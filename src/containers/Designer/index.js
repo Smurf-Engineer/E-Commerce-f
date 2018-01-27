@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import vertexShader from "./vertex";
 import fragmentShader from "./fragment";
+import "./styles.css";
 
 /* eslint-disable */
 class Designer extends Component {
@@ -307,7 +308,7 @@ class Designer extends Component {
   render() {
     return (
       <div>
-        <div>Jackroo Designer - v0.01</div>
+        <div className="header">Jackroo Designer - v0.02</div>
         <div
           ref={container => (this.container = container)}
           style={{ width: "100%", height: "100vh" }}
