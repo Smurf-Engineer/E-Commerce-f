@@ -1,0 +1,77 @@
+newmtl RED_J_TAG:RED_J_TAG:RED_J_TAG:J_Red_Tag:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd Red-J.jpg
+Ni 1.00
+newmtl just_tour:SSJersey14_6_bb1:Box003SG1
+illum 4
+Kd 0.34 0.29 0.20
+Ka 0.34 0.29 0.20
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns -0.00
+newmtl just_tour:SSJersey14_6_bb1:Cloth_ShapeSG:jakroo_designer
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.10 0.10 0.10
+Tf 1.00 1.00 1.00
+bump TOUR-SS_Jersey-BUMP.jpg -bm 0.15
+Ni 1.00
+Ks 0.21 0.21 0.21
+newmtl just_tour:SSJersey14_6_bb1:flat_lock_curve:flatlock_example:lambert2SG:jakroo_flatlock
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.50 0.50 0.50
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl just_tour:SSJersey14_6_bb1:reflectorFBXASC032rounded001SG
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.40 0.40 0.40
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.30 0.30 0.30
+Ns 18.00
+newmtl just_tour:SSJersey14_6_bb1:zGrabSG1
+illum 4
+Kd 0.27 0.27 0.27
+Ka 0.59 0.59 0.59
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl tour_s_zipper:just_tour:SSJersey14_6_bb1:Box003SG1
+illum 4
+Kd 0.34 0.29 0.20
+Ka 0.34 0.29 0.20
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns -0.00
+newmtl tour_s_zipper:just_tour:SSJersey14_6_bb1:ZipperTipperSG
+illum 4
+Kd 0.66 0.66 0.66
+Ka 0.66 0.66 0.66
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns -0.00
+newmtl tour_s_zipper:just_tour:SSJersey14_6_bb1:zGrabSG1
+illum 4
+Kd 0.27 0.27 0.27
+Ka 0.59 0.59 0.59
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00
+newmtl tour_s_zipper:just_tour:SSJersey14_6_bb1:zipperFBXASC032lengthSG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.59 0.59 0.59
+Tf 1.00 1.00 1.00
+Ni 1.00
+Ks 0.00 0.00 0.00
+Ns 0.00

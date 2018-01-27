@@ -1,0 +1,34 @@
+newmtl fab_8
+Ka 0.000000 0.000000 0.000000
+Kd 0.937255 0.952941 0.952941
+Ks 1.000000 1.000000 1.000000
+illum 2
+Ns 0.000000
+d 1.000000
+map_Kd JAKROO-NEW-3D_Test_Base-textures/rib_col.png
+map_bump JAKROO-NEW-3D_Test_Base-textures/rib_nrm.png
+map_Ks JAKROO-NEW-3D_Test_Base-textures/rib_spec.png
+
+
+newmtl fab_26
+Ka 0.000000 0.000000 0.000000
+Kd 0.937255 0.952941 0.952941
+Ks 1.000000 1.000000 1.000000
+illum 2
+Ns 0.000000
+d 1.000000
+map_Kd JAKROO-NEW-3D_Test_Base-textures/jersey_col.png
+map_bump JAKROO-NEW-3D_Test_Base-textures/jersey_nrm.png
+map_Ks JAKROO-NEW-3D_Test_Base-textures/jersey_spec.png
+
+
+newmtl fab_18
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+illum 2
+Ns 0.000000
+d 1.000000
+map_Kd JAKROO-NEW-3D_Test_Base-textures/shadow_stitch3.png
+
+
