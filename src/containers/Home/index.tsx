@@ -1,33 +1,46 @@
 import * as React from 'react'
+import gql from 'graphql-tag'
+import { graphql, compose, QueryProps } from 'react-apollo'
 import logo from './react.svg'
 import './Home.css'
 
-class Home extends React.Component<{}, {}> {
+type User = {
+  id: string
+  email: string
+}
+
+interface Data extends QueryProps {
+  users: [User]
+}
+
+interface Props {
+  data: Data
+}
+
+class Home extends React.Component<Props, {}> {
   render() {
     return (
       <div className="Home">
         <div className="Home-header">
           <img src={logo} className="Home-logo" alt="logo" />
-          <h2>Welcome to Razzles</h2>
+          <h2>JR-WEB</h2>
         </div>
-        <p className="Home-intro">
-          To get started, edit <code>src/App.tsx</code> or{' '}
-          <code>src/Home.tsx</code> and save to reload.
-        </p>
-        <ul className="Home-resources">
-          <li>
-            <a href="https://github.com/jaredpalmer/razzle">Docs</a>
-          </li>
-          <li>
-            <a href="https://github.com/jaredpalmer/razzle/issues">Issues</a>
-          </li>
-          <li>
-            <a href="https://palmer.chat">Community Slack</a>
-          </li>
-        </ul>
       </div>
     )
   }
 }
 
-export default Home
+const usersQuery = gql`
+  query GetUsers {
+    users {
+      id
+      email
+    }
+  }
+`
+const HomeEnhance = compose(
+  // someOther HOC like connect
+  graphql<Data>(usersQuery)
+)(Home)
+
+export default HomeEnhance
