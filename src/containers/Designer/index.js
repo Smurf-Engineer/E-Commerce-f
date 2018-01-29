@@ -14,7 +14,6 @@ class Designer extends Component {
     renderer.setSize(clientWidth, clientHeight);
 
     /* Textures */
-
     const loader = new THREE.TextureLoader();
 
     const front = loader.load("./models/Tour5/bb-1-camfront_Front.png");
@@ -203,9 +202,7 @@ class Designer extends Component {
 
   setupGui = () => {
     const object = this.scene.getObjectByName("jersey");
-    const gui = new dat.GUI({
-      height: 5 * 32 - 1
-    });
+    const gui = new dat.GUI({ height: 5 * 32 - 1 });
     const Config = function() {
       this.block1 = "#FFAAB4";
       this.block2 = "#EE3C6F";
@@ -288,9 +285,7 @@ class Designer extends Component {
     }
   };
 
-  stop = () => {
-    cancelAnimationFrame(this.framId);
-  };
+  stop = () => cancelAnimationFrame(this.framId);
 
   animate = () => {
     this.rendeScene();

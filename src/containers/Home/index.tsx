@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import logo from './react.svg';
-import './Home.css';
+import * as React from 'react'
+import logo from './react.svg'
+import './Home.css'
 
-class Home extends Component {
+class Home extends React.Component<{}, {}> {
   render() {
     return (
       <div className="Home">
         <div className="Home-header">
           <img src={logo} className="Home-logo" alt="logo" />
-          <h2>Welcome to Razzle</h2>
+          <h2>Welcome to Razzles</h2>
         </div>
         <p className="Home-intro">
-          To get started, edit <code>src/App.js</code> or{' '}
-          <code>src/Home.js</code> and save to reload.
+          To get started, edit <code>src/App.tsx</code> or{' '}
+          <code>src/Home.tsx</code> and save to reload.
         </p>
         <ul className="Home-resources">
           <li>
@@ -26,8 +26,8 @@ class Home extends Component {
           </li>
         </ul>
       </div>
-    );
+    )
   }
 }
 
-export default Home;
+export default Home
