@@ -4,7 +4,9 @@ import App from './App'
 import { ApolloProvider, getDataFromTree } from 'react-apollo'
 import { renderToString, renderToStaticMarkup } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
-import Html from './Html'
+import { ServerStyleSheet } from 'styled-components'
+import Html from './helpers/Html'
+import renderHtml from './helpers/render'
 import { configureServerClient } from './apollo'
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
@@ -19,22 +21,23 @@ server
     const location = req.url
     const context = {}
 
-    const AppContent = (
-      <ApolloProvider {...{ client }}>
-        <StaticRouter {...{ context, location }}>
-          <App />
-        </StaticRouter>
-      </ApolloProvider>
-    )
+    getDataFromTree(App as any).then(() => {
+      const sheet = new ServerStyleSheet()
+      const jsx = sheet.collectStyles(
+        <ApolloProvider {...{ client }}>
+          <StaticRouter {...{ context, location }}>
+            <App />
+          </StaticRouter>
+        </ApolloProvider>
+      )
+      const content = renderToString(jsx)
 
-    getDataFromTree(AppContent).then(() => {
-      const content = renderToString(AppContent)
+      const styleTags = sheet.getStyleTags()
       const state = client.extract()
-
       const html = <Html {...{ content, state }} />
-
+      const htmlString = renderHtml(styleTags, html)
       res.status(200)
-      res.send(`<!doctype html>\n${renderToStaticMarkup(html)}`)
+      res.send(htmlString)
       res.end()
     })
   })

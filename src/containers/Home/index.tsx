@@ -2,7 +2,7 @@ import * as React from 'react'
 import gql from 'graphql-tag'
 import { graphql, compose, QueryProps } from 'react-apollo'
 import logo from './react.svg'
-import './Home.css'
+import { Container, HomeHeader } from './styledComponents'
 
 type User = {
   id: string
@@ -20,12 +20,11 @@ interface Props {
 class Home extends React.Component<Props, {}> {
   render() {
     return (
-      <div className="Home">
-        <div className="Home-header">
-          <img src={logo} className="Home-logo" alt="logo" />
+      <Container>
+        <HomeHeader>
           <h2>JR-WEB</h2>
-        </div>
-      </div>
+        </HomeHeader>
+      </Container>
     )
   }
 }
