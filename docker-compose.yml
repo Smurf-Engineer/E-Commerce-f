@@ -13,6 +13,8 @@ services:
       # over to the new volume upon volume initialization.
       # node_modules from this new volume will be used and not from your local dev env.
       - /app/node_modules/
+      # Mounts the build directory for compiled files
+      - /app/build
 
     # Expose ports [HOST:CONTAINER]
     ports:
