@@ -1,7 +1,4 @@
 ---
-# use alpine with yarn image
-image: davidglez/alpine-pm2
-
 # set docker enabled
 options:
   docker: true
@@ -27,6 +24,7 @@ pipelines:
         - gcloud config set project $GCLOUD_PROJECT
         - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone=$GCLOUD_ZONE
         # Building images
+        - curl -o- -L https://yarnpkg.com/install.sh | bash
         - yarn --pure-lockfile
         - yarn build
         - docker build . -t us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
