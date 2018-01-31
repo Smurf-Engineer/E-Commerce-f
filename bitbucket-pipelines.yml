@@ -30,4 +30,4 @@ pipelines:
         - docker tag us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
         - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
         # Deploy the image
-        - kubectl set image deployment $APP $APP=us.us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
+        - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
