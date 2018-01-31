@@ -18,7 +18,7 @@ COPY . /app/
 
 RUN yarn --pure-lockfile
 
-RUN yarn build
+# RUN yarn build
 
 # expose port 3000
 EXPOSE 3000
