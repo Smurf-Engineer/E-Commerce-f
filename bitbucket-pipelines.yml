@@ -1,7 +1,4 @@
 ---
-# use alpine with yarn image
-image: davidglez/alpine-pm2
-
 # set docker enabled
 options:
   docker: true
@@ -14,9 +11,11 @@ pipelines:
         # install git and verify if the desired folder has changes
         # - apt-get update && apt-get install -y unzip git
         # - if [ git diff HEAD~ --name-only|grep api ]; then echo "File does not exist"; fi
-        # add curl
-        - apk update
-        - apk add curl
+        # install yarn and yarn build
+        - curl -o- -L https://yarnpkg.com/install.sh | bash
+        - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+        - yarn --pure-lockfile
+        - yarn build
         # Installing gcloud
         - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
         - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
@@ -30,8 +29,6 @@ pipelines:
         - gcloud config set project $GCLOUD_PROJECT
         - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone=$GCLOUD_ZONE
         # Building images
-        - yarn --pure-lockfile
-        - yarn build
         - docker build . -t us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
         # Pushing SHA1 image
         - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
