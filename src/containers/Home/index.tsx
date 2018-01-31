@@ -1,5 +1,7 @@
 import * as React from 'react'
 import gql from 'graphql-tag'
+import Button from 'antd/lib/button'
+import message from 'antd/lib/message'
 import { graphql, compose, QueryProps } from 'react-apollo'
 import logo from './react.svg'
 import { Container, HomeHeader } from './styledComponents'
@@ -18,12 +20,13 @@ interface Props {
 }
 
 class Home extends React.Component<Props, {}> {
+  onClickMessage = () => message.info('JR Web test message')
   render() {
     return (
       <Container>
-        <HomeHeader>
-          <h2>JR-WEB</h2>
-        </HomeHeader>
+        <Button onClick={this.onClickMessage} type="primary">
+          Info Message
+        </Button>
       </Container>
     )
   }
