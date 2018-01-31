@@ -1,24 +1,33 @@
-# This is a sample build configuration for Docker.
-# Check our guides at https://confluence.atlassian.com/x/O1toN for more examples.
-# Only use spaces to indent your .yml configuration.
-# -----
-# You can specify a custom docker image from Docker Hub as your build environment.
-# image: atlassian/default-image:latest
-
-# enable Docker for your repository
+---
 options:
   docker: true
 
 pipelines:
-  default:
+  branches:
+    development:
     - step:
-        script: # Modify the commands below to build your repository.
-          # Set $DOCKER_HUB_USERNAME and $DOCKER_HUB_PASSWORD as environment variables in repository settings
-          - export IMAGE_NAME=your-Dockerhub-account/your-docker-image-name:$BITBUCKET_COMMIT
-
-          # build the Docker image (this will use the Dockerfile in the root of the repo)
-          - docker build -t $IMAGE_NAME .
-          # authenticate with the Docker Hub registry
-          - docker login --username $DOCKER_HUB_USERNAME --password $DOCKER_HUB_PASSWORD
-          # push the new Docker image to the Docker registry
-          - docker push $IMAGE_NAME
+        script:
+        # install git and verify if the desired folder has changes
+        # - apt-get update && apt-get install -y unzip git
+        # - if [ git diff HEAD~ --name-only|grep api ]; then echo "File does not exist"; fi
+        # Installing gcloud
+        - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
+        - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
+        - /tmp/google-cloud-sdk/install.sh -q
+        - source /tmp/google-cloud-sdk/path.bash.inc
+        # Installing kubectl
+        - gcloud components install kubectl -q
+        # Authentication
+        - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
+        - gcloud auth activate-service-account --key-file gcloud-api-key.json
+        - gcloud config set project $GCLOUD_PROJECT
+        - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone=$GCLOUD_ZONE
+        # Building images
+        - docker build . -t us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
+        # Pushing SHA1 image
+        - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
+        # Pushing latest image
+        - docker tag us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
+        - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
+        # Deploy the image
+        - kubectl set image deployment $APP $APP=us.us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
