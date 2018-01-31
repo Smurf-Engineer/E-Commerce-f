@@ -1,5 +1,5 @@
-import Home from './containers/Home'
-import Designer from './containers/Designer'
+import Home from '../containers/Home'
+import Designer from '../containers/Designer'
 
 const routes = [
   {

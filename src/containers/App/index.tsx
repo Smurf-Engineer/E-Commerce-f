@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
-import Home from './containers/Home/'
-import Designer from './containers/Designer'
-import routes from './routes'
+import Home from '../Home'
+import Designer from '../Designer'
+import routes from '../../config/routes'
 import './theme.ant'
 import './App.css'
 

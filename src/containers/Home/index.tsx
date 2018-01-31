@@ -1,9 +1,11 @@
 import * as React from 'react'
-import gql from 'graphql-tag'
+import { connect } from 'react-redux'
 import Button from 'antd/lib/button'
 import message from 'antd/lib/message'
-import { graphql, compose, QueryProps } from 'react-apollo'
-import logo from './react.svg'
+import { QueryProps, compose, graphql } from 'react-apollo'
+import { ReducersObject } from '../../store/rootReducer'
+import { usersQuery } from './data'
+import * as homeActions from './actions'
 import { Container, HomeHeader } from './styledComponents'
 
 type User = {
@@ -17,10 +19,16 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
+  someKey: string
+  defaultAction: () => void
 }
 
 class Home extends React.Component<Props, {}> {
-  onClickMessage = () => message.info('JR Web test message')
+  onClickMessage = () => {
+    const { defaultAction } = this.props
+    defaultAction()
+    message.info('JR Web test message')
+  }
   render() {
     return (
       <Container>
@@ -32,17 +40,11 @@ class Home extends React.Component<Props, {}> {
   }
 }
 
-const usersQuery = gql`
-  query GetUsers {
-    users {
-      id
-      email
-    }
-  }
-`
+const mapStateToProps = (state: ReducersObject) => state.home.toJS()
+
 const HomeEnhance = compose(
-  // someOther HOC like connect
-  graphql<Data>(usersQuery)
+  graphql<Data>(usersQuery),
+  connect(mapStateToProps, { ...homeActions })
 )(Home)
 
 export default HomeEnhance
