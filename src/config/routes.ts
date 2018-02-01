@@ -1,7 +1,14 @@
-import Home from '../containers/Home'
-import Designer from '../containers/Designer'
+/* Routes */
+import NotFound from '../screens/NotFound'
+import Home from '../screens/Home'
+import Designer from '../screens/Designer'
 
 const routes = [
+  {
+    path: '/not-found',
+    name: 'notFound',
+    component: NotFound
+  },
   {
     path: '/',
     name: 'home',
