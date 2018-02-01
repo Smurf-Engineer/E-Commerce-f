@@ -5,16 +5,16 @@ const renderHtml = (styleTags: any, html: any) => {
   return ` <!doctype html>
   <html lang="en">
       <head>
-          <script src="js/three.min.js"></script>
-          <script src="js/loaders/DDSLoader.js"></script>
-          <script src="js/loaders/MTLLoader.js"></script>
-          <script src="js/loaders/OBJLoader.js"></script>
-          <script src="js/controls/OrbitControls.js"></script>
-          <script src="js/shaders/FresnelShader.js"></script>
-          <script src="js/Detector.js"></script>
-          <script src="js/libs/stats.min.js"></script>
-          <script src="js/libs/dat.gui.min.js"></script>
-          <script src="js/libs/stats.min.js"></script>
+          <script type="text/javascript" src="js/three.min.js"></script>
+          <script type="text/javascript" src="js/loaders/DDSLoader.js"></script>
+          <script type="text/javascript" src="js/loaders/MTLLoader.js"></script>
+          <script type="text/javascript" src="js/loaders/OBJLoader.js"></script>
+          <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
+          <script type="text/javascript" src="js/shaders/FresnelShader.js"></script>
+          <script type="text/javascript" src="js/Detector.js"></script>
+          <script type="text/javascript" src="js/libs/stats.min.js"></script>
+          <script type="text/javascript" src="js/libs/dat.gui.min.js"></script>
+          <script type="text/javascript" src="js/libs/stats.min.js"></script>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
           <title>JR-Web</title>
