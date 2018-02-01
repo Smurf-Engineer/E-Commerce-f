@@ -1,0 +1,34 @@
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
+{{#if wantActionsAndReducer}}
+import {{ camelCase name }}Reducer, { initialState } from './reducer'
+import { defaultAction } from './actions'
+{{/if}}
+import { {{ properCase name }} } from './index'
+
+describe(' {{ properCase name }} Screen', () => {
+  it('renders without exploding', () => {
+    const div = document.createElement('div')
+    // tslint:disable-next-line:no-empty
+    ReactDOM.render(<{{ properCase name }} />, div)
+  })
+  {{#if wantActionsAndReducer}}
+  // Test redux actions
+  it('Return the default state for unknow action', () => {
+    let state = {{ camelCase name }}Reducer(initialState, { type: undefined })
+    expect(state).toEqual(initialState)
+  })
+
+  it('Update someKey correctly', () => {
+    const testValue = 'Test value'
+    const state = {{ camelCase name }}Reducer(initialState, defaultAction(testValue))
+    const someKey = state.get('someKey')
+    expect(someKey).toEqual(testValue)
+
+    const testValue2 = 'Test value 2'
+    const state2 = {{ camelCase name }}Reducer(initialState, defaultAction(testValue2))
+    const someKey2 = state2.get('someKey')
+    expect(someKey2).toEqual(testValue2)
+  })
+  {{/if}}
+})
