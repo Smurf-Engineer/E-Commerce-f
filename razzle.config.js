@@ -74,6 +74,9 @@ module.exports = {
     })
 
     config.plugins.push(new ExtractTextPlugin('static/css/styles.css'))
+    config.plugins.push(
+      new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop')
+    )
 
     return config
   }
