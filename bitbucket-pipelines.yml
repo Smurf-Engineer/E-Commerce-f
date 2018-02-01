@@ -10,7 +10,7 @@ pipelines:
   default:
   - step:
       script:
-      - npm install
+      - npm install --production
       - npm run tslint
       - npm run test
   branches:
