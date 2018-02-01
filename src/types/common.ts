@@ -3,7 +3,7 @@
  */
 
 export interface Action {
-  type: any
+  type: string
 }
 
 export interface AnyAction extends Action {

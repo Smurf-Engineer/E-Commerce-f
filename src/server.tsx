@@ -9,7 +9,7 @@ import { ServerStyleSheet } from 'styled-components'
 import Html from './helpers/Html'
 import renderHtml from './helpers/render'
 import { configureServerClient } from './apollo'
-import App from './containers/App'
+import App from './screens/App'
 import configureStore from './store'
 
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)

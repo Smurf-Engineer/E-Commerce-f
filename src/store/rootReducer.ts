@@ -2,13 +2,13 @@
  * Root reducer
  */
 import { fromJS } from 'immutable'
-import { combineReducers, AnyAction } from 'redux'
-import home from '../containers/Home/reducer'
+import { combineReducers } from 'redux'
+import home from '../screens/Home/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
-  app: any
   home: any
+  app: any
 }
 
 const appInitialState = fromJS({
@@ -25,8 +25,8 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
 }
 
 const rootReducer = combineReducers({
-  app: appReducer,
-  home
+  home,
+  app: appReducer
 })
 
 export default rootReducer
