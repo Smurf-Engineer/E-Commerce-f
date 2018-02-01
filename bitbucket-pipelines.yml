@@ -11,7 +11,7 @@ pipelines:
   - step:
       script:
       - npm install --production
-      - npm run tslint
+      - npm run lint
       - npm run test
   branches:
     development:
