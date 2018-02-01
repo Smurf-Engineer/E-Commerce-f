@@ -5,7 +5,7 @@ import Designer from '../screens/Designer'
 
 const routes = [
   {
-    path: '/*',
+    path: '/not-found',
     name: 'notFound',
     component: NotFound
   },

@@ -1,3 +1,6 @@
+/**
+ * Home Actions - Created by david on 08/10/17.
+ */
 import * as React from 'react'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'

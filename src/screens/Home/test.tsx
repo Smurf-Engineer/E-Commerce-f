@@ -14,7 +14,7 @@ describe('Home Reducer', () => {
   })
 
   it('Return the default state for unknow action', () => {
-    let state = homeReducer(initialState, { type: undefined })
+    let state = homeReducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)
   })
 
