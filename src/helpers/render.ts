@@ -15,6 +15,7 @@ const renderHtml = (styleTags: any, html: any) => {
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
           <title>JR-Web</title>
+          <base href="/" />
           <meta name="viewport" content="width=device-width, initial-scale=1">
           ${
             assets.client.css
