@@ -7,6 +7,11 @@ options:
   docker: true
 
 pipelines:
+  default:
+  - step:
+      script:
+      - npm run tslint
+      - npm run test
   branches:
     development:
     - step:
