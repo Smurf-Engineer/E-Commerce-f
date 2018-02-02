@@ -1,6 +1,6 @@
 ---
 # docker image
-image: node:8.9.3
+image: node:6.10.3
 
 # set docker enabled
 options:

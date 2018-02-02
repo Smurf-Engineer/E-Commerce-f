@@ -1,7 +1,9 @@
-FROM davidglez/alpine-pm2
+FROM node:6.10.3
 
 # create app directory in container
 RUN mkdir -p /app
+
+RUN npm install pm2 -g
 
 # set /app directory as default working directory
 WORKDIR /app
@@ -11,12 +13,12 @@ WORKDIR /app
 # ADD package.json yarn.lock /app/
 
 # --pure-lockfile: Don’t generate a yarn.lock lockfile
-# RUN yarn --pure-lockfile
+# RUN npm i --production
 
 # copy all file from current dir to /app in container
 COPY . /app/
 
-# RUN yarn --pure-lockfile
+# RUN npm i --production
 
 # RUN yarn build
 
