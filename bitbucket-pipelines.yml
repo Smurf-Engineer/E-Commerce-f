@@ -17,9 +17,6 @@ pipelines:
     development:
     - step:
         script:
-        # install git and verify if the desired folder has changes
-        # - apt-get update && apt-get install -y unzip git
-        # - if [ git diff HEAD~ --name-only|grep api ]; then echo "File does not exist"; fi
         # install yarn and yarn build
         - curl -o- -L https://yarnpkg.com/install.sh | bash
         - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
