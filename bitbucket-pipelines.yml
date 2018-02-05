@@ -1,6 +1,6 @@
 ---
 # docker image
-image: node:6.10.3
+image: node:9.4.0
 
 # set docker enabled
 options:
@@ -18,11 +18,11 @@ pipelines:
     - step:
         script:
         # install yarn and yarn build
-        - curl -o- -L https://yarnpkg.com/install.sh | bash
-        - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+        # - curl -o- -L https://yarnpkg.com/install.sh | bash
+        # - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
         - export CI=false
-        - npm install --production
-        - yarn build
+        # - npm install --production
+        # - yarn build
         # Installing gcloud
         - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
         - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
