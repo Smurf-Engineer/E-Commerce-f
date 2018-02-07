@@ -15,8 +15,8 @@ WORKDIR /app
 # if there are changes in package.json
 ADD package.json yarn.lock /app/
 
-# --pure-lockfile: Donâ€™t generate a yarn.lock lockfile
-RUN npm i --production --pure-lockfile
+# --pure-lockfile: Don’t generate a yarn.lock lockfile
+RUN npm i --production --pure-lockfile --exact
 
 # copy all file from current dir to /app in container
 COPY . /app/
