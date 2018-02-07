@@ -4,23 +4,24 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { ReducersObject } from '../../store/rootReducer'
+import { usersQuery } from './data'
 import * as homeActions from './actions'
 import Button from '../../components/Button'
 import { Container, HomeHeader } from './styledComponents'
 
-// type User = {
-//   id: string
-//   email: string
-// }
+type User = {
+  id: string
+  email: string
+}
 
-// interface Data extends QueryProps {
-//   users: [User]
-// }
+interface Data {
+  users: [User]
+}
 
 interface Props {
-  //  data?: Data
+  data?: Data
   someKey?: string
   defaultAction: (someKey: string) => void
 }
@@ -42,6 +43,9 @@ export class Home extends React.Component<Props, {}> {
 
 const mapStateToProps = ({ home }: ReducersObject) => home.toJS()
 
-const HomeEnhance = compose(connect(mapStateToProps, { ...homeActions }))(Home)
+const HomeEnhance = compose(
+  graphql<Data>(usersQuery),
+  connect(mapStateToProps, { ...homeActions })
+)(Home)
 
 export default HomeEnhance
