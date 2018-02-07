@@ -1,5 +1,9 @@
 body {
   margin: 0 !important;
   padding: 0;
-  font-family: sans-serif;
+  font-family: Avenir Next;
+}
+
+.ant-layout-header {
+  line-height: 0px !important;
 }

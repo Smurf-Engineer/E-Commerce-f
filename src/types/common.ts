@@ -2,6 +2,16 @@
  * Global types
  */
 
+export interface QueryProps {
+  error?: any
+  networkStatus?: number
+  loading?: boolean
+  variables?: any
+  fetchMore: any
+  refetch?: any
+  updateQuery?: any
+}
+
 export interface Action {
   type: string
 }
