@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import Layout from 'antd/lib/layout'
+import MenuBar from '../../components/MenuBar'
 import Home from '../Home'
 import Designer from '../Designer'
 import routes from '../../config/routes'
@@ -12,7 +13,7 @@ const { Header, Content, Footer } = Layout
 const App = () => (
   <Layout>
     <Header>
-      <div>HEADER</div>
+      <MenuBar />
     </Header>
     <Content>
       <Switch>

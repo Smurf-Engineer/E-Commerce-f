@@ -1,4 +1,3 @@
-// Test config for precommit.
 module.exports = {
   verbose: true,
   transform: {
@@ -13,5 +12,8 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'json'],
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
-  setupTestFrameworkScriptFile: 'raf/polyfill'
+  setupTestFrameworkScriptFile: './src/setupTests.js',
+  moduleNameMapper: {
+    '^.+\\.svg?$': '<rootDir>/__mocks__/svgTransform.js'
+  }
 }

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
 import { compose, graphql } from 'react-apollo'
+import { QueryProps } from '../../types/common'
 import { ReducersObject } from '../../store/rootReducer'
 import { usersQuery } from './data'
 import * as homeActions from './actions'
@@ -16,7 +17,7 @@ type User = {
   email: string
 }
 
-interface Data {
+interface Data extends QueryProps {
   users: [User]
 }
 
@@ -28,7 +29,7 @@ interface Props {
 
 export class Home extends React.Component<Props, {}> {
   onClickMessage = () => {
-    const { defaultAction } = this.props
+    const { defaultAction, data } = this.props
     defaultAction('Some Updated value')
     message.info('JR Web test message')
   }

@@ -6,8 +6,6 @@ import { defaultAction } from './actions'
 
 describe('Home Reducer', () => {
   it('renders without exploding', () => {
-    const data = { users: [{ id: 'ds', email: 'some@jr.com' }] }
-
     const div = document.createElement('div')
     // tslint:disable-next-line:no-empty
     ReactDOM.render(<Home defaultAction={() => {}} />, div)
