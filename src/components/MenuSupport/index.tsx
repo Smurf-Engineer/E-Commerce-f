@@ -4,44 +4,20 @@
 import * as React from 'react'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/Menu'
-import { Container, Text } from './styledComponents'
+import { Container, Text, Link, menuStyle } from './styledComponents'
+import links from './links'
 
 interface Props {}
 
-const links = [
-  {
-    label: 'F.A.Q',
-    url: '/'
-  },
-  {
-    label: 'Terms of Use',
-    url: '/'
-  },
-  {
-    label: 'Pricing chart',
-    url: '/'
-  },
-  {
-    label: ' Warranty',
-    url: '/'
-  },
-  {
-    label: ' Design Support',
-    url: '/'
-  }
-]
-
 const MenuSupport = (props: Props) => {
   const items = links.map(({ label, url }, index) => (
-    <Menu.Item>
-      <a target="_blank" href="url">
-        {label}
-      </a>
+    <Menu.Item key={index}>
+      <Link href={url}>{label}</Link>
     </Menu.Item>
   ))
-  const menu = <Menu>{items}</Menu>
+  const menu = <Menu style={menuStyle}>{items}</Menu>
   return (
-    <Dropdown overlay={menu}>
+    <Dropdown className="top-dropdown ant-dropdown-menu" overlay={menu}>
       <Text>SUPPORT</Text>
     </Dropdown>
   )

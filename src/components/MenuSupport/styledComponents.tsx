@@ -12,3 +12,14 @@ export const Text = styled.div`
   font-size: 14px;
   cursor: pointer;
 `
+
+export const Link = styled.a`
+  color: #5f6062;
+  font-size: 16px;
+  line-height: 25px;
+`
+
+export const menuStyle = {
+  marginTop: 15,
+  borderRadius: 0
+}
