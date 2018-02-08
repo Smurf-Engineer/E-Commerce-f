@@ -3,8 +3,3 @@ body {
   padding: 0;
   font-family: Avenir Next;
 }
-
-.top-dropdown .ant-dropdown-menu {
-  border-radius: 0px !important;
-  margin-top: 15px !important;
-}
