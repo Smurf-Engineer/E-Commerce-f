@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import Dropdown from 'antd/lib/dropdown'
-import Menu from 'antd/lib/Menu'
 import Support from '../MenuSupport'
 import DropdownList from '../DropdownList'
 import {

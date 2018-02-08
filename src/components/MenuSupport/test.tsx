@@ -8,6 +8,6 @@ import MenuSupport from './index'
 describe('<MenuSupport />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MenuSupport  />, div)
+    ReactDOM.render(<MenuSupport />, div)
   })
 })

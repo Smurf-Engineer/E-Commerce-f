@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import Dropdown from 'antd/lib/dropdown'
-import Menu from 'antd/lib/Menu'
+import Menu from 'antd/lib/menu'
 import { Container, Text, Link, menuStyle } from './styledComponents'
 import links from './links'
 
