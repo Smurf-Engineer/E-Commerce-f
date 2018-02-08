@@ -17,7 +17,7 @@ const MenuSupport = (props: Props) => {
   ))
   const menu = <Menu style={menuStyle}>{items}</Menu>
   return (
-    <Dropdown className="top-dropdown ant-dropdown-menu" overlay={menu}>
+    <Dropdown overlay={menu}>
       <Text>SUPPORT</Text>
     </Dropdown>
   )
