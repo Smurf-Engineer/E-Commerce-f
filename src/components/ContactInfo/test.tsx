@@ -8,6 +8,6 @@ import ContactInfo from './index'
 describe('<ContactInfo />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<ContactInfo  />, div)
+    ReactDOM.render(<ContactInfo />, div)
   })
 })

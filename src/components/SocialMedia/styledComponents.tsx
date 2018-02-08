@@ -2,7 +2,6 @@
  * Styled Components - Created by cazarez on 07/02/18.
  */
 import styled from 'styled-components'
-import fbLogo from '../../assets/fb.svg'
 
 export const Container = styled.div`
   display: flex;

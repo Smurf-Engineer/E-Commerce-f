@@ -8,6 +8,6 @@ import CustomerSupport from './index'
 describe('<CustomerSupport />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<CustomerSupport  />, div)
+    ReactDOM.render(<CustomerSupport />, div)
   })
 })

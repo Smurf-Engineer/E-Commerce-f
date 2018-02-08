@@ -8,6 +8,6 @@ import DesignSupport from './index'
 describe('<DesignSupport />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<DesignSupport  />, div)
+    ReactDOM.render(<DesignSupport />, div)
   })
 })

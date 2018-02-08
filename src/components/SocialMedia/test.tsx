@@ -8,6 +8,6 @@ import SocialMedia from './index'
 describe('<SocialMedia />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<SocialMedia  />, div)
+    ReactDOM.render(<SocialMedia />, div)
   })
 })

@@ -8,6 +8,6 @@ import AboutUs from './index'
 describe('<AboutUs />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<AboutUs  />, div)
+    ReactDOM.render(<AboutUs />, div)
   })
 })

@@ -8,6 +8,6 @@ import Teams from './index'
 describe('<Teams />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<Teams  />, div)
+    ReactDOM.render(<Teams />, div)
   })
 })
