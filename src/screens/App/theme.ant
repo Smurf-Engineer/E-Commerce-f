@@ -1,6 +1,3 @@
 @import "~antd/dist/antd.less";
 
 @primary-color: #1DA57A;
-@layout-header-background    : #FFFFFF;
-@layout-header-height: 110px;
-@layout-header-padding: 0px;
