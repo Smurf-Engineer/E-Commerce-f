@@ -21,3 +21,13 @@ export interface AnyAction extends Action {
 }
 
 export type Reducer<S> = (state: S, action: AnyAction) => S
+
+// Mouse Click Events
+
+export interface SyntheticMouseEventTarget extends EventTarget {
+  id: string
+}
+
+export interface SyntethicEventMouse extends React.MouseEvent<HTMLElement> {
+  target: SyntheticMouseEventTarget
+}
