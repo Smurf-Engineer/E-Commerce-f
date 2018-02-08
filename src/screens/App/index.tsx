@@ -13,7 +13,7 @@ const { Content, Footer } = Layout
 
 const App = () => (
   <Layout>
-    <Header className="menu-bar">
+    <Header>
       <MenuBar />
     </Header>
     <Content>
