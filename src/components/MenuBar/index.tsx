@@ -2,6 +2,9 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
+import Dropdown from 'antd/lib/dropdown'
+import Menu from 'antd/lib/Menu'
+import Support from '../MenuSupport'
 import DropdownList from '../DropdownList'
 import {
   Container,
@@ -26,7 +29,7 @@ const MenuBar = (props: Props) => {
   return (
     <Container>
       <Row>
-        <TopText>SUPPORT</TopText>
+        <Support />
         <TopRow>
           <Region>
             <img src={caFlag} />
