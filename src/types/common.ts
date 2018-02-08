@@ -21,3 +21,8 @@ export interface AnyAction extends Action {
 }
 
 export type Reducer<S> = (state: S, action: AnyAction) => S
+
+export interface Prices {
+  price: number
+  quantity: string
+}
