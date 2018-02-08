@@ -23,7 +23,6 @@ class SocialMedia extends React.Component {
   }
   render() {
     const { hoverOn } = this.state
-    console.log(hoverOn)
     return (
       <Container>
         <SocialLogosContainer>
