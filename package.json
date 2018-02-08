@@ -60,30 +60,25 @@
     "typescript": "^2.6.2"
   },
   "devDependencies": {
-    "react-generator": "git+ssh://git@bitbucket.org:tailrecursive/generators.git"
+    "react-generator":
+      "git+ssh://git@bitbucket.org:tailrecursive/generators.git"
   },
-  "pre-commit": [
-    "lint",
-    "test"
-  ],
+  "pre-commit": ["lint", "test"],
   "jest": {
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js",
       "^.+\\.css$": "<rootDir>/node_modules/razzle/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/node_modules/razzle/config/jest/fileTransform.js"
+      "^(?!.*\\.(js|jsx|css|json)$)":
+        "<rootDir>/node_modules/razzle/config/jest/fileTransform.js"
+    },
+    "moduleNameMapper": {
+      "^.+\\.svg?$": "<rootDir>/__mocks__/svgTransform.js"
     },
     "testMatch": [
       "<rootDir>/__tests__/**/*.(ts|js)?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(ts|js)?(x)"
     ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"],
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"]
   }
 }
