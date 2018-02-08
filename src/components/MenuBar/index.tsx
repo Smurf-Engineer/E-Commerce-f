@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import DropdownList from '../DropdownList'
+import Support from '../MenuSupport'
 import {
   Container,
   TopText,
@@ -26,7 +27,7 @@ const MenuBar = (props: Props) => {
   return (
     <Container>
       <Row>
-        <TopText>SUPPORT</TopText>
+        <Support />
         <TopRow>
           <Region>
             <img src={caFlag} />
