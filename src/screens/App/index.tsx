@@ -5,10 +5,11 @@ import MenuBar from '../../components/MenuBar'
 import Home from '../Home'
 import Designer from '../Designer'
 import routes from '../../config/routes'
+import { Header } from './styledComponents'
 import './theme.ant'
 import './App.css'
 
-const { Header, Content, Footer } = Layout
+const { Content, Footer } = Layout
 
 const App = () => (
   <Layout>
