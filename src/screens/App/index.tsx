@@ -4,6 +4,8 @@ import Layout from 'antd/lib/layout'
 import MenuBar from '../../components/MenuBar'
 import Home from '../Home'
 import Designer from '../Designer'
+import ContactAndLinks from '../../components/ContactAndLinks'
+import SocialMedia from '../../components/SocialMedia'
 import routes from '../../config/routes'
 import { Header } from './styledComponents'
 import './theme.ant'
@@ -22,7 +24,8 @@ const App = () => (
       </Switch>
     </Content>
     <Footer>
-      <div>FOOTER</div>
+      <ContactAndLinks />
+      <SocialMedia />
     </Footer>
   </Layout>
 )
