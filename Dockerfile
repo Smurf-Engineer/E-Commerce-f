@@ -13,15 +13,15 @@ WORKDIR /app
 
 # only copy package.json initially so that `RUN yarn` layer is recreated only
 # if there are changes in package.json
-ADD package.json  /app/
+ADD package.json yarn.lock  /app/
 
 # --pure-lockfile: Don�t generate a yarn.lock lockfile
-RUN npm i --production
+RUN yarn --pure-lockfile
 
 # copy all file from current dir to /app in container
 COPY . /app/
 
-RUN npm run build
+RUN yarn build
 
 # expose port 3000
 EXPOSE 3000
