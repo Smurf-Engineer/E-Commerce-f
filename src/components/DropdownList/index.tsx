@@ -2,19 +2,29 @@
  * DropdownList Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
+import Popover from 'antd/lib/popover'
+import Menu from 'antd/lib/menu'
 import { Container, Option, OptionDropdown } from './styledComponents'
 
 interface Props {}
 
-const options = ['MEN', 'WOMEN', 'CYCLING', 'TRIATHALON', 'NORDIC', 'ACTIVE']
-
 const DropdownList = (props: Props) => {
-  const optionsList = options.map((option, index) => (
-    <Option key={index}>
-      <OptionDropdown>{option}</OptionDropdown>
-    </Option>
-  ))
-  return <Container>{optionsList}</Container>
+  return (
+    <Container>
+      <Popover
+        style={{ paddingTop: 15 }}
+        placement="bottom"
+        content={<div>SOME</div>}
+      >
+        <OptionDropdown>{'MEN'}</OptionDropdown>
+      </Popover>
+      <OptionDropdown>{'WOMEN'}</OptionDropdown>
+      <OptionDropdown>{'CYCLING'}</OptionDropdown>
+      <OptionDropdown>{'TRIATHALON'}</OptionDropdown>
+      <OptionDropdown>{'NORDIC'}</OptionDropdown>
+      <OptionDropdown>{'ACTIVE'}</OptionDropdown>
+    </Container>
+  )
 }
 
 export default DropdownList
