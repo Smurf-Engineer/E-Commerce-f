@@ -65,13 +65,19 @@ module.exports = {
     //
     config.module.rules.push(tsLoader)
 
-    config.module.rules.push({
-      test: /\.ant$/,
-      loader: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader!less-loader'
-      })
-    })
+    config.module.rules.push(
+      {
+        test: /\.ant$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader!less-loader'
+        })
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
+      }
+    )
 
     config.plugins.push(new ExtractTextPlugin('static/css/styles.css'))
     config.plugins.push(

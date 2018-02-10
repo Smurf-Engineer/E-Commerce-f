@@ -4,6 +4,7 @@
 import * as React from 'react'
 import Popover from 'antd/lib/popover'
 import Menu from 'antd/lib/menu'
+import MenuGender from '../MenuGender'
 import { Container, Option, OptionDropdown } from './styledComponents'
 
 interface Props {}
@@ -12,9 +13,10 @@ const DropdownList = (props: Props) => {
   return (
     <Container>
       <Popover
-        style={{ paddingTop: 15 }}
+        overlayStyle={{ width: '100%', paddingTop: 36 }}
+        trigger="hover"
         placement="bottom"
-        content={<div>SOME</div>}
+        content={<MenuGender />}
       >
         <OptionDropdown>{'MEN'}</OptionDropdown>
       </Popover>

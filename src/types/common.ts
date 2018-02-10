@@ -26,3 +26,8 @@ export interface Prices {
   price: number
   quantity: string
 }
+
+export interface Filter {
+  id: string
+  label: string
+}
