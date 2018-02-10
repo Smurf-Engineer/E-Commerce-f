@@ -9,6 +9,7 @@ import { Reducer } from '../types/common'
 export interface ReducersObject {
   home: any
   app: any
+  quickView: any
 }
 
 const appInitialState = fromJS({

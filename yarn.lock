@@ -113,6 +113,10 @@
   version "16.0.35"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.35.tgz#7ce8a83cad9690fd965551fc513217a74fc9e079"
 
+"@types/react@>=15":
+  version "16.0.36"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.36.tgz#ceb5639013bdb92a94147883052e69bb2c22c69b"
+
 "@types/redux-logger@^3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@types/redux-logger/-/redux-logger-3.0.5.tgz#d1a02758f90845899cd304aa0912daeba2028eb6"
@@ -7095,6 +7099,15 @@ rc@~1.1.6:
     ini "~1.3.0"
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
+
+react-animate-height@^0.10.9:
+  version "0.10.9"
+  resolved "https://registry.yarnpkg.com/react-animate-height/-/react-animate-height-0.10.9.tgz#69b8f1184a595e2469e2a8459b3185e9052020dd"
+  dependencies:
+    classnames "^2.2.5"
+    prop-types "^15.5.8"
+  optionalDependencies:
+    "@types/react" ">=15"
 
 react-apollo@^2.0.4:
   version "2.0.4"

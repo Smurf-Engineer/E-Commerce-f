@@ -10,7 +10,10 @@ import { ReducersObject } from '../../store/rootReducer'
 import { usersQuery } from './data'
 import * as homeActions from './actions'
 import Button from '../../components/Button'
+import QuickView from '../../components/QuickView'
 import { Container, HomeHeader } from './styledComponents'
+import { Prices } from '../../types/common'
+import { ProductData } from '../../components/QuickView/mocks'
 
 type User = {
   id: string
@@ -28,15 +31,37 @@ interface Props {
 }
 
 export class Home extends React.Component<Props, {}> {
+  state = {
+    openQuickView: false
+  }
   onClickMessage = () => {
     const { defaultAction, data } = this.props
     defaultAction('Some Updated value')
     message.info('JR Web test message')
   }
+
+  onClickButton = () => {
+    const { openQuickView } = this.state
+    this.setState({ openQuickView: !openQuickView })
+  }
+
+  onCloseModal = () => {
+    this.setState({ openQuickView: false })
+  }
+
   render() {
+    const { openQuickView } = this.state
+    console.log('mockData ', ProductData)
     return (
       <Container>
         <Button onClick={this.onClickMessage} label="Info Message" />
+        <Button onClick={this.onClickButton} label="Info Message" />
+        <QuickView
+          open={openQuickView}
+          title={'THE TOUR BIKE JERSEY'}
+          data={ProductData}
+          handleClose={this.onCloseModal}
+        />
       </Container>
     )
   }
