@@ -22,12 +22,6 @@ export const Categories = styled.div`
   padding-left: 16px;
 `
 
-export const List = styled.div`
-  width: 60%;
-  background-color: #5f6062;
-  margin-right: -32px;
-`
-
 export const Text = styled.div`
   color: #5f6062;
   font-family: 'Avenir Next';

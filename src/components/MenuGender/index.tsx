@@ -4,14 +4,61 @@
 import * as React from 'react'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
+import ProductList from '../ProductHorizontalList'
 import {
   Container,
   Text,
   Filters,
   Categories,
-  List,
   Divider
 } from './styledComponents'
+import { Product } from '../../types/common'
+
+// TODO: Test data
+const products: Product[] = [
+  {
+    id: '0',
+    images: {
+      front:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+      back:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+      left:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+      right:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+    },
+    type: 'TOUR',
+    description: 'SHORT SLEEVE JERSEY',
+    priceRange: {
+      from: 63,
+      to: 119
+    },
+    collections: 5,
+    isTopProduct: true
+  },
+  {
+    id: '0',
+    images: {
+      front:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+      back:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+      left:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+      right:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+    },
+    type: 'TOUR',
+    description: 'SHORT SLEEVE JERSEY',
+    priceRange: {
+      from: 63,
+      to: 119
+    },
+    collections: 5,
+    isTopProduct: false
+  }
+]
 
 const filters = [
   { id: '0', label: 'Cycling' },
@@ -65,7 +112,7 @@ class MenuGender extends React.Component<Props, {}> {
           />
         </Categories>
         <Divider type="vertical" />
-        <List>List</List>
+        <ProductList {...{ products }} />
       </Container>
     )
   }

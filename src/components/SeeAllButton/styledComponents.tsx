@@ -7,6 +7,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   cursor: pointer;
+  align-items: center;
 `
 
 export const Text = styled.div`
