@@ -10,6 +10,9 @@ describe('<ProductHorizontalList />', () => {
   test('renders without exploding', () => {
     const products: Product[] = []
     const div = document.createElement('div')
-    ReactDOM.render(<ProductHorizontalList {...{ products }} />, div)
+    ReactDOM.render(
+      <ProductHorizontalList {...{ products }} onPressSeeAll={() => {}} />,
+      div
+    )
   })
 })

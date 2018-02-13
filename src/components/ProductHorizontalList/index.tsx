@@ -9,9 +9,10 @@ import { Product } from '../../types/common'
 
 interface Props {
   products: Product[]
+  onPressSeeAll: () => void
 }
 
-const ProductHorizontalList = ({ products }: Props) => {
+const ProductHorizontalList = ({ products, onPressSeeAll }: Props) => {
   const list = products.map((product, key) => (
     <ProductThumbnail {...{ product, key }} />
   ))
@@ -19,7 +20,7 @@ const ProductHorizontalList = ({ products }: Props) => {
     <Container>
       {list}
       <AllButton>
-        <SeeAllButton />
+        <SeeAllButton onClick={onPressSeeAll} />
       </AllButton>
     </Container>
   )

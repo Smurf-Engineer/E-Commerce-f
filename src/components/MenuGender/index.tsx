@@ -193,7 +193,7 @@ class MenuGender extends React.Component<Props, {}> {
             {...{ filters, filterSelected }}
             onHoverFilter={this.handleOnHoverFilter}
           />
-          <SeeAllButton />
+          <SeeAllButton onClick={this.handleOnPressSeeAll} />
         </Filters>
         <Divider type="vertical" />
         <Categories>
@@ -204,7 +204,10 @@ class MenuGender extends React.Component<Props, {}> {
           />
         </Categories>
         <Divider type="vertical" />
-        <ProductList {...{ products }} />
+        <ProductList
+          {...{ products }}
+          onPressSeeAll={this.handleOnPressSeeAll}
+        />
       </Container>
     )
   }
