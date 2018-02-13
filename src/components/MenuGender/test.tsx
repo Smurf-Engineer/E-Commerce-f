@@ -8,6 +8,6 @@ import MenuGender from './index'
 describe('<MenuGender />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MenuGender  />, div)
+    ReactDOM.render(<MenuGender type="none" />, div)
   })
 })

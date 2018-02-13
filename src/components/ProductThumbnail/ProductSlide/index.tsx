@@ -2,6 +2,7 @@
  * ProductSlide Component - Created by david on 12/02/18.
  */
 import * as React from 'react'
+import SwipeableViews from 'react-swipeable-views'
 import {
   ImageContainer,
   ImageTop,
@@ -14,7 +15,6 @@ import {
   CustomizeButton,
   Page
 } from './styledComponents'
-import SwipeableViews from 'react-swipeable-views'
 import backIcon from '../../../assets/leftarrow.svg'
 import nextIcon from '../../../assets/rightarrow.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
@@ -26,15 +26,30 @@ interface Props {
   isHovered: boolean
   isTopProduct: boolean
   images: ImageType
+  currentImage: number
+  onPressBack: () => void
+  onPressNext: () => void
+  onPressCustomize: () => void
 }
+
+const imagesOrder = ['front', 'left', 'right', 'back']
 
 const ProductSlide = ({
   onMouseEnter,
   onMouseLeave,
   isHovered,
   isTopProduct,
-  images
+  images,
+  currentImage,
+  onPressCustomize,
+  onPressBack,
+  onPressNext
 }: Props) => {
+  const imagePages = imagesOrder.map((key, index) => (
+    <Page key={index}>
+      <Image src={images[key]} />
+    </Page>
+  ))
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
@@ -45,20 +60,15 @@ const ProductSlide = ({
           </TopContainer>
         )}
       </ImageTop>
-      {/* <Image src={images.front} /> */}
-      <SwipeableViews>
-        <Page>1</Page>
-        <Page>2</Page>
-        <Page>3</Page>
-      </SwipeableViews>
+      <SwipeableViews index={currentImage}>{imagePages}</SwipeableViews>
       {isHovered && (
         <Arrows>
-          <Arrow src={backIcon} />
-          <Arrow src={nextIcon} />
+          <Arrow src={backIcon} onClick={onPressBack} />
+          <Arrow src={nextIcon} onClick={onPressNext} />
         </Arrows>
       )}
       {isHovered && (
-        <ButtonContainer>
+        <ButtonContainer onClick={onPressCustomize}>
           <CustomizeButton>CUSTOMIZE</CustomizeButton>
         </ButtonContainer>
       )}

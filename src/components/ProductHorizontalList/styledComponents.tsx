@@ -8,8 +8,10 @@ export const Container = styled.div`
   margin-right: -32px;
   display: flex;
   flex-direction: row;
+  overflow: auto;
+  white-space: nowrap;
 `
 
-export const Text = styled.div`
-  color: #f12;
+export const AllButton = styled.div`
+  margin-left: 32px;
 `

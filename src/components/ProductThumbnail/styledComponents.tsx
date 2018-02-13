@@ -4,13 +4,14 @@
 import styled, { keyframes } from 'styled-components'
 
 export const Container = styled.div`
-  margin-right: 24px;
+  margin: 0px 16px;
 `
 
 export const Text = styled.div`
   color: #fff;
 `
 export const ImageContainer = styled.div`
+  user-select: none;
   cursor: pointer;
   background-color: #f1f4f5;
   height: 214.13px;
@@ -20,6 +21,7 @@ export const ImageContainer = styled.div`
 `
 
 export const Image = styled.img`
+  user-select: none;
   height: 200.29px;
   width: 180.44px;
 `
@@ -64,6 +66,7 @@ export const Type = styled.div`
   line-height: 19px;
 `
 export const Description = styled.div`
+  user-select: none;
   color: #8c8c8c;
   font-family: 'Avenir Next';
   font-size: 12px;
@@ -72,12 +75,14 @@ export const Description = styled.div`
 `
 
 export const InfoContainer = styled.div`
+  user-select: none;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `
 
 export const Label = styled.div`
+  user-select: none;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 12px;
@@ -85,6 +90,7 @@ export const Label = styled.div`
 `
 
 export const Price = styled.div`
+  user-select: none;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 12px;
@@ -111,7 +117,9 @@ export const Arrows = styled.div`
   animation: ${fadeIn} 0.6s linear;
 `
 
-export const Arrow = styled.img``
+export const Arrow = styled.img`
+  user-select: none;
+`
 
 export const ButtonContainer = styled.div`
   display: flex;

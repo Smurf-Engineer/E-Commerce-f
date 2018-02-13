@@ -30,6 +30,6 @@ export const Text = styled.div`
 `
 
 export const Divider = styled(AntDivider)`
-  height: 20.89em;
-  margin: -12px 8px;
+  height: 22.67em;
+  margin: -12px 0px;
 `

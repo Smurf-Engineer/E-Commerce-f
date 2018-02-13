@@ -13,21 +13,23 @@ import './App.css'
 
 const { Content, Footer } = Layout
 
-const App = () => (
-  <Layout>
-    <Header>
-      <MenuBar />
-    </Header>
-    <Content>
-      <Switch>
-        {routes.map(route => <Route key={route.name} {...route} />)}
-      </Switch>
-    </Content>
-    <Footer>
-      <ContactAndLinks />
-      <SocialMedia />
-    </Footer>
-  </Layout>
-)
+const App = (props: any) => {
+  return (
+    <Layout>
+      <Header>
+        <MenuBar />
+      </Header>
+      <Content>
+        <Switch>
+          {routes.map(route => <Route key={route.name} {...route} />)}
+        </Switch>
+      </Content>
+      <Footer>
+        <ContactAndLinks />
+        <SocialMedia />
+      </Footer>
+    </Layout>
+  )
+}
 
 export default App

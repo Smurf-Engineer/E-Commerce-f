@@ -30,11 +30,38 @@ interface Props {
 
 class ProductThumbnail extends React.Component<Props, {}> {
   state = {
-    isHovered: false
+    isHovered: false,
+    currentImage: 0
   }
 
   handleOnHover = () => this.setState({ isHovered: true })
+
   handleOnBlur = () => this.setState({ isHovered: false })
+
+  handleOnPressBack = () => {
+    const { product: { images } } = this.props
+    const keys = Object.keys(images)
+    let { currentImage } = this.state
+    currentImage -= 1
+    if (currentImage < 0) {
+      return
+    }
+    this.setState({ currentImage })
+  }
+
+  handleOnPressNext = () => {
+    const { product: { images } } = this.props
+    let { currentImage } = this.state
+    const keys = Object.keys(images)
+    currentImage += 1
+    if (currentImage >= keys.length) {
+      return
+    }
+    this.setState({ currentImage })
+  }
+
+  // TODO: Send to Product Page
+  handleOnPressCustomize = () => {}
 
   render() {
     const {
@@ -47,13 +74,16 @@ class ProductThumbnail extends React.Component<Props, {}> {
         collections
       }
     } = this.props
-    const { isHovered } = this.state
+    const { isHovered, currentImage } = this.state
     return (
       <Container>
         <ImageSlide
-          {...{ isTopProduct, isHovered, images }}
+          {...{ isTopProduct, isHovered, images, currentImage }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
+          onPressBack={this.handleOnPressBack}
+          onPressNext={this.handleOnPressNext}
+          onPressCustomize={this.handleOnPressCustomize}
         />
         <Footer>
           <Type>{type}</Type>

@@ -38,7 +38,91 @@ const products: Product[] = [
     isTopProduct: true
   },
   {
-    id: '0',
+    id: '1',
+    images: {
+      front:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+      back:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+      left:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+      right:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+    },
+    type: 'TOUR',
+    description: 'SHORT SLEEVE JERSEY',
+    priceRange: {
+      from: 63,
+      to: 119
+    },
+    collections: 5,
+    isTopProduct: false
+  },
+  {
+    id: '2',
+    images: {
+      front:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+      back:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+      left:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+      right:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+    },
+    type: 'TOUR',
+    description: 'SHORT SLEEVE JERSEY',
+    priceRange: {
+      from: 63,
+      to: 119
+    },
+    collections: 5,
+    isTopProduct: false
+  },
+  {
+    id: '3',
+    images: {
+      front:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+      back:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+      left:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+      right:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+    },
+    type: 'TOUR',
+    description: 'SHORT SLEEVE JERSEY',
+    priceRange: {
+      from: 63,
+      to: 119
+    },
+    collections: 5,
+    isTopProduct: true
+  },
+  {
+    id: '4',
+    images: {
+      front:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+      back:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+      left:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+      right:
+        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+    },
+    type: 'TOUR',
+    description: 'SHORT SLEEVE JERSEY',
+    priceRange: {
+      from: 63,
+      to: 119
+    },
+    collections: 5,
+    isTopProduct: false
+  },
+  {
+    id: '5',
     images: {
       front:
         'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
@@ -77,18 +161,20 @@ const categories = [
   { id: '6', label: 'Accesories' }
 ]
 
-interface Props {}
+interface Props {
+  type: string
+}
 
 class MenuGender extends React.Component<Props, {}> {
   state = {
-    filterSelected: '0',
-    categorySelected: '0'
+    filterSelected: 0,
+    categorySelected: 0
   }
 
-  handleOnHoverFilter = (filterSelected: string) =>
+  handleOnHoverFilter = (filterSelected: number, id: string) =>
     this.setState({ filterSelected })
 
-  handleOnHoverCategory = (categorySelected: string) =>
+  handleOnHoverCategory = (categorySelected: number, id: string) =>
     this.setState({ categorySelected })
 
   render() {
@@ -97,9 +183,8 @@ class MenuGender extends React.Component<Props, {}> {
       <Container>
         <Filters>
           <FilterList
+            {...{ filters, filterSelected }}
             onHoverFilter={this.handleOnHoverFilter}
-            filters={filters}
-            filterSelected={filterSelected}
           />
           <SeeAllButton />
         </Filters>

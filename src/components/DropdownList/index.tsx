@@ -21,11 +21,18 @@ const DropdownList = (props: Props) => {
         overlayStyle={overStyle}
         trigger="hover"
         placement="bottom"
-        content={<MenuGender />}
+        content={<MenuGender type="men" />}
       >
         <OptionDropdown>{'MEN'}</OptionDropdown>
       </Popover>
-      <OptionDropdown>{'WOMEN'}</OptionDropdown>
+      <Popover
+        overlayStyle={overStyle}
+        trigger="hover"
+        placement="bottom"
+        content={<MenuGender type="women" />}
+      >
+        <OptionDropdown>{'WOMEN'}</OptionDropdown>
+      </Popover>
       <OptionDropdown>{'CYCLING'}</OptionDropdown>
       <OptionDropdown>{'TRIATHALON'}</OptionDropdown>
       <OptionDropdown>{'NORDIC'}</OptionDropdown>

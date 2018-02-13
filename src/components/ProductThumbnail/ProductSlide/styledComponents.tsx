@@ -4,6 +4,8 @@
 import styled, { keyframes } from 'styled-components'
 
 export const ImageContainer = styled.div`
+  user-select: none;
+  position: relative;
   cursor: pointer;
   background-color: #f1f4f5;
   height: 214.13px;
@@ -13,16 +15,19 @@ export const ImageContainer = styled.div`
 `
 
 export const Page = styled.div`
+  user-select: none;
   height: 200.29px;
-  width: 180.44px;
+  text-align: center;
 `
 
 export const Image = styled.img`
+  user-select: none;
   height: 200.29px;
   width: 180.44px;
 `
 
 export const ImageTop = styled.div`
+  user-select: none;
   display: flex;
   flex-direction: row;
   position: absolute;
@@ -30,6 +35,7 @@ export const ImageTop = styled.div`
   justify-content: space-between;
 `
 export const TopContainer = styled.div`
+  user-select: none;
   height: 35.04px;
   width: 36px;
   background-color: #e61737;
@@ -39,6 +45,7 @@ export const TopContainer = styled.div`
 `
 
 export const TopText = styled.div`
+  user-select: none;
   color: #ffffff;
   font-family: 'Avenir Next';
   font-size: 8px;
@@ -60,10 +67,11 @@ const fadeIn = keyframes`
 `
 
 export const Arrows = styled.div`
+  user-select: none;
   display: flex;
   flex-direction: row;
   position: absolute;
-  top: 165px;
+  top: 110px;
   width: 200px;
   justify-content: space-between;
   animation: ${fadeIn} 0.6s linear;
@@ -72,14 +80,16 @@ export const Arrows = styled.div`
 export const Arrow = styled.img``
 
 export const ButtonContainer = styled.div`
+  user-select: none;
   display: flex;
   position: absolute;
   width: 200px;
   justify-content: center;
-  top: 220px;
+  top: 170px;
 `
 
 export const CustomizeButton = styled.div`
+  user-select: none;
   background-color: #e61737b3;
   color: #fff;
   font-family: 'Avenir Next';
