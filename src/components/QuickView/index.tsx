@@ -79,6 +79,12 @@ class QuickView extends React.Component<Props, State> {
             <Col span={12}>
               <Title>{title}</Title>
               <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
+              <Ratings
+                stars={5}
+                starDimension={'15px'}
+                rating={4.5}
+                totalReviews={123}
+              />
 
               <ProductInfContainer>
                 <ProductInfoTitle>

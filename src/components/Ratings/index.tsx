@@ -2,17 +2,27 @@
  * Ratings Component - Created by cazarez on 12/02/18.
  */
 import * as React from 'react'
+import StarRatings from 'react-star-ratings'
 import { Container, Text, StyledImg } from './styledComponents'
 
 interface Props {
+  rating: number
   totalReviews: number
   stars: number
+  starDimension: string
 }
 
-const Ratings = ({ totalReviews, stars }: Props) => {
+const Ratings = ({ totalReviews, stars, rating, starDimension }: Props) => {
   return (
     <Container>
-      <Text>Ratings Stateless</Text>
+      <StarRatings
+        rating={rating}
+        starRatedColor="red"
+        // changeRating={this.changeRating}
+        numberOfStars={stars}
+        starDimension={starDimension}
+      />
+      <Text>{`${totalReviews} Reviews`}</Text>
     </Container>
   )
 }
