@@ -8,6 +8,15 @@ import QuickView from './index'
 describe('<QuickView />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<QuickView open={true} title={''} data={{}} />, div)
+    const data = {
+      quantityPrice: [],
+      images: {
+        front: '',
+        back: '',
+        left: '',
+        right: ''
+      }
+    }
+    ReactDOM.render(<QuickView open={true} title={''} data={data} />, div)
   })
 })
