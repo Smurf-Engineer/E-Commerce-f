@@ -8,3 +8,8 @@ body {
 .ant-modal-body {
   line-height: normal;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

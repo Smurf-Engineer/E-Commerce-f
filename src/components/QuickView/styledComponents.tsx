@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Row from 'antd/lib/Row'
-import Divider from 'antd/lib/Divider'
+import Divider from 'antd/lib/divider'
 import arrowRightIcon from '../../assets/arrow.svg'
 
 export const Container = styled.div`

@@ -27,9 +27,29 @@ export interface Prices {
   quantity: string
 }
 
-export interface ProductImage {
+export interface Filter {
+  id: string
+  label: string
+}
+
+export type ImageType = {
   front: string
-  right: string
-  left: string
   back: string
+  left: string
+  right: string
+}
+
+type PriceRange = {
+  from: number
+  to: number
+}
+
+export interface Product {
+  id: string
+  images: ImageType
+  type: string
+  description: string
+  priceRange: PriceRange
+  collections: number
+  isTopProduct: boolean
 }

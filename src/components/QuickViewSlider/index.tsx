@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { ProductImage } from '../../types/common'
+import { ImageType } from '../../types/common'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
 
@@ -21,7 +21,7 @@ import {
 } from './styledComponents'
 
 interface Props {
-  productImages: ProductImage
+  productImages: ImageType
   available: string
 }
 

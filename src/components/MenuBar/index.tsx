@@ -21,9 +21,11 @@ import caFlag from '../../assets/CA.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
 
-interface Props {}
+interface Props {
+  history: any
+}
 
-const MenuBar = (props: Props) => {
+const MenuBar = ({ history }: Props) => {
   return (
     <Container>
       <Row>
@@ -40,7 +42,7 @@ const MenuBar = (props: Props) => {
       <Divider />
       <BottomRow>
         <LogoIcon src={logo} />
-        <DropdownList />
+        <DropdownList {...{ history }} />
         <SearchIcon src={search} />
       </BottomRow>
     </Container>

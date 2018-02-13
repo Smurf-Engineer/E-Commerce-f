@@ -1,13 +1,13 @@
 /**
- * MenuBar Test - Created by david on 07/02/18.
+ * SeeAllButton Test - Created by david on 09/02/18.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import MenuBar from './index'
+import SeeAllButton from './index'
 
-describe('<MenuBar />', () => {
+describe('<SeeAllButton />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MenuBar history={{}} />, div)
+    ReactDOM.render(<SeeAllButton  />, div)
   })
 })
