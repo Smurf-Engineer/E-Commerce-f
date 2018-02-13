@@ -13,7 +13,8 @@ import {
   Arrow,
   ButtonContainer,
   CustomizeButton,
-  Page
+  Page,
+  QuickView
 } from './styledComponents'
 import backIcon from '../../../assets/leftarrow.svg'
 import nextIcon from '../../../assets/rightarrow.svg'
@@ -53,7 +54,7 @@ const ProductSlide = ({
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
-        <img src={quickViewIcon} />
+        <QuickView src={quickViewIcon} />
         {isTopProduct && (
           <TopContainer>
             <TopText>TOP</TopText>

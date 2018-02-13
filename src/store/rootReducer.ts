@@ -13,6 +13,7 @@ export interface ReducersObject {
   app: any
   menuGender: any
   menuSports: any
+  quickView: any
 }
 
 const appInitialState = fromJS({
