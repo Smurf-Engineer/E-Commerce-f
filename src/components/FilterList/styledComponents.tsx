@@ -7,14 +7,14 @@ export const Container = styled.div``
 
 export const Text = styled.div`
   color: #5f6062;
+  padding: 4px 0px;
   font-family: 'Avenir Next';
-  padding: 8px 0px;
   font-size: 14px;
-  line-height: 22px;
   cursor: pointer;
 `
 
 export const Option = styled.div`
+  position: relative;
   width: fit-content;
 `
 

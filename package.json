@@ -79,14 +79,10 @@
       "<rootDir>/__tests__/**/*.(ts|js)?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(ts|js)?(x)"
     ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ],
-    "collectCoverageFrom": [
-      "src/**/*.{js,jsx,ts,tsx}"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "json"],
+    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"],
+    "moduleNameMapper": {
+      "^.+\\.svg?$": "<rootDir>/__mocks__/svgTransform.js"
+    }
   }
 }

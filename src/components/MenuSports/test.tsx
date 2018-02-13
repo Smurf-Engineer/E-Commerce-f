@@ -1,23 +1,21 @@
 /**
- * MenuGender Test - Created by david on 09/02/18.
+ * MenuSports Test - Created by david on 13/02/18.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import reducer, { initialState } from './reducer'
-import { setCategoryAction, setSportAction, setClearAction } from './actions'
-import { MenuGender } from './index'
+import { setCategoryAction, setClearAction } from './actions'
+import { MenuSports } from './index'
 
-describe('<MenuGender />', () => {
+describe('<MenuSports />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <MenuGender
+      <MenuSports
         type="none"
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
-        setSportAction={() => {}}
         setCategoryAction={() => {}}
-        sportSelected={-1}
         categorySelected={-2}
       />,
       div
@@ -25,7 +23,7 @@ describe('<MenuGender />', () => {
   })
 })
 
-describe('MenuGender Reducer', () => {
+describe('MenuSports Reducer', () => {
   it('Return the default state for unknow action', () => {
     const state = reducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)
@@ -37,25 +35,14 @@ describe('MenuGender Reducer', () => {
   })
 
   it('Update category key', () => {
-    const state = reducer(initialState, setCategoryAction(1))
+    const state = reducer(initialState, setCategoryAction(2))
     const categorySelected = state.get('categorySelected')
     expect(state).not.toEqual(initialState)
-    expect(categorySelected).toEqual(1)
+    expect(categorySelected).toEqual(2)
 
     const state2 = reducer(initialState, setCategoryAction(2))
     const categorySelected2 = state2.get('categorySelected')
     expect(state2).not.toEqual(initialState)
     expect(categorySelected2).toEqual(2)
-  })
-
-  it('Update sport key', () => {
-    const state = reducer(initialState, setSportAction(2))
-    const sportSelected = state.get('sportSelected')
-    expect(sportSelected).toEqual(2)
-
-    const state2 = reducer(initialState, setSportAction(3))
-    const sportSelected2 = state2.get('sportSelected')
-    expect(state2).not.toEqual(initialState)
-    expect(sportSelected2).toEqual(3)
   })
 })
