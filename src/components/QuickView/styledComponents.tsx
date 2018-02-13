@@ -95,9 +95,12 @@ export const ArrowRight = styled.div`
 
 export const FullDetails = styled.div`
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   right: 20px;
   bottom: 10px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 export const StyledDivider = styled(Divider)`
   margin: 10px 0;

@@ -36,7 +36,6 @@ class QuickViewSlider extends React.Component<Props, State> {
   render() {
     const { productImages, available } = this.props
     const { index } = this.state
-    console.log(productImages)
     return (
       <Container>
         <SwipeableViews enableMouseEvents={true} {...{ index }}>

@@ -25,9 +25,9 @@ import {
   ArrowRight,
   StyledDivider
 } from './styledComponents'
-import Modal from 'antd/lib/Modal'
-import Col from 'antd/lib/Col'
-import Row from 'antd/lib/Row'
+import Modal from 'antd/lib/modal'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
 import Button from 'antd/lib/button'
 import PriceQuantity from '../PriceQuantity'
 import closeIcon from '../../assets/cancel-button.svg'
@@ -38,6 +38,8 @@ import { AnyAction } from '../../types/common'
 
 interface State {
   showDescription: boolean
+  showDetail: boolean
+  showSpecs: boolean
 }
 
 interface Props {
@@ -54,12 +56,13 @@ class QuickView extends React.Component<Props, State> {
 
   state = {
     showDescription: true,
-    showDetail: false
+    showDetail: false,
+    showSpecs: false
   }
 
   render() {
     const { open, title, data, handleClose } = this.props
-    const { showDescription } = this.state
+    const { showDescription, showDetail, showSpecs } = this.state
     const renderPrices = data.quantityPrice.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />
@@ -75,6 +78,10 @@ class QuickView extends React.Component<Props, State> {
                 productImages={data.images}
                 available={data.availableCollections}
               />
+              <FullDetails>
+                <div>Full Details</div>
+                <ArrowRight />
+              </FullDetails>
             </Col>
             <Col span={12}>
               <Title>{title}</Title>
@@ -91,7 +98,7 @@ class QuickView extends React.Component<Props, State> {
                   <div>Description</div>
                   <UpDownArrow
                     src={showDescription ? upArrowIcon : downArrowIcon}
-                    onClick={this.toggle}
+                    onClick={this.showDescription}
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
@@ -106,15 +113,12 @@ class QuickView extends React.Component<Props, State> {
                 <ProductInfoTitle>
                   <div>Details</div>
                   <UpDownArrow
-                    src={showDescription ? downArrowIcon : upArrowIcon}
-                    onClick={this.toggle}
+                    src={showDetail ? downArrowIcon : upArrowIcon}
+                    onClick={this.showDetail}
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
-                <AnimateHeight
-                  duration={500}
-                  height={showDescription ? 0 : 'auto'}
-                >
+                <AnimateHeight duration={500} height={showDetail ? 'auto' : 0}>
                   <DetailsContent
                     dangerouslySetInnerHTML={{ __html: data.details }}
                   />
@@ -124,41 +128,48 @@ class QuickView extends React.Component<Props, State> {
                 <ProductInfoTitle>
                   <div>Specs</div>
                   <UpDownArrow
-                    src={showDescription ? downArrowIcon : upArrowIcon}
-                    onClick={this.toggle}
+                    src={showSpecs ? downArrowIcon : upArrowIcon}
+                    onClick={this.showSpecs}
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
-                <AnimateHeight
-                  duration={500}
-                  height={showDescription ? 0 : 'auto'}
-                >
+                <AnimateHeight duration={500} height={showSpecs ? 'auto' : 0}>
                   <DescriptionContent
-                    dangerouslySetInnerHTML={{ __html: data.details }}
+                    dangerouslySetInnerHTML={{ __html: data.productSpecs }}
                   />
                 </AnimateHeight>
               </ProductInfContainer>
             </Col>
           </StyledRow>
-          <FullDetails>
-            <div>Full Details</div>
-            <ArrowRight />
-          </FullDetails>
         </Modal>
       </Container>
     )
   }
 
-  toggle = () => {
-    const { showDescription, showDetail } = this.state
+  showDescription = () => {
+    const { showDescription, showDetail, showSpecs } = this.state
     this.setState({
-      showDescription: !showDescription
-      // showDetail: !showDetail
+      showDescription: true,
+      showDetail: false,
+      showSpecs: false
     })
-    console.log('toggle')
   }
-
-  // toggleDetail = () => {}
+  showDetail = () => {
+    const { showDescription, showDetail, showSpecs } = this.state
+    this.setState({
+      showDescription: false,
+      showDetail: true,
+      showSpecs: false
+    })
+  }
+  showSpecs = () => {
+    const { showDescription, showDetail, showSpecs } = this.state
+    this.setState({
+      showDescription: false,
+      showDetail: false,
+      showSpecs: true
+    })
+  }
 }
 
 const QuickViewEnhance = compose()(QuickView)
