@@ -2,7 +2,7 @@
  * Styled Components - Created by cazarez on 08/02/18.
  */
 import styled from 'styled-components'
-import Row from 'antd/lib/Row'
+import Row from 'antd/lib/row'
 import Divider from 'antd/lib/divider'
 import arrowRightIcon from '../../assets/arrow.svg'
 

@@ -85,7 +85,7 @@ class QuickView extends React.Component<Props, State> {
                 rating={4.5}
                 totalReviews={123}
               />
-
+              {/*TODO: Change to ProductInfo Component */}
               <ProductInfContainer>
                 <ProductInfoTitle>
                   <div>Description</div>
