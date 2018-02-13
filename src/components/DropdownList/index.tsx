@@ -12,16 +12,30 @@ import {
   overStyle
 } from './styledComponents'
 
-interface Props {}
+interface Props {
+  history: any
+}
 
-const DropdownList = (props: Props) => {
+const DropdownList = ({ history }: Props) => {
+  const handleOnSeeAll = (type: string) => {
+    history.push('product-catalogue')
+  }
+  const handleOnCustomize = (id: string) => {
+    history.push('designer')
+  }
   return (
     <Container>
       <Popover
         overlayStyle={overStyle}
         trigger="hover"
         placement="bottom"
-        content={<MenuGender type="men" />}
+        content={
+          <MenuGender
+            type="men"
+            onPressSeeAll={handleOnSeeAll}
+            onPressCustomize={handleOnCustomize}
+          />
+        }
       >
         <OptionDropdown>{'MEN'}</OptionDropdown>
       </Popover>
@@ -29,7 +43,13 @@ const DropdownList = (props: Props) => {
         overlayStyle={overStyle}
         trigger="hover"
         placement="bottom"
-        content={<MenuGender type="women" />}
+        content={
+          <MenuGender
+            type="women"
+            onPressSeeAll={handleOnSeeAll}
+            onPressCustomize={handleOnCustomize}
+          />
+        }
       >
         <OptionDropdown>{'WOMEN'}</OptionDropdown>
       </Popover>

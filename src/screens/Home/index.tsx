@@ -10,6 +10,7 @@ import { ReducersObject } from '../../store/rootReducer'
 import { usersQuery } from './data'
 import * as homeActions from './actions'
 import Button from '../../components/Button'
+import Layout from '../../components/MainLayout'
 import { Container, HomeHeader } from './styledComponents'
 
 type User = {
@@ -24,6 +25,7 @@ interface Data extends QueryProps {
 interface Props {
   data?: Data
   someKey?: string
+  history: any
   defaultAction: (someKey: string) => void
 }
 
@@ -34,10 +36,13 @@ export class Home extends React.Component<Props, {}> {
     message.info('JR Web test message')
   }
   render() {
+    const { history } = this.props
     return (
-      <Container>
-        <Button onClick={this.onClickMessage} label="Info Message" />
-      </Container>
+      <Layout {...{ history }}>
+        <Container>
+          <Button onClick={this.onClickMessage} label="Info Message" />
+        </Container>
+      </Layout>
     )
   }
 }

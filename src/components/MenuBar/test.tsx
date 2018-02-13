@@ -8,6 +8,6 @@ import MenuBar from './index'
 describe('<MenuBar />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MenuBar />, div)
+    ReactDOM.render(<MenuBar history={{}} />, div)
   })
 })

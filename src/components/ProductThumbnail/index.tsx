@@ -60,7 +60,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
     this.setState({ currentImage })
   }
 
-  // TODO: Send to Product Page
+  // TODO: Send to Designer Page
   handleOnPressCustomize = () => {}
 
   render() {

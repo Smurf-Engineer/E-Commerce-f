@@ -8,7 +8,7 @@ describe('Home Reducer', () => {
   it('renders without exploding', () => {
     const div = document.createElement('div')
     // tslint:disable-next-line:no-empty
-    ReactDOM.render(<Home defaultAction={() => {}} />, div)
+    ReactDOM.render(<Home defaultAction={() => {}} history={{}} />, div)
   })
 
   it('Return the default state for unknow action', () => {

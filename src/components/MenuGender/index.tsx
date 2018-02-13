@@ -163,6 +163,8 @@ const categories = [
 
 interface Props {
   type: string
+  onPressSeeAll: (type: string) => void
+  onPressCustomize: (id: string) => void
 }
 
 class MenuGender extends React.Component<Props, {}> {
@@ -176,6 +178,11 @@ class MenuGender extends React.Component<Props, {}> {
 
   handleOnHoverCategory = (categorySelected: number, id: string) =>
     this.setState({ categorySelected })
+
+  handleOnPressSeeAll = () => {
+    const { onPressSeeAll, type } = this.props
+    onPressSeeAll(type)
+  }
 
   render() {
     const { filterSelected, categorySelected } = this.state
