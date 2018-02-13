@@ -18,7 +18,6 @@ const Ratings = ({ totalReviews, stars, rating, starDimension }: Props) => {
       <StarRatings
         rating={rating}
         starRatedColor="red"
-        // changeRating={this.changeRating}
         numberOfStars={stars}
         starDimension={starDimension}
       />
