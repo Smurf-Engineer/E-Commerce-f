@@ -2,9 +2,8 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
-import Dropdown from 'antd/lib/dropdown'
-import Support from '../MenuSupport'
 import DropdownList from '../DropdownList'
+import Support from '../MenuSupport'
 import {
   Container,
   TopText,

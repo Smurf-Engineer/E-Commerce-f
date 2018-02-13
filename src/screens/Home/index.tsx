@@ -14,6 +14,7 @@ import QuickView from '../../components/QuickView'
 import { Container, HomeHeader } from './styledComponents'
 import { Prices } from '../../types/common'
 import { ProductData } from '../../components/QuickView/mocks'
+import SwipeableViews from 'react-swipeable-views'
 
 type User = {
   id: string
@@ -51,7 +52,6 @@ export class Home extends React.Component<Props, {}> {
 
   render() {
     const { openQuickView } = this.state
-    console.log('mockData ', ProductData)
     return (
       <Container>
         <Button onClick={this.onClickMessage} label="Info Message" />

@@ -6,6 +6,9 @@ import { connect } from 'react-redux'
 import { ReducersObject } from '../../store/rootReducer'
 import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
+import QuickViewSlider from '../QuickViewSlider'
+
+import Ratings from '../Ratings'
 import {
   Container,
   CloseIcon,
@@ -20,9 +23,7 @@ import {
   DetailsContent,
   UpDownArrow,
   ArrowRight,
-  StyledDivider,
-  StyledButton,
-  ButtonRow
+  StyledDivider
 } from './styledComponents'
 import Modal from 'antd/lib/Modal'
 import Col from 'antd/lib/Col'
@@ -37,7 +38,6 @@ import { AnyAction } from '../../types/common'
 
 interface State {
   showDescription: boolean
-  showDetail: boolean
 }
 
 interface Props {
@@ -59,7 +59,7 @@ class QuickView extends React.Component<Props, State> {
 
   render() {
     const { open, title, data, handleClose } = this.props
-    const { showDescription, showDetail } = this.state
+    const { showDescription } = this.state
     const renderPrices = data.quantityPrice.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />
@@ -71,21 +71,15 @@ class QuickView extends React.Component<Props, State> {
           <CloseIcon src={closeIcon} onClick={handleClose} />
           <StyledRow>
             <Col span={12}>
-              <div
-                style={{
-                  height: 400,
-                  backgroundColor: '#fff',
-                  margin: '0px 20px 0px 0px',
-                  border: '1px solid grey'
-                }}
+              <QuickViewSlider
+                productImages={data.images}
+                available={data.availableCollections}
               />
-              <ButtonRow>
-                <StyledButton type="danger">CUSTOMIZE</StyledButton>
-              </ButtonRow>
             </Col>
             <Col span={12}>
               <Title>{title}</Title>
               <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
+
               <ProductInfContainer>
                 <ProductInfoTitle>
                   <div>Description</div>
@@ -106,13 +100,34 @@ class QuickView extends React.Component<Props, State> {
                 <ProductInfoTitle>
                   <div>Details</div>
                   <UpDownArrow
-                    src={showDetail ? upArrowIcon : downArrowIcon}
+                    src={showDescription ? downArrowIcon : upArrowIcon}
                     onClick={this.toggle}
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
-                <AnimateHeight duration={500} height={!showDetail ? 0 : 'auto'}>
+                <AnimateHeight
+                  duration={500}
+                  height={showDescription ? 0 : 'auto'}
+                >
                   <DetailsContent
+                    dangerouslySetInnerHTML={{ __html: data.details }}
+                  />
+                </AnimateHeight>
+              </ProductInfContainer>
+              <ProductInfContainer>
+                <ProductInfoTitle>
+                  <div>Specs</div>
+                  <UpDownArrow
+                    src={showDescription ? downArrowIcon : upArrowIcon}
+                    onClick={this.toggle}
+                  />
+                </ProductInfoTitle>
+                <StyledDivider />
+                <AnimateHeight
+                  duration={500}
+                  height={showDescription ? 0 : 'auto'}
+                >
+                  <DescriptionContent
                     dangerouslySetInnerHTML={{ __html: data.details }}
                   />
                 </AnimateHeight>
@@ -131,8 +146,8 @@ class QuickView extends React.Component<Props, State> {
   toggle = () => {
     const { showDescription, showDetail } = this.state
     this.setState({
-      showDescription: !showDescription,
-      showDetail: !showDetail
+      showDescription: !showDescription
+      // showDetail: !showDetail
     })
     console.log('toggle')
   }

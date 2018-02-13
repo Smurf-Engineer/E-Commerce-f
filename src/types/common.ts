@@ -26,3 +26,10 @@ export interface Prices {
   price: number
   quantity: string
 }
+
+export interface ProductImage {
+  front: string
+  right: string
+  left: string
+  back: string
+}

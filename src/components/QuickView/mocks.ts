@@ -1,5 +1,14 @@
 export const ProductData = {
-  images: [],
+  images: {
+    front:
+      'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
+    right:
+      'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
+    back:
+      'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
+    left:
+      'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
+  },
   quantityPrice: [
     {
       price: 119,
@@ -18,6 +27,7 @@ export const ProductData = {
       quantity: '25-49'
     }
   ],
+  availableCollections: '5 Collection Available',
   ratings: {},
   /* tslint:disable*/
   description:
