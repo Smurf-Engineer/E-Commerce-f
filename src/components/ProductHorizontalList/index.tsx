@@ -11,18 +11,20 @@ interface Props {
   products: Product[]
   onPressSeeAll: () => void
   onPressCustomize: (id: string) => void
+  width?: string
 }
 
 const ProductHorizontalList = ({
   products,
   onPressSeeAll,
-  onPressCustomize
+  onPressCustomize,
+  width = '60%'
 }: Props) => {
   const list = products.map((product, key) => (
     <ProductThumbnail {...{ product, key, onPressCustomize }} />
   ))
   return (
-    <Container>
+    <Container {...{ width }}>
       {list}
       <AllButton>
         <SeeAllButton onClick={onPressSeeAll} />

@@ -1,21 +1,15 @@
 /**
- * MenuGender Component - Created by david on 09/02/18.
+ * MenuSports Component - Created by david on 13/02/18.
  */
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import * as menuGenderActions from './actions'
+import * as menuSportActions from './actions'
 import { ReducersObject } from '../../store/rootReducer'
+import { Container, Divider, Filters } from './styledComponents'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import {
-  Container,
-  Text,
-  Filters,
-  Categories,
-  Divider
-} from './styledComponents'
 import { Product } from '../../types/common'
 
 // TODO: Test data
@@ -149,13 +143,6 @@ const products: Product[] = [
 ]
 
 const filters = [
-  { id: '0', label: 'Cycling' },
-  { id: '1', label: 'Triathalon' },
-  { id: '2', label: 'Nordic' },
-  { id: '3', label: 'Active' }
-]
-
-const categories = [
   { id: '0', label: 'Tops' },
   { id: '1', label: 'Shorts' },
   { id: '2', label: 'MTB' },
@@ -169,18 +156,11 @@ interface Props {
   type: string
   onPressSeeAll: (type: string) => void
   onPressCustomize: (id: string) => void
-  setSportAction: (sport: number) => void
-  setCategoryAction: (category: number) => void
-  sportSelected: number
+  setCategoryAction: (sport: number) => void
   categorySelected: number
 }
 
-export class MenuGender extends React.PureComponent<Props, {}> {
-  handleOnHoverFilter = (filterSelected: number, id: string) => {
-    const { setSportAction } = this.props
-    setSportAction(filterSelected)
-  }
-
+export class MenuSports extends React.PureComponent<Props, {}> {
   handleOnHoverCategory = (categorySelected: number, id: string) => {
     const { setCategoryAction } = this.props
     setCategoryAction(categorySelected)
@@ -192,28 +172,21 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { onPressCustomize, sportSelected, categorySelected } = this.props
+    const { onPressCustomize, categorySelected } = this.props
     return (
       <Container>
         <Filters>
           <FilterList
             {...{ filters }}
-            filterSelected={sportSelected}
-            onHoverFilter={this.handleOnHoverFilter}
+            filterSelected={categorySelected}
+            onHoverFilter={this.handleOnHoverCategory}
           />
           <SeeAllButton onClick={this.handleOnPressSeeAll} />
         </Filters>
         <Divider type="vertical" />
-        <Categories>
-          <FilterList
-            onHoverFilter={this.handleOnHoverCategory}
-            filters={categories}
-            filterSelected={categorySelected}
-          />
-        </Categories>
-        <Divider type="vertical" />
         <ProductList
           {...{ products, onPressCustomize }}
+          width={'80%'}
           onPressSeeAll={this.handleOnPressSeeAll}
         />
       </Container>
@@ -221,10 +194,10 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ menuGender }: ReducersObject) => menuGender.toJS()
+const mapStateToProps = ({ menuSports }: ReducersObject) => menuSports.toJS()
 
 const MenuGenderEnhance = compose(
-  connect(mapStateToProps, { ...menuGenderActions })
-)(MenuGender)
+  connect(mapStateToProps, { ...menuSportActions })
+)(MenuSports)
 
 export default MenuGenderEnhance

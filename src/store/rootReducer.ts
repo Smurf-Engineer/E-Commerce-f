@@ -4,11 +4,15 @@
 import { fromJS } from 'immutable'
 import { combineReducers } from 'redux'
 import home from '../screens/Home/reducer'
+import menuGender from '../components/MenuGender/reducer'
+import menuSports from '../components/MenuSports/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
   home: any
   app: any
+  menuGender: any
+  menuSports: any
 }
 
 const appInitialState = fromJS({
@@ -26,6 +30,8 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
 
 const rootReducer = combineReducers({
   home,
+  menuGender,
+  menuSports,
   app: appReducer
 })
 
