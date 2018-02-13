@@ -18,3 +18,7 @@ export const OptionDropdown = styled.div`
 export const Option = styled.div`
   heigth: 100%;
 `
+export const overStyle = {
+  width: '100%',
+  paddingTop: 36
+}

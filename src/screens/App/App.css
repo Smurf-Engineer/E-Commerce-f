@@ -3,3 +3,8 @@ body {
   padding: 0;
   font-family: Avenir Next;
 }
+
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent;
+}

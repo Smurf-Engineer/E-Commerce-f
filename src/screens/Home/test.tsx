@@ -5,12 +5,6 @@ import { Home } from './index'
 import { defaultAction } from './actions'
 
 describe('Home Reducer', () => {
-  it('renders without exploding', () => {
-    const div = document.createElement('div')
-    // tslint:disable-next-line:no-empty
-    ReactDOM.render(<Home defaultAction={() => {}} />, div)
-  })
-
   it('Return the default state for unknow action', () => {
     let state = homeReducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)

@@ -8,6 +8,6 @@ import DropdownList from './index'
 describe('<DropdownList />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<DropdownList />, div)
+    ReactDOM.render(<DropdownList history={{}} />, div)
   })
 })
