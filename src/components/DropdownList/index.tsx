@@ -16,6 +16,8 @@ interface Props {
   history: any
 }
 
+const genderOptions = ['men', 'women']
+
 const DropdownList = ({ history }: Props) => {
   const handleOnSeeAll = (type: string) => {
     history.push('product-catalogue')
@@ -23,36 +25,27 @@ const DropdownList = ({ history }: Props) => {
   const handleOnCustomize = (id: string) => {
     history.push('designer')
   }
+  const genderMenus = genderOptions.map(option => (
+    <Popover
+      key={option}
+      overlayStyle={overStyle}
+      trigger="hover"
+      placement="bottom"
+      content={
+        <MenuGender
+          type={option}
+          onPressSeeAll={handleOnSeeAll}
+          onPressCustomize={handleOnCustomize}
+        />
+      }
+    >
+      <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
+    </Popover>
+  ))
   return (
     <Container>
-      <Popover
-        overlayStyle={overStyle}
-        trigger="hover"
-        placement="bottom"
-        content={
-          <MenuGender
-            type="men"
-            onPressSeeAll={handleOnSeeAll}
-            onPressCustomize={handleOnCustomize}
-          />
-        }
-      >
-        <OptionDropdown>{'MEN'}</OptionDropdown>
-      </Popover>
-      <Popover
-        overlayStyle={overStyle}
-        trigger="hover"
-        placement="bottom"
-        content={
-          <MenuGender
-            type="women"
-            onPressSeeAll={handleOnSeeAll}
-            onPressCustomize={handleOnCustomize}
-          />
-        }
-      >
-        <OptionDropdown>{'WOMEN'}</OptionDropdown>
-      </Popover>
+      {genderMenus}
+      {/* TODO: USE MAP WHEN MENU SPORTS Component is ready */}
       <OptionDropdown>{'CYCLING'}</OptionDropdown>
       <OptionDropdown>{'TRIATHALON'}</OptionDropdown>
       <OptionDropdown>{'NORDIC'}</OptionDropdown>

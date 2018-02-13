@@ -185,6 +185,7 @@ class MenuGender extends React.Component<Props, {}> {
   }
 
   render() {
+    const { onPressCustomize } = this.props
     const { filterSelected, categorySelected } = this.state
     return (
       <Container>
@@ -205,7 +206,7 @@ class MenuGender extends React.Component<Props, {}> {
         </Categories>
         <Divider type="vertical" />
         <ProductList
-          {...{ products }}
+          {...{ products, onPressCustomize }}
           onPressSeeAll={this.handleOnPressSeeAll}
         />
       </Container>

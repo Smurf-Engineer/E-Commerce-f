@@ -18,6 +18,9 @@ describe('<ProductThumbnail />', () => {
       collections: 0,
       isTopProduct: false
     }
-    ReactDOM.render(<ProductThumbnail {...{ product }} />, div)
+    ReactDOM.render(
+      <ProductThumbnail {...{ product }} onPressCustomize={() => {}} />,
+      div
+    )
   })
 })

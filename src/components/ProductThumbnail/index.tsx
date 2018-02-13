@@ -26,6 +26,7 @@ import { Product } from '../../types/common'
 
 interface Props {
   product: Product
+  onPressCustomize: (id: string) => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
@@ -60,8 +61,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
     this.setState({ currentImage })
   }
 
-  // TODO: Send to Designer Page
-  handleOnPressCustomize = () => {}
+  handleOnPressCustomize = () => {
+    const { onPressCustomize, product: { id } } = this.props
+    onPressCustomize(id)
+  }
 
   render() {
     const {

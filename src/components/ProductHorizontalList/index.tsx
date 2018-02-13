@@ -10,11 +10,16 @@ import { Product } from '../../types/common'
 interface Props {
   products: Product[]
   onPressSeeAll: () => void
+  onPressCustomize: (id: string) => void
 }
 
-const ProductHorizontalList = ({ products, onPressSeeAll }: Props) => {
+const ProductHorizontalList = ({
+  products,
+  onPressSeeAll,
+  onPressCustomize
+}: Props) => {
   const list = products.map((product, key) => (
-    <ProductThumbnail {...{ product, key }} />
+    <ProductThumbnail {...{ product, key, onPressCustomize }} />
   ))
   return (
     <Container>

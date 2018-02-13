@@ -11,7 +11,11 @@ describe('<ProductHorizontalList />', () => {
     const products: Product[] = []
     const div = document.createElement('div')
     ReactDOM.render(
-      <ProductHorizontalList {...{ products }} onPressSeeAll={() => {}} />,
+      <ProductHorizontalList
+        {...{ products }}
+        onPressSeeAll={() => {}}
+        onPressCustomize={() => {}}
+      />,
       div
     )
   })
