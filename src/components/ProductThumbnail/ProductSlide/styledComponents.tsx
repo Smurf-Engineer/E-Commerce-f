@@ -55,7 +55,9 @@ export const TopText = styled.div`
   text-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.24);
 `
 
-export const QuickView = styled.img``
+export const QuickView = styled.img`
+  cursor: pointer;
+`
 
 const fadeIn = keyframes`
   from {

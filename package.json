@@ -6,8 +6,7 @@
     "start": "razzle start",
     "build": "razzle build",
     "lint": "tslint --project tsconfig.json --config tslint.json",
-    "generate":
-      "plop --plopfile ./node_modules/react-components-generator/index.js",
+    "generate": "plop --plopfile ./node_modules/react-components-generator/index.js",
     "test:dev": "razzle test --env=jsdom",
     "test": "jest --config ./jest.config.js",
     "start:prod": "NODE_ENV=production node build/server.js"
@@ -45,11 +44,13 @@
     "raf": "^3.4.0",
     "razzle": "^0.8.7",
     "react": "^16.2.0",
+    "react-animate-height": "^0.10.9",
     "react-apollo": "^2.0.4",
     "react-components-generator": "^0.0.4",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
+    "react-star-ratings": "^2.2.0",
     "react-swipeable-views": "^0.12.12",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
@@ -64,19 +65,28 @@
     "typescript": "^2.6.2"
   },
   "devDependencies": {},
-  "pre-commit": ["lint", "test"],
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "jest": {
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js",
       "^.+\\.css$": "<rootDir>/node_modules/razzle/config/jest/cssTransform.js",
-      "^(?!.*\\.(js|jsx|css|json)$)":
-        "<rootDir>/node_modules/razzle/config/jest/fileTransform.js"
+      "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/node_modules/razzle/config/jest/fileTransform.js"
     },
     "testMatch": [
       "<rootDir>/__tests__/**/*.(ts|js)?(x)",
       "<rootDir>/src/**/?(*.)(spec|test).(ts|js)?(x)"
     ],
-    "moduleFileExtensions": ["ts", "tsx", "js", "json"],
-    "collectCoverageFrom": ["src/**/*.{js,jsx,ts,tsx}"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}"
+    ]
   }
 }
