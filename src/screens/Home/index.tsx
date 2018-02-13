@@ -23,10 +23,9 @@ interface Data extends QueryProps {
   users: [User]
 }
 
-interface Props {
+interface Props extends RouteComponentProps<any> {
   data?: Data
   someKey?: string
-  history: any
   defaultAction: (someKey: string) => void
 }
 
