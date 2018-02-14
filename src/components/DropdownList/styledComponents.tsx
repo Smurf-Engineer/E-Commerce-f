@@ -22,3 +22,10 @@ export const overStyle = {
   width: '100%',
   paddingTop: 6
 }
+
+export const menuStyle = {
+  borderBottom: 0,
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between'
+} as React.CSSProperties

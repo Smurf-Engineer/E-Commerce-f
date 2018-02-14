@@ -14,7 +14,8 @@ import {
   Container,
   Option,
   OptionDropdown,
-  overStyle
+  overStyle,
+  menuStyle
 } from './styledComponents'
 
 const SubMenu = Menu.SubMenu
@@ -90,7 +91,7 @@ export const DropdownList = ({ history, dispatch }: Props) => {
     </Menu.Item>
   ))
   return (
-    <Menu mode="horizontal" selectable={false} style={{ borderBottom: 0 }}>
+    <Menu mode="horizontal" selectable={false} style={menuStyle}>
       {genderMenus}
       {sportMenus}
     </Menu>

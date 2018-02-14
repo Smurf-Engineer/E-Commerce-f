@@ -5,7 +5,6 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   width: ${(props: any) => props.width};
-  margin-right: -32px;
   display: flex;
   flex-direction: row;
   overflow: auto;
