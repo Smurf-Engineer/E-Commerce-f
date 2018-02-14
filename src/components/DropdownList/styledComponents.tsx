@@ -20,5 +20,5 @@ export const Option = styled.div`
 `
 export const overStyle = {
   width: '100%',
-  paddingTop: 36
+  paddingTop: 6
 }

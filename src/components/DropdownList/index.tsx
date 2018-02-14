@@ -17,6 +17,9 @@ import {
   overStyle
 } from './styledComponents'
 
+const SubMenu = Menu.SubMenu
+const MenuItemGroup = Menu.ItemGroup
+
 interface Props {
   history: any
   dispatch: any
@@ -47,46 +50,50 @@ export const DropdownList = ({ history, dispatch }: Props) => {
   }
 
   const genderMenus = genderOptions.map(option => (
-    <Popover
-      key={option}
-      overlayStyle={overStyle}
-      trigger="hover"
-      placement="bottom"
-      onVisibleChange={handleOnHideGenderMenu}
-      content={
-        <MenuGender
-          type={option}
-          onPressSeeAll={handleOnSeeAll}
-          onPressCustomize={handleOnCustomize}
-        />
-      }
-    >
-      <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
-    </Popover>
+    <Menu.Item key={option}>
+      <Popover
+        key={option}
+        overlayStyle={overStyle}
+        trigger="hover"
+        placement="bottom"
+        onVisibleChange={handleOnHideGenderMenu}
+        content={
+          <MenuGender
+            type={option}
+            onPressSeeAll={handleOnSeeAll}
+            onPressCustomize={handleOnCustomize}
+          />
+        }
+      >
+        <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
+      </Popover>
+    </Menu.Item>
   ))
   const sportMenus = sportOptions.map(option => (
-    <Popover
-      key={option}
-      overlayStyle={overStyle}
-      trigger="hover"
-      placement="bottom"
-      onVisibleChange={handleOnHideSportsMenu}
-      content={
-        <MenuSports
-          type={option}
-          onPressSeeAll={handleOnSeeAll}
-          onPressCustomize={handleOnCustomize}
-        />
-      }
-    >
-      <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
-    </Popover>
+    <Menu.Item key={option}>
+      <Popover
+        key={option}
+        overlayStyle={overStyle}
+        trigger="hover"
+        placement="bottom"
+        onVisibleChange={handleOnHideSportsMenu}
+        content={
+          <MenuSports
+            type={option}
+            onPressSeeAll={handleOnSeeAll}
+            onPressCustomize={handleOnCustomize}
+          />
+        }
+      >
+        <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
+      </Popover>
+    </Menu.Item>
   ))
   return (
-    <Container>
+    <Menu mode="horizontal" selectable={false} style={{ borderBottom: 0 }}>
       {genderMenus}
       {sportMenus}
-    </Container>
+    </Menu>
   )
 }
 
