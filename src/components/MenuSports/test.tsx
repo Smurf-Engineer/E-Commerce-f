@@ -5,14 +5,21 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import reducer, { initialState } from './reducer'
 import { setCategoryAction, setClearAction } from './actions'
+import { Filter } from '../../types/common'
 import { MenuSports } from './index'
 
 describe('<MenuSports />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const sports: Filter[] = []
+    const categories: Filter[] = []
+    const data = {
+      fetchMore: () => {}
+    }
     ReactDOM.render(
       <MenuSports
-        type="none"
+        {...{ sports, categories }}
+        type={1}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
         setCategoryAction={() => {}}

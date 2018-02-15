@@ -4,12 +4,15 @@
 import * as React from 'react'
 import Popover from 'antd/lib/popover'
 import { connect } from 'react-redux'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
+import { QueryProps } from '../../types/common'
+import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
 import MenuSports from '../MenuSports'
+import { Filter } from '../../types/common'
 import {
   Container,
   Option,
@@ -21,15 +24,22 @@ import {
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
 
+interface Data extends QueryProps {
+  categories: Filter[]
+  sports: Filter[]
+}
+
 interface Props {
   history: any
   dispatch: any
+  data: Data
 }
 
 const genderOptions = ['men', 'women']
 const sportOptions = ['cycling', 'triathalon', 'nordic', 'active']
 
-export const DropdownList = ({ history, dispatch }: Props) => {
+export const DropdownList = ({ history, dispatch, data }: Props) => {
+  const { categories, sports } = data
   const handleOnSeeAll = (type: string) => {
     history.push('product-catalogue')
   }
@@ -60,6 +70,7 @@ export const DropdownList = ({ history, dispatch }: Props) => {
         onVisibleChange={handleOnHideGenderMenu}
         content={
           <MenuGender
+            {...{ sports, categories }}
             type={option}
             onPressSeeAll={handleOnSeeAll}
             onPressCustomize={handleOnCustomize}
@@ -70,7 +81,7 @@ export const DropdownList = ({ history, dispatch }: Props) => {
       </Popover>
     </Menu.Item>
   ))
-  const sportMenus = sportOptions.map(option => (
+  const sportMenus = sportOptions.map((option, index) => (
     <Menu.Item key={option}>
       <Popover
         key={option}
@@ -80,7 +91,8 @@ export const DropdownList = ({ history, dispatch }: Props) => {
         onVisibleChange={handleOnHideSportsMenu}
         content={
           <MenuSports
-            type={option}
+            {...{ sports, categories }}
+            type={index}
             onPressSeeAll={handleOnSeeAll}
             onPressCustomize={handleOnCustomize}
           />
@@ -100,8 +112,9 @@ export const DropdownList = ({ history, dispatch }: Props) => {
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
-const DropdownListEnhance = compose(connect(null, mapDispatchToProps))(
-  DropdownList
-)
+const DropdownListEnhance = compose(
+  graphql<Data>(categoriesQuery),
+  connect(null, mapDispatchToProps)
+)(DropdownList)
 
 export default DropdownListEnhance

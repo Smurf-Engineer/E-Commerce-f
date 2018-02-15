@@ -28,8 +28,8 @@ export interface Prices {
 }
 
 export interface Filter {
-  id: string
-  label: string
+  id: number
+  name: string
 }
 
 export type ImageType = {

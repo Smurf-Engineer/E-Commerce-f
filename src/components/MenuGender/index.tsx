@@ -16,7 +16,7 @@ import {
   Categories,
   Divider
 } from './styledComponents'
-import { Product } from '../../types/common'
+import { Product, Filter } from '../../types/common'
 
 // TODO: Test data
 const products: Product[] = [
@@ -148,40 +148,25 @@ const products: Product[] = [
   }
 ]
 
-const filters = [
-  { id: '0', label: 'Cycling' },
-  { id: '1', label: 'Triathalon' },
-  { id: '2', label: 'Nordic' },
-  { id: '3', label: 'Active' }
-]
-
-const categories = [
-  { id: '0', label: 'Tops' },
-  { id: '1', label: 'Shorts' },
-  { id: '2', label: 'MTB' },
-  { id: '3', label: 'Skin suits' },
-  { id: '4', label: 'Outerwear tops' },
-  { id: '5', label: 'Outerwear bottoms' },
-  { id: '6', label: 'Accesories' }
-]
-
 interface Props {
-  type: string
-  onPressSeeAll: (type: string) => void
+  type: number
+  onPressSeeAll: (type: number) => void
   onPressCustomize: (id: string) => void
   setSportAction: (sport: number) => void
   setCategoryAction: (category: number) => void
   sportSelected: number
   categorySelected: number
+  sports: Filter[]
+  categories: Filter[]
 }
 
 export class MenuGender extends React.PureComponent<Props, {}> {
-  handleOnHoverFilter = (filterSelected: number, id: string) => {
+  handleOnHoverFilter = (filterSelected: number, id: number) => {
     const { setSportAction } = this.props
     setSportAction(filterSelected)
   }
 
-  handleOnHoverCategory = (categorySelected: number, id: string) => {
+  handleOnHoverCategory = (categorySelected: number, id: number) => {
     const { setCategoryAction } = this.props
     setCategoryAction(categorySelected)
   }
@@ -192,12 +177,18 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { onPressCustomize, sportSelected, categorySelected } = this.props
+    const {
+      onPressCustomize,
+      sportSelected,
+      categorySelected,
+      sports,
+      categories
+    } = this.props
     return (
       <Container>
         <Filters>
           <FilterList
-            {...{ filters }}
+            filters={sports}
             filterSelected={sportSelected}
             onHoverFilter={this.handleOnHoverFilter}
           />
@@ -212,10 +203,10 @@ export class MenuGender extends React.PureComponent<Props, {}> {
           />
         </Categories>
         <Divider type="vertical" />
-        <ProductList
-          {...{ products, onPressCustomize }}
+        {/* <ProductList
+          {...{ products, onPressCustomize,  }}
           onPressSeeAll={this.handleOnPressSeeAll}
-        />
+        /> */}
       </Container>
     )
   }

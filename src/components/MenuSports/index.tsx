@@ -2,7 +2,7 @@
  * MenuSports Component - Created by david on 13/02/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as menuSportActions from './actions'
 import { ReducersObject } from '../../store/rootReducer'
@@ -10,7 +10,8 @@ import { Container, Divider, Filters } from './styledComponents'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import { Product } from '../../types/common'
+import { productsQuery } from './data'
+import { Product, Filter } from '../../types/common'
 
 // TODO: Test data
 const products: Product[] = [
@@ -142,27 +143,19 @@ const products: Product[] = [
   }
 ]
 
-const filters = [
-  { id: '0', label: 'Tops' },
-  { id: '1', label: 'Shorts' },
-  { id: '2', label: 'MTB' },
-  { id: '3', label: 'Skin suits' },
-  { id: '4', label: 'Outerwear tops' },
-  { id: '5', label: 'Outerwear bottoms' },
-  { id: '6', label: 'Accesories' }
-]
-
 interface Props {
-  type: string
-  onPressSeeAll: (type: string) => void
+  type: number
+  onPressSeeAll: (type: number) => void
   onPressCustomize: (id: string) => void
   setCategoryAction: (sport: number) => void
   categorySelected: number
+  sports: Filter[]
+  categories: Filter[]
 }
 
 export class MenuSports extends React.PureComponent<Props, {}> {
-  handleOnHoverCategory = (categorySelected: number, id: string) => {
-    const { setCategoryAction } = this.props
+  handleOnHoverCategory = (categorySelected: number) => {
+    const { setCategoryAction, categories } = this.props
     setCategoryAction(categorySelected)
   }
 
@@ -172,12 +165,21 @@ export class MenuSports extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { onPressCustomize, categorySelected } = this.props
+    const {
+      type,
+      onPressCustomize,
+      categorySelected,
+      categories,
+      sports
+    } = this.props
+    console.log('-------------TYPE---------')
+    console.log(type)
+    console.log('---------------------------')
     return (
       <Container>
         <Filters>
           <FilterList
-            {...{ filters }}
+            filters={categories}
             filterSelected={categorySelected}
             onHoverFilter={this.handleOnHoverCategory}
           />
@@ -187,6 +189,8 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         <ProductList
           {...{ products, onPressCustomize }}
           width={'80%'}
+          sportFilter={sports[type]}
+          category={categories[categorySelected]}
           onPressSeeAll={this.handleOnPressSeeAll}
         />
       </Container>

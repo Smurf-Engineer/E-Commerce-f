@@ -5,14 +5,18 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import reducer, { initialState } from './reducer'
 import { setCategoryAction, setSportAction, setClearAction } from './actions'
+import { Filter } from '../../types/common'
 import { MenuGender } from './index'
 
 describe('<MenuGender />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const sports: Filter[] = []
+    const categories: Filter[] = []
     ReactDOM.render(
       <MenuGender
-        type="none"
+        {...{ sports, categories }}
+        type={0}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
         setSportAction={() => {}}

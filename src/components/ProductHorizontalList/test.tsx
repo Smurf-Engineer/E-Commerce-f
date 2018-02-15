@@ -4,15 +4,19 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import ProductHorizontalList from './index'
-import { Product } from '../../types/common'
+import { Product, Filter } from '../../types/common'
 
 describe('<ProductHorizontalList />', () => {
   test('renders without exploding', () => {
     const products: Product[] = []
     const div = document.createElement('div')
+    const category: Filter = {
+      id: 1,
+      name: '2js'
+    }
     ReactDOM.render(
       <ProductHorizontalList
-        {...{ products }}
+        {...{ products, category }}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
       />,
