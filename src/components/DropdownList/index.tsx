@@ -21,8 +21,7 @@ import {
   menuStyle
 } from './styledComponents'
 
-const SubMenu = Menu.SubMenu
-const MenuItemGroup = Menu.ItemGroup
+const { SubMenu } = Menu
 
 interface Data extends QueryProps {
   categories: Filter[]
