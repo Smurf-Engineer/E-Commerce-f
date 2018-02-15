@@ -20,11 +20,12 @@ import logo from '../../assets/jakroo_logo.svg'
 import caFlag from '../../assets/CA.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
+import SearchBar from '../SearchBar'
 
 interface Props {
   history: any
 }
-
+const searchProd = () => {}
 const MenuBar = ({ history }: Props) => {
   return (
     <Container>
@@ -43,7 +44,7 @@ const MenuBar = ({ history }: Props) => {
       <BottomRow>
         <LogoIcon src={logo} />
         <DropdownList {...{ history }} />
-        <SearchIcon src={search} />
+        <SearchBar search={searchProd} hiddenInput={true} />
       </BottomRow>
     </Container>
   )
