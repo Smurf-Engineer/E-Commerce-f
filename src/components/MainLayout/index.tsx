@@ -7,6 +7,7 @@ import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import { Container, Header } from './styledComponents'
+import SearchResults from '../SearchResults'
 
 const { Content, Footer } = Layout
 
@@ -15,19 +16,35 @@ interface Props {
   history: any
 }
 
-const MainLayout = ({ children, history }: Props) => {
-  return (
-    <Layout>
-      <Header>
-        <MenuBar {...{ history }} />
-      </Header>
-      <Content>{children}</Content>
-      <Footer>
-        <ContactAndLinks />
-        <SocialMedia />
-      </Footer>
-    </Layout>
-  )
+class MainLayout extends React.Component<Props, {}> {
+  state = {
+    openResults: true
+  }
+  render() {
+    const { children, history } = this.props
+    return (
+      <Layout>
+        <Header>
+          <MenuBar {...{ history }} />
+        </Header>
+        <SearchResults
+          showResults={this.state.openResults}
+          searchParam={'asd'}
+          closeResults={this.closeResults}
+          {...{ history }}
+        />
+        <Content>{children}</Content>
+        <Footer>
+          <ContactAndLinks />
+          <SocialMedia />
+        </Footer>
+      </Layout>
+    )
+  }
+  closeResults = () => {
+    const { openResults } = this.state
+    this.setState({ openResults: !openResults })
+  }
 }
 
 export default MainLayout
