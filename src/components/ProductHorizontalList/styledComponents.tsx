@@ -4,8 +4,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  width: 60%;
-  margin-right: -32px;
+  width: ${(props: any) => props.width};
   display: flex;
   flex-direction: row;
   overflow: auto;
