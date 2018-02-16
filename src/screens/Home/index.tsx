@@ -23,6 +23,8 @@ type User = {
 
 interface Props extends RouteComponentProps<any> {
   someKey?: string
+  productId: number
+  openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
 }
 
@@ -37,18 +39,19 @@ export class Home extends React.Component<Props, {}> {
   }
 
   onCloseModal = () => {
-    this.setState({ openQuickView: false })
+    const { openQuickViewAction } = this.props
+    openQuickViewAction(null)
   }
 
   render() {
     const { openQuickView } = this.state
-    const { history } = this.props
+    const { history, productId } = this.props
     return (
       <Layout {...{ history }}>
         <Container>
           <Button onClick={this.onClickButton} label="Info Message" />
           <QuickView
-            open={openQuickView}
+            open={!!productId}
             title={'THE TOUR BIKE JERSEY'}
             data={ProductData}
             handleClose={this.onCloseModal}

@@ -4,11 +4,13 @@
 
 import gql from 'graphql-tag'
 
+// TODO: delete alias
 export const productsQuery = gql`
   query GetProducts($gender: Int, $category: Int, $sport: Int) {
     products(gender: $gender, category: $category, sport: $sport, limit: 6) {
       id
-      description
+      type: name
+      description: short_description
       collections
       isTopProduct
       images: pictures {

@@ -19,7 +19,8 @@ interface Props {
   genderFilter?: Filter
   sportFilter: Filter
   onPressSeeAll: () => void
-  onPressCustomize: (id: string) => void
+  onPressCustomize: (id: number) => void
+  onPressQuickView: (id: number) => void
   width?: string
   category: Filter
 }
@@ -28,6 +29,7 @@ export const ProductHorizontalList = ({
   data,
   onPressSeeAll,
   onPressCustomize,
+  onPressQuickView,
   width = '60%',
   genderFilter,
   sportFilter,
@@ -58,6 +60,7 @@ export const ProductHorizontalList = ({
           key,
           id,
           onPressCustomize,
+          onPressQuickView,
           type,
           images,
           description,

@@ -45,7 +45,7 @@ export type PriceRange = {
 }
 
 export interface Product {
-  id: string
+  id: number
   images: ImageType
   type: string
   description: string

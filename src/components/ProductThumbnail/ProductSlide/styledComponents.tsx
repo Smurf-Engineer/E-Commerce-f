@@ -55,7 +55,8 @@ export const TopText = styled.div`
   text-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.24);
 `
 
-export const QuickView = styled.img`
+export const QuickView = styled.div`
+  z-index: 10;
   cursor: pointer;
 `
 
@@ -76,7 +77,6 @@ export const Arrows = styled.div`
   top: 110px;
   width: 200px;
   justify-content: space-between;
-  animation: ${fadeIn} 0.1s linear;
 `
 
 export const Arrow = styled.img``
@@ -102,5 +102,4 @@ export const CustomizeButton = styled.div`
   align-items: center;
   border-radius: 2px;
   padding: 6px 16px;
-  animation: ${fadeIn} 0.3s linear;
 `

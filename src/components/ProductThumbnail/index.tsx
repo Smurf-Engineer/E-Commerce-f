@@ -25,14 +25,15 @@ import ImageSlide from './ProductSlide'
 import { ImageType, PriceRange } from '../../types/common'
 
 interface Props {
-  id?: string
+  id: number
   type?: string
   images?: ImageType
   description?: string
   priceRange?: PriceRange
   isTopProduct: boolean
   collections?: number
-  onPressCustomize: (id: string) => void
+  onPressCustomize: (id: number) => void
+  onPressQuickView: (id: number) => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
@@ -69,7 +70,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
 
   handleOnPressCustomize = () => {
     const { onPressCustomize, id } = this.props
-    onPressCustomize(id || '')
+    onPressCustomize(id)
+  }
+
+  handleOnPressQuickView = () => {
+    const { onPressQuickView, id } = this.props
+    onPressQuickView(id)
   }
 
   render() {
@@ -89,6 +95,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
           {...{ isTopProduct, isHovered, images, currentImage }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
+          onPressQuickView={this.handleOnPressQuickView}
           onPressBack={this.handleOnPressBack}
           onPressNext={this.handleOnPressNext}
           onPressCustomize={this.handleOnPressCustomize}

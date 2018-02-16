@@ -10,7 +10,12 @@ describe('<ProductThumbnail />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <ProductThumbnail isTopProduct={false} onPressCustomize={() => {}} />,
+      <ProductThumbnail
+        id={0}
+        isTopProduct={false}
+        onPressCustomize={() => {}}
+        onPressQuickView={() => {}}
+      />,
       div
     )
   })
