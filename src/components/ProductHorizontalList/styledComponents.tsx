@@ -3,8 +3,12 @@
  */
 import styled from 'styled-components'
 
+interface PropsContainer {
+  width: string
+}
+
 export const Container = styled.div`
-  width: ${(props: any) => props.width};
+  width: ${({ width }: PropsContainer) => width};
   display: flex;
   flex-direction: row;
   overflow: auto;

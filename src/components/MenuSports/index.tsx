@@ -151,6 +151,7 @@ interface Props {
   categorySelected: number
   sports: Filter[]
   categories: Filter[]
+  visible: boolean
 }
 
 export class MenuSports extends React.PureComponent<Props, {}> {
@@ -167,14 +168,17 @@ export class MenuSports extends React.PureComponent<Props, {}> {
   render() {
     const {
       type,
+      visible,
       onPressCustomize,
       categorySelected,
       categories,
       sports
     } = this.props
-    console.log('-------------TYPE---------')
-    console.log(type)
-    console.log('---------------------------')
+
+    if (!visible) {
+      return null
+    }
+
     return (
       <Container>
         <Filters>

@@ -11,6 +11,7 @@ describe('<DropdownList />', () => {
     const div = document.createElement('div')
     const sports: Filter[] = []
     const categories: Filter[] = []
+    
     const data = {
       sports,
       categories,

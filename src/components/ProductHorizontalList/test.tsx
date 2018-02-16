@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ProductHorizontalList from './index'
+import { ProductHorizontalList } from './index'
 import { Product, Filter } from '../../types/common'
 
 describe('<ProductHorizontalList />', () => {
@@ -14,9 +14,17 @@ describe('<ProductHorizontalList />', () => {
       id: 1,
       name: '2js'
     }
+    const sportFilter: Filter = {
+      id: 1,
+      name: '2js'
+    }
+    const data = {
+      products,
+      fetchMore: () => {}
+    }
     ReactDOM.render(
       <ProductHorizontalList
-        {...{ products, category }}
+        {...{ products, category, data, sportFilter }}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
       />,

@@ -7,10 +7,15 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import { QueryProps } from '../../types/common'
+import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
+import {
+  setMenuGenderSelectedAction,
+  setMenuSportSelectedAction
+} from './actions'
 import MenuSports from '../MenuSports'
 import { Filter } from '../../types/common'
 import {
@@ -21,99 +26,122 @@ import {
   menuStyle
 } from './styledComponents'
 
-const { SubMenu } = Menu
-
 interface Data extends QueryProps {
+  genders: Filter[]
   categories: Filter[]
   sports: Filter[]
+}
+
+interface Option {
+  label: string
+  visible: boolean
 }
 
 interface Props {
   history: any
   dispatch: any
   data: Data
+  sportOptions: Option[]
+  genderOptions: Option[]
 }
 
-const genderOptions = ['men', 'women']
-const sportOptions = ['cycling', 'triathalon', 'nordic', 'active']
-
-export const DropdownList = ({ history, dispatch, data }: Props) => {
-  const { categories, sports } = data
-  const handleOnSeeAll = (type: string) => {
+export class DropdownList extends React.PureComponent<Props> {
+  handleOnSeeAll = (type: string) => {
+    const { history } = this.props
     history.push('product-catalogue')
   }
 
-  const handleOnCustomize = (id: string) => {
+  handleOnCustomize = (id: string) => {
+    const { history } = this.props
     history.push('designer')
   }
 
-  const handleOnHideGenderMenu = (visible: boolean) => {
+  handleOnHideGenderMenu = (visible: boolean, index: number) => {
+    const { dispatch } = this.props
+
+    dispatch(setMenuGenderSelectedAction(index, visible))
+
     if (!visible) {
       dispatch({ type: CLEAR_MENU_GENDER })
     }
   }
 
-  const handleOnHideSportsMenu = (visible: boolean) => {
+  handleOnHideSportsMenu = (visible: boolean, index: number) => {
+    const { dispatch } = this.props
+
+    dispatch(setMenuSportSelectedAction(index, visible))
+
     if (!visible) {
       dispatch({ type: CLEAR_MENU_SPORTS })
     }
   }
 
-  const genderMenus = genderOptions.map(option => (
-    <Menu.Item key={option}>
-      <Popover
-        key={option}
-        overlayStyle={overStyle}
-        trigger="hover"
-        placement="bottom"
-        onVisibleChange={handleOnHideGenderMenu}
-        content={
-          <MenuGender
-            {...{ sports, categories }}
-            type={option}
-            onPressSeeAll={handleOnSeeAll}
-            onPressCustomize={handleOnCustomize}
-          />
-        }
-      >
-        <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
-      </Popover>
-    </Menu.Item>
-  ))
-  const sportMenus = sportOptions.map((option, index) => (
-    <Menu.Item key={option}>
-      <Popover
-        key={option}
-        overlayStyle={overStyle}
-        trigger="hover"
-        placement="bottom"
-        onVisibleChange={handleOnHideSportsMenu}
-        content={
-          <MenuSports
-            {...{ sports, categories }}
-            type={index}
-            onPressSeeAll={handleOnSeeAll}
-            onPressCustomize={handleOnCustomize}
-          />
-        }
-      >
-        <OptionDropdown>{option.toUpperCase()}</OptionDropdown>
-      </Popover>
-    </Menu.Item>
-  ))
-  return (
-    <Menu mode="horizontal" selectable={false} style={menuStyle}>
-      {genderMenus}
-      {sportMenus}
-    </Menu>
-  )
+  render() {
+    const { history, dispatch, data, genderOptions, sportOptions } = this.props
+    const { genders, categories, sports } = data
+
+    const genderMenus = genderOptions.map(({ label, visible }, index) => (
+      <Menu.Item key={label}>
+        <Popover
+          overlayStyle={overStyle}
+          trigger="hover"
+          placement="bottom"
+          visible={visible}
+          onVisibleChange={isVisible =>
+            this.handleOnHideGenderMenu(isVisible, index)
+          }
+          content={
+            <MenuGender
+              {...{ genders, sports, categories, visible }}
+              type={index}
+              onPressSeeAll={this.handleOnSeeAll}
+              onPressCustomize={this.handleOnCustomize}
+            />
+          }
+        >
+          <OptionDropdown>{label.toUpperCase()}</OptionDropdown>
+        </Popover>
+      </Menu.Item>
+    ))
+    const sportMenus = sportOptions.map(({ label, visible }, index) => (
+      <Menu.Item key={label}>
+        <Popover
+          overlayStyle={overStyle}
+          trigger="hover"
+          placement="bottom"
+          visible={visible}
+          onVisibleChange={isVisible =>
+            this.handleOnHideSportsMenu(isVisible, index)
+          }
+          content={
+            <MenuSports
+              {...{ sports, categories, visible }}
+              type={index}
+              onPressSeeAll={this.handleOnSeeAll}
+              onPressCustomize={this.handleOnCustomize}
+            />
+          }
+        >
+          <OptionDropdown>{label.toUpperCase()}</OptionDropdown>
+        </Popover>
+      </Menu.Item>
+    ))
+    return (
+      <Menu mode="horizontal" selectable={false} style={menuStyle}>
+        {genderMenus}
+        {sportMenus}
+      </Menu>
+    )
+  }
 }
+
+const mapStateToProps = ({ menu }: ReducersObject) => menu.toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const DropdownListEnhance = compose(
   graphql<Data>(categoriesQuery),
-  connect(null, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps)
 )(DropdownList)
 
 export default DropdownListEnhance

@@ -3,39 +3,40 @@
  */
 import * as React from 'react'
 import { Container, AllButton } from './styledComponents'
+import { compose, graphql } from 'react-apollo'
 import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
+import { productsQuery } from './data'
 import { Product, QueryProps, Filter } from '../../types/common'
 
-interface Data extends QueryProps {}
+interface Data extends QueryProps {
+  products: Product[]
+}
 
 interface Props {
-  // data: Data
+  data: Data
   products: Product[]
-  sportFilter?: Filter
+  genderFilter?: Filter
+  sportFilter: Filter
   onPressSeeAll: () => void
   onPressCustomize: (id: string) => void
   width?: string
   category: Filter
 }
 
-const ProductHorizontalList = ({
+export const ProductHorizontalList = ({
   products,
+  data,
   onPressSeeAll,
   onPressCustomize,
   width = '60%',
+  genderFilter,
   sportFilter,
   category
 }: Props) => {
   const list = products.map((product, key) => (
     <ProductThumbnail {...{ product, key, onPressCustomize }} />
   ))
-  // console.log('----------SPORT---------')
-  // console.log(sportFilter)
-  // console.log('---------------------------')
-  // console.log('--------CATEGORY--------')
-  // console.log(category)
-  // console.log('---------------------------')
   return (
     <Container {...{ width }}>
       {list}
@@ -46,15 +47,22 @@ const ProductHorizontalList = ({
   )
 }
 
-export default ProductHorizontalList
+type OwnProps = {
+  genderFilter?: Filter
+  category?: Filter
+  sportFilter?: Filter
+}
 
-// graphql<Data>(productsQuery, {
-//   options: ({ categories, categorySelected, sports, type }: any) => {
-//     console.log('-------------DATA--------------')
-//     console.log(categorySelected)
-//     console.log('---------------------------')
-//     return {
-//       variables: { gender: 1 }
-//     }
-//   }
-// }),
+const ListEnhance = compose(
+  graphql<Data>(productsQuery, {
+    options: ({ genderFilter, category, sportFilter }: OwnProps) => ({
+      variables: {
+        gender: genderFilter ? genderFilter.id : null,
+        category: category ? category.id : null,
+        sport: sportFilter ? sportFilter.id : null
+      }
+    })
+  })
+)(ProductHorizontalList)
+
+export default ListEnhance

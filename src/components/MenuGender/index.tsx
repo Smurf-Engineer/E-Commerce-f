@@ -156,8 +156,10 @@ interface Props {
   setCategoryAction: (category: number) => void
   sportSelected: number
   categorySelected: number
+  genders: Filter[]
   sports: Filter[]
   categories: Filter[]
+  visible: boolean
 }
 
 export class MenuGender extends React.PureComponent<Props, {}> {
@@ -178,12 +180,20 @@ export class MenuGender extends React.PureComponent<Props, {}> {
 
   render() {
     const {
+      type,
+      visible,
       onPressCustomize,
       sportSelected,
       categorySelected,
-      sports,
-      categories
+      genders = [],
+      sports = [],
+      categories = []
     } = this.props
+
+    if (!visible) {
+      return null
+    }
+
     return (
       <Container>
         <Filters>
@@ -203,10 +213,13 @@ export class MenuGender extends React.PureComponent<Props, {}> {
           />
         </Categories>
         <Divider type="vertical" />
-        {/* <ProductList
-          {...{ products, onPressCustomize,  }}
+        <ProductList
+          {...{ products, onPressCustomize }}
+          genderFilter={genders[type]}
+          sportFilter={sports[sportSelected]}
+          category={categories[categorySelected]}
           onPressSeeAll={this.handleOnPressSeeAll}
-        /> */}
+        />
       </Container>
     )
   }
