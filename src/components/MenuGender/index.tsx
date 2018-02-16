@@ -18,137 +18,6 @@ import {
 } from './styledComponents'
 import { Product, Filter } from '../../types/common'
 
-// TODO: Test data
-const products: Product[] = [
-  {
-    id: '0',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR TOUR TOUR TOUR TOUR TOUR',
-    description:
-      'SHORT SLEEVE JERSEY SHORT SLEEVE JERSEY SHORT SLEEVE JERSEY SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: true
-  },
-  {
-    id: '1',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '2',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '3',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: true
-  },
-  {
-    id: '4',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '5',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  }
-]
-
 interface Props {
   type: number
   onPressSeeAll: (type: number) => void
@@ -215,7 +84,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
         </Categories>
         <Divider type="vertical" />
         <ProductList
-          {...{ products, onPressCustomize }}
+          {...{ onPressCustomize }}
           genderFilter={genders[type]}
           sportFilter={sports[sportSelected]}
           category={categories[categorySelected]}
