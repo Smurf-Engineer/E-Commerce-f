@@ -13,7 +13,7 @@ export const initialState = fromJS({
   ],
   sportOptions: [
     { label: 'cycling', visible: false },
-    { label: 'triathalon', visible: false },
+    { label: 'triathlon', visible: false },
     { label: 'nordic', visible: false },
     { label: 'active', visible: false }
   ]

@@ -63,7 +63,7 @@ describe('DropdownList Reducer', () => {
     expect(menuVisible).toEqual(true)
   })
 
-  it('Set the Triathalon Menu Dropdown visible ', () => {
+  it('Set the Triathlon Menu Dropdown visible ', () => {
     const state = reducer(initialState, setMenuSportSelectedAction(1, true))
     const menuVisible = state.getIn(['sportOptions', 1, 'visible'])
     expect(menuVisible).toEqual(true)
