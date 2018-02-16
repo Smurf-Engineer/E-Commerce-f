@@ -15,7 +15,8 @@ import { Filter } from '../../types/common'
 interface Props {
   type: number
   onPressSeeAll: (type: number) => void
-  onPressCustomize: (id: string) => void
+  onPressCustomize: (id: number) => void
+  onPressQuickView: (id: number) => void
   setCategoryAction: (sport: number) => void
   categorySelected: number
   sports: Filter[]
@@ -39,6 +40,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       type,
       visible,
       onPressCustomize,
+      onPressQuickView,
       categorySelected,
       categories,
       sports
@@ -60,7 +62,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         </Filters>
         <Divider type="vertical" />
         <ProductList
-          {...{ onPressCustomize }}
+          {...{ onPressCustomize, onPressQuickView }}
           width={'80%'}
           sportFilter={sports[type]}
           category={categories[categorySelected]}

@@ -30,6 +30,7 @@ interface Props {
   currentImage: number
   onPressBack: () => void
   onPressNext: () => void
+  onPressQuickView: () => void
   onPressCustomize: () => void
 }
 
@@ -43,6 +44,7 @@ const ProductSlide = ({
   images,
   currentImage,
   onPressCustomize,
+  onPressQuickView,
   onPressBack,
   onPressNext
 }: Props) => {
@@ -52,7 +54,9 @@ const ProductSlide = ({
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
-        <QuickView src={quickViewIcon} />
+        <QuickView onClick={onPressQuickView}>
+          <img src={quickViewIcon} />
+        </QuickView>
         {isTopProduct && (
           <TopContainer>
             <TopText>TOP</TopText>

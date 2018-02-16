@@ -6,7 +6,7 @@ import { Container, Text, Line, Option } from './styledComponents'
 import { Filter } from '../../types/common'
 
 interface Props {
-  filters: Filter[]
+  filters?: Filter[]
   onHoverFilter?: (index: number, id: number) => void
   filterSelected?: number
 }

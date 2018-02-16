@@ -56,6 +56,12 @@ export class DropdownList extends React.PureComponent<Props> {
     history.push('designer')
   }
 
+  handleOnQuickView = (id: number) => {
+    const { dispatch } = this.props
+    // TODO: Temp action - Move QuickView Component to layout
+    dispatch({ type: 'src/Home/OPEN_QUICKVIEW_ACTION', id })
+  }
+
   handleOnHideGenderMenu = (visible: boolean, index: number) => {
     const { dispatch } = this.props
 
@@ -95,6 +101,7 @@ export class DropdownList extends React.PureComponent<Props> {
               {...{ genders, sports, categories, visible }}
               type={index}
               onPressSeeAll={this.handleOnSeeAll}
+              onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
             />
           }
@@ -118,6 +125,7 @@ export class DropdownList extends React.PureComponent<Props> {
               {...{ sports, categories, visible }}
               type={index}
               onPressSeeAll={this.handleOnSeeAll}
+              onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
             />
           }
