@@ -76,7 +76,7 @@ export const Arrows = styled.div`
   top: 110px;
   width: 200px;
   justify-content: space-between;
-  animation: ${fadeIn} 0.6s linear;
+  animation: ${fadeIn} 0.1s linear;
 `
 
 export const Arrow = styled.img``

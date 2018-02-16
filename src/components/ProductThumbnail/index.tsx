@@ -22,10 +22,16 @@ import {
   ButtonContainer
 } from './styledComponents'
 import ImageSlide from './ProductSlide'
-import { Product } from '../../types/common'
+import { ImageType, PriceRange } from '../../types/common'
 
 interface Props {
-  product: Product
+  id?: string
+  type?: string
+  images?: ImageType
+  description?: string
+  priceRange?: PriceRange
+  isTopProduct: boolean
+  collections?: number
   onPressCustomize: (id: string) => void
 }
 
@@ -40,8 +46,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
   handleOnBlur = () => this.setState({ isHovered: false })
 
   handleOnPressBack = () => {
-    const { product: { images } } = this.props
-    const keys = Object.keys(images)
+    const { images } = this.props
+    const keys = Object.keys(images || {})
     let { currentImage } = this.state
     currentImage -= 1
     if (currentImage < 0) {
@@ -51,33 +57,32 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handleOnPressNext = () => {
-    const { product: { images } } = this.props
+    const { images } = this.props
     let { currentImage } = this.state
-    const keys = Object.keys(images)
+    const keys = Object.keys(images || {})
     currentImage += 1
-    if (currentImage >= keys.length) {
+    if (currentImage >= keys.length - 1) {
       return
     }
     this.setState({ currentImage })
   }
 
   handleOnPressCustomize = () => {
-    const { onPressCustomize, product: { id } } = this.props
-    onPressCustomize(id)
+    const { onPressCustomize, id } = this.props
+    onPressCustomize(id || '')
   }
 
   render() {
     const {
-      product: {
-        type,
-        images,
-        description,
-        priceRange,
-        isTopProduct,
-        collections
-      }
+      type,
+      images,
+      description,
+      priceRange,
+      isTopProduct,
+      collections
     } = this.props
     const { isHovered, currentImage } = this.state
+    const price = !!priceRange && `$${priceRange.from} - $${priceRange.to}`
     return (
       <Container>
         <ImageSlide
@@ -93,7 +98,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
           <Description>{description}</Description>
           <InfoContainer>
             <Label>{`${collections} Collection`}</Label>
-            <Price>{`$${priceRange.from} - $${priceRange.to}`}</Price>
+            {!!priceRange && <Price>{price}</Price>}
           </InfoContainer>
         </Footer>
       </Container>

@@ -8,28 +8,6 @@ import { setCategoryAction, setClearAction } from './actions'
 import { Filter } from '../../types/common'
 import { MenuSports } from './index'
 
-describe('<MenuSports />', () => {
-  test('renders without exploding', () => {
-    const div = document.createElement('div')
-    const sports: Filter[] = []
-    const categories: Filter[] = []
-    const data = {
-      fetchMore: () => {}
-    }
-    ReactDOM.render(
-      <MenuSports
-        {...{ sports, categories }}
-        type={1}
-        onPressSeeAll={() => {}}
-        onPressCustomize={() => {}}
-        setCategoryAction={() => {}}
-        categorySelected={-2}
-      />,
-      div
-    )
-  })
-})
-
 describe('MenuSports Reducer', () => {
   it('Return the default state for unknow action', () => {
     const state = reducer(initialState, { type: 'unknow' })

@@ -8,27 +8,6 @@ import { setCategoryAction, setSportAction, setClearAction } from './actions'
 import { Filter } from '../../types/common'
 import { MenuGender } from './index'
 
-describe('<MenuGender />', () => {
-  test('renders without exploding', () => {
-    const div = document.createElement('div')
-    const sports: Filter[] = []
-    const categories: Filter[] = []
-    ReactDOM.render(
-      <MenuGender
-        {...{ sports, categories }}
-        type={0}
-        onPressSeeAll={() => {}}
-        onPressCustomize={() => {}}
-        setSportAction={() => {}}
-        setCategoryAction={() => {}}
-        sportSelected={-1}
-        categorySelected={-2}
-      />,
-      div
-    )
-  })
-})
-
 describe('MenuGender Reducer', () => {
   it('Return the default state for unknow action', () => {
     const state = reducer(initialState, { type: 'unknow' })

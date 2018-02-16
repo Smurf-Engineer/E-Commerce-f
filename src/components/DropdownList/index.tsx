@@ -32,7 +32,7 @@ interface Data extends QueryProps {
   sports: Filter[]
 }
 
-interface Option {
+export interface Option {
   label: string
   visible: boolean
 }

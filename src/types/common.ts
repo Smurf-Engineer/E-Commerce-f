@@ -39,7 +39,7 @@ export type ImageType = {
   right: string
 }
 
-type PriceRange = {
+export type PriceRange = {
   from: number
   to: number
 }

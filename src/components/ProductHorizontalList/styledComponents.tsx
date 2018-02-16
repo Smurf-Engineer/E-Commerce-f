@@ -15,6 +15,14 @@ export const Container = styled.div`
   white-space: nowrap;
 `
 
+export const ContainerLoading = styled.div`
+  width: ${({ width }: PropsContainer) => width};
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+`
+
 export const AllButton = styled.div`
   margin-left: 32px;
 `

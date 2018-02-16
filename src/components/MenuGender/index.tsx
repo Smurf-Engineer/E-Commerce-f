@@ -32,8 +32,9 @@ const products: Product[] = [
       right:
         'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
     },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
+    type: 'TOUR TOUR TOUR TOUR TOUR TOUR',
+    description:
+      'SHORT SLEEVE JERSEY SHORT SLEEVE JERSEY SHORT SLEEVE JERSEY SHORT SLEEVE JERSEY',
     priceRange: {
       from: 63,
       to: 119
