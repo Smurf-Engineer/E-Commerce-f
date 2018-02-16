@@ -28,8 +28,8 @@ export interface Prices {
 }
 
 export interface Filter {
-  id: string
-  label: string
+  id: number
+  name: string
 }
 
 export type ImageType = {
@@ -39,7 +39,7 @@ export type ImageType = {
   right: string
 }
 
-type PriceRange = {
+export type PriceRange = {
   from: number
   to: number
 }

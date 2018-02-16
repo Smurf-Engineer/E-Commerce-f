@@ -7,7 +7,7 @@ import { Filter } from '../../types/common'
 
 interface Props {
   filters: Filter[]
-  onHoverFilter?: (index: number, id: string) => void
+  onHoverFilter?: (index: number, id: number) => void
   filterSelected?: number
 }
 
@@ -16,9 +16,9 @@ const FilterList = ({
   onHoverFilter = () => {},
   filterSelected
 }: Props) => {
-  const list = filters.map(({ id, label }, index) => (
+  const list = filters.map(({ id, name }, index) => (
     <Option key={index} onMouseEnter={() => onHoverFilter(index, id)}>
-      <Text>{label}</Text>
+      <Text>{name}</Text>
       {index === filterSelected && <Line />}
     </Option>
   ))

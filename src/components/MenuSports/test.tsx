@@ -5,23 +5,8 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import reducer, { initialState } from './reducer'
 import { setCategoryAction, setClearAction } from './actions'
+import { Filter } from '../../types/common'
 import { MenuSports } from './index'
-
-describe('<MenuSports />', () => {
-  test('renders without exploding', () => {
-    const div = document.createElement('div')
-    ReactDOM.render(
-      <MenuSports
-        type="none"
-        onPressSeeAll={() => {}}
-        onPressCustomize={() => {}}
-        setCategoryAction={() => {}}
-        categorySelected={-2}
-      />,
-      div
-    )
-  })
-})
 
 describe('MenuSports Reducer', () => {
   it('Return the default state for unknow action', () => {

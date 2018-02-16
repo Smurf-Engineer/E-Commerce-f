@@ -6,6 +6,7 @@ import { combineReducers } from 'redux'
 import home from '../screens/Home/reducer'
 import menuGender from '../components/MenuGender/reducer'
 import menuSports from '../components/MenuSports/reducer'
+import menu from '../components/DropdownList/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
@@ -13,6 +14,7 @@ export interface ReducersObject {
   app: any
   menuGender: any
   menuSports: any
+  menu: any
   quickView: any
 }
 
@@ -30,6 +32,7 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
 }
 
 const rootReducer = combineReducers({
+  menu,
   home,
   menuGender,
   menuSports,

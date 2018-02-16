@@ -16,172 +16,29 @@ import {
   Categories,
   Divider
 } from './styledComponents'
-import { Product } from '../../types/common'
-
-// TODO: Test data
-const products: Product[] = [
-  {
-    id: '0',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: true
-  },
-  {
-    id: '1',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '2',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '3',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: true
-  },
-  {
-    id: '4',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '5',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  }
-]
-
-const filters = [
-  { id: '0', label: 'Cycling' },
-  { id: '1', label: 'Triathalon' },
-  { id: '2', label: 'Nordic' },
-  { id: '3', label: 'Active' }
-]
-
-const categories = [
-  { id: '0', label: 'Tops' },
-  { id: '1', label: 'Shorts' },
-  { id: '2', label: 'MTB' },
-  { id: '3', label: 'Skin suits' },
-  { id: '4', label: 'Outerwear tops' },
-  { id: '5', label: 'Outerwear bottoms' },
-  { id: '6', label: 'Accesories' }
-]
+import { Product, Filter } from '../../types/common'
 
 interface Props {
-  type: string
-  onPressSeeAll: (type: string) => void
+  type: number
+  onPressSeeAll: (type: number) => void
   onPressCustomize: (id: string) => void
   setSportAction: (sport: number) => void
   setCategoryAction: (category: number) => void
   sportSelected: number
   categorySelected: number
+  genders: Filter[]
+  sports: Filter[]
+  categories: Filter[]
+  visible: boolean
 }
 
 export class MenuGender extends React.PureComponent<Props, {}> {
-  handleOnHoverFilter = (filterSelected: number, id: string) => {
+  handleOnHoverFilter = (filterSelected: number, id: number) => {
     const { setSportAction } = this.props
     setSportAction(filterSelected)
   }
 
-  handleOnHoverCategory = (categorySelected: number, id: string) => {
+  handleOnHoverCategory = (categorySelected: number, id: number) => {
     const { setCategoryAction } = this.props
     setCategoryAction(categorySelected)
   }
@@ -192,12 +49,26 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { onPressCustomize, sportSelected, categorySelected } = this.props
+    const {
+      type,
+      visible,
+      onPressCustomize,
+      sportSelected,
+      categorySelected,
+      genders = [],
+      sports = [],
+      categories = []
+    } = this.props
+
+    if (!visible) {
+      return null
+    }
+
     return (
       <Container>
         <Filters>
           <FilterList
-            {...{ filters }}
+            filters={sports}
             filterSelected={sportSelected}
             onHoverFilter={this.handleOnHoverFilter}
           />
@@ -213,7 +84,10 @@ export class MenuGender extends React.PureComponent<Props, {}> {
         </Categories>
         <Divider type="vertical" />
         <ProductList
-          {...{ products, onPressCustomize }}
+          {...{ onPressCustomize }}
+          genderFilter={genders[type]}
+          sportFilter={sports[sportSelected]}
+          category={categories[categorySelected]}
           onPressSeeAll={this.handleOnPressSeeAll}
         />
       </Container>
