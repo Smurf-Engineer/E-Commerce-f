@@ -24,9 +24,10 @@ import SearchBar from '../SearchBar'
 
 interface Props {
   history: any
+  searchFunc: (param: string) => void
 }
-const searchProd = () => {}
-const MenuBar = ({ history }: Props) => {
+
+const MenuBar = ({ history, searchFunc }: Props) => {
   return (
     <Container>
       <Row>
@@ -44,7 +45,7 @@ const MenuBar = ({ history }: Props) => {
       <BottomRow>
         <LogoIcon src={logo} />
         <DropdownList {...{ history }} />
-        <SearchBar search={searchProd} hiddenInput={true} />
+        <SearchBar search={searchFunc} onHeader={true} />
       </BottomRow>
     </Container>
   )

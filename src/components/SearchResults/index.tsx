@@ -2,8 +2,12 @@
  * SearchResults Component - Created by cazarez on 14/02/18.
  */
 import * as React from 'react'
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
 import AnimateHeight from 'react-animate-height'
 import CloseIcon from '../../assets/cancel-button.svg'
+import { QueryProps, Product } from '../../types/common'
+import { searchResultsQuery } from './data'
 import {
   Container,
   Text,
@@ -12,9 +16,13 @@ import {
   Results
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
-import { Product } from '../../types/common'
+
+interface Data extends QueryProps {
+  productSearch: [Product]
+}
 
 interface Props {
+  data?: Data
   searchParam: string
   showResults: boolean
   closeResults: () => void
@@ -152,6 +160,7 @@ const products: Product[] = [
 
 class SearchResults extends React.Component<Props, {}> {
   render() {
+    console.log('SEARRRRRCH ', this.props.data)
     const { searchParam, showResults, closeResults } = this.props
     const list = products.map((product, key) => (
       <ProductThumbnail onPressCustomize={this.press} {...{ product, key }} />
@@ -176,4 +185,15 @@ class SearchResults extends React.Component<Props, {}> {
   }
 }
 
-export default SearchResults
+type OwnProps = {
+  searchParam?: string
+}
+
+const searchEnhance = compose(
+  graphql<Data>(searchResultsQuery, {
+    options: ({ searchParam }: OwnProps) => ({
+      variables: { search: searchParam }
+    })
+  })
+)(SearchResults)
+export default searchEnhance

@@ -8,50 +8,65 @@ import { CSSProperties } from 'react'
 
 interface Props {
   search: (value: string) => void
-  hiddenInput?: boolean
+  onHeader?: boolean
 }
 
 interface StateProps {
   width?: string
+  searchValue: string
 }
 class SearchBar extends React.Component<Props, StateProps> {
   constructor(props: Props) {
     super(props)
-    const { hiddenInput } = props
+    const { onHeader } = props
     this.state = {
-      width: hiddenInput ? '0px' : ''
+      width: onHeader ? '0px' : '',
+      searchValue: ''
     }
   }
   render() {
-    const { search, hiddenInput } = this.props
-    const { width } = this.state
+    const { search, onHeader } = this.props
+    const { width, searchValue } = this.state
     return (
       <Container>
         <SearchInput
           size="large"
           placeholder="Seach for a product"
-          // onChange={this.handleChange}
-          onSearch={this.search}
-          onClick={this.showInput}
-          {...{ width }}
+          onChange={this.handleChange}
+          onSearch={this.showInput}
+          onBlur={onHeader ? this.hideInput : this.clearInput}
           enterButton={true}
+          {...{ width }}
+          value={searchValue}
         />
       </Container>
     )
   }
 
   showInput = () => {
-    const { hiddenInput } = this.props
-    console.log('click')
-    if (hiddenInput) {
+    const { onHeader } = this.props
+    const { width } = this.state
+    console.log('click', width)
+    if (onHeader) {
       this.setState({ width: 'auto' })
+    }
+  }
+
+  clearInput = () => {
+    this.setState({ searchValue: '' })
+  }
+
+  hideInput = () => {
+    const { onHeader } = this.props
+    if (onHeader) {
+      this.setState({ width: '0px', searchValue: '' })
     }
   }
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value } } = evt
     const { search } = this.props
-    console.log('on change ', value)
+    this.setState({ searchValue: value })
     if (value.length > 3) {
       search(value)
     }
