@@ -9,17 +9,8 @@ import { Product } from '../../types/common'
 describe('<ProductThumbnail />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const product = {
-      id: 'test-0',
-      images: { front: '', back: '', left: '', right: '' },
-      type: '',
-      description: '',
-      priceRange: { from: 0, to: 1 },
-      collections: 0,
-      isTopProduct: false
-    }
     ReactDOM.render(
-      <ProductThumbnail {...{ product }} onPressCustomize={() => {}} />,
+      <ProductThumbnail isTopProduct={false} onPressCustomize={() => {}} />,
       div
     )
   })

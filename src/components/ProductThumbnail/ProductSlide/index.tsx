@@ -26,7 +26,7 @@ interface Props {
   onMouseLeave: () => void
   isHovered: boolean
   isTopProduct: boolean
-  images: ImageType
+  images?: ImageType
   currentImage: number
   onPressBack: () => void
   onPressNext: () => void
@@ -46,11 +46,9 @@ const ProductSlide = ({
   onPressBack,
   onPressNext
 }: Props) => {
-  const imagePages = imagesOrder.map((key, index) => (
-    <Page key={index}>
-      <Image src={images[key]} />
-    </Page>
-  ))
+  const imagePages = imagesOrder.map((key, index) => {
+    return <Page key={index}>{!!images && <Image src={images[key]} />}</Page>
+  })
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>

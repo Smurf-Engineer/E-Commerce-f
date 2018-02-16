@@ -9,7 +9,6 @@ import { compose, graphql } from 'react-apollo'
 import { QueryProps } from '../../types/common'
 import { RouteComponentProps } from 'react-router-dom'
 import { ReducersObject } from '../../store/rootReducer'
-import { usersQuery } from './data'
 import * as homeActions from './actions'
 import Button from '../../components/Button'
 import QuickView from '../../components/QuickView'
@@ -36,12 +35,7 @@ type User = {
   email: string
 }
 
-interface Data extends QueryProps {
-  users: [User]
-}
-
 interface Props extends RouteComponentProps<any> {
-  data?: Data
   someKey?: string
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -126,9 +120,6 @@ export class Home extends React.Component<Props, {}> {
 
 const mapStateToProps = ({ home }: ReducersObject) => home.toJS()
 
-const HomeEnhance = compose(
-  graphql<Data>(usersQuery),
-  connect(mapStateToProps, { ...homeActions })
-)(Home)
+const HomeEnhance = compose(connect(mapStateToProps, { ...homeActions }))(Home)
 
 export default HomeEnhance

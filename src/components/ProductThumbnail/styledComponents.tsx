@@ -64,6 +64,9 @@ export const Type = styled.div`
   font-size: 14px;
   font-weight: bold;
   line-height: 19px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 220px;
 `
 export const Description = styled.div`
   user-select: none;
@@ -72,6 +75,10 @@ export const Description = styled.div`
   font-size: 12px;
   line-height: 16px;
   padding 2px 0px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 220px;
 `
 
 export const InfoContainer = styled.div`

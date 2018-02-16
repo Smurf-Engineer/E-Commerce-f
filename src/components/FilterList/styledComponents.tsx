@@ -18,17 +18,7 @@ export const Option = styled.div`
   width: fit-content;
 `
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`
-
 export const Line = styled.div`
   height: 2px;
   background-color: #e61737;
-  animation: ${fadeIn} 0.6s linear;
 `
