@@ -45,6 +45,7 @@ class MainLayout extends React.Component<Props, {}> {
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}
+          openResults={this.openResults}
           {...{ history }}
         />
         <Content>{children}</Content>
@@ -57,7 +58,11 @@ class MainLayout extends React.Component<Props, {}> {
   }
   closeResults = () => {
     const { showSearchResults, showSearchResultsAction } = this.props
-    showSearchResultsAction(!showSearchResults)
+    showSearchResultsAction(false)
+  }
+  openResults = () => {
+    const { showSearchResults, showSearchResultsAction } = this.props
+    showSearchResultsAction(true)
   }
 }
 

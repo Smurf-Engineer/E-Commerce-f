@@ -41,7 +41,7 @@ interface Props extends RouteComponentProps<any> {
   setSearchParam: (param: string) => void
   showSearchResultsHome: (show: boolean) => void
   showSearchResults: boolean
-  searchParam: string
+  searchString: string
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -60,14 +60,16 @@ export class Home extends React.Component<Props, {}> {
     this.setState({ openQuickView: false })
   }
 
+  openResults = () => {
+    const { showSearchResults, showSearchResultsHome } = this.props
+    showSearchResultsHome(true)
+  }
   closeResults = () => {
     const { showSearchResults, showSearchResultsHome } = this.props
-    showSearchResultsHome(!showSearchResults)
+    showSearchResultsHome(false)
   }
-
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
-    console.log(this.stepInput)
     zenscroll.to(this.stepInput, 700)
     setSearchParam(value)
   }
@@ -78,8 +80,9 @@ export class Home extends React.Component<Props, {}> {
       history,
       showSearchResults,
       setSearchParam,
-      searchParam
+      searchString
     } = this.props
+
     return (
       <Layout {...{ history }}>
         <Container>
@@ -99,9 +102,10 @@ export class Home extends React.Component<Props, {}> {
             }}
           >
             <SearchResults
-              searchParam={searchParam}
+              searchParam={searchString}
               showResults={showSearchResults}
               closeResults={this.closeResults}
+              openResults={this.openResults}
               {...{ history }}
             />
           </div>

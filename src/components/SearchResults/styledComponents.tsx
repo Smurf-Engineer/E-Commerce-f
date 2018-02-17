@@ -29,5 +29,10 @@ export const CloseImg = styled.img`
 export const Results = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+`
+
+export const EmptySearch = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  line-height: 23px;
 `

@@ -4,29 +4,36 @@
 import * as React from 'react'
 import { Container, Text, SearchInput } from './styledComponents'
 import { AnyAction } from '../../types/common'
-import { CSSProperties } from 'react'
+import debounce from 'lodash/debounce'
 
 interface Props {
-  search: (value: string) => void
+  search: any
   onHeader?: boolean
 }
 
 interface StateProps {
   width?: string
   searchValue: string
+  searchResults: any
 }
 class SearchBar extends React.Component<Props, StateProps> {
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.search(this.state.searchValue),
+    300
+  )
   constructor(props: Props) {
     super(props)
     const { onHeader } = props
     this.state = {
       width: onHeader ? '0px' : '',
-      searchValue: ''
+      searchValue: '',
+      searchResults: null
     }
   }
   render() {
     const { search, onHeader } = this.props
     const { width, searchValue } = this.state
+
     return (
       <Container>
         <SearchInput
@@ -38,6 +45,7 @@ class SearchBar extends React.Component<Props, StateProps> {
           enterButton={true}
           {...{ width }}
           value={searchValue}
+          onFocus={this.clearInput}
         />
       </Container>
     )
@@ -46,7 +54,6 @@ class SearchBar extends React.Component<Props, StateProps> {
   showInput = () => {
     const { onHeader } = this.props
     const { width } = this.state
-    console.log('click', width)
     if (onHeader) {
       this.setState({ width: 'auto' })
     }
@@ -59,21 +66,20 @@ class SearchBar extends React.Component<Props, StateProps> {
   hideInput = () => {
     const { onHeader } = this.props
     if (onHeader) {
-      this.setState({ width: '0px', searchValue: '' })
+      this.setState({ width: '0px' })
     }
   }
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value } } = evt
     const { search } = this.props
-    this.setState({ searchValue: value })
-    if (value.length > 3) {
-      search(value)
-    }
+
+    this.setState({ searchValue: value.trim() }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
   }
 
   search = (value: string) => {
-    console.log('serch', value)
     const { search } = this.props
     search(value)
   }

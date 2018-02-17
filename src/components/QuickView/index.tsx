@@ -63,7 +63,7 @@ class QuickView extends React.Component<Props, State> {
   render() {
     const { open, title, data, handleClose } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
-    console.log('quick ', showDescription, showDetail, showSpecs)
+
     const renderPrices = data.quantityPrice.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import gql from 'graphql-tag'
 import AnimateHeight from 'react-animate-height'
+import Spinner from 'antd/lib/spin'
 import CloseIcon from '../../assets/cancel-button.svg'
 import { QueryProps, Product } from '../../types/common'
 import { searchResultsQuery } from './data'
@@ -13,165 +14,67 @@ import {
   Text,
   TitleContainer,
   CloseImg,
-  Results
+  Results,
+  EmptySearch
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
 
 interface Data extends QueryProps {
-  productSearch: [Product]
+  productSearch: Product[]
 }
 
 interface Props {
-  data?: Data
+  data: Data
   searchParam: string
   showResults: boolean
   closeResults: () => void
+  openResults: () => void
   history: any
 }
 
-const products: Product[] = [
-  {
-    id: '0',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: true
-  },
-  {
-    id: '1',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '2',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '3',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: true
-  },
-  {
-    id: '4',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  },
-  {
-    id: '5',
-    images: {
-      front:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png',
-      back:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-18.png',
-      left:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-10.png',
-      right:
-        'https://storage.googleapis.com/jakroo-storage/product-img-tour-27.png'
-    },
-    type: 'TOUR',
-    description: 'SHORT SLEEVE JERSEY',
-    priceRange: {
-      from: 63,
-      to: 119
-    },
-    collections: 5,
-    isTopProduct: false
-  }
-]
-
-class SearchResults extends React.Component<Props, {}> {
+export class SearchResults extends React.Component<Props, {}> {
+  static defaultProps: Data
   render() {
-    console.log('SEARRRRRCH ', this.props.data)
-    const { searchParam, showResults, closeResults } = this.props
-    const list = products.map((product, key) => (
-      <ProductThumbnail onPressCustomize={this.press} {...{ product, key }} />
-    ))
+    const {
+      searchParam,
+      showResults,
+      closeResults,
+      openResults,
+      data: { productSearch, loading, error }
+    } = this.props
+    let list: JSX.Element[] = []
+    let totalProducst = 0
+
+    if (!loading && productSearch) {
+      totalProducst = productSearch.length
+      list = productSearch.map((product, key) => {
+        return (
+          <ProductThumbnail
+            key={key}
+            onPressCustomize={this.press}
+            id={product.id}
+            description={product.description}
+            collections={product.collections}
+            images={product.images}
+            type={product.type}
+            isTopProduct={product.isTopProduct}
+          />
+        )
+      })
+    }
+    console.log(this.props.data)
+    const renderResults = !error ? (
+      <Results>{list}</Results>
+    ) : (
+      <EmptySearch>No hay resultados</EmptySearch>
+    )
+
     return (
       <AnimateHeight duration={500} height={showResults ? 'auto' : 0}>
         <Container>
           <TitleContainer>
-            <Text>{`We Found ${
-              products.length
-            } Items with "${searchParam}"`}</Text>
+            <Text
+            >{`We Found ${totalProducst} Items with "${searchParam}"`}</Text>
             <CloseImg src={CloseIcon} alt="close" onClick={closeResults} />
           </TitleContainer>
           <Results>{list}</Results>
@@ -192,6 +95,7 @@ type OwnProps = {
 const searchEnhance = compose(
   graphql<Data>(searchResultsQuery, {
     options: ({ searchParam }: OwnProps) => ({
+      fetchPolicy: 'network-only',
       variables: { search: searchParam }
     })
   })

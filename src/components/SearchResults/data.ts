@@ -4,23 +4,15 @@ export const searchResultsQuery = gql`
   query SearchProduct($search: String!) {
     productSearch(text: $search) {
       id
-      name
-      category_id
-      sport_id
-      gender
-      description
+      type: name
+      description: short_description
       collections
       isTopProduct
-      details
-      intended_use
-      temperature_range
-      materials_info
-      pictures {
-        id
-        front_image
-        back_image
-        left_image
-        right_image
+      images: pictures {
+        front: front_image
+        back: back_image
+        left: left_image
+        right: right_image
       }
     }
   }

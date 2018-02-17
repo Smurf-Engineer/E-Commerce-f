@@ -13,7 +13,7 @@ import { Reducer } from '../../types/common'
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   showSearchResults: false,
-  searchParam: ''
+  searchString: ''
 })
 
 const homeReducer: Reducer<any> = (state = initialState, action) => {
@@ -21,7 +21,10 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
     case SET_SEARCH_PARAM:
-      return state.merge({ searchParam: action.param, showSearchResults: true })
+      return state.merge({
+        searchString: action.param,
+        showSearchResults: true
+      })
     case SHOW_SEARCH_RESULTS_HOME:
       return state.set('showSearchResults', action.show)
     default:
