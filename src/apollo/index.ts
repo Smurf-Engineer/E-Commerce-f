@@ -7,7 +7,7 @@ import fetch from 'node-fetch'
 import conig from '../config'
 
 const httpLink = createHttpLink({
-  uri: 'https://dev.api.jakroo.shipnote.io/api/graphql',
+  uri: conig.graphQlUrl,
   fetch: fetch as any
 })
 
