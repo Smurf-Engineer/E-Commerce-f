@@ -4,7 +4,8 @@
 import {
   DEFAULT_ACTION,
   SHOW_SEARCH_RESULTS_HOME,
-  SET_SEARCH_PARAM
+  SET_SEARCH_PARAM,
+  OPEN_QUICKVIEW_ACTION
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -26,3 +27,7 @@ export const showSearchResultsHome = (show: boolean): AnyAction => {
     show
   }
 }
+export const openQuickViewAction = (id: number | null): AnyAction => ({
+  type: OPEN_QUICKVIEW_ACTION,
+  id
+})

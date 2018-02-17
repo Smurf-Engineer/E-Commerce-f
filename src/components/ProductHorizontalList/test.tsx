@@ -27,6 +27,7 @@ describe('<ProductHorizontalList />', () => {
         {...{ products, category, data, sportFilter }}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
+        onPressQuickView={() => {}}
       />,
       div
     )

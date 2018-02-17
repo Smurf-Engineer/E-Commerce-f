@@ -1,5 +1,9 @@
 import { fromJS } from 'immutable'
-import { SHOW_HEADER_SEARCH_RESULTS, SET_SEARCH_PARAM } from './constants'
+import {
+  SHOW_HEADER_SEARCH_RESULTS,
+  SET_SEARCH_PARAM,
+  OPEN_QUICKVIEW_ACTION
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -13,6 +17,8 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ searchParam: action.param, showSearchResults: true })
     case SHOW_HEADER_SEARCH_RESULTS:
       return state.set('showSearchResults', action.show)
+    case OPEN_QUICKVIEW_ACTION:
+      return state.set('productId', action.id)
     default:
       return state
   }

@@ -21,6 +21,7 @@ describe('<SearchResults />', () => {
         searchParam={''}
         history={{}}
         data={data}
+        quickViewAction={() => {}}
       />,
       div
     )

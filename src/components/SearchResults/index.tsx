@@ -29,6 +29,7 @@ interface Props {
   showResults: boolean
   closeResults: () => void
   openResults: () => void
+  quickViewAction: () => void
   history: any
 }
 
@@ -40,6 +41,7 @@ export class SearchResults extends React.Component<Props, {}> {
       showResults,
       closeResults,
       openResults,
+      quickViewAction,
       data: { productSearch, loading, error }
     } = this.props
     let list: JSX.Element[] = []
@@ -58,11 +60,12 @@ export class SearchResults extends React.Component<Props, {}> {
             images={product.images}
             type={product.type}
             isTopProduct={product.isTopProduct}
+            onPressQuickView={quickViewAction}
           />
         )
       })
     }
-    console.log(this.props.data)
+
     const renderResults = !error ? (
       <Results>{list}</Results>
     ) : (

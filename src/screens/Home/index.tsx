@@ -37,6 +37,8 @@ type User = {
 
 interface Props extends RouteComponentProps<any> {
   someKey?: string
+  productId: number
+  openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
   showSearchResultsHome: (show: boolean) => void
@@ -51,13 +53,14 @@ export class Home extends React.Component<Props, {}> {
   }
   private stepInput: any
 
-  onClickButton = () => {
-    const { openQuickView } = this.state
-    this.setState({ openQuickView: !openQuickView })
+  handleOnQuickView = (id: number) => {
+    const { openQuickViewAction } = this.props
+    openQuickViewAction(id)
   }
 
   onCloseModal = () => {
-    this.setState({ openQuickView: false })
+    const { openQuickViewAction } = this.props
+    openQuickViewAction(null)
   }
 
   openResults = () => {
@@ -75,12 +78,13 @@ export class Home extends React.Component<Props, {}> {
   }
 
   render() {
-    const { openQuickView, openResults } = this.state
+    const { openQuickView } = this.state
     const {
       history,
       showSearchResults,
       setSearchParam,
-      searchString
+      searchString,
+      productId
     } = this.props
 
     return (
@@ -106,12 +110,12 @@ export class Home extends React.Component<Props, {}> {
               showResults={showSearchResults}
               closeResults={this.closeResults}
               openResults={this.openResults}
+              quickViewAction={this.handleOnQuickView}
               {...{ history }}
             />
           </div>
-          <Button onClick={this.onClickButton} label="Info Message" />
           <QuickView
-            open={openQuickView}
+            open={!!productId}
             title={'THE TOUR BIKE JERSEY'}
             data={ProductData}
             handleClose={this.onCloseModal}

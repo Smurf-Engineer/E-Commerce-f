@@ -20,6 +20,7 @@ interface Props {
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
+  openQuickViewAction: (open: boolean | null) => void
   showSearchResults: boolean
   searchParam: string
 }
@@ -27,7 +28,6 @@ interface Props {
 class MainLayout extends React.Component<Props, {}> {
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
-    console.log(this.props)
     setSearchParam(value)
   }
 
@@ -46,6 +46,7 @@ class MainLayout extends React.Component<Props, {}> {
           searchParam={searchParam}
           closeResults={this.closeResults}
           openResults={this.openResults}
+          quickViewAction={this.openQuickView}
           {...{ history }}
         />
         <Content>{children}</Content>
@@ -64,6 +65,8 @@ class MainLayout extends React.Component<Props, {}> {
     const { showSearchResults, showSearchResultsAction } = this.props
     showSearchResultsAction(true)
   }
+  // TODO AddQuickView Action
+  openQuickView = (id: number) => {}
 }
 
 const mapStateToProps = ({ layout }: ReducersObject) => layout.toJS()
