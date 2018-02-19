@@ -1,18 +1,16 @@
-/**
- * Home redux actions
- */
 import {
-  DEFAULT_ACTION,
-  SHOW_SEARCH_RESULTS_HOME,
+  SHOW_HEADER_SEARCH_RESULTS,
   SET_SEARCH_PARAM,
   OPEN_QUICKVIEW_ACTION
 } from './constants'
 import { AnyAction } from '../../types/common'
 
-export const defaultAction = (someValue: string): AnyAction => ({
-  type: DEFAULT_ACTION,
-  someValue
-})
+export const showSearchResultsAction = (show: boolean): AnyAction => {
+  return {
+    type: SHOW_HEADER_SEARCH_RESULTS,
+    show
+  }
+}
 
 export const setSearchParam = (param: string): AnyAction => {
   return {
@@ -21,12 +19,6 @@ export const setSearchParam = (param: string): AnyAction => {
   }
 }
 
-export const showSearchResultsHome = (show: boolean): AnyAction => {
-  return {
-    type: SHOW_SEARCH_RESULTS_HOME,
-    show
-  }
-}
 export const openQuickViewAction = (id: number | null): AnyAction => ({
   type: OPEN_QUICKVIEW_ACTION,
   id
