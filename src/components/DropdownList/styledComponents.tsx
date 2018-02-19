@@ -20,7 +20,7 @@ export const Option = styled.div`
 `
 export const overStyle = {
   width: '100%',
-  paddingTop: 6
+  paddingTop: 4
 }
 
 export const menuStyle = {
