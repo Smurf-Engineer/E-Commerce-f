@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by cazarez on 13/02/18.
  */
-import styled, { ThemedStyledProps } from 'styled-components'
+import styled from 'styled-components'
 import Input from 'antd/lib/input'
 
 const Search = Input.Search
