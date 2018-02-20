@@ -108,7 +108,14 @@ export class QuickView extends React.Component<Props, State> {
     const materials = !data.loading ? product.materials : ''
     return (
       <Container>
-        <Modal visible={open} footer={null} closable={false} width={800}>
+        <Modal
+          visible={open}
+          footer={null}
+          closable={false}
+          width={800}
+          destroyOnClose={true}
+          afterClose={this.resetState}
+        >
           <CloseIcon src={closeIcon} onClick={handleClose} />
           <StyledRow>
             <Col span={12}>
@@ -133,7 +140,8 @@ export class QuickView extends React.Component<Props, State> {
                   <div>Description</div>
                   <UpDownArrow
                     src={showDescription ? upArrowIcon : downArrowIcon}
-                    onClick={this.showDescription}
+                    onClick={this.toggleDescriptionDetails}
+                    id="Description"
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
@@ -149,7 +157,8 @@ export class QuickView extends React.Component<Props, State> {
                   <div>Details</div>
                   <UpDownArrow
                     src={showDetail ? upArrowIcon : downArrowIcon}
-                    onClick={this.showDetail}
+                    onClick={this.toggleDescriptionDetails}
+                    id="Details"
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
@@ -164,7 +173,8 @@ export class QuickView extends React.Component<Props, State> {
                   <div>Specs</div>
                   <UpDownArrow
                     src={showSpecs ? upArrowIcon : downArrowIcon}
-                    onClick={this.showSpecs}
+                    onClick={this.toggleDescriptionDetails}
+                    id="Specs"
                   />
                 </ProductInfoTitle>
                 <StyledDivider />
@@ -181,29 +191,21 @@ export class QuickView extends React.Component<Props, State> {
       </Container>
     )
   }
-
-  showDescription = () => {
-    const { showDescription, showDetail, showSpecs } = this.state
+  resetState = () => {
     this.setState({
       showDescription: true,
       showDetail: false,
       showSpecs: false
     })
   }
-  showDetail = () => {
+
+  toggleDescriptionDetails = (evt: React.MouseEvent<HTMLImageElement>) => {
+    const { currentTarget: { id } } = evt
     const { showDescription, showDetail, showSpecs } = this.state
     this.setState({
-      showDescription: false,
-      showDetail: true,
-      showSpecs: false
-    })
-  }
-  showSpecs = () => {
-    const { showDescription, showDetail, showSpecs } = this.state
-    this.setState({
-      showDescription: false,
-      showDetail: false,
-      showSpecs: true
+      showDescription: id === 'Description' ? true : false,
+      showDetail: id === 'Details' ? true : false,
+      showSpecs: id === 'Specs' ? true : false
     })
   }
 
