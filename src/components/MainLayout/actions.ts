@@ -19,7 +19,9 @@ export const setSearchParam = (param: string): AnyAction => {
   }
 }
 
-export const openQuickViewAction = (id: number | null): AnyAction => ({
-  type: OPEN_QUICKVIEW_ACTION,
-  id
-})
+export const openQuickViewAction = (id: number | null): AnyAction => {
+  return {
+    type: OPEN_QUICKVIEW_ACTION,
+    id
+  }
+}

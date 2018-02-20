@@ -11,7 +11,8 @@ describe('<QuickViewSlider />', () => {
     ReactDOM.render(
       <QuickViewSlider
         productImages={{ front: '', back: '', left: '', right: '' }}
-        available={''}
+        available={0}
+        gotoCustomize={() => {}}
       />,
       div
     )

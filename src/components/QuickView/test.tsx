@@ -3,20 +3,42 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import QuickView from './index'
+import { QuickView } from './index'
 
 describe('<QuickView />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const data = {
-      quantityPrice: [],
-      images: {
-        front: '',
-        back: '',
-        left: '',
-        right: ''
-      }
+      product: {
+        id: 0,
+        images: {
+          front: '',
+          back: '',
+          left: '',
+          right: ''
+        },
+        type: '',
+        description: '',
+        priceRange: { from: 0, to: 0 },
+        collections: 0,
+        isTopProduct: false,
+        details: '',
+        specs: '',
+        name: '',
+        temperature: '',
+        materials: ''
+      },
+      fetchMore: () => {}
     }
-    ReactDOM.render(<QuickView open={true} title={''} data={data} />, div)
+    ReactDOM.render(
+      <QuickView
+        open={true}
+        data={data}
+        handleClose={() => {}}
+        productId={0}
+        history={{}}
+      />,
+      div
+    )
   })
 })

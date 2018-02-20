@@ -15,7 +15,7 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   showSearchResults: false,
   searchString: '',
-  productId: null
+  productId: 0
 })
 
 const homeReducer: Reducer<any> = (state = initialState, action) => {

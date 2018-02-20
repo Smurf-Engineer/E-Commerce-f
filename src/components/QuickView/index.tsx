@@ -23,18 +23,26 @@ import {
   DetailsContent,
   UpDownArrow,
   ArrowRight,
-  StyledDivider
+  StyledDivider,
+  Loading
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
 import Row from 'antd/lib/row'
 import Button from 'antd/lib/button'
+import Spin from 'antd/lib/spin'
 import PriceQuantity from '../PriceQuantity'
 import closeIcon from '../../assets/cancel-button.svg'
 import downArrowIcon from '../../assets/downarrow.svg'
 import upArrowIcon from '../../assets/uparrow.svg'
-import { Prices } from '../../types/common'
-import { AnyAction } from '../../types/common'
+import {
+  Prices,
+  AnyAction,
+  QueryProps,
+  Product,
+  ImageType
+} from '../../types/common'
+import { QuickViewQuery } from './data'
 
 interface State {
   showDescription: boolean
@@ -42,18 +50,25 @@ interface State {
   showSpecs: boolean
 }
 
-interface Props {
-  open: boolean
-  title: string
-  data: any
-  handleClose: () => void
+interface ProductPageTypes extends Product {
+  temperature: string
+  materials: string
 }
 
-class QuickView extends React.Component<Props, State> {
-  public static defaultProps = {
-    data: {}
-  }
+interface Data extends QueryProps {
+  product: ProductPageTypes
+}
 
+interface Props {
+  open: boolean
+  title?: string
+  data: Data
+  handleClose: () => void
+  productId: number
+  history: any
+}
+
+export class QuickView extends React.Component<Props, State> {
   state = {
     showDescription: true,
     showDetail: false,
@@ -61,24 +76,43 @@ class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const { open, title, data, handleClose } = this.props
+    const {
+      open,
+      handleClose,
+      data,
+      data: { product, loading, error }
+    } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
 
-    const renderPrices = data.quantityPrice.map((item: any, index: number) => (
+    // TODO: UNCOMMENT CODE WHEN GRAPHQL QUERY RETURNS THE QUENTITY PRICE RANGE
+    /*const renderPrices = product.quantityPrice.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />
       </AvailablePrices>
-    ))
+    ))*/
+    const imageSlider = data.loading ? (
+      <Loading>
+        <Spin />
+      </Loading>
+    ) : (
+      <QuickViewSlider
+        productImages={product.images}
+        available={5}
+        gotoCustomize={this.gotoCustomize}
+      />
+    )
+    const title = !data.loading ? product.name : ''
+    const description = !data.loading ? product.description : ''
+    const details = !data.loading ? product.details : ''
+    const temperature = !data.loading ? product.temperature : ''
+    const materials = !data.loading ? product.materials : ''
     return (
       <Container>
         <Modal visible={open} footer={null} closable={false} width={800}>
           <CloseIcon src={closeIcon} onClick={handleClose} />
           <StyledRow>
             <Col span={12}>
-              <QuickViewSlider
-                productImages={data.images}
-                available={data.availableCollections}
-              />
+              {imageSlider}
               <FullDetails>
                 <div>Full Details</div>
                 <ArrowRight />
@@ -86,7 +120,7 @@ class QuickView extends React.Component<Props, State> {
             </Col>
             <Col span={12}>
               <Title>{title}</Title>
-              <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
+              <PriceQuantityRow>{}</PriceQuantityRow>
               <Ratings
                 stars={5}
                 starDimension={'15px'}
@@ -107,7 +141,7 @@ class QuickView extends React.Component<Props, State> {
                   duration={500}
                   height={showDescription ? 'auto' : 0}
                 >
-                  <DescriptionContent>{data.description}</DescriptionContent>
+                  <DescriptionContent>{description}</DescriptionContent>
                 </AnimateHeight>
               </ProductInfContainer>
               <ProductInfContainer>
@@ -121,7 +155,7 @@ class QuickView extends React.Component<Props, State> {
                 <StyledDivider />
                 <AnimateHeight duration={500} height={showDetail ? 'auto' : 0}>
                   <DetailsContent
-                    dangerouslySetInnerHTML={{ __html: data.details }}
+                    dangerouslySetInnerHTML={{ __html: details }}
                   />
                 </AnimateHeight>
               </ProductInfContainer>
@@ -135,9 +169,10 @@ class QuickView extends React.Component<Props, State> {
                 </ProductInfoTitle>
                 <StyledDivider />
                 <AnimateHeight duration={500} height={showSpecs ? 'auto' : 0}>
-                  <DescriptionContent
-                    dangerouslySetInnerHTML={{ __html: data.productSpecs }}
-                  />
+                  <DescriptionContent>
+                    <p>{`TEMPERATURE RANGE: ${temperature}`}</p>
+                    <p>{`MATERIALS: ${materials}`}</p>
+                  </DescriptionContent>
                 </AnimateHeight>
               </ProductInfContainer>
             </Col>
@@ -171,9 +206,25 @@ class QuickView extends React.Component<Props, State> {
       showSpecs: true
     })
   }
+
+  gotoCustomize = () => {
+    const { history } = this.props
+    console.log('customize')
+    history.push('designer')
+  }
 }
 
-const QuickViewEnhance = compose()(QuickView)
-// graphql<Data>(QuickViewQuery),
+type OwnProps = {
+  productId?: number
+}
+
+const QuickViewEnhance = compose(
+  graphql<Data>(QuickViewQuery, {
+    options: ({ productId }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      variables: { id: productId }
+    })
+  })
+)(QuickView)
 
 export default QuickViewEnhance

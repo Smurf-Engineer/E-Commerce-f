@@ -4,7 +4,6 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { SearchResults } from './index'
-// import { Product } from '../../types/common'
 
 describe('<SearchResults />', () => {
   test('renders without exploding', () => {

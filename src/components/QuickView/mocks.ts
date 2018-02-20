@@ -1,3 +1,4 @@
+// TODO DELETE FILE
 export const ProductData = {
   images: {
     front:

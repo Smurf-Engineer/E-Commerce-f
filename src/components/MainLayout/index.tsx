@@ -10,6 +10,7 @@ import { ReducersObject } from '../../store/rootReducer'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
+import QuickView from '../../components/QuickView'
 import { Container, Header } from './styledComponents'
 import SearchResults from '../SearchResults'
 
@@ -20,9 +21,10 @@ interface Props {
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
-  openQuickViewAction: (open: boolean | null) => void
+  openQuickViewAction: (open: number | null) => void
   showSearchResults: boolean
   searchParam: string
+  productId: boolean
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -32,7 +34,14 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   render() {
-    const { children, history, showSearchResults, searchParam } = this.props
+    const {
+      children,
+      history,
+      showSearchResults,
+      searchParam,
+      productId
+    } = this.props
+
     return (
       <Layout>
         <Header>
@@ -54,6 +63,11 @@ class MainLayout extends React.Component<Props, {}> {
           <ContactAndLinks />
           <SocialMedia />
         </Footer>
+        <QuickView
+          open={!!productId}
+          handleClose={this.onCloseModal}
+          {...{ productId, history }}
+        />
       </Layout>
     )
   }
@@ -66,7 +80,14 @@ class MainLayout extends React.Component<Props, {}> {
     showSearchResultsAction(true)
   }
   // TODO AddQuickView Action
-  openQuickView = (id: number) => {}
+  openQuickView = (id: number) => {
+    const { openQuickViewAction, productId } = this.props
+    openQuickViewAction(id)
+  }
+  onCloseModal = () => {
+    const { openQuickViewAction } = this.props
+    openQuickViewAction(0)
+  }
 }
 
 const mapStateToProps = ({ layout }: ReducersObject) => layout.toJS()

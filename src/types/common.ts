@@ -52,4 +52,7 @@ export interface Product {
   priceRange: PriceRange
   collections: number
   isTopProduct: boolean
+  details: string
+  specs: string
+  name: string
 }

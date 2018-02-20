@@ -8,7 +8,8 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   searchParam: '',
-  showSearchResults: false
+  showSearchResults: false,
+  productId: 0
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
