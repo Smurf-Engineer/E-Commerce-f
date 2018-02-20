@@ -24,7 +24,6 @@ import {
   SearchBarContent
 } from './styledComponents'
 import { Prices } from '../../types/common'
-// import { ProductData } from '../../components/QuickView/mocks'
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
 import { AnyAction } from '../../types/common'

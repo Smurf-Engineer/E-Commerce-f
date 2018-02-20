@@ -5,23 +5,17 @@ import {
 } from './constants'
 import { AnyAction } from '../../types/common'
 
-export const showSearchResultsAction = (show: boolean): AnyAction => {
-  return {
-    type: SHOW_HEADER_SEARCH_RESULTS,
-    show
-  }
-}
+export const showSearchResultsAction = (show: boolean): AnyAction => ({
+  type: SHOW_HEADER_SEARCH_RESULTS,
+  show
+})
 
-export const setSearchParam = (param: string): AnyAction => {
-  return {
-    type: SET_SEARCH_PARAM,
-    param
-  }
-}
+export const setSearchParam = (param: string): AnyAction => ({
+  type: SET_SEARCH_PARAM,
+  param
+})
 
-export const openQuickViewAction = (id: number | null): AnyAction => {
-  return {
-    type: OPEN_QUICKVIEW_ACTION,
-    id
-  }
-}
+export const openQuickViewAction = (id: number | null): AnyAction => ({
+  type: OPEN_QUICKVIEW_ACTION,
+  id
+})
