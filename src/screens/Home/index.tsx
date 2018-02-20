@@ -24,11 +24,11 @@ import {
   SearchBarContent
 } from './styledComponents'
 import { Prices } from '../../types/common'
-import { ProductData } from '../../components/QuickView/mocks'
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
 import { AnyAction } from '../../types/common'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
+import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 type User = {
   id: string
@@ -44,6 +44,7 @@ interface Props extends RouteComponentProps<any> {
   showSearchResultsHome: (show: boolean) => void
   showSearchResults: boolean
   searchString: string
+  dispatch: any
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -54,27 +55,30 @@ export class Home extends React.Component<Props, {}> {
   private stepInput: any
 
   handleOnQuickView = (id: number) => {
-    const { openQuickViewAction } = this.props
-    openQuickViewAction(id)
+    const { dispatch } = this.props
+    dispatch(openQuickViewAction(id))
   }
 
   onCloseModal = () => {
-    const { openQuickViewAction } = this.props
-    openQuickViewAction(null)
+    const { dispatch } = this.props
+    openQuickViewAction(0)
   }
 
   openResults = () => {
-    const { showSearchResults, showSearchResultsHome } = this.props
-    showSearchResultsHome(true)
+    const { dispatch } = this.props
+    const { showSearchResultsHome } = homeActions
+    dispatch(showSearchResultsHome(true))
   }
   closeResults = () => {
-    const { showSearchResults, showSearchResultsHome } = this.props
-    showSearchResultsHome(false)
+    const { dispatch } = this.props
+    const { showSearchResultsHome } = homeActions
+    dispatch(showSearchResultsHome(false))
   }
   onSearch = (value: string) => {
-    const { setSearchParam } = this.props
+    const { dispatch } = this.props
+    const { setSearchParam } = homeActions
     zenscroll.to(this.stepInput, 700)
-    setSearchParam(value)
+    dispatch(setSearchParam(value))
   }
 
   render() {
@@ -87,6 +91,16 @@ export class Home extends React.Component<Props, {}> {
       productId
     } = this.props
 
+    const searchResults = searchString ? (
+      <SearchResults
+        searchParam={searchString}
+        showResults={showSearchResults}
+        closeResults={this.closeResults}
+        openResults={this.openResults}
+        quickViewAction={this.handleOnQuickView}
+        {...{ history }}
+      />
+    ) : null
     return (
       <Layout {...{ history }}>
         <Container>
@@ -105,21 +119,8 @@ export class Home extends React.Component<Props, {}> {
               this.stepInput = input
             }}
           >
-            <SearchResults
-              searchParam={searchString}
-              showResults={showSearchResults}
-              closeResults={this.closeResults}
-              openResults={this.openResults}
-              quickViewAction={this.handleOnQuickView}
-              {...{ history }}
-            />
+            {searchResults}
           </div>
-          <QuickView
-            open={!!productId}
-            title={'THE TOUR BIKE JERSEY'}
-            data={ProductData}
-            handleClose={this.onCloseModal}
-          />
         </Container>
       </Layout>
     )
@@ -128,6 +129,8 @@ export class Home extends React.Component<Props, {}> {
 
 const mapStateToProps = ({ home }: ReducersObject) => home.toJS()
 
-const HomeEnhance = compose(connect(mapStateToProps, { ...homeActions }))(Home)
+const mapDispatchToProps = (dispatch: any) => ({ dispatch })
+
+const HomeEnhance = compose(connect(mapStateToProps, mapDispatchToProps))(Home)
 
 export default HomeEnhance

@@ -106,3 +106,8 @@ export const StyledDivider = styled(Divider)`
   margin: 10px 0;
   border-bottom: 1px solid #bebebe;
 `
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  padding: 180px;
+`

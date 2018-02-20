@@ -22,7 +22,8 @@ import {
 
 interface Props {
   productImages: ImageType
-  available: string
+  available: number
+  gotoCustomize: () => void
 }
 
 interface State {
@@ -34,8 +35,9 @@ class QuickViewSlider extends React.Component<Props, State> {
     index: 0
   }
   render() {
-    const { productImages, available } = this.props
+    const { gotoCustomize, productImages, available } = this.props
     const { index } = this.state
+
     return (
       <Container>
         <SwipeableViews enableMouseEvents={true} {...{ index }}>
@@ -57,8 +59,10 @@ class QuickViewSlider extends React.Component<Props, State> {
           <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
         </Arrows>
         <ButtonRow>
-          <StyledButton type="danger">CUSTOMIZE</StyledButton>
-          <Available>{available}</Available>
+          <StyledButton type="danger" onClick={gotoCustomize}>
+            CUSTOMIZE
+          </StyledButton>
+          <Available>{`${available} Collections Available`}</Available>
         </ButtonRow>
       </Container>
     )

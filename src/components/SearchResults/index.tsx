@@ -44,6 +44,7 @@ export class SearchResults extends React.Component<Props, {}> {
       quickViewAction,
       data: { productSearch, loading, error }
     } = this.props
+
     let list: JSX.Element[] = []
     let totalProducst = 0
 
@@ -53,7 +54,7 @@ export class SearchResults extends React.Component<Props, {}> {
         return (
           <ProductThumbnail
             key={key}
-            onPressCustomize={this.press}
+            onPressCustomize={this.gotoCustomize}
             id={product.id}
             description={product.description}
             collections={product.collections}
@@ -85,8 +86,9 @@ export class SearchResults extends React.Component<Props, {}> {
       </AnimateHeight>
     )
   }
-  press = () => {
+  gotoCustomize = () => {
     const { history } = this.props
+    console.log('customize')
     history.push('designer')
   }
 }

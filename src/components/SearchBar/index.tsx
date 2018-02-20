@@ -78,11 +78,6 @@ class SearchBar extends React.Component<Props, StateProps> {
       this.raiseSearchWhenUserStopsTyping()
     })
   }
-
-  search = (value: string) => {
-    const { search } = this.props
-    search(value)
-  }
 }
 
 export default SearchBar
