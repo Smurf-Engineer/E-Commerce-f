@@ -3,16 +3,22 @@
  */
 
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
+import messages from './messages'
 import { Container, Text } from './styledComponents'
 
-interface Props {}
+interface Props {
+  history: any
+}
 
 export class NotFound extends React.Component<Props, {}> {
   render() {
+    const { history } = this.props
     return (
       <Container>
-        <Text>NotFound Screen</Text>
+        <Text>
+          <FormattedMessage {...messages.title} />
+        </Text>
       </Container>
     )
   }

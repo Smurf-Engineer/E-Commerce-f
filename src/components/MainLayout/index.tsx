@@ -6,6 +6,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
+import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { ReducersObject } from '../../store/rootReducer'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
@@ -21,6 +22,7 @@ interface Props {
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
+  changeLocaleAction: (locale: string) => void
   openQuickViewAction: (open: number | null) => void
   showSearchResults: boolean
   searchParam: string
@@ -39,7 +41,8 @@ class MainLayout extends React.Component<Props, {}> {
       history,
       showSearchResults,
       searchParam,
-      productId
+      productId,
+      changeLocaleAction
     } = this.props
 
     return (
@@ -47,6 +50,7 @@ class MainLayout extends React.Component<Props, {}> {
         <Header>
           <MenuBar
             searchFunc={this.onSearch}
+            onChangeLocation={changeLocaleAction}
             {...{ history, showSearchResults, searchParam }}
           />
         </Header>
@@ -72,11 +76,11 @@ class MainLayout extends React.Component<Props, {}> {
     )
   }
   closeResults = () => {
-    const { showSearchResults, showSearchResultsAction } = this.props
+    const { showSearchResultsAction } = this.props
     showSearchResultsAction(false)
   }
   openResults = () => {
-    const { showSearchResults, showSearchResultsAction } = this.props
+    const { showSearchResultsAction } = this.props
     showSearchResultsAction(true)
   }
   // TODO AddQuickView Action
@@ -92,7 +96,7 @@ class MainLayout extends React.Component<Props, {}> {
 
 const mapStateToProps = ({ layout }: ReducersObject) => layout.toJS()
 
-const LayoutEnhance = compose(connect(mapStateToProps, { ...LayoutActions }))(
-  MainLayout
-)
+const LayoutEnhance = compose(
+  connect(mapStateToProps, { ...LayoutActions, ...LocaleActions })
+)(MainLayout)
 export default LayoutEnhance

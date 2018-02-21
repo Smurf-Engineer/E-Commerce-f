@@ -56,3 +56,10 @@ export interface Product {
   specs: string
   name: string
 }
+
+export interface Region {
+  icon: string
+  label: string
+  languages: string[]
+  currencies: string[]
+}
