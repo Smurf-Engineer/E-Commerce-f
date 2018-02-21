@@ -25,6 +25,7 @@ import {
   overStyle,
   menuStyle
 } from './styledComponents'
+import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 interface Data extends QueryProps {
   genders: Filter[]
@@ -58,8 +59,7 @@ export class DropdownList extends React.PureComponent<Props> {
 
   handleOnQuickView = (id: number) => {
     const { dispatch } = this.props
-    // TODO: Temp action - Move QuickView Component to layout
-    dispatch({ type: 'src/Home/OPEN_QUICKVIEW_ACTION', id })
+    dispatch(openQuickViewAction(id))
   }
 
   handleOnHideGenderMenu = (visible: boolean, index: number) => {
