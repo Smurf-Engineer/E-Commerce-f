@@ -37,15 +37,6 @@ export const BottomRow = styled.div`
   align-items: center;
 `
 
-export const Region = styled.div`
-  display: flex;
-  width: 68px;
-  justify-content: space-between;
-  align-items: center;
-  flex-direction: row;
-  cursor: pointer;
-`
-
 export const Divider = styled.div`
   height: 1px;
   width: 100%;

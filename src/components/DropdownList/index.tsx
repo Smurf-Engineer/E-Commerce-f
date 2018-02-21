@@ -10,13 +10,13 @@ import { QueryProps } from '../../types/common'
 import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
+import MenuSports from '../MenuSports'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
 import {
   setMenuGenderSelectedAction,
   setMenuSportSelectedAction
 } from './actions'
-import MenuSports from '../MenuSports'
 import { Filter } from '../../types/common'
 import {
   Container,
@@ -93,6 +93,7 @@ export class DropdownList extends React.PureComponent<Props> {
           trigger="hover"
           placement="bottom"
           visible={visible}
+          mouseEnterDelay={0.3}
           onVisibleChange={isVisible =>
             this.handleOnHideGenderMenu(isVisible, index)
           }
@@ -117,6 +118,7 @@ export class DropdownList extends React.PureComponent<Props> {
           trigger="hover"
           placement="bottom"
           visible={visible}
+          mouseEnterDelay={0.3}
           onVisibleChange={isVisible =>
             this.handleOnHideSportsMenu(isVisible, index)
           }

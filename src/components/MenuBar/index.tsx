@@ -3,11 +3,11 @@
  */
 import * as React from 'react'
 import DropdownList from '../DropdownList'
-import Support from '../MenuSupport'
+import MenuSupport from '../MenuSupport'
+import MenuRegion from '../MenuRegion'
 import {
   Container,
   TopText,
-  Region,
   Row,
   Divider,
   TopRow,
@@ -17,7 +17,6 @@ import {
   SearchIcon
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
-import caFlag from '../../assets/CA.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
 import SearchBar from '../SearchBar'
@@ -25,18 +24,16 @@ import SearchBar from '../SearchBar'
 interface Props {
   history: any
   searchFunc: (param: string) => void
+  onChangeLocation: (locale: string) => void
 }
 
-const MenuBar = ({ history, searchFunc }: Props) => {
+const MenuBar = ({ history, searchFunc, onChangeLocation }: Props) => {
   return (
     <Container>
       <Row>
-        <Support />
+        <MenuSupport />
         <TopRow>
-          <Region>
-            <img src={caFlag} />
-            <TopText>$USD</TopText>
-          </Region>
+          <MenuRegion {...{ onChangeLocation }} />
           <CartIcon src={cart} />
           <TopText>LOGIN</TopText>
         </TopRow>
