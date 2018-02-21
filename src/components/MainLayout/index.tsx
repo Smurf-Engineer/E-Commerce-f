@@ -79,7 +79,7 @@ class MainLayout extends React.Component<Props, {}> {
     const { showSearchResults, showSearchResultsAction } = this.props
     showSearchResultsAction(true)
   }
-  // TODO AddQuickView Action
+
   openQuickView = (id: number) => {
     const { openQuickViewAction, productId } = this.props
     openQuickViewAction(id)
