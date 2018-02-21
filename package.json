@@ -50,7 +50,7 @@
     "react": "^16.2.0",
     "react-animate-height": "^0.10.9",
     "react-apollo": "^2.0.4",
-    "react-components-generator": "^0.0.4",
+    "react-components-generator": "^0.0.6",
     "react-dom": "^16.2.0",
     "react-intl": "^2.4.0",
     "react-redux": "^5.0.6",

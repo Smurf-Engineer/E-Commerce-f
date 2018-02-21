@@ -18,7 +18,7 @@ export class LanguageProvider extends React.Component<Props, {}> {
     const { locale, messages } = this.props
     return (
       <IntlProvider
-        locale="de"
+        locale="en"
         key={locale}
         messages={messages[locale]}
         textComponent="div"

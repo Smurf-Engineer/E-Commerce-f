@@ -7176,9 +7176,9 @@ react-apollo@^2.0.4:
     lodash.pick "^4.4.0"
     prop-types "^15.5.8"
 
-react-components-generator@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/react-components-generator/-/react-components-generator-0.0.4.tgz#f3ab9a01d61ea8f5ac612295a052d174073fa5de"
+react-components-generator@^0.0.6:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/react-components-generator/-/react-components-generator-0.0.6.tgz#ae452bda37464807e6b650db1a82ea6953244800"
   dependencies:
     moment "^2.20.1"
     plop "^1.9.1"

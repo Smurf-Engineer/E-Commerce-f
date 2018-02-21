@@ -20,8 +20,12 @@ export const Row = styled.div`
   justify-content: center;
 `
 
+interface TextProps {
+  selected: boolean
+}
+
 export const Text = styled.div`
-  color: #5f6062;
+  color: ${({ selected }: TextProps) => (selected ? '#e61737' : ' #5f6062')};
   text-align: center;
   cursor: pointer;
   font-family: 'Avenir Next';

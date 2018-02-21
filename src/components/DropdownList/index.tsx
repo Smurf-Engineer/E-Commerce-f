@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Popover from 'antd/lib/popover'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
@@ -25,6 +26,7 @@ import {
   overStyle,
   menuStyle
 } from './styledComponents'
+import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 interface Data extends QueryProps {
@@ -107,7 +109,9 @@ export class DropdownList extends React.PureComponent<Props> {
             />
           }
         >
-          <OptionDropdown>{label.toUpperCase()}</OptionDropdown>
+          <OptionDropdown>
+            <FormattedMessage {...messages[label]} />
+          </OptionDropdown>
         </Popover>
       </Menu.Item>
     ))
@@ -132,7 +136,9 @@ export class DropdownList extends React.PureComponent<Props> {
             />
           }
         >
-          <OptionDropdown>{label.toUpperCase()}</OptionDropdown>
+          <OptionDropdown>
+            <FormattedMessage {...messages[label]} />
+          </OptionDropdown>
         </Popover>
       </Menu.Item>
     ))
