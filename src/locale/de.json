@@ -1,4 +1,9 @@
 {
-  "screens.NotFoundPage.header": "Seite nicht gefunden.",
-  "component.RegionMenu.language": "Sprache"
+  "screens.NotFoundPage.header": "Page not found.",
+  "components.menuBar.men": "MÄNNER",
+  "components.menuBar.women": "FRAU",
+  "components.menuBar.cycling": "RADFAHREN",
+  "components.menuBar.triathlon": "TRIATHLON",
+  "components.menuBar.nordic": "NORDISCH",
+  "components.menuBar.active": "AKTIV"
 }

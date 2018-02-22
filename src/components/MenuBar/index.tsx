@@ -16,6 +16,7 @@ import {
   CartIcon,
   SearchIcon
 } from './styledComponents'
+import { RegionConfig } from '../../types/common'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
@@ -24,16 +25,33 @@ import SearchBar from '../SearchBar'
 interface Props {
   history: any
   searchFunc: (param: string) => void
-  onChangeLocation: (locale: string) => void
+  onChangeLocation: (payload: RegionConfig) => void
+  currentRegion: number
+  currentLanguage: number
+  currentCurrency: number
 }
 
-const MenuBar = ({ history, searchFunc, onChangeLocation }: Props) => {
+const MenuBar = ({
+  history,
+  searchFunc,
+  onChangeLocation,
+  currentRegion,
+  currentLanguage,
+  currentCurrency
+}: Props) => {
   return (
     <Container>
       <Row>
         <MenuSupport />
         <TopRow>
-          <MenuRegion {...{ onChangeLocation }} />
+          <MenuRegion
+            {...{
+              onChangeLocation,
+              currentRegion,
+              currentLanguage,
+              currentCurrency
+            }}
+          />
           <CartIcon src={cart} />
           <TopText>LOGIN</TopText>
         </TopRow>

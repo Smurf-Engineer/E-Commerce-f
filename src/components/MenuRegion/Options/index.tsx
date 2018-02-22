@@ -8,6 +8,8 @@ import { Container, Label, Row, Text, LineVertical } from './styledComponents'
 interface Props {
   title: string
   options: string[]
+  currentSelected: number
+  onPress: (index: number) => void
 }
 
 const insertDividers = (items: React.ReactNode[]) => {
@@ -22,15 +24,21 @@ const insertDividers = (items: React.ReactNode[]) => {
   return updatedItems
 }
 
-const Options = ({ title, options }: Props) => {
+const Options = ({ title, options, currentSelected, onPress }: Props) => {
   const items = options.map((option, index) => (
-    <Text key={index}>{option.toUpperCase()}</Text>
+    <Text
+      key={index}
+      selected={currentSelected === index}
+      onClick={() => onPress(index)}
+    >
+      {option.toUpperCase()}
+    </Text>
   ))
-  const itemWithDivider = insertDividers(items)
+  const itemsWithDivider = insertDividers(items)
   return (
     <Container>
       <Label>{title}</Label>
-      <Row>{itemWithDivider}</Row>
+      <Row>{itemsWithDivider}</Row>
     </Container>
   )
 }

@@ -1,0 +1,9 @@
+{
+  "screens.NotFoundPage.header": "Page not found.",
+  "components.menuBar.men": "HOMMES",
+  "components.menuBar.women": "FEMMES",
+  "components.menuBar.cycling": "CYCLISME",
+  "components.menuBar.triathlon": "TRIATHLON",
+  "components.menuBar.nordic": "NORDIQUE",
+  "components.menuBar.active": "ACTIF"
+}

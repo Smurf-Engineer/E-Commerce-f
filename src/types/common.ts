@@ -63,3 +63,10 @@ export interface Region {
   languages: string[]
   currencies: string[]
 }
+
+export interface RegionConfig {
+  region: number
+  localeIndex: number
+  locale: string
+  currency: number
+}

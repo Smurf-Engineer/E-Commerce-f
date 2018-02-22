@@ -5,9 +5,6 @@ import * as React from 'react'
 import MenuAntd from 'antd/lib/menu'
 import upperFirst from 'lodash/upperFirst'
 import Dropdown from 'antd/lib/dropdown'
-import caFlag from '../../../assets/CA.svg'
-import euFlag from '../../../assets/EU.svg'
-import usFlag from '../../../assets/US.svg'
 import downArrow from '../../../assets/downarrow.svg'
 import Options from '../Options'
 import { Region } from '../../../types/common'
@@ -23,33 +20,27 @@ import {
   menuStyle
 } from './styledComponents'
 
-const regions: Region[] = [
-  {
-    icon: usFlag,
-    label: 'global',
-    languages: ['en', 'jpn'],
-    currencies: ['$usd', '$aud', '¥jpy']
-  },
-  {
-    icon: caFlag,
-    label: 'canada',
-    languages: ['en', 'fr'],
-    currencies: ['$cad']
-  },
-  {
-    icon: euFlag,
-    label: 'europe',
-    languages: ['en', 'de'],
-    currencies: ['$eur', '₣CHF']
-  }
-]
-
 interface Props {
   currentRegion: number
+  currentLanguage: number
+  currentCurrency: number
   onSelectRegion: (menu: any) => void
+  onSelectLanguage: (index: number) => void
+  onSelectCurrency: (index: number) => void
+  onClickConfirm: () => void
+  regions: Region[]
 }
 
-const Menu = ({ currentRegion, onSelectRegion }: Props) => {
+const Menu = ({
+  currentRegion,
+  currentLanguage,
+  currentCurrency,
+  onSelectRegion,
+  onSelectLanguage,
+  onSelectCurrency,
+  onClickConfirm,
+  regions
+}: Props) => {
   const items = regions.map(({ icon, label }, index) => (
     <MenuAntd.Item key={index}>
       <Option>
@@ -76,11 +67,21 @@ const Menu = ({ currentRegion, onSelectRegion }: Props) => {
     <Container>
       <Dropdown overlay={menu}>{region}</Dropdown>
       <Line />
-      <Options title="Language" options={regions[currentRegion].languages} />
+      <Options
+        title="Language"
+        options={regions[currentRegion].languages}
+        onPress={onSelectLanguage}
+        currentSelected={currentLanguage}
+      />
       <Line />
-      <Options title="Currency" options={regions[currentRegion].currencies} />
+      <Options
+        title="Currency"
+        options={regions[currentRegion].currencies}
+        onPress={onSelectCurrency}
+        currentSelected={currentCurrency}
+      />
       <Line />
-      <Text>CONFIRM</Text>
+      <Text onClick={onClickConfirm}>CONFIRM</Text>
     </Container>
   )
 }

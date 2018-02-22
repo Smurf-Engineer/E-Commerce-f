@@ -8,6 +8,7 @@ import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { ReducersObject } from '../../store/rootReducer'
+import { RegionConfig } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -22,11 +23,14 @@ interface Props {
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
-  changeLocaleAction: (locale: string) => void
+  setRegionAction: (payload: RegionConfig) => void
   openQuickViewAction: (open: number | null) => void
   showSearchResults: boolean
   searchParam: string
   productId: boolean
+  currentRegion: number
+  currentLanguage: number
+  currentCurrency: number
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -42,7 +46,10 @@ class MainLayout extends React.Component<Props, {}> {
       showSearchResults,
       searchParam,
       productId,
-      changeLocaleAction
+      setRegionAction,
+      currentRegion,
+      currentLanguage,
+      currentCurrency
     } = this.props
 
     return (
@@ -50,8 +57,15 @@ class MainLayout extends React.Component<Props, {}> {
         <Header>
           <MenuBar
             searchFunc={this.onSearch}
-            onChangeLocation={changeLocaleAction}
-            {...{ history, showSearchResults, searchParam }}
+            onChangeLocation={setRegionAction}
+            {...{
+              history,
+              showSearchResults,
+              searchParam,
+              currentRegion,
+              currentLanguage,
+              currentCurrency
+            }}
           />
         </Header>
         <SearchResults
@@ -94,7 +108,9 @@ class MainLayout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ layout }: ReducersObject) => layout.toJS()
+const mapStateToProps = ({ layout, languageProvider }: ReducersObject) => {
+  return { ...layout.toJS(), ...languageProvider.toJS() }
+}
 
 const LayoutEnhance = compose(
   connect(mapStateToProps, { ...LayoutActions, ...LocaleActions })

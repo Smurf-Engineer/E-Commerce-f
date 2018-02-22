@@ -4,23 +4,23 @@
 
 const links = [
   {
-    label: 'F.A.Q',
+    label: 'faq',
     url: 'https://www.jakroo.com/us/faq.html'
   },
   {
-    label: 'Terms of Use',
+    label: 'terms',
     url: 'https://www.jakroo.com/us/terms-and-conditions.html'
   },
   {
-    label: 'Pricing chart',
+    label: 'pricing',
     url: 'http://www.jakroo.com/price-sheets/2018Q1-USD_RETAIL_COND-2.pdf'
   },
   {
-    label: ' Warranty',
+    label: 'warranty',
     url: 'https://www.jakroo.com/us/warranty.html'
   },
   {
-    label: ' Design Support',
+    label: 'design',
     url: 'https://www.jakroo.com/us/art-specs.html'
   }
 ]
