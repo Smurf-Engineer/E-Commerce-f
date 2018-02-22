@@ -2,12 +2,16 @@
  * ContactInfo Component - Created by Carlos Cazarez on 07/02/18.
  */
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Container, Title, Text, Phone, Email } from './styledComponents'
+import messages from './messages'
 
 const ContactInfo = () => {
   return (
     <Container>
-      <Title>CONTACT INFO</Title>
+      <Title>
+        <FormattedMessage {...messages.title} />
+      </Title>
       <Text>
         <div>5906 Stoneridge Mall Road.</div>
         <div> Pleasanton, CA 94588</div>

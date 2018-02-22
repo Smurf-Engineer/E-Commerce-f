@@ -20,6 +20,7 @@ const { Content, Footer } = Layout
 
 interface Props {
   children: React.ReactChild
+  intl: any
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
@@ -49,9 +50,9 @@ class MainLayout extends React.Component<Props, {}> {
       setRegionAction,
       currentRegion,
       currentLanguage,
-      currentCurrency
+      currentCurrency,
+      intl
     } = this.props
-
     return (
       <Layout>
         <Header>
@@ -60,6 +61,7 @@ class MainLayout extends React.Component<Props, {}> {
             onChangeLocation={setRegionAction}
             {...{
               history,
+              intl,
               showSearchResults,
               searchParam,
               currentRegion,

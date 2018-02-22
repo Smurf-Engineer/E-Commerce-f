@@ -5,6 +5,10 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
+  title: {
+    id: 'components.menuSupport.title',
+    defaultMessage: 'SUPPORT'
+  },
   faq: {
     id: 'components.menuSupport.faq',
     defaultMessage: 'F.A.Q'

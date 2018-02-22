@@ -4,11 +4,14 @@
 import * as React from 'react'
 import { Container, Text, SearchInput } from './styledComponents'
 import { AnyAction } from '../../types/common'
+import messages from './messages'
 import debounce from 'lodash/debounce'
 
 interface Props {
   search: any
   onHeader?: boolean
+  intl?: any
+  formatMessage: (messageDescriptor: any) => string
 }
 
 interface StateProps {
@@ -31,14 +34,13 @@ class SearchBar extends React.Component<Props, StateProps> {
     }
   }
   render() {
-    const { search, onHeader } = this.props
+    const { search, onHeader, formatMessage } = this.props
     const { width, searchValue } = this.state
-
     return (
       <Container>
         <SearchInput
           size="large"
-          placeholder="Seach for a product"
+          placeholder={formatMessage(messages.hint)}
           onChange={this.handleChange}
           onSearch={this.showInput}
           onBlur={onHeader ? this.hideInput : this.clearInput}

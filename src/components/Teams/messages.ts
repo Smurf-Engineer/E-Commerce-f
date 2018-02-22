@@ -1,0 +1,24 @@
+/**
+ * Teams - messages
+ */
+
+import { defineMessages } from 'react-intl'
+
+export default defineMessages({
+  title: {
+    id: 'components.footer.teams.title',
+    defaultMessage: 'TEAMS'
+  },
+  stores: {
+    id: 'components.footer.teams.stores',
+    defaultMessage: 'Team Stores'
+  },
+  kits: {
+    id: 'components.footer.teams.kits',
+    defaultMessage: 'Team Kits'
+  },
+  sponsor: {
+    id: 'components.footer.teams.sponsor',
+    defaultMessage: 'Get Sponsored'
+  }
+})

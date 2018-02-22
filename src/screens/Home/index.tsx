@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
+import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import zenscroll from 'zenscroll'
 import { compose, graphql } from 'react-apollo'
 import { QueryProps } from '../../types/common'
@@ -28,6 +29,7 @@ import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
 import { AnyAction } from '../../types/common'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
+import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 type User = {
@@ -45,6 +47,7 @@ interface Props extends RouteComponentProps<any> {
   showSearchResults: boolean
   searchString: string
   dispatch: any
+  intl: InjectedIntl
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -88,9 +91,9 @@ export class Home extends React.Component<Props, {}> {
       showSearchResults,
       setSearchParam,
       searchString,
-      productId
+      productId,
+      intl
     } = this.props
-
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
@@ -102,15 +105,22 @@ export class Home extends React.Component<Props, {}> {
       />
     ) : null
     return (
-      <Layout {...{ history }}>
+      <Layout {...{ history, intl }}>
         <Container>
           <SearchContainer>
             <SearchBackground src={BackgroundImg} />
             <SearchBarContent>
-              <SearchBar search={this.onSearch} />
+              <SearchBar
+                search={this.onSearch}
+                formatMessage={intl.formatMessage}
+              />
               <HelpContainer>
-                <NeedHelp>Not sure? We'll help you find out.</NeedHelp>
-                <GetStartedButton size="large">GET STARTED</GetStartedButton>
+                <NeedHelp>
+                  <FormattedMessage {...messages.helpFind} />
+                </NeedHelp>
+                <GetStartedButton size="large">
+                  <FormattedMessage {...messages.startButton} />
+                </GetStartedButton>
               </HelpContainer>
             </SearchBarContent>
           </SearchContainer>
@@ -131,6 +141,9 @@ const mapStateToProps = ({ home }: ReducersObject) => home.toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
-const HomeEnhance = compose(connect(mapStateToProps, mapDispatchToProps))(Home)
+const HomeEnhance = compose(
+  injectIntl,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Home)
 
 export default HomeEnhance
