@@ -37,9 +37,22 @@ class MenuBar extends React.Component<Props, StateProps> {
   state = {
     openLogin: false
   }
+
   render() {
     const { history, searchFunc } = this.props
     const { openLogin } = this.state
+    let user
+    if (typeof window !== 'undefined') {
+      console.log('window')
+      user = JSON.parse(localStorage.getItem('user') as string)
+      console.log(user)
+    }
+
+    const login = !user ? (
+      <Login open={openLogin} requestClose={this.handleCloseLogin} />
+    ) : (
+      <div>{user.name}</div>
+    )
     return (
       <Container>
         <Row>
@@ -59,7 +72,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           <DropdownList {...{ history }} />
           <SearchBar search={searchFunc} onHeader={true} />
         </BottomRow>
-        <Login open={openLogin} requestClose={this.handleCloseLogin} />
+        {login}
       </Container>
     )
   }

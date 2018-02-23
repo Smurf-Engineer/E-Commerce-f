@@ -8,6 +8,6 @@ import Login from './index'
 describe('<Login />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<Login open={false} />, div)
+    ReactDOM.render(<Login open={false} requestClose={() => {}} />, div)
   })
 })

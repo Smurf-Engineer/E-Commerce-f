@@ -42,11 +42,15 @@ export const RememberMeRow = styled.div`
 
 export const JoinNowLabel = styled.span`
   font-weight: 600;
+  margin-left: 5px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 export const StyledLoginButton = styled(Button)`
   border-radius: 0px;
   width: 100%;
-  height: 44px;
+  height: 50px;
   border-color: #e61737;
   background-color: #fff;
   margin-bottom: 10px;
@@ -61,4 +65,10 @@ export const NotAMemberLabel = styled.div`
   line-height: 22px;
   text-align: center;
   margin-bottom: 50px;
+`
+
+export const ForgotPasswordLabel = styled.div`
+  &:hover {
+    cursor: pointer;
+  }
 `

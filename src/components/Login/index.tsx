@@ -2,7 +2,9 @@
  * Login Component - Created by cazarez on 20/02/18.
  */
 import * as React from 'react'
+import { graphql, compose } from 'react-apollo'
 import Checkbox from 'antd/lib/checkbox'
+import get from 'lodash/get'
 import {
   Container,
   LoginLabel,
@@ -11,35 +13,130 @@ import {
   RememberMeRow,
   StyledLoginButton,
   NotAMemberLabel,
-  JoinNowLabel
+  JoinNowLabel,
+  ForgotPasswordLabel
 } from './styledComponents'
 import JakrooModal from '../Common/JakrooModal'
+import FacebookGmailLogin from '../FacebookGmailLogin'
+import SignUp from '../SignUp'
+import { mailLogin, googleLogin, facebooklLogin } from './data'
 
 interface Props {
   open: boolean
-  requestClose?: () => void
+  requestClose: () => void
+  loginWithEmail: (variables: {}) => void
 }
 
-const Login = ({ open, requestClose }: Props) => {
-  return (
-    <JakrooModal open={open} {...{ requestClose }}>
-      <Container>
-        <LoginLabel>Log In</LoginLabel>
+interface StateProps {
+  isLoginIn: boolean
+  email: string
+  password: string
+}
+
+class Login extends React.Component<Props, StateProps> {
+  state = {
+    isLoginIn: true,
+    email: '',
+    password: ''
+  }
+  render() {
+    const { open, requestClose } = this.props
+    const { isLoginIn, email, password } = this.state
+    const renderView = isLoginIn ? (
+      <div>
+        <LoginLabel>{'Log In'}</LoginLabel>
         <FormContainer>
-          <StyledInput placeholder="E-Mail" />
-          <StyledInput placeholder="Password" />
+          <StyledInput
+            id="email"
+            placeholder="E-Mail"
+            value={email}
+            onChange={this.handleInputChange}
+          />
+          <StyledInput
+            id="password"
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={this.handleInputChange}
+          />
           <RememberMeRow>
-            <Checkbox>Remember me</Checkbox>
-            <div>Forgot Password?</div>
+            <Checkbox>{'Remember me'}</Checkbox>
+            <ForgotPasswordLabel>{'Forgot Password?'}</ForgotPasswordLabel>
           </RememberMeRow>
-          <StyledLoginButton type="danger">LOG IN</StyledLoginButton>
+          <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
+            {'LOG IN'}
+          </StyledLoginButton>
+          <FacebookGmailLogin />
         </FormContainer>
         <NotAMemberLabel>
-          Not a member? <JoinNowLabel>JOIN NOW</JoinNowLabel>
+          {'Not a member?'}
+          <JoinNowLabel onClick={this.handleJoinNow}>{'JOIN NOW'}</JoinNowLabel>
         </NotAMemberLabel>
-      </Container>
-    </JakrooModal>
-  )
+      </div>
+    ) : (
+      <SignUp closeSignUp={this.showLogin} />
+    )
+    return (
+      <JakrooModal
+        open={open}
+        requestClose={this.onClosemodal}
+        style={{ top: 20 }}
+      >
+        <Container>{renderView}</Container>
+      </JakrooModal>
+    )
+  }
+  handleJoinNow = () => {
+    this.setState({ isLoginIn: false })
+  }
+  onClosemodal = () => {
+    const { requestClose } = this.props
+    requestClose()
+    this.setState({ isLoginIn: true })
+  }
+
+  showLogin = () => {
+    this.setState({
+      isLoginIn: true
+    })
+  }
+
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { currentTarget: { value, id } } = evt
+    evt.persist()
+    this.setState({ [id]: value } as any)
+  }
+
+  handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
+    const { email, password } = this.state
+    const { loginWithEmail } = this.props
+    if (!email && !password) {
+      return
+    }
+    let loginData
+    try {
+      loginData = await loginWithEmail({ variables: { email, password } })
+      const data = get(loginData, 'data', false)
+      if (data) {
+        console.log(data)
+        const userData = {
+          token: get(data, 'login.token', ''),
+          name: get(data, 'login.user.name', ''),
+          lastName: get(data, 'login.user.lastName')
+        }
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(userData))
+        }
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  handleFacebookLogin = () => {
+    // TODO: ADD facebook mutation call
+  }
 }
 
-export default Login
+const loginEnhance = compose(mailLogin, facebooklLogin, googleLogin)(Login)
+export default loginEnhance

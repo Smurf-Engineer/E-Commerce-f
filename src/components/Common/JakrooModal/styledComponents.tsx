@@ -28,3 +28,4 @@ export const Logo = styled.img`
   margin-top: -25px;
   margin-bottom: 30px;
 `
+export const Title = styled.div``
