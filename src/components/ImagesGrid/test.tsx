@@ -3,15 +3,11 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { ImagesGrid } from './index'
+import ImagesGrid from './index'
 
 describe('<ImagesGrid />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const data = {
-      productsHome: [],
-      fetchMore: () => {}
-    }
-    ReactDOM.render(<ImagesGrid data={data} />, div)
+    ReactDOM.render(<ImagesGrid />, div)
   })
 })
