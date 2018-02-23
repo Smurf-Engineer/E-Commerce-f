@@ -44,6 +44,11 @@ export type PriceRange = {
   to: number
 }
 
+export type HomePageBatch = {
+  method: string
+  result: string
+}
+
 export interface Product {
   id: number
   images: ImageType

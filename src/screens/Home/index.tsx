@@ -26,6 +26,7 @@ import {
 import { Prices } from '../../types/common'
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
+import ImagesGrid from '../../components/ImagesGrid'
 import { AnyAction } from '../../types/common'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
@@ -121,6 +122,7 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
+          <ImagesGrid />
         </Container>
       </Layout>
     )
