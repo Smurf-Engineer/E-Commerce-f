@@ -12,7 +12,6 @@ export default defineMessages({
   },
   startButton: {
     id: 'screens.Home.start.button',
-    // tslint:disable-next-line:quotemark
     defaultMessage: 'GET STARTED'
   }
 })
