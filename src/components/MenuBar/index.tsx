@@ -2,7 +2,7 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, InjectedIntl } from 'react-intl'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -31,7 +31,7 @@ interface Props {
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
-  intl: any
+  intl: InjectedIntl
 }
 
 const MenuBar = ({

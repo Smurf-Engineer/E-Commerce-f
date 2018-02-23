@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
@@ -20,7 +21,7 @@ const { Content, Footer } = Layout
 
 interface Props {
   children: React.ReactChild
-  intl: any
+  intl: InjectedIntl
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void

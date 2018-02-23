@@ -10,7 +10,6 @@ import debounce from 'lodash/debounce'
 interface Props {
   search: any
   onHeader?: boolean
-  intl?: any
   formatMessage: (messageDescriptor: any) => string
 }
 
