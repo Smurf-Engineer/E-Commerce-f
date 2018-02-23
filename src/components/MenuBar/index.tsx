@@ -2,6 +2,7 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
+import { FormattedMessage, InjectedIntl } from 'react-intl'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -20,6 +21,7 @@ import { RegionConfig } from '../../types/common'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
+import messages from './messages'
 import SearchBar from '../SearchBar'
 
 interface Props {
@@ -29,6 +31,7 @@ interface Props {
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
+  intl: InjectedIntl
 }
 
 const MenuBar = ({
@@ -37,7 +40,8 @@ const MenuBar = ({
   onChangeLocation,
   currentRegion,
   currentLanguage,
-  currentCurrency
+  currentCurrency,
+  intl
 }: Props) => {
   return (
     <Container>
@@ -53,14 +57,20 @@ const MenuBar = ({
             }}
           />
           <CartIcon src={cart} />
-          <TopText>LOGIN</TopText>
+          <TopText>
+            <FormattedMessage {...messages.title} />
+          </TopText>
         </TopRow>
       </Row>
       <Divider />
       <BottomRow>
         <LogoIcon src={logo} />
         <DropdownList {...{ history }} />
-        <SearchBar search={searchFunc} onHeader={true} />
+        <SearchBar
+          search={searchFunc}
+          onHeader={true}
+          formatMessage={intl.formatMessage}
+        />
       </BottomRow>
     </Container>
   )

@@ -5,5 +5,6 @@
   "components.menuBar.cycling": "RADFAHREN",
   "components.menuBar.triathlon": "TRIATHLON",
   "components.menuBar.nordic": "NORDISCH",
-  "components.menuBar.active": "AKTIV"
+  "components.menuBar.active": "AKTIV",
+  "components.searchBar.hint": "Suchen Sie nach einem Produkt"
 }

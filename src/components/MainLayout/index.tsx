@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
@@ -20,6 +21,7 @@ const { Content, Footer } = Layout
 
 interface Props {
   children: React.ReactChild
+  intl: InjectedIntl
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
@@ -49,9 +51,9 @@ class MainLayout extends React.Component<Props, {}> {
       setRegionAction,
       currentRegion,
       currentLanguage,
-      currentCurrency
+      currentCurrency,
+      intl
     } = this.props
-
     return (
       <Layout>
         <Header>
@@ -60,6 +62,7 @@ class MainLayout extends React.Component<Props, {}> {
             onChangeLocation={setRegionAction}
             {...{
               history,
+              intl,
               showSearchResults,
               searchParam,
               currentRegion,

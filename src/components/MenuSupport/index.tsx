@@ -22,7 +22,9 @@ const MenuSupport = (props: Props) => {
   const menu = <Menu style={menuStyle}>{items}</Menu>
   return (
     <Dropdown overlay={menu}>
-      <Text>SUPPORT</Text>
+      <Text>
+        <FormattedMessage {...messages.title} />
+      </Text>
     </Dropdown>
   )
 }
