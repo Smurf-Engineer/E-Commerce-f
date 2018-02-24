@@ -4,7 +4,9 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Checkbox from 'antd/lib/checkbox'
+import message from 'antd/lib/message'
 import get from 'lodash/get'
+import { validate } from 'email-validator'
 import {
   Container,
   LoginLabel,
@@ -19,28 +21,39 @@ import {
 import JakrooModal from '../Common/JakrooModal'
 import FacebookGmailLogin from '../FacebookGmailLogin'
 import SignUp from '../SignUp'
-import { mailLogin, googleLogin, facebooklLogin } from './data'
+import { mailLogin } from './data'
 
 interface Props {
   open: boolean
   requestClose: () => void
   loginWithEmail: (variables: {}) => void
+  loginWithFacebook: (variables: {}) => void
+  loginWithGoogle: (variables: {}) => void
 }
 
 interface StateProps {
   isLoginIn: boolean
   email: string
   password: string
+  validEmail: boolean
+  validPassword: boolean
 }
 
 class Login extends React.Component<Props, StateProps> {
   state = {
     isLoginIn: true,
     email: '',
-    password: ''
+    password: '',
+    validEmail: false,
+    validPassword: false
   }
   render() {
-    const { open, requestClose } = this.props
+    const {
+      open,
+      requestClose,
+      loginWithFacebook,
+      loginWithGoogle
+    } = this.props
     const { isLoginIn, email, password } = this.state
     const renderView = isLoginIn ? (
       <div>
@@ -66,7 +79,7 @@ class Login extends React.Component<Props, StateProps> {
           <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
             {'LOG IN'}
           </StyledLoginButton>
-          <FacebookGmailLogin />
+          <FacebookGmailLogin {...{ requestClose }} />
         </FormContainer>
         <NotAMemberLabel>
           {'Not a member?'}
@@ -74,7 +87,7 @@ class Login extends React.Component<Props, StateProps> {
         </NotAMemberLabel>
       </div>
     ) : (
-      <SignUp closeSignUp={this.showLogin} />
+      <SignUp closeSignUp={this.showLogin} {...{ requestClose }} />
     )
     return (
       <JakrooModal
@@ -100,6 +113,9 @@ class Login extends React.Component<Props, StateProps> {
       isLoginIn: true
     })
   }
+  validateMail = (mail: string) => {
+    return validate(mail)
+  }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value, id } } = evt
@@ -109,34 +125,38 @@ class Login extends React.Component<Props, StateProps> {
 
   handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
     const { email, password } = this.state
-    const { loginWithEmail } = this.props
+    const { loginWithEmail, requestClose } = this.props
+
     if (!email && !password) {
+      message.error('Invalid User or Password!')
       return
     }
-    let loginData
+
     try {
-      loginData = await loginWithEmail({ variables: { email, password } })
-      const data = get(loginData, 'data', false)
+      const loginData = await loginWithEmail({ variables: { email, password } })
+      const data = get(loginData, 'data.login', false)
+
       if (data) {
-        console.log(data)
         const userData = {
-          token: get(data, 'login.token', ''),
-          name: get(data, 'login.user.name', ''),
-          lastName: get(data, 'login.user.lastName')
+          token: get(data, 'token', ''),
+          name: get(data, 'user.name', ''),
+          lastName: get(data, 'user.lastName')
         }
+        message.success(
+          `Hi ${get(data, 'user.name', '')}! Welcome to Jakroo`,
+          5
+        )
         if (typeof window !== 'undefined') {
           localStorage.setItem('user', JSON.stringify(userData))
         }
+        requestClose()
       }
     } catch (error) {
+      message.error('Something happened, please try again!')
       console.error(error)
     }
   }
-
-  handleFacebookLogin = () => {
-    // TODO: ADD facebook mutation call
-  }
 }
 
-const loginEnhance = compose(mailLogin, facebooklLogin, googleLogin)(Login)
+const loginEnhance = compose(mailLogin)(Login)
 export default loginEnhance

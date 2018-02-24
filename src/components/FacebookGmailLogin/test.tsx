@@ -8,6 +8,6 @@ import FacebookGmailLogin from './index'
 describe('<FacebookGmailLogin />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<FacebookGmailLogin  />, div)
+    ReactDOM.render(<FacebookGmailLogin />, div)
   })
 })

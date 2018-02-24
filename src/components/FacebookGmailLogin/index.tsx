@@ -2,6 +2,8 @@
  * FacebookGmailLogin Component - Created by cazarez on 21/02/18.
  */
 import * as React from 'react'
+import get from 'lodash/get'
+import { graphql, compose } from 'react-apollo'
 import FacebookSignIn from '../FacebookSignIn'
 import GoogleLogin from 'react-google-login'
 import {
@@ -11,49 +13,101 @@ import {
   GoogleButton
 } from './styledComponents'
 
-interface Props {}
-
-const componentClicked = (evt: any) => {
-  console.log(evt)
+import { facebooklLogin, googleLogin } from './data'
+interface Props {
+  loginWithFacebook: (variables: {}) => void
+  loginWithGoogle: (variables: {}) => void
+  requestClose: () => void
 }
 
-const responseFacebook = (evt: any) => {
-  console.log(evt)
-}
+class FacebookGmailLogin extends React.Component<Props, {}> {
+  render() {
+    return (
+      <Container>
+        <GoogleButton
+          clientId={
+            '32595750537-deiet8319orbo3c54uqin9aqkpnbchbu.apps.googleusercontent.com'
+          }
+          onSuccess={this.googleLoginSuccess}
+          onFailure={this.googleLoginFailure}
+        >
+          <div />
+          <span>Login with Google</span>
+        </GoogleButton>
+        <FacebookButton
+          appId="1656476814419105"
+          autoLoad={true}
+          fields="name,email,picture"
+          cssClass="my-facebook-button-class"
+          icon="fa-facebook"
+          onClick={this.componentClicked}
+          callback={this.responseFacebook}
+          scope="public_profile"
+        />
+        <FacebookSignIn redirectUrl="/" appId="1656476814419105" />
+      </Container>
+    )
+  }
+  componentClicked = (evt: any) => {
+    console.log('COMPONENT CLICK FACEBOOK ', evt)
+  }
 
-const googleLoginSuccess = (resp: any) => {
-  console.log(resp)
-}
+  responseFacebook = async (facebookResp: {}) => {
+    const { loginWithFacebook, requestClose } = this.props
+    const token = get(facebookResp, 'accessToken')
+    console.log('FACEBOOK CALLBACK ', facebookResp)
+    try {
+      const response = await loginWithFacebook({ variables: { token } })
+      console.log('FB RESP ', response)
+      const data = get(response, 'data.facebookSignIn', false)
 
-const googleLoginFailure = (err: any) => {
-  console.log(err)
-}
-const FacebookGmailLogin = (props: Props) => {
-  return (
-    <Container>
-      <GoogleButton
-        clientId={
-          '32595750537-deiet8319orbo3c54uqin9aqkpnbchbu.apps.googleusercontent.com'
+      if (data) {
+        const user = this.createUserObject(data)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(user))
         }
-        onSuccess={googleLoginSuccess}
-        onFailure={googleLoginFailure}
-      >
-        <div />
-        <span>Login with Google</span>
-      </GoogleButton>
-      <FacebookButton
-        appId="1656476814419105"
-        autoLoad={true}
-        fields="name,email,picture"
-        cssClass="my-facebook-button-class"
-        icon="fa-facebook"
-        onClick={componentClicked}
-        callback={responseFacebook}
-        scope="public_profile,user_friends,user_actions.books"
-      />
-      <FacebookSignIn redirectUrl="/" appId="1656476814419105" />
-    </Container>
-  )
+        requestClose()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  googleLoginSuccess = async (resp: {}) => {
+    const { loginWithGoogle, requestClose } = this.props
+    const token = get(resp, 'tokenId', false)
+
+    try {
+      const response = await loginWithGoogle({ variables: { token } })
+      const data = get(response, 'data.googleSignIn', false)
+
+      if (data) {
+        const user = this.createUserObject(data)
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('user', JSON.stringify(user))
+        }
+        requestClose()
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  createUserObject = (data: {}) => {
+    const userData = {
+      token: get(data, 'token', ''),
+      name: get(data, 'user.name', ''),
+      lastName: get(data, 'user.lastName')
+    }
+
+    return userData
+  }
+  googleLoginFailure = (err: any) => {
+    console.error('ERROR GOOGLE ', err)
+  }
 }
 
-export default FacebookGmailLogin
+const FacebookGmailLoginEnhance = compose(facebooklLogin, googleLogin)(
+  FacebookGmailLogin
+)
+export default FacebookGmailLoginEnhance

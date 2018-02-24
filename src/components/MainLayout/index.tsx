@@ -22,9 +22,11 @@ interface Props {
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   openQuickViewAction: (open: number | null) => void
+  openLoginAction: (open: boolean) => void
   showSearchResults: boolean
   searchParam: string
   productId: boolean
+  openLogin: boolean
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -39,7 +41,9 @@ class MainLayout extends React.Component<Props, {}> {
       history,
       showSearchResults,
       searchParam,
-      productId
+      productId,
+      openLogin,
+      openLoginAction
     } = this.props
 
     return (
@@ -47,7 +51,13 @@ class MainLayout extends React.Component<Props, {}> {
         <Header>
           <MenuBar
             searchFunc={this.onSearch}
-            {...{ history, showSearchResults, searchParam }}
+            {...{
+              history,
+              showSearchResults,
+              searchParam,
+              openLogin,
+              openLoginAction
+            }}
           />
         </Header>
         <SearchResults

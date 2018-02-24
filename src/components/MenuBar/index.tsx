@@ -27,6 +27,8 @@ import Login from '../Login'
 interface Props {
   history: any
   searchFunc: (param: string) => void
+  openLogin?: boolean
+  openLoginAction: (open: boolean) => void
 }
 
 interface StateProps {
@@ -39,8 +41,8 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { history, searchFunc } = this.props
-    const { openLogin } = this.state
+    const { history, searchFunc, openLogin } = this.props
+    // const { openLogin } = this.state
     let user
     if (typeof window !== 'undefined') {
       console.log('window')
@@ -48,10 +50,10 @@ class MenuBar extends React.Component<Props, StateProps> {
       console.log(user)
     }
 
-    const login = !user ? (
-      <Login open={openLogin} requestClose={this.handleCloseLogin} />
+    const loggedUser = !user ? (
+      <TopText onClick={this.handleOpenLogin}>LOGIN</TopText>
     ) : (
-      <div>{user.name}</div>
+      <TopText>{`${String(user.name).toUpperCase()}`}</TopText>
     )
     return (
       <Container>
@@ -63,7 +65,7 @@ class MenuBar extends React.Component<Props, StateProps> {
               <TopText>$USD</TopText>
             </Region>
             <CartIcon src={cart} />
-            <TopText onClick={this.handleOpenLogin}>LOGIN</TopText>
+            {loggedUser}
           </TopRow>
         </Row>
         <Divider />
@@ -72,16 +74,20 @@ class MenuBar extends React.Component<Props, StateProps> {
           <DropdownList {...{ history }} />
           <SearchBar search={searchFunc} onHeader={true} />
         </BottomRow>
-        {login}
+        <Login open={openLogin} requestClose={this.handleCloseLogin} />
       </Container>
     )
   }
 
   handleOpenLogin = () => {
-    this.setState({ openLogin: true })
+    const { openLoginAction } = this.props
+    openLoginAction(true)
+    // this.setState({ openLogin: true })
   }
   handleCloseLogin = () => {
-    this.setState({ openLogin: false })
+    const { openLoginAction } = this.props
+    openLoginAction(false)
+    //  this.setState({ openLogin: false })
   }
 }
 
