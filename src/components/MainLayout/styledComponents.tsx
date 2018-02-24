@@ -11,9 +11,13 @@ export const Text = styled.div`
   color: #fff;
 `
 
+interface HeaderProps {
+  hideBottom?: boolean
+}
+
 export const Header = styled.div`
   background: #ffffff;
   padding: 0px;
-  height: 110px;
+  height: ${({ hideBottom }: HeaderProps) => (hideBottom ? 38 : 110)};
   line-height: 0px;
 `

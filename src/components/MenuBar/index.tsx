@@ -17,12 +17,12 @@ import {
   CartIcon,
   SearchIcon
 } from './styledComponents'
-import { RegionConfig } from '../../types/common'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
+import { RegionConfig } from '../../types/common'
 
 interface Props {
   history: any
@@ -32,17 +32,19 @@ interface Props {
   currentLanguage: number
   currentCurrency: number
   intl: InjectedIntl
+  hideBottom?: boolean
 }
 
-const MenuBar = ({
+const MenuBar: React.SFC<Props> = ({
   history,
   searchFunc,
   onChangeLocation,
   currentRegion,
   currentLanguage,
   currentCurrency,
+  hideBottom,
   intl
-}: Props) => {
+}) => {
   return (
     <Container>
       <Row>
@@ -63,17 +65,23 @@ const MenuBar = ({
         </TopRow>
       </Row>
       <Divider />
-      <BottomRow>
-        <LogoIcon src={logo} />
-        <DropdownList {...{ history }} />
-        <SearchBar
-          search={searchFunc}
-          onHeader={true}
-          formatMessage={intl.formatMessage}
-        />
-      </BottomRow>
+      {!hideBottom && (
+        <BottomRow>
+          <LogoIcon src={logo} />
+          <DropdownList {...{ history }} />
+          <SearchBar
+            search={searchFunc}
+            onHeader={true}
+            formatMessage={intl.formatMessage}
+          />
+        </BottomRow>
+      )}
     </Container>
   )
+}
+
+MenuBar.defaultProps = {
+  hideBottom: false
 }
 
 export default MenuBar
