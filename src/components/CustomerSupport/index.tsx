@@ -2,28 +2,34 @@
  * CustomerSupport Component - Created by cazarez on 07/02/18.
  */
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 import { Container, Title, Text, Span } from './styledComponents'
+import messages from './messages'
 
 const CustomerSupport = () => {
   return (
     <Container>
-      <Title>CUSTOMER SUPPORT</Title>
+      <Title>
+        <FormattedMessage {...messages.title} />
+      </Title>
       <Text>
-        <Span href="https://www.jakroo.com/us/faq.html">F.A.Q.</Span>
+        <Span href="https://www.jakroo.com/us/faq.html">
+          <FormattedMessage {...messages.faq} />
+        </Span>
       </Text>
       <Text>
         <Span href="http://www.jakroo.com/price-sheets/2018Q1-USD_RETAIL_COND-2.pdf">
-          Pricing Chart
+          <FormattedMessage {...messages.pricing} />
         </Span>
       </Text>
       <Text>
         <Span href="https://www.jakroo.com/us/terms-and-conditions.html">
-          Terms of Use
+          <FormattedMessage {...messages.terms} />
         </Span>
       </Text>
       <Text>
         <Span href="https://www.jakroo.com/us/warranty.html">
-          Warranty Program
+          <FormattedMessage {...messages.warranty} />
         </Span>
       </Text>
     </Container>

@@ -2,6 +2,7 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
+import { FormattedMessage, InjectedIntl } from 'react-intl'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -16,11 +17,12 @@ import {
   CartIcon,
   SearchIcon
 } from './styledComponents'
-import { RegionConfig } from '../../types/common'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
+import messages from './messages'
 import SearchBar from '../SearchBar'
+import { RegionConfig } from '../../types/common'
 
 interface Props {
   history: any
@@ -29,16 +31,20 @@ interface Props {
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
+  intl: InjectedIntl
+  hideBottom?: boolean
 }
 
-const MenuBar = ({
+const MenuBar: React.SFC<Props> = ({
   history,
   searchFunc,
   onChangeLocation,
   currentRegion,
   currentLanguage,
-  currentCurrency
-}: Props) => {
+  currentCurrency,
+  hideBottom,
+  intl
+}) => {
   return (
     <Container>
       <Row>
@@ -53,17 +59,29 @@ const MenuBar = ({
             }}
           />
           <CartIcon src={cart} />
-          <TopText>LOGIN</TopText>
+          <TopText>
+            <FormattedMessage {...messages.title} />
+          </TopText>
         </TopRow>
       </Row>
       <Divider />
-      <BottomRow>
-        <LogoIcon src={logo} />
-        <DropdownList {...{ history }} />
-        <SearchBar search={searchFunc} onHeader={true} />
-      </BottomRow>
+      {!hideBottom && (
+        <BottomRow>
+          <LogoIcon src={logo} />
+          <DropdownList {...{ history }} />
+          <SearchBar
+            search={searchFunc}
+            onHeader={true}
+            formatMessage={intl.formatMessage}
+          />
+        </BottomRow>
+      )}
     </Container>
   )
+}
+
+MenuBar.defaultProps = {
+  hideBottom: false
 }
 
 export default MenuBar
