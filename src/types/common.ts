@@ -75,3 +75,9 @@ export interface RegionConfig {
   locale: string
   currency: number
 }
+
+export interface Theme {
+  id: number
+  name: string
+  picture: string
+}

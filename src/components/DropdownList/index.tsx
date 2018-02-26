@@ -56,7 +56,7 @@ export class DropdownList extends React.PureComponent<Props> {
 
   handleOnCustomize = (id: string) => {
     const { history } = this.props
-    history.push('designer')
+    history.push('/design-center')
   }
 
   handleOnQuickView = (id: number) => {
