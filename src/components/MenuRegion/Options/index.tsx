@@ -3,11 +3,12 @@
  */
 import * as React from 'react'
 import range from 'lodash/range'
+import { Language } from '../../../types/common'
 import { Container, Label, Row, Text, LineVertical } from './styledComponents'
 
 interface Props {
   title: string
-  options: string[]
+  options: Language[]
   currentSelected: number
   onPress: (index: number) => void
 }
@@ -31,7 +32,7 @@ const Options = ({ title, options, currentSelected, onPress }: Props) => {
       selected={currentSelected === index}
       onClick={() => onPress(index)}
     >
-      {option.toUpperCase()}
+      {option.short_name.toUpperCase()}
     </Text>
   ))
   const itemsWithDivider = insertDividers(items)

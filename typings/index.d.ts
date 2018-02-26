@@ -35,3 +35,8 @@ declare module 'react-star-ratings' {
 
   export default StarRatings
 }
+
+declare module 'react-leaf-carousel' {
+  const content: any
+  export default content
+}

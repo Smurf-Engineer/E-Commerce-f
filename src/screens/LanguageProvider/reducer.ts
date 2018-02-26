@@ -24,7 +24,7 @@ const languageProviderReducer: Reducer<any> = (
       return state.merge({
         currentRegion: region,
         currentLanguage: localeIndex,
-        locale,
+        locale: locale.toLowerCase(),
         currentCurrency: currency
       })
     }

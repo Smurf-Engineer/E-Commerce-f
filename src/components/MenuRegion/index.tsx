@@ -2,15 +2,28 @@
  * MenuRegion Component - Created by david on 20/02/18.
  */
 import * as React from 'react'
+import { graphql, compose } from 'react-apollo'
+import gql from 'graphql-tag'
+import { regionsQuery } from './data'
 import Popover from 'antd/lib/popover'
 import Menu from './Menu'
 import caFlag from '../../assets/CA.svg'
 import euFlag from '../../assets/EU.svg'
 import usFlag from '../../assets/US.svg'
-import { RegionConfig, Region as RegionType } from '../../types/common'
-import { Container, TopText, Region, overStyle } from './styledComponents'
+import {
+  QueryProps,
+  RegionConfig,
+  Region as RegionType,
+  Currency
+} from '../../types/common'
+import { Container, TopText, Regionst, overStyle } from './styledComponents'
+
+interface Data extends QueryProps {
+  regionsResult: RegionType[]
+}
 
 interface Props {
+  data: Data
   onChangeLocation: (payload: RegionConfig) => void
   currentRegion: number
   currentLanguage: number
@@ -23,28 +36,11 @@ interface State {
   currentCurrencyTemp: number | null
 }
 
-const regions: RegionType[] = [
-  {
-    icon: usFlag,
-    label: 'global',
-    languages: ['en', 'jpn'],
-    currencies: ['$usd', '$aud', '¥jpy']
-  },
-  {
-    icon: caFlag,
-    label: 'canada',
-    languages: ['en', 'fr'],
-    currencies: ['$cad']
-  },
-  {
-    icon: euFlag,
-    label: 'europe',
-    languages: ['en', 'de'],
-    currencies: ['$eur', '₣CHF']
-  }
-]
+let regionList = [] as RegionType[]
 
-class MenuRegion extends React.PureComponent<Props, State> {
+export class MenuRegion extends React.PureComponent<Props, State> {
+  static defaultProps: Data
+
   state = {
     currentRegionTemp: null,
     currentLanguageTemp: null,
@@ -59,11 +55,13 @@ class MenuRegion extends React.PureComponent<Props, State> {
       currentCurrencyTemp: 0
     })
 
-  handleOnSelectLanguage = (currentLanguageTemp: number) =>
+  handleOnSelectLanguage = (currentLanguageTemp: number) => {
     this.setState({ currentLanguageTemp })
+  }
 
-  handleOnSelectCurrency = (currentCurrencyTemp: number) =>
+  handleOnSelectCurrency = (currentCurrencyTemp: number) => {
     this.setState({ currentCurrencyTemp })
+  }
 
   handleOnClickConfirm = () => {
     const {
@@ -79,11 +77,11 @@ class MenuRegion extends React.PureComponent<Props, State> {
       currentCurrency
     } = this.props
     const region =
-      regions[currentRegionTemp !== null ? currentRegionTemp : currentRegion]
+      regionList[currentRegionTemp !== null ? currentRegionTemp : currentRegion]
     const locale =
       region.languages[
         currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
-      ]
+      ].short_name
     onChangeLocation({
       locale,
       region: currentRegionTemp !== null ? currentRegionTemp : currentRegion,
@@ -110,9 +108,22 @@ class MenuRegion extends React.PureComponent<Props, State> {
       currentLanguageTemp,
       currentCurrencyTemp
     } = this.state
-    const { currentRegion, currentLanguage, currentCurrency } = this.props
-    const region = regions[currentRegion || 0]
-    const currency = region.currencies[currentCurrency || 0]
+    const {
+      currentRegion,
+      currentLanguage,
+      currentCurrency,
+      data: { regionsResult, loading, error }
+    } = this.props
+
+    let region = {} as RegionType
+    let currency = {} as Currency
+
+    if (!loading && regionsResult) {
+      regionList = regionsResult
+      region = regionList[currentRegion || 0]
+      currency = region.currencies[currentCurrency || 0]
+    }
+
     return (
       <Popover
         overlayStyle={overStyle}
@@ -121,7 +132,7 @@ class MenuRegion extends React.PureComponent<Props, State> {
         onVisibleChange={this.handleOnVisibleChange}
         content={
           <Menu
-            regions={regions}
+            regions={regionList}
             currentRegion={
               currentRegionTemp !== null ? currentRegionTemp : currentRegion
             }
@@ -142,13 +153,23 @@ class MenuRegion extends React.PureComponent<Props, State> {
           />
         }
       >
-        <Region>
+        <Regionst>
           <img src={region.icon} />
-          <TopText>{currency.toUpperCase()}</TopText>
-        </Region>
+          <TopText>
+            {loading ? null : currency.short_name.toUpperCase()}
+          </TopText>
+        </Regionst>
       </Popover>
     )
   }
 }
 
-export default MenuRegion
+const regionEnhance = compose(
+  graphql<Data>(regionsQuery, {
+    options: () => ({
+      fetchPolicy: 'network-only',
+      variables: {}
+    })
+  })
+)(MenuRegion)
+export default regionEnhance
