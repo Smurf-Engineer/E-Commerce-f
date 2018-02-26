@@ -4,7 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import designCenterReducer, { initialState } from './reducer'
-import { defaultAction } from './actions'
+import { setCurrentTabAction } from './actions'
 import { DesignCenter } from './index'
 
 describe(' DesignCenter Screen', () => {
@@ -14,15 +14,18 @@ describe(' DesignCenter Screen', () => {
     expect(state).toEqual(initialState)
   })
 
-  it('Update someKey correctly', () => {
-    const testValue = 'Test value'
-    const state = designCenterReducer(initialState, defaultAction(testValue))
-    const someKey = state.get('someKey')
+  it('Update currentTab correctly', () => {
+    const testValue = 0
+    const state = designCenterReducer(initialState, setCurrentTabAction(0))
+    const someKey = state.get('currentTab')
     expect(someKey).toEqual(testValue)
 
-    const testValue2 = 'Test value 2'
-    const state2 = designCenterReducer(initialState, defaultAction(testValue2))
-    const someKey2 = state2.get('someKey')
+    const testValue2 = 10
+    const state2 = designCenterReducer(
+      initialState,
+      setCurrentTabAction(testValue2)
+    )
+    const someKey2 = state2.get('currentTab')
     expect(someKey2).toEqual(testValue2)
   })
 })

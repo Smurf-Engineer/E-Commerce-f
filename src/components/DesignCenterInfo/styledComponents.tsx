@@ -7,6 +7,7 @@ export const Container = styled.div`
   padding 16px 32px;
   display: flex;
   justify-content: center;
+  background-color: #fff;
 `
 
 export const Row = styled.div`

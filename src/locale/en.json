@@ -36,5 +36,7 @@
   "components.DesignCenterTabs.theme": "Theme",
   "components.DesignCenterTabs.style": "Style",
   "components.DesignCenterTabs.customize": "Customize",
-  "components.DesignCenterTabs.preview": "Preview"
+  "components.DesignCenterTabs.preview": "Preview",
+  "components.DesignCenterInfo.theme": "SELECT A THEME",
+  "components.DesignCenterInfo.style": "SELECT A STYLE"
 }
