@@ -30,5 +30,13 @@
   "components.footer.teams.title": "TEAMS",
   "components.footer.teams.stores": "Team Stores",
   "components.footer.teams.kits": "Team Kits",
-  "components.footer.teams.sponsor": "Get Sponsored"
+  "components.footer.teams.sponsor": "Get Sponsored",
+  "components.DesignCenterHeader.back": "Back to Jakroo",
+  "components.DesignCenterHeader.date": "Estimated Delivery Date: {date}",
+  "components.DesignCenterTabs.theme": "Theme",
+  "components.DesignCenterTabs.style": "Style",
+  "components.DesignCenterTabs.customize": "Customize",
+  "components.DesignCenterTabs.preview": "Preview",
+  "components.DesignCenterInfo.theme": "SELECT A THEME",
+  "components.DesignCenterInfo.style": "SELECT A STYLE"
 }

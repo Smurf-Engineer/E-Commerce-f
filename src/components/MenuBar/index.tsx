@@ -18,13 +18,13 @@ import {
   CartIcon,
   SearchIcon
 } from './styledComponents'
-import { RegionConfig } from '../../types/common'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
+import { RegionConfig } from '../../types/common'
 
 interface Props {
   history: any
@@ -36,9 +36,13 @@ interface Props {
   currentLanguage: number
   currentCurrency: number
   intl: InjectedIntl
+  hideBottom?: boolean
 }
 
 class MenuBar extends React.Component<Props, {}> {
+  static defaultProps = {
+    hideBottom: false
+  }
   render() {
     const {
       history,
@@ -48,6 +52,7 @@ class MenuBar extends React.Component<Props, {}> {
       currentRegion,
       currentLanguage,
       currentCurrency,
+      hideBottom,
       intl
     } = this.props
     let user
@@ -80,15 +85,17 @@ class MenuBar extends React.Component<Props, {}> {
           </TopRow>
         </Row>
         <Divider />
-        <BottomRow>
-          <LogoIcon src={logo} />
-          <DropdownList {...{ history }} />
-          <SearchBar
-            search={searchFunc}
-            onHeader={true}
-            formatMessage={intl.formatMessage}
-          />
-        </BottomRow>
+        {!hideBottom && (
+          <BottomRow>
+            <LogoIcon src={logo} />
+            <DropdownList {...{ history }} />
+            <SearchBar
+              search={searchFunc}
+              onHeader={true}
+              formatMessage={intl.formatMessage}
+            />
+          </BottomRow>
+        )}
         <Login open={openLogin} requestClose={this.handleCloseLogin} />
       </Container>
     )

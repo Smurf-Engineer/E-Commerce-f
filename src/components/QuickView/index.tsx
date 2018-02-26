@@ -211,7 +211,7 @@ export class QuickView extends React.Component<Props, State> {
 
   gotoCustomize = () => {
     const { history } = this.props
-    history.push('designer')
+    history.push('/design-center')
   }
 }
 

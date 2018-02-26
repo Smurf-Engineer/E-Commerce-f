@@ -58,12 +58,13 @@ class MainLayout extends React.Component<Props, {}> {
       currentCurrency,
       intl
     } = this.props
+    const { location: { pathname } } = history
+    const hideBottom = pathname === '/design-center'
     return (
       <Layout>
-        <Header>
+        <Header {...{ hideBottom }}>
           <MenuBar
             searchFunc={this.onSearch}
-
             onChangeLocation={setRegionAction}
             {...{
               history,
@@ -74,7 +75,8 @@ class MainLayout extends React.Component<Props, {}> {
               currentLanguage,
               currentCurrency,
               openLogin,
-              openLoginAction
+              openLoginAction,
+              hideBottom
             }}
           />
         </Header>
@@ -87,10 +89,12 @@ class MainLayout extends React.Component<Props, {}> {
           {...{ history }}
         />
         <Content>{children}</Content>
-        <Footer>
-          <ContactAndLinks />
-          <SocialMedia />
-        </Footer>
+        {!hideBottom && (
+          <Footer>
+            <ContactAndLinks />
+            <SocialMedia />
+          </Footer>
+        )}
         <QuickView
           open={!!productId}
           handleClose={this.onCloseModal}
