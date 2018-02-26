@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import vertexShader from './vertex'
 import fragmentShader from './fragment'
-import './styles.css'
+import { Container, Render } from './styledComponents'
 
 // TODO: Refactor this code
 /* eslint-disable */
-class Designer extends Component {
-  componentDidMount() {
+class Render3D extends Component {
+  // TODO: Remove _
+  componentDidMount_() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -196,7 +197,7 @@ class Designer extends Component {
     this.start()
   }
 
-  componentWillUnmount() {
+  componentWillUnmount_() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
   }
@@ -303,15 +304,12 @@ class Designer extends Component {
 
   render() {
     return (
-      <div>
-        <div className="header">Jackroo Designer - v0.02</div>
-        <div
-          ref={container => (this.container = container)}
-          style={{ width: '100%', height: '100vh' }}
-        />
-      </div>
+      <Container>
+        <div>RENDER</div>
+        {/* <Render innerRef={container => (this.container = container)} /> */}
+      </Container>
     )
   }
 }
 
-export default Designer
+export default Render3D

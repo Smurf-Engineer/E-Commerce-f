@@ -15,6 +15,7 @@ import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
 import Grid from '../../components/DesignCenterGrid'
+import Customize from '../../components/DesignCenterCustomize'
 import { Container, Text } from './styledComponents'
 import { Theme } from '../../types/common'
 import messages from './messages'
@@ -125,7 +126,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               <div>Style</div>
             </div>
-            <div>customize</div>
+            <Customize />
             <div key="preview">
               <div>Preview</div>
             </div>

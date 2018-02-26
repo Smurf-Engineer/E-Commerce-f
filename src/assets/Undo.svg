@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="19px" viewBox="0 0 14 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Design-Tools/Toolsets/Edit-Tools" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-13.000000, -11.000000)" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group" transform="translate(12.687500, 11.273863)" stroke="#979797">
+            <path d="M1.76130384,5.35813849 L7.70769192,5.35813849 C10.9917914,5.35813849 13.65408,8.02042712 13.65408,11.3045266 C13.65408,14.588626 10.9917914,17.2509147 7.70769192,17.2509147 L1.76130384,17.2509147" id="Rectangle"></path>
+            <polyline id="Triangle" transform="translate(3.196666, 5.358138) rotate(-90.000000) translate(-3.196666, -5.358138) " points="-1.49047837 7.68403306 3.19666627 3.03224392 7.8838109 7.68403306"></polyline>
+        </g>
+    </g>
+</svg>

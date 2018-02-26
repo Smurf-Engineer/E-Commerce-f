@@ -4,3 +4,4 @@
 @layout-footer-background: #231f20;
 @popover-distance: -3000px;
 @zindex-popover: 999;
+@tab-bar-margin: 0 0 0 0;

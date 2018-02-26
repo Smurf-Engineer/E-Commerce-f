@@ -38,5 +38,9 @@
   "components.DesignCenterTabs.customize": "Customize",
   "components.DesignCenterTabs.preview": "Preview",
   "components.DesignCenterInfo.theme": "SELECT A THEME",
-  "components.DesignCenterInfo.style": "SELECT A STYLE"
+  "components.DesignCenterInfo.style": "SELECT A STYLE",
+  "components.designCenterCustomize.Tab.color": "Color",
+  "components.designCenterCustomize.Tab.text": "Text",
+  "components.designCenterCustomize.Tab.symbol": "Symbol",
+  "components.designCenterCustomize.Tab.upload": "Upload"
 }
