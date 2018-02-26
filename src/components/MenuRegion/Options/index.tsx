@@ -32,7 +32,7 @@ const Options = ({ title, options, currentSelected, onPress }: Props) => {
       selected={currentSelected === index}
       onClick={() => onPress(index)}
     >
-      {option.short_name.toUpperCase()}
+      {option.shortName.toUpperCase()}
     </Text>
   ))
   const itemsWithDivider = insertDividers(items)

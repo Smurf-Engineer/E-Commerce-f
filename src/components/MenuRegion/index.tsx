@@ -81,7 +81,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     const locale =
       region.languages[
         currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
-      ].short_name
+      ].shortName
     onChangeLocation({
       locale,
       region: currentRegionTemp !== null ? currentRegionTemp : currentRegion,
@@ -155,9 +155,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       >
         <Regionst>
           <img src={region.icon} />
-          <TopText>
-            {loading ? null : currency.short_name.toUpperCase()}
-          </TopText>
+          <TopText>{loading ? null : currency.shortName.toUpperCase()}</TopText>
         </Regionst>
       </Popover>
     )

@@ -9,12 +9,12 @@ export const regionsQuery = gql`
       currencies {
         id
         name
-        short_name
+        shortName: short_name
       }
       languages {
         id
         name
-        short_name
+        shortName: short_name
       }
     }
   }

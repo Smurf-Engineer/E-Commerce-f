@@ -72,13 +72,13 @@ export interface Region {
 export interface Language {
   id: number
   name: string
-  short_name: string
+  shortName: string
 }
 
 export interface Currency {
   id: number
   name: string
-  short_name: string
+  shortName: string
 }
 
 export interface RegionConfig {
