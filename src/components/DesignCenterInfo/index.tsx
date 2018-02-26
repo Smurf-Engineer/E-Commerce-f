@@ -13,7 +13,7 @@ import {
   Message,
   QuickView
 } from './styledComponents'
-import quickView from '../../assets//quickview.svg'
+import quickView from '../../assets/quickview.svg'
 
 interface Props {
   label: string
