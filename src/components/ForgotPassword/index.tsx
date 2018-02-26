@@ -19,7 +19,7 @@ interface Props {
 
 const ForgotPassword = ({ open, requestClose }: Props) => {
   return (
-    <JakrooModal open={open} {...{ requestClose }}>
+    <JakrooModal {...{ open, requestClose }}>
       <Container>
         <ForgotPasswordLabel>Forgot your password?</ForgotPasswordLabel>
         <EnterEmailLabel>

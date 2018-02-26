@@ -5,6 +5,7 @@ import * as React from 'react'
 import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
 import GoogleLogin from 'react-google-login'
+import config from '../../config/index'
 import {
   Container,
   Text,
@@ -24,9 +25,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     return (
       <Container>
         <GoogleButton
-          clientId={
-            '32595750537-deiet8319orbo3c54uqin9aqkpnbchbu.apps.googleusercontent.com'
-          }
+          clientId={config.googleId || ''}
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
         >
@@ -34,7 +33,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           <span>Login with Google</span>
         </GoogleButton>
         <FacebookButton
-          appId="1656476814419105"
+          appId={config.facebookId || ''}
           autoLoad={false}
           fields="name,email,picture"
           cssClass="my-facebook-button-class"
