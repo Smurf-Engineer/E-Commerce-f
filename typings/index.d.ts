@@ -35,3 +35,19 @@ declare module 'react-star-ratings' {
 
   export default StarRatings
 }
+
+declare module 'react-facebook-login' {
+  interface Props {
+    appId: string
+    autoLoad: boolean
+    fields: string
+    onClick: (param: any) => void
+    callback: (param: any) => void
+    cssClass: string
+    scope: string
+    icon: string
+  }
+
+  class FacebookLogin extends React.Component<Props, any> {}
+  export default FacebookLogin
+}

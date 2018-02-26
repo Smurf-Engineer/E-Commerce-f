@@ -27,9 +27,11 @@ interface Props {
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
   openQuickViewAction: (open: number | null) => void
+  openLoginAction: (open: boolean) => void
   showSearchResults: boolean
   searchParam: string
   productId: boolean
+  openLogin: boolean
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
@@ -48,6 +50,8 @@ class MainLayout extends React.Component<Props, {}> {
       showSearchResults,
       searchParam,
       productId,
+      openLogin,
+      openLoginAction,
       setRegionAction,
       currentRegion,
       currentLanguage,
@@ -70,6 +74,8 @@ class MainLayout extends React.Component<Props, {}> {
               currentRegion,
               currentLanguage,
               currentCurrency,
+              openLogin,
+              openLoginAction,
               hideBottom
             }}
           />
@@ -105,7 +111,7 @@ class MainLayout extends React.Component<Props, {}> {
     const { showSearchResultsAction } = this.props
     showSearchResultsAction(true)
   }
-  // TODO AddQuickView Action
+
   openQuickView = (id: number) => {
     const { openQuickViewAction, productId } = this.props
     openQuickViewAction(id)
