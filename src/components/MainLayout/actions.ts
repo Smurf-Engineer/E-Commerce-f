@@ -21,10 +21,7 @@ export const openQuickViewAction = (id: number | null): AnyAction => ({
   id
 })
 
-export const openLoginAction = (open: boolean): AnyAction => {
-  console.log('open login ', open)
-  return {
-    type: OPEN_LOGIN_MODAL,
-    open
-  }
-}
+export const openLoginAction = (open: boolean): AnyAction => ({
+  type: OPEN_LOGIN_MODAL,
+  open
+})

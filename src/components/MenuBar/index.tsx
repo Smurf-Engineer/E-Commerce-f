@@ -3,12 +3,13 @@
  */
 import * as React from 'react'
 import Modal from 'antd/lib/modal'
+import { FormattedMessage, InjectedIntl } from 'react-intl'
 import DropdownList from '../DropdownList'
-import Support from '../MenuSupport'
+import MenuSupport from '../MenuSupport'
+import MenuRegion from '../MenuRegion'
 import {
   Container,
   TopText,
-  Region,
   Row,
   Divider,
   TopRow,
@@ -17,10 +18,11 @@ import {
   CartIcon,
   SearchIcon
 } from './styledComponents'
+import { RegionConfig } from '../../types/common'
 import logo from '../../assets/jakroo_logo.svg'
-import caFlag from '../../assets/CA.svg'
 import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
+import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
 
@@ -29,41 +31,50 @@ interface Props {
   searchFunc: (param: string) => void
   openLogin?: boolean
   openLoginAction: (open: boolean) => void
+  onChangeLocation: (payload: RegionConfig) => void
+  currentRegion: number
+  currentLanguage: number
+  currentCurrency: number
+  intl: InjectedIntl
 }
 
-interface StateProps {
-  openLogin: boolean
-}
-
-class MenuBar extends React.Component<Props, StateProps> {
-  state = {
-    openLogin: false
-  }
-
+class MenuBar extends React.Component<Props, {}> {
   render() {
-    const { history, searchFunc, openLogin } = this.props
-    // const { openLogin } = this.state
+    const {
+      history,
+      searchFunc,
+      openLogin,
+      onChangeLocation,
+      currentRegion,
+      currentLanguage,
+      currentCurrency,
+      intl
+    } = this.props
     let user
     if (typeof window !== 'undefined') {
-      console.log('window')
       user = JSON.parse(localStorage.getItem('user') as string)
-      console.log(user)
     }
 
     const loggedUser = !user ? (
-      <TopText onClick={this.handleOpenLogin}>LOGIN</TopText>
+      <TopText onClick={this.handleOpenLogin}>
+        <FormattedMessage {...messages.title} />
+      </TopText>
     ) : (
       <TopText>{`${String(user.name).toUpperCase()}`}</TopText>
     )
     return (
       <Container>
         <Row>
-          <Support />
+          <MenuSupport />
           <TopRow>
-            <Region>
-              <img src={caFlag} />
-              <TopText>$USD</TopText>
-            </Region>
+            <MenuRegion
+              {...{
+                onChangeLocation,
+                currentRegion,
+                currentLanguage,
+                currentCurrency
+              }}
+            />
             <CartIcon src={cart} />
             {loggedUser}
           </TopRow>
@@ -72,22 +83,24 @@ class MenuBar extends React.Component<Props, StateProps> {
         <BottomRow>
           <LogoIcon src={logo} />
           <DropdownList {...{ history }} />
-          <SearchBar search={searchFunc} onHeader={true} />
+          <SearchBar
+            search={searchFunc}
+            onHeader={true}
+            formatMessage={intl.formatMessage}
+          />
         </BottomRow>
         <Login open={openLogin} requestClose={this.handleCloseLogin} />
       </Container>
     )
   }
-
   handleOpenLogin = () => {
     const { openLoginAction } = this.props
     openLoginAction(true)
-    // this.setState({ openLogin: true })
   }
+
   handleCloseLogin = () => {
     const { openLoginAction } = this.props
     openLoginAction(false)
-    //  this.setState({ openLogin: false })
   }
 }
 

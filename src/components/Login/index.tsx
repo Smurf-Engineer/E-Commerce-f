@@ -7,6 +7,7 @@ import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
 import { validate } from 'email-validator'
+import { FormattedMessage, InjectedIntl } from 'react-intl'
 import {
   Container,
   LoginLabel,
@@ -22,6 +23,7 @@ import JakrooModal from '../Common/JakrooModal'
 import FacebookGmailLogin from '../FacebookGmailLogin'
 import SignUp from '../SignUp'
 import { mailLogin } from './data'
+import messages from './messages'
 
 interface Props {
   open: boolean
@@ -57,7 +59,9 @@ class Login extends React.Component<Props, StateProps> {
     const { isLoginIn, email, password } = this.state
     const renderView = isLoginIn ? (
       <div>
-        <LoginLabel>{'Log In'}</LoginLabel>
+        <LoginLabel>
+          <FormattedMessage {...messages.title} />
+        </LoginLabel>
         <FormContainer>
           <StyledInput
             id="email"
@@ -127,7 +131,7 @@ class Login extends React.Component<Props, StateProps> {
     const { email, password } = this.state
     const { loginWithEmail, requestClose } = this.props
 
-    if (!email && !password) {
+    if (!email || !password) {
       message.error('Invalid User or Password!')
       return
     }

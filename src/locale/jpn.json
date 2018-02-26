@@ -1,0 +1,9 @@
+{
+  "screens.NotFoundPage.header": "Page not found.",
+  "components.menuBar.men": "男性",
+  "components.menuBar.women": "女性",
+  "components.menuBar.cycling": "サイクリング",
+  "components.menuBar.triathlon": "トライアスロン",
+  "components.menuBar.nordic": "ノルディック",
+  "components.menuBar.active": "アクティブ"
+}

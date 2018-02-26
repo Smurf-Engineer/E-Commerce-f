@@ -33,6 +33,7 @@ import {
 interface Props {
   closeSignUp?: () => void
   signUpUser: (variables: {}) => void
+  requestClose: () => void
 }
 interface StateProps {
   name: string
@@ -53,7 +54,7 @@ class SignUp extends React.Component<Props, StateProps> {
     newsLetter: false
   }
   render() {
-    const { closeSignUp } = this.props
+    const { closeSignUp, requestClose } = this.props
     const {
       name,
       lastName,
@@ -71,7 +72,7 @@ class SignUp extends React.Component<Props, StateProps> {
               'Save and acess all your customized designs and preferences for a better shopping experience.'
             }
           </Text>
-          <FacebookGmailLogin />
+          <FacebookGmailLogin {...{ requestClose }} />
         </SocialMediaContainer>
         <DividerRow>
           <LeftDivider />

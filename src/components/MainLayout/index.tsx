@@ -4,9 +4,12 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
+import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { ReducersObject } from '../../store/rootReducer'
+import { RegionConfig } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -18,15 +21,20 @@ const { Content, Footer } = Layout
 
 interface Props {
   children: React.ReactChild
+  intl: InjectedIntl
   history: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
+  setRegionAction: (payload: RegionConfig) => void
   openQuickViewAction: (open: number | null) => void
   openLoginAction: (open: boolean) => void
   showSearchResults: boolean
   searchParam: string
   productId: boolean
   openLogin: boolean
+  currentRegion: number
+  currentLanguage: number
+  currentCurrency: number
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -43,18 +51,28 @@ class MainLayout extends React.Component<Props, {}> {
       searchParam,
       productId,
       openLogin,
-      openLoginAction
+      openLoginAction,
+      setRegionAction,
+      currentRegion,
+      currentLanguage,
+      currentCurrency,
+      intl
     } = this.props
-
     return (
       <Layout>
         <Header>
           <MenuBar
             searchFunc={this.onSearch}
+
+            onChangeLocation={setRegionAction}
             {...{
               history,
+              intl,
               showSearchResults,
               searchParam,
+              currentRegion,
+              currentLanguage,
+              currentCurrency,
               openLogin,
               openLoginAction
             }}
@@ -82,11 +100,11 @@ class MainLayout extends React.Component<Props, {}> {
     )
   }
   closeResults = () => {
-    const { showSearchResults, showSearchResultsAction } = this.props
+    const { showSearchResultsAction } = this.props
     showSearchResultsAction(false)
   }
   openResults = () => {
-    const { showSearchResults, showSearchResultsAction } = this.props
+    const { showSearchResultsAction } = this.props
     showSearchResultsAction(true)
   }
 
@@ -100,9 +118,11 @@ class MainLayout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ layout }: ReducersObject) => layout.toJS()
+const mapStateToProps = ({ layout, languageProvider }: ReducersObject) => {
+  return { ...layout.toJS(), ...languageProvider.toJS() }
+}
 
-const LayoutEnhance = compose(connect(mapStateToProps, { ...LayoutActions }))(
-  MainLayout
-)
+const LayoutEnhance = compose(
+  connect(mapStateToProps, { ...LayoutActions, ...LocaleActions })
+)(MainLayout)
 export default LayoutEnhance

@@ -4,7 +4,6 @@
 import * as React from 'react'
 import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
-import FacebookSignIn from '../FacebookSignIn'
 import GoogleLogin from 'react-google-login'
 import {
   Container,
@@ -36,7 +35,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         </GoogleButton>
         <FacebookButton
           appId="1656476814419105"
-          autoLoad={true}
+          autoLoad={false}
           fields="name,email,picture"
           cssClass="my-facebook-button-class"
           icon="fa-facebook"
@@ -44,21 +43,17 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           callback={this.responseFacebook}
           scope="public_profile"
         />
-        <FacebookSignIn redirectUrl="/" appId="1656476814419105" />
       </Container>
     )
   }
-  componentClicked = (evt: any) => {
-    console.log('COMPONENT CLICK FACEBOOK ', evt)
-  }
+  componentClicked = (evt: any) => {}
 
   responseFacebook = async (facebookResp: {}) => {
     const { loginWithFacebook, requestClose } = this.props
     const token = get(facebookResp, 'accessToken')
-    console.log('FACEBOOK CALLBACK ', facebookResp)
+
     try {
       const response = await loginWithFacebook({ variables: { token } })
-      console.log('FB RESP ', response)
       const data = get(response, 'data.facebookSignIn', false)
 
       if (data) {

@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Popover from 'antd/lib/popover'
+import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
@@ -10,13 +11,13 @@ import { QueryProps } from '../../types/common'
 import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
+import MenuSports from '../MenuSports'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants'
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
 import {
   setMenuGenderSelectedAction,
   setMenuSportSelectedAction
 } from './actions'
-import MenuSports from '../MenuSports'
 import { Filter } from '../../types/common'
 import {
   Container,
@@ -25,6 +26,7 @@ import {
   overStyle,
   menuStyle
 } from './styledComponents'
+import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 interface Data extends QueryProps {
@@ -93,6 +95,7 @@ export class DropdownList extends React.PureComponent<Props> {
           trigger="hover"
           placement="bottom"
           visible={visible}
+          mouseEnterDelay={0.3}
           onVisibleChange={isVisible =>
             this.handleOnHideGenderMenu(isVisible, index)
           }
@@ -106,7 +109,9 @@ export class DropdownList extends React.PureComponent<Props> {
             />
           }
         >
-          <OptionDropdown>{label.toUpperCase()}</OptionDropdown>
+          <OptionDropdown>
+            <FormattedMessage {...messages[label]} />
+          </OptionDropdown>
         </Popover>
       </Menu.Item>
     ))
@@ -117,6 +122,7 @@ export class DropdownList extends React.PureComponent<Props> {
           trigger="hover"
           placement="bottom"
           visible={visible}
+          mouseEnterDelay={0.3}
           onVisibleChange={isVisible =>
             this.handleOnHideSportsMenu(isVisible, index)
           }
@@ -130,7 +136,9 @@ export class DropdownList extends React.PureComponent<Props> {
             />
           }
         >
-          <OptionDropdown>{label.toUpperCase()}</OptionDropdown>
+          <OptionDropdown>
+            <FormattedMessage {...messages[label]} />
+          </OptionDropdown>
         </Popover>
       </Menu.Item>
     ))

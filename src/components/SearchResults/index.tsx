@@ -88,7 +88,6 @@ export class SearchResults extends React.Component<Props, {}> {
   }
   gotoCustomize = () => {
     const { history } = this.props
-    console.log('customize')
     history.push('designer')
   }
 }

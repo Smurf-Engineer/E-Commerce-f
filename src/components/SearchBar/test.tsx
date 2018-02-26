@@ -8,6 +8,7 @@ import SearchBar from './index'
 describe('<SearchBar />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<SearchBar search={() => {}} />, div)
+    const format = (message: string) => 'string'
+    ReactDOM.render(<SearchBar search={() => {}} formatMessage={format} />, div)
   })
 })
