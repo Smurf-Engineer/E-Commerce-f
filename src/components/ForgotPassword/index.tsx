@@ -2,6 +2,7 @@
  * ForgotPassword Component - Created by cazarez on 20/02/18.
  */
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 import {
   Container,
   ForgotPasswordLabel,
@@ -10,29 +11,32 @@ import {
   StyledButtonSend,
   ReturnToLogin
 } from './styledComponents'
+import messages from './messages'
 import JakrooModal from '../Common/JakrooModal'
 
 interface Props {
   open: boolean
   requestClose?: () => void
+  formatMessage?: (messageDescriptor: any) => string
 }
 
-const ForgotPassword = ({ open, requestClose }: Props) => {
+const ForgotPassword = ({ open, requestClose, formatMessage }: Props) => {
   return (
     <JakrooModal {...{ open, requestClose }}>
       <Container>
-        <ForgotPasswordLabel>Forgot your password?</ForgotPasswordLabel>
+        <ForgotPasswordLabel>
+          <FormattedMessage {...messages.forgotPasswordLabel} />
+        </ForgotPasswordLabel>
         <EnterEmailLabel>
-          Enter your email to receive instructions on how to reset your
-          password.
+          <FormattedMessage {...messages.enterEmailLabel} />
         </EnterEmailLabel>
         <StyledInput placeholder="Email" />
-        <div>
-          <StyledButtonSend>SEND</StyledButtonSend>
-        </div>
-        <div>
-          <ReturnToLogin>Or return to LOG IN</ReturnToLogin>
-        </div>
+        <StyledButtonSend>
+          <FormattedMessage {...messages.sendButtonLabel} />
+        </StyledButtonSend>
+        <ReturnToLogin>
+          <FormattedMessage {...messages.returnToLoginLabel} />
+        </ReturnToLogin>
       </Container>
     </JakrooModal>
   )

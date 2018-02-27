@@ -40,5 +40,38 @@
   "components.DesignCenterTabs.customize": "Customize",
   "components.DesignCenterTabs.preview": "Preview",
   "components.DesignCenterInfo.theme": "SELECT A THEME",
-  "components.DesignCenterInfo.style": "SELECT A STYLE"
+  "components.DesignCenterInfo.style": "SELECT A STYLE",
+  "components.login.title": "Log In",
+  "components.login.rememberMe": "Remember Me",
+  "components.login.forgotPassword": "Forgot Password",
+  "components.login.loginButtonLabel": "LOGIN",
+  "components.login.notAMember": "Not a member?",
+  "components.login.joinNow": "JOIN NOW",
+  "components.login.emailLabel": "E-Mail",
+  "components.login.passwordLabel": "Password",
+  "components.login.welcomeMessage": "Hi {name}! Welcome to Jakroo",
+  "components.login.createAccountError":
+    "Something wrong happened. Please try again!",
+  "components.signUp.createLabel": "Create a Jakroo Account",
+  "components.signUp.saveAndAccessLegend":
+    "Save and acess all your customized designs and preferences for a better shopping experience.",
+  "components.signUp.orLabel": "OR",
+  "components.signUp.firstNameLabel": "First Name",
+  "components.signUp.lastNameLabel": "Last Name",
+  "components.signUp.emailLabel": "E-Mail",
+  "components.signUp.passwordLabel":
+    "Password * Must be at least 8 characters long",
+  "components.signUp.repeatPasswordLabel": "Re-enter Password",
+  "components.signUp.newsLetterSignUp": "Sign me up for Jackroo’s Newsletter",
+  "components.signUp.termsAndPolicyLegend":
+    "By creating an account, you agree to Jakroo's Privacy Policy and Terms of Use",
+  "components.signUp.createAccountButtonLabel": "CREATE ACCOUNT",
+  "compoenents.signUp.haveAccount": "Have an account?",
+  "components.signUp.loginLabel": "LOG IN",
+  "components.signUp.welcomeMessage": "Hi {name}! Welcome to Jakroo",
+  "components.signUp.passwordLengthError":
+    "Password must be at least 8 characters",
+  "components.signUp.requiredFieldsError": "All fields are required!",
+  "components.signUp.createAccountError":
+    "Something wrong happened. Please try again!"
 }

@@ -8,6 +8,10 @@ import Login from './index'
 describe('<Login />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<Login open={false} requestClose={() => {}} />, div)
+    const format = (message: string) => 'string'
+    ReactDOM.render(
+      <Login open={false} requestClose={() => {}} formatMessage={format} />,
+      div
+    )
   })
 })

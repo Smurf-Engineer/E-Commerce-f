@@ -24,6 +24,7 @@ import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
+import ForgotPassword from '../ForgotPassword'
 import { RegionConfig } from '../../types/common'
 
 interface Props {
@@ -39,11 +40,19 @@ interface Props {
   hideBottom?: boolean
 }
 
-class MenuBar extends React.Component<Props, {}> {
+interface StateProps {
+  openForgotPassword: boolean
+}
+
+class MenuBar extends React.Component<Props, StateProps> {
   static defaultProps = {
     hideBottom: false
   }
+  state = {
+    openForgotPassword: false
+  }
   render() {
+    const { openForgotPassword } = this.state
     const {
       history,
       searchFunc,
@@ -96,7 +105,16 @@ class MenuBar extends React.Component<Props, {}> {
             />
           </BottomRow>
         )}
-        <Login open={openLogin} requestClose={this.handleCloseLogin} />
+        <Login
+          open={openLogin}
+          requestClose={this.handleCloseLogin}
+          formatMessage={intl.formatMessage}
+          handleForgotPassword={this.handleOpenForgotPassword}
+        />
+        <ForgotPassword
+          open={openForgotPassword}
+          formatMessage={intl.formatMessage}
+        />
       </Container>
     )
   }
@@ -108,6 +126,10 @@ class MenuBar extends React.Component<Props, {}> {
   handleCloseLogin = () => {
     const { openLoginAction } = this.props
     openLoginAction(false)
+  }
+  handleOpenForgotPassword = () => {
+    const { openForgotPassword } = this.state
+    this.setState({ openForgotPassword: !openForgotPassword })
   }
 }
 
