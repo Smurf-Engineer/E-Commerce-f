@@ -14,13 +14,6 @@ interface Props {
   logout: () => void
 }
 
-const handleLogOut = () => {
-  console.log('Logout')
-  if (typeof window !== 'undefined' && localStorage.getItem('user')) {
-    localStorage.removeItem('user')
-  }
-}
-
 const Logout = ({ title, logout }: Props) => {
   const logoutMenu = (
     <Menu style={menuStyle}>
