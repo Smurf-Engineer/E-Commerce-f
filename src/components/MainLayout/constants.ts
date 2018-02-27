@@ -6,3 +6,5 @@ export const OPEN_QUICKVIEW_ACTION = `${namespace}/OPEN_QUICKVIEW_ACTION`
 
 // LOGIN MODAL
 export const OPEN_LOGIN_MODAL = `${namespace}/OPEN_LOGIN_MODAL`
+export const LOGOUT = `${namespace}/LOGOUT`
+export const SAVE_USER_TO_LOCAL = `${namespace}/SAVE_USER_TO_LOCAL`

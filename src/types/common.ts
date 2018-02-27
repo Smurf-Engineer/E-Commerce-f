@@ -93,3 +93,9 @@ export interface Theme {
   name: string
   picture: string
 }
+
+export interface UserType {
+  name: string
+  lastName: string
+  token: string
+}

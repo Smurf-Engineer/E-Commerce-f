@@ -9,7 +9,7 @@ import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { ReducersObject } from '../../store/rootReducer'
-import { RegionConfig } from '../../types/common'
+import { RegionConfig, UserType } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -28,6 +28,8 @@ interface Props {
   setRegionAction: (payload: RegionConfig) => void
   openQuickViewAction: (open: number | null) => void
   openLoginAction: (open: boolean) => void
+  saveUserToLocal: (user: object) => void
+  logoutAction: () => void
   showSearchResults: boolean
   searchParam: string
   productId: boolean
@@ -56,7 +58,9 @@ class MainLayout extends React.Component<Props, {}> {
       currentRegion,
       currentLanguage,
       currentCurrency,
-      intl
+      intl,
+      logoutAction,
+      saveUserToLocal
     } = this.props
     const { location: { pathname } } = history
     const hideBottom = pathname === '/design-center'
@@ -76,7 +80,9 @@ class MainLayout extends React.Component<Props, {}> {
               currentCurrency,
               openLogin,
               openLoginAction,
-              hideBottom
+              hideBottom,
+              logoutAction,
+              saveUserToLocal
             }}
           />
         </Header>
