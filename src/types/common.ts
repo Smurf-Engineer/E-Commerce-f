@@ -65,8 +65,20 @@ export interface Product {
 export interface Region {
   icon: string
   label: string
-  languages: string[]
-  currencies: string[]
+  languages: Language[]
+  currencies: Currency[]
+}
+
+export interface Language {
+  id: number
+  name: string
+  shortName: string
+}
+
+export interface Currency {
+  id: number
+  name: string
+  shortName: string
 }
 
 export interface RegionConfig {
