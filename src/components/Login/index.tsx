@@ -31,6 +31,8 @@ interface Props {
   loginWithEmail: (variables: {}) => void
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
+  formatMessage: (messageDescriptor: any, values?: object) => string
+  handleForgotPassword?: () => void
 }
 
 interface StateProps {
@@ -54,44 +56,53 @@ class Login extends React.Component<Props, StateProps> {
       open,
       requestClose,
       loginWithFacebook,
-      loginWithGoogle
+      loginWithGoogle,
+      formatMessage,
+      handleForgotPassword
     } = this.props
     const { isLoginIn, email, password } = this.state
     const renderView = isLoginIn ? (
       <div>
         <LoginLabel>
-          <FormattedMessage {...messages.title} />
+          <FormattedMessage {...messages.login} />
         </LoginLabel>
         <FormContainer>
           <StyledInput
             id="email"
-            placeholder="E-Mail"
+            placeholder={formatMessage(messages.emailLabel)}
             value={email}
             onChange={this.handleInputChange}
           />
           <StyledInput
             id="password"
-            type="password"
+            type={formatMessage(messages.passwordLabel)}
             placeholder="Password"
             value={password}
             onChange={this.handleInputChange}
           />
           <RememberMeRow>
-            <Checkbox>{'Remember me'}</Checkbox>
-            <ForgotPasswordLabel>{'Forgot Password?'}</ForgotPasswordLabel>
+            <Checkbox>{formatMessage(messages.rememberMe)}</Checkbox>
+            <ForgotPasswordLabel onClick={handleForgotPassword}>
+              {formatMessage(messages.forgotPassword)}
+            </ForgotPasswordLabel>
           </RememberMeRow>
           <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
-            {'LOG IN'}
+            {formatMessage(messages.loginButtonLabel)}
           </StyledLoginButton>
           <FacebookGmailLogin {...{ requestClose }} />
         </FormContainer>
         <NotAMemberLabel>
-          {'Not a member?'}
-          <JoinNowLabel onClick={this.handleJoinNow}>{'JOIN NOW'}</JoinNowLabel>
+          {formatMessage(messages.notAMember)}
+          <JoinNowLabel onClick={this.handleJoinNow}>
+            {formatMessage(messages.joinNow)}
+          </JoinNowLabel>
         </NotAMemberLabel>
       </div>
     ) : (
-      <SignUp closeSignUp={this.showLogin} {...{ requestClose }} />
+      <SignUp
+        closeSignUp={this.showLogin}
+        {...{ requestClose, formatMessage }}
+      />
     )
     return (
       <JakrooModal
@@ -129,7 +140,7 @@ class Login extends React.Component<Props, StateProps> {
 
   handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
     const { email, password } = this.state
-    const { loginWithEmail, requestClose } = this.props
+    const { loginWithEmail, requestClose, formatMessage } = this.props
 
     if (!email || !password) {
       message.error('Invalid User or Password!')
@@ -147,7 +158,9 @@ class Login extends React.Component<Props, StateProps> {
           lastName: get(data, 'user.lastName')
         }
         message.success(
-          `Hi ${get(data, 'user.name', '')}! Welcome to Jakroo`,
+          formatMessage(messages.welcomeMessage, {
+            name: get(data, 'user.name', '')
+          }),
           5
         )
         if (typeof window !== 'undefined') {
@@ -156,7 +169,7 @@ class Login extends React.Component<Props, StateProps> {
         requestClose()
       }
     } catch (error) {
-      message.error('Something happened, please try again!')
+      message.error(formatMessage(messages.loginError))
       console.error(error)
     }
   }

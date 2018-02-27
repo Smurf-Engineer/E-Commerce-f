@@ -37,7 +37,6 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           autoLoad={false}
           fields="name,email,picture"
           cssClass="my-facebook-button-class"
-          icon="fa-facebook"
           onClick={this.componentClicked}
           callback={this.responseFacebook}
           scope="public_profile"
