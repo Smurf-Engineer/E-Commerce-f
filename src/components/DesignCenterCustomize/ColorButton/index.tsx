@@ -4,14 +4,21 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container, Text } from './styledComponents'
+import { Container, Oval, OvalSelected, Text } from './styledComponents'
 
-interface Props {}
+interface Props {
+  label: string
+  currentColor?: string
+  selected: boolean
+}
 
-const ColorButton = (props: Props) => {
+const ColorButton = ({ label, currentColor, selected }: Props) => {
   return (
     <Container>
-      <FormattedMessage {...messages.title} />
+      <OvalSelected {...{ selected }}>
+        <Oval {...{ currentColor }} />
+      </OvalSelected>
+      <Text>{label}</Text>
     </Container>
   )
 }

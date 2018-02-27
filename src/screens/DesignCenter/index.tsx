@@ -81,8 +81,10 @@ const themes: Theme[] = [
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
+  colorBlock: number
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
+  setColorBlockAction: (index: number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -103,7 +105,13 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, currentTab } = this.props
+    const {
+      intl,
+      history,
+      currentTab,
+      setColorBlockAction,
+      colorBlock
+    } = this.props
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -126,7 +134,10 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               <div>Style</div>
             </div>
-            <Customize />
+            <Customize
+              {...{ colorBlock }}
+              onSelectColorBlock={setColorBlockAction}
+            />
             <div key="preview">
               <div>Preview</div>
             </div>

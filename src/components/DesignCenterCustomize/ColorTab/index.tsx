@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import Divider from 'antd/lib/divider'
 import ColorButton from '../ColorButton'
 import nextIcon from '../../../assets/rightarrow.svg'
 import messages from './messages'
@@ -12,7 +13,8 @@ import {
   Text,
   Top,
   Row,
-  NextIcon
+  NextIcon,
+  ColorButtons
 } from './styledComponents'
 
 interface Props {}
@@ -20,6 +22,14 @@ interface Props {}
 const colors = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
 
 const ColorTab = (props: Props) => {
+  const colorButtons = colors.map((label, index) => (
+    <ColorButton
+      key={index}
+      {...{ label }}
+      currentColor={index === 1 ? '#E53636' : ''}
+      selected={index === 1}
+    />
+  ))
   return (
     <Container>
       <Top>
@@ -33,6 +43,8 @@ const ColorTab = (props: Props) => {
           <NextIcon src={nextIcon} />
         </Row>
       </Top>
+      <ColorButtons>{colorButtons}</ColorButtons>
+      <Divider />
     </Container>
   )
 }

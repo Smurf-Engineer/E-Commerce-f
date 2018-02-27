@@ -3,15 +3,14 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  background-color: #eff2f4;
-`
+export const Container = styled.div``
 
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 8px 32px;
+  background-color: #eff2f4;
 `
 
 export const Row = styled.div`
@@ -36,4 +35,10 @@ export const Text = styled.div`
 
 export const NextIcon = styled.img`
   margin-left: 8px;
+`
+
+export const ColorButtons = styled.div`
+  display: flex;
+  justify-content: space-around;
+  padding: 14px 32px 0px 32px;
 `

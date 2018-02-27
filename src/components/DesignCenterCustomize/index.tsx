@@ -8,12 +8,14 @@ import Tabs from './Tabs'
 import Render3D from './Render3D'
 import { Container, Text } from './styledComponents'
 
-interface Props {}
+interface Props {
+  onSelectColorBlock: (index: number) => void
+}
 
-const DesignCenterCustomize = (props: Props) => {
+const DesignCenterCustomize = ({ onSelectColorBlock }: Props) => {
   return (
     <Container>
-      <Tabs />
+      <Tabs {...{ onSelectColorBlock }} />
       <Render3D />
     </Container>
   )

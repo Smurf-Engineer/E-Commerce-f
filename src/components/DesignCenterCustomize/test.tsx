@@ -8,6 +8,10 @@ import DesignCenterCustomize from './index'
 describe('<DesignCenterCustomize />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<DesignCenterCustomize  />, div)
+    const selectColor = (index: number) => {}
+    ReactDOM.render(
+      <DesignCenterCustomize onSelectColorBlock={selectColor} />,
+      div
+    )
   })
 })
