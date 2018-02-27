@@ -73,5 +73,9 @@
     "Password must be at least 8 characters",
   "components.signUp.requiredFieldsError": "All fields are required!",
   "components.signUp.createAccountError":
-    "Something wrong happened. Please try again!"
+    "Something wrong happened. Please try again!",
+  "components.Logout.myLockerLabel": "My Locker",
+  "components.Logout.myAccountLabel": "My Account",
+  "components.Logout.profileSettingsLabel": "Profile Settings",
+  "components.Logout.logoutLabel": "Logout"
 }

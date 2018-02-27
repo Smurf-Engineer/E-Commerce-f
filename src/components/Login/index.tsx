@@ -32,6 +32,7 @@ interface Props {
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   formatMessage: (messageDescriptor: any, values?: object) => string
+  login: (user: object) => void
   handleForgotPassword?: () => void
 }
 
@@ -58,7 +59,8 @@ class Login extends React.Component<Props, StateProps> {
       loginWithFacebook,
       loginWithGoogle,
       formatMessage,
-      handleForgotPassword
+      handleForgotPassword,
+      login
     } = this.props
     const { isLoginIn, email, password } = this.state
     const renderView = isLoginIn ? (
@@ -89,7 +91,7 @@ class Login extends React.Component<Props, StateProps> {
           <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
             {formatMessage(messages.loginButtonLabel)}
           </StyledLoginButton>
-          <FacebookGmailLogin {...{ requestClose }} />
+          <FacebookGmailLogin handleLogin={login} {...{ requestClose }} />
         </FormContainer>
         <NotAMemberLabel>
           {formatMessage(messages.notAMember)}
@@ -140,7 +142,7 @@ class Login extends React.Component<Props, StateProps> {
 
   handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
     const { email, password } = this.state
-    const { loginWithEmail, requestClose, formatMessage } = this.props
+    const { loginWithEmail, requestClose, formatMessage, login } = this.props
 
     if (!email || !password) {
       message.error('Invalid User or Password!')
@@ -163,9 +165,7 @@ class Login extends React.Component<Props, StateProps> {
           }),
           5
         )
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('user', JSON.stringify(userData))
-        }
+        login(userData)
         requestClose()
       }
     } catch (error) {

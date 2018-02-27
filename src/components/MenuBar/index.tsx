@@ -24,8 +24,9 @@ import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
+import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
-import { RegionConfig } from '../../types/common'
+import { RegionConfig, UserType } from '../../types/common'
 
 interface Props {
   history: any
@@ -33,6 +34,8 @@ interface Props {
   openLogin?: boolean
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
+  saveUserToLocal: (user: object) => void
+  logoutAction: () => void
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
@@ -62,7 +65,9 @@ class MenuBar extends React.Component<Props, StateProps> {
       currentLanguage,
       currentCurrency,
       hideBottom,
-      intl
+      intl,
+      logoutAction,
+      saveUserToLocal
     } = this.props
     let user
     if (typeof window !== 'undefined') {
@@ -74,7 +79,10 @@ class MenuBar extends React.Component<Props, StateProps> {
         <FormattedMessage {...messages.title} />
       </TopText>
     ) : (
-      <TopText>{`${String(user.name).toUpperCase()}`}</TopText>
+      <Logout
+        title={`${String(user.name).toUpperCase()}`}
+        logout={logoutAction}
+      />
     )
     return (
       <Container>
@@ -110,6 +118,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           requestClose={this.handleCloseLogin}
           formatMessage={intl.formatMessage}
           handleForgotPassword={this.handleOpenForgotPassword}
+          login={saveUserToLocal}
         />
         <ForgotPassword
           open={openForgotPassword}
