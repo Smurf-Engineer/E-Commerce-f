@@ -15,7 +15,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_CURRENT_TAB_ACTION:
       return state.set('currentTab', action.index)
     case SET_COLOR_BLOCK_ACTION:
-      return state.set('colorBloack', action.index)
+      return state.set('colorBlock', action.index)
     default:
       return state
   }

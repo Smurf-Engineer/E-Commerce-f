@@ -10,12 +10,13 @@ import { Container, Text } from './styledComponents'
 
 interface Props {
   onSelectColorBlock: (index: number) => void
+  colorBlock: number
 }
 
-const DesignCenterCustomize = ({ onSelectColorBlock }: Props) => {
+const DesignCenterCustomize = ({ onSelectColorBlock, colorBlock }: Props) => {
   return (
     <Container>
-      <Tabs {...{ onSelectColorBlock }} />
+      <Tabs {...{ colorBlock, onSelectColorBlock }} />
       <Render3D />
     </Container>
   )

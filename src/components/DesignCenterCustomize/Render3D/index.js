@@ -7,12 +7,12 @@ import { Container, Render } from './styledComponents'
 /* eslint-disable */
 class Render3D extends Component {
   // TODO: Remove _
-  componentDidMount_() {
+  componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor('#4f5052')
+    renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
 
     /* Textures */
@@ -52,9 +52,10 @@ class Render3D extends Component {
       0.1,
       1000
     )
-    camera.position.z = 250
+    camera.position.z = 220
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
+    controls.enableZoom = false
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -93,7 +94,7 @@ class Render3D extends Component {
             customColor2: { type: 'c', value: new THREE.Color('#EE3C6F') },
             customColor3: { type: 'c', value: new THREE.Color('#94CFBB') },
             customColor4: { type: 'c', value: new THREE.Color('#00ADEE') },
-            customColor5: { type: 'c', value: new THREE.Color('#000000') },
+            customColor5: { type: 'c', value: new THREE.Color('#ffffff') },
             positionX: { type: 'f', value: 1.0 },
             positionY: { type: 'f', value: 1.0 },
             color1: {},
@@ -177,7 +178,7 @@ class Render3D extends Component {
           object.children[22].material = backPocketMaterial
 
           /* Object Conig */
-          object.position.y = -30
+          object.position.y = -40
           object.name = 'jersey'
           scene.add(object)
         },
@@ -197,7 +198,7 @@ class Render3D extends Component {
     this.start()
   }
 
-  componentWillUnmount_() {
+  componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
   }
@@ -305,8 +306,7 @@ class Render3D extends Component {
   render() {
     return (
       <Container>
-        <div>RENDER</div>
-        {/* <Render innerRef={container => (this.container = container)} /> */}
+        <Render innerRef={container => (this.container = container)} />
       </Container>
     )
   }

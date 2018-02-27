@@ -10,7 +10,7 @@ describe('<DesignCenterCustomize />', () => {
     const div = document.createElement('div')
     const selectColor = (index: number) => {}
     ReactDOM.render(
-      <DesignCenterCustomize onSelectColorBlock={selectColor} />,
+      <DesignCenterCustomize onSelectColorBlock={selectColor} colorBlock={0} />,
       div
     )
   })

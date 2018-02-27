@@ -15,14 +15,17 @@ import { Container, Text } from './styledComponents'
 
 const { TabPane } = AntdTabs
 
-interface Props {}
+interface Props {
+  onSelectColorBlock: (index: number) => void
+  colorBlock: number
+}
 
-const Tabs = (props: Props) => {
+const Tabs = ({ onSelectColorBlock, colorBlock }: Props) => {
   return (
     <Container>
       <AntdTabs defaultActiveKey="1">
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
-          <ColorTab />
+          <ColorTab {...{ onSelectColorBlock, colorBlock }} />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
           Content of Tab Pane 2

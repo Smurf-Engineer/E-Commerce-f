@@ -17,17 +17,20 @@ import {
   ColorButtons
 } from './styledComponents'
 
-interface Props {}
+interface Props {
+  onSelectColorBlock: (index: number) => void
+  colorBlock: number
+}
 
 const colors = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
 
-const ColorTab = (props: Props) => {
+const ColorTab = ({ onSelectColorBlock, colorBlock }: Props) => {
   const colorButtons = colors.map((label, index) => (
     <ColorButton
       key={index}
-      {...{ label }}
+      {...{ index, label, onSelectColorBlock }}
       currentColor={index === 1 ? '#E53636' : ''}
-      selected={index === 1}
+      selected={colorBlock === index}
     />
   ))
   return (

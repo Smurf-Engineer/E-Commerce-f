@@ -7,14 +7,23 @@ import messages from './messages'
 import { Container, Oval, OvalSelected, Text } from './styledComponents'
 
 interface Props {
+  index: number
   label: string
   currentColor?: string
   selected: boolean
+  onSelectColorBlock: (index: number) => void
 }
 
-const ColorButton = ({ label, currentColor, selected }: Props) => {
+const ColorButton = ({
+  index,
+  onSelectColorBlock,
+  label,
+  currentColor,
+  selected
+}: Props) => {
+  const handleOnPressColorBlock = () => onSelectColorBlock(index)
   return (
-    <Container>
+    <Container onClick={handleOnPressColorBlock}>
       <OvalSelected {...{ selected }}>
         <Oval {...{ currentColor }} />
       </OvalSelected>
