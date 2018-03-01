@@ -16,11 +16,7 @@ const DesignCenterGrid = ({ themes }: Props) => {
   const list = themes.map(({ picture, name }, index) => (
     <ThemeItem key={index} {...{ name, picture }} />
   ))
-  return (
-    <Container>
-      <Row>{list}</Row>
-    </Container>
-  )
+  return <Row>{list}</Row>
 }
 
 export default DesignCenterGrid

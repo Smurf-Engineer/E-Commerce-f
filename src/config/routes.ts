@@ -2,7 +2,6 @@
 import DesignCenter from '../screens/DesignCenter'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
-import Designer from '../screens/Designer'
 
 const routes = [
   {
@@ -20,11 +19,6 @@ const routes = [
     name: 'home',
     exact: true,
     component: Home
-  },
-  {
-    path: '/designer',
-    name: 'designer',
-    component: Designer
   }
 ]
 
