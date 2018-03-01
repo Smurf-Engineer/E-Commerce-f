@@ -82,16 +82,17 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
   colorBlock: number
+  palettes: Palette[]
+  paletteName: string
+  colors: string[]
+  // Redux Actions
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
   setColorAction: (color: string) => void
   setPaletteAction: (colors: string[]) => void
   setPaletteNameAction: (name: string) => void
-  paletteName: string
-  palettes: Palette[]
   setPalettesAction: (palettes: Palette[]) => void
-  colors: string[]
 }
 
 export class DesignCenter extends React.Component<Props, {}> {

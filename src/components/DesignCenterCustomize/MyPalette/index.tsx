@@ -18,12 +18,12 @@ import {
 } from './styledComponents'
 
 interface Props {
-  onSelectPalette: (colors: string[]) => void
-  onChangePaletteName: (name: string) => void
   palettes: Palette[]
   paletteName: string
   colors: string[]
+  onSelectPalette: (colors: string[]) => void
   onSetPalettes: (palettes: Palette[]) => void
+  onChangePaletteName: (name: string) => void
 }
 
 class MyPalette extends React.PureComponent<Props> {

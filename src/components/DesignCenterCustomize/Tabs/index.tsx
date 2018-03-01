@@ -17,14 +17,14 @@ import { Container, Text } from './styledComponents'
 const { TabPane } = AntdTabs
 
 interface Props {
-  onSelectColorBlock: (index: number) => void
-  onSelectColor: (color: string) => void
-  onSelectPalette: (colors: string[]) => void
   colorBlock: number
-  onChangePaletteName: (name: string) => void
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  onSelectColorBlock: (index: number) => void
+  onSelectColor: (color: string) => void
+  onSelectPalette: (colors: string[]) => void
+  onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
 }
 

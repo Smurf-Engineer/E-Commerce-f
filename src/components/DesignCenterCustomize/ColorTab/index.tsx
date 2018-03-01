@@ -23,15 +23,15 @@ import {
 } from './styledComponents'
 
 interface Props {
+  colorBlock: number
+  paletteName: string
+  palettes: Palette[]
+  colors: string[]
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
-  colorBlock: number
   onChangePaletteName: (name: string) => void
-  paletteName: string
-  palettes: Palette[]
   onSetPalettes: (palettes: Palette[]) => void
-  colors: string[]
 }
 
 interface State {
