@@ -13,8 +13,9 @@ export const Text = styled.div`
   color: #fff;
 `
 
-export const Row = styled.div`
+export const Row = styled.ul`
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
-  align-content: space-between;
+  width: 100%;
 `

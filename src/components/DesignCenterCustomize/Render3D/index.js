@@ -1,12 +1,41 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
+import isEqual from 'lodash/isEqual'
+import { FormattedMessage } from 'react-intl'
 import vertexShader from './vertex'
 import fragmentShader from './fragment'
-import { Container, Render } from './styledComponents'
+import {
+  Container,
+  Render,
+  Progress,
+  Model,
+  Row,
+  QuickView,
+  Button,
+  DragText,
+  ModelType,
+  ModelText
+} from './styledComponents'
+import messages from './messages'
+import quickView from '../../../assets/quickview.svg'
+import arrowDown from '../../../assets/downarrow.svg'
 
 // TODO: Refactor this code
 /* eslint-disable */
-class Render3D extends Component {
-  // TODO: Remove _
+class Render3D extends PureComponent {
+  state = {
+    showDragmessage: true,
+    loading: false,
+    progress: 0.0
+  }
+  componentWillReceiveProps(nextProps) {
+    const { colors } = this.props
+    const { colors: nextColors } = nextProps
+    const isDifferent = isEqual(colors, nextColors)
+    if (!isDifferent) {
+      this.setupColors(nextColors)
+    }
+  }
+  // TODO: Remove
   componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
@@ -18,20 +47,6 @@ class Render3D extends Component {
     /* Textures */
     const loader = new THREE.TextureLoader()
 
-    const front = loader.load('./models/Tour5/bb-1-camfront_Front.png')
-    const rightSleeve = loader.load(
-      './models/Tour5/bb-3-camright_Right Sleeve.png'
-    )
-    const leftSleeve = loader.load(
-      './models/Tour5/bb-5-camleft_Left Sleeve.png'
-    )
-    const rightPanel = loader.load(
-      './models/Tour5/bb-2-camright_RightSidepanel.png'
-    )
-    const leftPanel = loader.load(
-      './models/Tour5/bb-4-camleft_Left_Sidepanel.png'
-    )
-    const back = loader.load('./models/Tour5/bb-6-camback_Back.png')
     const backPocket = loader.load(
       './models/Tour5/bb-7-camback_Back Pockets.png'
     )
@@ -52,15 +67,16 @@ class Render3D extends Component {
       0.1,
       1000
     )
-    camera.position.z = 220
+    camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
-    controls.enableZoom = false
+    controls.minDistance = 150
+    controls.maxDistance = 350
 
     /* Scene and light */
     const scene = new THREE.Scene()
-    const ambient = new THREE.AmbientLight(0xffffff, 0.3)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8)
+    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.78)
     directionalLight.position.copy(camera.position)
 
     const mtlLoader = new THREE.MTLLoader()
@@ -119,7 +135,7 @@ class Render3D extends Component {
           uniformsWithPhong.color5.value = color5
           uniformsWithPhong.bumpMap.value = bumpMap
           uniformsWithPhong.bumpMapScale = 0.45
-          uniformsWithPhong.shininess.value = 20
+          uniformsWithPhong.shininess.value = 15
 
           this.uniformsWithPhong = uniformsWithPhong
 
@@ -178,7 +194,7 @@ class Render3D extends Component {
           object.children[22].material = backPocketMaterial
 
           /* Object Conig */
-          object.position.y = -40
+          object.position.y = -30
           object.name = 'jersey'
           scene.add(object)
         },
@@ -192,7 +208,6 @@ class Render3D extends Component {
     this.renderer = renderer
     this.loader = mtlLoader
     this.directionalLight = directionalLight
-    this.setupGui()
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
@@ -203,78 +218,21 @@ class Render3D extends Component {
     this.container.removeChild(this.renderer.domElement)
   }
 
-  setupGui = () => {
-    const object = this.scene.getObjectByName('jersey')
-    const gui = new dat.GUI({ height: 5 * 32 - 1 })
-    const Config = function() {
-      this.block1 = '#FFAAB4'
-      this.block2 = '#EE3C6F'
-      this.block3 = '#94CFBB'
-      this.block4 = '#00ADEE'
-      this.flatlock = '#ffffff'
-      this.object = '#000000'
-      this.positionX = 1.0
-      this.positionY = 1.0
-    }
-    const conf = new Config()
-
-    const setPosition = function() {
-      logoMesh.position.set(positionY, positionX, 15.5)
-    }
-
-    const positionControllerX = gui
-      .add(conf, 'positionX')
-      .min(0.6)
-      .max(1.2)
-      .step(0.001)
-    positionControllerX.onChange(value => {
-      this.uniformsWithPhong.positionX.value = value
-    })
-
-    const positionControllerY = gui
-      .add(conf, 'positionY')
-      .min(0.9)
-      .max(1.2)
-      .step(0.001)
-    positionControllerY.onChange(value => {
-      this.uniformsWithPhong.positionY.value = value
-    })
-
-    const controller1 = gui.addColor(conf, 'block1')
-    controller1.onChange(colorValue => {
-      this.uniformsWithPhong.customColor1.value = new THREE.Color(colorValue)
-    })
-
-    const controller2 = gui.addColor(conf, 'block2')
-    controller2.onChange(colorValue => {
-      this.uniformsWithPhong.customColor2.value = new THREE.Color(colorValue)
-    })
-
-    const controller3 = gui.addColor(conf, 'block3')
-    controller3.onChange(colorValue => {
-      this.uniformsWithPhong.customColor3.value = new THREE.Color(colorValue)
-    })
-
-    const controller4 = gui.addColor(conf, 'block4')
-    controller4.onChange(colorValue => {
-      this.uniformsWithPhong.customColor4.value = new THREE.Color(colorValue)
-    })
-
-    const flatlockController = gui.addColor(conf, 'flatlock')
-    flatlockController.onChange(colorValue => {
-      object.children[1].material.color = new THREE.Color(colorValue)
-    })
-
-    const objectController = gui.addColor(conf, 'object')
-    objectController.onChange(colorValue => {
-      this.uniformsWithPhong.customColor5.value = new THREE.Color(colorValue)
+  setupColors = colors => {
+    let colorNumber = 1
+    colors.forEach(color => {
+      let key = `customColor${colorNumber}`
+      if (color && this.uniformsWithPhong) {
+        this.uniformsWithPhong[key].value = new THREE.Color(color)
+      }
+      colorNumber += 1
     })
   }
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const percentComplete = xhr.loaded / xhr.total * 100
-      console.log(Math.round(percentComplete, 2) + '% downloaded')
+      const progress = Math.round(xhr.loaded / xhr.total * 100)
+      this.setState({ progress })
     }
   }
 
@@ -300,13 +258,32 @@ class Render3D extends Component {
   }
 
   lightUpdate = () => {
+    const { showDragmessage } = this.state
+    if (showDragmessage) {
+      this.setState({ showDragmessage: false })
+    }
     this.directionalLight.position.copy(this.camera.position)
   }
 
   render() {
+    const { showDragmessage } = this.state
     return (
       <Container>
+        <Row>
+          <Model>{'TOUR'}</Model>
+          <QuickView src={quickView} />
+        </Row>
         <Render innerRef={container => (this.container = container)} />
+        {showDragmessage && (
+          <DragText>
+            <FormattedMessage {...messages.drag} />
+          </DragText>
+        )}
+        <ModelType>
+          <ModelText>3D Model: Product Only</ModelText>
+          <img src={arrowDown} />
+        </ModelType>
+        <Button type="primary">Save</Button>
       </Container>
     )
   }

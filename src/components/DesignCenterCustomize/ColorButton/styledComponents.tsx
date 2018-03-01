@@ -30,7 +30,8 @@ export const Oval = styled.div`
   width: 30px;
   border-radius: 50%;
   border: 1px solid
-    ${({ currentColor }: OvalProps) => currentColor || '#bebebe'};
+    ${({ currentColor }: OvalProps) =>
+      currentColor && currentColor !== '#FFFFFF' ? currentColor : '#bebebe'};
   background-color: ${({ currentColor }: OvalProps) => currentColor || '#fff'};
   align-self: center;
 `

@@ -85,6 +85,9 @@ interface Props extends RouteComponentProps<any> {
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
+  setColorAction: (color: string) => void
+  setPaletteAction: (colors: string[]) => void
+  colors: string[]
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -110,7 +113,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       history,
       currentTab,
       setColorBlockAction,
-      colorBlock
+      setColorAction,
+      setPaletteAction,
+      colorBlock,
+      colors
     } = this.props
     return (
       <Layout {...{ history, intl }}>
@@ -124,7 +130,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <Grid {...{ themes }} />
+              {currentTab === 0 && <Grid {...{ themes }} />}
             </div>
             <div key="style">
               <Info
@@ -135,8 +141,10 @@ export class DesignCenter extends React.Component<Props, {}> {
               <div>Style</div>
             </div>
             <Customize
-              {...{ colorBlock }}
+              {...{ colorBlock, colors }}
               onSelectColorBlock={setColorBlockAction}
+              onSelectColor={setColorAction}
+              onSelectPalette={setPaletteAction}
             />
             <div key="preview">
               <div>Preview</div>

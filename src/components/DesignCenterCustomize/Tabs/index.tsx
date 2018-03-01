@@ -17,15 +17,32 @@ const { TabPane } = AntdTabs
 
 interface Props {
   onSelectColorBlock: (index: number) => void
+  onSelectColor: (color: string) => void
+  onSelectPalette: (colors: string[]) => void
   colorBlock: number
+  colors: string[]
 }
 
-const Tabs = ({ onSelectColorBlock, colorBlock }: Props) => {
+const Tabs = ({
+  onSelectColorBlock,
+  colorBlock,
+  onSelectColor,
+  onSelectPalette,
+  colors
+}: Props) => {
   return (
     <Container>
       <AntdTabs defaultActiveKey="1">
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
-          <ColorTab {...{ onSelectColorBlock, colorBlock }} />
+          <ColorTab
+            {...{
+              onSelectColorBlock,
+              colorBlock,
+              onSelectColor,
+              colors,
+              onSelectPalette
+            }}
+          />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
           Content of Tab Pane 2

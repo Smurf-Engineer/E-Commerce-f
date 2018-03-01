@@ -4,8 +4,12 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Divider from 'antd/lib/divider'
+import SwipeableViews from 'react-swipeable-views'
 import ColorButton from '../ColorButton'
+import ColorList from '../ColorList'
+import MyPalette from '../MyPalette'
 import nextIcon from '../../../assets/rightarrow.svg'
+import backIcon from '../../../assets/leftarrow.svg'
 import messages from './messages'
 import {
   Container,
@@ -13,43 +17,75 @@ import {
   Text,
   Top,
   Row,
-  NextIcon,
+  ArrowIcon,
   ColorButtons
 } from './styledComponents'
 
 interface Props {
   onSelectColorBlock: (index: number) => void
+  onSelectColor: (color: string) => void
+  onSelectPalette: (colors: string[]) => void
   colorBlock: number
+  colors: string[]
 }
 
-const colors = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
+interface State {
+  isFirstPage: boolean
+}
 
-const ColorTab = ({ onSelectColorBlock, colorBlock }: Props) => {
-  const colorButtons = colors.map((label, index) => (
-    <ColorButton
-      key={index}
-      {...{ index, label, onSelectColorBlock }}
-      currentColor={index === 1 ? '#E53636' : ''}
-      selected={colorBlock === index}
-    />
-  ))
-  return (
-    <Container>
-      <Top>
-        <TextColors>
-          <FormattedMessage {...messages.selectColor} />
-        </TextColors>
-        <Row>
-          <Text>
-            <FormattedMessage {...messages.myPalettes} />
-          </Text>
-          <NextIcon src={nextIcon} />
-        </Row>
-      </Top>
-      <ColorButtons>{colorButtons}</ColorButtons>
-      <Divider />
-    </Container>
-  )
+const colorsBlocks = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
+
+class ColorTab extends React.PureComponent<Props, State> {
+  state = {
+    isFirstPage: true
+  }
+  handleTooglePage = () =>
+    this.setState(({ isFirstPage }) => ({ isFirstPage: !isFirstPage }))
+  render() {
+    const {
+      onSelectColorBlock,
+      colorBlock,
+      onSelectColor,
+      colors,
+      onSelectPalette
+    } = this.props
+    const { isFirstPage } = this.state
+    const colorButtons = colorsBlocks.map((label, index) => (
+      <ColorButton
+        key={index}
+        {...{ index, label, onSelectColorBlock }}
+        currentColor={colors[index]}
+        selected={colorBlock === index}
+      />
+    ))
+    return (
+      <Container>
+        <Top>
+          {isFirstPage && (
+            <TextColors>
+              <FormattedMessage {...messages.selectColor} />
+            </TextColors>
+          )}
+          <Row {...{ isFirstPage }} onClick={this.handleTooglePage}>
+            <Text>
+              <FormattedMessage
+                {...messages[isFirstPage ? 'myPalettes' : 'myPalette']}
+              />
+            </Text>
+            <ArrowIcon src={isFirstPage ? nextIcon : backIcon} />
+          </Row>
+        </Top>
+        <SwipeableViews index={isFirstPage ? 0 : 1}>
+          <div>
+            <ColorButtons>{colorButtons}</ColorButtons>
+            <Divider />
+            <ColorList {...{ onSelectColor }} />
+          </div>
+          <MyPalette {...{ onSelectPalette }} />
+        </SwipeableViews>
+      </Container>
+    )
+  }
 }
 
 export default ColorTab

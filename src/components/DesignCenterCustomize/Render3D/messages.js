@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.Render3D.tittle',
-    defaultMessage: 'Render3D'
+  drag: {
+    id: 'components.Render3D.drag',
+    defaultMessage: 'Drag to rotate'
   }
 })

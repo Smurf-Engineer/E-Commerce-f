@@ -3,12 +3,15 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  cursor: pointer;
-  flex: 1;
+export const Container = styled.li`
+  list-style: none;
+  display: inline-block;
+  width: calc(100% / 3);
+  text-align: center;
 `
 
 export const Image = styled.img`
+  cursor: pointer;
   padding: 20px 0px;
 `
 

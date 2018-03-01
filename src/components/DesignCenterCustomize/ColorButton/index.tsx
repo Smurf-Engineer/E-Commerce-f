@@ -10,7 +10,7 @@ interface Props {
   index: number
   label: string
   currentColor?: string
-  selected: boolean
+  selected?: boolean
   onSelectColorBlock: (index: number) => void
 }
 
@@ -19,7 +19,7 @@ const ColorButton = ({
   onSelectColorBlock,
   label,
   currentColor,
-  selected
+  selected = false
 }: Props) => {
   const handleOnPressColorBlock = () => onSelectColorBlock(index)
   return (
