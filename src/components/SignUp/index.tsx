@@ -29,11 +29,13 @@ import {
   LogInLabel,
   InputRow
 } from './styledComponents'
+import messages from './messages'
 
 interface Props {
-  closeSignUp?: () => void
+  closeSignUp: () => void
   signUpUser: (variables: {}) => void
   requestClose: () => void
+  formatMessage: (messageDescriptor: any, values?: object) => string
 }
 interface StateProps {
   name: string
@@ -54,7 +56,7 @@ class SignUp extends React.Component<Props, StateProps> {
     newsLetter: false
   }
   render() {
-    const { closeSignUp, requestClose } = this.props
+    const { closeSignUp, requestClose, formatMessage } = this.props
     const {
       name,
       lastName,
@@ -66,29 +68,27 @@ class SignUp extends React.Component<Props, StateProps> {
     return (
       <Container>
         <SocialMediaContainer>
-          <SignUpLabel>{'Create a Jakroo Account'}</SignUpLabel>
-          <Text>
-            {
-              'Save and acess all your customized designs and preferences for a better shopping experience.'
-            }
-          </Text>
+          <SignUpLabel>
+            {formatMessage(messages.createAccountLabel)}
+          </SignUpLabel>
+          <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
           <FacebookGmailLogin {...{ requestClose }} />
         </SocialMediaContainer>
         <DividerRow>
           <LeftDivider />
-          <OrLabel>{'OR'}</OrLabel>
+          <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
           <RightDivider />
         </DividerRow>
         <FormContainer>
           <StyledInput
             id="name"
-            topText={'First Name'}
+            topText={formatMessage(messages.firtsNameLabel)}
             value={name}
             onChange={this.handleInputChange}
           />
           <StyledInput
             id="lastName"
-            topText={'Last Name'}
+            topText={formatMessage(messages.lastNameLabel)}
             value={lastName}
             onChange={this.handleInputChange}
           />
@@ -101,37 +101,39 @@ class SignUp extends React.Component<Props, StateProps> {
           <StyledInput
             id="password"
             type="password"
-            topText={'Password * Must be at least 8 characters long'}
+            topText={formatMessage(messages.passwordLabel)}
             value={password}
             onChange={this.handleInputChange}
           />
           <StyledInput
             id="repeatPassword"
             type="password"
-            topText={'Re-enter Password'}
+            topText={formatMessage(messages.repeatPasswordLabel)}
             value={repeatPassword}
             onChange={this.handleInputChange}
           />
           <NewsLetterRow>
             <Checkbox checked={newsLetter} onChange={this.toggleCheckbox} />
             <NewsLetterText>
-              {'Sign me up for Jackroo’s Newsletter'}
+              {formatMessage(messages.newsLetterSignUp)}
             </NewsLetterText>
           </NewsLetterRow>
           <CreateAccountContainer>
             <CreateAccountText>
-              {`'By creating an account, you agree to Jakroo's Privacy Policy and Terms of Use'`}
+              {formatMessage(messages.termsAndPolicyLegend)}
             </CreateAccountText>
             <StyledButton
               type="danger"
               ghost={true}
               onClick={this.handleCreateAccount}
             >
-              {'CREATE ACCOUNT'}
+              {formatMessage(messages.createAccountButtonLabel)}
             </StyledButton>
             <HaveAnAccountRow>
-              {'Have an account?'}
-              <LogInLabel onClick={closeSignUp}>{'LOG IN'}</LogInLabel>
+              {formatMessage(messages.haveAccount)}
+              <LogInLabel onClick={closeSignUp}>
+                {formatMessage(messages.loginLabel)}
+              </LogInLabel>
             </HaveAnAccountRow>
           </CreateAccountContainer>
         </FormContainer>
@@ -166,14 +168,14 @@ class SignUp extends React.Component<Props, StateProps> {
       repeatPassword,
       newsLetter
     } = this.state
-    const { signUpUser } = this.props
+    const { signUpUser, formatMessage, closeSignUp } = this.props
 
     if (password.length < 8) {
       if (!name || !lastName || !email || !password || !repeatPassword) {
-        message.error('All fields are required!')
+        message.error(formatMessage(messages.requiredFieldsError))
         return
       }
-      message.error('Password must be at least 8 characters')
+      message.error(formatMessage(messages.passwordLengthError))
       return
     }
     const user = {
@@ -186,13 +188,17 @@ class SignUp extends React.Component<Props, StateProps> {
     try {
       const response = await signUpUser({ variables: { user } })
       const data = get(response, 'data.signUp', false)
-
       if (data) {
-        message.info(`Hi ${get(data, 'user.name', '')}! Welcome to Jakroo`)
+        message.info(
+          formatMessage(messages.welcomeMessage, {
+            name: get(data, 'user.name', '')
+          })
+        )
       }
+      closeSignUp()
     } catch (error) {
-      message.error('User already exists.')
-      console.error('catch: ', error)
+      message.error(formatMessage(messages.createAccountError))
+      console.error(error)
       this.clearState()
     }
   }

@@ -2,7 +2,9 @@ import {
   SHOW_HEADER_SEARCH_RESULTS,
   SET_SEARCH_PARAM,
   OPEN_QUICKVIEW_ACTION,
-  OPEN_LOGIN_MODAL
+  OPEN_LOGIN_MODAL,
+  LOGOUT,
+  SAVE_USER_TO_LOCAL
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -24,4 +26,13 @@ export const openQuickViewAction = (id: number | null): AnyAction => ({
 export const openLoginAction = (open: boolean): AnyAction => ({
   type: OPEN_LOGIN_MODAL,
   open
+})
+
+export const saveUserToLocal = (user: object): AnyAction => ({
+  type: SAVE_USER_TO_LOCAL,
+  user
+})
+
+export const logoutAction = (): AnyAction => ({
+  type: LOGOUT
 })

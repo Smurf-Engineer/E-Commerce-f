@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
 import GoogleLogin from 'react-google-login'
 import config from '../../config/index'
+import { UserType } from '../../types/common'
 import {
   Container,
   Text,
@@ -18,6 +19,7 @@ interface Props {
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   requestClose: () => void
+  handleLogin: (user: object) => void
 }
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
@@ -37,7 +39,6 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           autoLoad={false}
           fields="name,email,picture"
           cssClass="my-facebook-button-class"
-          icon="fa-facebook"
           onClick={this.componentClicked}
           callback={this.responseFacebook}
           scope="public_profile"
@@ -48,7 +49,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   componentClicked = (evt: any) => {}
 
   responseFacebook = async (facebookResp: {}) => {
-    const { loginWithFacebook, requestClose } = this.props
+    const { loginWithFacebook, requestClose, handleLogin } = this.props
     const token = get(facebookResp, 'accessToken')
 
     try {
@@ -57,9 +58,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
       if (data) {
         const user = this.createUserObject(data)
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('user', JSON.stringify(user))
-        }
+        handleLogin(user)
         requestClose()
       }
     } catch (error) {
@@ -68,7 +67,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   }
 
   googleLoginSuccess = async (resp: {}) => {
-    const { loginWithGoogle, requestClose } = this.props
+    const { loginWithGoogle, requestClose, handleLogin } = this.props
     const token = get(resp, 'tokenId', false)
 
     try {
@@ -77,9 +76,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
       if (data) {
         const user = this.createUserObject(data)
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('user', JSON.stringify(user))
-        }
+        handleLogin(user)
         requestClose()
       }
     } catch (error) {

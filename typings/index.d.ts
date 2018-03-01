@@ -43,9 +43,9 @@ declare module 'react-facebook-login' {
     fields: string
     onClick: (param: any) => void
     callback: (param: any) => void
-    cssClass: string
-    scope: string
-    icon: string
+    cssClass?: string
+    scope?: string
+    icon?: string
   }
 
   class FacebookLogin extends React.Component<Props, any> {}

@@ -98,3 +98,9 @@ export interface Palette {
   name: string
   colors: string[]
 }
+
+export interface UserType {
+  name: string
+  lastName: string
+  token: string
+}

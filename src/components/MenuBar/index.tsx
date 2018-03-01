@@ -24,7 +24,9 @@ import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
-import { RegionConfig } from '../../types/common'
+import Logout from '../Logout'
+import ForgotPassword from '../ForgotPassword'
+import { RegionConfig, UserType } from '../../types/common'
 
 interface Props {
   history: any
@@ -32,6 +34,8 @@ interface Props {
   openLogin?: boolean
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
+  saveUserToLocal: (user: object) => void
+  logoutAction: () => void
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
@@ -39,11 +43,19 @@ interface Props {
   hideBottom?: boolean
 }
 
-class MenuBar extends React.Component<Props, {}> {
+interface StateProps {
+  openForgotPassword: boolean
+}
+
+class MenuBar extends React.Component<Props, StateProps> {
   static defaultProps = {
     hideBottom: false
   }
+  state = {
+    openForgotPassword: false
+  }
   render() {
+    const { openForgotPassword } = this.state
     const {
       history,
       searchFunc,
@@ -53,7 +65,9 @@ class MenuBar extends React.Component<Props, {}> {
       currentLanguage,
       currentCurrency,
       hideBottom,
-      intl
+      intl,
+      logoutAction,
+      saveUserToLocal
     } = this.props
     let user
     if (typeof window !== 'undefined') {
@@ -65,7 +79,10 @@ class MenuBar extends React.Component<Props, {}> {
         <FormattedMessage {...messages.title} />
       </TopText>
     ) : (
-      <TopText>{`${String(user.name).toUpperCase()}`}</TopText>
+      <Logout
+        title={`${String(user.name).toUpperCase()}`}
+        logout={logoutAction}
+      />
     )
     return (
       <Container>
@@ -96,7 +113,17 @@ class MenuBar extends React.Component<Props, {}> {
             />
           </BottomRow>
         )}
-        <Login open={openLogin} requestClose={this.handleCloseLogin} />
+        <Login
+          open={openLogin}
+          requestClose={this.handleCloseLogin}
+          formatMessage={intl.formatMessage}
+          handleForgotPassword={this.handleOpenForgotPassword}
+          login={saveUserToLocal}
+        />
+        <ForgotPassword
+          open={openForgotPassword}
+          formatMessage={intl.formatMessage}
+        />
       </Container>
     )
   }
@@ -108,6 +135,10 @@ class MenuBar extends React.Component<Props, {}> {
   handleCloseLogin = () => {
     const { openLoginAction } = this.props
     openLoginAction(false)
+  }
+  handleOpenForgotPassword = () => {
+    const { openForgotPassword } = this.state
+    this.setState({ openForgotPassword: !openForgotPassword })
   }
 }
 
