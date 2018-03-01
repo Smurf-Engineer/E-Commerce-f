@@ -11,6 +11,7 @@ import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
+import { Palette } from '../../../types/common'
 import { Container, Text } from './styledComponents'
 
 const { TabPane } = AntdTabs
@@ -20,7 +21,11 @@ interface Props {
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   colorBlock: number
+  onChangePaletteName: (name: string) => void
+  paletteName: string
+  palettes: Palette[]
   colors: string[]
+  onSetPalettes: (palettes: Palette[]) => void
 }
 
 const Tabs = ({
@@ -28,6 +33,10 @@ const Tabs = ({
   colorBlock,
   onSelectColor,
   onSelectPalette,
+  onChangePaletteName,
+  paletteName,
+  palettes,
+  onSetPalettes,
   colors
 }: Props) => {
   return (
@@ -40,7 +49,11 @@ const Tabs = ({
               colorBlock,
               onSelectColor,
               colors,
-              onSelectPalette
+              onChangePaletteName,
+              paletteName,
+              palettes,
+              onSelectPalette,
+              onSetPalettes
             }}
           />
         </TabPane>

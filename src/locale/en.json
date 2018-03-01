@@ -44,5 +44,9 @@
   "components.designCenterCustomize.Tab.color": "Color",
   "components.designCenterCustomize.Tab.text": "Text",
   "components.designCenterCustomize.Tab.symbol": "Symbol",
-  "components.designCenterCustomize.Tab.upload": "Upload"
+  "components.designCenterCustomize.Tab.upload": "Upload",
+  "components.designCenterCustomize.ColorTab.selectColor": "Select Colors",
+  "components.designCenterCustomize.ColorTab.myPalette": "My Palette",
+  "components.designCenterCustomize.ColorTab.myPalettes": "My Palettes",
+  "components.designCenterCustomize.ColorTab.color": "Color {name}"
 }

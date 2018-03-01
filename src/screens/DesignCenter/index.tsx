@@ -17,7 +17,7 @@ import Info from '../../components/DesignCenterInfo'
 import Grid from '../../components/DesignCenterGrid'
 import Customize from '../../components/DesignCenterCustomize'
 import { Container, Text } from './styledComponents'
-import { Theme } from '../../types/common'
+import { Theme, Palette } from '../../types/common'
 import messages from './messages'
 
 // TODO: DUMMIE DATA
@@ -87,6 +87,10 @@ interface Props extends RouteComponentProps<any> {
   setColorBlockAction: (index: number) => void
   setColorAction: (color: string) => void
   setPaletteAction: (colors: string[]) => void
+  setPaletteNameAction: (name: string) => void
+  paletteName: string
+  palettes: Palette[]
+  setPalettesAction: (palettes: Palette[]) => void
   colors: string[]
 }
 
@@ -116,6 +120,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       setColorAction,
       setPaletteAction,
       colorBlock,
+      setPaletteNameAction,
+      paletteName,
+      palettes,
+      setPalettesAction,
       colors
     } = this.props
     return (
@@ -141,10 +149,12 @@ export class DesignCenter extends React.Component<Props, {}> {
               <div>Style</div>
             </div>
             <Customize
-              {...{ colorBlock, colors }}
+              {...{ colorBlock, colors, paletteName, palettes }}
               onSelectColorBlock={setColorBlockAction}
               onSelectColor={setColorAction}
               onSelectPalette={setPaletteAction}
+              onChangePaletteName={setPaletteNameAction}
+              onSetPalettes={setPalettesAction}
             />
             <div key="preview">
               <div>Preview</div>

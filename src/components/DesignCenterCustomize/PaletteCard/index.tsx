@@ -20,15 +20,24 @@ import {
 } from './styledComponents'
 
 interface Props {
+  id: number
   colors: string[]
   name: string
   onSelectPalette: (colors: string[]) => void
+  onClickDelete: (index: number) => void
 }
 
 const colorsBlocks = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
 
-const PaletteCard = ({ name, colors, onSelectPalette }: Props) => {
+const PaletteCard = ({
+  id,
+  name,
+  colors,
+  onSelectPalette,
+  onClickDelete
+}: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(colors)
+  const handleOnClickDelete = () => onClickDelete(id)
   const colorButtons = colorsBlocks.map((label, index) => (
     <ColorButton
       key={index}
@@ -42,7 +51,7 @@ const PaletteCard = ({ name, colors, onSelectPalette }: Props) => {
       <Row>
         <TopRow>
           <Name>{name}</Name>
-          <Delete>
+          <Delete onClick={handleOnClickDelete}>
             <DeleteLabel>-</DeleteLabel>
           </Delete>
         </TopRow>

@@ -32,3 +32,7 @@ export const Button = styled.div`
   font-size: 14px;
   line-height: 19px;
 `
+export const ListContainer = styled.div`
+  overflow: auto;
+  height: 392px;
+`

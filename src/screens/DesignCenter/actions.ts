@@ -6,9 +6,11 @@ import {
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
-  SET_PALETTE_ACTION
+  SET_PALETTE_ACTION,
+  SET_PALETTE_NAME_ACTION,
+  SET_PALETTES_ACTION
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, Palette } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -33,4 +35,14 @@ export const setColorAction = (color: string): AnyAction => ({
 export const setPaletteAction = (colors: string[]): AnyAction => ({
   type: SET_PALETTE_ACTION,
   colors
+})
+
+export const setPaletteNameAction = (name: string): AnyAction => ({
+  type: SET_PALETTE_NAME_ACTION,
+  name
+})
+
+export const setPalettesAction = (palettes: Palette[]): AnyAction => ({
+  type: SET_PALETTES_ACTION,
+  palettes
 })

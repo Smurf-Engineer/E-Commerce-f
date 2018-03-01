@@ -11,6 +11,7 @@ import MyPalette from '../MyPalette'
 import nextIcon from '../../../assets/rightarrow.svg'
 import backIcon from '../../../assets/leftarrow.svg'
 import messages from './messages'
+import { Palette } from '../../../types/common'
 import {
   Container,
   TextColors,
@@ -26,6 +27,10 @@ interface Props {
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   colorBlock: number
+  onChangePaletteName: (name: string) => void
+  paletteName: string
+  palettes: Palette[]
+  onSetPalettes: (palettes: Palette[]) => void
   colors: string[]
 }
 
@@ -46,7 +51,11 @@ class ColorTab extends React.PureComponent<Props, State> {
       onSelectColorBlock,
       colorBlock,
       onSelectColor,
+      onChangePaletteName,
+      paletteName,
+      palettes,
       colors,
+      onSetPalettes,
       onSelectPalette
     } = this.props
     const { isFirstPage } = this.state
@@ -81,7 +90,16 @@ class ColorTab extends React.PureComponent<Props, State> {
             <Divider />
             <ColorList {...{ onSelectColor }} />
           </div>
-          <MyPalette {...{ onSelectPalette }} />
+          <MyPalette
+            {...{
+              onSelectPalette,
+              onChangePaletteName,
+              paletteName,
+              palettes,
+              onSetPalettes,
+              colors
+            }}
+          />
         </SwipeableViews>
       </Container>
     )

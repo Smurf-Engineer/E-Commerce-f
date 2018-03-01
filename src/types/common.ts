@@ -93,3 +93,8 @@ export interface Theme {
   name: string
   picture: string
 }
+
+export interface Palette {
+  name: string
+  colors: string[]
+}
