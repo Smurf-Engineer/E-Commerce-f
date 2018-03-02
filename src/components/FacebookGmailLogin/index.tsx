@@ -6,7 +6,7 @@ import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
 import GoogleLogin from 'react-google-login'
 import FacebookLogin from 'react-facebook-login'
-import {} from 'antd/lib/message'
+import message from 'antd/lib/message'
 import config from '../../config/index'
 import { UserType } from '../../types/common'
 import {
@@ -20,7 +20,7 @@ import {
 import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, values?: object) => string
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   requestClose: () => void
@@ -66,6 +66,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       if (data) {
         const user = this.createUserObject(data)
         handleLogin(user)
+        this.welcomeMessage(get(user, 'name'))
         requestClose()
       }
     } catch (error) {
@@ -84,6 +85,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       if (data) {
         const user = this.createUserObject(data)
         handleLogin(user)
+        this.welcomeMessage(get(user, 'name'))
         requestClose()
       }
     } catch (error) {
@@ -102,6 +104,16 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   }
   googleLoginFailure = (err: any) => {
     console.error('ERROR GOOGLE ', err)
+  }
+
+  welcomeMessage = (name: string) => {
+    const { formatMessage } = this.props
+    message.success(
+      formatMessage(messages.welcomeMessage, {
+        name
+      }),
+      5
+    )
   }
 }
 
