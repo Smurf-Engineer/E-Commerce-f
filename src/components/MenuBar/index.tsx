@@ -123,6 +123,7 @@ class MenuBar extends React.Component<Props, StateProps> {
         <ForgotPassword
           open={openForgotPassword}
           formatMessage={intl.formatMessage}
+          requestClose={this.handleOpenForgotPassword}
         />
       </Container>
     )
@@ -137,6 +138,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     openLoginAction(false)
   }
   handleOpenForgotPassword = () => {
+    this.handleCloseLogin()
     const { openForgotPassword } = this.state
     this.setState({ openForgotPassword: !openForgotPassword })
   }
