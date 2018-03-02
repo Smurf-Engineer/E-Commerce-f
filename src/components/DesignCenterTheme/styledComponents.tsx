@@ -9,6 +9,13 @@ export const Container = styled.div`
   text-align: center;
 `
 
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`
+
 export const Text = styled.div`
   color: #fff;
 `

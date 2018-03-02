@@ -9,7 +9,8 @@ import {
   SET_COLOR_ACTION,
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
-  SET_PALETTES_ACTION
+  SET_PALETTES_ACTION,
+  SET_LOADING_MODEL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -21,7 +22,8 @@ export const initialState = fromJS({
   colorBlock: -1,
   colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   palettes: [],
-  paletteName: ''
+  paletteName: '',
+  loadingModel: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -44,6 +46,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('paletteName', action.name)
     case SET_PALETTES_ACTION:
       return state.set('palettes', action.palettes)
+    case SET_LOADING_MODEL:
+      return state.set('loadingModel', action.loading)
     default:
       return state
   }
