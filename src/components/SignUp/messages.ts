@@ -44,7 +44,7 @@ export default defineMessages({
   },
   createAccountButtonLabel: {
     id: 'components.signUp.createAccountButtonLabel',
-    defaultMEssage: 'CREATE ACCOUNT'
+    defaultMessage: 'CREATE ACCOUNT'
   },
   haveAccount: {
     id: 'compoenents.signUp.haveAccount',
@@ -52,7 +52,7 @@ export default defineMessages({
   },
   loginLabel: {
     id: 'components.signUp.loginLabel',
-    defaultMEssage: 'LOG IN'
+    defaultMessage: 'LOG IN'
   },
   welcomeMessage: {
     id: 'components.signUp.welcomeMessage',

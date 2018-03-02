@@ -8,5 +8,9 @@ export default defineMessages({
   facebookLoginLabel: {
     id: 'components.menuBar.facebookLoginLabel',
     defaultMessage: 'LOG IN WITH FACEBOOK'
+  },
+  welcomeMessage: {
+    id: 'components.login.welcomeMessage',
+    defaultMessage: 'Hi {name}! Welcome to Jakroo'
   }
 })
