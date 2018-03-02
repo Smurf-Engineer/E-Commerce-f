@@ -5,17 +5,21 @@ import * as React from 'react'
 import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
 import GoogleLogin from 'react-google-login'
+import FacebookLogin from 'react-facebook-login'
 import config from '../../config/index'
 import { UserType } from '../../types/common'
 import {
   Container,
   Text,
-  FacebookButton,
-  GoogleButton
+  FacebookButtonWrapper,
+  GoogleButton,
+  GoogleIcon,
+  GoogleLabel
 } from './styledComponents'
-
+import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
 interface Props {
+  formatMessage: (messageDescriptor: any) => string
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   requestClose: () => void
@@ -24,6 +28,7 @@ interface Props {
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
   render() {
+    const { formatMessage } = this.props
     return (
       <Container>
         <GoogleButton
@@ -31,18 +36,19 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
         >
-          <div />
-          <span>Login with Google</span>
+          <GoogleIcon />
+          <GoogleLabel>{formatMessage(messages.googleLoginLabel)}</GoogleLabel>
         </GoogleButton>
-        <FacebookButton
-          appId="1656476814419105"
-          autoLoad={false}
-          fields="name,email,picture"
-          cssClass="my-facebook-button-class"
-          onClick={this.componentClicked}
-          callback={this.responseFacebook}
-          scope="public_profile"
-        />
+        <FacebookButtonWrapper>
+          <FacebookLogin
+            appId="1656476814419105"
+            autoLoad={false}
+            fields="name,email,picture"
+            onClick={this.componentClicked}
+            callback={this.responseFacebook}
+            scope="public_profile"
+          />
+        </FacebookButtonWrapper>
       </Container>
     )
   }

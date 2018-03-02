@@ -41,11 +41,11 @@ declare module 'react-facebook-login' {
     appId: string
     autoLoad: boolean
     fields: string
-    onClick: (param: any) => void
+    onClick?: (param: any | null) => void
     callback: (param: any) => void
     cssClass?: string
     scope?: string
-    icon?: string
+    icon?: JSX.Element | string
   }
 
   class FacebookLogin extends React.Component<Props, any> {}
