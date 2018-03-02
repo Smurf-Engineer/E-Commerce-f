@@ -5,17 +5,12 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   background-color: #fff;
-  padding: 18px 120px;
-  text-align: center;
+  width: 25.4%;
+  padding-bottom: 32px;
+  z-index: 1;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12), 0 0px 2px rgba(0, 0, 0, 0.24);
 `
 
 export const Text = styled.div`
   color: #fff;
-`
-
-export const Row = styled.ul`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
 `

@@ -9,11 +9,6 @@ body {
   line-height: normal;
 }
 
-::-webkit-scrollbar {
-  width: 0px;
-  background: transparent;
-}
-
 .my-facebook-button-class {
   width: 100%;
   background-color: #395ca9;
@@ -23,4 +18,8 @@ body {
 
 .fa .facebook {
   margin-right: 15px;
+}
+
+span.ant-input-group-addon {
+  border: 0px !important;
 }

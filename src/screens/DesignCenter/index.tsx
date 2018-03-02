@@ -15,8 +15,9 @@ import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
 import Grid from '../../components/DesignCenterGrid'
+import Customize from '../../components/DesignCenterCustomize'
 import { Container, Text } from './styledComponents'
-import { Theme } from '../../types/common'
+import { Theme, Palette } from '../../types/common'
 import messages from './messages'
 
 // TODO: DUMMIE DATA
@@ -80,8 +81,18 @@ const themes: Theme[] = [
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
+  colorBlock: number
+  palettes: Palette[]
+  paletteName: string
+  colors: string[]
+  // Redux Actions
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
+  setColorBlockAction: (index: number) => void
+  setColorAction: (color: string) => void
+  setPaletteAction: (colors: string[]) => void
+  setPaletteNameAction: (name: string) => void
+  setPalettesAction: (palettes: Palette[]) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -102,7 +113,20 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, currentTab } = this.props
+    const {
+      intl,
+      history,
+      currentTab,
+      setColorBlockAction,
+      setColorAction,
+      setPaletteAction,
+      colorBlock,
+      setPaletteNameAction,
+      paletteName,
+      palettes,
+      setPalettesAction,
+      colors
+    } = this.props
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -115,7 +139,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <Grid {...{ themes }} />
+              {currentTab === 0 && <Grid {...{ themes }} />}
             </div>
             <div key="style">
               <Info
@@ -125,7 +149,14 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               <div>Style</div>
             </div>
-            <div>customize</div>
+            <Customize
+              {...{ colorBlock, colors, paletteName, palettes }}
+              onSelectColorBlock={setColorBlockAction}
+              onSelectColor={setColorAction}
+              onSelectPalette={setPaletteAction}
+              onChangePaletteName={setPaletteNameAction}
+              onSetPalettes={setPalettesAction}
+            />
             <div key="preview">
               <div>Preview</div>
             </div>
