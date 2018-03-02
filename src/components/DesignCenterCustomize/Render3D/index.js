@@ -38,6 +38,7 @@ class Render3D extends PureComponent {
   // TODO: Remove
   componentDidMount() {
     /* Renderer config */
+    const { onLoadModel } = this.props
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
@@ -89,6 +90,7 @@ class Render3D extends PureComponent {
 
     mtlLoader.setPath('./models/')
     mtlLoader.load('Tour.mtl', materials => {
+      onLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.setMaterials(materials)
@@ -96,6 +98,7 @@ class Render3D extends PureComponent {
       objLoader.load(
         'Tour.obj',
         object => {
+          onLoadModel(false)
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({

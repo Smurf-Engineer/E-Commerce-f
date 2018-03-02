@@ -91,7 +91,7 @@ export interface RegionConfig {
 export interface Theme {
   id: number
   name: string
-  picture: string
+  image: string
 }
 
 export interface Palette {
