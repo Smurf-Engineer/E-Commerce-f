@@ -14,74 +14,29 @@ import * as designCenterActions from './actions'
 import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
-import Grid from '../../components/DesignCenterGrid'
+import ThemeTab from '../../components/DesignCenterTheme'
+import CustomizeTab from '../../components/DesignCenterCustomize'
 import { Container, Text } from './styledComponents'
-import { Theme } from '../../types/common'
+import { Theme, Palette } from '../../types/common'
 import messages from './messages'
-
-// TODO: DUMMIE DATA
-const themes: Theme[] = [
-  {
-    id: 1,
-    name: 'Patriotic / Armed Forces',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Patriotic_arm%20forces.svg'
-  },
-  {
-    id: 2,
-    name: 'Animal Prints',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/AnimalPrint.svg'
-  },
-  {
-    id: 3,
-    name: 'Geometric',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Geometric.svg'
-  },
-  {
-    id: 4,
-    name: 'Vintage / Retro',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Vintage_Retro.svg'
-  },
-  {
-    id: 5,
-    name: 'Oraganic',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Organic.svg'
-  },
-  {
-    id: 6,
-    name: 'Natural / Floral / Scenic',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Natural_floral.svg'
-  },
-  {
-    id: 7,
-    name: 'Bohemian / Tribal',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Bohemian_tribal.svg'
-  },
-  {
-    id: 8,
-    name: 'Grunge',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Grunge.svg'
-  },
-  {
-    id: 9,
-    name: 'Funky',
-    picture:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Funky.svg'
-  }
-]
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
+  colorBlock: number
+  palettes: Palette[]
+  paletteName: string
+  colors: string[]
+  loadingModel: boolean
+  // Redux Actions
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
+  setColorBlockAction: (index: number) => void
+  setColorAction: (color: string) => void
+  setPaletteAction: (colors: string[]) => void
+  setPaletteNameAction: (name: string) => void
+  setPalettesAction: (palettes: Palette[]) => void
+  setLoadingModel: (loading: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -102,7 +57,22 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, currentTab } = this.props
+    const {
+      intl,
+      history,
+      currentTab,
+      setColorBlockAction,
+      setColorAction,
+      setPaletteAction,
+      colorBlock,
+      setPaletteNameAction,
+      paletteName,
+      palettes,
+      setPalettesAction,
+      colors,
+      loadingModel,
+      setLoadingModel
+    } = this.props
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -115,7 +85,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <Grid {...{ themes }} />
+              {currentTab === 0 && <ThemeTab {...{ loadingModel }} />}
             </div>
             <div key="style">
               <Info
@@ -125,7 +95,15 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               <div>Style</div>
             </div>
-            <div>customize</div>
+            <CustomizeTab
+              {...{ colorBlock, colors, paletteName, palettes, loadingModel }}
+              onSelectColorBlock={setColorBlockAction}
+              onSelectColor={setColorAction}
+              onSelectPalette={setPaletteAction}
+              onChangePaletteName={setPaletteNameAction}
+              onSetPalettes={setPalettesAction}
+              onLoadModel={setLoadingModel}
+            />
             <div key="preview">
               <div>Preview</div>
             </div>

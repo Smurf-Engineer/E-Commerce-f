@@ -11,13 +11,11 @@ export const Text = styled.div`
 
 export const DetailsContent = styled.div`
   width: 100%;
-  height: 450px;
   font-family: 'Avenir Next' !important;
 `
 
 export const TestimonialsContent = styled.div`
   width: 100%;
-  height: 300px;
   font-family: 'Avenir Next' !important;
 `
 
@@ -45,6 +43,7 @@ export const ImageQuote = styled.img`
   height: 515px;
   width: 80%;
   float: right;
+  object-fit: cover;
 `
 
 export const CardQuote = styled.div`
@@ -55,7 +54,7 @@ export const CardQuote = styled.div`
   margin-top: 60px;
 `
 
-export const TextQuote = styled.p`
+export const TextQuote = styled.div`
   height: 341.04px;
   width: 384px;
   color: #5f6062;

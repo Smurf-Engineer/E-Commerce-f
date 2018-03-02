@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="21px" viewBox="0 0 18 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Design-Tools/Toolsets/Edit-Tools" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-11.000000, -99.000000)" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Group-2" transform="translate(9.000000, 99.000000)" stroke="#979797">
+            <path d="M11,3.20050404 C6.47351747,3.20050404 2.80407836,6.86994315 2.80407836,11.3964257 C2.80407836,15.9229082 6.47351747,19.5923473 11,19.5923473 C15.5264825,19.5923473 19.1959216,15.9229082 19.1959216,11.3964257 C19.1959216,9.73677046 18.7026187,8.19233232 17.8546396,6.90173816" id="Oval-2" transform="translate(11.000000, 11.396426) rotate(-105.000000) translate(-11.000000, -11.396426) "></path>
+            <polyline id="Triangle" transform="translate(5.944042, 4.888835) rotate(-135.000000) translate(-5.944042, -4.888835) " points="1.99318761 6.84936102 5.944042 2.92830823 9.89489639 6.84936102"></polyline>
+        </g>
+    </g>
+</svg>
