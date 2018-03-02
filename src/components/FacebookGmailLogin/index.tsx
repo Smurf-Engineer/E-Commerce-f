@@ -27,7 +27,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     return (
       <Container>
         <GoogleButton
-          clientId={config.googleId || ''}
+          clientId="32595750537-deiet8319orbo3c54uqin9aqkpnbchbu.apps.googleusercontent.com"
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
         >
@@ -35,7 +35,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           <span>Login with Google</span>
         </GoogleButton>
         <FacebookButton
-          appId={config.facebookId || ''}
+          appId="1656476814419105"
           autoLoad={false}
           fields="name,email,picture"
           cssClass="my-facebook-button-class"
