@@ -46,7 +46,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
             fields="name,email,picture"
             onClick={this.componentClicked}
             callback={this.responseFacebook}
-            scope="public_profile"
+            scope="public_profile, email"
           />
         </FacebookButtonWrapper>
       </Container>
