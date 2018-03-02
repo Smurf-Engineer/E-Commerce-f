@@ -18,7 +18,7 @@ export const FacebookButtonWrapper = styled.div`
     background-color: #395ca9;
     color: #fff;
     padding: 15px 0;
-    text-transform: initial;
+    text-transform: uppercase;
     font-size: inherit;
   }
 `
