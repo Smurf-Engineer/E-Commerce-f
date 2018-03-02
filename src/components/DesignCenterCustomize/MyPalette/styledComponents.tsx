@@ -42,7 +42,3 @@ export const ListContainer = styled.div`
   overflow: auto;
   height: 392px;
 `
-
-// span.ant-input-group-addon {
-//   border: 0px !important;
-// }
