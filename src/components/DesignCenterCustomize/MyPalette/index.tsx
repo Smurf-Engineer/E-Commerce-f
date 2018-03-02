@@ -14,7 +14,8 @@ import {
   Input,
   Padding,
   Divider,
-  ListContainer
+  ListContainer,
+  InputWrapper
 } from './styledComponents'
 
 interface Props {
@@ -103,12 +104,14 @@ class MyPalette extends React.PureComponent<Props> {
     return (
       <Container>
         <Padding>
-          <Input
-            value={paletteName}
-            onChange={this.updatePaletteName}
-            placeholder="Name Palette"
-            addonAfter={<Button onClick={this.onSavePalette}>Save</Button>}
-          />
+          <InputWrapper>
+            <Input
+              value={paletteName}
+              onChange={this.updatePaletteName}
+              placeholder="Name Palette"
+              addonAfter={<Button onClick={this.onSavePalette}>Save</Button>}
+            />
+          </InputWrapper>
         </Padding>
         <Divider />
         <ListContainer>{paletteList}</ListContainer>

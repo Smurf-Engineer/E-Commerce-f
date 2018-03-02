@@ -15,6 +15,12 @@ export const Input = styled(AntdInput)`
   border-radius: 0px;
 `
 
+export const InputWrapper = styled.div`
+  .ant-input-group-addon  {
+    border: 0px;
+  }
+`
+
 export const Padding = styled.div`
   padding: 12px 32px 0px 32px;
 `
@@ -36,3 +42,7 @@ export const ListContainer = styled.div`
   overflow: auto;
   height: 392px;
 `
+
+// span.ant-input-group-addon {
+//   border: 0px !important;
+// }
