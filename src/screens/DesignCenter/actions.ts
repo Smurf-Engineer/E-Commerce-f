@@ -8,7 +8,8 @@ import {
   SET_COLOR_ACTION,
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
-  SET_PALETTES_ACTION
+  SET_PALETTES_ACTION,
+  SET_LOADING_MODEL
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -45,4 +46,9 @@ export const setPaletteNameAction = (name: string): AnyAction => ({
 export const setPalettesAction = (palettes: Palette[]): AnyAction => ({
   type: SET_PALETTES_ACTION,
   palettes
+})
+
+export const setLoadingModel = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_MODEL,
+  loading
 })

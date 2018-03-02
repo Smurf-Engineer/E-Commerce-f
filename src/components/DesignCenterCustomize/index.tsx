@@ -14,11 +14,13 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  loadingModel: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
+  onLoadModel: (loading: boolean) => void
 }
 
 const DesignCenterCustomize = ({
@@ -30,7 +32,9 @@ const DesignCenterCustomize = ({
   paletteName,
   palettes,
   onSetPalettes,
-  colors
+  colors,
+  loadingModel,
+  onLoadModel
 }: Props) => {
   return (
     <Container>
@@ -47,7 +51,7 @@ const DesignCenterCustomize = ({
           onSetPalettes
         }}
       />
-      <Render3D {...{ colors }} />
+      <Render3D {...{ colors, onLoadModel, loadingModel }} />
     </Container>
   )
 }

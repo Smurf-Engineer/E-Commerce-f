@@ -10,3 +10,4 @@ export const SET_COLOR_ACTION = `${namespace}/SET_COLOR_ACTION`
 export const SET_PALETTE_ACTION = `${namespace}/SET_PALETTE_ACTION`
 export const SET_PALETTE_NAME_ACTION = `${namespace}/SET_PALETTE_NAME_ACTION`
 export const SET_PALETTES_ACTION = `${namespace}/SET_PALETTES_ACTION`
+export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`

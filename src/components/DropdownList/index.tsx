@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
-import { QueryProps } from '../../types/common'
 import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
@@ -18,7 +17,7 @@ import {
   setMenuGenderSelectedAction,
   setMenuSportSelectedAction
 } from './actions'
-import { Filter } from '../../types/common'
+import { Filter, QueryProps } from '../../types/common'
 import {
   Container,
   Option,

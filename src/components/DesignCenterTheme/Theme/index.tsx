@@ -7,13 +7,13 @@ import { Container, Text, Image } from './styledComponents'
 
 interface Props {
   name: string
-  picture: string
+  image: string
 }
 
-const Theme = ({ name, picture }: Props) => {
+const Theme = ({ name, image }: Props) => {
   return (
     <Container>
-      <Image src={picture} />
+      <Image src={image} />
       <Text>{name}</Text>
     </Container>
   )
