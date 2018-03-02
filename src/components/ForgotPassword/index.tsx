@@ -24,6 +24,7 @@ interface Props {
 }
 
 class ForgotPassword extends React.Component<Props, {}> {
+  // TODO: refactor placeholder Email
   render() {
     const { open, requestClose } = this.props
     return (
