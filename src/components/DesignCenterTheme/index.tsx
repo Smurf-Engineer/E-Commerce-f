@@ -22,7 +22,7 @@ interface Props {
 }
 
 export const DesignCenterGrid = ({ data, loadingModel }: Props) => {
-  if (data.loading && loadingModel) {
+  if (data.loading || loadingModel) {
     return (
       <LoadingContainer>
         <Spin />
