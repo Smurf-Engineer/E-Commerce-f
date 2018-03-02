@@ -9,7 +9,9 @@ import { connect } from 'react-redux'
 import UpperCase from 'lodash/upperCase'
 import { ReducersObject } from '../../store/rootReducer'
 import Layout from '../../components/MainLayout'
-import Filter from '../../components/ProductCatalogFilterComponent'
+import FilterComponent from '../../components/ProductCatalogFilterComponent'
+import ProductsThumbnailList from '../../components/ProductCatalogueThumbnailsList'
+import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as productCatalogActions from './actions'
 import messages from './messages'
 import {
@@ -20,43 +22,59 @@ import {
   ResultsColumn
 } from './styledComponents'
 import { QueryProps, Product } from '../../types/common'
-import { GetProductsQuery } from './data'
+import { GetProductsQuery, GetFiltersQuery } from './data'
 
 interface FilterOptions {
   name: string
   selected: boolean
 }
-interface Filter {
+interface FilterType {
   index: number
   id: string
   name: string
   options: FilterOptions[]
 }
 interface Data extends QueryProps {
-  product: Product[]
+  filters: FilterType[]
 }
 
 interface StateProps {
   showTypeFilters: boolean
+  filters: FilterType[]
 }
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
-  filtersArray: Filter[]
+  filtersArray: FilterType[]
+  data: Data
+  selectedFilters: FilterType[]
   selectedFilterAction: (filter: {}) => void
+  openQuickViewAction: (index: number) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
   state = {
-    showTypeFilters: false
+    showTypeFilters: false,
+    filters: []
   }
   render() {
-    const { history, intl, filtersArray } = this.props
-
-    const filters = filtersArray.map((filter: Filter, index: number) => {
+    const {
+      history,
+      intl,
+      filtersArray,
+      openQuickViewAction: openQuickView,
+      data: { loading, filters: filtersGraph },
+      selectedFilters
+    } = this.props
+    console.log(this.props)
+    if (loading) {
+      return null
+    }
+    // const filters = filtersArray.map((filter: FilterType, index: number) => {
+    const filters = filtersGraph.map((filter: FilterType, index: number) => {
       const filterToShow = this.state[`show${filter.name}Filters`]
       return (
-        <Filter
+        <FilterComponent
           key={index}
           id={filter.name}
           title={UpperCase(filter.name)}
@@ -76,7 +94,12 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
             </FiltersTitle>
             {filters}
           </FiltersColumn>
-          <ResultsColumn>product List</ResultsColumn>
+          <ResultsColumn>
+            <ProductsThumbnailList
+              formatMessage={intl.formatMessage}
+              {...{ openQuickView, history }}
+            />
+          </ResultsColumn>
         </Container>
       </Layout>
     )
@@ -90,9 +113,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   handleSelect = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { selectedFilterAction } = this.props
+    const { selectedFilterAction, selectedFilters } = this.props
+    const { filters } = this.state
     const { target: { name, value, checked } } = evt
-    console.log(evt.target)
+
     const filter = {
       id: value,
       name,
@@ -108,7 +132,8 @@ const mapStateToProps = ({ productCatalog }: ReducersObject) =>
 
 const ProductCatalogEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...productCatalogActions })
+  graphql<Data>(GetFiltersQuery, {}),
+  connect(mapStateToProps, { ...productCatalogActions, openQuickViewAction })
 )(ProductCatalog)
 
 export default ProductCatalogEnhance

@@ -27,3 +27,13 @@ export const GetProductsQuery = gql`
     }
   }
 `
+export const GetFiltersQuery = gql`
+  query filters {
+    filters {
+      name
+      options {
+        name
+      }
+    }
+  }
+`

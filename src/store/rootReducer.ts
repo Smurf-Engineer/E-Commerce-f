@@ -3,7 +3,7 @@
  */
 import { fromJS } from 'immutable'
 import { combineReducers } from 'redux'
-import productCatalog from '../screens/ProductCatalog/reducer'
+import productCatalog from '../screens/ProductCatalogue/reducer'
 import designCenter from '../screens/DesignCenter/reducer'
 import languageProvider from '../screens/LanguageProvider/reducer'
 import home from '../screens/Home/reducer'
@@ -14,7 +14,7 @@ import menu from '../components/DropdownList/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
-  productCatalog: any,
+  productCatalog: any
   designCenter: any
   languageProvider: any
   home: any

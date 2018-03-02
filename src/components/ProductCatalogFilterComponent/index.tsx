@@ -45,7 +45,7 @@ const ProductCatalogFilterComponent = ({
   const renderOptions = options.map((option, index) => (
     <ItemRow key={index}>
       <Checkbox
-        checked={get(option, 'selected')}
+        // checked={get(option, 'selected')}
         onChange={selectOption}
         name={get(option, 'name')}
         value={id}

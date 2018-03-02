@@ -5,3 +5,4 @@ const namespace = 'src/ProductCatalog'
 
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
 export const SELECTED_FILTER = `${namespace}/SELECTED_FILTER`
+export const SORTBY_SELECTED = `${namespace}/SORTBY_SELECTED`
