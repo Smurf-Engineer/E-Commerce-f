@@ -6,6 +6,7 @@ import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
 import GoogleLogin from 'react-google-login'
 import FacebookLogin from 'react-facebook-login'
+import {} from 'antd/lib/message'
 import config from '../../config/index'
 import { UserType } from '../../types/common'
 import {
