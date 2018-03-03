@@ -5,13 +5,13 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Container, Title, Text, Phone, Email } from './styledComponents'
 import messages from './messages'
-
-const ContactInfo = () => {
+interface Props {
+  formatMessage: (messageDescriptor: any) => string
+}
+const ContactInfo = ({ formatMessage }: Props) => {
   return (
     <Container>
-      <Title>
-        <FormattedMessage {...messages.title} />
-      </Title>
+      <Title>{formatMessage(messages.title)}</Title>
       <Text>
         <div>5906 Stoneridge Mall Road.</div>
         <div> Pleasanton, CA 94588</div>
