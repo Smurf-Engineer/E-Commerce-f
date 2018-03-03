@@ -5,27 +5,29 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { Container, Title, Text, Span } from './styledComponents'
 import messages from './messsages'
+import UnderlinedLink from '../Common/UnderlinedLink'
 
-const DesignSupport = () => {
+interface Props {
+  formatMessage: (messageDescriptor: any) => string
+}
+const DesignSupport = ({ formatMessage }: Props) => {
   return (
     <Container>
-      <Title>
-        <FormattedMessage {...messages.title} />
-      </Title>
+      <Title>{formatMessage(messages.title)}</Title>
       <Text>
-        <Span href="https://www.jakroo.com/us/art-specs.html">
-          <FormattedMessage {...messages.artwork} />
-        </Span>
+        <UnderlinedLink link="https://www.jakroo.com/us/art-specs.html">
+          {formatMessage(messages.artwork)}
+        </UnderlinedLink>
       </Text>
       <Text>
-        <Span href="https://www.jakroo.com/us/templates.html">
-          <FormattedMessage {...messages.template} />
-        </Span>
+        <UnderlinedLink link="https://www.jakroo.com/us/templates.html">
+          {formatMessage(messages.template)}
+        </UnderlinedLink>
       </Text>
       <Text>
-        <Span href="https://www.jakroo.com/us/fit-sizing.html">
-          <FormattedMessage {...messages.fit} />
-        </Span>
+        <UnderlinedLink link="https://www.jakroo.com/us/fit-sizing.html">
+          {formatMessage(messages.fit)}
+        </UnderlinedLink>
       </Text>
     </Container>
   )
