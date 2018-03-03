@@ -50,20 +50,8 @@ const ImagesGrid = () => {
           <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-ladies.jpg" />
         </Slider>
       </CarouselContent>
-      <DetailsContent
-        dangerouslySetInnerHTML={{
-          __html: `
-            <div class="yotpo yotpo-pictures-gallery">
-            </div>`
-        }}
-      />
-      <TestimonialsContent
-        dangerouslySetInnerHTML={{
-          __html: `
-            <div class="yotpo yotpo-reviews-carousel">
-            </div>`
-        }}
-      />
+      <DetailsContent className="yotpo yotpo-pictures-gallery" />
+      <TestimonialsContent className="yotpo yotpo-reviews-carousel" />
     </Container>
   )
 }

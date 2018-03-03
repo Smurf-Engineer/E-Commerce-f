@@ -1,0 +1,25 @@
+@popover-prefix-cls: ~'@{ant-prefix}-popover';
+
+.@{popover-prefix-cls} {
+  &-inner {
+    background-color: @popover-bg;
+    background-clip: padding-box;
+    border-radius: 0px;
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+  }
+}
+
+.@{tooltip-prefix-cls} {
+  &-inner {
+    max-width: @tooltip-max-width;
+    padding: 6px 8px;
+    color: @tooltip-color;
+    text-align: left;
+    text-decoration: none;
+    background-color: @tooltip-bg;
+    border-radius: 1px;
+    font-size: 10px;
+    box-shadow: @box-shadow-base;
+    min-height: 26px;
+  }
+}

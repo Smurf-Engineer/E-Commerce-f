@@ -35,6 +35,7 @@ export const BottomRow = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  height: 70px;
 `
 
 export const Divider = styled.div`
