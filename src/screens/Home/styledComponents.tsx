@@ -18,7 +18,7 @@ export const SearchBarContent = styled.div`
 `
 
 export const SearchBackground = styled.img`
-  width: 100vw;
+  width: 100%;
 `
 export const SearchContainer = styled.div`
   position: relative;
