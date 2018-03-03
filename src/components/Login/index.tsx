@@ -91,7 +91,10 @@ class Login extends React.Component<Props, StateProps> {
           <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
             {formatMessage(messages.loginButtonLabel)}
           </StyledLoginButton>
-          <FacebookGmailLogin handleLogin={login} {...{ requestClose }} />
+          <FacebookGmailLogin
+            handleLogin={login}
+            {...{ requestClose, formatMessage }}
+          />
         </FormContainer>
         <NotAMemberLabel>
           {formatMessage(messages.notAMember)}
