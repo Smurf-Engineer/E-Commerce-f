@@ -98,7 +98,7 @@ class MainLayout extends React.Component<Props, {}> {
         {!hideBottom && (
           <Footer>
             <ContactAndLinks formatMessage={intl.formatMessage} />
-            <SocialMedia {...{ intl }} />
+            <SocialMedia />
           </Footer>
         )}
         <QuickView
