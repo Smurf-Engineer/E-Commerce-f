@@ -61,6 +61,16 @@ class Render3D extends PureComponent {
     const label = loader.load('./models/Red-J.jpg')
     const bumpMap = loader.load('./models/TOUR-SS_Jersey-BUMP.jpg')
 
+    // Fix the warning: image is not power of two
+    flatlock.minFilter = THREE.LinearFilter
+    backPocket.minFilter = THREE.LinearFilter
+    label.minFilter = THREE.LinearFilter
+    color1.minFilter = THREE.LinearFilter
+    color2.minFilter = THREE.LinearFilter
+    color3.minFilter = THREE.LinearFilter
+    color4.minFilter = THREE.LinearFilter
+    color5.minFilter = THREE.LinearFilter
+
     /* Camera */
     const camera = new THREE.PerspectiveCamera(
       25,
