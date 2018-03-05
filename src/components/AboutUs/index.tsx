@@ -3,28 +3,30 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Container, Title, Text, Span } from './styledComponents'
+import { Container, Title, Text } from './styledComponents'
 import messages from './messages'
+import Span from '../Common/UnderlinedLink'
 
-const AboutUs = () => {
+interface Props {
+  formatMessage: (messageDescriptor: any) => string
+}
+const AboutUs = ({ formatMessage }: Props) => {
   return (
     <Container>
-      <Title>
-        <FormattedMessage {...messages.title} />
-      </Title>
+      <Title>{formatMessage(messages.title)}</Title>
       <Text>
-        <Span href="https://www.jakroo.com/us/about-us.html">
-          <FormattedMessage {...messages.company} />
+        <Span link="https://www.jakroo.com/us/about-us.html">
+          {formatMessage(messages.company)}
         </Span>
       </Text>
       <Text>
-        <Span href="https://www.jakroo.com/us/technology.html">
-          <FormattedMessage {...messages.technology} />
+        <Span link="https://www.jakroo.com/us/technology.html">
+          {formatMessage(messages.technology)}
         </Span>
       </Text>
       <Text>
-        <Span href="https://www.jakroo.com/us/job-opportunities.html">
-          <FormattedMessage {...messages.jobs} />
+        <Span link="https://www.jakroo.com/us/job-opportunities.html">
+          {formatMessage(messages.jobs)}
         </Span>
       </Text>
     </Container>

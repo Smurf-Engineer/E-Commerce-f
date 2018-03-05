@@ -10,9 +10,10 @@ describe('<ContactInfo />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
+    const format = (message: string) => 'string'
     ReactDOM.render(
       <IntlProvider {...props}>
-        <ContactInfo />
+        <ContactInfo formatMessage={format} />
       </IntlProvider>,
       div
     )
