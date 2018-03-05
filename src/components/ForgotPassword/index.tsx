@@ -4,6 +4,9 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import { validate } from 'email-validator'
+import get from 'lodash/get'
+import message from 'antd/lib/message'
 import {
   Container,
   ForgotPasswordLabel,
@@ -18,15 +21,70 @@ import JakrooModal from '../Common/JakrooModal'
 
 interface Props {
   open: boolean
-  requestClose?: () => void
-  formatMessage?: (messageDescriptor: any) => string
+  requestClose: () => void
+  formatMessage: (messageDescriptor: any, values?: object) => string
   sendMailForgotPassword: (variables: {}) => void
 }
 
-class ForgotPassword extends React.Component<Props, {}> {
+interface StateProps {
+  email: string
+  validEmail: boolean
+}
+
+class ForgotPassword extends React.Component<Props, StateProps> {
+  state = {
+    email: '',
+    validEmail: false
+  }
+
+  onSendMail = async (facebookResp: {}) => {
+    const { sendMailForgotPassword, formatMessage, requestClose } = this.props
+    const { email } = this.state
+
+    if (!email || !this.validateMail(email)) {
+      this.forgotMessage('Invalid Email!', false)
+      return
+    }
+
+    try {
+      const response = await sendMailForgotPassword({
+        variables: { email }
+      })
+      const data = get(response, 'data.forgotPassword', false)
+
+      if (data) {
+        this.forgotMessage(data.message, true)
+        requestClose()
+      }
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      this.forgotMessage(errorMessage, false)
+      console.error(error)
+    }
+  }
+
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { currentTarget: { value, id } } = evt
+    evt.persist()
+    this.setState({ [id]: value } as any)
+  }
+
+  validateMail = (mail: string) => {
+    return validate(mail)
+  }
+
+  forgotMessage = (printMessage: string, success: boolean) => {
+    if (success) {
+      message.success(printMessage, 5)
+    } else {
+      message.error(printMessage, 5)
+    }
+  }
+
   // TODO: refactor placeholder Email
   render() {
     const { open, requestClose } = this.props
+    const { email } = this.state
     return (
       <JakrooModal {...{ open, requestClose }}>
         <Container>
@@ -36,8 +94,13 @@ class ForgotPassword extends React.Component<Props, {}> {
           <EnterEmailLabel>
             <FormattedMessage {...messages.enterEmailLabel} />
           </EnterEmailLabel>
-          <StyledInput placeholder="Email" />
-          <StyledButtonSend>
+          <StyledInput
+            id="email"
+            value={email}
+            onChange={this.handleInputChange}
+            placeholder="Email"
+          />
+          <StyledButtonSend onClick={this.onSendMail}>
             <FormattedMessage {...messages.sendButtonLabel} />
           </StyledButtonSend>
           <ReturnToLogin>
