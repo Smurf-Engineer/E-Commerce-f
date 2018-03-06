@@ -82,12 +82,6 @@ export class ResetPassword extends React.Component<Props, {}> {
     }
   }
 
-  // handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-  //   const { currentTarget: { value, id } } = evt
-  //   evt.persist()
-  //   this.setState({ [id]: value } as any)
-  // }
-
   handlePasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
     const { currentTarget: { value, id } } = evt
