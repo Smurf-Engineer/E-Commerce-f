@@ -9,10 +9,11 @@ import ForgotPassword from './index'
 describe('<ForgotPassword />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const format = (message: string) => 'string'
     const props = { open: false }
     ReactDOM.render(
       <IntlProvider {...props}>
-        <ForgotPassword open={false} />
+        <ForgotPassword open={false} formatMessage={format} />
       </IntlProvider>,
       div
     )

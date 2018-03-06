@@ -6,6 +6,7 @@ import { combineReducers } from 'redux'
 import designCenter from '../screens/DesignCenter/reducer'
 import languageProvider from '../screens/LanguageProvider/reducer'
 import home from '../screens/Home/reducer'
+import reset from '../screens/ResetPassword/reducer'
 import menuGender from '../components/MenuGender/reducer'
 import menuSports from '../components/MenuSports/reducer'
 import layout from '../components/MainLayout/reducer'
@@ -16,6 +17,7 @@ export interface ReducersObject {
   designCenter: any
   languageProvider: any
   home: any
+  reset: any
   app: any
   menuGender: any
   menuSports: any
@@ -42,6 +44,7 @@ const rootReducer = combineReducers({
   languageProvider,
   menu,
   home,
+  reset,
   menuGender,
   menuSports,
   layout,

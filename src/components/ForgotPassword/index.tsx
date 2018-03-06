@@ -42,7 +42,7 @@ class ForgotPassword extends React.Component<Props, StateProps> {
     const { email } = this.state
 
     if (!email || !this.validateMail(email)) {
-      this.forgotMessage('Invalid Email!', false)
+      this.forgotMessage(formatMessage(messages.invalidEmailLabel), false)
       return
     }
 
@@ -81,9 +81,8 @@ class ForgotPassword extends React.Component<Props, StateProps> {
     }
   }
 
-  // TODO: refactor placeholder Email
   render() {
-    const { open, requestClose } = this.props
+    const { open, requestClose, formatMessage } = this.props
     const { email } = this.state
     return (
       <JakrooModal {...{ open, requestClose }}>
@@ -98,7 +97,7 @@ class ForgotPassword extends React.Component<Props, StateProps> {
             id="email"
             value={email}
             onChange={this.handleInputChange}
-            placeholder="Email"
+            placeholder={formatMessage(messages.emailLabel)}
           />
           <StyledButtonSend onClick={this.onSendMail}>
             <FormattedMessage {...messages.sendButtonLabel} />
