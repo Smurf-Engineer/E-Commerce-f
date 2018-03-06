@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import { FormattedMessage } from 'react-intl'
+import Dropdown from 'antd/lib/dropdown'
+import Menu from 'antd/lib/menu'
 import vertexShader from './vertex'
 import fragmentShader from './fragment'
 import {
@@ -15,9 +17,13 @@ import {
   ModelType,
   ModelText
 } from './styledComponents'
+import Slider from '../ZoomSlider'
+import OptionsController from '../OptionsController'
 import messages from './messages'
 import quickView from '../../../assets/quickview.svg'
 import arrowDown from '../../../assets/downarrow.svg'
+
+const { Item } = Menu
 
 // TODO: Refactor this code
 /* eslint-disable */
@@ -36,7 +42,7 @@ class Render3D extends PureComponent {
     }
   }
   // TODO: Remove
-  componentDidMount() {
+  componentDidMount_() {
     /* Renderer config */
     const { onLoadModel } = this.props
     const { clientWidth, clientHeight } = this.container
@@ -62,7 +68,6 @@ class Render3D extends PureComponent {
     const bumpMap = loader.load('./models/TOUR-SS_Jersey-BUMP.jpg')
 
     // Fix the warning: image is not power of two
-    flatlock.minFilter = THREE.LinearFilter
     backPocket.minFilter = THREE.LinearFilter
     label.minFilter = THREE.LinearFilter
     color1.minFilter = THREE.LinearFilter
@@ -278,10 +283,58 @@ class Render3D extends PureComponent {
     this.directionalLight.position.copy(this.camera.position)
   }
 
+  handleOnKeyDown = event => {
+    let charCode = String.fromCharCode(event.which).toLowerCase()
+    if (event.shiftKey && event.ctrlKey && charCode === 'z') {
+      console.log('REDO')
+    } else if (event.ctrlKey && charCode === 'z') {
+      console.log('UNDO')
+    }
+
+    // For MAC we can use metaKey to detect cmd key
+    if (event.shiftKey && event.metaKey && charCode === 'z') {
+      console.log('REDO MAC')
+    } else if (event.metaKey && charCode === 'z') {
+      console.log('UNDO MAC')
+    }
+  }
+
+  handleOnClickUndo = () => {}
+
+  handleOnClickRedo = () => {}
+
+  handleOnClickReset = () => {}
+
+  handleOnClickBlanck = () => {}
+
+  handleOnChange3DModel = () => {}
+
+  handleOnChangeZoom = value => {
+    console.log('------------------------------------')
+    console.log(value)
+    console.log('------------------------------------')
+  }
+
   render() {
     const { showDragmessage } = this.state
+
+    const menu = (
+      <Menu onClick={this.handleOnChange3DModel}>
+        <Menu.Item key="1">Product Only</Menu.Item>
+        <Menu.Item key="2">With Avatar</Menu.Item>
+        <Menu.Item key="3">On Bike</Menu.Item>
+      </Menu>
+    )
+
     return (
-      <Container>
+      <div
+        onKeyDown={this.handleOnKeyDown}
+        tabIndex="0"
+        style={{
+          position: 'relative',
+          width: '74.6%'
+        }}
+      >
         <Row>
           <Model>{'TOUR'}</Model>
           <QuickView src={quickView} />
@@ -292,12 +345,21 @@ class Render3D extends PureComponent {
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
-        <ModelType>
-          <ModelText>3D Model: Product Only</ModelText>
-          <img src={arrowDown} />
-        </ModelType>
+        <Dropdown overlay={menu}>
+          <ModelType>
+            <ModelText>3D Model: Product Only</ModelText>
+            <img src={arrowDown} />
+          </ModelType>
+        </Dropdown>
         <Button type="primary">Save</Button>
-      </Container>
+        <OptionsController
+          onClickUndo={this.handleOnClickUndo}
+          onClickRedo={this.handleOnClickRedo}
+          onClickReset={this.handleOnClickReset}
+          onClickBlank={this.handleOnClickBlanck}
+        />
+        <Slider onChangeZoom={this.handleOnChangeZoom} />
+      </div>
     )
   }
 }

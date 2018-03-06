@@ -51,3 +51,16 @@ declare module 'react-facebook-login' {
   class FacebookLogin extends React.Component<Props, any> {}
   export default FacebookLogin
 }
+
+declare module 'react-rangeslider' {
+  interface Props {
+    min: number
+    max: number
+    value: number
+    orientation: string
+    onChange: (value: number) => void
+  }
+
+  class Slider extends React.Component<Props, any> {}
+  export default Slider
+}

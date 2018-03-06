@@ -9,3 +9,7 @@
 @input-addon-bg: #4185DE;
 @tooltip-arrow-color: transparent;
 @tooltip-distance: @tooltip-arrow-width - 1px + 2px;
+@slider-rail-background-color: #BEBEBE;
+@slider-rail-background-color-hover:  #BEBEBE;
+@slider-track-background-color: #BEBEBE;
+@slider-track-background-color-hover: #BEBEBE;
