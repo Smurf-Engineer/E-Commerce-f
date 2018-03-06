@@ -25,12 +25,3 @@ export const Title = styled.div`
 export const Text = styled.div`
   margin-bottom: 13px;
 `
-
-export const Span = styled.a`
-  color: #fff;
-  &:hover {
-    border-bottom: 1px solid red;
-    cursor: pointer;
-    color: #fff;
-  }
-`

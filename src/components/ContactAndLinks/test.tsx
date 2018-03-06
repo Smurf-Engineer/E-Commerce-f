@@ -10,9 +10,10 @@ describe('<ContactAndLinks />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
+    const format = (message: string) => 'string'
     ReactDOM.render(
       <IntlProvider {...props}>
-        <ContactAndLinks />
+        <ContactAndLinks formatMessage={format} />
       </IntlProvider>,
       div
     )

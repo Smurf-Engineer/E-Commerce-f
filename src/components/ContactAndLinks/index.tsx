@@ -2,6 +2,7 @@
  * ContactAndLinks Component - Created by cazarez on 07/02/18.
  */
 import * as React from 'react'
+import { InjectedIntl } from 'react-intl'
 import ContactInfo from '../ContactInfo'
 import CustomerSupport from '../CustomerSupport'
 import DesignSupport from '../DesignSupport'
@@ -11,16 +12,18 @@ import { Container, Text, ComplianceLogos, StyledImg } from './styledComponents'
 import BSCILogo from '../../assets/BSCI_logo.svg'
 import CaliPropLogo from '../../assets/californiaprop65.svg'
 
-interface Props {}
+interface Props {
+  formatMessage: (messageDescriptor: any) => string
+}
 
-const ContactAndLinks = (props: Props) => {
+const ContactAndLinks = ({ formatMessage }: Props) => {
   return (
     <Container>
-      <ContactInfo />
-      <CustomerSupport />
-      <DesignSupport />
-      <AboutUs />
-      <Teams />
+      <ContactInfo {...{ formatMessage }} />
+      <CustomerSupport {...{ formatMessage }} />
+      <DesignSupport {...{ formatMessage }} />
+      <AboutUs {...{ formatMessage }} />
+      <Teams {...{ formatMessage }} />
       <ComplianceLogos>
         <StyledImg alt="logo" src={BSCILogo} />
         <StyledImg alt="logo" src={CaliPropLogo} />
