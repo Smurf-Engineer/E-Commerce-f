@@ -2,9 +2,11 @@
  * Styled Components - Created by cazarez on 27/02/18.
  */
 import styled from 'styled-components'
+import breadcrumb from 'antd/lib/breadcrumb'
 
 export const Container = styled.div`
   display: flex;
+  flew-wrap: no-wrap;
   height: 100vh;
   padding: 31px 36px 32px 32px;
   background-color: #fff;
@@ -27,5 +29,11 @@ export const FiltersTitle = styled.div`
   margin-bottom: 15px;
 `
 export const ResultsColumn = styled.div`
-  flex: 10 0 auto;
+  flex: 10;
+`
+
+export const StyledBreadcrumb = styled(breadcrumb)`
+  background-color: #fff;
+  padding: 10.5px 0 10.5px 48px;
+  border: 1px solid #dcdcdc;
 `

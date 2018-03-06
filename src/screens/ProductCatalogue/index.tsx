@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import UpperCase from 'lodash/upperCase'
+import Breadcrumb from 'antd/lib/breadcrumb'
 import { ReducersObject } from '../../store/rootReducer'
 import Layout from '../../components/MainLayout'
 import FilterComponent from '../../components/ProductCatalogFilterComponent'
@@ -19,10 +20,11 @@ import {
   Text,
   FiltersColumn,
   FiltersTitle,
-  ResultsColumn
+  ResultsColumn,
+  StyledBreadcrumb
 } from './styledComponents'
 import { QueryProps, Product } from '../../types/common'
-import { GetProductsQuery, GetFiltersQuery } from './data'
+import { GetFiltersQuery } from './data'
 
 interface FilterOptions {
   name: string
@@ -70,6 +72,15 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     if (loading) {
       return null
     }
+
+    const breadCrumb = (
+      <StyledBreadcrumb>
+        <Breadcrumb.Item>Men</Breadcrumb.Item>
+        <Breadcrumb.Item>Cycling</Breadcrumb.Item>
+        <Breadcrumb.Item>Tops</Breadcrumb.Item>
+      </StyledBreadcrumb>
+    )
+
     // const filters = filtersArray.map((filter: FilterType, index: number) => {
     const filters = filtersGraph.map((filter: FilterType, index: number) => {
       const filterToShow = this.state[`show${filter.name}Filters`]
@@ -87,6 +98,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     })
     return (
       <Layout {...{ history, intl }}>
+        {breadCrumb}
         <Container>
           <FiltersColumn>
             <FiltersTitle>

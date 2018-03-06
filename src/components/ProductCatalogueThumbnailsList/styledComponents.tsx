@@ -45,10 +45,25 @@ export const StyledImg = styled.img`
   margin-left: 5px !important;
 `
 
-export const ThumbnailsList = styled.div`
+export const ThumbnailsList = styled.ul`
+  position: relative;
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+`
+
+export const ThumbnailListItem = styled.li`
+  list-style: none;
+  display: inline-block;
+  width: calc(100% / 4);
+  text-align: center;
 `
 
 export const PaginationRow = styled.div`
   text-align: right;
 `
+
+export const MenuStyle = {
+  width: '200px'
+}

@@ -2,7 +2,7 @@
  * ProductCatalogueThumbnailsList Component - Created by cazarez on 01/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { graphql, compose } from 'react-apollo'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu, { ClickParam } from 'antd/lib/menu'
@@ -19,66 +19,83 @@ import {
   TotalItems,
   StyledImg,
   ThumbnailsList,
-  PaginationRow
+  PaginationRow,
+  MenuStyle,
+  ThumbnailListItem
 } from './styledComponents'
+import { GetProductsQuery } from './data'
+import { Filter } from '../../types/common'
 
 interface Data extends QueryProps {
-  products: Product[]
+  catalogue: Product[]
+}
+
+interface StateProps {
+  orderBy: string
+  filters: Filter[]
 }
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   openQuickView: (id: number) => void
   sortBy?: (sort: string | null) => void
-  data?: Data
+  data: Data
   history: any
 }
 
 class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
+  state = {
+    orderBy: 'Top Seller'
+  }
   render() {
-    const { formatMessage } = this.props
+    const { formatMessage, data: { catalogue, loading } } = this.props
+    const { orderBy } = this.state
+    console.log(this.state, this.props.data)
+    if (loading) {
+      return null
+    }
+
     const sortOptions = (
-      <Menu style={{ width: '200px' }} onClick={this.handleMenuClick}>
+      <Menu style={MenuStyle} onClick={this.handleOrderBy}>
         <Menu.Item key="topSeller">
-          <FormattedMessage {...messages.topSellerLabel} />
+          {formatMessage(messages.topSellerLabel)}
         </Menu.Item>
         <Menu.Item key="lowest">
-          <FormattedMessage {...messages.lowestPriceLabel} />
+          {formatMessage(messages.lowestPriceLabel)}
         </Menu.Item>
         <Menu.Item key="hightest">
-          <FormattedMessage {...messages.hightestPriceLabel} />
+          {formatMessage(messages.hightestPriceLabel)}
         </Menu.Item>
       </Menu>
     )
 
+    const thumbnailsList = catalogue.map((product, index) => (
+      <ThumbnailListItem key={index}>
+        <ProductThumbnail
+          id={product.id}
+          isTopProduct={product.isTopProduct}
+          onPressCustomize={this.gotoDesignCenter}
+          onPressQuickView={this.handlePressQuickView}
+          collections={product.collections}
+          images={product.images}
+        />
+      </ThumbnailListItem>
+    ))
     return (
       <Container>
         <HeadRow>
           <TotalItems>{'9 Items'}</TotalItems>
           <SortOptions>
-            <SortByLabel>
-              <FormattedMessage {...messages.sortByLabel} />
-            </SortByLabel>
+            <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
             <Dropdown overlay={sortOptions} placement="bottomCenter">
-              <Text>{formatMessage(messages.topSellerLabel)}</Text>
+              <Text>{orderBy}</Text>
             </Dropdown>
             <StyledImg src={downArrowIcon} />
           </SortOptions>
         </HeadRow>
-        <ThumbnailsList>
-          <ProductThumbnail
-            id={1}
-            isTopProduct={false}
-            onPressCustomize={this.gotoDesignCenter}
-            onPressQuickView={this.handlePressQuickView}
-          />
-          <ProductThumbnail
-            id={2}
-            isTopProduct={false}
-            onPressCustomize={this.gotoDesignCenter}
-            onPressQuickView={this.handlePressQuickView}
-          />
-        </ThumbnailsList>
+        <div>
+          <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+        </div>
         <PaginationRow>
           <Pagination size="small" total={50} pageSize={12} />
         </PaginationRow>
@@ -97,9 +114,27 @@ class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     openQuickView(id)
   }
 
-  handleMenuClick = (evt: ClickParam) => {
-    console.log(evt)
+  handleOrderBy = (evt: ClickParam) => {
+    const { item: { props: { children } } } = evt
+
+    this.setState({ orderBy: children })
+  }
+
+  handleVisible = (param: boolean | undefined) => {
+    console.log(param)
   }
 }
 
-export default ProductCatalogueThumbnailsList
+const ThumbnailsListEnhance = compose(
+  graphql<Data>(GetProductsQuery, {
+    options: {
+      variables: {
+        gender: 1,
+        category: 0,
+        sport: 1
+      }
+    }
+  })
+)(ProductCatalogueThumbnailsList)
+
+export default ThumbnailsListEnhance
