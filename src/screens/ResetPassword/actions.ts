@@ -1,11 +1,7 @@
 /**
  * Home redux actions
  */
-import {
-  DEFAULT_ACTION,
-  SHOW_SEARCH_RESULTS_HOME,
-  SET_SEARCH_PARAM
-} from './constants'
+import { DEFAULT_ACTION, SET_PASSWORD, SET_CONFIRM_PASSWORD } from './constants'
 import { AnyAction } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -13,16 +9,16 @@ export const defaultAction = (someValue: string): AnyAction => ({
   someValue
 })
 
-export const setSearchParam = (param: string): AnyAction => {
+export const setPassword = (param: string): AnyAction => {
   return {
-    type: SET_SEARCH_PARAM,
+    type: SET_PASSWORD,
     param
   }
 }
 
-export const showSearchResultsHome = (show: boolean): AnyAction => {
+export const setConfirmPassword = (param: string): AnyAction => {
   return {
-    type: SHOW_SEARCH_RESULTS_HOME,
-    show
+    type: SET_CONFIRM_PASSWORD,
+    param
   }
 }

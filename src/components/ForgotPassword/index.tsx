@@ -2,11 +2,13 @@
  * ForgotPassword Component - Created by cazarez on 20/02/18.
  */
 import * as React from 'react'
+import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import { validate } from 'email-validator'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
+import { ReducersObject } from '../../store/rootReducer'
 import {
   Container,
   ForgotPasswordLabel,
@@ -15,31 +17,28 @@ import {
   StyledButtonSend,
   ReturnToLogin
 } from './styledComponents'
+import { setEmail } from './actions'
 import { forgotPassword } from './data'
 import messages from './messages'
 import JakrooModal from '../Common/JakrooModal'
 
 interface Props {
   open: boolean
+  dispatch: any
+  email: string
   requestClose: () => void
   formatMessage: (messageDescriptor: any, values?: object) => string
   sendMailForgotPassword: (variables: {}) => void
 }
 
-interface StateProps {
-  email: string
-  validEmail: boolean
-}
-
-class ForgotPassword extends React.Component<Props, StateProps> {
-  state = {
-    email: '',
-    validEmail: false
-  }
-
+class ForgotPassword extends React.Component<Props, {}> {
   onSendMail = async (facebookResp: {}) => {
-    const { sendMailForgotPassword, formatMessage, requestClose } = this.props
-    const { email } = this.state
+    const {
+      sendMailForgotPassword,
+      formatMessage,
+      requestClose,
+      email
+    } = this.props
 
     if (!email || !this.validateMail(email)) {
       this.forgotMessage(formatMessage(messages.invalidEmailLabel), false)
@@ -64,9 +63,10 @@ class ForgotPassword extends React.Component<Props, StateProps> {
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { dispatch } = this.props
     const { currentTarget: { value, id } } = evt
     evt.persist()
-    this.setState({ [id]: value } as any)
+    dispatch(setEmail(value))
   }
 
   validateMail = (mail: string) => {
@@ -82,8 +82,7 @@ class ForgotPassword extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { open, requestClose, formatMessage } = this.props
-    const { email } = this.state
+    const { open, requestClose, formatMessage, email } = this.props
     return (
       <JakrooModal {...{ open, requestClose }}>
         <Container>
@@ -111,5 +110,12 @@ class ForgotPassword extends React.Component<Props, StateProps> {
   }
 }
 
-const ForgotPasswordEnhance = compose(forgotPassword)(ForgotPassword)
+const mapStateToProps = ({ forgot }: ReducersObject) => forgot.toJS()
+
+const mapDispatchToProps = (dispatch: any) => ({ dispatch })
+
+const ForgotPasswordEnhance = compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  forgotPassword
+)(ForgotPassword)
 export default ForgotPasswordEnhance

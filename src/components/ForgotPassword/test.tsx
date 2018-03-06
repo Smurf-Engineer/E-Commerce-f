@@ -3,19 +3,26 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { IntlProvider } from 'react-intl'
+import forgotReducer, { initialState } from './reducer'
+import { defaultAction } from './actions'
 import ForgotPassword from './index'
 
-describe('<ForgotPassword />', () => {
-  test('renders without exploding', () => {
-    const div = document.createElement('div')
-    const format = (message: string) => 'string'
-    const props = { open: false }
-    ReactDOM.render(
-      <IntlProvider {...props}>
-        <ForgotPassword open={false} formatMessage={format} />
-      </IntlProvider>,
-      div
-    )
+describe('Forgot Reducer', () => {
+  it('Return the default state for unknow action', () => {
+    let state = forgotReducer(initialState, { type: 'unknow' })
+    expect(state).toEqual(initialState)
+  })
+
+  // Test redux actions
+  it('Update someKey correctly', () => {
+    const testValue = 'Test value'
+    const state = forgotReducer(initialState, defaultAction(testValue))
+    const someKey = state.get('someKey')
+    expect(someKey).toEqual(testValue)
+
+    const testValue2 = 'Test value 2'
+    const state2 = forgotReducer(initialState, defaultAction(testValue2))
+    const someKey2 = state2.get('someKey')
+    expect(someKey2).toEqual(testValue2)
   })
 })

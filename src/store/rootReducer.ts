@@ -11,6 +11,7 @@ import menuGender from '../components/MenuGender/reducer'
 import menuSports from '../components/MenuSports/reducer'
 import layout from '../components/MainLayout/reducer'
 import menu from '../components/DropdownList/reducer'
+import forgot from '../components/ForgotPassword/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
@@ -23,6 +24,7 @@ export interface ReducersObject {
   menuSports: any
   layout: any
   menu: any
+  forgot: any
   quickView: any
 }
 
@@ -43,6 +45,7 @@ const rootReducer = combineReducers({
   designCenter,
   languageProvider,
   menu,
+  forgot,
   home,
   reset,
   menuGender,

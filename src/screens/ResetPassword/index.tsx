@@ -23,30 +23,27 @@ import {
   ForgotPasswordLabel,
   StyledCard
 } from './styledComponents'
+import { setPassword, setConfirmPassword } from './actions'
 import { resetPassword } from './data'
 
 interface Props {
-  // formatMessage: (messageDescriptor: any, values?: object) => string
   changeResetPassword: (variables: {}) => void
+  history: any
+  dispatch: any
+  password: string
+  confirmPassword: string
   intl: InjectedIntl
 }
 
-interface StateProps {
-  password: string
-  confirmPassword: string
-  validPass: boolean
-}
-
-export class ResetPassword extends React.Component<Props, StateProps> {
-  state = {
-    password: '',
-    confirmPassword: '',
-    validPass: false
-  }
-
+export class ResetPassword extends React.Component<Props, {}> {
   handleChangePassword = async (evt: React.MouseEvent<EventTarget>) => {
-    const { password, confirmPassword } = this.state
-    const { changeResetPassword, intl } = this.props
+    const {
+      changeResetPassword,
+      intl,
+      history,
+      password,
+      confirmPassword
+    } = this.props
 
     if (!password || !confirmPassword) {
       this.changeMessage(
@@ -73,7 +70,7 @@ export class ResetPassword extends React.Component<Props, StateProps> {
 
         if (data) {
           this.changeMessage(data.message, true)
-          // TODO: redirect to home
+          history.replace('/')
         }
       } catch (error) {
         const errorMessage = error.graphQLErrors.map((x: any) => x.message)
@@ -85,10 +82,24 @@ export class ResetPassword extends React.Component<Props, StateProps> {
     }
   }
 
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+  // handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+  //   const { currentTarget: { value, id } } = evt
+  //   evt.persist()
+  //   this.setState({ [id]: value } as any)
+  // }
+
+  handlePasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { dispatch } = this.props
     const { currentTarget: { value, id } } = evt
     evt.persist()
-    this.setState({ [id]: value } as any)
+    dispatch(setPassword(value))
+  }
+
+  handleConfirmPasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { dispatch } = this.props
+    const { currentTarget: { value, id } } = evt
+    evt.persist()
+    dispatch(setConfirmPassword(value))
   }
 
   changeMessage = (printMessage: string, success: boolean) => {
@@ -100,8 +111,7 @@ export class ResetPassword extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { intl } = this.props
-    const { password, confirmPassword } = this.state
+    const { intl, password, confirmPassword } = this.props
     return (
       <Container>
         <StyledCard title={intl.formatMessage(messages.changePasswordLabel)}>
@@ -111,14 +121,14 @@ export class ResetPassword extends React.Component<Props, StateProps> {
               value={password}
               type="Password"
               placeholder={intl.formatMessage(messages.newPasswordLabel)}
-              onChange={this.handleInputChange}
+              onChange={this.handlePasswordChange}
             />
             <StyledInput
               id="confirmPassword"
               value={confirmPassword}
               type="Password"
               placeholder={intl.formatMessage(messages.confirmNewPasswordLabel)}
-              onChange={this.handleInputChange}
+              onChange={this.handleConfirmPasswordChange}
             />
             <StyledLoginButton
               type="danger"
