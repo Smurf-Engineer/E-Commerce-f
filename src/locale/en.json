@@ -85,5 +85,15 @@
   "components.Logout.myLockerLabel": "My Locker",
   "components.Logout.myAccountLabel": "My Account",
   "components.Logout.profileSettingsLabel": "Profile Settings",
-  "components.Logout.logoutLabel": "Logout"
+  "components.Logout.logoutLabel": "Logout",
+  "components.forgotPassword.emailLabel": "Email",
+  "components.forgotPassword.invalidEmailLabel": "Invalid email!",
+  "components.ResetPassword.passwordLabel": "Password",
+  "components.ResetPassword.confirmPasswordLabel": "confirmPassword",
+  "components.ResetPassword.newPasswordLabel": "New password",
+  "components.ResetPassword.confirmNewPasswordLabel": "Confirm New Password",
+  "components.ResetPassword.changePasswordLabel": "Change Password",
+  "components.ResetPassword.invalidPasswordMessage": "Invalid password!",
+  "components.ResetPassword.resetTokenMessage": "Reset token needed",
+  "components.ResetPassword.noMatchingMessage": "No matching passwords"
 }
