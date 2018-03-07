@@ -19,14 +19,14 @@ interface Props {
   onClickUndo: () => void
   onClickRedo: () => void
   onClickReset: () => void
-  onClickBlank: () => void
+  onClickClear: () => void
 }
 
 const OptionsController = ({
   onClickUndo,
   onClickRedo,
   onClickReset,
-  onClickBlank
+  onClickClear
 }: Props) => {
   return (
     <OptionsContainer>
@@ -45,7 +45,7 @@ const OptionsController = ({
         </OptionButton>
       </Options>
       <Options>
-        <OptionButton onClick={onClickBlank}>
+        <OptionButton onClick={onClickClear}>
           <img src={blankIcon} />
         </OptionButton>
       </Options>

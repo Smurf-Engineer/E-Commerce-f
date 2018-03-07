@@ -11,3 +11,7 @@ export const SET_PALETTE_ACTION = `${namespace}/SET_PALETTE_ACTION`
 export const SET_PALETTE_NAME_ACTION = `${namespace}/SET_PALETTE_NAME_ACTION`
 export const SET_PALETTES_ACTION = `${namespace}/SET_PALETTES_ACTION`
 export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`
+export const DESIGN_UNDO_ACTION = `${namespace}/DESIGN_UNDO_ACTION`
+export const DESIGN_REDO_ACTION = `${namespace}/DESIGN_REDO_ACTION`
+export const DESIGN_RESET_ACTION = `${namespace}/DESIGN_RESET_ACTION`
+export const DESIGN_CLEAR_ACTION = `${namespace}/DESIGN_CLEAR_ACTION`

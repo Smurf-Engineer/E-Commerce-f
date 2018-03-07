@@ -21,6 +21,7 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  styleColors: string[]
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -37,7 +38,8 @@ const Tabs = ({
   paletteName,
   palettes,
   onSetPalettes,
-  colors
+  colors,
+  styleColors
 }: Props) => {
   return (
     <Container>
@@ -49,6 +51,7 @@ const Tabs = ({
               colorBlock,
               onSelectColor,
               colors,
+              styleColors,
               onChangePaletteName,
               paletteName,
               palettes,

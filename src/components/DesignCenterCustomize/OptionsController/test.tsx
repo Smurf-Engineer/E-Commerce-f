@@ -13,8 +13,8 @@ describe('<OptionsController />', () => {
       <OptionsController
         onClickUndo={testFunction}
         onClickRedo={testFunction}
-        onClickBlank={testFunction}
         onClickReset={testFunction}
+        onClickClear={testFunction}
       />,
       div
     )

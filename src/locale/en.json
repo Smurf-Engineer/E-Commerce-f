@@ -85,5 +85,9 @@
   "components.Logout.myLockerLabel": "My Locker",
   "components.Logout.myAccountLabel": "My Account",
   "components.Logout.profileSettingsLabel": "Profile Settings",
-  "components.Logout.logoutLabel": "Logout"
+  "components.Logout.logoutLabel": "Logout",
+  "components.Render3D.drag": "Drag to rotate",
+  "components.Render3D.productOnly": "Product Only",
+  "components.Render3D.withAvatar": "With Avatar",
+  "components.Render3D.onBike": "On Bike"
 }
