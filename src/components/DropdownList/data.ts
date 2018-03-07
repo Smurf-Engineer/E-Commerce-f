@@ -8,7 +8,7 @@ export const categoriesQuery = gql`
   query GetCategories {
     genders {
       id
-      name
+      name: gender
     }
     categories {
       id
