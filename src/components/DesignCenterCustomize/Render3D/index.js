@@ -61,6 +61,7 @@ class Render3D extends PureComponent {
     /* Renderer config */
     const { onLoadModel, styleColors } = this.props
     const { clientWidth, clientHeight } = this.container
+
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
@@ -342,15 +343,11 @@ class Render3D extends PureComponent {
   }
 
   handleOnChangeZoom = value => {
-    const zoomFactor = value * 1.0 / 100
+    const zoomValue = value * 1.0 / 1000
+
+    console.log('----------------FV-----------------')
+    console.log(this.scene)
     console.log('------------------------------------')
-    console.log(zoomFactor)
-    console.log('------------------------------------')
-    console.log('------------------------------------')
-    console.log(this.controls)
-    console.log('------------------------------------')
-    // this.camera.fov *= zoomFactor
-    // this.camera.updateProjectionMatrix()
   }
 
   render() {
