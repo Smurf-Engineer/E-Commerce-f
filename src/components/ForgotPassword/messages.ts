@@ -10,6 +10,14 @@ export default defineMessages({
     defaultMessage:
       'Enter your email to receive instructions on how to reset your password.'
   },
+  emailLabel: {
+    id: 'components.forgotPassword.emailLabel',
+    defaultMessage: 'Email'
+  },
+  invalidEmailLabel: {
+    id: 'components.forgotPassword.invalidEmailLabel',
+    defaultMessage: 'Invalid email!'
+  },
   sendButtonLabel: {
     id: 'components.forgotPassword.sendButtonLabel',
     defaultMessage: 'SEND'
