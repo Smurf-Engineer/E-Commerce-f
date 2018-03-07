@@ -3,14 +3,14 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ProductCatalogueThumbnailsList from './index'
+import { ProductCatalogueThumbnailsList } from './index'
 
 describe('<ProductCatalogueThumbnailsList />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const format = (message: string) => 'string'
     const data = {
-      products: [],
+      catalogue: [],
       fetchMore: () => {}
     }
     ReactDOM.render(

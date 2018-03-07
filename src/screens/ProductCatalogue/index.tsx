@@ -23,7 +23,7 @@ import {
   ResultsColumn,
   StyledBreadcrumb
 } from './styledComponents'
-import { QueryProps, Product } from '../../types/common'
+import { QueryProps, Product, Filter } from '../../types/common'
 import { GetFiltersQuery } from './data'
 
 interface FilterOptions {
@@ -49,9 +49,10 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   filtersArray: FilterType[]
   data: Data
-  selectedFilters: FilterType[]
-  selectedFilterAction: (filter: {}) => void
+  genderFilters: FilterType[]
+  setFilterAction: (filter: {}) => void
   openQuickViewAction: (index: number) => void
+  setGenderFilters: (filter: object) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
@@ -59,16 +60,18 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     showTypeFilters: false,
     filters: []
   }
+  componentDidMount() {}
+
   render() {
     const {
       history,
       intl,
       filtersArray,
+      genderFilters,
       openQuickViewAction: openQuickView,
-      data: { loading, filters: filtersGraph },
-      selectedFilters
+      data: { loading, filters: filtersGraph }
     } = this.props
-    console.log(this.props)
+    console.log('genderFilters ', genderFilters)
     if (loading) {
       return null
     }
@@ -81,19 +84,20 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       </StyledBreadcrumb>
     )
 
-    // const filters = filtersArray.map((filter: FilterType, index: number) => {
     const filters = filtersGraph.map((filter: FilterType, index: number) => {
       const filterToShow = this.state[`show${filter.name}Filters`]
       return (
-        <FilterComponent
-          key={index}
-          id={filter.name}
-          title={UpperCase(filter.name)}
-          options={filter.options}
-          showOptions={filterToShow}
-          toggleOptions={this.toggleFilter}
-          selectOption={this.handleSelect}
-        />
+        <div key={index}>
+          <FilterComponent
+            key={filter.id}
+            id={filter.name}
+            title={UpperCase(filter.name)}
+            options={filter.options}
+            showOptions={filterToShow}
+            toggleOptions={this.toggleFilter}
+            selectOption={this.handleSelect}
+          />
+        </div>
       )
     })
     return (
@@ -125,17 +129,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   handleSelect = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { selectedFilterAction, selectedFilters } = this.props
+    const { setFilterAction, genderFilters, setGenderFilters } = this.props
     const { filters } = this.state
-    const { target: { name, value, checked } } = evt
+    const { target: { name, value, checked, id } } = evt
 
-    const filter = {
-      id: value,
-      name,
-      checked
+    const filterObject = {
+      type: name,
+      filter: checked
     }
-
-    selectedFilterAction(filter)
+    console.log('CheCK ', name, value, id)
+    setFilterAction(filterObject)
   }
 }
 

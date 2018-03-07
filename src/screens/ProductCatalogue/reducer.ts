@@ -2,13 +2,22 @@
  * ProductCatalog Reducer - Created by cazarez on 27/02/18.
  */
 import { fromJS } from 'immutable'
-import { DEFAULT_ACTION, SELECTED_FILTER } from './constants'
+import {
+  DEFAULT_ACTION,
+  SELECTED_FILTER,
+  SHOW_TYPE_FILTER,
+  SET_GENDER_FILTERS
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   typeOfFilter: '',
-  selectedFilters: []
+  genderFilters: {},
+  sportFilters: {},
+  categoryFilters: {},
+  fitFilters: {},
+  TemperatureFilters: {}
 })
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -16,12 +25,20 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
     case SELECTED_FILTER: {
-      console.log('Selected filter ', action)
       return state.merge({
         typeOfFilter: action.id,
         selectedFilters: action.filter
       })
     }
+    case SHOW_TYPE_FILTER:
+      console.log(action.key, action.filter)
+      return state.merge({ [action.key]: action.filter })
+    case SET_GENDER_FILTERS:
+      return state.updateIn(
+        [action.type, action.value],
+        (value: any) => !!!value
+      )
+
     /*{
       const id = action.filter.id
 

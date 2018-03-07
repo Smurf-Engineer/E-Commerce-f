@@ -7,7 +7,6 @@ import breadcrumb from 'antd/lib/breadcrumb'
 export const Container = styled.div`
   display: flex;
   flew-wrap: no-wrap;
-  height: 100vh;
   padding: 31px 36px 32px 32px;
   background-color: #fff;
 `

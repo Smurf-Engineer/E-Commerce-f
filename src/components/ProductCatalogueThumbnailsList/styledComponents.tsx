@@ -6,6 +6,9 @@ import styled from 'styled-components'
 export const Container = styled.div`
   padding: 0 33px 30px 35px;
 `
+export const Content = styled.div`
+  overflow: scroll;
+`
 
 export const Text = styled.div`
   color: #5f6062;
@@ -18,6 +21,7 @@ export const HeadRow = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
+  padding: 0 8% 0 4%;
 `
 
 export const TotalItems = styled.div`
@@ -57,11 +61,12 @@ export const ThumbnailListItem = styled.li`
   list-style: none;
   display: inline-block;
   width: calc(100% / 4);
-  text-align: center;
+  padding-bottom: 20px;
 `
 
 export const PaginationRow = styled.div`
   text-align: right;
+  padding-right: 8%;
 `
 
 export const MenuStyle = {

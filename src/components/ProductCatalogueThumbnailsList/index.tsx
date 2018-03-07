@@ -7,11 +7,13 @@ import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu, { ClickParam } from 'antd/lib/menu'
 import messages from './messages'
+import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import downArrowIcon from '../../assets/downarrow.svg'
 import { QueryProps, Product } from '../../types/common'
 import {
   Container,
+  Content,
   Text,
   HeadRow,
   SortByLabel,
@@ -23,7 +25,6 @@ import {
   MenuStyle,
   ThumbnailListItem
 } from './styledComponents'
-import { GetProductsQuery } from './data'
 import { Filter } from '../../types/common'
 
 interface Data extends QueryProps {
@@ -43,14 +44,14 @@ interface Props {
   history: any
 }
 
-class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
+export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   state = {
     orderBy: 'Top Seller'
   }
   render() {
     const { formatMessage, data: { catalogue, loading } } = this.props
     const { orderBy } = this.state
-    console.log(this.state, this.props.data)
+
     if (loading) {
       return null
     }
@@ -73,11 +74,14 @@ class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       <ThumbnailListItem key={index}>
         <ProductThumbnail
           id={product.id}
+          type={product.type}
+          description={product.description}
           isTopProduct={product.isTopProduct}
           onPressCustomize={this.gotoDesignCenter}
           onPressQuickView={this.handlePressQuickView}
           collections={product.collections}
           images={product.images}
+          priceRange={product.priceRange}
         />
       </ThumbnailListItem>
     ))
@@ -93,9 +97,9 @@ class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             <StyledImg src={downArrowIcon} />
           </SortOptions>
         </HeadRow>
-        <div>
+        <Content>
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
-        </div>
+        </Content>
         <PaginationRow>
           <Pagination size="small" total={50} pageSize={12} />
         </PaginationRow>
@@ -110,18 +114,16 @@ class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
   handlePressQuickView = (id: number) => {
     const { openQuickView } = this.props
-    console.log(id)
     openQuickView(id)
   }
 
   handleOrderBy = (evt: ClickParam) => {
     const { item: { props: { children } } } = evt
-
     this.setState({ orderBy: children })
   }
 
   handleVisible = (param: boolean | undefined) => {
-    console.log(param)
+    // console.log(param)
   }
 }
 
