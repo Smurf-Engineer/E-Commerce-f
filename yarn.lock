@@ -88,6 +88,12 @@
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@types/query-string/-/query-string-5.1.0.tgz#7f40cdea49ddafa0ea4f3db35fb6c24d3bfd4dcc"
 
+"@types/rc-slider@^8.2.3":
+  version "8.2.3"
+  resolved "https://registry.yarnpkg.com/@types/rc-slider/-/rc-slider-8.2.3.tgz#61eadafbb999f8ff11388ef9d0054accb20a7640"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.0.3":
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.3.tgz#8accad7eabdab4cca3e1a56f5ccb57de2da0ff64"
@@ -7040,6 +7046,18 @@ rc-select@~7.5.0:
     rc-menu "^6.1.0"
     rc-trigger "^2.2.0"
     rc-util "^4.0.4"
+    warning "^3.0.0"
+
+rc-slider@^8.6.1:
+  version "8.6.1"
+  resolved "https://registry.yarnpkg.com/rc-slider/-/rc-slider-8.6.1.tgz#ee5e0380dbdf4b5de6955a265b0d4ff6196405d1"
+  dependencies:
+    babel-runtime "6.x"
+    classnames "^2.2.5"
+    prop-types "^15.5.4"
+    rc-tooltip "^3.7.0"
+    rc-util "^4.0.4"
+    shallowequal "^1.0.1"
     warning "^3.0.0"
 
 rc-slider@~8.5.0:

@@ -5,14 +5,17 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Slider from 'react-rangeslider'
 import messages from './messages'
-// import './styles.css'
-import { Container, SliderContainer } from './styledComponents'
+import { Container, SliderContainer, Button } from './styledComponents'
 
 interface Props {
-  onChangeZoom: (value: any) => void
+  onChangeZoom: (value: number) => void
 }
 
-class ZoomSlider extends React.PureComponent<Props, {}> {
+interface State {
+  value: number
+}
+
+class ZoomSlider extends React.PureComponent<Props, State> {
   state = {
     value: 50
   }
@@ -20,11 +23,36 @@ class ZoomSlider extends React.PureComponent<Props, {}> {
   handleOnChangeValue = (value: number) =>
     this.setState({ value }, () => this.props.onChangeZoom(value))
 
+  handleZoomIn = () => {
+    const { value } = this.state
+    const { onChangeZoom } = this.props
+
+    if (value < 70) {
+      this.setState(
+        ({ value: prevValue }) => ({ value: prevValue + 2 }),
+        () => onChangeZoom(this.state.value)
+      )
+    }
+  }
+
+  handleZoomOut = () => {
+    const { value } = this.state
+    const { onChangeZoom } = this.props
+
+    if (value > 20) {
+      this.setState(
+        ({ value: prevValue }) => ({ value: prevValue - 2 }),
+        () => onChangeZoom(this.state.value)
+      )
+    }
+  }
+
   render() {
     const { value } = this.state
     const { onChangeZoom } = this.props
     return (
       <Container>
+        <Button onClick={this.handleZoomIn}>+</Button>
         <Slider
           min={25}
           max={70}
@@ -33,27 +61,8 @@ class ZoomSlider extends React.PureComponent<Props, {}> {
           orientation="vertical"
           onChange={this.handleOnChangeValue}
         />
+        <Button onClick={this.handleZoomOut}>-</Button>
       </Container>
-      // <Container>
-      //   {/* <input
-      //     type="range"
-      //     min={1}
-      //     max={100}
-      //     value={value}
-      //     className="slider"
-      //     onChange={this.handleOnChangeValue}
-      //     id="myRange"
-      //   /> */}
-      //   {/* <SliderContainer>
-      //     <Slider
-      //       onAfterChange={onChangeZoom}
-      //       min={20}
-      //       max={80}
-      //       vertical={true}
-      //       defaultValue={50}
-      //     />
-      //   </SliderContainer> */}
-      // </Container>
     )
   }
 }

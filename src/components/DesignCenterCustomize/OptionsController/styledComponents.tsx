@@ -6,6 +6,7 @@ import AntdDivider from 'antd/lib/divider'
 
 export const OptionsContainer = styled.div`
   position: absolute;
+  user-select: none;
   left: 26px;
   bottom: 14%;
 `
@@ -20,6 +21,7 @@ interface OptionsProps {
 
 export const OptionButton = styled.div`
   width: 40px;
+  user-select: none;
   height: 40px;
   display: flex;
   align-items: center;
@@ -31,4 +33,5 @@ export const OptionButton = styled.div`
 
 export const Divider = styled(AntdDivider)`
   margin: 0px;
+  user-select: none;
 `
