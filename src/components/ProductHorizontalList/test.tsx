@@ -4,11 +4,14 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { ProductHorizontalList } from './index'
-import { Product, Filter } from '../../types/common'
+import { ProductType, Filter } from '../../types/common'
 
 describe('<ProductHorizontalList />', () => {
   test('renders without exploding', () => {
-    const products: Product[] = []
+    const products: ProductType = {
+      fullCount: '0',
+      products: []
+    } as ProductType
     const div = document.createElement('div')
     const category: Filter = {
       id: 1,
