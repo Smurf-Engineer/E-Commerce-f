@@ -8,10 +8,10 @@ import Spin from 'antd/lib/spin'
 import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
 import { productsQuery } from './data'
-import { Product, QueryProps, Filter } from '../../types/common'
+import { Product, ProductType, QueryProps, Filter } from '../../types/common'
 
 interface Data extends QueryProps {
-  products?: Product[]
+  products?: ProductType
 }
 
 interface Props {
@@ -48,9 +48,9 @@ export const ProductHorizontalList = ({
     return <div>Error...</div>
   }
 
-  const products: Product[] = data.products || []
+  const products: ProductType = data.products || ({} as ProductType)
 
-  const list = products.map(
+  const list = products.products.map(
     (
       { id, type, images, description, priceRange, isTopProduct, collections },
       key
