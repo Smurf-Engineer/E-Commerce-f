@@ -42,7 +42,8 @@ class Render3D extends PureComponent {
   state = {
     showDragmessage: true,
     currentView: 2,
-    currentModel: 0
+    currentModel: 0,
+    zoomValue: 0
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,6 +102,7 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
     controls.minDistance = 150
     controls.maxDistance = 350
+    controls.enableZoom = false
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -343,15 +345,13 @@ class Render3D extends PureComponent {
   }
 
   handleOnChangeZoom = value => {
-    const zoomValue = value * 1.0 / 1000
-
-    console.log('----------------FV-----------------')
-    console.log(this.scene)
-    console.log('------------------------------------')
+    const zoomValue = value * 1.0 / 100
+    this.camera.zoom = zoomValue * 2
+    this.camera.updateProjectionMatrix()
   }
 
   render() {
-    const { showDragmessage, currentView } = this.state
+    const { showDragmessage, currentView, zoomValue } = this.state
     const { onPressQuickView } = this.props
 
     const menu = (

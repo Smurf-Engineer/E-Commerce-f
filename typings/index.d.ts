@@ -58,6 +58,7 @@ declare module 'react-rangeslider' {
     max: number
     value: number
     orientation: string
+    tooltip: boolean
     onChange: (value: number) => void
   }
 
