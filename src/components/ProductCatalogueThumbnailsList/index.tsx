@@ -114,7 +114,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         </Menu.Item>
       </Menu>
     )
-    console.log(catalogue.length, catalogue)
+
     return (
       <Container>
         <HeadRow>
