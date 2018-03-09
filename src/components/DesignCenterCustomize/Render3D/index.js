@@ -352,7 +352,7 @@ class Render3D extends PureComponent {
 
   render() {
     const { showDragmessage, currentView, zoomValue } = this.state
-    const { onPressQuickView } = this.props
+    const { onPressQuickView, undoEnabled, redoEnabled } = this.props
 
     const menu = (
       <Menu onClick={this.handleOnChange3DModel}>
@@ -388,6 +388,7 @@ class Render3D extends PureComponent {
         </Dropdown>
         <Button type="primary">Save</Button>
         <OptionsController
+          {...{ undoEnabled, redoEnabled }}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnClickReset}

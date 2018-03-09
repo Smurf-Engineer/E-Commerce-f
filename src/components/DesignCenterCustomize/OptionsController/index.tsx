@@ -16,6 +16,8 @@ import {
 } from './styledComponents'
 
 interface Props {
+  undoEnabled: boolean
+  redoEnabled: boolean
   onClickUndo: () => void
   onClickRedo: () => void
   onClickReset: () => void
@@ -23,19 +25,33 @@ interface Props {
 }
 
 const OptionsController = ({
+  undoEnabled,
+  redoEnabled,
   onClickUndo,
   onClickRedo,
   onClickReset,
   onClickClear
 }: Props) => {
+  const handleUndoClick = () => {
+    if (undoEnabled) {
+      onClickUndo()
+    }
+  }
+
+  const handleRedoClick = () => {
+    if (redoEnabled) {
+      onClickRedo()
+    }
+  }
+
   return (
     <OptionsContainer>
       <Options>
-        <OptionButton onClick={onClickUndo}>
+        <OptionButton onClick={handleUndoClick}>
           <img src={undoIcon} />
         </OptionButton>
         <Divider />
-        <OptionButton onClick={onClickRedo}>
+        <OptionButton onClick={handleRedoClick}>
           <img src={redoIcon} />
         </OptionButton>
       </Options>

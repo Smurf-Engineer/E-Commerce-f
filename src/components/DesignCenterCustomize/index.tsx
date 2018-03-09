@@ -16,6 +16,8 @@ interface Props {
   colors: string[]
   styleColors: string[]
   loadingModel: boolean
+  undoEnabled: boolean
+  redoEnabled: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -46,7 +48,9 @@ const DesignCenterCustomize = ({
   onRedoAction,
   onResetAction,
   onClearAction,
-  onPressQuickView
+  onPressQuickView,
+  undoEnabled,
+  redoEnabled
 }: Props) => {
   return (
     <Container>
@@ -74,7 +78,9 @@ const DesignCenterCustomize = ({
           onRedoAction,
           onResetAction,
           onClearAction,
-          onPressQuickView
+          onPressQuickView,
+          undoEnabled,
+          redoEnabled
         }}
       />
     </Container>

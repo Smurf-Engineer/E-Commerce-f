@@ -20,6 +20,11 @@ import { Container, Text } from './styledComponents'
 import { Theme, Palette } from '../../types/common'
 import messages from './messages'
 
+interface Change {
+  type: string
+  state: any
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
@@ -29,6 +34,8 @@ interface Props extends RouteComponentProps<any> {
   colors: string[]
   styleColors: string[]
   loadingModel: boolean
+  undoChanges: Change[]
+  redoChanges: Change[]
   // Redux Actions
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
@@ -81,7 +88,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       designUndoAction,
       designRedoAction,
       designResetAction,
-      designClearAction
+      designClearAction,
+      undoChanges,
+      redoChanges
     } = this.props
     return (
       <Layout {...{ history, intl }}>
@@ -114,6 +123,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 palettes,
                 loadingModel
               }}
+              undoEnabled={undoChanges.length > 0}
+              redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}
               onSelectColor={setColorAction}
               onSelectPalette={setPaletteAction}

@@ -11,6 +11,8 @@ describe('<OptionsController />', () => {
     const testFunction = () => {}
     ReactDOM.render(
       <OptionsController
+        undoEnabled={false}
+        redoEnabled={false}
         onClickUndo={testFunction}
         onClickRedo={testFunction}
         onClickReset={testFunction}
