@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components'
 
 export const Container = styled.div`
   margin: 0px 16px;
+  width: 220px;
 `
 
 export const Text = styled.div`
@@ -30,7 +31,6 @@ export const ImageTop = styled.div`
   display: flex;
   flex-direction: row;
   position: absolute;
-  width: 200px;
   justify-content: space-between;
 `
 export const TopContainer = styled.div`

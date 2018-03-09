@@ -40,8 +40,8 @@ export type ImageType = {
 }
 
 export type PriceRange = {
-  from: number
-  to: number
+  quantity: string
+  price: number
 }
 
 export type HomePageBatch = {
@@ -54,7 +54,7 @@ export interface Product {
   images: ImageType
   type: string
   description: string
-  priceRange: PriceRange
+  priceRange: PriceRange[]
   collections: number
   isTopProduct: boolean
   details: string

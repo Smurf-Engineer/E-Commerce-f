@@ -29,7 +29,7 @@ interface Props {
   type?: string
   images?: ImageType
   description?: string
-  priceRange?: PriceRange
+  priceRange?: PriceRange[]
   isTopProduct: boolean
   collections?: number
   onPressCustomize: (id: number) => void
@@ -88,7 +88,9 @@ class ProductThumbnail extends React.Component<Props, {}> {
       collections
     } = this.props
     const { isHovered, currentImage } = this.state
-    const price = !!priceRange && `$${priceRange.from} - $${priceRange.to}`
+    const price =
+      priceRange &&
+      `$${priceRange[0].price} - $${priceRange[priceRange.length - 1].price}`
     return (
       <Container>
         <ImageSlide
@@ -105,7 +107,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
           <Description>{description}</Description>
           <InfoContainer>
             <Label>{`${collections} Collection`}</Label>
-            {!!priceRange && <Price>{price}</Price>}
+            <Price>{price}</Price>
           </InfoContainer>
         </Footer>
       </Container>
