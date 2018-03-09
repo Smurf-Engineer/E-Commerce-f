@@ -79,6 +79,6 @@ export const MenuStyle = {
 
 export const NoResultsFound = styled.div`
   display: flex;
-  height: 100vh;
+  height: 60vh;
   justify-content: center;
 `

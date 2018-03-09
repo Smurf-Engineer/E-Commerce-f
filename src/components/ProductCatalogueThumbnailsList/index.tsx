@@ -114,7 +114,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         </Menu.Item>
       </Menu>
     )
-
+    console.log(catalogue.length, catalogue)
     return (
       <Container>
         <HeadRow>
@@ -129,13 +129,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         </HeadRow>
         <Content>{loading ? renderLoading : renderThumbnailList}</Content>
         <PaginationRow>
-          <Pagination
-            size="small"
-            current={currentPage}
-            onChange={handleChangePage}
-            total={parseInt(total, 10)}
-            pageSize={limit}
-          />
+          {parseInt(total, 10) > 12 && (
+            <Pagination
+              size="small"
+              current={currentPage}
+              onChange={handleChangePage}
+              total={parseInt(total, 10)}
+              pageSize={limit}
+            />
+          )}
         </PaginationRow>
       </Container>
     )
