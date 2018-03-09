@@ -254,9 +254,6 @@ class Render3D extends PureComponent {
   }
 
   onProgress = xhr => {
-    console.log('------------------------------------')
-    console.log(xhr)
-    console.log('------------------------------------')
     if (xhr.lengthComputable) {
       const progress = Math.round(xhr.loaded / xhr.total * 100)
       this.setState({ progress })
