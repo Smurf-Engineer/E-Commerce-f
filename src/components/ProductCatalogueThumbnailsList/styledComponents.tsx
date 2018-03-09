@@ -3,9 +3,7 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  padding: 0 33px 30px 35px;
-`
+export const Container = styled.div``
 export const Content = styled.div`
   overflow: scroll;
 `
@@ -21,7 +19,7 @@ export const HeadRow = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  padding: 0 8% 0 4%;
+  padding: 0 2% 0 5%;
 `
 
 export const TotalItems = styled.div`
@@ -64,9 +62,15 @@ export const ThumbnailListItem = styled.li`
   padding-bottom: 20px;
 `
 
+export const Loading = styled.div`
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+`
 export const PaginationRow = styled.div`
   text-align: right;
-  padding-right: 8%;
+  padding-right: 2%;
 `
 
 export const MenuStyle = {

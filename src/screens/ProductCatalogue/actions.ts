@@ -4,11 +4,10 @@
 import {
   DEFAULT_ACTION,
   SELECTED_FILTER,
-  SORTBY_SELECTED,
+  ORDERBY_SELECTED,
   SHOW_TYPE_FILTER,
-  SET_GENDER_FILTERS,
-  SET_CATEGORY_FILTERS,
-  SET_SPORT_FILTERS
+  SET_SELECTED_FILTERS,
+  SET_SKIP_VALUE
 } from './constants'
 import { AnyAction, Filter } from '../../types/common'
 
@@ -17,9 +16,9 @@ export const defaultAction = (someValue: string): AnyAction => ({
   someValue
 })
 
-export const showTypeFilter = (filter: boolean): AnyAction => ({
+export const showTypeFilter = (showFilter: boolean): AnyAction => ({
   type: SHOW_TYPE_FILTER,
-  filter
+  showFilter
 })
 
 export const setFilterAction = (filter: {}): AnyAction => ({
@@ -27,12 +26,18 @@ export const setFilterAction = (filter: {}): AnyAction => ({
   filter
 })
 
-export const sortBySelected = (sort: string): AnyAction => ({
-  type: SORTBY_SELECTED,
-  sort
+export const sortBySelected = (orderBy: string): AnyAction => ({
+  type: ORDERBY_SELECTED,
+  orderBy
 })
 
-export const setGenderFilters = (genderFilters: Filter[]) => ({
-  type: SET_GENDER_FILTERS,
-  genderFilters
+export const setSelectedFilters = (filter: Filter[]) => ({
+  type: SET_SELECTED_FILTERS,
+  filter
+})
+
+export const setSkipValue = (skip: number, page: number) => ({
+  type: SET_SKIP_VALUE,
+  skip,
+  page
 })

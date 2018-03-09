@@ -6,13 +6,19 @@ import {
   DEFAULT_ACTION,
   SELECTED_FILTER,
   SHOW_TYPE_FILTER,
-  SET_GENDER_FILTERS
+  SET_SELECTED_FILTERS,
+  ORDERBY_SELECTED,
+  SET_SKIP_VALUE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   typeOfFilter: '',
+  orderBy: 'Top Seller',
+  limit: 12,
+  skip: 0,
+  currentPage: 1,
   genderFilters: {},
   sportFilters: {},
   categoryFilters: {},
@@ -31,33 +37,18 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SHOW_TYPE_FILTER:
-      console.log(action.key, action.filter)
       return state.merge({ [action.key]: action.filter })
-    case SET_GENDER_FILTERS:
-      return state.updateIn(
-        [action.type, action.value],
-        (value: any) => !!!value
-      )
-
-    /*{
-      const id = action.filter.id
-
-      const indexOfType = state.get('filtersArray').findIndex((type: any) => {
-        return type.get('name') === action.filter.id
+    case SET_SELECTED_FILTERS:
+      const { filter: { type, name } } = action
+      console.log('gender filters reducer ', type, name)
+      return state.updateIn([type, name], (value: any) => !!!value)
+    case ORDERBY_SELECTED:
+      return state.set('orderBy', action.orderBy)
+    case SET_SKIP_VALUE:
+      return state.merge({
+        skip: action.skip,
+        currentPage: action.page
       })
-      const indexOfOption = state
-        .get('filtersArray')
-        .get(indexOfType)
-        .get('options')
-        .findIndex((option: any) => {
-          return option.get('name') === action.filter.name
-        })
-
-      return state.setIn(
-        ['filtersArray', indexOfType, 'options', indexOfOption, 'selected'],
-        action.filter.checked
-      )
-    } */
     default:
       return state
   }

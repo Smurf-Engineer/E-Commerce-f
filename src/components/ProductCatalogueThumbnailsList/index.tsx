@@ -3,14 +3,14 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import Spin from 'antd/lib/spin'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu, { ClickParam } from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
-import downArrowIcon from '../../assets/downarrow.svg'
-import { QueryProps, Product } from '../../types/common'
+import { QueryProps, ProductType } from '../../types/common'
 import {
   Container,
   Content,
@@ -21,14 +21,16 @@ import {
   TotalItems,
   StyledImg,
   ThumbnailsList,
+  ThumbnailListItem,
+  Loading,
   PaginationRow,
-  MenuStyle,
-  ThumbnailListItem
+  MenuStyle
 } from './styledComponents'
 import { Filter } from '../../types/common'
+import downArrowIcon from '../../assets/downarrow.svg'
 
 interface Data extends QueryProps {
-  catalogue: Product[]
+  products: ProductType
 }
 
 interface StateProps {
@@ -39,69 +41,97 @@ interface StateProps {
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   openQuickView: (id: number) => void
-  sortBy?: (sort: string | null) => void
+  handleChangePage: (page: number) => void
+  handleOrderBy?: (evt: ClickParam) => void
+  sortOptions?: Element | null
+  sortByLabel: string
   data: Data
   history: any
+  currentPage: number
+  limit?: number
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
-  state = {
-    orderBy: 'Top Seller'
-  }
   render() {
-    const { formatMessage, data: { catalogue, loading } } = this.props
-    const { orderBy } = this.state
+    const {
+      formatMessage,
+      sortByLabel,
+      currentPage,
+      limit,
+      handleChangePage,
+      handleOrderBy,
+      data: { loading, products }
+    } = this.props
 
-    if (loading) {
+    if (!products) {
       return null
     }
+    const { products: catalogue = [], fullCount: total } = products
+
+    const renderLoading = (
+      <Loading>
+        <Spin />
+      </Loading>
+    )
+
+    let thumbnailsList
+    if (catalogue) {
+      thumbnailsList = catalogue.map((product, index) => (
+        <ThumbnailListItem key={index}>
+          <ProductThumbnail
+            id={product.id}
+            type={product.type}
+            description={product.description}
+            isTopProduct={product.isTopProduct}
+            onPressCustomize={this.gotoDesignCenter}
+            onPressQuickView={this.handlePressQuickView}
+            collections={product.collections}
+            images={product.images}
+            priceRange={product.priceRange}
+          />
+        </ThumbnailListItem>
+      ))
+    }
+
+    const renderThumbnailList = (
+      <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+    )
 
     const sortOptions = (
-      <Menu style={MenuStyle} onClick={this.handleOrderBy}>
+      <Menu style={MenuStyle} onClick={handleOrderBy}>
         <Menu.Item key="topSeller">
           {formatMessage(messages.topSellerLabel)}
         </Menu.Item>
-        <Menu.Item key="lowest">
+        <Menu.Item key="pricelow">
           {formatMessage(messages.lowestPriceLabel)}
         </Menu.Item>
-        <Menu.Item key="hightest">
+        <Menu.Item key="pricehigh">
           {formatMessage(messages.hightestPriceLabel)}
         </Menu.Item>
       </Menu>
     )
 
-    const thumbnailsList = catalogue.map((product, index) => (
-      <ThumbnailListItem key={index}>
-        <ProductThumbnail
-          id={product.id}
-          type={product.type}
-          description={product.description}
-          isTopProduct={product.isTopProduct}
-          onPressCustomize={this.gotoDesignCenter}
-          onPressQuickView={this.handlePressQuickView}
-          collections={product.collections}
-          images={product.images}
-          priceRange={product.priceRange}
-        />
-      </ThumbnailListItem>
-    ))
     return (
       <Container>
         <HeadRow>
-          <TotalItems>{'9 Items'}</TotalItems>
+          <TotalItems>{`${total} Items`}</TotalItems>
           <SortOptions>
             <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
             <Dropdown overlay={sortOptions} placement="bottomCenter">
-              <Text>{orderBy}</Text>
+              <Text>{sortByLabel}</Text>
             </Dropdown>
             <StyledImg src={downArrowIcon} />
           </SortOptions>
         </HeadRow>
-        <Content>
-          <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
-        </Content>
+        <Content>{loading ? renderLoading : renderThumbnailList}</Content>
         <PaginationRow>
-          <Pagination size="small" total={50} pageSize={12} />
+          <Pagination
+            size="small"
+            current={currentPage}
+            onChange={handleChangePage}
+            total={parseInt(total, 10)}
+            pageSize={limit}
+          />
         </PaginationRow>
       </Container>
     )
@@ -116,24 +146,38 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     const { openQuickView } = this.props
     openQuickView(id)
   }
+}
 
-  handleOrderBy = (evt: ClickParam) => {
-    const { item: { props: { children } } } = evt
-    this.setState({ orderBy: children })
-  }
-
-  handleVisible = (param: boolean | undefined) => {
-    // console.log(param)
-  }
+type OwnProps = {
+  genderFilters?: string
+  sportFilters?: string
+  categoryFilters?: string
+  fitFilters?: string
+  temperatureFilters?: string
+  limit?: number
+  orderBy?: string
+  skip?: number
 }
 
 const ThumbnailsListEnhance = compose(
   graphql<Data>(GetProductsQuery, {
-    options: {
-      variables: {
-        gender: 1,
-        category: 0,
-        sport: 1
+    options: ({
+      genderFilters,
+      categoryFilters,
+      sportFilters,
+      limit,
+      orderBy,
+      skip
+    }: OwnProps) => {
+      return {
+        variables: {
+          gender: genderFilters ? genderFilters : null,
+          category: categoryFilters ? categoryFilters : null,
+          sport: sportFilters ? sportFilters : null,
+          limit: limit ? limit : null,
+          order: orderBy ? orderBy : null,
+          offset: skip ? skip : null
+        }
       }
     }
   })

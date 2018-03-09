@@ -12,7 +12,7 @@ export const Container = styled.div`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: #5f6062;
 `
 export const FiltersColumn = styled.div`
   flex: 1 1 auto;
@@ -36,3 +36,7 @@ export const StyledBreadcrumb = styled(breadcrumb)`
   padding: 10.5px 0 10.5px 48px;
   border: 1px solid #dcdcdc;
 `
+
+export const MenuStyle = {
+  width: '200px'
+}
