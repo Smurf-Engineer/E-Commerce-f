@@ -12,6 +12,9 @@ export const productsQuery = gql`
       products {
         id
         type: name
+        priceRange {
+          price
+        }
         description: short_description
         collections
         isTopProduct

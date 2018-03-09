@@ -19,7 +19,7 @@ describe('<QuickView />', () => {
         },
         type: '',
         description: '',
-        priceRange: { from: 0, to: 0 },
+        priceRange: [],
         collections: 0,
         isTopProduct: false,
         details: '',
