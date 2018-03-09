@@ -99,5 +99,12 @@
   "components.ResetPassword.changePasswordLabel": "Change Password",
   "components.ResetPassword.invalidPasswordMessage": "Invalid password!",
   "components.ResetPassword.resetTokenMessage": "Reset token needed",
-  "components.ResetPassword.noMatchingMessage": "No matching passwords"
+  "components.ResetPassword.noMatchingMessage": "No matching passwords",
+  "screens.ProductCatalog.filtersTitle": "FILTERS",
+  "components.ProductCatalogueThumbnailsList.sortByLabel": "Sort By",
+  "components.ProductCatalogueThumbnailsList.topSellerLabel": "Top Seller",
+  "components.ProductCatalogueThumbnailsList.lowestPriceLabel": "Lowest Price",
+  "components.ProductCatalogueThumbnailsList.hightestPriceLabel":
+    "Hightest Price",
+  "components.ProductCatalogueThumbnailsList.emptyResults": "No results found"
 }

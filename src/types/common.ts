@@ -63,7 +63,7 @@ export interface Product {
 }
 
 export interface ProductType {
-  fullCount: String
+  fullCount: string
   products: Product[]
 }
 
