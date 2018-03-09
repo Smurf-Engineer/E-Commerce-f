@@ -54,7 +54,7 @@ const ProductCatalogFilterComponent = ({
       <TitleContainer>
         <Title>{title}</Title>
         <StyledImg
-          id={id ? id : ''}
+          id={id || ''}
           src={showOptions ? uparrowIcon : downarrowIcon}
           onClick={toggleOptions}
         />

@@ -24,7 +24,8 @@ import {
   ThumbnailListItem,
   Loading,
   PaginationRow,
-  MenuStyle
+  MenuStyle,
+  NoResultsFound
 } from './styledComponents'
 import { Filter } from '../../types/common'
 import downArrowIcon from '../../assets/downarrow.svg'
@@ -93,9 +94,12 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       ))
     }
 
-    const renderThumbnailList = (
-      <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
-    )
+    const renderThumbnailList =
+      catalogue.length > 0 ? (
+        <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+      ) : (
+        <NoResultsFound>{formatMessage(messages.emptyResults)}</NoResultsFound>
+      )
 
     const sortOptions = (
       <Menu style={MenuStyle} onClick={handleOrderBy}>

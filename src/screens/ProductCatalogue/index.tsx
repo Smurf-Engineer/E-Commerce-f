@@ -107,15 +107,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
         break
     }
 
-    // TODO WAITING FOR DEFINITION
-    const breadCrumb = (
-      <StyledBreadcrumb>
-        <Breadcrumb.Item>Men</Breadcrumb.Item>
-        <Breadcrumb.Item>Cycling</Breadcrumb.Item>
-        <Breadcrumb.Item>Tops</Breadcrumb.Item>
-      </StyledBreadcrumb>
-    )
-
     const renderFilters = filtersGraph.map(
       (filter: FilterType, index: number) => {
         const filterToShow = this.state[`show${filter.name}Filters`]
@@ -155,7 +146,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     return (
       <Layout {...{ history, intl }}>
-        {breadCrumb}
         <Container>
           <FiltersColumn>
             <FiltersTitle>

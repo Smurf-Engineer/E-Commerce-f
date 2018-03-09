@@ -76,3 +76,9 @@ export const PaginationRow = styled.div`
 export const MenuStyle = {
   width: '200px'
 }
+
+export const NoResultsFound = styled.div`
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+`
