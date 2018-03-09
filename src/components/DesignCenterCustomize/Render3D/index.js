@@ -301,19 +301,20 @@ class Render3D extends PureComponent {
     })
   }
 
+  // TODO: WIP
   handleOnKeyDown = event => {
     let charCode = String.fromCharCode(event.which).toLowerCase()
     if (event.shiftKey && event.ctrlKey && charCode === 'z') {
-      console.log('REDO')
+      // TODO: Handle ctrl+shift+z
     } else if (event.ctrlKey && charCode === 'z') {
-      console.log('UNDO')
+      // TODO: Handle ctrl+z
     }
 
     // For MAC we can use metaKey to detect cmd key
     if (event.shiftKey && event.metaKey && charCode === 'z') {
-      console.log('REDO MAC')
+      // TODO: Handle cmd+shift+z
     } else if (event.metaKey && charCode === 'z') {
-      console.log('UNDO MAC')
+      // TODO: Handle cmd+z
     }
   }
 
@@ -338,7 +339,6 @@ class Render3D extends PureComponent {
   handleOnPressRight = () => {
     const { currentView } = this.state
     const nextView = currentView === 3 ? 0 : currentView + 1
-    const { x, y, z } = viewPositions[nextView]
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
