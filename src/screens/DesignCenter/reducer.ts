@@ -48,10 +48,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const updatedColors = colors.updateIn([colorBlock], () => color)
       const redoChanges = state.get('redoChanges')
 
-      const lastStep = {
-        type: 'colors',
-        state: colors
-      }
+      const lastStep = { type: 'colors', state: colors }
 
       return state.merge({
         colors: List.of(...updatedColors),
@@ -64,10 +61,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
 
-      const lastStep = {
-        type: 'colors',
-        state: colors
-      }
+      const lastStep = { type: 'colors', state: colors }
 
       return state.merge({
         colors: List.of(...action.colors),
@@ -83,10 +77,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       const oldState = state.get(undoStep.type)
 
-      const redoStep = {
-        type: undoStep.type,
-        state: oldState
-      }
+      const redoStep = { type: undoStep.type, state: oldState }
 
       return state.merge({
         undoChanges: undoChanges.shift(),
@@ -102,10 +93,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       const currentState = state.get(redoStep.type)
 
-      const undoStep = {
-        type: redoStep.type,
-        state: currentState
-      }
+      const undoStep = { type: redoStep.type, state: currentState }
 
       return state.merge({
         undoChanges: undoChanges.unshift(undoStep),
