@@ -1,10 +1,16 @@
 /* Routes */
+import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/product-catalogue',
+    name: 'productCatalogue',
+    component: ProductCatalog
+  },
   {
     path: '/recovery',
     name: 'recovery',
