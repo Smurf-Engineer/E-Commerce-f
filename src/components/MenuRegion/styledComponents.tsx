@@ -7,7 +7,7 @@ export const Container = styled.div`
   background-color: #222;
 `
 
-export const Regionst = styled.div`
+export const Regions = styled.div`
   display: flex;
   width: 68px;
   justify-content: space-between;

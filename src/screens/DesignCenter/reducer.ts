@@ -3,6 +3,7 @@
  */
 import { fromJS, List } from 'immutable'
 import fill from 'lodash/fill'
+import isEqual from 'lodash/isEqual'
 import {
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
@@ -38,16 +39,18 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_COLOR_BLOCK_ACTION:
       return state.set('colorBlock', action.index)
     case SET_COLOR_ACTION: {
-      const colorBlock = state.get('colorBlock')
-      if (colorBlock < 0) {
-        return state
-      }
       const { color } = action
       const colors = state.get('colors')
-      const undoChanges = state.get('undoChanges')
-      const updatedColors = colors.updateIn([colorBlock], () => color)
-      const redoChanges = state.get('redoChanges')
+      const colorBlock = state.get('colorBlock')
+      const prevColor = colors.get(colorBlock)
 
+      if (colorBlock < 0 || color === prevColor) {
+        return state
+      }
+
+      const updatedColors = colors.updateIn([colorBlock], () => color)
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
       const lastStep = { type: 'colors', state: colors }
 
       return state.merge({
@@ -57,14 +60,20 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_PALETTE_ACTION: {
-      const colors = state.get('colors')
+      const { colors } = action
+      const prevColors = state.get('colors')
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
+      const equalColors = isEqual(colors, prevColors.toJS())
 
-      const lastStep = { type: 'colors', state: colors }
+      if (equalColors) {
+        return state
+      }
+
+      const lastStep = { type: 'colors', state: prevColors }
 
       return state.merge({
-        colors: List.of(...action.colors),
+        colors: List.of(...colors),
         undoChanges: undoChanges.unshift(lastStep),
         redoChanges: redoChanges.clear()
       })
@@ -72,11 +81,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
-
       const undoStep = undoChanges.first()
-
       const oldState = state.get(undoStep.type)
-
       const redoStep = { type: undoStep.type, state: oldState }
 
       return state.merge({
@@ -88,11 +94,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case DESIGN_REDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
-
       const redoStep = redoChanges.first()
-
       const currentState = state.get(redoStep.type)
-
       const undoStep = { type: redoStep.type, state: currentState }
 
       return state.merge({

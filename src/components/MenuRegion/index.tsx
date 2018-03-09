@@ -16,7 +16,7 @@ import {
   Region as RegionType,
   Currency
 } from '../../types/common'
-import { Container, TopText, Regionst, overStyle } from './styledComponents'
+import { Container, TopText, Regions, overStyle } from './styledComponents'
 
 interface Data extends QueryProps {
   regionsResult: RegionType[]
@@ -153,12 +153,12 @@ export class MenuRegion extends React.PureComponent<Props, State> {
           />
         }
       >
-        <Regionst>
+        <Regions>
           <img src={region.icon} />
           <TopText>
             {loading || error ? null : currency.shortName.toUpperCase()}
           </TopText>
-        </Regionst>
+        </Regions>
       </Popover>
     )
   }
