@@ -1,5 +1,6 @@
 @import '~antd/dist/antd.less';
 @import './base.less';
+@import './range.less';
 
 @primary-color: #e61737;
 @layout-footer-background: #231f20;

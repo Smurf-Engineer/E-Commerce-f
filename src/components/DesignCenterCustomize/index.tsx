@@ -14,13 +14,21 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  styleColors: string[]
   loadingModel: boolean
+  undoEnabled: boolean
+  redoEnabled: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
   onLoadModel: (loading: boolean) => void
+  onUndoAction: () => void
+  onRedoAction: () => void
+  onResetAction: () => void
+  onClearAction: () => void
+  onPressQuickView: () => void
 }
 
 const DesignCenterCustomize = ({
@@ -33,8 +41,16 @@ const DesignCenterCustomize = ({
   palettes,
   onSetPalettes,
   colors,
+  styleColors,
   loadingModel,
-  onLoadModel
+  onLoadModel,
+  onUndoAction,
+  onRedoAction,
+  onResetAction,
+  onClearAction,
+  onPressQuickView,
+  undoEnabled,
+  redoEnabled
 }: Props) => {
   return (
     <Container>
@@ -45,13 +61,28 @@ const DesignCenterCustomize = ({
           onSelectColorBlock,
           onSelectColor,
           colors,
+          styleColors,
           onSelectPalette,
           onChangePaletteName,
           paletteName,
           onSetPalettes
         }}
       />
-      <Render3D {...{ colors, onLoadModel, loadingModel }} />
+      <Render3D
+        {...{
+          colors,
+          styleColors,
+          onLoadModel,
+          loadingModel,
+          onUndoAction,
+          onRedoAction,
+          onResetAction,
+          onClearAction,
+          onPressQuickView,
+          undoEnabled,
+          redoEnabled
+        }}
+      />
     </Container>
   )
 }

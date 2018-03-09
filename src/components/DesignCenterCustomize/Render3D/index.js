@@ -1,6 +1,9 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
+import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
+import Dropdown from 'antd/lib/dropdown'
+import Menu from 'antd/lib/menu'
 import vertexShader from './vertex'
 import fragmentShader from './fragment'
 import {
@@ -13,33 +16,53 @@ import {
   Button,
   DragText,
   ModelType,
-  ModelText
+  ModelText,
+  ViewControls,
+  ViewButton
 } from './styledComponents'
+import { jerseyTextures, viewPositions } from './config'
+import Slider from '../ZoomSlider'
+import OptionsController from '../OptionsController'
 import messages from './messages'
 import quickView from '../../../assets/quickview.svg'
 import arrowDown from '../../../assets/downarrow.svg'
+import left from '../../../assets/leftarrow.svg'
+import right from '../../../assets/arrow.svg'
+import frontIcon from '../../../assets/Cube-Front.svg'
+import leftIcon from '../../../assets/Cube_Left.svg'
+import rightIcon from '../../../assets/Cube_right.svg'
+import topIcon from '../../../assets/Cube-Top.svg'
+import backIcon from '../../../assets/Cube_back.svg'
 
-// TODO: Refactor this code
+const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
+const { Item } = Menu
+
 /* eslint-disable */
 class Render3D extends PureComponent {
   state = {
     showDragmessage: true,
-    loading: false,
-    progress: 0.0
+    currentView: 2,
+    currentModel: 0,
+    zoomValue: 0
   }
+
   componentWillReceiveProps(nextProps) {
     const { colors } = this.props
-    const { colors: nextColors } = nextProps
+    const { colors: nextColors, styleColors } = nextProps
     const isDifferent = isEqual(colors, nextColors)
     if (!isDifferent) {
-      this.setupColors(nextColors)
+      const emptyColors = filter(nextColors, color => !!!color)
+      const isResetingColors = emptyColors.length >= colors.length
+      this.setupColors(isResetingColors ? styleColors : nextColors)
     }
   }
-  // TODO: Remove
+
+  // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
-    const { onLoadModel } = this.props
+    const { onLoadModel, styleColors } = this.props
     const { clientWidth, clientHeight } = this.container
+
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
@@ -48,18 +71,24 @@ class Render3D extends PureComponent {
     /* Textures */
     const loader = new THREE.TextureLoader()
 
-    const backPocket = loader.load(
-      './models/Tour5/bb-7-camback_Back Pockets.png'
-    )
-    const branding = loader.load('./models/Tour5/branding.png')
-    const color1 = loader.load('./models/Tour5/colorblock_1.png')
-    const color2 = loader.load('./models/Tour5/colorblock_2.png')
-    const color3 = loader.load('./models/Tour5/colorblock_3.png')
-    const color4 = loader.load('./models/Tour5/colorblock_4.png')
-    const color5 = loader.load('./models/Tour5/colorblock_5.png')
-    const flatlock = loader.load('./models/Tour5/flatlock.png')
-    const label = loader.load('./models/Red-J.jpg')
-    const bumpMap = loader.load('./models/TOUR-SS_Jersey-BUMP.jpg')
+    const textures = {
+      backPocket: {},
+      color1: {},
+      color2: {},
+      color3: {},
+      color4: {},
+      color5: {},
+      flatlock: {},
+      label: {},
+      bumpMap: {}
+    }
+
+    for (const key in textures) {
+      textures[key] = loader.load(jerseyTextures[key])
+      if (key !== 'flatlock') {
+        textures[key].minFilter = THREE.LinearFilter
+      }
+    }
 
     /* Camera */
     const camera = new THREE.PerspectiveCamera(
@@ -73,6 +102,7 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
     controls.minDistance = 150
     controls.maxDistance = 350
+    controls.enableZoom = false
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -99,21 +129,28 @@ class Render3D extends PureComponent {
         'Tour.obj',
         object => {
           onLoadModel(false)
+
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: flatlock,
+            map: textures.flatlock,
             color: 0xffffff
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
+          const customColors = {}
+          let i = 0
+          for (const color of styleColors) {
+            customColors[`customColor${i + 1}`] = {
+              type: 'c',
+              value: new THREE.Color(color)
+            }
+            i += 1
+          }
+
           const uniforms = {
-            customColor1: { type: 'c', value: new THREE.Color('#F0AAB4') },
-            customColor2: { type: 'c', value: new THREE.Color('#EE3C6F') },
-            customColor3: { type: 'c', value: new THREE.Color('#94CFBB') },
-            customColor4: { type: 'c', value: new THREE.Color('#00ADEE') },
-            customColor5: { type: 'c', value: new THREE.Color('#ffffff') },
+            ...customColors,
             positionX: { type: 'f', value: 1.0 },
             positionY: { type: 'f', value: 1.0 },
             color1: {},
@@ -131,12 +168,12 @@ class Render3D extends PureComponent {
           ])
 
           const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-          uniformsWithPhong.color1.value = color1
-          uniformsWithPhong.color2.value = color2
-          uniformsWithPhong.color3.value = color3
-          uniformsWithPhong.color4.value = color4
-          uniformsWithPhong.color5.value = color5
-          uniformsWithPhong.bumpMap.value = bumpMap
+          uniformsWithPhong.color1.value = textures.color1
+          uniformsWithPhong.color2.value = textures.color2
+          uniformsWithPhong.color3.value = textures.color3
+          uniformsWithPhong.color4.value = textures.color4
+          uniformsWithPhong.color5.value = textures.color5
+          uniformsWithPhong.bumpMap.value = textures.bumpMap
           uniformsWithPhong.bumpMapScale = 0.45
           uniformsWithPhong.shininess.value = 15
 
@@ -165,32 +202,24 @@ class Render3D extends PureComponent {
           })
 
           /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({ map: label })
+          const labelMaterial = new THREE.MeshPhongMaterial({
+            map: textures.label
+          })
           const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: backPocket
+            map: textures.backPocket
           })
 
           /* Assign materials */
           const cloneObject = object.children[0].clone()
           object.add(cloneObject)
 
-          // FIXME: Clipart testing
-          // object.children[0].add(logoMesh);
-
           /* jersey */
           object.children[0].material = insideMaterial
           object.children[24].material = shaderMaterial
           /* flatlock */
-          object.children[1].material = flatlockMaterial
-          object.children[2].material = flatlockMaterial
-          object.children[3].material = flatlockMaterial
-          object.children[4].material = flatlockMaterial
-          object.children[5].material = flatlockMaterial
-          object.children[6].material = flatlockMaterial
-          object.children[7].material = flatlockMaterial
-          object.children[8].material = flatlockMaterial
-          object.children[9].material = flatlockMaterial
-          object.children[10].material = flatlockMaterial
+          for (let index = 1; index <= 10; index++) {
+            object.children[index].material = flatlockMaterial
+          }
           /* Jersey label */
           object.children[17].material = labelMaterial
           /* back pocket */
@@ -210,6 +239,7 @@ class Render3D extends PureComponent {
     this.camera = camera
     this.renderer = renderer
     this.loader = mtlLoader
+    this.controls = controls
     this.directionalLight = directionalLight
 
     this.container.appendChild(this.renderer.domElement)
@@ -221,17 +251,6 @@ class Render3D extends PureComponent {
     this.container.removeChild(this.renderer.domElement)
   }
 
-  setupColors = colors => {
-    let colorNumber = 1
-    colors.forEach(color => {
-      let key = `customColor${colorNumber}`
-      if (color && this.uniformsWithPhong) {
-        this.uniformsWithPhong[key].value = new THREE.Color(color)
-      }
-      colorNumber += 1
-    })
-  }
-
   onProgress = xhr => {
     if (xhr.lengthComputable) {
       const progress = Math.round(xhr.loaded / xhr.total * 100)
@@ -239,9 +258,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  onError = xhr => {
-    console.log('Error: ' + xhr)
-  }
+  onError = xhr => console.error('Error: ' + xhr)
 
   start = () => {
     if (!this.framId) {
@@ -268,13 +285,94 @@ class Render3D extends PureComponent {
     this.directionalLight.position.copy(this.camera.position)
   }
 
+  cameraUpdate = ({ x, y, z }) => {
+    this.camera.position.set(x, y, z)
+    this.controls.update()
+  }
+
+  setupColors = colors => {
+    let colorNumber = 1
+    colors.forEach(color => {
+      let key = `customColor${colorNumber}`
+      if (color && this.uniformsWithPhong) {
+        this.uniformsWithPhong[key].value = new THREE.Color(color)
+      }
+      colorNumber += 1
+    })
+  }
+
+  // TODO: WIP
+  handleOnKeyDown = event => {
+    let charCode = String.fromCharCode(event.which).toLowerCase()
+    if (event.shiftKey && event.ctrlKey && charCode === 'z') {
+      // TODO: Handle ctrl+shift+z
+    } else if (event.ctrlKey && charCode === 'z') {
+      // TODO: Handle ctrl+z
+    }
+
+    // For MAC we can use metaKey to detect cmd key
+    if (event.shiftKey && event.metaKey && charCode === 'z') {
+      // TODO: Handle cmd+shift+z
+    } else if (event.metaKey && charCode === 'z') {
+      // TODO: Handle cmd+z
+    }
+  }
+
+  handleOnClickUndo = () => this.props.onUndoAction()
+
+  handleOnClickRedo = () => this.props.onRedoAction()
+
+  handleOnClickReset = () => this.props.onResetAction()
+
+  handleOnClickClear = () => this.props.onClearAction()
+
+  handleOnChange3DModel = () => {}
+
+  handleOnPressLeft = () => {
+    const { currentView } = this.state
+    const nextView = currentView === 0 ? 3 : currentView - 1
+    const viewPosition = viewPositions[nextView]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: nextView })
+  }
+
+  handleOnPressRight = () => {
+    const { currentView } = this.state
+    const nextView = currentView === 3 ? 0 : currentView + 1
+    const viewPosition = viewPositions[nextView]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: nextView })
+  }
+
+  handleOnChangeZoom = value => {
+    const zoomValue = value * 1.0 / 100
+    this.camera.zoom = zoomValue * 2
+    this.camera.updateProjectionMatrix()
+  }
+
   render() {
-    const { showDragmessage } = this.state
+    const { showDragmessage, currentView, zoomValue } = this.state
+    const { onPressQuickView, undoEnabled, redoEnabled } = this.props
+
+    const menu = (
+      <Menu onClick={this.handleOnChange3DModel}>
+        <Menu.Item key="1">
+          <FormattedMessage {...messages.productOnly} />
+        </Menu.Item>
+        <Menu.Item key="2">
+          <FormattedMessage {...messages.withAvatar} />
+        </Menu.Item>
+        <Menu.Item key="3">
+          <FormattedMessage {...messages.onBike} />
+        </Menu.Item>
+      </Menu>
+    )
+
     return (
-      <Container>
+      <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
           <Model>{'TOUR'}</Model>
-          <QuickView src={quickView} />
+          <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
         <Render innerRef={container => (this.container = container)} />
         {showDragmessage && (
@@ -282,11 +380,26 @@ class Render3D extends PureComponent {
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
-        <ModelType>
-          <ModelText>3D Model: Product Only</ModelText>
-          <img src={arrowDown} />
-        </ModelType>
+        <Dropdown overlay={menu}>
+          <ModelType>
+            <ModelText>3D Model: Product Only</ModelText>
+            <img src={arrowDown} />
+          </ModelType>
+        </Dropdown>
         <Button type="primary">Save</Button>
+        <OptionsController
+          {...{ undoEnabled, redoEnabled }}
+          onClickUndo={this.handleOnClickUndo}
+          onClickRedo={this.handleOnClickRedo}
+          onClickReset={this.handleOnClickReset}
+          onClickClear={this.handleOnClickClear}
+        />
+        <Slider onChangeZoom={this.handleOnChangeZoom} />
+        <ViewControls>
+          <ViewButton onClick={this.handleOnPressLeft} src={left} />
+          <img src={cubeViews[currentView]} />
+          <ViewButton onClick={this.handleOnPressRight} src={right} />
+        </ViewControls>
       </Container>
     )
   }

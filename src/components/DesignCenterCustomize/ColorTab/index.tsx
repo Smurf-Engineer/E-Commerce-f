@@ -27,6 +27,7 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  styleColors: string[]
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -55,6 +56,7 @@ class ColorTab extends React.PureComponent<Props, State> {
       paletteName,
       palettes,
       colors,
+      styleColors,
       onSetPalettes,
       onSelectPalette
     } = this.props
@@ -63,7 +65,7 @@ class ColorTab extends React.PureComponent<Props, State> {
       <ColorButton
         key={index}
         {...{ index, label, onSelectColorBlock }}
-        currentColor={colors[index]}
+        currentColor={colors[index] || styleColors[index]}
         selected={colorBlock === index}
       />
     ))

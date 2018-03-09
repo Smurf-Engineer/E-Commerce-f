@@ -20,6 +20,11 @@ import { Container, Text } from './styledComponents'
 import { Theme, Palette } from '../../types/common'
 import messages from './messages'
 
+interface Change {
+  type: string
+  state: any
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
@@ -27,7 +32,10 @@ interface Props extends RouteComponentProps<any> {
   palettes: Palette[]
   paletteName: string
   colors: string[]
+  styleColors: string[]
   loadingModel: boolean
+  undoChanges: Change[]
+  redoChanges: Change[]
   // Redux Actions
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
@@ -37,6 +45,10 @@ interface Props extends RouteComponentProps<any> {
   setPaletteNameAction: (name: string) => void
   setPalettesAction: (palettes: Palette[]) => void
   setLoadingModel: (loading: boolean) => void
+  designUndoAction: () => void
+  designRedoAction: () => void
+  designResetAction: () => void
+  designClearAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -70,8 +82,15 @@ export class DesignCenter extends React.Component<Props, {}> {
       palettes,
       setPalettesAction,
       colors,
+      styleColors,
       loadingModel,
-      setLoadingModel
+      setLoadingModel,
+      designUndoAction,
+      designRedoAction,
+      designResetAction,
+      designClearAction,
+      undoChanges,
+      redoChanges
     } = this.props
     return (
       <Layout {...{ history, intl }}>
@@ -96,13 +115,27 @@ export class DesignCenter extends React.Component<Props, {}> {
               <div>Style</div>
             </div>
             <CustomizeTab
-              {...{ colorBlock, colors, paletteName, palettes, loadingModel }}
+              {...{
+                colorBlock,
+                colors,
+                styleColors,
+                paletteName,
+                palettes,
+                loadingModel
+              }}
+              undoEnabled={undoChanges.length > 0}
+              redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}
               onSelectColor={setColorAction}
               onSelectPalette={setPaletteAction}
               onChangePaletteName={setPaletteNameAction}
               onSetPalettes={setPalettesAction}
               onLoadModel={setLoadingModel}
+              onUndoAction={designUndoAction}
+              onRedoAction={designRedoAction}
+              onResetAction={designResetAction}
+              onClearAction={designClearAction}
+              onPressQuickView={this.handleOpenQuickView}
             />
             <div key="preview">
               <div>Preview</div>
