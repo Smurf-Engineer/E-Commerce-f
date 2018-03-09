@@ -123,8 +123,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 palettes,
                 loadingModel
               }}
-              undoEnabled={!undoChanges.length}
-              redoEnabled={!redoChanges.length}
+              undoEnabled={undoChanges.length > 0}
+              redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}
               onSelectColor={setColorAction}
               onSelectPalette={setPaletteAction}
