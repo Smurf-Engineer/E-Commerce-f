@@ -37,7 +37,12 @@ export const QuickView = styled.img`
   margin-left: 8px;
 `
 
-export const Progress = styled(AntdProgress)``
+export const Progress = styled(AntdProgress)`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
 
 export const Button = styled(AntdButton)`
   position: absolute;
@@ -90,4 +95,8 @@ export const ViewControls = styled.div`
   position: absolute;
   top: 68px;
   right: 26px;
+`
+
+export const LoadingContainer = styled.div`
+  width: 74.6%;
 `

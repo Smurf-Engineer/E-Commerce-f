@@ -18,6 +18,8 @@ interface Props {
   loadingModel: boolean
   undoEnabled: boolean
   redoEnabled: boolean
+  currentTab: number
+  swipingView: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -40,6 +42,7 @@ const DesignCenterCustomize = ({
   paletteName,
   palettes,
   onSetPalettes,
+  currentTab,
   colors,
   styleColors,
   loadingModel,
@@ -50,7 +53,8 @@ const DesignCenterCustomize = ({
   onClearAction,
   onPressQuickView,
   undoEnabled,
-  redoEnabled
+  redoEnabled,
+  swipingView
 }: Props) => {
   return (
     <Container>
@@ -68,21 +72,23 @@ const DesignCenterCustomize = ({
           onSetPalettes
         }}
       />
-      <Render3D
-        {...{
-          colors,
-          styleColors,
-          onLoadModel,
-          loadingModel,
-          onUndoAction,
-          onRedoAction,
-          onResetAction,
-          onClearAction,
-          onPressQuickView,
-          undoEnabled,
-          redoEnabled
-        }}
-      />
+      {currentTab === 2 && !swipingView ? (
+        <Render3D
+          {...{
+            colors,
+            styleColors,
+            onLoadModel,
+            loadingModel,
+            onUndoAction,
+            onRedoAction,
+            onResetAction,
+            onClearAction,
+            onPressQuickView,
+            undoEnabled,
+            redoEnabled
+          }}
+        />
+      ) : null}
     </Container>
   )
 }
