@@ -36,6 +36,7 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   undoChanges: Change[]
   redoChanges: Change[]
+  swipingView: boolean
   // Redux Actions
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
@@ -49,6 +50,7 @@ interface Props extends RouteComponentProps<any> {
   designRedoAction: () => void
   designResetAction: () => void
   designClearAction: () => void
+  setSwipingTabAction: (swiping: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -68,6 +70,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     setCurrentTabAction(index)
   }
 
+  handleOnTransictionEnd = () => this.props.setSwipingTabAction(false)
+
   render() {
     const {
       intl,
@@ -81,6 +85,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       paletteName,
       palettes,
       setPalettesAction,
+      swipingView,
       colors,
       styleColors,
       loadingModel,
@@ -92,12 +97,16 @@ export class DesignCenter extends React.Component<Props, {}> {
       undoChanges,
       redoChanges
     } = this.props
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
           <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
-          <SwipeableViews index={currentTab}>
+          <SwipeableViews
+            onTransitionEnd={this.handleOnTransictionEnd}
+            index={currentTab}
+          >
             <div key="theme">
               <Info
                 label="theme"
@@ -121,7 +130,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 styleColors,
                 paletteName,
                 palettes,
-                loadingModel
+                loadingModel,
+                currentTab,
+                swipingView
               }}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}

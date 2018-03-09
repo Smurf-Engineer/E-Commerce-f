@@ -15,3 +15,4 @@ export const DESIGN_UNDO_ACTION = `${namespace}/DESIGN_UNDO_ACTION`
 export const DESIGN_REDO_ACTION = `${namespace}/DESIGN_REDO_ACTION`
 export const DESIGN_RESET_ACTION = `${namespace}/DESIGN_RESET_ACTION`
 export const DESIGN_CLEAR_ACTION = `${namespace}/DESIGN_CLEAR_ACTION`
+export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`

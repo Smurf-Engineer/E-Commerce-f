@@ -18,7 +18,8 @@ import {
   ModelType,
   ModelText,
   ViewControls,
-  ViewButton
+  ViewButton,
+  LoadingContainer
 } from './styledComponents'
 import { jerseyTextures, viewPositions } from './config'
 import Slider from '../ZoomSlider'
@@ -43,7 +44,8 @@ class Render3D extends PureComponent {
     showDragmessage: true,
     currentView: 2,
     currentModel: 0,
-    zoomValue: 0
+    zoomValue: 0,
+    progress: 0
   }
 
   componentWillReceiveProps(nextProps) {
@@ -252,6 +254,9 @@ class Render3D extends PureComponent {
   }
 
   onProgress = xhr => {
+    console.log('------------------------------------')
+    console.log(xhr)
+    console.log('------------------------------------')
     if (xhr.lengthComputable) {
       const progress = Math.round(xhr.loaded / xhr.total * 100)
       this.setState({ progress })
@@ -351,8 +356,13 @@ class Render3D extends PureComponent {
   }
 
   render() {
-    const { showDragmessage, currentView, zoomValue } = this.state
-    const { onPressQuickView, undoEnabled, redoEnabled } = this.props
+    const { showDragmessage, currentView, zoomValue, progress } = this.state
+    const {
+      onPressQuickView,
+      undoEnabled,
+      redoEnabled,
+      loadingModel
+    } = this.props
 
     const menu = (
       <Menu onClick={this.handleOnChange3DModel}>
@@ -374,7 +384,9 @@ class Render3D extends PureComponent {
           <Model>{'TOUR'}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
-        <Render innerRef={container => (this.container = container)} />
+        <Render innerRef={container => (this.container = container)}>
+          {loadingModel && <Progress type="circle" percent={progress + 1} />}
+        </Render>
         {showDragmessage && (
           <DragText>
             <FormattedMessage {...messages.drag} />

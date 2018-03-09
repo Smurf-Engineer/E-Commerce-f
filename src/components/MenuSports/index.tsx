@@ -64,8 +64,8 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         <ProductList
           {...{ onPressCustomize, onPressQuickView }}
           width={'80%'}
-          sportFilter={sports[type]}
-          category={categories[categorySelected]}
+          sportFilter={sports && sports[type]}
+          category={categories && categories[categorySelected]}
           onPressSeeAll={this.handleOnPressSeeAll}
         />
       </Container>

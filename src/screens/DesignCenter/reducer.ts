@@ -14,7 +14,8 @@ import {
   SET_LOADING_MODEL,
   DESIGN_RESET_ACTION,
   DESIGN_UNDO_ACTION,
-  DESIGN_REDO_ACTION
+  DESIGN_REDO_ACTION,
+  SET_SWIPING_TAB_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -29,13 +30,17 @@ export const initialState = fromJS({
   paletteName: '',
   loadingModel: false,
   undoChanges: [],
-  redoChanges: []
+  redoChanges: [],
+  swipingView: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_CURRENT_TAB_ACTION:
-      return state.set('currentTab', action.index)
+      return state.merge({
+        currentTab: action.index,
+        swipingView: true
+      })
     case SET_COLOR_BLOCK_ACTION:
       return state.set('colorBlock', action.index)
     case SET_COLOR_ACTION: {
@@ -112,6 +117,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingModel', action.loading)
     case DESIGN_RESET_ACTION:
       return state.set('colors', List.of(...colorsInit))
+    case SET_SWIPING_TAB_ACTION:
+      return state.set('swipingView', action.isSwiping)
     default:
       return state
   }

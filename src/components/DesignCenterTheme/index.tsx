@@ -4,13 +4,14 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import withLoading from '../WithLoadingData'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
 import { QueryProps } from '../../types/common'
 import { Theme } from '../../types/common'
 import { themesQuery } from './data'
 import ThemeItem from './Theme'
-import { Container, Text, Row, LoadingContainer } from './styledComponents'
+import { Container, Text, Row } from './styledComponents'
 
 interface Data extends QueryProps {
   themes?: Theme[]
@@ -21,15 +22,7 @@ interface Props {
   loadingModel: boolean
 }
 
-export const DesignCenterGrid = ({ data, loadingModel }: Props) => {
-  if (data.loading || loadingModel) {
-    return (
-      <LoadingContainer>
-        <Spin />
-      </LoadingContainer>
-    )
-  }
-
+export const DesignCenterGrid = ({ data }: Props) => {
   if (data.error) {
     // TODO: Handle error.
     return <div>Error</div>
@@ -41,8 +34,9 @@ export const DesignCenterGrid = ({ data, loadingModel }: Props) => {
   return <Row>{list}</Row>
 }
 
-const DesignCenterGridWithData = compose(graphql<Data>(themesQuery))(
-  DesignCenterGrid
-)
+const DesignCenterGridWithData = compose(
+  graphql<Data>(themesQuery),
+  withLoading
+)(DesignCenterGrid)
 
 export default DesignCenterGridWithData

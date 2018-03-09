@@ -13,7 +13,8 @@ import {
   DESIGN_UNDO_ACTION,
   DESIGN_REDO_ACTION,
   DESIGN_RESET_ACTION,
-  DESIGN_CLEAR_ACTION
+  DESIGN_CLEAR_ACTION,
+  SET_SWIPING_TAB_ACTION
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -71,4 +72,9 @@ export const designResetAction = (): AnyAction => ({
 
 export const designClearAction = (): AnyAction => ({
   type: DESIGN_CLEAR_ACTION
+})
+
+export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
+  type: SET_SWIPING_TAB_ACTION,
+  isSwiping
 })
