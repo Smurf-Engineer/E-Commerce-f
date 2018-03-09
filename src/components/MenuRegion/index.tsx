@@ -156,7 +156,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
         <Regionst>
           <img src={region.icon} />
           <TopText>
-            {loading || !currency ? null : currency.shortName.toUpperCase()}
+            {loading || error ? null : currency.shortName.toUpperCase()}
           </TopText>
         </Regionst>
       </Popover>

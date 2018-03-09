@@ -62,6 +62,11 @@ export interface Product {
   name: string
 }
 
+export interface ProductType {
+  fullCount: String
+  products: Product[]
+}
+
 export interface Region {
   icon: string
   label: string
