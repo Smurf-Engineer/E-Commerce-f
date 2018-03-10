@@ -7,7 +7,7 @@ import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
   position: relative;
-  width: 74.6%;
+  width: 85%;
 `
 
 export const Render = styled.div`
@@ -44,13 +44,25 @@ export const Progress = styled(AntdProgress)`
   transform: translate(-50%, -50%);
 `
 
-export const Button = styled(AntdButton)`
-  position: absolute;
-  height: 40px;
-  bottom: 10%;
-  width: 138px;
+export const BottomButtons = styled.div`
+  display: flex;
   left: 50%;
+  bottom: 7%;
   transform: translate(-50%, -50%);
+  position: absolute;
+`
+
+export const Button = styled(AntdButton)`
+  height: 40px;
+  width: 200px;
+  margin: 0px 4px;
+`
+export const ButtonRight = styled(AntdButton)`
+  height: 40px;
+  width: 200px;
+  position: absolute;
+  bottom: 7%;
+  right: 26px;
 `
 export const DragText = styled.div`
   color: #5f6062;
