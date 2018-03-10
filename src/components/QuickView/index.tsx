@@ -84,12 +84,15 @@ export class QuickView extends React.Component<Props, State> {
     } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
 
+    if (!product) {
+      return null
+    }
     // TODO: UNCOMMENT CODE WHEN GRAPHQL QUERY RETURNS THE QUENTITY PRICE RANGE
-    /*const renderPrices = product.quantityPrice.map((item: any, index: number) => (
+    const renderPrices = product.priceRange.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />
       </AvailablePrices>
-    ))*/
+    ))
     const imageSlider = data.loading ? (
       <Loading>
         <Spin />
@@ -129,7 +132,7 @@ export class QuickView extends React.Component<Props, State> {
             </Col>
             <Col span={12}>
               <Title>{title}</Title>
-              <PriceQuantityRow>{}</PriceQuantityRow>
+              <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
               <Ratings
                 stars={5}
                 starDimension={'15px'}
