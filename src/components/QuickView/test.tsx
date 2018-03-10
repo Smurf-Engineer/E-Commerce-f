@@ -26,7 +26,19 @@ describe('<QuickView />', () => {
         specs: '',
         name: '',
         temperature: '',
-        materials: ''
+        materials: '',
+        fitStyles: [
+          {
+            id: 0,
+            name: ''
+          }
+        ],
+        genders: [
+          {
+            id: 0,
+            name: ''
+          }
+        ]
       },
       fetchMore: () => {}
     }

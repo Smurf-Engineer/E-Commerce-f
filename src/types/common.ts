@@ -60,11 +60,21 @@ export interface Product {
   details: string
   specs: string
   name: string
+  fitStyles: Filter[]
+  genders: Filter[]
 }
 
 export interface ProductType {
   fullCount: String
   products: Product[]
+}
+
+export interface BodyChartItem {
+  size: String
+  waist: String
+  hips: String
+  chest: String
+  inseam: String
 }
 
 export interface Region {

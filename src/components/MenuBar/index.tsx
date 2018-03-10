@@ -23,6 +23,7 @@ import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
+import FitInfo from '../FitInfo'
 import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
@@ -31,7 +32,7 @@ import { RegionConfig, UserType } from '../../types/common'
 interface Props {
   history: any
   searchFunc: (param: string) => void
-  openLogin?: boolean
+  openLogin: boolean
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
   saveUserToLocal: (user: object) => void
@@ -113,13 +114,14 @@ class MenuBar extends React.Component<Props, StateProps> {
             />
           </BottomRow>
         )}
-        <Login
+        <FitInfo open={openLogin} productId={1} />
+        {/* <Login
           open={openLogin}
           requestClose={this.handleCloseLogin}
           formatMessage={intl.formatMessage}
           handleForgotPassword={this.handleOpenForgotPassword}
           login={saveUserToLocal}
-        />
+        /> */}
         <ForgotPassword
           open={openForgotPassword}
           formatMessage={intl.formatMessage}

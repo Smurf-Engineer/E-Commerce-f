@@ -31,6 +31,17 @@ export const StyledLabel = styled.div`
   margin-bottom: 10px;
 `
 
+export const StyledFooterLabel = styled.div`
+  height: 30%;
+  width: 100%;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 22px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+`
+
 export const TitleLabel = styled.div`
   height: 27px;
   width: 145px;
@@ -51,7 +62,7 @@ export const StyledLoginButton = styled(Button)`
 `
 
 export const StyledRow = styled(Row)`
-  margin-top: 30px;
+  margin-top: 10px;
   display: list-item;
 `
 
@@ -62,6 +73,30 @@ export const CenterDiv = styled.div`
   align-items: center;
 `
 
+export const ImageDiv = styled.div`
+  background-color: #fff;
+  width: 100%;
+  height: 20px%;
+`
+
+export const ImageContainer = styled.div`
+  user-select: none;
+  position: relative;
+  cursor: pointer;
+  background-color: #f1f4f5;
+  height: 430px;
+  width: 100%;
+  padding: 10px;
+  text-align: center;
+
+  margin-top: 10px;
+`
+
 export const radioGroupStyle = {
   marginTop: '10px'
+}
+
+export const tableStyle = {
+  marginTop: '10px',
+  marginRight: '10px'
 }
