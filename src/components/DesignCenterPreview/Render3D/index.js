@@ -20,50 +20,30 @@ import {
   ViewControls,
   ViewButton,
   LoadingContainer,
-  ButtonWrapper
+  ButtonWrapper,
+  BottomButtons,
+  ButtonRight,
+  ButtonWrapperRight
 } from './styledComponents'
 import { jerseyTextures, viewPositions } from './config'
-import Slider from '../../ZoomSlider'
-import OptionsController from '../OptionsController'
-import messages from './messages'
-import quickView from '../../../assets/quickview.svg'
 import arrowDown from '../../../assets/downarrow.svg'
-import left from '../../../assets/leftarrow.svg'
-import right from '../../../assets/arrow.svg'
-import frontIcon from '../../../assets/Cube-Front.svg'
-import leftIcon from '../../../assets/Cube_Left.svg'
-import rightIcon from '../../../assets/Cube_right.svg'
-import topIcon from '../../../assets/Cube-Top.svg'
-import backIcon from '../../../assets/Cube_back.svg'
+import Slider from '../../ZoomSlider'
+import messages from './messages'
 
-const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
 /* eslint-disable */
 class Render3D extends PureComponent {
   state = {
     showDragmessage: true,
-    currentView: 2,
     currentModel: 0,
     zoomValue: 0,
     progress: 0
   }
-
-  componentWillReceiveProps(nextProps) {
-    const { colors } = this.props
-    const { colors: nextColors, styleColors } = nextProps
-    const isDifferent = isEqual(colors, nextColors)
-    if (!isDifferent) {
-      const emptyColors = filter(nextColors, color => !!!color)
-      const isResetingColors = emptyColors.length >= colors.length
-      this.setupColors(isResetingColors ? styleColors : nextColors)
-    }
-  }
-
   // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
-    const { onLoadModel, styleColors } = this.props
+    const { onLoadModel, colors } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -144,7 +124,7 @@ class Render3D extends PureComponent {
 
           const customColors = {}
           let i = 0
-          for (const color of styleColors) {
+          for (const color of colors) {
             customColors[`customColor${i + 1}`] = {
               type: 'c',
               value: new THREE.Color(color)
@@ -304,48 +284,7 @@ class Render3D extends PureComponent {
     })
   }
 
-  // TODO: WIP
-  handleOnKeyDown = event => {
-    let charCode = String.fromCharCode(event.which).toLowerCase()
-    if (event.shiftKey && event.ctrlKey && charCode === 'z') {
-      // TODO: Handle ctrl+shift+z
-    } else if (event.ctrlKey && charCode === 'z') {
-      // TODO: Handle ctrl+z
-    }
-
-    // For MAC we can use metaKey to detect cmd key
-    if (event.shiftKey && event.metaKey && charCode === 'z') {
-      // TODO: Handle cmd+shift+z
-    } else if (event.metaKey && charCode === 'z') {
-      // TODO: Handle cmd+z
-    }
-  }
-
-  handleOnClickUndo = () => this.props.onUndoAction()
-
-  handleOnClickRedo = () => this.props.onRedoAction()
-
-  handleOnClickReset = () => this.props.onResetAction()
-
-  handleOnClickClear = () => this.props.onClearAction()
-
   handleOnChange3DModel = () => {}
-
-  handleOnPressLeft = () => {
-    const { currentView } = this.state
-    const nextView = currentView === 0 ? 3 : currentView - 1
-    const viewPosition = viewPositions[nextView]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: nextView })
-  }
-
-  handleOnPressRight = () => {
-    const { currentView } = this.state
-    const nextView = currentView === 3 ? 0 : currentView + 1
-    const viewPosition = viewPositions[nextView]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: nextView })
-  }
 
   handleOnChangeZoom = value => {
     const zoomValue = value * 1.0 / 100
@@ -377,11 +316,7 @@ class Render3D extends PureComponent {
     )
 
     return (
-      <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
-        <Row>
-          <Model>{'TOUR'}</Model>
-          <QuickView onClick={onPressQuickView} src={quickView} />
-        </Row>
+      <Container onKeyDown={this.handleOnKeyDown}>
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
@@ -396,22 +331,24 @@ class Render3D extends PureComponent {
             <img src={arrowDown} />
           </ModelType>
         </Dropdown>
-        <ButtonWrapper>
-          <Button type="primary">Save</Button>
-        </ButtonWrapper>
-        <OptionsController
-          {...{ undoEnabled, redoEnabled }}
-          onClickUndo={this.handleOnClickUndo}
-          onClickRedo={this.handleOnClickRedo}
-          onClickReset={this.handleOnClickReset}
-          onClickClear={this.handleOnClickClear}
-        />
+        <BottomButtons>
+          <ButtonWrapper>
+            <Button>
+              <FormattedMessage {...messages.addToTeam} />
+            </Button>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Button type="primary">
+              <FormattedMessage {...messages.addToCart} />
+            </Button>
+          </ButtonWrapper>
+        </BottomButtons>
         <Slider onChangeZoom={this.handleOnChangeZoom} />
-        <ViewControls>
-          <ViewButton onClick={this.handleOnPressLeft} src={left} />
-          <img src={cubeViews[currentView]} />
-          <ViewButton onClick={this.handleOnPressRight} src={right} />
-        </ViewControls>
+        <ButtonWrapperRight>
+          <ButtonRight type="primary">
+            <FormattedMessage {...messages.keepShoping} />
+          </ButtonRight>
+        </ButtonWrapperRight>
       </Container>
     )
   }
