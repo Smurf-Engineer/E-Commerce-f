@@ -20,5 +20,17 @@ export default defineMessages({
   onBike: {
     id: 'components.Render3D.onBike',
     defaultMessage: 'On Bike'
+  },
+  addToTeam: {
+    id: 'components.DesignCenterPreview.Render3D.addToTeam',
+    defaultMessage: 'Add to Team Store'
+  },
+  addToCart: {
+    id: 'components.DesignCenterPreview.Render3D.addToCart',
+    defaultMessage: 'Add to Cart'
+  },
+  keepShoping: {
+    id: 'components.DesignCenterPreview.Render3D.keepShoping',
+    defaultMessage: 'Keep Shopping'
   }
 })

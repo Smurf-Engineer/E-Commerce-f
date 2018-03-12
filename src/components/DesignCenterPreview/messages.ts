@@ -5,8 +5,12 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.DesignCenterPreview.tittle',
-    defaultMessage: 'DesignCenterPreview'
+  shareButton: {
+    id: 'components.DesignCenterPreview.shareButton',
+    defaultMessage: 'Share'
+  },
+  editButton: {
+    id: 'components.DesignCenterPreview.editButton',
+    defaultMessage: 'Edit'
   }
 })

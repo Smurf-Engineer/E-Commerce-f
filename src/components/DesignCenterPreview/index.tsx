@@ -3,8 +3,6 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import messages from './messages'
-import Render3D from './Render3D'
 import Button from 'antd/lib/button'
 import {
   Container,
@@ -14,6 +12,8 @@ import {
   Model,
   QuickView
 } from './styledComponents'
+import Render3D from './Render3D'
+import messages from './messages'
 import quickView from '../../assets/quickview.svg'
 
 interface Props {
@@ -23,9 +23,15 @@ interface Props {
   loadingModel: boolean
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
+  onSelectTab: (tab: number) => void
 }
 
 class DesignCenterPreview extends React.PureComponent<Props, {}> {
+  handleOnPressEdit = () => {
+    const { onSelectTab } = this.props
+    onSelectTab(2)
+  }
+
   render() {
     const {
       colors,
@@ -33,7 +39,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       swipingView,
       loadingModel,
       onPressQuickView,
-      onLoadModel
+      onLoadModel,
+      onSelectTab
     } = this.props
     return (
       <Container>
@@ -43,10 +50,14 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             <QuickView onClick={onPressQuickView} src={quickView} />
           </Row>
           <ButtonWrapper>
-            <Button type="primary">Share</Button>
+            <Button type="primary">
+              <FormattedMessage {...messages.shareButton} />
+            </Button>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button type="primary">Edit</Button>
+            <Button type="primary" onClick={this.handleOnPressEdit}>
+              <FormattedMessage {...messages.editButton} />
+            </Button>
           </ButtonWrapper>
         </ButtonsContainer>
         {currentTab === 3 && !swipingView ? (

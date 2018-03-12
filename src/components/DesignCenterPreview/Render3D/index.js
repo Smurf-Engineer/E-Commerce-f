@@ -22,7 +22,8 @@ import {
   LoadingContainer,
   ButtonWrapper,
   BottomButtons,
-  ButtonRight
+  ButtonRight,
+  ButtonWrapperRight
 } from './styledComponents'
 import { jerseyTextures, viewPositions } from './config'
 import arrowDown from '../../../assets/downarrow.svg'
@@ -332,16 +333,22 @@ class Render3D extends PureComponent {
         </Dropdown>
         <BottomButtons>
           <ButtonWrapper>
-            <Button>Add to Team Store</Button>
+            <Button>
+              <FormattedMessage {...messages.addToTeam} />
+            </Button>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button type="primary">Add to Cart</Button>
+            <Button type="primary">
+              <FormattedMessage {...messages.addToCart} />
+            </Button>
           </ButtonWrapper>
         </BottomButtons>
         <Slider onChangeZoom={this.handleOnChangeZoom} />
-        <ButtonWrapper>
-          <ButtonRight type="primary">Keep Shopping</ButtonRight>
-        </ButtonWrapper>
+        <ButtonWrapperRight>
+          <ButtonRight type="primary">
+            <FormattedMessage {...messages.keepShoping} />
+          </ButtonRight>
+        </ButtonWrapperRight>
       </Container>
     )
   }

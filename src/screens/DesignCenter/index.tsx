@@ -158,6 +158,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               }}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
+              onSelectTab={this.handleOnSelectTab}
             />
           </SwipeableViews>
         </Container>
