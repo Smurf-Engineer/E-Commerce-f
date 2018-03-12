@@ -15,6 +15,7 @@ import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
 import ThemeTab from '../../components/DesignCenterTheme'
+import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
 import { Container, Text } from './styledComponents'
 import { Theme, Palette } from '../../types/common'
@@ -121,7 +122,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <div>Style</div>
+              <StyleTab />
             </div>
             <CustomizeTab
               {...{

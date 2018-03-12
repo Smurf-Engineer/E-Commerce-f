@@ -10,7 +10,7 @@ import messages from './messages'
 import { QueryProps } from '../../types/common'
 import { Theme } from '../../types/common'
 import { themesQuery } from './data'
-import ThemeItem from './Theme'
+import ThemeItem from '../Theme'
 import { Container, Text, Row } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -27,6 +27,7 @@ export const DesignCenterGrid = ({ data }: Props) => {
     // TODO: Handle error.
     return <div>Error</div>
   }
+
   const themes = data.themes || []
   const list = themes.map(({ image, name }, index) => (
     <ThemeItem key={index} {...{ name, image }} />
