@@ -17,6 +17,7 @@ import Info from '../../components/DesignCenterInfo'
 import ThemeTab from '../../components/DesignCenterTheme'
 import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
+import PreviewTab from '../../components/DesignCenterPreview'
 import { Container, Text } from './styledComponents'
 import { Theme, Palette } from '../../types/common'
 import messages from './messages'
@@ -128,12 +129,12 @@ export class DesignCenter extends React.Component<Props, {}> {
               {...{
                 colorBlock,
                 colors,
-                styleColors,
-                paletteName,
-                palettes,
                 loadingModel,
                 currentTab,
-                swipingView
+                swipingView,
+                styleColors,
+                paletteName,
+                palettes
               }}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
@@ -149,9 +150,17 @@ export class DesignCenter extends React.Component<Props, {}> {
               onClearAction={designClearAction}
               onPressQuickView={this.handleOpenQuickView}
             />
-            <div key="preview">
-              <div>Preview</div>
-            </div>
+            <PreviewTab
+              {...{
+                colors,
+                loadingModel,
+                currentTab,
+                swipingView
+              }}
+              onLoadModel={setLoadingModel}
+              onPressQuickView={this.handleOpenQuickView}
+              onSelectTab={this.handleOnSelectTab}
+            />
           </SwipeableViews>
         </Container>
       </Layout>

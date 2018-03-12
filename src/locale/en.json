@@ -106,5 +106,10 @@
   "components.ProductCatalogueThumbnailsList.lowestPriceLabel": "Lowest Price",
   "components.ProductCatalogueThumbnailsList.hightestPriceLabel":
     "Hightest Price",
-  "components.ProductCatalogueThumbnailsList.emptyResults": "No results found"
+  "components.ProductCatalogueThumbnailsList.emptyResults": "No results found",
+  "components.DesignCenterPreview.shareButton": "Share",
+  "components.DesignCenterPreview.editButton": "Edit",
+  "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
+  "components.DesignCenterPreview.Render3D.addToCart": "Add to Cart",
+  "components.DesignCenterPreview.Render3D.keepShoping": "Keep Shopping"
 }
