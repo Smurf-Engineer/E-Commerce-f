@@ -126,3 +126,8 @@ export interface UserType {
   lastName: string
   token: string
 }
+
+export interface AntColumns {
+  title: string
+  dataIndex: string
+}

@@ -31,7 +31,7 @@ import { RegionConfig, UserType } from '../../types/common'
 interface Props {
   history: any
   searchFunc: (param: string) => void
-  openLogin: boolean
+  openLogin?: boolean
   openLoginAction: (open: boolean) => void
   onChangeLocation: (payload: RegionConfig) => void
   saveUserToLocal: (user: object) => void

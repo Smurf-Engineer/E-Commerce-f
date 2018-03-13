@@ -43,13 +43,7 @@ import {
   ImageStyle
 } from './styledComponents'
 import closeIcon from '../../assets/cancel-button.svg'
-import {
-  setGender,
-  setFitStyle,
-  setMetric,
-  setFitStyleDescription,
-  setFitStyleImage
-} from './actions'
+import * as fitActions from './actions'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
@@ -60,6 +54,11 @@ interface Data extends QueryProps {
 
 interface Props {
   requestClose: () => void
+  setGender: (param: number) => void
+  setFitStyle: (param: number) => void
+  setFitStyleDescription: (param: string) => void
+  setFitStyleImage: (param: string) => void
+  setMetric: (param: string) => void
   dispatch: any
   open: boolean
   data: Data
@@ -73,21 +72,26 @@ interface Props {
 
 class FitInfo extends React.Component<Props, {}> {
   onGenderChange = async (e: any) => {
-    const { dispatch } = this.props
-    dispatch(setGender(e.target.value))
+    const { setGender } = this.props
+    setGender(e.target.value)
   }
 
   onFitChange = (e: any) => {
-    const { data: { product }, dispatch } = this.props
+    const {
+      data: { product },
+      setFitStyle,
+      setFitStyleDescription,
+      setFitStyleImage
+    } = this.props
     const selectedStyle = find(product.fitStyles, { id: e.target.value })
-    dispatch(setFitStyle(e.target.value))
-    dispatch(setFitStyleDescription(selectedStyle ? selectedStyle.info : ''))
-    dispatch(setFitStyleImage(selectedStyle ? selectedStyle.image : ''))
+    setFitStyle(e.target.value)
+    setFitStyleDescription(selectedStyle ? selectedStyle.info : '')
+    setFitStyleImage(selectedStyle ? selectedStyle.image : '')
   }
 
   onMetricChange = (e: any) => {
-    const { dispatch } = this.props
-    dispatch(setMetric(e.target.value))
+    const { setMetric } = this.props
+    setMetric(e.target.value)
   }
 
   render() {
@@ -99,7 +103,6 @@ class FitInfo extends React.Component<Props, {}> {
       fitStyle,
       fitStyleDescription,
       fitStyleImage,
-      dispatch,
       productId
     } = this.props
     const { product } = data
@@ -108,9 +111,9 @@ class FitInfo extends React.Component<Props, {}> {
     let fitStylesList
 
     if (!data.loading && !data.error) {
-      genderList = product.genders.map((genderObject, index) => (
-        <RadioButton key={genderObject.id} value={genderObject.id}>
-          {genderObject.name}
+      genderList = product.genders.map(({ id, name }, index) => (
+        <RadioButton key={id} value={id}>
+          {name}
         </RadioButton>
       ))
 
@@ -199,7 +202,7 @@ const mapStateToProps = ({ fitInfo }: ReducersObject) => fitInfo.toJS()
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const FitInfoEnhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(mapStateToProps, { ...fitActions }),
   graphql<Data>(categoriesQuery, {
     options: ({ productId }: OwnProps) => ({
       fetchPolicy: 'network-only',

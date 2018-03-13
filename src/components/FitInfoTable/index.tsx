@@ -30,8 +30,8 @@ export class FitInfoTable extends React.Component<Props, {}> {
     const { data, metric } = this.props
     const { bodyChart } = data
 
-    let chartcolumns: any = [] as any
-    let chartData: any = [] as any
+    let chartcolumns: any = []
+    let chartData: any = []
 
     if (!data.loading && !data.error) {
       chartcolumns = Object.keys(bodyChart[0]).map((key, index) => {
@@ -47,7 +47,7 @@ export class FitInfoTable extends React.Component<Props, {}> {
       chartcolumns = compact(chartcolumns)
 
       let indexItems = 0
-      chartData = bodyChart.map((key: any, index) => {
+      chartData = bodyChart.map((key, index) => {
         const objectKeys = keys(key)
         const object: any = {}
         forEach(objectKeys, (value, objectIndex) => {
