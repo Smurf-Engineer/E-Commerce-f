@@ -187,7 +187,7 @@ class FitInfo extends React.Component<Props, {}> {
     )
   }
 
-  handleCancel = (e: any) => {
+  handleCancel = () => {
     const { requestClose } = this.props
     requestClose()
   }
