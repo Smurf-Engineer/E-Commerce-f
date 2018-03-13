@@ -8,6 +8,7 @@ import StyleItem from '../Theme'
 import { Theme } from '../../types/common'
 import { Container, Title, Slider, Row, List } from './styledComponents'
 
+// TODO: Dummie data
 const styles: Theme[] = [
   {
     id: 0,
