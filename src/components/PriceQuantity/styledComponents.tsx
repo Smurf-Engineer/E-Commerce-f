@@ -14,7 +14,7 @@ export const AvailablePrices = styled.div`
 
 export const PriceLabel = styled.div`
   height: 25px;
-  width: 56px;
+
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 18px;
@@ -23,7 +23,7 @@ export const PriceLabel = styled.div`
 `
 export const QuantityLabel = styled.div`
   height: 16px;
-  width: 63.71px;
+
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 12px;

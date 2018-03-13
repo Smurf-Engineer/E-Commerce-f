@@ -1,5 +1,5 @@
 /* Routes */
-import Product from '../screens/Product'
+import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
 import NotFound from '../screens/NotFound'
@@ -8,9 +8,9 @@ import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
   {
-    path: '/product',
-    name: 'product',
-    component: Product
+    path: '/product/:id',
+    name: 'productDetail',
+    component: ProductDetail
   },
   {
     path: '/product-catalogue',

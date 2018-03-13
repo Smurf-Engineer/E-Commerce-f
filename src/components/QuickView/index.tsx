@@ -7,6 +7,7 @@ import { ReducersObject } from '../../store/rootReducer'
 import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
 import QuickViewSlider from '../QuickViewSlider'
+import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 import Ratings from '../Ratings'
 import {
@@ -87,7 +88,7 @@ export class QuickView extends React.Component<Props, State> {
     if (!product) {
       return null
     }
-    // TODO: UNCOMMENT CODE WHEN GRAPHQL QUERY RETURNS THE QUENTITY PRICE RANGE
+
     const renderPrices = product.priceRange.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />
@@ -126,7 +127,7 @@ export class QuickView extends React.Component<Props, State> {
             <Col span={12}>
               {imageSlider}
               <FullDetails>
-                <div>Full Details</div>
+                <div onClick={this.gotoProductPage}>Full Details</div>
                 <ArrowRight />
               </FullDetails>
             </Col>
@@ -215,8 +216,16 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   gotoCustomize = () => {
-    const { history } = this.props
+    const { history, handleClose } = this.props
+    handleClose()
     history.push('/design-center')
+  }
+
+  gotoProductPage = () => {
+    const { history, productId, handleClose } = this.props
+    console.log(this.props)
+    handleClose()
+    history.push(`/product/${productId}`)
   }
 }
 
