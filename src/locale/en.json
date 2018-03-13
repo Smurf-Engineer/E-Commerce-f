@@ -95,5 +95,12 @@
   "components.ResetPassword.changePasswordLabel": "Change Password",
   "components.ResetPassword.invalidPasswordMessage": "Invalid password!",
   "components.ResetPassword.resetTokenMessage": "Reset token needed",
-  "components.ResetPassword.noMatchingMessage": "No matching passwords"
+  "components.ResetPassword.noMatchingMessage": "No matching passwords",
+  "components.FitInfo.sizeChart": "SIZING CHART",
+  "components.FitInfo.fitStyles": "FIT STYLES",
+  "components.FitInfo.getFittedLabel":
+    "Don’t want to look at charts? We’ll get you the right sizing",
+  "components.FitInfo.getFittedButton": "GET FITTED",
+  "components.FitInfo.inches": "IN",
+  "components.FitInfo.centimeters": "CM"
 }

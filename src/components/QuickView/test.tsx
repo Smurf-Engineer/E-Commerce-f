@@ -30,7 +30,9 @@ describe('<QuickView />', () => {
         fitStyles: [
           {
             id: 0,
-            name: ''
+            name: '',
+            info: '',
+            image: ''
           }
         ],
         genders: [

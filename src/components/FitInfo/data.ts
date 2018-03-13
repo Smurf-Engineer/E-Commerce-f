@@ -1,19 +1,11 @@
 /**
  * Filters queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const categoriesQuery = gql`
   query GetCategories($id: Int!) {
-    genders {
-      id
-      name: gender
-    }
-    fitStyles {
-      id
-      name: description
-    }
     product(id: $id) {
       genders {
         id
@@ -22,13 +14,9 @@ export const categoriesQuery = gql`
       fitStyles {
         id
         name: description
+        info
+        image
       }
-    }
-    bodyChart(bodyChartId: 1, genderId: 1) {
-      size
-      waist
-      chest
-      inseam
     }
   }
 `

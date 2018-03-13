@@ -32,6 +32,13 @@ export interface Filter {
   name: string
 }
 
+export interface FitStyle {
+  id: number
+  name: string
+  info: string
+  image: string
+}
+
 export type ImageType = {
   front: string
   back: string
@@ -60,7 +67,7 @@ export interface Product {
   details: string
   specs: string
   name: string
-  fitStyles: Filter[]
+  fitStyles: FitStyle[]
   genders: Filter[]
 }
 

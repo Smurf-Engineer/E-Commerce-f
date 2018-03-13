@@ -9,6 +9,10 @@ export const Container = styled.div`
   background-color: #222;
 `
 
+export const ImageStyle = {
+  height: '100%'
+}
+
 export const Text = styled.div`
   color: #fff;
 `

@@ -23,7 +23,6 @@ import cart from '../../assets/cart.svg'
 import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
-import FitInfo from '../FitInfo'
 import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
@@ -114,14 +113,13 @@ class MenuBar extends React.Component<Props, StateProps> {
             />
           </BottomRow>
         )}
-        <FitInfo open={openLogin} productId={1} />
-        {/* <Login
+        <Login
           open={openLogin}
           requestClose={this.handleCloseLogin}
           formatMessage={intl.formatMessage}
           handleForgotPassword={this.handleOpenForgotPassword}
           login={saveUserToLocal}
-        /> */}
+        />
         <ForgotPassword
           open={openForgotPassword}
           formatMessage={intl.formatMessage}
