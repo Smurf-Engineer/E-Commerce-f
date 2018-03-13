@@ -3,6 +3,7 @@
  */
 import {
   DEFAULT_ACTION,
+  CLEAR_STORE_ACTION,
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
@@ -21,6 +22,10 @@ import { AnyAction, Palette } from '../../types/common'
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
   someValue
+})
+
+export const clearStoreAction = (): AnyAction => ({
+  type: CLEAR_STORE_ACTION
 })
 
 export const setCurrentTabAction = (index: number): AnyAction => ({

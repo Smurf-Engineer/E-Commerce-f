@@ -5,6 +5,7 @@ import { fromJS, List } from 'immutable'
 import fill from 'lodash/fill'
 import isEqual from 'lodash/isEqual'
 import {
+  CLEAR_STORE_ACTION,
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
@@ -36,6 +37,8 @@ export const initialState = fromJS({
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
+    case CLEAR_STORE_ACTION:
+      return initialState
     case SET_CURRENT_TAB_ACTION:
       return state.merge({
         currentTab: action.index,

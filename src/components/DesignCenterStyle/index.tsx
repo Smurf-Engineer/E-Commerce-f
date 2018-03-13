@@ -28,7 +28,7 @@ const styles: Theme[] = [
       'https://storage.googleapis.com/jakroo-storage/Assets_themes/Geometric.svg'
   },
   {
-    id: 3,
+    id: 2,
     name: 'Name of Style',
     image:
       'https://storage.googleapis.com/jakroo-storage/Assets_themes/Geometric.svg'

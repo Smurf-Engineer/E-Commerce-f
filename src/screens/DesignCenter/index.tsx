@@ -40,6 +40,7 @@ interface Props extends RouteComponentProps<any> {
   redoChanges: Change[]
   swipingView: boolean
   // Redux Actions
+  clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
@@ -56,6 +57,10 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { clearStoreAction } = this.props
+    clearStoreAction()
+  }
   handleOpenQuickView = () => {
     const { openQuickViewAction: openQuickView } = this.props
     // TODO: This id it's the same of the product
