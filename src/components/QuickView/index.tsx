@@ -2,8 +2,7 @@
  * QuickView Component - Created by cazarez on 08/02/18.
  */
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { ReducersObject } from '../../store/rootReducer'
+
 import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
 import QuickViewSlider from '../QuickViewSlider'
@@ -15,7 +14,6 @@ import {
   Title,
   StyledRow,
   PriceQuantityRow,
-  AvailablePrices,
   FullDetails,
   ProductInfContainer,
   ProductInfoTitle,
@@ -28,20 +26,13 @@ import {
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
-import Row from 'antd/lib/row'
-import Button from 'antd/lib/button'
+
 import Spin from 'antd/lib/spin'
-import PriceQuantity from '../PriceQuantity'
+
 import closeIcon from '../../assets/cancel-button.svg'
 import downArrowIcon from '../../assets/downarrow.svg'
 import upArrowIcon from '../../assets/uparrow.svg'
-import {
-  Prices,
-  AnyAction,
-  QueryProps,
-  Product,
-  ImageType
-} from '../../types/common'
+import { QueryProps, Product, ImageType } from '../../types/common'
 import { QuickViewQuery } from './data'
 
 interface State {
@@ -76,12 +67,7 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      open,
-      handleClose,
-      data,
-      data: { product, loading, error }
-    } = this.props
+    const { open, handleClose, data, data: { product } } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
 
     // TODO: UNCOMMENT CODE WHEN GRAPHQL QUERY RETURNS THE QUENTITY PRICE RANGE
@@ -203,7 +189,6 @@ export class QuickView extends React.Component<Props, State> {
 
   toggleDescriptionDetails = (evt: React.MouseEvent<HTMLImageElement>) => {
     const { currentTarget: { id } } = evt
-    const { showDescription, showDetail, showSpecs } = this.state
     this.setState({
       showDescription: id === 'Description' ? true : false,
       showDetail: id === 'Details' ? true : false,

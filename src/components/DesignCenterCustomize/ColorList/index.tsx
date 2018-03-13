@@ -3,8 +3,6 @@
  */
 import * as React from 'react'
 import Tooltip from 'antd/lib/tooltip/'
-import { FormattedMessage } from 'react-intl'
-import messages from './messages'
 import { Container, Color, Row, Col } from './styledComponents'
 import colors from './colors'
 

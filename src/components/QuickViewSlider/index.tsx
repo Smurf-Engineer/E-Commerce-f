@@ -6,10 +6,8 @@ import SwipeableViews from 'react-swipeable-views'
 import { ImageType } from '../../types/common'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
-
 import {
   Container,
-  Text,
   StyledButton,
   ButtonRow,
   Available,

@@ -2,14 +2,11 @@
  * PaletteCard Component - Created by david on 28/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import Button from 'antd/lib/button'
 import Divider from 'antd/lib/divider'
 import ColorButton from '../ColorButton'
-import messages from './messages'
 import {
   Container,
-  Text,
   ColorButtons,
   Name,
   Row,

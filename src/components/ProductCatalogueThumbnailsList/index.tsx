@@ -27,16 +27,10 @@ import {
   MenuStyle,
   NoResultsFound
 } from './styledComponents'
-import { Filter } from '../../types/common'
 import downArrowIcon from '../../assets/downarrow.svg'
 
 interface Data extends QueryProps {
   products: ProductType
-}
-
-interface StateProps {
-  orderBy: string
-  filters: Filter[]
 }
 
 interface Props {

@@ -7,7 +7,7 @@ import Menu from 'antd/lib/menu'
 import toUpper from 'lodash/toUpper'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container, Text, menuStyle } from './styledComponents'
+import { Text, menuStyle } from './styledComponents'
 
 interface Props {
   title: string

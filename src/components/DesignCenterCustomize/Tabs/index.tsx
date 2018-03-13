@@ -3,16 +3,14 @@
  */
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
-import { FormattedMessage } from 'react-intl'
 import Tab from '../Tab'
 import ColorTab from '../ColorTab'
-import messages from './messages'
 import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
 import { Palette } from '../../../types/common'
-import { Container, Text } from './styledComponents'
+import { Container } from './styledComponents'
 
 const { TabPane } = AntdTabs
 

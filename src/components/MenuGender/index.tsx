@@ -9,14 +9,8 @@ import { ReducersObject } from '../../store/rootReducer'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import {
-  Container,
-  Text,
-  Filters,
-  Categories,
-  Divider
-} from './styledComponents'
-import { Product, Filter } from '../../types/common'
+import { Container, Filters, Categories, Divider } from './styledComponents'
+import { Filter } from '../../types/common'
 
 interface Props {
   type: number

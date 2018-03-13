@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { QueryProps, Filter } from '../../types/common'
+import { Filter } from '../../types/common'
 import { Option } from './index'
 import reducer, { initialState } from './reducer'
 import {

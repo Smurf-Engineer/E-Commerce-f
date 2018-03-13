@@ -1,12 +1,9 @@
 /**
  * MenuSports Test - Created by david on 13/02/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+
 import reducer, { initialState } from './reducer'
 import { setCategoryAction, setClearAction } from './actions'
-import { Filter } from '../../types/common'
-import { MenuSports } from './index'
 
 describe('MenuSports Reducer', () => {
   it('Return the default state for unknow action', () => {

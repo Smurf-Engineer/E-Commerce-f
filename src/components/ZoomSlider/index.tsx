@@ -2,10 +2,8 @@
  * ZoomSlider Component - Created by david on 05/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import Slider from 'react-rangeslider'
-import messages from './messages'
-import { Container, SliderContainer, Button } from './styledComponents'
+import { Container, Button } from './styledComponents'
 
 interface Props {
   onChangeZoom: (value: number) => void
@@ -49,7 +47,6 @@ class ZoomSlider extends React.PureComponent<Props, State> {
 
   render() {
     const { value } = this.state
-    const { onChangeZoom } = this.props
     return (
       <Container>
         <Button onClick={this.handleZoomIn}>+</Button>

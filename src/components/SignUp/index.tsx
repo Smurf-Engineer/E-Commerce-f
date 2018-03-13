@@ -2,11 +2,10 @@
  * SignUp Component - Created by cazarez on 21/02/18.
  */
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
+import { compose } from 'react-apollo'
 import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
-import JakrooModal from '../Common/JakrooModal'
 import FacebookGmailLogin from '../FacebookGmailLogin'
 import { createUser } from './data'
 import {
@@ -26,8 +25,7 @@ import {
   CreateAccountText,
   StyledButton,
   HaveAnAccountRow,
-  LogInLabel,
-  InputRow
+  LogInLabel
 } from './styledComponents'
 import messages from './messages'
 

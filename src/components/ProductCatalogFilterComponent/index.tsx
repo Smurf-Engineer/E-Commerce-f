@@ -2,12 +2,9 @@
  * ProductCatalogFilterComponent Component - Created by cazarez on 28/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import get from 'lodash/get'
 import AnimateHeight from 'react-animate-height'
 import Checkbox from 'antd/lib/checkbox'
-
-import messages from './messages'
 import {
   Container,
   Content,

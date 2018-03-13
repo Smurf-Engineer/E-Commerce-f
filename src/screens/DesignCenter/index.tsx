@@ -2,7 +2,7 @@
  * DesignCenter Screen - Created by david on 23/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -18,9 +18,8 @@ import ThemeTab from '../../components/DesignCenterTheme'
 import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
-import { Container, Text } from './styledComponents'
-import { Theme, Palette } from '../../types/common'
-import messages from './messages'
+import { Container } from './styledComponents'
+import { Palette } from '../../types/common'
 
 interface Change {
   type: string

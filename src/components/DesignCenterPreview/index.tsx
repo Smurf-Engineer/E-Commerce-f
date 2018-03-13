@@ -39,8 +39,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       swipingView,
       loadingModel,
       onPressQuickView,
-      onLoadModel,
-      onSelectTab
+      onLoadModel
     } = this.props
     return (
       <Container>

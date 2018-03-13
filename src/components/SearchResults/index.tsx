@@ -3,9 +3,7 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
 import AnimateHeight from 'react-animate-height'
-import Spinner from 'antd/lib/spin'
 import CloseIcon from '../../assets/cancel-button.svg'
 import { QueryProps, Product } from '../../types/common'
 import { searchResultsQuery } from './data'
@@ -14,8 +12,7 @@ import {
   Text,
   TitleContainer,
   CloseImg,
-  Results,
-  EmptySearch
+  Results
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
 
@@ -40,9 +37,9 @@ export class SearchResults extends React.Component<Props, {}> {
       searchParam,
       showResults,
       closeResults,
-      openResults,
+
       quickViewAction,
-      data: { productSearch, loading, error }
+      data: { productSearch, loading }
     } = this.props
 
     let list: JSX.Element[] = []
@@ -66,12 +63,6 @@ export class SearchResults extends React.Component<Props, {}> {
         )
       })
     }
-
-    const renderResults = !error ? (
-      <Results>{list}</Results>
-    ) : (
-      <EmptySearch>No hay resultados</EmptySearch>
-    )
 
     return (
       <AnimateHeight duration={500} height={showResults ? 'auto' : 0}>

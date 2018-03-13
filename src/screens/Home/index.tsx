@@ -1,21 +1,18 @@
 /**
- * Home Actions - Created by david on 08/10/17.
+ * Home - Created by david on 08/10/17.
  */
+
 import * as React from 'react'
 import { connect } from 'react-redux'
-import message from 'antd/lib/message'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
-import { compose, graphql } from 'react-apollo'
-import { QueryProps } from '../../types/common'
+import { compose } from 'react-apollo'
 import { ReducersObject } from '../../store/rootReducer'
 import * as homeActions from './actions'
-import Button from '../../components/Button'
 import Layout from '../../components/MainLayout'
 import {
   Container,
-  HomeHeader,
   SearchBackground,
   HelpContainer,
   NeedHelp,
@@ -23,19 +20,12 @@ import {
   SearchContainer,
   SearchBarContent
 } from './styledComponents'
-import { Prices } from '../../types/common'
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
-import { AnyAction } from '../../types/common'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-
-type User = {
-  id: string
-  email: string
-}
 
 interface Props extends RouteComponentProps<any> {
   someKey?: string
@@ -62,10 +52,7 @@ export class Home extends React.Component<Props, {}> {
     dispatch(openQuickViewAction(id))
   }
 
-  onCloseModal = () => {
-    const { dispatch } = this.props
-    openQuickViewAction(0)
-  }
+  onCloseModal = () => openQuickViewAction(0)
 
   openResults = () => {
     const { dispatch } = this.props
@@ -85,15 +72,7 @@ export class Home extends React.Component<Props, {}> {
   }
 
   render() {
-    const { openQuickView } = this.state
-    const {
-      history,
-      showSearchResults,
-      setSearchParam,
-      searchString,
-      productId,
-      intl
-    } = this.props
+    const { history, showSearchResults, searchString, intl } = this.props
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
