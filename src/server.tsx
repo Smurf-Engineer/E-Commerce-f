@@ -1,9 +1,8 @@
 import * as React from 'react'
 import * as express from 'express'
-import { fromJS } from 'immutable'
 import { ApolloProvider, getDataFromTree } from 'react-apollo'
 import { Provider } from 'react-redux'
-import { renderToString, renderToStaticMarkup } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
 import Html from './helpers/Html'
@@ -11,8 +10,6 @@ import renderHtml from './helpers/render'
 import { configureServerClient } from './apollo'
 import App from './screens/App'
 import configureStore from './store'
-
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
 
 const server = express()
 

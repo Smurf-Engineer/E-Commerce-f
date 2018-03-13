@@ -1,11 +1,8 @@
 /**
  * ResetPassword Test - Created by gustavomedina on 05/03/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import resetReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { ResetPassword } from './index'
 
 describe('Reset Reducer', () => {
   it('Return the default state for unknow action', () => {

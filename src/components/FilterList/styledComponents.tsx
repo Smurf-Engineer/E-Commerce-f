@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by david on 09/02/18.
  */
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 export const Container = styled.div``
 

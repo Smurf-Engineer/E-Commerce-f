@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  position: relative;
   padding 16px 32px;
   display: flex;
   justify-content: center;

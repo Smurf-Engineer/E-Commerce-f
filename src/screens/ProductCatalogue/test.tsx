@@ -1,11 +1,9 @@
 /**
  * ProductCatalog Test - Created by cazarez on 27/02/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+
 import productCatalogReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { ProductCatalog } from './index'
 
 describe(' ProductCatalog Screen', () => {
   // Test redux actions

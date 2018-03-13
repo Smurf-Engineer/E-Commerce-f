@@ -26,7 +26,7 @@ interface Props {
 
 export class MenuSports extends React.PureComponent<Props, {}> {
   handleOnHoverCategory = (categorySelected: number) => {
-    const { setCategoryAction, categories } = this.props
+    const { setCategoryAction } = this.props
     setCategoryAction(categorySelected)
   }
 

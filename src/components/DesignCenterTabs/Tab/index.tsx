@@ -2,9 +2,6 @@
  * Tab Component - Created by david on 23/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-
-import messages from './messages'
 import {
   Container,
   Text,

@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by david on 23/02/18.
  */
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 import AntdDivider from 'antd/lib/divider'
 
 export const Container = styled.div`

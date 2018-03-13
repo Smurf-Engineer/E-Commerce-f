@@ -2,20 +2,16 @@
  * FitInfo Component - Created by gustavomedina on 08/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
 import Radio from 'antd/lib/radio'
-import messages from './messages'
 import {
   Container,
-  Text,
   CloseIcon,
   StyledRow,
   StyledLoginButton,
   StyledLabel,
   TitleLabel,
-  CenterDiv,
   radioGroupStyle
 } from './styledComponents'
 import closeIcon from '../../assets/cancel-button.svg'

@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
-import { graphql, compose } from 'react-apollo'
+import { compose } from 'react-apollo'
 import { validate } from 'email-validator'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
@@ -64,7 +64,7 @@ class ForgotPassword extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value, id } } = evt
+    const { currentTarget: { value } } = evt
     evt.persist()
     dispatch(setEmail(value))
   }

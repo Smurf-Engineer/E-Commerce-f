@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import StarRatings from 'react-star-ratings'
-import { Container, Text, StyledImg } from './styledComponents'
+import { Container, Text } from './styledComponents'
 
 interface Props {
   rating: number

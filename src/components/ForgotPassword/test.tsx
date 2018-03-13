@@ -1,11 +1,8 @@
 /**
  * ForgotPassword Test - Created by cazarez on 20/02/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import forgotReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import ForgotPassword from './index'
 
 describe('Forgot Reducer', () => {
   it('Return the default state for unknow action', () => {

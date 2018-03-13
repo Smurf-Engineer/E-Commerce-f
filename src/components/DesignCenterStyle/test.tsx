@@ -1,18 +1,18 @@
 /**
- * DesignCenterTabs Test - Created by david on 23/02/18.
+ * DesignCenterStyle Test - Created by david on 12/03/18.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
-import DesignCenterTabs from './index'
+import DesignCenterStyle from './index'
 
-describe('<DesignCenterTabs />', () => {
+describe('<DesignCenterStyle />', () => {
   test('renders without exploding', () => {
-    const div = document.createElement('div')
     const props = { locale: 'en' }
+    const div = document.createElement('div')
     ReactDOM.render(
       <IntlProvider {...props}>
-        <DesignCenterTabs currentTab={0} onSelectTab={() => {}} />
+        <DesignCenterStyle />
       </IntlProvider>,
       div
     )

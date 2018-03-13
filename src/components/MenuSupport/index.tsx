@@ -6,7 +6,7 @@ import Dropdown from 'antd/lib/dropdown'
 import { FormattedMessage } from 'react-intl'
 import Menu from 'antd/lib/menu'
 import messages from './messages'
-import { Container, Text, Link, menuStyle } from './styledComponents'
+import { Text, Link, menuStyle } from './styledComponents'
 import links from './links'
 
 interface Props {}
