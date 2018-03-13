@@ -86,6 +86,10 @@
   "components.Logout.myAccountLabel": "My Account",
   "components.Logout.profileSettingsLabel": "Profile Settings",
   "components.Logout.logoutLabel": "Logout",
+  "components.Render3D.drag": "Drag to rotate",
+  "components.Render3D.productOnly": "Product Only",
+  "components.Render3D.withAvatar": "With Avatar",
+  "components.Render3D.onBike": "On Bike",
   "components.forgotPassword.emailLabel": "Email",
   "components.forgotPassword.invalidEmailLabel": "Invalid email!",
   "components.ResetPassword.passwordLabel": "Password",
@@ -102,5 +106,17 @@
     "Don’t want to look at charts? We’ll get you the right sizing",
   "components.FitInfo.getFittedButton": "GET FITTED",
   "components.FitInfo.inches": "IN",
-  "components.FitInfo.centimeters": "CM"
+  "components.FitInfo.centimeters": "CM",
+  "screens.ProductCatalog.filtersTitle": "FILTERS",
+  "components.ProductCatalogueThumbnailsList.sortByLabel": "Sort By",
+  "components.ProductCatalogueThumbnailsList.topSellerLabel": "Top Seller",
+  "components.ProductCatalogueThumbnailsList.lowestPriceLabel": "Lowest Price",
+  "components.ProductCatalogueThumbnailsList.hightestPriceLabel":
+    "Hightest Price",
+  "components.ProductCatalogueThumbnailsList.emptyResults": "No results found",
+  "components.DesignCenterPreview.shareButton": "Share",
+  "components.DesignCenterPreview.editButton": "Edit",
+  "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
+  "components.DesignCenterPreview.Render3D.addToCart": "Add to Cart",
+  "components.DesignCenterPreview.Render3D.keepShoping": "Keep Shopping"
 }

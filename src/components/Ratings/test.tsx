@@ -9,7 +9,7 @@ describe('<Ratings />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <Ratings totalReviews={0} stars={0} rating={0} starDimension={''} />,
+      <Ratings totalReviews={1} stars={0} rating={0} starDimension={''} />,
       div
     )
   })

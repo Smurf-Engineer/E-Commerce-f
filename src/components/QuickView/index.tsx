@@ -96,16 +96,18 @@ export class QuickView extends React.Component<Props, State> {
       </Loading>
     ) : (
       <QuickViewSlider
-        productImages={product.images}
+        productImages={product ? product.images : ({} as ImageType)}
         available={5}
         gotoCustomize={this.gotoCustomize}
       />
     )
-    const title = !data.loading ? product.name : ''
-    const description = !data.loading ? product.description : ''
-    const details = !data.loading ? product.details : ''
-    const temperature = !data.loading ? product.temperature : ''
-    const materials = !data.loading ? product.materials : ''
+
+    const title = data.loading || !product ? '' : product.name
+    const description = data.loading || !product ? '' : product.description
+    const details = data.loading || !product ? '' : product.details
+    const temperature = data.loading || !product ? '' : product.temperature
+    const materials = data.loading || !product ? '' : product.materials
+
     return (
       <Container>
         <Modal

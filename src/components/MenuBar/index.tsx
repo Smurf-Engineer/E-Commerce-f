@@ -54,6 +54,12 @@ class MenuBar extends React.Component<Props, StateProps> {
   state = {
     openForgotPassword: false
   }
+
+  handleOnGoHome = () => {
+    const { history } = this.props
+    history.replace('/')
+  }
+
   render() {
     const { openForgotPassword } = this.state
     const {
@@ -104,7 +110,7 @@ class MenuBar extends React.Component<Props, StateProps> {
         <Divider />
         {!hideBottom && (
           <BottomRow>
-            <LogoIcon src={logo} />
+            <LogoIcon src={logo} onClick={this.handleOnGoHome} />
             <DropdownList {...{ history }} />
             <SearchBar
               search={searchFunc}

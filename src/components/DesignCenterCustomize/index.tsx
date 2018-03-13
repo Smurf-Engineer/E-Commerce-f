@@ -14,13 +14,23 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  styleColors: string[]
   loadingModel: boolean
+  undoEnabled: boolean
+  redoEnabled: boolean
+  currentTab: number
+  swipingView: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
   onLoadModel: (loading: boolean) => void
+  onUndoAction: () => void
+  onRedoAction: () => void
+  onResetAction: () => void
+  onClearAction: () => void
+  onPressQuickView: () => void
 }
 
 const DesignCenterCustomize = ({
@@ -32,9 +42,19 @@ const DesignCenterCustomize = ({
   paletteName,
   palettes,
   onSetPalettes,
+  currentTab,
   colors,
+  styleColors,
   loadingModel,
-  onLoadModel
+  onLoadModel,
+  onUndoAction,
+  onRedoAction,
+  onResetAction,
+  onClearAction,
+  onPressQuickView,
+  undoEnabled,
+  redoEnabled,
+  swipingView
 }: Props) => {
   return (
     <Container>
@@ -45,13 +65,30 @@ const DesignCenterCustomize = ({
           onSelectColorBlock,
           onSelectColor,
           colors,
+          styleColors,
           onSelectPalette,
           onChangePaletteName,
           paletteName,
           onSetPalettes
         }}
       />
-      <Render3D {...{ colors, onLoadModel, loadingModel }} />
+      {currentTab === 2 && !swipingView ? (
+        <Render3D
+          {...{
+            colors,
+            styleColors,
+            onLoadModel,
+            loadingModel,
+            onUndoAction,
+            onRedoAction,
+            onResetAction,
+            onClearAction,
+            onPressQuickView,
+            undoEnabled,
+            redoEnabled
+          }}
+        />
+      ) : null}
     </Container>
   )
 }

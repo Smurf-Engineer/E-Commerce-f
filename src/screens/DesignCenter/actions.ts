@@ -9,7 +9,12 @@ import {
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
   SET_PALETTES_ACTION,
-  SET_LOADING_MODEL
+  SET_LOADING_MODEL,
+  DESIGN_UNDO_ACTION,
+  DESIGN_REDO_ACTION,
+  DESIGN_RESET_ACTION,
+  DESIGN_CLEAR_ACTION,
+  SET_SWIPING_TAB_ACTION
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -51,4 +56,25 @@ export const setPalettesAction = (palettes: Palette[]): AnyAction => ({
 export const setLoadingModel = (loading: boolean): AnyAction => ({
   type: SET_LOADING_MODEL,
   loading
+})
+
+export const designUndoAction = (): AnyAction => ({
+  type: DESIGN_UNDO_ACTION
+})
+
+export const designRedoAction = (): AnyAction => ({
+  type: DESIGN_REDO_ACTION
+})
+
+export const designResetAction = (): AnyAction => ({
+  type: DESIGN_RESET_ACTION
+})
+
+export const designClearAction = (): AnyAction => ({
+  type: DESIGN_CLEAR_ACTION
+})
+
+export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
+  type: SET_SWIPING_TAB_ACTION,
+  isSwiping
 })
