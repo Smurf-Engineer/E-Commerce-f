@@ -36,7 +36,9 @@ const styles: Theme[] = [
   }
 ]
 
-interface Props {}
+interface Props {
+  onSelectStyle: (style: any) => void
+}
 
 const marks = {
   1: 'Classic',
@@ -45,9 +47,18 @@ const marks = {
 }
 
 class DesignCenterStyle extends React.PureComponent<Props, {}> {
+  handleOnSelectStyle = (id: number) => {
+    const { onSelectStyle } = this.props
+    onSelectStyle(id)
+  }
+
   render() {
-    const list = styles.map(({ image, name }, index) => (
-      <StyleItem key={index} {...{ name, image }} />
+    const list = styles.map(({ id, image, name }, index) => (
+      <StyleItem
+        key={index}
+        {...{ id, name, image }}
+        onClick={this.handleOnSelectStyle}
+      />
     ))
     return (
       <Container>

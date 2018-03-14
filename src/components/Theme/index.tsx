@@ -5,13 +5,16 @@ import * as React from 'react'
 import { Container, Text, Image } from './styledComponents'
 
 interface Props {
+  id: number
   name: string
   image: string
+  onClick: (id: number) => void
 }
 
-const Theme = ({ name, image }: Props) => {
+const Theme = ({ onClick, id, name, image }: Props) => {
+  const handleOnClick = () => onClick(id)
   return (
-    <Container>
+    <Container onClick={handleOnClick}>
       <Image src={image} />
       <Text>{name}</Text>
     </Container>

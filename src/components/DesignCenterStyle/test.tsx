@@ -10,9 +10,10 @@ describe('<DesignCenterStyle />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
+    const testFunc = () => {}
     ReactDOM.render(
       <IntlProvider {...props}>
-        <DesignCenterStyle />
+        <DesignCenterStyle onSelectStyle={testFunc} />
       </IntlProvider>,
       div
     )

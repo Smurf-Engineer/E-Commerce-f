@@ -10,11 +10,16 @@ describe('<DesignCenterGrid />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const themes: Theme[] = []
+    const testFunc = () => {}
     const data = {
       fetchMore: () => {}
     }
     ReactDOM.render(
-      <DesignCenterGrid {...{ themes, data }} loadingModel={false} />,
+      <DesignCenterGrid
+        {...{ themes, data }}
+        loadingModel={false}
+        onSelectTheme={testFunc}
+      />,
       div
     )
   })

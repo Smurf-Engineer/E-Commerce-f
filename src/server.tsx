@@ -46,8 +46,8 @@ server
         </ApolloProvider>
       )
 
-      const content = renderToString(jsx)
       const preloadState = store.getState()
+      const content = renderToString(jsx)
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
 

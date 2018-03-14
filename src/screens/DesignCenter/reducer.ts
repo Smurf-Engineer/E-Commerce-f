@@ -16,7 +16,9 @@ import {
   DESIGN_RESET_ACTION,
   DESIGN_UNDO_ACTION,
   DESIGN_REDO_ACTION,
-  SET_SWIPING_TAB_ACTION
+  SET_SWIPING_TAB_ACTION,
+  SET_THEME_SELECTED_ACTION,
+  SET_STYLE_SELECTED_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -32,7 +34,9 @@ export const initialState = fromJS({
   loadingModel: false,
   undoChanges: [],
   redoChanges: [],
-  swipingView: false
+  swipingView: false,
+  themeId: null,
+  style: null
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -122,6 +126,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('colors', List.of(...colorsInit))
     case SET_SWIPING_TAB_ACTION:
       return state.set('swipingView', action.isSwiping)
+    case SET_THEME_SELECTED_ACTION:
+      return state.merge({
+        themeId: action.id,
+        currentTab: 1
+      })
+    case SET_STYLE_SELECTED_ACTION:
+      return state.merge({
+        style: action.colors,
+        currentTab: 2
+      })
     default:
       return state
   }
