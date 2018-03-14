@@ -14,7 +14,7 @@ const loggerMiddleware = createLogger({
 const configureStore = (preloadStore = {}) => {
   const store = createStore(
     rootReducer,
-    fromJS(preloadStore),
+    {},
     composeStore(applyMiddleware(loggerMiddleware))
   )
 

@@ -87,10 +87,10 @@ export interface Currency {
 }
 
 export interface RegionConfig {
-  region: number
-  localeIndex: number
+  region: number | string
+  localeIndex: number | string
   locale: string
-  currency: number
+  currency: number | string
 }
 
 export interface Theme {

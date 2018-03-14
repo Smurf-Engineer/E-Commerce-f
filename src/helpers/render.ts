@@ -32,7 +32,7 @@ const renderHtml = (styleTags: any, html: any, preloadState: any) => {
           ${styleTags}
       </head>\n${renderToStaticMarkup(html)}
       \n<script>
-            window.__PRELOADED_STATE__ = ${serialize(preloadState)}
+            window.__PRELOADED_STATE__ = ${JSON.stringify(preloadState)}
           </script>
     </html>`
 }

@@ -7,9 +7,9 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   locale: DEFAULT_LOCALE,
-  currentRegion: 0,
-  currentLanguage: 0,
-  currentCurrency: 0
+  currentRegion: '',
+  currentLanguage: '',
+  currentCurrency: ''
 })
 
 const languageProviderReducer: Reducer<any> = (

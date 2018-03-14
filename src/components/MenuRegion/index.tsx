@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import findIndex from 'lodash/findIndex'
 import { regionsQuery } from './data'
 import Popover from 'antd/lib/popover'
 import Menu from './Menu'
@@ -21,9 +22,9 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   onChangeLocation: (payload: RegionConfig) => void
-  currentRegion: number
-  currentLanguage: number
-  currentCurrency: number
+  currentRegion: string
+  currentLanguage: string
+  currentCurrency: string
 }
 
 interface State {
@@ -31,8 +32,6 @@ interface State {
   currentLanguageTemp: number | null
   currentCurrencyTemp: number | null
 }
-
-let regionList = [] as RegionType[]
 
 export class MenuRegion extends React.PureComponent<Props, State> {
   static defaultProps: Data
@@ -59,6 +58,16 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     this.setState({ currentCurrencyTemp })
   }
 
+  getCurrentIndex = (list: any[], param: string, key: string): number => {
+    const index = findIndex(list, item => item[key] === param)
+
+    if (index >= 0) {
+      return index
+    }
+
+    return 0
+  }
+
   handleOnClickConfirm = () => {
     const {
       currentRegionTemp,
@@ -70,22 +79,33 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       onChangeLocation,
       currentRegion,
       currentLanguage,
-      currentCurrency
+      currentCurrency,
+      data: { regionsResult }
     } = this.props
-    const region =
-      regionList[currentRegionTemp !== null ? currentRegionTemp : currentRegion]
-    const locale =
-      region.languages[
-        currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
-      ].shortName
-    onChangeLocation({
-      locale,
-      region: currentRegionTemp !== null ? currentRegionTemp : currentRegion,
-      localeIndex:
-        currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage,
-      currency:
-        currentCurrencyTemp !== null ? currentCurrencyTemp : currentCurrency
-    })
+
+    // TODO: Get params and construct the URL.
+    // const locale =
+    //   region.languages[
+    //     currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
+    //   ].shortName
+
+    const regionIndex =
+      currentRegionTemp !== null ? currentRegionTemp : currentRegion
+    const localeIndex =
+      currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
+    const currencyIndex =
+      currentCurrencyTemp !== null ? currentCurrencyTemp : currentCurrency
+
+    window.location.replace('/Europe?lang=DE&currency=₣CHF')
+
+    // onChangeLocation({
+    //   locale,
+    //   region: currentRegionTemp !== null ? currentRegionTemp : currentRegion,
+    //   localeIndex:
+    //     currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage,
+    //   currency:
+    //     currentCurrencyTemp !== null ? currentCurrencyTemp : currentCurrency
+    // })
   }
 
   handleOnVisibleChange = (visible: boolean) => {
@@ -113,11 +133,26 @@ export class MenuRegion extends React.PureComponent<Props, State> {
 
     let region = {} as RegionType
     let currency = {} as Currency
+    let regionIndex = 0
+    let languageIndex = 0
+    let currencyIndex = 0
 
     if (!loading && regionsResult) {
-      regionList = regionsResult
-      region = regionList[currentRegion || 0]
-      currency = region.currencies[currentCurrency || 0]
+      regionIndex = this.getCurrentIndex(regionsResult, currentRegion, 'label')
+      region = regionsResult[regionIndex] || {}
+
+      languageIndex = this.getCurrentIndex(
+        region.languages,
+        currentLanguage,
+        'shortName'
+      )
+
+      currencyIndex = this.getCurrentIndex(
+        region.currencies,
+        currentCurrency,
+        'shortName'
+      )
+      currency = region.currencies[currencyIndex] || {}
     }
 
     return (
@@ -128,19 +163,15 @@ export class MenuRegion extends React.PureComponent<Props, State> {
         onVisibleChange={this.handleOnVisibleChange}
         content={
           <Menu
-            regions={regionList}
+            regions={regionsResult}
             currentRegion={
-              currentRegionTemp !== null ? currentRegionTemp : currentRegion
+              currentRegionTemp !== null ? currentRegionTemp : regionIndex
             }
             currentLanguage={
-              currentLanguageTemp !== null
-                ? currentLanguageTemp
-                : currentLanguage
+              currentLanguageTemp !== null ? currentLanguageTemp : languageIndex
             }
             currentCurrency={
-              currentCurrencyTemp !== null
-                ? currentCurrencyTemp
-                : currentCurrency
+              currentCurrencyTemp !== null ? currentCurrencyTemp : currencyIndex
             }
             onSelectRegion={this.handleOnSelectRegion}
             onSelectLanguage={this.handleOnSelectLanguage}
@@ -152,7 +183,9 @@ export class MenuRegion extends React.PureComponent<Props, State> {
         <Regions>
           <img src={region.icon} />
           <TopText>
-            {loading || error ? null : currency.shortName.toUpperCase()}
+            {loading || error || !currency.shortName
+              ? null
+              : currency.shortName.toUpperCase()}
           </TopText>
         </Regions>
       </Popover>

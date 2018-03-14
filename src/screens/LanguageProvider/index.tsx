@@ -29,12 +29,8 @@ export class LanguageProvider extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: ReducersObject) => {
-  console.log('-----------STATE---------')
-  console.log(state)
-  console.log('---------------------------')
-  return state.languageProvider.toJS()
-}
+const mapStateToProps = ({ languageProvider }: ReducersObject) =>
+  languageProvider.toJS()
 
 const LanguageProviderEnhance = compose(
   connect(mapStateToProps, { ...languageProviderActions })

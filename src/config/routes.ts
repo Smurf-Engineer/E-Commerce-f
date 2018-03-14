@@ -27,7 +27,7 @@ const routes = [
     component: NotFound
   },
   {
-    path: '/',
+    path: '/:region',
     name: 'home',
     exact: true,
     component: Home
