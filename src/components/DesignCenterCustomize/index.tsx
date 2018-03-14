@@ -2,12 +2,10 @@
  * DesignCenterCustomize Component - Created by david on 26/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import messages from './messages'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import { Palette } from '../../types/common'
-import { Container, Text } from './styledComponents'
+import { Container } from './styledComponents'
 
 interface Props {
   colorBlock: number

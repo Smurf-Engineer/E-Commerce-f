@@ -1,7 +1,4 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import homeReducer, { initialState } from './reducer'
-import { Home } from './index'
 import { defaultAction } from './actions'
 
 describe('Home Reducer', () => {

@@ -2,7 +2,6 @@
  * MenuBar Component - Created by david on 07/02/18.
  */
 import * as React from 'react'
-import Modal from 'antd/lib/modal'
 import { FormattedMessage, InjectedIntl } from 'react-intl'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
@@ -15,18 +14,16 @@ import {
   TopRow,
   BottomRow,
   LogoIcon,
-  CartIcon,
-  SearchIcon
+  CartIcon
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
-import search from '../../assets/search.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
-import { RegionConfig, UserType } from '../../types/common'
+import { RegionConfig } from '../../types/common'
 
 interface Props {
   history: any

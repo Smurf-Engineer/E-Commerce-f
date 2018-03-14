@@ -9,12 +9,12 @@ import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { ReducersObject } from '../../store/rootReducer'
-import { RegionConfig, UserType } from '../../types/common'
+import { RegionConfig } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
-import { Container, Header } from './styledComponents'
+import { Header } from './styledComponents'
 import SearchResults from '../SearchResults'
 
 const { Content, Footer } = Layout
@@ -119,7 +119,7 @@ class MainLayout extends React.Component<Props, {}> {
   }
 
   openQuickView = (id: number) => {
-    const { openQuickViewAction, productId } = this.props
+    const { openQuickViewAction } = this.props
     openQuickViewAction(id)
   }
   onCloseModal = () => {

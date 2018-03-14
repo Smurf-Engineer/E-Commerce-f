@@ -1,11 +1,8 @@
 /**
  * DesignCenter Test - Created by david on 23/02/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import designCenterReducer, { initialState } from './reducer'
 import { setCurrentTabAction } from './actions'
-import { DesignCenter } from './index'
 
 describe(' DesignCenter Screen', () => {
   // Test redux actions

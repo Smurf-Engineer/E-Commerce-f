@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by david on 12/02/18.
  */
-import styled, { keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 export const ImageContainer = styled.div`
   user-select: none;
@@ -58,15 +58,6 @@ export const TopText = styled.div`
 export const QuickView = styled.div`
   z-index: 10;
   cursor: pointer;
-`
-
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 `
 
 export const Arrows = styled.div`

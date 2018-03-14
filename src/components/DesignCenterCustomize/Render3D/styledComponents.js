@@ -100,3 +100,16 @@ export const ViewControls = styled.div`
 export const LoadingContainer = styled.div`
   width: 74.6%;
 `
+
+export const ButtonWrapper = styled.div`
+  margin-bottom: 16px;
+  .ant-btn-primary  {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    width: 138px;
+  }
+  .ant-btn-primary:hover {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+`

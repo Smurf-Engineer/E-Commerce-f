@@ -27,16 +27,10 @@ import {
   MenuStyle,
   NoResultsFound
 } from './styledComponents'
-import { Filter } from '../../types/common'
 import downArrowIcon from '../../assets/downarrow.svg'
 
 interface Data extends QueryProps {
   products: ProductType
-}
-
-interface StateProps {
-  orderBy: string
-  filters: Filter[]
 }
 
 interface Props {
@@ -129,13 +123,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         </HeadRow>
         <Content>{loading ? renderLoading : renderThumbnailList}</Content>
         <PaginationRow>
-          <Pagination
-            size="small"
-            current={currentPage}
-            onChange={handleChangePage}
-            total={parseInt(total, 10)}
-            pageSize={limit}
-          />
+          {parseInt(total, 10) > 12 && (
+            <Pagination
+              size="small"
+              current={currentPage}
+              onChange={handleChangePage}
+              total={parseInt(total, 10)}
+              pageSize={limit}
+            />
+          )}
         </PaginationRow>
       </Container>
     )

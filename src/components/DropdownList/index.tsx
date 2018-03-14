@@ -19,7 +19,6 @@ import {
 } from './actions'
 import { Filter, QueryProps } from '../../types/common'
 import {
-  Container,
   Option,
   OptionDropdown,
   overStyle,
@@ -84,7 +83,7 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 
   render() {
-    const { history, dispatch, data, genderOptions, sportOptions } = this.props
+    const { data, genderOptions, sportOptions } = this.props
     const { genders, categories, sports } = data
 
     const genderMenus = genderOptions.map(({ label, visible }, index) => (

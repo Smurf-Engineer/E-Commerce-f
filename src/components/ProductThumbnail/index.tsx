@@ -4,22 +4,12 @@
 import * as React from 'react'
 import {
   Container,
-  Text,
-  ImageContainer,
-  Image,
   Footer,
   Type,
   Description,
   InfoContainer,
   Label,
-  Price,
-  ImageTop,
-  TopContainer,
-  TopText,
-  Arrows,
-  Arrow,
-  CustomizeButton,
-  ButtonContainer
+  Price
 } from './styledComponents'
 import ImageSlide from './ProductSlide'
 import { ImageType, PriceRange } from '../../types/common'
@@ -47,8 +37,6 @@ class ProductThumbnail extends React.Component<Props, {}> {
   handleOnBlur = () => this.setState({ isHovered: false })
 
   handleOnPressBack = () => {
-    const { images } = this.props
-    const keys = Object.keys(images || {})
     let { currentImage } = this.state
     currentImage -= 1
     if (currentImage < 0) {

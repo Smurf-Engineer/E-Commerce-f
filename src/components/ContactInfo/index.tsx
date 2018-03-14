@@ -2,7 +2,6 @@
  * ContactInfo Component - Created by Carlos Cazarez on 07/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import { Container, Title, Text, Phone, Email } from './styledComponents'
 import messages from './messages'
 interface Props {

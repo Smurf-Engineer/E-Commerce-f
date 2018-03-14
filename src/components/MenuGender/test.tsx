@@ -1,12 +1,9 @@
 /**
  * MenuGender Test - Created by david on 09/02/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+
 import reducer, { initialState } from './reducer'
 import { setCategoryAction, setSportAction, setClearAction } from './actions'
-import { Filter } from '../../types/common'
-import { MenuGender } from './index'
 
 describe('MenuGender Reducer', () => {
   it('Return the default state for unknow action', () => {

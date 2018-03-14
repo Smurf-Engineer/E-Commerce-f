@@ -3,15 +3,11 @@
  */
 import * as React from 'react'
 import get from 'lodash/get'
-import { graphql, compose } from 'react-apollo'
-import GoogleLogin from 'react-google-login'
+import { compose } from 'react-apollo'
 import FacebookLogin from 'react-facebook-login'
 import message from 'antd/lib/message'
-import config from '../../config/index'
-import { UserType } from '../../types/common'
 import {
   Container,
-  Text,
   FacebookButtonWrapper,
   GoogleButton,
   GoogleIcon,

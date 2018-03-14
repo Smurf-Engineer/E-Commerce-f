@@ -19,10 +19,11 @@ import {
   ModelText,
   ViewControls,
   ViewButton,
-  LoadingContainer
+  LoadingContainer,
+  ButtonWrapper
 } from './styledComponents'
 import { jerseyTextures, viewPositions } from './config'
-import Slider from '../ZoomSlider'
+import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
 import quickView from '../../../assets/quickview.svg'
@@ -395,7 +396,9 @@ class Render3D extends PureComponent {
             <img src={arrowDown} />
           </ModelType>
         </Dropdown>
-        <Button type="primary">Save</Button>
+        <ButtonWrapper>
+          <Button type="primary">Save</Button>
+        </ButtonWrapper>
         <OptionsController
           {...{ undoEnabled, redoEnabled }}
           onClickUndo={this.handleOnClickUndo}

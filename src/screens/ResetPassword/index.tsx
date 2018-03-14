@@ -3,8 +3,8 @@
  */
 import * as React from 'react'
 import { connect } from 'react-redux'
-import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
-import { graphql, compose } from 'react-apollo'
+import { InjectedIntl, injectIntl } from 'react-intl'
+import { compose } from 'react-apollo'
 import * as queryString from 'query-string'
 import { ReducersObject } from '../../store/rootReducer'
 import message from 'antd/lib/message'
@@ -13,14 +13,9 @@ import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
-  LoginLabel,
   FormContainer,
   StyledInput,
-  RememberMeRow,
   StyledLoginButton,
-  NotAMemberLabel,
-  JoinNowLabel,
-  ForgotPasswordLabel,
   StyledCard
 } from './styledComponents'
 import { setPassword, setConfirmPassword } from './actions'
@@ -84,14 +79,14 @@ export class ResetPassword extends React.Component<Props, {}> {
 
   handlePasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value, id } } = evt
+    const { currentTarget: { value } } = evt
     evt.persist()
     dispatch(setPassword(value))
   }
 
   handleConfirmPasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value, id } } = evt
+    const { currentTarget: { value } } = evt
     evt.persist()
     dispatch(setConfirmPassword(value))
   }

@@ -4,12 +4,12 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
-const props = { locale: 'en' }
 import DesignCenterTabs from './index'
 
 describe('<DesignCenterTabs />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const props = { locale: 'en' }
     ReactDOM.render(
       <IntlProvider {...props}>
         <DesignCenterTabs currentTab={0} onSelectTab={() => {}} />

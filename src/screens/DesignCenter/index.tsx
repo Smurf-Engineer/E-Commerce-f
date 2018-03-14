@@ -2,7 +2,7 @@
  * DesignCenter Screen - Created by david on 23/02/18.
  */
 import * as React from 'react'
-import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import SwipeableViews from 'react-swipeable-views'
@@ -15,10 +15,11 @@ import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
 import ThemeTab from '../../components/DesignCenterTheme'
+import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
-import { Container, Text } from './styledComponents'
-import { Theme, Palette } from '../../types/common'
-import messages from './messages'
+import PreviewTab from '../../components/DesignCenterPreview'
+import { Container } from './styledComponents'
+import { Palette } from '../../types/common'
 
 interface Change {
   type: string
@@ -38,6 +39,7 @@ interface Props extends RouteComponentProps<any> {
   redoChanges: Change[]
   swipingView: boolean
   // Redux Actions
+  clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
@@ -51,9 +53,15 @@ interface Props extends RouteComponentProps<any> {
   designResetAction: () => void
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
+  setThemeAction: (id: number) => void
+  setStyleAction: (style: any) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { clearStoreAction } = this.props
+    clearStoreAction()
+  }
   handleOpenQuickView = () => {
     const { openQuickViewAction: openQuickView } = this.props
     // TODO: This id it's the same of the product
@@ -95,7 +103,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       designResetAction,
       designClearAction,
       undoChanges,
-      redoChanges
+      redoChanges,
+      setThemeAction,
+      setStyleAction
     } = this.props
 
     return (
@@ -113,7 +123,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 0 && <ThemeTab {...{ loadingModel }} />}
+              {currentTab === 0 && (
+                <ThemeTab
+                  {...{ loadingModel }}
+                  onSelectTheme={setThemeAction}
+                />
+              )}
             </div>
             <div key="style">
               <Info
@@ -121,18 +136,18 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <div>Style</div>
+              <StyleTab onSelectStyle={setStyleAction} />
             </div>
             <CustomizeTab
               {...{
                 colorBlock,
                 colors,
-                styleColors,
-                paletteName,
-                palettes,
                 loadingModel,
                 currentTab,
-                swipingView
+                swipingView,
+                styleColors,
+                paletteName,
+                palettes
               }}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
@@ -148,9 +163,17 @@ export class DesignCenter extends React.Component<Props, {}> {
               onClearAction={designClearAction}
               onPressQuickView={this.handleOpenQuickView}
             />
-            <div key="preview">
-              <div>Preview</div>
-            </div>
+            <PreviewTab
+              {...{
+                colors,
+                loadingModel,
+                currentTab,
+                swipingView
+              }}
+              onLoadModel={setLoadingModel}
+              onPressQuickView={this.handleOpenQuickView}
+              onSelectTab={this.handleOnSelectTab}
+            />
           </SwipeableViews>
         </Container>
       </Layout>

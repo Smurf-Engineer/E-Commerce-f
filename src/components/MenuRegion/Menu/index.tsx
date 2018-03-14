@@ -13,8 +13,6 @@ import {
   Text,
   Row,
   Line,
-  LineVertical,
-  Label,
   Option,
   MenuOption,
   menuStyle

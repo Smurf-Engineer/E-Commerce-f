@@ -1,11 +1,9 @@
 /**
  * LanguageProvider Test - Created by david on 20/02/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+
 import languageProviderReducer, { initialState } from './reducer'
 import { changeLocaleAction } from './actions'
-import { LanguageProvider } from './index'
 
 describe(' LanguageProvider Screen', () => {
   // Test redux actions
