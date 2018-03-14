@@ -8,31 +8,43 @@ import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import Breadcrumb from 'antd/lib/breadcrumb'
-import Col from 'antd/lib/col'
-import Row from 'antd/lib/row'
+import Button from 'antd/lib/button'
 import { ReducersObject } from '../../store/rootReducer'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
 import {
   Container,
+  Content,
   Title,
   Subtitle,
   StyledBreadCrumb,
   ImagePreview,
   ProductData,
   AvailablePrices,
-  RenderRow
+  RenderRow,
+  Description,
+  ButtonsRow,
+  StyledButton
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
+import ProductInfo from '../../components/ProductInfo'
+import ImagesGrid from '../../components/ImagesGrid'
 import { Product, QueryProps } from '../../types/common'
 
 const { Item } = Breadcrumb
 
+interface ProductTypes extends Product {
+  intendedUse: string
+  temperatures: string
+  materials: string
+  match: any
+}
+
 interface Data extends QueryProps {
-  product: Product
+  product: ProductTypes
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -40,14 +52,39 @@ interface Props extends RouteComponentProps<any> {
   data: Data
 }
 
-export class ProductDetail extends React.Component<Props, {}> {
+interface StateProps {
+  showDetails: boolean
+  showSpecs: boolean
+}
+
+export class ProductDetail extends React.Component<Props, StateProps> {
+  state = {
+    showDetails: true,
+    showSpecs: true
+  }
+
   render() {
-    const { intl, history, data: { product } } = this.props
-    // const { name, type } = product
-    console.log('PRODUCT ', product)
+    const {
+      intl,
+      history,
+      data: { product },
+      match: { params: { id: productId } }
+    } = this.props
+    const { formatMessage } = intl
+    const { showDetails, showSpecs } = this.state
+
     if (!product) {
       return null
     }
+
+    const {
+      name,
+      type,
+      description,
+      intendedUse,
+      temperatures,
+      materials
+    } = product
 
     const renderPrices = product.priceRange.map((item: any, index: number) => (
       <AvailablePrices key={index}>
@@ -66,21 +103,72 @@ export class ProductDetail extends React.Component<Props, {}> {
       <Layout {...{ history, intl }}>
         {breadCrumb}
         <Container>
-          <ImagePreview>IMAPREV</ImagePreview>
-          <ProductData>
-            <Title>{product.name}</Title>
-            <Subtitle>{product.type.toLocaleUpperCase()}</Subtitle>
-            <RenderRow>{renderPrices}</RenderRow>
-            <Ratings
-              stars={5}
-              starDimension={'15px'}
-              rating={4.5}
-              totalReviews={123}
-            />
-          </ProductData>
+          <Content>
+            <ImagePreview>IMAPREV</ImagePreview>
+            <ProductData>
+              <Title>{name}</Title>
+              <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+              <RenderRow>{renderPrices}</RenderRow>
+              <Ratings
+                stars={5}
+                starDimension={'15px'}
+                rating={4.5}
+                totalReviews={123}
+              />
+              <Description>{description}</Description>
+              <ButtonsRow>
+                <StyledButton>
+                  {formatMessage(messages.customizeLabel)}
+                </StyledButton>
+                <StyledButton>
+                  {formatMessage(messages.buyNowLabel)}
+                </StyledButton>
+              </ButtonsRow>
+              <ProductInfo
+                id="Details"
+                title={formatMessage(messages.detailsLabel)}
+                showContent={showDetails}
+                toggleView={this.toggleProductInfo}
+              >
+                {product.details}
+              </ProductInfo>
+              <ProductInfo
+                id="Specs"
+                title={formatMessage(messages.specsLabel)}
+                showContent={showSpecs}
+                toggleView={this.toggleProductInfo}
+              >
+                <p>
+                  {intendedUse
+                    ? `${formatMessage(
+                        messages.intendedUseLabel
+                      )}: ${intendedUse}`
+                    : null}
+                </p>
+                <p>
+                  {temperatures
+                    ? `${formatMessage(
+                        messages.temperaturesLabel
+                      )}: ${temperatures}`
+                    : null}
+                </p>
+                <p>
+                  {materials
+                    ? `${formatMessage(messages.materialsLabel)}: ${materials}`
+                    : null}
+                </p>
+              </ProductInfo>
+            </ProductData>
+          </Content>
         </Container>
+        <ImagesGrid />
       </Layout>
     )
+  }
+
+  toggleProductInfo = (id: string) => {
+    const stateValue = this.state[`show${id}`]
+    this.setState({ [`show${id}`]: !stateValue } as any)
   }
 }
 

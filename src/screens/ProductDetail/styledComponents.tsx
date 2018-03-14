@@ -3,23 +3,25 @@
  */
 import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
+import Button from 'antd/lib/button'
 
 export const Container = styled.div`
-  display: flex;
-  height: 100vh;
   background-color: #fff;
   padding: 31px 32px 0 32px;
 `
 
+export const Content = styled.div`
+  display: flex;
+`
+
 export const ImagePreview = styled.div`
-  flex: 2;
+  flex: 1;
 `
 
 export const ProductData = styled.div`
-  flex: 2;
+  flex: 1;
 `
 export const Title = styled.div`
-  height: 33px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 24px;
@@ -28,8 +30,6 @@ export const Title = styled.div`
 `
 
 export const Subtitle = styled.div`
-  height: 19px;
-  width: 209px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 14px;
@@ -49,4 +49,32 @@ export const AvailablePrices = styled.div`
 export const RenderRow = styled.div`
   display: flex;
   margin-top: 20px;
+`
+
+export const Description = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 23px;
+`
+
+export const ButtonsRow = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0 25px;
+
+  .ant-btn {
+    color: #e61737;
+    font-family: 'Avenir Next';
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+  }
+`
+
+export const StyledButton = styled(Button)`
+  height: 50px;
+  width: 221px;
+  border: 2px solid #e61737;
+  border-radius: 2px;
 `

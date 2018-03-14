@@ -17,8 +17,8 @@ export const GetProductsByIdQuery = gql`
       design_center
       description
       details
-      materials_info
-      temperature_range
+      materials: materials_info
+      temperatures: temperature_range
       genders {
         gender
       }
@@ -29,7 +29,7 @@ export const GetProductsByIdQuery = gql`
       }
       collections
       isTopProduct
-      intended_use
+      intendedUse: intended_use
       pictures {
         front: front_image
         back: back_image
