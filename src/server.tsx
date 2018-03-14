@@ -34,10 +34,11 @@ server
           </Provider>
         </ApolloProvider>
       )
-      const content = renderToString(jsx)
 
+      const content = renderToString(jsx)
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
+
       const html = <Html {...{ content, state }} />
       const htmlString = renderHtml(styleTags, html)
       res.status(200)
