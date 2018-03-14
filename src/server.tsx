@@ -21,18 +21,7 @@ server
     const location = req.url
     const context = {}
 
-    const locale = {
-      region: 'global',
-      lang: 'es',
-      currency: 'usd'
-    }
-    const preloadStore = {
-      app: {
-        user: locale
-      }
-    }
-
-    const store = configureStore(preloadStore)
+    const store = configureStore()
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
@@ -47,12 +36,11 @@ server
       )
 
       const content = renderToString(jsx)
-      const preloadState = store.getState()
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
 
       const html = <Html {...{ content, state }} />
-      const htmlString = renderHtml(styleTags, html, preloadState)
+      const htmlString = renderHtml(styleTags, html)
       res.status(200)
       res.send(htmlString)
       res.end()

@@ -1,9 +1,7 @@
 import { renderToStaticMarkup } from 'react-dom/server'
-import serialize from 'serialize-javascript'
-import { fromJS } from 'immutable'
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
 
-const renderHtml = (styleTags: any, html: any, preloadState: any) => {
+const renderHtml = (styleTags: any, html: any) => {
   return `
   <!DOCTYPE html>
   <html lang="en">
@@ -32,9 +30,6 @@ const renderHtml = (styleTags: any, html: any, preloadState: any) => {
           }
           ${styleTags}
       </head>\n${renderToStaticMarkup(html)}
-      \n<script>
-            window.__PRELOADED_STATE__ = ${serialize(preloadState)}
-          </script>
     </html>`
 }
 

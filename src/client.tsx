@@ -9,13 +9,7 @@ import App from './screens/App'
 
 const client = configureBrowserClient()
 
-declare global {
-  interface Window {
-    __PRELOADED_STATE__: any
-  }
-}
-
-const store = configureStore(window.__PRELOADED_STATE__)
+const store = configureStore()
 
 ReactDom.hydrate(
   <ApolloProvider {...{ client }}>
