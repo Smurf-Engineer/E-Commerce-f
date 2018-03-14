@@ -21,7 +21,18 @@ server
     const location = req.url
     const context = {}
 
-    const store = configureStore()
+    const locale = {
+      region: 'global',
+      lang: 'es',
+      currency: 'usd'
+    }
+    const preloadStore = {
+      app: {
+        user: locale
+      }
+    }
+
+    const store = configureStore(preloadStore)
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
@@ -34,12 +45,14 @@ server
           </Provider>
         </ApolloProvider>
       )
-      const content = renderToString(jsx)
 
+      const content = renderToString(jsx)
+      const preloadState = store.getState()
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
+
       const html = <Html {...{ content, state }} />
-      const htmlString = renderHtml(styleTags, html)
+      const htmlString = renderHtml(styleTags, html, preloadState)
       res.status(200)
       res.send(htmlString)
       res.end()

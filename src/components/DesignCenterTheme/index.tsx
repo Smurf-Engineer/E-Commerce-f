@@ -17,17 +17,18 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   loadingModel: boolean
+  onSelectTheme: (id: number) => void
 }
 
-export const DesignCenterGrid = ({ data }: Props) => {
+export const DesignCenterGrid = ({ data, onSelectTheme }: Props) => {
   if (data.error) {
     // TODO: Handle error.
     return <div>Error</div>
   }
 
   const themes = data.themes || []
-  const list = themes.map(({ image, name }, index) => (
-    <ThemeItem key={index} {...{ name, image }} />
+  const list = themes.map(({ id, image, name }, index) => (
+    <ThemeItem key={index} {...{ id, name, image }} onClick={onSelectTheme} />
   ))
   return <Row>{list}</Row>
 }

@@ -53,6 +53,8 @@ interface Props extends RouteComponentProps<any> {
   designResetAction: () => void
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
+  setThemeAction: (id: number) => void
+  setStyleAction: (style: any) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -101,7 +103,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       designResetAction,
       designClearAction,
       undoChanges,
-      redoChanges
+      redoChanges,
+      setThemeAction,
+      setStyleAction
     } = this.props
 
     return (
@@ -119,7 +123,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 0 && <ThemeTab {...{ loadingModel }} />}
+              {currentTab === 0 && (
+                <ThemeTab
+                  {...{ loadingModel }}
+                  onSelectTheme={setThemeAction}
+                />
+              )}
             </div>
             <div key="style">
               <Info
@@ -127,7 +136,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <StyleTab />
+              <StyleTab onSelectStyle={setStyleAction} />
             </div>
             <CustomizeTab
               {...{
