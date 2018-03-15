@@ -30,71 +30,27 @@ server
     const context = {}
 
     if (location === '/') {
-      const resultFetch = await fetch(`${config.graphqlUriBase}region`)
-      const json: any = await resultFetch.json()
-      let region: Region = {} as Region
-      switch (json.country_code) {
-        case 'CA':
-          region = {
-            region: 'global',
-            code: 'ca',
-            lang: 'en',
-            currency: 'cad'
-          }
-          break
-        case 'AT':
-          region = {
-            region: 'europe',
-            code: 'eu',
-            lang: 'en',
-            currency: 'eur'
-          }
-          break
-        case 'GB':
-          region = {
-            region: 'europe',
-            code: 'eu',
-            lang: 'en',
-            currency: 'eur'
-          }
-          break
-        case 'DE':
-          region = {
-            region: 'europe',
-            code: 'eu',
-            lang: 'en',
-            currency: 'eur'
-          }
-          break
-        case 'FR':
-          region = {
-            region: 'europe',
-            code: 'eu',
-            lang: 'en',
-            currency: 'eur'
-          }
-          break
-        default:
-          region = {
-            region: 'global',
-            code: 'us',
-            lang: 'en',
-            currency: 'usd'
-          }
-          break
+      try {
+        const resultFetch = await fetch(`${config.graphqlUriBase}region`)
+        const json: Region = await resultFetch.json()
+        res.redirect(
+          `/${json.code}?lang=${json.lang}&currency=${json.currency}`
+        )
+      } catch (error) {
+        const locale = {
+          region: 'global',
+          code: 'us',
+          lang: 'en',
+          currency: 'usd'
+        }
+        res.redirect(
+          `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
+        )
       }
-      res.redirect(
-        `/${region.code}?lang=${region.lang}&currency=${region.currency}`
-      )
       return
     }
-    const locale = {
-      region: 'global',
-      code: 'us',
-      lang: 'en',
-      currency: 'usd'
-    }
-    const store = configureStore(locale)
+
+    const store = configureStore()
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()

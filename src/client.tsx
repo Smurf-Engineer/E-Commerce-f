@@ -3,12 +3,12 @@ import * as ReactDom from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { ApolloProvider } from 'react-apollo'
 import { Provider } from 'react-redux'
-import { configureStoreClient } from './store'
+import configureStore from './store'
 import { configureBrowserClient } from './apollo'
 const client = configureBrowserClient()
 import App from './screens/App'
 
-const store = configureStoreClient()
+const store = configureStore()
 
 ReactDom.hydrate(
   <ApolloProvider {...{ client }}>
