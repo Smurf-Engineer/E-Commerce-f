@@ -1,6 +1,3 @@
-/**
- * ProductDetail Screen - Created by cazarez on 12/03/18.
- */
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
@@ -50,7 +47,7 @@ import ImagesGrid from '../../components/ImagesGrid'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
-import { Product, QueryProps, ImageType } from '../../types/common'
+import { Product, QueryProps } from '../../types/common'
 
 const { Item } = Breadcrumb
 
@@ -59,6 +56,8 @@ interface ProductTypes extends Product {
   temperatures: string
   materials: string
   genders: object[]
+  customizable: boolean
+  yotpoId: string
 }
 
 interface Data extends QueryProps {
@@ -95,6 +94,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   render() {
+    // const { intl, history } = this.props
     const {
       intl,
       history,
@@ -105,39 +105,34 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       openFitInfo,
       data: { product }
     } = this.props
-    const { formatMessage } = intl
+    // const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
 
-    /* if (!product) {
-      console.log('RETURN NULL', product)
-      // return <div>adf</div>
-    } else {*/
-    const name = get(product, 'name', '')
-    const type = get(product, 'type', '')
-    const description = get(product, 'description', '')
-    const intendedUse = get(product, 'intendedUse', '')
-    const temperatures = get(product, 'temperatures', '')
-    const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', '')
-    const customizable = get(product, 'customizable', false)
-    const images = get(product, 'images', {} as ImageType)
-    const yotpoId = get(product, 'yotpoId', '')
-    const reviewsScore = get(product, 'yotpoAverageScore', {})
+    if (!product) {
+      return <div>loading</div>
+    }
+    /*
+    const {
+      name,
+      type,
+      description,
+      intendedUse,
+      temperatures,
+      materials,
+      genders,
+      customizable,
+      images
+    } = product
 
     const maleGender = get(genders, '0.gender', '')
     const femaleGender = get(genders, '1.gender', '')
-    let renderPrices
+    const renderPrices = product.priceRange.map((item: any, index: number) => (
+      <AvailablePrices key={index}>
+        <PriceQuantity price={item.price} quantity={item.quantity} />
+      </AvailablePrices>
+    ))
 
-    console.log('RETURN RENDER', product)
-    if (product) {
-      renderPrices = product.priceRange.map((item: any, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity price={item.price} quantity={item.quantity} />
-        </AvailablePrices>
-      ))
-    }
-
-    /* TODO: hidden for the moment
+   TODO: hidden for the moment
     const breadCrumb = (
       <StyledBreadCrumb>
         <Item>Men</Item>
@@ -145,57 +140,55 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         <Item>Tour</Item>
       </StyledBreadCrumb>
     ) */
-    let productInfo
-    if (product) {
-      productInfo = (
-        <div>
-          <ProductInfo
-            id="Details"
-            title={formatMessage(messages.detailsLabel)}
-            showContent={showDetails}
-            toggleView={this.toggleProductInfo}
+
+    /*  const productInfo = (
+      <div>
+        <ProductInfo
+          id="Details"
+          title={formatMessage(messages.detailsLabel)}
+          showContent={showDetails}
+          toggleView={this.toggleProductInfo}
+        >
+          {product.details}
+        </ProductInfo>
+        <ProductInfo
+          id="Specs"
+          title={formatMessage(messages.specsLabel)}
+          showContent={showSpecs}
+          toggleView={this.toggleProductInfo}
+        >
+          <p>
+            {intendedUse
+              ? `${formatMessage(messages.intendedUseLabel)}: ${intendedUse}`
+              : null}
+          </p>
+          <p>
+            {temperatures
+              ? `${formatMessage(messages.temperaturesLabel)}: ${temperatures}`
+              : null}
+          </p>
+          <p>
+            {materials
+              ? `${formatMessage(messages.materialsLabel)}: ${materials}`
+              : null}
+          </p>
+        </ProductInfo>
+      </div>
+    )
+
+    const availableSizes = sizes.map((size, index) => {
+      return (
+        <div key={index}>
+          <SectionButton
+            id={index.toString()}
+            selected={index === selectedSize}
+            onClick={this.handleSelectedSize}
           >
-            {product.details}
-          </ProductInfo>
-          <ProductInfo
-            id="Specs"
-            title={formatMessage(messages.specsLabel)}
-            showContent={showSpecs}
-            toggleView={this.toggleProductInfo}
-          >
-            <p>
-              {intendedUse
-                ? `${formatMessage(messages.intendedUseLabel)}: ${intendedUse}`
-                : null}
-            </p>
-            <p>
-              {temperatures
-                ? `${formatMessage(
-                    messages.temperaturesLabel
-                  )}: ${temperatures}`
-                : null}
-            </p>
-            <p>
-              {materials
-                ? `${formatMessage(messages.materialsLabel)}: ${materials}`
-                : null}
-            </p>
-          </ProductInfo>
+            {size}
+          </SectionButton>
         </div>
       )
-    }
-
-    const availableSizes = sizes.map((size, index) => (
-      <div key={index}>
-        <SectionButton
-          id={index.toString()}
-          selected={index === selectedSize}
-          onClick={this.handleSelectedSize}
-        >
-          {size}
-        </SectionButton>
-      </div>
-    ))
+    })
 
     const availableFits = fits.map((fit, index) => (
       <div key={index}>
@@ -274,65 +267,61 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         {/* TODO: section hidden for lack of definition 
         <SectionRow style={{ visibility: 'hidden' }}>
           <SectionTitle>{formatMessage(messages.selectionLabel)}</SectionTitle>
-        </SectionRow>*/}
+        </SectionRow>
         {sizeSection}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
-    )
+    )*/
 
     return (
       <Layout {...{ history, intl }}>
         <Container>
           {/* breadCrumb   TODO: hidden for the moment*/}
-          {product && (
-            <Content>
-              <ImagePreview>
-                <ImagesSlider {...{ images }} />
-              </ImagePreview>
-              <ProductData>
-                <TitleRow>
-                  <div>
-                    <Title>{name}</Title>
-                    <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                  </div>
-                  <CompareButton>
-                    {formatMessage(messages.compareLabe)}
-                  </CompareButton>
-                </TitleRow>
-                <PricesRow>{renderPrices}</PricesRow>
-                <Ratings
-                  stars={5}
-                  starDimension={'15px'}
-                  rating={get(reviewsScore, 'averageScore', 0)}
-                  totalReviews={get(reviewsScore, 'total', 0)}
-                />
-                <Description>{description}</Description>
-                <ButtonsRow>
-                  {customizable && (
-                    <StyledButton onClick={this.gotoCustomize}>
-                      {formatMessage(messages.customizeLabel)}
-                    </StyledButton>
-                  )}
-                  <StyledButton onClick={this.toggleBuyNowOptions}>
-                    {formatMessage(messages.buyNowLabel)}
+          <Content>
+            {/* <ImagePreview>
+              <ImagesSlider {...{ images }} />
+            </ImagePreview>
+            <ProductData>
+              <TitleRow>
+                <div>
+                  <Title>{name}</Title>
+                  <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+                </div>
+                <CompareButton>
+                  {formatMessage(messages.compareLabe)}
+                </CompareButton>
+              </TitleRow>
+              <PricesRow>{renderPrices}</PricesRow>
+              <Ratings
+                stars={5}
+                starDimension={'15px'}
+                rating={4.5}
+                totalReviews={123}
+              />
+              <Description>{description}</Description>
+              <ButtonsRow>
+                {customizable && (
+                  <StyledButton onClick={this.gotoCustomize}>
+                    {formatMessage(messages.customizeLabel)}
                   </StyledButton>
-                </ButtonsRow>
-                <AnimateHeight
-                  duration={500}
-                  height={showBuyNowSection ? 'auto' : 0}
-                >
-                  {collectionSelection}
-                </AnimateHeight>
-                {productInfo}
-              </ProductData>
-            </Content>
-          )}
-          <YotpoReviews {...{ yotpoId }} />
+                )}
+                <StyledButton onClick={this.toggleBuyNowOptions}>
+                  {formatMessage(messages.buyNowLabel)}
+                </StyledButton>
+              </ButtonsRow>
+              <AnimateHeight
+                duration={500}
+                height={showBuyNowSection ? 'auto' : 0}
+              >
+                {collectionSelection}
+              </AnimateHeight>
+              {productInfo}
+              </ProductData> */}
+          </Content>
         </Container>
       </Layout>
     )
-    // }
   }
 
   toggleProductInfo = (id: string) => {
@@ -374,13 +363,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = ({
-  productDetail,
-  menuGender,
-  menuSports
-}: ReducersObject) => {
-  return { ...productDetail.toJS(), ...menuGender.toJS(), ...menuSports.toJS() }
-}
+const mapStateToProps = ({ productDetail }: ReducersObject) =>
+  productDetail.toJS()
 
 type OwnProps = {
   productId?: number

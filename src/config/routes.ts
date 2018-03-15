@@ -1,4 +1,5 @@
 /* Routes */
+import MiScreen from '../screens/MiScreen'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
@@ -7,6 +8,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/mi-screen/:id',
+    name: 'miScreen',
+    component: MiScreen
+  },
   {
     path: '/product/:id',
     name: 'productDetail',

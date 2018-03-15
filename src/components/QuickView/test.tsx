@@ -26,7 +26,13 @@ describe('<QuickView />', () => {
         specs: '',
         name: '',
         temperature: '',
-        materials: ''
+        materials: '',
+        customizable: false,
+        yotpoId: '',
+        yotpoAverageScore: {
+          total: 0,
+          averageScore: 0
+        }
       },
       fetchMore: () => {}
     }

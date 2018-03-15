@@ -41,10 +41,6 @@ export const GetProductsByIdQuery = gql`
         price
         quantity
       }
-      yotpoAverageScore {
-        total: total_reviews
-        averageScore: average_score
-      }
     }
   }
 `

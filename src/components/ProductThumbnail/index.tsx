@@ -2,6 +2,9 @@
  * ProductThumbnail Component - Created by david on 12/02/18.
  */
 import * as React from 'react'
+import { withRouter } from 'react-router'
+import { connect } from 'react-redux'
+import { compose } from 'react-apollo'
 import {
   Container,
   Footer,
@@ -22,6 +25,7 @@ interface Props {
   priceRange?: PriceRange[]
   isTopProduct: boolean
   collections?: number
+  history: any
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
 }
@@ -66,6 +70,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
     onPressQuickView(id)
   }
 
+  handlePressThumbnail = () => {
+    const { id, history } = this.props
+    console.log(this.props)
+    history.push(`/product/${id}`)
+  }
+
   render() {
     const {
       type,
@@ -89,6 +99,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
           onPressBack={this.handleOnPressBack}
           onPressNext={this.handleOnPressNext}
           onPressCustomize={this.handleOnPressCustomize}
+          onPressThumbnail={this.handlePressThumbnail}
         />
         <Footer>
           <Type>{type}</Type>
@@ -103,4 +114,4 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 }
 
-export default ProductThumbnail
+export default compose(withRouter)(ProductThumbnail)

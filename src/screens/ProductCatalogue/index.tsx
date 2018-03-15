@@ -53,6 +53,7 @@ interface Props extends RouteComponentProps<any> {
   genderFilters: FilterType
   sportFilters: FilterType
   categoryFilters: FilterType
+  seasonFilters: FilterType
   fitstyleFilters: FilterType
   temperatureFilters: FilterType
   orderBy: string
@@ -80,6 +81,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       sportFilters,
       categoryFilters,
       fitstyleFilters,
+      seasonFilters,
       temperatureFilters,
       orderBy,
       limit,
@@ -124,23 +126,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       }
     )
 
-    const genderOptions = get(filtersGraph, '0.options')
-    const sportOptions = get(filtersGraph, '1.options')
-    const categoryOptions = get(filtersGraph, '2.options')
-    const fitOptions = get(filtersGraph, '3.options')
-    const tempOptions = get(filtersGraph, '4.options')
+    const sportOptions = get(filtersGraph, '0.options', [])
+    const categoryOptions = get(filtersGraph, '1.options', [])
+    const seasonOptions = get(filtersGraph, '2.options', [])
 
-    const genderIndexes = this.getFilterIndexes(genderOptions, genderFilters)
     const sportIndexes = this.getFilterIndexes(sportOptions, sportFilters)
     const categoryIndexes = this.getFilterIndexes(
       categoryOptions,
       categoryFilters
     )
-    const fitIndexes = this.getFilterIndexes(fitOptions, fitstyleFilters)
-    const temperatureIndexes = this.getFilterIndexes(
-      tempOptions,
-      temperatureFilters
-    )
+    const seasonsIndexes = this.getFilterIndexes(seasonOptions, seasonFilters)
 
     return (
       <Layout {...{ history, intl }}>
@@ -154,11 +149,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
           <ResultsColumn>
             <ProductsThumbnailList
               formatMessage={intl.formatMessage}
-              genderFilters={genderIndexes}
               sportFilters={sportIndexes}
               categoryFilters={categoryIndexes}
-              fitFilters={fitIndexes}
-              temperatureFilters={temperatureIndexes}
+              seasonFilters={seasonsIndexes}
               handleChangePage={this.handlechangePage}
               handleOrderBy={this.handleOrderBy}
               {...{
@@ -185,6 +178,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   getFilterIndexes = (filterOptions: FilterOptions[], filters: object) => {
+    console.log('get indexes ', filterOptions)
     let indexes = ''
     filterOptions.forEach((option: FilterOptions, index: number) => {
       if (has(filters, option.name) && filters[option.name]) {

@@ -10,6 +10,7 @@ import {
   SET_SELECTED_SIZE,
   SET_SELECTED_FIT
 } from './constants'
+import { SET_CATEGORY_SELECTED } from '../../components/MenuGender/constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -18,7 +19,8 @@ export const initialState = fromJS({
   showBuyNowSection: false,
   selectedGender: '',
   selectedSize: -1,
-  selectedFit: -1
+  selectedFit: -1,
+  categoryName: ''
 })
 
 const productDetailReducer: Reducer<any> = (state = initialState, action) => {
@@ -35,6 +37,9 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedSize', parseInt(action.selected, 10))
     case SET_SELECTED_FIT:
       return state.set('selectedFit', parseInt(action.selected, 10))
+    case SET_CATEGORY_SELECTED:
+      console.log('CATEGORY ', action)
+      return state.set('categoryName', action.name)
     default:
       return state
   }
