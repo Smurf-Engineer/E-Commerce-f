@@ -64,13 +64,12 @@ server
         </ApolloProvider>
       )
 
-      const preloadState = store.getState()
       const content = renderToString(jsx)
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
 
       const html = <Html {...{ content, state }} />
-      const htmlString = renderHtml(styleTags, html, preloadState)
+      const htmlString = renderHtml(styleTags, html)
       res.status(200)
       res.send(htmlString)
       res.end()
