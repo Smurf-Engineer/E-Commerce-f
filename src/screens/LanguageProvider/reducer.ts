@@ -20,11 +20,10 @@ const languageProviderReducer: Reducer<any> = (
     case CHANGE_LOCALE:
       return state.set('locale', action.locale)
     case SET_REGION_ACTION: {
-      const { payload: { region, localeIndex, locale, currency } } = action
+      const { payload: { region, localeIndex, currency } } = action
       return state.merge({
         currentRegion: region,
         currentLanguage: localeIndex,
-        locale: locale.toLowerCase(),
         currentCurrency: currency
       })
     }

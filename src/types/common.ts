@@ -70,6 +70,7 @@ export interface ProductType {
 export interface Region {
   icon: string
   label: string
+  code: string
   languages: Language[]
   currencies: Currency[]
 }
@@ -83,6 +84,7 @@ export interface Language {
 export interface Currency {
   id: number
   name: string
+  abbreviation: string
   shortName: string
 }
 

@@ -1,5 +1,4 @@
 import { renderToStaticMarkup } from 'react-dom/server'
-import serialize from 'serialize-javascript'
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
 
 const renderHtml = (styleTags: any, html: any, preloadState: any) => {
@@ -31,9 +30,6 @@ const renderHtml = (styleTags: any, html: any, preloadState: any) => {
           }
           ${styleTags}
       </head>\n${renderToStaticMarkup(html)}
-      \n<script>
-            window.__PRELOADED_STATE__ = ${JSON.stringify(preloadState)}
-          </script>
     </html>`
 }
 

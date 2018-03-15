@@ -76,36 +76,49 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     } = this.state
 
     const {
-      onChangeLocation,
       currentRegion,
       currentLanguage,
       currentCurrency,
       data: { regionsResult }
     } = this.props
 
-    // TODO: Get params and construct the URL.
-    // const locale =
-    //   region.languages[
-    //     currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
-    //   ].shortName
+    const regionIndex = this.getCurrentIndex(
+      regionsResult,
+      currentRegion,
+      'code'
+    )
+    const region =
+      regionsResult[
+        currentRegionTemp !== null ? currentRegionTemp : regionIndex
+      ] || {}
 
-    const regionIndex =
-      currentRegionTemp !== null ? currentRegionTemp : currentRegion
-    const localeIndex =
-      currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage
-    const currencyIndex =
-      currentCurrencyTemp !== null ? currentCurrencyTemp : currentCurrency
+    const languageIndex = this.getCurrentIndex(
+      region.languages,
+      currentLanguage,
+      'shortName'
+    )
 
-    window.location.replace('/Europe?lang=DE&currency=₣CHF')
+    const language =
+      region.languages[
+        currentLanguageTemp !== null ? currentLanguageTemp : languageIndex
+      ] || {}
 
-    // onChangeLocation({
-    //   locale,
-    //   region: currentRegionTemp !== null ? currentRegionTemp : currentRegion,
-    //   localeIndex:
-    //     currentLanguageTemp !== null ? currentLanguageTemp : currentLanguage,
-    //   currency:
-    //     currentCurrencyTemp !== null ? currentCurrencyTemp : currentCurrency
-    // })
+    const currencyIndex = this.getCurrentIndex(
+      region.currencies,
+      currentCurrency,
+      'abbreviation'
+    )
+    const currency =
+      region.currencies[
+        currentCurrencyTemp !== null ? currentCurrencyTemp : currencyIndex
+      ] || {}
+
+    const { code: regionCode } = region
+    const { shortName: langCode } = language
+    const { abbreviation: currencyCode } = currency
+    const url = `/${regionCode}?lang=${langCode}&currency=${currencyCode}`
+
+    window.location.replace(url)
   }
 
   handleOnVisibleChange = (visible: boolean) => {
@@ -138,7 +151,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     let currencyIndex = 0
 
     if (!loading && regionsResult) {
-      regionIndex = this.getCurrentIndex(regionsResult, currentRegion, 'label')
+      regionIndex = this.getCurrentIndex(regionsResult, currentRegion, 'code')
       region = regionsResult[regionIndex] || {}
 
       languageIndex = this.getCurrentIndex(
@@ -150,7 +163,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       currencyIndex = this.getCurrentIndex(
         region.currencies,
         currentCurrency,
-        'shortName'
+        'abbreviation'
       )
       currency = region.currencies[currencyIndex] || {}
     }

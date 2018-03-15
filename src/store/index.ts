@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import { createLogger } from 'redux-logger'
-import { fromJS } from 'immutable'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from './rootReducer'
 
