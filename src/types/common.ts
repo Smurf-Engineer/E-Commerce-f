@@ -32,6 +32,13 @@ export interface Filter {
   name: string
 }
 
+export interface FitStyle {
+  id: number
+  name: string
+  info: string
+  image: string
+}
+
 export type ImageType = {
   front: string
   back: string
@@ -60,11 +67,21 @@ export interface Product {
   details: string
   specs: string
   name: string
+  fitStyles: FitStyle[]
+  genders: Filter[]
 }
 
 export interface ProductType {
   fullCount: string
   products: Product[]
+}
+
+export interface BodyChartItem {
+  size: String
+  waist: String
+  hips: String
+  chest: String
+  inseam: String
 }
 
 export interface Region {
@@ -108,4 +125,9 @@ export interface UserType {
   name: string
   lastName: string
   token: string
+}
+
+export interface AntColumns {
+  title: string
+  dataIndex: string
 }
