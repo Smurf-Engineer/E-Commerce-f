@@ -2,8 +2,6 @@
  * ProductInfo Component - Created by cazarez on 13/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import messages from './messages'
 import AnimateHeight from 'react-animate-height'
 import {
   Container,

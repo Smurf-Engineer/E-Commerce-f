@@ -14,7 +14,7 @@ export const GetProductsByIdQuery = gql`
       }
       gender_id
       retail_version
-      design_center
+      customizable: design_center
       description
       details
       materials: materials_info

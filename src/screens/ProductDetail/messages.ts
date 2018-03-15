@@ -36,5 +36,33 @@ export default defineMessages({
   materialsLabel: {
     id: 'screens.ProductsDetail.materialsLabel',
     defaultMessage: 'MATERIALS'
+  },
+  compareLabe: {
+    id: 'screens.ProductDetail.compareLabel',
+    defaultMessage: 'COMPARE'
+  },
+  genderLabel: {
+    id: 'screens.ProductDetail.genderLabel',
+    defaultMessage: 'Gender'
+  },
+  selectionLabel: {
+    id: 'screens.ProductDetail.selectionLabel',
+    defaultMessage: 'Selection'
+  },
+  sizeLabel: {
+    id: 'screens.ProductDetail.sizeLabel',
+    defaultMessage: 'Size'
+  },
+  fitLabel: {
+    id: 'screens.PRoductDetail.fitLabel',
+    defaultMessage: 'Fit'
+  },
+  getFittedLabel: {
+    id: 'screens.ProductDetails.getFittedLabel',
+    defaultMessage: 'Get fitted'
+  },
+  addToCartButtonLabel: {
+    id: 'screens.ProductDetail.addToCartButtonLabel',
+    defaultMessage: 'Add to Cart'
   }
 })

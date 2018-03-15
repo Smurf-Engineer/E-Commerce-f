@@ -1,11 +1,8 @@
 /**
  * ProductDetail Test - Created by cazarez on 12/03/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import productDetailReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { ProductDetail } from './index'
 
 describe(' ProductDetail Screen', () => {
   // Test redux actions

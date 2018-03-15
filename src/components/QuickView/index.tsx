@@ -6,10 +6,10 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
 import QuickViewSlider from '../QuickViewSlider'
-import { openQuickViewAction } from '../../components/MainLayout/actions'
-
+import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../Ratings'
 import {
+  AvailablePrices,
   Container,
   CloseIcon,
   Title,

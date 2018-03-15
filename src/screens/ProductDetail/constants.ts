@@ -4,3 +4,8 @@
 const namespace = 'src/ProductDetail'
 
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
+export const OPEN_FITINFO = `${namespace}/OPEN_FITINFO`
+export const SHOW_BUYNOW_OPTIONS = `${namespace}/SHOW_BUYNOW_OPTIONS`
+export const SET_SELECTED_GENDER = `${namespace}/SET_SELECTED_GENDER`
+export const SET_SELECTED_SIZE = `${namespace}/SET_SELECTED_SIZE`
+export const SET_SELECTED_FIT = `${namespace}/SET_SELECTED_FIT`
