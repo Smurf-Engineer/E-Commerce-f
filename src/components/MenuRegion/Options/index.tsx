@@ -2,7 +2,6 @@
  * Options Component - Created by david on 20/02/18.
  */
 import * as React from 'react'
-import range from 'lodash/range'
 import { Language } from '../../../types/common'
 import { Container, Label, Row, Text, LineVertical } from './styledComponents'
 

@@ -8,7 +8,7 @@ import Spin from 'antd/lib/spin'
 import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
 import { productsQuery } from './data'
-import { Product, ProductType, QueryProps, Filter } from '../../types/common'
+import { ProductType, QueryProps, Filter } from '../../types/common'
 
 interface Data extends QueryProps {
   products?: ProductType

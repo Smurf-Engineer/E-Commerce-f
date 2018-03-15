@@ -5,7 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import Tab from './Tab'
-import { Container, Text, Divider, Row, View, Tabs } from './styledComponents'
+import { Container, Divider, Row, View, Tabs } from './styledComponents'
 
 interface Props {
   currentTab: number

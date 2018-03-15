@@ -39,6 +39,7 @@
     "no-debugger": true,
     "no-duplicate-variable": true,
     "no-eval": true,
+    "no-unused-variable": true,
     "no-shadowed-variable": true,
     "no-string-literal": true,
     "no-switch-case-fall-through": true,

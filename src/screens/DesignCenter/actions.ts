@@ -3,6 +3,7 @@
  */
 import {
   DEFAULT_ACTION,
+  CLEAR_STORE_ACTION,
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
@@ -14,13 +15,19 @@ import {
   DESIGN_REDO_ACTION,
   DESIGN_RESET_ACTION,
   DESIGN_CLEAR_ACTION,
-  SET_SWIPING_TAB_ACTION
+  SET_SWIPING_TAB_ACTION,
+  SET_THEME_SELECTED_ACTION,
+  SET_STYLE_SELECTED_ACTION
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
   someValue
+})
+
+export const clearStoreAction = (): AnyAction => ({
+  type: CLEAR_STORE_ACTION
 })
 
 export const setCurrentTabAction = (index: number): AnyAction => ({
@@ -77,4 +84,15 @@ export const designClearAction = (): AnyAction => ({
 export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
   type: SET_SWIPING_TAB_ACTION,
   isSwiping
+})
+
+export const setThemeAction = (id: number): AnyAction => ({
+  type: SET_THEME_SELECTED_ACTION,
+  id
+})
+
+// TODO: Temp any
+export const setStyleAction = (colors: any): AnyAction => ({
+  type: SET_STYLE_SELECTED_ACTION,
+  colors
 })

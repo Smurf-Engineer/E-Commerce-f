@@ -3,13 +3,12 @@
  */
 import * as React from 'react'
 import { List } from 'immutable'
-import { FormattedMessage } from 'react-intl'
+
 import PaletteCard from '../PaletteCard'
-import messages from './messages'
+
 import { Palette } from '../../../types/common'
 import {
   Container,
-  Text,
   Button,
   Input,
   Padding,
@@ -88,12 +87,7 @@ class MyPalette extends React.PureComponent<Props> {
   }
 
   render() {
-    const {
-      onSelectPalette,
-      onChangePaletteName,
-      palettes,
-      paletteName
-    } = this.props
+    const { onSelectPalette, palettes, paletteName } = this.props
     const paletteList = palettes.map(({ name, colors }, id) => (
       <PaletteCard
         key={id}

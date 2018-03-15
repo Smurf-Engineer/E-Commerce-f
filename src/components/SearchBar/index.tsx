@@ -2,8 +2,7 @@
  * SearchBar Component - Created by cazarez on 13/02/18.
  */
 import * as React from 'react'
-import { Container, Text, SearchInput } from './styledComponents'
-import { AnyAction } from '../../types/common'
+import { Container, SearchInput } from './styledComponents'
 import messages from './messages'
 import debounce from 'lodash/debounce'
 
@@ -33,7 +32,7 @@ class SearchBar extends React.Component<Props, StateProps> {
     }
   }
   render() {
-    const { search, onHeader, formatMessage } = this.props
+    const { onHeader, formatMessage } = this.props
     const { width, searchValue } = this.state
     return (
       <Container>
@@ -54,7 +53,6 @@ class SearchBar extends React.Component<Props, StateProps> {
 
   showInput = () => {
     const { onHeader } = this.props
-    const { width } = this.state
     if (onHeader) {
       this.setState({ width: 'auto' })
     }
@@ -73,7 +71,6 @@ class SearchBar extends React.Component<Props, StateProps> {
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { currentTarget: { value } } = evt
-    const { search } = this.props
 
     this.setState({ searchValue: value.trim() }, () => {
       this.raiseSearchWhenUserStopsTyping()

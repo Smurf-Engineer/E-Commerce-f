@@ -5,44 +5,26 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
-import keys from 'lodash/keys'
-import forEach from 'lodash/forEach'
-import compact from 'lodash/compact'
-import get from 'lodash/get'
 import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
 import Radio from 'antd/lib/radio'
-import Table from 'antd/lib/table'
 import FitInfoTable from '../FitInfoTable'
 import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
-import {
-  ImageType,
-  QueryProps,
-  Filter,
-  Product,
-  BodyChartItem,
-  FitStyle
-} from '../../types/common'
+import { QueryProps, Product } from '../../types/common'
 import messages from './messages'
 import {
   Container,
-  Text,
-  CloseIcon,
   StyledRow,
   StyledLoginButton,
   StyledLabel,
   TitleLabel,
-  CenterDiv,
   radioGroupStyle,
-  tableStyle,
-  ImageDiv,
   StyledFooterLabel,
   ImageContainer,
   ImageStyle
 } from './styledComponents'
-import closeIcon from '../../assets/cancel-button.svg'
 import * as fitActions from './actions'
 
 const RadioButton = Radio.Button
@@ -100,10 +82,8 @@ class FitInfo extends React.Component<Props, {}> {
       data,
       gender,
       metric,
-      fitStyle,
       fitStyleDescription,
-      fitStyleImage,
-      productId
+      fitStyleImage
     } = this.props
     const { product } = data
 
@@ -198,8 +178,6 @@ type OwnProps = {
 }
 
 const mapStateToProps = ({ fitInfo }: ReducersObject) => fitInfo.toJS()
-
-const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const FitInfoEnhance = compose(
   connect(mapStateToProps, { ...fitActions }),

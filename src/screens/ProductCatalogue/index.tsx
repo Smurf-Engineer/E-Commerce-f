@@ -10,7 +10,7 @@ import UpperCase from 'lodash/upperCase'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
-import Breadcrumb from 'antd/lib/breadcrumb'
+
 import { ClickParam } from 'antd/lib/menu'
 import { ReducersObject } from '../../store/rootReducer'
 import Layout from '../../components/MainLayout'
@@ -23,9 +23,7 @@ import {
   Container,
   FiltersColumn,
   FiltersTitle,
-  ResultsColumn,
-  StyledBreadcrumb,
-  MenuStyle
+  ResultsColumn
 } from './styledComponents'
 import { QueryProps } from '../../types/common'
 import { GetFiltersQuery } from './data'
@@ -180,7 +178,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   handlechangePage = (pageNumber: number) => {
-    const { setSkipValue, limit, currentPage } = this.props
+    const { setSkipValue, limit } = this.props
     const skip = (pageNumber - 1) * limit
 
     setSkipValue(skip, pageNumber)
@@ -211,8 +209,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   handleSelect = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { setFilterAction, genderFilters, setSelectedFilters } = this.props
-    const { target: { name, value, checked, id } } = evt
+    const { setSelectedFilters } = this.props
+    const { target: { name, value } } = evt
 
     const noSpacesValue = value.replace(/\s/g, '')
     const filterObject = {

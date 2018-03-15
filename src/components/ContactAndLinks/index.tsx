@@ -2,13 +2,13 @@
  * ContactAndLinks Component - Created by cazarez on 07/02/18.
  */
 import * as React from 'react'
-import { InjectedIntl } from 'react-intl'
+
 import ContactInfo from '../ContactInfo'
 import CustomerSupport from '../CustomerSupport'
 import DesignSupport from '../DesignSupport'
 import AboutUs from '../AboutUs'
 import Teams from '../Teams'
-import { Container, Text, ComplianceLogos, StyledImg } from './styledComponents'
+import { Container, ComplianceLogos, StyledImg } from './styledComponents'
 import BSCILogo from '../../assets/BSCI_logo.svg'
 import CaliPropLogo from '../../assets/californiaprop65.svg'
 

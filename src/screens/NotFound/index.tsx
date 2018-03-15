@@ -13,7 +13,6 @@ interface Props {
 
 export class NotFound extends React.Component<Props, {}> {
   render() {
-    const { history } = this.props
     return (
       <Container>
         <Text>

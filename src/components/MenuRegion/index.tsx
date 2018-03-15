@@ -3,20 +3,16 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
-import gql from 'graphql-tag'
 import { regionsQuery } from './data'
 import Popover from 'antd/lib/popover'
 import Menu from './Menu'
-import caFlag from '../../assets/CA.svg'
-import euFlag from '../../assets/EU.svg'
-import usFlag from '../../assets/US.svg'
 import {
   QueryProps,
   RegionConfig,
   Region as RegionType,
   Currency
 } from '../../types/common'
-import { Container, TopText, Regions, overStyle } from './styledComponents'
+import { TopText, Regions, overStyle } from './styledComponents'
 
 interface Data extends QueryProps {
   regionsResult: RegionType[]

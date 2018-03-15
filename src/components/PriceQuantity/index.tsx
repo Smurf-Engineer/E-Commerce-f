@@ -2,7 +2,7 @@
  * PriceQuantity Component - Created by cazarez on 08/02/18.
  */
 import * as React from 'react'
-import { Container, Text, PriceLabel, QuantityLabel } from './styledComponents'
+import { Container, PriceLabel, QuantityLabel } from './styledComponents'
 
 interface Props {
   price: number

@@ -1,13 +1,10 @@
 /**
  * FitInfo Test - Created by gustavomedina on 08/03/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import fitInfoReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import FitInfo from './index'
 
-describe('<FitInfo />', () => {
+describe('Fit Info', () => {
   it('Return the default state for unknow action', () => {
     let state = fitInfoReducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)

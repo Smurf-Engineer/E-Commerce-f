@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import {
   Container,
-  Text,
   DetailsContent,
   TestimonialsContent,
   CarouselContent,
@@ -17,7 +16,6 @@ import {
   CardQuote,
   TextQuote
 } from './styledComponents'
-interface Props {}
 
 const settings = {
   dots: false,

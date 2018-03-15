@@ -2,16 +2,13 @@
  * FitInfoTable Component - Created by gustavomedina on 12/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
-import { connect } from 'react-redux'
 import keys from 'lodash/keys'
 import forEach from 'lodash/forEach'
 import compact from 'lodash/compact'
 import { QueryProps, BodyChartItem } from '../../types/common'
 import Table from 'antd/lib/table'
-import messages from './messages'
-import { Container, Text, tableStyle } from './styledComponents'
+import { Container, tableStyle } from './styledComponents'
 import { categoriesQuery } from './data'
 
 interface Data extends QueryProps {
@@ -27,7 +24,7 @@ interface Props {
 
 export class FitInfoTable extends React.Component<Props, {}> {
   render() {
-    const { data, metric } = this.props
+    const { data } = this.props
     const { bodyChart } = data
 
     let chartcolumns: any = []

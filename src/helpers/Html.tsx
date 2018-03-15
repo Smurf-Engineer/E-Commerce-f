@@ -1,5 +1,4 @@
 import React from 'react'
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
 
 interface Props {
   content: any

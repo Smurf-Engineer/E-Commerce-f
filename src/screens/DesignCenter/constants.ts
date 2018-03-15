@@ -4,6 +4,7 @@
 const namespace = 'src/DesignCenter'
 
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
+export const CLEAR_STORE_ACTION = `${namespace}/CLEAR_STORE_ACTION`
 export const SET_CURRENT_TAB_ACTION = `${namespace}/SET_CURRENT_TAB_ACTION`
 export const SET_COLOR_BLOCK_ACTION = `${namespace}/SET_COLOR_BLOCK_ACTION`
 export const SET_COLOR_ACTION = `${namespace}/SET_COLOR_ACTION`
@@ -16,3 +17,5 @@ export const DESIGN_REDO_ACTION = `${namespace}/DESIGN_REDO_ACTION`
 export const DESIGN_RESET_ACTION = `${namespace}/DESIGN_RESET_ACTION`
 export const DESIGN_CLEAR_ACTION = `${namespace}/DESIGN_CLEAR_ACTION`
 export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`
+export const SET_THEME_SELECTED_ACTION = `${namespace}/SET_THEME_SELECTED_ACTION`
+export const SET_STYLE_SELECTED_ACTION = `${namespace}/SET_STYLE_SELECTED_ACTION`

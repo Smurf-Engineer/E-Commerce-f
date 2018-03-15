@@ -2,8 +2,6 @@
  * OptionsController Component - Created by david on 05/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import messages from './messages'
 import undoIcon from '../../../assets/Undo.svg'
 import redoIcon from '../../../assets/Redo.svg'
 import resetIcon from '../../../assets/Reset.svg'

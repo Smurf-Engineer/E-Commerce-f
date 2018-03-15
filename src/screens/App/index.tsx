@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import routes from '../../config/routes'
-import { Header } from './styledComponents'
 import LanguageProvider from '../../screens/LanguageProvider'
 import { translationMessages } from '../../locale'
 import './theme.ant'
