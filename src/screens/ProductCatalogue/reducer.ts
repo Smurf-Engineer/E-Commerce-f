@@ -40,7 +40,6 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ [action.key]: action.filter })
     case SET_SELECTED_FILTERS:
       const { filter: { type, name } } = action
-      console.log('gender filters reducer ', type, name)
       return state.updateIn([type, name], (value: any) => !!!value)
     case ORDERBY_SELECTED:
       return state.set('orderBy', action.orderBy)

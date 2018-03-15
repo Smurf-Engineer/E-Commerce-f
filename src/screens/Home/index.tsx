@@ -4,6 +4,8 @@
 
 import * as React from 'react'
 import { connect } from 'react-redux'
+import queryString from 'query-string'
+import isEmpty from 'lodash/isEmpty'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
@@ -25,6 +27,7 @@ import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
+import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 interface Props extends RouteComponentProps<any> {
@@ -46,6 +49,21 @@ export class Home extends React.Component<Props, {}> {
     openResults: true
   }
   private stepInput: any
+
+  componentDidMount() {
+    const { dispatch, match: { params }, location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    if (params && params.region && !isEmpty(queryParams)) {
+      dispatch(
+        setRegionAction({
+          region: params.region,
+          localeIndex: queryParams.lang,
+          locale: queryParams.lang,
+          currency: queryParams.currency
+        })
+      )
+    }
+  }
 
   handleOnQuickView = (id: number) => {
     const { dispatch } = this.props

@@ -87,6 +87,7 @@ export interface BodyChartItem {
 export interface Region {
   icon: string
   label: string
+  code: string
   languages: Language[]
   currencies: Currency[]
 }
@@ -100,14 +101,15 @@ export interface Language {
 export interface Currency {
   id: number
   name: string
+  abbreviation: string
   shortName: string
 }
 
 export interface RegionConfig {
-  region: number
-  localeIndex: number
+  region: number | string
+  localeIndex: number | string
   locale: string
-  currency: number
+  currency: number | string
 }
 
 export interface Theme {
