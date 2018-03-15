@@ -4,16 +4,20 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
-import DesignCenterStyle from './index'
+import { DesignCenterStyle } from './index'
 
 describe('<DesignCenterStyle />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
     const testFunc = () => {}
+    const data = {
+      fetchMore: () => {},
+      styles: []
+    }
     ReactDOM.render(
       <IntlProvider {...props}>
-        <DesignCenterStyle onSelectStyle={testFunc} />
+        <DesignCenterStyle {...{ data }} onSelectStyle={testFunc} />
       </IntlProvider>,
       div
     )
