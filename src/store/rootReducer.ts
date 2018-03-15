@@ -14,6 +14,7 @@ import menuSports from '../components/MenuSports/reducer'
 import layout from '../components/MainLayout/reducer'
 import menu from '../components/DropdownList/reducer'
 import forgot from '../components/ForgotPassword/reducer'
+import fitInfo from '../components/FitInfo/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
@@ -29,6 +30,7 @@ export interface ReducersObject {
   menu: any
   forgot: any
   quickView: any
+  fitInfo: any
 }
 
 const appInitialState = fromJS({
@@ -55,6 +57,7 @@ const rootReducer = combineReducers({
   menuGender,
   menuSports,
   layout,
+  fitInfo,
   app: appReducer
 })
 
