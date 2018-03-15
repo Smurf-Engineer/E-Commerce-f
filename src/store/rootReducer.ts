@@ -3,7 +3,6 @@
  */
 import { fromJS } from 'immutable'
 import { combineReducers } from 'redux'
-// import { combineReducers } from 'redux-immutable'
 import productCatalog from '../screens/ProductCatalogue/reducer'
 import designCenter from '../screens/DesignCenter/reducer'
 import languageProvider from '../screens/LanguageProvider/reducer'
