@@ -32,13 +32,7 @@ interface Props {
 
 export class ResetPassword extends React.Component<Props, {}> {
   handleChangePassword = async (evt: React.MouseEvent<EventTarget>) => {
-    const {
-      changeResetPassword,
-      intl,
-      history,
-      password,
-      confirmPassword
-    } = this.props
+    const { changeResetPassword, intl, password, confirmPassword } = this.props
 
     if (!password || !confirmPassword) {
       this.changeMessage(
@@ -65,7 +59,7 @@ export class ResetPassword extends React.Component<Props, {}> {
 
         if (data) {
           this.changeMessage(data.message, true)
-          history.replace('/')
+          window.location.replace('/')
         }
       } catch (error) {
         const errorMessage = error.graphQLErrors.map((x: any) => x.message)
