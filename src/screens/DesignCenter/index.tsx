@@ -70,7 +70,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   handleOnPressBack = () => {
     const { history } = this.props
-    history.replace('/')
+    history.goBack()
   }
 
   handleOnSelectTab = (index: number) => {

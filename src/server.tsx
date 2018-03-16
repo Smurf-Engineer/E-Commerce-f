@@ -33,7 +33,6 @@ server
       try {
         const resultFetch = await fetch(`${config.graphqlUriBase}region`)
         const json: Region = await resultFetch.json()
-        console.log('Success---->', json)
         res.redirect(
           `/${json.code}?lang=${json.lang}&currency=${json.currency}`
         )
@@ -44,7 +43,6 @@ server
           lang: 'en',
           currency: 'usd'
         }
-        console.log('Failure---->', locale)
         res.redirect(
           `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
         )

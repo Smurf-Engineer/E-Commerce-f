@@ -54,7 +54,7 @@ class MenuBar extends React.Component<Props, StateProps> {
 
   handleOnGoHome = () => {
     const { history } = this.props
-    history.replace('/')
+    history.goBack()
   }
 
   render() {
