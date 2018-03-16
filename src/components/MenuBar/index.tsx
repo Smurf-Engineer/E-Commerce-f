@@ -52,10 +52,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     openForgotPassword: false
   }
 
-  handleOnGoHome = () => {
-    const { history } = this.props
-    history.goBack()
-  }
+  handleOnGoHome = () => window.location.replace('/')
 
   render() {
     const { openForgotPassword } = this.state

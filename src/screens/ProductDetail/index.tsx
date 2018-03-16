@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
+import queryString from 'query-string'
 import get from 'lodash/get'
 // TODO: uncoment when breadcrumb gets implemented
 // import Breadcrumb from 'antd/lib/breadcrumb'
@@ -117,7 +118,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const genders = get(product, 'genders', '')
     const customizable = get(product, 'customizable', false)
     const images = get(product, 'images', {} as ImageType)
-    const yotpoId = get(product, 'yotpoId', '')
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
     const maleGender = get(genders, '0.gender', '')
@@ -276,6 +276,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </BuyNowOptions>
     )
 
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+
+    const yotpoId = queryParams.yotpoId || ''
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -389,16 +394,18 @@ const mapStateToProps = ({
 type OwnProps = {
   productId?: number
   match?: any
+  location?: any
 }
 
 const ProductDetailEnhance = compose(
   injectIntl,
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
-      const { match: { params: { id } } } = ownprops
+      const { location: { search } } = ownprops
+      const queryParams = queryString.parse(search)
       return {
         variables: {
-          id: id ? id : null
+          id: queryParams ? queryParams.id : null
         }
       }
     }

@@ -52,7 +52,16 @@ export const ProductHorizontalList = ({
 
   const list = products.products.map(
     (
-      { id, type, images, description, priceRange, isTopProduct, collections },
+      {
+        id,
+        type,
+        images,
+        description,
+        priceRange,
+        isTopProduct,
+        collections,
+        yotpoId
+      },
       key
     ) => (
       <ProductThumbnail
@@ -66,7 +75,8 @@ export const ProductHorizontalList = ({
           description,
           priceRange,
           isTopProduct,
-          collections
+          collections,
+          yotpoId
         }}
       />
     )

@@ -16,6 +16,7 @@ describe('<ProductThumbnail />', () => {
           isTopProduct={false}
           onPressCustomize={() => {}}
           onPressQuickView={() => {}}
+          yotpoId="fondo"
         />
       </MemoryRouter>,
       div
