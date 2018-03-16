@@ -5,6 +5,7 @@ export const GetProductsQuery = gql`
     $gender: String
     $category: String
     $sport: String
+    $season: String
     $limit: Int
     $order: String
     $offset: Int
@@ -13,6 +14,7 @@ export const GetProductsQuery = gql`
       gender: $gender
       category: $category
       sport: $sport
+      season: $season
       limit: $limit
       order: $order
       offset: $offset

@@ -32,6 +32,7 @@ interface Props {
   onPressNext: () => void
   onPressQuickView: () => void
   onPressCustomize: () => void
+  onPressThumbnail: () => void
 }
 
 const imagesOrder = ['front', 'left', 'right', 'back']
@@ -46,10 +47,15 @@ const ProductSlide = ({
   onPressCustomize,
   onPressQuickView,
   onPressBack,
-  onPressNext
+  onPressNext,
+  onPressThumbnail
 }: Props) => {
   const imagePages = imagesOrder.map((key, index) => {
-    return <Page key={index}>{!!images && <Image src={images[key]} />}</Page>
+    return (
+      <Page key={index}>
+        {!!images && <Image src={images[key]} onClick={onPressThumbnail} />}
+      </Page>
+    )
   })
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>

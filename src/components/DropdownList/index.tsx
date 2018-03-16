@@ -49,7 +49,7 @@ interface Props {
 export class DropdownList extends React.PureComponent<Props> {
   handleOnSeeAll = (type: string) => {
     const { history } = this.props
-    history.push('product-catalogue')
+    history.push('/product-catalogue')
   }
 
   handleOnCustomize = (id: string) => {

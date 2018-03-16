@@ -13,6 +13,10 @@ export const QuickViewQuery = gql`
       details
       materials: materials_info
       temperature: temperature_range
+      priceRange {
+        quantity
+        price
+      }
       images: pictures {
         id
         front: front_image
