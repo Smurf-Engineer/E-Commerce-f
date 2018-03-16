@@ -64,5 +64,9 @@ export default defineMessages({
   addToCartButtonLabel: {
     id: 'screens.ProductDetail.addToCartButtonLabel',
     defaultMessage: 'Add to Cart'
+  },
+  jakrooWidgetTitle: {
+    id: 'screens.YotpoReviews.jakrooWidgetTitle',
+    defaultMessage: 'Inspiration from our community. #Jakroo'
   }
 })

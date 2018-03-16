@@ -2,13 +2,7 @@
  * YotpoReviews Component - Created by cazarez on 14/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import {
-  Container,
-  YotpoContainer,
-  JakrooWidgetsTitle
-} from './styledComponents'
-import messages from './messages'
+import { Container, YotpoContainer } from './styledComponents'
 
 interface Props {
   yotpoId: string
@@ -22,9 +16,6 @@ class YotpoReviews extends React.Component<Props, {}> {
     const { yotpoId } = this.props
     return (
       <Container>
-        <JakrooWidgetsTitle>
-          <FormattedMessage {...messages.jakrooWidgetTitle} />
-        </JakrooWidgetsTitle>
         <YotpoContainer
           dangerouslySetInnerHTML={{
             __html: `<div class="yotpo yotpo-main-widget"

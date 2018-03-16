@@ -157,6 +157,9 @@ export const GetFittedLabel = styled.div`
   font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const QuestionSpan = styled.span`
@@ -189,3 +192,14 @@ export const AddToCartButton = styled(Button)`
     border-color: #4a90e2;
   }
 `
+export const JakrooWidgetsTitle = styled.div`
+  height: 25px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25px;
+  margin-left: 34px;
+`
+
+export const YotpoImageSlider = styled.div``
