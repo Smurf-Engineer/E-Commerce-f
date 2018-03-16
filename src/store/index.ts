@@ -10,7 +10,7 @@ const loggerMiddleware = createLogger({
   predicate: () => process.env.NODE_ENV === 'development'
 })
 
-const configureStore = () => {
+const configureStore = (preloadStore = {}) => {
   const store = createStore(
     rootReducer,
     {},

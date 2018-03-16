@@ -32,7 +32,21 @@ describe('<QuickView />', () => {
         yotpoAverageScore: {
           total: 0,
           averageScore: 0
-        }
+        },
+        fitStyles: [
+          {
+            id: 0,
+            name: '',
+            info: '',
+            image: ''
+          }
+        ],
+        genders: [
+          {
+            id: 0,
+            name: ''
+          }
+        ]
       },
       fetchMore: () => {}
     }

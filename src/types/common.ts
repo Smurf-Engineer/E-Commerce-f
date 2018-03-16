@@ -32,6 +32,13 @@ export interface Filter {
   name: string
 }
 
+export interface FitStyle {
+  id: number
+  name: string
+  info: string
+  image: string
+}
+
 export type ImageType = {
   front: string
   back: string
@@ -63,6 +70,8 @@ export interface Product {
   customizable: boolean
   yotpoId: string
   yotpoAverageScore: ProductReviews
+  fitStyles: FitStyle[]
+  genders: Filter[]
 }
 
 export interface ProductReviews {
@@ -75,9 +84,18 @@ export interface ProductType {
   products: Product[]
 }
 
+export interface BodyChartItem {
+  size: String
+  waist: String
+  hips: String
+  chest: String
+  inseam: String
+}
+
 export interface Region {
   icon: string
   label: string
+  code: string
   languages: Language[]
   currencies: Currency[]
 }
@@ -91,20 +109,34 @@ export interface Language {
 export interface Currency {
   id: number
   name: string
+  abbreviation: string
   shortName: string
 }
 
 export interface RegionConfig {
-  region: number
-  localeIndex: number
+  region: number | string
+  localeIndex: number | string
   locale: string
-  currency: number
+  currency: number | string
 }
 
 export interface Theme {
   id: number
   name: string
   image: string
+}
+
+export interface ColorBlock {
+  image: string
+  color: string
+  colorDesc: string
+}
+
+export interface Style {
+  id: number
+  name: string
+  image: string
+  colors: ColorBlock[]
 }
 
 export interface Palette {
@@ -116,4 +148,9 @@ export interface UserType {
   name: string
   lastName: string
   token: string
+}
+
+export interface AntColumns {
+  title: string
+  dataIndex: string
 }

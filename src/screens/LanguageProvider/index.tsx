@@ -10,17 +10,18 @@ import * as languageProviderActions from './actions'
 
 interface Props {
   locale: string
+  currentLanguage: string
   messages: any
 }
 
 export class LanguageProvider extends React.Component<Props, {}> {
   render() {
-    const { locale, messages } = this.props
+    const { currentLanguage, messages } = this.props
     return (
       <IntlProvider
         locale="en"
-        key={locale}
-        messages={messages[locale]}
+        key={currentLanguage}
+        messages={messages[currentLanguage]}
         textComponent="div"
       >
         {React.Children.only(this.props.children)}

@@ -2,30 +2,107 @@
  * FitInfo Component - Created by gustavomedina on 08/03/18.
  */
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
+import { compose, graphql } from 'react-apollo'
+import { connect } from 'react-redux'
+import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
 import Radio from 'antd/lib/radio'
+import FitInfoTable from '../FitInfoTable'
+import { ReducersObject } from '../../store/rootReducer'
+import { categoriesQuery } from './data'
+import { QueryProps, Product } from '../../types/common'
+import messages from './messages'
 import {
   Container,
-  CloseIcon,
   StyledRow,
   StyledLoginButton,
   StyledLabel,
   TitleLabel,
-  radioGroupStyle
+  radioGroupStyle,
+  StyledFooterLabel,
+  ImageContainer,
+  ImageStyle
 } from './styledComponents'
-import closeIcon from '../../assets/cancel-button.svg'
+import * as fitActions from './actions'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
+interface Data extends QueryProps {
+  product: Product
+}
+
 interface Props {
+  requestClose: () => void
+  setGender: (param: number) => void
+  setFitStyle: (param: number) => void
+  setFitStyleDescription: (param: string) => void
+  setFitStyleImage: (param: string) => void
+  setMetric: (param: string) => void
+  dispatch: any
   open: boolean
+  data: Data
+  productId: number
+  gender: number
+  fitStyle: number
+  fitStyleDescription: string
+  fitStyleImage: string
+  metric: string
 }
 
 class FitInfo extends React.Component<Props, {}> {
+  onGenderChange = async (e: any) => {
+    const { setGender } = this.props
+    setGender(e.target.value)
+  }
+
+  onFitChange = (e: any) => {
+    const {
+      data: { product },
+      setFitStyle,
+      setFitStyleDescription,
+      setFitStyleImage
+    } = this.props
+    const selectedStyle = find(product.fitStyles, { id: e.target.value })
+    setFitStyle(e.target.value)
+    setFitStyleDescription(selectedStyle ? selectedStyle.info : '')
+    setFitStyleImage(selectedStyle ? selectedStyle.image : '')
+  }
+
+  onMetricChange = (e: any) => {
+    const { setMetric } = this.props
+    setMetric(e.target.value)
+  }
+
   render() {
-    const { open } = this.props
+    const {
+      open,
+      data,
+      gender,
+      metric,
+      fitStyleDescription,
+      fitStyleImage
+    } = this.props
+    const { product } = data
+
+    let genderList
+    let fitStylesList
+
+    if (!data.loading && !data.error) {
+      genderList = product.genders.map(({ id, name }, index) => (
+        <RadioButton key={id} value={id}>
+          {name}
+        </RadioButton>
+      ))
+
+      fitStylesList = product.fitStyles.map((fit, index) => (
+        <RadioButton key={fit.id} value={fit.id}>
+          {fit.name}
+        </RadioButton>
+      ))
+    }
 
     return (
       <Container>
@@ -36,33 +113,80 @@ class FitInfo extends React.Component<Props, {}> {
           maskClosable={true}
           width={'60%'}
           destroyOnClose={true}
+          onCancel={this.handleCancel}
         >
-          <CloseIcon src={closeIcon} />
           <StyledLabel>
-            Don’t want to look at charts? We’ll get you the right sizing.
+            <FormattedMessage {...messages.getFittedLabel} />
           </StyledLabel>
-          <StyledLoginButton type="danger">GET FITTED</StyledLoginButton>
+          <StyledLoginButton type="danger">
+            <FormattedMessage {...messages.getFittedButton} />
+          </StyledLoginButton>
           <StyledRow>
             <Col span={12}>
-              <TitleLabel>SIZING CHART</TitleLabel>
-              <RadioGroup defaultValue="a" size="large" style={radioGroupStyle}>
-                <RadioButton value="a">Men</RadioButton>
-                <RadioButton value="b">Women</RadioButton>
-              </RadioGroup>
+              <TitleLabel>
+                <FormattedMessage {...messages.sizeChart} />
+              </TitleLabel>
+              <StyledRow>
+                <Col span={14}>
+                  <RadioGroup defaultValue="1" onChange={this.onGenderChange}>
+                    {genderList}
+                  </RadioGroup>
+                </Col>
+                <Col span={6}>
+                  <RadioGroup defaultValue="1" onChange={this.onMetricChange}>
+                    <RadioButton value="IN">
+                      <FormattedMessage {...messages.inches} />
+                    </RadioButton>
+                    <RadioButton value="CM">
+                      <FormattedMessage {...messages.centimeters} />
+                    </RadioButton>
+                  </RadioGroup>
+                </Col>
+              </StyledRow>
+              <FitInfoTable bodyChartId={1} metric={metric} genderId={gender} />
             </Col>
             <Col span={12}>
-              <TitleLabel>FIT STYLES</TitleLabel>
-              <RadioGroup defaultValue="a" size="large" style={radioGroupStyle}>
-                <RadioButton value="a">Slim</RadioButton>
-                <RadioButton value="b">Standard</RadioButton>
-                <RadioButton value="c">Relaxed</RadioButton>
+              <TitleLabel>
+                <FormattedMessage {...messages.fitStyles} />
+              </TitleLabel>
+              <RadioGroup
+                defaultValue="1"
+                style={radioGroupStyle}
+                onChange={this.onFitChange}
+              >
+                {fitStylesList}
               </RadioGroup>
+              <ImageContainer>
+                <img style={ImageStyle} src={fitStyleImage} />
+              </ImageContainer>
+              <StyledFooterLabel>{fitStyleDescription}</StyledFooterLabel>
             </Col>
           </StyledRow>
         </Modal>
       </Container>
     )
   }
+
+  handleCancel = () => {
+    const { requestClose } = this.props
+    requestClose()
+  }
 }
 
-export default FitInfo
+type OwnProps = {
+  productId?: number
+}
+
+const mapStateToProps = ({ fitInfo }: ReducersObject) => fitInfo.toJS()
+
+const FitInfoEnhance = compose(
+  connect(mapStateToProps, { ...fitActions }),
+  graphql<Data>(categoriesQuery, {
+    options: ({ productId }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      variables: { id: productId }
+    })
+  })
+)(FitInfo)
+
+export default FitInfoEnhance

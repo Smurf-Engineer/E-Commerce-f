@@ -6,10 +6,12 @@ export const regionsQuery = gql`
       id
       label: name
       icon
+      code
       currencies {
         id
         name
         shortName: short_name
+        abbreviation
       }
       languages {
         id

@@ -104,7 +104,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
           <Type>{type}</Type>
           <Description>{description}</Description>
           <InfoContainer>
-            <Label>{`${collections} Collection`}</Label>
+            <Label>{`${collections || 0} Collections`}</Label>
             <Price>{price}</Price>
           </InfoContainer>
         </Footer>

@@ -3,40 +3,21 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { graphql, compose } from 'react-apollo'
+import withLoading from '../WithLoadingData'
+import { QueryProps } from '../../types/common'
+import { stylesQuery } from './data'
 import messages from './messages'
 import StyleItem from '../Theme'
-import { Theme } from '../../types/common'
+import { Style } from '../../types/common'
 import { Container, Title, Slider, Row, List } from './styledComponents'
 
-// TODO: Dummie data
-const styles: Theme[] = [
-  {
-    id: 0,
-    name: 'Name of Style',
-    image:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Patriotic_arm%20forces.svg'
-  },
-  {
-    id: 1,
-    name: 'Name of Style',
-    image:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/AnimalPrint.svg'
-  },
-  {
-    id: 2,
-    name: 'Name of Style',
-    image:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Geometric.svg'
-  },
-  {
-    id: 2,
-    name: 'Name of Style',
-    image:
-      'https://storage.googleapis.com/jakroo-storage/Assets_themes/Geometric.svg'
-  }
-]
+interface Data extends QueryProps {
+  styles?: Style[]
+}
 
 interface Props {
+  data: Data
   onSelectStyle: (style: any) => void
 }
 
@@ -46,20 +27,27 @@ const marks = {
   3: 'Extreme'
 }
 
-class DesignCenterStyle extends React.PureComponent<Props, {}> {
-  handleOnSelectStyle = (id: number) => {
-    const { onSelectStyle } = this.props
-    onSelectStyle(id)
+export class DesignCenterStyle extends React.PureComponent<Props, {}> {
+  handleOnSelectStyle = (id: number, index: any) => {
+    const { onSelectStyle, data: { styles } } = this.props
+    const colors = styles ? styles[index].colors : {}
+    onSelectStyle(colors)
   }
 
   render() {
-    const list = styles.map(({ id, image, name }, index) => (
+    const { data: { styles, error } } = this.props
+    if (error) {
+      return <div>Error</div>
+    }
+    const stylesItems = styles || []
+    const list = stylesItems.map(({ id, image, name }, index) => (
       <StyleItem
         key={index}
-        {...{ id, name, image }}
+        {...{ index, id, name, image }}
         onClick={this.handleOnSelectStyle}
       />
     ))
+
     return (
       <Container>
         <Title>
@@ -74,4 +62,9 @@ class DesignCenterStyle extends React.PureComponent<Props, {}> {
   }
 }
 
-export default DesignCenterStyle
+const DesignCenterStyleWithData = compose(
+  graphql<Data>(stylesQuery),
+  withLoading
+)(DesignCenterStyle)
+
+export default DesignCenterStyleWithData
