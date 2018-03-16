@@ -8,6 +8,7 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
+// TODO: uncoment when breadcrumb gets implemented
 // import Breadcrumb from 'antd/lib/breadcrumb'
 import AnimateHeight from 'react-animate-height'
 import { ReducersObject } from '../../store/rootReducer'
@@ -45,12 +46,12 @@ import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
-// import ImagesGrid from '../../components/ImagesGrid'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import { Product, QueryProps, ImageType } from '../../types/common'
 
+// TODO: uncomment when breadcrumb implemented
 // const { Item } = Breadcrumb
 
 interface ProductTypes extends Product {
@@ -106,10 +107,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
-    /* if (!product) {
-      console.log('RETURN NULL', product)
-      // return <div>adf</div>
-    } else {*/
+
     const productId = get(product, 'id')
     const name = get(product, 'name', '')
     const type = get(product, 'type', '')
@@ -339,7 +337,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         />
       </Layout>
     )
-    // }
   }
 
   toggleProductInfo = (id: string) => {

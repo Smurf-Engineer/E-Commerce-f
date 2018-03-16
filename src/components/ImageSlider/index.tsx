@@ -34,7 +34,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
-    const ThumbnailsArary = [
+    const ThumbnailsArray = [
       images.front,
       images.right,
       images.back,
@@ -42,7 +42,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
     ]
     // ########
 
-    const thumbnails = ThumbnailsArary.map((thumbnail, i) => (
+    const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
       <ThumbnailContainer key={i}>
         <ThumbnailImg
           id={i.toString()}
@@ -53,7 +53,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
       </ThumbnailContainer>
     ))
 
-    const selectedImages = ThumbnailsArary.map((thumbnail, i) => (
+    const selectedImages = ThumbnailsArray.map((thumbnail, i) => (
       <SelectedImage key={i}>
         <img src={thumbnail} />
       </SelectedImage>

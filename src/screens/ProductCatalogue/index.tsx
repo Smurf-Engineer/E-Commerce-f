@@ -175,7 +175,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   getFilterIndexes = (filterOptions: FilterOptions[], filters: object) => {
-    console.log('get indexes ', filterOptions)
     let indexes = ''
     filterOptions.forEach((option: FilterOptions, index: number) => {
       if (has(filters, option.name) && filters[option.name]) {

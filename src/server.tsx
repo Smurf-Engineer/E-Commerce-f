@@ -22,12 +22,16 @@ interface Region {
 }
 
 server
+  .set('trust proxy', true)
+  .enable('trust proxy')
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
     const client = configureServerClient()
     const location = req.url
     const context = {}
+
+    console.log('2', req.connection.remoteAddress)
 
     if (location === '/') {
       try {
