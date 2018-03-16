@@ -45,7 +45,7 @@ import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 // import ImagesGrid from '../../components/ImagesGrid'
-// import FitInfo from '../../components/FitInfo'
+import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import { Product, QueryProps, ImageType } from '../../types/common'
@@ -56,7 +56,6 @@ interface ProductTypes extends Product {
   intendedUse: string
   temperatures: string
   materials: string
-  genders: object[]
 }
 
 interface Data extends QueryProps {
@@ -65,6 +64,7 @@ interface Data extends QueryProps {
 }
 
 interface Props extends RouteComponentProps<any> {
+  productId?: number
   intl: InjectedIntl
   data: Data
   showBuyNowSection: boolean
@@ -100,16 +100,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedSize,
       selectedGender,
       selectedFit,
-      // openFitInfo,
+      openFitInfo,
       data: { product }
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
-
     /* if (!product) {
       console.log('RETURN NULL', product)
       // return <div>adf</div>
     } else {*/
+    const productId = get(product, 'id')
     const name = get(product, 'name', '')
     const type = get(product, 'type', '')
     const description = get(product, 'description', '')
@@ -126,7 +126,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const femaleGender = get(genders, '1.gender', '')
     let renderPrices
 
-    console.log('RETURN RENDER', product)
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
         <AvailablePrices key={index}>
@@ -328,6 +327,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           )}
           <YotpoReviews {...{ yotpoId }} />
         </Container>
+        <FitInfo
+          open={openFitInfo}
+          requestClose={this.closeFitInfoModal}
+          productId={productId}
+        />
       </Layout>
     )
     // }
@@ -369,6 +373,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   gotoCustomize = () => {
     const { history } = this.props
     history.push('/design-center')
+  }
+
+  closeFitInfoModal = () => {
+    const { openFitInfoAction } = this.props
+    openFitInfoAction(false)
   }
 }
 
