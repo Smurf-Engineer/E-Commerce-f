@@ -19,6 +19,7 @@ class YotpoReviews extends React.Component<Props, {}> {
     render: true
   }
   render() {
+    const { yotpoId } = this.props
     return (
       <Container>
         <JakrooWidgetsTitle>
@@ -27,7 +28,7 @@ class YotpoReviews extends React.Component<Props, {}> {
         <YotpoContainer
           dangerouslySetInnerHTML={{
             __html: `<div class="yotpo yotpo-main-widget"
-            data-product-id="fondo"
+            data-product-id="${yotpoId}"
             data-price="Product Price"
             data-currency="Price Currency"
             data-name="Product Title"
