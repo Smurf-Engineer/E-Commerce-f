@@ -6,13 +6,14 @@ import { Container, Text, Image } from './styledComponents'
 
 interface Props {
   id: number
+  index?: number
   name: string
   image: string
-  onClick: (id: number) => void
+  onClick: (id: number, index?: number) => void
 }
 
-const Theme = ({ onClick, id, name, image }: Props) => {
-  const handleOnClick = () => onClick(id)
+const Theme = ({ index, onClick, id, name, image }: Props) => {
+  const handleOnClick = () => onClick(id, index)
   return (
     <Container onClick={handleOnClick}>
       <Image src={image} />

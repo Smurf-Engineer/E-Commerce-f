@@ -118,6 +118,19 @@ export interface Theme {
   image: string
 }
 
+export interface ColorBlock {
+  image: string
+  color: string
+  colorDesc: string
+}
+
+export interface Style {
+  id: number
+  name: string
+  image: string
+  colors: ColorBlock[]
+}
+
 export interface Palette {
   name: string
   colors: string[]
