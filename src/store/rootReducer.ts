@@ -3,7 +3,6 @@
  */
 import { fromJS } from 'immutable'
 import { combineReducers } from 'redux'
-import miScreen from '../screens/MiScreen/reducer'
 import productDetail from '../screens/ProductDetail/reducer'
 import productCatalog from '../screens/ProductCatalogue/reducer'
 import designCenter from '../screens/DesignCenter/reducer'
@@ -18,7 +17,6 @@ import forgot from '../components/ForgotPassword/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
-  miScreen: any,
   productDetail: any
   product: any
   productCatalog: any
@@ -49,7 +47,6 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
 }
 
 const rootReducer = combineReducers({
-  miScreen,
   productDetail,
   productCatalog,
   designCenter,

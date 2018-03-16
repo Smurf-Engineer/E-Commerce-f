@@ -7,9 +7,8 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
-import Breadcrumb from 'antd/lib/breadcrumb'
+// import Breadcrumb from 'antd/lib/breadcrumb'
 import AnimateHeight from 'react-animate-height'
-import SwipeableViews from 'react-swipeable-views'
 import { ReducersObject } from '../../store/rootReducer'
 import * as productDetailActions from './actions'
 import messages from './messages'
@@ -20,7 +19,6 @@ import {
   TitleRow,
   Title,
   Subtitle,
-  StyledBreadCrumb,
   StyledInputNumber,
   ImagePreview,
   ProductData,
@@ -46,13 +44,13 @@ import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
-import ImagesGrid from '../../components/ImagesGrid'
-import FitInfo from '../../components/FitInfo'
+// import ImagesGrid from '../../components/ImagesGrid'
+// import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import { Product, QueryProps, ImageType } from '../../types/common'
 
-const { Item } = Breadcrumb
+// const { Item } = Breadcrumb
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -102,7 +100,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedSize,
       selectedGender,
       selectedFit,
-      openFitInfo,
+      // openFitInfo,
       data: { product }
     } = this.props
     const { formatMessage } = intl

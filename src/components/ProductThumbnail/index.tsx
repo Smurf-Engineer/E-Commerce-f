@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import { withRouter } from 'react-router'
-import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import {
   Container,

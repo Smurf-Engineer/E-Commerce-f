@@ -2,12 +2,9 @@
  * ImageSlider Component - Created by cazarez on 14/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import SwipeableViews from 'react-swipeable-views'
-import messages from './messages'
 import {
   Container,
-  Text,
   SwipeContainer,
   ThumbnailContainer,
   ImageThumbnails,

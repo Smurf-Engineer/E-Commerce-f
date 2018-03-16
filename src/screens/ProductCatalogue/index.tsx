@@ -77,12 +77,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const {
       history,
       intl,
-      genderFilters,
       sportFilters,
       categoryFilters,
-      fitstyleFilters,
       seasonFilters,
-      temperatureFilters,
       orderBy,
       limit,
       skip,

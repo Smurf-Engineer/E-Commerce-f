@@ -2,8 +2,6 @@
  * YotpoReviews Component - Created by cazarez on 14/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import messages from './messages'
 import { Container, YotpoContainer } from './styledComponents'
 
 interface Props {
@@ -23,7 +21,6 @@ class YotpoReviews extends React.Component<Props, {}> {
   }
 
   render() {
-    const { yotpoId } = this.props
     console.log('RENDER YOTPO REVIEWS')
     return (
       <Container>
