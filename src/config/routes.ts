@@ -8,7 +8,7 @@ import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
   {
-    path: '/product/:id',
+    path: '/product',
     name: 'productDetail',
     component: ProductDetail
   },

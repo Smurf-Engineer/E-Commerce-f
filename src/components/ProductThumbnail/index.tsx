@@ -72,7 +72,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
 
   handlePressThumbnail = () => {
     const { id, yotpoId } = this.props
-    window.location.replace(`/product/${id}?yotpoId=${yotpoId}`)
+    window.location.replace(`/product?id=${id}&yotpoId=${yotpoId}`)
   }
 
   render() {

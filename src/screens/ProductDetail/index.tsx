@@ -394,16 +394,18 @@ const mapStateToProps = ({
 type OwnProps = {
   productId?: number
   match?: any
+  location?: any
 }
 
 const ProductDetailEnhance = compose(
   injectIntl,
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
-      const { match: { params: { id } } } = ownprops
+      const { location: { search } } = ownprops
+      const queryParams = queryString.parse(search)
       return {
         variables: {
-          id: id ? id : null
+          id: queryParams ? queryParams.id : null
         }
       }
     }
