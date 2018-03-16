@@ -24,6 +24,7 @@ interface Props {
   priceRange?: PriceRange[]
   isTopProduct: boolean
   collections?: number
+  yotpoId: string
   history: any
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
@@ -70,9 +71,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { id, history } = this.props
-    console.log(this.props)
-    history.push(`/product/${id}`)
+    const { id, yotpoId } = this.props
+    window.location.replace(`/product/${id}?yotpoId=${yotpoId}`)
   }
 
   render() {

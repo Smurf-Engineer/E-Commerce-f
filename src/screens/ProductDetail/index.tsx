@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
+import queryString from 'query-string'
 import get from 'lodash/get'
 // import Breadcrumb from 'antd/lib/breadcrumb'
 import AnimateHeight from 'react-animate-height'
@@ -119,7 +120,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const genders = get(product, 'genders', '')
     const customizable = get(product, 'customizable', false)
     const images = get(product, 'images', {} as ImageType)
-    const yotpoId = get(product, 'yotpoId', '')
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
     const maleGender = get(genders, '0.gender', '')
@@ -277,6 +277,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         {addToCartRow}
       </BuyNowOptions>
     )
+
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+
+    const yotpoId = queryParams.yotpoId || ''
 
     return (
       <Layout {...{ history, intl }}>

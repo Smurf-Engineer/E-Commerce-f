@@ -21,10 +21,8 @@ class YotpoReviews extends React.Component<Props, {}> {
   }
 
   render() {
-    console.log('RENDER YOTPO REVIEWS')
     return (
       <Container>
-        <div>YOTPO REVIEWS</div>
         <YotpoContainer
           dangerouslySetInnerHTML={{
             __html: `<div class="yotpo yotpo-main-widget"
