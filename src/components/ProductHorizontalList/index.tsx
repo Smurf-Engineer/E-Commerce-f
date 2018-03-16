@@ -45,9 +45,6 @@ export const ProductHorizontalList = ({
 
   // TODO: Empty error
   if (data.error) {
-    console.log('---------------------------')
-    console.log(data.error)
-    console.log('---------------------------')
     return <div>Error...</div>
   }
 
