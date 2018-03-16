@@ -42,9 +42,10 @@ export const PriceQuantityRow = styled(Row)`
   display: flex;
   margin-top: 20px;
   margin-bottom: 20px;
+  flex: wrap;
 `
 export const AvailablePrices = styled.div`
-  margin-right: 26px;
+  margin-right: 10px;
 `
 
 export const ProductInfContainer = styled.div`

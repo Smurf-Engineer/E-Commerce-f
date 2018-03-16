@@ -67,8 +67,16 @@ export interface Product {
   details: string
   specs: string
   name: string
+  customizable: boolean
+  yotpoId: string
+  yotpoAverageScore: ProductReviews
   fitStyles: FitStyle[]
   genders: Filter[]
+}
+
+export interface ProductReviews {
+  total: number
+  averageScore: number
 }
 
 export interface ProductType {

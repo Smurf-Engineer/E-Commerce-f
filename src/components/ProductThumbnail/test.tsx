@@ -4,17 +4,21 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import ProductThumbnail from './index'
+import { MemoryRouter } from 'react-router-dom'
 
 describe('<ProductThumbnail />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <ProductThumbnail
-        id={0}
-        isTopProduct={false}
-        onPressCustomize={() => {}}
-        onPressQuickView={() => {}}
-      />,
+      <MemoryRouter>
+        <ProductThumbnail
+          id={0}
+          isTopProduct={false}
+          onPressCustomize={() => {}}
+          onPressQuickView={() => {}}
+          yotpoId="fondo"
+        />
+      </MemoryRouter>,
       div
     )
   })

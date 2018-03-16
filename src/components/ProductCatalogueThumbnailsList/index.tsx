@@ -152,6 +152,7 @@ type OwnProps = {
   genderFilters?: string
   sportFilters?: string
   categoryFilters?: string
+  seasonFilters?: string
   fitFilters?: string
   temperatureFilters?: string
   limit?: number
@@ -165,6 +166,7 @@ const ThumbnailsListEnhance = compose(
       genderFilters,
       categoryFilters,
       sportFilters,
+      seasonFilters,
       limit,
       orderBy,
       skip
@@ -174,6 +176,7 @@ const ThumbnailsListEnhance = compose(
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,
+          season: seasonFilters ? seasonFilters : null,
           limit: limit ? limit : null,
           order: orderBy ? orderBy : null,
           offset: skip ? skip : null

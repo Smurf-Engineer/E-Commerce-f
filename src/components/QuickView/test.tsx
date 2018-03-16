@@ -27,6 +27,12 @@ describe('<QuickView />', () => {
         name: '',
         temperature: '',
         materials: '',
+        customizable: false,
+        yotpoId: '',
+        yotpoAverageScore: {
+          total: 0,
+          averageScore: 0
+        },
         fitStyles: [
           {
             id: 0,

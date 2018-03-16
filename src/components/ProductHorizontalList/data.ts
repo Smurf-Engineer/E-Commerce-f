@@ -11,6 +11,7 @@ export const productsQuery = gql`
       fullCount
       products {
         id
+        yotpoId: yotpo_id
         type: name
         priceRange {
           price

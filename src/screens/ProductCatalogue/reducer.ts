@@ -22,6 +22,7 @@ export const initialState = fromJS({
   genderFilters: {},
   sportFilters: {},
   categoryFilters: {},
+  seasonFilters: {},
   fitFilters: {},
   TemperatureFilters: {}
 })

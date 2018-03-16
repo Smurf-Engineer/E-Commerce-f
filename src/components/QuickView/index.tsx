@@ -6,9 +6,10 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
 import QuickViewSlider from '../QuickViewSlider'
-
+import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../Ratings'
 import {
+  AvailablePrices,
   Container,
   CloseIcon,
   Title,
@@ -70,12 +71,15 @@ export class QuickView extends React.Component<Props, State> {
     const { open, handleClose, data, data: { product } } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
 
-    // TODO: UNCOMMENT CODE WHEN GRAPHQL QUERY RETURNS THE QUENTITY PRICE RANGE
-    /*const renderPrices = product.quantityPrice.map((item: any, index: number) => (
+    if (!product) {
+      return null
+    }
+
+    const renderPrices = product.priceRange.map((item: any, index: number) => (
       <AvailablePrices key={index}>
         <PriceQuantity price={item.price} quantity={item.quantity} />
       </AvailablePrices>
-    ))*/
+    ))
     const imageSlider = data.loading ? (
       <Loading>
         <Spin />
@@ -109,13 +113,13 @@ export class QuickView extends React.Component<Props, State> {
             <Col span={12}>
               {imageSlider}
               <FullDetails>
-                <div>Full Details</div>
+                <div onClick={this.gotoProductPage}>Full Details</div>
                 <ArrowRight />
               </FullDetails>
             </Col>
             <Col span={12}>
               <Title>{title}</Title>
-              <PriceQuantityRow>{}</PriceQuantityRow>
+              <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
               <Ratings
                 stars={5}
                 starDimension={'15px'}
@@ -197,8 +201,15 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   gotoCustomize = () => {
-    const { history } = this.props
+    const { history, handleClose } = this.props
+    handleClose()
     history.push('/design-center')
+  }
+
+  gotoProductPage = () => {
+    const { history, productId, handleClose } = this.props
+    handleClose()
+    history.push(`/product/${productId}`)
   }
 }
 
