@@ -71,7 +71,6 @@ class ProductThumbnail extends React.Component<Props, {}> {
 
   handlePressThumbnail = () => {
     const { id, history } = this.props
-    console.log(this.props)
     history.push(`/product/${id}`)
   }
 
