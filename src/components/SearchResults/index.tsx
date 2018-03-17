@@ -53,6 +53,7 @@ export class SearchResults extends React.Component<Props, {}> {
             key={key}
             onPressCustomize={this.gotoCustomize}
             id={product.id}
+            yotpoId={product.yotpoId}
             description={product.description}
             collections={product.collections}
             images={product.images}
