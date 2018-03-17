@@ -23,7 +23,6 @@ interface Region {
 
 server
   .set('trust proxy', true)
-  .enable('trust proxy')
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
   .get('/*', async (req: express.Request, res: express.Response) => {
@@ -31,15 +30,11 @@ server
     const location = req.url
     const context = {}
 
-    console.log('------------------')
-    console.log('req.ip', req.ip)
-    console.log('remoteAddress', req.connection.remoteAddress)
-    console.log('X-Real-IP', req.headers['X-Real-IP'])
-    console.log('X-Forwarded-For', req.headers['X-Forwarded-For'])
-
     if (location === '/') {
       try {
-        const resultFetch = await fetch(`${config.graphqlUriBase}region`)
+        const resultFetch = await fetch(
+          `${config.graphqlUriBase}region?ip=${req.ip}`
+        )
         const json: Region = await resultFetch.json()
         res.redirect(
           `/${json.code}?lang=${json.lang}&currency=${json.currency}`
