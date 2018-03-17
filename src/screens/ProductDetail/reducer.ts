@@ -35,7 +35,7 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_SIZE:
       return state.set('selectedSize', parseInt(action.selected, 10))
     case SET_SELECTED_FIT:
-      return state.set('categoryName', action.name)
+      return state.set('selectedFit', parseInt(action.selected, 10))
     default:
       return state
   }

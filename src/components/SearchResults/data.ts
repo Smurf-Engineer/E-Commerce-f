@@ -4,6 +4,7 @@ export const searchResultsQuery = gql`
   query SearchProduct($search: String!) {
     productSearch(text: $search) {
       id
+      yotpoId: yotpo_id
       type: name
       description: short_description
       collections

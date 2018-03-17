@@ -31,7 +31,11 @@ server
     const location = req.url
     const context = {}
 
-    console.log('2', req.connection.remoteAddress)
+    console.log('------------------')
+    console.log('req.ip', req.ip)
+    console.log('remoteAddress', req.connection.remoteAddress)
+    console.log('X-Real-IP', req.headers['X-Real-IP'])
+    console.log('X-Forwarded-For', req.headers['X-Forwarded-For'])
 
     if (location === '/') {
       try {

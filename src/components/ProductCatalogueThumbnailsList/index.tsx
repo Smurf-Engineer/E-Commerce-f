@@ -75,6 +75,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         <ThumbnailListItem key={index}>
           <ProductThumbnail
             id={product.id}
+            yotpoId={product.yotpoId}
             type={product.type}
             description={product.description}
             isTopProduct={product.isTopProduct}

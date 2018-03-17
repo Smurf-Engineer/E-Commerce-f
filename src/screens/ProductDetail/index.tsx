@@ -2,7 +2,7 @@
  * ProductDetail Screen - Created by cazarez on 12/03/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
@@ -40,7 +40,9 @@ import {
   GetFittedLabel,
   QuestionSpan,
   AddToCartRow,
-  AddToCartButton
+  AddToCartButton,
+  JakrooWidgetsTitle,
+  YotpoImageSlider
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -211,7 +213,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             <SectionTitle>{formatMessage(messages.sizeLabel)}</SectionTitle>
             <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
           </SectionTitleContainer>
-          <GetFittedLabel>
+          <GetFittedLabel onClick={this.gotoGetFittedPage}>
             {formatMessage(messages.getFittedLabel)}
           </GetFittedLabel>
         </SizeRowTitleRow>
@@ -328,6 +330,25 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               </ProductData>
             </Content>
           )}
+          <JakrooWidgetsTitle>
+            <FormattedMessage {...messages.jakrooWidgetTitle} />
+          </JakrooWidgetsTitle>
+          <YotpoImageSlider
+            dangerouslySetInnerHTML={{
+              __html: `<div class="yotpo yotpo-pictures-gallery"
+            data-layout-rows="1"
+            data-spacing="1"
+            data-source="all"
+            data-title="0"
+            data-hover-color="#ffffff"
+            data-hover-opacity="0.8"
+            data-hover-icon="true"
+            data-cta-text="CUSTOMIZE"
+            data-cta-color="#2f84ed"
+            data-yotpo-element-id="2">
+            </div>`
+            }}
+          />
           <YotpoReviews {...{ yotpoId }} />
         </Container>
         <FitInfo
@@ -375,6 +396,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   gotoCustomize = () => {
     const { history } = this.props
     history.push('/design-center')
+  }
+
+  gotoGetFittedPage = () => {
+    const { history } = this.props
+    history.push('/get-fitted')
   }
 
   closeFitInfoModal = () => {
