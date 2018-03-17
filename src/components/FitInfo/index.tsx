@@ -91,17 +91,25 @@ class FitInfo extends React.Component<Props, {}> {
     let fitStylesList
 
     if (!data.loading && !data.error) {
-      genderList = product.genders.map(({ id, name }, index) => (
-        <RadioButton key={id} value={id}>
-          {name}
-        </RadioButton>
-      ))
+      genderList = product.genders.map(({ id, name }, index) => {
+        return id ? (
+          <RadioButton key={id} value={id}>
+            {name}
+          </RadioButton>
+        ) : (
+          undefined
+        )
+      })
 
-      fitStylesList = product.fitStyles.map((fit, index) => (
-        <RadioButton key={fit.id} value={fit.id}>
-          {fit.name}
-        </RadioButton>
-      ))
+      fitStylesList = product.fitStyles.map((fit, index) => {
+        return fit.id ? (
+          <RadioButton key={fit.id} value={fit.id}>
+            {fit.name}
+          </RadioButton>
+        ) : (
+          undefined
+        )
+      })
     }
 
     return (
@@ -182,10 +190,13 @@ const mapStateToProps = ({ fitInfo }: ReducersObject) => fitInfo.toJS()
 const FitInfoEnhance = compose(
   connect(mapStateToProps, { ...fitActions }),
   graphql<Data>(categoriesQuery, {
-    options: ({ productId }: OwnProps) => ({
-      fetchPolicy: 'network-only',
-      variables: { id: productId }
-    })
+    options: (ownprops: OwnProps) => {
+      const { productId } = ownprops
+      return {
+        fetchPolicy: 'always',
+        variables: { id: productId || 0 }
+      }
+    }
   })
 )(FitInfo)
 
