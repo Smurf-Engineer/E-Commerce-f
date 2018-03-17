@@ -17,14 +17,16 @@ declare global {
 
 class YotpoReviews extends React.Component<Props, any> {
   yotpo: any
-  componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.yotpoId !== this.props.yotpoId) {
-      this.updateYotpoWidget(nextProps.yotpoId)
+  componentWillReceiveProps({ yotpoId }: Props) {
+    const { yotpoId: oldYotpoId } = this.props
+    if (yotpoId !== oldYotpoId) {
+      this.updateYotpoWidget(yotpoId)
     }
   }
 
   componentDidMount() {
-    this.updateYotpoWidget(this.props.yotpoId)
+    const { yotpoId } = this.props
+    this.updateYotpoWidget(yotpoId)
   }
 
   updateYotpoWidget = (id: string) => {
