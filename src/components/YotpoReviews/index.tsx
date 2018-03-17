@@ -3,30 +3,53 @@
  */
 import * as React from 'react'
 import { Container, YotpoContainer } from './styledComponents'
+import ReactDOM from 'react-dom'
 
 interface Props {
   yotpoId: string
 }
 
-class YotpoReviews extends React.Component<Props, {}> {
-  state = {
-    render: true
+declare global {
+  interface Window {
+    yotpo: any
   }
-  render() {
+}
+
+class YotpoReviews extends React.Component<Props, any> {
+  yotpo: any
+  componentWillReceiveProps({ yotpoId }: Props) {
+    const { yotpoId: oldYotpoId } = this.props
+    if (yotpoId !== oldYotpoId) {
+      this.updateYotpoWidget(yotpoId)
+    }
+  }
+
+  componentDidMount() {
     const { yotpoId } = this.props
+    this.updateYotpoWidget(yotpoId)
+  }
+
+  updateYotpoWidget = (id: string) => {
+    try {
+      const element = ReactDOM.findDOMNode(this.yotpo)
+      element.setAttribute('class', 'yotpo yotpo-main-widget')
+      element.setAttribute('data-product-id', id)
+      element.setAttribute('data-price', 'Product Price')
+      element.setAttribute('data-currency', 'Price Currency')
+      element.setAttribute('data-name', 'Product Title')
+
+      if (window.yotpo.inview) {
+        window.yotpo.refreshWidgets()
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  render() {
     return (
       <Container>
-        <YotpoContainer
-          dangerouslySetInnerHTML={{
-            __html: `<div class="yotpo yotpo-main-widget"
-            data-product-id="${yotpoId}"
-            data-price="Product Price"
-            data-currency="Price Currency"
-            data-name="Product Title"
-            </div>
-        `
-          }}
-        />
+        <YotpoContainer innerRef={yotpo => (this.yotpo = yotpo)} />
       </Container>
     )
   }
