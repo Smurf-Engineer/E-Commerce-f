@@ -25,6 +25,7 @@ import {
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
+import YotpoHome from '../../components/YotpoHome'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
@@ -129,6 +130,7 @@ export class Home extends React.Component<Props, {}> {
             {searchResults}
           </div>
           <ImagesGrid />
+          <YotpoHome />
         </Container>
       </Layout>
     )
