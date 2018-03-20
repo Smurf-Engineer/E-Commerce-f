@@ -8,4 +8,5 @@ export const Container = styled.div``
 export const Text = styled.div`
   color: #fff;
 `
-export const YotpoContainer = styled.div``
+export const YotpoReviewsContainer = styled.div``
+export const YotpoCarousel = styled.div``

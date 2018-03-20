@@ -2,7 +2,11 @@
  * YotpoReviews Component - Created by cazarez on 14/03/18.
  */
 import * as React from 'react'
-import { Container, YotpoContainer } from './styledComponents'
+import {
+  Container,
+  YotpoReviewsContainer,
+  YotpoCarousel
+} from './styledComponents'
 import ReactDOM from 'react-dom'
 
 interface Props {
@@ -17,6 +21,7 @@ declare global {
 
 class YotpoReviews extends React.Component<Props, any> {
   yotpo: any
+  yotpoGallery: any
   componentWillReceiveProps({ yotpoId }: Props) {
     const { yotpoId: oldYotpoId } = this.props
     if (yotpoId !== oldYotpoId) {
@@ -31,12 +36,17 @@ class YotpoReviews extends React.Component<Props, any> {
 
   updateYotpoWidget = (id: string) => {
     try {
-      const element = ReactDOM.findDOMNode(this.yotpo)
-      element.setAttribute('class', 'yotpo yotpo-main-widget')
-      element.setAttribute('data-product-id', id)
-      element.setAttribute('data-price', 'Product Price')
-      element.setAttribute('data-currency', 'Price Currency')
-      element.setAttribute('data-name', 'Product Title')
+      const yotpoReviews = ReactDOM.findDOMNode(this.yotpo)
+      yotpoReviews.setAttribute('class', 'yotpo yotpo-main-widget')
+      yotpoReviews.setAttribute('data-product-id', id)
+      yotpoReviews.setAttribute('data-price', 'Product Price')
+      yotpoReviews.setAttribute('data-currency', 'Price Currency')
+      yotpoReviews.setAttribute('data-name', 'Product Title')
+
+      const yotpoCarousel = ReactDOM.findDOMNode(this.yotpoGallery)
+      yotpoCarousel.setAttribute('class', 'yotpo yotpo-slider yotpo-size-7')
+      yotpoCarousel.setAttribute('data-product-id', id)
+      yotpoCarousel.setAttribute('data-yotpo-element-id', '3')
 
       if (window.yotpo.inview) {
         window.yotpo.refreshWidgets()
@@ -49,7 +59,8 @@ class YotpoReviews extends React.Component<Props, any> {
   render() {
     return (
       <Container>
-        <YotpoContainer innerRef={yotpo => (this.yotpo = yotpo)} />
+        <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
+        <YotpoReviewsContainer innerRef={yotpo => (this.yotpo = yotpo)} />
       </Container>
     )
   }
