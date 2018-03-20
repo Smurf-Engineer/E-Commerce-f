@@ -91,25 +91,27 @@ class FitInfo extends React.Component<Props, {}> {
     let fitStylesList
 
     if (!data.loading && !data.error) {
-      genderList = product.genders.map(({ id, name }, index) => {
-        return id ? (
-          <RadioButton key={id} value={id}>
-            {name}
-          </RadioButton>
-        ) : (
-          undefined
-        )
-      })
+      genderList = product.genders.map(
+        ({ id, name }, index) =>
+          id ? (
+            <RadioButton key={id} value={id}>
+              {name}
+            </RadioButton>
+          ) : (
+            undefined
+          )
+      )
 
-      fitStylesList = product.fitStyles.map((fit, index) => {
-        return fit.id ? (
-          <RadioButton key={fit.id} value={fit.id}>
-            {fit.name}
-          </RadioButton>
-        ) : (
-          undefined
-        )
-      })
+      fitStylesList = product.fitStyles.map(
+        (fit, index) =>
+          fit.id ? (
+            <RadioButton key={fit.id} value={fit.id}>
+              {fit.name}
+            </RadioButton>
+          ) : (
+            undefined
+          )
+      )
     }
 
     return (
