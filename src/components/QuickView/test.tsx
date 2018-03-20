@@ -46,7 +46,8 @@ describe('<QuickView />', () => {
             id: 0,
             name: ''
           }
-        ]
+        ],
+        bodyChartId: 0
       },
       fetchMore: () => {}
     }

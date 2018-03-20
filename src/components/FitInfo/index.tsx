@@ -89,6 +89,7 @@ class FitInfo extends React.Component<Props, {}> {
 
     let genderList
     let fitStylesList
+    let sizingTable
 
     if (!data.loading && !data.error) {
       genderList = product.genders.map(
@@ -111,6 +112,16 @@ class FitInfo extends React.Component<Props, {}> {
           ) : (
             undefined
           )
+      )
+
+      sizingTable = product ? (
+        <FitInfoTable
+          bodyChartId={product.bodyChartId}
+          metric={metric}
+          genderId={gender}
+        />
+      ) : (
+        <div> No data. </div>
       )
     }
 
@@ -153,7 +164,7 @@ class FitInfo extends React.Component<Props, {}> {
                   </RadioGroup>
                 </Col>
               </StyledRow>
-              <FitInfoTable bodyChartId={1} metric={metric} genderId={gender} />
+              {sizingTable}
             </Col>
             <Col span={12}>
               <TitleLabel>
