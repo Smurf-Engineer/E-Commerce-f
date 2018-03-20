@@ -41,8 +41,7 @@ import {
   QuestionSpan,
   AddToCartRow,
   AddToCartButton,
-  JakrooWidgetsTitle,
-  YotpoImageSlider
+  JakrooWidgetsTitle
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -333,22 +332,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           <JakrooWidgetsTitle>
             <FormattedMessage {...messages.jakrooWidgetTitle} />
           </JakrooWidgetsTitle>
-          <YotpoImageSlider
-            dangerouslySetInnerHTML={{
-              __html: `<div class="yotpo yotpo-pictures-gallery"
-            data-layout-rows="1"
-            data-spacing="1"
-            data-source="all"
-            data-title="0"
-            data-hover-color="#ffffff"
-            data-hover-opacity="0.8"
-            data-hover-icon="true"
-            data-cta-text="CUSTOMIZE"
-            data-cta-color="#2f84ed"
-            data-yotpo-element-id="2">
-            </div>`
-            }}
-          />
           <YotpoReviews {...{ yotpoId }} />
         </Container>
         <FitInfo
