@@ -10,6 +10,7 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 // TODO: uncoment when breadcrumb gets implemented
 // import Breadcrumb from 'antd/lib/breadcrumb'
+import Message from 'antd/lib/message'
 import AnimateHeight from 'react-animate-height'
 import { ReducersObject } from '../../store/rootReducer'
 import * as productDetailActions from './actions'
@@ -75,11 +76,13 @@ interface Props extends RouteComponentProps<any> {
   selectedGender: number
   selectedSize: number
   selectedFit: number
+  loadingModel: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: string) => void
   setSelectedSizeAction: (selected: number) => void
   setSelectedFitAction: (selected: number) => void
+  setLoadingModel: (loading: boolean) => void
 }
 
 interface StateProps {
@@ -104,6 +107,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedGender,
       selectedFit,
       openFitInfo,
+      setLoadingModel,
+      // loadingModel, TODO: uncomment loading model when loading bug gets fixed
       data: { product }
     } = this.props
     const { formatMessage } = intl
@@ -259,7 +264,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const addToCartRow = (
       <AddToCartRow>
         <StyledInputNumber min={1} max={10} defaultValue={1} />
-        <AddToCartButton>
+        <AddToCartButton onClick={this.addtoCart}>
           {formatMessage(messages.addToCartButtonLabel)}
         </AddToCartButton>
       </AddToCartRow>
@@ -289,7 +294,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider {...{ images }} />
+                <ImagesSlider
+                  onLoadModel={setLoadingModel}
+                  // TODO: remove commented loading when  loading 3D model gets fixed
+                  // loading={loadingModel}
+                  {...{ images }}
+                />
               </ImagePreview>
               <ProductData>
                 <TitleRow>
@@ -385,6 +395,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   gotoGetFittedPage = () => {
     const { history } = this.props
     history.push('/get-fitted')
+  }
+
+  addtoCart = () => {
+    const { data: { product: { name } } } = this.props
+    Message.success(`${name} has been succesfully added to cart!`)
   }
 
   closeFitInfoModal = () => {
