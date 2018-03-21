@@ -21,7 +21,6 @@ import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
 import { ImageType } from '../../types/common'
 
-const styleColors = ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF']
 interface Props {
   images: ImageType
   loading?: boolean | undefined
@@ -69,7 +68,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
     const loading3Dmodel = loading ? (
       <Spin />
     ) : (
-      <Product3DThumbnail {...{ styleColors, onLoadModel }} />
+      <Product3DThumbnail {...{ onLoadModel }} />
     )
     const renderSelectedImage =
       index === 0 ? (

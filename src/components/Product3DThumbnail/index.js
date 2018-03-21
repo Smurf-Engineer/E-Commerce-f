@@ -4,8 +4,6 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import vertexShader from './vertex'
-import fragmentShader from './fragment'
 import {
   Container,
   Render,
@@ -22,7 +20,6 @@ import {
   LoadingContainer,
   ButtonWrapper
 } from './styledComponents'
-import { jerseyTextures, viewPositions } from './config'
 import messages from './messages'
 
 const { Item } = Menu
@@ -184,17 +181,6 @@ class Product3DThumbnail extends PureComponent {
   cameraUpdate = ({ x, y, z }) => {
     this.camera.position.set(x, y, z)
     this.controls.update()
-  }
-
-  setupColors = colors => {
-    let colorNumber = 1
-    colors.forEach(color => {
-      let key = `customColor${colorNumber}`
-      if (color && this.uniformsWithPhong) {
-        this.uniformsWithPhong[key].value = new THREE.Color(color)
-      }
-      colorNumber += 1
-    })
   }
 
   render() {
