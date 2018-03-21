@@ -89,19 +89,40 @@ class FitInfo extends React.Component<Props, {}> {
 
     let genderList
     let fitStylesList
+    let sizingTable
 
     if (!data.loading && !data.error) {
-      genderList = product.genders.map(({ id, name }, index) => (
-        <RadioButton key={id} value={id}>
-          {name}
-        </RadioButton>
-      ))
+      genderList = product.genders.map(
+        ({ id, name }, index) =>
+          id ? (
+            <RadioButton key={id} value={id}>
+              {name}
+            </RadioButton>
+          ) : (
+            undefined
+          )
+      )
 
-      fitStylesList = product.fitStyles.map((fit, index) => (
-        <RadioButton key={fit.id} value={fit.id}>
-          {fit.name}
-        </RadioButton>
-      ))
+      fitStylesList = product.fitStyles.map(
+        (fit, index) =>
+          fit.id ? (
+            <RadioButton key={fit.id} value={fit.id}>
+              {fit.name}
+            </RadioButton>
+          ) : (
+            undefined
+          )
+      )
+
+      sizingTable = product ? (
+        <FitInfoTable
+          bodyChartId={product.bodyChartId}
+          metric={metric}
+          genderId={gender}
+        />
+      ) : (
+        <div> No data. </div>
+      )
     }
 
     return (
@@ -143,7 +164,7 @@ class FitInfo extends React.Component<Props, {}> {
                   </RadioGroup>
                 </Col>
               </StyledRow>
-              <FitInfoTable bodyChartId={1} metric={metric} genderId={gender} />
+              {sizingTable}
             </Col>
             <Col span={12}>
               <TitleLabel>
@@ -182,10 +203,13 @@ const mapStateToProps = ({ fitInfo }: ReducersObject) => fitInfo.toJS()
 const FitInfoEnhance = compose(
   connect(mapStateToProps, { ...fitActions }),
   graphql<Data>(categoriesQuery, {
-    options: ({ productId }: OwnProps) => ({
-      fetchPolicy: 'network-only',
-      variables: { id: productId }
-    })
+    options: (ownprops: OwnProps) => {
+      const { productId } = ownprops
+      return {
+        fetchPolicy: 'always',
+        variables: { id: productId || 0 }
+      }
+    }
   })
 )(FitInfo)
 

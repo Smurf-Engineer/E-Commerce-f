@@ -72,6 +72,7 @@ export interface Product {
   yotpoAverageScore: ProductReviews
   fitStyles: FitStyle[]
   genders: Filter[]
+  bodyChartId: number
 }
 
 export interface ProductReviews {
