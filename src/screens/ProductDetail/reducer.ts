@@ -8,7 +8,8 @@ import {
   OPEN_FITINFO,
   SET_SELECTED_GENDER,
   SET_SELECTED_SIZE,
-  SET_SELECTED_FIT
+  SET_SELECTED_FIT,
+  LOADING_3D_MODEL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -19,7 +20,8 @@ export const initialState = fromJS({
   selectedGender: '',
   selectedSize: -1,
   selectedFit: -1,
-  categoryName: ''
+  categoryName: '',
+  loadingModel: false
 })
 
 const productDetailReducer: Reducer<any> = (state = initialState, action) => {
@@ -36,6 +38,8 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedSize', parseInt(action.selected, 10))
     case SET_SELECTED_FIT:
       return state.set('selectedFit', parseInt(action.selected, 10))
+    case LOADING_3D_MODEL:
+      return state.set('loadingModel', action.loading)
     default:
       return state
   }

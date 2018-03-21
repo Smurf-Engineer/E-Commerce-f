@@ -49,6 +49,10 @@ export const SwipeContainer = styled.div`
   position: relative;
   justify-content: center;
 `
+export const ThreeDThumbnailContair = styled.div`
+  text-align: center;
+  width: 660px;
+`
 
 export const Arrows = styled.div`
   display: flex;
