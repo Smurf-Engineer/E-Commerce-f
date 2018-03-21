@@ -7,7 +7,8 @@ import {
   OPEN_FITINFO,
   SET_SELECTED_GENDER,
   SET_SELECTED_FIT,
-  SET_SELECTED_SIZE
+  SET_SELECTED_SIZE,
+  LOADING_3D_MODEL
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -39,4 +40,9 @@ export const setSelectedSizeAction = (selected: number) => ({
 export const setSelectedFitAction = (selected: number) => ({
   type: SET_SELECTED_FIT,
   selected
+})
+
+export const setLoadingModel = (loading: boolean): AnyAction => ({
+  type: LOADING_3D_MODEL,
+  loading
 })

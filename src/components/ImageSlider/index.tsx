@@ -3,9 +3,11 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
+import Spin from 'antd/lib/spin'
 import {
   Container,
   SwipeContainer,
+  ThreeDThumbnailContair,
   ThumbnailContainer,
   ImageThumbnails,
   ThumbnailImg,
@@ -14,12 +16,16 @@ import {
   ArrowLeft,
   ArrowRight
 } from './styledComponents'
+import Product3DThumbnail from '../Product3DThumbnail'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
 import { ImageType } from '../../types/common'
 
+const styleColors = ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF']
 interface Props {
   images: ImageType
+  loading?: boolean | undefined
+  onLoadModel?: (loading: boolean) => void | undefined
 }
 
 interface StateProps {
@@ -30,11 +36,12 @@ class ImageSlider extends React.Component<Props, StateProps> {
     index: 0
   }
   render() {
-    const { images } = this.props
+    const { images, onLoadModel, loading } = this.props
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
     const ThumbnailsArray = [
+      images.front,
       images.front,
       images.right,
       images.back,
@@ -58,12 +65,23 @@ class ImageSlider extends React.Component<Props, StateProps> {
         <img src={thumbnail} />
       </SelectedImage>
     ))
+
+    const loading3Dmodel = loading ? (
+      <Spin />
+    ) : (
+      <Product3DThumbnail {...{ styleColors, onLoadModel }} />
+    )
+    const renderSelectedImage =
+      index === 0 ? (
+        <ThreeDThumbnailContair>{loading3Dmodel}</ThreeDThumbnailContair>
+      ) : (
+        <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
+      )
+
     return (
       <Container>
         <SwipeContainer>
-          <SwipeableViews enableMouseEvents={true} {...{ index }}>
-            {selectedImages}
-          </SwipeableViews>
+          {renderSelectedImage}
           <Arrows>
             <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
             <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
@@ -82,7 +100,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
   handleNextPage = () => {
     const { index } = this.state
 
-    if (index < 3) {
+    if (index < 5) {
       this.setState({ index: index + 1 })
     }
   }
