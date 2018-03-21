@@ -57,4 +57,7 @@ export const ReturnToLogin = styled.div`
   text-align: center;
   width: 100%;
   margin-bottom: 47px;
+  &:hover {
+    cursor: pointer;
+  }
 `

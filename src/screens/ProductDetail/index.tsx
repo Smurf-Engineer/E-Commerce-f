@@ -338,6 +338,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           open={openFitInfo}
           requestClose={this.closeFitInfoModal}
           productId={productId}
+          history={history}
         />
       </Layout>
     )
