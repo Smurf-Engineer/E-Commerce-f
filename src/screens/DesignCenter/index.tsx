@@ -38,6 +38,7 @@ interface Props extends RouteComponentProps<any> {
   undoChanges: Change[]
   redoChanges: Change[]
   swipingView: boolean
+  openShareModal: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -55,6 +56,7 @@ interface Props extends RouteComponentProps<any> {
   setSwipingTabAction: (swiping: boolean) => void
   setThemeAction: (id: number) => void
   setStyleAction: (style: any) => void
+  openShareModalAction: (open: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -105,7 +107,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       undoChanges,
       redoChanges,
       setThemeAction,
-      setStyleAction
+      setStyleAction,
+      openShareModal,
+      openShareModalAction
     } = this.props
 
     return (
@@ -168,8 +172,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 colors,
                 loadingModel,
                 currentTab,
-                swipingView
+                swipingView,
+                openShareModal,
+                openShareModalAction
               }}
+              formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
               onSelectTab={this.handleOnSelectTab}

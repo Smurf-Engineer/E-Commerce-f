@@ -18,7 +18,8 @@ import {
   DESIGN_REDO_ACTION,
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
-  SET_STYLE_SELECTED_ACTION
+  SET_STYLE_SELECTED_ACTION,
+  OPEN_SHARE_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -36,7 +37,8 @@ export const initialState = fromJS({
   redoChanges: [],
   swipingView: false,
   themeId: null,
-  style: null
+  style: null,
+  openShareModal: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -136,6 +138,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         style: action.colors,
         currentTab: 2
       })
+    case OPEN_SHARE_MODAL:
+      return state.set('openShareModal', action.open)
     default:
       return state
   }

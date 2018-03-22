@@ -14,6 +14,7 @@ import {
 } from './styledComponents'
 import Render3D from './Render3D'
 import messages from './messages'
+import ShareDesignModal from '../ShareDesignModal'
 import quickView from '../../assets/quickview.svg'
 
 interface Props {
@@ -21,15 +22,28 @@ interface Props {
   colors: string[]
   currentTab: number
   loadingModel: boolean
+  openShareModal: boolean
+  formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
   onSelectTab: (tab: number) => void
+  openShareModalAction: (open: boolean) => void
 }
 
 class DesignCenterPreview extends React.PureComponent<Props, {}> {
   handleOnPressEdit = () => {
     const { onSelectTab } = this.props
     onSelectTab(2)
+  }
+
+  handleOnPressShare = () => {
+    const { openShareModalAction } = this.props
+    openShareModalAction(true)
+  }
+
+  handleRequestCloseShare = () => {
+    const { openShareModalAction } = this.props
+    openShareModalAction(false)
   }
 
   render() {
@@ -39,7 +53,9 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       swipingView,
       loadingModel,
       onPressQuickView,
-      onLoadModel
+      onLoadModel,
+      openShareModal,
+      formatMessage
     } = this.props
     return (
       <Container>
@@ -49,7 +65,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             <QuickView onClick={onPressQuickView} src={quickView} />
           </Row>
           <ButtonWrapper>
-            <Button type="primary">
+            <Button type="primary" onClick={this.handleOnPressShare}>
               <FormattedMessage {...messages.shareButton} />
             </Button>
           </ButtonWrapper>
@@ -68,6 +84,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             }}
           />
         ) : null}
+        <ShareDesignModal
+          open={openShareModal}
+          requestClose={this.handleRequestCloseShare}
+          {...{ formatMessage }}
+        />
       </Container>
     )
   }

@@ -17,7 +17,8 @@ import {
   DESIGN_CLEAR_ACTION,
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
-  SET_STYLE_SELECTED_ACTION
+  SET_STYLE_SELECTED_ACTION,
+  OPEN_SHARE_MODAL
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -95,4 +96,9 @@ export const setThemeAction = (id: number): AnyAction => ({
 export const setStyleAction = (colors: any): AnyAction => ({
   type: SET_STYLE_SELECTED_ACTION,
   colors
+})
+
+export const openShareModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_SHARE_MODAL,
+  open
 })

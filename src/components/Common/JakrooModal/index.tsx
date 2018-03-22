@@ -11,12 +11,20 @@ interface Props {
   open: boolean
   width?: string
   requestClose?: () => void
+  withLogo?: boolean | undefined
   children?: any
   title?: string
   style?: any
 }
 
-const CustomModal = ({ open, requestClose, children, title, style }: Props) => {
+const CustomModal = ({
+  open,
+  requestClose,
+  children,
+  title,
+  style,
+  withLogo = true
+}: Props) => {
   return (
     <Container>
       <Modal
@@ -27,10 +35,12 @@ const CustomModal = ({ open, requestClose, children, title, style }: Props) => {
         style={style}
       >
         <CloseIcon src={closeIcon} onClick={requestClose} />
-        <Header>
-          <Logo src={JakRooLogo} />
-        </Header>
-        {title ? <Title>Title</Title> : ''}
+        {withLogo && (
+          <Header>
+            <Logo src={JakRooLogo} />
+          </Header>
+        )}
+        {title ? <Title>{title}</Title> : ''}
         {children}
       </Modal>
     </Container>
