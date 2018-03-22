@@ -8,6 +8,7 @@ import YotpoHome from './index'
 describe('<YotpoHome />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<YotpoHome  />, div)
+    window.yotpo = {} as any
+    ReactDOM.render(<YotpoHome />, div)
   })
 })

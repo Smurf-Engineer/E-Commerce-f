@@ -17,7 +17,9 @@ import {
   DESIGN_CLEAR_ACTION,
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
-  SET_STYLE_SELECTED_ACTION
+  SET_STYLE_SELECTED_ACTION,
+  OPEN_SAVEDESIGN,
+  SET_DESIGN_NAME
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -90,6 +92,18 @@ export const setThemeAction = (id: number): AnyAction => ({
   type: SET_THEME_SELECTED_ACTION,
   id
 })
+
+export const openSaveDesignAction = (open: boolean) => ({
+  type: OPEN_SAVEDESIGN,
+  open
+})
+
+export const setDesignNameAction = (param: string): AnyAction => {
+  return {
+    type: SET_DESIGN_NAME,
+    param
+  }
+}
 
 // TODO: Temp any
 export const setStyleAction = (colors: any): AnyAction => ({
