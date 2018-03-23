@@ -42,6 +42,7 @@ interface Props extends RouteComponentProps<any> {
   openShareModal: boolean
   openSaveDesign: boolean
   designName: string
+  savedDesignId: number
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -62,6 +63,7 @@ interface Props extends RouteComponentProps<any> {
   setStyleAction: (style: any) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean) => void
+  saveDesignIdAction: (id: number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -123,7 +125,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       openShareModal,
       openShareModalAction,
       openSaveDesignAction,
-      setDesignNameAction
+      setDesignNameAction,
+      saveDesignIdAction,
+      savedDesignId
     } = this.props
 
     return (
@@ -189,7 +193,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 currentTab,
                 swipingView,
                 openShareModal,
-                openShareModalAction
+                openShareModalAction,
+                savedDesignId
               }}
               formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
@@ -204,6 +209,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
+            afterSaveDesign={saveDesignIdAction}
           />
         </Container>
       </Layout>

@@ -23,6 +23,7 @@ interface Props {
   currentTab: number
   loadingModel: boolean
   openShareModal: boolean
+  savedDesignId: number
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
@@ -55,7 +56,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       onPressQuickView,
       onLoadModel,
       openShareModal,
-      formatMessage
+      formatMessage,
+      savedDesignId
     } = this.props
     return (
       <Container>
@@ -87,7 +89,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         <ShareDesignModal
           open={openShareModal}
           requestClose={this.handleRequestCloseShare}
-          {...{ formatMessage }}
+          {...{ formatMessage, savedDesignId }}
         />
       </Container>
     )

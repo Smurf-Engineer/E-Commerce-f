@@ -20,7 +20,8 @@ import {
   SET_STYLE_SELECTED_ACTION,
   OPEN_SHARE_MODAL,
   OPEN_SAVEDESIGN,
-  SET_DESIGN_NAME
+  SET_DESIGN_NAME,
+  SAVE_DESIGN_ID
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -115,4 +116,9 @@ export const setStyleAction = (colors: any): AnyAction => ({
 export const openShareModalAction = (open: boolean): AnyAction => ({
   type: OPEN_SHARE_MODAL,
   open
+})
+
+export const saveDesignIdAction = (id: number): AnyAction => ({
+  type: SAVE_DESIGN_ID,
+  id
 })

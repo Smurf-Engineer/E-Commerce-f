@@ -26,6 +26,7 @@ interface Props {
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
   saveDesignNameMutation: (variables: {}) => void
+  afterSaveDesign: (id: number) => void | undefined
 }
 
 export class SaveDesign extends React.Component<Props, {}> {
@@ -47,7 +48,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       colors,
       formatMessage,
       saveDesignNameMutation,
-      requestClose
+      requestClose,
+      afterSaveDesign
     } = this.props
 
     if (!designName) {
@@ -72,7 +74,10 @@ export class SaveDesign extends React.Component<Props, {}> {
       const data = get(response, 'data.saveDesign', false)
 
       if (data) {
+        console.log('saved design', data)
+        const { id: designId } = data
         message.success(formatMessage(messages.saveSuccess))
+        afterSaveDesign(designId)
         requestClose()
       }
     } catch (error) {

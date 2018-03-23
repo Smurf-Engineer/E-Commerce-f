@@ -29,6 +29,7 @@ const { TextArea } = Input
 
 interface Props {
   open: boolean
+  savedDesignId: number
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
 }

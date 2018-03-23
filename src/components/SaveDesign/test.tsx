@@ -15,6 +15,7 @@ describe('<SaveDesign />', () => {
     const saveDesignNameMutation = () => {}
     const closeSaveDesignModal = () => {}
     const setDesignNameAction = () => {}
+    const afterSaveDesign = () => {}
     const div = document.createElement('div')
     const format = (message: string) => 'string'
     ReactDOM.render(
@@ -27,6 +28,7 @@ describe('<SaveDesign />', () => {
           designName={designName}
           colors={colors}
           saveDesignNameMutation={saveDesignNameMutation}
+          afterSaveDesign={afterSaveDesign}
         />
       </IntlProvider>,
       div

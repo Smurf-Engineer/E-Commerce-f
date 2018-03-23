@@ -5,6 +5,7 @@ export const saveDesignName = graphql(
   gql`
     mutation saveDesign($design: DesignInput!, $colors: [String]!) {
       saveDesign(design: $design, colors: $colors) {
+        id
         name
       }
     }
