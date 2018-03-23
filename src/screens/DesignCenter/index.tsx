@@ -18,6 +18,7 @@ import ThemeTab from '../../components/DesignCenterTheme'
 import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
+import SaveDesign from '../../components/SaveDesign'
 import { Container } from './styledComponents'
 import { Palette } from '../../types/common'
 
@@ -39,6 +40,8 @@ interface Props extends RouteComponentProps<any> {
   redoChanges: Change[]
   swipingView: boolean
   openShareModal: boolean
+  openSaveDesign: boolean
+  designName: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -46,6 +49,7 @@ interface Props extends RouteComponentProps<any> {
   setColorBlockAction: (index: number) => void
   setColorAction: (color: string) => void
   setPaletteAction: (colors: string[]) => void
+  setDesignNameAction: (name: string) => void
   setPaletteNameAction: (name: string) => void
   setPalettesAction: (palettes: Palette[]) => void
   setLoadingModel: (loading: boolean) => void
@@ -57,6 +61,7 @@ interface Props extends RouteComponentProps<any> {
   setThemeAction: (id: number) => void
   setStyleAction: (style: any) => void
   openShareModalAction: (open: boolean) => void
+  openSaveDesignAction: (open: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -82,6 +87,11 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   handleOnTransictionEnd = () => this.props.setSwipingTabAction(false)
 
+  closeSaveDesignModal = () => {
+    const { openSaveDesignAction } = this.props
+    openSaveDesignAction(false)
+  }
+
   render() {
     const {
       intl,
@@ -94,11 +104,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       setPaletteNameAction,
       paletteName,
       palettes,
+      openSaveDesign,
       setPalettesAction,
       swipingView,
       colors,
       styleColors,
       loadingModel,
+      designName,
       setLoadingModel,
       designUndoAction,
       designRedoAction,
@@ -109,7 +121,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       setThemeAction,
       setStyleAction,
       openShareModal,
-      openShareModalAction
+      openShareModalAction,
+      openSaveDesignAction,
+      setDesignNameAction
     } = this.props
 
     return (
@@ -166,6 +180,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onResetAction={designResetAction}
               onClearAction={designClearAction}
               onPressQuickView={this.handleOpenQuickView}
+              onOpenSaveDesign={openSaveDesignAction}
             />
             <PreviewTab
               {...{
@@ -182,6 +197,14 @@ export class DesignCenter extends React.Component<Props, {}> {
               onSelectTab={this.handleOnSelectTab}
             />
           </SwipeableViews>
+          <SaveDesign
+            open={openSaveDesign}
+            requestClose={this.closeSaveDesignModal}
+            formatMessage={intl.formatMessage}
+            onDesignName={setDesignNameAction}
+            designName={designName}
+            colors={colors}
+          />
         </Container>
       </Layout>
     )

@@ -29,6 +29,7 @@ interface Props {
   onResetAction: () => void
   onClearAction: () => void
   onPressQuickView: () => void
+  onOpenSaveDesign: (open: boolean) => void
 }
 
 const DesignCenterCustomize = ({
@@ -52,7 +53,8 @@ const DesignCenterCustomize = ({
   onPressQuickView,
   undoEnabled,
   redoEnabled,
-  swipingView
+  swipingView,
+  onOpenSaveDesign
 }: Props) => {
   return (
     <Container>
@@ -83,7 +85,8 @@ const DesignCenterCustomize = ({
             onClearAction,
             onPressQuickView,
             undoEnabled,
-            redoEnabled
+            redoEnabled,
+            onOpenSaveDesign
           }}
         />
       ) : null}

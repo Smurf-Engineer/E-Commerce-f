@@ -35,6 +35,7 @@ interface Data extends QueryProps {
 }
 
 interface Props {
+  history: any
   requestClose: () => void
   setGender: (param: number) => void
   setFitStyle: (param: number) => void
@@ -74,6 +75,11 @@ class FitInfo extends React.Component<Props, {}> {
   onMetricChange = (e: any) => {
     const { setMetric } = this.props
     setMetric(e.target.value)
+  }
+
+  gotoGetFittedPage = () => {
+    const { history } = this.props
+    history.push('/get-fitted')
   }
 
   render() {
@@ -139,7 +145,7 @@ class FitInfo extends React.Component<Props, {}> {
           <StyledLabel>
             <FormattedMessage {...messages.getFittedLabel} />
           </StyledLabel>
-          <StyledLoginButton type="danger">
+          <StyledLoginButton type="danger" onClick={this.gotoGetFittedPage}>
             <FormattedMessage {...messages.getFittedButton} />
           </StyledLoginButton>
           <StyledRow>

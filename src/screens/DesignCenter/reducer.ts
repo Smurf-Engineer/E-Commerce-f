@@ -19,7 +19,9 @@ import {
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
   SET_STYLE_SELECTED_ACTION,
-  OPEN_SHARE_MODAL
+  OPEN_SHARE_MODAL,
+  OPEN_SAVEDESIGN,
+  SET_DESIGN_NAME
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -32,13 +34,15 @@ export const initialState = fromJS({
   styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   palettes: [],
   paletteName: '',
+  designName: '',
   loadingModel: false,
   undoChanges: [],
   redoChanges: [],
   swipingView: false,
   themeId: null,
   style: null,
-  openShareModal: false
+  openShareModal: false,
+  openSaveDesign: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -140,6 +144,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
+    case OPEN_SAVEDESIGN:
+      return state.set('openSaveDesign', action.open)
+    case SET_DESIGN_NAME:
+      return state.merge({ designName: action.param })
     default:
       return state
   }

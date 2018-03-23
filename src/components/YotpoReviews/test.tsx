@@ -10,6 +10,7 @@ describe('<YotpoReviews />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
+    window.yotpo = {} as any
     ReactDOM.render(
       <IntlProvider {...props}>
         <YotpoReviews yotpoId="" />

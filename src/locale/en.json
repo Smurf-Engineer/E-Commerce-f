@@ -126,5 +126,13 @@
   "components.ShareDesignModal.addEmailLabel": "Add email addresses...",
   "components.ShareDesignModal.addMessageLabel": "Add a message...",
   "components.ShareDesignModal.sendButtonLabel": "Send",
-  "components.ShareDesignModal.copyButtonLabel": "Copy"
+  "components.ShareDesignModal.copyButtonLabel": "Copy",
+  "components.SaveDesign.modalTitle": "Name your design",
+  "components.SaveDesign.modalText":
+    "Name it something that is simple and recognizable to you.",
+  "components.SaveDesign.placeholder": "Design name",
+  "components.SaveDesign.invalidNameMessage": "Invalid design name",
+  "components.SaveDesign.saveSuccess": "Design saved",
+  "components.SaveDesign.save": "Save",
+  "components.SaveDesign.invalidUser": "You must be logged in to save designs."
 }

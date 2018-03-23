@@ -353,6 +353,11 @@ class Render3D extends PureComponent {
     this.camera.updateProjectionMatrix()
   }
 
+  handleOnSave = () => {
+    const { onOpenSaveDesign } = this.props
+    onOpenSaveDesign(true)
+  }
+
   render() {
     const { showDragmessage, currentView, zoomValue, progress } = this.state
     const {
@@ -397,7 +402,9 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         <ButtonWrapper>
-          <Button type="primary">Save</Button>
+          <Button type="primary" onClick={this.handleOnSave}>
+            Save
+          </Button>
         </ButtonWrapper>
         <OptionsController
           {...{ undoEnabled, redoEnabled }}
