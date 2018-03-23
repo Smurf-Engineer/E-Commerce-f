@@ -44,7 +44,7 @@ interface StateProps {
   validPassword: boolean
 }
 
-class Login extends React.Component<Props, StateProps> {
+export class Login extends React.Component<Props, StateProps> {
   state = {
     isLoginIn: true,
     email: '',

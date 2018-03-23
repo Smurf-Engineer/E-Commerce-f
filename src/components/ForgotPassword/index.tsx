@@ -26,6 +26,7 @@ interface Props {
   open: boolean
   dispatch: any
   email: string
+  openLogin: () => void
   requestClose: () => void
   formatMessage: (messageDescriptor: any, values?: object) => string
   sendMailForgotPassword: (variables: {}) => void
@@ -81,6 +82,13 @@ class ForgotPassword extends React.Component<Props, {}> {
     }
   }
 
+  closeForgot = () => {
+    const { openLogin, requestClose } = this.props
+
+    requestClose()
+    openLogin()
+  }
+
   render() {
     const { open, requestClose, formatMessage, email } = this.props
     return (
@@ -101,7 +109,7 @@ class ForgotPassword extends React.Component<Props, {}> {
           <StyledButtonSend onClick={this.onSendMail}>
             <FormattedMessage {...messages.sendButtonLabel} />
           </StyledButtonSend>
-          <ReturnToLogin>
+          <ReturnToLogin onClick={this.closeForgot}>
             <FormattedMessage {...messages.returnToLoginLabel} />
           </ReturnToLogin>
         </Container>
