@@ -28,7 +28,7 @@ interface Props {
   saveDesignNameMutation: (variables: {}) => void
 }
 
-class SaveDesign extends React.Component<Props, {}> {
+export class SaveDesign extends React.Component<Props, {}> {
   handleCancel = () => {
     const { requestClose } = this.props
     requestClose()
