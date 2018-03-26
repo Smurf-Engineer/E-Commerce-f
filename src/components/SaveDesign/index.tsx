@@ -74,7 +74,6 @@ export class SaveDesign extends React.Component<Props, {}> {
       const data = get(response, 'data.saveDesign', false)
 
       if (data) {
-        console.log('saved design', data)
         const { id: designId } = data
         message.success(formatMessage(messages.saveSuccess))
         afterSaveDesign(designId)
@@ -126,5 +125,3 @@ export class SaveDesign extends React.Component<Props, {}> {
 
 const SaveDesignEnhance = compose(saveDesignName)(SaveDesign)
 export default SaveDesignEnhance
-
-// export default SaveDesign

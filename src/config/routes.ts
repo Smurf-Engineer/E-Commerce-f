@@ -39,7 +39,7 @@ const routes = [
     component: Home
   },
   {
-    path: '/my-designs/id',
+    path: '/designs/:id',
     name: 'myDesigns'
   }
 ]

@@ -55,9 +55,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
         display: 'popup',
         quote: 'test'
       },
-      (response: any) => {
-        console.log('Shared', response)
-      }
+      (response: any) => {}
     )
   }
 
