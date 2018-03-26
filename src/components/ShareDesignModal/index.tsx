@@ -2,8 +2,8 @@
  * ShareDesignModal Component - Created by cazarez on 21/03/18.
  */
 import * as React from 'react'
-// import ReactDOM from 'react-dom'
 import Input from 'antd/lib/input'
+// TODO: commented to hide share by mail Form
 // import Button from 'antd/lib/button'
 import messages from './messages'
 import {
@@ -15,9 +15,11 @@ import {
   ShareLinkContainer,
   ShareSocialMediaContainer,
   IconsRow,
+  // TODO: commented to hide share by mail Form
   // ShareByMailRow,
   FacebookIconImg,
   TwitterIconImg
+  // TODO: commented to hide share by mail Form
   // InputWrapper,
   // SendButtonWrapper
 } from './styledComponents'
@@ -26,6 +28,7 @@ import FbIcon from '../../assets/FB_share.svg'
 import TwitterIcon from '../../assets/Twitter_share.svg'
 
 const ShareLinkInput = Input.Search
+// TODO: commented to hide share by mail Form
 // const { TextArea } = Input
 
 declare global {
@@ -59,8 +62,10 @@ class ShareDesignModal extends React.Component<Props, {}> {
   }
 
   copyToClipboard = (value: string) => {
-    // const toClipboard = new ClipboardEvent(value)
-    this.copyInput.select()
+    const { input: { input } } = this.copyInput
+    this.copyInput.focus()
+    input.setSelectionRange(0, value.length)
+
     document.execCommand('copy')
   }
 
@@ -69,6 +74,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
     const designURL = `https://jakroo.com/designs/${savedDesignId}`
 
     {
+      // TODO: commented to hide share by mail Form
       /* const shareByEmail = (
       <ShareByMailRow style={{ display: 'none' }}>
         <Title>
@@ -105,14 +111,13 @@ class ShareDesignModal extends React.Component<Props, {}> {
               </Title>
               <ShareInputWrapper>
                 <ShareLinkInput
-                  // placeholder="https://jakroo.com/us/yourdesign"
                   ref={input => (this.copyInput = input)}
                   id="url"
                   enterButton={formatMessage(messages.copyButtonLabel)}
                   size="large"
                   value={designURL}
-                  disabled={true}
                   onSearch={this.copyToClipboard}
+                  onChange={() => {}}
                 />
               </ShareInputWrapper>
             </ShareLinkContainer>
