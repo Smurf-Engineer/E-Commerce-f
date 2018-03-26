@@ -39,8 +39,10 @@ interface Props extends RouteComponentProps<any> {
   undoChanges: Change[]
   redoChanges: Change[]
   swipingView: boolean
+  openShareModal: boolean
   openSaveDesign: boolean
   designName: string
+  savedDesignId: number
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -59,7 +61,9 @@ interface Props extends RouteComponentProps<any> {
   setSwipingTabAction: (swiping: boolean) => void
   setThemeAction: (id: number) => void
   setStyleAction: (style: any) => void
+  openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean) => void
+  saveDesignIdAction: (id: number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -118,8 +122,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       redoChanges,
       setThemeAction,
       setStyleAction,
+      openShareModal,
+      openShareModalAction,
       openSaveDesignAction,
-      setDesignNameAction
+      setDesignNameAction,
+      saveDesignIdAction,
+      savedDesignId
     } = this.props
 
     return (
@@ -183,8 +191,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 colors,
                 loadingModel,
                 currentTab,
-                swipingView
+                swipingView,
+                openShareModal,
+                openShareModalAction,
+                savedDesignId
               }}
+              formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
               onSelectTab={this.handleOnSelectTab}
@@ -197,6 +209,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
+            afterSaveDesign={saveDesignIdAction}
           />
         </Container>
       </Layout>

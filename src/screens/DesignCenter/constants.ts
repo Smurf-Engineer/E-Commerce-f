@@ -19,5 +19,9 @@ export const DESIGN_CLEAR_ACTION = `${namespace}/DESIGN_CLEAR_ACTION`
 export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`
 export const SET_THEME_SELECTED_ACTION = `${namespace}/SET_THEME_SELECTED_ACTION`
 export const SET_STYLE_SELECTED_ACTION = `${namespace}/SET_STYLE_SELECTED_ACTION`
+
+export const OPEN_SHARE_MODAL = `${namespace}/OPEN_SHARE_MODAL`
 export const OPEN_SAVEDESIGN = `${namespace}/OPEN_SAVEDESIGN`
 export const SET_DESIGN_NAME = `${namespace}/SET_DESIGN_NAME`
+
+export const SAVE_DESIGN_ID = `${namespace}/SAVE_DESIGN_ID`

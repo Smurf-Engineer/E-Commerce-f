@@ -16,6 +16,7 @@ const Html = ({ content, state }: Props) => (
         )};`
       }}
     />
+    <script async={true} defer={true} src="//platform.twitter.com/widgets.js" />
     <script
       type="text/javascript"
       src="//staticw2.yotpo.com/Rnb6ShWsqfzkqYmFM5RuNHtDJvKIcsexNP7yvpUO/widget.js"

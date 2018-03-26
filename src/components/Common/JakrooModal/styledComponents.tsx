@@ -28,4 +28,11 @@ export const Logo = styled.img`
   margin-top: -25px;
   margin-bottom: 30px;
 `
-export const Title = styled.div``
+export const Title = styled.div`
+  margin-bottom: 20px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 27px;
+`

@@ -37,6 +37,10 @@ const routes = [
     name: 'home',
     exact: true,
     component: Home
+  },
+  {
+    path: '/designs/:id',
+    name: 'myDesigns'
   }
 ]
 
