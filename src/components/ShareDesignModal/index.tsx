@@ -53,7 +53,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
         method: 'share',
         href: designURL,
         display: 'popup',
-        quote: 'test'
+        quote: 'Check my awesome design!'
       },
       (response: any) => {}
     )
@@ -69,7 +69,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
 
   render() {
     const { formatMessage, open, requestClose, savedDesignId } = this.props
-    const designURL = `https://jakroo.com/designs/${savedDesignId}`
+    const designURL = `dev.jakroo.tailrecursive.co/${savedDesignId}`
 
     {
       // TODO: commented to hide share by mail Form
