@@ -1,19 +1,10 @@
 /**
  * FitWidget Test - Created by gustavomedina on 23/03/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import fitWidgetReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { FitWidget } from './index'
 
 describe(' FitWidget Screen', () => {
-  it('renders without exploding', () => {
-    const div = document.createElement('div')
-    // tslint:disable-next-line:no-empty
-    ReactDOM.render(<FitWidget />, div)
-  })
-  // Test redux actions
   it('Return the default state for unknow action', () => {
     let state = fitWidgetReducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)

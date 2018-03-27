@@ -2,6 +2,7 @@
  * Styled Components - Created by gustavomedina on 23/03/18.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
 
 export const Container = styled.div`
   background-color: #fff;
@@ -31,4 +32,13 @@ export const Sidebar = styled.aside`
 
 export const Main = styled.section`
   grid-area: main;
+`
+
+export const StyledLoginButton = styled(Button)`
+  border-radius: 0px;
+  width: 100%;
+  height: 50px;
+  border-color: #e61737;
+  background-color: #fff;
+  margin-bottom: 10px;
 `
