@@ -8,8 +8,6 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
-// TODO: uncoment when breadcrumb gets implemented
-// import Breadcrumb from 'antd/lib/breadcrumb'
 import Message from 'antd/lib/message'
 import AnimateHeight from 'react-animate-height'
 import { ReducersObject } from '../../store/rootReducer'
@@ -52,9 +50,6 @@ import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import { Product, QueryProps, ImageType } from '../../types/common'
-
-// TODO: uncomment when breadcrumb implemented
-// const { Item } = Breadcrumb
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -108,7 +103,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       setLoadingModel,
-      // loadingModel, TODO: uncomment loading model when loading bug gets fixed
       data: { product }
     } = this.props
     const { formatMessage } = intl
@@ -138,14 +132,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       ))
     }
 
-    /* TODO: hidden for the moment
-    const breadCrumb = (
-      <StyledBreadCrumb>
-        <Item>Men</Item>
-        <Item>Cycling</Item>
-        <Item>Tour</Item>
-      </StyledBreadCrumb>
-    ) */
     let productInfo
     if (product) {
       productInfo = (
@@ -290,16 +276,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     return (
       <Layout {...{ history, intl }}>
         <Container>
-          {/* breadCrumb   TODO: hidden for the moment*/}
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider
-                  onLoadModel={setLoadingModel}
-                  // TODO: remove commented loading when  loading 3D model gets fixed
-                  // loading={loadingModel}
-                  {...{ images }}
-                />
+                <ImagesSlider onLoadModel={setLoadingModel} {...{ images }} />
               </ImagePreview>
               <ProductData>
                 <TitleRow>
@@ -307,9 +287,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                   </div>
-                  <CompareButton>
-                    {formatMessage(messages.compareLabe)}
-                  </CompareButton>
+                  <a href="https://www.jakroo.com/us/jersey-comparison.html">
+                    <CompareButton>
+                      {formatMessage(messages.compareLabe)}
+                    </CompareButton>
+                  </a>
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings

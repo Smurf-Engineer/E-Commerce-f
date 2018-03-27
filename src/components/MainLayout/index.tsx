@@ -26,7 +26,7 @@ interface Props {
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
-  openQuickViewAction: (open: number | null) => void
+  openQuickViewAction: (open: number, yotpoId: string | null) => void
   openLoginAction: (open: boolean) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
@@ -37,6 +37,7 @@ interface Props {
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
+  yotpoId: string
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -52,6 +53,7 @@ class MainLayout extends React.Component<Props, {}> {
       showSearchResults,
       searchParam,
       productId,
+      yotpoId,
       openLogin,
       openLoginAction,
       setRegionAction,
@@ -104,7 +106,7 @@ class MainLayout extends React.Component<Props, {}> {
         <QuickView
           open={!!productId}
           handleClose={this.onCloseModal}
-          {...{ productId, history }}
+          {...{ productId, history, yotpoId }}
         />
       </Layout>
     )
@@ -118,13 +120,13 @@ class MainLayout extends React.Component<Props, {}> {
     showSearchResultsAction(true)
   }
 
-  openQuickView = (id: number) => {
+  openQuickView = (id: number, yotpoId: string) => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(id)
+    openQuickViewAction(id, yotpoId)
   }
   onCloseModal = () => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(0)
+    openQuickViewAction(0, '')
   }
 }
 
