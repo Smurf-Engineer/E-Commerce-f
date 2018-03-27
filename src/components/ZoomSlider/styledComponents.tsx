@@ -19,6 +19,10 @@ export const Container = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     display: none;
   }
+
+  @media only screen and (max-width: 1366px) {
+    display: none;
+  }
 `
 
 export const Text = styled.div`
