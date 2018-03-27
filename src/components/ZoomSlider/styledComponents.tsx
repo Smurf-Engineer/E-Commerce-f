@@ -11,6 +11,18 @@ export const Container = styled.div`
   flex-direction: column;
   display: flex;
   align-items: center;
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    display: none;
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: none;
+  }
+
+  @media only screen and (max-width: 1366px) {
+    display: none;
+  }
 `
 
 export const Text = styled.div`

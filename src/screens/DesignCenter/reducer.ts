@@ -22,7 +22,8 @@ import {
   OPEN_SHARE_MODAL,
   OPEN_SAVEDESIGN,
   SET_DESIGN_NAME,
-  SAVE_DESIGN_ID
+  SAVE_DESIGN_ID,
+  COLOR_BLOCK_HOVERED_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -31,6 +32,7 @@ const colorsInit = fill(Array(5), '')
 export const initialState = fromJS({
   currentTab: 0,
   colorBlock: -1,
+  colorBlockHovered: -1,
   colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   palettes: [],
@@ -58,6 +60,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_COLOR_BLOCK_ACTION:
       return state.set('colorBlock', action.index)
+    case COLOR_BLOCK_HOVERED_ACTION:
+      return state.set('colorBlockHovered', action.index)
     case SET_COLOR_ACTION: {
       const { color } = action
       const colors = state.get('colors')

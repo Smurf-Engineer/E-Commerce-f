@@ -83,6 +83,7 @@ class Render3D extends PureComponent {
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
+    controls.enableKeys = false
     controls.minDistance = 150
     controls.maxDistance = 350
     controls.enableZoom = false

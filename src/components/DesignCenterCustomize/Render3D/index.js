@@ -50,13 +50,20 @@ class Render3D extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { colors } = this.props
-    const { colors: nextColors, styleColors } = nextProps
-    const isDifferent = isEqual(colors, nextColors)
-    if (!isDifferent) {
+    const { colors, colorBlockHovered: oldColorBlockHovered } = this.props
+    const { colors: nextColors, styleColors, colorBlockHovered } = nextProps
+
+    const colorsHasChange = isEqual(colors, nextColors)
+    if (!colorsHasChange) {
       const emptyColors = filter(nextColors, color => !!!color)
       const isResetingColors = emptyColors.length >= colors.length
       this.setupColors(isResetingColors ? styleColors : nextColors)
+      return
+    }
+
+    const colorBlockHasChange = oldColorBlockHovered !== colorBlockHovered
+    if (colorBlockHasChange) {
+      this.setupHoverColor(colorBlockHovered)
     }
   }
 
@@ -103,9 +110,13 @@ class Render3D extends PureComponent {
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
+    const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
+      .matches
+
+    controls.enableKeys = false
     controls.minDistance = 150
     controls.maxDistance = 350
-    controls.enableZoom = false
+    controls.enableZoom = isMobile
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -304,6 +315,20 @@ class Render3D extends PureComponent {
     })
   }
 
+  setupHoverColor = colorBlockHovered => {
+    const { colors } = this.props
+    let key = `customColor${colorBlockHovered + 1}`
+    if (
+      colorBlockHovered >= 0 &&
+      this.uniformsWithPhong &&
+      this.uniformsWithPhong[key]
+    ) {
+      this.uniformsWithPhong[key].value = new THREE.Color('#f2f2f2')
+    } else {
+      this.setupColors(colors)
+    }
+  }
+
   // TODO: WIP
   handleOnKeyDown = event => {
     let charCode = String.fromCharCode(event.which).toLowerCase()
@@ -364,7 +389,8 @@ class Render3D extends PureComponent {
       onPressQuickView,
       undoEnabled,
       redoEnabled,
-      loadingModel
+      loadingModel,
+      formatMessage
     } = this.props
 
     const menu = (
@@ -407,7 +433,7 @@ class Render3D extends PureComponent {
           </Button>
         </ButtonWrapper>
         <OptionsController
-          {...{ undoEnabled, redoEnabled }}
+          {...{ undoEnabled, redoEnabled, formatMessage }}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnClickReset}

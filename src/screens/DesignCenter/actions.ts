@@ -21,7 +21,8 @@ import {
   OPEN_SHARE_MODAL,
   OPEN_SAVEDESIGN,
   SET_DESIGN_NAME,
-  SAVE_DESIGN_ID
+  SAVE_DESIGN_ID,
+  COLOR_BLOCK_HOVERED_ACTION
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -41,6 +42,11 @@ export const setCurrentTabAction = (index: number): AnyAction => ({
 
 export const setColorBlockAction = (index: number): AnyAction => ({
   type: SET_COLOR_BLOCK_ACTION,
+  index
+})
+
+export const setHoverColorBlockAction = (index: number): AnyAction => ({
+  type: COLOR_BLOCK_HOVERED_ACTION,
   index
 })
 
