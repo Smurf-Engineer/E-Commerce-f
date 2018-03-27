@@ -134,5 +134,8 @@
   "components.SaveDesign.invalidNameMessage": "Invalid design name",
   "components.SaveDesign.saveSuccess": "Design saved",
   "components.SaveDesign.save": "Save",
-  "components.SaveDesign.invalidUser": "You must be logged in to save designs."
+  "components.SaveDesign.invalidUser": "You must be logged in to save designs.",
+  "components.OptionsController.undo": "Undo",
+  "components.OptionsController.redo": "Redo",
+  "components.OptionsController.reset": "Reset"
 }

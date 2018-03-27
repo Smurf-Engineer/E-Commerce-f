@@ -9,8 +9,10 @@ describe('<OptionsController />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const testFunction = () => {}
+    const testFormat = (message: any) => 'test'
     ReactDOM.render(
       <OptionsController
+        formatMessage={testFormat}
         undoEnabled={false}
         redoEnabled={false}
         onClickUndo={testFunction}

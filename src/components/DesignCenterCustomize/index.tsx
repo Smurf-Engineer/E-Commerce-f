@@ -32,6 +32,7 @@ interface Props {
   onPressQuickView: () => void
   onOpenSaveDesign: (open: boolean) => void
   onHoverColorBlock: (index: number) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const DesignCenterCustomize = ({
@@ -58,7 +59,8 @@ const DesignCenterCustomize = ({
   redoEnabled,
   swipingView,
   onOpenSaveDesign,
-  onHoverColorBlock
+  onHoverColorBlock,
+  formatMessage
 }: Props) => {
   return (
     <Container>
@@ -93,7 +95,8 @@ const DesignCenterCustomize = ({
             onPressQuickView,
             undoEnabled,
             redoEnabled,
-            onOpenSaveDesign
+            onOpenSaveDesign,
+            formatMessage
           }}
         />
       ) : null}

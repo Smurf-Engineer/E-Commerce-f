@@ -176,6 +176,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 paletteName,
                 palettes
               }}
+              formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}

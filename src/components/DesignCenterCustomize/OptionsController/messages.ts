@@ -5,8 +5,16 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.OptionsController.tittle',
-    defaultMessage: 'OptionsController'
+  undo: {
+    id: 'components.OptionsController.undo',
+    defaultMessage: 'Undo'
+  },
+  redo: {
+    id: 'components.OptionsController.redo',
+    defaultMessage: 'Redo'
+  },
+  reset: {
+    id: 'components.OptionsController.reset',
+    defaultMessage: 'Reset'
   }
 })

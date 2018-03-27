@@ -6,6 +6,7 @@ import Tooltip from 'antd/lib/tooltip/'
 import undoIcon from '../../../assets/Undo.svg'
 import redoIcon from '../../../assets/Redo.svg'
 import resetIcon from '../../../assets/Reset.svg'
+import messages from './messages'
 // TODO: Waiting for client definition
 // import blankIcon from '../../../assets/Blank.svg'
 import {
@@ -22,6 +23,7 @@ interface Props {
   onClickRedo: () => void
   onClickReset: () => void
   onClickClear: () => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const OptionsController = ({
@@ -30,7 +32,8 @@ const OptionsController = ({
   onClickUndo,
   onClickRedo,
   onClickReset,
-  onClickClear
+  onClickClear,
+  formatMessage
 }: Props) => {
   const handleUndoClick = () => {
     if (undoEnabled) {
@@ -47,20 +50,20 @@ const OptionsController = ({
   return (
     <OptionsContainer>
       <Options>
-        <Tooltip placement="right" title="Undo">
+        <Tooltip placement="right" title={formatMessage(messages.undo)}>
           <OptionButton onClick={handleUndoClick}>
             <img src={undoIcon} />
           </OptionButton>
         </Tooltip>
         <Divider />
-        <Tooltip placement="right" title="Redo">
+        <Tooltip placement="right" title={formatMessage(messages.redo)}>
           <OptionButton onClick={handleRedoClick}>
             <img src={redoIcon} />
           </OptionButton>
         </Tooltip>
       </Options>
       <Options>
-        <Tooltip placement="right" title="Reset">
+        <Tooltip placement="right" title={formatMessage(messages.reset)}>
           <OptionButton onClick={onClickReset} withMargin={true}>
             <img src={resetIcon} />
           </OptionButton>

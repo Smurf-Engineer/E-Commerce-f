@@ -389,7 +389,8 @@ class Render3D extends PureComponent {
       onPressQuickView,
       undoEnabled,
       redoEnabled,
-      loadingModel
+      loadingModel,
+      formatMessage
     } = this.props
 
     const menu = (
@@ -432,7 +433,7 @@ class Render3D extends PureComponent {
           </Button>
         </ButtonWrapper>
         <OptionsController
-          {...{ undoEnabled, redoEnabled }}
+          {...{ undoEnabled, redoEnabled, formatMessage }}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnClickReset}
