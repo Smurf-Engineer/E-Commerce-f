@@ -31,6 +31,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
   colorBlock: number
+  colorBlockHovered: number
   palettes: Palette[]
   paletteName: string
   colors: string[]
@@ -48,6 +49,7 @@ interface Props extends RouteComponentProps<any> {
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
+  setHoverColorBlockAction: (index: number) => void
   setColorAction: (color: string) => void
   setPaletteAction: (colors: string[]) => void
   setDesignNameAction: (name: string) => void
@@ -100,9 +102,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       history,
       currentTab,
       setColorBlockAction,
+      setHoverColorBlockAction,
       setColorAction,
       setPaletteAction,
       colorBlock,
+      colorBlockHovered,
       setPaletteNameAction,
       paletteName,
       palettes,
@@ -158,11 +162,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <StyleTab onSelectStyle={setStyleAction} />
+              {currentTab === 1 && <StyleTab onSelectStyle={setStyleAction} />}
             </div>
             <CustomizeTab
               {...{
                 colorBlock,
+                colorBlockHovered,
                 colors,
                 loadingModel,
                 currentTab,
@@ -174,6 +179,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}
+              onHoverColorBlock={setHoverColorBlockAction}
               onSelectColor={setColorAction}
               onSelectPalette={setPaletteAction}
               onChangePaletteName={setPaletteNameAction}

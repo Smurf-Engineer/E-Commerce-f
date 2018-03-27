@@ -9,6 +9,7 @@ import { Container } from './styledComponents'
 
 interface Props {
   colorBlock: number
+  colorBlockHovered: number
   paletteName: string
   palettes: Palette[]
   colors: string[]
@@ -30,11 +31,13 @@ interface Props {
   onClearAction: () => void
   onPressQuickView: () => void
   onOpenSaveDesign: (open: boolean) => void
+  onHoverColorBlock: (index: number) => void
 }
 
 const DesignCenterCustomize = ({
   onSelectColorBlock,
   colorBlock,
+  colorBlockHovered,
   onSelectColor,
   onSelectPalette,
   onChangePaletteName,
@@ -54,7 +57,8 @@ const DesignCenterCustomize = ({
   undoEnabled,
   redoEnabled,
   swipingView,
-  onOpenSaveDesign
+  onOpenSaveDesign,
+  onHoverColorBlock
 }: Props) => {
   return (
     <Container>
@@ -62,7 +66,9 @@ const DesignCenterCustomize = ({
         {...{
           palettes,
           colorBlock,
+          colorBlockHovered,
           onSelectColorBlock,
+          onHoverColorBlock,
           onSelectColor,
           colors,
           styleColors,
@@ -76,6 +82,7 @@ const DesignCenterCustomize = ({
         <Render3D
           {...{
             colors,
+            colorBlockHovered,
             styleColors,
             onLoadModel,
             loadingModel,

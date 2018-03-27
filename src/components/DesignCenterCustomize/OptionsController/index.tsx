@@ -2,10 +2,12 @@
  * OptionsController Component - Created by david on 05/03/18.
  */
 import * as React from 'react'
+import Tooltip from 'antd/lib/tooltip/'
 import undoIcon from '../../../assets/Undo.svg'
 import redoIcon from '../../../assets/Redo.svg'
 import resetIcon from '../../../assets/Reset.svg'
-import blankIcon from '../../../assets/Blank.svg'
+// TODO: Waiting for client definition
+// import blankIcon from '../../../assets/Blank.svg'
 import {
   OptionsContainer,
   Options,
@@ -45,24 +47,31 @@ const OptionsController = ({
   return (
     <OptionsContainer>
       <Options>
-        <OptionButton onClick={handleUndoClick}>
-          <img src={undoIcon} />
-        </OptionButton>
+        <Tooltip placement="right" title="Undo">
+          <OptionButton onClick={handleUndoClick}>
+            <img src={undoIcon} />
+          </OptionButton>
+        </Tooltip>
         <Divider />
-        <OptionButton onClick={handleRedoClick}>
-          <img src={redoIcon} />
-        </OptionButton>
+        <Tooltip placement="right" title="Redo">
+          <OptionButton onClick={handleRedoClick}>
+            <img src={redoIcon} />
+          </OptionButton>
+        </Tooltip>
       </Options>
       <Options>
-        <OptionButton onClick={onClickReset} withMargin={true}>
-          <img src={resetIcon} />
-        </OptionButton>
+        <Tooltip placement="right" title="Reset">
+          <OptionButton onClick={onClickReset} withMargin={true}>
+            <img src={resetIcon} />
+          </OptionButton>
+        </Tooltip>
       </Options>
+      {/* // TODO: Waiting for client definition
       <Options>
         <OptionButton onClick={onClickClear}>
           <img src={blankIcon} />
         </OptionButton>
-      </Options>
+     </Options> */}
     </OptionsContainer>
   )
 }

@@ -135,6 +135,6 @@ void main() {
   #include <dithering_fragment>
 
 }
-`;
+`
 
-export default fragment;
+export default fragment
