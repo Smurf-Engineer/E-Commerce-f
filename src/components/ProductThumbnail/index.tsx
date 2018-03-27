@@ -27,7 +27,7 @@ interface Props {
   yotpoId: string
   history: any
   onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number) => void
+  onPressQuickView: (id: number, yotpoId: string) => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
@@ -66,8 +66,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handleOnPressQuickView = () => {
-    const { onPressQuickView, id } = this.props
-    onPressQuickView(id)
+    const { onPressQuickView, id, yotpoId } = this.props
+    onPressQuickView(id, yotpoId)
   }
 
   handlePressThumbnail = () => {

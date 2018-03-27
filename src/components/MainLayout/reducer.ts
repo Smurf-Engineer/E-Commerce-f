@@ -13,6 +13,7 @@ export const initialState = fromJS({
   searchParam: '',
   showSearchResults: false,
   productId: 0,
+  yotpoId: '',
   openLogin: false,
   user: {}
 })
@@ -24,7 +25,7 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case SHOW_HEADER_SEARCH_RESULTS:
       return state.set('showSearchResults', action.show)
     case OPEN_QUICKVIEW_ACTION:
-      return state.set('productId', action.id)
+      return state.merge({ productId: action.id, yotpoId: action.yotpoId })
     case OPEN_LOGIN_MODAL:
       return state.set('openLogin', action.open)
     case SAVE_USER_TO_LOCAL: {

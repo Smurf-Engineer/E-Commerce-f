@@ -58,6 +58,7 @@ describe('<QuickView />', () => {
         handleClose={() => {}}
         productId={0}
         history={{}}
+        yotpoId=""
       />,
       div
     )
