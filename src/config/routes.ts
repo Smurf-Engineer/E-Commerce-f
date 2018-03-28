@@ -1,4 +1,5 @@
 /* Routes */
+import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
@@ -8,6 +9,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/fit-widget',
+    name: 'fitWidget',
+    component: FitWidget
+  },
   {
     path: '/designs',
     name: 'designs',

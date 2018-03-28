@@ -79,7 +79,7 @@ class FitInfo extends React.Component<Props, {}> {
 
   gotoGetFittedPage = () => {
     const { history } = this.props
-    history.push('/get-fitted')
+    history.push('/fit-widget')
   }
 
   render() {

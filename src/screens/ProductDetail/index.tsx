@@ -319,6 +319,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 </AnimateHeight>
                 {productInfo}
               </ProductData>
+              <FitInfo
+                open={openFitInfo}
+                requestClose={this.closeFitInfoModal}
+                productId={productId}
+                history={history}
+              />
             </Content>
           )}
           <JakrooWidgetsTitle>
@@ -326,12 +332,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           </JakrooWidgetsTitle>
           <YotpoReviews {...{ yotpoId }} />
         </Container>
-        <FitInfo
-          open={openFitInfo}
-          requestClose={this.closeFitInfoModal}
-          productId={productId}
-          history={history}
-        />
       </Layout>
     )
   }
@@ -377,7 +377,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   gotoGetFittedPage = () => {
     const { history } = this.props
-    history.push('/get-fitted')
+    history.push('/fit-widget')
   }
 
   addtoCart = () => {
