@@ -204,9 +204,9 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   gotoCustomize = () => {
-    const { history, handleClose } = this.props
+    const { history, handleClose, productId } = this.props
     handleClose()
-    history.push('/design-center')
+    history.push(`/design-center?id=${productId}`)
   }
 
   gotoProductPage = () => {

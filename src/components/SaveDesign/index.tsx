@@ -19,6 +19,7 @@ import {
 import { saveDesignName } from './data'
 
 interface Props {
+  productId: string
   open: boolean
   designName: string
   colors: string[]
@@ -44,6 +45,7 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   handleSaveName = async (evt: React.MouseEvent<EventTarget>) => {
     const {
+      productId,
       designName,
       colors,
       formatMessage,
@@ -65,9 +67,11 @@ export class SaveDesign extends React.Component<Props, {}> {
     try {
       const designObj = {
         name: designName,
-        product_id: 1,
+        product_id: productId,
+        // TODO: REMOVE ID
         user_id: 1
       }
+
       const response = await saveDesignNameMutation({
         variables: { design: designObj, colors }
       })

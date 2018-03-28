@@ -16,11 +16,13 @@ describe('<SaveDesign />', () => {
     const closeSaveDesignModal = () => {}
     const setDesignNameAction = () => {}
     const afterSaveDesign = () => {}
+    const productId = ''
     const div = document.createElement('div')
     const format = (message: string) => 'string'
     ReactDOM.render(
       <IntlProvider {...props}>
         <SaveDesign
+          {...{ open, productId }}
           open={open}
           requestClose={closeSaveDesignModal}
           formatMessage={format}

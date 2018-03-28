@@ -38,9 +38,16 @@ interface Props {
   currentLanguage: number
   currentCurrency: number
   yotpoId: string
+  hideBottomHeader: boolean
+  hideFooter: boolean
 }
 
 class MainLayout extends React.Component<Props, {}> {
+  static defaultProps = {
+    hideBottomHeader: false,
+    hideFooter: false
+  }
+
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
     setSearchParam(value)
@@ -62,13 +69,14 @@ class MainLayout extends React.Component<Props, {}> {
       currentCurrency,
       intl,
       logoutAction,
-      saveUserToLocal
+      saveUserToLocal,
+      hideBottomHeader,
+      hideFooter
     } = this.props
     const { location: { pathname } } = history
-    const hideBottom = pathname === '/design-center'
     return (
       <Layout>
-        <Header {...{ hideBottom }}>
+        <Header {...{ hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
@@ -82,10 +90,10 @@ class MainLayout extends React.Component<Props, {}> {
               currentCurrency,
               openLogin,
               openLoginAction,
-              hideBottom,
               logoutAction,
               saveUserToLocal
             }}
+            hideBottom={hideBottomHeader}
           />
         </Header>
         <SearchResults
@@ -97,7 +105,7 @@ class MainLayout extends React.Component<Props, {}> {
           {...{ history }}
         />
         <Content>{children}</Content>
-        {!hideBottom && (
+        {!hideFooter && (
           <Footer>
             <ContactAndLinks formatMessage={intl.formatMessage} />
             <SocialMedia />
