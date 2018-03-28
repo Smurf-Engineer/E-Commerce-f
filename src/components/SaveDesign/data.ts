@@ -7,6 +7,7 @@ export const saveDesignName = graphql(
       saveDesign(design: $design, colors: $colors) {
         id
         name
+        shortId: short_id
       }
     }
   `,

@@ -370,8 +370,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   gotoCustomize = () => {
-    const { history } = this.props
-    history.push('/design-center')
+    const { history, data: { product } } = this.props
+    const productId = get(product, 'id')
+    history.push(`/design-center?id=${productId}`)
   }
 
   gotoGetFittedPage = () => {
