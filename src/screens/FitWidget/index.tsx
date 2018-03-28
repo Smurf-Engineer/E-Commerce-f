@@ -17,7 +17,9 @@ import {
   StyledContent,
   StyledContentInner,
   StyledSider,
-  StyledSiderInner
+  StyledSiderInner,
+  StyledList,
+  overStyle
 } from './styledComponents'
 import MainLayout from '../../components/MainLayout'
 
@@ -28,6 +30,7 @@ interface Props {
   history: any
 }
 
+// TODO: fix this data in functional component
 const mensages = [
   {
     id: 1,
@@ -59,11 +62,11 @@ export class FitWidget extends React.Component<Props, {}> {
     return (
       <MainLayout {...{ history, intl }}>
         <Container>
-          <Layout style={{ minHeight: '100vh' }}>
+          <Layout style={overStyle}>
             <Layout>
               <StyledContent>
                 <StyledContentInner>
-                  <ul style={{ background: '#fff', padding: '24px' }}>
+                  <StyledList>
                     {mensages.map(
                       (message, index) =>
                         message.type === 'server' ? (
@@ -74,7 +77,7 @@ export class FitWidget extends React.Component<Props, {}> {
                           </UserText>
                         )
                     )}
-                  </ul>
+                  </StyledList>
                 </StyledContentInner>
               </StyledContent>
             </Layout>

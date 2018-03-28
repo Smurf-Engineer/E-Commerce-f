@@ -83,3 +83,12 @@ export const StyledSiderInner = styled.div`
   font-weight: 60;
   line-height: 25px;
 `
+
+export const StyledList = styled.ul`
+  background: #fff;
+  padding: 24px;
+`
+
+export const overStyle = {
+  minHeight: '100vh'
+}
