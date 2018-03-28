@@ -4,7 +4,9 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  margin-bottom: 10px;
+`
 
 export const Text = styled.div`
   color: #fff;
@@ -27,7 +29,7 @@ export const ButtonRow = styled.div`
 `
 
 export const Available = styled.div`
-  margin: 10px 0;
+  margin-top: 10px;
 `
 
 export const SliderPage = styled.div`

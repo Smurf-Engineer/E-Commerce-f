@@ -74,7 +74,6 @@ export const Description = styled.div`
 
 export const ButtonsRow = styled.div`
   display: flex;
-  justify-content: space-around;
   margin: 20px 0 25px;
 
   .ant-btn {
@@ -176,7 +175,6 @@ export const QuestionSpan = styled.span`
 `
 export const AddToCartRow = styled.div`
   display: flex;
-  justify-content: flex-end;
 `
 
 export const AddToCartButton = styled(Button)`
@@ -203,3 +201,48 @@ export const JakrooWidgetsTitle = styled.div`
 `
 
 export const YotpoImageSlider = styled.div``
+
+export const Downloadtemplate = styled.div`
+  height: 19px;
+  color: #8c8c8c;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  line-height: 19px;
+  margin-left: 10px;
+`
+
+export const DownloadTemplateContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding-right: 20px;
+`
+
+export const AvailableLabel = styled.div`
+  margin-top: 15px;
+  height: 22px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-style: italic;
+  line-height: 22px;
+`
+
+export const DownloadImg = styled.img`
+  &:hover {
+    cursor: pointer;
+  }
+`
+export const DetailsList = styled.ul`
+  padding: 10px 0 0 20px;
+`
+
+export const DetailsListItem = styled.li`
+  margin-bottom: 15px;
+`
+export const ProductAvailableColor = styled.img`
+  margin-right: 15px;
+  &:hover {
+    cursor: pointer;
+  }
+`

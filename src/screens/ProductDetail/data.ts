@@ -26,7 +26,7 @@ export const GetProductsByIdQuery = gql`
       size_range
       fitStyles {
         id
-        description
+        name: description
       }
       collections
       isTopProduct
@@ -45,6 +45,8 @@ export const GetProductsByIdQuery = gql`
         total: total_reviews
         averageScore: average_score
       }
+      retailMen: men_retail
+      retailWomen: women_retail
     }
   }
 `
