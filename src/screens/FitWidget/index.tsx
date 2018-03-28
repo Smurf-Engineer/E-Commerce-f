@@ -9,7 +9,7 @@ import { ReducersObject } from '../../store/rootReducer'
 import * as fitWidgetActions from './actions'
 import { messageAdded } from './data'
 import { StyledLoginButton } from './styledComponents'
-// import { QueryProps } from '../../types/common'
+import { QueryProps } from '../../types/common'
 // import messages from '../../components/FacebookGmailLogin/messages'
 
 const { SubMenu } = Menu
@@ -20,23 +20,88 @@ const { Content, Sider } = Layout
 //   text: string
 // }
 
-// interface Data extends QueryProps {
-//   regionsResult: MessageResult
-// }
+interface Data extends QueryProps {
+  // regionsResult: MessageResult
+}
 interface Props {
   subscriptionMessage: (variables: {}) => void
+  data: Data
 }
 
 export class FitWidget extends React.Component<Props, {}> {
+  handleClick = async (evt: React.MouseEvent<EventTarget>) => {
+    // const { data } = this.props
+    // console.log('click')
+    // const response = await data.subscribeToMore({
+    //   document: messageAdded,
+    //   variables: {},
+    //   updateQuery: (prev: any, {subscriptionData}: any) => {
+    //     if (!subscriptionData.data) {
+    //       return prev
+    //     }
+    //     const newMessage = subscriptionData.data.messageAdded
+    //   }
+    // });
+  }
+
+  componentDidMount() {
+    console.log('------------data--------------')
+    console.log(this.props.data)
+    console.log('--------------------------')
+    if (this.props.data && this.props.data.subscribeToMore) {
+      this.props.data.subscribeToMore({
+        document: messageAdded,
+        variables: {},
+        updateQuery: (prev: any, { subscriptionData }: any) => {
+          console.log('------------subscriptionData--------------')
+          console.log(subscriptionData)
+          console.log('--------------------------')
+          if (!subscriptionData.data) {
+            return prev
+          }
+          const newMessage = subscriptionData.data.messageAdded
+          console.log('------------newMessage--------------')
+          console.log(newMessage)
+          console.log('--------------------------')
+          return newMessage
+        }
+      })
+    }
+  }
   render() {
+    // const { data } = this.props
+    // console.log('------------data--------------')
+    // console.log(data)
+    // console.log('--------------------------')
+
+    // if (!data.loading && data.subscribeToMore) {
+    //   data.subscribeToMore({
+    //     document: messageAdded,
+    //     variables: {},
+    //     updateQuery: (prev: any, { subscriptionData }: any) => {
+    //       console.log('------------subscriptionData--------------')
+    //       console.log(subscriptionData)
+    //       console.log('--------------------------')
+    //       if (!subscriptionData.data) {
+    //         return prev
+    //       }
+    //       const newMessage = subscriptionData.data.messageAdded
+    //       console.log('------------newMessage--------------')
+    //       console.log(newMessage)
+    //       console.log('--------------------------')
+    //       return newMessage
+    //     }
+    //   })
+    // }
+
     return (
       <Layout style={{ minHeight: '100vh' }}>
         <Layout>
           <Content style={{ margin: '16px 16px', height: '100%' }}>
             <div style={{ padding: 24, background: '#fff', height: '100%' }}>
-              Canobbio is a cat.
+              new messages.
+              <StyledLoginButton onClick={this.handleClick} />
             </div>
-            <StyledLoginButton />
           </Content>
         </Layout>
         <Sider width={300} style={{ background: '#fff', minHeight: '100vh' }}>
@@ -92,8 +157,13 @@ export class FitWidget extends React.Component<Props, {}> {
 const mapStateToProps = ({ fitWidget }: ReducersObject) => fitWidget.toJS()
 
 const FitWidgetEnhance = compose(
-  connect(mapStateToProps, { ...fitWidgetActions }),
-  messageAdded
+  connect(mapStateToProps, { ...fitWidgetActions })
+  // graphql<Data>(messageAdded, {
+  //   options: () => ({
+  //     fetchPolicy: 'network-only',
+  //     variables: {}
+  //   })
+  // })
 )(FitWidget)
 
 export default FitWidgetEnhance

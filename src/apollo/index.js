@@ -4,8 +4,8 @@ import { createHttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 // import { setContext } from 'apollo-link-context'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { SubscriptionClient } from 'subscriptions-transport-ws'
-import * as WebSocket from 'ws'
+import { SubscriptionClient } from 'subscriptions-transport-ws/dist/client'
+import WebSocket from 'ws'
 import fetch from 'node-fetch'
 
 // TODO: implement
@@ -19,16 +19,16 @@ import fetch from 'node-fetch'
 //   }
 // })
 
-const hasSubscriptionOperation = ({ query }: any) => {
+const hasSubscriptionOperation = ({ query }) => {
   return query.definitions.some(
-    (kind: any, operation: any) =>
+    (kind, operation) =>
       kind === 'OperationDefinition' && operation === 'subscription'
   )
 }
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4040/api/graphql',
-  fetch: fetch as any
+  fetch: fetch
 })
 
 // const wsLink = new WebSocketLink({
@@ -40,7 +40,7 @@ const httpLink = createHttpLink({
 // })
 
 const wsClient = new SubscriptionClient(
-  `ws://localhost:4040/api/subscriptions`,
+  `ws://localhost:4041/subscriptions`,
   {
     reconnect: true
   },
@@ -49,11 +49,7 @@ const wsClient = new SubscriptionClient(
 
 const webSocketLink = new WebSocketLink(wsClient)
 
-const link = ApolloLink.split(
-  hasSubscriptionOperation,
-  webSocketLink as any,
-  httpLink
-)
+const link = ApolloLink.split(hasSubscriptionOperation, webSocketLink, httpLink)
 
 export const configureServerClient = () => {
   const client = new ApolloClient({
@@ -65,11 +61,11 @@ export const configureServerClient = () => {
   return client
 }
 
-declare global {
-  interface Window {
-    __APOLLO_STATE__: any
-  }
-}
+// declare global {
+//   interface Window {
+//     __APOLLO_STATE__: any
+//   }
+// }
 export const configureBrowserClient = () => {
   const client = new ApolloClient({
     ssrForceFetchDelay: 100,

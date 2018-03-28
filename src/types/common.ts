@@ -10,6 +10,7 @@ export interface QueryProps {
   fetchMore: any
   refetch?: any
   updateQuery?: any
+  subscribeToMore?: (options: any) => () => void
 }
 
 export interface Action {
