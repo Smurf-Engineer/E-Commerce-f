@@ -2,21 +2,19 @@
  * Designs Screen - Created by david on 27/03/18.
  */
 import * as React from 'react'
-import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import get from 'lodash/get'
 import withLoading from '../../components/WithLoadingData/'
 import Header from '../../components/DesignCenterHeader'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { compose, graphql } from 'react-apollo'
-import Info from '../../components/DesignCenterInfo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import Layout from '../../components/MainLayout'
 import Render3D from './Render3D'
 import { ReducersObject } from '../../store/rootReducer'
 import * as designsActions from './actions'
-import messages from './messages'
 import { styleQuery } from './data'
 import { QueryProps } from '../../types/common'
 import quickView from '../../assets/quickview.svg'
@@ -53,7 +51,7 @@ export class Designs extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, data: { loading, error, design } } = this.props
+    const { intl, history, data: { error, design } } = this.props
     const productName = get(design, 'product.name')
     const colors = get(design, 'colors')
 

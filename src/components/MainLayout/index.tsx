@@ -73,7 +73,6 @@ class MainLayout extends React.Component<Props, {}> {
       hideBottomHeader,
       hideFooter
     } = this.props
-    const { location: { pathname } } = history
     return (
       <Layout>
         <Header {...{ hideBottomHeader }}>

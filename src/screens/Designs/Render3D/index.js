@@ -124,7 +124,7 @@ class Render3D extends PureComponent {
 
           const customColors = {}
           let i = 0
-          for (const color of colors) {
+          for (const { color } of colors) {
             customColors[`customColor${i + 1}`] = {
               type: 'c',
               value: new THREE.Color(color)
@@ -333,21 +333,11 @@ class Render3D extends PureComponent {
         </Dropdown>
         <BottomButtons>
           <ButtonWrapper>
-            <Button>
-              <FormattedMessage {...messages.addToTeam} />
-            </Button>
-          </ButtonWrapper>
-          <ButtonWrapper>
             <Button type="primary">
               <FormattedMessage {...messages.addToCart} />
             </Button>
           </ButtonWrapper>
         </BottomButtons>
-        <ButtonWrapperRight>
-          <ButtonRight type="primary">
-            <FormattedMessage {...messages.keepShoping} />
-          </ButtonRight>
-        </ButtonWrapperRight>
       </Container>
     )
   }
