@@ -25,7 +25,7 @@ import {
   ButtonRight,
   ButtonWrapperRight
 } from './styledComponents'
-import { jerseyTextures, viewPositions } from './config'
+import { jerseyTextures } from './config'
 import arrowDown from '../../../assets/downarrow.svg'
 import messages from './messages'
 
