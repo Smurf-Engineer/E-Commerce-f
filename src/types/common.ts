@@ -73,6 +73,8 @@ export interface Product {
   fitStyles: FitStyle[]
   genders: Filter[]
   bodyChartId: number
+  retailMen: boolean
+  retailWomen: boolean
 }
 
 export interface ProductReviews {

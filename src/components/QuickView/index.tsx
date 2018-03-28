@@ -91,6 +91,7 @@ export class QuickView extends React.Component<Props, State> {
         productImages={product ? product.images : ({} as ImageType)}
         available={5}
         gotoCustomize={this.gotoCustomize}
+        isRetail={(product.retailMen && product.retailWomen) || false}
       />
     )
 

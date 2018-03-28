@@ -47,7 +47,9 @@ describe('<QuickView />', () => {
             name: ''
           }
         ],
-        bodyChartId: 0
+        bodyChartId: 0,
+        retailMen: false,
+        retailWomen: false
       },
       fetchMore: () => {}
     }
