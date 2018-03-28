@@ -78,7 +78,7 @@ export const ModelType = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
-  top: 18px;
+  top: -24px;
   right: 26px;
 `
 

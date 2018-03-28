@@ -12,7 +12,7 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import Layout from '../../components/MainLayout'
-import Render3D from './Render3D'
+import ThreeD from './Render3D'
 import { ReducersObject } from '../../store/rootReducer'
 import * as designsActions from './actions'
 import { styleQuery } from './data'
@@ -36,6 +36,9 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
   openQuickViewAction: (index: number) => void
+  loadingModel: boolean
+  // Redux actions
+  setLoadingAction: (loading: boolean) => void
 }
 
 export class Designs extends React.Component<Props, {}> {
@@ -71,13 +74,7 @@ export class Designs extends React.Component<Props, {}> {
               <Model>{productName}</Model>
               <QuickView onClick={this.handleOpenQuickView} src={quickView} />
             </Row>
-            <Render3D
-              {...{
-                colors
-              }}
-              // onLoadModel={() => {}}
-              // loadingModel={false}
-            />
+            <ThreeD {...{ colors }} />
           </Container>
         )}
       </Layout>

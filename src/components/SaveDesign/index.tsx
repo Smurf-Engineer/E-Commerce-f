@@ -78,9 +78,9 @@ export class SaveDesign extends React.Component<Props, {}> {
       const data = get(response, 'data.saveDesign', false)
 
       if (data) {
-        const { id: designId } = data
+        const { shortId } = data
         message.success(formatMessage(messages.saveSuccess))
-        afterSaveDesign(designId)
+        afterSaveDesign(shortId)
         requestClose()
       }
     } catch (error) {

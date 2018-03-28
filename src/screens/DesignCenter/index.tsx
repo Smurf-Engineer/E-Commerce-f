@@ -75,6 +75,12 @@ export class DesignCenter extends React.Component<Props, {}> {
     clearStoreAction()
   }
 
+  handleAfterSaveDesign = (id: number) => {
+    const { saveDesignIdAction } = this.props
+    saveDesignIdAction(id)
+    this.handleOnSelectTab(3)
+  }
+
   handleOpenQuickView = () => {
     const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
@@ -134,7 +140,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       openShareModalAction,
       openSaveDesignAction,
       setDesignNameAction,
-      saveDesignIdAction,
       savedDesignId
     } = this.props
 
@@ -225,7 +230,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
-            afterSaveDesign={saveDesignIdAction}
+            afterSaveDesign={this.handleAfterSaveDesign}
           />
         </Container>
       </Layout>

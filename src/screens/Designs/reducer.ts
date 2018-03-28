@@ -2,17 +2,17 @@
  * Designs Reducer - Created by david on 27/03/18.
  */
 import { fromJS } from 'immutable'
-import { DEFAULT_ACTION } from './constants'
+import { SET_LOADING_ACTION } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
-  someKey: 'This is a value in the reducer'
+  loadingModel: false
 })
 
 const designsReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state.set('someKey', action.someValue)
+    case SET_LOADING_ACTION:
+      return state.set('loadingModel', action.isLoading)
     default:
       return state
   }

@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const styleQuery = gql`
-  query getStyle($designId: Int!) {
-    design: sharedDesign(designId: $designId) {
+  query getStyle($designId: String!) {
+    design: sharedDesignShortId(designId: $designId) {
       id
       name
       product {

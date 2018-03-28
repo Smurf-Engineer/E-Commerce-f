@@ -37,9 +37,11 @@ class Render3D extends PureComponent {
     showDragmessage: true,
     currentModel: 0,
     zoomValue: 0,
-    progress: 0
+    progress: 0,
+    // TODO: Temp fix use redux from parent
+    isLoading: false
   }
-  // TODO:  Refactor this code
+
   componentDidMount() {
     /* Renderer config */
     const { onLoadModel, colors } = this.props
@@ -82,10 +84,11 @@ class Render3D extends PureComponent {
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
+
     controls.enableKeys = false
     controls.minDistance = 150
     controls.maxDistance = 350
-    controls.enableZoom = false
+    controls.enableZoom = true
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -103,7 +106,7 @@ class Render3D extends PureComponent {
 
     mtlLoader.setPath('./models/')
     mtlLoader.load('Tour.mtl', materials => {
-      // onLoadModel(true)
+      this.handleOnLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.setMaterials(materials)
@@ -111,7 +114,7 @@ class Render3D extends PureComponent {
       objLoader.load(
         'Tour.obj',
         object => {
-          // onLoadModel(false)
+          this.handleOnLoadModel(false)
 
           // Materials
           /* Object material */
@@ -234,6 +237,8 @@ class Render3D extends PureComponent {
     this.container.removeChild(this.renderer.domElement)
   }
 
+  handleOnLoadModel = isLoading => this.setState({ loadingModel: isLoading })
+
   onProgress = xhr => {
     if (xhr.lengthComputable) {
       const progress = Math.round(xhr.loaded / xhr.total * 100)
@@ -273,33 +278,17 @@ class Render3D extends PureComponent {
     this.controls.update()
   }
 
-  setupColors = colors => {
-    let colorNumber = 1
-    colors.forEach(color => {
-      let key = `customColor${colorNumber}`
-      if (color && this.uniformsWithPhong) {
-        this.uniformsWithPhong[key].value = new THREE.Color(color)
-      }
-      colorNumber += 1
-    })
-  }
-
   handleOnChange3DModel = () => {}
 
-  handleOnChangeZoom = value => {
-    const zoomValue = value * 1.0 / 100
-    this.camera.zoom = zoomValue * 2
-    this.camera.updateProjectionMatrix()
-  }
-
   render() {
-    const { showDragmessage, currentView, zoomValue, progress } = this.state
     const {
-      onPressQuickView,
-      undoEnabled,
-      redoEnabled,
+      showDragmessage,
+      currentView,
+      zoomValue,
+      progress,
       loadingModel
-    } = this.props
+    } = this.state
+    const { onPressQuickView, undoEnabled, redoEnabled } = this.props
 
     const menu = (
       <Menu onClick={this.handleOnChange3DModel}>
