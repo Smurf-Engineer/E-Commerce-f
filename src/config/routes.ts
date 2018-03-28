@@ -1,4 +1,5 @@
 /* Routes */
+import Designs from '../screens/Designs'
 import ProductDetail from '../screens/ProductDetail'
 import ProductCatalog from '../screens/ProductCatalogue'
 import DesignCenter from '../screens/DesignCenter'
@@ -7,6 +8,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/designs',
+    name: 'designs',
+    component: Designs
+  },
   {
     path: '/product',
     name: 'productDetail',
@@ -37,10 +43,6 @@ const routes = [
     name: 'home',
     exact: true,
     component: Home
-  },
-  {
-    path: '/designs/:id',
-    name: 'myDesigns'
   }
 ]
 

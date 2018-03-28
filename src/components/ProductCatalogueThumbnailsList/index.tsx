@@ -138,9 +138,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     )
   }
 
-  gotoDesignCenter = () => {
+  gotoDesignCenter = (id: string) => {
     const { history } = this.props
-    history.push('/design-center')
+    history.push(`/design-center?id=${id}`)
   }
 
   handlePressQuickView = (id: number) => {

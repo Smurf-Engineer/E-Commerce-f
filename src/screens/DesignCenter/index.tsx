@@ -5,6 +5,7 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import queryString from 'query-string'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
 import { ReducersObject } from '../../store/rootReducer'
@@ -73,10 +74,19 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { clearStoreAction } = this.props
     clearStoreAction()
   }
+
+  handleAfterSaveDesign = (id: number) => {
+    const { saveDesignIdAction } = this.props
+    saveDesignIdAction(id)
+    this.handleOnSelectTab(3)
+  }
+
   handleOpenQuickView = () => {
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
-    // TODO: This id it's the same of the product
-    openQuickView(1)
+    openQuickView(productId)
   }
 
   handleOnPressBack = () => {
@@ -130,12 +140,15 @@ export class DesignCenter extends React.Component<Props, {}> {
       openShareModalAction,
       openSaveDesignAction,
       setDesignNameAction,
-      saveDesignIdAction,
       savedDesignId
     } = this.props
 
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const productId = queryParams.id || ''
+
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
           <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
@@ -210,13 +223,14 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
           </SwipeableViews>
           <SaveDesign
+            {...{ productId }}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             formatMessage={intl.formatMessage}
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
-            afterSaveDesign={saveDesignIdAction}
+            afterSaveDesign={this.handleAfterSaveDesign}
           />
         </Container>
       </Layout>
