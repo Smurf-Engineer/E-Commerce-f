@@ -15,7 +15,7 @@ interface State {
 
 class ZoomSlider extends React.PureComponent<Props, State> {
   state = {
-    value: 250
+    value: 50
   }
 
   handleOnChangeValue = (value: number) =>
@@ -25,7 +25,7 @@ class ZoomSlider extends React.PureComponent<Props, State> {
     const { value } = this.state
     const { onChangeZoom } = this.props
 
-    if (value < 150) {
+    if (value < 70) {
       this.setState(
         ({ value: prevValue }) => ({ value: prevValue + 2 }),
         () => onChangeZoom(this.state.value)
@@ -37,7 +37,7 @@ class ZoomSlider extends React.PureComponent<Props, State> {
     const { value } = this.state
     const { onChangeZoom } = this.props
 
-    if (value > 150) {
+    if (value > 20) {
       this.setState(
         ({ value: prevValue }) => ({ value: prevValue - 2 }),
         () => onChangeZoom(this.state.value)
@@ -51,8 +51,8 @@ class ZoomSlider extends React.PureComponent<Props, State> {
       <Container>
         <Button onClick={this.handleZoomIn}>+</Button>
         <Slider
-          min={150}
-          max={350}
+          min={25}
+          max={70}
           value={value}
           tooltip={false}
           orientation="vertical"
