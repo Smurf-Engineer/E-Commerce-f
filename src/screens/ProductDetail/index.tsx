@@ -376,7 +376,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   gotoGetFittedPage = () => {
     const { history } = this.props
-    history.push('/get-fitted')
+    history.push('/fit-widget')
   }
 
   addtoCart = () => {
