@@ -43,8 +43,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class Designs extends React.Component<Props, {}> {
   handleOnPressBack = () => {
-    const { history } = this.props
-    history.replace('/')
+    window.location.replace('/')
   }
 
   handleOpenQuickView = () => {

@@ -90,6 +90,11 @@ export class Home extends React.Component<Props, {}> {
     dispatch(setSearchParam(value))
   }
 
+  handleOnGetStarted = () => {
+    const { history } = this.props
+    history.push('/fit-widget')
+  }
+
   render() {
     const { history, showSearchResults, searchString, intl } = this.props
     const searchResults = searchString ? (
@@ -116,7 +121,10 @@ export class Home extends React.Component<Props, {}> {
                 <NeedHelp>
                   <FormattedMessage {...messages.helpFind} />
                 </NeedHelp>
-                <GetStartedButton size="large">
+                <GetStartedButton
+                  size="large"
+                  onClick={this.handleOnGetStarted}
+                >
                   <FormattedMessage {...messages.startButton} />
                 </GetStartedButton>
               </HelpContainer>
