@@ -152,7 +152,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     let productInfo
     if (product) {
-      const productDetails = product.details.split(',')
+      const productDetails =
+        product.details !== null ? product.details.split(',') : ['']
       const details = productDetails.map((detail, index) => (
         <DetailsListItem key={index}>{detail}</DetailsListItem>
       ))
