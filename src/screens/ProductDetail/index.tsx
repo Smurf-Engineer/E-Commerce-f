@@ -8,8 +8,9 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
+import map from 'lodash/map'
 import Message from 'antd/lib/message'
-import AnimateHeight from 'react-animate-height'
+// import AnimateHeight from 'react-animate-height'
 import { ReducersObject } from '../../store/rootReducer'
 import * as productDetailActions from './actions'
 import messages from './messages'
@@ -20,7 +21,7 @@ import {
   TitleRow,
   Title,
   Subtitle,
-  StyledInputNumber,
+  // StyledInputNumber,
   ImagePreview,
   ProductData,
   AvailablePrices,
@@ -38,9 +39,16 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
-  AddToCartRow,
-  AddToCartButton,
-  JakrooWidgetsTitle
+  // AddToCartRow,
+  // AddToCartButton,
+  JakrooWidgetsTitle,
+  Downloadtemplate,
+  DownloadTemplateContainer,
+  AvailableLabel,
+  DownloadImg,
+  DetailsList,
+  DetailsListItem,
+  ProductAvailableColor
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -50,6 +58,9 @@ import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import { Product, QueryProps, ImageType } from '../../types/common'
+import DownloadIcon from '../../assets/download.svg'
+import ChessColors from '../../assets/chess-colors.svg'
+import RedColor from '../../assets/colorred.svg'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -85,8 +96,9 @@ interface StateProps {
   showSpecs: boolean
 }
 
+// TODO: Remove sizes
 const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', '2XL']
-const fits = ['Slim', 'Standard', 'Relaxed']
+
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: true,
@@ -97,9 +109,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       intl,
       history,
-      showBuyNowSection,
+      // showBuyNowSection,
       selectedSize,
-      selectedGender,
+      // selectedGender,
       selectedFit,
       openFitInfo,
       setLoadingModel,
@@ -107,7 +119,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
-
     const productId = get(product, 'id')
     const name = get(product, 'name', '')
     const type = get(product, 'type', '')
@@ -116,13 +127,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
     const genders = get(product, 'genders', '')
-    const customizable = get(product, 'customizable', false)
+
+    const isRetail =
+      get(product, 'retailMen', false) && get(product, 'retailWomen', false)
     const images = get(product, 'images', {} as ImageType)
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
     const maleGender = get(genders, '0.gender', '')
     const femaleGender = get(genders, '1.gender', '')
+    const genderMessage =
+      femaleGender && maleGender
+        ? formatMessage(messages.unisexGenderLabel)
+        : formatMessage(messages.oneGenderLabel)
     let renderPrices
+    const fitStyles = get(product, 'fitStyles', [])
 
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
@@ -134,6 +152,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     let productInfo
     if (product) {
+      const productDetails =
+        product.details !== null ? product.details.split(',') : ['']
+      const details = productDetails.map((detail, index) => (
+        <DetailsListItem key={index}>{detail}</DetailsListItem>
+      ))
+
       productInfo = (
         <div>
           <ProductInfo
@@ -142,7 +166,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             showContent={showDetails}
             toggleView={this.toggleProductInfo}
           >
-            {product.details}
+            <DetailsList>{details}</DetailsList>
           </ProductInfo>
           <ProductInfo
             id="Specs"
@@ -184,17 +208,39 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </div>
     ))
 
-    const availableFits = fits.map((fit, index) => (
-      <div key={index}>
+    let availableFits
+    if (product) {
+      availableFits = fitStyles[0].id ? (
+        map(fitStyles, (fit: any, index: number) => (
+          <div key={index}>
+            <SectionButton
+              id={index.toString()}
+              selected={index === selectedFit}
+              onClick={this.handleSelectedFit}
+            >
+              {fit.name}
+            </SectionButton>
+          </div>
+        ))
+      ) : (
         <SectionButton
-          id={index.toString()}
-          selected={index === selectedFit}
+          id={'1'}
+          selected={1 === selectedFit}
           onClick={this.handleSelectedFit}
         >
-          {fit}
+          {'Standard'}
         </SectionButton>
-      </div>
-    ))
+      )
+    }
+    const colorsSection = (
+      <SectionRow>
+        <SectionTitle>{formatMessage(messages.ColorsLabel)}</SectionTitle>
+        <div>
+          <ProductAvailableColor src={ChessColors} />
+          <ProductAvailableColor src={RedColor} />
+        </div>
+      </SectionRow>
+    )
 
     const sizeSection = (
       <SectionRow>
@@ -221,47 +267,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const genderSection = (
-      <SectionRow>
-        <SectionTitle>{formatMessage(messages.genderLabel)}</SectionTitle>
-        <SectionButtonsContainer>
-          {maleGender && (
-            <SectionButton
-              id={'Men'}
-              onClick={this.handleSelectedGender}
-              selected={selectedGender === maleGender}
-            >
-              {maleGender}
-            </SectionButton>
-          )}
-          {femaleGender && (
-            <SectionButton
-              id="Women"
-              selected={selectedGender === femaleGender}
-              onClick={this.handleSelectedGender}
-            >
-              {femaleGender}
-            </SectionButton>
-          )}
-        </SectionButtonsContainer>
-      </SectionRow>
-    )
-
     const addToCartRow = (
-      <AddToCartRow>
-        <StyledInputNumber min={1} max={10} defaultValue={1} />
-        <AddToCartButton onClick={this.addtoCart}>
+      <ButtonsRow>
+        <StyledButton onClick={this.addtoCart}>
           {formatMessage(messages.addToCartButtonLabel)}
-        </AddToCartButton>
-      </AddToCartRow>
+        </StyledButton>
+      </ButtonsRow>
     )
     const collectionSelection = (
       <BuyNowOptions>
-        {genderSection}
-        {/* TODO: section hidden for lack of definition 
-        <SectionRow style={{ visibility: 'hidden' }}>
-          <SectionTitle>{formatMessage(messages.selectionLabel)}</SectionTitle>
-        </SectionRow>*/}
+        {colorsSection}
         {sizeSection}
         {fitSection}
         {addToCartRow}
@@ -280,6 +295,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             <Content>
               <ImagePreview>
                 <ImagesSlider onLoadModel={setLoadingModel} {...{ images }} />
+                <DownloadTemplateContainer>
+                  <a href="https://www.jakroo.com/download/Tour_Template.pdf">
+                    <DownloadImg src={DownloadIcon} />
+                  </a>
+                  <Downloadtemplate>
+                    {formatMessage(messages.downloadLabel)}
+                  </Downloadtemplate>
+                </DownloadTemplateContainer>
               </ImagePreview>
               <ProductData>
                 <TitleRow>
@@ -301,22 +324,23 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   totalReviews={get(reviewsScore, 'total', 0)}
                 />
                 <Description>{description}</Description>
+                <AvailableLabel>{genderMessage}</AvailableLabel>
                 <ButtonsRow>
-                  {customizable && (
+                  {!isRetail && (
                     <StyledButton onClick={this.gotoCustomize}>
                       {formatMessage(messages.customizeLabel)}
                     </StyledButton>
                   )}
-                  <StyledButton onClick={this.toggleBuyNowOptions}>
+                  {/* <StyledButton onClick={this.toggleBuyNowOptions}>
                     {formatMessage(messages.buyNowLabel)}
-                  </StyledButton>
+                </StyledButton>*/}
                 </ButtonsRow>
-                <AnimateHeight
+                {/* <AnimateHeight
                   duration={500}
                   height={showBuyNowSection ? 'auto' : 0}
-                >
-                  {collectionSelection}
-                </AnimateHeight>
+                >*/}
+                {isRetail && collectionSelection}
+                {/* </AnimateHeight>*/}
                 {productInfo}
               </ProductData>
               <FitInfo
@@ -393,10 +417,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
 const mapStateToProps = ({
   productDetail,
-  menuGender,
+  menu,
   menuSports
 }: ReducersObject) => {
-  return { ...productDetail.toJS(), ...menuGender.toJS(), ...menuSports.toJS() }
+  return { ...productDetail.toJS(), ...menu.toJS(), ...menuSports.toJS() }
 }
 
 type OwnProps = {

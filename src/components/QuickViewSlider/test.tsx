@@ -13,6 +13,7 @@ describe('<QuickViewSlider />', () => {
         productImages={{ front: '', back: '', left: '', right: '' }}
         available={0}
         gotoCustomize={() => {}}
+        isRetail={false}
       />,
       div
     )

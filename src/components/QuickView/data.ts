@@ -29,6 +29,8 @@ export const QuickViewQuery = gql`
         left: left_image
         right: right_image
       }
+      retailMen: men_retail
+      retailWomen: women_retail
     }
   }
 `

@@ -151,7 +151,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
+          <Tabs {...{ currentTab }} onSelectTab={() => {}} />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}

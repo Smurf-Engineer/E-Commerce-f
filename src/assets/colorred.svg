@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="30px" height="31px" viewBox="0 0 30 31" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.2 (51160) - http://www.bohemiancoding.com/sketch -->
+    <title>Oval Copy 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="70" cy="20.0664227" r="15"></circle>
+    </defs>
+    <g id="Home-+-Product" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="1.4-Product-Page---Retail" transform="translate(-579.000000, -505.000000)">
+            <g id="Stacked-Group" transform="translate(524.000000, 339.000000)">
+                <g id="Group-5">
+                    <g transform="translate(0.000000, 161.000000)">
+                        <g id="Oval-Copy-3">
+                            <use fill="#E61737" fill-rule="evenodd" xlink:href="#path-1"></use>
+                            <circle stroke="#DCDCDC" stroke-width="1" cx="70" cy="20.0664227" r="14.5"></circle>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
