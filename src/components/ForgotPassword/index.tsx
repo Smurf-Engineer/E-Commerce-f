@@ -8,7 +8,6 @@ import { compose } from 'react-apollo'
 import { validate } from 'email-validator'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
-import { ReducersObject } from '../../store/rootReducer'
 import {
   Container,
   ForgotPasswordLabel,
@@ -118,7 +117,7 @@ class ForgotPassword extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ forgot }: ReducersObject) => forgot.toJS()
+const mapStateToProps = (state: any) => state.get('forgot').toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 

@@ -65,3 +65,11 @@ declare module 'react-rangeslider' {
   class Slider extends React.Component<Props, any> {}
   export default Slider
 }
+
+declare module 'react-responsive-redux' {
+  let reducer: any
+  let setMobileDetect: any
+  let mobileParser: any
+  let MobileScreen: any
+  let DesktopScreen: any
+}

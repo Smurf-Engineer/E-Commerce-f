@@ -6,7 +6,6 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { Layout, Menu } from 'antd'
-import { ReducersObject } from '../../store/rootReducer'
 import * as fitWidgetActions from './actions'
 import messages from './messages'
 import {
@@ -122,7 +121,7 @@ export class FitWidget extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ fitWidget }: ReducersObject) => fitWidget.toJS()
+const mapStateToProps = (state: any) => state.get('fitWidget').toJS()
 
 const FitWidgetEnhance = compose(
   injectIntl,

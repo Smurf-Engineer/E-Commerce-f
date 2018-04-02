@@ -15,6 +15,16 @@ export const SearchBarContent = styled.div`
   left: 360px;
   right: 360px;
   color: #fff;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    position: unset;
+  }
 `
 
 export const SearchBackground = styled.img`
@@ -26,6 +36,10 @@ export const SearchContainer = styled.div`
 
 export const HelpContainer = styled.div`
   text-align: center;
+
+  @media (min-width: 320px) and (max-width: 1024px) {
+    display: none;
+  }
 `
 
 export const NeedHelp = styled.div`

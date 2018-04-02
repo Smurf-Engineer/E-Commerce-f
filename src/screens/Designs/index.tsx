@@ -13,7 +13,6 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import Layout from '../../components/MainLayout'
 import ThreeD from './Render3D'
-import { ReducersObject } from '../../store/rootReducer'
 import * as designsActions from './actions'
 import { styleQuery } from './data'
 import { QueryProps } from '../../types/common'
@@ -81,7 +80,7 @@ export class Designs extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ designs }: ReducersObject) => designs.toJS()
+const mapStateToProps = (state: any) => state.get('designs').toJS()
 
 type OwnProps = {
   location?: any

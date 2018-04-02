@@ -10,7 +10,6 @@ import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
 import Radio from 'antd/lib/radio'
 import FitInfoTable from '../FitInfoTable'
-import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
 import { QueryProps, Product } from '../../types/common'
 import messages from './messages'
@@ -204,7 +203,7 @@ type OwnProps = {
   productId?: number
 }
 
-const mapStateToProps = ({ fitInfo }: ReducersObject) => fitInfo.toJS()
+const mapStateToProps = (state: any) => state.get('fitInfo').toJS()
 
 const FitInfoEnhance = compose(
   connect(mapStateToProps, { ...fitActions }),

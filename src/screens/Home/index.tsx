@@ -10,7 +10,6 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import { compose } from 'react-apollo'
-import { ReducersObject } from '../../store/rootReducer'
 import * as homeActions from './actions'
 import Layout from '../../components/MainLayout'
 import {
@@ -145,7 +144,7 @@ export class Home extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ home }: ReducersObject) => home.toJS()
+const mapStateToProps = (state: any) => state.get('home').toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 

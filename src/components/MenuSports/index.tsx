@@ -5,7 +5,6 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as menuSportActions from './actions'
-import { ReducersObject } from '../../store/rootReducer'
 import { Container, Divider, Filters } from './styledComponents'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
@@ -73,7 +72,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ menuSports }: ReducersObject) => menuSports.toJS()
+const mapStateToProps = (state: any) => state.get('menuSports').toJS()
 
 const MenuGenderEnhance = compose(
   connect(mapStateToProps, { ...menuSportActions })

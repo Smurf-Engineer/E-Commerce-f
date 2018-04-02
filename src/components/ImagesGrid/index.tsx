@@ -4,6 +4,7 @@
 import * as React from 'react'
 import Slider from 'react-slick'
 import { FormattedMessage } from 'react-intl'
+import Responsive from 'react-responsive'
 import messages from './messages'
 import {
   Container,
@@ -26,6 +27,9 @@ const settings = {
   arrows: false
 }
 
+const Desktop = (props: any) => <Responsive {...props} minWidth={992} />
+const Mobile = (props: any) => <Responsive {...props} maxWidth={767} />
+
 const ImagesGrid = () => {
   return (
     <Container>
@@ -35,7 +39,12 @@ const ImagesGrid = () => {
             <FormattedMessage {...messages.quote} />
           </TextQuote>
         </CardQuote>
-        <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
+        <Desktop>
+          <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
+        </Desktop>
+        <Mobile>
+          <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/R2C2.jpg" />
+        </Mobile>
       </QuoteContent>
       <CarouselContent>
         <Slider {...settings}>

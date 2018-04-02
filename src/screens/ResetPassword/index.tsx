@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { InjectedIntl, injectIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import * as queryString from 'query-string'
-import { ReducersObject } from '../../store/rootReducer'
 import message from 'antd/lib/message'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
@@ -126,7 +125,7 @@ export class ResetPassword extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ reset }: ReducersObject) => reset.toJS()
+const mapStateToProps = (state: any) => state.get('reset').toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
