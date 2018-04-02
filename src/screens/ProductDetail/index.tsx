@@ -11,7 +11,6 @@ import get from 'lodash/get'
 import map from 'lodash/map'
 import Message from 'antd/lib/message'
 // import AnimateHeight from 'react-animate-height'
-import { ReducersObject } from '../../store/rootReducer'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -415,12 +414,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = ({
-  productDetail,
-  menu,
-  menuSports
-}: ReducersObject) => {
-  return { ...productDetail.toJS(), ...menu.toJS(), ...menuSports.toJS() }
+const mapStateToProps = (state: any) => {
+  const productDetail = state.get('productDetail').toJS()
+  const menu = state.get('menu').toJS()
+  const menuSports = state.get('menuSports').toJS()
+  return { ...productDetail, ...menu, ...menuSports }
 }
 
 type OwnProps = {

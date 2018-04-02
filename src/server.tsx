@@ -1,5 +1,6 @@
 import * as React from 'react'
 import * as express from 'express'
+import { setMobileDetect, mobileParser } from 'react-responsive-redux'
 import { ApolloProvider, getDataFromTree } from 'react-apollo'
 import { Provider } from 'react-redux'
 import { renderToString } from 'react-dom/server'
@@ -55,6 +56,10 @@ server
 
     const store = configureStore()
 
+    const { dispatch } = store
+    const mobileDetect = mobileParser(req)
+    dispatch(setMobileDetect(mobileDetect))
+
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
       const jsx = sheet.collectStyles(
@@ -70,8 +75,9 @@ server
       const content = renderToString(jsx)
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
+      const finalState = store.getState()
 
-      const html = <Html {...{ content, state }} />
+      const html = <Html {...{ content, state }} reduxState={finalState} />
       const htmlString = renderHtml(styleTags, html)
       res.status(200)
       res.send(htmlString)

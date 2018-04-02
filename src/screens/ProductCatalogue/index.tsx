@@ -10,9 +10,7 @@ import UpperCase from 'lodash/upperCase'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
-
 import { ClickParam } from 'antd/lib/menu'
-import { ReducersObject } from '../../store/rootReducer'
 import Layout from '../../components/MainLayout'
 import FilterComponent from '../../components/ProductCatalogFilterComponent'
 import ProductsThumbnailList from '../../components/ProductCatalogueThumbnailsList'
@@ -211,8 +209,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = ({ productCatalog }: ReducersObject) =>
-  productCatalog.toJS()
+const mapStateToProps = (state: any) => state.get('productCatalog').toJS()
 
 const ProductCatalogEnhance = compose(
   injectIntl,

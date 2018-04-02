@@ -8,7 +8,6 @@ import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { ReducersObject } from '../../store/rootReducer'
 import { RegionConfig } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
@@ -137,8 +136,10 @@ class MainLayout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ layout, languageProvider }: ReducersObject) => {
-  return { ...layout.toJS(), ...languageProvider.toJS() }
+const mapStateToProps = (state: any) => {
+  const layoutProps = state.get('layout').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...layoutProps, ...langProps }
 }
 
 const LayoutEnhance = compose(
