@@ -5,7 +5,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import fetch from 'node-fetch'
 
 const httpLink = createHttpLink({
-  uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
+  uri: 'http://localhost:4040/api/graphql',
   fetch: fetch as any
 })
 

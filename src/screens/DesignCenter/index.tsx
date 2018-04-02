@@ -231,6 +231,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             designName={designName}
             colors={colors}
             afterSaveDesign={this.handleAfterSaveDesign}
+            savedDesignId={savedDesignId}
           />
         </Container>
       </Layout>

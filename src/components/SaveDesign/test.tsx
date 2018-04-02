@@ -12,6 +12,7 @@ describe('<SaveDesign />', () => {
     const designName = ''
     const colors = ['']
     const open = false
+    const savedDesignId = 0
     const saveDesignNameMutation = () => {}
     const closeSaveDesignModal = () => {}
     const setDesignNameAction = () => {}
@@ -31,6 +32,7 @@ describe('<SaveDesign />', () => {
           colors={colors}
           saveDesignNameMutation={saveDesignNameMutation}
           afterSaveDesign={afterSaveDesign}
+          savedDesignId={savedDesignId}
         />
       </IntlProvider>,
       div

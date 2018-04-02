@@ -22,6 +22,7 @@ interface Props {
   productId: string
   open: boolean
   designName: string
+  savedDesignId: number
   colors: string[]
   requestClose: () => void
   onDesignName: (name: string) => void
@@ -92,7 +93,10 @@ export class SaveDesign extends React.Component<Props, {}> {
   }
 
   render() {
-    const { open, formatMessage, designName } = this.props
+    const { open, formatMessage, designName, savedDesignId } = this.props
+    if (savedDesignId !== 0) {
+      console.log('-----------diferente de 0----------')
+    }
     return (
       <Container>
         <Modal
