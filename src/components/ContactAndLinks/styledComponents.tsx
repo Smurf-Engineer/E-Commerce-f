@@ -27,6 +27,7 @@ export const Text = styled.div`
 
 export const ComplianceLogos = styled.div`
   display: flex;
+  align-self: flex-end;
   flex-direction: column;
   justify-content: flex-end;
 `

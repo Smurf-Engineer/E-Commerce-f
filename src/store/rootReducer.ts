@@ -3,7 +3,6 @@
  */
 import { fromJS } from 'immutable'
 import { combineReducers } from 'redux-immutable'
-import { reducer as responsiveReducer } from 'react-responsive-redux'
 import fitWidget from '../screens/FitWidget/reducer'
 import designs from '../screens/Designs/reducer'
 import productDetail from '../screens/ProductDetail/reducer'
@@ -49,6 +48,46 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
   switch (action.type) {
     case 'Some type action':
       return state
+    default:
+      return state
+  }
+}
+
+const responsiveInitialState = fromJS({
+  phone: null,
+  tablet: null,
+  mobile: null,
+  desktop: null,
+  fakeWidth: 1200
+})
+
+const responsiveReducer: Reducer<any> = (
+  state = responsiveInitialState,
+  action
+) => {
+  switch (action.type) {
+    case '@@react-responsive-redux/SET_MOBILE_DETECT': {
+      const { phone, tablet, mobile, desktop } = action
+      let fakeWidth = 1200
+
+      if (mobile) {
+        if (phone) {
+          fakeWidth = 767
+        } else if (tablet) {
+          fakeWidth = 991
+        } else {
+          fakeWidth = 767
+        }
+      }
+
+      return state.merge({
+        phone,
+        tablet,
+        mobile,
+        desktop,
+        fakeWidth
+      })
+    }
     default:
       return state
   }

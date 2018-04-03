@@ -41,6 +41,7 @@ interface Props extends RouteComponentProps<any> {
   searchString: string
   dispatch: any
   intl: InjectedIntl
+  fakeWidth: number
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -95,7 +96,13 @@ export class Home extends React.Component<Props, {}> {
   }
 
   render() {
-    const { history, showSearchResults, searchString, intl } = this.props
+    const {
+      history,
+      showSearchResults,
+      searchString,
+      intl,
+      fakeWidth
+    } = this.props
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
@@ -136,7 +143,7 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
-          <ImagesGrid />
+          <ImagesGrid {...{ fakeWidth }} />
           <YotpoHome />
         </Container>
       </Layout>
@@ -144,7 +151,11 @@ export class Home extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('home').toJS()
+const mapStateToProps = (state: any) => {
+  const home = state.get('home').toJS()
+  const responsive = state.get('responsive').toJS()
+  return { ...home, ...responsive }
+}
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 

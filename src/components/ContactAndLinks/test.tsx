@@ -13,7 +13,7 @@ describe('<ContactAndLinks />', () => {
     const format = (message: string) => 'string'
     ReactDOM.render(
       <IntlProvider {...props}>
-        <ContactAndLinks formatMessage={format} />
+        <ContactAndLinks formatMessage={format} fakeWidth={1200} />
       </IntlProvider>,
       div
     )

@@ -4,7 +4,7 @@
 import * as React from 'react'
 import Slider from 'react-slick'
 import { FormattedMessage } from 'react-intl'
-import Responsive from 'react-responsive'
+import MediaQuery from 'react-responsive'
 import messages from './messages'
 import {
   Container,
@@ -27,10 +27,11 @@ const settings = {
   arrows: false
 }
 
-const Desktop = (props: any) => <Responsive {...props} minWidth={992} />
-const Mobile = (props: any) => <Responsive {...props} maxWidth={767} />
+interface Props {
+  fakeWidth: number
+}
 
-const ImagesGrid = () => {
+const ImagesGrid = ({ fakeWidth }: Props) => {
   return (
     <Container>
       <QuoteContent>
@@ -39,20 +40,40 @@ const ImagesGrid = () => {
             <FormattedMessage {...messages.quote} />
           </TextQuote>
         </CardQuote>
-        <Desktop>
-          <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
-        </Desktop>
-        <Mobile>
-          <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/R2C2.jpg" />
-        </Mobile>
+        <MediaQuery
+          minWidth={992}
+          values={{ width: fakeWidth, deviceWidth: fakeWidth }}
+        >
+          {matches => {
+            if (matches) {
+              return (
+                <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
+              )
+            } else {
+              return (
+                <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/R2C2.jpg" />
+              )
+            }
+          }}
+        </MediaQuery>
       </QuoteContent>
       <CarouselContent>
         <Slider {...settings}>
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/herbalife-guys.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/rise-women.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-guys.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-ladies.jpg" />
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/herbalife-guys.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/rise-women.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-guys.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-ladies.jpg" />
+          </div>
         </Slider>
       </CarouselContent>
     </Container>
