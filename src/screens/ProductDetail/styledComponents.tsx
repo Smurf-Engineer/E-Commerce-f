@@ -17,16 +17,34 @@ export const Container = styled.div`
 export const Content = styled.div`
   display: flex;
   padding: 0px 32px 50px 32px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: block;
+    padding: 0px 12px 50px 12px;
+  }
 `
 
 export const ImagePreview = styled.div`
   width: 50%;
   padding: 0 50px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    padding: 0;
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    padding: 0 20px 0 0;
+  }
 `
 
 export const ProductData = styled.div`
   padding-top: 31px;
   width: 50%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
 `
 export const Title = styled.div`
   color: #5f6062;
@@ -34,6 +52,10 @@ export const Title = styled.div`
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 18px;
+  }
 `
 
 export const Subtitle = styled.div`
@@ -41,6 +63,18 @@ export const Subtitle = styled.div`
   font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 12px;
+  }
+`
+
+export const TitleSubtitleContainer = styled.div``
+
+export const StyledLink = styled.a`
+  @media (min-width: 320px) and (max-width: 480px) {
+    align-self: center;
+  }
 `
 
 export const StyledBreadCrumb = styled(Breadcrumb)`
@@ -58,11 +92,23 @@ export const StyledInputNumber = styled(InputNumber)`
 
 export const AvailablePrices = styled.div`
   margin-right: 30px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 0;
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    margin-right: 20px;
+  }
 `
 
 export const PricesRow = styled.div`
   display: flex;
   margin-top: 20px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    justify-content: space-between;
+  }
 `
 
 export const Description = styled.div`
@@ -90,6 +136,10 @@ export const StyledButton = styled(Button)`
   width: 221px;
   border: 2px solid #e61737;
   border-radius: 2px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 export const TitleRow = styled.div`
@@ -137,6 +187,10 @@ export const SectionButton = styled.div`
   &:hover {
     cursor: pointer;
   }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 15px;
+  }
 `
 
 export const SectionRow = styled.div`
@@ -144,6 +198,9 @@ export const SectionRow = styled.div`
 `
 export const SectionButtonsContainer = styled.div`
   display: flex;
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-wrap: wrap;
+  }
 `
 export const SizeRowTitleRow = styled.div`
   display: flex;
@@ -184,6 +241,7 @@ export const AddToCartButton = styled(Button)`
   background-color: #4a90e2;
   color: #fff;
   margin-left: 26px;
+
   &:hover {
     background-color: #4a90e2;
     color: #fff;

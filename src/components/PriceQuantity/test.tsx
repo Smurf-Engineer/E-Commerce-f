@@ -8,6 +8,6 @@ import PriceQuantity from './index'
 describe('<PriceQuantity />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<PriceQuantity price={0} quantity={''} />, div)
+    ReactDOM.render(<PriceQuantity price={0} quantity={''} index={0} />, div)
   })
 })

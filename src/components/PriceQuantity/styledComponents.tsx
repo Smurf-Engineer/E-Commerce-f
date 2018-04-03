@@ -10,6 +10,10 @@ export const Text = styled.div`
 `
 export const AvailablePrices = styled.div`
   margin-right: 26px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-right: 5px;
+  }
 `
 
 export const PriceLabel = styled.div`
@@ -20,10 +24,13 @@ export const PriceLabel = styled.div`
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 16px;
+  }
 `
 export const QuantityLabel = styled.div`
   height: 16px;
-
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 12px;

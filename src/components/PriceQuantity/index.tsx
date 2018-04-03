@@ -7,14 +7,14 @@ import { Container, PriceLabel, QuantityLabel } from './styledComponents'
 interface Props {
   price: number
   quantity: string
+  index: number
 }
 
-const PriceQuantity = (props: Props) => {
-  const { price, quantity } = props
+const PriceQuantity = ({ price, quantity, index }: Props) => {
   return (
     <Container>
       <PriceLabel>{`$ ${price}`}</PriceLabel>
-      <QuantityLabel>{`QTY. ${quantity}`}</QuantityLabel>
+      <QuantityLabel>{`${quantity} ${index > 0 ? 'pcs' : ''}`}</QuantityLabel>
     </Container>
   )
 }
