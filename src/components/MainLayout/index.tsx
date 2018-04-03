@@ -39,6 +39,7 @@ interface Props {
   yotpoId: string
   hideBottomHeader: boolean
   hideFooter: boolean
+  fakeWidth: number
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -70,7 +71,8 @@ class MainLayout extends React.Component<Props, {}> {
       logoutAction,
       saveUserToLocal,
       hideBottomHeader,
-      hideFooter
+      hideFooter,
+      fakeWidth
     } = this.props
     return (
       <Layout>
@@ -79,6 +81,7 @@ class MainLayout extends React.Component<Props, {}> {
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
             {...{
+              fakeWidth,
               history,
               intl,
               showSearchResults,
@@ -105,7 +108,10 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks formatMessage={intl.formatMessage} />
+            <ContactAndLinks
+              formatMessage={intl.formatMessage}
+              fakeWidth={fakeWidth}
+            />
             <SocialMedia />
           </Footer>
         )}
@@ -139,7 +145,8 @@ class MainLayout extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const layoutProps = state.get('layout').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...layoutProps, ...langProps }
+  const responsive = state.get('responsive').toJS()
+  return { ...layoutProps, ...langProps, ...responsive }
 }
 
 const LayoutEnhance = compose(

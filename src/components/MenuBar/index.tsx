@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl } from 'react-intl'
-import Responsive from 'react-responsive'
+import MediaQuery from 'react-responsive'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -27,12 +27,6 @@ import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
 import { RegionConfig } from '../../types/common'
 
-const Desktop = (props: any) => <Responsive {...props} minWidth={992} />
-const Tablet = (props: any) => (
-  <Responsive {...props} minWidth={768} maxWidth={991} />
-)
-const Mobile = (props: any) => <Responsive {...props} maxWidth={767} />
-
 interface Props {
   history: any
   searchFunc: (param: string) => void
@@ -46,6 +40,7 @@ interface Props {
   currentCurrency: number
   intl: InjectedIntl
   hideBottom?: boolean
+  fakeWidth: number
 }
 
 interface StateProps {
@@ -75,7 +70,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       hideBottom,
       intl,
       logoutAction,
-      saveUserToLocal
+      saveUserToLocal,
+      fakeWidth
     } = this.props
     let user
     if (typeof window !== 'undefined') {
@@ -93,47 +89,50 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
-    const menu = (
-      <Container>
-        <Row>
-          <MenuSupport />
-          <TopRow>
-            <MenuRegion
-              {...{
-                onChangeLocation,
-                currentRegion,
-                currentLanguage,
-                currentCurrency
-              }}
-            />
-            <CartIcon src={cart} />
-            {loggedUser}
-          </TopRow>
-        </Row>
-        <Divider />
-        {!hideBottom && (
-          <BottomRow>
-            <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-            <DropdownList {...{ history }} />
-            <SearchBar
-              search={searchFunc}
-              onHeader={true}
-              formatMessage={intl.formatMessage}
-            />
-          </BottomRow>
-        )}
-      </Container>
-    )
-
     return (
       <div>
-        <Desktop>{menu}</Desktop>
-        <Tablet>
-          <MenuMobile />
-        </Tablet>
-        <Mobile>
-          <MenuMobile />
-        </Mobile>
+        <MediaQuery
+          minWidth={992}
+          values={{ width: fakeWidth, deviceWidth: fakeWidth }}
+        >
+          {matches => {
+            if (matches) {
+              return (
+                <Container>
+                  <Row>
+                    <MenuSupport />
+                    <TopRow>
+                      <MenuRegion
+                        {...{
+                          onChangeLocation,
+                          currentRegion,
+                          currentLanguage,
+                          currentCurrency
+                        }}
+                      />
+                      <CartIcon src={cart} />
+                      {loggedUser}
+                    </TopRow>
+                  </Row>
+                  <Divider />
+                  {!hideBottom && (
+                    <BottomRow>
+                      <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+                      <DropdownList {...{ history }} />
+                      <SearchBar
+                        search={searchFunc}
+                        onHeader={true}
+                        formatMessage={intl.formatMessage}
+                      />
+                    </BottomRow>
+                  )}
+                </Container>
+              )
+            } else {
+              return <MenuMobile />
+            }
+          }}
+        </MediaQuery>
         <Login
           open={openLogin}
           requestClose={this.handleCloseLogin}

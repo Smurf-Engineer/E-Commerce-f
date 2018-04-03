@@ -2,18 +2,19 @@
  * MenuBarMobile Component - Created by david on 02/04/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
-import messages from './messages'
-import { Container, Text } from './styledComponents'
+import logo from '../../assets/jakroo_logo.svg'
+import cart from '../../assets/cart.svg'
+import menu from '../../assets/Menu.svg'
+import { Container, Logo, Icon } from './styledComponents'
 
 interface Props {}
 
 const MenuBarMobile = (props: Props) => {
   return (
     <Container>
-      <div>MENU</div>
-      <div>LOGO</div>
-      <div>CAR</div>
+      <Icon src={menu} />
+      <Logo src={logo} />
+      <Icon src={cart} />
     </Container>
   )
 }
