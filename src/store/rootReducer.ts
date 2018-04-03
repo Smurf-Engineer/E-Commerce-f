@@ -78,8 +78,6 @@ const responsiveReducer: Reducer<any> = (
         } else {
           fakeWidth = 767
         }
-      } else if (desktop) {
-        fakeWidth = 1200
       }
 
       return state.merge({
