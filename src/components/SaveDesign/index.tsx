@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
+import Checkbox from 'antd/lib/checkbox'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -14,9 +15,11 @@ import {
   Text,
   StyledInput,
   ButtonWrapper,
-  Button
+  Button,
+  StyledSaveAs,
+  CheckWrapper
 } from './styledComponents'
-import { saveDesignName } from './data'
+import { saveDesignName, saveDesignChanges } from './data'
 
 interface Props {
   productId: string
@@ -28,6 +31,7 @@ interface Props {
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
   saveDesignNameMutation: (variables: {}) => void
+  saveDesignChangesMutation: (variables: {}) => void
   afterSaveDesign: (id: number) => void | undefined
 }
 
@@ -92,11 +96,35 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
   }
 
+  handleSaveChanges = async (evt: React.MouseEvent<EventTarget>) => {
+    const {
+      colors,
+      savedDesignId,
+      formatMessage,
+      saveDesignChangesMutation,
+      requestClose
+    } = this.props
+
+    try {
+      const response = await saveDesignChangesMutation({
+        variables: { designId: savedDesignId, colors }
+      })
+      const data = get(response, 'data.saveDesignAs', false)
+
+      if (data) {
+        message.success(formatMessage(messages.saveSuccess))
+        requestClose()
+      }
+    } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
+      console.error(error)
+    }
+  }
+
   render() {
     const { open, formatMessage, designName, savedDesignId } = this.props
-    if (savedDesignId !== 0) {
-      console.log('-----------diferente de 0----------')
-    }
     return (
       <Container>
         <Modal
@@ -111,9 +139,22 @@ export class SaveDesign extends React.Component<Props, {}> {
           <Title>
             <FormattedMessage {...messages.modalTitle} />
           </Title>
-          <Text>
-            <FormattedMessage {...messages.modalText} />
-          </Text>
+          {savedDesignId !== 0 ? (
+            <StyledSaveAs>
+              <ButtonWrapper>
+                <Button type="primary" onClick={this.handleSaveChanges}>
+                  <FormattedMessage {...messages.saveChanges} />
+                </Button>
+              </ButtonWrapper>
+              <Text>
+                <FormattedMessage {...messages.modalSaveAsNewDesign} />
+              </Text>
+            </StyledSaveAs>
+          ) : (
+            <Text>
+              <FormattedMessage {...messages.modalText} />
+            </Text>
+          )}
           <StyledInput
             id="saveDesignName"
             value={designName}
@@ -122,14 +163,23 @@ export class SaveDesign extends React.Component<Props, {}> {
           />
           <ButtonWrapper>
             <Button type="primary" onClick={this.handleSaveName}>
-              <FormattedMessage {...messages.save} />
+              {savedDesignId !== 0 ? (
+                <FormattedMessage {...messages.modalSaveAsNewDesign} />
+              ) : (
+                <FormattedMessage {...messages.save} />
+              )}
             </Button>
           </ButtonWrapper>
+          <CheckWrapper>
+            <Checkbox>
+              <FormattedMessage {...messages.checkCopyright} />
+            </Checkbox>
+          </CheckWrapper>
         </Modal>
       </Container>
     )
   }
 }
 
-const SaveDesignEnhance = compose(saveDesignName)(SaveDesign)
+const SaveDesignEnhance = compose(saveDesignName, saveDesignChanges)(SaveDesign)
 export default SaveDesignEnhance
