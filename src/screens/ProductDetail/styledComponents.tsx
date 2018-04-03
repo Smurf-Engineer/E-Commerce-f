@@ -18,12 +18,6 @@ export const Content = styled.div`
   display: flex;
   padding: 0px 32px 50px 32px;
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) {
-  }
-
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
     padding: 0px 12px 50px 12px;
