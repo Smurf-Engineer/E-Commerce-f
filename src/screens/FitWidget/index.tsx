@@ -18,8 +18,7 @@ import {
   StyledSider,
   StyledSiderInner,
   StyledList,
-  overStyle,
-  menuStyle
+  overStyle
 } from './styledComponents'
 import MainLayout from '../../components/MainLayout'
 
@@ -85,7 +84,7 @@ export class FitWidget extends React.Component<Props, {}> {
               <StyledSiderInner>
                 {formatMessage(messages.yourFitFor)}
               </StyledSiderInner>
-              <Menu mode="inline" style={menuStyle}>
+              <Menu mode="inline" style={{ position: 'absolute', bottom: 0 }}>
                 <SubMenu
                   key="sub1"
                   title={
