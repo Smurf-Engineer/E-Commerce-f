@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
-import { ReducersObject } from '../../store/rootReducer'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -239,8 +238,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ designCenter }: ReducersObject) =>
-  designCenter.toJS()
+const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 
 const DesignCenterEnhance = compose(
   injectIntl,

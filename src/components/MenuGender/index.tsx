@@ -5,7 +5,6 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as menuGenderActions from './actions'
-import { ReducersObject } from '../../store/rootReducer'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
@@ -91,7 +90,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ menuGender }: ReducersObject) => menuGender.toJS()
+const mapStateToProps = (state: any) => state.get('menuGender').toJS()
 
 const MenuGenderEnhance = compose(
   connect(mapStateToProps, { ...menuGenderActions })

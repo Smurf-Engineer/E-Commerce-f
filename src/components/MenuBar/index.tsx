@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl } from 'react-intl'
+import Responsive from 'react-responsive'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -24,6 +25,12 @@ import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
 import { RegionConfig } from '../../types/common'
+
+const Desktop = (props: any) => <Responsive {...props} minWidth={992} />
+const Tablet = (props: any) => (
+  <Responsive {...props} minWidth={768} maxWidth={991} />
+)
+const Mobile = (props: any) => <Responsive {...props} maxWidth={767} />
 
 interface Props {
   history: any
@@ -84,35 +91,46 @@ class MenuBar extends React.Component<Props, StateProps> {
         logout={logoutAction}
       />
     )
+
     return (
-      <Container>
-        <Row>
-          <MenuSupport />
-          <TopRow>
-            <MenuRegion
-              {...{
-                onChangeLocation,
-                currentRegion,
-                currentLanguage,
-                currentCurrency
-              }}
-            />
-            <CartIcon src={cart} />
-            {loggedUser}
-          </TopRow>
-        </Row>
-        <Divider />
-        {!hideBottom && (
-          <BottomRow>
-            <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-            <DropdownList {...{ history }} />
-            <SearchBar
-              search={searchFunc}
-              onHeader={true}
-              formatMessage={intl.formatMessage}
-            />
-          </BottomRow>
-        )}
+      <div>
+        <Desktop>
+          <Container>
+            <Row>
+              <MenuSupport />
+              <TopRow>
+                <MenuRegion
+                  {...{
+                    onChangeLocation,
+                    currentRegion,
+                    currentLanguage,
+                    currentCurrency
+                  }}
+                />
+                <CartIcon src={cart} />
+                {loggedUser}
+              </TopRow>
+            </Row>
+            <Divider />
+            {!hideBottom && (
+              <BottomRow>
+                <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+                <DropdownList {...{ history }} />
+                <SearchBar
+                  search={searchFunc}
+                  onHeader={true}
+                  formatMessage={intl.formatMessage}
+                />
+              </BottomRow>
+            )}
+          </Container>
+        </Desktop>
+        <Tablet>
+          <div style={{ height: 40, lineHeight: 2 }}>HEADER</div>
+        </Tablet>
+        <Mobile>
+          <div style={{ height: 40, lineHeight: 2 }}>HEADER</div>
+        </Mobile>
         <Login
           open={openLogin}
           requestClose={this.handleCloseLogin}
@@ -126,7 +144,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           requestClose={this.handleOpenForgotPassword}
           openLogin={this.handleOpenLogin}
         />
-      </Container>
+      </div>
     )
   }
   handleOpenLogin = () => {

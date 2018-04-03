@@ -2,7 +2,8 @@
  * Root reducer
  */
 import { fromJS } from 'immutable'
-import { combineReducers } from 'redux'
+import { combineReducers } from 'redux-immutable'
+import { reducer as responsiveReducer } from 'react-responsive-redux'
 import fitWidget from '../screens/FitWidget/reducer'
 import designs from '../screens/Designs/reducer'
 import productDetail from '../screens/ProductDetail/reducer'
@@ -37,6 +38,7 @@ export interface ReducersObject {
   forgot: any
   quickView: any
   fitInfo: any
+  responsiveReducer: any
 }
 
 const appInitialState = fromJS({
@@ -67,6 +69,7 @@ const rootReducer = combineReducers({
   menuSports,
   layout,
   fitInfo,
+  responsive: responsiveReducer,
   app: appReducer
 })
 

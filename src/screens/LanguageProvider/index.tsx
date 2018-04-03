@@ -5,7 +5,6 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { IntlProvider } from 'react-intl'
-import { ReducersObject } from '../../store/rootReducer'
 import * as languageProviderActions from './actions'
 
 interface Props {
@@ -30,8 +29,7 @@ export class LanguageProvider extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ languageProvider }: ReducersObject) =>
-  languageProvider.toJS()
+const mapStateToProps = (state: any) => state.get('languageProvider').toJS()
 
 const LanguageProviderEnhance = compose(
   connect(mapStateToProps, { ...languageProviderActions })
