@@ -22,9 +22,7 @@ import {
   OPEN_SAVEDESIGN,
   SET_DESIGN_NAME,
   SAVE_DESIGN_ID,
-  COLOR_BLOCK_HOVERED_ACTION,
-  SET_CHECKED_TERMS,
-  CLEAR_DESIGN_INFO
+  COLOR_BLOCK_HOVERED_ACTION
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -126,16 +124,7 @@ export const openShareModalAction = (open: boolean): AnyAction => ({
   open
 })
 
-export const saveDesignIdAction = (id: string): AnyAction => ({
+export const saveDesignIdAction = (id: number): AnyAction => ({
   type: SAVE_DESIGN_ID,
   id
-})
-
-export const setCheckedTermsAction = (checked: boolean): AnyAction => ({
-  type: SET_CHECKED_TERMS,
-  checked
-})
-
-export const clearDesignInfoAction = (): AnyAction => ({
-  type: CLEAR_DESIGN_INFO
 })

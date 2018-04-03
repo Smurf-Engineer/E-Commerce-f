@@ -26,5 +26,3 @@ export const OPEN_SAVEDESIGN = `${namespace}/OPEN_SAVEDESIGN`
 export const SET_DESIGN_NAME = `${namespace}/SET_DESIGN_NAME`
 
 export const SAVE_DESIGN_ID = `${namespace}/SAVE_DESIGN_ID`
-export const SET_CHECKED_TERMS = `${namespace}/SET_CHECKED_TERMS`
-export const CLEAR_DESIGN_INFO = `${namespace}/CLEAR_DESIGN_INFO`

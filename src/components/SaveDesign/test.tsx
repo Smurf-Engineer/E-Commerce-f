@@ -12,16 +12,11 @@ describe('<SaveDesign />', () => {
     const designName = ''
     const colors = ['']
     const open = false
-    const savedDesignId = ''
     const saveDesignNameMutation = () => {}
-    const clearDesignInfo = () => {}
-    const saveDesignChangesMutation = () => {}
     const closeSaveDesignModal = () => {}
     const setDesignNameAction = () => {}
-    const setCheckedTerms = () => {}
     const afterSaveDesign = () => {}
     const productId = ''
-    const checkedTerms = false
     const div = document.createElement('div')
     const format = (message: string) => 'string'
     ReactDOM.render(
@@ -35,12 +30,7 @@ describe('<SaveDesign />', () => {
           designName={designName}
           colors={colors}
           saveDesignNameMutation={saveDesignNameMutation}
-          saveDesignChangesMutation={saveDesignChangesMutation}
           afterSaveDesign={afterSaveDesign}
-          savedDesignId={savedDesignId}
-          checkedTerms={checkedTerms}
-          setCheckedTerms={setCheckedTerms}
-          clearDesignInfo={clearDesignInfo}
         />
       </IntlProvider>,
       div

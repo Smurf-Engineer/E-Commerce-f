@@ -14,7 +14,7 @@ describe('<ShareDesignModal />', () => {
         formatMessage={format}
         open={false}
         requestClose={() => {}}
-        savedDesignId={''}
+        savedDesignId={0}
       />,
       div
     )

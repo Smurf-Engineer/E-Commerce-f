@@ -11,15 +11,11 @@ export default defineMessages({
   },
   modalTitle: {
     id: 'components.SaveDesign.modalTitle',
-    defaultMessage: 'Save your design'
+    defaultMessage: 'Name your design'
   },
   modalText: {
     id: 'components.SaveDesign.modalText',
     defaultMessage: 'Name it something that is simple and recognizable to you.'
-  },
-  modalSaveAsNewDesign: {
-    id: 'components.SaveDesign.modalSaveAsNewDesign',
-    defaultMessage: 'Save as new design'
   },
   placeholder: {
     id: 'components.SaveDesign.placeholder',
@@ -37,17 +33,8 @@ export default defineMessages({
     id: 'components.SaveDesign.save',
     defaultMessage: 'Save'
   },
-  saveChanges: {
-    id: 'components.SaveDesign.saveChanges',
-    defaultMessage: 'Save changes'
-  },
   invalidUser: {
     id: 'components.SaveDesign.invalidUser',
     defaultMessage: 'You must be logged in to save designs.'
-  },
-  checkCopyright: {
-    id: 'components.SaveDesign.checkCopyright',
-    defaultMessage:
-      'I hereby agree that I have permission and the rights to  use all images I have uploaded to this design'
   }
 })
