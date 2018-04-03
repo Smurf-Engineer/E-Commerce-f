@@ -39,7 +39,7 @@ declare global {
 
 interface Props {
   open: boolean
-  savedDesignId: number
+  savedDesignId: string
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
 }

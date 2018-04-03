@@ -23,7 +23,7 @@ interface Props {
   currentTab: number
   loadingModel: boolean
   openShareModal: boolean
-  savedDesignId: number
+  savedDesignId: string
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void

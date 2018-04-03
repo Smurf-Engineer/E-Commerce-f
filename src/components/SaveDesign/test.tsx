@@ -12,7 +12,7 @@ describe('<SaveDesign />', () => {
     const designName = ''
     const colors = ['']
     const open = false
-    const savedDesignId = 0
+    const savedDesignId = ''
     const saveDesignNameMutation = () => {}
     const clearDesignInfo = () => {}
     const saveDesignChangesMutation = () => {}

@@ -126,7 +126,7 @@ export const openShareModalAction = (open: boolean): AnyAction => ({
   open
 })
 
-export const saveDesignIdAction = (id: number): AnyAction => ({
+export const saveDesignIdAction = (id: string): AnyAction => ({
   type: SAVE_DESIGN_ID,
   id
 })

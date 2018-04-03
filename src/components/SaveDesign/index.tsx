@@ -21,11 +21,17 @@ import {
 } from './styledComponents'
 import { saveDesignName, saveDesignChanges } from './data'
 
+interface Data {
+  id: number
+  shortId: string
+  name: string
+}
+
 interface Props {
   productId: string
   open: boolean
   designName: string
-  savedDesignId: number
+  savedDesignId: string
   colors: string[]
   checkedTerms: boolean
   requestClose: () => void
@@ -33,7 +39,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   saveDesignNameMutation: (variables: {}) => void
   saveDesignChangesMutation: (variables: {}) => void
-  afterSaveDesign: (id: number) => void | undefined
+  afterSaveDesign: (id: string) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   clearDesignInfo: () => void
 }
@@ -83,7 +89,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       const response = await saveDesignNameMutation({
         variables: { design: designObj, colors }
       })
-      const data = get(response, 'data.saveDesign', false)
+      const data: Data = get(response, 'data.saveDesign', false)
 
       if (data) {
         const { shortId } = data
@@ -160,7 +166,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           <Title>
             <FormattedMessage {...messages.modalTitle} />
           </Title>
-          {savedDesignId !== 0 ? (
+          {savedDesignId !== '' ? (
             <StyledSaveAs>
               <ButtonWrapper>
                 <Button
@@ -197,7 +203,7 @@ export class SaveDesign extends React.Component<Props, {}> {
               disabled={!checkedTerms}
               onClick={this.handleSaveName}
             >
-              {savedDesignId !== 0 ? (
+              {savedDesignId !== '' ? (
                 <FormattedMessage {...messages.modalSaveAsNewDesign} />
               ) : (
                 <FormattedMessage {...messages.save} />
