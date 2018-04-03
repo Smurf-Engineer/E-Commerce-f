@@ -144,7 +144,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
         <AvailablePrices key={index}>
-          <PriceQuantity price={item.price} quantity={item.quantity} />
+          <PriceQuantity
+            price={item.price}
+            quantity={item.quantity}
+            {...{ index }}
+          />
         </AvailablePrices>
       ))
     }
