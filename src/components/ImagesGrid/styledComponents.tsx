@@ -25,12 +25,22 @@ export const CarouselContent = styled.div`
   padding: 10px;
   width: 100%;
   color: #333;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0px;
+    margin: 0px;
+  }
 `
 
 export const Slide = styled.img`
-  height: 700px;
-  width: 80%;
+  width: 100%;
   padding: 5px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    object-fit: cover;
+    width: 300px;
+    height: 100px;
+  }
 `
 
 export const QuoteContent = styled.div`

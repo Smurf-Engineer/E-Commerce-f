@@ -7,6 +7,7 @@ import Responsive from 'react-responsive'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
+import MenuMobile from '../MenuBarMobile'
 import {
   Container,
   TopText,
@@ -92,44 +93,46 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
+    const menu = (
+      <Container>
+        <Row>
+          <MenuSupport />
+          <TopRow>
+            <MenuRegion
+              {...{
+                onChangeLocation,
+                currentRegion,
+                currentLanguage,
+                currentCurrency
+              }}
+            />
+            <CartIcon src={cart} />
+            {loggedUser}
+          </TopRow>
+        </Row>
+        <Divider />
+        {!hideBottom && (
+          <BottomRow>
+            <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+            <DropdownList {...{ history }} />
+            <SearchBar
+              search={searchFunc}
+              onHeader={true}
+              formatMessage={intl.formatMessage}
+            />
+          </BottomRow>
+        )}
+      </Container>
+    )
+
     return (
       <div>
-        <Desktop>
-          <Container>
-            <Row>
-              <MenuSupport />
-              <TopRow>
-                <MenuRegion
-                  {...{
-                    onChangeLocation,
-                    currentRegion,
-                    currentLanguage,
-                    currentCurrency
-                  }}
-                />
-                <CartIcon src={cart} />
-                {loggedUser}
-              </TopRow>
-            </Row>
-            <Divider />
-            {!hideBottom && (
-              <BottomRow>
-                <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-                <DropdownList {...{ history }} />
-                <SearchBar
-                  search={searchFunc}
-                  onHeader={true}
-                  formatMessage={intl.formatMessage}
-                />
-              </BottomRow>
-            )}
-          </Container>
-        </Desktop>
+        <Desktop>{menu}</Desktop>
         <Tablet>
-          <div style={{ height: 40, lineHeight: 2 }}>HEADER</div>
+          <MenuMobile />
         </Tablet>
         <Mobile>
-          <div style={{ height: 40, lineHeight: 2 }}>HEADER</div>
+          <MenuMobile />
         </Mobile>
         <Login
           open={openLogin}

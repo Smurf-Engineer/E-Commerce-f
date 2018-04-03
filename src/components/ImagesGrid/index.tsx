@@ -29,6 +29,7 @@ const settings = {
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={992} />
 const Mobile = (props: any) => <Responsive {...props} maxWidth={767} />
+const Default = (props: any) => <Responsive {...props} minWidth={768} />
 
 const ImagesGrid = () => {
   return (
@@ -45,14 +46,27 @@ const ImagesGrid = () => {
         <Mobile>
           <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/R2C2.jpg" />
         </Mobile>
+        <Default>
+          <ImageQuote src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
+        </Default>
       </QuoteContent>
       <CarouselContent>
         <Slider {...settings}>
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/herbalife-guys.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/rise-women.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-guys.jpg" />
-          <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-ladies.jpg" />
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/herbalife-guys.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/kona-herba.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/rise-women.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-guys.jpg" />
+          </div>
+          <div>
+            <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-ladies.jpg" />
+          </div>
         </Slider>
       </CarouselContent>
     </Container>
