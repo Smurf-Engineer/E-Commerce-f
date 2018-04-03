@@ -79,7 +79,11 @@ export class QuickView extends React.Component<Props, State> {
 
     const renderPrices = product.priceRange.map((item: any, index: number) => (
       <AvailablePrices key={index}>
-        <PriceQuantity price={item.price} quantity={item.quantity} />
+        <PriceQuantity
+          price={item.price}
+          quantity={item.quantity}
+          {...{ index }}
+        />
       </AvailablePrices>
     ))
     const imageSlider = loading ? (

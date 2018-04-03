@@ -12,7 +12,8 @@ import {
   SelectedImage,
   Arrows,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  SwipeImg
 } from './styledComponents'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
@@ -57,7 +58,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
 
     const selectedImages = ThumbnailsArray.map((thumbnail, i) => (
       <SelectedImage key={i}>
-        <img src={thumbnail} />
+        <SwipeImg src={thumbnail} />
       </SelectedImage>
     ))
 
@@ -83,7 +84,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
   handleNextPage = () => {
     const { index } = this.state
 
-    if (index < 5) {
+    if (index < 3) {
       this.setState({ index: index + 1 })
     }
   }
