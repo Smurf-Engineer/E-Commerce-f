@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
+import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import map from 'lodash/map'
@@ -47,7 +48,9 @@ import {
   DownloadImg,
   DetailsList,
   DetailsListItem,
-  ProductAvailableColor
+  ProductAvailableColor,
+  TitleSubtitleContainer,
+  StyledLink
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -60,6 +63,8 @@ import { Product, QueryProps, ImageType } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
 import RedColor from '../../assets/colorred.svg'
+
+const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -298,26 +303,28 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             <Content>
               <ImagePreview>
                 <ImagesSlider onLoadModel={setLoadingModel} {...{ images }} />
-                <DownloadTemplateContainer>
-                  <a href="https://www.jakroo.com/download/Tour_Template.pdf">
-                    <DownloadImg src={DownloadIcon} />
-                  </a>
-                  <Downloadtemplate>
-                    {formatMessage(messages.downloadLabel)}
-                  </Downloadtemplate>
-                </DownloadTemplateContainer>
+                <Desktop>
+                  <DownloadTemplateContainer>
+                    <a href="https://www.jakroo.com/download/Tour_Template.pdf">
+                      <DownloadImg src={DownloadIcon} />
+                    </a>
+                    <Downloadtemplate>
+                      {formatMessage(messages.downloadLabel)}
+                    </Downloadtemplate>
+                  </DownloadTemplateContainer>
+                </Desktop>
               </ImagePreview>
               <ProductData>
                 <TitleRow>
-                  <div>
+                  <TitleSubtitleContainer>
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                  </div>
-                  <a href="https://www.jakroo.com/us/jersey-comparison.html">
+                  </TitleSubtitleContainer>
+                  <StyledLink href="https://www.jakroo.com/us/jersey-comparison.html">
                     <CompareButton>
                       {formatMessage(messages.compareLabe)}
                     </CompareButton>
-                  </a>
+                  </StyledLink>
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings

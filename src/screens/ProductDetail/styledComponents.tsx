@@ -38,6 +38,10 @@ export const ImagePreview = styled.div`
     width: 100%;
     padding: 0;
   }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    padding: 0 20px 0 0;
+  }
 `
 
 export const ProductData = styled.div`
@@ -54,6 +58,10 @@ export const Title = styled.div`
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 18px;
+  }
 `
 
 export const Subtitle = styled.div`
@@ -61,6 +69,18 @@ export const Subtitle = styled.div`
   font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 12px;
+  }
+`
+
+export const TitleSubtitleContainer = styled.div``
+
+export const StyledLink = styled.a`
+  @media (min-width: 320px) and (max-width: 480px) {
+    align-self: center;
+  }
 `
 
 export const StyledBreadCrumb = styled(Breadcrumb)`
@@ -81,6 +101,10 @@ export const AvailablePrices = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0;
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    margin-right: 20px;
   }
 `
 

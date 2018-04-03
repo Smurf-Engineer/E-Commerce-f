@@ -52,10 +52,22 @@ export const SwipeContainer = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 100%;
+  }
 `
 
 export const SwipeImg = styled.img`
   @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
     width: 100%;
   }
 `
