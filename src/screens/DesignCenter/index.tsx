@@ -42,6 +42,7 @@ interface Props extends RouteComponentProps<any> {
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
+  checkedTerms: boolean
   designName: string
   savedDesignId: number
   // Redux Actions
@@ -66,6 +67,8 @@ interface Props extends RouteComponentProps<any> {
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean) => void
   saveDesignIdAction: (id: number) => void
+  setCheckedTermsAction: (checked: boolean) => void
+  clearDesignInfoAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -139,7 +142,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       openShareModalAction,
       openSaveDesignAction,
       setDesignNameAction,
-      savedDesignId
+      savedDesignId,
+      checkedTerms,
+      setCheckedTermsAction,
+      clearDesignInfoAction
     } = this.props
 
     const { location: { search } } = this.props
@@ -231,6 +237,9 @@ export class DesignCenter extends React.Component<Props, {}> {
             colors={colors}
             afterSaveDesign={this.handleAfterSaveDesign}
             savedDesignId={savedDesignId}
+            checkedTerms={checkedTerms}
+            setCheckedTerms={setCheckedTermsAction}
+            clearDesignInfo={clearDesignInfoAction}
           />
         </Container>
       </Layout>

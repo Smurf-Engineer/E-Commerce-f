@@ -27,12 +27,15 @@ interface Props {
   designName: string
   savedDesignId: number
   colors: string[]
+  checkedTerms: boolean
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
   saveDesignNameMutation: (variables: {}) => void
   saveDesignChangesMutation: (variables: {}) => void
   afterSaveDesign: (id: number) => void | undefined
+  setCheckedTerms: (checked: boolean) => void
+  clearDesignInfo: () => void
 }
 
 export class SaveDesign extends React.Component<Props, {}> {
@@ -123,8 +126,25 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
   }
 
+  toggleChecked = (e: any) => {
+    const { setCheckedTerms } = this.props
+
+    setCheckedTerms(e.target.checked)
+  }
+
+  handleClose = () => {
+    const { clearDesignInfo } = this.props
+    clearDesignInfo()
+  }
+
   render() {
-    const { open, formatMessage, designName, savedDesignId } = this.props
+    const {
+      open,
+      formatMessage,
+      designName,
+      savedDesignId,
+      checkedTerms
+    } = this.props
     return (
       <Container>
         <Modal
@@ -135,6 +155,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           width={'30%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
+          afterClose={this.handleClose}
         >
           <Title>
             <FormattedMessage {...messages.modalTitle} />
@@ -142,7 +163,11 @@ export class SaveDesign extends React.Component<Props, {}> {
           {savedDesignId !== 0 ? (
             <StyledSaveAs>
               <ButtonWrapper>
-                <Button type="primary" onClick={this.handleSaveChanges}>
+                <Button
+                  type="primary"
+                  disabled={!checkedTerms}
+                  onClick={this.handleSaveChanges}
+                >
                   <FormattedMessage {...messages.saveChanges} />
                 </Button>
               </ButtonWrapper>
@@ -161,8 +186,17 @@ export class SaveDesign extends React.Component<Props, {}> {
             placeholder={formatMessage(messages.placeholder)}
             onChange={this.handleInputChange}
           />
+          <CheckWrapper>
+            <Checkbox onChange={this.toggleChecked}>
+              <FormattedMessage {...messages.checkCopyright} />
+            </Checkbox>
+          </CheckWrapper>
           <ButtonWrapper>
-            <Button type="primary" onClick={this.handleSaveName}>
+            <Button
+              type="primary"
+              disabled={!checkedTerms}
+              onClick={this.handleSaveName}
+            >
               {savedDesignId !== 0 ? (
                 <FormattedMessage {...messages.modalSaveAsNewDesign} />
               ) : (
@@ -170,11 +204,6 @@ export class SaveDesign extends React.Component<Props, {}> {
               )}
             </Button>
           </ButtonWrapper>
-          <CheckWrapper>
-            <Checkbox>
-              <FormattedMessage {...messages.checkCopyright} />
-            </Checkbox>
-          </CheckWrapper>
         </Modal>
       </Container>
     )
