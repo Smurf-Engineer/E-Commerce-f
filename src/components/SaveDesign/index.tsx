@@ -132,10 +132,10 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
   }
 
-  toggleChecked = (e: any) => {
+  toggleChecked = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { setCheckedTerms } = this.props
-
-    setCheckedTerms(e.target.checked)
+    const { checked } = evt.target
+    setCheckedTerms(checked)
   }
 
   handleClose = () => {
