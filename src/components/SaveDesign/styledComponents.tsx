@@ -26,13 +26,17 @@ export const Text = styled.div`
   font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 21px;
+  margin-top: 10px;
 `
 
 export const StyledInput = styled(Input)`
   margin-bottom: 20px;
-  margin-top: 20px;
+  margin-top: 0px;
   border-radius: 0px;
   width: 100%;
+`
+export const StyledSaveAs = styled.div`
+  margin-top: 10px;
 `
 
 export const Button = styled(AntdButton)`
@@ -42,7 +46,7 @@ export const Button = styled(AntdButton)`
 
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
-  .ant-btn-primary  {
+  .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;
     width: 100%;
@@ -50,5 +54,17 @@ export const ButtonWrapper = styled.div`
   .ant-btn-primary:hover {
     background-color: #4a90e2;
     border-color: #4a90e2;
+  }
+`
+export const CheckWrapper = styled.div`
+  margin-bottom: 10px;
+  .ant-checkbox-wrapper:hover,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    border-color: #4a90e2;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-indeterminate .ant-checkbox-inner {
+    background-color: #4a90e2;
   }
 `
