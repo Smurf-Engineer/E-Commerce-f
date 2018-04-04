@@ -20,30 +20,32 @@ interface Props {
   data?: Data
   history: any
   loginButton: React.ReactNode
+  regionButton: React.ReactNode
 }
 
-class MobileMenu extends React.PureComponent<Props, {}> {
+export class MobileMenu extends React.PureComponent<Props, {}> {
   state = {
     visible: false
   }
-  hide = () => {
-    this.setState({
-      visible: false
-    })
-  }
-  handleVisibleChange = (visible: boolean) => {
-    this.setState({ visible })
-  }
+
+  hide = () => this.setState({ visible: false })
+  handleVisibleChange = (visible: boolean) => this.setState({ visible })
 
   render() {
-    const { data, history, loginButton } = this.props
+    const { data, history, loginButton, regionButton } = this.props
+    const { visible } = this.state
     return (
       <Popover
         overlayStyle={overStyle}
-        content={<Menu {...{ data, history, loginButton }} />}
+        content={
+          <Menu
+            {...{ data, history, loginButton, regionButton }}
+            menuOpen={visible}
+          />
+        }
         trigger="click"
         placement="bottom"
-        visible={this.state.visible}
+        visible={visible}
         onVisibleChange={this.handleVisibleChange}
       >
         <Icon src={menu} />

@@ -16,3 +16,9 @@ export const LoginButton = styled.div`
   font-weight: 600;
   line-height: 22px;
 `
+
+export const Bottom = styled.div`
+  margin-top: 24px;
+`
+
+export const menuStyle = { width: '100%', marginLeft: -24 }

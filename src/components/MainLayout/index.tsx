@@ -98,12 +98,12 @@ class MainLayout extends React.Component<Props, {}> {
           />
         </Header>
         <SearchResults
+          {...{ history }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}
           openResults={this.openResults}
           quickViewAction={this.openQuickView}
-          {...{ history }}
         />
         <Content>{children}</Content>
         {!hideFooter && (

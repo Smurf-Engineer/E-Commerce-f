@@ -10,12 +10,17 @@ import { Container, Logo, Icon } from './styledComponents'
 interface Props {
   history: any
   loginButton: React.ReactNode
+  regionButton: React.ReactNode
 }
 
-const MenuBarMobile = ({ history, loginButton }: Props) => {
+export const MenuBarMobile = ({
+  history,
+  loginButton,
+  regionButton
+}: Props) => {
   return (
     <Container>
-      <Menu {...{ history, loginButton }} />
+      <Menu {...{ history, loginButton, regionButton }} />
       <Logo src={logo} />
       <Icon src={cart} />
     </Container>

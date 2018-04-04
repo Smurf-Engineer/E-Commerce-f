@@ -3,7 +3,9 @@
  */
 import * as React from 'react'
 import MenuAntd from 'antd/lib/menu'
-import { Container } from './styledComponents'
+import { Container, Bottom, menuStyle } from './styledComponents'
+import { FormattedMessage } from 'react-intl'
+import messages from './messages'
 
 const { SubMenu } = MenuAntd
 
@@ -23,18 +25,37 @@ interface Props {
   data?: any
   history: any
   loginButton: React.ReactNode
+  regionButton: React.ReactNode
+  menuOpen: boolean
 }
 
 class Menu extends React.PureComponent<Props, {}> {
+  state = {
+    openKeys: ['']
+  }
+  componentWillReceiveProps({ menuOpen }: Props) {
+    if (menuOpen === false) {
+      this.setState({ openKeys: [''] })
+    }
+  }
   handleClick = ({ item, key, selectedKeys }: any) => {
     const { history } = this.props
-    history.push('/product-catalogue')
-    console.log('SELECT', item, key, selectedKeys)
+    history.push(`/product-catalogue?${key}`)
+  }
+  onOpenChange = (openKeys: string[]) => {
+    if (openKeys[openKeys.length - 1].substring(0, 4) === 'menu') {
+      const newOpenKeys = ['']
+      newOpenKeys.push(openKeys[openKeys.length - 1])
+      this.setState({ openKeys: newOpenKeys })
+    } else {
+      this.setState({ openKeys })
+    }
   }
   render() {
     const {
       data: { loading, error, categories, sports },
-      loginButton
+      loginButton,
+      regionButton
     } = this.props
 
     if (loading) {
@@ -45,30 +66,47 @@ class Menu extends React.PureComponent<Props, {}> {
       return <div>Something went wrong</div>
     }
 
-    const optionsGender = menuOptionsGenders.map(({ label }, index) => (
-      <SubMenu
-        key={`${label}-${index}`}
-        title={<span>{label.toUpperCase()}</span>}
-      >
-        {sports.map(({ id: sportId, name: sportName }: any) => (
-          <SubMenu key={`${label}-${sportId}`} title={sportName}>
-            {categories.map(({ id: categoryId, name: categoryName }: any) => (
-              <MenuAntd.Item key={`${label}-${sportId}-${categoryId}`}>
-                {categoryName}
-              </MenuAntd.Item>
-            ))}
-          </SubMenu>
-        ))}
-      </SubMenu>
-    ))
+    const optionsGender = menuOptionsGenders.map(
+      ({ label: genderName }, index) => (
+        <SubMenu
+          key={`menu-${genderName}-${index}`}
+          title={
+            <span>
+              <FormattedMessage {...messages[genderName]} />
+            </span>
+          }
+        >
+          {sports.map(({ id: sportId, name: sportName }: any) => (
+            <SubMenu
+              key={`${genderName}-${sportId}-${index}`}
+              title={sportName}
+            >
+              {categories.map(({ id: categoryId, name: categoryName }: any) => (
+                <MenuAntd.Item
+                  key={`genderFilter=${genderName}&sportFilters=${sportName}&categoryFilters=${categoryName}`}
+                >
+                  {categoryName}
+                </MenuAntd.Item>
+              ))}
+            </SubMenu>
+          ))}
+        </SubMenu>
+      )
+    )
 
     const optionsSports = menuOptionsSports.map(({ label }, index) => (
       <SubMenu
-        key={`${label}-${index}`}
-        title={<span>{label.toUpperCase()}</span>}
+        key={`menu-${label}-${index}`}
+        title={
+          <span>
+            <FormattedMessage {...messages[label]} />
+          </span>
+        }
       >
         {categories.map(({ id, name }: any) => (
-          <MenuAntd.Item key={`${label}-${id}`}>{name}</MenuAntd.Item>
+          <MenuAntd.Item key={`sportFilters=${label}&categoryFilters=${name}`}>
+            {name}
+          </MenuAntd.Item>
         ))}
       </SubMenu>
     ))
@@ -77,17 +115,21 @@ class Menu extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        <div>SEARCH</div>
         <MenuAntd
           mode="inline"
           onSelect={this.handleClick}
           defaultSelectedKeys={['']}
           defaultOpenKeys={['']}
-          style={{ width: '100%' }}
+          openKeys={this.state.openKeys}
+          onOpenChange={this.onOpenChange}
+          style={menuStyle}
         >
           {options}
         </MenuAntd>
-        {loginButton}
+        <Bottom>
+          {loginButton}
+          {regionButton}
+        </Bottom>
       </Container>
     )
   }

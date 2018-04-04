@@ -3,11 +3,19 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import MobileMenu from './index'
+import { MobileMenu } from './index'
 
 describe('<MobileMenu />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MobileMenu data={{} as any} />, div)
+    ReactDOM.render(
+      <MobileMenu
+        history={{}}
+        data={{} as any}
+        loginButton={null}
+        regionButton={null}
+      />,
+      div
+    )
   })
 })
