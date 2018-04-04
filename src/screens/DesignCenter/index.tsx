@@ -42,8 +42,9 @@ interface Props extends RouteComponentProps<any> {
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
+  checkedTerms: boolean
   designName: string
-  savedDesignId: number
+  savedDesignId: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -65,7 +66,9 @@ interface Props extends RouteComponentProps<any> {
   setStyleAction: (style: any) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean) => void
-  saveDesignIdAction: (id: number) => void
+  saveDesignIdAction: (id: string) => void
+  setCheckedTermsAction: (checked: boolean) => void
+  clearDesignInfoAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -74,7 +77,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     clearStoreAction()
   }
 
-  handleAfterSaveDesign = (id: number) => {
+  handleAfterSaveDesign = (id: string) => {
     const { saveDesignIdAction } = this.props
     saveDesignIdAction(id)
     this.handleOnSelectTab(3)
@@ -136,7 +139,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       openShareModalAction,
       openSaveDesignAction,
       setDesignNameAction,
-      savedDesignId
+      savedDesignId,
+      checkedTerms,
+      setCheckedTermsAction,
+      clearDesignInfoAction
     } = this.props
 
     const { location: { search } } = this.props
@@ -227,6 +233,10 @@ export class DesignCenter extends React.Component<Props, {}> {
             designName={designName}
             colors={colors}
             afterSaveDesign={this.handleAfterSaveDesign}
+            savedDesignId={savedDesignId}
+            checkedTerms={checkedTerms}
+            setCheckedTerms={setCheckedTermsAction}
+            clearDesignInfo={clearDesignInfoAction}
           />
         </Container>
       </Layout>

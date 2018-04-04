@@ -92,3 +92,8 @@ export const StyledList = styled.ul`
 export const overStyle = {
   minHeight: '100vh'
 }
+
+export const menuStyle = {
+  position: 'absolute',
+  bottom: 0
+} as React.CSSProperties

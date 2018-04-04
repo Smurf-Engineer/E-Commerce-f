@@ -70,29 +70,42 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const { open, handleClose, data: { product, loading } } = this.props
+    const { open, handleClose, data } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
+
+    let product = {} as ProductPageTypes
+    let loading = true
+
+    if (data) {
+      product = data.product
+      loading = data.loading || false
+    }
 
     if (!product) {
       return null
     }
 
-    const renderPrices = product.priceRange.map((item: any, index: number) => (
-      <AvailablePrices key={index}>
-        <PriceQuantity
-          price={item.price}
-          quantity={item.quantity}
-          {...{ index }}
-        />
-      </AvailablePrices>
-    ))
+    const renderPrices = loading ? (
+      <div />
+    ) : (
+      product.priceRange.map((item: any, index: number) => (
+        <AvailablePrices key={index}>
+          <PriceQuantity
+            price={item.price}
+            quantity={item.quantity}
+            {...{ index }}
+          />
+        </AvailablePrices>
+      ))
+    )
     const imageSlider = loading ? (
       <Loading>
         <Spin />
       </Loading>
     ) : (
       <QuickViewSlider
-        productImages={product ? product.images : ({} as ImageType)}
+        // TODO: filter by gender
+        productImages={product ? product.images : ([] as ImageType[])}
         available={5}
         gotoCustomize={this.gotoCustomize}
         isRetail={(product.retailMen && product.retailWomen) || false}
@@ -227,10 +240,13 @@ type OwnProps = {
 
 const QuickViewEnhance = compose(
   graphql<Data>(QuickViewQuery, {
-    options: ({ productId }: OwnProps) => ({
-      fetchPolicy: 'network-only',
-      variables: { id: productId }
-    })
+    options: ({ productId }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        variables: { id: productId },
+        skip: productId === 0
+      }
+    }
   })
 )(QuickView)
 
