@@ -4,15 +4,18 @@
 import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
-import menu from '../../assets/Menu.svg'
+import Menu from '../MobileMenu'
 import { Container, Logo, Icon } from './styledComponents'
 
-interface Props {}
+interface Props {
+  history: any
+  loginButton: React.ReactNode
+}
 
-const MenuBarMobile = (props: Props) => {
+const MenuBarMobile = ({ history, loginButton }: Props) => {
   return (
     <Container>
-      <Icon src={menu} />
+      <Menu {...{ history, loginButton }} />
       <Logo src={logo} />
       <Icon src={cart} />
     </Container>

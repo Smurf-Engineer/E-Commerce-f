@@ -8,6 +8,6 @@ import MenuBarMobile from './index'
 describe('<MenuBarMobile />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MenuBarMobile  />, div)
+    ReactDOM.render(<MenuBarMobile history={{}} loginButton={null} />, div)
   })
 })

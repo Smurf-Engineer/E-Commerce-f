@@ -129,7 +129,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                 </Container>
               )
             } else {
-              return <MenuMobile />
+              return <MenuMobile {...{ history }} loginButton={loggedUser} />
             }
           }}
         </MediaQuery>

@@ -9,6 +9,10 @@ export const Container = styled.div`
   font-size: 12px;
   line-height: 16px;
   font-weight: 200;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-top: 24px;
+  }
 `
 
 export const Title = styled.div`

@@ -13,10 +13,10 @@ import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
-import { Header } from './styledComponents'
+import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 
-const { Content, Footer } = Layout
+const { Content } = Layout
 
 interface Props {
   children: React.ReactChild
