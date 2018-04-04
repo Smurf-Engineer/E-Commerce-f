@@ -7,18 +7,17 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: #231f20;
+`
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
+export const ContainerMobile = styled.div``
 
-  @media (min-width: 481px) and (max-width: 767px) {
-  }
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
-  @media (min-width: 320px) and (max-width: 480px) {
-    display: flex;
-    flex-direction: column;
-    justify-content: wrap;
-  }
+export const Column = styled.div`
+  height: 144px;
 `
 
 export const Text = styled.div`
@@ -27,11 +26,11 @@ export const Text = styled.div`
 
 export const ComplianceLogos = styled.div`
   display: flex;
-  align-self: flex-end;
   flex-direction: column;
   justify-content: flex-end;
 `
 
 export const StyledImg = styled.img`
   margin-bottom: 10px;
+  align-self: flex-end;
 `

@@ -23,3 +23,13 @@
     min-height: 26px;
   }
 }
+
+.@{menu-prefix-cls} {
+  &-inline {
+    border-right: 0px @border-style-base @border-color-split;
+
+    .@{menu-prefix-cls}-submenu-title {
+      width: ~'calc(100% + 24px)';
+    }
+  }
+}

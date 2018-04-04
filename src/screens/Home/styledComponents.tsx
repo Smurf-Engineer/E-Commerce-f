@@ -18,7 +18,7 @@ export const SearchBarContent = styled.div`
 
   @media (min-width: 768px) and (max-width: 1024px) {
     top: 14em;
-    width: 50%;
+    width: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
