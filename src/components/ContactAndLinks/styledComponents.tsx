@@ -9,6 +9,17 @@ export const Container = styled.div`
   background-color: #231f20;
 `
 
+export const ContainerMobile = styled.div``
+
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const Column = styled.div`
+  height: 144px;
+`
+
 export const Text = styled.div`
   color: #fff;
 `
@@ -21,4 +32,5 @@ export const ComplianceLogos = styled.div`
 
 export const StyledImg = styled.img`
   margin-bottom: 10px;
+  align-self: flex-end;
 `

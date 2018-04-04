@@ -3,8 +3,9 @@ import React from 'react'
 interface Props {
   content: any
   state: any
+  reduxState: any
 }
-const Html = ({ content, state }: Props) => (
+const Html = ({ content, state, reduxState }: Props) => (
   <body>
     <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
     <script
@@ -16,6 +17,15 @@ const Html = ({ content, state }: Props) => (
         )};`
       }}
     />
+    <script
+      charSet="UTF-8"
+      dangerouslySetInnerHTML={{
+        __html: `window.__PRELOADED_STATE__=${JSON.stringify(
+          reduxState
+        ).replace(/</g, '\\u003c')};`
+      }}
+    />
+    <script async={true} defer={true} src="//platform.twitter.com/widgets.js" />
     <script
       type="text/javascript"
       src="//staticw2.yotpo.com/Rnb6ShWsqfzkqYmFM5RuNHtDJvKIcsexNP7yvpUO/widget.js"

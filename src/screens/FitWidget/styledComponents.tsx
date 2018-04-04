@@ -1,44 +1,99 @@
 /**
- * Styled Components - Created by gustavomedina on 23/03/18.
+ * Styled Components - Created by gustavomedina on 27/03/18.
  */
 import styled from 'styled-components'
-import Button from 'antd/lib/button'
+import Layout from 'antd/lib/layout'
+import Menu from 'antd/lib/menu'
+
+const { SubMenu } = Menu
+const { Content, Sider } = Layout
 
 export const Container = styled.div`
-  background-color: #fff;
-  width: 100%;
-  height: 100%;
+  background: #fff;
+  display: flex;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
 `
 
-export const MessagesList = styled.section`
-  padding: 5px 5px 0 0;
+export const Text = styled.div`
+  box-sizing: border-box;
+  height: 61.89px;
+  width: 372.5px;
+  border: 0.5px solid #dcdcdc;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 2px 11px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+  padding: 10px;
 `
 
-export const NewMessage = styled.section`
-  position: fixed;
+export const UserText = styled.div`
+  box-sizing: border-box;
+  height: 40px;
+  width: 93px;
+  border: 0.5px solid #dcdcdc;
+  border-radius: 2px;
+  background-color: #4a90e2;
+  box-shadow: 0 2px 11px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 5px;
+  padding: 10px;
+  float: right;
+  color: #fff;
+`
+export const StyledSubMenu = styled(SubMenu)`
+  position: absolute;
   bottom: 0;
-  width: 100%;
-  padding: 5px;
-  margin-right: 0px;
-  border-top: 1px solid #3f3f3f;
 `
 
-export const Sidebar = styled.aside`
-  grid-area: sidebar;
-  padding: 5px 5px 0 0;
-  border-left: 1px solid #3f3f3f;
+export const StyledSubMenuInner = styled.span`
+  height: 25px;
+  width: 169px;
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 25px;
+`
+export const StyledContent = styled(Content)`
+  margin: 2px;
+  background: #fff;
   height: 100%;
+  max-height: 100vh;
 `
 
-export const Main = styled.section`
-  grid-area: main;
+export const StyledContentInner = styled.div`
+  background: #fff;
+  height: 100%;
+  max-height: 100vh;
 `
 
-export const StyledLoginButton = styled(Button)`
-  border-radius: 0px;
-  width: 100%;
-  height: 50px;
-  border-color: #e61737;
-  background-color: #fff;
-  margin-bottom: 10px;
+export const StyledSider = styled(Sider)`
+  background: #fff;
+  margin-top: 2px;
 `
+
+export const StyledSiderInner = styled.div`
+  height: 75px;
+  width: 221px;
+  color: #5f6062;
+  font-family: Avenir Next;
+  margin: 8px;
+  font-size: 18px;
+  font-weight: 60;
+  line-height: 25px;
+`
+
+export const StyledList = styled.ul`
+  background: #fff;
+  padding: 24px;
+`
+
+export const overStyle = {
+  minHeight: '100vh'
+}
+
+export const menuStyle = {
+  position: 'absolute',
+  bottom: 0
+} as React.CSSProperties

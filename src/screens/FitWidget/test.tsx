@@ -1,10 +1,11 @@
 /**
- * FitWidget Test - Created by gustavomedina on 23/03/18.
+ * FitWidget Test - Created by gustavomedina on 27/03/18.
  */
 import fitWidgetReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
 
 describe(' FitWidget Screen', () => {
+  // Test redux actions
   it('Return the default state for unknow action', () => {
     let state = fitWidgetReducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)

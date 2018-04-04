@@ -11,12 +11,14 @@ describe('<QuickView />', () => {
     const data = {
       product: {
         id: 0,
-        images: {
-          front: '',
-          back: '',
-          left: '',
-          right: ''
-        },
+        images: [
+          {
+            front: '',
+            back: '',
+            left: '',
+            right: ''
+          }
+        ],
         type: '',
         description: '',
         priceRange: [],
@@ -47,7 +49,9 @@ describe('<QuickView />', () => {
             name: ''
           }
         ],
-        bodyChartId: 0
+        bodyChartId: 0,
+        retailMen: false,
+        retailWomen: false
       },
       fetchMore: () => {}
     }
@@ -58,6 +62,7 @@ describe('<QuickView />', () => {
         handleClose={() => {}}
         productId={0}
         history={{}}
+        yotpoId=""
       />,
       div
     )

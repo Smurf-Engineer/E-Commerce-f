@@ -8,16 +8,15 @@ import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { ReducersObject } from '../../store/rootReducer'
 import { RegionConfig } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
-import { Header } from './styledComponents'
+import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 
-const { Content, Footer } = Layout
+const { Content } = Layout
 
 interface Props {
   children: React.ReactChild
@@ -26,7 +25,7 @@ interface Props {
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
-  openQuickViewAction: (open: number | null) => void
+  openQuickViewAction: (open: number, yotpoId: string | null) => void
   openLoginAction: (open: boolean) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
@@ -37,9 +36,18 @@ interface Props {
   currentRegion: number
   currentLanguage: number
   currentCurrency: number
+  yotpoId: string
+  hideBottomHeader: boolean
+  hideFooter: boolean
+  fakeWidth: number
 }
 
 class MainLayout extends React.Component<Props, {}> {
+  static defaultProps = {
+    hideBottomHeader: false,
+    hideFooter: false
+  }
+
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
     setSearchParam(value)
@@ -52,6 +60,7 @@ class MainLayout extends React.Component<Props, {}> {
       showSearchResults,
       searchParam,
       productId,
+      yotpoId,
       openLogin,
       openLoginAction,
       setRegionAction,
@@ -60,17 +69,19 @@ class MainLayout extends React.Component<Props, {}> {
       currentCurrency,
       intl,
       logoutAction,
-      saveUserToLocal
+      saveUserToLocal,
+      hideBottomHeader,
+      hideFooter,
+      fakeWidth
     } = this.props
-    const { location: { pathname } } = history
-    const hideBottom = pathname === '/design-center'
     return (
       <Layout>
-        <Header {...{ hideBottom }}>
+        <Header {...{ hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
             {...{
+              fakeWidth,
               history,
               intl,
               showSearchResults,
@@ -80,31 +91,34 @@ class MainLayout extends React.Component<Props, {}> {
               currentCurrency,
               openLogin,
               openLoginAction,
-              hideBottom,
               logoutAction,
               saveUserToLocal
             }}
+            hideBottom={hideBottomHeader}
           />
         </Header>
         <SearchResults
+          {...{ history }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}
           openResults={this.openResults}
           quickViewAction={this.openQuickView}
-          {...{ history }}
         />
         <Content>{children}</Content>
-        {!hideBottom && (
+        {!hideFooter && (
           <Footer>
-            <ContactAndLinks formatMessage={intl.formatMessage} />
+            <ContactAndLinks
+              formatMessage={intl.formatMessage}
+              fakeWidth={fakeWidth}
+            />
             <SocialMedia />
           </Footer>
         )}
         <QuickView
           open={!!productId}
           handleClose={this.onCloseModal}
-          {...{ productId, history }}
+          {...{ productId, history, yotpoId }}
         />
       </Layout>
     )
@@ -118,18 +132,21 @@ class MainLayout extends React.Component<Props, {}> {
     showSearchResultsAction(true)
   }
 
-  openQuickView = (id: number) => {
+  openQuickView = (id: number, yotpoId: string) => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(id)
+    openQuickViewAction(id, yotpoId)
   }
   onCloseModal = () => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(0)
+    openQuickViewAction(0, '')
   }
 }
 
-const mapStateToProps = ({ layout, languageProvider }: ReducersObject) => {
-  return { ...layout.toJS(), ...languageProvider.toJS() }
+const mapStateToProps = (state: any) => {
+  const layoutProps = state.get('layout').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  const responsive = state.get('responsive').toJS()
+  return { ...layoutProps, ...langProps, ...responsive }
 }
 
 const LayoutEnhance = compose(

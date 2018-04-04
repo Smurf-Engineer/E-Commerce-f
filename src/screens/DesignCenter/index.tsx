@@ -5,9 +5,9 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import queryString from 'query-string'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
-import { ReducersObject } from '../../store/rootReducer'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -31,6 +31,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   currentTab: number
   colorBlock: number
+  colorBlockHovered: number
   palettes: Palette[]
   paletteName: string
   colors: string[]
@@ -39,13 +40,17 @@ interface Props extends RouteComponentProps<any> {
   undoChanges: Change[]
   redoChanges: Change[]
   swipingView: boolean
+  openShareModal: boolean
   openSaveDesign: boolean
+  checkedTerms: boolean
   designName: string
+  savedDesignId: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
+  setHoverColorBlockAction: (index: number) => void
   setColorAction: (color: string) => void
   setPaletteAction: (colors: string[]) => void
   setDesignNameAction: (name: string) => void
@@ -59,7 +64,11 @@ interface Props extends RouteComponentProps<any> {
   setSwipingTabAction: (swiping: boolean) => void
   setThemeAction: (id: number) => void
   setStyleAction: (style: any) => void
+  openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean) => void
+  saveDesignIdAction: (id: string) => void
+  setCheckedTermsAction: (checked: boolean) => void
+  clearDesignInfoAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -67,16 +76,22 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { clearStoreAction } = this.props
     clearStoreAction()
   }
-  handleOpenQuickView = () => {
-    const { openQuickViewAction: openQuickView } = this.props
-    // TODO: This id it's the same of the product
-    openQuickView(1)
+
+  handleAfterSaveDesign = (id: string) => {
+    const { saveDesignIdAction } = this.props
+    saveDesignIdAction(id)
+    this.handleOnSelectTab(3)
   }
 
-  handleOnPressBack = () => {
-    const { history } = this.props
-    history.goBack()
+  handleOpenQuickView = () => {
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const productId = queryParams.id || ''
+    const { openQuickViewAction: openQuickView } = this.props
+    openQuickView(productId)
   }
+
+  handleOnPressBack = () => window.location.replace('/')
 
   handleOnSelectTab = (index: number) => {
     const { setCurrentTabAction } = this.props
@@ -96,9 +111,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       history,
       currentTab,
       setColorBlockAction,
+      setHoverColorBlockAction,
       setColorAction,
       setPaletteAction,
       colorBlock,
+      colorBlockHovered,
       setPaletteNameAction,
       paletteName,
       palettes,
@@ -118,15 +135,25 @@ export class DesignCenter extends React.Component<Props, {}> {
       redoChanges,
       setThemeAction,
       setStyleAction,
+      openShareModal,
+      openShareModalAction,
       openSaveDesignAction,
-      setDesignNameAction
+      setDesignNameAction,
+      savedDesignId,
+      checkedTerms,
+      setCheckedTermsAction,
+      clearDesignInfoAction
     } = this.props
 
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const productId = queryParams.id || ''
+
     return (
-      <Layout {...{ history, intl }}>
+      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
+          <Tabs {...{ currentTab }} onSelectTab={() => {}} />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}
@@ -150,11 +177,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              <StyleTab onSelectStyle={setStyleAction} />
+              {currentTab === 1 && <StyleTab onSelectStyle={setStyleAction} />}
             </div>
             <CustomizeTab
               {...{
                 colorBlock,
+                colorBlockHovered,
                 colors,
                 loadingModel,
                 currentTab,
@@ -163,9 +191,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 paletteName,
                 palettes
               }}
+              formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}
+              onHoverColorBlock={setHoverColorBlockAction}
               onSelectColor={setColorAction}
               onSelectPalette={setPaletteAction}
               onChangePaletteName={setPaletteNameAction}
@@ -183,20 +213,30 @@ export class DesignCenter extends React.Component<Props, {}> {
                 colors,
                 loadingModel,
                 currentTab,
-                swipingView
+                swipingView,
+                openShareModal,
+                openShareModalAction,
+                savedDesignId
               }}
+              formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
               onSelectTab={this.handleOnSelectTab}
             />
           </SwipeableViews>
           <SaveDesign
+            {...{ productId }}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             formatMessage={intl.formatMessage}
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
+            afterSaveDesign={this.handleAfterSaveDesign}
+            savedDesignId={savedDesignId}
+            checkedTerms={checkedTerms}
+            setCheckedTerms={setCheckedTermsAction}
+            clearDesignInfo={clearDesignInfoAction}
           />
         </Container>
       </Layout>
@@ -204,8 +244,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ designCenter }: ReducersObject) =>
-  designCenter.toJS()
+const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 
 const DesignCenterEnhance = compose(
   injectIntl,

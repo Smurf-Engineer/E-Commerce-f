@@ -7,6 +7,8 @@ import gql from 'graphql-tag'
 export const QuickViewQuery = gql`
   query GetProductById($id: Int!) {
     product(id: $id) {
+      id
+      yotpoId: yotpo_id
       name
       description
       collections
@@ -17,13 +19,18 @@ export const QuickViewQuery = gql`
         quantity
         price
       }
+      yotpoAverageScore {
+        total: total_reviews
+        averageScore: average_score
+      }
       images: pictures {
-        id
         front: front_image
         back: back_image
         left: left_image
         right: right_image
       }
+      retailMen: men_retail
+      retailWomen: women_retail
     }
   }
 `

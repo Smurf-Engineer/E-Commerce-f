@@ -45,9 +45,9 @@ export default defineMessages({
     id: 'screens.ProductDetail.genderLabel',
     defaultMessage: 'Gender'
   },
-  selectionLabel: {
-    id: 'screens.ProductDetail.selectionLabel',
-    defaultMessage: 'Selection'
+  ColorsLabel: {
+    id: 'screens.ProductDetail.ColorsLabel',
+    defaultMessage: 'Colors'
   },
   sizeLabel: {
     id: 'screens.ProductDetail.sizeLabel',
@@ -68,5 +68,17 @@ export default defineMessages({
   jakrooWidgetTitle: {
     id: 'screens.YotpoReviews.jakrooWidgetTitle',
     defaultMessage: 'Inspiration from our community. #Jakroo'
+  },
+  downloadLabel: {
+    id: 'screens.ProductDetail.downloadLabel',
+    defaultMessage: 'Download Template'
+  },
+  oneGenderLabel: {
+    id: 'screens.ProductDetail.oneGenderLabel',
+    defaultMessage: 'Available for Men/Women'
+  },
+  unisexGenderLabel: {
+    id: 'screens.ProductDetail.unisexGenderLabel',
+    defaultMessage: 'Available for Men and Women'
   }
 })

@@ -19,8 +19,9 @@ import {
 } from './styledComponents'
 
 interface Props {
-  productImages: ImageType
+  productImages: ImageType[]
   available: number
+  isRetail: boolean
   gotoCustomize: () => void
 }
 
@@ -33,23 +34,32 @@ class QuickViewSlider extends React.Component<Props, State> {
     index: 0
   }
   render() {
-    const { gotoCustomize, productImages, available } = this.props
+    const { gotoCustomize, productImages, available, isRetail } = this.props
     const { index } = this.state
 
+    // TODO: filter by gender
+    const images = productImages[0]
+
+    const customizeButton = (
+      <StyledButton onClick={gotoCustomize}>{'CUSTOMIZE'}</StyledButton>
+    )
+    const addToCartButton = (
+      <StyledButton onClick={gotoCustomize}>{'ADD TO CART'}</StyledButton>
+    )
     return (
       <Container>
         <SwipeableViews enableMouseEvents={true} {...{ index }}>
           <SliderPage>
-            <StyledImage src={productImages.front} />
+            <StyledImage src={images.front} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={productImages.right} />
+            <StyledImage src={images.right} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={productImages.left} />
+            <StyledImage src={images.left} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={productImages.back} />
+            <StyledImage src={images.back} />
           </SliderPage>
         </SwipeableViews>
         <Arrows>
@@ -57,10 +67,10 @@ class QuickViewSlider extends React.Component<Props, State> {
           <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
         </Arrows>
         <ButtonRow>
-          <StyledButton type="danger" onClick={gotoCustomize}>
-            CUSTOMIZE
-          </StyledButton>
-          <Available>{`${available} Collections Available`}</Available>
+          {isRetail ? addToCartButton : customizeButton}
+          {!isRetail && (
+            <Available>{`${available} Collections Available`}</Available>
+          )}
         </ButtonRow>
       </Container>
     )

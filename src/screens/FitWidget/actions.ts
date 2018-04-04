@@ -1,5 +1,5 @@
 /**
- * FitWidget  Actions - Created by gustavomedina on 23/03/18.
+ * FitWidget  Actions - Created by gustavomedina on 27/03/18.
  */
 import { DEFAULT_ACTION } from './constants'
 import { AnyAction } from '../../types/common'

@@ -2,10 +2,13 @@
  * OptionsController Component - Created by david on 05/03/18.
  */
 import * as React from 'react'
+import Tooltip from 'antd/lib/tooltip/'
 import undoIcon from '../../../assets/Undo.svg'
 import redoIcon from '../../../assets/Redo.svg'
 import resetIcon from '../../../assets/Reset.svg'
-import blankIcon from '../../../assets/Blank.svg'
+import messages from './messages'
+// TODO: Waiting for client definition
+// import blankIcon from '../../../assets/Blank.svg'
 import {
   OptionsContainer,
   Options,
@@ -20,6 +23,7 @@ interface Props {
   onClickRedo: () => void
   onClickReset: () => void
   onClickClear: () => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const OptionsController = ({
@@ -28,7 +32,8 @@ const OptionsController = ({
   onClickUndo,
   onClickRedo,
   onClickReset,
-  onClickClear
+  onClickClear,
+  formatMessage
 }: Props) => {
   const handleUndoClick = () => {
     if (undoEnabled) {
@@ -45,24 +50,31 @@ const OptionsController = ({
   return (
     <OptionsContainer>
       <Options>
-        <OptionButton onClick={handleUndoClick}>
-          <img src={undoIcon} />
-        </OptionButton>
+        <Tooltip placement="right" title={formatMessage(messages.undo)}>
+          <OptionButton onClick={handleUndoClick}>
+            <img src={undoIcon} />
+          </OptionButton>
+        </Tooltip>
         <Divider />
-        <OptionButton onClick={handleRedoClick}>
-          <img src={redoIcon} />
-        </OptionButton>
+        <Tooltip placement="right" title={formatMessage(messages.redo)}>
+          <OptionButton onClick={handleRedoClick}>
+            <img src={redoIcon} />
+          </OptionButton>
+        </Tooltip>
       </Options>
       <Options>
-        <OptionButton onClick={onClickReset} withMargin={true}>
-          <img src={resetIcon} />
-        </OptionButton>
+        <Tooltip placement="right" title={formatMessage(messages.reset)}>
+          <OptionButton onClick={onClickReset} withMargin={true}>
+            <img src={resetIcon} />
+          </OptionButton>
+        </Tooltip>
       </Options>
+      {/* // TODO: Waiting for client definition
       <Options>
         <OptionButton onClick={onClickClear}>
           <img src={blankIcon} />
         </OptionButton>
-      </Options>
+     </Options> */}
     </OptionsContainer>
   )
 }

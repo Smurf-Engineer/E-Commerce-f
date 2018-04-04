@@ -8,6 +8,7 @@ import AnimateHeight from 'react-animate-height'
 import QuickViewSlider from '../QuickViewSlider'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../Ratings'
+import get from 'lodash/get'
 import {
   AvailablePrices,
   Container,
@@ -57,6 +58,7 @@ interface Props {
   data: Data
   handleClose: () => void
   productId: number
+  yotpoId: string
   history: any
 }
 
@@ -68,35 +70,54 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const { open, handleClose, data, data: { product } } = this.props
+    const { open, handleClose, data } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
+
+    let product = {} as ProductPageTypes
+    let loading = true
+
+    if (data) {
+      product = data.product
+      loading = data.loading || false
+    }
 
     if (!product) {
       return null
     }
 
-    const renderPrices = product.priceRange.map((item: any, index: number) => (
-      <AvailablePrices key={index}>
-        <PriceQuantity price={item.price} quantity={item.quantity} />
-      </AvailablePrices>
-    ))
-    const imageSlider = data.loading ? (
+    const renderPrices = loading ? (
+      <div />
+    ) : (
+      product.priceRange.map((item: any, index: number) => (
+        <AvailablePrices key={index}>
+          <PriceQuantity
+            price={item.price}
+            quantity={item.quantity}
+            {...{ index }}
+          />
+        </AvailablePrices>
+      ))
+    )
+    const imageSlider = loading ? (
       <Loading>
         <Spin />
       </Loading>
     ) : (
       <QuickViewSlider
-        productImages={product ? product.images : ({} as ImageType)}
+        // TODO: filter by gender
+        productImages={product ? product.images : ([] as ImageType[])}
         available={5}
         gotoCustomize={this.gotoCustomize}
+        isRetail={(product.retailMen && product.retailWomen) || false}
       />
     )
 
-    const title = data.loading || !product ? '' : product.name
-    const description = data.loading || !product ? '' : product.description
-    const details = data.loading || !product ? '' : product.details
-    const temperature = data.loading || !product ? '' : product.temperature
-    const materials = data.loading || !product ? '' : product.materials
+    const title = loading || !product ? '' : product.name
+    const description = loading || !product ? '' : product.description
+    const details = loading || !product ? '' : product.details
+    const temperature = loading || !product ? '' : product.temperature
+    const materials = loading || !product ? '' : product.materials
+    const reviewsScore = loading || !product ? '' : product.yotpoAverageScore
 
     return (
       <Container>
@@ -123,8 +144,8 @@ export class QuickView extends React.Component<Props, State> {
               <Ratings
                 stars={5}
                 starDimension={'15px'}
-                rating={4.5}
-                totalReviews={123}
+                rating={get(reviewsScore, 'averageScore', 0)}
+                totalReviews={get(reviewsScore, 'total', 0)}
               />
               {/*TODO: Change to ProductInfo Component */}
               <ProductInfContainer>
@@ -201,15 +222,15 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   gotoCustomize = () => {
-    const { history, handleClose } = this.props
+    const { history, handleClose, productId } = this.props
     handleClose()
-    history.push('/design-center')
+    history.push(`/design-center?id=${productId}`)
   }
 
   gotoProductPage = () => {
-    const { history, productId, handleClose } = this.props
+    const { history, productId, yotpoId, handleClose } = this.props
     handleClose()
-    history.push(`/product/${productId}`)
+    history.push(`/product?id=${productId}&yotpoId=${yotpoId}`)
   }
 }
 
@@ -219,10 +240,13 @@ type OwnProps = {
 
 const QuickViewEnhance = compose(
   graphql<Data>(QuickViewQuery, {
-    options: ({ productId }: OwnProps) => ({
-      fetchPolicy: 'network-only',
-      variables: { id: productId }
-    })
+    options: ({ productId }: OwnProps) => {
+      return {
+        fetchPolicy: 'network-only',
+        variables: { id: productId },
+        skip: productId === 0
+      }
+    }
   })
 )(QuickView)
 

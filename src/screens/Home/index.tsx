@@ -10,7 +10,6 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import { compose } from 'react-apollo'
-import { ReducersObject } from '../../store/rootReducer'
 import * as homeActions from './actions'
 import Layout from '../../components/MainLayout'
 import {
@@ -42,6 +41,7 @@ interface Props extends RouteComponentProps<any> {
   searchString: string
   dispatch: any
   intl: InjectedIntl
+  fakeWidth: number
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -66,12 +66,12 @@ export class Home extends React.Component<Props, {}> {
     }
   }
 
-  handleOnQuickView = (id: number) => {
+  handleOnQuickView = (id: number, yotpoId: string) => {
     const { dispatch } = this.props
-    dispatch(openQuickViewAction(id))
+    dispatch(openQuickViewAction(id, yotpoId))
   }
 
-  onCloseModal = () => openQuickViewAction(0)
+  onCloseModal = () => openQuickViewAction(0, '')
 
   openResults = () => {
     const { dispatch } = this.props
@@ -90,8 +90,19 @@ export class Home extends React.Component<Props, {}> {
     dispatch(setSearchParam(value))
   }
 
+  handleOnGetStarted = () => {
+    const { history } = this.props
+    history.push('/fit-widget')
+  }
+
   render() {
-    const { history, showSearchResults, searchString, intl } = this.props
+    const {
+      history,
+      showSearchResults,
+      searchString,
+      intl,
+      fakeWidth
+    } = this.props
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
@@ -116,7 +127,10 @@ export class Home extends React.Component<Props, {}> {
                 <NeedHelp>
                   <FormattedMessage {...messages.helpFind} />
                 </NeedHelp>
-                <GetStartedButton size="large">
+                <GetStartedButton
+                  size="large"
+                  onClick={this.handleOnGetStarted}
+                >
                   <FormattedMessage {...messages.startButton} />
                 </GetStartedButton>
               </HelpContainer>
@@ -129,7 +143,7 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
-          <ImagesGrid />
+          <ImagesGrid {...{ fakeWidth }} />
           <YotpoHome />
         </Container>
       </Layout>
@@ -137,7 +151,11 @@ export class Home extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = ({ home }: ReducersObject) => home.toJS()
+const mapStateToProps = (state: any) => {
+  const home = state.get('home').toJS()
+  const responsive = state.get('responsive').toJS()
+  return { ...home, ...responsive }
+}
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 

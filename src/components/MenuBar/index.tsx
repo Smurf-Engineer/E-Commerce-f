@@ -3,9 +3,11 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl } from 'react-intl'
+import MediaQuery from 'react-responsive'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
+import MenuMobile from '../MenuBarMobile'
 import {
   Container,
   TopText,
@@ -38,6 +40,7 @@ interface Props {
   currentCurrency: number
   intl: InjectedIntl
   hideBottom?: boolean
+  fakeWidth: number
 }
 
 interface StateProps {
@@ -67,7 +70,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       hideBottom,
       intl,
       logoutAction,
-      saveUserToLocal
+      saveUserToLocal,
+      fakeWidth
     } = this.props
     let user
     if (typeof window !== 'undefined') {
@@ -84,35 +88,61 @@ class MenuBar extends React.Component<Props, StateProps> {
         logout={logoutAction}
       />
     )
+
+    const menuRegion = (
+      <MenuRegion
+        {...{
+          onChangeLocation,
+          currentRegion,
+          currentLanguage,
+          currentCurrency
+        }}
+      />
+    )
+
     return (
-      <Container>
-        <Row>
-          <MenuSupport />
-          <TopRow>
-            <MenuRegion
-              {...{
-                onChangeLocation,
-                currentRegion,
-                currentLanguage,
-                currentCurrency
-              }}
-            />
-            <CartIcon src={cart} />
-            {loggedUser}
-          </TopRow>
-        </Row>
-        <Divider />
-        {!hideBottom && (
-          <BottomRow>
-            <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-            <DropdownList {...{ history }} />
-            <SearchBar
-              search={searchFunc}
-              onHeader={true}
-              formatMessage={intl.formatMessage}
-            />
-          </BottomRow>
-        )}
+      <div>
+        <MediaQuery
+          minWidth={992}
+          values={{ width: fakeWidth, deviceWidth: fakeWidth }}
+        >
+          {matches => {
+            if (matches) {
+              return (
+                <Container>
+                  <Row>
+                    <MenuSupport />
+                    <TopRow>
+                      {menuRegion}
+                      <CartIcon src={cart} />
+                      {loggedUser}
+                    </TopRow>
+                  </Row>
+                  <Divider />
+                  {!hideBottom && (
+                    <BottomRow>
+                      <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+                      <DropdownList {...{ history }} />
+                      <SearchBar
+                        search={searchFunc}
+                        onHeader={true}
+                        formatMessage={intl.formatMessage}
+                      />
+                    </BottomRow>
+                  )}
+                </Container>
+              )
+            } else {
+              return (
+                <MenuMobile
+                  {...{ history }}
+                  loginButton={loggedUser}
+                  regionButton={menuRegion}
+                />
+              )
+            }
+          }}
+        </MediaQuery>
         <Login
           open={openLogin}
           requestClose={this.handleCloseLogin}
@@ -126,7 +156,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           requestClose={this.handleOpenForgotPassword}
           openLogin={this.handleOpenLogin}
         />
-      </Container>
+      </div>
     )
   }
   handleOpenLogin = () => {

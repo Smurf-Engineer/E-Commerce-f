@@ -71,22 +71,26 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
     let thumbnailsList
     if (catalogue) {
-      thumbnailsList = catalogue.map((product, index) => (
-        <ThumbnailListItem key={index}>
-          <ProductThumbnail
-            id={product.id}
-            yotpoId={product.yotpoId}
-            type={product.type}
-            description={product.description}
-            isTopProduct={product.isTopProduct}
-            onPressCustomize={this.gotoDesignCenter}
-            onPressQuickView={this.handlePressQuickView}
-            collections={product.collections}
-            images={product.images}
-            priceRange={product.priceRange}
-          />
-        </ThumbnailListItem>
-      ))
+      thumbnailsList = catalogue.map((product, index) => {
+        // TODO: filter by gender
+        const productImages = product.images ? product.images[0] : {}
+        return (
+          <ThumbnailListItem key={index}>
+            <ProductThumbnail
+              id={product.id}
+              yotpoId={product.yotpoId}
+              type={product.type}
+              description={product.description}
+              isTopProduct={product.isTopProduct}
+              onPressCustomize={this.gotoDesignCenter}
+              onPressQuickView={this.handlePressQuickView}
+              collections={product.collections}
+              images={productImages}
+              priceRange={product.priceRange}
+            />
+          </ThumbnailListItem>
+        )
+      })
     }
 
     const renderThumbnailList =
@@ -138,9 +142,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     )
   }
 
-  gotoDesignCenter = () => {
+  gotoDesignCenter = (id: string) => {
     const { history } = this.props
-    history.push('/design-center')
+    history.push(`/design-center?id=${id}`)
   }
 
   handlePressQuickView = (id: number) => {

@@ -3,20 +3,18 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import Spin from 'antd/lib/spin'
 import {
   Container,
   SwipeContainer,
-  ThreeDThumbnailContair,
   ThumbnailContainer,
   ImageThumbnails,
   ThumbnailImg,
   SelectedImage,
   Arrows,
   ArrowLeft,
-  ArrowRight
+  ArrowRight,
+  SwipeImg
 } from './styledComponents'
-import Product3DThumbnail from '../Product3DThumbnail'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
 import { ImageType } from '../../types/common'
@@ -35,12 +33,11 @@ class ImageSlider extends React.Component<Props, StateProps> {
     index: 0
   }
   render() {
-    const { images, onLoadModel, loading } = this.props
+    const { images } = this.props
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
     const ThumbnailsArray = [
-      images.front,
       images.front,
       images.right,
       images.back,
@@ -61,26 +58,14 @@ class ImageSlider extends React.Component<Props, StateProps> {
 
     const selectedImages = ThumbnailsArray.map((thumbnail, i) => (
       <SelectedImage key={i}>
-        <img src={thumbnail} />
+        <SwipeImg src={thumbnail} />
       </SelectedImage>
     ))
-
-    const loading3Dmodel = loading ? (
-      <Spin />
-    ) : (
-      <Product3DThumbnail {...{ onLoadModel }} />
-    )
-    const renderSelectedImage =
-      index === 0 ? (
-        <ThreeDThumbnailContair>{loading3Dmodel}</ThreeDThumbnailContair>
-      ) : (
-        <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
-      )
 
     return (
       <Container>
         <SwipeContainer>
-          {renderSelectedImage}
+          <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
           <Arrows>
             <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
             <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
@@ -99,7 +84,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
   handleNextPage = () => {
     const { index } = this.state
 
-    if (index < 5) {
+    if (index < 3) {
       this.setState({ index: index + 1 })
     }
   }

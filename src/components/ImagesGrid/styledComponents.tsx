@@ -25,12 +25,22 @@ export const CarouselContent = styled.div`
   padding: 10px;
   width: 100%;
   color: #333;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0px;
+    margin: 0px;
+  }
 `
 
 export const Slide = styled.img`
-  height: 700px;
-  width: 80%;
+  width: 100%;
   padding: 5px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    object-fit: cover;
+    width: 300px;
+    height: 100px;
+  }
 `
 
 export const QuoteContent = styled.div`
@@ -38,6 +48,17 @@ export const QuoteContent = styled.div`
   width: 100%;
   height: 515px;
   display: table;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-top: 0px;
+    height: 245px;
+  }
 `
 
 export const ImageQuote = styled.img`
@@ -45,25 +66,53 @@ export const ImageQuote = styled.img`
   width: 80%;
   float: right;
   object-fit: cover;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    height: 245px;
+  }
 `
 
 export const CardQuote = styled.div`
-  height: 395px;
+  padding: 16px 16px 32px 16px;
   width: 442px;
   background-color: #ffffff;
   position: absolute;
   margin-top: 60px;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 12px;
+    width: 50%;
+    margin-top: 16px;
+  }
 `
 
 export const TextQuote = styled.div`
-  height: 341.04px;
   width: 384px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 36px;
-  position: relative;
-  float: left;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 18px;
+    width: 100%;
+  }
 `

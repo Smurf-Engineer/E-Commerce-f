@@ -42,7 +42,6 @@ export const PriceQuantityRow = styled(Row)`
   display: flex;
   margin-top: 20px;
   margin-bottom: 20px;
-  flex: wrap;
 `
 export const AvailablePrices = styled.div`
   margin-right: 10px;

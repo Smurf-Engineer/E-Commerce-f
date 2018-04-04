@@ -17,16 +17,10 @@ interface SelectedProps {
 export const Tab = styled.div`
   display: flex;
   flex: 1;
-  cursor: pointer;
   background-color: ${({ selected }: SelectedProps) =>
     selected ? '#e61737' : '#fff'};
   justify-content: center;
   align-items: center;
-
-  &:hover {
-    background-color: ${({ selected }: SelectedProps) =>
-      selected ? '#e61737' : '#fafafa'};
-  }
 `
 
 export const Text = styled.div`

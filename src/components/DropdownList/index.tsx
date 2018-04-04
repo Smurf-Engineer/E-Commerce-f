@@ -7,7 +7,6 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
-import { ReducersObject } from '../../store/rootReducer'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -54,12 +53,12 @@ export class DropdownList extends React.PureComponent<Props> {
 
   handleOnCustomize = (id: string) => {
     const { history } = this.props
-    history.push('/design-center')
+    history.push(`/design-center?id=${id}`)
   }
 
-  handleOnQuickView = (id: number) => {
+  handleOnQuickView = (id: number, yotpoId: string) => {
     const { dispatch } = this.props
-    dispatch(openQuickViewAction(id))
+    dispatch(openQuickViewAction(id, yotpoId))
   }
 
   handleOnHideGenderMenu = (visible: boolean, index: number) => {
@@ -149,7 +148,7 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = ({ menu }: ReducersObject) => menu.toJS()
+const mapStateToProps = (state: any) => state.get('menu').toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 

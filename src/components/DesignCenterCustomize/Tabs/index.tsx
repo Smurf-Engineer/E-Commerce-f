@@ -16,6 +16,7 @@ const { TabPane } = AntdTabs
 
 interface Props {
   colorBlock: number
+  colorBlockHovered: number
   paletteName: string
   palettes: Palette[]
   colors: string[]
@@ -25,11 +26,14 @@ interface Props {
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
+  onHoverColorBlock: (index: number) => void
 }
 
 const Tabs = ({
   onSelectColorBlock,
+  onHoverColorBlock,
   colorBlock,
+  colorBlockHovered,
   onSelectColor,
   onSelectPalette,
   onChangePaletteName,
@@ -46,7 +50,9 @@ const Tabs = ({
           <ColorTab
             {...{
               onSelectColorBlock,
+              onHoverColorBlock,
               colorBlock,
+              colorBlockHovered,
               onSelectColor,
               colors,
               styleColors,

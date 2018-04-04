@@ -59,7 +59,7 @@ export type HomePageBatch = {
 
 export interface Product {
   id: number
-  images: ImageType
+  images: ImageType[]
   type: string
   description: string
   priceRange: PriceRange[]
@@ -74,6 +74,8 @@ export interface Product {
   fitStyles: FitStyle[]
   genders: Filter[]
   bodyChartId: number
+  retailMen: boolean
+  retailWomen: boolean
 }
 
 export interface ProductReviews {

@@ -119,12 +119,29 @@
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
   "components.DesignCenterPreview.Render3D.addToCart": "Add to Cart",
   "components.DesignCenterPreview.Render3D.keepShoping": "Keep Shopping",
-  "components.SaveDesign.modalTitle": "Name your design",
+  "components.ShareDesignModal.tittle": "SHARE YOU AWESOME DESIGN!",
+  "components.ShareDesignModal.shareLinkLabel": "Share Link",
+  "components.ShareDesignModal.socialMediaLabel": "Social Media",
+  "components.ShareDesignModal.emailLabel": "E-mail",
+  "components.ShareDesignModal.addEmailLabel": "Add email addresses...",
+  "components.ShareDesignModal.addMessageLabel": "Add a message...",
+  "components.ShareDesignModal.sendButtonLabel": "Send",
+  "components.ShareDesignModal.copyButtonLabel": "Copy",
+
+  "components.SaveDesign.modalTitle": "Save your design",
   "components.SaveDesign.modalText":
     "Name it something that is simple and recognizable to you.",
+  "components.SaveDesign.modalSaveAsNewDesign": "Save as new design",
   "components.SaveDesign.placeholder": "Design name",
   "components.SaveDesign.invalidNameMessage": "Invalid design name",
   "components.SaveDesign.saveSuccess": "Design saved",
   "components.SaveDesign.save": "Save",
-  "components.SaveDesign.invalidUser": "You must be logged in to save designs."
+  "components.SaveDesign.saveChanges": "Save changes",
+  "components.SaveDesign.invalidUser": "You must be logged in to save designs.",
+  "components.SaveDesign.checkCopyright":
+    "I hereby agree that I have permission and the rights to  use all images I have uploaded to this design",
+
+  "components.OptionsController.undo": "Undo",
+  "components.OptionsController.redo": "Redo",
+  "components.OptionsController.reset": "Reset"
 }

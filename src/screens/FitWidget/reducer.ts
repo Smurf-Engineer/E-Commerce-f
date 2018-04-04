@@ -1,5 +1,5 @@
 /**
- * FitWidget Reducer - Created by gustavomedina on 23/03/18.
+ * FitWidget Reducer - Created by gustavomedina on 27/03/18.
  */
 import { fromJS } from 'immutable'
 import { DEFAULT_ACTION } from './constants'

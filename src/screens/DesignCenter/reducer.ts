@@ -19,8 +19,13 @@ import {
   SET_SWIPING_TAB_ACTION,
   SET_THEME_SELECTED_ACTION,
   SET_STYLE_SELECTED_ACTION,
+  OPEN_SHARE_MODAL,
   OPEN_SAVEDESIGN,
-  SET_DESIGN_NAME
+  SET_DESIGN_NAME,
+  SAVE_DESIGN_ID,
+  COLOR_BLOCK_HOVERED_ACTION,
+  SET_CHECKED_TERMS,
+  CLEAR_DESIGN_INFO
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -29,6 +34,7 @@ const colorsInit = fill(Array(5), '')
 export const initialState = fromJS({
   currentTab: 0,
   colorBlock: -1,
+  colorBlockHovered: -1,
   colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   palettes: [],
@@ -40,7 +46,10 @@ export const initialState = fromJS({
   swipingView: false,
   themeId: null,
   style: null,
-  openSaveDesign: false
+  openShareModal: false,
+  openSaveDesign: false,
+  checkedTerms: false,
+  savedDesignId: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -54,6 +63,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_COLOR_BLOCK_ACTION:
       return state.set('colorBlock', action.index)
+    case COLOR_BLOCK_HOVERED_ACTION:
+      return state.set('colorBlockHovered', action.index)
     case SET_COLOR_ACTION: {
       const { color } = action
       const colors = state.get('colors')
@@ -140,10 +151,18 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         style: action.colors,
         currentTab: 2
       })
+    case OPEN_SHARE_MODAL:
+      return state.set('openShareModal', action.open)
     case OPEN_SAVEDESIGN:
       return state.set('openSaveDesign', action.open)
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
+    case SAVE_DESIGN_ID:
+      return state.set('savedDesignId', action.id)
+    case SET_CHECKED_TERMS:
+      return state.set('checkedTerms', action.checked)
+    case CLEAR_DESIGN_INFO:
+      return state.merge({ checkedTerms: false, designName: '' })
     default:
       return state
   }
