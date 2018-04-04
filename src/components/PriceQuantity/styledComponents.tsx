@@ -25,7 +25,7 @@ export const PriceLabel = styled.div`
   font-weight: 600;
   line-height: 25px;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     font-size: 16px;
   }
 `

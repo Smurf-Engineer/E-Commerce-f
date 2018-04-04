@@ -56,7 +56,7 @@ export const TopText = styled.div`
 `
 
 export const QuickView = styled.div`
-  z-index: 10;
+  z-index: 1;
   cursor: pointer;
 `
 

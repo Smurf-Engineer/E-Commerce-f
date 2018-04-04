@@ -22,6 +22,12 @@ export const Content = styled.div`
     display: block;
     padding: 0px 12px 50px 12px;
   }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
 `
 
 export const ImagePreview = styled.div`
@@ -35,6 +41,7 @@ export const ImagePreview = styled.div`
 
   @media (min-width: 481px) and (max-width: 768px) {
     padding: 0 20px 0 0;
+    width: 100%;
   }
 `
 
@@ -188,7 +195,7 @@ export const SectionButton = styled.div`
     cursor: pointer;
   }
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     margin-bottom: 15px;
   }
 `
@@ -198,7 +205,7 @@ export const SectionRow = styled.div`
 `
 export const SectionButtonsContainer = styled.div`
   display: flex;
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
   }
 `

@@ -20,6 +20,16 @@ export const HeadRow = styled.div`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 0 2% 0 5%;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0;
+  }
 `
 
 export const TotalItems = styled.div`
@@ -53,6 +63,17 @@ export const ThumbnailsList = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0;
+    flex-direction: column;
+  }
 `
 
 export const ThumbnailListItem = styled.li`

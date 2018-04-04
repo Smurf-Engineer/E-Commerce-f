@@ -4,11 +4,25 @@
 import styled from 'styled-components'
 import breadcrumb from 'antd/lib/breadcrumb'
 
+interface FiltersProps {
+  showChildren?: boolean
+}
+
 export const Container = styled.div`
   display: flex;
-  flew-wrap: no-wrap;
+  flex-wrap: no-wrap;
   padding: 31px 36px 32px 32px;
   background-color: #fff;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 31px 5px 32px 5px;
+  }
 `
 
 export const Text = styled.div`
@@ -19,6 +33,8 @@ export const FiltersColumn = styled.div`
 `
 
 export const FiltersTitle = styled.div`
+  display: ${({ showChildren }: FiltersProps) =>
+    showChildren ? 'inline-block' : 'none'};
   height: 36.95px;
   color: #5f6062;
   font-family: 'Avenir Next';

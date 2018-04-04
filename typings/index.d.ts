@@ -73,3 +73,26 @@ declare module 'react-responsive-redux' {
   let MobileScreen: any
   let DesktopScreen: any
 }
+
+declare module 'rc-drawer' {
+  interface Props {
+    prefixCls?: string
+    sidebarStyle?: object
+    contentStyle?: object
+    overlayStyle?: object
+    dragHandleStyle?: object
+    docked?: boolean
+    open: boolean
+    transitions?: boolean
+    touch?: boolean
+    enableDragHandle?: boolean
+    position?: string
+    dragToggleDistance?: number
+    onOpenChange?: () => void
+    sidebar: any
+    style?: any
+  }
+
+  class Drawer extends React.Component<Props, any> {}
+  export default Drawer
+}

@@ -23,3 +23,39 @@
     min-height: 26px;
   }
 }
+
+/* Drawer Styles */
+.rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar {
+  -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  background-color: white;
+}
+
+.rc-drawer.rc-drawer-left .rc-drawer-draghandle,
+.rc-drawer.rc-drawer-right .rc-drawer-draghandle {
+  width: 0px !important;
+  height: 100%;
+}
+
+.rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar {
+  -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  top: 75px;
+  padding: 15px;
+}
+
+.rc-drawer-overlay {
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 0.3s ease-out;
+  -o-transition: opacity 0.3s ease-out;
+  transition: opacity 0.3s ease-out;
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0 !important;
+}
