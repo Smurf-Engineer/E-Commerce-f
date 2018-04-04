@@ -58,7 +58,7 @@ export type HomePageBatch = {
 
 export interface Product {
   id: number
-  images: ImageType
+  images: ImageType[]
   type: string
   description: string
   priceRange: PriceRange[]

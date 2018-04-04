@@ -48,6 +48,8 @@ export class SearchResults extends React.Component<Props, {}> {
     if (!loading && productSearch) {
       totalProducst = productSearch.length
       list = productSearch.map((product, key) => {
+        // TODO: filter by gender
+        const productImages = product.images ? product.images[0] : {}
         return (
           <ProductThumbnail
             key={key}
@@ -56,7 +58,7 @@ export class SearchResults extends React.Component<Props, {}> {
             yotpoId={product.yotpoId}
             description={product.description}
             collections={product.collections}
-            images={product.images}
+            images={productImages}
             type={product.type}
             isTopProduct={product.isTopProduct}
             onPressQuickView={quickViewAction}

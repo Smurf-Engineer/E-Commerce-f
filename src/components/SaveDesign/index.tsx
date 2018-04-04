@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
+import Checkbox from 'antd/lib/checkbox'
 import get from 'lodash/get'
 import messages from './messages'
 import {
@@ -14,20 +15,33 @@ import {
   Text,
   StyledInput,
   ButtonWrapper,
-  Button
+  Button,
+  StyledSaveAs,
+  CheckWrapper
 } from './styledComponents'
-import { saveDesignName } from './data'
+import { saveDesignName, saveDesignChanges } from './data'
+
+interface Data {
+  id: number
+  shortId: string
+  name: string
+}
 
 interface Props {
   productId: string
   open: boolean
   designName: string
+  savedDesignId: string
   colors: string[]
+  checkedTerms: boolean
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
   saveDesignNameMutation: (variables: {}) => void
-  afterSaveDesign: (id: number) => void | undefined
+  saveDesignChangesMutation: (variables: {}) => void
+  afterSaveDesign: (id: string) => void | undefined
+  setCheckedTerms: (checked: boolean) => void
+  clearDesignInfo: () => void
 }
 
 export class SaveDesign extends React.Component<Props, {}> {
@@ -75,7 +89,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       const response = await saveDesignNameMutation({
         variables: { design: designObj, colors }
       })
-      const data = get(response, 'data.saveDesign', false)
+      const data: Data = get(response, 'data.saveDesign', false)
 
       if (data) {
         const { shortId } = data
@@ -91,8 +105,52 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
   }
 
+  handleSaveChanges = async (evt: React.MouseEvent<EventTarget>) => {
+    const {
+      colors,
+      savedDesignId,
+      formatMessage,
+      saveDesignChangesMutation,
+      requestClose
+    } = this.props
+
+    try {
+      const response = await saveDesignChangesMutation({
+        variables: { designId: savedDesignId, colors }
+      })
+      const data = get(response, 'data.saveDesignAs', false)
+
+      if (data) {
+        message.success(formatMessage(messages.saveSuccess))
+        requestClose()
+      }
+    } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
+      console.error(error)
+    }
+  }
+
+  toggleChecked = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const { setCheckedTerms } = this.props
+    const { checked } = evt.target
+    setCheckedTerms(checked)
+  }
+
+  handleClose = () => {
+    const { clearDesignInfo } = this.props
+    clearDesignInfo()
+  }
+
   render() {
-    const { open, formatMessage, designName } = this.props
+    const {
+      open,
+      formatMessage,
+      designName,
+      savedDesignId,
+      checkedTerms
+    } = this.props
     return (
       <Container>
         <Modal
@@ -103,22 +161,53 @@ export class SaveDesign extends React.Component<Props, {}> {
           width={'30%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
+          afterClose={this.handleClose}
         >
           <Title>
             <FormattedMessage {...messages.modalTitle} />
           </Title>
-          <Text>
-            <FormattedMessage {...messages.modalText} />
-          </Text>
+          {savedDesignId !== '' ? (
+            <StyledSaveAs>
+              <ButtonWrapper>
+                <Button
+                  type="primary"
+                  disabled={!checkedTerms}
+                  onClick={this.handleSaveChanges}
+                >
+                  <FormattedMessage {...messages.saveChanges} />
+                </Button>
+              </ButtonWrapper>
+              <Text>
+                <FormattedMessage {...messages.modalSaveAsNewDesign} />
+              </Text>
+            </StyledSaveAs>
+          ) : (
+            <Text>
+              <FormattedMessage {...messages.modalText} />
+            </Text>
+          )}
           <StyledInput
             id="saveDesignName"
             value={designName}
             placeholder={formatMessage(messages.placeholder)}
             onChange={this.handleInputChange}
           />
+          <CheckWrapper>
+            <Checkbox onChange={this.toggleChecked}>
+              <FormattedMessage {...messages.checkCopyright} />
+            </Checkbox>
+          </CheckWrapper>
           <ButtonWrapper>
-            <Button type="primary" onClick={this.handleSaveName}>
-              <FormattedMessage {...messages.save} />
+            <Button
+              type="primary"
+              disabled={!checkedTerms}
+              onClick={this.handleSaveName}
+            >
+              {savedDesignId !== '' ? (
+                <FormattedMessage {...messages.modalSaveAsNewDesign} />
+              ) : (
+                <FormattedMessage {...messages.save} />
+              )}
             </Button>
           </ButtonWrapper>
         </Modal>
@@ -127,5 +216,5 @@ export class SaveDesign extends React.Component<Props, {}> {
   }
 }
 
-const SaveDesignEnhance = compose(saveDesignName)(SaveDesign)
+const SaveDesignEnhance = compose(saveDesignName, saveDesignChanges)(SaveDesign)
 export default SaveDesignEnhance
