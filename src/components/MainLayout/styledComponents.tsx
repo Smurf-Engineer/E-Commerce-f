@@ -32,9 +32,6 @@ export const Footer = styled.div`
     padding: 16px;
   }
 
-  @media (min-width: 481px) and (max-width: 767px) {
-  }
-
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 24px;
   }
