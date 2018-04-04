@@ -18,10 +18,12 @@ export const MenuBarMobile = ({
   loginButton,
   regionButton
 }: Props) => {
+  const handleGoHome = () => window.location.replace('/')
+
   return (
     <Container>
       <Menu {...{ history, loginButton, regionButton }} />
-      <Logo src={logo} />
+      <Logo src={logo} onClick={handleGoHome} />
       <Icon src={cart} />
     </Container>
   )
