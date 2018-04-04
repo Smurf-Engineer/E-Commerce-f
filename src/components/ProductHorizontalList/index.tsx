@@ -74,13 +74,13 @@ export const ProductHorizontalList = ({
             onPressCustomize,
             onPressQuickView,
             type,
-            images: productImages,
             description,
             priceRange,
             isTopProduct,
             collections,
             yotpoId
           }}
+          images={productImages}
         />
       )
     }
