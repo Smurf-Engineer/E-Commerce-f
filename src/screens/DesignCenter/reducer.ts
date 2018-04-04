@@ -49,7 +49,7 @@ export const initialState = fromJS({
   openShareModal: false,
   openSaveDesign: false,
   checkedTerms: false,
-  savedDesignId: '0'
+  savedDesignId: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
