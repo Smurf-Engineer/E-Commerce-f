@@ -89,6 +89,17 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
+    const menuRegion = (
+      <MenuRegion
+        {...{
+          onChangeLocation,
+          currentRegion,
+          currentLanguage,
+          currentCurrency
+        }}
+      />
+    )
+
     return (
       <div>
         <MediaQuery
@@ -102,14 +113,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                   <Row>
                     <MenuSupport />
                     <TopRow>
-                      <MenuRegion
-                        {...{
-                          onChangeLocation,
-                          currentRegion,
-                          currentLanguage,
-                          currentCurrency
-                        }}
-                      />
+                      {menuRegion}
                       <CartIcon src={cart} />
                       {loggedUser}
                     </TopRow>
@@ -129,7 +133,13 @@ class MenuBar extends React.Component<Props, StateProps> {
                 </Container>
               )
             } else {
-              return <MenuMobile />
+              return (
+                <MenuMobile
+                  {...{ history }}
+                  loginButton={loggedUser}
+                  regionButton={menuRegion}
+                />
+              )
             }
           }}
         </MediaQuery>

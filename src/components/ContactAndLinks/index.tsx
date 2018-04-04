@@ -8,7 +8,13 @@ import DesignSupport from '../DesignSupport'
 import MediaQuery from 'react-responsive'
 import AboutUs from '../AboutUs'
 import Teams from '../Teams'
-import { Container, ComplianceLogos, StyledImg } from './styledComponents'
+import {
+  Container,
+  ComplianceLogos,
+  StyledImg,
+  ContainerMobile,
+  Row
+} from './styledComponents'
 import BSCILogo from '../../assets/BSCI_logo.svg'
 import CaliPropLogo from '../../assets/californiaprop65.svg'
 
@@ -20,7 +26,7 @@ interface Props {
 const ContactAndLinks = ({ formatMessage, fakeWidth }: Props) => {
   return (
     <MediaQuery
-      minWidth={992}
+      minWidth={768}
       values={{ width: fakeWidth, deviceWidth: fakeWidth }}
     >
       {matches => {
@@ -39,7 +45,25 @@ const ContactAndLinks = ({ formatMessage, fakeWidth }: Props) => {
             </Container>
           )
         } else {
-          return <div>MOBILE CONTACT LINKS</div>
+          return (
+            <ContainerMobile>
+              <ContactInfo {...{ formatMessage }} />
+              <Row>
+                <div>
+                  <CustomerSupport {...{ formatMessage }} />
+                  <DesignSupport {...{ formatMessage }} />
+                </div>
+                <div>
+                  <AboutUs {...{ formatMessage }} />
+                  <Teams {...{ formatMessage }} />
+                </div>
+              </Row>
+              <ComplianceLogos>
+                <StyledImg alt="logo" src={BSCILogo} />
+                <StyledImg alt="logo" src={CaliPropLogo} />
+              </ComplianceLogos>
+            </ContainerMobile>
+          )
         }
       }}
     </MediaQuery>
