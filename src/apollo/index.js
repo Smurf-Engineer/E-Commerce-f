@@ -1,23 +1,23 @@
 import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
+import { split } from 'apollo-link'
 import { createHttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
-// import { setContext } from 'apollo-link-context'
+import { setContext } from 'apollo-link-context'
+import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { SubscriptionClient } from 'subscriptions-transport-ws/dist/client'
-import WebSocket from 'ws'
 import fetch from 'node-fetch'
 
-// TODO: implement
-// const authLink = setContext((_, { headers }) => {
-//   const token = 'get token from storage'
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: token ? `Bearer ${token}` : null
-//     }
-//   }
-// })
+const authLink = setContext((_, { headers }) => {
+  const token = 'get token from storage'
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : null
+    }
+  }
+})
 
 const hasSubscriptionOperation = ({ query }) => {
   return query.definitions.some(
@@ -27,49 +27,44 @@ const hasSubscriptionOperation = ({ query }) => {
 }
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4040/api/graphql',
+  uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
   fetch: fetch
 })
 
-// const wsLink = new WebSocketLink({
-//   uri: 'ws://localhost:4040/api/subscriptions',
-//   options: {
-//     reconnect: true
-//   },
-//   webSocketImpl: WebSocket
-// })
+const wsLink = process.browser
+  ? new WebSocketLink({
+      uri: `ws://api.jakroo.tailrecursive.co/api/subscriptions`,
+      options: {
+        reconnect: true
+      }
+    })
+  : null
 
-const wsClient = new SubscriptionClient(
-  `ws://localhost:4040/subscriptions`,
-  {
-    reconnect: true
-  },
-  WebSocket
-)
-
-const webSocketLink = new WebSocketLink(wsClient)
-
-const link = ApolloLink.split(hasSubscriptionOperation, webSocketLink, httpLink)
+const link = process.browser
+  ? split(
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === 'OperationDefinition' && operation === 'subscription'
+      },
+      wsLink,
+      authLink.concat(httpLink)
+    )
+  : authLink.concat(httpLink)
 
 export const configureServerClient = () => {
   const client = new ApolloClient({
     ssrMode: true,
-    link,
+    link: link,
     cache: new InMemoryCache()
   })
 
   return client
 }
 
-// declare global {
-//   interface Window {
-//     __APOLLO_STATE__: any
-//   }
-// }
 export const configureBrowserClient = () => {
   const client = new ApolloClient({
     ssrForceFetchDelay: 100,
-    link,
+    link: link,
     cache: new InMemoryCache().restore(window.__APOLLO_STATE__)
   })
 
