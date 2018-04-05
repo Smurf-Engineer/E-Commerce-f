@@ -65,14 +65,12 @@ export const ThumbnailsList = styled.ul`
   width: 100%;
 
   @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) {
-  }
-
-  @media (min-width: 320px) and (max-width: 480px) {
     padding: 0;
-    flex-direction: column;
+  }
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    padding: 0;
+    justify-content: space-between;
   }
 `
 
@@ -81,6 +79,14 @@ export const ThumbnailListItem = styled.li`
   display: inline-block;
   width: calc(100% / 4);
   padding-bottom: 20px;
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    width: calc(100% / 3);
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: calc(95% / 2);
+  }
 `
 
 export const Loading = styled.div`
@@ -92,6 +98,11 @@ export const Loading = styled.div`
 export const PaginationRow = styled.div`
   text-align: right;
   padding-right: 2%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0;
+    text-align: center;
+  }
 `
 
 export const MenuStyle = {

@@ -15,12 +15,6 @@ export const Container = styled.div`
   padding: 31px 36px 32px 32px;
   background-color: #fff;
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) {
-  }
-
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 31px 5px 32px 5px;
   }
@@ -47,6 +41,16 @@ export const FiltersTitle = styled.div`
 `
 export const ResultsColumn = styled.div`
   flex: 10;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 export const StyledBreadcrumb = styled(breadcrumb)`

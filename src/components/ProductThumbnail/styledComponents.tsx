@@ -6,6 +6,11 @@ import styled, { keyframes } from 'styled-components'
 export const Container = styled.div`
   margin: 0px 16px;
   width: 220px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    margin-left: 0;
+  }
 `
 
 export const Text = styled.div`
@@ -67,6 +72,10 @@ export const Type = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 220px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
 `
 export const Description = styled.div`
   user-select: none;
@@ -79,6 +88,10 @@ export const Description = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 220px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 export const InfoContainer = styled.div`
