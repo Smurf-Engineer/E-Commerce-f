@@ -63,23 +63,27 @@ export const ProductHorizontalList = ({
         yotpoId
       },
       key
-    ) => (
-      <ProductThumbnail
-        {...{
-          key,
-          id,
-          onPressCustomize,
-          onPressQuickView,
-          type,
-          images,
-          description,
-          priceRange,
-          isTopProduct,
-          collections,
-          yotpoId
-        }}
-      />
-    )
+    ) => {
+      // TODO: filter by gender
+      const productImages = images ? images[0] : {}
+      return (
+        <ProductThumbnail
+          {...{
+            key,
+            id,
+            onPressCustomize,
+            onPressQuickView,
+            type,
+            description,
+            priceRange,
+            isTopProduct,
+            collections,
+            yotpoId
+          }}
+          images={productImages}
+        />
+      )
+    }
   )
   return (
     <Container {...{ width }}>

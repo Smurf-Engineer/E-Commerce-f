@@ -4,8 +4,9 @@
 import styled from 'styled-components'
 import breadcrumb from 'antd/lib/breadcrumb'
 
-interface FiltersProps {
+interface StyleProps {
   showChildren?: boolean
+  color?: string
 }
 
 export const Container = styled.div`
@@ -33,7 +34,7 @@ export const FiltersColumn = styled.div`
 `
 
 export const FiltersTitle = styled.div`
-  display: ${({ showChildren }: FiltersProps) =>
+  display: ${({ showChildren }: StyleProps) =>
     showChildren ? 'inline-block' : 'none'};
   height: 36.95px;
   color: #5f6062;
@@ -42,6 +43,7 @@ export const FiltersTitle = styled.div`
   font-weight: bold;
   line-height: 27px;
   margin-bottom: 15px;
+  ${({ color }: StyleProps) => `color: ${color};`};
 `
 export const ResultsColumn = styled.div`
   flex: 10;

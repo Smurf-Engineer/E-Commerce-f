@@ -58,7 +58,7 @@
     "react": "^16.2.0",
     "react-animate-height": "^0.10.9",
     "react-apollo": "^2.0.4",
-    "react-components-generator": "^0.0.6",
+    "react-components-generator": "^0.0.7",
     "react-dom": "^16.2.0",
     "react-facebook-login": "^4.0.0",
     "react-google-login": "^3.0.4",

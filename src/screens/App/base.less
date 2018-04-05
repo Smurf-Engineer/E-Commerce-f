@@ -40,7 +40,6 @@
 .rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar {
   -webkit-box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-  top: 75px;
   padding: 15px;
 }
 
@@ -58,4 +57,28 @@
   transition: opacity 0.3s ease-out;
   background-color: rgba(0, 0, 0, 0.3);
   opacity: 0 !important;
+}
+
+.rc-drawer-sidebar {
+  z-index: 2;
+  position: absolute;
+  transition: -webkit-transform 0.3s ease-out;
+  -webkit-transition: -webkit-transform 0.3s ease-out;
+  -o-transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+  will-change: transform;
+  overflow-y: auto;
+  padding: 15px;
+  background-color: white;
+}
+
+.@{menu-prefix-cls} {
+  &-inline {
+    border-right: 0px @border-style-base @border-color-split;
+
+    .@{menu-prefix-cls}-submenu-title {
+      width: ~'calc(100% + 24px)';
+    }
+  }
 }

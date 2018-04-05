@@ -12,6 +12,7 @@ export const Container = styled.div`
   justify-content: space-between;
   padding: 0px 10px;
   align-items: center;
+  border-bottom: 1px solid gainsboro;
 `
 
 export const Logo = styled.img`

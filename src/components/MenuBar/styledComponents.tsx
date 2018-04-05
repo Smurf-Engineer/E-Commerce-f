@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   position: relative;
+  border-bottom: 1px solid gainsboro;
 `
 
 export const Row = styled.div`

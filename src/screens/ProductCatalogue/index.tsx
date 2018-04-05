@@ -132,7 +132,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     const sidebarFilters = (
       <div>
-        <FiltersTitle showChildren={openSidebar}>
+        <FiltersTitle showChildren={openSidebar} color={'#e61737'}>
           {intl.formatMessage(messages.filtersTitle)}
         </FiltersTitle>
         {renderFilters}
