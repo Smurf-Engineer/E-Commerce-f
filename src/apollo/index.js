@@ -40,7 +40,7 @@ const httpLink = createHttpLink({
 // })
 
 const wsClient = new SubscriptionClient(
-  `ws://localhost:4041/subscriptions`,
+  `ws://localhost:4040/subscriptions`,
   {
     reconnect: true
   },
