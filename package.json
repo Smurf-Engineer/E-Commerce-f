@@ -54,6 +54,7 @@
     "query-string": "^5.1.0",
     "raf": "^3.4.0",
     "razzle": "^0.8.7",
+    "rc-drawer": "^0.4.11",
     "react": "^16.2.0",
     "react-animate-height": "^0.10.9",
     "react-apollo": "^2.0.4",

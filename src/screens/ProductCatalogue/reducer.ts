@@ -8,7 +8,8 @@ import {
   SHOW_TYPE_FILTER,
   SET_SELECTED_FILTERS,
   ORDERBY_SELECTED,
-  SET_SKIP_VALUE
+  SET_SKIP_VALUE,
+  OPEN_SIDEBAR_MOBILE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -24,7 +25,8 @@ export const initialState = fromJS({
   categoryFilters: {},
   seasonFilters: {},
   fitFilters: {},
-  TemperatureFilters: {}
+  TemperatureFilters: {},
+  openSidebar: false
 })
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -51,6 +53,8 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         skip: action.skip,
         currentPage: action.page
       })
+    case OPEN_SIDEBAR_MOBILE:
+      return state.set('openSidebar', action.open)
     default:
       return state
   }

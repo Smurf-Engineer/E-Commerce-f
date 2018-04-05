@@ -1,12 +1,15 @@
 /**
  * ProductCatalog Screen - Created by cazarez on 27/02/18.
  */
+import 'rc-drawer/assets/index.css'
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import UpperCase from 'lodash/upperCase'
+import MediaQuery from 'react-responsive'
+import Drawer from 'rc-drawer'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
@@ -58,11 +61,14 @@ interface Props extends RouteComponentProps<any> {
   limit: number
   skip: number
   currentPage: number
+  fakeWidth: number
+  openSidebar: boolean
   setFilterAction: (filter: {}) => void
   openQuickViewAction: (index: number) => void
   setSelectedFilters: (filter: object) => void
   sortBySelected: (sortBy: string) => void
   setSkipValue: (skip: number, page: number) => void
+  openSidebarMobile: (open: boolean) => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
@@ -82,9 +88,12 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       limit,
       skip,
       currentPage,
+      fakeWidth,
+      openSidebar,
       openQuickViewAction: openQuickView,
       data: { loading, filters: filtersGraph }
     } = this.props
+
     let sortByLabel = ''
     if (loading) {
       return null
@@ -121,6 +130,15 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       }
     )
 
+    const sidebarFilters = (
+      <div>
+        <FiltersTitle showChildren={openSidebar} color={'#e61737'}>
+          {intl.formatMessage(messages.filtersTitle)}
+        </FiltersTitle>
+        {renderFilters}
+      </div>
+    )
+
     const sportOptions = get(filtersGraph, '0.options', [])
     const categoryOptions = get(filtersGraph, '1.options', [])
     const seasonOptions = get(filtersGraph, '2.options', [])
@@ -132,37 +150,94 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     )
     const seasonsIndexes = this.getFilterIndexes(seasonOptions, seasonFilters)
 
-    return (
-      <Layout {...{ history, intl }}>
-        <Container>
-          <FiltersColumn>
-            <FiltersTitle>
-              {intl.formatMessage(messages.filtersTitle)}
-            </FiltersTitle>
-            {renderFilters}
-          </FiltersColumn>
-          <ResultsColumn>
-            <ProductsThumbnailList
-              formatMessage={intl.formatMessage}
-              sportFilters={sportIndexes}
-              categoryFilters={categoryIndexes}
-              seasonFilters={seasonsIndexes}
-              handleChangePage={this.handlechangePage}
-              handleOrderBy={this.handleOrderBy}
-              {...{
-                skip,
-                orderBy,
-                limit,
-                openQuickView,
-                history,
-                sortByLabel,
-                currentPage
-              }}
-            />
-          </ResultsColumn>
-        </Container>
-      </Layout>
+    const renderView = (
+      <MediaQuery
+        maxWidth={768}
+        values={{ width: fakeWidth, deviceWidth: fakeWidth }}
+      >
+        {matches => {
+          if (matches) {
+            return (
+              <div className="drawer-container">
+                <Drawer
+                  open={openSidebar}
+                  sidebar={sidebarFilters}
+                  position={'left'}
+                  touch={true}
+                  onOpenChange={this.handleOpenSidebar}
+                >
+                  <Layout {...{ history, intl }}>
+                    <Container>
+                      <ResultsColumn>
+                        <FiltersTitle
+                          onClick={this.handleOpenSidebar}
+                          showChildren={true}
+                        >
+                          {intl.formatMessage(messages.filtersTitle)}
+                        </FiltersTitle>
+                        <ProductsThumbnailList
+                          formatMessage={intl.formatMessage}
+                          sportFilters={sportIndexes}
+                          categoryFilters={categoryIndexes}
+                          seasonFilters={seasonsIndexes}
+                          handleChangePage={this.handlechangePage}
+                          handleOrderBy={this.handleOrderBy}
+                          {...{
+                            skip,
+                            orderBy,
+                            limit,
+                            openQuickView,
+                            history,
+                            sortByLabel,
+                            currentPage
+                          }}
+                        />
+                      </ResultsColumn>
+                    </Container>
+                  </Layout>
+                </Drawer>
+              </div>
+            )
+          } else {
+            return (
+              <Layout {...{ history, intl }}>
+                <Container>
+                  <FiltersColumn>
+                    <FiltersTitle
+                      onClick={this.handleOpenSidebar}
+                      showChildren={true}
+                    >
+                      {intl.formatMessage(messages.filtersTitle)}
+                    </FiltersTitle>
+                    {renderFilters}
+                  </FiltersColumn>
+                  <ResultsColumn>
+                    <ProductsThumbnailList
+                      formatMessage={intl.formatMessage}
+                      sportFilters={sportIndexes}
+                      categoryFilters={categoryIndexes}
+                      seasonFilters={seasonsIndexes}
+                      handleChangePage={this.handlechangePage}
+                      handleOrderBy={this.handleOrderBy}
+                      {...{
+                        skip,
+                        orderBy,
+                        limit,
+                        openQuickView,
+                        history,
+                        sortByLabel,
+                        currentPage
+                      }}
+                    />
+                  </ResultsColumn>
+                </Container>
+              </Layout>
+            )
+          }
+        }}
+      </MediaQuery>
     )
+    return renderView
   }
 
   handlechangePage = (pageNumber: number) => {
@@ -207,9 +282,18 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
     setSelectedFilters(filterObject)
   }
+
+  handleOpenSidebar = () => {
+    const { openSidebar, openSidebarMobile } = this.props
+    openSidebarMobile(!openSidebar)
+  }
 }
 
-const mapStateToProps = (state: any) => state.get('productCatalog').toJS()
+const mapStateToProps = (state: any) => {
+  const productCatalogue = state.get('productCatalog').toJS()
+  const responsive = state.get('responsive').toJS()
+  return { ...productCatalogue, ...responsive }
+}
 
 const ProductCatalogEnhance = compose(
   injectIntl,

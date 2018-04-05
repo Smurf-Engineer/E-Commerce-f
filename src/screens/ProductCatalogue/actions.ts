@@ -7,7 +7,8 @@ import {
   ORDERBY_SELECTED,
   SHOW_TYPE_FILTER,
   SET_SELECTED_FILTERS,
-  SET_SKIP_VALUE
+  SET_SKIP_VALUE,
+  OPEN_SIDEBAR_MOBILE
 } from './constants'
 import { AnyAction, Filter } from '../../types/common'
 
@@ -40,4 +41,9 @@ export const setSkipValue = (skip: number, page: number) => ({
   type: SET_SKIP_VALUE,
   skip,
   page
+})
+
+export const openSidebarMobile = (open: boolean) => ({
+  type: OPEN_SIDEBAR_MOBILE,
+  open
 })

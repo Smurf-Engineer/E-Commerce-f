@@ -63,7 +63,7 @@ export const SwipeContainer = styled.div`
 `
 
 export const SwipeImg = styled.img`
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 767px) {
     width: 100%;
   }
 
