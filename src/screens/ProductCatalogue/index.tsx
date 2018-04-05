@@ -284,7 +284,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   handleOpenSidebar = () => {
-    console.log('onopenchange')
     const { openSidebar, openSidebarMobile } = this.props
     openSidebarMobile(!openSidebar)
   }

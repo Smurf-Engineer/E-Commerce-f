@@ -15,7 +15,7 @@ export const Container = styled.div`
   padding: 31px 36px 32px 32px;
   background-color: #fff;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     padding: 31px 5px 32px 5px;
   }
 `
