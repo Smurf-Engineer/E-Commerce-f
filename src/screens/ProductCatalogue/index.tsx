@@ -1,7 +1,6 @@
 /**
  * ProductCatalog Screen - Created by cazarez on 27/02/18.
  */
-import 'rc-drawer/assets/index.css'
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
