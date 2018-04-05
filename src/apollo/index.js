@@ -1,12 +1,10 @@
 import { ApolloClient } from 'apollo-client'
-import { ApolloLink } from 'apollo-link'
 import { split } from 'apollo-link'
 import { createHttpLink } from 'apollo-link-http'
 import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
 import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import { SubscriptionClient } from 'subscriptions-transport-ws/dist/client'
 import fetch from 'node-fetch'
 
 const authLink = setContext((_, { headers }) => {
@@ -29,7 +27,7 @@ const hasSubscriptionOperation = ({ query }) => {
 
 const httpLink = createHttpLink({
   uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
-  fetch: fetch
+  fetch
 })
 
 const wsLink = process.browser
