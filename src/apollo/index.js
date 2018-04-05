@@ -10,7 +10,8 @@ import { SubscriptionClient } from 'subscriptions-transport-ws/dist/client'
 import fetch from 'node-fetch'
 
 const authLink = setContext((_, { headers }) => {
-  const token = 'get token from storage'
+  const user = JSON.parse(localStorage.getItem('user'))
+  const token = user ? user.token : ''
   return {
     headers: {
       ...headers,
