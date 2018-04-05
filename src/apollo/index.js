@@ -32,7 +32,7 @@ const httpLink = createHttpLink({
 
 const wsLink = process.browser
   ? new WebSocketLink({
-      uri: `ws://api.jakroo.tailrecursive.co/api/subscriptions`,
+      uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
       options: {
         reconnect: true
       }
