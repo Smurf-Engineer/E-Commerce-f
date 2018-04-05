@@ -84,6 +84,8 @@ module.exports = {
       new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop')
     )
 
+    config.plugins.push(new webpack.IgnorePlugin(/utf-8-validate|bufferutil/))
+
     return config
   }
 }
