@@ -38,10 +38,12 @@ class Menu extends React.PureComponent<Props, {}> {
       this.setState({ openKeys: [''] })
     }
   }
+
   handleClick = ({ item, key, selectedKeys }: any) => {
     const { history } = this.props
     history.push(`/product-catalogue?${key}`)
   }
+
   onOpenChange = (openKeys: string[]) => {
     if (openKeys[openKeys.length - 1].substring(0, 4) === 'menu') {
       const newOpenKeys = ['']
@@ -50,6 +52,11 @@ class Menu extends React.PureComponent<Props, {}> {
     } else {
       this.setState({ openKeys })
     }
+  }
+
+  handleOnSeeAll = () => {
+    const { history } = this.props
+    history.push(`/product-catalogue`)
   }
   render() {
     const {
@@ -126,6 +133,7 @@ class Menu extends React.PureComponent<Props, {}> {
         >
           {options}
         </MenuAntd>
+        <span onClick={this.handleOnSeeAll}>SEE ALL</span>
         <Bottom>
           {loginButton}
           {regionButton}

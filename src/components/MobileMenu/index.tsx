@@ -29,6 +29,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
   }
 
   hide = () => this.setState({ visible: false })
+
   handleVisibleChange = (visible: boolean) => this.setState({ visible })
 
   render() {
