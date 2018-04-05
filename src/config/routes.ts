@@ -1,4 +1,5 @@
 /* Routes */
+import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
 import ProductDetail from '../screens/ProductDetail'
@@ -9,6 +10,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/subscription-test',
+    name: 'subscriptionTest',
+    component: SubscriptionTest
+  },
   {
     path: '/fit-widget',
     name: 'fitWidget',
