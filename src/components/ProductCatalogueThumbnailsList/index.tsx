@@ -10,7 +10,8 @@ import Menu, { ClickParam } from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
-import { QueryProps, ProductType } from '../../types/common'
+import FooterThumbnailLocker from '../FooterThumbnailLocker'
+import { QueryProps, ProductType, DesignType } from '../../types/common'
 import {
   Container,
   Content,
@@ -44,6 +45,9 @@ interface Props {
   history: any
   currentPage: number
   limit?: number
+  designs?: DesignType[]
+  onPressPrivate?: () => void
+  onPressDelete?: () => void
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -55,76 +59,116 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       limit,
       handleChangePage,
       handleOrderBy,
-      data: { loading, products }
+      data,
+      designs,
+      onPressPrivate = () => {},
+      onPressDelete = () => {}
     } = this.props
 
-    if (!products) {
-      return null
-    }
-    const { products: catalogue = [], fullCount: total } = products
-
-    const renderLoading = (
-      <Loading>
-        <Spin />
-      </Loading>
-    )
-
     let thumbnailsList
-    if (catalogue) {
-      thumbnailsList = catalogue.map((product, index) => {
-        // TODO: filter by gender
-        const productImages = product.images ? product.images[0] : {}
+    let total = '10'
+    let sortOptions = null
+    let loading = false
+    let renderThumbnailList = null
+    let renderLoading = null
+    if (designs) {
+      thumbnailsList = designs.map(({ id, name, product }, index) => {
         return (
           <ThumbnailListItem key={index}>
             <ProductThumbnail
               id={product.id}
               yotpoId={product.yotpoId}
-              type={product.type}
-              description={product.description}
+              footer={
+                <FooterThumbnailLocker
+                  {...{ id, name, onPressPrivate, onPressDelete }}
+                  description={`${product.type} ${product.description}`}
+                  date="03/03/2018" // TODO: Get design date
+                />
+              }
+              labelButton="ADD TO CART"
               isTopProduct={product.isTopProduct}
-              onPressCustomize={this.gotoDesignCenter}
+              onPressCustomize={this.handleOnPressAddToCart}
               onPressQuickView={this.handlePressQuickView}
-              collections={product.collections}
-              images={productImages}
-              priceRange={product.priceRange}
+              image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
             />
           </ThumbnailListItem>
         )
       })
-    }
-
-    const renderThumbnailList =
-      catalogue.length > 0 ? (
-        <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
-      ) : (
-        <NoResultsFound>{formatMessage(messages.emptyResults)}</NoResultsFound>
+      renderThumbnailList = <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+    } else {
+      renderLoading = (
+        <Loading>
+          <Spin />
+        </Loading>
       )
 
-    const sortOptions = (
-      <Menu style={MenuStyle} onClick={handleOrderBy}>
-        <Menu.Item key="topSeller">
-          {formatMessage(messages.topSellerLabel)}
-        </Menu.Item>
-        <Menu.Item key="pricelow">
-          {formatMessage(messages.lowestPriceLabel)}
-        </Menu.Item>
-        <Menu.Item key="pricehigh">
-          {formatMessage(messages.hightestPriceLabel)}
-        </Menu.Item>
-      </Menu>
-    )
+      const { loading: loadingData, products } = data
+      loading = loadingData || false
+      if (!products) {
+        return null
+      }
+      const { products: catalogue = [], fullCount } = products
+      total = fullCount
+      if (catalogue) {
+        thumbnailsList = catalogue.map((product, index) => {
+          // TODO: filter by gender
+          const productImages = product.images ? product.images[0] : {}
+          return (
+            <ThumbnailListItem key={index}>
+              <ProductThumbnail
+                id={product.id}
+                yotpoId={product.yotpoId}
+                type={product.type}
+                description={product.description}
+                isTopProduct={product.isTopProduct}
+                onPressCustomize={this.gotoDesignCenter}
+                onPressQuickView={this.handlePressQuickView}
+                collections={product.collections}
+                images={productImages}
+                priceRange={product.priceRange}
+              />
+            </ThumbnailListItem>
+          )
+        })
+      }
+
+      renderThumbnailList =
+        catalogue.length > 0 ? (
+          <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+        ) : (
+          <NoResultsFound>
+            {formatMessage(messages.emptyResults)}
+          </NoResultsFound>
+        )
+
+      sortOptions = (
+        <Menu style={MenuStyle} onClick={handleOrderBy}>
+          <Menu.Item key="topSeller">
+            {formatMessage(messages.topSellerLabel)}
+          </Menu.Item>
+          <Menu.Item key="pricelow">
+            {formatMessage(messages.lowestPriceLabel)}
+          </Menu.Item>
+          <Menu.Item key="pricehigh">
+            {formatMessage(messages.hightestPriceLabel)}
+          </Menu.Item>
+        </Menu>
+      )
+    }
 
     return (
       <Container>
         <HeadRow>
           <TotalItems>{`${total} Items`}</TotalItems>
-          <SortOptions>
-            <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
-            <Dropdown overlay={sortOptions} placement="bottomCenter">
-              <Text>{sortByLabel}</Text>
-            </Dropdown>
-            <StyledImg src={downArrowIcon} />
-          </SortOptions>
+          {sortOptions && (
+            <SortOptions>
+              <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>
+              <Dropdown overlay={sortOptions} placement="bottomCenter">
+                <Text>{sortByLabel}</Text>
+              </Dropdown>
+              <StyledImg src={downArrowIcon} />
+            </SortOptions>
+          )}
         </HeadRow>
         <Content>{loading ? renderLoading : renderThumbnailList}</Content>
         <PaginationRow>
@@ -151,6 +195,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     const { openQuickView } = this.props
     openQuickView(id)
   }
+
+  // TODO: Handle add to cart
+  handleOnPressAddToCart = (id: number) => {}
 }
 
 type OwnProps = {
@@ -163,6 +210,7 @@ type OwnProps = {
   limit?: number
   orderBy?: string
   skip?: number
+  designs?: DesignType[]
 }
 
 const ThumbnailsListEnhance = compose(
@@ -174,7 +222,8 @@ const ThumbnailsListEnhance = compose(
       seasonFilters,
       limit,
       orderBy,
-      skip
+      skip,
+      designs
     }: OwnProps) => {
       return {
         variables: {
@@ -185,7 +234,8 @@ const ThumbnailsListEnhance = compose(
           limit: limit ? limit : null,
           order: orderBy ? orderBy : null,
           offset: skip ? skip : null
-        }
+        },
+        skip: !!designs
       }
     }
   })

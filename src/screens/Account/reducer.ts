@@ -2,17 +2,20 @@
  * Account Reducer - Created by david on 05/04/18.
  */
 import { fromJS } from 'immutable'
-import { DEFAULT_ACTION } from './constants'
+import { SET_OPEN_KEYS, SET_CURRENT_SCREEN } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
-  someKey: 'This is a value in the reducer'
+  openKeys: [''],
+  screen: ''
 })
 
 const accountReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state.set('someKey', action.someValue)
+    case SET_OPEN_KEYS:
+      return state.set('openKeys', action.keys)
+    case SET_CURRENT_SCREEN:
+      return state.set('screen', action.screen)
     default:
       return state
   }
