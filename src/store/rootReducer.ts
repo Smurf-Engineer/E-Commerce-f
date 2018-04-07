@@ -12,6 +12,7 @@ import languageProvider from '../screens/LanguageProvider/reducer'
 import home from '../screens/Home/reducer'
 import reset from '../screens/ResetPassword/reducer'
 import subscriptionTest from '../screens/ResetPassword/reducer'
+import teamstoreProductPage from '../screens/TeamstoreProductPage/reducer'
 import menuGender from '../components/MenuGender/reducer'
 import menuSports from '../components/MenuSports/reducer'
 import layout from '../components/MainLayout/reducer'
@@ -21,6 +22,7 @@ import fitInfo from '../components/FitInfo/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  teamstoreProductPage: any
   subscriptionTest: any
   fitWidget: any
   designs: any
@@ -96,6 +98,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  teamstoreProductPage,
   subscriptionTest,
   fitWidget,
   designs,
