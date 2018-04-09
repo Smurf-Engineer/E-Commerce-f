@@ -13,10 +13,10 @@ import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
-import { Header } from './styledComponents'
+import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 
-const { Content, Footer } = Layout
+const { Content } = Layout
 
 interface Props {
   children: React.ReactChild
@@ -39,6 +39,7 @@ interface Props {
   yotpoId: string
   hideBottomHeader: boolean
   hideFooter: boolean
+  fakeWidth: number
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -70,7 +71,8 @@ class MainLayout extends React.Component<Props, {}> {
       logoutAction,
       saveUserToLocal,
       hideBottomHeader,
-      hideFooter
+      hideFooter,
+      fakeWidth
     } = this.props
     return (
       <Layout>
@@ -79,6 +81,7 @@ class MainLayout extends React.Component<Props, {}> {
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
             {...{
+              fakeWidth,
               history,
               intl,
               showSearchResults,
@@ -95,17 +98,20 @@ class MainLayout extends React.Component<Props, {}> {
           />
         </Header>
         <SearchResults
+          {...{ history }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}
           openResults={this.openResults}
           quickViewAction={this.openQuickView}
-          {...{ history }}
         />
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks formatMessage={intl.formatMessage} />
+            <ContactAndLinks
+              formatMessage={intl.formatMessage}
+              fakeWidth={fakeWidth}
+            />
             <SocialMedia />
           </Footer>
         )}
@@ -139,7 +145,8 @@ class MainLayout extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const layoutProps = state.get('layout').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...layoutProps, ...langProps }
+  const responsive = state.get('responsive').toJS()
+  return { ...layoutProps, ...langProps, ...responsive }
 }
 
 const LayoutEnhance = compose(

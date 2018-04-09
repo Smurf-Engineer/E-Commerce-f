@@ -11,12 +11,14 @@ describe('<QuickView />', () => {
     const data = {
       product: {
         id: 0,
-        images: {
-          front: '',
-          back: '',
-          left: '',
-          right: ''
-        },
+        images: [
+          {
+            front: '',
+            back: '',
+            left: '',
+            right: ''
+          }
+        ],
         type: '',
         description: '',
         priceRange: [],

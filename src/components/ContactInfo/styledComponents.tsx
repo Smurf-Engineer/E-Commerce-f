@@ -11,6 +11,10 @@ export const Container = styled.div`
   line-height: 16px;
   margin-bottom: 15px;
   font-weight: 200;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 24px;
+  }
 `
 export const Title = styled.div`
   height: 14px;

@@ -19,7 +19,7 @@ import {
 } from './styledComponents'
 
 interface Props {
-  productImages: ImageType
+  productImages: ImageType[]
   available: number
   isRetail: boolean
   gotoCustomize: () => void
@@ -37,6 +37,9 @@ class QuickViewSlider extends React.Component<Props, State> {
     const { gotoCustomize, productImages, available, isRetail } = this.props
     const { index } = this.state
 
+    // TODO: filter by gender
+    const images = productImages[0]
+
     const customizeButton = (
       <StyledButton onClick={gotoCustomize}>{'CUSTOMIZE'}</StyledButton>
     )
@@ -47,16 +50,16 @@ class QuickViewSlider extends React.Component<Props, State> {
       <Container>
         <SwipeableViews enableMouseEvents={true} {...{ index }}>
           <SliderPage>
-            <StyledImage src={productImages.front} />
+            <StyledImage src={images.front} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={productImages.right} />
+            <StyledImage src={images.right} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={productImages.left} />
+            <StyledImage src={images.left} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={productImages.back} />
+            <StyledImage src={images.back} />
           </SliderPage>
         </SwipeableViews>
         <Arrows>

@@ -46,7 +46,7 @@ export const Button = styled(AntdButton)`
 
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
-  .ant-btn-primary  {
+  .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;
     width: 100%;
@@ -60,7 +60,7 @@ export const CheckWrapper = styled.div`
   margin-bottom: 10px;
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
-  .ant-checkbox-input:focus + .ant-checkbox-inner  {
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
     border-color: #4a90e2;
   }
   .ant-checkbox-checked .ant-checkbox-inner,

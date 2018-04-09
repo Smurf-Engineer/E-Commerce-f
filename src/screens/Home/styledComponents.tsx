@@ -17,6 +17,10 @@ export const SearchBarContent = styled.div`
   color: #fff;
 
   @media (min-width: 768px) and (max-width: 1024px) {
+    top: 14em;
+    width: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   @media (min-width: 481px) and (max-width: 767px) {
@@ -37,7 +41,7 @@ export const SearchContainer = styled.div`
 export const HelpContainer = styled.div`
   text-align: center;
 
-  @media (min-width: 320px) and (max-width: 1024px) {
+  @media (min-width: 320px) and (max-width: 767px) {
     display: none;
   }
 `

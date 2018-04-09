@@ -10,7 +10,7 @@ describe('<QuickViewSlider />', () => {
     const div = document.createElement('div')
     ReactDOM.render(
       <QuickViewSlider
-        productImages={{ front: '', back: '', left: '', right: '' }}
+        productImages={[{ front: '', back: '', left: '', right: '' }]}
         available={0}
         gotoCustomize={() => {}}
         isRetail={false}

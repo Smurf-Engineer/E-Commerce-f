@@ -10,6 +10,7 @@ export interface QueryProps {
   fetchMore: any
   refetch?: any
   updateQuery?: any
+  subscribeToMore?: (options: any) => () => void
 }
 
 export interface Action {
@@ -58,7 +59,7 @@ export type HomePageBatch = {
 
 export interface Product {
   id: number
-  images: ImageType
+  images: ImageType[]
   type: string
   description: string
   priceRange: PriceRange[]

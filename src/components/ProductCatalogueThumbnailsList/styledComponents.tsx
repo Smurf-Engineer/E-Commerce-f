@@ -20,6 +20,10 @@ export const HeadRow = styled.div`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: 0 2% 0 5%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0;
+  }
 `
 
 export const TotalItems = styled.div`
@@ -53,6 +57,15 @@ export const ThumbnailsList = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding: 0;
+  }
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    padding: 0;
+    justify-content: space-between;
+  }
 `
 
 export const ThumbnailListItem = styled.li`
@@ -60,6 +73,14 @@ export const ThumbnailListItem = styled.li`
   display: inline-block;
   width: calc(100% / 4);
   padding-bottom: 20px;
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    width: calc(100% / 3);
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: calc(95% / 2);
+  }
 `
 
 export const Loading = styled.div`
@@ -71,6 +92,11 @@ export const Loading = styled.div`
 export const PaginationRow = styled.div`
   text-align: right;
   padding-right: 2%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0;
+    text-align: center;
+  }
 `
 
 export const MenuStyle = {

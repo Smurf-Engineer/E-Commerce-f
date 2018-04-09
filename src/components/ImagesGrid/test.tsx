@@ -13,7 +13,7 @@ describe('<ImagesGrid />', () => {
     // tslint:disable-next-line:no-empty
     ReactDOM.render(
       <IntlProvider {...props}>
-        <ImagesGrid />
+        <ImagesGrid fakeWidth={1200} />
       </IntlProvider>,
       div
     )

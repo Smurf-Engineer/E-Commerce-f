@@ -91,10 +91,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     openQuickView(productId)
   }
 
-  handleOnPressBack = () => {
-    const { history } = this.props
-    history.goBack()
-  }
+  handleOnPressBack = () => window.location.replace('/')
 
   handleOnSelectTab = (index: number) => {
     const { setCurrentTabAction } = this.props
