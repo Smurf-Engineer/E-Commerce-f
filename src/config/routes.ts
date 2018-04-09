@@ -1,4 +1,5 @@
 /* Routes */
+import CreateStore from '../screens/CreateStore'
 import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
 import Designs from '../screens/Designs'
@@ -10,6 +11,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/create-store',
+    name: 'createStore',
+    component: CreateStore
+  },
   {
     path: '/subscription-test',
     name: 'subscriptionTest',
