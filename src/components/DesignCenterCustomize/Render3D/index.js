@@ -295,10 +295,6 @@ class Render3D extends PureComponent {
   }
 
   lightUpdate = changed => {
-    // const { isSaving } = this.state
-    // if (changed && isSaving) {
-
-    // }
     const { showDragmessage } = this.state
     if (showDragmessage) {
       this.setState({ showDragmessage: false })
