@@ -78,6 +78,12 @@ export interface Product {
   retailWomen: boolean
 }
 
+export type DesignType = {
+  id: number
+  name: string
+  product: Product
+}
+
 export interface ProductReviews {
   total: number
   averageScore: number

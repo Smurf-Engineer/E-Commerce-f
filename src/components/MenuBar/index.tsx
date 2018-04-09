@@ -57,6 +57,11 @@ class MenuBar extends React.Component<Props, StateProps> {
 
   handleOnGoHome = () => window.location.replace('/')
 
+  handleMyAccount = () => {
+    const { history } = this.props
+    history.push('account')
+  }
+
   render() {
     const { openForgotPassword } = this.state
     const {
@@ -86,6 +91,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       <Logout
         title={`${String(user.name).toUpperCase()}`}
         logout={logoutAction}
+        account={this.handleMyAccount}
       />
     )
 
