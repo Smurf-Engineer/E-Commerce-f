@@ -9,6 +9,7 @@ import productDetail from '../screens/ProductDetail/reducer'
 import productCatalog from '../screens/ProductCatalogue/reducer'
 import designCenter from '../screens/DesignCenter/reducer'
 import languageProvider from '../screens/LanguageProvider/reducer'
+import account from '../screens/Account/reducer'
 import home from '../screens/Home/reducer'
 import reset from '../screens/ResetPassword/reducer'
 import subscriptionTest from '../screens/ResetPassword/reducer'
@@ -23,6 +24,7 @@ import { Reducer } from '../types/common'
 
 export interface ReducersObject {
   teamstoreProductPage: any
+  account: any
   subscriptionTest: any
   fitWidget: any
   designs: any
@@ -99,6 +101,7 @@ const responsiveReducer: Reducer<any> = (
 
 const rootReducer = combineReducers({
   teamstoreProductPage,
+  account,
   subscriptionTest,
   fitWidget,
   designs,

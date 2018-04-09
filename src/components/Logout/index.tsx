@@ -12,24 +12,36 @@ import { Text, menuStyle } from './styledComponents'
 interface Props {
   title: string
   logout: () => void
+  account: () => void
 }
 
-const Logout = ({ title, logout }: Props) => {
+const Logout = ({ title, logout, account }: Props) => {
+  const handleOnClick = ({ key }: any) => {
+    switch (key) {
+      case 'logout':
+        logout()
+        break
+      case 'account':
+        account()
+        break
+      default:
+        break
+    }
+  }
+
   const logoutMenu = (
-    <Menu style={menuStyle}>
-      <Menu.Item>
+    <Menu onClick={handleOnClick} style={menuStyle}>
+      <Menu.Item key="locker">
         <FormattedMessage {...messages.myLockerLabel} />
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="account">
         <FormattedMessage {...messages.myAccountLabel} />
       </Menu.Item>
-      <Menu.Item>
+      <Menu.Item key="settings">
         <FormattedMessage {...messages.profileSettingsLabel} />
       </Menu.Item>
-      <Menu.Item>
-        <div onClick={logout}>
-          <FormattedMessage {...messages.logoutLabel} />
-        </div>
+      <Menu.Item key="logout">
+        <FormattedMessage {...messages.logoutLabel} />
       </Menu.Item>
     </Menu>
   )

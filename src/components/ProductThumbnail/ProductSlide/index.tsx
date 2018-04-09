@@ -27,7 +27,9 @@ interface Props {
   isHovered: boolean
   isTopProduct: boolean
   images?: ImageType
+  image?: string
   currentImage: number
+  labelButton?: string
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -43,6 +45,8 @@ const ProductSlide = ({
   isHovered,
   isTopProduct,
   images,
+  image,
+  labelButton = 'CUSTOMIZE',
   currentImage,
   onPressCustomize,
   onPressQuickView,
@@ -50,6 +54,31 @@ const ProductSlide = ({
   onPressNext,
   onPressThumbnail
 }: Props) => {
+  if (image) {
+    return (
+      <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
+        <ImageTop>
+          <QuickView onClick={onPressQuickView}>
+            <img src={quickViewIcon} />
+          </QuickView>
+          {isTopProduct && (
+            <TopContainer>
+              <TopText>TOP</TopText>
+            </TopContainer>
+          )}
+        </ImageTop>
+        <Page>
+          <Image src={image} onClick={onPressThumbnail} />
+        </Page>
+        {isHovered && (
+          <ButtonContainer onClick={onPressCustomize}>
+            <CustomizeButton>{labelButton}</CustomizeButton>
+          </ButtonContainer>
+        )}
+      </ImageContainer>
+    )
+  }
+
   const imagePages = imagesOrder.map((key, index) => {
     return (
       <Page key={index}>
@@ -78,7 +107,7 @@ const ProductSlide = ({
       )}
       {isHovered && (
         <ButtonContainer onClick={onPressCustomize}>
-          <CustomizeButton>CUSTOMIZE</CustomizeButton>
+          <CustomizeButton>{labelButton}</CustomizeButton>
         </ButtonContainer>
       )}
     </ImageContainer>
