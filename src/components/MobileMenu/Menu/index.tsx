@@ -33,6 +33,7 @@ class Menu extends React.PureComponent<Props, {}> {
   state = {
     openKeys: ['']
   }
+
   componentWillReceiveProps({ menuOpen }: Props) {
     if (menuOpen === false) {
       this.setState({ openKeys: [''] })

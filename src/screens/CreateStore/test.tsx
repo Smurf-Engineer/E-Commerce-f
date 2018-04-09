@@ -1,18 +1,10 @@
 /**
  * CreateStore Test - Created by david on 09/04/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import createStoreReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { CreateStore } from './index'
 
 describe(' CreateStore Screen', () => {
-  it('renders without exploding', () => {
-    const div = document.createElement('div')
-    // tslint:disable-next-line:no-empty
-    ReactDOM.render(<CreateStore />, div)
-  })
   // Test redux actions
   it('Return the default state for unknow action', () => {
     let state = createStoreReducer(initialState, { type: 'unknow' })

@@ -4,13 +4,15 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  background-color: #222;
   display: flex;
   height: 100vh;
-  align-items: center;
-  justify-content: center;
+  padding: 40px 32px 0px 32px;
 `
 
-export const Text = styled.div`
-  color: #fff;
+export const Title = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 27px;
 `

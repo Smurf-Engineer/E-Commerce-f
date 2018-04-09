@@ -20,10 +20,13 @@ interface Props {
   id: number
   type?: string
   images?: ImageType
+  image?: string
   description?: string
   priceRange?: PriceRange[]
+  labelButton?: string
   isTopProduct: boolean
   collections?: number
+  footer?: React.ReactNode
   yotpoId: string
   history: any
   onPressCustomize: (id: number) => void
@@ -82,7 +85,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
       description,
       priceRange,
       isTopProduct,
-      collections
+      collections,
+      footer,
+      labelButton,
+      image
     } = this.props
     const { isHovered, currentImage } = this.state
     const price =
@@ -91,7 +97,14 @@ class ProductThumbnail extends React.Component<Props, {}> {
     return (
       <Container>
         <ImageSlide
-          {...{ isTopProduct, isHovered, images, currentImage }}
+          {...{
+            isTopProduct,
+            isHovered,
+            images,
+            currentImage,
+            labelButton,
+            image
+          }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
           onPressQuickView={this.handleOnPressQuickView}
@@ -100,14 +113,18 @@ class ProductThumbnail extends React.Component<Props, {}> {
           onPressCustomize={this.handleOnPressCustomize}
           onPressThumbnail={this.handlePressThumbnail}
         />
-        <Footer>
-          <Type>{type}</Type>
-          <Description>{description}</Description>
-          <InfoContainer>
-            <Label>{`${collections || 0} Collections`}</Label>
-            <Price>{price}</Price>
-          </InfoContainer>
-        </Footer>
+        {footer ? (
+          footer
+        ) : (
+          <Footer>
+            <Type>{type}</Type>
+            <Description>{description}</Description>
+            <InfoContainer>
+              <Label>{`${collections || 0} Collections`}</Label>
+              <Price>{price}</Price>
+            </InfoContainer>
+          </Footer>
+        )}
       </Container>
     )
   }

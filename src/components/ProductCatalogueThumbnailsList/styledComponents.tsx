@@ -15,13 +15,17 @@ export const Text = styled.div`
   }
 `
 
+interface HeadRowProps {
+  withoutPadding?: boolean
+}
+
 export const HeadRow = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 15px;
-  padding: 0 2% 0 5%;
-
-  @media (min-width: 320px) and (max-width: 480px) {
+  padding: ${({ withoutPadding }: HeadRowProps) =>
+      withoutPadding ? '0' : '0 2% 0 5%;'}
+    @media (min-width: 320px) and (max-width: 480px) {
     padding: 0;
   }
 `
@@ -66,6 +70,9 @@ export const ThumbnailsList = styled.ul`
     padding: 0;
     justify-content: space-between;
   }
+
+  margin-left: ${({ withoutPadding }: HeadRowProps) =>
+    withoutPadding ? '-54px' : '0'};
 `
 
 export const ThumbnailListItem = styled.li`
