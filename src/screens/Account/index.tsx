@@ -11,6 +11,7 @@ import * as accountActions from './actions'
 import messages from './messages'
 import { options, SCREEN_LOCKER } from './constants'
 import Layout from '../../components/MainLayout'
+import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
 import {
   Container,
@@ -31,6 +32,7 @@ interface Props extends RouteComponentProps<any> {
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
+  openQuickViewAction: (id: number, yotpoId: string | null) => void
 }
 
 export class Account extends React.Component<Props, {}> {
@@ -51,10 +53,12 @@ export class Account extends React.Component<Props, {}> {
   }
 
   getScreenComponent = (screen: string) => {
-    const { intl } = this.props
+    const { intl, openQuickViewAction: openQuickView } = this.props
     switch (screen) {
       case SCREEN_LOCKER:
-        return <MyLocker formatMessage={intl.formatMessage} />
+        return (
+          <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
+        )
       default:
         return null
     }
@@ -111,7 +115,7 @@ const mapStateToProps = (state: any) => state.get('account').toJS()
 
 const AccountEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...accountActions })
+  connect(mapStateToProps, { ...accountActions, openQuickViewAction })
 )(Account)
 
 export default AccountEnhance

@@ -48,6 +48,7 @@ interface Props {
   designs?: DesignType[]
   onPressPrivate?: () => void
   onPressDelete?: () => void
+  withoutPadding?: boolean
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -62,16 +63,18 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       data,
       designs,
       onPressPrivate = () => {},
-      onPressDelete = () => {}
+      onPressDelete = () => {},
+      withoutPadding
     } = this.props
 
     let thumbnailsList
-    let total = '10'
+    let total = ''
     let sortOptions = null
     let loading = false
     let renderThumbnailList = null
     let renderLoading = null
     if (designs) {
+      total = designs.length.toString()
       thumbnailsList = designs.map(({ id, name, product }, index) => {
         return (
           <ThumbnailListItem key={index}>
@@ -94,7 +97,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           </ThumbnailListItem>
         )
       })
-      renderThumbnailList = <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
+      renderThumbnailList = (
+        <ThumbnailsList withoutPadding={!!withoutPadding}>
+          {thumbnailsList}
+        </ThumbnailsList>
+      )
     } else {
       renderLoading = (
         <Loading>
@@ -158,7 +165,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <HeadRow>
+        <HeadRow withoutPadding={!!withoutPadding}>
           <TotalItems>{`${total} Items`}</TotalItems>
           {sortOptions && (
             <SortOptions>

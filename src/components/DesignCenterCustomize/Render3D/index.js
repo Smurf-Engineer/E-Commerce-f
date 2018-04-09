@@ -73,7 +73,10 @@ class Render3D extends PureComponent {
     const { onLoadModel, styleColors } = this.props
     const { clientWidth, clientHeight } = this.container
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      preserveDrawingBuffer: true
+    })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
@@ -291,7 +294,11 @@ class Render3D extends PureComponent {
     this.renderer.render(this.scene, this.camera)
   }
 
-  lightUpdate = () => {
+  lightUpdate = changed => {
+    // const { isSaving } = this.state
+    // if (changed && isSaving) {
+
+    // }
     const { showDragmessage } = this.state
     if (showDragmessage) {
       this.setState({ showDragmessage: false })
@@ -378,9 +385,21 @@ class Render3D extends PureComponent {
     this.camera.updateProjectionMatrix()
   }
 
-  handleOnSave = () => {
+  saveDesign = previewImage => {
+    // TODO: Send base64 image
     const { onOpenSaveDesign } = this.props
     onOpenSaveDesign(true)
+  }
+
+  takeDesignPicture = () => {
+    const viewPosition = viewPositions[2]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: 2 }, () =>
+      setTimeout(() => {
+        const dataUrl = this.renderer.domElement.toDataURL('image/png')
+        this.saveDesign(dataUrl)
+      }, 200)
+    )
   }
 
   render() {
@@ -428,7 +447,7 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         <ButtonWrapper>
-          <Button type="primary" onClick={this.handleOnSave}>
+          <Button type="primary" onClick={this.takeDesignPicture}>
             Save
           </Button>
         </ButtonWrapper>

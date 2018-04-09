@@ -16,6 +16,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
+  openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: string) => string
 }
 
@@ -28,8 +29,9 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     // TODO: Handle delete
   }
 
-  handleOnOpenQuickView = (id: number) => {
-    // TODO: Handle openquickview
+  handleOnOpenQuickView = (id: number, yotpoId: string) => {
+    const { openQuickView } = this.props
+    openQuickView(id, yotpoId)
   }
 
   render() {
@@ -38,6 +40,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       <Container>
         <ProductList
           {...{ formatMessage, designs }}
+          withoutPadding={true}
           onPressPrivate={this.handleOnPressPrivate}
           onPressDelete={this.handleOnPressDelete}
           openQuickView={this.handleOnOpenQuickView}

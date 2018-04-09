@@ -47,7 +47,7 @@ const FooterThumbnailLocker = ({
           <Private>Private</Private>
         </Checkbox>
         <Delete onClick={handleOnPressDelete}>
-          <FormattedMessage {...messages.private} />
+          <FormattedMessage {...messages.delete} />
         </Delete>
       </Bottom>
     </Footer>
