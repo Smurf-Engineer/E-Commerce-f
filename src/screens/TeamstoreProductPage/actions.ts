@@ -7,7 +7,8 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_FIT,
   SET_SELECTED_SIZE,
-  LOADING_3D_MODEL
+  LOADING_3D_MODEL,
+  OPEN_DYNAMIC_PRICE_MODAL
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -39,4 +40,9 @@ export const setSelectedFitAction = (selected: number) => ({
 export const setLoadingModel = (loading: boolean): AnyAction => ({
   type: LOADING_3D_MODEL,
   loading
+})
+
+export const openDynamicPriceModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_DYNAMIC_PRICE_MODAL,
+  open
 })

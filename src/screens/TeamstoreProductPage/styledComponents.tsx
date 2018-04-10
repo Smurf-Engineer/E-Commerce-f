@@ -144,6 +144,8 @@ export const StyledButton = styled(Button)`
   width: 221px;
   border: 2px solid #e61737;
   border-radius: 2px;
+  color: #e61737;
+  font-size: 16px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -324,6 +326,8 @@ export const EstimatePrice = styled.div`
   font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
+  margin-bottom: 15px;
+  margin-top: 5px;
 `
 export const PricesContainer = styled.div`
   display: flex;
@@ -340,4 +344,60 @@ export const SpanNumber = styled.span`
 export const TeamBanner = styled.img`
   width: 100%;
   height: 20%;
+`
+
+export const DynamicPriceModalContainer = styled.div``
+
+export const DynamicPriceModalTitle = styled.div`
+  height: 27px;
+  margin-bottom: 10px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 27px;
+`
+export const StyledParagraph = styled.p`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 22px;
+`
+
+export const ButtonRow = styled.div`
+  text-align: right;
+`
+export const GotItButton = styled(Button)`
+  height: 40px;
+  width: 114.36px;
+  border-radius: 2px;
+  background-color: #4a90e2;
+  color: #fff;
+  font-family: 'Avenir Next';
+`
+export const BreadCrumbRow = styled.div`
+  padding: 12px 0 12px 48px;
+  border-bottom: 1px solid #dcdcdc;
+`
+
+export const RelatedProductsContainer = styled.div`
+  padding: 20px 0 45px 40px;
+`
+
+export const RelatedProductsRow = styled.div`
+  display: flex;
+`
+
+export const TeamStoresTitleContainer = styled.div`
+  display: flex;
+  text-align: left;
+`
+
+export const TeamStoresTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  line-height: 25px;
+  border-bottom: 4px solid #e61737;
+  padding: 21px 0;
 `

@@ -3,13 +3,16 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Link } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import map from 'lodash/map'
 import queryString from 'query-string'
 import Message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
+import Divider from 'antd/lib/divider'
+import Breadcrumb from 'antd/lib/breadcrumb'
 // import { ReducersObject } from '../../store/rootReducer'
 import { GetProductsByIdQuery } from './data'
 import * as teamstoreProductPageActions from './actions'
@@ -41,26 +44,37 @@ import {
   DetailsList,
   DetailsListItem,
   TitleSubtitleContainer,
-  OrdersInfo,
+  // OrdersInfo,
   PricesContainer,
-  CurrentOrder,
+  // CurrentOrder,
   EstimatePrice,
-  SpanNumber,
-  TeamBanner
+  // SpanNumber,
+  // TeamBanner,
+  DynamicPriceModalContainer,
+  DynamicPriceModalTitle,
+  StyledParagraph,
+  ButtonRow,
+  GotItButton,
+  BreadCrumbRow,
+  RelatedProductsContainer,
+  RelatedProductsRow,
+  TeamStoresTitleContainer,
+  TeamStoresTitle
 } from './styledComponents'
-import Ratings from '../../components/Ratings'
+// import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
-// import ImagesSlider from '../../components/ImageSlider'
+import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
+import ProductThumbnail from '../../components/ProductThumbnail'
 import ThreeDRender from './Product3D'
-import { Product, QueryProps } from '../../types/common'
+import { Product, QueryProps, ImageType } from '../../types/common'
 // import DownloadIcon from '../../assets/download.svg'
 // import ChessColors from '../../assets/chess-colors.svg'
 // import RedColor from '../../assets/colorred.svg'
-import BannerImage from '../../assets/banner.jpg'
+// import BannerImage from '../../assets/banner.jpg'
 // import BackgroundImg from '../../assets/FE1I5781.jpg'
 
 interface ProductTypes extends Product {
@@ -79,16 +93,18 @@ interface Props extends RouteComponentProps<any> {
   data: Data
   showBuyNowSection: boolean
   openFitInfo: boolean
-  selectedGender: number
+  selectedGender: string
   selectedSize: number
   selectedFit: number
   loadingModel: boolean
+  showDynamicPrice: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: string) => void
   setSelectedSizeAction: (selected: number) => void
   setSelectedFitAction: (selected: number) => void
   setLoadingModel: (loading: boolean) => void
+  openDynamicPriceModalAction: (open: boolean) => void
 }
 
 interface StateProps {
@@ -108,9 +124,11 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const {
       intl,
       history,
+      selectedGender,
       selectedSize,
       selectedFit,
       openFitInfo,
+      showDynamicPrice,
       // setLoadingModel,
       data: { product }
     } = this.props
@@ -123,18 +141,22 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', '')
+    const genders = get(product, 'genders', [])
 
-    const reviewsScore = get(product, 'yotpoAverageScore', {})
+    // const reviewsScore = get(product, 'yotpoAverageScore', {})
 
-    const maleGender = get(genders, '0.gender', '')
-    const femaleGender = get(genders, '1.gender', '')
+    const maleGender = get(genders, '0.name', '')
+    const femaleGender = get(genders, '1.name', '')
     const genderMessage =
       femaleGender && maleGender
         ? formatMessage(messages.unisexGenderLabel)
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
     const fitStyles = get(product, 'fitStyles', [])
+
+    if (!product) {
+      return null
+    }
 
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
@@ -193,6 +215,19 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         </div>
       )
     }
+    console.log(genders, fitStyles)
+
+    const availableGenders = map(genders, (item, index) => (
+      <div key={index}>
+        <SectionButton
+          id={item.name}
+          selected={item.name === selectedGender}
+          onClick={this.handleSelectedGender}
+        >
+          {item.name}
+        </SectionButton>
+      </div>
+    ))
 
     const availableSizes = sizes.map((size, index) => (
       <div key={index}>
@@ -231,6 +266,15 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       )
     }
 
+    const gendersSection = (
+      <SectionRow>
+        <SectionTitleContainer>
+          <SectionTitle>{formatMessage(messages.genderLabel)}</SectionTitle>
+        </SectionTitleContainer>
+        <SectionButtonsContainer>{availableGenders}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
     const sizeSection = (
       <SectionRow>
         <SizeRowTitleRow>
@@ -265,26 +309,97 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     )
     const collectionSelection = (
       <BuyNowOptions>
+        {gendersSection}
         {sizeSection}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
     )
 
+    const breadCrumb = (
+      <Breadcrumb>
+        <Breadcrumb.Item>
+          <Link to={'/teamstores-home'}>{'Teamstores'}</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <Link to={'/team-store'}>{'Tigers Team'}</Link>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>{'Tigers'}</Breadcrumb.Item>
+      </Breadcrumb>
+    )
+
+    const dinamicPriceModal = (
+      <Modal
+        visible={showDynamicPrice}
+        closable={false}
+        footer={null}
+        onCancel={this.handleDynamicPriceModal}
+      >
+        <DynamicPriceModalContainer>
+          <DynamicPriceModalTitle>
+            {formatMessage(messages.dynamicPriceDropTitle).toLocaleUpperCase()}
+          </DynamicPriceModalTitle>
+          <StyledParagraph>
+            {formatMessage(messages.everybodyWinsText)}
+          </StyledParagraph>
+          <StyledParagraph>
+            {formatMessage(messages.asTeamMemberText)}
+          </StyledParagraph>
+          <StyledParagraph>
+            {formatMessage(messages.finalPricingText)}
+          </StyledParagraph>
+          <ButtonRow>
+            <GotItButton onClick={this.handleDynamicPriceModal}>
+              {formatMessage(messages.gotItLabel)}
+            </GotItButton>
+          </ButtonRow>
+        </DynamicPriceModalContainer>
+      </Modal>
+    )
+
     const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
 
     const yotpoId = queryParams.yotpoId || ''
+    const imagesArray = get(product, 'images', [] as ImageType[])
+    const images = imagesArray[0]
+    // const colors = ['']
 
-    const colors = ['']
+    const thumbnailFooter = (
+      <div>
+        <div>{'TIGERS'}</div>
+        <div>{'TOUR Short Sleeve Jersey'}</div>
+        <div>
+          <div>{'Orders Placed 0'}</div>
+          <div>{'Current Price $119'}</div>
+        </div>
+        <div>{'Estimate Price $63'}</div>
+      </div>
+    )
+
+    const related = (
+      <RelatedProductsRow>
+        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
+        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
+        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
+        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
+      </RelatedProductsRow>
+    )
+
+    const headerTeamStores = (
+      <TeamStoresTitleContainer>
+        <TeamStoresTitle>{'TEAM STORES'}</TeamStoresTitle>
+      </TeamStoresTitleContainer>
+    )
     return (
-      <Layout {...{ history, intl }}>
-        <Container>
-          {product && (
+      <Layout headerMenuOptions={headerTeamStores} {...{ history, intl }}>
+        {product && (
+          <Container>
+            <BreadCrumbRow>{breadCrumb}</BreadCrumbRow>
             <Content>
               <ImagePreview>
-                <TeamBanner src={BannerImage} />
-                <ThreeDRender {...{ colors }} />
+                {/* <TeamBanner src={BannerImage} />*/}
+                <ImagesSlider {...{ images }} threeDmodel={<ThreeDRender />} />
               </ImagePreview>
               <ProductData>
                 <TitleRow>
@@ -292,10 +407,13 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                   </TitleSubtitleContainer>
+                  <StyledButton onClick={this.handleDynamicPriceModal}>
+                    {formatMessage(messages.dynamicPriceDropTitle)}
+                  </StyledButton>
                 </TitleRow>
                 <PricesRow>
                   <PricesContainer>{renderPrices}</PricesContainer>
-                  <OrdersInfo>
+                  {/* <OrdersInfo>
                     <div>
                       <CurrentOrder>
                         {`${formatMessage(messages.currentOrdersLabel)} `}
@@ -305,16 +423,23 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                         {`${formatMessage(messages.forEstimatePriceLabel)} `}
                         <SpanNumber>{'24'}</SpanNumber>
                       </EstimatePrice>
-                    </div>
-                    <QuestionSpan>?</QuestionSpan>
-                  </OrdersInfo>
+                    </div> 
+                    <QuestionSpan onClick={this.handleDynamicPriceModal}>
+                      ?
+                    </QuestionSpan>
+                  </OrdersInfo>*/}
                 </PricesRow>
-                <Ratings
+                <EstimatePrice>
+                  {formatMessage(messages.forEstimatePriceLabel, {
+                    quantity: 3
+                  })}
+                </EstimatePrice>
+                {/* <Ratings
                   stars={5}
                   starDimension={'15px'}
                   rating={get(reviewsScore, 'averageScore', 0)}
                   totalReviews={get(reviewsScore, 'total', 0)}
-                />
+                />*/}
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
                 {collectionSelection}
@@ -327,12 +452,22 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                 history={history}
               />
             </Content>
-          )}
-          <JakrooWidgetsTitle>
-            <FormattedMessage {...messages.jakrooWidgetTitle} />
-          </JakrooWidgetsTitle>
-          <YotpoReviews {...{ yotpoId }} />
-        </Container>
+            <Divider />
+            <RelatedProductsContainer>
+              <SectionTitleContainer>
+                <SectionTitle>
+                  {formatMessage(messages.relatedProductsLabel)}
+                </SectionTitle>
+              </SectionTitleContainer>
+              {related}
+            </RelatedProductsContainer>
+            <JakrooWidgetsTitle>
+              <FormattedMessage {...messages.jakrooWidgetTitle} />
+            </JakrooWidgetsTitle>
+            <YotpoReviews {...{ yotpoId }} />
+          </Container>
+        )}
+        {dinamicPriceModal}
       </Layout>
     )
   }
@@ -340,6 +475,12 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[`show${id}`]
     this.setState({ [`show${id}`]: !stateValue } as any)
+  }
+
+  handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
+    const { setSelectedGenderAction } = this.props
+    const { currentTarget: { id } } = evt
+    setSelectedGenderAction(id)
   }
 
   handleSelectedSize = (evt: React.MouseEvent<HTMLDivElement>) => {
@@ -375,6 +516,11 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
   }
 
   loadModel = () => {}
+
+  handleDynamicPriceModal = () => {
+    const { openDynamicPriceModalAction, showDynamicPrice } = this.props
+    openDynamicPriceModalAction(!showDynamicPrice)
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('teamstoreProductPage').toJS()

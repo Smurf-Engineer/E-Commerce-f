@@ -87,6 +87,34 @@ export default defineMessages({
   },
   forEstimatePriceLabel: {
     id: 'screens.teamstoreProductPage.forEstimatePriceLabel',
-    defaultMessage: 'For estimate price'
+    defaultMessage:
+      'Your team needs {quantity} more pcs till target pricing reach'
+  },
+  dynamicPriceDropTitle: {
+    id: 'screens.teamstoreProductPage.dynamicPriceDropTitle',
+    defaultMessage: 'Dynamic Price Drop'
+  },
+  everybodyWinsText: {
+    id: 'screens.teamstoreProductPage.everybodyWinsText',
+    defaultMessage: `With JAKROO's Dynamic Price Drop, everybody wins!`
+  },
+  asTeamMemberText: {
+    id: 'screens.teamstoreProductPage.asTeamMemberText',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'As team members place their orders and reache te next discount level, the price automatically drops for everyone, even for those who placed ther order before the drop'
+  },
+  finalPricingText: {
+    id: 'screens.teamstoreProductPage.finalPricingText',
+    // tslint:disable-next-line:max-line-length
+    defaultMessage: `Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it's that cool!`
+  },
+  gotItLabel: {
+    id: 'screens.teamstoreProductPage.gotItLabel',
+    defaultMessage: 'Got it!'
+  },
+  relatedProductsLabel: {
+    id: 'screens.teamstoreProductPage.relatedProductsLabel',
+    defaultMessage: 'Related Products'
   }
 })

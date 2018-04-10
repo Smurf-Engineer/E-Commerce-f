@@ -13,7 +13,6 @@ export const GetProductsByIdQuery = gql`
         id
         name
       }
-      gender_id
       retail_version
       customizable: design_center
       description
@@ -21,7 +20,8 @@ export const GetProductsByIdQuery = gql`
       materials: materials_info
       temperatures: temperature_range
       genders {
-        gender
+        id
+        name: gender
       }
       size_range
       fitStyles {
