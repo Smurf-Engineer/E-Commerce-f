@@ -164,3 +164,8 @@ export interface AntColumns {
   title: string
   dataIndex: string
 }
+
+export interface Size {
+  id: number
+  range: string
+}
