@@ -21,6 +21,7 @@ describe('<SaveDesign />', () => {
     const setCheckedTerms = () => {}
     const afterSaveDesign = () => {}
     const productId = ''
+    const designBase64 = ''
     const checkedTerms = false
     const div = document.createElement('div')
     const format = (message: string) => 'string'
@@ -34,6 +35,7 @@ describe('<SaveDesign />', () => {
           onDesignName={setDesignNameAction}
           designName={designName}
           colors={colors}
+          designBase64={designBase64}
           saveDesignNameMutation={saveDesignNameMutation}
           saveDesignChangesMutation={saveDesignChangesMutation}
           afterSaveDesign={afterSaveDesign}

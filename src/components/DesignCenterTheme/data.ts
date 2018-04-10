@@ -7,9 +7,12 @@ import gql from 'graphql-tag'
 export const themesQuery = gql`
   query GetThemes {
     themes {
-      id
-      name
-      image
+      fullCount
+      themes {
+        id
+        name
+        image
+      }
     }
   }
 `

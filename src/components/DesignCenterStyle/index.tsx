@@ -9,11 +9,11 @@ import { QueryProps } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
 import StyleItem from '../Theme'
-import { Style } from '../../types/common'
+import { StyleResult } from '../../types/common'
 import { Container, Title, Slider, Row, List } from './styledComponents'
 
 interface Data extends QueryProps {
-  styles?: Style[]
+  styles?: StyleResult
 }
 
 interface Props {
@@ -30,7 +30,7 @@ const marks = {
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
     const { onSelectStyle, data: { styles } } = this.props
-    const colors = styles ? styles[index].colors : {}
+    const colors = styles ? styles.styles[index].colors : {}
     onSelectStyle(colors)
   }
 
@@ -39,7 +39,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     if (error) {
       return <div>Error</div>
     }
-    const stylesItems = styles || []
+    const stylesItems = styles ? styles.styles : []
     const list = stylesItems.map(({ id, image, name }, index) => (
       <StyleItem
         key={index}

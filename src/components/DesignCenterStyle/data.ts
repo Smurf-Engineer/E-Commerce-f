@@ -7,13 +7,16 @@ import gql from 'graphql-tag'
 export const stylesQuery = gql`
   query GetStyles {
     styles {
-      id
-      name
-      image
-      colors: colorsBlocks {
+      fullCount
+      styles {
+        id
+        name
         image
-        color
-        colorDesc: colordesc
+        colors: colorsBlocks {
+          image
+          color
+          colorDesc: colordesc
+        }
       }
     }
   }
