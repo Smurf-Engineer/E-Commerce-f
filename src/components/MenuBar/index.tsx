@@ -41,6 +41,7 @@ interface Props {
   intl: InjectedIntl
   hideBottom?: boolean
   fakeWidth: number
+  headerMenuOptions?: React.ReactNode | undefined
 }
 
 interface StateProps {
@@ -76,7 +77,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       intl,
       logoutAction,
       saveUserToLocal,
-      fakeWidth
+      fakeWidth,
+      headerMenuOptions
     } = this.props
     let user
     if (typeof window !== 'undefined') {
@@ -128,7 +130,11 @@ class MenuBar extends React.Component<Props, StateProps> {
                   {!hideBottom && (
                     <BottomRow>
                       <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-                      <DropdownList {...{ history }} />
+                      {headerMenuOptions ? (
+                        headerMenuOptions
+                      ) : (
+                        <DropdownList {...{ history }} />
+                      )}
                       <SearchBar
                         search={searchFunc}
                         onHeader={true}

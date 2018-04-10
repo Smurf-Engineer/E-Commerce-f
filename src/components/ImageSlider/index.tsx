@@ -23,6 +23,7 @@ interface Props {
   images: ImageType
   loading?: boolean | undefined
   onLoadModel?: (loading: boolean) => void | undefined
+  threeDmodel?: React.ReactNode | undefined
 }
 
 interface StateProps {
@@ -33,11 +34,12 @@ class ImageSlider extends React.Component<Props, StateProps> {
     index: 0
   }
   render() {
-    const { images } = this.props
+    const { images, threeDmodel } = this.props
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
     const ThumbnailsArray = [
+      images.front,
       images.front,
       images.right,
       images.back,
@@ -65,7 +67,14 @@ class ImageSlider extends React.Component<Props, StateProps> {
     return (
       <Container>
         <SwipeContainer>
-          <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
+          {index === 0 ? (
+            threeDmodel
+          ) : (
+            <SwipeableViews {...{ index }}>
+              {threeDmodel}
+              {selectedImages}
+            </SwipeableViews>
+          )}
           <Arrows>
             <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
             <ArrowRight src={NextArrow} onClick={this.handleNextPage} />

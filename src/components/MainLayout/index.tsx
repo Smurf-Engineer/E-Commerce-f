@@ -40,6 +40,7 @@ interface Props {
   hideBottomHeader: boolean
   hideFooter: boolean
   fakeWidth: number
+  headerMenuOptions?: React.ReactNode | undefined
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -72,7 +73,8 @@ class MainLayout extends React.Component<Props, {}> {
       saveUserToLocal,
       hideBottomHeader,
       hideFooter,
-      fakeWidth
+      fakeWidth,
+      headerMenuOptions
     } = this.props
     return (
       <Layout>
@@ -92,7 +94,8 @@ class MainLayout extends React.Component<Props, {}> {
               openLogin,
               openLoginAction,
               logoutAction,
-              saveUserToLocal
+              saveUserToLocal,
+              headerMenuOptions
             }}
             hideBottom={hideBottomHeader}
           />

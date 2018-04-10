@@ -52,6 +52,11 @@ export type PriceRange = {
   price: number
 }
 
+export interface GenderType {
+  id: number
+  gender: string
+}
+
 export type HomePageBatch = {
   method: string
   result: string
