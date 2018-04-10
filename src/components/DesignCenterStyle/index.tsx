@@ -30,7 +30,8 @@ const marks = {
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
     const { onSelectStyle, data: { styles } } = this.props
-    const colors = styles ? styles.styles[index].colors : {}
+    const allStyles = styles ? styles.styles || [] : []
+    const colors = allStyles ? allStyles[index].colors : {}
     onSelectStyle(colors)
   }
 
@@ -39,7 +40,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     if (error) {
       return <div>Error</div>
     }
-    const stylesItems = styles ? styles.styles : []
+    const stylesItems = styles ? styles.styles || [] : []
     const list = stylesItems.map(({ id, image, name }, index) => (
       <StyleItem
         key={index}
