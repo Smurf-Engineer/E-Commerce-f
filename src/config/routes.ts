@@ -1,4 +1,5 @@
 /* Routes */
+import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
 import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
@@ -11,6 +12,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/teamstore-product-page',
+    name: 'teamstoreProductPage',
+    component: TeamstoreProductPage
+  },
   {
     path: '/account',
     name: 'account',
