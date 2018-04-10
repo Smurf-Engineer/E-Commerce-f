@@ -35,6 +35,7 @@ interface Props extends RouteComponentProps<any> {
   palettes: Palette[]
   paletteName: string
   colors: string[]
+  designBase64: string
   styleColors: string[]
   loadingModel: boolean
   undoChanges: Change[]
@@ -65,7 +66,7 @@ interface Props extends RouteComponentProps<any> {
   setThemeAction: (id: number) => void
   setStyleAction: (style: any) => void
   openShareModalAction: (open: boolean) => void
-  openSaveDesignAction: (open: boolean) => void
+  openSaveDesignAction: (open: boolean, imageBase64: string) => void
   saveDesignIdAction: (id: string) => void
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
@@ -102,7 +103,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   closeSaveDesignModal = () => {
     const { openSaveDesignAction } = this.props
-    openSaveDesignAction(false)
+    openSaveDesignAction(false, '')
   }
 
   render() {
@@ -123,6 +124,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       setPalettesAction,
       swipingView,
       colors,
+      designBase64,
       styleColors,
       loadingModel,
       designName,
@@ -232,6 +234,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
+            designBase64={designBase64}
             afterSaveDesign={this.handleAfterSaveDesign}
             savedDesignId={savedDesignId}
             checkedTerms={checkedTerms}

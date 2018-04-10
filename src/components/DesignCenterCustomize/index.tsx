@@ -30,7 +30,7 @@ interface Props {
   onResetAction: () => void
   onClearAction: () => void
   onPressQuickView: () => void
-  onOpenSaveDesign: (open: boolean) => void
+  onOpenSaveDesign: (open: boolean, imageBase64: string) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
 }

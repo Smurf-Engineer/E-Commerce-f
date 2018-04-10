@@ -103,9 +103,10 @@ export const setThemeAction = (id: number): AnyAction => ({
   id
 })
 
-export const openSaveDesignAction = (open: boolean) => ({
+export const openSaveDesignAction = (open: boolean, imageBase64: string) => ({
   type: OPEN_SAVEDESIGN,
-  open
+  open,
+  imageBase64
 })
 
 export const setDesignNameAction = (param: string): AnyAction => {

@@ -87,6 +87,12 @@ export type DesignType = {
   id: number
   name: string
   product: Product
+  image: string
+}
+
+export type DesignResultType = {
+  fullCount: string
+  designs: DesignType[]
 }
 
 export interface ProductReviews {
@@ -141,6 +147,11 @@ export interface Theme {
   image: string
 }
 
+export interface ThemeResult {
+  fullCount: string
+  themes: Theme[]
+}
+
 export interface ColorBlock {
   image: string
   color: string
@@ -152,6 +163,11 @@ export interface Style {
   name: string
   image: string
   colors: ColorBlock[]
+}
+
+export interface StyleResult {
+  fullCount: string
+  styles: Style[]
 }
 
 export interface Palette {
