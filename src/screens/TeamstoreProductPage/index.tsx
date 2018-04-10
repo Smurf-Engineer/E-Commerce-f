@@ -13,7 +13,6 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Divider from 'antd/lib/divider'
 import Breadcrumb from 'antd/lib/breadcrumb'
-// import { ReducersObject } from '../../store/rootReducer'
 import { GetProductsByIdQuery } from './data'
 import * as teamstoreProductPageActions from './actions'
 import messages from './messages'
@@ -44,6 +43,7 @@ import {
   DetailsList,
   DetailsListItem,
   TitleSubtitleContainer,
+  // TODO: Delete ALL commented code AFTER verify it won't be needed anymore
   // OrdersInfo,
   PricesContainer,
   // CurrentOrder,
@@ -71,11 +71,8 @@ import YotpoReviews from '../../components/YotpoReviews'
 import ProductThumbnail from '../../components/ProductThumbnail'
 import ThreeDRender from './Product3D'
 import { Product, QueryProps, ImageType } from '../../types/common'
-// import DownloadIcon from '../../assets/download.svg'
-// import ChessColors from '../../assets/chess-colors.svg'
-// import RedColor from '../../assets/colorred.svg'
+
 // import BannerImage from '../../assets/banner.jpg'
-// import BackgroundImg from '../../assets/FE1I5781.jpg'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -215,7 +212,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         </div>
       )
     }
-    console.log(genders, fitStyles)
 
     const availableGenders = map(genders, (item, index) => (
       <div key={index}>
