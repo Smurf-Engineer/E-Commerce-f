@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Button from 'antd/lib/button'
@@ -234,6 +234,7 @@ const mapStateToProps = (state: any) => state.get('createStore').toJS()
 
 const CreateStoreEnhance = compose(
   injectIntl,
+  withApollo,
   connect(mapStateToProps, { ...createStoreActions })
 )(CreateStore)
 

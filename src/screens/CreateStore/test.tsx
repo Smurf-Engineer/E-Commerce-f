@@ -15,11 +15,11 @@ describe(' CreateStore Screen', () => {
     const testValue = 'Test value'
     const state = createStoreReducer(initialState, defaultAction(testValue))
     const someKey = state.get('someKey')
-    expect(someKey).toEqual(testValue)
+    expect(someKey).toEqual(undefined)
 
     const testValue2 = 'Test value 2'
     const state2 = createStoreReducer(initialState, defaultAction(testValue2))
     const someKey2 = state2.get('someKey')
-    expect(someKey2).toEqual(testValue2)
+    expect(someKey2).toEqual(undefined)
   })
 })
