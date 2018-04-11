@@ -11,8 +11,8 @@ export const Container = styled.div`
 `
 
 export const Render = styled.div`
-  width: 100%;
-  height: 90vh;
+  width: 662px;
+  height: 663px;
 `
 
 export const Model = styled.div`

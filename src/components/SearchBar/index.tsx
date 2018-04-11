@@ -9,6 +9,7 @@ import debounce from 'lodash/debounce'
 interface Props {
   search: any
   onHeader?: boolean
+  searchWidth?: string | undefined
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -32,10 +33,11 @@ class SearchBar extends React.Component<Props, StateProps> {
     }
   }
   render() {
-    const { onHeader, formatMessage } = this.props
+    const { onHeader, formatMessage, searchWidth } = this.props
     const { width, searchValue } = this.state
+    console.log(searchWidth)
     return (
-      <Container>
+      <Container {...{ searchWidth }}>
         <SearchInput
           size="large"
           placeholder={formatMessage(messages.hint)}

@@ -388,7 +388,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       </TeamStoresTitleContainer>
     )
     return (
-      <Layout headerMenuOptions={headerTeamStores} {...{ history, intl }}>
+      <Layout teamStoresHeader={true} {...{ history, intl }}>
         {product && (
           <Container>
             <BreadCrumbRow>{breadCrumb}</BreadCrumbRow>
