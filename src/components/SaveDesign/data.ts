@@ -8,6 +8,7 @@ export const saveDesignName = graphql(
         id
         name
         shortId: short_id
+        image
       }
     }
   `,
@@ -18,8 +19,16 @@ export const saveDesignName = graphql(
 
 export const saveDesignChanges = graphql(
   gql`
-    mutation saveDesignAs($designId: String!, $colors: [String]!) {
-      saveDesignAs(designId: $designId, colors: $colors) {
+    mutation saveDesignAs(
+      $designId: String!
+      $designObj: DesignInput!
+      $colors: [String]!
+    ) {
+      saveDesignAs(
+        designId: $designId
+        designObj: $designObj
+        colors: $colors
+      ) {
         message
       }
     }

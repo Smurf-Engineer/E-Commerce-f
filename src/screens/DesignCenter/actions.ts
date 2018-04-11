@@ -24,7 +24,8 @@ import {
   SAVE_DESIGN_ID,
   COLOR_BLOCK_HOVERED_ACTION,
   SET_CHECKED_TERMS,
-  CLEAR_DESIGN_INFO
+  CLEAR_DESIGN_INFO,
+  SAVE_DESIGN_LOADING
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -125,6 +126,11 @@ export const setStyleAction = (colors: any): AnyAction => ({
 export const openShareModalAction = (open: boolean): AnyAction => ({
   type: OPEN_SHARE_MODAL,
   open
+})
+
+export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({
+  type: SAVE_DESIGN_LOADING,
+  loading
 })
 
 export const saveDesignIdAction = (id: string): AnyAction => ({
