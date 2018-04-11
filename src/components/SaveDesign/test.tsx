@@ -20,9 +20,11 @@ describe('<SaveDesign />', () => {
     const setDesignNameAction = () => {}
     const setCheckedTerms = () => {}
     const afterSaveDesign = () => {}
+    const setSaveDesignLoading = () => {}
     const productId = ''
     const designBase64 = ''
     const checkedTerms = false
+    const saveDesignLoading = false
     const div = document.createElement('div')
     const format = (message: string) => 'string'
     ReactDOM.render(
@@ -43,6 +45,8 @@ describe('<SaveDesign />', () => {
           checkedTerms={checkedTerms}
           setCheckedTerms={setCheckedTerms}
           clearDesignInfo={clearDesignInfo}
+          setSaveDesignLoading={setSaveDesignLoading}
+          saveDesignLoading={saveDesignLoading}
         />
       </IntlProvider>,
       div

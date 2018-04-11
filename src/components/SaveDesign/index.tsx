@@ -35,6 +35,7 @@ interface Props {
   colors: string[]
   checkedTerms: boolean
   designBase64: string
+  saveDesignLoading: boolean
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -43,6 +44,7 @@ interface Props {
   afterSaveDesign: (id: string) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   clearDesignInfo: () => void
+  setSaveDesignLoading: (loading: boolean) => void
 }
 
 export class SaveDesign extends React.Component<Props, {}> {
@@ -67,7 +69,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       formatMessage,
       saveDesignNameMutation,
       requestClose,
-      afterSaveDesign
+      afterSaveDesign,
+      setSaveDesignLoading
     } = this.props
 
     if (!designName) {
@@ -87,10 +90,12 @@ export class SaveDesign extends React.Component<Props, {}> {
         image: designBase64
       }
 
+      setSaveDesignLoading(true)
       const response = await saveDesignNameMutation({
         variables: { design: designObj, colors }
       })
       const data: Data = get(response, 'data.saveDesign', false)
+      setSaveDesignLoading(false)
 
       if (data) {
         const { shortId } = data
@@ -99,6 +104,7 @@ export class SaveDesign extends React.Component<Props, {}> {
         requestClose()
       }
     } catch (error) {
+      setSaveDesignLoading(false)
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
@@ -112,20 +118,31 @@ export class SaveDesign extends React.Component<Props, {}> {
       savedDesignId,
       formatMessage,
       saveDesignChangesMutation,
-      requestClose
+      requestClose,
+      designBase64,
+      setSaveDesignLoading
     } = this.props
 
+    const designObj = {
+      name: '',
+      product_id: 0,
+      image: designBase64
+    }
+
     try {
+      setSaveDesignLoading(true)
       const response = await saveDesignChangesMutation({
-        variables: { designId: savedDesignId, colors }
+        variables: { designId: savedDesignId, designObj, colors }
       })
       const data = get(response, 'data.saveDesignAs', false)
+      setSaveDesignLoading(false)
 
       if (data) {
         message.success(formatMessage(messages.saveSuccess))
         requestClose()
       }
     } catch (error) {
+      setSaveDesignLoading(false)
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
@@ -150,7 +167,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       formatMessage,
       designName,
       savedDesignId,
-      checkedTerms
+      checkedTerms,
+      saveDesignLoading
     } = this.props
     return (
       <Container>
@@ -174,6 +192,7 @@ export class SaveDesign extends React.Component<Props, {}> {
                   type="primary"
                   disabled={!checkedTerms}
                   onClick={this.handleSaveChanges}
+                  loading={saveDesignLoading}
                 >
                   <FormattedMessage {...messages.saveChanges} />
                 </Button>
@@ -203,6 +222,7 @@ export class SaveDesign extends React.Component<Props, {}> {
               type="primary"
               disabled={!checkedTerms}
               onClick={this.handleSaveName}
+              loading={saveDesignLoading}
             >
               {savedDesignId !== '' ? (
                 <FormattedMessage {...messages.modalSaveAsNewDesign} />
