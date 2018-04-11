@@ -7,29 +7,17 @@ import uploadIcon from '../../assets/upload_white.svg'
 import { DragMessage, DragTypes, Icon, draggerStyle } from './styledComponents'
 
 interface Props {
-  onSelectImage: (file: any, image: any) => void
+  onSelectImage: (file: any) => boolean
 }
 
 const { Dragger } = Upload
 
 class TeamDragger extends React.PureComponent<Props, {}> {
-  beforeUpload = (file: any) => {
-    const { onSelectImage } = this.props
-    const reader = new FileReader()
-
-    reader.onloadend = () => onSelectImage(file, reader.result)
-
-    if (file) {
-      reader.readAsDataURL(file)
-    }
-
-    return false
-  }
-
   render() {
+    const { onSelectImage } = this.props
     return (
       <Dragger
-        beforeUpload={this.beforeUpload}
+        beforeUpload={onSelectImage}
         style={draggerStyle}
         multiple={false}
         showUploadList={false}

@@ -8,6 +8,6 @@ import TeamDragger from './index'
 describe('<TeamDragger />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<TeamDragger onSelectImage={() => {}} />, div)
+    ReactDOM.render(<TeamDragger onSelectImage={() => false} />, div)
   })
 })

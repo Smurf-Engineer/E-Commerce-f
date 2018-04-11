@@ -61,5 +61,32 @@ export default defineMessages({
   optional: {
     id: 'screens.CreateStore.optional',
     defaultMessage: 'Optional'
+  },
+  privateLabel: {
+    id: 'screens.CreateStore.privateLabel',
+    defaultMessage: 'Make your store private'
+  },
+  privateMessage: {
+    id: 'screens.CreateStore.privateMessage',
+    defaultMessage:
+      'Making the store private will allow people with direct link and access code to view your store.'
+  },
+  onDemandLabel: {
+    id: 'screens.CreateStore.onDemandLabel',
+    defaultMessage: '14 Day On-Demand Mode'
+  },
+  onDemandMessage: {
+    id: 'screens.CreateStore.onDemandMessage',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'On-Demand Mode is  available ONLY after initial ordering has been completed. Existing new members will be able to place fill-in orders anytime  and receive within 14 days or order placement. '
+  },
+  buttonBuild: {
+    id: 'screens.CreateStore.buttonBuild',
+    defaultMessage: 'Build Team Store'
+  },
+  buttonSave: {
+    id: 'screens.CreateStore.buttonSave',
+    defaultMessage: 'Save Changes'
   }
 })

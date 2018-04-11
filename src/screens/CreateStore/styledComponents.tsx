@@ -67,12 +67,48 @@ export const Icon = styled.img`
 
 export const PreviewImage = styled.img`
   width: 100%;
-  height: 200px;
+  height: 198px;
+  margin-bottom: 16px;
 `
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+
+export const RowButtons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
+
+export const RowSwitch = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
+`
+
+export const ButtonDelete = styled.div`
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  line-height: 19px;
+  margin-left: 8px;
+  cursor: pointer;
+`
+
+export const Column = styled.div``
 
 export const buttonStyle = {
   width: '20%',
   margin: '16px 0px'
 }
 
-export const draggerStyle = { padding: '30px 0px' }
+export const buttonBuildStyle = {
+  width: '25%',
+  margin: '16px 0px'
+}
+
+export const draggerStyle = { padding: '30px 0px', marginBottom: 16 }

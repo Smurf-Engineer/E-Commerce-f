@@ -21,7 +21,7 @@ export const Container = styled.div`
     box-shadow: ${({ selected }: ContainerProps) =>
       selected
         ? '0 1px 4px 0 rgba(0, 0, 0, 0.07)'
-        : '0 8px 14px rgba(0, 0, 0, 0.07), 0 5px 5px rgba(0, 0, 0, 0.22)'};
+        : '0 1px 4px rgba(0, 0, 0, 0.07), 0 1px 1px rgba(0, 0, 0, 0.1)'};
   }
 `
 

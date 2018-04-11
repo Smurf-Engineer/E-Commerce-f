@@ -8,6 +8,14 @@ import StoreForm from './index'
 describe('<StoreForm />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<StoreForm  />, div)
+    ReactDOM.render(
+      <StoreForm
+        onUpdateName={() => {}}
+        name=""
+        onSelectStartDate={() => {}}
+        onSelectEndDate={() => {}}
+      />,
+      div
+    )
   })
 })
