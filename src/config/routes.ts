@@ -1,5 +1,6 @@
 /* Routes */
 import CreateStore from '../screens/CreateStore'
+import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
 import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
@@ -16,6 +17,11 @@ const routes = [
     path: '/create-store',
     name: 'createStore',
     component: CreateStore
+  },
+  {
+    path: '/teamstore-product-page',
+    name: 'teamstoreProductPage',
+    component: TeamstoreProductPage
   },
   {
     path: '/account',

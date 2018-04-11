@@ -5,13 +5,13 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import withLoading from '../WithLoadingData'
 import { QueryProps } from '../../types/common'
-import { Theme } from '../../types/common'
+import { ThemeResult } from '../../types/common'
 import { themesQuery } from './data'
 import ThemeItem from '../Theme'
 import { Row } from './styledComponents'
 
 interface Data extends QueryProps {
-  themes?: Theme[]
+  themes?: ThemeResult
 }
 
 interface Props {
@@ -26,7 +26,7 @@ export const DesignCenterGrid = ({ data, onSelectTheme }: Props) => {
     return <div>Error</div>
   }
 
-  const themes = data.themes || []
+  const themes = data.themes ? data.themes.themes || [] : []
   const list = themes.map(({ id, image, name }, index) => (
     <ThemeItem key={index} {...{ id, name, image }} onClick={onSelectTheme} />
   ))

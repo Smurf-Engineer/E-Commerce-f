@@ -34,6 +34,7 @@ interface Props {
   savedDesignId: string
   colors: string[]
   checkedTerms: boolean
+  designBase64: string
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -62,6 +63,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       productId,
       designName,
       colors,
+      designBase64,
       formatMessage,
       saveDesignNameMutation,
       requestClose,
@@ -82,8 +84,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       const designObj = {
         name: designName,
         product_id: productId,
-        // TODO: REMOVE ID
-        user_id: 1
+        image: designBase64
       }
 
       const response = await saveDesignNameMutation({

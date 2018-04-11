@@ -6,12 +6,12 @@ import { graphql, compose } from 'react-apollo'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
-import { QueryProps, DesignType } from '../../types/common'
+import { QueryProps, DesignResultType } from '../../types/common'
 import { desginsQuery } from './data'
 import { Container } from './styledComponents'
 
 interface Data extends QueryProps {
-  designs: DesignType[]
+  designs: DesignResultType
 }
 
 interface Props {
@@ -36,14 +36,16 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
   render() {
     const { formatMessage, data: { designs } } = this.props
+    const myDesigns = designs ? designs.designs : []
     return (
       <Container>
         <ProductList
-          {...{ formatMessage, designs }}
+          {...{ formatMessage }}
           withoutPadding={true}
           onPressPrivate={this.handleOnPressPrivate}
           onPressDelete={this.handleOnPressDelete}
           openQuickView={this.handleOnOpenQuickView}
+          designs={myDesigns}
         />
       </Container>
     )

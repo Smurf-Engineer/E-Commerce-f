@@ -12,7 +12,7 @@ export const Container = styled.div`
 
 export const Render = styled.div`
   width: 100%;
-  height: 60vh;
+  height: 90vh;
 `
 
 export const Model = styled.div`
@@ -44,13 +44,22 @@ export const Progress = styled(AntdProgress)`
   transform: translate(-50%, -50%);
 `
 
-export const Button = styled(AntdButton)`
-  position: absolute;
-  height: 40px;
-  bottom: 10%;
-  width: 138px;
+export const BottomButtons = styled.div`
+  display: flex;
   left: 50%;
+  bottom: 7%;
   transform: translate(-50%, -50%);
+  position: absolute;
+`
+
+export const Button = styled(AntdButton)`
+  height: 40px;
+  width: 200px;
+  margin: 0px 4px;
+`
+export const ButtonRight = styled(AntdButton)`
+  height: 40px;
+  width: 200px;
 `
 export const DragText = styled.div`
   color: #5f6062;
@@ -59,7 +68,7 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 19%;
+  bottom: 15%;
   left: 50%;
   transform: translate(-50%, -50%);
 `
@@ -69,7 +78,7 @@ export const ModelType = styled.div`
   display: flex;
   align-items: center;
   position: absolute;
-  top: 18px;
+  top: -24px;
   right: 26px;
 `
 
@@ -103,6 +112,22 @@ export const LoadingContainer = styled.div`
 
 export const ButtonWrapper = styled.div`
   margin-bottom: 16px;
+  .ant-btn-primary  {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    width: 138px;
+  }
+  .ant-btn-primary:hover {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+`
+
+export const ButtonWrapperRight = styled.div`
+  margin-bottom: 16px;
+  position: absolute;
+  bottom: 11.1%;
+  right: 26px;
   .ant-btn-primary  {
     background-color: #4a90e2;
     border-color: #4a90e2;

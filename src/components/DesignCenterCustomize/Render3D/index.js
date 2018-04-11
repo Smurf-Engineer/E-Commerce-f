@@ -384,7 +384,7 @@ class Render3D extends PureComponent {
   saveDesign = previewImage => {
     // TODO: Send base64 image
     const { onOpenSaveDesign } = this.props
-    onOpenSaveDesign(true)
+    onOpenSaveDesign(true, previewImage)
   }
 
   takeDesignPicture = () => {

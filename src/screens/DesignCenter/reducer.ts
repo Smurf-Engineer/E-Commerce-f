@@ -49,7 +49,8 @@ export const initialState = fromJS({
   openShareModal: false,
   openSaveDesign: false,
   checkedTerms: false,
-  savedDesignId: ''
+  savedDesignId: '',
+  designBase64: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -154,7 +155,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
     case OPEN_SAVEDESIGN:
-      return state.set('openSaveDesign', action.open)
+      return state.merge({
+        openSaveDesign: action.open,
+        designBase64: action.imageBase64
+      })
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID:

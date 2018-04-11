@@ -13,7 +13,10 @@ describe('<DesignCenterStyle />', () => {
     const testFunc = () => {}
     const data = {
       fetchMore: () => {},
-      styles: []
+      styles: {
+        fullCount: '0',
+        styles: []
+      }
     }
     ReactDOM.render(
       <IntlProvider {...props}>

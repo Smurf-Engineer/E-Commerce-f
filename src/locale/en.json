@@ -156,5 +156,14 @@
   "screens.Account.submenu.locker": "My Locker",
   "screens.Account.submenu.files": "My Files",
   "components.FooterThumbnailLocker.private": "Private",
-  "components.FooterThumbnailLocker.delete": "Delete"
+  "components.FooterThumbnailLocker.delete": "Delete",
+
+  "screens.teamstoreProductPage.dynamicPriceDropTitle": "DYNAMIC PRICE DROP",
+  "screens.teamstoreProductPage.everybodyWinsText":
+    "With JAKROO's Dynamic Price Drop, everybody wins!",
+  "screens.teamstoreProductPage.asTeamMemberText":
+    "As team members place their orders and reache te next discount level, the price automatically drops for everyone, even for those who placed ther order before the drop",
+  "screens.teamstoreProductPage.finalPricingText":
+    "Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it's that cool!",
+  "screens.teamstoreProductPage.dynamicPriceButtonLabel": "Got it!"
 }
