@@ -17,6 +17,7 @@ import SwitchWithLabel from '../../components/SwitchWithLabel'
 import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
 import TeamSizes from '../../components/TeamSizes'
+import { DesignType, SelectedItem } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
 import {
@@ -47,6 +48,7 @@ interface Props extends RouteComponentProps<any> {
   endDateMoment?: Moment
   passCode: string
   openLocker: boolean
+  selectedItems: SelectedItem
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -56,6 +58,9 @@ interface Props extends RouteComponentProps<any> {
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
   setOpenLockerAction: (open: boolean) => void
+  setItemSelectedAction: (id: number, checked: boolean) => void
+  deleteItemSelectedAction: (index: number) => void
+  setItemsAddAction: (items: DesignType[]) => void
 }
 
 export class CreateStore extends React.Component<Props, {}> {
@@ -108,12 +113,16 @@ export class CreateStore extends React.Component<Props, {}> {
       updatePrivateAction,
       updateOnDemandAction,
       updatePassCodeAction,
+      setItemSelectedAction,
+      deleteItemSelectedAction,
+      setItemsAddAction,
       name,
       startDateMoment,
       endDateMoment,
       privateStore,
       onDemand,
-      passCode
+      passCode,
+      selectedItems
     } = this.props
     const { formatMessage } = intl
     if (
@@ -217,12 +226,21 @@ export class CreateStore extends React.Component<Props, {}> {
               message={formatMessage(messages.onDemandMessage)}
             />
           </RowSwitch>
-          <Button type="primary" size="large" style={buttonBuildStyle}>
+          <Button
+            disabled={true}
+            type="primary"
+            size="large"
+            style={buttonBuildStyle}
+          >
             {formatMessage(messages.buttonBuild)}
           </Button>
           <LockerModal
+            {...{ selectedItems }}
             visible={openLocker}
             onRequestClose={this.handleOnCloseLocker}
+            onSelectItem={setItemSelectedAction}
+            onUnselectItem={deleteItemSelectedAction}
+            onAddItems={setItemsAddAction}
           />
         </Container>
       </Layout>

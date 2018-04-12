@@ -8,11 +8,18 @@ import { LockerModal } from './index'
 describe('<LockerModal />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const data = {
-      fetchMore: () => {}
-    }
+    const pagination = { fullCount: '0', designs: [] }
+    const selectedItems = { 0: false }
+    const data = { pagination, fetchMore: () => {} }
     ReactDOM.render(
-      <LockerModal {...{ data }} visible={false} onRequestClose={() => {}} />,
+      <LockerModal
+        {...{ data, selectedItems }}
+        visible={false}
+        onRequestClose={() => {}}
+        onSelectItem={() => {}}
+        onUnselectItem={() => {}}
+        onAddItems={() => {}}
+      />,
       div
     )
   })

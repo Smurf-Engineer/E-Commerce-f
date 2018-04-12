@@ -11,7 +11,10 @@ import {
   UPDATE_PRIVATE_ACTION,
   UPDATE_ON_DEMAND_ACTION,
   UPDATE_PASS_CODE_ACTION,
-  SET_OPEN_LOCKER_ACTION
+  SET_OPEN_LOCKER_ACTION,
+  SET_ITEM_SELECTED_ACTION,
+  DELETE_ITEM_SELECTED_ACTION,
+  SET_ITEMS_ADD_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -26,7 +29,9 @@ export const initialState = fromJS({
   privateStore: true,
   onDemand: false,
   passCode: '',
-  openLocker: false
+  openLocker: false,
+  selectedItems: {},
+  items: []
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
@@ -60,6 +65,19 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('passCode', action.code)
     case SET_OPEN_LOCKER_ACTION:
       return state.set('openLocker', action.isOpen)
+    case SET_ITEM_SELECTED_ACTION:
+      return state.setIn(['selectedItems', action.id], action.checked)
+    case DELETE_ITEM_SELECTED_ACTION: {
+      const { index } = action
+      const selectedItems = state.get('selectedItems')
+      const updatedSelectedItems = selectedItems.delete(index)
+      return state.set('selectedItems', updatedSelectedItems)
+    }
+    case SET_ITEMS_ADD_ACTION: {
+      const items = state.get('items')
+      const updatedItems = items.push(...action.items)
+      return state.set('items', updatedItems)
+    }
     default:
       return state
   }

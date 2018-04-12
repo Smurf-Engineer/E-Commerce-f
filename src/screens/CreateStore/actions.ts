@@ -10,10 +10,13 @@ import {
   UPDATE_PRIVATE_ACTION,
   UPDATE_ON_DEMAND_ACTION,
   UPDATE_PASS_CODE_ACTION,
-  SET_OPEN_LOCKER_ACTION
+  SET_OPEN_LOCKER_ACTION,
+  SET_ITEM_SELECTED_ACTION,
+  DELETE_ITEM_SELECTED_ACTION,
+  SET_ITEMS_ADD_ACTION
 } from './constants'
 import { Moment } from 'moment'
-import { AnyAction } from '../../types/common'
+import { AnyAction, DesignType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -67,4 +70,23 @@ export const updatePassCodeAction = (code: string): AnyAction => ({
 export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
   type: SET_OPEN_LOCKER_ACTION,
   isOpen
+})
+
+export const setItemSelectedAction = (
+  id: number,
+  checked: boolean
+): AnyAction => ({
+  type: SET_ITEM_SELECTED_ACTION,
+  id,
+  checked
+})
+
+export const deleteItemSelectedAction = (index: number): AnyAction => ({
+  type: DELETE_ITEM_SELECTED_ACTION,
+  index
+})
+
+export const setItemsAddAction = (items: DesignType[]): AnyAction => ({
+  type: SET_ITEMS_ADD_ACTION,
+  items
 })

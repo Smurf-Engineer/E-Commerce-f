@@ -12,3 +12,6 @@ export const UPDATE_ON_DEMAND_ACTION = `${namespace}/UPDATE_ON_DEMAND_ACTION`
 export const SET_TEAM_SIZE_ACTION = `${namespace}/SET_TEAM_SIZE_ACTION`
 export const UPDATE_PASS_CODE_ACTION = `${namespace}/UPDATE_PASS_CODE_ACTION`
 export const SET_OPEN_LOCKER_ACTION = `${namespace}/SET_OPEN_LOCKER_ACTION`
+export const SET_ITEM_SELECTED_ACTION = `${namespace}/SET_ITEM_SELECTED_ACTION`
+export const DELETE_ITEM_SELECTED_ACTION = `${namespace}/DELETE_ITEM_SELECTED_ACTION`
+export const SET_ITEMS_ADD_ACTION = `${namespace}/SET_ITEMS_ADD_ACTION`

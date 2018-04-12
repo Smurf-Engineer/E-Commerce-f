@@ -21,4 +21,12 @@ export const Title = styled.div`
 
 export const List = styled.div`
   padding-top: 22px;
+  height: 70vh;
+  overflow: auto;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
 `

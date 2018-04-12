@@ -13,6 +13,10 @@ export interface QueryProps {
   subscribeToMore?: (options: any) => () => void
 }
 
+export interface SelectedItem {
+  [extraProp: number]: boolean
+}
+
 export interface Action {
   type: string
 }
@@ -88,6 +92,7 @@ export type DesignType = {
   name: string
   product: Product
   image: string
+  createdAt: string
 }
 
 export type DesignResultType = {

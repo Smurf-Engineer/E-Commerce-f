@@ -75,7 +75,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       total = designs.length.toString()
-      thumbnailsList = designs.map(({ id, name, product }, index) => {
+      thumbnailsList = designs.map(({ id, name, product, image }, index) => {
         return (
           <ThumbnailListItem key={index}>
             <ProductThumbnail
@@ -92,7 +92,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
               isTopProduct={product.isTopProduct}
               onPressCustomize={this.handleOnPressAddToCart}
               onPressQuickView={this.handlePressQuickView}
-              image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
+              image={image}
             />
           </ThumbnailListItem>
         )
