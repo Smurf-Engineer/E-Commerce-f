@@ -71,5 +71,9 @@ export default defineMessages({
   estimatedArrival: {
     id: 'screens.StoreFront.estimatedArrival',
     defaultMessage: 'Estimated arrival'
+  },
+  shareModalTitle: {
+    id: 'screen.StoreFront.shareModalTitle',
+    defaultMessage: 'SHARE YOUR TEAMSTORE!'
   }
 })

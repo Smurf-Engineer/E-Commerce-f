@@ -53,6 +53,7 @@ export const Label = styled.div`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
+  text-align: right;
 `
 
 export const Price = styled.div`

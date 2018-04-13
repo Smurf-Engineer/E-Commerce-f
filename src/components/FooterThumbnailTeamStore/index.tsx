@@ -3,17 +3,9 @@
  */
 import * as React from 'react'
 // import { FormattedMessage } from 'react-intl'
-import Checkbox from 'antd/lib/checkbox'
+import Progress from 'antd/lib/progress'
 // import messages from './messages'
-import {
-  Footer,
-  Type,
-  Description,
-  Bottom,
-  Label,
-  Delete,
-  Private
-} from './styledComponents'
+import { Footer, Type, Description, Bottom, Label } from './styledComponents'
 
 interface Props {
   id: number
@@ -24,7 +16,11 @@ interface Props {
   onPressDelete: (id: number) => void
 }
 
-const FooterThumbnailLocker = ({
+// TODO: get from query
+const estimatedPrice = 'Estimate price $63'
+const currentPrice = 'Current price $119'
+
+const FooterThumbnailTeamStore = ({
   id,
   name,
   description,
@@ -32,24 +28,17 @@ const FooterThumbnailLocker = ({
   onPressPrivate,
   onPressDelete
 }: Props) => {
-  const handleOnPressPrivate = (e: any) => {
-    onPressPrivate(id, e.target.checked)
-  }
-  const handleOnPressDelete = () => onPressDelete(id)
   return (
     <Footer>
       <Type>{name}</Type>
       <Description>{description}</Description>
-      <Label>{date}</Label>
+      <Label>{estimatedPrice}</Label>
+      <Label>{currentPrice}</Label>
       <Bottom>
-        <Checkbox onChange={handleOnPressPrivate}>
-          {/*TODO: Move to messages*/}
-          <Private>Private</Private>
-        </Checkbox>
-        <Delete onClick={handleOnPressDelete} />
+        <Progress percent={30} />
       </Bottom>
     </Footer>
   )
 }
 
-export default FooterThumbnailLocker
+export default FooterThumbnailTeamStore

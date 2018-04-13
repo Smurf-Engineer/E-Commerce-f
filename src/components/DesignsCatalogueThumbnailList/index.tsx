@@ -10,7 +10,7 @@ import Menu, { ClickParam } from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
-import FooterThumbnailLocker from '../FooterThumbnailLocker'
+import FooterThumbnailTeamStore from '../FooterThumbnailTeamStore'
 import { QueryProps, ProductType, DesignType } from '../../types/common'
 import {
   Container,
@@ -82,7 +82,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               id={product.id}
               yotpoId={product.yotpoId}
               footer={
-                <FooterThumbnailLocker
+                <FooterThumbnailTeamStore
                   {...{ id, name, onPressPrivate, onPressDelete }}
                   description={`${product.type} ${product.description}`}
                   date="03/03/2018" // TODO: Get design date
@@ -198,7 +198,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     history.push(`/design-center?id=${id}`)
   }
 
-  handlePressQuickView = (id: number) => {
+  handlePressQuickView = (id: number, yotpoId: string) => {
     const { openQuickView } = this.props
     openQuickView(id)
   }
