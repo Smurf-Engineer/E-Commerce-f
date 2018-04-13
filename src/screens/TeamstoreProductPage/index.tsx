@@ -44,13 +44,8 @@ import {
   DetailsList,
   DetailsListItem,
   TitleSubtitleContainer,
-  // TODO: Delete ALL commented code AFTER verify it won't be needed anymore
-  // OrdersInfo,
   PricesContainer,
-  // CurrentOrder,
   EstimatePrice,
-  // SpanNumber,
-  // TeamBanner,
   DynamicPriceModalContainer,
   DynamicPriceModalTitle,
   StyledParagraph,
@@ -64,10 +59,7 @@ import {
   ThumbnailFooterSubtitle,
   ThumbnailFooterPriceContainer,
   ThumbnailFooterPricelabel
-  //  TeamStoresTitleContainer,
-  //  TeamStoresTitle
 } from './styledComponents'
-// import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
@@ -83,8 +75,6 @@ import {
   PriceRange,
   TeamstoreType
 } from '../../types/common'
-
-// import BannerImage from '../../assets/banner.jpg'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -140,7 +130,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       showDynamicPrice,
-      // setLoadingModel,
       data: { product },
       teamStoreItems: { relatedItems }
     } = this.props
@@ -154,9 +143,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
     const genders = get(product, 'genders', [])
-
-    // const reviewsScore = get(product, 'yotpoAverageScore', {})
-
     const maleGender = get(genders, '0.name', '')
     const femaleGender = get(genders, '1.name', '')
     const genderMessage =
@@ -374,7 +360,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const yotpoId = queryParams.yotpoId || ''
     const imagesArray = get(product, 'images', [] as ImageType[])
     const images = imagesArray[0]
-    // const colors = ['']
 
     // TODO: PASS TO THUMBNAIL FOOTER COMPONENT
     const thumbnailFooter = (desigName: string, productType: string) => (
@@ -408,7 +393,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
             <BreadCrumbRow>{breadCrumb}</BreadCrumbRow>
             <Content>
               <ImagePreview>
-                {/* <TeamBanner src={BannerImage} />*/}
                 <ImagesSlider
                   {...{ images }}
                   threeDmodel={<ThreeDRender />}
@@ -427,33 +411,12 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                 </TitleRow>
                 <PricesRow>
                   <PricesContainer>{renderPrices}</PricesContainer>
-                  {/* <OrdersInfo>
-                    <div>
-                      <CurrentOrder>
-                        {`${formatMessage(messages.currentOrdersLabel)} `}
-                        <SpanNumber>{'2'}</SpanNumber>
-                      </CurrentOrder>
-                      <EstimatePrice>
-                        {`${formatMessage(messages.forEstimatePriceLabel)} `}
-                        <SpanNumber>{'24'}</SpanNumber>
-                      </EstimatePrice>
-                    </div> 
-                    <QuestionSpan onClick={this.handleDynamicPriceModal}>
-                      ?
-                    </QuestionSpan>
-                  </OrdersInfo>*/}
                 </PricesRow>
                 <EstimatePrice>
                   {formatMessage(messages.forEstimatePriceLabel, {
                     quantity: 3
                   })}
                 </EstimatePrice>
-                {/* <Ratings
-                  stars={5}
-                  starDimension={'15px'}
-                  rating={get(reviewsScore, 'averageScore', 0)}
-                  totalReviews={get(reviewsScore, 'total', 0)}
-                />*/}
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
                 {collectionSelection}
