@@ -21,9 +21,10 @@ import { ImageType } from '../../types/common'
 
 interface Props {
   images: ImageType
-  loading?: boolean | undefined
-  onLoadModel?: (loading: boolean) => void | undefined
-  threeDmodel?: React.ReactNode | undefined
+  loading?: boolean
+  onLoadModel?: (loading: boolean) => void
+  threeDmodel?: React.ReactNode
+  customProduct?: boolean
 }
 
 interface StateProps {
@@ -34,17 +35,13 @@ class ImageSlider extends React.Component<Props, StateProps> {
     index: 0
   }
   render() {
-    const { images, threeDmodel } = this.props
+    const { images, threeDmodel, customProduct } = this.props
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
-    const ThumbnailsArray = [
-      images.front,
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const ThumbnailsArray = customProduct
+      ? [images.front, images.front, images.right, images.back, images.left]
+      : [images.front, images.right, images.back, images.left]
     // ########
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (

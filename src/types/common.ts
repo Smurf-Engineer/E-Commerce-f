@@ -185,3 +185,24 @@ export interface AntColumns {
   title: string
   dataIndex: string
 }
+
+export type TeamstoreItemType = {
+  id: string
+  design: DesignType
+  expectedQuantity: number
+}
+
+export type TeamstoreType = {
+  id: number
+  shortId: string
+  name: string
+  cutOffDate: string
+  deliveryDate: string
+  private: boolean
+  items: TeamstoreItemType[]
+}
+
+export interface TeamstoreResult {
+  fullCount: string
+  teamStores: TeamstoreType[]
+}

@@ -10,6 +10,7 @@ interface Props {
   search: any
   onHeader?: boolean
   searchWidth?: string | undefined
+  resetInput?: boolean | undefined
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -35,7 +36,6 @@ class SearchBar extends React.Component<Props, StateProps> {
   render() {
     const { onHeader, formatMessage, searchWidth } = this.props
     const { width, searchValue } = this.state
-    console.log(searchWidth)
     return (
       <Container {...{ searchWidth }}>
         <SearchInput
@@ -61,7 +61,10 @@ class SearchBar extends React.Component<Props, StateProps> {
   }
 
   clearInput = () => {
-    this.setState({ searchValue: '' })
+    const { resetInput } = this.props
+    if (resetInput) {
+      this.setState({ searchValue: '' })
+    }
   }
 
   hideInput = () => {

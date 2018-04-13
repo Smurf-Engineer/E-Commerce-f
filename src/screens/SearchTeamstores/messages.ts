@@ -18,5 +18,17 @@ export default defineMessages({
   myTeamsButtonLabel: {
     id: 'screens.Teamstores.myTeamsButtonLabel',
     defaultMessage: 'My team stores'
+  },
+  featuredTeamStoresLabel: {
+    id: 'screens.Teamstores.featuredTeamStoresLabel',
+    defaultMessage: 'FEATURED TEAM STORES'
+  },
+  getSponsoredLabel: {
+    id: 'screens.Teamstores.getSponsoredLabel',
+    defaultMessage: 'Get Sponsored'
+  },
+  shareModalTitle: {
+    id: 'screen.Teamstores.shareModalTitle',
+    defaultMessage: 'SHARE YOUR TEAMSTORE!'
   }
 })

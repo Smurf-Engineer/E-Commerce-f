@@ -57,9 +57,9 @@ import {
   GotItButton,
   BreadCrumbRow,
   RelatedProductsContainer,
-  RelatedProductsRow,
-  TeamStoresTitleContainer,
-  TeamStoresTitle
+  RelatedProductsRow
+  //  TeamStoresTitleContainer,
+  //  TeamStoresTitle
 } from './styledComponents'
 // import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -382,11 +382,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       </RelatedProductsRow>
     )
 
-    const headerTeamStores = (
-      <TeamStoresTitleContainer>
-        <TeamStoresTitle>{'TEAM STORES'}</TeamStoresTitle>
-      </TeamStoresTitleContainer>
-    )
     return (
       <Layout teamStoresHeader={true} {...{ history, intl }}>
         {product && (
@@ -395,7 +390,11 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
             <Content>
               <ImagePreview>
                 {/* <TeamBanner src={BannerImage} />*/}
-                <ImagesSlider {...{ images }} threeDmodel={<ThreeDRender />} />
+                <ImagesSlider
+                  {...{ images }}
+                  threeDmodel={<ThreeDRender />}
+                  customProduct={true}
+                />
               </ImagePreview>
               <ProductData>
                 <TitleRow>

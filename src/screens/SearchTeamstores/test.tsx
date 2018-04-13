@@ -3,7 +3,6 @@
  */
 import teamstoresReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { Teamstores } from './index'
 
 describe(' Teamstores Screen', () => {
   // Test redux actions

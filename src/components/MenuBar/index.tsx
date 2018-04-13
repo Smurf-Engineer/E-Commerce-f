@@ -110,12 +110,26 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
-    const teamstoresMenu = (
-      <TeamStoresMenuContainer>
-        <TeamStoresMenuTitle>
-          {intl.formatMessage(messages.teamStoresTitle)}
-        </TeamStoresMenuTitle>
-      </TeamStoresMenuContainer>
+    const bottomRowContent = teamStoresHeader ? (
+      <BottomRow>
+        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+        <TeamStoresMenuContainer>
+          <TeamStoresMenuTitle>
+            {intl.formatMessage(messages.teamStoresTitle)}
+          </TeamStoresMenuTitle>
+        </TeamStoresMenuContainer>
+        <div />
+      </BottomRow>
+    ) : (
+      <BottomRow>
+        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+        <DropdownList {...{ history }} />
+        <SearchBar
+          search={searchFunc}
+          onHeader={true}
+          formatMessage={intl.formatMessage}
+        />
+      </BottomRow>
     )
 
     return (
@@ -137,21 +151,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                     </TopRow>
                   </Row>
                   <Divider />
-                  {!hideBottom && (
-                    <BottomRow>
-                      <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-                      {teamStoresHeader ? (
-                        teamstoresMenu
-                      ) : (
-                        <DropdownList {...{ history }} />
-                      )}
-                      <SearchBar
-                        search={searchFunc}
-                        onHeader={true}
-                        formatMessage={intl.formatMessage}
-                      />
-                    </BottomRow>
-                  )}
+                  {!hideBottom && bottomRowContent}
                 </Container>
               )
             } else {
