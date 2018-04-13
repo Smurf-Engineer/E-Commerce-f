@@ -5,6 +5,7 @@ import React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import omitBy from 'lodash/omitBy'
+
 import ProductThumbnail from '../../components/ProductThumbnailStore'
 import { desginsQuery } from './data'
 import {
@@ -13,7 +14,7 @@ import {
   DesignType,
   SelectedItem
 } from '../../types/common'
-import { Title, List } from './styledComponents'
+import { Title, List, modalStyle } from './styledComponents'
 
 interface Data extends QueryProps {
   pagination: DesignResultType
@@ -57,14 +58,9 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       tableItems
     } = this.props
 
-    if (loading) {
-      return <div>Loading...</div>
-    }
+    const designs = loading || error ? [] : pagination.designs
 
-    if (error) {
-      return error
-    }
-    const list = pagination.designs.map(
+    const list = designs.map(
       (
         {
           id,
@@ -93,7 +89,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         closable={false}
         onOk={this.handleOnAddItems}
         onCancel={onRequestClose}
-        style={{ top: 20 }}
+        style={modalStyle}
         maskStyle={{ backgroundColor: 'rgba(241,244,245,0.5)' }}
         destroyOnClose={true}
         okText="ADD"
