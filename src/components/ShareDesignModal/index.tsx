@@ -23,6 +23,7 @@ import {
   // InputWrapper,
   // SendButtonWrapper
 } from './styledComponents'
+import config from '../../config/index'
 import Modal from '../Common/JakrooModal'
 import FbIcon from '../../assets/FB_share.svg'
 import TwitterIcon from '../../assets/Twitter_share.svg'
@@ -79,9 +80,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
       url,
       modalTitle
     } = this.props
-    const designURL = url
-      ? url
-      : `https://dev.jakroo.tailrecursive.co/designs?id=${savedDesignId}`
+    const designURL = url ? url : `${config.baseUrl}designs?id=${savedDesignId}`
 
     {
       // TODO: commented to hide share by mail Form

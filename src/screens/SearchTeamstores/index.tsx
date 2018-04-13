@@ -21,6 +21,7 @@ import {
   Title,
   GetSponsored
 } from './styledComponents'
+import config from '../../config/index'
 import Layout from '../../components/MainLayout'
 import SearchBar from '../../components/SearchBar'
 import TeamStoreList from '../../components/TeamStoreList'
@@ -40,7 +41,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
   render() {
     const { history, intl, searchString, openShare, storeId } = this.props
     const { formatMessage } = intl
-    const shareStoreUrl = `https://dev.jakroo.tailrecursive.co/store-front?storeId=${storeId}`
+    const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
