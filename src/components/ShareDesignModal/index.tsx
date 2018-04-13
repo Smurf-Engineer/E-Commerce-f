@@ -23,6 +23,7 @@ import {
   // InputWrapper,
   // SendButtonWrapper
 } from './styledComponents'
+import config from '../../config/index'
 import Modal from '../Common/JakrooModal'
 import FbIcon from '../../assets/FB_share.svg'
 import TwitterIcon from '../../assets/Twitter_share.svg'
@@ -39,7 +40,10 @@ declare global {
 
 interface Props {
   open: boolean
-  savedDesignId: string
+  savedDesignId?: string
+
+  url?: string
+  modalTitle?: string
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -68,8 +72,15 @@ class ShareDesignModal extends React.Component<Props, {}> {
   }
 
   render() {
-    const { formatMessage, open, requestClose, savedDesignId } = this.props
-    const designURL = `https://dev.jakroo.tailrecursive.co/designs?id=${savedDesignId}`
+    const {
+      formatMessage,
+      open,
+      requestClose,
+      savedDesignId,
+      url,
+      modalTitle
+    } = this.props
+    const designURL = url ? url : `${config.baseUrl}designs?id=${savedDesignId}`
 
     {
       // TODO: commented to hide share by mail Form
@@ -98,7 +109,7 @@ class ShareDesignModal extends React.Component<Props, {}> {
       <Modal
         withLogo={false}
         {...{ open, requestClose }}
-        title={formatMessage(messages.title)}
+        title={modalTitle ? modalTitle : formatMessage(messages.title)}
       >
         <Container>
           <ShareLinkRow>

@@ -1,5 +1,6 @@
 /* Routes */
 import StoreFront from '../screens/StoreFront'
+import SearchTeamstores from '../screens/SearchTeamstores'
 import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
 import SubscriptionTest from '../screens/SubscriptionTest'
@@ -17,6 +18,11 @@ const routes = [
     path: '/store-front',
     name: 'storeFront',
     component: StoreFront
+  },
+  {
+    path: '/search-teamstores',
+    name: 'searchTeamstores',
+    component: SearchTeamstores
   },
   {
     path: '/teamstore-product-page',

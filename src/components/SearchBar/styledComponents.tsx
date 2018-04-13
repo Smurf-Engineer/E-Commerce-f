@@ -5,7 +5,14 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 
 const Search = Input.Search
-export const Container = styled.div``
+
+interface StyledProps {
+  searchWidth?: string
+}
+export const Container = styled.div`
+  ${({ searchWidth }: StyledProps) =>
+    searchWidth ? `width: ${searchWidth};` : ''};
+`
 
 export const Text = styled.div`
   color: #fff;
