@@ -90,9 +90,40 @@ export type DesignType = {
   image: string
 }
 
+export type TeamStoreItemtype = {
+  team_store_id: number
+  design_id: string
+  design: DesignType
+  expected_quantity: number
+  visible: boolean
+}
+
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
+}
+
+export type TeamStoreResultType = {
+  fullCount: string
+  teamStores: TeamStoreType[]
+}
+
+export type TeamStoreType = {
+  id: number
+  short_id: string
+  name: string
+  cutoff_date: DateObjectType
+  delivery_date: DateObjectType
+  private: boolean
+  created_at: string
+  items: TeamStoreItemtype[]
+}
+
+export type DateObjectType = {
+  day: string
+  dayOrdinal: string
+  month: string
+  year: string
 }
 
 export interface ProductReviews {
@@ -106,11 +137,11 @@ export interface ProductType {
 }
 
 export interface BodyChartItem {
-  size: String
-  waist: String
-  hips: String
-  chest: String
-  inseam: String
+  size: string
+  waist: string
+  hips: string
+  chest: string
+  inseam: string
 }
 
 export interface Region {

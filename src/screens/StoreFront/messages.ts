@@ -11,7 +11,11 @@ export default defineMessages({
   },
   orderTitle: {
     id: 'screens.StoreFront.orderTitle',
-    defaultMessage: 'Order by March 1st and receive your order by March 15th'
+    defaultMessage: 'Order by'
+  },
+  orderTitle2: {
+    id: 'screens.StoreFront.orderTitle2',
+    defaultMessage: 'and receive your order by'
   },
   priceDropTitle: {
     id: 'screens.StoreFront.priceDropTitle',
@@ -51,5 +55,21 @@ export default defineMessages({
   CanIORder: {
     id: 'screens.StoreFront.CanIORder',
     defaultMessage: 'Can i reorder?'
+  },
+  share: {
+    id: 'screens.StoreFront.share',
+    defaultMessage: 'Share'
+  },
+  edit: {
+    id: 'screens.StoreFront.edit',
+    defaultMessage: 'Edit'
+  },
+  cutOff: {
+    id: 'screens.StoreFront.cutOff',
+    defaultMessage: 'Cut-off date'
+  },
+  estimatedArrival: {
+    id: 'screens.StoreFront.estimatedArrival',
+    defaultMessage: 'Estimated arrival'
   }
 })

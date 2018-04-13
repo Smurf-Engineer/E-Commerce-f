@@ -26,7 +26,7 @@ const hasSubscriptionOperation = ({ query }) => {
 }
 
 const httpLink = createHttpLink({
-  uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
+  uri: 'http://localhost:4040/api/graphql',
   fetch
 })
 
