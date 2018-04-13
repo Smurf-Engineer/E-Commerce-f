@@ -1,6 +1,6 @@
 import { ApolloClient } from 'apollo-client'
 import { split } from 'apollo-link'
-import { createHttpLink } from 'apollo-link-http'
+import { createUploadLink } from 'apollo-upload-client'
 import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
 import { getMainDefinition } from 'apollo-utilities'
@@ -25,7 +25,7 @@ const hasSubscriptionOperation = ({ query }) => {
   )
 }
 
-const httpLink = createHttpLink({
+const uploadLink = createUploadLink({
   uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
   fetch
 })
@@ -46,9 +46,9 @@ const link = process.browser
         return kind === 'OperationDefinition' && operation === 'subscription'
       },
       wsLink,
-      authLink.concat(httpLink)
+      authLink.concat(uploadLink)
     )
-  : authLink.concat(httpLink)
+  : authLink.concat(uploadLink)
 
 export const configureServerClient = () => {
   const client = new ApolloClient({

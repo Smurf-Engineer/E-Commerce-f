@@ -13,6 +13,7 @@ import languageProvider from '../screens/LanguageProvider/reducer'
 import account from '../screens/Account/reducer'
 import home from '../screens/Home/reducer'
 import reset from '../screens/ResetPassword/reducer'
+import storeFront from '../screens/StoreFront/reducer'
 import subscriptionTest from '../screens/ResetPassword/reducer'
 import teamstoreProductPage from '../screens/TeamstoreProductPage/reducer'
 import searchTeamstores from '../screens/SearchTeamstores/reducer'
@@ -25,6 +26,7 @@ import fitInfo from '../components/FitInfo/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  storeFront: any
   createStore: any
   searchTeamstores: any
   teamstoreProductPage: any
@@ -104,6 +106,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  storeFront,
   createStore,
   searchTeamstores,
   teamstoreProductPage,
