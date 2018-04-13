@@ -50,7 +50,7 @@ export const GetProductsByIdQuery = gql`
     }
   }
 `
-export const desginsQuery = gql`
+export const getTeamStoresRelated = gql`
   query GetDesigns {
     designs: myDesigns {
       id
@@ -76,6 +76,26 @@ export const desginsQuery = gql`
           back: back_image
           left: left_image
           right: right_image
+        }
+      }
+    }
+  }
+`
+
+export const GetTeamStoreItems = gql`
+  query GetTeamStore($storeId: String!) {
+    relatedItems: getTeamStore(teamStoreId: $storeId) {
+      shortId: short_id
+      name
+      items {
+        expectedQty: expected_quantity
+        design {
+          image
+          name
+          product {
+            name
+            type: short_description
+          }
         }
       }
     }

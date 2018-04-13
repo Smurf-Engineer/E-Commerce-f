@@ -27,6 +27,7 @@ interface Props {
   isTopProduct: boolean
   collections?: number
   footer?: React.ReactNode
+  hideCustomButton?: boolean
   yotpoId: string
   history: any
   onPressCustomize: (id: number) => void
@@ -88,7 +89,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       collections,
       footer,
       labelButton,
-      image
+      image,
+      hideCustomButton
     } = this.props
     const { isHovered, currentImage } = this.state
     const price =
@@ -103,7 +105,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             images,
             currentImage,
             labelButton,
-            image
+            image,
+            hideCustomButton
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

@@ -39,12 +39,34 @@ class ImageSlider extends React.Component<Props, StateProps> {
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
-    const ThumbnailsArray = customProduct
-      ? [images.front, images.front, images.right, images.back, images.left]
-      : [images.front, images.right, images.back, images.left]
+    const ThumbnailsArray = [
+      images.front,
+      images.right,
+      images.back,
+      images.left
+    ]
+
+    const ThumbnailsArrayWith3D = [
+      images.front,
+      images.front,
+      images.right,
+      images.back,
+      images.left
+    ]
     // ########
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
+      <ThumbnailContainer key={i}>
+        <ThumbnailImg
+          id={i.toString()}
+          src={thumbnail}
+          onClick={this.selectThumbnail}
+          selected={index === i}
+        />
+      </ThumbnailContainer>
+    ))
+
+    const thumbnailsWith3d = ThumbnailsArrayWith3D.map((thumbnail, i) => (
       <ThumbnailContainer key={i}>
         <ThumbnailImg
           id={i.toString()}
@@ -61,23 +83,31 @@ class ImageSlider extends React.Component<Props, StateProps> {
       </SelectedImage>
     ))
 
+    const selectedImagesWith3d = ThumbnailsArrayWith3D.map((thumbnail, i) => (
+      <SelectedImage key={i}>
+        <SwipeImg src={thumbnail} />
+      </SelectedImage>
+    ))
+
+    const swipeViews = customProduct ? (
+      <SwipeableViews {...{ index }}>
+        {index === 0 ? threeDmodel : selectedImagesWith3d}
+      </SwipeableViews>
+    ) : (
+      <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
+    )
     return (
       <Container>
         <SwipeContainer>
-          {index === 0 ? (
-            threeDmodel
-          ) : (
-            <SwipeableViews {...{ index }}>
-              {threeDmodel}
-              {selectedImages}
-            </SwipeableViews>
-          )}
+          {index === 0 && customProduct ? threeDmodel : swipeViews}
           <Arrows>
             <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
             <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
           </Arrows>
         </SwipeContainer>
-        <ImageThumbnails>{thumbnails}</ImageThumbnails>
+        <ImageThumbnails>
+          {customProduct ? thumbnailsWith3d : thumbnails}
+        </ImageThumbnails>
       </Container>
     )
   }
@@ -90,7 +120,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
   handleNextPage = () => {
     const { index } = this.state
 
-    if (index < 3) {
+    if (index < 4) {
       this.setState({ index: index + 1 })
     }
   }
