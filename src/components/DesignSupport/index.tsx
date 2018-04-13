@@ -8,6 +8,7 @@ import UnderlinedLink from '../Common/UnderlinedLink'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  history?: any
 }
 const DesignSupport = ({ formatMessage }: Props) => {
   return (

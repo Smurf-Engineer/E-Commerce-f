@@ -15,7 +15,9 @@ export const Container = styled.div`
 export const Text = styled.div`
   color: #fff;
 `
-export const TeamStoresList = styled.ul``
+export const TeamStoresList = styled.ul`
+  padding: 0;
+`
 
 export const FoundStoreItem = styled.li`
   list-style-type: none;

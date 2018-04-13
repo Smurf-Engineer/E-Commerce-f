@@ -114,6 +114,7 @@ class MainLayout extends React.Component<Props, {}> {
             <ContactAndLinks
               formatMessage={intl.formatMessage}
               fakeWidth={fakeWidth}
+              {...{ history }}
             />
             <SocialMedia />
           </Footer>

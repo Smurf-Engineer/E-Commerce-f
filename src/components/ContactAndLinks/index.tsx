@@ -21,9 +21,10 @@ import CaliPropLogo from '../../assets/californiaprop65.svg'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   fakeWidth: number
+  history?: any
 }
 
-const ContactAndLinks = ({ formatMessage, fakeWidth }: Props) => {
+const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
   return (
     <MediaQuery
       minWidth={768}
@@ -33,11 +34,11 @@ const ContactAndLinks = ({ formatMessage, fakeWidth }: Props) => {
         if (matches) {
           return (
             <Container>
-              <ContactInfo {...{ formatMessage }} />
-              <CustomerSupport {...{ formatMessage }} />
-              <DesignSupport {...{ formatMessage }} />
-              <AboutUs {...{ formatMessage }} />
-              <Teams {...{ formatMessage }} />
+              <ContactInfo {...{ history, formatMessage }} />
+              <CustomerSupport {...{ history, formatMessage }} />
+              <DesignSupport {...{ history, formatMessage }} />
+              <AboutUs {...{ history, formatMessage }} />
+              <Teams {...{ history, formatMessage }} />
               <ComplianceLogos>
                 <StyledImg alt="logo" src={BSCILogo} />
                 <StyledImg alt="logo" src={CaliPropLogo} />
@@ -47,15 +48,15 @@ const ContactAndLinks = ({ formatMessage, fakeWidth }: Props) => {
         } else {
           return (
             <ContainerMobile>
-              <ContactInfo {...{ formatMessage }} />
+              <ContactInfo {...{ history, formatMessage }} />
               <Row>
                 <div>
-                  <CustomerSupport {...{ formatMessage }} />
-                  <DesignSupport {...{ formatMessage }} />
+                  <CustomerSupport {...{ history, formatMessage }} />
+                  <DesignSupport {...{ history, formatMessage }} />
                 </div>
                 <div>
-                  <AboutUs {...{ formatMessage }} />
-                  <Teams {...{ formatMessage }} />
+                  <AboutUs {...{ history, formatMessage }} />
+                  <Teams {...{ history, formatMessage }} />
                 </div>
               </Row>
               <ComplianceLogos>
