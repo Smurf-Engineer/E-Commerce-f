@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
+import message from 'antd/lib/message'
 import { RouteComponentProps } from 'react-router-dom'
 import Layout from '../../components/MainLayout'
 import LockerTable from '../../components/LockerTable'
@@ -85,8 +86,9 @@ export class CreateStore extends React.Component<Props, {}> {
   beforeUpload = (file: any) => {
     const reader = new FileReader()
 
-    reader.onloadend = () =>
+    reader.onloadend = () => {
       this.setState({ file, imagePreviewUrl: reader.result })
+    }
 
     if (file) {
       reader.readAsDataURL(file)
@@ -141,6 +143,7 @@ export class CreateStore extends React.Component<Props, {}> {
       clearStoreAction,
       history
     } = this.props
+    const { file } = this.state
     setLoadingAction(true)
     const items = itemsSelected.map(({ id, visible }) => ({
       design_id: id,
@@ -158,13 +161,13 @@ export class CreateStore extends React.Component<Props, {}> {
         items
       }
       const { data: { store } } = await createStore({
-        variables: { teamStore }
+        variables: { teamStore, file }
       })
       const { shortId } = store as any
       history.push(`/store-front?storeId=${shortId}`)
       clearStoreAction()
     } catch (error) {
-      // TODO: Handle error
+      message.error('Something wrong happened. Please try again!')
       setLoadingAction(false)
     }
   }
