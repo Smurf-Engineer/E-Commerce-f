@@ -13,6 +13,10 @@ export interface QueryProps {
   subscribeToMore?: (options: any) => () => void
 }
 
+export interface SelectedItem {
+  [extraProp: number]: boolean
+}
+
 export interface Action {
   type: string
 }
@@ -86,8 +90,10 @@ export interface Product {
 export type DesignType = {
   id: number
   name: string
+  visible?: boolean
   product: Product
   image: string
+  createdAt: string
 }
 
 export type DesignResultType = {
@@ -184,6 +190,11 @@ export interface UserType {
 export interface AntColumns {
   title: string
   dataIndex: string
+}
+
+export interface Size {
+  id: number
+  range: string
 }
 
 export type TeamstoreItemType = {
