@@ -8,12 +8,13 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import map from 'lodash/map'
+import findIndex from 'lodash/findIndex'
 import queryString from 'query-string'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Divider from 'antd/lib/divider'
 import Breadcrumb from 'antd/lib/breadcrumb'
-import { GetProductsByIdQuery } from './data'
+import { GetProductsByIdQuery, GetTeamStoreItems } from './data'
 import * as teamstoreProductPageActions from './actions'
 import messages from './messages'
 import {
@@ -43,13 +44,8 @@ import {
   DetailsList,
   DetailsListItem,
   TitleSubtitleContainer,
-  // TODO: Delete ALL commented code AFTER verify it won't be needed anymore
-  // OrdersInfo,
   PricesContainer,
-  // CurrentOrder,
   EstimatePrice,
-  // SpanNumber,
-  // TeamBanner,
   DynamicPriceModalContainer,
   DynamicPriceModalTitle,
   StyledParagraph,
@@ -57,11 +53,13 @@ import {
   GotItButton,
   BreadCrumbRow,
   RelatedProductsContainer,
-  RelatedProductsRow
-  //  TeamStoresTitleContainer,
-  //  TeamStoresTitle
+  RelatedProductsRow,
+  ThumbnailFooterContainer,
+  ThumbnailFooterTitle,
+  ThumbnailFooterSubtitle,
+  ThumbnailFooterPriceContainer,
+  ThumbnailFooterPricelabel
 } from './styledComponents'
-// import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
@@ -70,9 +68,13 @@ import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import ProductThumbnail from '../../components/ProductThumbnail'
 import ThreeDRender from './Product3D'
-import { Product, QueryProps, ImageType } from '../../types/common'
-
-// import BannerImage from '../../assets/banner.jpg'
+import {
+  Product,
+  QueryProps,
+  ImageType,
+  PriceRange,
+  TeamstoreType
+} from '../../types/common'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -82,6 +84,7 @@ interface ProductTypes extends Product {
 
 interface Data extends QueryProps {
   product: ProductTypes
+  relatedItems: TeamstoreType
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -95,6 +98,7 @@ interface Props extends RouteComponentProps<any> {
   selectedFit: number
   loadingModel: boolean
   showDynamicPrice: boolean
+  teamStoreItems: Data
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: string) => void
@@ -126,8 +130,8 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       showDynamicPrice,
-      // setLoadingModel,
-      data: { product }
+      data: { product },
+      teamStoreItems: { relatedItems }
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
@@ -139,9 +143,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
     const genders = get(product, 'genders', [])
-
-    // const reviewsScore = get(product, 'yotpoAverageScore', {})
-
     const maleGender = get(genders, '0.name', '')
     const femaleGender = get(genders, '1.name', '')
     const genderMessage =
@@ -359,28 +360,31 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const yotpoId = queryParams.yotpoId || ''
     const imagesArray = get(product, 'images', [] as ImageType[])
     const images = imagesArray[0]
-    // const colors = ['']
 
-    const thumbnailFooter = (
-      <div>
-        <div>{'TIGERS'}</div>
-        <div>{'TOUR Short Sleeve Jersey'}</div>
-        <div>
-          <div>{'Orders Placed 0'}</div>
-          <div>{'Current Price $119'}</div>
-        </div>
-        <div>{'Estimate Price $63'}</div>
-      </div>
+    // TODO: PASS TO THUMBNAIL FOOTER COMPONENT
+    const thumbnailFooter = (desigName: string, productType: string) => (
+      <ThumbnailFooterContainer>
+        <ThumbnailFooterTitle>{desigName}</ThumbnailFooterTitle>
+        <ThumbnailFooterSubtitle>{productType}</ThumbnailFooterSubtitle>
+        <ThumbnailFooterPriceContainer>
+          <ThumbnailFooterPricelabel>
+            {'Current Price $119'}
+          </ThumbnailFooterPricelabel>
+          <ThumbnailFooterPricelabel>
+            {'Estimate Price $63'}
+          </ThumbnailFooterPricelabel>
+        </ThumbnailFooterPriceContainer>
+      </ThumbnailFooterContainer>
     )
 
-    const related = (
-      <RelatedProductsRow>
-        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
-        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
-        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
-        <ProductThumbnail image={images.front} footer={thumbnailFooter} />
-      </RelatedProductsRow>
-    )
+    const relatedProducts = relatedItems.items.map((item, index) => (
+      <ProductThumbnail
+        key={index}
+        image={item.design.image}
+        hideCustomButton={true}
+        footer={thumbnailFooter(item.design.name, item.design.product.type)}
+      />
+    ))
 
     return (
       <Layout teamStoresHeader={true} {...{ history, intl }}>
@@ -389,7 +393,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
             <BreadCrumbRow>{breadCrumb}</BreadCrumbRow>
             <Content>
               <ImagePreview>
-                {/* <TeamBanner src={BannerImage} />*/}
                 <ImagesSlider
                   {...{ images }}
                   threeDmodel={<ThreeDRender />}
@@ -408,33 +411,12 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                 </TitleRow>
                 <PricesRow>
                   <PricesContainer>{renderPrices}</PricesContainer>
-                  {/* <OrdersInfo>
-                    <div>
-                      <CurrentOrder>
-                        {`${formatMessage(messages.currentOrdersLabel)} `}
-                        <SpanNumber>{'2'}</SpanNumber>
-                      </CurrentOrder>
-                      <EstimatePrice>
-                        {`${formatMessage(messages.forEstimatePriceLabel)} `}
-                        <SpanNumber>{'24'}</SpanNumber>
-                      </EstimatePrice>
-                    </div> 
-                    <QuestionSpan onClick={this.handleDynamicPriceModal}>
-                      ?
-                    </QuestionSpan>
-                  </OrdersInfo>*/}
                 </PricesRow>
                 <EstimatePrice>
                   {formatMessage(messages.forEstimatePriceLabel, {
                     quantity: 3
                   })}
                 </EstimatePrice>
-                {/* <Ratings
-                  stars={5}
-                  starDimension={'15px'}
-                  rating={get(reviewsScore, 'averageScore', 0)}
-                  totalReviews={get(reviewsScore, 'total', 0)}
-                />*/}
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
                 {collectionSelection}
@@ -454,7 +436,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                   {formatMessage(messages.relatedProductsLabel)}
                 </SectionTitle>
               </SectionTitleContainer>
-              {related}
+              <RelatedProductsRow>{relatedProducts}</RelatedProductsRow>
             </RelatedProductsContainer>
             <JakrooWidgetsTitle>
               <FormattedMessage {...messages.jakrooWidgetTitle} />
@@ -516,12 +498,18 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const { openDynamicPriceModalAction, showDynamicPrice } = this.props
     openDynamicPriceModalAction(!showDynamicPrice)
   }
+
+  getTierPrice = (prices: PriceRange[], range = '2-5') => () => {
+    const index = findIndex(prices, ({ quantity }) => quantity === range)
+    return prices[index] ? prices[index].price : 0
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('teamstoreProductPage').toJS()
 
 type OwnProps = {
   productId?: number
+  store?: string
   location?: any
 }
 
@@ -534,6 +522,17 @@ const TeamstoreProductPageEnhance = compose(
       return {
         variables: {
           id: queryParams ? queryParams.id : null
+        }
+      }
+    }
+  }),
+  graphql(GetTeamStoreItems, {
+    name: 'teamStoreItems',
+    options: ({ location: { search } }: OwnProps) => {
+      const queryParams = queryString.parse(search)
+      return {
+        variables: {
+          storeId: queryParams ? queryParams.store : null
         }
       }
     }

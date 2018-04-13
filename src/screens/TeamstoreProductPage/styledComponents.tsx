@@ -401,3 +401,42 @@ export const TeamStoresTitle = styled.div`
   border-bottom: 4px solid #e61737;
   padding: 21px 0;
 `
+
+// TODO: MOVE THIS STYLES TO PRODUCTTHUMBNAIL FOOTER FOR RELATED PRODUCTS WHEN COMPONENT GETS CREATED
+
+export const ThumbnailFooterContainer = styled.div`
+  padding: 5px;
+`
+export const ThumbnailFooterTitle = styled.div`
+  height: 18.75px;
+  width: 209px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 0.16px;
+  line-height: 19px;
+`
+export const ThumbnailFooterSubtitle = styled.div`
+  height: 15.79px;
+  width: 146px;
+  color: #8c8c8c;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+`
+
+export const ThumbnailFooterPriceContainer = styled.div`
+  text-align: right;
+  margin-top: 3px;
+`
+
+export const ThumbnailFooterPricelabel = styled.div`
+  height: 15.79px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+`
