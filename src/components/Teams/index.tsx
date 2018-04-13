@@ -8,16 +8,18 @@ import Span from '../Common/UnderlinedLink'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  history?: any
 }
 
-const Teams = ({ formatMessage }: Props) => {
+const Teams = ({ formatMessage, history }: Props) => {
+  const goTo = (link: string) => () => {
+    history.push(`/${link}`)
+  }
   return (
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
-      <Text>
-        <Span link="https://www.jakroo.com/us/team-stores.html">
-          {formatMessage(messages.stores)}
-        </Span>
+      <Text onClick={goTo('search-teamstores')}>
+        <Span>{formatMessage(messages.stores)}</Span>
       </Text>
       <Text>
         <Span link="https://www.jakroo.com/us/team-kits.html">
