@@ -22,6 +22,7 @@ interface Props {
   image?: string
   description?: string
   checked: boolean
+  disabled: boolean
   onSelectItem?: (id: number, checked: boolean) => void
 }
 
@@ -35,11 +36,22 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   render() {
-    const { name, type, description, image, date, checked } = this.props
+    const {
+      name,
+      type,
+      description,
+      image,
+      date,
+      checked,
+      disabled
+    } = this.props
 
     return (
       <Container>
-        <Image {...{ image, checked }} onChange={this.handleOnPressSelect} />
+        <Image
+          {...{ image, checked, disabled }}
+          onChange={this.handleOnPressSelect}
+        />
         <Footer>
           <Type>{name}</Type>
           <Description>{`${type} ${description}`}</Description>

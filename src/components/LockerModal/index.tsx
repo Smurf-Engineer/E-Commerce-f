@@ -5,7 +5,6 @@ import React from 'react'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import omitBy from 'lodash/omitBy'
-import moment from 'moment'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
 import { desginsQuery } from './data'
 import {
@@ -24,6 +23,7 @@ interface Props {
   data: Data
   visible: boolean
   selectedItems: SelectedItem
+  tableItems: SelectedItem
   onSelectItem: (id: number, checked: boolean) => void
   onUnselectItem: (index: number) => void
   onRequestClose: () => void
@@ -53,7 +53,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       visible,
       onRequestClose,
       data: { loading, error, pagination },
-      selectedItems
+      selectedItems,
+      tableItems
     } = this.props
 
     if (loading) {
@@ -63,7 +64,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     if (error) {
       return error
     }
-
     const list = pagination.designs.map(
       (
         {
@@ -77,11 +77,12 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       ) => (
         <ProductThumbnail
           key={id}
-          checked={selectedItems[index]}
+          checked={selectedItems[index] || tableItems[id]}
+          disabled={tableItems[id]}
           id={index}
           onSelectItem={this.handleOnItemSelect}
           {...{ name, image, productId, description, type }}
-          date={moment(createdAt).format('DD/MM/YYYY')}
+          date={createdAt}
         />
       )
     )

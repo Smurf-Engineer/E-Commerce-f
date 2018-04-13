@@ -9,13 +9,14 @@ interface Props {
   image?: string
   onChange: React.ChangeEventHandler<HTMLInputElement>
   checked: boolean
+  disabled: boolean
 }
 
-const ProductSlide = ({ image, onChange, checked }: Props) => {
+const ProductSlide = ({ image, onChange, checked, disabled }: Props) => {
   return (
     <ImageContainer>
       <ImageTop>
-        <Checkbox {...{ checked, onChange }} />
+        <Checkbox {...{ checked, onChange, disabled }} />
       </ImageTop>
       <Page>
         <Image src={image} />

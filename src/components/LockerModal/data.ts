@@ -14,8 +14,13 @@ export const desginsQuery = gql`
         createdAt: created_at
         product {
           id
+          yotpoId: yotpo_id
           type: name
           description: short_description
+          priceRange {
+            quantity
+            price
+          }
         }
       }
     }

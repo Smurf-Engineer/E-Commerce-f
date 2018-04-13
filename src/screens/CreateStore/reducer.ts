@@ -14,13 +14,16 @@ import {
   SET_OPEN_LOCKER_ACTION,
   SET_ITEM_SELECTED_ACTION,
   DELETE_ITEM_SELECTED_ACTION,
-  SET_ITEMS_ADD_ACTION
+  SET_ITEMS_ADD_ACTION,
+  SET_ITEM_VISIBLE_ACTION,
+  SET_LOADING_ACTION,
+  CREATE_STORE_SUCCESS
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
-  teamSizeId: -1,
-  teamSizeRange: '',
+  teamSizeId: 1,
+  teamSizeRange: '2-5',
   name: '',
   startDate: '',
   startDateMoment: null,
@@ -31,13 +34,18 @@ export const initialState = fromJS({
   passCode: '',
   openLocker: false,
   selectedItems: {},
-  items: []
+  items: [],
+  loading: false
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state
+    case SET_LOADING_ACTION:
+      return state.set('loading', action.isLoading)
+    case CREATE_STORE_SUCCESS:
+      return initialState
     case UPDATE_NAME_ACTION:
       return state.set('name', action.name)
     case UPDATE_START_DATE_ACTION:
@@ -69,13 +77,27 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return state.setIn(['selectedItems', action.id], action.checked)
     case DELETE_ITEM_SELECTED_ACTION: {
       const { index } = action
-      const selectedItems = state.get('selectedItems')
+      const selectedItems = state.get('items')
       const updatedSelectedItems = selectedItems.delete(index)
-      return state.set('selectedItems', updatedSelectedItems)
+      return state.set('items', updatedSelectedItems)
     }
     case SET_ITEMS_ADD_ACTION: {
       const items = state.get('items')
       const updatedItems = items.push(...action.items)
+      return state.merge({
+        items: updatedItems,
+        openLocker: false,
+        selectedItems: {}
+      })
+    }
+    case SET_ITEM_VISIBLE_ACTION: {
+      const { index, visible } = action
+      const items = state.get('items')
+      const updatedItems = items.update(index, (item: any) => {
+        const updatedItem = Object.assign({}, item)
+        updatedItem.visible = visible
+        return updatedItem
+      })
       return state.set('items', updatedItems)
     }
     default:

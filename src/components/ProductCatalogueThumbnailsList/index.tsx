@@ -75,28 +75,30 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       total = designs.length.toString()
-      thumbnailsList = designs.map(({ id, name, product, image }, index) => {
-        return (
-          <ThumbnailListItem key={index}>
-            <ProductThumbnail
-              id={product.id}
-              yotpoId={product.yotpoId}
-              footer={
-                <FooterThumbnailLocker
-                  {...{ id, name, onPressPrivate, onPressDelete }}
-                  description={`${product.type} ${product.description}`}
-                  date="03/03/2018" // TODO: Get design date
-                />
-              }
-              labelButton="ADD TO CART"
-              isTopProduct={product.isTopProduct}
-              onPressCustomize={this.handleOnPressAddToCart}
-              onPressQuickView={this.handlePressQuickView}
-              image={image}
-            />
-          </ThumbnailListItem>
-        )
-      })
+      thumbnailsList = designs.map(
+        ({ id, name, product, image, createdAt }, index) => {
+          return (
+            <ThumbnailListItem key={index}>
+              <ProductThumbnail
+                id={product.id}
+                yotpoId={product.yotpoId}
+                footer={
+                  <FooterThumbnailLocker
+                    {...{ id, name, onPressPrivate, onPressDelete }}
+                    description={`${product.type} ${product.description}`}
+                    date={createdAt}
+                  />
+                }
+                labelButton="ADD TO CART"
+                isTopProduct={product.isTopProduct}
+                onPressCustomize={this.handleOnPressAddToCart}
+                onPressQuickView={this.handlePressQuickView}
+                image={image}
+              />
+            </ThumbnailListItem>
+          )
+        }
+      )
       renderThumbnailList = (
         <ThumbnailsList withoutPadding={!!withoutPadding}>
           {thumbnailsList}

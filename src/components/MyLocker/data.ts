@@ -11,6 +11,7 @@ export const desginsQuery = gql`
         id
         name
         image
+        createdAt: created_at
         product {
           id
           yotpoId: yotpo_id

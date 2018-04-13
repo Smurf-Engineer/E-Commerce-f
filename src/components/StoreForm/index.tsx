@@ -122,7 +122,7 @@ const StoreForm = ({
           value={startDate}
           disabledDate={disabledStartDate}
           onChange={handleOnSelectStart}
-          format="DD/MM/YY"
+          format="YYYY-MM-DD" // TODO: Change format
           size="large"
           style={inputStyle}
         />
@@ -136,7 +136,7 @@ const StoreForm = ({
           disabledDate={disabledEndDate}
           onChange={handleOnSelectEnd}
           disabled={!startDate}
-          format="DD/MM/YY"
+          format="YYYY-MM-DD" // TODO: Change format
           size="large"
           style={inputStyle}
         />

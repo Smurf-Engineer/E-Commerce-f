@@ -14,6 +14,7 @@ describe('<LockerModal />', () => {
     ReactDOM.render(
       <LockerModal
         {...{ data, selectedItems }}
+        tableItems={selectedItems}
         visible={false}
         onRequestClose={() => {}}
         onSelectItem={() => {}}

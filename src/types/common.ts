@@ -90,6 +90,7 @@ export interface Product {
 export type DesignType = {
   id: number
   name: string
+  visible?: boolean
   product: Product
   image: string
   createdAt: string

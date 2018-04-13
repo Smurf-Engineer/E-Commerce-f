@@ -17,6 +17,7 @@ import SwitchWithLabel from '../../components/SwitchWithLabel'
 import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
 import TeamSizes from '../../components/TeamSizes'
+import { createStoreMutation } from './data'
 import { DesignType, SelectedItem } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -49,6 +50,10 @@ interface Props extends RouteComponentProps<any> {
   passCode: string
   openLocker: boolean
   selectedItems: SelectedItem
+  items: DesignType[]
+  teamSizeRange: string
+  createStore: any
+  loading: boolean
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -61,12 +66,20 @@ interface Props extends RouteComponentProps<any> {
   setItemSelectedAction: (id: number, checked: boolean) => void
   deleteItemSelectedAction: (index: number) => void
   setItemsAddAction: (items: DesignType[]) => void
+  openQuickViewAction: (id: number, yotpoId: string) => void
+  setItemVisibleAction: (index: number, visible: boolean) => void
+  setLoadingAction: (loading: boolean) => void
+  clearStoreAction: () => void
 }
 
 export class CreateStore extends React.Component<Props, {}> {
   state = {
     file: null,
     imagePreviewUrl: null
+  }
+
+  validateForm = () => {
+    // TODO: Add form validation
   }
 
   beforeUpload = (file: any) => {
@@ -100,6 +113,71 @@ export class CreateStore extends React.Component<Props, {}> {
     setOpenLockerAction(false)
   }
 
+  handleOnDeleteItem = (index: number) => {
+    const { deleteItemSelectedAction } = this.props
+    deleteItemSelectedAction(index)
+  }
+
+  handleOnPressQuickView = (id: number, yotpoId: string) => {
+    const { openQuickViewAction } = this.props
+    openQuickViewAction(id, yotpoId)
+  }
+
+  handleOnPressVisible = (index: number, visible: boolean) => {
+    const { setItemVisibleAction } = this.props
+    setItemVisibleAction(index, visible)
+  }
+
+  handleBuildTeamStore = async () => {
+    const {
+      createStore,
+      name,
+      startDate,
+      endDate,
+      privateStore,
+      passCode,
+      items: itemsSelected,
+      setLoadingAction,
+      clearStoreAction,
+      history
+    } = this.props
+    setLoadingAction(true)
+    const items = itemsSelected.map(({ id, visible }) => ({
+      design_id: id,
+      team_store_id: 1, // TODO: Delete after update mutation
+      expected_quantity: 1, // TODO: Delete after update mutation
+      visible: !!visible
+    }))
+    try {
+      const teamStore = {
+        name,
+        cutoffDate: startDate,
+        deliveryDate: endDate,
+        private: privateStore,
+        passcode: passCode,
+        items
+      }
+      const { data: { store } } = await createStore({
+        variables: { teamStore }
+      })
+      const { shortId } = store as any
+      history.push(`/store-front?storeId=${shortId}`)
+      clearStoreAction()
+    } catch (error) {
+      // TODO: Handle error
+      setLoadingAction(false)
+    }
+  }
+
+  getCheckedItems = (items: DesignType[]) => {
+    const checkedItems = {}
+    for (const item of items) {
+      checkedItems[item.id] = true
+    }
+
+    return checkedItems
+  }
+
   render() {
     const { imagePreviewUrl } = this.state
     const {
@@ -122,7 +200,10 @@ export class CreateStore extends React.Component<Props, {}> {
       privateStore,
       onDemand,
       passCode,
-      selectedItems
+      selectedItems,
+      items,
+      teamSizeRange,
+      loading
     } = this.props
     const { formatMessage } = intl
     if (
@@ -137,6 +218,8 @@ export class CreateStore extends React.Component<Props, {}> {
     ) : (
       <Dragger onSelectImage={this.beforeUpload} />
     )
+
+    const tableItems = this.getCheckedItems(items)
 
     return (
       <Layout {...{ history, intl }}>
@@ -188,7 +271,12 @@ export class CreateStore extends React.Component<Props, {}> {
           <Subtitle>
             <FormattedMessage {...messages.stock} />
           </Subtitle>
-          <LockerTable />
+          <LockerTable
+            {...{ formatMessage, items, teamSizeRange }}
+            onPressDelete={this.handleOnDeleteItem}
+            onPressQuickView={this.handleOnPressQuickView}
+            onPressVisible={this.handleOnPressVisible}
+          />
           <Row>
             <Subtitle>
               <FormattedMessage {...messages.bannerMessage} />
@@ -227,15 +315,16 @@ export class CreateStore extends React.Component<Props, {}> {
             />
           </RowSwitch>
           <Button
-            disabled={true}
+            {...{ loading }}
             type="primary"
             size="large"
             style={buttonBuildStyle}
+            onClick={this.handleBuildTeamStore}
           >
             {formatMessage(messages.buttonBuild)}
           </Button>
           <LockerModal
-            {...{ selectedItems }}
+            {...{ selectedItems, tableItems }}
             visible={openLocker}
             onRequestClose={this.handleOnCloseLocker}
             onSelectItem={setItemSelectedAction}
@@ -253,6 +342,7 @@ const mapStateToProps = (state: any) => state.get('createStore').toJS()
 const CreateStoreEnhance = compose(
   injectIntl,
   withApollo,
+  createStoreMutation,
   connect(mapStateToProps, { ...createStoreActions })
 )(CreateStore)
 
