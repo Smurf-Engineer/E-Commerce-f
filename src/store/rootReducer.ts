@@ -7,6 +7,7 @@ import fitWidget from '../screens/FitWidget/reducer'
 import designs from '../screens/Designs/reducer'
 import productDetail from '../screens/ProductDetail/reducer'
 import productCatalog from '../screens/ProductCatalogue/reducer'
+import createStore from '../screens/CreateStore/reducer'
 import designCenter from '../screens/DesignCenter/reducer'
 import languageProvider from '../screens/LanguageProvider/reducer'
 import account from '../screens/Account/reducer'
@@ -24,6 +25,7 @@ import fitInfo from '../components/FitInfo/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  createStore: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -102,6 +104,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  createStore,
   searchTeamstores,
   teamstoreProductPage,
   account,

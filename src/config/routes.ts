@@ -1,4 +1,5 @@
 /* Routes */
+import CreateStore from '../screens/CreateStore'
 import SearchTeamstores from '../screens/SearchTeamstores'
 import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
@@ -13,6 +14,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/create-store',
+    name: 'createStore',
+    component: CreateStore
+  },
   {
     path: '/search-teamstores',
     name: 'searchTeamstores',
