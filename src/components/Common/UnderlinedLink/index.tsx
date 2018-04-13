@@ -5,7 +5,7 @@ import * as React from 'react'
 import { Span } from './styledComponents'
 
 interface Props {
-  link: string
+  link?: string
   children?: any
 }
 

@@ -23,6 +23,17 @@ export const Text = styled.div`
 
 export const SearchBackground = styled.img`
   width: 100%;
+  object-fit: fill;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
 `
 
 export const TeamStoreText = styled.div`
@@ -75,6 +86,16 @@ export const Title = styled.div`
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 20px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
 `
 
 export const GetSponsored = styled.div`

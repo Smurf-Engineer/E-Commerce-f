@@ -8,6 +8,7 @@ import Span from '../Common/UnderlinedLink'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  history?: any
 }
 const CustomerSupport = ({ formatMessage }: Props) => {
   return (

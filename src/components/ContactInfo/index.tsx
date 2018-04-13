@@ -6,6 +6,7 @@ import { Container, Title, Text, Phone, Email } from './styledComponents'
 import messages from './messages'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  history?: any
 }
 const ContactInfo = ({ formatMessage }: Props) => {
   return (

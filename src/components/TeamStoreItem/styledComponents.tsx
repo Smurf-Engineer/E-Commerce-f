@@ -17,10 +17,21 @@ export const Text = styled.div`
 
 export const StyledImg = styled.img`
   width: 100%;
+  object-fit: fill;
 `
 
 export const TeamStoreCard = styled.div`
   width: 468px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 300px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+  }
 `
 
 export const CardContent = styled.div`
