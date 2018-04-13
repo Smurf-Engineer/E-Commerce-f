@@ -56,3 +56,17 @@ export const CartIcon = styled.img`
 export const SearchIcon = styled.img`
   cursor: pointer;
 `
+
+export const TeamStoresMenuContainer = styled.div`
+  display: flex;
+  text-align: left;
+`
+
+export const TeamStoresMenuTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  line-height: 25px;
+  border-bottom: 4px solid #e61737;
+  padding: 21px 0;
+`

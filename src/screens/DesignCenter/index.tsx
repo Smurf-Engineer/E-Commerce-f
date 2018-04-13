@@ -46,6 +46,7 @@ interface Props extends RouteComponentProps<any> {
   checkedTerms: boolean
   designName: string
   savedDesignId: string
+  saveDesignLoading: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -70,6 +71,7 @@ interface Props extends RouteComponentProps<any> {
   saveDesignIdAction: (id: string) => void
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
+  saveDesignLoadingAction: (loading: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -128,6 +130,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       styleColors,
       loadingModel,
       designName,
+      saveDesignLoading,
       setLoadingModel,
       designUndoAction,
       designRedoAction,
@@ -144,7 +147,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       savedDesignId,
       checkedTerms,
       setCheckedTermsAction,
-      clearDesignInfoAction
+      clearDesignInfoAction,
+      saveDesignLoadingAction
     } = this.props
 
     const { location: { search } } = this.props
@@ -240,6 +244,8 @@ export class DesignCenter extends React.Component<Props, {}> {
             checkedTerms={checkedTerms}
             setCheckedTerms={setCheckedTermsAction}
             clearDesignInfo={clearDesignInfoAction}
+            setSaveDesignLoading={saveDesignLoadingAction}
+            saveDesignLoading={saveDesignLoading}
           />
         </Container>
       </Layout>

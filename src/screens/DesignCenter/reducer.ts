@@ -25,7 +25,8 @@ import {
   SAVE_DESIGN_ID,
   COLOR_BLOCK_HOVERED_ACTION,
   SET_CHECKED_TERMS,
-  CLEAR_DESIGN_INFO
+  CLEAR_DESIGN_INFO,
+  SAVE_DESIGN_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -50,7 +51,8 @@ export const initialState = fromJS({
   openSaveDesign: false,
   checkedTerms: false,
   savedDesignId: '',
-  designBase64: ''
+  designBase64: '',
+  saveDesignLoading: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -165,6 +167,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('savedDesignId', action.id)
     case SET_CHECKED_TERMS:
       return state.set('checkedTerms', action.checked)
+    case SAVE_DESIGN_LOADING:
+      return state.set('saveDesignLoading', action.loading)
     case CLEAR_DESIGN_INFO:
       return state.merge({ checkedTerms: false, designName: '' })
     default:

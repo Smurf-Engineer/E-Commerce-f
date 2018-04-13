@@ -16,7 +16,9 @@ import {
   TopRow,
   BottomRow,
   LogoIcon,
-  CartIcon
+  CartIcon,
+  TeamStoresMenuContainer,
+  TeamStoresMenuTitle
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import cart from '../../assets/cart.svg'
@@ -41,7 +43,7 @@ interface Props {
   intl: InjectedIntl
   hideBottom?: boolean
   fakeWidth: number
-  headerMenuOptions?: React.ReactNode | undefined
+  teamStoresHeader?: boolean | undefined
 }
 
 interface StateProps {
@@ -78,7 +80,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       logoutAction,
       saveUserToLocal,
       fakeWidth,
-      headerMenuOptions
+      teamStoresHeader
     } = this.props
     let user
     if (typeof window !== 'undefined') {
@@ -108,6 +110,28 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
+    const bottomRowContent = teamStoresHeader ? (
+      <BottomRow>
+        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+        <TeamStoresMenuContainer>
+          <TeamStoresMenuTitle>
+            {intl.formatMessage(messages.teamStoresTitle)}
+          </TeamStoresMenuTitle>
+        </TeamStoresMenuContainer>
+        <div />
+      </BottomRow>
+    ) : (
+      <BottomRow>
+        <LogoIcon src={logo} onClick={this.handleOnGoHome} />
+        <DropdownList {...{ history }} />
+        <SearchBar
+          search={searchFunc}
+          onHeader={true}
+          formatMessage={intl.formatMessage}
+        />
+      </BottomRow>
+    )
+
     return (
       <div>
         <MediaQuery
@@ -127,21 +151,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                     </TopRow>
                   </Row>
                   <Divider />
-                  {!hideBottom && (
-                    <BottomRow>
-                      <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-                      {headerMenuOptions ? (
-                        headerMenuOptions
-                      ) : (
-                        <DropdownList {...{ history }} />
-                      )}
-                      <SearchBar
-                        search={searchFunc}
-                        onHeader={true}
-                        formatMessage={intl.formatMessage}
-                      />
-                    </BottomRow>
-                  )}
+                  {!hideBottom && bottomRowContent}
                 </Container>
               )
             } else {
