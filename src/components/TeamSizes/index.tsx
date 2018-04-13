@@ -35,12 +35,14 @@ interface Props {
 }
 
 const TeamSizes = ({ currentSelected, onSelectRange }: Props) => {
+  const handleOnSelectRange = (id: number, range: string) => () =>
+    onSelectRange(id, range)
   const ranges = sizes.map(({ id, range }) => (
     <Button
       key={id}
       label={range}
       selected={id === currentSelected}
-      onClick={() => onSelectRange(id, range)}
+      onClick={handleOnSelectRange(id, range)}
     />
   ))
   return <Container>{ranges}</Container>

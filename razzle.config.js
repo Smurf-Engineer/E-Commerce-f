@@ -23,6 +23,8 @@ module.exports = {
         )
     )
 
+    config.module.rules[1].exclude.push(/\.mjs$/)
+
     // Safely locate Babel-Loader in Razzle's webpack internals
     const babelLoader = config.module.rules.findIndex(
       rule => rule.options && rule.options.babelrc
