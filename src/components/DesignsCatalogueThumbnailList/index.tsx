@@ -1,5 +1,5 @@
 /**
- * ProductCatalogueThumbnailsList Component - Created by cazarez on 01/03/18.
+ * ProductCatalogueThumbnailsList Component - Created by gustavomedina on 01/03/18.
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
