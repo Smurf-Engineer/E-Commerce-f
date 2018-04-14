@@ -11,6 +11,7 @@ interface Props {
   onHeader?: boolean
   searchWidth?: string | undefined
   resetInput?: boolean | undefined
+  placeHolderLabel?: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -34,13 +35,21 @@ class SearchBar extends React.Component<Props, StateProps> {
     }
   }
   render() {
-    const { onHeader, formatMessage, searchWidth } = this.props
+    const {
+      onHeader,
+      formatMessage,
+      searchWidth,
+      placeHolderLabel
+    } = this.props
     const { width, searchValue } = this.state
+
     return (
       <Container {...{ searchWidth }}>
         <SearchInput
           size="large"
-          placeholder={formatMessage(messages.hint)}
+          placeholder={
+            placeHolderLabel ? placeHolderLabel : formatMessage(messages.hint)
+          }
           onChange={this.handleChange}
           onSearch={this.showInput}
           onBlur={onHeader ? this.hideInput : this.clearInput}

@@ -30,5 +30,9 @@ export default defineMessages({
   shareModalTitle: {
     id: 'screen.Teamstores.shareModalTitle',
     defaultMessage: 'SHARE YOUR TEAMSTORE!'
+  },
+  searchPlaceHolder: {
+    id: 'screen.Teamstores.searchPlaceHolder',
+    defaultMessage: 'Search for a store'
   }
 })

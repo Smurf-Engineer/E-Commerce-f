@@ -298,6 +298,7 @@ export class StoreFront extends React.Component<Props, {}> {
                 onPressDelete={this.handleOnPressDelete}
                 openQuickView={this.handleOnOpenQuickView}
                 designs={designs}
+                teamStoreShortId={teamStoreShortId}
               />
             )}
           </ListContainer>

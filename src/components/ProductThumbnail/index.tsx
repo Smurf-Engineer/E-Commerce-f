@@ -30,6 +30,8 @@ interface Props {
   hideCustomButton?: boolean
   yotpoId: string
   history: any
+  isStoreThumbnail?: boolean
+  teamStoreShortId?: string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -75,8 +77,22 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { id, yotpoId, history } = this.props
-    history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+    const {
+      id,
+      yotpoId,
+      history,
+      teamStoreShortId,
+      isStoreThumbnail
+    } = this.props
+
+    console.log(teamStoreShortId && isStoreThumbnail)
+    if (teamStoreShortId && isStoreThumbnail) {
+      history.push(
+        `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
+      )
+    } else {
+      history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+    }
   }
 
   render() {

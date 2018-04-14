@@ -45,6 +45,7 @@ interface Props {
   history: any
   currentPage: number
   limit?: number
+  teamStoreShortId?: string
   designs?: DesignType[]
   onPressPrivate?: () => void
   onPressDelete?: () => void
@@ -61,6 +62,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       handleChangePage,
       handleOrderBy,
       data,
+      teamStoreShortId,
       designs,
       onPressPrivate = () => {},
       onPressDelete = () => {},
@@ -93,6 +95,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               onPressCustomize={this.handleOnPressAddToCart}
               onPressQuickView={this.handlePressQuickView}
               image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
+              isStoreThumbnail={true}
+              {...{ teamStoreShortId }}
             />
           </ThumbnailListItem>
         )
@@ -217,6 +221,7 @@ type OwnProps = {
   limit?: number
   orderBy?: string
   skip?: number
+  teamStoreShortId?: string
   designs?: DesignType[]
 }
 
