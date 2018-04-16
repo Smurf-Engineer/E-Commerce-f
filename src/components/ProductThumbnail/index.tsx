@@ -85,7 +85,6 @@ class ProductThumbnail extends React.Component<Props, {}> {
       isStoreThumbnail
     } = this.props
 
-    console.log(teamStoreShortId && isStoreThumbnail)
     if (teamStoreShortId && isStoreThumbnail) {
       history.push(
         `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
