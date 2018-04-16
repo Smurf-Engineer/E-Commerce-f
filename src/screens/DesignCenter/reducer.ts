@@ -33,11 +33,11 @@ import { Reducer } from '../../types/common'
 const colorsInit = fill(Array(5), '')
 
 export const initialState = fromJS({
-  currentTab: 0,
+  currentTab: 2, // TODO: Change to 0
   colorBlock: -1,
   colorBlockHovered: -1,
-  colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
-  styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
+  colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#000000'],
+  styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#000000'],
   palettes: [],
   paletteName: '',
   designName: '',

@@ -74,8 +74,8 @@ class Render3D extends PureComponent {
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      preserveDrawingBuffer: true
+      antialias: true
+      // preserveDrawingBuffer: true
     })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
@@ -83,6 +83,8 @@ class Render3D extends PureComponent {
 
     /* Textures */
     const loader = new THREE.TextureLoader()
+
+    // BITMAP TEST
 
     const textures = {
       backPocket: {},
@@ -117,9 +119,9 @@ class Render3D extends PureComponent {
       .matches
 
     controls.enableKeys = false
-    controls.minDistance = 150
+    controls.minDistance = 0
     controls.maxDistance = 350
-    controls.enableZoom = isMobile
+    // controls.enableZoom = isMobile
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -149,100 +151,127 @@ class Render3D extends PureComponent {
 
           // Materials
           /* Object material */
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock,
-            color: 0xffffff
-          })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+          // const flatlockMaterial = new THREE.MeshLambertMaterial({
+          //   map: textures.flatlock,
+          //   color: 0xffffff
+          // })
+          // flatlockMaterial.map.wrapS = THREE.RepeatWrapping
+          // flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
-          const customColors = {}
-          let i = 0
-          for (const color of styleColors) {
-            customColors[`customColor${i + 1}`] = {
-              type: 'c',
-              value: new THREE.Color(color)
-            }
-            i += 1
-          }
+          // const customColors = {}
+          // let i = 0
+          // for (const color of styleColors) {
+          //   customColors[`customColor${i + 1}`] = {
+          //     type: 'c',
+          //     value: new THREE.Color(color)
+          //   }
+          //   i += 1
+          // }
 
-          const uniforms = {
-            ...customColors,
-            positionX: { type: 'f', value: 1.0 },
-            positionY: { type: 'f', value: 1.0 },
-            color1: {},
-            color2: {},
-            color3: {},
-            color4: {},
-            color5: {},
-            logo: {}
-          }
+          const meshText = this.createLabel(
+            'CULICHI',
+            0.5,
+            0.5,
+            0,
+            10,
+            '#00ADEE'
+          )
 
-          const phongShader = THREE.ShaderLib.phong
-          const mergeUniforms = THREE.UniformsUtils.merge([
-            phongShader.uniforms,
-            uniforms
-          ])
+          const canvas = this.createLabel('CULICHI', '#00ADEE', 'Avenir', 10)
 
-          const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-          uniformsWithPhong.color1.value = textures.color1
-          uniformsWithPhong.color2.value = textures.color2
-          uniformsWithPhong.color3.value = textures.color3
-          uniformsWithPhong.color4.value = textures.color4
-          uniformsWithPhong.color5.value = textures.color5
-          uniformsWithPhong.bumpMap.value = textures.bumpMap
-          uniformsWithPhong.bumpMapScale = 0.45
-          uniformsWithPhong.shininess.value = 15
-
-          this.uniformsWithPhong = uniformsWithPhong
-
-          const defines = {}
-          defines['USE_MAP'] = ''
-          defines['USE_COLOR'] = ''
-          defines['USE_BUMPMAP'] = ''
-
-          const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniformsWithPhong,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            side: THREE.FrontSide,
-            defines: defines,
-            lights: true
+          const textureFront = loader.load(jerseyTextures.front)
+          const tex = new THREE.Texture(canvas)
+          const boxMaterial = new THREE.MeshPhongMaterial({
+            map: tex,
+            side: THREE.FrontSide
           })
 
-          shaderMaterial.extensions.derivatives = true
+          const boxGeometry = new THREE.BoxGeometry(2.0, 2.0, 2.0)
+          const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial)
+          boxMesh.position.set(0.0, 0.0, 4.0)
+          // scene.add(boxMesh)
 
-          // Inside material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide
-          })
+          // const uniforms = {
+          //   ...customColors,
+          //   positionX: { type: 'f', value: 1.0 },
+          //   positionY: { type: 'f', value: 1.0 },
+          //   color1: {},
+          //   color2: {},
+          //   color3: {},
+          //   color4: {},
+          //   color5: {},
+          //   logo: {},
+          //   text: {
+          //     type: 't',
+          //     value: meshText
+          //   }
+          // }
 
-          /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({
-            map: textures.label
-          })
-          const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: textures.backPocket
-          })
+          // const phongShader = THREE.ShaderLib.phong
+          // const mergeUniforms = THREE.UniformsUtils.merge([
+          //   phongShader.uniforms,
+          //   uniforms
+          // ])
 
-          /* Assign materials */
-          const cloneObject = object.children[0].clone()
-          object.add(cloneObject)
+          // const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
+          // uniformsWithPhong.color1.value = textures.color1
+          // uniformsWithPhong.color2.value = textures.color2
+          // uniformsWithPhong.color3.value = textures.color3
+          // uniformsWithPhong.color4.value = textures.color4
+          // uniformsWithPhong.color5.value = textures.color5
+          // uniformsWithPhong.bumpMap.value = textures.bumpMap
+          // uniformsWithPhong.bumpMapScale = 0.45
+          // uniformsWithPhong.shininess.value = 15
 
-          /* jersey */
-          object.children[0].material = insideMaterial
-          object.children[24].material = shaderMaterial
-          /* flatlock */
-          for (let index = 1; index <= 10; index++) {
-            object.children[index].material = flatlockMaterial
-          }
-          /* Jersey label */
-          object.children[17].material = labelMaterial
-          /* back pocket */
-          object.children[22].material = backPocketMaterial
+          // this.uniformsWithPhong = uniformsWithPhong
 
-          /* Object Conig */
+          // const defines = {}
+          // defines['USE_MAP'] = ''
+          // defines['USE_COLOR'] = ''
+          // defines['USE_BUMPMAP'] = ''
+
+          // const shaderMaterial = new THREE.ShaderMaterial({
+          //   uniforms: uniformsWithPhong,
+          //   vertexShader: vertexShader,
+          //   fragmentShader: fragmentShader,
+          //   side: THREE.FrontSide,
+          //   defines: defines,
+          //   lights: true
+          // })
+
+          // shaderMaterial.extensions.derivatives = true
+
+          // // Inside material
+          // const insideMaterial = new THREE.MeshPhongMaterial({
+          //   color: 0x000000,
+          //   side: THREE.BackSide
+          // })
+
+          // /* Texture materials */
+          // const labelMaterial = new THREE.MeshPhongMaterial({
+          //   map: textures.label
+          // })
+          // const backPocketMaterial = new THREE.MeshPhongMaterial({
+          //   map: textures.backPocket
+          // })
+
+          // /* Assign materials */
+          // const cloneObject = object.children[0].clone()
+          // object.add(cloneObject)
+
+          // /* jersey */
+          object.children[0].material = boxMaterial
+          // object.children[24].material = shaderMaterial
+          // /* flatlock */
+          // for (let index = 1; index <= 10; index++) {
+          //   object.children[index].material = flatlockMaterial
+          // }
+          // /* Jersey label */
+          // object.children[17].material = labelMaterial
+          // /* back pocket */
+          // object.children[22].material = backPocketMaterial
+
+          /* Object Config */
           object.position.y = -30
           object.name = 'jersey'
           scene.add(object)
@@ -266,6 +295,22 @@ class Render3D extends PureComponent {
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
+  }
+
+  createLabel = (text, color, font, size) => {
+    size = size || 24
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    const fontStr = (font || 'Arial') + ' ' + (size + 'px')
+    ctx.font = fontStr
+    const w = ctx.measureText(text).width
+    const h = Math.ceil(size * 1.25)
+    canvas.width = w
+    canvas.height = h
+    ctx.font = fontStr
+    ctx.fillStyle = color || 'black'
+    ctx.fillText(text, 0, size)
+    return canvas
   }
 
   onProgress = xhr => {

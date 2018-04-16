@@ -8,10 +8,11 @@ export const jerseyTextures = {
   color2: './models/Tour5/colorblock_2.png',
   color3: './models/Tour5/colorblock_3.png',
   color4: './models/Tour5/colorblock_4.png',
-  color5: './models/Tour5/colorblock_5.png',
+  color5: './models/Tour5/colorblock_5_white.png',
   flatlock: './models/Tour5/flatlock.png',
   label: './models/Red-J.jpg',
-  bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg'
+  bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg',
+  front: 'bb-1-camfront_Front'
 }
 
 export const viewPositions = {
