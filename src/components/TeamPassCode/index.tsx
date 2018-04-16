@@ -32,7 +32,9 @@ class TeamPassCode extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { setPassCode } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     setPassCode(value)
   }
@@ -50,6 +52,7 @@ class TeamPassCode extends React.Component<Props, {}> {
 
   render() {
     const { open, passCode } = this.props
+
     return (
       <Container>
         <Modal

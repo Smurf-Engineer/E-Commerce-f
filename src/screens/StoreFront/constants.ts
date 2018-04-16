@@ -9,4 +9,6 @@ export const OPEN_SHARE_MODAL = `${namespace}/OPEN_SHARE_MODAL`
 
 export const OPEN_PASS_CODE = `${namespace}/OPEN_PASS_CODE`
 
+export const OPEN_EMAIL_CONTACT = `${namespace}/OPEN_EMAIL_CONTACT`
+
 export const SET_PASS_CODE = `${namespace}/SET_PASS_CODE`

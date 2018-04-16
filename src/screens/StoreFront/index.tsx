@@ -43,7 +43,9 @@ import {
   CalendarFinalTitle,
   DatesTitle,
   CalendarContainer,
-  ListContainer
+  ListContainer,
+  DefaultButton,
+  ErrorTitle
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -52,6 +54,7 @@ import Share from '../../components/ShareDesignModal'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import TeamPassCode from '../../components/TeamPassCode'
+import EmailContact from '../../components/EmailContact'
 
 const PASSCODE_ERROR = 'Pass code needed.'
 
@@ -71,12 +74,14 @@ interface Props extends RouteComponentProps<any> {
   openShare: boolean
   history: any
   openPassCode: boolean
+  openEmailContact: boolean
   passCode: string
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   openPassCodeDialogAction: (open: boolean) => void
   setPassCodeAction: (passCode: string) => void
+  openEmailContactDialogAction: (open: boolean) => void
 }
 
 // TODO: Implement when info provided
@@ -115,6 +120,11 @@ export class StoreFront extends React.Component<Props, {}> {
     openPassCodeDialogAction(false)
   }
 
+  closeEmailContactModal = () => {
+    const { openEmailContactDialogAction } = this.props
+    openEmailContactDialogAction(false)
+  }
+
   handleOnPressPrivate = (id: number, isPrivate: boolean) => {
     // TODO: Handle private
   }
@@ -134,15 +144,26 @@ export class StoreFront extends React.Component<Props, {}> {
   }
 
   handlShareClick = () => {
-    const { data: { getTeamStore } } = this.props
+    const {
+      data: { getTeamStore }
+    } = this.props
 
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
 
     this.handleOpenShareModal(teamStoreShortId)
   }
 
+  handlContactClick = () => {
+    const { openEmailContactDialogAction } = this.props
+    openEmailContactDialogAction(true)
+  }
+
   handleIngressPassCode = async () => {
-    const { location: { search }, passCode, data } = this.props
+    const {
+      location: { search },
+      passCode,
+      data
+    } = this.props
     const queryParams = queryString.parse(search)
 
     // TODO: remove if not needed
@@ -173,7 +194,8 @@ export class StoreFront extends React.Component<Props, {}> {
       history,
       openPassCode,
       setPassCodeAction,
-      passCode
+      passCode,
+      openEmailContact
     } = this.props
     const { formatMessage } = intl
 
@@ -189,6 +211,7 @@ export class StoreFront extends React.Component<Props, {}> {
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
     const teamStoreName = get(getTeamStore, 'name', '')
+    const teamStoreOwner = get(getTeamStore, 'owner', false)
     const cutOffDay = get(getTeamStore, 'cutoff_date.day', '0')
     const deliveryDay = get(getTeamStore, 'delivery_date.day', '0')
     const cutOffDayOrdinal = get(getTeamStore, 'cutoff_date.dayOrdinal', '0')
@@ -225,18 +248,23 @@ export class StoreFront extends React.Component<Props, {}> {
           <HeadersContainer>
             <Content>
               <HeadersContainer>
-                <Title>{errorMessage || teamStoreName}</Title>
+                <Title>{teamStoreName}</Title>
                 <ButtonWrapper>
                   <Button type="primary" onClick={this.handlShareClick}>
                     <FormattedMessage {...messages.share} />
                   </Button>
                 </ButtonWrapper>
-                {/* {TODO: add when design finished} */}
-                {/* <ButtonWrapper>
-                <Button type="primary">
-                  <FormattedMessage {...messages.edit} />
-                </Button>
-              </ButtonWrapper> */}
+                {teamStoreOwner ? (
+                  <ButtonWrapper>
+                    <Button type="primary">
+                      <FormattedMessage {...messages.edit} />
+                    </Button>
+                  </ButtonWrapper>
+                ) : (
+                  <DefaultButton onClick={this.handlContactClick}>
+                    <FormattedMessage {...messages.contactManager} />
+                  </DefaultButton>
+                )}
               </HeadersContainer>
               <PriceTitle>
                 <FormattedMessage {...messages.priceDropTitle} />
@@ -278,29 +306,33 @@ export class StoreFront extends React.Component<Props, {}> {
               </DatesContainer>
             </SideBar>
           </HeadersContainer>
-          <TierContainer>
-            <TierTitle>
-              <FormattedMessage {...messages.tierTitle} />
-            </TierTitle>
-            <TierDescription>
-              <FormattedMessage {...messages.tierDescription} />
-            </TierDescription>
-            <StyledSlider marks={marks} disabled={true} defaultValue={37} />
-          </TierContainer>
-          <ListContainer>
-            {errorMessage ? (
-              <AboutTitle>{errorMessage}</AboutTitle>
-            ) : (
-              <ProductList
-                {...{ formatMessage }}
-                withoutPadding={true}
-                onPressPrivate={this.handleOnPressPrivate}
-                onPressDelete={this.handleOnPressDelete}
-                openQuickView={this.handleOnOpenQuickView}
-                designs={designs}
-              />
-            )}
-          </ListContainer>
+
+          {errorMessage ? (
+            <ErrorTitle>{errorMessage}</ErrorTitle>
+          ) : (
+            <div>
+              <TierContainer>
+                <TierTitle>
+                  <FormattedMessage {...messages.tierTitle} />
+                </TierTitle>
+                <TierDescription>
+                  <FormattedMessage {...messages.tierDescription} />
+                </TierDescription>
+                <StyledSlider marks={marks} disabled={true} defaultValue={37} />
+              </TierContainer>
+              <ListContainer>
+                <ProductList
+                  {...{ formatMessage }}
+                  withoutPadding={true}
+                  onPressPrivate={this.handleOnPressPrivate}
+                  onPressDelete={this.handleOnPressDelete}
+                  openQuickView={this.handleOnOpenQuickView}
+                  designs={designs}
+                />
+              </ListContainer>
+            </div>
+          )}
+
           <AboutContainer>
             <AboutTitle>
               <FormattedMessage {...messages.aboutOrdering} />
@@ -345,6 +377,11 @@ export class StoreFront extends React.Component<Props, {}> {
             passCode={passCode}
             handleIngressPassCode={this.handleIngressPassCode}
           />
+          <EmailContact
+            {...{ formatMessage }}
+            open={openEmailContact}
+            requestClose={this.closeEmailContactModal}
+          />
         </Container>
       </TeamsLayout>
     )
@@ -362,7 +399,9 @@ const StoreFrontEnhance = compose(
   injectIntl,
   graphql<Data>(getSingleTeamStore, {
     options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
+      const {
+        location: { search }
+      } = ownprops
       const queryParams = queryString.parse(search)
       return {
         variables: {

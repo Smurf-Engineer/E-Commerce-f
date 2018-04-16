@@ -5,7 +5,8 @@ import {
   DEFAULT_ACTION,
   OPEN_SHARE_MODAL,
   OPEN_PASS_CODE,
-  SET_PASS_CODE
+  SET_PASS_CODE,
+  OPEN_EMAIL_CONTACT
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -36,3 +37,8 @@ export const setPassCodeAction = (param: string): AnyAction => {
     param
   }
 }
+
+export const openEmailContactDialogAction = (open: boolean) => ({
+  type: OPEN_EMAIL_CONTACT,
+  open
+})

@@ -41,6 +41,20 @@ export const AboutTitle = styled.div`
   line-height: 33px;
   text-transform: uppercase;
   text-align: center;
+  margin-bottom: 30px;
+`
+
+export const ErrorTitle = styled.div`
+  color: #e21530;
+  font-family: Avenir Next;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  line-height: 33px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
 `
 
 export const AboutContainer = styled.div`
@@ -58,7 +72,7 @@ export const OrderTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 19px;
-  text-align: center;
+  text-align: right;
 `
 
 export const Content = styled.div`
@@ -137,6 +151,10 @@ export const Button = styled(AntdButton)`
   width: 70px;
 `
 
+export const DefaultButton = styled(AntdButton)`
+  height: 40px;
+`
+
 export const ImageBanner = styled.img`
   height: 30%;
   width: 100%;
@@ -195,8 +213,8 @@ export const DatesContainer = styled.div`
   display: flex;
   flex-direction: row;
   padding-top: 20px;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: flex-end;
 `
 
 export const CalendarContainer = styled.div`
