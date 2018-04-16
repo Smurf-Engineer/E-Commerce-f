@@ -56,6 +56,7 @@ export class SearchTeamstores extends React.Component<Props, {}> {
                 search={this.onSearch}
                 formatMessage={intl.formatMessage}
                 searchWidth={'100%'}
+                placeHolderLabel={formatMessage(messages.searchPlaceHolder)}
               />
               <ButtonRow>
                 <StyledButton>
