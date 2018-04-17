@@ -14,7 +14,7 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Divider from 'antd/lib/divider'
 import Breadcrumb from 'antd/lib/breadcrumb'
-import { GetProductsByIdQuery, GetTeamStoreItems } from './data'
+import { GetTeamStoreItems, GetDesignQuery } from './data'
 import * as teamstoreProductPageActions from './actions'
 import messages from './messages'
 import {
@@ -68,12 +68,14 @@ import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import ProductThumbnail from '../../components/ProductThumbnail'
 import ThreeDRender from './Product3D'
+
 import {
   Product,
   QueryProps,
   ImageType,
   PriceRange,
-  TeamstoreType
+  TeamstoreType,
+  DesignType
 } from '../../types/common'
 
 interface ProductTypes extends Product {
@@ -83,7 +85,7 @@ interface ProductTypes extends Product {
 }
 
 interface Data extends QueryProps {
-  product: ProductTypes
+  design: DesignType
   relatedItems: TeamstoreType
 }
 
@@ -130,48 +132,57 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       showDynamicPrice,
-      data: { product },
+      data,
+      data: { design },
       teamStoreItems: { relatedItems }
     } = this.props
+    console.log('DESGIN ', data.design)
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
-    const productId = get(product, 'id')
-    const name = get(product, 'name', '')
-    const type = get(product, 'type', '')
-    const description = get(product, 'description', '')
-    const intendedUse = get(product, 'intendedUse', '')
-    const temperatures = get(product, 'temperatures', '')
-    const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', [])
-    const maleGender = get(genders, '0.name', '')
-    const femaleGender = get(genders, '1.name', '')
+    const designName = get(design, 'name', '')
+    const colors = get(design, 'colors')
+    console.log(designName, colors)
+    const productId = get(design, 'product.id', '')
+    const name = get(design, 'product.name', '')
+    const type = get(design, 'product.type', '')
+    const description = get(design, 'product.description', '')
+    const intendedUse = get(design, 'product.intendedUse', '')
+    const temperatures = get(design, 'product.temperatures', '')
+    const materials = get(design, 'product.materials', '')
+    const genders = get(design, 'product.genders', [])
+    const maleGender = get(design, 'product.genders[0].name', '')
+    const femaleGender = get(design, 'product.genders[1].name', '')
     const genderMessage =
       femaleGender && maleGender
         ? formatMessage(messages.unisexGenderLabel)
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
-    const fitStyles = get(product, 'fitStyles', [])
+    const fitStyles = get(design, 'product.fitStyles', [])
 
-    if (!product) {
+    if (!design) {
       return null
     }
 
-    if (product) {
-      renderPrices = product.priceRange.map((item: any, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity
-            price={item.price}
-            quantity={item.quantity}
-            {...{ index }}
-          />
-        </AvailablePrices>
-      ))
+    if (design.product) {
+      renderPrices = design.product.priceRange.map(
+        (item: any, index: number) => (
+          <AvailablePrices key={index}>
+            <PriceQuantity
+              price={item.price}
+              quantity={item.quantity}
+              {...{ index }}
+            />
+          </AvailablePrices>
+        )
+      )
     }
 
     let productInfo
-    if (product) {
+    if (design.product) {
       const productDetails =
-        product.details !== null ? product.details.split(',') : ['']
+        design.product.details !== null
+          ? design.product.details.split(',')
+          : ['']
       const details = productDetails.map((detail, index) => (
         <DetailsListItem key={index}>{detail}</DetailsListItem>
       ))
@@ -214,7 +225,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       )
     }
 
-    const availableGenders = map(genders, (item, index) => (
+    const availableGenders = map(genders, (item: ProductTypes, index) => (
       <div key={index}>
         <SectionButton
           id={item.name}
@@ -239,7 +250,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     ))
 
     let availableFits
-    if (product) {
+    if (design.product) {
       availableFits = fitStyles[0].id ? (
         map(fitStyles, (fit: any, index: number) => (
           <div key={index}>
@@ -358,7 +369,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const queryParams = queryString.parse(search)
 
     const yotpoId = queryParams.yotpoId || ''
-    const imagesArray = get(product, 'images', [] as ImageType[])
+    const imagesArray = get(design, 'product.images', [] as ImageType[])
     const images = imagesArray[0]
 
     // TODO: PASS TO THUMBNAIL FOOTER COMPONENT
@@ -388,22 +399,23 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
 
     return (
       <Layout teamStoresHeader={true} {...{ history, intl }}>
-        {product && (
+        {design.product && (
           <Container>
             <BreadCrumbRow>{breadCrumb}</BreadCrumbRow>
             <Content>
               <ImagePreview>
                 <ImagesSlider
                   {...{ images }}
-                  threeDmodel={<ThreeDRender />}
+                  threeDmodel={<ThreeDRender {...{ colors }} />}
                   customProduct={true}
                 />
               </ImagePreview>
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
-                    <Title>{name}</Title>
-                    <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+                    <Title>{designName.toLocaleUpperCase()}</Title>
+                    <Subtitle>{`${name} ${type}`}</Subtitle>
+                    <Subtitle>{`MODEL ID`}</Subtitle>
                   </TitleSubtitleContainer>
                   <StyledButton onClick={this.handleDynamicPriceModal}>
                     {formatMessage(messages.dynamicPriceDropTitle)}
@@ -483,7 +495,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
   }
 
   addtoCart = () => {
-    const { data: { product: { name } } } = this.props
+    const { data: { design: { product: { name } } } } = this.props
     Message.success(`${name} has been succesfully added to cart!`)
   }
 
@@ -508,20 +520,18 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
 const mapStateToProps = (state: any) => state.get('teamstoreProductPage').toJS()
 
 type OwnProps = {
-  productId?: number
-  store?: string
   location?: any
 }
 
 const TeamstoreProductPageEnhance = compose(
   injectIntl,
-  graphql<Data>(GetProductsByIdQuery, {
+  graphql<Data>(GetDesignQuery, {
     options: (ownprops: OwnProps) => {
       const { location: { search } } = ownprops
       const queryParams = queryString.parse(search)
       return {
         variables: {
-          id: queryParams ? queryParams.id : null
+          searchParam: queryParams ? queryParams.id : null
         }
       }
     }

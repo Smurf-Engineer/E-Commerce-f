@@ -299,6 +299,7 @@ export class StoreFront extends React.Component<Props, {}> {
                 openQuickView={this.handleOnOpenQuickView}
                 designs={designs}
                 teamStoreShortId={teamStoreShortId}
+                storeFront={true}
               />
             )}
           </ListContainer>

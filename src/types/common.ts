@@ -68,6 +68,7 @@ export type HomePageBatch = {
 
 export interface Product {
   id: number
+  shortId?: string
   images: ImageType[]
   type: string
   description: string
