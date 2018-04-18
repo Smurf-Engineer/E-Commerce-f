@@ -34,6 +34,17 @@ export const Label = styled.div`
   margin-bottom: 5px;
 `
 
+export const TitleLabel = styled.div`
+  height: 19px;
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 14px;
+  letter-spacing: 0.18px;
+  line-height: 19px;
+  margin-top: 15px;
+  margin-bottom: 5px;
+`
+
 export const StyledInput = styled(Input)`
   margin-bottom: 20px;
   margin-top: 0px;

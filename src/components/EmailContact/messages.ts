@@ -16,5 +16,13 @@ export default defineMessages({
   send: {
     id: 'components.EmailContact.send',
     defaultMessage: 'Send'
+  },
+  askMe: {
+    id: 'components.EmailContact.askMe',
+    defaultMessage: 'Ask me anything'
+  },
+  nameLabel: {
+    id: 'components.EmailContact.nameLabel',
+    defaultMessage: 'Write message to '
   }
 })

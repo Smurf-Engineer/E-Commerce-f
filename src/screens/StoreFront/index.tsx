@@ -45,7 +45,8 @@ import {
   CalendarContainer,
   ListContainer,
   DefaultButton,
-  ErrorTitle
+  ErrorTitle,
+  FlexContainer
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -76,12 +77,16 @@ interface Props extends RouteComponentProps<any> {
   openPassCode: boolean
   openEmailContact: boolean
   passCode: string
+  emailContact: string
+  emailMessage: string
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   openPassCodeDialogAction: (open: boolean) => void
   setPassCodeAction: (passCode: string) => void
   openEmailContactDialogAction: (open: boolean) => void
+  setEmailContactAction: (email: string) => void
+  setEmailMessageAction: (message: string) => void
 }
 
 // TODO: Implement when info provided
@@ -195,18 +200,29 @@ export class StoreFront extends React.Component<Props, {}> {
       openPassCode,
       setPassCodeAction,
       passCode,
-      openEmailContact
+      openEmailContact,
+      emailContact,
+      emailMessage,
+      setEmailContactAction,
+      setEmailMessageAction
     } = this.props
     const { formatMessage } = intl
 
     if (error) {
-      const msgError = error.graphQLErrors[0]
+      const msgError = error.graphQLErrors.length
+        ? error.graphQLErrors[0].message
+        : error.message
       if (msgError.message === PASSCODE_ERROR) {
+        // TODO: dont do this
         this.handleOpenPassCode()
       }
     }
 
-    const errorMessage = error ? error.graphQLErrors[0].message || null : null
+    const errorMessage = error
+      ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
+        error.message ||
+        null
+      : null
 
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
@@ -248,23 +264,27 @@ export class StoreFront extends React.Component<Props, {}> {
           <HeadersContainer>
             <Content>
               <HeadersContainer>
-                <Title>{teamStoreName}</Title>
-                <ButtonWrapper>
-                  <Button type="primary" onClick={this.handlShareClick}>
-                    <FormattedMessage {...messages.share} />
-                  </Button>
-                </ButtonWrapper>
-                {teamStoreOwner ? (
-                  <ButtonWrapper>
-                    <Button type="primary">
-                      <FormattedMessage {...messages.edit} />
-                    </Button>
-                  </ButtonWrapper>
-                ) : (
-                  <DefaultButton onClick={this.handlContactClick}>
-                    <FormattedMessage {...messages.contactManager} />
-                  </DefaultButton>
-                )}
+                <FlexContainer>
+                  <Title>{teamStoreName}</Title>
+                  <FlexContainer>
+                    <ButtonWrapper>
+                      <Button type="primary" onClick={this.handlShareClick}>
+                        <FormattedMessage {...messages.share} />
+                      </Button>
+                    </ButtonWrapper>
+                    {teamStoreOwner ? (
+                      <ButtonWrapper>
+                        <Button type="primary">
+                          <FormattedMessage {...messages.edit} />
+                        </Button>
+                      </ButtonWrapper>
+                    ) : (
+                      <DefaultButton onClick={this.handlContactClick}>
+                        <FormattedMessage {...messages.contactManager} />
+                      </DefaultButton>
+                    )}
+                  </FlexContainer>
+                </FlexContainer>
               </HeadersContainer>
               <PriceTitle>
                 <FormattedMessage {...messages.priceDropTitle} />
@@ -381,6 +401,10 @@ export class StoreFront extends React.Component<Props, {}> {
             {...{ formatMessage }}
             open={openEmailContact}
             requestClose={this.closeEmailContactModal}
+            onSetEmail={setEmailContactAction}
+            onSetMesage={setEmailMessageAction}
+            emailContact={emailContact}
+            emailMessage={emailMessage}
           />
         </Container>
       </TeamsLayout>

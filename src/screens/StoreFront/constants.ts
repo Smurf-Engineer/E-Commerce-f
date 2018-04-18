@@ -12,3 +12,7 @@ export const OPEN_PASS_CODE = `${namespace}/OPEN_PASS_CODE`
 export const OPEN_EMAIL_CONTACT = `${namespace}/OPEN_EMAIL_CONTACT`
 
 export const SET_PASS_CODE = `${namespace}/SET_PASS_CODE`
+
+export const SET_EMAIL_CONTACT = `${namespace}/SET_EMAIL_CONTACT`
+
+export const SET_EMAIL_MESSAGE = `${namespace}/SET_EMAIL_MESSAGE`

@@ -30,6 +30,7 @@ export const Title = styled.div`
   letter-spacing: 0.3px;
   line-height: 33px;
   text-transform: uppercase;
+  padding-right: 10px;
 `
 
 export const AboutTitle = styled.div`
@@ -134,7 +135,6 @@ export const StyledSlider = styled(Slider)`
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   padding-right: 10px;
-  padding-left: 10px;
   .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;
@@ -212,9 +212,18 @@ export const CalendarDay = styled.div`
 export const DatesContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
   padding-top: 20px;
   align-items: right;
   justify-content: flex-end;
+`
+
+export const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
 `
 
 export const CalendarContainer = styled.div`
