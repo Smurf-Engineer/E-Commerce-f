@@ -382,6 +382,11 @@ export const BreadCrumbRow = styled.div`
 
 export const RelatedProductsContainer = styled.div`
   padding: 20px 0 45px 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    overflow: scroll;
+    padding: 0 10px 10px 10px;
+  }
 `
 
 export const RelatedProductsRow = styled.div`

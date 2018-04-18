@@ -115,6 +115,7 @@ export const getTeamStoresRelated = gql`
     designs: myDesigns {
       id
       name
+      shortId: short_id
       product {
         id
         yotpoId: yotpo_id
@@ -145,16 +146,21 @@ export const getTeamStoresRelated = gql`
 export const GetTeamStoreItems = gql`
   query GetTeamStore($storeId: String!) {
     relatedItems: getTeamStore(teamStoreId: $storeId) {
+      id
       shortId: short_id
       name
       items {
         expectedQty: expected_quantity
         design {
+          id
+          shortId: short_id
           image
           name
           product {
+            id
             name
             type: short_description
+            yotpoId: yotpo_id
           }
         }
       }

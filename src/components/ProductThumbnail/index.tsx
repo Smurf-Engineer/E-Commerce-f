@@ -28,6 +28,7 @@ interface Props {
   collections?: number
   footer?: React.ReactNode
   hideCustomButton?: boolean
+  hideQuickView?: boolean
   yotpoId: string
   history: any
   isStoreThumbnail?: boolean
@@ -105,7 +106,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       footer,
       labelButton,
       image,
-      hideCustomButton
+      hideCustomButton,
+      hideQuickView
     } = this.props
     const { isHovered, currentImage } = this.state
     const price =
@@ -121,7 +123,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             currentImage,
             labelButton,
             image,
-            hideCustomButton
+            hideCustomButton,
+            hideQuickView
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

@@ -2,13 +2,14 @@
  * TeamstoreProductPage Screen - Created by cazarez on 06/04/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps, Link } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import map from 'lodash/map'
 import findIndex from 'lodash/findIndex'
+import capitalize from 'lodash/capitalize'
 import queryString from 'query-string'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
@@ -39,7 +40,7 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
-  JakrooWidgetsTitle,
+  // JakrooWidgetsTitle,
   AvailableLabel,
   DetailsList,
   DetailsListItem,
@@ -132,17 +133,18 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       showDynamicPrice,
-      data,
+      teamStoreItems,
       data: { design },
       teamStoreItems: { relatedItems }
     } = this.props
-    console.log('DESGIN ', data.design)
+    console.log('DESGIN ', teamStoreItems, design)
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
     const designName = get(design, 'name', '')
     const colors = get(design, 'colors')
     console.log(designName, colors)
     const productId = get(design, 'product.id', '')
+    const storeName = get(relatedItems, 'name', 'untitled')
     const name = get(design, 'product.name', '')
     const type = get(design, 'product.type', '')
     const description = get(design, 'product.description', '')
@@ -158,6 +160,10 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
     const fitStyles = get(design, 'product.fitStyles', [])
+    const { location: { search } } = this.props
+    const queryParams = queryString.parse(search)
+    const yotpoId = queryParams.yotpoId || ''
+    const storeId = queryParams.store || ''
 
     if (!design) {
       return null
@@ -327,12 +333,14 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const breadCrumb = (
       <Breadcrumb>
         <Breadcrumb.Item>
-          <Link to={'/teamstores-home'}>{'Teamstores'}</Link>
+          <Link to={'/search-teamstores'}>{'Teamstores'}</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <Link to={'/team-store'}>{'Tigers Team'}</Link>
+          <Link to={`/store-front?storeId=${storeId}`}>
+            {capitalize(storeName)}
+          </Link>
         </Breadcrumb.Item>
-        <Breadcrumb.Item>{'Tigers'}</Breadcrumb.Item>
+        <Breadcrumb.Item>{designName}</Breadcrumb.Item>
       </Breadcrumb>
     )
 
@@ -365,10 +373,6 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       </Modal>
     )
 
-    const { location: { search } } = this.props
-    const queryParams = queryString.parse(search)
-
-    const yotpoId = queryParams.yotpoId || ''
     const imagesArray = get(design, 'product.images', [] as ImageType[])
     const images = imagesArray[0]
 
@@ -390,9 +394,14 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
 
     const relatedProducts = relatedItems.items.map((item, index) => (
       <ProductThumbnail
+        id={item.design.shortId}
+        isStoreThumbnail={true}
+        yotpoId={item.design.product.yotpoId}
+        teamStoreShortId={storeId}
         key={index}
         image={item.design.image}
         hideCustomButton={true}
+        hideQuickView={true}
         footer={thumbnailFooter(item.design.name, item.design.product.type)}
       />
     ))
@@ -450,9 +459,9 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
               </SectionTitleContainer>
               <RelatedProductsRow>{relatedProducts}</RelatedProductsRow>
             </RelatedProductsContainer>
-            <JakrooWidgetsTitle>
+            {/* <JakrooWidgetsTitle>
               <FormattedMessage {...messages.jakrooWidgetTitle} />
-            </JakrooWidgetsTitle>
+            </JakrooWidgetsTitle>*/}
             <YotpoReviews {...{ yotpoId }} />
           </Container>
         )}
