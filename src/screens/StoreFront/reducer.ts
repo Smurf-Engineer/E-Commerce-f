@@ -9,7 +9,8 @@ import {
   SET_PASS_CODE,
   OPEN_EMAIL_CONTACT,
   SET_EMAIL_CONTACT,
-  SET_EMAIL_MESSAGE
+  SET_EMAIL_MESSAGE,
+  SEND_MESSAGE_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -19,6 +20,7 @@ export const initialState = fromJS({
   openShare: false,
   openPassCode: false,
   openEmailContact: false,
+  sendMessageLoading: false,
   emailContact: '',
   emailMessage: ''
 })
@@ -42,6 +44,8 @@ const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('emailContact', action.param)
     case SET_EMAIL_MESSAGE:
       return state.set('emailMessage', action.param)
+    case SEND_MESSAGE_LOADING:
+      return state.set('sendMessageLoading', action.loading)
     default:
       return state
   }

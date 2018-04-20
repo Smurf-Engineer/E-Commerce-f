@@ -25,9 +25,12 @@ interface Props {
   onSetEmail: (email: string) => void
   onSetMesage: (message: string) => void
   contactManagerMutation: (variables: {}) => void
+  setSendMessageLoading: (loading: boolean) => void
   open: boolean
+  teamStoreId: string
   emailContact: string
   emailMessage: string
+  sendMessageLoading: boolean
 }
 
 class EmailContact extends React.Component<Props, {}> {
@@ -55,11 +58,19 @@ class EmailContact extends React.Component<Props, {}> {
   }
 
   handleSendMessage = async (evt: React.MouseEvent<EventTarget>) => {
-    const { contactManagerMutation, emailMessage, requestClose } = this.props
+    const {
+      contactManagerMutation,
+      emailMessage,
+      requestClose,
+      teamStoreId,
+      setSendMessageLoading
+    } = this.props
     try {
+      setSendMessageLoading(true)
       const response = await contactManagerMutation({
-        variables: { teamStoreId: '', text: emailMessage }
+        variables: { teamStoreId, text: emailMessage }
       })
+      setSendMessageLoading(false)
       const data = get(response, 'data.contactEmail', false)
 
       if (data) {
@@ -67,6 +78,7 @@ class EmailContact extends React.Component<Props, {}> {
         requestClose()
       }
     } catch (error) {
+      setSendMessageLoading(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       this.sendMessage(errorMessage, false)
       console.error(error)
@@ -82,7 +94,7 @@ class EmailContact extends React.Component<Props, {}> {
   }
 
   render() {
-    const { open, formatMessage, emailMessage } = this.props
+    const { open, formatMessage, emailMessage, sendMessageLoading } = this.props
 
     return (
       <Container>
@@ -105,7 +117,11 @@ class EmailContact extends React.Component<Props, {}> {
             onChange={this.handleMessageChange}
           />
           <ButtonWrapper>
-            <Button type="primary" onClick={this.handleSendMessage}>
+            <Button
+              type="primary"
+              onClick={this.handleSendMessage}
+              loading={sendMessageLoading}
+            >
               <FormattedMessage {...messages.send} />
             </Button>
           </ButtonWrapper>

@@ -40,13 +40,13 @@ class TeamPassCode extends React.Component<Props, {}> {
   }
 
   handleEnter = async (evt: React.MouseEvent<EventTarget>) => {
-    const { formatMessage, passCode, handleIngressPassCode } = this.props
+    const { formatMessage, passCode, requestClose } = this.props
 
     if (!passCode) {
       message.error(formatMessage(messages.invalidNameMessage))
       return
     } else {
-      handleIngressPassCode()
+      requestClose()
     }
   }
 

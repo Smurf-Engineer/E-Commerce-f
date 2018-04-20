@@ -160,7 +160,12 @@ export class CreateStore extends React.Component<Props, {}> {
         passcode: passCode,
         items
       }
-      const { data: { store } } = await createStore({
+      console.log('--------------file-------------')
+      console.log(file)
+      console.log('---------------------------')
+      const {
+        data: { store }
+      } = await createStore({
         variables: { teamStore, file }
       })
       const { shortId } = store as any

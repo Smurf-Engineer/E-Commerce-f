@@ -8,7 +8,8 @@ import {
   SET_PASS_CODE,
   OPEN_EMAIL_CONTACT,
   SET_EMAIL_CONTACT,
-  SET_EMAIL_MESSAGE
+  SET_EMAIL_MESSAGE,
+  SEND_MESSAGE_LOADING
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -58,3 +59,8 @@ export const setEmailMessageAction = (param: string): AnyAction => {
     param
   }
 }
+
+export const sendMessageLoadingAction = (loading: boolean): AnyAction => ({
+  type: SEND_MESSAGE_LOADING,
+  loading
+})
