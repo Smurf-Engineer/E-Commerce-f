@@ -11,6 +11,7 @@ export const desginsQuery = gql`
         id
         name
         image
+        shortId: short_id
         createdAt: created_at
         product {
           id

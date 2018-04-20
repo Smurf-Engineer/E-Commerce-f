@@ -37,6 +37,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   render() {
     const { formatMessage, data: { designs } } = this.props
     const myDesigns = designs ? designs.designs : []
+
     return (
       <Container>
         <ProductList

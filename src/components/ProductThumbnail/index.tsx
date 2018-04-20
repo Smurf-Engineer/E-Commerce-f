@@ -27,8 +27,11 @@ interface Props {
   isTopProduct: boolean
   collections?: number
   footer?: React.ReactNode
+  hideCustomButton?: boolean
   yotpoId: string
   history: any
+  isStoreThumbnail?: boolean
+  teamStoreShortId?: string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -74,8 +77,21 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { id, yotpoId, history } = this.props
-    history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+    const {
+      id,
+      yotpoId,
+      history,
+      teamStoreShortId,
+      isStoreThumbnail
+    } = this.props
+
+    if (teamStoreShortId && isStoreThumbnail) {
+      history.push(
+        `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
+      )
+    } else {
+      history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+    }
   }
 
   render() {
@@ -88,7 +104,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       collections,
       footer,
       labelButton,
-      image
+      image,
+      hideCustomButton
     } = this.props
     const { isHovered, currentImage } = this.state
     const price =
@@ -103,7 +120,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             images,
             currentImage,
             labelButton,
-            image
+            image,
+            hideCustomButton
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
