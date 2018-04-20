@@ -8,6 +8,7 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import map from 'lodash/map'
+import filter from 'lodash/filter'
 import findIndex from 'lodash/findIndex'
 import capitalize from 'lodash/capitalize'
 import queryString from 'query-string'
@@ -59,7 +60,8 @@ import {
   ThumbnailFooterTitle,
   ThumbnailFooterSubtitle,
   ThumbnailFooterPriceContainer,
-  ThumbnailFooterPricelabel
+  ThumbnailFooterPricelabel,
+  PriceSpan
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import PriceQuantity from '../../components/PriceQuantity'
@@ -76,7 +78,8 @@ import {
   ImageType,
   PriceRange,
   TeamstoreType,
-  DesignType
+  DesignType,
+  TeamstoreItemType
 } from '../../types/common'
 
 interface ProductTypes extends Product {
@@ -133,16 +136,13 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       showDynamicPrice,
-      teamStoreItems,
       data: { design },
       teamStoreItems: { relatedItems }
     } = this.props
-    console.log('DESGIN ', teamStoreItems, design)
+
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
     const designName = get(design, 'name', '')
-    const colors = get(design, 'colors')
-    console.log(designName, colors)
     const productId = get(design, 'product.id', '')
     const storeName = get(relatedItems, 'name', 'untitled')
     const name = get(design, 'product.name', '')
@@ -158,18 +158,25 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       femaleGender && maleGender
         ? formatMessage(messages.unisexGenderLabel)
         : formatMessage(messages.oneGenderLabel)
-    let renderPrices
+    //    let renderPrices
     const fitStyles = get(design, 'product.fitStyles', [])
     const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
     const yotpoId = queryParams.yotpoId || ''
     const storeId = queryParams.store || ''
 
+    // TODO: Change to real priceRange and starting price when gets implemmented in the backq
+    // const priceRange = get(design, 'product.priceRange', [])
+    //  const startingPrice = this.getTierPrice(priceRange)
+
     if (!design) {
       return null
     }
 
-    if (design.product) {
+    const colors = get(design, 'colors')
+    const designShortId = get(design, 'shortId')
+    // TODO: temporal commented code
+    /*   if (design.product) {
       renderPrices = design.product.priceRange.map(
         (item: any, index: number) => (
           <AvailablePrices key={index}>
@@ -182,6 +189,22 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         )
       )
     }
+*/
+    const productPrices = (
+      <AvailablePrices>
+        <AvailablePrices>
+          <PriceQuantity
+            price={119}
+            priceColor={'#E61737'}
+            quantity={'Current Price'}
+            index={0}
+          />
+        </AvailablePrices>
+        <AvailablePrices>
+          <PriceQuantity price={63} quantity={'Team Target Price'} index={0} />
+        </AvailablePrices>
+      </AvailablePrices>
+    )
 
     let productInfo
     if (design.product) {
@@ -383,16 +406,25 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         <ThumbnailFooterSubtitle>{productType}</ThumbnailFooterSubtitle>
         <ThumbnailFooterPriceContainer>
           <ThumbnailFooterPricelabel>
-            {'Current Price $119'}
+            {'Current Price'}
+            <PriceSpan labelColor={'#E61737 '}>{'$ 119'}</PriceSpan>
           </ThumbnailFooterPricelabel>
           <ThumbnailFooterPricelabel>
-            {'Estimate Price $63'}
+            {'Estimate Price'}
+            <PriceSpan>{'$ 119'}</PriceSpan>
           </ThumbnailFooterPricelabel>
         </ThumbnailFooterPriceContainer>
       </ThumbnailFooterContainer>
     )
 
-    const relatedProducts = relatedItems.items.map((item, index) => (
+    const filterRelatedProducts = filter(
+      relatedItems.items,
+      ({ design: { shortId } }: TeamstoreItemType) => {
+        return shortId !== designShortId
+      }
+    )
+
+    const relatedProducts = filterRelatedProducts.map((item, index) => (
       <ProductThumbnail
         id={item.design.shortId}
         isStoreThumbnail={true}
@@ -431,7 +463,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                   </StyledButton>
                 </TitleRow>
                 <PricesRow>
-                  <PricesContainer>{renderPrices}</PricesContainer>
+                  <PricesContainer>{productPrices}</PricesContainer>
                 </PricesRow>
                 <EstimatePrice>
                   {formatMessage(messages.forEstimatePriceLabel, {
@@ -514,13 +546,12 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
   }
 
   loadModel = () => {}
-
   handleDynamicPriceModal = () => {
     const { openDynamicPriceModalAction, showDynamicPrice } = this.props
     openDynamicPriceModalAction(!showDynamicPrice)
   }
 
-  getTierPrice = (prices: PriceRange[], range = '2-5') => () => {
+  getTierPrice = (prices: PriceRange[], range = '2-5') => {
     const index = findIndex(prices, ({ quantity }) => quantity === range)
     return prices[index] ? prices[index].price : 0
   }
@@ -539,6 +570,7 @@ const TeamstoreProductPageEnhance = compose(
       const { location: { search } } = ownprops
       const queryParams = queryString.parse(search)
       return {
+        fetchPolicy: 'network-only',
         variables: {
           searchParam: queryParams ? queryParams.id : null
         }

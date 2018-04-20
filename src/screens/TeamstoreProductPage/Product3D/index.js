@@ -43,7 +43,6 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    /* Renderer config */
     const { onLoadModel, colors } = this.props
     const { clientWidth, clientHeight } = this.container
 
@@ -232,6 +231,12 @@ class Render3D extends PureComponent {
     this.start()
   }
 
+  componentWillReceiveProps(nextProps) {
+    const { colors } = nextProps
+
+    this.setupColors(colors)
+  }
+
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
@@ -280,6 +285,18 @@ class Render3D extends PureComponent {
 
   handleOnChange3DModel = () => {}
 
+  setupColors = colors => {
+    let colorNumber = 1
+    colors.forEach(colorObject => {
+      let key = `customColor${colorNumber}`
+      const { color } = colorObject
+      if (color && this.uniformsWithPhong) {
+        this.uniformsWithPhong[key].value = new THREE.Color(color)
+      }
+      colorNumber += 1
+    })
+  }
+
   render() {
     const {
       showDragmessage,
@@ -289,20 +306,6 @@ class Render3D extends PureComponent {
       loadingModel
     } = this.state
     const { onPressQuickView, undoEnabled, redoEnabled } = this.props
-
-    const menu = (
-      <Menu onClick={this.handleOnChange3DModel}>
-        <Menu.Item key="1">
-          <FormattedMessage {...messages.productOnly} />
-        </Menu.Item>
-        <Menu.Item key="2">
-          <FormattedMessage {...messages.withAvatar} />
-        </Menu.Item>
-        <Menu.Item key="3">
-          <FormattedMessage {...messages.onBike} />
-        </Menu.Item>
-      </Menu>
-    )
 
     return (
       <Container onKeyDown={this.handleOnKeyDown}>

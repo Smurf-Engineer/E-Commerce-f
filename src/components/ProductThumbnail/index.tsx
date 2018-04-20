@@ -78,15 +78,9 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const {
-      id,
-      yotpoId,
-      history,
-      teamStoreShortId,
-      isStoreThumbnail
-    } = this.props
+    const { id, yotpoId, history, teamStoreShortId } = this.props
 
-    if (teamStoreShortId && isStoreThumbnail) {
+    if (teamStoreShortId) {
       history.push(
         `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
       )
