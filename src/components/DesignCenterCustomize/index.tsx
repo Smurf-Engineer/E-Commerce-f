@@ -19,6 +19,7 @@ interface Props {
   redoEnabled: boolean
   currentTab: number
   swipingView: boolean
+  text: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -33,6 +34,7 @@ interface Props {
   onOpenSaveDesign: (open: boolean, imageBase64: string) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
+  onUpdateText: (text: string) => void
 }
 
 const DesignCenterCustomize = ({
@@ -60,7 +62,9 @@ const DesignCenterCustomize = ({
   swipingView,
   onOpenSaveDesign,
   onHoverColorBlock,
-  formatMessage
+  formatMessage,
+  text,
+  onUpdateText
 }: Props) => {
   return (
     <Container>
@@ -77,12 +81,15 @@ const DesignCenterCustomize = ({
           onSelectPalette,
           onChangePaletteName,
           paletteName,
-          onSetPalettes
+          onSetPalettes,
+          text,
+          onUpdateText
         }}
       />
       {currentTab === 2 && !swipingView ? (
         <Render3D
           {...{
+            text,
             colors,
             colorBlockHovered,
             styleColors,

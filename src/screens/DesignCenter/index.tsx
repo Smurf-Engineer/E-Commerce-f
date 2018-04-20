@@ -47,6 +47,7 @@ interface Props extends RouteComponentProps<any> {
   designName: string
   savedDesignId: string
   saveDesignLoading: boolean
+  text: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -72,6 +73,7 @@ interface Props extends RouteComponentProps<any> {
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
+  setTextAction: (text: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -112,6 +114,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       intl,
       history,
+      text,
       currentTab,
       setColorBlockAction,
       setHoverColorBlockAction,
@@ -148,7 +151,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       checkedTerms,
       setCheckedTermsAction,
       clearDesignInfoAction,
-      saveDesignLoadingAction
+      saveDesignLoadingAction,
+      setTextAction
     } = this.props
 
     const { location: { search } } = this.props
@@ -195,8 +199,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 swipingView,
                 styleColors,
                 paletteName,
-                palettes
+                palettes,
+                text
               }}
+              onUpdateText={setTextAction}
               formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}

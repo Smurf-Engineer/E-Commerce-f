@@ -5,6 +5,7 @@ import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import ColorTab from '../ColorTab'
+import TextTab from '../TextTab'
 import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
@@ -21,12 +22,14 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  text: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
+  onUpdateText: (text: string) => void
 }
 
 const Tabs = ({
@@ -41,7 +44,9 @@ const Tabs = ({
   palettes,
   onSetPalettes,
   colors,
-  styleColors
+  styleColors,
+  onUpdateText,
+  text
 }: Props) => {
   return (
     <Container>
@@ -65,7 +70,7 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
-          Content of Tab Pane 2
+          <TextTab {...{ text, onUpdateText }} />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           Content of Tab Pane 3
