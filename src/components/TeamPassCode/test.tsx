@@ -14,8 +14,6 @@ describe('<TeamPassCode />', () => {
     const closeModal = () => {}
     const setPass = (message: string) => {}
     const format = (message: string) => 'string'
-    const handlePass = () => {}
-    const passCode = ''
     ReactDOM.render(
       <IntlProvider {...props}>
         <TeamPassCode
@@ -23,8 +21,6 @@ describe('<TeamPassCode />', () => {
           requestClose={closeModal}
           formatMessage={format}
           setPassCode={setPass}
-          passCode={passCode}
-          handleIngressPassCode={handlePass}
         />
       </IntlProvider>,
       div

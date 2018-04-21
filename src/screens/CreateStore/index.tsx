@@ -145,8 +145,8 @@ export class CreateStore extends React.Component<Props, {}> {
     } = this.props
     const { file } = this.state
     setLoadingAction(true)
-    const items = itemsSelected.map(({ id, visible, shortId }) => ({
-      design_id: shortId,
+    const items = itemsSelected.map(({ id, visible }) => ({
+      design_id: id,
       team_store_id: 1, // TODO: Delete after update mutation
       expected_quantity: 1, // TODO: Delete after update mutation
       visible: !!visible
@@ -160,9 +160,7 @@ export class CreateStore extends React.Component<Props, {}> {
         passcode: passCode,
         items
       }
-      console.log('--------------file-------------')
-      console.log(file)
-      console.log('---------------------------')
+
       const {
         data: { store }
       } = await createStore({

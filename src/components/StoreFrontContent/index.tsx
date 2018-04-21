@@ -2,9 +2,10 @@
  * StoreFrontContent Component - Created by gustavomedina on 18/04/18.
  */
 import * as React from 'react'
-import { injectIntl, FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+// import message from 'antd/lib/message'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
 import {
@@ -50,11 +51,10 @@ import ProductInfo from '../../components/ProductInfo'
 import ProductList from '../../components/DesignsCatalogueThumbnailList'
 import Share from '../../components/ShareDesignModal'
 import EmailContact from '../../components/EmailContact'
-// import TeamsLayout from '../../components/MainLayout'
-// import { openQuickViewAction } from '../../components/MainLayout/actions'
+import TeamPassCode from '../../components/TeamPassCode'
 
-const PASSCODE_ERROR = 'Pass code needed.'
-const WRONG_PASSCODE_ERROR = 'Wrong pass code.'
+// const PASSCODE_ERROR = 'Pass code needed.'
+// const WRONG_PASSCODE_ERROR = 'Wrong pass code.'
 
 interface Data extends QueryProps {
   teamStores: TeamStoreResultType
@@ -78,6 +78,7 @@ interface Props {
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
+  setPassCodeAction: (passCode: string) => void
 }
 
 export class StoreFrontContent extends React.Component<Props, {}> {
@@ -129,6 +130,11 @@ export class StoreFrontContent extends React.Component<Props, {}> {
     openEmailContactDialogAction(false)
   }
 
+  closePassCodeModal = () => {
+    const { setOpenPassCodeDialog } = this.props
+    setOpenPassCodeDialog(false)
+  }
+
   render() {
     const {
       data: { error, getTeamStore },
@@ -140,29 +146,22 @@ export class StoreFrontContent extends React.Component<Props, {}> {
       setEmailContactAction,
       setEmailMessageAction,
       sendMessageLoading,
-      sendMessageLoadingAction
+      sendMessageLoadingAction,
+      setPassCodeAction
     } = this.props
 
-    if (error) {
-      const msgError = error.graphQLErrors.length
-        ? error.graphQLErrors[0].message
-        : error.message
+    const openModal =
+      getTeamStore && (getTeamStore.id === -1 || getTeamStore.id === -2)
 
-      if (msgError === PASSCODE_ERROR || msgError === WRONG_PASSCODE_ERROR) {
-        // TODO: dont do this
-        this.handleOpenPassCode()
-      }
-    }
+    // if (getTeamStore && getTeamStore.id === -2) {
+    //   message.error(formatMessage(messages.invalidPass))
+    // }
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
         error.message ||
         null
       : null
-
-    console.log('--------------errorMessage-------------')
-    console.log(errorMessage)
-    console.log('---------------------------')
 
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
@@ -188,7 +187,7 @@ export class StoreFrontContent extends React.Component<Props, {}> {
       return x.design
     })
 
-    // TODO: remove when component changed
+    // TODO: dynamic
     const marks = {
       1: {
         style: sliderStyle,
@@ -375,6 +374,13 @@ export class StoreFrontContent extends React.Component<Props, {}> {
           sendMessageLoading={sendMessageLoading}
           setSendMessageLoading={sendMessageLoadingAction}
         />
+
+        <TeamPassCode
+          open={openModal}
+          requestClose={this.closePassCodeModal}
+          formatMessage={formatMessage}
+          setPassCode={setPassCodeAction}
+        />
       </Container>
     )
   }
@@ -386,7 +392,6 @@ type OwnProps = {
 }
 
 const StoreFrontContentEnhance = compose(
-  injectIntl,
   graphql<Data>(getSingleTeamStore, {
     options: ({ teamStoreId, passCode }: OwnProps) => {
       console.log('---------OwnProps-----------')

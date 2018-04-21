@@ -17,41 +17,49 @@ import {
 
 interface Props {
   open: boolean
-  passCode: string
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
   setPassCode: (passCode: string) => void
-  handleIngressPassCode: () => void
 }
 
+// interface StateProps {
+//   passCode: string
+// }
+
 class TeamPassCode extends React.Component<Props, {}> {
+  state = {
+    passCode: ''
+  }
+
   handleCancel = () => {
     const { requestClose } = this.props
     requestClose()
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setPassCode } = this.props
     const {
       currentTarget: { value }
     } = evt
     evt.persist()
-    setPassCode(value)
+    this.setState({ passCode: value })
   }
 
   handleEnter = async (evt: React.MouseEvent<EventTarget>) => {
-    const { formatMessage, passCode, requestClose } = this.props
+    const { formatMessage, requestClose, setPassCode } = this.props
+    const { passCode } = this.state
 
     if (!passCode) {
       message.error(formatMessage(messages.invalidNameMessage))
       return
     } else {
+      setPassCode(passCode)
       requestClose()
     }
   }
 
   render() {
-    const { open, passCode } = this.props
+    const { open } = this.props
+    const { passCode } = this.state
 
     return (
       <Container>

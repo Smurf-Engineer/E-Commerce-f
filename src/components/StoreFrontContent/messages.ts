@@ -79,5 +79,9 @@ export default defineMessages({
   contactManager: {
     id: 'screen.StoreFrontContent.contactManager',
     defaultMessage: 'Contact store manager'
+  },
+  invalidPass: {
+    id: 'screen.StoreFrontContent.invalidPass',
+    defaultMessage: 'Invalid passcode value.'
   }
 })

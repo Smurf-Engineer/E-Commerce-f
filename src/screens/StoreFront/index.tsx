@@ -13,7 +13,7 @@ import { QueryProps } from '../../types/common'
 import { Container } from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-import TeamPassCode from '../../components/TeamPassCode'
+// import TeamPassCode from '../../components/TeamPassCode'
 import StoreFrontContent from '../../components/StoreFrontContent'
 
 interface Params extends QueryProps {
@@ -79,7 +79,6 @@ export class StoreFront extends React.Component<Props, {}> {
       intl,
       openShare,
       history,
-      openPassCode,
       setPassCodeAction,
       passCode,
       openEmailContact,
@@ -93,7 +92,6 @@ export class StoreFront extends React.Component<Props, {}> {
       openShareModalAction,
       openPassCodeDialogAction
     } = this.props
-    const { formatMessage } = intl
 
     const {
       location: { search }
@@ -106,7 +104,7 @@ export class StoreFront extends React.Component<Props, {}> {
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
           <StoreFrontContent
-            formatMessage={formatMessage}
+            formatMessage={intl.formatMessage}
             openQuickViewAction={openQuickViewAction}
             openEmailContactDialogAction={openEmailContactDialogAction}
             openShareModalAction={openShareModalAction}
@@ -121,14 +119,7 @@ export class StoreFront extends React.Component<Props, {}> {
             setEmailContactAction={setEmailContactAction}
             setEmailMessageAction={setEmailMessageAction}
             sendMessageLoadingAction={sendMessageLoadingAction}
-          />
-          <TeamPassCode
-            open={openPassCode}
-            requestClose={this.closePassCodeModal}
-            formatMessage={intl.formatMessage}
-            setPassCode={setPassCodeAction}
-            passCode={passCode}
-            handleIngressPassCode={this.handleIngressPassCode}
+            setPassCodeAction={setPassCodeAction}
           />
         </Container>
       </TeamsLayout>

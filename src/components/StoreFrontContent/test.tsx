@@ -111,6 +111,7 @@ describe('<StoreFrontContent />', () => {
         ]
       }
     }
+    const setPassCodeAction = (passCode: string) => {}
     ReactDOM.render(
       <MemoryRouter>
         <IntlProvider {...props}>
@@ -130,6 +131,7 @@ describe('<StoreFrontContent />', () => {
             setEmailContactAction={setEmailContactAction}
             setEmailMessageAction={setEmailMessageAction}
             sendMessageLoadingAction={sendMessageLoadingAction}
+            setPassCodeAction={setPassCodeAction}
           />
         </IntlProvider>
       </MemoryRouter>,
