@@ -28,6 +28,7 @@ export const getSingleTeamStore = gql`
           id
           name
           image
+          shortId: short_id
           product {
             id
             yotpoId: yotpo_id

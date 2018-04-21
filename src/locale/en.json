@@ -167,6 +167,31 @@
   "screens.teamstoreProductPage.finalPricingText":
     "Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it's that cool!",
   "screens.teamstoreProductPage.dynamicPriceButtonLabel": "Got it!",
+  "screens.teamstoreProductPage.customizeLabel": "CUSTOMIZE",
+  "screens.teamstoreProductPage.buyNowLabel": "BUY NOW",
+  "screens.teamstoreProductPage.intendedUseLabel": "INTENDED USE",
+  "screens.teamstoreProductPage.detailsLabel": "Details",
+  "screens.teamstoreProductPage.specsLabel": "Specs",
+  "screens.teamstoreProductPage.temperaturesLabel": "TEMPERATURE RANGE",
+  "screens.teamstoreProductPage.materialsLabel": "MATERIALS",
+  "screens.teamstoreProductPage.compareLabel": "COMPARE",
+  "screens.teamstoreProductPage.genderLabel": "Gender",
+  "screens.teamstoreProductPage.ColorsLabel": "Colors",
+  "screens.teamstoreProductPage.sizeLabel": "Size",
+  "screens.teamstoreProductPage.fitLabel": "Fit",
+  "screens.teamstoreProductPage.getFittedLabel": "Get fitted",
+  "screens.teamstoreProductPage.addToCartButtonLabel": "Add to Cart",
+  "screens.YotpoReviews.jakrooWidgetTitle":
+    "Inspiration from our community. #Jakroo",
+  "screens.teamstoreProductPage.downloadLabel": "Download Template",
+  "screens.teamstoreProductPage.oneGenderLabel": "Available for Men/Women",
+  "screens.teamstoreProductPage.unisexGenderLabel":
+    "Available for Men and Women",
+  "screens.teamstoreProductPage.currentOrdersLabel": "Current Orders",
+  "screens.teamstoreProductPage.forEstimatePriceLabel":
+    "Your team needs {quantity} more pcs till target pricing reach",
+  "screens.teamstoreProductPage.gotItLabel": "Got it!",
+  "screens.teamstoreProductPage.relatedProductsLabel": "Related Products",
   "screens.CreateStore.title": "Let’s build a team store!",
   "screens.CreateStore.teamSizeTitle": "Estimated Team Size",
   "screens.CreateStore.teamSizeMessage":

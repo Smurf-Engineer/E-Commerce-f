@@ -2,7 +2,9 @@
  * Styled Components - Created by cazarez on 08/02/18.
  */
 import styled from 'styled-components'
-
+interface StyleProps {
+  priceColor?: string
+}
 export const Container = styled.div``
 
 export const Text = styled.div`
@@ -19,7 +21,8 @@ export const AvailablePrices = styled.div`
 export const PriceLabel = styled.div`
   height: 25px;
 
-  color: #5f6062;
+  color: ${({ priceColor }: StyleProps) =>
+    priceColor ? priceColor : '#5f6062'};
   font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
