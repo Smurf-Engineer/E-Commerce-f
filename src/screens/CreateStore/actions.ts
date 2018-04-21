@@ -115,9 +115,11 @@ export const setItemVisibleAction = (
 
 export const openQuickViewAction = (
   id: number,
-  yotpoId: string | null
+  yotpoId: string | null,
+  hideSliderButtons?: boolean
 ): AnyAction => ({
   type: OPEN_QUICKVIEW_ACTION,
   id,
-  yotpoId
+  yotpoId,
+  hideSliderButtons
 })

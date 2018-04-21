@@ -27,7 +27,11 @@ interface Props {
   items: DesignType[]
   teamSizeRange: string
   onPressDelete: (index: number) => void
-  onPressQuickView: (id: number, yotpoId: string) => void
+  onPressQuickView: (
+    id: number,
+    yotpoId: string,
+    hideSliderButtons?: boolean
+  ) => void
   onPressVisible: (index: number, checked: boolean) => void
 }
 

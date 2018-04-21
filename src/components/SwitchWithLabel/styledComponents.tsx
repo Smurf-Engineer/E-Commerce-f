@@ -38,3 +38,11 @@ export const inputStyle = {
   width: '100%',
   marginTop: 16
 }
+
+export const Error = styled.div`
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  line-height: 16px;
+  padding: 4px;
+`

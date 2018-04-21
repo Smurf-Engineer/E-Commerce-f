@@ -27,7 +27,11 @@ interface Props {
   visible: boolean
   yotpoId: string
   onPressDelete: (index: number) => void
-  onPressQuickView: (id: number, yotpoId: string) => void
+  onPressQuickView: (
+    id: number,
+    yotpoId: string,
+    hideSliderButtons?: boolean
+  ) => void
   onPressVisible: (index: number, checked: boolean) => void
 }
 
@@ -48,7 +52,7 @@ const ProductRow = ({
   onPressVisible
 }: Props) => {
   const handleOnClick = () => onPressDelete(index)
-  const handleOnClickView = () => onPressQuickView(productId, yotpoId)
+  const handleOnClickView = () => onPressQuickView(productId, yotpoId, true)
   const handleOnClickVisible = (e: React.ChangeEvent<HTMLInputElement>) => {
     const checked = e.target.checked
     onPressVisible(index, checked)

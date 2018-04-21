@@ -15,6 +15,8 @@ import {
   inputStyle
 } from './styledComponents'
 
+import messages from './messages'
+
 interface Props {
   hasError?: boolean
   name: string
@@ -23,6 +25,7 @@ interface Props {
   onUpdateName: (name: string) => void
   onSelectStartDate: (dateMoment: Moment, date: string) => void
   onSelectEndDate: (dateMoment: Moment, date: string) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const StoreForm = ({
@@ -32,7 +35,8 @@ const StoreForm = ({
   onSelectEndDate,
   name,
   startDate,
-  endDate
+  endDate,
+  formatMessage
 }: Props) => {
   const handleUpdateName = (evnt: React.ChangeEvent<HTMLInputElement>) => {
     const { target: { value } } = evnt
@@ -104,7 +108,7 @@ const StoreForm = ({
     <Container>
       <Column>
         <Label>
-          Team Store Name <Required>*</Required>
+          {formatMessage(messages.teamStoreName)} <Required>*</Required>
         </Label>
         <Input
           value={name}
@@ -112,11 +116,12 @@ const StoreForm = ({
           size="large"
           onChange={handleUpdateName}
         />
-        {hasError && <Error>This field is required</Error>}
+        {hasError &&
+          !name && <Error>{formatMessage(messages.requiredFieldLabel)}</Error>}
       </Column>
       <Column>
         <Label>
-          Order Cut Off Date <Required>*</Required>
+          {formatMessage(messages.orderCutOffLabel)} <Required>*</Required>
         </Label>
         <DatePicker
           value={startDate}
@@ -126,10 +131,14 @@ const StoreForm = ({
           size="large"
           style={inputStyle}
         />
+        {hasError &&
+          !startDate && (
+            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+          )}
       </Column>
       <Column>
         <Label>
-          Desired Delivery Date <Required>*</Required>
+          {formatMessage(messages.desiredDeliveryLabel)} <Required>*</Required>
         </Label>
         <DatePicker
           value={endDate}
@@ -140,6 +149,10 @@ const StoreForm = ({
           size="large"
           style={inputStyle}
         />
+        {hasError &&
+          !endDate && (
+            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+          )}
       </Column>
     </Container>
   )

@@ -8,12 +8,14 @@ import StoreForm from './index'
 describe('<StoreForm />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const format = (message: string) => 'string'
     ReactDOM.render(
       <StoreForm
         onUpdateName={() => {}}
         name=""
         onSelectStartDate={() => {}}
         onSelectEndDate={() => {}}
+        formatMessage={format}
       />,
       div
     )

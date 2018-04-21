@@ -11,6 +11,7 @@ import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
 import { RouteComponentProps } from 'react-router-dom'
+import zenscroll from 'zenscroll'
 import Layout from '../../components/MainLayout'
 import LockerTable from '../../components/LockerTable'
 import LockerModal from '../../components/LockerModal'
@@ -35,7 +36,9 @@ import {
   RowSwitch,
   ButtonDelete,
   buttonStyle,
-  buttonBuildStyle
+  buttonBuildStyle,
+  BannerTitleContainer,
+  OptionalLabel
 } from './styledComponents'
 
 interface Props extends RouteComponentProps<any> {
@@ -67,20 +70,58 @@ interface Props extends RouteComponentProps<any> {
   setItemSelectedAction: (id: number, checked: boolean) => void
   deleteItemSelectedAction: (index: number) => void
   setItemsAddAction: (items: DesignType[]) => void
-  openQuickViewAction: (id: number, yotpoId: string) => void
+  openQuickViewAction: (
+    id: number,
+    yotpoId: string,
+    hideSliderButtons?: boolean
+  ) => void
   setItemVisibleAction: (index: number, visible: boolean) => void
   setLoadingAction: (loading: boolean) => void
   clearStoreAction: () => void
 }
 
-export class CreateStore extends React.Component<Props, {}> {
+interface StateProps {
+  hasError: boolean
+  file: string | null
+  imagePreviewUrl: string | null
+}
+export class CreateStore extends React.Component<Props, StateProps> {
   state = {
     file: null,
-    imagePreviewUrl: null
+    imagePreviewUrl: null,
+    hasError: false
   }
+  private lockerTable: any
 
-  validateForm = () => {
-    // TODO: Add form validation
+  validateForm = (
+    name: string,
+    startDate: string,
+    endDate: string,
+    items: DesignType[],
+    passCode: string
+  ) => {
+    const { privateStore } = this.props
+    let validForm = true
+
+    if (items.length < 1) {
+      zenscroll.to(this.lockerTable)
+      message.warning('you need to add Items to the table')
+
+      validForm = false
+    } else if (!name || !startDate || !endDate) {
+      this.setState({
+        hasError: !name || !startDate || !endDate || !items.length
+      })
+      validForm = false
+      zenscroll.toY(0)
+    } else if (privateStore && !passCode) {
+      this.setState({
+        hasError: true
+      })
+      validForm = false
+    }
+
+    return validForm
   }
 
   beforeUpload = (file: any) => {
@@ -122,7 +163,7 @@ export class CreateStore extends React.Component<Props, {}> {
 
   handleOnPressQuickView = (id: number, yotpoId: string) => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(id, yotpoId)
+    openQuickViewAction(id, yotpoId, true)
   }
 
   handleOnPressVisible = (index: number, visible: boolean) => {
@@ -144,6 +185,19 @@ export class CreateStore extends React.Component<Props, {}> {
       history
     } = this.props
     const { file } = this.state
+
+    const validForm = this.validateForm(
+      name,
+      startDate,
+      endDate,
+      itemsSelected,
+      passCode
+    )
+
+    if (!validForm) {
+      return
+    }
+
     setLoadingAction(true)
     const items = itemsSelected.map(({ id, visible, shortId }) => ({
       design_id: shortId,
@@ -167,6 +221,7 @@ export class CreateStore extends React.Component<Props, {}> {
       history.push(`/store-front?storeId=${shortId}`)
       clearStoreAction()
     } catch (error) {
+      console.log(error)
       message.error('Something wrong happened. Please try again!')
       setLoadingAction(false)
     }
@@ -182,7 +237,7 @@ export class CreateStore extends React.Component<Props, {}> {
   }
 
   render() {
-    const { imagePreviewUrl } = this.state
+    const { imagePreviewUrl, hasError } = this.state
     const {
       intl,
       history,
@@ -215,7 +270,7 @@ export class CreateStore extends React.Component<Props, {}> {
     ) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
-
+    console.log('CREATE STORE ', hasError)
     const bannerComponent = imagePreviewUrl ? (
       <PreviewImage src={imagePreviewUrl} />
     ) : (
@@ -231,12 +286,13 @@ export class CreateStore extends React.Component<Props, {}> {
             <FormattedMessage {...messages.title} />
           </Title>
           <StoreForm
-            {...{ name }}
+            {...{ name, formatMessage }}
             startDate={startDateMoment}
             endDate={endDateMoment}
             onUpdateName={updateNameAction}
             onSelectStartDate={updateStartDateAction}
             onSelectEndDate={updateEndDateAction}
+            {...{ hasError }}
           />
           <Subtitle>
             <FormattedMessage {...messages.teamSizeTitle} />
@@ -257,7 +313,13 @@ export class CreateStore extends React.Component<Props, {}> {
             <p>{formatMessage(messages.priceDropMessageP3)}</p>
           </PriceMessage>
           <Subtitle>
-            <FormattedMessage {...messages.storeItemsTitle} />
+            <div
+              ref={table => {
+                this.lockerTable = table
+              }}
+            >
+              <FormattedMessage {...messages.storeItemsTitle} />
+            </div>
           </Subtitle>
           <LockerMessage>
             <FormattedMessage {...messages.storeItemsMessage} />
@@ -281,9 +343,14 @@ export class CreateStore extends React.Component<Props, {}> {
             onPressVisible={this.handleOnPressVisible}
           />
           <Row>
-            <Subtitle>
-              <FormattedMessage {...messages.bannerMessage} />
-            </Subtitle>
+            <BannerTitleContainer>
+              <Subtitle>
+                <FormattedMessage {...messages.bannerMessage} />
+              </Subtitle>
+              <OptionalLabel>
+                {`(${formatMessage(messages.optional)})`}
+              </OptionalLabel>
+            </BannerTitleContainer>
             {!!imagePreviewUrl && (
               <RowButtons>
                 <Upload
@@ -303,12 +370,14 @@ export class CreateStore extends React.Component<Props, {}> {
           {bannerComponent}
           <RowSwitch>
             <SwitchWithLabel
+              hasError={hasError}
               {...{ passCode, updatePassCodeAction }}
               withInput={true}
               checked={privateStore}
               onChange={updatePrivateAction}
               label={formatMessage(messages.privateLabel)}
               message={formatMessage(messages.privateMessage)}
+              errorLabel={formatMessage(messages.requiredFieldLabel)}
             />
             <SwitchWithLabel
               checked={onDemand}

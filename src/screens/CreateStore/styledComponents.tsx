@@ -112,3 +112,12 @@ export const buttonBuildStyle = {
 }
 
 export const draggerStyle = { padding: '30px 0px', marginBottom: 16 }
+
+export const BannerTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const OptionalLabel = styled.span`
+  margin-left: 10px;
+`
