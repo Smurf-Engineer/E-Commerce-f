@@ -114,7 +114,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       <BottomRow>
         <LogoIcon src={logo} onClick={this.handleOnGoHome} />
         <TeamStoresMenuContainer>
-          <TeamStoresMenuTitle>
+          <TeamStoresMenuTitle onClick={this.gotoTeamStores}>
             {intl.formatMessage(messages.teamStoresTitle)}
           </TeamStoresMenuTitle>
         </TeamStoresMenuContainer>
@@ -181,6 +181,12 @@ class MenuBar extends React.Component<Props, StateProps> {
       </div>
     )
   }
+
+  gotoTeamStores = () => {
+    const { history } = this.props
+    history.push('/search-teamstores')
+  }
+
   handleOpenLogin = () => {
     const { openLoginAction } = this.props
     openLoginAction(true)

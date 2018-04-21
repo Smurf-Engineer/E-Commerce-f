@@ -31,6 +31,7 @@ interface Props {
   currentImage: number
   labelButton?: string
   hideCustomButton?: boolean
+  hideQuickView?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -54,7 +55,8 @@ const ProductSlide = ({
   onPressBack,
   onPressNext,
   onPressThumbnail,
-  hideCustomButton
+  hideCustomButton,
+  hideQuickView
 }: Props) => {
   if (image) {
     return (
@@ -62,9 +64,11 @@ const ProductSlide = ({
         {...{ onMouseEnter, onMouseLeave, isTopProduct, hideCustomButton }}
       >
         <ImageTop>
-          <QuickView onClick={onPressQuickView}>
-            <img src={quickViewIcon} />
-          </QuickView>
+          {!hideQuickView && (
+            <QuickView onClick={onPressQuickView}>
+              <img src={quickViewIcon} />
+            </QuickView>
+          )}
           {isTopProduct && (
             <TopContainer>
               <TopText>TOP</TopText>

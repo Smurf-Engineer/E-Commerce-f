@@ -2,7 +2,7 @@
  * Teamstores Screen - Created by cazarez on 10/04/18.
  */
 import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
@@ -42,6 +42,13 @@ export class SearchTeamstores extends React.Component<Props, {}> {
     const { history, intl, searchString, openShare, storeId } = this.props
     const { formatMessage } = intl
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
+    if (
+      typeof window !== 'undefined' &&
+      !JSON.parse(localStorage.getItem('user') as string)
+    ) {
+      return <Redirect to="/us?lang=en&currency=usd" />
+    }
+
     return (
       <Layout teamStoresHeader={true} {...{ intl, history }}>
         <Container>

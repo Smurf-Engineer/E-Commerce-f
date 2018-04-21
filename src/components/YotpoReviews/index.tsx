@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom'
 
 interface Props {
   yotpoId: string
+  noCarousel?: boolean
 }
 
 declare global {
