@@ -12,7 +12,8 @@ export const jerseyTextures = {
   flatlock: './models/Tour5/flatlock.png',
   label: './models/Red-J.jpg',
   bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg',
-  front: 'bb-1-camfront_Front'
+  front: './models/Tour5/bb-1-camfront_Front.png',
+  logo: './models/lizard.png'
 }
 
 export const viewPositions = {

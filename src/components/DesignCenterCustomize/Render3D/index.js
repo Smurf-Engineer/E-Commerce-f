@@ -6,6 +6,7 @@ import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import vertexShader from './vertex'
 import fragmentShader from './fragment'
+import { fragmentCanvas, vertexCanvas } from './canvas'
 import {
   Container,
   Render,
@@ -95,7 +96,9 @@ class Render3D extends PureComponent {
       color5: {},
       flatlock: {},
       label: {},
-      bumpMap: {}
+      bumpMap: {},
+      front: {},
+      logo: {}
     }
 
     for (const key in textures) {
@@ -105,9 +108,9 @@ class Render3D extends PureComponent {
       }
     }
 
-    const canvas = this.createLabel('CULICHI', '#fff', 'Avenir', 20)
-    const canvasTexture = new THREE.Texture(canvas)
-    canvasTexture.needsUpdate = true
+    const canvasTexture = this.createLabel('CULICHI', '#f23', 'Avenir', 12)
+    // const canvasTexture = new THREE.Texture(canvas)
+    // canvasTexture.needsUpdate = true
     textures.text = canvasTexture
 
     /* Camera */
@@ -245,26 +248,70 @@ class Render3D extends PureComponent {
             map: canvasTexture
           })
 
+          const frontMaterial = new THREE.MeshBasicMaterial({
+            // wireframe: true,
+            map: canvasTexture,
+            side: THREE.FrontSide,
+            transparent: true
+          })
+
+          frontMaterial.name = 'MI MATERIAL'
+
+          console.log('------------------------------------')
+          console.log(frontMaterial)
+          console.log('------------------------------------')
+
+          const customUniforms = {
+            text: { type: 't', value: textures.front }
+          }
+
+          const canvasMaterial = new THREE.ShaderMaterial({
+            // uniforms: uniformsWithPhong,
+            uniforms: customUniforms,
+            // map: textures.logo,
+            vertexShader: vertexCanvas,
+            fragmentShader: fragmentCanvas,
+            side: THREE.FrontSide,
+            transparent: true
+            //blending: THREE.AdditiveBlending
+            // defines: defines
+            // lights: true
+          })
+
+          const color1Material = new THREE.MeshPhongMaterial({
+            // wireframe: true,
+            map: textures.logo,
+            side: THREE.FrontSide,
+            transparent: true
+          })
+
           /* Assign materials */
           const cloneObject = object.children[0].clone()
+          const frontObject = object.children[0].clone()
+          frontObject.name = 'FRONT'
           object.add(cloneObject)
+          object.add(frontObject)
 
-          /* jersey */
+          /* Jersey */
           object.children[0].material = insideMaterial
           object.children[24].material = shaderMaterial
-          /* flatlock */
+          object.children[25].material = frontMaterial
+          /* Flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
           }
           /* Jersey label */
           object.children[17].material = labelMaterial
-          /* back pocket */
+          /* Back pocket */
           object.children[22].material = backPocketMaterial
 
           /* Object Config */
           object.position.y = -30
           object.name = 'jersey'
           scene.add(object)
+          // if (!window.scene) {
+          //   window.scene = scene
+          // }
         },
         this.onProgress,
         this.onError
@@ -287,48 +334,23 @@ class Render3D extends PureComponent {
     this.container.removeChild(this.renderer.domElement)
   }
 
-  createLabel = (text, x, y, z, size, color) => {
+  createLabel = (text, color, font, size) => {
+    size = size || 24
     const canvas = document.createElement('canvas')
-    const context = canvas.getContext('2d')
-    context.font = size + 'pt Arial'
-    const margin = 10
-    const textWidth = context.measureText(text).width
-    context.strokeStyle = 'black'
-    // context.strokeRect(0, 0, canvas.width, canvas.height)
-    // context.strokeStyle = 'red'
-    // context.strokeRect(
-    //   canvas.width / 2 - textWidth / 2 - margin / 2,
-    //   canvas.height / 2 - size / 2 - +margin / 2,
-    //   textWidth + margin,
-    //   size + margin
-    // )
-    context.textAlign = 'center'
-    context.textBaseline = 'middle'
-    context.fillStyle = 'white'
-    context.fillText(text, canvas.width / 2, canvas.height / 2)
-    const texture = new THREE.Texture(canvas)
-    texture.repeat.x = canvas.width / 800
-    texture.repeat.y = canvas.height / 2000
-    texture.offset.x = 300 / 100 * texture.repeat.x
-    texture.offset.y = 400 / 100 * texture.repeat.y
-    console.log('-----------------TEXT-------------------')
-    console.log(texture)
-    console.log('------------------------------------')
-    texture.needsUpdate = true
+    const ctx = canvas.getContext('2d')
+    const fontStr = (font || 'Arial') + ' ' + (size + 'px')
+    ctx.font = fontStr
+    const w = ctx.measureText(text).width
+    const h = Math.ceil(size * 1.25)
+    canvas.width = w
+    canvas.height = h
+    ctx.font = fontStr
+    ctx.fillStyle = color || 'black'
+    ctx.fillText(text, 0, size)
+    const tex = new THREE.Texture(canvas)
+    tex.needsUpdate = true
 
-    return texture
-    // const material = new THREE.MeshBasicMaterial({
-    //   map: texture
-    // })
-    // const mesh = new THREE.Mesh(
-    //   new THREE.PlaneGeometry(canvas.width, canvas.height, 10, 10),
-    //   material
-    // )
-    // mesh.overdraw = true
-    // // mesh.doubleSided = true;
-    // mesh.position.x = x - canvas.width / 2
-    // mesh.position.y = y - canvas.height / 2
-    // return mesh
+    return tex
   }
 
   onProgress = xhr => {

@@ -117,7 +117,7 @@ void main() {
   vec4 mixTextures =  texelColor1 + texelColor2 + texelColor3 + texelColor4 + texelColor5 * (1.0 - (texelColor1.a + texelColor2.a + texelColor3.a + texelColor4.a));
   // vec4 mixTextures = texelText * (1.0 - (texelText.a));
   diffuseColor *= mixTextures;
-  diffuseColor += texelText;
+  // diffuseColor += texelText;
 
   #include <color_fragment>
   #include <alphamap_fragment>
