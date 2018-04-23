@@ -10,6 +10,10 @@ interface ButtonProps {
   selected: boolean
 }
 
+interface ThumbnailStyle {
+  labelColor?: string
+}
+
 export const Container = styled.div`
   background-color: #fff;
 `
@@ -99,6 +103,7 @@ export const StyledInputNumber = styled(InputNumber)`
 
 export const AvailablePrices = styled.div`
   margin-right: 30px;
+  display: flex;
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0;
@@ -382,6 +387,11 @@ export const BreadCrumbRow = styled.div`
 
 export const RelatedProductsContainer = styled.div`
   padding: 20px 0 45px 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    overflow: scroll;
+    padding: 0 10px 10px 10px;
+  }
 `
 
 export const RelatedProductsRow = styled.div`
@@ -439,4 +449,11 @@ export const ThumbnailFooterPricelabel = styled.div`
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
+`
+
+export const PriceSpan = styled.span`
+  color: ${({ labelColor }: ThumbnailStyle) =>
+    labelColor ? '#E61737' : '#5f6062'};
+  margin-left: 3px;
+  font-weight: 600;
 `
