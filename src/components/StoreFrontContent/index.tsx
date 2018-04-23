@@ -5,7 +5,6 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
-// import message from 'antd/lib/message'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
 import {
@@ -52,9 +51,6 @@ import ProductList from '../../components/DesignsCatalogueThumbnailList'
 import Share from '../../components/ShareDesignModal'
 import EmailContact from '../../components/EmailContact'
 import TeamPassCode from '../../components/TeamPassCode'
-
-// const PASSCODE_ERROR = 'Pass code needed.'
-// const WRONG_PASSCODE_ERROR = 'Wrong pass code.'
 
 interface Data extends QueryProps {
   teamStores: TeamStoreResultType
@@ -152,10 +148,6 @@ export class StoreFrontContent extends React.Component<Props, {}> {
 
     const openModal =
       getTeamStore && (getTeamStore.id === -1 || getTeamStore.id === -2)
-
-    // if (getTeamStore && getTeamStore.id === -2) {
-    //   message.error(formatMessage(messages.invalidPass))
-    // }
 
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
@@ -394,9 +386,6 @@ type OwnProps = {
 const StoreFrontContentEnhance = compose(
   graphql<Data>(getSingleTeamStore, {
     options: ({ teamStoreId, passCode }: OwnProps) => {
-      console.log('---------OwnProps-----------')
-      console.log(teamStoreId)
-      console.log(passCode)
       return {
         fetchPolicy: 'always',
         variables: {
@@ -406,12 +395,6 @@ const StoreFrontContentEnhance = compose(
       }
     }
   })
-  // graphql<Data>(getSingleTeamStore, {
-  //   options: ({ teamStoreId, passCode }: OwnProps) => ({
-  //     fetchPolicy: 'network-only',
-  //     variables: { teamStoreId, passCode }
-  //   })
-  // })
 )(StoreFrontContent)
 
 export default StoreFrontContentEnhance
