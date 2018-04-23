@@ -13,7 +13,6 @@ import { QueryProps } from '../../types/common'
 import { Container } from './styledComponents'
 import TeamsLayout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-// import TeamPassCode from '../../components/TeamPassCode'
 import StoreFrontContent from '../../components/StoreFrontContent'
 
 interface Params extends QueryProps {
