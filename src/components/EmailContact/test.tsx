@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import EmailContact from './index'
+import { EmailContact } from './index'
 
 describe('<EmailContact />', () => {
   test('renders without exploding', () => {
@@ -12,6 +12,10 @@ describe('<EmailContact />', () => {
     const setEmailMessageAction = (message: string) => {}
     const emailContact = ''
     const emailMessage = ''
+    const teamStoreId = ''
+    const sendMessageLoading = false
+    const setSendMessageLoading = (loading: boolean) => {}
+    const contactManagerMutation = (variables: any) => {}
     const div = document.createElement('div')
     ReactDOM.render(
       <EmailContact
@@ -22,6 +26,10 @@ describe('<EmailContact />', () => {
         onSetMesage={setEmailMessageAction}
         emailContact={emailContact}
         emailMessage={emailMessage}
+        teamStoreId={teamStoreId}
+        sendMessageLoading={sendMessageLoading}
+        setSendMessageLoading={setSendMessageLoading}
+        contactManagerMutation={contactManagerMutation}
       />,
       div
     )

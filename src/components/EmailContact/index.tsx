@@ -33,7 +33,7 @@ interface Props {
   sendMessageLoading: boolean
 }
 
-class EmailContact extends React.Component<Props, {}> {
+export class EmailContact extends React.Component<Props, {}> {
   handleCancel = () => {
     const { requestClose } = this.props
     requestClose()
