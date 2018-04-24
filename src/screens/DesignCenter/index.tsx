@@ -2,7 +2,7 @@
  * DesignCenter Screen - Created by david on 23/02/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
@@ -23,6 +23,7 @@ import SaveDesign from '../../components/SaveDesign'
 import { Container, StyledTitle } from './styledComponents'
 import { Palette } from '../../types/common'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
+import messages from './messages'
 
 interface Change {
   type: string
@@ -268,7 +269,7 @@ export class DesignCenter extends React.Component<Props, {}> {
           {currentTab === 2 ? (
             <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
               <StyledTitle onClick={this.toggleBottomSheet}>
-                Inspiration
+                <FormattedMessage {...messages.inspirationTtitle} />
               </StyledTitle>
               <DesignCenterInspiration
                 {...{ productId }}
