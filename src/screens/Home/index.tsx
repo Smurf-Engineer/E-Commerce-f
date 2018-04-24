@@ -30,6 +30,8 @@ import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
+import DesignCenterInspiration from '../../components/DesignCenterInspiration'
+
 interface Props extends RouteComponentProps<any> {
   someKey?: string
   productId: number
@@ -52,7 +54,11 @@ export class Home extends React.Component<Props, {}> {
   private stepInput: any
 
   componentDidMount() {
-    const { dispatch, match: { params }, location: { search } } = this.props
+    const {
+      dispatch,
+      match: { params },
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     if (params && params.region && !isEmpty(queryParams)) {
       dispatch(
@@ -145,6 +151,11 @@ export class Home extends React.Component<Props, {}> {
           </div>
           <ImagesGrid {...{ fakeWidth }} />
           <YotpoHome />
+          <DesignCenterInspiration
+            onPressSeeAll={() => {}}
+            onPressCustomize={() => {}}
+            onPressQuickView={() => {}}
+          />
         </Container>
       </Layout>
     )
