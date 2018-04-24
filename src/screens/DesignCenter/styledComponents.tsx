@@ -10,3 +10,22 @@ export const Container = styled.div`
 export const Text = styled.div`
   color: #fff;
 `
+
+export const StyledTitle = styled.div`
+  background-color: #fff;
+  padding: 16px 0;
+  box-sizing: border-box;
+  font-family: Avenir Next;
+  color: black;
+  min-height: 64px;
+  font-size: 24px;
+  text-align: left;
+  flex: 1;
+  margin-left: 15px;
+
+  color: #5f6062;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+`

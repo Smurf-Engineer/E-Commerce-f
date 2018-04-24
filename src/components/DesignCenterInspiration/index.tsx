@@ -4,9 +4,12 @@
 import * as React from 'react'
 import Spin from 'antd/lib/spin'
 import { compose, graphql } from 'react-apollo'
-import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
-import { Container, AllButton, ContainerLoading } from './styledComponents'
+import {
+  Container,
+  ContainerLoading,
+  FooterThumbnailInspiration
+} from './styledComponents'
 import { DesignResultType, QueryProps, Filter } from '../../types/common'
 import { desginsQuery } from './data'
 
@@ -56,36 +59,27 @@ export const DesignCenterInspiration = ({
         key={index}
         id={shortId}
         yotpoId={product.yotpoId}
-        footer={<div />}
         labelButton="ADD TO CART"
         isTopProduct={product.isTopProduct}
         onPressCustomize={(idd: string) => {}}
         onPressQuickView={(idi: number, yotpoId: string) => {}}
         image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
         isStoreThumbnail={true}
+        footer={<FooterThumbnailInspiration>{name}</FooterThumbnailInspiration>}
       />
     )
   })
-  return (
-    <Container {...{ width }}>
-      {list}
-      <AllButton>
-        <SeeAllButton onClick={onPressSeeAll} />
-      </AllButton>
-    </Container>
-  )
+  return <Container>{list}</Container>
 }
 
 type OwnProps = {
-  genderFilter?: Filter
-  category?: Filter
-  sportFilter?: Filter
+  productId?: number
 }
 
 const DesignCenterInspirationEnhance = compose(
   graphql<Data>(desginsQuery, {
-    options: ({ genderFilter, category, sportFilter }: OwnProps) => ({
-      variables: {}
+    options: ({ productId }: OwnProps) => ({
+      variables: { productId }
     })
   })
 )(DesignCenterInspiration)

@@ -7,12 +7,22 @@ interface PropsContainer {
   width: string
 }
 
+export const ParentContainer = styled.div`
+  width: 100%;
+  height: 300px;
+  background-color: #fff;
+  margin-top: 20px;
+`
+
 export const Container = styled.div`
-  width: ${({ width }: PropsContainer) => width};
+  width: 100%;
+  height: 300px;
   display: flex;
   flex-direction: row;
   overflow: auto;
   white-space: nowrap;
+  background-color: #fff;
+  align-items: center;
 `
 
 export const ContainerLoading = styled.div`
@@ -21,6 +31,27 @@ export const ContainerLoading = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+`
+
+export const Title = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  margin-left: 15px;
+  padding-top: 20px;
+`
+
+export const FooterThumbnailInspiration = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  text-align: center;
 `
 
 export const AllButton = styled.div`

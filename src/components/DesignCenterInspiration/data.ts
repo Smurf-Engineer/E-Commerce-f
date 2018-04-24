@@ -4,8 +4,8 @@
 import gql from 'graphql-tag'
 
 export const desginsQuery = gql`
-  query GetDesigns {
-    designs: myDesigns {
+  query inspirationDesigns($productId: Int!) {
+    designs: inspirationDesigns(productId: $productId) {
       fullCount
       designs {
         id
