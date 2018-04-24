@@ -22,12 +22,12 @@ interface Props {
   setPassCode: (passCode: string) => void
 }
 
-// interface StateProps {
-//   passCode: string
-// }
+interface StateProps {
+  passCode: string
+}
 
 class TeamPassCode extends React.Component<Props, {}> {
-  state = {
+  state: StateProps = {
     passCode: ''
   }
 

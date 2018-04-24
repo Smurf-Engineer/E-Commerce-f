@@ -67,7 +67,6 @@ interface Props {
   openShare: boolean
   teamStoreId: string
   openEmailContact: boolean
-  // passCode: string
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
