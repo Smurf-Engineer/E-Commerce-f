@@ -6,7 +6,11 @@ import {
   DEFAULT_ACTION,
   OPEN_SHARE_MODAL,
   OPEN_PASS_CODE,
-  SET_PASS_CODE
+  SET_PASS_CODE,
+  OPEN_EMAIL_CONTACT,
+  SET_EMAIL_CONTACT,
+  SET_EMAIL_MESSAGE,
+  SEND_MESSAGE_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -14,7 +18,11 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   passCode: '',
   openShare: false,
-  openPassCode: false
+  openPassCode: false,
+  openEmailContact: false,
+  sendMessageLoading: false,
+  emailContact: '',
+  emailMessage: ''
 })
 
 const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
@@ -28,8 +36,16 @@ const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
       })
     case OPEN_PASS_CODE:
       return state.set('openPassCode', action.open)
+    case OPEN_EMAIL_CONTACT:
+      return state.set('openEmailContact', action.open)
     case SET_PASS_CODE:
       return state.merge({ passCode: action.param })
+    case SET_EMAIL_CONTACT:
+      return state.set('emailContact', action.param)
+    case SET_EMAIL_MESSAGE:
+      return state.set('emailMessage', action.param)
+    case SEND_MESSAGE_LOADING:
+      return state.set('sendMessageLoading', action.loading)
     default:
       return state
   }
