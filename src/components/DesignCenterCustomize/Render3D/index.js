@@ -305,6 +305,10 @@ class Render3D extends PureComponent {
           /* Back pocket */
           object.children[22].material = backPocketMaterial
 
+          console.log('------------------------------------')
+          console.log(object)
+          console.log('------------------------------------')
+
           /* Object Config */
           object.position.y = -30
           object.name = 'jersey'
@@ -347,8 +351,8 @@ class Render3D extends PureComponent {
     ctx.font = fontStr
     ctx.fillStyle = color || 'black'
     ctx.fillText(text, 0, size)
-    const tex = new THREE.Texture(canvas)
-    tex.needsUpdate = true
+    const tex = new THREE.CanvasTexture(canvas)
+    // tex.needsUpdate = true
 
     return tex
   }
