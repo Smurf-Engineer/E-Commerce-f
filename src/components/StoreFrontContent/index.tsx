@@ -5,6 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import message from 'antd/lib/message'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
 import {
@@ -145,14 +146,24 @@ export class StoreFrontContent extends React.Component<Props, {}> {
       setPassCodeAction
     } = this.props
 
-    const openModal =
-      getTeamStore && (getTeamStore.id === -1 || getTeamStore.id === -2)
-
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
         error.message ||
         null
       : null
+
+    const openModal =
+      getTeamStore &&
+      (getTeamStore.id === -1 || getTeamStore.id === -2) &&
+      !errorMessage
+
+    if (getTeamStore && !errorMessage) {
+      if (getTeamStore.id === -1) {
+        message.error(formatMessage(messages.passcodeNeeded))
+      } else if (getTeamStore.id === -2) {
+        message.error(formatMessage(messages.invalidPass))
+      }
+    }
 
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
@@ -166,6 +177,7 @@ export class StoreFrontContent extends React.Component<Props, {}> {
       'delivery_date.dayOrdinal',
       '0'
     )
+    const ownerName = get(getTeamStore, 'owner_name', null)
     const cutOffMonth = get(getTeamStore, 'cutoff_date.month', 'month')
     const deliveryMonth = get(getTeamStore, 'delivery_date.month', 'month')
     const items = getTeamStore ? getTeamStore.items || [] : []
@@ -364,6 +376,7 @@ export class StoreFrontContent extends React.Component<Props, {}> {
           emailMessage={emailMessage}
           sendMessageLoading={sendMessageLoading}
           setSendMessageLoading={sendMessageLoadingAction}
+          ownerName={ownerName}
         />
 
         <TeamPassCode
@@ -386,7 +399,7 @@ const StoreFrontContentEnhance = compose(
   graphql<Data>(getSingleTeamStore, {
     options: ({ teamStoreId, passCode }: OwnProps) => {
       return {
-        fetchPolicy: 'always',
+        fetchPolicy: 'network-only',
         variables: {
           teamStoreId,
           passCode

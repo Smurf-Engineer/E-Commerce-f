@@ -83,5 +83,9 @@ export default defineMessages({
   invalidPass: {
     id: 'screen.StoreFrontContent.invalidPass',
     defaultMessage: 'Invalid passcode value.'
+  },
+  passcodeNeeded: {
+    id: 'screen.StoreFrontContent.passcodeNeeded',
+    defaultMessage: 'Passcode needed.'
   }
 })
