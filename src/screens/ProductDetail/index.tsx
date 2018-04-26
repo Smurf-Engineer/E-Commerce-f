@@ -10,6 +10,7 @@ import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import map from 'lodash/map'
+import findIndex from 'lodash/findIndex'
 import Message from 'antd/lib/message'
 // import AnimateHeight from 'react-animate-height'
 import * as productDetailActions from './actions'
@@ -135,7 +136,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const isRetail =
       get(product, 'retailMen', false) && get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
-    const images = imagesArray[0]
+    // const images = imagesArray[0]
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
     const maleGender = get(genders, '0.gender', '')
@@ -146,6 +147,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
     const fitStyles = get(product, 'fitStyles', [])
+
+    const {
+      location: { search }
+    } = this.props
+    const queryParams = queryString.parse(search)
+
+    const yotpoId = queryParams.yotpoId || ''
+
+    const genderId = queryParams.gender || 0
+    const genderIndex = findIndex(imagesArray, {
+      genderId: parseInt(genderId, 10)
+    })
+
+    const images = imagesArray[genderIndex] || imagesArray[0]
 
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
@@ -292,11 +307,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </BuyNowOptions>
     )
 
-    const { location: { search } } = this.props
-    const queryParams = queryString.parse(search)
-
-    const yotpoId = queryParams.yotpoId || ''
-
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -383,19 +393,25 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedGenderAction } = this.props
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     setSelectedGenderAction(id)
   }
 
   handleSelectedSize = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedSizeAction } = this.props
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     setSelectedSizeAction(parseInt(id, 10))
   }
 
   handleSelectedFit = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedFitAction } = this.props
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     setSelectedFitAction(parseInt(id, 10))
   }
 
@@ -405,7 +421,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   gotoCustomize = () => {
-    const { history, data: { product } } = this.props
+    const {
+      history,
+      data: { product }
+    } = this.props
     const productId = get(product, 'id')
     history.push(`/design-center?id=${productId}`)
   }
@@ -416,7 +435,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   addtoCart = () => {
-    const { data: { product: { name } } } = this.props
+    const {
+      data: {
+        product: { name }
+      }
+    } = this.props
     Message.success(`${name} has been succesfully added to cart!`)
   }
 
@@ -443,7 +466,9 @@ const ProductDetailEnhance = compose(
   injectIntl,
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
+      const {
+        location: { search }
+      } = ownprops
       const queryParams = queryString.parse(search)
       return {
         variables: {

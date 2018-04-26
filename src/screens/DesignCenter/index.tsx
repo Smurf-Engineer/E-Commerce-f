@@ -20,7 +20,7 @@ import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
 import SaveDesign from '../../components/SaveDesign'
-import { Container, StyledTitle } from './styledComponents'
+import { Container, StyledTitle, BottomSheetWrapper } from './styledComponents'
 import { Palette } from '../../types/common'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
@@ -267,17 +267,19 @@ export class DesignCenter extends React.Component<Props, {}> {
             saveDesignLoading={saveDesignLoading}
           />
           {currentTab === 2 ? (
-            <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
-              <StyledTitle onClick={this.toggleBottomSheet}>
-                <FormattedMessage {...messages.inspirationTtitle} />
-              </StyledTitle>
-              <DesignCenterInspiration
-                {...{ productId }}
-                onPressSeeAll={() => {}}
-                onPressCustomize={() => {}}
-                onPressQuickView={() => {}}
-              />
-            </SwipeableBottomSheet>
+            <BottomSheetWrapper>
+              <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
+                <StyledTitle onClick={this.toggleBottomSheet}>
+                  <FormattedMessage {...messages.inspirationTtitle} />
+                </StyledTitle>
+                <DesignCenterInspiration
+                  {...{ productId }}
+                  onPressSeeAll={() => {}}
+                  onPressCustomize={() => {}}
+                  onPressQuickView={() => {}}
+                />
+              </SwipeableBottomSheet>
+            </BottomSheetWrapper>
           ) : null}
         </Container>
       </Layout>
