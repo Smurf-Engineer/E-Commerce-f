@@ -7,6 +7,10 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 24px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 
 export const Label = styled.div`
@@ -16,6 +20,10 @@ export const Label = styled.div`
   font-size: 14px;
   line-height: 19px;
   margin-bottom: 6px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 0;
+  }
 `
 
 export const Required = styled.div`
@@ -28,6 +36,11 @@ export const Required = styled.div`
 
 export const Column = styled.div`
   width: 32%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 24px;
+  }
 `
 
 export const Error = styled.div`

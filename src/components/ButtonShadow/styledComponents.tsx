@@ -23,6 +23,10 @@ export const Container = styled.div`
         ? '0 1px 4px 0 rgba(0, 0, 0, 0.07)'
         : '0 1px 4px rgba(0, 0, 0, 0.07), 0 1px 1px rgba(0, 0, 0, 0.1)'};
   }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 20%;
+  }
 `
 
 export const Text = styled.div`

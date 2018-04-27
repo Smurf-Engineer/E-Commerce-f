@@ -134,7 +134,9 @@ export class StoreFront extends React.Component<Props, {}> {
   }
 
   handlShareClick = () => {
-    const { data: { getTeamStore } } = this.props
+    const {
+      data: { getTeamStore }
+    } = this.props
 
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
 
@@ -142,7 +144,11 @@ export class StoreFront extends React.Component<Props, {}> {
   }
 
   handleIngressPassCode = async () => {
-    const { location: { search }, passCode, data } = this.props
+    const {
+      location: { search },
+      passCode,
+      data
+    } = this.props
     const queryParams = queryString.parse(search)
 
     // TODO: remove if not needed
@@ -208,7 +214,6 @@ export class StoreFront extends React.Component<Props, {}> {
     const designs = items.map(x => {
       return x.design
     })
-
     // TODO: remove when component changed
     const marks = {
       1: '1',
@@ -221,7 +226,7 @@ export class StoreFront extends React.Component<Props, {}> {
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
         <Container>
-          {teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
+          {!teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
           <HeadersContainer>
             <Content>
               <HeadersContainer>
@@ -364,7 +369,9 @@ const StoreFrontEnhance = compose(
   injectIntl,
   graphql<Data>(getSingleTeamStore, {
     options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
+      const {
+        location: { search }
+      } = ownprops
       const queryParams = queryString.parse(search)
       return {
         variables: {

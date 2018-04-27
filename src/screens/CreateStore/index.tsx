@@ -3,9 +3,10 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
+import { compose, withApollo, graphql } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import queryString from 'query-string'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
@@ -19,7 +20,7 @@ import SwitchWithLabel from '../../components/SwitchWithLabel'
 import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
 import TeamSizes from '../../components/TeamSizes'
-import { createStoreMutation } from './data'
+import { createStoreMutation, GetTeamStoreQuery } from './data'
 import { DesignType, SelectedItem } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -35,11 +36,12 @@ import {
   RowButtons,
   RowSwitch,
   ButtonDelete,
-  buttonStyle,
-  buttonBuildStyle,
+  AddItem,
+  ButtonBuildStyle,
   BannerTitleContainer,
   OptionalLabel
 } from './styledComponents'
+import config from '../../config/index'
 
 interface Props extends RouteComponentProps<any> {
   teamSizeId: number
@@ -58,6 +60,7 @@ interface Props extends RouteComponentProps<any> {
   teamSizeRange: string
   createStore: any
   loading: boolean
+  client: any
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -78,6 +81,7 @@ interface Props extends RouteComponentProps<any> {
   setItemVisibleAction: (index: number, visible: boolean) => void
   setLoadingAction: (loading: boolean) => void
   clearStoreAction: () => void
+  moveRowAction: (index: number, row: any) => void
 }
 
 interface StateProps {
@@ -182,10 +186,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
       items: itemsSelected,
       setLoadingAction,
       clearStoreAction,
-      history
+      history,
+      teamSizeId,
+      onDemand
     } = this.props
     const { file } = this.state
-
     const validForm = this.validateForm(
       name,
       startDate,
@@ -201,21 +206,41 @@ export class CreateStore extends React.Component<Props, StateProps> {
     setLoadingAction(true)
     const items = itemsSelected.map(({ id, visible, shortId }) => ({
       design_id: shortId,
-      team_store_id: 1, // TODO: Delete after update mutation
-      expected_quantity: 1, // TODO: Delete after update mutation
       visible: !!visible
     }))
     try {
+      // TODO refactor, pass image Upload to his own method
+      const formData = new FormData()
+
+      formData.append('file', file as any)
+      const user = JSON.parse(localStorage.getItem('user') || '')
+
+      const uploadResp = await fetch(`${config.graphqlUriBase}uploadBanner`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+
+          Authorization: `Bearer ${user.token}`
+        },
+        body: formData
+      })
+      const banner = await uploadResp.json()
+
       const teamStore = {
         name,
         cutoffDate: startDate,
         deliveryDate: endDate,
         private: privateStore,
         passcode: passCode,
-        items
+        items,
+        teamsizeId: teamSizeId,
+        demandMode: onDemand,
+        banner: banner.image
       }
-      const { data: { store } } = await createStore({
-        variables: { teamStore, file }
+      const {
+        data: { store }
+      } = await createStore({
+        variables: { teamStore }
       })
       const { shortId } = store as any
       history.push(`/store-front?storeId=${shortId}`)
@@ -247,16 +272,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateStartDateAction,
       updateEndDateAction,
       updatePrivateAction,
-      updateOnDemandAction,
+      // updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
       deleteItemSelectedAction,
       setItemsAddAction,
+      moveRowAction,
       name,
       startDateMoment,
       endDateMoment,
       privateStore,
-      onDemand,
+      // onDemand,
       passCode,
       selectedItems,
       items,
@@ -270,7 +296,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
     ) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
-    console.log('CREATE STORE ', hasError)
     const bannerComponent = imagePreviewUrl ? (
       <PreviewImage src={imagePreviewUrl} />
     ) : (
@@ -324,15 +349,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
           <LockerMessage>
             <FormattedMessage {...messages.storeItemsMessage} />
           </LockerMessage>
-          <Button
+          <AddItem
             type="primary"
             ghost={true}
             size="large"
-            style={buttonStyle}
             onClick={this.handleOnAddItem}
           >
             {`+ ${formatMessage(messages.addItem)}`}
-          </Button>
+          </AddItem>
           <Subtitle>
             <FormattedMessage {...messages.stock} />
           </Subtitle>
@@ -341,6 +365,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             onPressDelete={this.handleOnDeleteItem}
             onPressQuickView={this.handleOnPressQuickView}
             onPressVisible={this.handleOnPressVisible}
+            onMoveRow={moveRowAction}
           />
           <Row>
             <BannerTitleContainer>
@@ -379,22 +404,21 @@ export class CreateStore extends React.Component<Props, StateProps> {
               message={formatMessage(messages.privateMessage)}
               errorLabel={formatMessage(messages.requiredFieldLabel)}
             />
-            <SwitchWithLabel
+            {/* <SwitchWithLabel
               checked={onDemand}
               onChange={updateOnDemandAction}
               label={formatMessage(messages.onDemandLabel)}
               message={formatMessage(messages.onDemandMessage)}
-            />
+            />*/}
           </RowSwitch>
-          <Button
+          <ButtonBuildStyle
             {...{ loading }}
             type="primary"
             size="large"
-            style={buttonBuildStyle}
             onClick={this.handleBuildTeamStore}
           >
             {formatMessage(messages.buttonBuild)}
-          </Button>
+          </ButtonBuildStyle>
           <LockerModal
             {...{ selectedItems, tableItems }}
             visible={openLocker}
@@ -411,9 +435,28 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
 const mapStateToProps = (state: any) => state.get('createStore').toJS()
 
+type OwnProps = {
+  location?: any
+}
+
 const CreateStoreEnhance = compose(
   injectIntl,
   withApollo,
+  graphql(GetTeamStoreQuery, {
+    options: (ownprops: OwnProps) => {
+      const {
+        location: { search }
+      } = ownprops
+      const queryParams = queryString.parse(search)
+      return {
+        fetchPolicy: 'network-only',
+        skip: !queryParams.storeId,
+        variables: {
+          teamstoreId: queryParams ? queryParams.storeId : null
+        }
+      }
+    }
+  }),
   createStoreMutation,
   connect(mapStateToProps, { ...createStoreActions })
 )(CreateStore)

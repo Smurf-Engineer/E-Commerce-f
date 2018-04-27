@@ -6,6 +6,11 @@ import styled from 'styled-components'
 export const Container = styled.div`
   width: 25%;
   margin-right: 10%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    margin-right: 0;
+  }
 `
 
 export const Row = styled.div`
