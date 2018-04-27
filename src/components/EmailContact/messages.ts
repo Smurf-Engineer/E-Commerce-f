@@ -24,5 +24,9 @@ export default defineMessages({
   nameLabel: {
     id: 'components.EmailContact.nameLabel',
     defaultMessage: 'Write message to '
+  },
+  invalidMessage: {
+    id: 'components.EmailContact.invalidMessage',
+    defaultMessage: 'Invalid email message.'
   }
 })

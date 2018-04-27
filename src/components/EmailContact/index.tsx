@@ -31,6 +31,7 @@ interface Props {
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
+  ownerName: string
 }
 
 export class EmailContact extends React.Component<Props, {}> {
@@ -63,8 +64,15 @@ export class EmailContact extends React.Component<Props, {}> {
       emailMessage,
       requestClose,
       teamStoreId,
-      setSendMessageLoading
+      setSendMessageLoading,
+      formatMessage
     } = this.props
+
+    if (!emailMessage) {
+      message.error(formatMessage(messages.invalidMessage))
+      return
+    }
+
     try {
       setSendMessageLoading(true)
       const response = await contactManagerMutation({
@@ -94,7 +102,13 @@ export class EmailContact extends React.Component<Props, {}> {
   }
 
   render() {
-    const { open, formatMessage, emailMessage, sendMessageLoading } = this.props
+    const {
+      open,
+      formatMessage,
+      emailMessage,
+      sendMessageLoading,
+      ownerName
+    } = this.props
 
     return (
       <Container>
@@ -108,7 +122,9 @@ export class EmailContact extends React.Component<Props, {}> {
           onCancel={this.handleCancel}
         >
           <Title>{formatMessage(messages.title)}</Title>
-          <TitleLabel>{formatMessage(messages.nameLabel)}</TitleLabel>
+          <TitleLabel>{`${formatMessage(
+            messages.nameLabel
+          )} ${ownerName}`}</TitleLabel>
           <TextArea
             id="emailMessage"
             rows={7}

@@ -12,6 +12,7 @@ export const getSingleTeamStore = gql`
       banner
       private
       owner
+      owner_name
       cutoff_date {
         day
         dayOrdinal

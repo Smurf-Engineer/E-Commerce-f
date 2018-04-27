@@ -29,3 +29,9 @@ export const StyledTitle = styled.div`
   letter-spacing: 0.23px;
   line-height: 25px;
 `
+
+export const BottomSheetWrapper = styled.div`
+  .react-swipeable-view-container {
+    box-shadow: rgba(0, 0, 0, 0.157) 0px -1px 5px !important;
+  }
+`

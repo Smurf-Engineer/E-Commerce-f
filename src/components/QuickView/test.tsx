@@ -16,7 +16,8 @@ describe('<QuickView />', () => {
             front: '',
             back: '',
             left: '',
-            right: ''
+            right: '',
+            genderId: 0
           }
         ],
         type: '',

@@ -27,6 +27,7 @@ interface Props {
   isTopProduct: boolean
   collections?: number
   footer?: React.ReactNode
+  gender?: number
   hideCustomButton?: boolean
   hideQuickView?: boolean
   yotpoId: string
@@ -78,14 +79,18 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { id, yotpoId, history, teamStoreShortId } = this.props
+    const { id, yotpoId, history, teamStoreShortId, gender } = this.props
 
     if (teamStoreShortId) {
       history.push(
         `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
       )
     } else {
-      history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+      history.push(
+        `/product?id=${id}&yotpoId=${yotpoId}${
+          gender ? `&gender=${gender}` : ''
+        }`
+      )
     }
   }
 
