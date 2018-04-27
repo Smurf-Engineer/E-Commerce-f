@@ -49,6 +49,7 @@ export type ImageType = {
   back: string
   left: string
   right: string
+  genderId: number
 }
 
 export type PriceRange = {

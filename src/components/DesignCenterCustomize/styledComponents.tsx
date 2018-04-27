@@ -11,3 +11,15 @@ export const Container = styled.div`
 export const Text = styled.div`
   color: #fff;
 `
+
+export const StyledTitle = styled.div`
+  background-color: #fff;
+  padding: 16px 0;
+  box-sizing: border-box;
+  color: black;
+  min-height: 64px;
+  font-size: 24px;
+  text-align: left;
+  flex: 1;
+  margin-left: 15px;
+`

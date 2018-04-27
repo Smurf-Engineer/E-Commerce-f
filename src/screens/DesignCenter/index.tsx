@@ -2,12 +2,13 @@
  * DesignCenter Screen - Created by david on 23/02/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
+import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -19,8 +20,10 @@ import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
 import SaveDesign from '../../components/SaveDesign'
-import { Container } from './styledComponents'
+import { Container, StyledTitle, BottomSheetWrapper } from './styledComponents'
 import { Palette } from '../../types/common'
+import DesignCenterInspiration from '../../components/DesignCenterInspiration'
+import messages from './messages'
 
 interface Change {
   type: string
@@ -75,6 +78,18 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
+  state = {
+    open: false
+  }
+
+  openBottomSheet(open: boolean) {
+    this.setState({ open })
+  }
+
+  toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
+    this.openBottomSheet(!this.state.open)
+  }
+
   componentWillUnmount() {
     const { clearStoreAction } = this.props
     clearStoreAction()
@@ -87,7 +102,9 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -151,7 +168,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       saveDesignLoadingAction
     } = this.props
 
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
 
@@ -247,6 +266,21 @@ export class DesignCenter extends React.Component<Props, {}> {
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />
+          {currentTab === 2 ? (
+            <BottomSheetWrapper>
+              <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
+                <StyledTitle onClick={this.toggleBottomSheet}>
+                  <FormattedMessage {...messages.inspirationTtitle} />
+                </StyledTitle>
+                <DesignCenterInspiration
+                  {...{ productId }}
+                  onPressSeeAll={() => {}}
+                  onPressCustomize={() => {}}
+                  onPressQuickView={() => {}}
+                />
+              </SwipeableBottomSheet>
+            </BottomSheetWrapper>
+          ) : null}
         </Container>
       </Layout>
     )

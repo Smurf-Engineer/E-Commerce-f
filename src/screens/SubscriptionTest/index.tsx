@@ -33,20 +33,23 @@ interface Props {
 export class SubscriptionTest extends React.Component<Props, {}> {
   componentWillMount() {
     const isBrowser = typeof window !== 'undefined'
-    const { data: { subscribeToMore } } = this.props
+    const {
+      data: { subscribeToMore }
+    } = this.props
     if (isBrowser) {
       subscribeToMore({
         document: commentsSubscription,
         updateQuery: (prev: any, { subscriptionData }: any) => {
-          const { data } = subscriptionData
-          console.log(data)
+          // const { data } = subscriptionData
           return prev
         }
       })
     }
   }
   render() {
-    const { data: { categories, loading, error } } = this.props
+    const {
+      data: { categories, loading, error }
+    } = this.props
 
     if (loading) {
       return <div>Loading...</div>

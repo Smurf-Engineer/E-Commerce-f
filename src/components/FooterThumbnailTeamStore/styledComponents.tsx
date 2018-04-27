@@ -56,6 +56,30 @@ export const Label = styled.div`
   text-align: right;
 `
 
+export const PriceLabel = styled.div`
+  user-select: none;
+  color: #5f6062;
+  padding 4px 0px;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  line-height: 16px;
+  text-align: right;
+  margin-left: 5px;
+  font-weight: bold;
+`
+
+export const RedPriceLabel = styled.div`
+  user-select: none;
+  color: #E61737;
+  padding 4px 0px;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  line-height: 16px;
+  text-align: right;
+  margin-left: 5px;
+  font-weight: bold;
+`
+
 export const Price = styled.div`
   user-select: none;
   color: #5f6062;
@@ -78,4 +102,11 @@ export const Private = styled.span`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
+`
+
+export const PricesContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: right;
+  justify-content: flex-end;
 `

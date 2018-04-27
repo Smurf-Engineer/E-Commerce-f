@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by gustavomedina on 11/04/18.
+ * Styled Components - Created by gustavomedina on 18/04/18.
  */
 import styled from 'styled-components'
 import Slider from 'antd/lib/slider'
@@ -129,7 +129,20 @@ export const StyledSlider = styled(Slider)`
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 40%;
+  width: 60%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 80%;
+  }
+`
+
+export const SliderWrapper = styled.div`
+  .ant-slider-track {
+    background-color: #91d5ff !important;
+  }
+  .ant-slider-handle {
+    border-color: #4a90e2 !important;
+  }
 `
 
 export const ButtonWrapper = styled.div`
@@ -249,3 +262,9 @@ export const ListContainer = styled.div`
   padding-right: 32px;
   padding-left: 32px;
 `
+export const sliderStyle = {
+  fontFamily: 'Avenir Next',
+  fontSize: '12px',
+  letterSpacing: '0.15px',
+  lineHeight: '16px'
+}

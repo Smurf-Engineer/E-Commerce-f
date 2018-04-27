@@ -2,10 +2,19 @@
  * FooterThumbnailTeamStore Component - Created by gustavomedina on 12/04/18.
  */
 import * as React from 'react'
-// import { FormattedMessage } from 'react-intl'
+import { FormattedMessage } from 'react-intl'
 import Progress from 'antd/lib/progress'
-// import messages from './messages'
-import { Footer, Type, Description, Bottom, Label } from './styledComponents'
+import messages from './messages'
+import {
+  Footer,
+  Type,
+  Description,
+  Bottom,
+  Label,
+  PricesContainer,
+  PriceLabel,
+  RedPriceLabel
+} from './styledComponents'
 
 interface Props {
   id: number
@@ -17,8 +26,8 @@ interface Props {
 }
 
 // TODO: get from query
-const estimatedPrice = 'Estimate price $63'
-const currentPrice = 'Current price $119'
+const estimatedPrice = '$63'
+const currentPrice = '$119'
 
 const FooterThumbnailTeamStore = ({
   id,
@@ -32,8 +41,18 @@ const FooterThumbnailTeamStore = ({
     <Footer>
       <Type>{name}</Type>
       <Description>{description}</Description>
-      <Label>{estimatedPrice}</Label>
-      <Label>{currentPrice}</Label>
+      <PricesContainer>
+        <Label>
+          <FormattedMessage {...messages.estimatedPrice} />
+        </Label>
+        <PriceLabel>{estimatedPrice}</PriceLabel>
+      </PricesContainer>
+      <PricesContainer>
+        <Label>
+          <FormattedMessage {...messages.currentPrice} />
+        </Label>
+        <RedPriceLabel>{currentPrice}</RedPriceLabel>
+      </PricesContainer>
       <Bottom>
         <Progress percent={30} />
       </Bottom>

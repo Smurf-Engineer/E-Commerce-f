@@ -48,6 +48,8 @@ export const ProductHorizontalList = ({
     return <div>Error...</div>
   }
 
+  const genderId = genderFilter ? genderFilter.id : null
+
   const products: ProductType = data.products || ({} as ProductType)
 
   const list = products.products.map(
@@ -81,6 +83,7 @@ export const ProductHorizontalList = ({
             yotpoId
           }}
           images={productImages}
+          gender={genderId}
         />
       )
     }

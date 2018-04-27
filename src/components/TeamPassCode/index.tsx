@@ -5,6 +5,8 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
+import { compose } from 'react-apollo'
+import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
@@ -14,42 +16,83 @@ import {
   ButtonWrapper,
   Button
 } from './styledComponents'
+import { getTeamStore } from './data'
 
 interface Props {
   open: boolean
-  passCode: string
+  teamStoreId: string
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
   setPassCode: (passCode: string) => void
-  handleIngressPassCode: () => void
+  getTeamStoreMutation: (variables: {}) => void
 }
 
-class TeamPassCode extends React.Component<Props, {}> {
+interface StateProps {
+  passCode: string
+}
+
+export class TeamPassCode extends React.Component<Props, {}> {
+  state: StateProps = {
+    passCode: ''
+  }
+
   handleCancel = () => {
     const { requestClose } = this.props
     requestClose()
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setPassCode } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
-    setPassCode(value)
+    this.setState({ passCode: value })
   }
 
   handleEnter = async (evt: React.MouseEvent<EventTarget>) => {
-    const { formatMessage, passCode, handleIngressPassCode } = this.props
+    const {
+      formatMessage,
+      requestClose,
+      setPassCode,
+      teamStoreId,
+      getTeamStoreMutation
+    } = this.props
+    const { passCode } = this.state
 
     if (!passCode) {
       message.error(formatMessage(messages.invalidNameMessage))
       return
     } else {
-      handleIngressPassCode()
+      try {
+        const response = await getTeamStoreMutation({
+          variables: { teamStoreId, passCode }
+        })
+        const data = get(response, 'data.getTeamStore', false)
+
+        if (data) {
+          if (data.id === -1) {
+            message.error(formatMessage(messages.passcodeNeeded))
+          } else if (data.id === -2) {
+            message.error(formatMessage(messages.invalidPass))
+          } else {
+            setPassCode(passCode)
+            requestClose()
+          }
+        }
+      } catch (error) {
+        const errorMessage =
+          (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
+          error.message
+        message.error(errorMessage)
+        console.error(error)
+      }
     }
   }
 
   render() {
-    const { open, passCode } = this.props
+    const { open } = this.props
+    const { passCode } = this.state
+
     return (
       <Container>
         <Modal
@@ -84,4 +127,5 @@ class TeamPassCode extends React.Component<Props, {}> {
   }
 }
 
-export default TeamPassCode
+const TeamPassCodeEnhance = compose(getTeamStore)(TeamPassCode)
+export default TeamPassCodeEnhance
