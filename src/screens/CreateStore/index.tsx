@@ -383,10 +383,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
                   showUploadList={false}
                   supportServerRender={true}
                 >
-                  <Button>Change</Button>
+                  <Button>{formatMessage(messages.changeLabel)}</Button>
                 </Upload>
                 <ButtonDelete onClick={this.handleOnDeleteImage}>
-                  Delete
+                  {formatMessage(messages.deleteLabel)}
                 </ButtonDelete>
               </RowButtons>
             )}

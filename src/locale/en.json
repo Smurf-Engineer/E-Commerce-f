@@ -221,5 +221,8 @@
   "components.LockerTable.target": "Target Price",
   "components.LockerTable.orders": "Current Orders",
   "components.LockerTable.current": "Current Price",
-  "components.LockerTable.visible": "Visible"
+  "components.LockerTable.visible": "Visible",
+  "components.StoreForm.requiredFieldLabel": "This field is required",
+  "components.StoreForm.changeLabel": "Change",
+  "componentes.StoreForm.deleteLabel": "Delete"
 }

@@ -92,5 +92,13 @@ export default defineMessages({
   requiredFieldLabel: {
     id: 'components.StoreForm.requiredFieldLabel',
     defaultMessage: 'This field is required'
+  },
+  changeLabel: {
+    id: 'components.StoreForm.changeLabel',
+    defaultMessage: 'Change'
+  },
+  deleteLabel: {
+    id: 'componentes.StoreForm.deleteLabel',
+    defaultMessage: 'Delete'
   }
 })
