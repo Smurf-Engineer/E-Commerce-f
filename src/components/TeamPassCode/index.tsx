@@ -31,7 +31,7 @@ interface StateProps {
   passCode: string
 }
 
-class TeamPassCode extends React.Component<Props, {}> {
+export class TeamPassCode extends React.Component<Props, {}> {
   state: StateProps = {
     passCode: ''
   }
@@ -80,7 +80,6 @@ class TeamPassCode extends React.Component<Props, {}> {
           }
         }
       } catch (error) {
-        // const errorMessage = error.graphQLErrors.map((x: any) => x.message)
         const errorMessage =
           (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
           error.message
