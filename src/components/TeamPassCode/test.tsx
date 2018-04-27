@@ -21,6 +21,7 @@ describe('<TeamPassCode />', () => {
           requestClose={closeModal}
           formatMessage={format}
           setPassCode={setPass}
+          teamStoreId={0}
         />
       </IntlProvider>,
       div

@@ -28,5 +28,9 @@ export default defineMessages({
   invalidMessage: {
     id: 'components.EmailContact.invalidMessage',
     defaultMessage: 'Invalid email message.'
+  },
+  storeManager: {
+    id: 'components.EmailContact.storeManager',
+    defaultMessage: 'store manager'
   }
 })

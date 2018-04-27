@@ -5,7 +5,6 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
-import message from 'antd/lib/message'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
 import {
@@ -67,6 +66,7 @@ interface Props {
   data: Data
   openShare: boolean
   teamStoreId: string
+  passCode?: string
   openEmailContact: boolean
   emailContact: string
   emailMessage: string
@@ -134,6 +134,8 @@ export class StoreFrontContent extends React.Component<Props, {}> {
   render() {
     const {
       data: { error, getTeamStore },
+      teamStoreId,
+      passCode,
       formatMessage,
       openShare,
       openEmailContact,
@@ -155,15 +157,8 @@ export class StoreFrontContent extends React.Component<Props, {}> {
     const openModal =
       getTeamStore &&
       (getTeamStore.id === -1 || getTeamStore.id === -2) &&
-      !errorMessage
-
-    if (getTeamStore && !errorMessage) {
-      if (getTeamStore.id === -1) {
-        message.error(formatMessage(messages.passcodeNeeded))
-      } else if (getTeamStore.id === -2) {
-        message.error(formatMessage(messages.invalidPass))
-      }
-    }
+      !errorMessage &&
+      !passCode
 
     const teamStoreShortId = get(getTeamStore, 'short_id', '')
     const teamStoreBanner = get(getTeamStore, 'banner', null)
@@ -384,6 +379,7 @@ export class StoreFrontContent extends React.Component<Props, {}> {
           requestClose={this.closePassCodeModal}
           formatMessage={formatMessage}
           setPassCode={setPassCodeAction}
+          teamStoreId={teamStoreId}
         />
       </Container>
     )
