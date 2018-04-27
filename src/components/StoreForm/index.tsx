@@ -2,6 +2,7 @@
  * StoreForm Component - Created by david on 09/04/18.
  */
 import * as React from 'react'
+import { compose } from 'react-apollo'
 import Input from 'antd/lib/input'
 import message from 'antd/lib/message'
 import DatePicker from 'antd/lib/date-picker'
@@ -14,15 +15,19 @@ import {
   Required,
   inputStyle
 } from './styledComponents'
+import { validateHolidayQuery } from './data'
+import messages from './messages'
 
 interface Props {
   hasError?: boolean
   name: string
   startDate?: Moment
   endDate?: Moment
+  validateHoliday: any
   onUpdateName: (name: string) => void
   onSelectStartDate: (dateMoment: Moment, date: string) => void
   onSelectEndDate: (dateMoment: Moment, date: string) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const StoreForm = ({
@@ -32,10 +37,14 @@ const StoreForm = ({
   onSelectEndDate,
   name,
   startDate,
-  endDate
+  endDate,
+  formatMessage,
+  validateHoliday
 }: Props) => {
   const handleUpdateName = (evnt: React.ChangeEvent<HTMLInputElement>) => {
-    const { target: { value } } = evnt
+    const {
+      target: { value }
+    } = evnt
 
     if (value.length > 15) {
       return
@@ -90,13 +99,28 @@ const StoreForm = ({
   const handleOnSelectStart = (date: Moment, dateString: string) =>
     onSelectStartDate(date, dateString)
 
-  const handleOnSelectEnd = (date: Moment, dateString: string) => {
-    // TODO: Validate for Federal Holiday
-    if (date && date.weekday() === 0) {
-      message.warning('Delivery date cannot be on a Sunday or Federal Holiday')
-      return
-    }
+  const handleOnSelectEnd = async (date: Moment, dateString: string) => {
+    if (date) {
+      const dateObj = {
+        day: parseInt(date.format('D'), 10),
+        month: parseInt(date.format('M'), 10),
+        year: parseInt(date.format('YYYY'), 10)
+      }
+      try {
+        const {
+          data: { isHoliday }
+        } = await validateHoliday({
+          variables: { date: dateObj }
+        })
 
+        if ((date && date.weekday() === 0) || isHoliday) {
+          message.warning(formatMessage(messages.deliveryErrorLabel))
+          return
+        }
+      } catch (error) {
+        message.error(formatMessage(messages.errorMsg))
+      }
+    }
     onSelectEndDate(date, dateString)
   }
 
@@ -104,7 +128,7 @@ const StoreForm = ({
     <Container>
       <Column>
         <Label>
-          Team Store Name <Required>*</Required>
+          {formatMessage(messages.teamStoreName)} <Required>*</Required>
         </Label>
         <Input
           value={name}
@@ -112,11 +136,12 @@ const StoreForm = ({
           size="large"
           onChange={handleUpdateName}
         />
-        {hasError && <Error>This field is required</Error>}
+        {hasError &&
+          !name && <Error>{formatMessage(messages.requiredFieldLabel)}</Error>}
       </Column>
       <Column>
         <Label>
-          Order Cut Off Date <Required>*</Required>
+          {formatMessage(messages.orderCutOffLabel)} <Required>*</Required>
         </Label>
         <DatePicker
           value={startDate}
@@ -126,10 +151,14 @@ const StoreForm = ({
           size="large"
           style={inputStyle}
         />
+        {hasError &&
+          !startDate && (
+            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+          )}
       </Column>
       <Column>
         <Label>
-          Desired Delivery Date <Required>*</Required>
+          {formatMessage(messages.desiredDeliveryLabel)} <Required>*</Required>
         </Label>
         <DatePicker
           value={endDate}
@@ -140,9 +169,14 @@ const StoreForm = ({
           size="large"
           style={inputStyle}
         />
+        {hasError &&
+          !endDate && (
+            <Error>{formatMessage(messages.requiredFieldLabel)}</Error>
+          )}
       </Column>
     </Container>
   )
 }
 
-export default StoreForm
+const StoreFormEnhance = compose(validateHolidayQuery)(StoreForm)
+export default StoreFormEnhance

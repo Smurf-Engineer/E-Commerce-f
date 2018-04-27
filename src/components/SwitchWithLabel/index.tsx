@@ -4,7 +4,14 @@
 import * as React from 'react'
 import Switch from 'antd/lib/switch'
 import Input from 'antd/lib/input'
-import { Container, Label, Message, Row, inputStyle } from './styledComponents'
+import {
+  Container,
+  Label,
+  Message,
+  Row,
+  inputStyle,
+  Error
+} from './styledComponents'
 
 interface Props {
   label: string
@@ -13,6 +20,8 @@ interface Props {
   checked: boolean
   width?: string
   withInput?: boolean
+  errorLabel?: string
+  hasError?: boolean
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
@@ -25,6 +34,8 @@ const SwitchWithLabel = ({
   withInput = false,
   passCode = '',
   width,
+  errorLabel,
+  hasError,
   updatePassCodeAction = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
@@ -54,6 +65,7 @@ const SwitchWithLabel = ({
           style={inputStyle}
         />
       )}
+      {hasError && (!passCode && checked) && <Error>{errorLabel}</Error>}
     </Container>
   )
 }

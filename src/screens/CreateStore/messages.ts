@@ -88,5 +88,17 @@ export default defineMessages({
   buttonSave: {
     id: 'screens.CreateStore.buttonSave',
     defaultMessage: 'Save Changes'
+  },
+  requiredFieldLabel: {
+    id: 'components.StoreForm.requiredFieldLabel',
+    defaultMessage: 'This field is required'
+  },
+  changeLabel: {
+    id: 'components.StoreForm.changeLabel',
+    defaultMessage: 'Change'
+  },
+  deleteLabel: {
+    id: 'componentes.StoreForm.deleteLabel',
+    defaultMessage: 'Delete'
   }
 })

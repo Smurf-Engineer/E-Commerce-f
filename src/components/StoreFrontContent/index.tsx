@@ -227,7 +227,7 @@ export class StoreFrontContent extends React.Component<Props, {}> {
 
     return (
       <Container>
-        {teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
+        {!teamStoreBanner ? <div /> : <ImageBanner src={teamStoreBanner} />}
         <HeadersContainer>
           <Content>
             <HeadersContainer>

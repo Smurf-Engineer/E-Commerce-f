@@ -5,6 +5,9 @@ import * as React from 'react'
 import messsages from './messages'
 import { Table, HeaderRow, Cell, Title } from './styledComponents'
 import findIndex from 'lodash/findIndex'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 import { DesignType, PriceRange } from '../../types/common'
 import Product from './ProductRow'
 
@@ -27,14 +30,25 @@ interface Props {
   items: DesignType[]
   teamSizeRange: string
   onPressDelete: (index: number) => void
-  onPressQuickView: (id: number, yotpoId: string) => void
+  onPressQuickView: (
+    id: number,
+    yotpoId: string,
+    hideSliderButtons?: boolean
+  ) => void
   onPressVisible: (index: number, checked: boolean) => void
+  onMoveRow: (index: number, hoverIndex: number, row: any) => void
 }
 
 class LockerTable extends React.PureComponent<Props, {}> {
   getTierPrice = (prices: PriceRange[], range = '2-5'): number => {
     const index = findIndex(prices, ({ quantity }) => quantity === range)
-    return prices[index] ? prices[index].price : 0
+    return index < 0 ? prices[prices.length - 1].price : prices[index].price
+  }
+
+  moveRow = (dragIndex: number, hoverIndex: number) => {
+    const { items, onMoveRow } = this.props
+    const dragRow = items[dragIndex]
+    onMoveRow(dragIndex, hoverIndex, dragRow)
   }
 
   render() {
@@ -85,6 +99,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
             currentOrders={0} // TODO: Get from the query
             currentPrice={startingPrice}
             visible={!!visible}
+            moveRow={this.moveRow}
           />
         )
       }
@@ -99,4 +114,4 @@ class LockerTable extends React.PureComponent<Props, {}> {
   }
 }
 
-export default LockerTable
+export default DragDropContext(HTML5Backend)(LockerTable)
