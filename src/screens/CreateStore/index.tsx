@@ -246,7 +246,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       history.push(`/store-front?storeId=${shortId}`)
       clearStoreAction()
     } catch (error) {
-      console.log(error)
       message.error('Something wrong happened. Please try again!')
       setLoadingAction(false)
     }
@@ -272,7 +271,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateStartDateAction,
       updateEndDateAction,
       updatePrivateAction,
-      // updateOnDemandAction,
+      // updateOnDemandAction, TODO: uncomment for editStore implementation
       updatePassCodeAction,
       setItemSelectedAction,
       deleteItemSelectedAction,
@@ -282,7 +281,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       startDateMoment,
       endDateMoment,
       privateStore,
-      // onDemand,
+      // onDemand,             TODO: uncomment for editStore implementation
       passCode,
       selectedItems,
       items,
@@ -404,7 +403,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
               message={formatMessage(messages.privateMessage)}
               errorLabel={formatMessage(messages.requiredFieldLabel)}
             />
-            {/* <SwitchWithLabel
+            {/*
+              TODO: uncomment for editStore implementation
+            <SwitchWithLabel
               checked={onDemand}
               onChange={updateOnDemandAction}
               label={formatMessage(messages.onDemandLabel)}

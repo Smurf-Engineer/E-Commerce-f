@@ -114,13 +114,11 @@ const StoreForm = ({
         })
 
         if ((date && date.weekday() === 0) || isHoliday) {
-          message.warning(
-            'Delivery date cannot be on a Sunday or Federal Holiday'
-          )
+          message.warning(formatMessage(messages.deliveryErrorLabel))
           return
         }
       } catch (error) {
-        console.log(error)
+        message.error(formatMessage(messages.errorMsg))
       }
     }
     onSelectEndDate(date, dateString)

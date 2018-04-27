@@ -24,5 +24,13 @@ export default defineMessages({
   desiredDeliveryLabel: {
     id: 'components.StoreForm.desiredDeliveryLabel',
     defaultMessage: 'Desired Delivery Date'
+  },
+  deliveryErrorLabel: {
+    id: 'components.StoreForm.deliveryErrorLabel',
+    defaultMessage: 'Delivery date cannot be on a Sunday or Federal Holiday'
+  },
+  errorMsg: {
+    id: 'components.storeForm.errorMsg',
+    defaultMessage: 'Something wrong happened. Please try again!'
   }
 })
