@@ -122,9 +122,8 @@ export class EmailContact extends React.Component<Props, {}> {
           onCancel={this.handleCancel}
         >
           <Title>{formatMessage(messages.title)}</Title>
-          <TitleLabel>{`${formatMessage(
-            messages.nameLabel
-          )} ${ownerName}`}</TitleLabel>
+          <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||
+            formatMessage(messages.storeManager)}`}</TitleLabel>
           <TextArea
             id="emailMessage"
             rows={7}

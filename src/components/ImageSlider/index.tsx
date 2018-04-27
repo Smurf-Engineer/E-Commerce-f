@@ -21,6 +21,7 @@ import { ImageType } from '../../types/common'
 
 interface Props {
   images: ImageType
+  moreImages?: ImageType[]
   loading?: boolean
   onLoadModel?: (loading: boolean) => void
   threeDmodel?: React.ReactNode
@@ -29,13 +30,41 @@ interface Props {
 
 interface StateProps {
   index: number
+  length: number
 }
 class ImageSlider extends React.Component<Props, StateProps> {
   state = {
-    index: 0
+    index: 0,
+    length: 3
   }
+
+  componentDidMount() {
+    const { images, moreImages } = this.props
+
+    const ThumbnailsArray = [
+      images.front,
+      images.right,
+      images.back,
+      images.left
+    ]
+
+    if (moreImages) {
+      for (const img of moreImages) {
+        ThumbnailsArray.push(img.front)
+        ThumbnailsArray.push(img.right)
+        ThumbnailsArray.push(img.back)
+        ThumbnailsArray.push(img.left)
+      }
+    }
+    this.updateLength(ThumbnailsArray.length)
+  }
+
+  updateLength = (length: number) => {
+    this.setState({ length })
+  }
+
   render() {
-    const { images, threeDmodel, customProduct } = this.props
+    const { images, threeDmodel, customProduct, moreImages } = this.props
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
@@ -45,6 +74,15 @@ class ImageSlider extends React.Component<Props, StateProps> {
       images.back,
       images.left
     ]
+
+    if (moreImages) {
+      for (const img of moreImages) {
+        ThumbnailsArray.push(img.front)
+        ThumbnailsArray.push(img.right)
+        ThumbnailsArray.push(img.back)
+        ThumbnailsArray.push(img.left)
+      }
+    }
 
     const ThumbnailsArrayWith3D = [
       images.front,
@@ -113,14 +151,16 @@ class ImageSlider extends React.Component<Props, StateProps> {
   }
 
   selectThumbnail = (evt: React.MouseEvent<HTMLImageElement>) => {
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     this.setState({ index: parseInt(id, 10) })
   }
 
   handleNextPage = () => {
-    const { index } = this.state
+    const { index, length } = this.state
 
-    if (index < 4) {
+    if (index < length) {
       this.setState({ index: index + 1 })
     }
   }

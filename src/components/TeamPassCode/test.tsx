@@ -4,7 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
-import TeamPassCode from './index'
+import { TeamPassCode } from './index'
 
 describe('<TeamPassCode />', () => {
   test('renders without exploding', () => {
@@ -14,6 +14,8 @@ describe('<TeamPassCode />', () => {
     const closeModal = () => {}
     const setPass = (message: string) => {}
     const format = (message: string) => 'string'
+    const getTeamStoreMutation = (variables: any) => {}
+    const teamStoreId = ''
     ReactDOM.render(
       <IntlProvider {...props}>
         <TeamPassCode
@@ -21,6 +23,8 @@ describe('<TeamPassCode />', () => {
           requestClose={closeModal}
           formatMessage={format}
           setPassCode={setPass}
+          teamStoreId={teamStoreId}
+          getTeamStoreMutation={getTeamStoreMutation}
         />
       </IntlProvider>,
       div

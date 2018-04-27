@@ -161,6 +161,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const images = imagesArray[genderIndex] || imagesArray[0]
 
+    const moreImages =
+      genderIndex !== -1
+        ? []
+        : imagesArray.filter(post => post.genderId !== images.genderId)
+
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
         <AvailablePrices key={index}>
@@ -312,7 +317,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider onLoadModel={setLoadingModel} {...{ images }} />
+                <ImagesSlider
+                  onLoadModel={setLoadingModel}
+                  {...{ images, moreImages }}
+                />
                 <Desktop>
                   <DownloadTemplateContainer>
                     <a href="https://www.jakroo.com/download/Tour_Template.pdf">
