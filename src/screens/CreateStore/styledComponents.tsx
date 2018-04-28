@@ -81,6 +81,10 @@ export const Row = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 
 export const RowButtons = styled.div`
@@ -93,6 +97,10 @@ export const RowSwitch = styled.div`
   display: flex;
   flex-direction: row;
   margin-top: 16px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 
 export const ButtonDelete = styled.div`
@@ -107,12 +115,8 @@ export const ButtonDelete = styled.div`
 export const Column = styled.div``
 
 export const AddItem = styled(Button)`
-  width: 20%;
+  width: 221px;
   margin: 16px 0px;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 70%;
-  }
 `
 
 export const ButtonBuildStyle = styled(Button)`

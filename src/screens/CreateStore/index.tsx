@@ -107,17 +107,16 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const { privateStore } = this.props
     let validForm = true
 
-    if (items.length < 1) {
-      zenscroll.to(this.lockerTable)
-      message.warning('you need to add Items to the table')
-
-      validForm = false
-    } else if (!name || !startDate || !endDate) {
+    if (!name || !startDate || !endDate) {
       this.setState({
         hasError: !name || !startDate || !endDate || !items.length
       })
       validForm = false
       zenscroll.toY(0)
+    } else if (items.length < 1) {
+      zenscroll.to(this.lockerTable)
+      message.warning('you need to add Items to your store!')
+      validForm = false
     } else if (privateStore && !passCode) {
       this.setState({
         hasError: true
@@ -209,7 +208,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       visible: !!visible
     }))
     try {
-      // TODO refactor, pass image Upload to his own method
       const formData = new FormData()
 
       formData.append('file', file as any)
@@ -271,7 +269,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateStartDateAction,
       updateEndDateAction,
       updatePrivateAction,
-      // updateOnDemandAction, TODO: uncomment for editStore implementation
+      updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
       deleteItemSelectedAction,
@@ -281,12 +279,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
       startDateMoment,
       endDateMoment,
       privateStore,
-      // onDemand,             TODO: uncomment for editStore implementation
+      onDemand,
       passCode,
       selectedItems,
       items,
       teamSizeRange,
-      loading
+      loading,
+      location: { search }
     } = this.props
     const { formatMessage } = intl
     if (
@@ -302,6 +301,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     )
 
     const tableItems = this.getCheckedItems(items)
+    const { storeId } = queryString.parse(search)
 
     return (
       <Layout {...{ history, intl }}>
@@ -403,14 +403,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
               message={formatMessage(messages.privateMessage)}
               errorLabel={formatMessage(messages.requiredFieldLabel)}
             />
-            {/*
-              TODO: uncomment for editStore implementation
-            <SwitchWithLabel
-              checked={onDemand}
-              onChange={updateOnDemandAction}
-              label={formatMessage(messages.onDemandLabel)}
-              message={formatMessage(messages.onDemandMessage)}
-            />*/}
+            {storeId && (
+              <SwitchWithLabel
+                checked={onDemand}
+                onChange={updateOnDemandAction}
+                label={formatMessage(messages.onDemandLabel)}
+                message={formatMessage(messages.onDemandMessage)}
+              />
+            )}
           </RowSwitch>
           <ButtonBuildStyle
             {...{ loading }}

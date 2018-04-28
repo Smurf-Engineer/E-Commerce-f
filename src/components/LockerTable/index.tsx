@@ -3,8 +3,15 @@
  */
 import * as React from 'react'
 import messsages from './messages'
-import { Table, HeaderRow, Cell, Title } from './styledComponents'
+import {
+  Table,
+  HeaderRow,
+  Cell,
+  Title,
+  MobileEmtpytable
+} from './styledComponents'
 import findIndex from 'lodash/findIndex'
+import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -60,11 +67,24 @@ class LockerTable extends React.PureComponent<Props, {}> {
       onPressVisible,
       teamSizeRange
     } = this.props
-    const header = headerTitles.map(({ width, message }, key) => (
-      <Cell {...{ key, width }}>
-        <Title>{message ? formatMessage(messsages[message]) : ''}</Title>
-      </Cell>
-    ))
+    const header = (
+      <MediaQuery minDeviceWidth={480}>
+        {matches => {
+          if (matches) {
+            const head = headerTitles.map(({ width, message }, key) => (
+              <Cell {...{ key, width }}>
+                <Title>
+                  {message ? formatMessage(messsages[message]) : ''}
+                </Title>
+              </Cell>
+            ))
+            return head
+          } else {
+            return null
+          }
+        }}
+      </MediaQuery>
+    )
 
     const itemsSelected = items.map(
       (
@@ -92,7 +112,8 @@ class LockerTable extends React.PureComponent<Props, {}> {
               onPressDelete,
               onPressQuickView,
               onPressVisible,
-              yotpoId
+              yotpoId,
+              formatMessage
             }}
             key={index}
             description={`${type} ${description}`}
@@ -105,10 +126,18 @@ class LockerTable extends React.PureComponent<Props, {}> {
       }
     )
 
+    const renderTable =
+      items.length > 0 ? (
+        itemsSelected
+      ) : (
+        <MediaQuery maxDeviceWidth={480}>
+          <MobileEmtpytable>There are no items in your store</MobileEmtpytable>
+        </MediaQuery>
+      )
     return (
       <Table>
         <HeaderRow>{header}</HeaderRow>
-        {itemsSelected}
+        {renderTable}
       </Table>
     )
   }
