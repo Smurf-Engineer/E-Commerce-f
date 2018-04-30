@@ -134,7 +134,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const genders = get(product, 'genders', '')
 
     const isRetail =
-      get(product, 'retailMen', false) && get(product, 'retailWomen', false)
+      get(product, 'retailMen', false) || get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
