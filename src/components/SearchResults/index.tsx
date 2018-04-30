@@ -32,6 +32,12 @@ interface Props {
 
 export class SearchResults extends React.Component<Props, {}> {
   static defaultProps: Data
+
+  componentWillUnmount() {
+    const { closeResults } = this.props
+    closeResults()
+  }
+
   render() {
     const {
       searchParam,

@@ -55,7 +55,9 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { onDesignName } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     onDesignName(value)
   }
@@ -211,6 +213,7 @@ export class SaveDesign extends React.Component<Props, {}> {
             value={designName}
             placeholder={formatMessage(messages.placeholder)}
             onChange={this.handleInputChange}
+            maxLength="15"
           />
           <CheckWrapper>
             <Checkbox onChange={this.toggleChecked}>
