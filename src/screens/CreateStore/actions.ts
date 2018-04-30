@@ -16,7 +16,8 @@ import {
   SET_ITEMS_ADD_ACTION,
   SET_ITEM_VISIBLE_ACTION,
   SET_LOADING_ACTION,
-  CREATE_STORE_SUCCESS
+  CREATE_STORE_SUCCESS,
+  MOVE_ROW
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -115,9 +116,18 @@ export const setItemVisibleAction = (
 
 export const openQuickViewAction = (
   id: number,
-  yotpoId: string | null
+  yotpoId: string | null,
+  hideSliderButtons?: boolean
 ): AnyAction => ({
   type: OPEN_QUICKVIEW_ACTION,
   id,
-  yotpoId
+  yotpoId,
+  hideSliderButtons
+})
+
+export const moveRowAction = (index: number, hoverIndex: number, row: any) => ({
+  type: MOVE_ROW,
+  index,
+  hoverIndex,
+  row
 })

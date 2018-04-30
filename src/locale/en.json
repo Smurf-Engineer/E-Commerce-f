@@ -191,5 +191,38 @@
   "screens.teamstoreProductPage.forEstimatePriceLabel":
     "Your team needs {quantity} more pcs till target pricing reach",
   "screens.teamstoreProductPage.gotItLabel": "Got it!",
-  "screens.teamstoreProductPage.relatedProductsLabel": "Related Products"
+  "screens.teamstoreProductPage.relatedProductsLabel": "Related Products",
+  "screens.CreateStore.title": "Let’s build a team store!",
+  "screens.CreateStore.teamSizeTitle": "Estimated Team Size",
+  "screens.CreateStore.teamSizeMessage":
+    "Select estimated size of your team to display the estimated (target) pricing for each item.",
+  "screens.CreateStore.priceDropTitle": "DYNAMIC PRICE DROP",
+  "screens.CreateStore.priceDropMessageP1":
+    "With JAKROO’s Dynamic Price Drop, everybody wins!",
+  "screens.CreateStore.priceDropMessageP2":
+    "As team members place their orders and reach the next discount level, the price automatically drops for everyone, even for those who placed their order before the drop.",
+  "screens.CreateStore.priceDropMessageP3":
+    "Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!",
+  "screens.CreateStore.storeItemsTitle": "Add Store Items",
+  "screens.CreateStore.storeItemsMessage": "Select designs from your Locker",
+  "screens.CreateStore.addItem": "ADD ITEM",
+  "screens.CreateStore.stock": "Let’s organize your stock",
+  "screens.CreateStore.bannerMessage": "Add a banner for your store",
+  "screens.CreateStore.optional": "Optional",
+  "screens.CreateStore.privateLabel": "Make your store private",
+  "screens.CreateStore.privateMessage":
+    "Making the store private will allow people with direct link and access code to view your store.",
+  "screens.CreateStore.onDemandLabel": "14 Day On-Demand Mode",
+  "screens.CreateStore.onDemandMessage":
+    "On-Demand Mode is  available ONLY after initial ordering has been completed. Existing new members will be able to place fill-in orders anytime  and receive within 14 days or order placement.",
+  "screens.CreateStore.buttonBuild": "Build Team Store",
+  "screens.CreateStore.buttonSave": "Save Changes",
+  "components.LockerTable.starting": "Starting Price",
+  "components.LockerTable.target": "Target Price",
+  "components.LockerTable.orders": "Current Orders",
+  "components.LockerTable.current": "Current Price",
+  "components.LockerTable.visible": "Visible",
+  "components.StoreForm.requiredFieldLabel": "This field is required",
+  "components.StoreForm.changeLabel": "Change",
+  "componentes.StoreForm.deleteLabel": "Delete"
 }

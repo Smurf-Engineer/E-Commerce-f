@@ -29,6 +29,10 @@ export const List = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    height: auto;
+  }
 `
 
 export const ErrorContainer = styled.div`

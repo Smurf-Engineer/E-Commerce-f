@@ -17,7 +17,8 @@ import {
   SET_ITEMS_ADD_ACTION,
   SET_ITEM_VISIBLE_ACTION,
   SET_LOADING_ACTION,
-  CREATE_STORE_SUCCESS
+  CREATE_STORE_SUCCESS,
+  MOVE_ROW
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -100,6 +101,13 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       })
       return state.set('items', updatedItems)
     }
+    case MOVE_ROW: {
+      const { index, hoverIndex, row } = action
+      const items = state.get('items')
+      const updatedItems = items.splice(index, 1).insert(hoverIndex, row)
+      return state.set('items', updatedItems)
+    }
+
     default:
       return state
   }

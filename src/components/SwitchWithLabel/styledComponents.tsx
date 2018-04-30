@@ -6,6 +6,16 @@ import styled from 'styled-components'
 export const Container = styled.div`
   width: 25%;
   margin-right: 10%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  @media (min-width: 481px) and (max-width: 1024px) {
+    width: 45%;
+  }
 `
 
 export const Row = styled.div`
@@ -38,3 +48,11 @@ export const inputStyle = {
   width: '100%',
   marginTop: 16
 }
+
+export const Error = styled.div`
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  line-height: 16px;
+  padding: 4px;
+`

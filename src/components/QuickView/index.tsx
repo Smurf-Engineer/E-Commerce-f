@@ -60,6 +60,7 @@ interface Props {
   productId: number
   yotpoId: string
   history: any
+  hideSliderButtons?: boolean
 }
 
 export class QuickView extends React.Component<Props, State> {
@@ -70,7 +71,7 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const { open, handleClose, data } = this.props
+    const { open, handleClose, data, hideSliderButtons } = this.props
     const { showDescription, showDetail, showSpecs } = this.state
 
     let product = {} as ProductPageTypes
@@ -109,6 +110,7 @@ export class QuickView extends React.Component<Props, State> {
         available={5}
         gotoCustomize={this.gotoCustomize}
         isRetail={(product.retailMen && product.retailWomen) || false}
+        {...{ hideSliderButtons }}
       />
     )
 
@@ -133,10 +135,12 @@ export class QuickView extends React.Component<Props, State> {
           <StyledRow>
             <Col span={12}>
               {imageSlider}
-              <FullDetails>
-                <div onClick={this.gotoProductPage}>Full Details</div>
-                <ArrowRight />
-              </FullDetails>
+              {!hideSliderButtons && (
+                <FullDetails>
+                  <div onClick={this.gotoProductPage}>Full Details</div>
+                  <ArrowRight />
+                </FullDetails>
+              )}
             </Col>
             <Col span={12}>
               <Title>{title}</Title>

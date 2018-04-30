@@ -18,3 +18,5 @@ export const SET_ITEMS_ADD_ACTION = `${namespace}/SET_ITEMS_ADD_ACTION`
 export const SET_ITEM_VISIBLE_ACTION = `${namespace}/SET_ITEM_VISIBLE_ACTION`
 export const SET_LOADING_ACTION = `${namespace}/SET_LOADING_ACTION`
 export const CREATE_STORE_SUCCESS = `${namespace}/CREATE_STORE_SUCCESS`
+
+export const MOVE_ROW = `${namespace}/MOVE_ROW`

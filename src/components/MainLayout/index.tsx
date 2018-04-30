@@ -40,7 +40,8 @@ interface Props {
   hideBottomHeader: boolean
   hideFooter: boolean
   fakeWidth: number
-  teamStoresHeader?: boolean | undefined
+  teamStoresHeader?: boolean
+  hideQuickViewSliderButtons?: boolean
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -74,7 +75,8 @@ class MainLayout extends React.Component<Props, {}> {
       hideBottomHeader,
       hideFooter,
       fakeWidth,
-      teamStoresHeader
+      teamStoresHeader,
+      hideQuickViewSliderButtons
     } = this.props
     return (
       <Layout>
@@ -122,6 +124,7 @@ class MainLayout extends React.Component<Props, {}> {
         <QuickView
           open={!!productId}
           handleClose={this.onCloseModal}
+          hideSliderButtons={hideQuickViewSliderButtons}
           {...{ productId, history, yotpoId }}
         />
       </Layout>
