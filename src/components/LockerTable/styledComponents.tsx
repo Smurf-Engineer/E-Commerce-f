@@ -29,9 +29,11 @@ export const Row = styled.div`
   border-bottom: ${({ noBorder }: RowProps) =>
     noBorder ? 'none' : '1px solid #dcdcdc'};
   padding: ${({ rowPadding }) => (rowPadding ? rowPadding : '8px 0')};
+  cursor: move;
 
   @media (min-width: 320px) and (max-width: 480px) {
     justify-content: space-between;
+  }
 `
 
 export const HeaderRow = styled.div`
