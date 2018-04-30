@@ -20,13 +20,6 @@ export const Text = styled.div`
   color: #fff;
 `
 
-export const HeaderRow = styled.div`
-  display: flex;
-  border-bottom-width: 1px;
-  border-bottom-color: #8c8c8c;
-  border-bottom-style: solid;
-  padding-bottom: 4px;
-`
 export const Title = styled.div`
   width: 58px;
   color: #5f6062;
