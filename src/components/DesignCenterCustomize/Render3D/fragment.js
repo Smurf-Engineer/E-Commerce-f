@@ -114,9 +114,12 @@ void main() {
   vec4 texelText = mapTexelToLinear( vecText );
 
   // Mix the textures
-  vec4 mixTextures =  texelColor1 + texelColor2 + texelColor3 + texelColor4 + texelColor5 * (1.0 - (texelColor1.a + texelColor2.a + texelColor3.a + texelColor4.a));
+  // TODO: Mix textures
+  vec4 mixTextures =  texelColor1 + texelColor2 + texelColor3 + texelColor4 + texelColor5 * (1.0 - (texelColor5.a));
   // vec4 mixTextures = texelText * (1.0 - (texelText.a));
-  diffuseColor *= mixTextures;
+  //  vec3 textures = texelColor1.rgb * texelColor1.a + texelColor2.rgb * texelColor2.a + texelColor3.rgb * texelColor3.a + texelColor4.rgb * texelColor4.a + texelColor5.rgb * texelColor5.a * (1.0 -  texelColor1.a);
+  // diffuseColor *= vec4(textures, 1.0);
+  diffuseColor *= texelColor1;
   // diffuseColor += texelText;
 
   #include <color_fragment>

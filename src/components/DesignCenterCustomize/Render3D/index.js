@@ -108,10 +108,10 @@ class Render3D extends PureComponent {
       }
     }
 
-    const canvasTexture = this.createLabel('CULICHI', '#f23', 'Avenir', 12)
-    // const canvasTexture = new THREE.Texture(canvas)
-    // canvasTexture.needsUpdate = true
-    textures.text = canvasTexture
+    // const canvasTexture = this.createLabel('CULICHI', '#f23', 'Avenir', 12)
+    // // const canvasTexture = new THREE.Texture(canvas)
+    // // canvasTexture.needsUpdate = true
+    // textures.text = canvasTexture
 
     /* Camera */
     const camera = new THREE.PerspectiveCamera(
@@ -223,7 +223,7 @@ class Render3D extends PureComponent {
             uniforms: uniformsWithPhong,
             vertexShader: vertexShader,
             fragmentShader: fragmentShader,
-            side: THREE.FrontSide,
+            side: THREE.DoubleSide,
             defines: defines,
             lights: true
           })
@@ -232,8 +232,9 @@ class Render3D extends PureComponent {
 
           // Inside material
           const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide
+            // color: 0x000000,
+            side: THREE.DoubleSide,
+            map: textures.color1
           })
 
           /* Texture materials */
@@ -244,58 +245,47 @@ class Render3D extends PureComponent {
             map: textures.backPocket
           })
 
-          const textMaterial = new THREE.MeshBasicMaterial({
-            map: canvasTexture
-          })
+          // const textMaterial = new THREE.MeshBasicMaterial({
+          //   map: canvasTexture
+          // })
 
-          const frontMaterial = new THREE.MeshBasicMaterial({
-            // wireframe: true,
-            map: canvasTexture,
-            side: THREE.FrontSide,
-            transparent: true
-          })
+          // const frontMaterial = new THREE.MeshBasicMaterial({
+          //   // wireframe: true,
+          //   map: canvasTexture,
+          //   side: THREE.FrontSide,
+          //   transparent: true
+          // })
 
-          frontMaterial.name = 'MI MATERIAL'
+          // frontMaterial.name = 'MI MATERIAL'
 
-          console.log('------------------------------------')
-          console.log(frontMaterial)
-          console.log('------------------------------------')
+          // const customUniforms = {
+          //   text: { type: 't', value: textures.front }
+          // }
 
-          const customUniforms = {
-            text: { type: 't', value: textures.front }
-          }
-
-          const canvasMaterial = new THREE.ShaderMaterial({
-            // uniforms: uniformsWithPhong,
-            uniforms: customUniforms,
-            // map: textures.logo,
-            vertexShader: vertexCanvas,
-            fragmentShader: fragmentCanvas,
-            side: THREE.FrontSide,
-            transparent: true
-            //blending: THREE.AdditiveBlending
-            // defines: defines
-            // lights: true
-          })
-
-          const color1Material = new THREE.MeshPhongMaterial({
-            // wireframe: true,
-            map: textures.logo,
-            side: THREE.FrontSide,
-            transparent: true
-          })
+          // const canvasMaterial = new THREE.ShaderMaterial({
+          //   // uniforms: uniformsWithPhong,
+          //   uniforms: customUniforms,
+          //   // map: textures.logo,
+          //   vertexShader: vertexCanvas,
+          //   fragmentShader: fragmentCanvas,
+          //   side: THREE.FrontSide,
+          //   transparent: true
+          //   //blending: THREE.AdditiveBlending
+          //   // defines: defines
+          //   // lights: true
+          // })
 
           /* Assign materials */
           const cloneObject = object.children[0].clone()
-          const frontObject = object.children[0].clone()
-          frontObject.name = 'FRONT'
+          // const frontObject = object.children[0].clone()
+          //          frontObject.name = 'FRONT'
           object.add(cloneObject)
-          object.add(frontObject)
+          // object.add(frontObject)
 
           /* Jersey */
           object.children[0].material = insideMaterial
-          object.children[24].material = shaderMaterial
-          object.children[25].material = frontMaterial
+          // object.children[24].material = shaderMaterial
+          // object.children[25].material = frontMaterial
           /* Flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial

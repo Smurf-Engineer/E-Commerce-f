@@ -37,8 +37,8 @@ export const initialState = fromJS({
   currentTab: 2, // TODO: Change to 0
   colorBlock: -1,
   colorBlockHovered: -1,
-  colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#000000'],
-  styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#000000'],
+  colors: ['#13185C', '#000000', '#363EAF', '#3296DC', '#13185C'],
+  styleColors: ['#13185C', '#000000', '#363EAF', '#3296DC', '#13185C'],
   palettes: [],
   paletteName: '',
   designName: '',
