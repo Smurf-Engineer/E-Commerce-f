@@ -1,4 +1,5 @@
 /* Routes */
+import ShoppingCartPage from '../screens/ShoppingCartPage'
 import StoreFront from '../screens/StoreFront'
 import CreateStore from '../screens/CreateStore'
 import SearchTeamstores from '../screens/SearchTeamstores'
@@ -15,6 +16,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/shopping-cart',
+    name: 'shoppingCartPage',
+    component: ShoppingCartPage
+  },
   {
     path: '/store-front',
     name: 'storeFront',
