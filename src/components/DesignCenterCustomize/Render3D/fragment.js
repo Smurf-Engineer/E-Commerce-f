@@ -108,7 +108,7 @@ void main() {
   // vec4 texelLogo = mapTexelToLinear( veclogo );
 
   // Mix the textures
-  vec4 mixTextures = texelColor1 + texelColor2 + texelColor3 + texelColor4;
+  vec4 mixTextures = texelColor1 + texelColor2 + texelColor3 + texelColor4 + texelColor5;
   diffuseColor *= mixTextures;
 
   #include <color_fragment>

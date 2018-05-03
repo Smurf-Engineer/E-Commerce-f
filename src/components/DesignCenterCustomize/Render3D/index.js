@@ -126,7 +126,7 @@ class Render3D extends PureComponent {
     /* Scene and light */
     const scene = new THREE.Scene()
     const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.78)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
     directionalLight.position.copy(camera.position)
 
     const mtlLoader = new THREE.MTLLoader()
@@ -221,6 +221,10 @@ class Render3D extends PureComponent {
             side: THREE.DoubleSide
           })
 
+          const frontMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.FrontSide
+          })
+
           /* Texture materials */
           const labelMaterial = new THREE.MeshPhongMaterial({
             map: textures.label
@@ -230,23 +234,54 @@ class Render3D extends PureComponent {
             map: textures.backPocket
           })
 
-          // const textureMaterial = new THREE.MeshPhongMaterial({
+          // const materialArea1 = new THREE.MeshPhongMaterial({
+          //   map: textures.color1,
+          //   color: styleColors[0],
+          //   blending: THREE.AdditiveBlending,
+          //   transparent: true
+          // })
+
+          // const materialArea2 = new THREE.MeshPhongMaterial({
+          //   map: textures.color2,
+          //   color: styleColors[1],
+          //   transparent: true
+          // })
+
+          // const materialArea3 = new THREE.MeshPhongMaterial({
+          //   map: textures.color3,
+          //   color: styleColors[2],
+          //   transparent: true
+          // })
+
+          // const materialArea4 = new THREE.MeshPhongMaterial({
           //   map: textures.color4,
-          //   color: '#a2f2f2',
+          //   color: styleColors[3],
           //   transparent: true
           // })
 
           /* Assign materials */
           const cloneObject = object.children[0].clone()
           // const cloneObject2 = object.children[0].clone()
+          // const cloneObject3 = object.children[0].clone()
+          // const cloneObject4 = object.children[0].clone()
+          // const cloneObject5 = object.children[0].clone()
+
           object.add(cloneObject)
           // object.add(cloneObject2)
+          // object.add(cloneObject3)
+          // object.add(cloneObject4)
+          // object.add(cloneObject5)
 
           /* jersey */
-          object.children[0].material = insideMaterial
-          // object.children[24].material = frontMaterial
+          object.children[0].material = frontMaterial
           object.children[24].material = shaderMaterial
-          // object.children[25].material = shaderMaterial
+          // object.children[0].material = frontMaterial
+          // object.children[24].material = materialArea1
+          // object.children[25].material = materialArea2
+          // object.children[26].material = materialArea3
+          // object.children[27].material = materialArea4
+          //  object.children[28].material = materialArea5
+
           /* flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
