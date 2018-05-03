@@ -96,8 +96,10 @@ class Render3D extends PureComponent {
       bumpMap: {}
     }
 
+    const texturesConfig = jerseyTextures()
+
     for (const key in textures) {
-      textures[key] = loader.load(jerseyTextures[key])
+      textures[key] = loader.load(texturesConfig[key])
       if (key !== 'flatlock') {
         textures[key].minFilter = THREE.LinearFilter
       }
@@ -151,8 +153,9 @@ class Render3D extends PureComponent {
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
             map: textures.flatlock,
-            color: 0xffffff
+            transparent: true
           })
+
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
@@ -207,6 +210,7 @@ class Render3D extends PureComponent {
             fragmentShader: fragmentShader,
             side: THREE.FrontSide,
             defines: defines,
+            transparent: true,
             lights: true
           })
 
@@ -214,25 +218,35 @@ class Render3D extends PureComponent {
 
           // Inside material
           const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide
+            side: THREE.DoubleSide
           })
 
           /* Texture materials */
           const labelMaterial = new THREE.MeshPhongMaterial({
             map: textures.label
           })
+
           const backPocketMaterial = new THREE.MeshPhongMaterial({
             map: textures.backPocket
           })
 
+          // const textureMaterial = new THREE.MeshPhongMaterial({
+          //   map: textures.color4,
+          //   color: '#a2f2f2',
+          //   transparent: true
+          // })
+
           /* Assign materials */
           const cloneObject = object.children[0].clone()
+          // const cloneObject2 = object.children[0].clone()
           object.add(cloneObject)
+          // object.add(cloneObject2)
 
           /* jersey */
           object.children[0].material = insideMaterial
+          // object.children[24].material = frontMaterial
           object.children[24].material = shaderMaterial
+          // object.children[25].material = shaderMaterial
           /* flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
@@ -258,6 +272,10 @@ class Render3D extends PureComponent {
     this.loader = mtlLoader
     this.controls = controls
     this.directionalLight = directionalLight
+
+    if (!window.scene) {
+      window.scene = this.scene
+    }
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
