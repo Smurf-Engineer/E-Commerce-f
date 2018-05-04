@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Divider from 'antd/lib/divider'
+import Tooltip from 'antd/lib/tooltip/'
 import SwipeableViews from 'react-swipeable-views'
 import ColorButton from '../ColorButton'
 import ColorList from '../ColorList'
@@ -41,7 +42,7 @@ interface State {
   isFirstPage: boolean
 }
 
-const colorsBlocks = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
+const colorsBlocks = ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5']
 
 class ColorTab extends React.PureComponent<Props, State> {
   state = {
@@ -65,20 +66,23 @@ class ColorTab extends React.PureComponent<Props, State> {
       onSelectPalette
     } = this.props
     const { isFirstPage } = this.state
-    const colorButtons = colorsBlocks.map((label, index) => (
-      <ColorButton
-        key={index}
-        {...{
-          index,
-          label,
-          colorBlockHovered,
-          onSelectColorBlock,
-          onHoverColorBlock
-        }}
-        currentColor={colors[index] || styleColors[index]}
-        selected={colorBlock === index}
-      />
-    ))
+    const colorButtons = colorsBlocks.map((label, index) => {
+      console.log('COLORBUTTONS MAP ', label, index, colors[index])
+      return (
+        <ColorButton
+          key={index}
+          {...{
+            index,
+            label,
+            colorBlockHovered,
+            onSelectColorBlock,
+            onHoverColorBlock
+          }}
+          currentColor={colors[index] || styleColors[index]}
+          selected={colorBlock === index}
+        />
+      )
+    })
     return (
       <Container>
         <Top>

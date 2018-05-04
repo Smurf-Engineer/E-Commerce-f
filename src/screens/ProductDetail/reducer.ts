@@ -18,10 +18,11 @@ export const initialState = fromJS({
   openFitInfo: false,
   showBuyNowSection: false,
   selectedGender: '',
-  selectedSize: -1,
-  selectedFit: -1,
+  selectedSize: {},
+  selectedFit: {},
   categoryName: '',
-  loadingModel: false
+  loadingModel: false,
+  itemToAddCart: {}
 })
 
 const productDetailReducer: Reducer<any> = (state = initialState, action) => {
@@ -35,9 +36,9 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_GENDER:
       return state.set('selectedGender', action.selected)
     case SET_SELECTED_SIZE:
-      return state.set('selectedSize', parseInt(action.selected, 10))
+      return state.set('selectedSize', action.selected)
     case SET_SELECTED_FIT:
-      return state.set('selectedFit', parseInt(action.selected, 10))
+      return state.set('selectedFit', action.selected)
     case LOADING_3D_MODEL:
       return state.set('loadingModel', action.loading)
     default:

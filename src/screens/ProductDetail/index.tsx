@@ -60,6 +60,7 @@ import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
+import AddtoCartButton from '../../components/AddToCartButton'
 import { Product, QueryProps, ImageType } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
@@ -73,6 +74,11 @@ interface ProductTypes extends Product {
   materials: string
 }
 
+interface SelectedType {
+  id: number
+  name: string
+}
+
 interface Data extends QueryProps {
   product: ProductTypes
   match: object
@@ -84,16 +90,18 @@ interface Props extends RouteComponentProps<any> {
   data: Data
   showBuyNowSection: boolean
   openFitInfo: boolean
-  selectedGender: number
-  selectedSize: number
-  selectedFit: number
+  selectedGender: SelectedType
+  selectedSize: SelectedType
+  selectedFit: SelectedType
   loadingModel: boolean
+  itemToAddCart: any
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
-  setSelectedGenderAction: (selected: string) => void
-  setSelectedSizeAction: (selected: number) => void
-  setSelectedFitAction: (selected: number) => void
+  setSelectedGenderAction: (selected: SelectedType) => void
+  setSelectedSizeAction: (selected: SelectedType) => void
+  setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
+  addItemToCartAction: (item: any) => void
 }
 
 interface StateProps {
@@ -120,6 +128,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       setLoadingModel,
+      itemToAddCart,
       data: { product }
     } = this.props
     const { formatMessage } = intl
@@ -228,8 +237,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       <div key={index}>
         <SectionButton
           id={index.toString()}
-          selected={index === selectedSize}
-          onClick={this.handleSelectedSize}
+          selected={index === selectedSize.id}
+          onClick={this.handleSelectedSize(index, size)}
         >
           {size}
         </SectionButton>
@@ -243,8 +252,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           <div key={index}>
             <SectionButton
               id={index.toString()}
-              selected={index === selectedFit}
-              onClick={this.handleSelectedFit}
+              selected={fit.id === selectedFit.id}
+              onClick={this.handleSelectedFit(fit)}
             >
               {fit.name}
             </SectionButton>
@@ -253,8 +262,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       ) : (
         <SectionButton
           id={'1'}
-          selected={1 === selectedFit}
-          onClick={this.handleSelectedFit}
+          selected={1 === selectedFit.id}
+          onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
         >
           {'Standard'}
         </SectionButton>
@@ -295,13 +304,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const addToCartRow = (
-      <ButtonsRow>
-        <StyledButton onClick={this.addtoCart}>
-          {formatMessage(messages.addToCartButtonLabel)}
-        </StyledButton>
-      </ButtonsRow>
-    )
+    const addToCartRow = this.renderAddButton()
+
     const collectionSelection = (
       <BuyNowOptions>
         {colorsSection}
@@ -403,23 +407,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       currentTarget: { id }
     } = evt
-    setSelectedGenderAction(id)
+    // setSelectedGenderAction(id)
   }
 
-  handleSelectedSize = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedSize = (index: number, size: string) => () => {
     const { setSelectedSizeAction } = this.props
-    const {
-      currentTarget: { id }
-    } = evt
-    setSelectedSizeAction(parseInt(id, 10))
+    // const { currentTarget } = evt
+    console.log(index, size)
+
+    setSelectedSizeAction({ id: index, name: size })
   }
 
-  handleSelectedFit = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedFit = (size: SelectedType, index?: number) => () => {
     const { setSelectedFitAction } = this.props
-    const {
-      currentTarget: { id }
-    } = evt
-    setSelectedFitAction(parseInt(id, 10))
+    setSelectedFitAction(size)
   }
 
   handleOpenFitInfo = () => {
@@ -441,13 +442,39 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     history.push('/fit-widget')
   }
 
-  addtoCart = () => {
+  validateAddtoCart = () => {
+    const { selectedSize, selectedFit } = this.props
+    return selectedSize.id >= 0 && selectedFit.id
+  }
+
+  renderAddButton = () => {
     const {
-      data: {
-        product: { name }
-      }
+      selectedFit,
+      selectedSize,
+      data: { product },
+      intl: { formatMessage }
     } = this.props
-    Message.success(`${name} has been succesfully added to cart!`)
+    const itemDetail = {}
+    const itemToAdd = Object.assign(
+      {},
+      { product },
+      {
+        itemDetails: Object.assign(
+          {},
+          { fit: selectedFit },
+          { size: selectedSize }
+        )
+      }
+    )
+    return (
+      <ButtonsRow>
+        <AddtoCartButton
+          onClick={this.validateAddtoCart}
+          label={formatMessage(messages.addToCartButtonLabel)}
+          item={itemToAdd}
+        />
+      </ButtonsRow>
+    )
   }
 
   closeFitInfoModal = () => {

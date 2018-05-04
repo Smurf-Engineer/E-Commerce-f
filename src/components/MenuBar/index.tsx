@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
+import {} from 'antd/'
 import DropdownList from '../DropdownList'
 import MenuSupport from '../MenuSupport'
 import MenuRegion from '../MenuRegion'
@@ -21,12 +22,13 @@ import {
   TeamStoresMenuTitle
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
-import cart from '../../assets/cart.svg'
+// import cart from '../../assets/cart.svg'
 import messages from './messages'
 import SearchBar from '../SearchBar'
 import Login from '../Login'
 import Logout from '../Logout'
 import ForgotPassword from '../ForgotPassword'
+import Cart from '../CartForHeader'
 import { RegionConfig } from '../../types/common'
 
 interface Props {
@@ -82,7 +84,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       fakeWidth,
       teamStoresHeader
     } = this.props
-    let user
+    let user: any
     if (typeof window !== 'undefined') {
       user = JSON.parse(localStorage.getItem('user') as string)
     }
@@ -146,7 +148,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                     <MenuSupport />
                     <TopRow>
                       {menuRegion}
-                      <CartIcon src={cart} />
+                      {user ? <Cart /> : null}
                       {loggedUser}
                     </TopRow>
                   </Row>

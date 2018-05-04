@@ -11,6 +11,7 @@ import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import FooterThumbnailLocker from '../FooterThumbnailLocker'
+import AddToCartButton from '../AddToCartButton'
 import { QueryProps, ProductType, DesignType } from '../../types/common'
 import {
   Container,
@@ -135,6 +136,17 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 collections={product.collections}
                 images={productImages}
                 priceRange={product.priceRange}
+                labelButton={
+                  product.customizable ? (
+                    'CUSTOMIZE'
+                  ) : (
+                    <AddToCartButton
+                      label={'ADD TO CART'}
+                      renderForThumbnail={true}
+                      item={product}
+                    />
+                  )
+                }
               />
             </ThumbnailListItem>
           )

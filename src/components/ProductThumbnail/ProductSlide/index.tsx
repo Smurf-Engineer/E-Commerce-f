@@ -29,7 +29,7 @@ interface Props {
   images?: ImageType
   image?: string
   currentImage: number
-  labelButton?: string
+  labelButton?: string | React.ReactNode
   hideCustomButton?: boolean
   hideQuickView?: boolean
   onPressBack: () => void
@@ -95,6 +95,15 @@ const ProductSlide = ({
       </Page>
     )
   })
+
+  const buttonToRender =
+    labelButton === 'CUSTOMIZE' ? (
+      <ButtonContainer onClick={onPressCustomize}>
+        <CustomizeButton>{labelButton}</CustomizeButton>
+      </ButtonContainer>
+    ) : (
+      labelButton
+    )
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
@@ -114,11 +123,7 @@ const ProductSlide = ({
           <Arrow src={nextIcon} onClick={onPressNext} />
         </Arrows>
       )}
-      {isHovered && (
-        <ButtonContainer onClick={onPressCustomize}>
-          <CustomizeButton>{labelButton}</CustomizeButton>
-        </ButtonContainer>
-      )}
+      {isHovered && buttonToRender}
     </ImageContainer>
   )
 }
