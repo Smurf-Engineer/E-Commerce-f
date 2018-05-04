@@ -96,7 +96,7 @@ class Render3D extends PureComponent {
       bumpMap: {}
     }
 
-    const texturesConfig = jerseyTextures('C03-D01')
+    const texturesConfig = jerseyTextures()
 
     for (const key in textures) {
       textures[key] = loader.load(texturesConfig[key])
@@ -152,8 +152,7 @@ class Render3D extends PureComponent {
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock,
-            color: 0xffffff
+            map: textures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -238,12 +237,15 @@ class Render3D extends PureComponent {
           })
 
           /* Assign materials */
-          const cloneObject = object.children[0].clone()
-          object.add(cloneObject)
+          const cloneObjectInside = object.children[0].clone()
+          const cloneObjectFront = object.children[0].clone()
+          object.add(cloneObjectInside)
+          object.add(cloneObjectFront)
 
           /* jersey */
-          object.children[0].material = frontMaterial
-          object.children[24].material = shaderMaterial
+          object.children[0].material = insideMaterial
+          object.children[24].material = frontMaterial
+          object.children[25].material = shaderMaterial
           /* flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
@@ -252,7 +254,6 @@ class Render3D extends PureComponent {
           object.children[17].material = labelMaterial
           /* back pocket */
           object.children[22].material = backPocketMaterial
-
           /* Object Conig */
           object.position.y = -30
           object.name = 'jersey'
@@ -324,7 +325,7 @@ class Render3D extends PureComponent {
       let key = `customColor${colorNumber}`
       if (colorNumber === 5) {
         const object = this.scene.getObjectByName('jersey')
-        object.children[0].material.color.setHex(color)
+        object.children[24].material.color.set(color)
       } else if (color && this.uniformsWithPhong) {
         this.uniformsWithPhong[key].value = new THREE.Color(color)
       }

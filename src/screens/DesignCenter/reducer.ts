@@ -37,7 +37,7 @@ export const initialState = fromJS({
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
-  styleColors: ['#3A3A3A', '#95DB00', '#EE3C6F', '#8CBEE6', '#F57F48'],
+  styleColors: ['#F0AAB4', '#EE3C6F', '#94CFBB', '#00ADEE', '#FFFFFF'],
   palettes: [],
   paletteName: '',
   designName: '',
