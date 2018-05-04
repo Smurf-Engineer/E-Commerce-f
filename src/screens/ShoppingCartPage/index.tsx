@@ -6,6 +6,8 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+import Input from 'antd/lib/input'
+import Collapse from 'antd/lib/collapse'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import messages from './messages'
@@ -19,8 +21,14 @@ import {
   OrderItem,
   TotalOrderItem,
   ButtonWrapper,
-  CheckoutButton
+  CheckoutButton,
+  ZipCodeInputWrapper,
+  CollapseWrapper,
+  CodeDivider
 } from './styledComponents'
+
+const ShareLinkInput = Input.Search
+const Panel = Collapse.Panel
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -36,7 +44,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
   render() {
     const { intl, history } = this.props
-    // const formatMessage = intl.formatMessage
+    const formatMessage = intl.formatMessage
     return (
       <Layout {...{ history, intl }}>
         <Title>
@@ -73,7 +81,47 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               <FormattedMessage {...messages.shipping} />
               <div>{`USD$0`}</div>
             </OrderItem>
-            <Divider />
+            <ZipCodeInputWrapper>
+              <ShareLinkInput
+                id="url"
+                placeholder={formatMessage(messages.zipCodePlaceholder)}
+                enterButton={formatMessage(messages.estimate)}
+                size="default"
+                maxLength="5"
+                // value={designURL}
+                // onSearch={this.copyToClipboard}
+                onChange={() => {}}
+              />
+            </ZipCodeInputWrapper>
+            <CodeDivider />
+            <CollapseWrapper>
+              <Collapse bordered={false}>
+                <Panel header={formatMessage(messages.discountCode)} key="1">
+                  <ZipCodeInputWrapper>
+                    <ShareLinkInput
+                      id="url"
+                      enterButton={formatMessage(messages.apply)}
+                      placeholder={formatMessage(messages.promoCodePlaceholder)}
+                      size="default"
+                      // value={designURL}
+                      // onSearch={this.copyToClipboard}
+                      onChange={() => {}}
+                    />
+                  </ZipCodeInputWrapper>
+                  <ZipCodeInputWrapper>
+                    <ShareLinkInput
+                      id="url"
+                      enterButton={formatMessage(messages.apply)}
+                      placeholder={formatMessage(messages.giftPlaceholder)}
+                      size="default"
+                      // value={designURL}
+                      // onSearch={this.copyToClipboard}
+                      onChange={() => {}}
+                    />
+                  </ZipCodeInputWrapper>
+                </Panel>
+              </Collapse>
+            </CollapseWrapper>
             <TotalOrderItem>
               <FormattedMessage {...messages.total} />
               <div>{`USD$0`}</div>

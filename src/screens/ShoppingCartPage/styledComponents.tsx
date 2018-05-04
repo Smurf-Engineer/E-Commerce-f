@@ -25,7 +25,7 @@ export const EmptyItems = styled.div`
 export const SideBar = styled.div`
   width: 20%;
   padding-left: 32px;
-  margin-right: 10px;
+  padding-right: 20px;
 `
 
 export const EmptyTitle = styled.div`
@@ -87,6 +87,14 @@ export const Divider = styled.div`
   width: 100%;
   border: 1px solid #dcdcdc;
   margin-bottom: 10px;
+`
+
+export const CodeDivider = styled.div`
+  box-sizing: border-box;
+  height: 1px;
+  width: 100%;
+  border: 1px solid #dcdcdc;
+  margin-bottom: 0;
 `
 
 export const OrderItem = styled.div`
@@ -152,6 +160,58 @@ export const ButtonWrapper = styled.div`
 export const CheckoutButton = styled(Button)`
   height: 40px;
   width: 100%;
+`
+
+export const InputWrapper = styled.div`
+  .ant-input {
+    margin-bottom: 26px;
+    height: 40px;
+    border-radius: 0;
+    color: #bebebe;
+    font-family: 'Avenir Next';
+    font-size: 16px;
+    line-height: 22px;
+  }
+`
+
+export const ZipCodeInputWrapper = styled.div`
+  margin-bottom: 10px;
+  input {
+    border-radius: 0;
+  }
+  .ant-btn {
+    border-radius: 0;
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+    &:hover {
+      background-color: #4a90e2;
+      border-color: #4a90e2;
+    }
+  }
+`
+
+export const CollapseWrapper = styled.div`
+  margin-bottom: 10px;
+  .ant-collapse .ant-collapse-item .ant-collapse-header {
+    display: flex;
+    flex-direction: row;
+    color: #5f6062;
+    font-family: Avenir Next;
+    font-size: 12px;
+    letter-spacing: 0.15px;
+    line-height: 16px;
+    padding: 14px 0 12px 0;
+  }
+  .ant-collapse .ant-collapse-item .ant-collapse-header .arrow {
+    position: absolute;
+    left: 95%;
+    display: inline;
+    width: auto;
+  }
+
+  .ant-collapse-borderless .ant-collapse-item .ant-collapse-content {
+    padding: 0 0 0 0;
+  }
 `
 
 export const menuStyle = { width: '100%', marginLeft: -24, paddingTop: 52 }

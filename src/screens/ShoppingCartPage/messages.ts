@@ -44,5 +44,29 @@ export default defineMessages({
   total: {
     id: 'screens.ShoppingCartPage.total',
     defaultMessage: 'Total'
+  },
+  estimate: {
+    id: 'screens.ShoppingCartPage.estimate',
+    defaultMessage: 'Estimate'
+  },
+  discountCode: {
+    id: 'screens.ShoppingCartPage.discountCode',
+    defaultMessage: 'Have a discount code?'
+  },
+  apply: {
+    id: 'screens.ShoppingCartPage.apply',
+    defaultMessage: 'Apply'
+  },
+  zipCodePlaceholder: {
+    id: 'screens.ShoppingCartPage.zipCodePlaceholder',
+    defaultMessage: 'Zip/Postal Code'
+  },
+  promoCodePlaceholder: {
+    id: 'screens.ShoppingCartPage.promoCodePlaceholder',
+    defaultMessage: 'Promo Code'
+  },
+  giftPlaceholder: {
+    id: 'screens.ShoppingCartPage.giftPlaceholder',
+    defaultMessage: 'Gift Certificate'
   }
 })
