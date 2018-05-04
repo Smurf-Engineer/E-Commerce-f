@@ -96,7 +96,7 @@ class Render3D extends PureComponent {
       bumpMap: {}
     }
 
-    const texturesConfig = jerseyTextures()
+    const texturesConfig = jerseyTextures('C03-D01')
 
     for (const key in textures) {
       textures[key] = loader.load(texturesConfig[key])
@@ -209,6 +209,7 @@ class Render3D extends PureComponent {
             fragmentShader: fragmentShader,
             side: THREE.FrontSide,
             defines: defines,
+            transparent: true,
             lights: true
           })
 
@@ -218,6 +219,14 @@ class Render3D extends PureComponent {
           const insideMaterial = new THREE.MeshPhongMaterial({
             color: 0x000000,
             side: THREE.BackSide
+          })
+
+          const frontMaterial = new THREE.MeshPhongMaterial({
+            map: textures.color5,
+            side: THREE.FrontSide,
+            bumpMap: textures.bumpMap,
+            color: styleColors[4],
+            transparent: true
           })
 
           /* Texture materials */
@@ -233,8 +242,8 @@ class Render3D extends PureComponent {
           object.add(cloneObject)
 
           /* jersey */
-          object.children[0].material = shaderMaterial
-          // object.children[24].material = shaderMaterial
+          object.children[0].material = frontMaterial
+          object.children[24].material = shaderMaterial
           /* flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
@@ -313,7 +322,10 @@ class Render3D extends PureComponent {
     let colorNumber = 1
     colors.forEach(color => {
       let key = `customColor${colorNumber}`
-      if (color && this.uniformsWithPhong) {
+      if (colorNumber === 5) {
+        const object = this.scene.getObjectByName('jersey')
+        object.children[0].material.color.setHex(color)
+      } else if (color && this.uniformsWithPhong) {
         this.uniformsWithPhong[key].value = new THREE.Color(color)
       }
       colorNumber += 1
