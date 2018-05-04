@@ -2,17 +2,19 @@
  * ThreeJs config
  */
 
-export const jerseyTextures = {
+export const jerseyTextures = (design = 'default') => ({
   backPocket: './models/Tour5/branding.png',
-  color1: './models/Tour5/colorblock_1.png',
-  color2: './models/Tour5/colorblock_2.png',
-  color3: './models/Tour5/colorblock_3.png',
-  color4: './models/Tour5/colorblock_4.png',
-  color5: './models/Tour5/colorblock_5.png',
+  color1: `./models/Tour5/designs/${design}/colorblock_1.png`,
+  color2: `./models/Tour5/designs/${design}/colorblock_2.png`,
+  color3: `./models/Tour5/designs/${design}/colorblock_3.png`,
+  color4: `./models/Tour5/designs/${design}/colorblock_4.png`,
+  color5: `./models/Tour5/designs/${design}/colorblock_5.png`,
   flatlock: './models/Tour5/flatlock.png',
   label: './models/Red-J.jpg',
-  bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg'
-}
+  bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg',
+  front: './models/Tour5/bb-1-camfront_Front.png',
+  logo: './models/lizard.png'
+})
 
 export const viewPositions = {
   0: {
