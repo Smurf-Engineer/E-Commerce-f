@@ -55,9 +55,7 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { onDesignName } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
+    const { currentTarget: { value } } = evt
     evt.persist()
     onDesignName(value)
   }

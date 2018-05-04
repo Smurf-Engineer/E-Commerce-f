@@ -235,9 +235,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         demandMode: onDemand,
         banner: banner.image
       }
-      const {
-        data: { store }
-      } = await createStore({
+      const { data: { store } } = await createStore({
         variables: { teamStore }
       })
       const { shortId } = store as any
@@ -445,9 +443,7 @@ const CreateStoreEnhance = compose(
   withApollo,
   graphql(GetTeamStoreQuery, {
     options: (ownprops: OwnProps) => {
-      const {
-        location: { search }
-      } = ownprops
+      const { location: { search } } = ownprops
       const queryParams = queryString.parse(search)
       return {
         fetchPolicy: 'network-only',
