@@ -24,7 +24,7 @@ export const EmptyItems = styled.div`
 
 export const SideBar = styled.div`
   width: 20%;
-  padding-left: 32px;
+  padding-left: 15px;
   padding-right: 20px;
 `
 
@@ -115,7 +115,6 @@ export const TotalOrderItem = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-
   color: #5f6062;
   font-family: Avenir Next;
   font-size: 16px;
@@ -133,6 +132,7 @@ export const Title = styled.div`
   text-transform: uppercase;
   padding-top: 36px;
   padding-left: 36px;
+  padding-bottom: 36px;
   background-color: #fff;
 `
 
@@ -212,6 +212,11 @@ export const CollapseWrapper = styled.div`
   .ant-collapse-borderless .ant-collapse-item .ant-collapse-content {
     padding: 0 0 0 0;
   }
+`
+
+export const CartList = styled.ul`
+  padding: 0;
+  height: 100%;
 `
 
 export const menuStyle = { width: '100%', marginLeft: -24, paddingTop: 52 }

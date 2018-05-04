@@ -24,8 +24,10 @@ import {
   CheckoutButton,
   ZipCodeInputWrapper,
   CollapseWrapper,
-  CodeDivider
+  CodeDivider,
+  CartList
 } from './styledComponents'
+import ListItem from '../../components/CartListItem'
 
 const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
@@ -133,7 +135,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
             </ButtonWrapper>
           </SideBar>
           <Content>
-            <Container />
+            <CartList>
+              <ListItem formatMessage={formatMessage} key={1} />
+              <ListItem formatMessage={formatMessage} key={2} />
+              <ListItem formatMessage={formatMessage} key={3} />
+            </CartList>
           </Content>
         </Container>
       </Layout>
