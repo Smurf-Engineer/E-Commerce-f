@@ -82,10 +82,6 @@ void main() {
   vec4 vecColor2 = texture2D( color2, vUv );
   vec4 vecColor3 = texture2D( color3, vUv );
   vec4 vecColor4 = texture2D( color4, vUv );
-  vec4 vecColor5 = texture2D( color5, vUv ) + vec4(customColor5, 1.0);
-
-  vec2 logoPosition = vUv * vec2(positionX,positionY);
-  vec4 veclogo = texture2D( logo, logoPosition);
 
   // Color texture
   vec4 inputColor1 = getVec4Color(customColor1);
@@ -101,11 +97,11 @@ void main() {
   vec4 texelColor2 = mapTexelToLinear( colorizedOutput2 );
   vec4 texelColor3 = mapTexelToLinear( colorizedOutput3 );
   vec4 texelColor4 = mapTexelToLinear( colorizedOutput4 );
-  vec4 texelMap = mapTexelToLinear( vecColor5 );
-  vec4 texelLogo = mapTexelToLinear( veclogo );
 
   // Mix the textures
-  vec4 mixTextures = texelColor1 + texelColor2 + texelColor3 + texelColor4 + texelMap * (1.0 - (texelColor1.a + texelColor2.a + texelColor3.a + texelColor4.a));
+  float mixColorsA = texelColor1.a + texelColor2.a + texelColor3.a + texelColor4.a;
+  vec3 mixColors = (texelColor1.rgb * texelColor1.a) + (texelColor2.rgb * (1.0 - texelColor1.a)) + (texelColor3.rgb * (1.0 - texelColor2.a)) + (texelColor4.rgb * (1.0 - texelColor3.a));
+  vec4 mixTextures = vec4(mixColors, mixColorsA);
   diffuseColor *= mixTextures;
 
   #include <color_fragment>
