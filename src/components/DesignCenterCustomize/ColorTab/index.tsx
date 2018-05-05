@@ -4,7 +4,6 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Divider from 'antd/lib/divider'
-import Tooltip from 'antd/lib/tooltip/'
 import SwipeableViews from 'react-swipeable-views'
 import ColorButton from '../ColorButton'
 import ColorList from '../ColorList'

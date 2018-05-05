@@ -2,7 +2,6 @@
  * Styled Components - Created by cazarez on 02/05/18.
  */
 import styled from 'styled-components'
-import badge from 'antd/lib/badge'
 
 export const Container = styled.div``
 

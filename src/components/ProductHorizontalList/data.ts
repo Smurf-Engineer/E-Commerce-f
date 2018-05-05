@@ -11,6 +11,7 @@ export const productsQuery = gql`
       fullCount
       products {
         id
+        name
         yotpoId: yotpo_id
         type: name
         priceRange {
@@ -19,6 +20,7 @@ export const productsQuery = gql`
         description: short_description
         collections
         isTopProduct
+        customizable: design_center
         images: pictures {
           front: front_image
           back: back_image

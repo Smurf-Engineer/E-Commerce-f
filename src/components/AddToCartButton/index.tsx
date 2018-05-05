@@ -2,19 +2,18 @@
  * AddToCartButton Component - Created by cazarez on 02/05/18.
  */
 import * as React from 'react'
-import { compose, withApollo } from 'react-apollo'
-import { FormattedMessage } from 'react-intl'
-import { List } from 'immutable'
-import find from 'lodash/find'
+import { connect } from 'react-redux'
+import { compose } from 'react-apollo'
+import get from 'lodash/get'
 import Message from 'antd/lib/message'
-import messages from './messages'
+
 import {
   Container,
-  Text,
   StyledButton,
   ButtonContainer,
   CustomizeButton
 } from './styledComponents'
+import { getTotalItemsIncart } from '../MainLayout/actions'
 import { Product } from '../../types/common'
 
 type ItemDetailType = {
@@ -32,11 +31,12 @@ interface Props {
   renderForThumbnail?: boolean
   item: CartItems
   onClick: () => boolean
+  getTotalItemsIncart: () => void
 }
 
-class AddToCartButton extends React.PureComponent<Props, {}> {
+export class AddToCartButton extends React.PureComponent<Props, {}> {
   render() {
-    const { label, onClick, renderForThumbnail } = this.props
+    const { label, renderForThumbnail } = this.props
 
     const renderView = renderForThumbnail ? (
       <ButtonContainer>
@@ -47,34 +47,55 @@ class AddToCartButton extends React.PureComponent<Props, {}> {
         <StyledButton onClick={this.addToCart}>{label}</StyledButton>
       </Container>
     )
+
     return renderView
   }
 
   addToCart = () => {
-    const { item, onClick } = this.props
-    console.log('ADD TO CART ', item)
-    const candAddToStore = onClick()
-    console.log('item', item)
-    let myItems = []
-    if (typeof window !== 'undefined') {
-      if (candAddToStore) {
-        const cartJson = JSON.parse(localStorage.getItem('cart') as any)
-        console.log('JSON CART', cartJson)
-        const findItem = find(cartJson, {})
-        myItems.push(item)
-        localStorage.setItem('cart', JSON.stringify(myItems))
-        Message.success(
-          `${item.product.name} has been succesfully added to cart!`
-        )
+    const { onClick, renderForThumbnail } = this.props
+    if (renderForThumbnail) {
+      this.saveInLocalStorage()
+    } else {
+      const candAddToStore = onClick()
+      if (!candAddToStore) {
+        Message.warning(`Please select color, size and fit style!`)
+        return
       } else {
-        console.log('cannotADD')
+        this.saveInLocalStorage()
       }
     }
   }
 
-  saveInLocalStorage = () => {}
+  saveInLocalStorage = () => {
+    const {
+      item,
+      renderForThumbnail,
+      getTotalItemsIncart: countCartItems
+    } = this.props
+    console.log(item)
+    const productName = renderForThumbnail
+      ? get(item, 'name')
+      : item.product.name
+
+    if (typeof window !== 'undefined') {
+      const cartList = JSON.parse(localStorage.getItem('cart') as any)
+
+      if (cartList) {
+        cartList.push(item)
+        localStorage.setItem('cart', JSON.stringify(cartList))
+      } else {
+        const myItems = []
+        myItems.push(item)
+        localStorage.setItem('cart', JSON.stringify(myItems))
+      }
+      countCartItems()
+      Message.success(`${productName} has been succesfully added to cart!`)
+    }
+  }
 }
 
-const AddToCartEnhanced = compose(withApollo)(AddToCartButton)
+const AddToCartEnhanced = compose(connect(null, { getTotalItemsIncart }))(
+  AddToCartButton
+)
 
 export default AddToCartEnhanced

@@ -5,7 +5,8 @@ import {
   OPEN_QUICKVIEW_ACTION,
   OPEN_LOGIN_MODAL,
   SAVE_USER_TO_LOCAL,
-  LOGOUT
+  LOGOUT,
+  GET_TOTAL_CART_ITEMS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -16,7 +17,8 @@ export const initialState = fromJS({
   yotpoId: '',
   hideQuickViewSliderButtons: false,
   openLogin: false,
-  user: {}
+  user: {},
+  itemsInCart: 0
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -45,6 +47,14 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('user', {})
     }
+    case GET_TOTAL_CART_ITEMS: {
+      if (localStorage.getItem('cart')) {
+        const totalItems = JSON.parse(localStorage.getItem('cart') as string)
+        return state.set('itemsInCart', totalItems.length)
+      }
+      return state
+    }
+
     default:
       return state
   }

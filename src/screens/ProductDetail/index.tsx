@@ -11,8 +11,6 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 import map from 'lodash/map'
 import findIndex from 'lodash/findIndex'
-import Message from 'antd/lib/message'
-// import AnimateHeight from 'react-animate-height'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -22,7 +20,6 @@ import {
   TitleRow,
   Title,
   Subtitle,
-  // StyledInputNumber,
   ImagePreview,
   ProductData,
   AvailablePrices,
@@ -40,8 +37,6 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
-  // AddToCartRow,
-  // AddToCartButton,
   JakrooWidgetsTitle,
   Downloadtemplate,
   DownloadTemplateContainer,
@@ -97,7 +92,7 @@ interface Props extends RouteComponentProps<any> {
   itemToAddCart: any
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
-  setSelectedGenderAction: (selected: SelectedType) => void
+  setSelectedGenderAction: (id: number) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
@@ -128,7 +123,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       setLoadingModel,
-      itemToAddCart,
       data: { product }
     } = this.props
     const { formatMessage } = intl
@@ -363,16 +357,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                       {formatMessage(messages.customizeLabel)}
                     </StyledButton>
                   )}
-                  {/* <StyledButton onClick={this.toggleBuyNowOptions}>
-                    {formatMessage(messages.buyNowLabel)}
-                </StyledButton>*/}
                 </ButtonsRow>
-                {/* <AnimateHeight
-                  duration={500}
-                  height={showBuyNowSection ? 'auto' : 0}
-                >*/}
                 {isRetail && collectionSelection}
-                {/* </AnimateHeight>*/}
                 {productInfo}
               </ProductData>
               <FitInfo
@@ -407,13 +393,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       currentTarget: { id }
     } = evt
-    // setSelectedGenderAction(id)
+    setSelectedGenderAction(parseInt(id, 10))
   }
 
   handleSelectedSize = (index: number, size: string) => () => {
     const { setSelectedSizeAction } = this.props
-    // const { currentTarget } = evt
-    console.log(index, size)
 
     setSelectedSizeAction({ id: index, name: size })
   }
@@ -454,16 +438,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       data: { product },
       intl: { formatMessage }
     } = this.props
-    const itemDetail = {}
+
+    let details
+    if (product) {
+      details = {
+        fit: selectedFit,
+        size: selectedSize,
+        label: product.name,
+        quantity: 1
+      }
+    }
     const itemToAdd = Object.assign(
       {},
       { product },
       {
-        itemDetails: Object.assign(
-          {},
-          { fit: selectedFit },
-          { size: selectedSize }
-        )
+        itemDetails: details
       }
     )
     return (
