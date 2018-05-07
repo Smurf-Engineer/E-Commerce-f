@@ -2,6 +2,7 @@
  * AddToCartButton Component - Created by cazarez on 02/05/18.
  */
 import * as React from 'react'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
@@ -13,6 +14,7 @@ import {
   ButtonContainer,
   CustomizeButton
 } from './styledComponents'
+import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
 import { Product } from '../../types/common'
 
@@ -27,11 +29,13 @@ interface CartItems {
 }
 
 interface Props {
+  intl: InjectedIntl
   label: string
   renderForThumbnail?: boolean
   item: CartItems
   onClick: () => boolean
   getTotalItemsIncart: () => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export class AddToCartButton extends React.PureComponent<Props, {}> {
@@ -52,13 +56,13 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   }
 
   addToCart = () => {
-    const { onClick, renderForThumbnail } = this.props
+    const { onClick, renderForThumbnail, intl } = this.props
     if (renderForThumbnail) {
       this.saveInLocalStorage()
     } else {
       const candAddToStore = onClick()
       if (!candAddToStore) {
-        Message.warning(`Please select color, size and fit style!`)
+        Message.warning(intl.formatMessage(messages.validationMessage))
         return
       } else {
         this.saveInLocalStorage()
@@ -68,11 +72,12 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
   saveInLocalStorage = () => {
     const {
+      intl,
       item,
       renderForThumbnail,
       getTotalItemsIncart: countCartItems
     } = this.props
-    console.log(item)
+
     const productName = renderForThumbnail
       ? get(item, 'name')
       : item.product.name
@@ -89,13 +94,16 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
         localStorage.setItem('cart', JSON.stringify(myItems))
       }
       countCartItems()
-      Message.success(`${productName} has been succesfully added to cart!`)
+      Message.success(
+        intl.formatMessage(messages.successfulAddMessage, { name: productName })
+      )
     }
   }
 }
 
-const AddToCartEnhanced = compose(connect(null, { getTotalItemsIncart }))(
-  AddToCartButton
-)
+const AddToCartEnhanced = compose(
+  injectIntl,
+  connect(null, { getTotalItemsIncart })
+)(AddToCartButton)
 
 export default AddToCartEnhanced

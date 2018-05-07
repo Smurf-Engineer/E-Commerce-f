@@ -144,6 +144,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       label={'ADD TO CART'}
                       renderForThumbnail={true}
                       item={product}
+                      {...{ formatMessage }}
                     />
                   )
                 }

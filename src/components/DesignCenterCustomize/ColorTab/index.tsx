@@ -66,7 +66,6 @@ class ColorTab extends React.PureComponent<Props, State> {
     } = this.props
     const { isFirstPage } = this.state
     const colorButtons = colorsBlocks.map((label, index) => {
-      console.log('COLORBUTTONS MAP ', label, index, colors[index])
       return (
         <ColorButton
           key={index}
