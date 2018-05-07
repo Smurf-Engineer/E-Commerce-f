@@ -9,6 +9,7 @@ export const searchResultsQuery = gql`
       description: short_description
       collections
       isTopProduct
+      customizable: design_center
       images: pictures {
         front: front_image
         back: back_image

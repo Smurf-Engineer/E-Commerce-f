@@ -7,6 +7,7 @@ import { compose, graphql } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
+import AddToCartButton from '../AddToCartButton'
 import { productsQuery } from './data'
 import { ProductType, QueryProps, Filter } from '../../types/common'
 
@@ -52,42 +53,51 @@ export const ProductHorizontalList = ({
 
   const products: ProductType = data.products || ({} as ProductType)
 
-  const list = products.products.map(
-    (
-      {
-        id,
-        type,
-        images,
-        description,
-        priceRange,
-        isTopProduct,
-        collections,
-        yotpoId
-      },
-      key
-    ) => {
-      // TODO: filter by gender
-      const productImages = images ? images[0] : {}
-      return (
-        <ProductThumbnail
-          {...{
-            key,
-            id,
-            onPressCustomize,
-            onPressQuickView,
-            type,
-            description,
-            priceRange,
-            isTopProduct,
-            collections,
-            yotpoId
-          }}
-          images={productImages}
-          gender={genderId}
-        />
-      )
-    }
-  )
+  const list = products.products.map((product, key) => {
+    // TODO: filter by gender
+    const {
+      id,
+      type,
+      images,
+      description,
+      priceRange,
+      isTopProduct,
+      collections,
+      yotpoId,
+      customizable
+    } = product
+
+    const productImages = images ? images[0] : {}
+    return (
+      <ProductThumbnail
+        {...{
+          key,
+          id,
+          onPressCustomize,
+          onPressQuickView,
+          type,
+          description,
+          priceRange,
+          isTopProduct,
+          collections,
+          yotpoId
+        }}
+        images={productImages}
+        gender={genderId}
+        labelButton={
+          customizable ? (
+            'CUSTOMIZE'
+          ) : (
+            <AddToCartButton
+              label={'ADD TO CART'}
+              renderForThumbnail={true}
+              item={product}
+            />
+          )
+        }
+      />
+    )
+  })
   return (
     <Container {...{ width }}>
       {list}

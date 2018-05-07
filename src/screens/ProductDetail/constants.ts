@@ -11,3 +11,4 @@ export const SET_SELECTED_SIZE = `${namespace}/SET_SELECTED_SIZE`
 export const SET_SELECTED_FIT = `${namespace}/SET_SELECTED_FIT`
 
 export const LOADING_3D_MODEL = `${namespace}/LOADING_3D_MODEL`
+export const ADD_ITEM_TO_CART = `${namespace}/ADD_ITEM_TO_CART`

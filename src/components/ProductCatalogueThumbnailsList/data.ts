@@ -28,6 +28,9 @@ export const GetProductsQuery = gql`
         description: short_description
         collections
         isTopProduct
+        customizable: design_center
+        retailMen: men_retail
+        retailWomen: women_retail
         priceRange {
           quantity
           price
