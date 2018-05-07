@@ -13,7 +13,10 @@ import {
   ItemDetailsHeaderNameDetail,
   ItemDetailsHeaderPriceDetail,
   NameContainer,
-  PriceContainer
+  PriceContainer,
+  AddMore,
+  DeleteItem,
+  BottomDivider
 } from './styledComponents'
 import CartListItemTable from '../../components/CartListItemTable'
 
@@ -25,29 +28,34 @@ class CartListItem extends React.Component<Props, {}> {
   render() {
     const { formatMessage } = this.props
     return (
-      <Container>
-        <Image />
-        <ItemDetails>
-          <ItemDetailsHeader>
-            <NameContainer>
-              <ItemDetailsHeaderName>Product</ItemDetailsHeaderName>
-              <ItemDetailsHeaderNameDetail>
-                Subtitle
-              </ItemDetailsHeaderNameDetail>
-            </NameContainer>
-            <PriceContainer>
-              <ItemDetailsHeaderPrice>$50</ItemDetailsHeaderPrice>
-              <ItemDetailsHeaderPriceDetail>
-                Unit Price: $99
-              </ItemDetailsHeaderPriceDetail>
-              <ItemDetailsHeaderPriceDetail>
-                Add 1 more for $92
-              </ItemDetailsHeaderPriceDetail>
-            </PriceContainer>
-          </ItemDetailsHeader>
-          <CartListItemTable formatMessage={formatMessage} />
-        </ItemDetails>
-      </Container>
+      <ItemDetails>
+        <Container>
+          <Image />
+          <ItemDetails>
+            <ItemDetailsHeader>
+              <NameContainer>
+                <ItemDetailsHeaderName>Product</ItemDetailsHeaderName>
+                <ItemDetailsHeaderNameDetail>
+                  Subtitle
+                </ItemDetailsHeaderNameDetail>
+              </NameContainer>
+              <PriceContainer>
+                <ItemDetailsHeaderPrice>$50</ItemDetailsHeaderPrice>
+                <ItemDetailsHeaderPriceDetail>
+                  Unit Price: $99
+                </ItemDetailsHeaderPriceDetail>
+                <ItemDetailsHeaderPriceDetail>
+                  Add 1 more for $92
+                </ItemDetailsHeaderPriceDetail>
+              </PriceContainer>
+            </ItemDetailsHeader>
+            <CartListItemTable formatMessage={formatMessage} />
+            <AddMore>+ Add More</AddMore>
+            <DeleteItem>Delete</DeleteItem>
+          </ItemDetails>
+        </Container>
+        <BottomDivider />
+      </ItemDetails>
     )
   }
 }

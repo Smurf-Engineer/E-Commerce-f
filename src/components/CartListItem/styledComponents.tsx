@@ -8,7 +8,6 @@ export const Container = styled.li`
   display: flex;
   flex-direction: row;
   background-color: #fff;
-  height: 400px;
   margin-bottom: 10px;
   width: 100%;
 `
@@ -83,4 +82,35 @@ export const Image = styled.div`
   color: #000;
   height: 214.13px;
   width: 220px;
+`
+
+export const AddMore = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  text-align: right;
+  cursor: pointer;
+  padding-right: 16px;
+`
+
+export const DeleteItem = styled.div`
+  margin-top: 20px;
+  color: #e61737;
+  font-family: Avenir Next;
+  font-size: 12px;
+  letter-spacing: 0.09px;
+  line-height: 16px;
+  text-align: right;
+  cursor: pointer;
+  padding-right: 16px;
+`
+
+export const BottomDivider = styled.div`
+  box-sizing: border-box;
+  height: 2px;
+  background-color: #dcdcdc;
+  margin-right: 16px;
+  margin-bottom: 30px;
 `
