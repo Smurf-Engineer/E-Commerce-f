@@ -15,6 +15,7 @@ import {
   Results
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
+import AddToCartButton from '../AddToCartButton'
 
 interface Data extends QueryProps {
   productSearch: Product[]
@@ -54,20 +55,40 @@ export class SearchResults extends React.Component<Props, {}> {
     if (!loading && productSearch) {
       totalProducst = productSearch.length
       list = productSearch.map((product, key) => {
+        const {
+          id,
+          yotpoId,
+          description,
+          collections,
+          type,
+          isTopProduct,
+          customizable
+        } = product
         // TODO: filter by gender
         const productImages = product.images ? product.images[0] : {}
         return (
           <ProductThumbnail
             key={key}
             onPressCustomize={this.gotoCustomize}
-            id={product.id}
-            yotpoId={product.yotpoId}
-            description={product.description}
-            collections={product.collections}
+            id={id}
+            yotpoId={yotpoId}
+            description={description}
+            collections={collections}
             images={productImages}
-            type={product.type}
-            isTopProduct={product.isTopProduct}
+            type={type}
+            isTopProduct={isTopProduct}
             onPressQuickView={quickViewAction}
+            labelButton={
+              customizable ? (
+                'CUSTOMIZE'
+              ) : (
+                <AddToCartButton
+                  label={'ADD TO CART'}
+                  renderForThumbnail={true}
+                  item={product}
+                />
+              )
+            }
           />
         )
       })

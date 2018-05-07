@@ -4,7 +4,8 @@ import {
   OPEN_QUICKVIEW_ACTION,
   OPEN_LOGIN_MODAL,
   LOGOUT,
-  SAVE_USER_TO_LOCAL
+  SAVE_USER_TO_LOCAL,
+  GET_TOTAL_CART_ITEMS
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -39,4 +40,8 @@ export const saveUserToLocal = (user: object): AnyAction => ({
 
 export const logoutAction = (): AnyAction => ({
   type: LOGOUT
+})
+
+export const getTotalItemsIncart = (): AnyAction => ({
+  type: GET_TOTAL_CART_ITEMS
 })

@@ -96,8 +96,10 @@ class Render3D extends PureComponent {
       bumpMap: {}
     }
 
+    const texturesConfig = jerseyTextures()
+
     for (const key in textures) {
-      textures[key] = loader.load(jerseyTextures[key])
+      textures[key] = loader.load(texturesConfig[key])
       if (key !== 'flatlock') {
         textures[key].minFilter = THREE.LinearFilter
       }
@@ -150,8 +152,7 @@ class Render3D extends PureComponent {
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock,
-            color: 0xffffff
+            map: textures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -207,6 +208,7 @@ class Render3D extends PureComponent {
             fragmentShader: fragmentShader,
             side: THREE.FrontSide,
             defines: defines,
+            transparent: true,
             lights: true
           })
 
@@ -218,6 +220,14 @@ class Render3D extends PureComponent {
             side: THREE.BackSide
           })
 
+          const frontMaterial = new THREE.MeshPhongMaterial({
+            map: textures.color5,
+            side: THREE.FrontSide,
+            bumpMap: textures.bumpMap,
+            color: styleColors[4],
+            transparent: true
+          })
+
           /* Texture materials */
           const labelMaterial = new THREE.MeshPhongMaterial({
             map: textures.label
@@ -227,12 +237,15 @@ class Render3D extends PureComponent {
           })
 
           /* Assign materials */
-          const cloneObject = object.children[0].clone()
-          object.add(cloneObject)
+          const cloneObjectInside = object.children[0].clone()
+          const cloneObjectFront = object.children[0].clone()
+          object.add(cloneObjectInside)
+          object.add(cloneObjectFront)
 
           /* jersey */
           object.children[0].material = insideMaterial
-          object.children[24].material = shaderMaterial
+          object.children[24].material = frontMaterial
+          object.children[25].material = shaderMaterial
           /* flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
@@ -241,7 +254,6 @@ class Render3D extends PureComponent {
           object.children[17].material = labelMaterial
           /* back pocket */
           object.children[22].material = backPocketMaterial
-
           /* Object Conig */
           object.position.y = -30
           object.name = 'jersey'
@@ -311,7 +323,10 @@ class Render3D extends PureComponent {
     let colorNumber = 1
     colors.forEach(color => {
       let key = `customColor${colorNumber}`
-      if (color && this.uniformsWithPhong) {
+      if (colorNumber === 5) {
+        const object = this.scene.getObjectByName('jersey')
+        object.children[24].material.color.set(color)
+      } else if (color && this.uniformsWithPhong) {
         this.uniformsWithPhong[key].value = new THREE.Color(color)
       }
       colorNumber += 1
@@ -392,7 +407,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/png')
+        const dataUrl = this.renderer.domElement.toDataURL('image/png', 0.1)
         this.saveDesign(dataUrl)
       }, 200)
     )

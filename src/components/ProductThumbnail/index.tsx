@@ -23,7 +23,7 @@ interface Props {
   image?: string
   description?: string
   priceRange?: PriceRange[]
-  labelButton?: string
+  labelButton?: string | React.ReactNode
   isTopProduct: boolean
   collections?: number
   footer?: React.ReactNode
