@@ -145,7 +145,8 @@ class Render3D extends PureComponent {
         'Tour.obj',
         object => {
           onLoadModel(false)
-          this.setState({ objectChilds: object.children.length })
+          const objectChilds = object.children.length
+          this.setState({ objectChilds })
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
@@ -176,61 +177,62 @@ class Render3D extends PureComponent {
           object.children[0].material = insideMaterial
 
           // Setup the texture layers
-          const areasLayers = loadedAreas.map((area, index) => {
-            const layerMaterial = object.children[0].clone()
-            layerMaterial.material = new THREE.MeshPhongMaterial({
-              map: loadedAreas[index],
-              side: THREE.FrontSide,
-              bumpMap: loadedTextures.bumpMap,
-              color: styleColors[index]
-            })
-            return layerMaterial
-          })
+          const areasLayers = loadedAreas.map((area, index) =>
+            object.children[0].clone()
+          )
           areasLayers.forEach(layer => object.add(layer))
 
-          // const texture1 = new THREE.MeshPhongMaterial({
-          //   map: loadedAreas[0],
-          //   side: THREE.FrontSide,
-          //   bumpMap: loadedTextures.bumpMap,
-          //   color: styleColors[0]
-          // })
+          // TODO: Refactor into a loop
+          const texture1 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[0],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[0]
+          })
 
-          // const texture2 = new THREE.MeshPhongMaterial({
-          //   map: loadedAreas[1],
-          //   side: THREE.FrontSide,
-          //   bumpMap: loadedTextures.bumpMap,
-          //   color: styleColors[1],
-          //   transparent: true
-          // })
+          const texture2 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[1],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[1],
+            transparent: true
+          })
 
-          // const texture3 = new THREE.MeshPhongMaterial({
-          //   map: loadedAreas[2],
-          //   side: THREE.FrontSide,
-          //   bumpMap: loadedTextures.bumpMap,
-          //   color: styleColors[2],
-          //   transparent: true
-          // })
+          const texture3 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[2],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[2],
+            transparent: true
+          })
 
-          // const texture4 = new THREE.MeshPhongMaterial({
-          //   map: loadedAreas[3],
-          //   side: THREE.FrontSide,
-          //   bumpMap: loadedTextures.bumpMap,
-          //   color: styleColors[3],
-          //   transparent: true
-          // })
+          const texture4 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[3],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[3],
+            transparent: true
+          })
 
-          // const texture5 = new THREE.MeshPhongMaterial({
-          //   map: loadedAreas[4],
-          //   side: THREE.FrontSide,
-          //   bumpMap: loadedTextures.bumpMap,
-          //   color: styleColors[4],
-          //   transparent: true
-          // })
+          const texture5 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[4],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[4],
+            transparent: true
+          })
+
+          object.children[24].material = texture1
+          object.children[25].material = texture2
+          object.children[26].material = texture3
+          object.children[27].material = texture4
+          object.children[28].material = texture5
 
           /* Texture materials */
           const labelMaterial = new THREE.MeshPhongMaterial({
             map: loadedTextures.label
           })
+
           const backPocketMaterial = new THREE.MeshPhongMaterial({
             map: loadedTextures.backPocket
           })
