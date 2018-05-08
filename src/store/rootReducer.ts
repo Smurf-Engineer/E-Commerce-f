@@ -4,6 +4,7 @@
 import { fromJS } from 'immutable'
 import { combineReducers } from 'redux-immutable'
 import fitWidget from '../screens/FitWidget/reducer'
+import designerTool from '../screens/DesignerTool/reducer'
 import designs from '../screens/Designs/reducer'
 import productDetail from '../screens/ProductDetail/reducer'
 import productCatalog from '../screens/ProductCatalogue/reducer'
@@ -26,6 +27,7 @@ import fitInfo from '../components/FitInfo/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  designerTool: any
   storeFront: any
   createStore: any
   searchTeamstores: any
@@ -106,6 +108,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  designerTool,
   storeFront,
   createStore,
   searchTeamstores,
