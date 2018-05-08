@@ -4,8 +4,6 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import vertexShader from './vertex'
-import fragmentShader from './fragment'
 import {
   Container,
   Render,
@@ -46,7 +44,8 @@ class Render3D extends PureComponent {
     currentView: 2,
     currentModel: 0,
     zoomValue: 0,
-    progress: 0
+    progress: 0,
+    objectChilds: 0
   }
 
   componentWillReceiveProps(nextProps) {
@@ -84,26 +83,22 @@ class Render3D extends PureComponent {
     /* Textures */
     const loader = new THREE.TextureLoader()
 
-    const textures = {
-      backPocket: {},
-      color1: {},
-      color2: {},
-      color3: {},
-      color4: {},
-      color5: {},
-      flatlock: {},
-      label: {},
-      bumpMap: {}
-    }
+    const { areas, textures } = jerseyTextures() || {}
 
-    const texturesConfig = jerseyTextures()
+    const loadedTextures = {}
 
     for (const key in textures) {
-      textures[key] = loader.load(texturesConfig[key])
+      loadedTextures[key] = loader.load(textures[key])
       if (key !== 'flatlock') {
-        textures[key].minFilter = THREE.LinearFilter
+        loadedTextures[key].minFilter = THREE.LinearFilter
       }
     }
+
+    const loadedAreas = areas.map(areaUri => {
+      const areaTexture = loader.load(areaUri)
+      areaTexture.minFilter = THREE.LinearFilter
+      return areaTexture
+    })
 
     /* Camera */
     const camera = new THREE.PerspectiveCamera(
@@ -126,7 +121,7 @@ class Render3D extends PureComponent {
     /* Scene and light */
     const scene = new THREE.Scene()
     const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.78)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
     directionalLight.position.copy(camera.position)
 
     const mtlLoader = new THREE.MTLLoader()
@@ -148,71 +143,15 @@ class Render3D extends PureComponent {
         'Tour.obj',
         object => {
           onLoadModel(false)
-
+          const objectChilds = object.children.length
+          this.setState({ objectChilds })
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock
+            map: loadedTextures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
-
-          const customColors = {}
-          let i = 0
-          for (const color of styleColors) {
-            customColors[`customColor${i + 1}`] = {
-              type: 'c',
-              value: new THREE.Color(color)
-            }
-            i += 1
-          }
-
-          const uniforms = {
-            ...customColors,
-            positionX: { type: 'f', value: 1.0 },
-            positionY: { type: 'f', value: 1.0 },
-            color1: {},
-            color2: {},
-            color3: {},
-            color4: {},
-            color5: {},
-            logo: {}
-          }
-
-          const phongShader = THREE.ShaderLib.phong
-          const mergeUniforms = THREE.UniformsUtils.merge([
-            phongShader.uniforms,
-            uniforms
-          ])
-
-          const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-          uniformsWithPhong.color1.value = textures.color1
-          uniformsWithPhong.color2.value = textures.color2
-          uniformsWithPhong.color3.value = textures.color3
-          uniformsWithPhong.color4.value = textures.color4
-          uniformsWithPhong.color5.value = textures.color5
-          uniformsWithPhong.bumpMap.value = textures.bumpMap
-          uniformsWithPhong.bumpMapScale = 0.45
-          uniformsWithPhong.shininess.value = 15
-
-          this.uniformsWithPhong = uniformsWithPhong
-
-          const defines = {}
-          defines['USE_MAP'] = ''
-          defines['USE_COLOR'] = ''
-          defines['USE_BUMPMAP'] = ''
-
-          const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniformsWithPhong,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            side: THREE.FrontSide,
-            defines: defines,
-            transparent: true,
-            lights: true
-          })
-
-          shaderMaterial.extensions.derivatives = true
 
           // Inside material
           const insideMaterial = new THREE.MeshPhongMaterial({
@@ -220,32 +159,72 @@ class Render3D extends PureComponent {
             side: THREE.BackSide
           })
 
-          const frontMaterial = new THREE.MeshPhongMaterial({
-            map: textures.color5,
+          /* Assign materials */
+
+          /* jersey */
+          object.children[0].material = insideMaterial
+
+          // Setup the texture layers
+          const areasLayers = loadedAreas.map((area, index) =>
+            object.children[0].clone()
+          )
+          areasLayers.forEach(layer => object.add(layer))
+
+          // TODO: Refactor into a loop
+          const texture1 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[0],
             side: THREE.FrontSide,
-            bumpMap: textures.bumpMap,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[0]
+          })
+
+          const texture2 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[1],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[1],
+            transparent: true
+          })
+
+          const texture3 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[2],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[2],
+            transparent: true
+          })
+
+          const texture4 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[3],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            color: styleColors[3],
+            transparent: true
+          })
+
+          const texture5 = new THREE.MeshPhongMaterial({
+            map: loadedAreas[4],
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
             color: styleColors[4],
             transparent: true
           })
 
+          object.children[24].material = texture1
+          object.children[25].material = texture2
+          object.children[26].material = texture3
+          object.children[27].material = texture4
+          object.children[28].material = texture5
+
           /* Texture materials */
           const labelMaterial = new THREE.MeshPhongMaterial({
-            map: textures.label
+            map: loadedTextures.label
           })
+
           const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: textures.backPocket
+            map: loadedTextures.backPocket
           })
 
-          /* Assign materials */
-          const cloneObjectInside = object.children[0].clone()
-          const cloneObjectFront = object.children[0].clone()
-          object.add(cloneObjectInside)
-          object.add(cloneObjectFront)
-
-          /* jersey */
-          object.children[0].material = insideMaterial
-          object.children[24].material = frontMaterial
-          object.children[25].material = shaderMaterial
           /* flatlock */
           for (let index = 1; index <= 10; index++) {
             object.children[index].material = flatlockMaterial
@@ -320,28 +299,23 @@ class Render3D extends PureComponent {
   }
 
   setupColors = colors => {
-    let colorNumber = 1
-    colors.forEach(color => {
-      let key = `customColor${colorNumber}`
-      if (colorNumber === 5) {
-        const object = this.scene.getObjectByName('jersey')
-        object.children[24].material.color.set(color)
-      } else if (color && this.uniformsWithPhong) {
-        this.uniformsWithPhong[key].value = new THREE.Color(color)
+    const { objectChilds } = this.state
+    const object = this.scene.getObjectByName('jersey')
+    colors.forEach((color, index) => {
+      if (object.children[objectChilds + index]) {
+        object.children[objectChilds + index].material.color.set(color)
       }
-      colorNumber += 1
     })
   }
 
   setupHoverColor = colorBlockHovered => {
+    const { objectChilds } = this.state
     const { colors } = this.props
-    let key = `customColor${colorBlockHovered + 1}`
-    if (
-      colorBlockHovered >= 0 &&
-      this.uniformsWithPhong &&
-      this.uniformsWithPhong[key]
-    ) {
-      this.uniformsWithPhong[key].value = new THREE.Color('#f2f2f2')
+    if (colorBlockHovered >= 0) {
+      const object = this.scene.getObjectByName('jersey')
+      object.children[objectChilds + colorBlockHovered].material.color.set(
+        '#f2f2f2'
+      )
     } else {
       this.setupColors(colors)
     }
