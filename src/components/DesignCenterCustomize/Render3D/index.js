@@ -4,8 +4,6 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import vertexShader from './vertex'
-import fragmentShader from './fragment'
 import {
   Container,
   Render,
@@ -85,7 +83,7 @@ class Render3D extends PureComponent {
     /* Textures */
     const loader = new THREE.TextureLoader()
 
-    const { areas, textures } = jerseyTextures('C03-D01') || {}
+    const { areas, textures } = jerseyTextures() || {}
 
     const loadedTextures = {}
 
@@ -154,16 +152,6 @@ class Render3D extends PureComponent {
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
-
-          const customColors = {}
-          let i = 0
-          for (const color of styleColors) {
-            customColors[`customColor${i + 1}`] = {
-              type: 'c',
-              value: new THREE.Color(color)
-            }
-            i += 1
-          }
 
           // Inside material
           const insideMaterial = new THREE.MeshPhongMaterial({
