@@ -19,30 +19,38 @@ import {
   BottomDivider
 } from './styledComponents'
 import CartListItemTable from '../../components/CartListItemTable'
+import { PriceRange } from '../../types/common'
+import messages from '../ProductInfo/messages'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  title: string
+  description: string
+  price: PriceRange
+  image: string
 }
 
 class CartListItem extends React.Component<Props, {}> {
   render() {
-    const { formatMessage } = this.props
+    const { formatMessage, title, description, price, image } = this.props
     return (
       <ItemDetails>
         <Container>
-          <Image />
+          <Image src={image} />
           <ItemDetails>
             <ItemDetailsHeader>
               <NameContainer>
-                <ItemDetailsHeaderName>Product</ItemDetailsHeaderName>
+                <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
                 <ItemDetailsHeaderNameDetail>
-                  Subtitle
+                  {description}
                 </ItemDetailsHeaderNameDetail>
               </NameContainer>
               <PriceContainer>
-                <ItemDetailsHeaderPrice>$50</ItemDetailsHeaderPrice>
+                <ItemDetailsHeaderPrice>{`$${
+                  price.price
+                }`}</ItemDetailsHeaderPrice>
                 <ItemDetailsHeaderPriceDetail>
-                  Unit Price: $99
+                  {`${formatMessage(messages.unitPrice)} $${price.price}`}
                 </ItemDetailsHeaderPriceDetail>
                 <ItemDetailsHeaderPriceDetail>
                   Add 1 more for $92

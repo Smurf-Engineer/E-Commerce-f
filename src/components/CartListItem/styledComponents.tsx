@@ -76,12 +76,22 @@ export const ItemDetailsHeaderPriceDetail = styled.div`
 
 export const ItemDetailsContent = styled.div``
 
-export const Image = styled.div`
-  height: 50px;
-  background-color: #000;
-  color: #000;
-  height: 214.13px;
-  width: 220px;
+export const Image = styled.img`
+  user-select: none;
+  height: 200.29px;
+  width: 180.44px;
+  background-color: #f1f4f5;
+
+  @media (min-width: 321px) and (max-width: 480px) {
+    height: 100%;
+    width: 100%;
+  }
+
+  @media only screen and (max-width: 320px) {
+    height: 120px;
+    width: 100%;
+    margin: 0;
+  }
 `
 
 export const AddMore = styled.div`

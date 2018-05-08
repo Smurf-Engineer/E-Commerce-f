@@ -106,53 +106,6 @@ class CartListItemTable extends React.Component<Props, {}> {
             <DeleteItem>—</DeleteItem>
           </Cell>
         </Row>
-        <Row>
-          <Cell>
-            <Select
-              style={{ width: '100%' }}
-              showSearch={false}
-              placeholder="Select gender"
-              optionFilterProp="children"
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
-          </Cell>
-          <Cell>
-            <Select
-              style={{ width: '100%' }}
-              showSearch={false}
-              placeholder="Select size"
-              optionFilterProp="children"
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
-          </Cell>
-          <Cell>
-            <Select
-              style={{ width: '100%' }}
-              showSearch={false}
-              placeholder="Select fit"
-              optionFilterProp="children"
-            >
-              <Option value="jack">Jack</Option>
-              <Option value="lucy">Lucy</Option>
-              <Option value="tom">Tom</Option>
-            </Select>
-          </Cell>
-          <Cell>
-            <Input style={{ width: '100%' }} placeholder="Label" />
-          </Cell>
-          <Cell>
-            <InputNumber min={1} max={10} defaultValue={1} />
-          </Cell>
-          <Cell width={10}>
-            <DeleteItem>—</DeleteItem>
-          </Cell>
-        </Row>
       </Table>
     )
   }
