@@ -74,7 +74,7 @@ class Render3D extends PureComponent {
     /* Textures */
     const loader = new THREE.TextureLoader()
 
-    const { areas, textures } = jerseyTextures() || {}
+    const { areas, textures } = jerseyTextures('C02-D01') || {}
 
     const loadedTextures = {}
 
@@ -121,18 +121,19 @@ class Render3D extends PureComponent {
     /* Object and MTL load */
 
     mtlLoader.setPath('./models/')
-    mtlLoader.load('Tour.mtl', materials => {
+    mtlLoader.load('Tour_v2.mtl', materials => {
       onLoadModel(true)
       materials.preload()
       const objLoader = new THREE.OBJLoader()
       objLoader.setMaterials(materials)
       objLoader.setPath('./models/')
       objLoader.load(
-        'Tour.obj',
+        'Tour_v2.obj',
         object => {
           onLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
+
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
@@ -144,20 +145,25 @@ class Render3D extends PureComponent {
 
           // Inside material
           const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
             side: THREE.BackSide
           })
 
           /* Assign materials */
 
-          /* jersey */
-          object.children[0].material = insideMaterial
-
           // Setup the texture layers
           const areasLayers = loadedAreas.map((area, index) =>
-            object.children[0].clone()
+            object.children[5].clone()
           )
           areasLayers.forEach(layer => object.add(layer))
+
+          const clonedObject = object.children[5].clone()
+          object.add(clonedObject)
+          const clonedObject2 = object.children[5].clone()
+          object.add(clonedObject2)
+          const clonedObject3 = object.children[5].clone()
+          object.add(clonedObject3)
+          const clonedObject4 = object.children[5].clone()
+          object.add(clonedObject4)
 
           // TODO: Refactor into a loop
           const texture1 = new THREE.MeshPhongMaterial({
@@ -199,29 +205,14 @@ class Render3D extends PureComponent {
             transparent: true
           })
 
-          object.children[24].material = texture1
+          /* Jersey label */
+          object.children[4].material.color.set('#ffffff')
+          object.children[5].material = texture1
           object.children[25].material = texture2
           object.children[26].material = texture3
           object.children[27].material = texture4
           object.children[28].material = texture5
 
-          /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.label
-          })
-
-          const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.backPocket
-          })
-
-          /* flatlock */
-          for (let index = 1; index <= 10; index++) {
-            object.children[index].material = flatlockMaterial
-          }
-          /* Jersey label */
-          object.children[17].material = labelMaterial
-          /* back pocket */
-          object.children[22].material = backPocketMaterial
           /* Object Conig */
           object.position.y = -40
           object.name = 'jersey'
@@ -238,6 +229,10 @@ class Render3D extends PureComponent {
     this.loader = mtlLoader
     this.controls = controls
     this.directionalLight = directionalLight
+
+    if (!window.scene) {
+      window.scene = this.scene
+    }
 
     this.container.appendChild(this.renderer.domElement)
     this.start()

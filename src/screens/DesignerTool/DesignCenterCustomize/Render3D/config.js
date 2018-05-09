@@ -12,10 +12,9 @@ export const jerseyTextures = (design = 'default') => ({
   ],
   textures: {
     backPocket: './models/Tour5/branding.png',
-    flatlock: './models/Tour5/flatlock.png',
-    label: './models/Red-J.jpg',
-    bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg',
-    front: './models/Tour5/bb-1-camfront_Front.png'
+    flatlock: './models/image/flatlock.tif',
+    label: './models/images/Red-J.jpg',
+    bumpMap: './models/images/Tour_v2-BumpMap.jpg'
   }
 })
 
