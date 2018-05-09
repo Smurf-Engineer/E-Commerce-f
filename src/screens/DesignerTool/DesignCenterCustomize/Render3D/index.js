@@ -58,7 +58,7 @@ class Render3D extends PureComponent {
     const { onLoadModel, styleColors, files } = this.props
     const { clientWidth, clientHeight } = this.container
 
-    if (!files.length) {
+    if (files.length) {
       return
     }
 
