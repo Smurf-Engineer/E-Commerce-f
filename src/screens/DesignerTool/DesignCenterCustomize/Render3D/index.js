@@ -55,13 +55,18 @@ class Render3D extends PureComponent {
   // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
-    const { onLoadModel, styleColors } = this.props
+    const { onLoadModel, styleColors, files } = this.props
     const { clientWidth, clientHeight } = this.container
+
+    if (!files.length) {
+      return
+    }
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       preserveDrawingBuffer: true
     })
+
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
@@ -131,7 +136,8 @@ class Render3D extends PureComponent {
           // Materials
           /* Object material */
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.flatlock
+            map: loadedTextures.flatlock,
+            transparent: true
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -372,7 +378,7 @@ class Render3D extends PureComponent {
 
   render() {
     const { progress } = this.state
-    const { loadingModel } = this.props
+    const { loadingModel, files } = this.props
 
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">

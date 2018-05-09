@@ -32,7 +32,8 @@ export const initialState = fromJS({
   checkedTerms: false,
   savedDesignId: '',
   designBase64: '',
-  saveDesignLoading: false
+  saveDesignLoading: false,
+  files: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {

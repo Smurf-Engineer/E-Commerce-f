@@ -4,6 +4,7 @@
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
+import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
@@ -34,7 +35,7 @@ const Tabs = ({
     <Container>
       <AntdTabs defaultActiveKey="1" size="large">
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="1">
-          Content of Tab Pane 3
+          <UploadTab />
         </TabPane>
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="4">
           <ColorTab

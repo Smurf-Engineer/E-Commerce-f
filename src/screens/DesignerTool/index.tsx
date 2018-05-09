@@ -14,6 +14,7 @@ interface Props {
   colorBlock: number
   colorBlockHovered: number
   loadingModel: boolean
+  files: string[]
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -32,7 +33,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       loadingModel,
       setColorAction,
       setColorBlockAction,
-      setHoverColorBlockAction
+      setHoverColorBlockAction,
+      files
     } = this.props
     return (
       <Container>
@@ -42,7 +44,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             styleColors,
             colorBlock,
             colorBlockHovered,
-            loadingModel
+            loadingModel,
+            files
           }}
           onLoadModel={setLoadingAction}
           onSelectColorBlock={setColorBlockAction}

@@ -11,6 +11,7 @@ interface Props {
   colorBlockHovered: number
   colors: string[]
   styleColors: string[]
+  files: string[]
   loadingModel: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -27,7 +28,8 @@ const DesignCenterCustomize = ({
   styleColors,
   loadingModel,
   onLoadModel,
-  onHoverColorBlock
+  onHoverColorBlock,
+  files
 }: Props) => {
   return (
     <Container>
@@ -48,7 +50,8 @@ const DesignCenterCustomize = ({
           colorBlockHovered,
           styleColors,
           onLoadModel,
-          loadingModel
+          loadingModel,
+          files
         }}
       />
     </Container>
