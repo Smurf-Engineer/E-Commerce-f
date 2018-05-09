@@ -4,3 +4,5 @@
 const namespace = 'src/ShoppingCartPage'
 
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
+
+export const SET_ITEMS_ACTION = `${namespace}/SET_ITEMS_ACTION`

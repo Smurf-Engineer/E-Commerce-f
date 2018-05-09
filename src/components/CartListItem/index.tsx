@@ -46,20 +46,22 @@ class CartListItem extends React.Component<Props, {}> {
                 </ItemDetailsHeaderNameDetail>
               </NameContainer>
               <PriceContainer>
-                <ItemDetailsHeaderPrice>{`$${
-                  price.price
-                }`}</ItemDetailsHeaderPrice>
+                <ItemDetailsHeaderPrice>{`$${price.price ||
+                  0}`}</ItemDetailsHeaderPrice>
                 <ItemDetailsHeaderPriceDetail>
-                  {`${formatMessage(messages.unitPrice)} $${price.price}`}
+                  {`${formatMessage(messages.unitPrice)} $${price.price || 0}`}
                 </ItemDetailsHeaderPriceDetail>
                 <ItemDetailsHeaderPriceDetail>
-                  Add 1 more for $92
+                  {`${formatMessage(messages.add)} 1 ${formatMessage(
+                    messages.moreFor
+                  )} $${price.price || 0}`}
+                  {/* Add 1 more for $92 */}
                 </ItemDetailsHeaderPriceDetail>
               </PriceContainer>
             </ItemDetailsHeader>
             <CartListItemTable formatMessage={formatMessage} />
-            <AddMore>+ Add More</AddMore>
-            <DeleteItem>Delete</DeleteItem>
+            <AddMore>{formatMessage(messages.addMore)}</AddMore>
+            <DeleteItem>{formatMessage(messages.delete)}</DeleteItem>
           </ItemDetails>
         </Container>
         <BottomDivider />

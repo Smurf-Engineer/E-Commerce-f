@@ -40,6 +40,8 @@ const Panel = Collapse.Panel
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
+  cart: Product[]
+  setItemsAction: (items: Product[]) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -50,22 +52,33 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
   handleCheckout = () => {}
 
+  componentDidMount() {
+    if (typeof window !== 'undefined') {
+      const { setItemsAction } = this.props
+
+      const cartList = JSON.parse(localStorage.getItem('cart') as any)
+      if (cartList) {
+        setItemsAction(cartList)
+      }
+    }
+  }
+
   render() {
-    const { intl, history } = this.props
+    const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
 
-    let cartList = [] as Product[]
+    // let cartList = [] as Product[]
 
-    if (typeof window !== 'undefined') {
-      cartList = JSON.parse(localStorage.getItem('cart') as any)
-    }
+    // if (typeof window !== 'undefined') {
+    //   cartList = JSON.parse(localStorage.getItem('cart') as any)
+    // }
 
-    console.log('------------cartList---------------')
-    console.log(cartList)
+    console.log('------------cart reducer---------------')
+    console.log(cart)
     console.log('---------------------------')
 
-    const renderList = cartList
-      ? cartList.map((product, index) => {
+    const renderList = cart
+      ? cart.map((product, index) => {
           return (
             <ListItem
               formatMessage={formatMessage}
@@ -81,100 +94,105 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
     return (
       <Layout {...{ history, intl }}>
-        <Title>
-          <FormattedMessage {...messages.title} />
-        </Title>
-        {!cartList ? (
-          <EmptyContainer>
-            <EmptyItems>
-              <EmptyTitle>
-                <FormattedMessage {...messages.emptyTitle} />
-              </EmptyTitle>
-              <EmptyDescription>
-                <FormattedMessage {...messages.emptyMessage} />
-              </EmptyDescription>
-              <StyledEmptyButton type="danger" onClick={this.handleClick}>
-                {formatMessage(messages.browse)}
-              </StyledEmptyButton>
-            </EmptyItems>
-          </EmptyContainer>
-        ) : (
-          <Container>
-            <SideBar>
-              <SummaryTitle>
-                <FormattedMessage {...messages.summaryTitle} />
-              </SummaryTitle>
-              <OrderItem>
-                <FormattedMessage {...messages.subtotal} />
-                <div>{`USD$0`}</div>
-              </OrderItem>
-              <Divider />
-              <OrderItem>
-                <FormattedMessage {...messages.taxes} />
-                <div>{`USD$0`}</div>
-              </OrderItem>
-              <OrderItem>
-                <FormattedMessage {...messages.shipping} />
-                <div>{`USD$0`}</div>
-              </OrderItem>
-              <ZipCodeInputWrapper>
-                <ShareLinkInput
-                  id="url"
-                  placeholder={formatMessage(messages.zipCodePlaceholder)}
-                  enterButton={formatMessage(messages.estimate)}
-                  size="default"
-                  maxLength="5"
-                  // value={designURL}
-                  // onSearch={this.copyToClipboard}
-                  onChange={() => {}}
-                />
-              </ZipCodeInputWrapper>
-              <CodeDivider />
-              <CollapseWrapper>
-                <Collapse bordered={false}>
-                  <Panel header={formatMessage(messages.discountCode)} key="1">
-                    <ZipCodeInputWrapper>
-                      <ShareLinkInput
-                        id="url"
-                        enterButton={formatMessage(messages.apply)}
-                        placeholder={formatMessage(
-                          messages.promoCodePlaceholder
-                        )}
-                        size="default"
-                        // value={designURL}
-                        // onSearch={this.copyToClipboard}
-                        onChange={() => {}}
-                      />
-                    </ZipCodeInputWrapper>
-                    <ZipCodeInputWrapper>
-                      <ShareLinkInput
-                        id="url"
-                        enterButton={formatMessage(messages.apply)}
-                        placeholder={formatMessage(messages.giftPlaceholder)}
-                        size="default"
-                        // value={designURL}
-                        // onSearch={this.copyToClipboard}
-                        onChange={() => {}}
-                      />
-                    </ZipCodeInputWrapper>
-                  </Panel>
-                </Collapse>
-              </CollapseWrapper>
-              <TotalOrderItem>
-                <FormattedMessage {...messages.total} />
-                <div>{`USD$0`}</div>
-              </TotalOrderItem>
-              <ButtonWrapper>
-                <CheckoutButton type="primary" onClick={this.handleCheckout}>
-                  <FormattedMessage {...messages.checkout} />
-                </CheckoutButton>
-              </ButtonWrapper>
-            </SideBar>
-            <Content>
-              <CartList>{renderList}</CartList>
-            </Content>
-          </Container>
-        )}
+        <div>
+          <Title>
+            <FormattedMessage {...messages.title} />
+          </Title>
+          {!cart ? (
+            <EmptyContainer>
+              <EmptyItems>
+                <EmptyTitle>
+                  <FormattedMessage {...messages.emptyTitle} />
+                </EmptyTitle>
+                <EmptyDescription>
+                  <FormattedMessage {...messages.emptyMessage} />
+                </EmptyDescription>
+                <StyledEmptyButton type="danger" onClick={this.handleClick}>
+                  {formatMessage(messages.browse)}
+                </StyledEmptyButton>
+              </EmptyItems>
+            </EmptyContainer>
+          ) : (
+            <Container>
+              <SideBar>
+                <SummaryTitle>
+                  <FormattedMessage {...messages.summaryTitle} />
+                </SummaryTitle>
+                <OrderItem>
+                  <FormattedMessage {...messages.subtotal} />
+                  <div>{`USD$0`}</div>
+                </OrderItem>
+                <Divider />
+                <OrderItem>
+                  <FormattedMessage {...messages.taxes} />
+                  <div>{`USD$0`}</div>
+                </OrderItem>
+                <OrderItem>
+                  <FormattedMessage {...messages.shipping} />
+                  <div>{`USD$0`}</div>
+                </OrderItem>
+                <ZipCodeInputWrapper>
+                  <ShareLinkInput
+                    id="url"
+                    placeholder={formatMessage(messages.zipCodePlaceholder)}
+                    enterButton={formatMessage(messages.estimate)}
+                    size="default"
+                    maxLength="5"
+                    // value={designURL}
+                    // onSearch={this.copyToClipboard}
+                    onChange={() => {}}
+                  />
+                </ZipCodeInputWrapper>
+                <CodeDivider />
+                <CollapseWrapper>
+                  <Collapse bordered={false}>
+                    <Panel
+                      header={formatMessage(messages.discountCode)}
+                      key="1"
+                    >
+                      <ZipCodeInputWrapper>
+                        <ShareLinkInput
+                          id="url"
+                          enterButton={formatMessage(messages.apply)}
+                          placeholder={formatMessage(
+                            messages.promoCodePlaceholder
+                          )}
+                          size="default"
+                          // value={designURL}
+                          // onSearch={this.copyToClipboard}
+                          onChange={() => {}}
+                        />
+                      </ZipCodeInputWrapper>
+                      <ZipCodeInputWrapper>
+                        <ShareLinkInput
+                          id="url"
+                          enterButton={formatMessage(messages.apply)}
+                          placeholder={formatMessage(messages.giftPlaceholder)}
+                          size="default"
+                          // value={designURL}
+                          // onSearch={this.copyToClipboard}
+                          onChange={() => {}}
+                        />
+                      </ZipCodeInputWrapper>
+                    </Panel>
+                  </Collapse>
+                </CollapseWrapper>
+                <TotalOrderItem>
+                  <FormattedMessage {...messages.total} />
+                  <div>{`USD$0`}</div>
+                </TotalOrderItem>
+                <ButtonWrapper>
+                  <CheckoutButton type="primary" onClick={this.handleCheckout}>
+                    <FormattedMessage {...messages.checkout} />
+                  </CheckoutButton>
+                </ButtonWrapper>
+              </SideBar>
+              <Content>
+                <CartList>{renderList}</CartList>
+              </Content>
+            </Container>
+          )}
+        </div>
       </Layout>
     )
   }

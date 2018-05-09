@@ -56,7 +56,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
         ThumbnailsArray.push(img.left)
       }
     }
-    this.updateLength(ThumbnailsArray.length)
+    this.updateLength(ThumbnailsArray.length - 1)
   }
 
   updateLength = (length: number) => {
