@@ -58,10 +58,6 @@ class Render3D extends PureComponent {
     const { onLoadModel, styleColors, files } = this.props
     const { clientWidth, clientHeight } = this.container
 
-    if (files.length) {
-      return
-    }
-
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       preserveDrawingBuffer: true
@@ -73,11 +69,14 @@ class Render3D extends PureComponent {
 
     /* Textures */
     const loader = new THREE.TextureLoader()
+    loader.crossOrigin = ''
 
+    /* Get the texture configuration */
+    // This maybe change for a graph query
     const { areas, textures } = jerseyTextures('C02-D01') || {}
 
+    /* Load area textures */
     const loadedTextures = {}
-
     for (const key in textures) {
       loadedTextures[key] = loader.load(textures[key])
       if (key !== 'flatlock') {
@@ -134,86 +133,44 @@ class Render3D extends PureComponent {
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
-          // Materials
-          /* Object material */
+          /* Object materials */
+
+          // Stitching
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.flatlock,
-            transparent: true
+            map: loadedTextures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
-          // Inside material
+          // Back material
           const insideMaterial = new THREE.MeshPhongMaterial({
-            side: THREE.BackSide
+            side: THREE.BackSide,
+            color: '#000000'
           })
-
-          /* Assign materials */
 
           // Setup the texture layers
-          const areasLayers = loadedAreas.map((area, index) =>
-            object.children[5].clone()
-          )
-          areasLayers.forEach(layer => object.add(layer))
-
-          const clonedObject = object.children[5].clone()
-          object.add(clonedObject)
-          const clonedObject2 = object.children[5].clone()
-          object.add(clonedObject2)
-          const clonedObject3 = object.children[5].clone()
-          object.add(clonedObject3)
-          const clonedObject4 = object.children[5].clone()
-          object.add(clonedObject4)
-
-          // TODO: Refactor into a loop
-          const texture1 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[0],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[0]
-          })
-
-          const texture2 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[1],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[1],
-            transparent: true
-          })
-
-          const texture3 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[2],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[2],
-            transparent: true
-          })
-
-          const texture4 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[3],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[3],
-            transparent: true
-          })
-
-          const texture5 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[4],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[4],
-            transparent: true
-          })
+          const areasLayers = loadedAreas.map(() => object.children[5].clone())
+          object.add(...areasLayers)
 
           /* Jersey label */
           object.children[4].material.color.set('#ffffff')
-          object.children[5].material = texture1
-          object.children[25].material = texture2
-          object.children[26].material = texture3
-          object.children[27].material = texture4
-          object.children[28].material = texture5
+          object.children[6].material = flatlockMaterial
+          object.children[5].material = insideMaterial
 
-          /* Object Conig */
+          loadedAreas.forEach(
+            (materialTexture, index) =>
+              (object.children[
+                objectChilds + index
+              ].material = new THREE.MeshPhongMaterial({
+                map: loadedAreas[index],
+                side: THREE.FrontSide,
+                bumpMap: loadedTextures.bumpMap,
+                color: styleColors[index],
+                transparent: true
+              }))
+          )
+
+          /* Object Config */
           object.position.y = -40
           object.name = 'jersey'
           scene.add(object)

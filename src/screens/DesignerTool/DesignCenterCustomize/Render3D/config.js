@@ -4,16 +4,14 @@
 
 export const jerseyTextures = (design = 'default') => ({
   areas: [
-    `./models/Tour5/designs/${design}/colorblock_1.png`,
-    `./models/Tour5/designs/${design}/colorblock_2.png`,
-    `./models/Tour5/designs/${design}/colorblock_3.png`,
-    `./models/Tour5/designs/${design}/colorblock_4.png`,
-    `./models/Tour5/designs/${design}/colorblock_5.png`
+    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_1.png`,
+    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_2.png`,
+    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_3.png`,
+    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_4.png`,
+    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_5.png`
   ],
   textures: {
-    backPocket: './models/Tour5/branding.png',
-    flatlock: './models/image/flatlock.tif',
-    label: './models/images/Red-J.jpg',
+    flatlock: './models/images/flatlock.png',
     bumpMap: './models/images/Tour_v2-BumpMap.jpg'
   }
 })
