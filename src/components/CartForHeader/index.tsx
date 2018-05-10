@@ -34,7 +34,7 @@ export class CartForHeader extends React.PureComponent<Props, {}> {
 
   gotoCartpage = () => {
     const { history } = this.props
-    history.push('/cart-page')
+    history.push('/shopping-cart')
   }
 }
 const mapStateToProps = null

@@ -16,16 +16,11 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
-import { Product } from '../../types/common'
-
-type ItemDetailType = {
-  id: number
-  name: string
-}
+import { Product, CartItemDetail } from '../../types/common'
 
 interface CartItems {
   product: Product
-  itemDetils: ItemDetailType[]
+  itemDetails: CartItemDetail[]
 }
 
 interface Props {
@@ -56,21 +51,33 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   }
 
   addToCart = () => {
-    const { onClick, renderForThumbnail, intl } = this.props
+    const { onClick, renderForThumbnail, intl, item } = this.props
     if (renderForThumbnail) {
-      this.saveInLocalStorage()
+      const details = [] as CartItemDetail[]
+      const detail = {
+        quantity: 1
+      }
+      details.push(detail)
+      const itemToAdd = Object.assign(
+        {},
+        { product: item.product },
+        {
+          itemDetails: details
+        }
+      )
+      this.saveInLocalStorage(itemToAdd)
     } else {
       const candAddToStore = onClick()
       if (!candAddToStore) {
         Message.warning(intl.formatMessage(messages.validationMessage))
         return
       } else {
-        this.saveInLocalStorage()
+        this.saveInLocalStorage(item)
       }
     }
   }
 
-  saveInLocalStorage = () => {
+  saveInLocalStorage = (obj?: CartItems) => {
     const {
       intl,
       item,
@@ -86,11 +93,11 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
 
       if (cartList) {
-        cartList.push(item)
+        cartList.push(obj || item)
         localStorage.setItem('cart', JSON.stringify(cartList))
       } else {
         const myItems = []
-        myItems.push(item)
+        myItems.push(obj || item)
         localStorage.setItem('cart', JSON.stringify(myItems))
       }
       countCartItems()
