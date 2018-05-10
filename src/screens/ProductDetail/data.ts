@@ -21,13 +21,14 @@ export const GetProductsByIdQuery = gql`
       materials: materials_info
       temperatures: temperature_range
       genders {
-        gender
+        id
+        name: gender
       }
-      size_range
       fitStyles {
         id
         name: description
       }
+      size_range
       collections
       isTopProduct
       intendedUse: intended_use

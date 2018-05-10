@@ -23,9 +23,11 @@ import layout from '../components/MainLayout/reducer'
 import menu from '../components/DropdownList/reducer'
 import forgot from '../components/ForgotPassword/reducer'
 import fitInfo from '../components/FitInfo/reducer'
+import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  shoppingCartPage: any
   storeFront: any
   createStore: any
   searchTeamstores: any
@@ -106,6 +108,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  shoppingCartPage,
   storeFront,
   createStore,
   searchTeamstores,

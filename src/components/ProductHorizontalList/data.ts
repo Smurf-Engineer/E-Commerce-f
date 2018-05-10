@@ -12,6 +12,14 @@ export const productsQuery = gql`
       products {
         id
         name
+        genders {
+          id
+          name: gender
+        }
+        fitStyles {
+          id
+          name: description
+        }
         yotpoId: yotpo_id
         type: name
         priceRange {
