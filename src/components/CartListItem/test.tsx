@@ -20,6 +20,7 @@ describe('<CartListItem />', () => {
     ) => {}
     const title = ''
     const description = ''
+    const itemIndex = 0
     const price = {
       price: 0,
       quantity: '1'
@@ -38,7 +39,12 @@ describe('<CartListItem />', () => {
         ],
         type: '',
         description: '',
-        priceRange: [],
+        priceRange: [
+          {
+            quantity: '1',
+            price: 0
+          }
+        ],
         collections: 0,
         isTopProduct: false,
         details: '',
@@ -87,6 +93,7 @@ describe('<CartListItem />', () => {
         cartItem={item}
         handleAddItemDetail={handleAdd}
         handledeleteItemDetail={handleDelete}
+        itemIndex={itemIndex}
       />,
       div
     )

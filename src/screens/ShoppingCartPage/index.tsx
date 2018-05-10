@@ -71,7 +71,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     index: number
   ) => {
     const { addItemDetailAction } = this.props
-    addItemDetailAction(0)
+    addItemDetailAction(index)
   }
 
   handledeleteItemDetail = (
@@ -80,7 +80,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     detailIndex: number
   ) => {
     const { deleteItemDetailAction } = this.props
-    deleteItemDetailAction(0, detailIndex)
+    deleteItemDetailAction(index, detailIndex)
   }
 
   render() {
@@ -100,6 +100,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               cartItem={cartItem}
               handleAddItemDetail={this.handleAddItemDetail}
               handledeleteItemDetail={this.handledeleteItemDetail}
+              itemIndex={index}
             />
           )
         })
@@ -161,13 +162,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                 </OrderItem>
                 <ZipCodeInputWrapper>
                   <ShareLinkInput
+                    disabled={true}
                     id="url"
                     placeholder={formatMessage(messages.zipCodePlaceholder)}
                     enterButton={formatMessage(messages.estimate)}
                     size="default"
                     maxLength="5"
-                    // value={designURL}
-                    // onSearch={this.copyToClipboard}
                     onChange={() => {}}
                   />
                 </ZipCodeInputWrapper>
@@ -180,25 +180,23 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     >
                       <ZipCodeInputWrapper>
                         <ShareLinkInput
+                          disabled={true}
                           id="url"
                           enterButton={formatMessage(messages.apply)}
                           placeholder={formatMessage(
                             messages.promoCodePlaceholder
                           )}
                           size="default"
-                          // value={designURL}
-                          // onSearch={this.copyToClipboard}
                           onChange={() => {}}
                         />
                       </ZipCodeInputWrapper>
                       <ZipCodeInputWrapper>
                         <ShareLinkInput
+                          disabled={true}
                           id="url"
                           enterButton={formatMessage(messages.apply)}
                           placeholder={formatMessage(messages.giftPlaceholder)}
                           size="default"
-                          // value={designURL}
-                          // onSearch={this.copyToClipboard}
                           onChange={() => {}}
                         />
                       </ZipCodeInputWrapper>

@@ -62,11 +62,13 @@ describe('<CartListItemTable />', () => {
       },
       itemDetails: []
     }
+    const itemIndex = 0
     ReactDOM.render(
       <CartListItemTable
         formatMessage={format}
         cartItem={item}
         handledeleteItemDetail={handleDelete}
+        itemIndex={itemIndex}
       />,
       div
     )

@@ -43,6 +43,7 @@ interface Props {
   price: PriceRange
   image: string
   cartItem: CartItems
+  itemIndex: number
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -55,8 +56,20 @@ class CartListItem extends React.Component<Props, {}> {
       image,
       cartItem,
       handleAddItemDetail,
-      handledeleteItemDetail
+      handledeleteItemDetail,
+      itemIndex
     } = this.props
+
+    const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+      return itemDetail.quantity
+    })
+
+    const quantitySum = quantities.reduce((a, b) => a + b, 0)
+    const itemTotal =
+      cartItem.product && cartItem.product.priceRange
+        ? cartItem.product.priceRange[0].price * quantitySum
+        : 0
+
     return (
       <ItemDetails>
         <Container>
@@ -70,7 +83,7 @@ class CartListItem extends React.Component<Props, {}> {
                 </ItemDetailsHeaderNameDetail>
               </NameContainer>
               <PriceContainer>
-                <ItemDetailsHeaderPrice>{`$${price.price ||
+                <ItemDetailsHeaderPrice>{`$${itemTotal ||
                   0}`}</ItemDetailsHeaderPrice>
                 <ItemDetailsHeaderPriceDetail>
                   {`${formatMessage(messages.unitPrice)} $${price.price || 0}`}
@@ -86,8 +99,9 @@ class CartListItem extends React.Component<Props, {}> {
               formatMessage={formatMessage}
               cartItem={cartItem}
               handledeleteItemDetail={handledeleteItemDetail}
+              itemIndex={itemIndex}
             />
-            <AddMore onClick={e => handleAddItemDetail(e, 1)}>
+            <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
               {formatMessage(messages.addMore)}
             </AddMore>
             <DeleteItem>{formatMessage(messages.delete)}</DeleteItem>

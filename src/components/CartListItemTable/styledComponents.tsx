@@ -2,6 +2,8 @@
  * Styled Components - Created by gustavomedina on 04/05/18.
  */
 import styled from 'styled-components'
+import Select from 'antd/lib/select'
+import Input from 'antd/lib/input'
 
 export const Container = styled.div`
   background-color: #222;
@@ -26,20 +28,6 @@ export const Table = styled.div`
 `
 
 export const Body = styled.tbody``
-
-// export const Row = styled.div`
-//   display: flex;
-//   align-items: center;
-//   justify-content: space-between;
-//   border-bottom: ${({ noBorder }: RowProps) =>
-//     noBorder ? 'none' : '1px solid #dcdcdc'};
-//   padding: ${({ rowPadding }) => (rowPadding ? rowPadding : '8px 0')};
-//   cursor: move;
-
-//   @media (min-width: 320px) and (max-width: 480px) {
-//     justify-content: space-between;
-//   }
-// `
 
 export const Row = styled.div`
   display: flex;
@@ -114,4 +102,12 @@ export const MobileEmtpytable = styled.div`
 export const DeleteItem = styled.div`
   color: #e61737;
   cursor: pointer;
+`
+
+export const StyledSelect = styled(Select)`
+  width: 100%;
+`
+
+export const StyledInput = styled(Input)`
+  width: 100%;
 `

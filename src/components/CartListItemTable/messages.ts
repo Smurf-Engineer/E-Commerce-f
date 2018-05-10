@@ -29,5 +29,21 @@ export default defineMessages({
   quantity: {
     id: 'components.CartListItemTable.quantity',
     defaultMessage: 'Quantity'
+  },
+  genderPlaceholder: {
+    id: 'components.CartListItemTable.genderPlaceholder',
+    defaultMessage: 'Select gender'
+  },
+  sizePlaceholder: {
+    id: 'components.CartListItemTable.sizePlaceholder',
+    defaultMessage: 'Select size'
+  },
+  fitPlaceholder: {
+    id: 'components.CartListItemTable.fitPlaceholder',
+    defaultMessage: 'Select fit'
+  },
+  labelPlaceholder: {
+    id: 'components.CartListItemTable.labelPlaceholder',
+    defaultMessage: 'Label'
   }
 })

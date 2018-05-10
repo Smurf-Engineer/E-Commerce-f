@@ -4,7 +4,7 @@
 import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import Select from 'antd/lib/select'
-import Input from 'antd/lib/input'
+
 import { InputNumber } from 'antd'
 import messages from './messages'
 import {
@@ -14,7 +14,9 @@ import {
   Title,
   Row,
   HeaderCell,
-  DeleteItem
+  DeleteItem,
+  StyledSelect,
+  StyledInput
 } from './styledComponents'
 import { CartItemDetail, Product } from '../../types/common'
 
@@ -33,6 +35,7 @@ interface Props {
     detailIndex: number
   ) => void
   cartItem: CartItems
+  itemIndex: number
 }
 
 interface Header {
@@ -51,7 +54,12 @@ const headerTitles: Header[] = [
 
 class CartListItemTable extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, cartItem, handledeleteItemDetail } = this.props
+    const {
+      formatMessage,
+      cartItem,
+      handledeleteItemDetail,
+      itemIndex
+    } = this.props
     const header = (
       <MediaQuery minDeviceWidth={480}>
         {matches => {
@@ -90,51 +98,43 @@ class CartListItemTable extends React.Component<Props, {}> {
           return (
             <Row key={index}>
               <Cell>
-                <Select
-                  style={{ width: '100%' }}
+                <StyledSelect
                   showSearch={false}
-                  placeholder="Select gender"
+                  placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
                 >
                   {genderOptions}
-                </Select>
+                </StyledSelect>
               </Cell>
               <Cell>
-                <Select
-                  style={{ width: '100%' }}
+                <StyledSelect
                   showSearch={false}
-                  placeholder="Select size"
+                  placeholder={formatMessage(messages.sizePlaceholder)}
                   optionFilterProp="children"
                   disabled={true}
-                >
-                  <Option value="jack">Jack</Option>
-                  <Option value="lucy">Lucy</Option>
-                  <Option value="tom">Tom</Option>
-                </Select>
+                />
               </Cell>
               <Cell>
-                <Select
-                  style={{ width: '100%' }}
+                <StyledSelect
                   showSearch={false}
-                  placeholder="Select fit"
+                  placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
                 >
                   {fitOptions}
-                </Select>
+                </StyledSelect>
               </Cell>
               <Cell>
-                <Input style={{ width: '100%' }} placeholder="Label" />
-              </Cell>
-              <Cell>
-                <InputNumber
-                  min={1}
-                  max={10}
-                  defaultValue={1}
-                  value={item.quantity}
+                <StyledInput
+                  placeholder={formatMessage(messages.labelPlaceholder)}
                 />
               </Cell>
+              <Cell>
+                <InputNumber min={1} max={10} defaultValue={item.quantity} />
+              </Cell>
               <Cell width={10}>
-                <DeleteItem onClick={e => handledeleteItemDetail(e, 0, index)}>
+                <DeleteItem
+                  onClick={e => handledeleteItemDetail(e, itemIndex, index)}
+                >
                   —
                 </DeleteItem>
               </Cell>
