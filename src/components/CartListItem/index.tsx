@@ -19,20 +19,44 @@ import {
   BottomDivider
 } from './styledComponents'
 import CartListItemTable from '../../components/CartListItemTable'
-import { PriceRange } from '../../types/common'
+import { PriceRange, Product, CartItemDetail } from '../../types/common'
 import messages from '../ProductInfo/messages'
+
+interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+}
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  handleAddItemDetail: (
+    event: React.MouseEvent<EventTarget>,
+    index: number
+  ) => void
+  handledeleteItemDetail: (
+    event: React.MouseEvent<EventTarget>,
+    index: number,
+    detailIndex: number
+  ) => void
   title: string
   description: string
   price: PriceRange
   image: string
+  cartItem: CartItems
 }
 
 class CartListItem extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, title, description, price, image } = this.props
+    const {
+      formatMessage,
+      title,
+      description,
+      price,
+      image,
+      cartItem,
+      handleAddItemDetail,
+      handledeleteItemDetail
+    } = this.props
     return (
       <ItemDetails>
         <Container>
@@ -55,12 +79,17 @@ class CartListItem extends React.Component<Props, {}> {
                   {`${formatMessage(messages.add)} 1 ${formatMessage(
                     messages.moreFor
                   )} $${price.price || 0}`}
-                  {/* Add 1 more for $92 */}
                 </ItemDetailsHeaderPriceDetail>
               </PriceContainer>
             </ItemDetailsHeader>
-            <CartListItemTable formatMessage={formatMessage} />
-            <AddMore>{formatMessage(messages.addMore)}</AddMore>
+            <CartListItemTable
+              formatMessage={formatMessage}
+              cartItem={cartItem}
+              handledeleteItemDetail={handledeleteItemDetail}
+            />
+            <AddMore onClick={e => handleAddItemDetail(e, 1)}>
+              {formatMessage(messages.addMore)}
+            </AddMore>
             <DeleteItem>{formatMessage(messages.delete)}</DeleteItem>
           </ItemDetails>
         </Container>

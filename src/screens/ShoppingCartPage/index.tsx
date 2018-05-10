@@ -10,6 +10,7 @@ import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
+import * as thunkActions from './thunkActions'
 import messages from './messages'
 import {
   Container,
@@ -33,15 +34,23 @@ import {
   StyledEmptyButton
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
-import { Product } from '../../types/common'
+import { Product, CartItemDetail } from '../../types/common'
 
 const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
 
+interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
-  cart: Product[]
+  cart: CartItems[]
   setItemsAction: (items: Product[]) => void
+  addItemDetailAction: (index: number) => void
+  deleteItemDetailAction: (index: number, detailIndex: number) => void
+  setInitialData: () => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -53,44 +62,67 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   handleCheckout = () => {}
 
   componentDidMount() {
-    if (typeof window !== 'undefined') {
-      const { setItemsAction } = this.props
+    const { setInitialData } = this.props
+    setInitialData()
+  }
 
-      const cartList = JSON.parse(localStorage.getItem('cart') as any)
-      if (cartList) {
-        setItemsAction(cartList)
-      }
-    }
+  handleAddItemDetail = (
+    event: React.MouseEvent<EventTarget>,
+    index: number
+  ) => {
+    const { addItemDetailAction } = this.props
+    addItemDetailAction(0)
+  }
+
+  handledeleteItemDetail = (
+    event: React.MouseEvent<EventTarget>,
+    index: number,
+    detailIndex: number
+  ) => {
+    const { deleteItemDetailAction } = this.props
+    deleteItemDetailAction(0, detailIndex)
   }
 
   render() {
     const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
 
-    // let cartList = [] as Product[]
-
-    // if (typeof window !== 'undefined') {
-    //   cartList = JSON.parse(localStorage.getItem('cart') as any)
-    // }
-
-    console.log('------------cart reducer---------------')
+    console.log('-------------cart--------------')
     console.log(cart)
     console.log('---------------------------')
 
     const renderList = cart
-      ? cart.map((product, index) => {
+      ? cart.map((cartItem, index) => {
           return (
             <ListItem
               formatMessage={formatMessage}
               key={index}
-              title={product.name}
-              description={product.description}
-              price={product.priceRange[0]}
-              image={product.images[0].front}
+              title={cartItem.product.name}
+              description={cartItem.product.description}
+              price={cartItem.product.priceRange[0]}
+              image={cartItem.product.images[0].front}
+              cartItem={cartItem}
+              handleAddItemDetail={this.handleAddItemDetail}
+              handledeleteItemDetail={this.handledeleteItemDetail}
             />
           )
         })
       : null
+
+    let totalSum = 0
+    if (cart) {
+      const total = cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        return cartItem.product.priceRange[0].price * quantitySum
+      })
+
+      totalSum = total.reduce((a, b) => a + b, 0)
+    }
 
     return (
       <Layout {...{ history, intl }}>
@@ -120,7 +152,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                 </SummaryTitle>
                 <OrderItem>
                   <FormattedMessage {...messages.subtotal} />
-                  <div>{`USD$0`}</div>
+                  <div>{`USD$${totalSum}`}</div>
                 </OrderItem>
                 <Divider />
                 <OrderItem>
@@ -202,7 +234,7 @@ const mapStateToProps = (state: any) => state.get('shoppingCartPage').toJS()
 
 const ShoppingCartPageEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...shoppingCartPageActions })
+  connect(mapStateToProps, { ...shoppingCartPageActions, ...thunkActions })
 )(ShoppingCartPage)
 
 export default ShoppingCartPageEnhance

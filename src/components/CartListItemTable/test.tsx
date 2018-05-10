@@ -9,6 +9,66 @@ describe('<CartListItemTable />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const format = (message: string) => 'string'
-    ReactDOM.render(<CartListItemTable formatMessage={format} />, div)
+    const handleDelete = (
+      event: React.MouseEvent<EventTarget>,
+      index: number,
+      detailIndex: number
+    ) => {}
+    const item = {
+      product: {
+        id: 0,
+        images: [
+          {
+            front: '',
+            back: '',
+            left: '',
+            right: '',
+            genderId: 0
+          }
+        ],
+        type: '',
+        description: '',
+        priceRange: [],
+        collections: 0,
+        isTopProduct: false,
+        details: '',
+        specs: '',
+        name: '',
+        temperature: '',
+        materials: '',
+        customizable: false,
+        yotpoId: '',
+        yotpoAverageScore: {
+          total: 0,
+          averageScore: 0
+        },
+        fitStyles: [
+          {
+            id: 0,
+            name: '',
+            info: '',
+            image: ''
+          }
+        ],
+        genders: [
+          {
+            id: 0,
+            name: ''
+          }
+        ],
+        bodyChartId: 0,
+        retailMen: false,
+        retailWomen: false
+      },
+      itemDetails: []
+    }
+    ReactDOM.render(
+      <CartListItemTable
+        formatMessage={format}
+        cartItem={item}
+        handledeleteItemDetail={handleDelete}
+      />,
+      div
+    )
   })
 })

@@ -2,7 +2,12 @@
  * ShoppingCartPage Reducer - Created by gustavomedina on 02/05/18.
  */
 import { fromJS } from 'immutable'
-import { DEFAULT_ACTION, SET_ITEMS_ACTION } from './constants'
+import {
+  DEFAULT_ACTION,
+  SET_ITEMS_ACTION,
+  ADD_ITEM_DETAIL_ACTION,
+  DELETE_ITEM_DETAIL_ACTION
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -18,7 +23,18 @@ const shoppingCartPageReducer: Reducer<any> = (
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
     case SET_ITEMS_ACTION:
-      return state.set('cart', action.items)
+      return state.set('cart', fromJS(action.items))
+    case ADD_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails'],
+        (itemDetails: any) => itemDetails.push({ quantity: 1 })
+      )
+    case DELETE_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails'],
+        (itemDetails: any) =>
+          itemDetails.filter((item: any) => item.name !== action.detailIndex)
+      )
     default:
       return state
   }
