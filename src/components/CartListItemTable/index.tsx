@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import MediaQuery from 'react-responsive'
+import find from 'lodash/find'
 import Select from 'antd/lib/select'
 
 import { InputNumber } from 'antd'
@@ -18,7 +19,7 @@ import {
   StyledSelect,
   StyledInput
 } from './styledComponents'
-import { CartItemDetail, Product } from '../../types/common'
+import { CartItemDetail, Product, ItemDetailType } from '../../types/common'
 
 const Option = Select.Option
 
@@ -33,6 +34,31 @@ interface Props {
     event: React.MouseEvent<EventTarget>,
     index: number,
     detailIndex: number
+  ) => void
+  setLabelItemDetail: (
+    index: number,
+    detailIndex: number,
+    label: string
+  ) => void
+  setDetailQuantity: (
+    index: number,
+    detailIndex: number,
+    quantity: number
+  ) => void
+  setDetailFit: (
+    index: number,
+    detailIndex: number,
+    fit: ItemDetailType
+  ) => void
+  setDetailGender: (
+    index: number,
+    detailIndex: number,
+    gender: ItemDetailType
+  ) => void
+  setDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
   ) => void
   cartItem: CartItems
   itemIndex: number
@@ -53,6 +79,53 @@ const headerTitles: Header[] = [
 ]
 
 class CartListItemTable extends React.Component<Props, {}> {
+  handleLabelChange = (
+    evt: React.FormEvent<HTMLInputElement>,
+    detail: number
+  ) => {
+    const { setLabelItemDetail, itemIndex } = this.props
+
+    const {
+      currentTarget: { value }
+    } = evt
+
+    setLabelItemDetail(itemIndex, detail, value)
+  }
+
+  handleQuantityChange = (value: any, detail: number) => {
+    const { setDetailQuantity, itemIndex } = this.props
+
+    setDetailQuantity(itemIndex, detail, value)
+  }
+
+  handleGenderChange = (value: any, detail: number) => {
+    const { setDetailGender, itemIndex, cartItem } = this.props
+
+    const selectedGender = find(cartItem.product.genders, {
+      name: value
+    }) as ItemDetailType
+
+    setDetailGender(itemIndex, detail, selectedGender)
+  }
+
+  handleSizeChange = (value: any, detail: number) => {
+    // const { setDetailGender, itemIndex, cartItem } = this.props
+    // const selectedGender = find(cartItem.product.genders, {
+    //   name: value
+    // }) as ItemDetailType
+    // setDetailGender(itemIndex, detail, selectedGender)
+  }
+
+  handleFitChange = (value: any, detail: number) => {
+    const { setDetailFit, itemIndex, cartItem } = this.props
+
+    const selectedfit = find(cartItem.product.fitStyles, {
+      name: value
+    }) as ItemDetailType
+
+    setDetailFit(itemIndex, detail, selectedfit)
+  }
+
   render() {
     const {
       formatMessage,
@@ -84,6 +157,7 @@ class CartListItemTable extends React.Component<Props, {}> {
         </Option>
       )
     })
+    const fits = cartItem.product.fitStyles && cartItem.product.fitStyles[0].id
 
     const genderOptions = cartItem.product.genders.map((gender, genderKey) => {
       return (
@@ -99,9 +173,11 @@ class CartListItemTable extends React.Component<Props, {}> {
             <Row key={index}>
               <Cell>
                 <StyledSelect
+                  onChange={e => this.handleGenderChange(e, index)}
                   showSearch={false}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
+                  defaultValue={item.gender ? item.gender.name : undefined}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -116,20 +192,32 @@ class CartListItemTable extends React.Component<Props, {}> {
               </Cell>
               <Cell>
                 <StyledSelect
+                  onChange={e => this.handleFitChange(e, index)}
                   showSearch={false}
                   placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
+                  disabled={!fits}
+                  defaultValue={item.fit ? item.fit.name : undefined}
                 >
                   {fitOptions}
                 </StyledSelect>
               </Cell>
               <Cell>
                 <StyledInput
+                  id={`input${index}`}
                   placeholder={formatMessage(messages.labelPlaceholder)}
+                  value={item.label || ''}
+                  onChange={e => this.handleLabelChange(e, index)}
                 />
               </Cell>
               <Cell>
-                <InputNumber min={1} max={10} defaultValue={item.quantity} />
+                <InputNumber
+                  key={index}
+                  onChange={e => this.handleQuantityChange(e, index)}
+                  min={1}
+                  max={10}
+                  defaultValue={item.quantity}
+                />
               </Cell>
               <Cell width={10}>
                 <DeleteItem

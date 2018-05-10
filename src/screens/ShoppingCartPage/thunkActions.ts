@@ -12,3 +12,16 @@ export const setInitialData = () => {
     } catch (error) {}
   }
 }
+
+export const saveToStorage = () => {
+  return async (dispatch: any) => {
+    try {
+      if (typeof window !== 'undefined') {
+        const cartList = JSON.parse(localStorage.getItem('cart') as any)
+        if (cartList) {
+          dispatch(setItemsAction(cartList))
+        }
+      }
+    } catch (error) {}
+  }
+}
