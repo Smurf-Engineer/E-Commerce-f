@@ -26,7 +26,7 @@ const hasSubscriptionOperation = ({ query }) => {
 }
 
 const uploadLink = createUploadLink({
-  uri: 'https://api.jakroo.tailrecursive.co/api/graphiql',
+  uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
   fetch
 })
 
