@@ -3,17 +3,20 @@
  */
 
 export const jerseyTextures = (design = 'default') => ({
-  backPocket: './models/Tour5/branding.png',
-  color1: `./models/Tour5/designs/${design}/colorblock_1.png`,
-  color2: `./models/Tour5/designs/${design}/colorblock_2.png`,
-  color3: `./models/Tour5/designs/${design}/colorblock_3.png`,
-  color4: `./models/Tour5/designs/${design}/colorblock_4.png`,
-  color5: `./models/Tour5/designs/${design}/colorblock_5.png`,
-  flatlock: './models/Tour5/flatlock.png',
-  label: './models/Red-J.jpg',
-  bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg',
-  front: './models/Tour5/bb-1-camfront_Front.png',
-  logo: './models/lizard.png'
+  areas: [
+    `./models/Tour5/designs/${design}/colorblock_1.png`,
+    `./models/Tour5/designs/${design}/colorblock_2.png`,
+    `./models/Tour5/designs/${design}/colorblock_3.png`,
+    `./models/Tour5/designs/${design}/colorblock_4.png`,
+    `./models/Tour5/designs/${design}/colorblock_5.png`
+  ],
+  textures: {
+    backPocket: './models/Tour5/branding.png',
+    flatlock: './models/Tour5/flatlock.png',
+    label: './models/Red-J.jpg',
+    bumpMap: './models/TOUR-SS_Jersey-BUMP.jpg',
+    front: './models/Tour5/bb-1-camfront_Front.png'
+  }
 })
 
 export const viewPositions = {
