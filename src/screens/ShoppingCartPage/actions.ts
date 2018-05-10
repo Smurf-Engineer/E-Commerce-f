@@ -5,7 +5,8 @@ import {
   DEFAULT_ACTION,
   SET_ITEMS_ACTION,
   ADD_ITEM_DETAIL_ACTION,
-  DELETE_ITEM_DETAIL_ACTION
+  DELETE_ITEM_DETAIL_ACTION,
+  SET_LABEL_ITEM_DETAIL_ACTION
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
 
@@ -29,6 +30,15 @@ export const deleteItemDetailAction = (
   detailIndex: number
 ): AnyAction => ({
   type: DELETE_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex
+})
+
+export const setLabelItemDetailAction = (
+  index: number,
+  detailIndex: number
+): AnyAction => ({
+  type: SET_LABEL_ITEM_DETAIL_ACTION,
   index,
   detailIndex
 })

@@ -6,7 +6,8 @@ import {
   DEFAULT_ACTION,
   SET_ITEMS_ACTION,
   ADD_ITEM_DETAIL_ACTION,
-  DELETE_ITEM_DETAIL_ACTION
+  DELETE_ITEM_DETAIL_ACTION,
+  SET_LABEL_ITEM_DETAIL_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -32,8 +33,12 @@ const shoppingCartPageReducer: Reducer<any> = (
     case DELETE_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails'],
-        (itemDetails: any) =>
-          itemDetails.filter((item: any) => item.name !== action.detailIndex)
+        (itemDetails: any) => itemDetails.splice(action.index, 1)
+      )
+    case SET_LABEL_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails'],
+        (itemDetails: any) => itemDetails.splice(action.index, 1)
       )
     default:
       return state

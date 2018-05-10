@@ -87,10 +87,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
 
-    console.log('-------------cart--------------')
-    console.log(cart)
-    console.log('---------------------------')
-
     const renderList = cart
       ? cart.map((cartItem, index) => {
           return (
