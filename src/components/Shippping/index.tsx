@@ -280,7 +280,11 @@ export class Shippping extends React.PureComponent<Props, {}> {
         />
         <AnimateHeight
           duration={500}
-          height={!userAddresses || showForm ? 'auto' : 0}
+          height={
+            (userAddresses && userAddresses.length === 0) || showForm
+              ? 'auto'
+              : 0
+          }
         >
           <Title>{formatMessage(messages.title)}</Title>
           {form}

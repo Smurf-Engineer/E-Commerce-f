@@ -24,9 +24,16 @@ import {
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
 import OrderSummary from '../../components/OrderSummary'
-import { AddressType } from '../../types/common'
+import { AddressType, CartItemDetail, Product } from '../../types/common'
 
 const { Step } = Steps
+
+// DELETE WHEN FUNCTION TO GET TOTAL GETS IMPLEMENTED
+interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   firstName: string
@@ -49,6 +56,8 @@ interface Props extends RouteComponentProps<any> {
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
+  saveToStorage: (cart: CartItems[]) => void
+  cart: CartItems[]
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -73,8 +82,24 @@ class Checkout extends React.Component<Props, {}> {
       emailCheckAction,
       inputChangeAction,
       selectDropdownAction,
-      showAddressFormAction
+      showAddressFormAction,
+      cart
     } = this.props
+
+    let totalSum = 0
+    if (cart) {
+      const total = cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        return cartItem.product.priceRange[0].price * quantitySum
+      })
+
+      totalSum = total.reduce((a, b) => a + b, 0)
+    }
 
     const steps = stepperTitles.map((step, key) => (
       <Step title={step} {...{ key }} />
@@ -120,7 +145,8 @@ class Checkout extends React.Component<Props, {}> {
             </StepsContainer>
             <SummaryContainer>
               <OrderSummary
-                total={434}
+                total={totalSum}
+                subtotal={totalSum}
                 discount={10}
                 formatMessage={intl.formatMessage}
               />
@@ -249,7 +275,12 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('checkout').toJS()
+const mapStateToProps = (state: any) => {
+  const checkout = state.get('checkout').toJS()
+  const shopppingCart = state.get('shoppingCartPage').toJS()
+
+  return { ...checkout, ...shopppingCart }
+}
 
 const CheckoutEnhance = compose(
   injectIntl,
