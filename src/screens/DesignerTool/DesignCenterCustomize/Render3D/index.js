@@ -27,10 +27,6 @@ import messages from './messages'
 
 class Render3D extends PureComponent {
   state = {
-    showDragmessage: true,
-    currentView: 2,
-    currentModel: 0,
-    zoomValue: 0,
     progress: 0,
     objectChilds: 0
   }
@@ -69,7 +65,6 @@ class Render3D extends PureComponent {
     }
   }
 
-  // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
@@ -239,11 +234,7 @@ class Render3D extends PureComponent {
     this.renderer.render(this.scene, this.camera)
   }
 
-  lightUpdate = changed => {
-    const { showDragmessage } = this.state
-    if (showDragmessage) {
-      this.setState({ showDragmessage: false })
-    }
+  lightUpdate = () => {
     this.directionalLight.position.copy(this.camera.position)
   }
 
