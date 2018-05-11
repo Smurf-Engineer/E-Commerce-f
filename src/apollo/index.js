@@ -34,7 +34,7 @@ const wsLink = process.browser
   ? new WebSocketLink({
       uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
       options: {
-        reconnect: true
+        reconnect: false // TODO: CHANGE TO TRUE LATER
       }
     })
   : null
