@@ -127,13 +127,20 @@ class CartListItemTable extends React.Component<Props, {}> {
     setDetailFit(itemIndex, detail, selectedfit)
   }
 
+  handleRemove = (
+    event: React.MouseEvent<EventTarget>,
+    itemIndex: number,
+    index: number
+  ) => {
+    const { handledeleteItemDetail, cartItem } = this.props
+
+    if (cartItem.itemDetails.length > 1) {
+      handledeleteItemDetail(event, itemIndex, index)
+    }
+  }
+
   render() {
-    const {
-      formatMessage,
-      cartItem,
-      handledeleteItemDetail,
-      itemIndex
-    } = this.props
+    const { formatMessage, cartItem, itemIndex } = this.props
     const header = (
       <MediaQuery minDeviceWidth={480}>
         {matches => {
@@ -178,7 +185,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   showSearch={false}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
-                  defaultValue={item.gender ? item.gender.name : undefined}
+                  value={item.gender ? item.gender.name : undefined}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -198,7 +205,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
                   disabled={!fits}
-                  defaultValue={item.fit ? item.fit.name : undefined}
+                  value={item.fit ? item.fit.name : undefined}
                 >
                   {fitOptions}
                 </StyledSelect>
@@ -217,12 +224,12 @@ class CartListItemTable extends React.Component<Props, {}> {
                   onChange={e => this.handleQuantityChange(e, index)}
                   min={1}
                   max={100}
-                  defaultValue={item.quantity}
+                  value={item.quantity || undefined}
                 />
               </Cell>
               <Cell width={10}>
                 <DeleteItem
-                  onClick={e => handledeleteItemDetail(e, itemIndex, index)}
+                  onClick={e => this.handleRemove(e, itemIndex, index)}
                 >
                   —
                 </DeleteItem>
