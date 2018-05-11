@@ -3,7 +3,8 @@
  */
 import * as React from 'react'
 import { compose } from 'react-apollo'
-import Checkbox from 'antd/lib/checkbox'
+// UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED
+// import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
 import { validate } from 'email-validator'
@@ -81,7 +82,8 @@ export class Login extends React.Component<Props, StateProps> {
             onChange={this.handleInputChange}
           />
           <RememberMeRow>
-            <Checkbox>{formatMessage(messages.rememberMe)}</Checkbox>
+            {/* {UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED} */}
+            {/* <Checkbox>{formatMessage(messages.rememberMe)}</Checkbox>*/}
             <ForgotPasswordLabel onClick={handleForgotPassword}>
               {formatMessage(messages.forgotPassword)}
             </ForgotPasswordLabel>
@@ -136,7 +138,9 @@ export class Login extends React.Component<Props, StateProps> {
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value, id } } = evt
+    const {
+      currentTarget: { value, id }
+    } = evt
     evt.persist()
     this.setState({ [id]: value } as any)
   }

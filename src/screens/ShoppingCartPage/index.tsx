@@ -6,8 +6,6 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import Input from 'antd/lib/input'
-import Collapse from 'antd/lib/collapse'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -17,15 +15,8 @@ import {
   SideBar,
   Content,
   Title,
-  SummaryTitle,
-  Divider,
-  OrderItem,
-  TotalOrderItem,
   ButtonWrapper,
   CheckoutButton,
-  ZipCodeInputWrapper,
-  CollapseWrapper,
-  CodeDivider,
   CartList,
   EmptyContainer,
   EmptyItems,
@@ -34,10 +25,9 @@ import {
   StyledEmptyButton
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
-import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 
-const ShareLinkInput = Input.Search
-const Panel = Collapse.Panel
+import Ordersummary from '../../components/OrderSummary'
+import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 
 interface CartItems {
   product: Product
@@ -89,7 +79,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  handleCheckout = () => {}
+  handleCheckout = () => {
+    const { history } = this.props
+    history.push('/checkout')
+  }
 
   componentDidMount() {
     const { setInitialData } = this.props
@@ -235,69 +228,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
-                <SummaryTitle>
-                  <FormattedMessage {...messages.summaryTitle} />
-                </SummaryTitle>
-                <OrderItem>
-                  <FormattedMessage {...messages.subtotal} />
-                  <div>{`USD$${totalSum}`}</div>
-                </OrderItem>
-                <Divider />
-                <OrderItem>
-                  <FormattedMessage {...messages.taxes} />
-                  <div>{`USD$0`}</div>
-                </OrderItem>
-                <OrderItem>
-                  <FormattedMessage {...messages.shipping} />
-                  <div>{`USD$0`}</div>
-                </OrderItem>
-                <ZipCodeInputWrapper>
-                  <ShareLinkInput
-                    disabled={true}
-                    id="url"
-                    placeholder={formatMessage(messages.zipCodePlaceholder)}
-                    enterButton={formatMessage(messages.estimate)}
-                    size="default"
-                    maxLength="5"
-                    onChange={() => {}}
-                  />
-                </ZipCodeInputWrapper>
-                <CodeDivider />
-                <CollapseWrapper>
-                  <Collapse bordered={false}>
-                    <Panel
-                      header={formatMessage(messages.discountCode)}
-                      key="1"
-                    >
-                      <ZipCodeInputWrapper>
-                        <ShareLinkInput
-                          disabled={true}
-                          id="url"
-                          enterButton={formatMessage(messages.apply)}
-                          placeholder={formatMessage(
-                            messages.promoCodePlaceholder
-                          )}
-                          size="default"
-                          onChange={() => {}}
-                        />
-                      </ZipCodeInputWrapper>
-                      <ZipCodeInputWrapper>
-                        <ShareLinkInput
-                          disabled={true}
-                          id="url"
-                          enterButton={formatMessage(messages.apply)}
-                          placeholder={formatMessage(messages.giftPlaceholder)}
-                          size="default"
-                          onChange={() => {}}
-                        />
-                      </ZipCodeInputWrapper>
-                    </Panel>
-                  </Collapse>
-                </CollapseWrapper>
-                <TotalOrderItem>
-                  <FormattedMessage {...messages.total} />
-                  <div>{`USD$0`}</div>
-                </TotalOrderItem>
+                <Ordersummary total={totalSum} {...{ formatMessage }} />
                 <ButtonWrapper>
                   <CheckoutButton type="primary" onClick={this.handleCheckout}>
                     <FormattedMessage {...messages.checkout} />
