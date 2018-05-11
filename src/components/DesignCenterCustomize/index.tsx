@@ -14,6 +14,7 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  currentStyle: number
   loadingModel: boolean
   undoEnabled: boolean
   redoEnabled: boolean
@@ -48,6 +49,7 @@ const DesignCenterCustomize = ({
   currentTab,
   colors,
   styleColors,
+  currentStyle,
   loadingModel,
   onLoadModel,
   onUndoAction,
@@ -96,7 +98,8 @@ const DesignCenterCustomize = ({
             undoEnabled,
             redoEnabled,
             onOpenSaveDesign,
-            formatMessage
+            formatMessage,
+            currentStyle
           }}
         />
       ) : null}

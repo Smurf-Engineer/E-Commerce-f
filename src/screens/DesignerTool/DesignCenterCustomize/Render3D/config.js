@@ -2,12 +2,6 @@
  * ThreeJs config
  */
 
-export const jerseyTextures = (design = 'default') => ({
-  textures: {
-    flatlock: './models/images/flatlock.png'
-  }
-})
-
 export const viewPositions = {
   0: {
     // Back

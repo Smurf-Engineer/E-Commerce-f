@@ -20,7 +20,11 @@ describe('<DesignCenterStyle />', () => {
     }
     ReactDOM.render(
       <IntlProvider {...props}>
-        <DesignCenterStyle {...{ data }} onSelectStyle={testFunc} />
+        <DesignCenterStyle
+          {...{ data }}
+          onSelectStyle={testFunc}
+          onSelectStyleComplexity={() => {}}
+        />
       </IntlProvider>,
       div
     )
