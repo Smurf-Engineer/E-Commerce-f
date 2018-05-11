@@ -153,7 +153,7 @@ class Render3D extends PureComponent {
           /* Object materials */
           // Stitching
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.flatlock,
+            map: flatLockTexture,
             transparent: true
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
