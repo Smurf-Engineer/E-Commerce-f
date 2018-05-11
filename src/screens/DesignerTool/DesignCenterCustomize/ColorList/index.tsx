@@ -11,10 +11,11 @@ interface Props {
 }
 
 const ColorList = ({ onSelectColor }: Props) => {
+  const handleOnSelectColor = (color: string) => () => onSelectColor(color)
   const colorsList = colors.map(({ value, name }, index) => (
     <Tooltip key={index} title={name}>
       <Col>
-        <Color color={value} onClick={() => onSelectColor(value)} />
+        <Color color={value} onClick={handleOnSelectColor(value)} />
       </Col>
     </Tooltip>
   ))
