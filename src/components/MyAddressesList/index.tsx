@@ -2,9 +2,9 @@
  * MyAddressesList Component - Created by cazarez on 10/05/18.
  */
 import * as React from 'react'
-import { compose, graphql } from 'react-apollo'
+
 import messages from './messages'
-import { GetAddressListQuery } from './data'
+
 import {
   Container,
   Content,
@@ -13,7 +13,7 @@ import {
   AddressesList
 } from './styledComponents'
 import MyAddress from '../MyAddress'
-import { QueryProps, AddressType } from '../../types/common'
+import { AddressType } from '../../types/common'
 
 interface Props {
   items: AddressType[]

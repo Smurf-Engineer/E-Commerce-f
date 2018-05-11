@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
-import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Icon from 'antd/lib/icon'
 import Menu, { ClickParam } from 'antd/lib/menu'
@@ -152,6 +151,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
               id="firstName"
               value={firstName}
               onChange={this.handleInputChange}
+              maxLength="50"
             />
             {!firstName &&
               hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
@@ -165,6 +165,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
               id="lastName"
               value={lastName}
               onChange={this.handleInputChange}
+              maxLength="50"
             />
             {!lastName &&
               hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
@@ -247,6 +248,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
               id="zipCode"
               value={zipCode}
               onChange={this.handleInputChange}
+              maxLength="20"
             />
             {!zipCode &&
               hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
@@ -260,6 +262,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
               id="phone"
               value={phone}
               onChange={this.handleInputChange}
+              maxLength="20"
             />
             {!phone &&
               hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
@@ -279,9 +282,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
           duration={500}
           height={!userAddresses || showForm ? 'auto' : 0}
         >
-          <Title>
-            <FormattedMessage {...messages.title} />
-          </Title>
+          <Title>{formatMessage(messages.title)}</Title>
           {form}
         </AnimateHeight>
         {shippingMethod}
@@ -293,7 +294,12 @@ export class Shippping extends React.PureComponent<Props, {}> {
     const {
       currentTarget: { id, value }
     } = evt
-    if (id === 'zipCode' || id === 'phone') {
+
+    const regex = /^[0-9]+$/
+    const isNumber = regex.test(value)
+
+    if (value && (id === 'zipCode' || id === 'phone') && !isNumber) {
+      return
     }
     inputChangeAction(id, value)
   }

@@ -146,7 +146,7 @@ class Checkout extends React.Component<Props, {}> {
       zipCode,
       phone,
       validFormAction,
-      addNewAddress
+      showAddressFormAction
       //   smsCheckAction,
       //   emailCheckAction
     } = this.props
@@ -177,17 +177,20 @@ class Checkout extends React.Component<Props, {}> {
 
     if (currentStep < stepperTitles.length - 1) {
       this.saveAddress(address)
-      stepAdvanceAction(currentStep + 1)
+      const response = stepAdvanceAction(currentStep + 1)
+      if (response) {
+        showAddressFormAction(false)
+      }
     }
   }
 
   saveAddress = async (address: AddressType) => {
-    const { addNewAddress, showAddressFormAction } = this.props
-    const response = await addNewAddress({ variables: { address } })
+    const { addNewAddress } = this.props
+    const {
+      data: { createUserAddress }
+    } = await addNewAddress({ variables: { address } })
 
-    if (response) {
-      showAddressFormAction(false)
-    }
+    return createUserAddress
   }
 
   // DELETE AFTER DEMO
