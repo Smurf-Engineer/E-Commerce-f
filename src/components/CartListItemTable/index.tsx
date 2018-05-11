@@ -6,7 +6,7 @@ import MediaQuery from 'react-responsive'
 import find from 'lodash/find'
 import Select from 'antd/lib/select'
 
-import { InputNumber } from 'antd'
+import InputNumber from 'antd/lib/input-number'
 import messages from './messages'
 import {
   Table,

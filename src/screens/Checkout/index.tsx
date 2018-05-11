@@ -11,6 +11,7 @@ import SwipeableViews from 'react-swipeable-views'
 import * as checkoutActions from './actions'
 import messages from './messages'
 import { AddAddressMutation } from './data'
+import { GetAddressListQuery } from '../../components/Shippping/data'
 import {
   Container,
   Content,
@@ -62,6 +63,10 @@ interface Props extends RouteComponentProps<any> {
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 class Checkout extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { stepAdvanceAction } = this.props
+    stepAdvanceAction(0)
+  }
   render() {
     const {
       intl,
@@ -214,7 +219,10 @@ class Checkout extends React.Component<Props, {}> {
     const { addNewAddress } = this.props
     const {
       data: { createUserAddress }
-    } = await addNewAddress({ variables: { address } })
+    } = await addNewAddress({
+      variables: { address },
+      refetchQueries: [{ query: GetAddressListQuery }]
+    })
 
     return createUserAddress
   }
