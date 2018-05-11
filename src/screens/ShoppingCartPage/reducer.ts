@@ -44,7 +44,7 @@ const shoppingCartPageReducer: Reducer<any> = (
     case DELETE_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails'],
-        (itemDetails: any) => itemDetails.splice(action.index, 1)
+        (itemDetails: any) => itemDetails.splice(action.detailIndex, 1)
       )
     case SET_LABEL_ITEM_DETAIL_ACTION:
       return state.updateIn(
