@@ -22,7 +22,7 @@ import {
   Logo
 } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
-import { jerseyTextures, viewPositions } from './config'
+import { viewPositions } from './config'
 import messages from './messages'
 
 class Render3D extends PureComponent {
@@ -129,19 +129,9 @@ class Render3D extends PureComponent {
     const { onLoadModel, styleColors } = this.props
 
     /* Get the texture configuration */
-    // This maybe change for a graph query
-    const { /* areas, */ textures } = jerseyTextures('C02-D01') || {}
-
-    /* Load area textures */
-    const loadedTextures = {}
-    for (const key in textures) {
-      loadedTextures[key] = this.imgLoader.load(textures[key])
-      if (key !== 'flatlock') {
-        loadedTextures[key].minFilter = THREE.LinearFilter
-      }
-    }
 
     const bumpMapTexture = this.imgLoader.load(files.bumpMap)
+    const flatLockTexture = this.imgLoader.load('./models/images/flatlock.png')
 
     const loadedAreas = files.areas.map(areaUri => {
       const areaTexture = this.imgLoader.load(areaUri)
