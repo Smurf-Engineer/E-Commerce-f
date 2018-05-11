@@ -1,4 +1,5 @@
 /* Routes */
+import DesignerTool from '../screens/DesignerTool'
 import ShoppingCartPage from '../screens/ShoppingCartPage'
 import StoreFront from '../screens/StoreFront'
 import CreateStore from '../screens/CreateStore'
@@ -16,6 +17,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/designer-tool',
+    name: 'designerTool',
+    component: DesignerTool
+  },
   {
     path: '/shopping-cart',
     name: 'shoppingCartPage',
