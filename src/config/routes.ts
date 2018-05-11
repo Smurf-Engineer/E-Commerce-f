@@ -1,5 +1,6 @@
 /* Routes */
 import Checkout from '../screens/Checkout'
+import DesignerTool from '../screens/DesignerTool'
 import ShoppingCartPage from '../screens/ShoppingCartPage'
 import StoreFront from '../screens/StoreFront'
 import CreateStore from '../screens/CreateStore'
@@ -21,6 +22,11 @@ const routes = [
     path: '/checkout',
     name: 'checkout',
     component: Checkout
+  },
+  {
+    path: '/designer-tool',
+    name: 'designerTool',
+    component: DesignerTool
   },
   {
     path: '/shopping-cart',

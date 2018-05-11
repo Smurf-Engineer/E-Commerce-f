@@ -27,6 +27,7 @@ describe('<QuickView />', () => {
         isTopProduct: false,
         details: '',
         specs: '',
+        shortDescription: '',
         name: '',
         temperature: '',
         materials: '',

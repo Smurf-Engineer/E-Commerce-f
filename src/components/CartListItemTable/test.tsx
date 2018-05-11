@@ -4,6 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import CartListItemTable from './index'
+import { ItemDetailType } from '../../types/common'
 
 describe('<CartListItemTable />', () => {
   test('renders without exploding', () => {
@@ -13,6 +14,31 @@ describe('<CartListItemTable />', () => {
       event: React.MouseEvent<EventTarget>,
       index: number,
       detailIndex: number
+    ) => {}
+    const handleLabel = (
+      index: number,
+      detailIndex: number,
+      label: string
+    ) => {}
+    const handleQuantity = (
+      index: number,
+      detailIndex: number,
+      quantity: number
+    ) => {}
+    const handleGender = (
+      index: number,
+      detailIndex: number,
+      gender: ItemDetailType
+    ) => {}
+    const handleFit = (
+      index: number,
+      detailIndex: number,
+      fit: ItemDetailType
+    ) => {}
+    const handleSize = (
+      index: number,
+      detailIndex: number,
+      size: ItemDetailType
     ) => {}
     const item = {
       product: {
@@ -27,6 +53,7 @@ describe('<CartListItemTable />', () => {
           }
         ],
         type: '',
+        shortDescription: '',
         description: '',
         priceRange: [],
         collections: 0,
@@ -69,6 +96,11 @@ describe('<CartListItemTable />', () => {
         cartItem={item}
         handledeleteItemDetail={handleDelete}
         itemIndex={itemIndex}
+        setLabelItemDetail={handleLabel}
+        setDetailQuantity={handleQuantity}
+        setDetailFit={handleFit}
+        setDetailGender={handleGender}
+        setDetailSize={handleSize}
       />,
       div
     )

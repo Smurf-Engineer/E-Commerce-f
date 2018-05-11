@@ -87,6 +87,7 @@ export interface Product {
   bodyChartId: number
   retailMen: boolean
   retailWomen: boolean
+  shortDescription: string
 }
 
 export type DesignType = {

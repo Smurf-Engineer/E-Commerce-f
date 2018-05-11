@@ -11,6 +11,7 @@ export const QuickViewQuery = gql`
       yotpoId: yotpo_id
       name
       description
+      shortDescription: short_description
       collections
       details
       genders {

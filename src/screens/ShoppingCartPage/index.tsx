@@ -25,8 +25,9 @@ import {
   StyledEmptyButton
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
+
 import Ordersummary from '../../components/OrderSummary'
-import { Product, CartItemDetail } from '../../types/common'
+import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 
 interface CartItems {
   product: Product
@@ -39,7 +40,37 @@ interface Props extends RouteComponentProps<any> {
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
+  removeItemAction: (index: number) => void
+  setTotalAction: (total: number) => void
+  setSubtotalAction: (subtotal: number) => void
+  setShippingAction: (shipping: number) => void
+  setLabelItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    label: string
+  ) => void
+  setGenderItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    gender: ItemDetailType
+  ) => void
+  setSizeItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+  setFitItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    fit: ItemDetailType
+  ) => void
+  setQuantityItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    quantity: number
+  ) => void
   setInitialData: () => void
+  saveToStorage: (cart: CartItems[]) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -58,12 +89,22 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setInitialData()
   }
 
+  componentWillUnmount() {
+    const { cart, saveToStorage } = this.props
+    saveToStorage(cart)
+  }
+
   handleAddItemDetail = (
     event: React.MouseEvent<EventTarget>,
     index: number
   ) => {
     const { addItemDetailAction } = this.props
     addItemDetailAction(index)
+  }
+
+  handleRemoveItem = (event: React.MouseEvent<EventTarget>, index: number) => {
+    const { removeItemAction } = this.props
+    removeItemAction(index)
   }
 
   handledeleteItemDetail = (
@@ -73,6 +114,51 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   ) => {
     const { deleteItemDetailAction } = this.props
     deleteItemDetailAction(index, detailIndex)
+  }
+
+  handleSetDetailLabel = (
+    index: number,
+    detailIndex: number,
+    label: string
+  ) => {
+    const { setLabelItemDetailAction } = this.props
+    setLabelItemDetailAction(index, detailIndex, label)
+  }
+
+  handleSetDetailGender = (
+    index: number,
+    detailIndex: number,
+    gender: ItemDetailType
+  ) => {
+    const { setGenderItemDetailAction } = this.props
+    setGenderItemDetailAction(index, detailIndex, gender)
+  }
+
+  handleSetDetailSize = (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => {
+    const { setSizeItemDetailAction } = this.props
+    setSizeItemDetailAction(index, detailIndex, size)
+  }
+
+  handleSetDetailFit = (
+    index: number,
+    detailIndex: number,
+    fit: ItemDetailType
+  ) => {
+    const { setFitItemDetailAction } = this.props
+    setFitItemDetailAction(index, detailIndex, fit)
+  }
+
+  handleSetDetailQuantity = (
+    index: number,
+    detailIndex: number,
+    quantity: number
+  ) => {
+    const { setQuantityItemDetailAction } = this.props
+    setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
   render() {
@@ -86,13 +172,19 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               formatMessage={formatMessage}
               key={index}
               title={cartItem.product.name}
-              description={cartItem.product.description}
+              description={cartItem.product.shortDescription}
               price={cartItem.product.priceRange[0]}
               image={cartItem.product.images[0].front}
               cartItem={cartItem}
               handleAddItemDetail={this.handleAddItemDetail}
               handledeleteItemDetail={this.handledeleteItemDetail}
               itemIndex={index}
+              setLabelItemDetail={this.handleSetDetailLabel}
+              setDetailQuantity={this.handleSetDetailQuantity}
+              setDetailFit={this.handleSetDetailFit}
+              setDetailGender={this.handleSetDetailGender}
+              setDetailSize={this.handleSetDetailSize}
+              removeItem={this.handleRemoveItem}
             />
           )
         })
@@ -117,9 +209,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       <Layout {...{ history, intl }}>
         <div>
           <Title>
-            <FormattedMessage {...messages.title} />
+            {`${formatMessage(messages.title)} (${cart ? cart.length : 0})`}
           </Title>
-          {!cart ? (
+          {!cart || cart.length < 1 ? (
             <EmptyContainer>
               <EmptyItems>
                 <EmptyTitle>
