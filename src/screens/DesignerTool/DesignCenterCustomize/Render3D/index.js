@@ -168,7 +168,8 @@ class Render3D extends PureComponent {
           /* Object materials */
           // Stitching
           const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.flatlock
+            map: loadedTextures.flatlock,
+            transparent: true
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -178,10 +179,6 @@ class Render3D extends PureComponent {
             side: THREE.BackSide,
             color: '#000000'
           })
-
-          console.log('---------------OBJECT-------------')
-          console.log(object)
-          console.log('------------------------------------')
 
           // Setup the texture layers
           const areasLayers = loadedAreas.map(() => object.children[5].clone())
@@ -200,7 +197,7 @@ class Render3D extends PureComponent {
                 map: loadedAreas[index],
                 side: THREE.FrontSide,
                 bumpMap: bumpMapTexture,
-                color: styleColors[index],
+                // color: styleColors[index], // TODO: For PNG with color
                 transparent: true
               }))
           )
