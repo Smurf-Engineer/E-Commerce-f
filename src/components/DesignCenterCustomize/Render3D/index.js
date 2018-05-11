@@ -20,7 +20,7 @@ import {
   LoadingContainer,
   ButtonWrapper
 } from './styledComponents'
-import { jerseyTextures, viewPositions } from './config'
+import { viewPositions } from './config'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
@@ -33,6 +33,8 @@ import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import topIcon from '../../../assets/Cube-Top.svg'
 import backIcon from '../../../assets/Cube_back.svg'
+// TODO: Test data
+import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
@@ -66,47 +68,23 @@ class Render3D extends PureComponent {
     }
   }
 
-  // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
-    const { onLoadModel, styleColors } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       preserveDrawingBuffer: true
     })
+
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
 
-    /* Textures */
-    const loader = new THREE.TextureLoader()
-
-    const { areas, textures } = jerseyTextures() || {}
-
-    const loadedTextures = {}
-
-    for (const key in textures) {
-      loadedTextures[key] = loader.load(textures[key])
-      if (key !== 'flatlock') {
-        loadedTextures[key].minFilter = THREE.LinearFilter
-      }
-    }
-
-    const loadedAreas = areas.map(areaUri => {
-      const areaTexture = loader.load(areaUri)
-      areaTexture.minFilter = THREE.LinearFilter
-      return areaTexture
-    })
-
     /* Camera */
-    const camera = new THREE.PerspectiveCamera(
-      25,
-      clientWidth / clientHeight,
-      0.1,
-      1000
-    )
+    const aspect = clientWidth / clientHeight
+    const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
+
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
@@ -124,131 +102,26 @@ class Render3D extends PureComponent {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
     directionalLight.position.copy(camera.position)
 
-    const mtlLoader = new THREE.MTLLoader()
-
     scene.add(camera)
     scene.add(ambient)
     scene.add(directionalLight)
 
-    /* Object and MTL load */
-
-    mtlLoader.setPath('./models/')
-    mtlLoader.load('Tour.mtl', materials => {
-      onLoadModel(true)
-      materials.preload()
-      const objLoader = new THREE.OBJLoader()
-      objLoader.setMaterials(materials)
-      objLoader.setPath('./models/')
-      objLoader.load(
-        'Tour.obj',
-        object => {
-          onLoadModel(false)
-          const objectChilds = object.children.length
-          this.setState({ objectChilds })
-          // Materials
-          /* Object material */
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.flatlock
-          })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
-
-          // Inside material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide
-          })
-
-          /* Assign materials */
-
-          /* jersey */
-          object.children[0].material = insideMaterial
-
-          // Setup the texture layers
-          const areasLayers = loadedAreas.map((area, index) =>
-            object.children[0].clone()
-          )
-          areasLayers.forEach(layer => object.add(layer))
-
-          // TODO: Refactor into a loop
-          const texture1 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[0],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[0]
-          })
-
-          const texture2 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[1],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[1],
-            transparent: true
-          })
-
-          const texture3 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[2],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[2],
-            transparent: true
-          })
-
-          const texture4 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[3],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[3],
-            transparent: true
-          })
-
-          const texture5 = new THREE.MeshPhongMaterial({
-            map: loadedAreas[4],
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            color: styleColors[4],
-            transparent: true
-          })
-
-          object.children[24].material = texture1
-          object.children[25].material = texture2
-          object.children[26].material = texture3
-          object.children[27].material = texture4
-          object.children[28].material = texture5
-
-          /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.label
-          })
-
-          const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.backPocket
-          })
-
-          /* flatlock */
-          for (let index = 1; index <= 10; index++) {
-            object.children[index].material = flatlockMaterial
-          }
-          /* Jersey label */
-          object.children[17].material = labelMaterial
-          /* back pocket */
-          object.children[22].material = backPocketMaterial
-          /* Object Conig */
-          object.position.y = -30
-          object.name = 'jersey'
-          scene.add(object)
-        },
-        this.onProgress,
-        this.onError
-      )
-    })
+    /* Loaders */
+    const mtlLoader = new THREE.MTLLoader()
+    const objLoader = new THREE.OBJLoader()
+    const imgLoader = new THREE.TextureLoader()
 
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
-    this.loader = mtlLoader
     this.controls = controls
     this.directionalLight = directionalLight
+
+    this.mtlLoader = mtlLoader
+    this.objLoader = objLoader
+    this.imgLoader = imgLoader
+
+    this.render3DModel()
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
@@ -257,6 +130,80 @@ class Render3D extends PureComponent {
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
+  }
+
+  render3DModel = () => {
+    /* Object and MTL load */
+    const { onLoadModel, currentStyle } = this.props
+
+    /* Texture configuration */
+    const modelTextures = dummieData[currentStyle]
+    const flatlockTexture = this.imgLoader.load('./models/images/flatlock.png')
+    const bumpMapTexture = this.imgLoader.load(modelTextures.bumpMap)
+
+    const loadedAreas = modelTextures.areas.map(areaUri => {
+      const areaTexture = this.imgLoader.load(areaUri)
+      areaTexture.minFilter = THREE.LinearFilter
+      return areaTexture
+    })
+
+    this.mtlLoader.load(modelTextures.mtl, materials => {
+      onLoadModel(true)
+      materials.preload()
+      this.objLoader.setMaterials(materials)
+      this.objLoader.load(
+        modelTextures.obj,
+        object => {
+          onLoadModel(false)
+          const objectChilds = object.children.length
+          this.setState({ objectChilds })
+
+          /* Object materials */
+
+          // Stitching
+          const flatlockMaterial = new THREE.MeshPhongMaterial({
+            map: flatlockTexture
+          })
+          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
+          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+
+          // Back material
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.BackSide,
+            color: '#000000'
+          })
+
+          // Setup the texture layers
+          const areasLayers = loadedAreas.map(() => object.children[5].clone())
+          object.add(...areasLayers)
+
+          /* Jersey label */
+          object.children[4].material.color.set('#ffffff')
+          object.children[6].material = flatlockMaterial
+          object.children[5].material = insideMaterial
+
+          loadedAreas.forEach(
+            (materialTexture, index) =>
+              (object.children[
+                objectChilds + index
+              ].material = new THREE.MeshPhongMaterial({
+                map: loadedAreas[index],
+                side: THREE.FrontSide,
+                bumpMap: bumpMapTexture,
+                color: modelTextures.colors[index],
+                transparent: true
+              }))
+          )
+
+          /* Object Config */
+          object.position.y = -30
+          object.name = 'jersey'
+          this.scene.add(object)
+        },
+        this.onProgress,
+        this.onError
+      )
+    })
   }
 
   onProgress = xhr => {
@@ -301,18 +248,20 @@ class Render3D extends PureComponent {
   setupColors = colors => {
     const { objectChilds } = this.state
     const object = this.scene.getObjectByName('jersey')
-    colors.forEach((color, index) => {
-      if (object.children[objectChilds + index]) {
-        object.children[objectChilds + index].material.color.set(color)
-      }
-    })
+    if (object) {
+      colors.forEach((color, index) => {
+        if (object.children[objectChilds + index]) {
+          object.children[objectChilds + index].material.color.set(color)
+        }
+      })
+    }
   }
 
   setupHoverColor = colorBlockHovered => {
+    const object = this.scene.getObjectByName('jersey')
     const { objectChilds } = this.state
     const { colors } = this.props
-    if (colorBlockHovered >= 0) {
-      const object = this.scene.getObjectByName('jersey')
+    if (object && colorBlockHovered >= 0) {
       object.children[objectChilds + colorBlockHovered].material.color.set(
         '#f2f2f2'
       )
