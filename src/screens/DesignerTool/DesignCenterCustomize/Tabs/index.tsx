@@ -17,9 +17,11 @@ interface Props {
   colorBlockHovered: number
   colors: string[]
   styleColors: string[]
+  uploadingFiles: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
+  onUploadFiles: (files: any) => void
 }
 
 const Tabs = ({
@@ -29,13 +31,15 @@ const Tabs = ({
   colorBlockHovered,
   onSelectColor,
   colors,
-  styleColors
+  styleColors,
+  onUploadFiles,
+  uploadingFiles
 }: Props) => {
   return (
     <Container>
       <AntdTabs defaultActiveKey="1" size="large">
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="1">
-          <UploadTab />
+          <UploadTab {...{ onUploadFiles, uploadingFiles }} />
         </TabPane>
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="4">
           <ColorTab

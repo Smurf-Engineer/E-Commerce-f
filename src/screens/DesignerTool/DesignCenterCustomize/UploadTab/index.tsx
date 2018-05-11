@@ -13,7 +13,10 @@ import {
   ButtonWrapper
 } from './styledComponents'
 
-interface Props {}
+interface Props {
+  onUploadFiles: (files: any) => void
+  uploadingFiles: boolean
+}
 
 class UploadTab extends React.PureComponent<Props, {}> {
   state = {
@@ -21,15 +24,17 @@ class UploadTab extends React.PureComponent<Props, {}> {
     uploading: false
   }
 
-  handleUpload = () => {}
+  handleUpload = () => {
+    const { fileList } = this.state
+    const { onUploadFiles } = this.props
+
+    if (fileList.length && fileList.length <= 8) {
+      onUploadFiles(fileList)
+    }
+  }
 
   beforeUpload = (file: any) => {
-    console.log('---------------------------')
-    console.log(file)
-    console.log('---------------------------')
-    this.setState(({ fileList }: any) => ({
-      fileList: [...fileList, file]
-    }))
+    this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))
     return false
   }
 
@@ -45,19 +50,26 @@ class UploadTab extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { fileList, uploading } = this.state
+    const { fileList } = this.state
+    const { uploadingFiles } = this.props
     return (
       <Container>
         <Top>
-          <Text>Upload OBJ, MTL and Texture files</Text>
+          <Text>
+            Upload your files:
+            <p>1. OBJ file</p>
+            <p>2. MTL file</p>
+            <p>3. Bumpmap file</p>
+            <p> 4. ColorBlock 1 - 5</p>
+          </Text>
           <Button
-            size="small"
+            size="large"
             type="primary"
             onClick={this.handleUpload}
             disabled={!fileList.length}
-            loading={uploading}
+            loading={uploadingFiles}
           >
-            {uploading ? 'Uploading' : 'Upload'}
+            {uploadingFiles ? 'Uploading' : 'Upload'}
           </Button>
         </Top>
         <Buttons>

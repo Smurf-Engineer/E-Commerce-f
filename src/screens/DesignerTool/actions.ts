@@ -6,7 +6,9 @@ import {
   SET_LOADING_MODEL,
   SET_COLOR_ACTION,
   SET_COLOR_BLOCK_ACTION,
-  COLOR_BLOCK_HOVERED_ACTION
+  COLOR_BLOCK_HOVERED_ACTION,
+  SET_UPLOADING_ACTION,
+  SET_UPLOADING_SUCCESS
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -33,4 +35,14 @@ export const setHoverColorBlockAction = (index: number): AnyAction => ({
 export const setColorAction = (color: string): AnyAction => ({
   type: SET_COLOR_ACTION,
   color
+})
+
+export const setUploadingAction = (isLoading: boolean): AnyAction => ({
+  type: SET_UPLOADING_ACTION,
+  isLoading
+})
+
+export const setUploadingSuccess = (modelConfig: any): AnyAction => ({
+  type: SET_UPLOADING_SUCCESS,
+  modelConfig
 })

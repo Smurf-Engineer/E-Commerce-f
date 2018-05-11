@@ -8,6 +8,9 @@ import UploadTab from './index'
 describe('<UploadTab />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<UploadTab  />, div)
+    ReactDOM.render(
+      <UploadTab onUploadFiles={() => {}} uploadingFiles={false} />,
+      div
+    )
   })
 })

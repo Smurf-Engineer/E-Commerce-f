@@ -18,12 +18,13 @@ import {
   ViewControls,
   ViewButton,
   LoadingContainer,
-  ButtonWrapper
+  ButtonWrapper,
+  Logo
 } from './styledComponents'
+import logo from '../../../../assets/jakroo_logo.svg'
 import { jerseyTextures, viewPositions } from './config'
 import messages from './messages'
 
-/* eslint-disable */
 class Render3D extends PureComponent {
   state = {
     showDragmessage: true,
@@ -35,8 +36,23 @@ class Render3D extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { colors, colorBlockHovered: oldColorBlockHovered } = this.props
-    const { colors: nextColors, styleColors, colorBlockHovered } = nextProps
+    const {
+      colors,
+      colorBlockHovered: oldColorBlockHovered,
+      files: oldFiles
+    } = this.props
+    const {
+      colors: nextColors,
+      styleColors,
+      colorBlockHovered,
+      files
+    } = nextProps
+
+    const filesHasChange = isEqual(files, oldFiles)
+    if (!filesHasChange) {
+      this.loadObject(files)
+      return
+    }
 
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
@@ -49,13 +65,13 @@ class Render3D extends PureComponent {
     const colorBlockHasChange = oldColorBlockHovered !== colorBlockHovered
     if (colorBlockHasChange) {
       this.setupHoverColor(colorBlockHovered)
+      return
     }
   }
 
   // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
-    const { onLoadModel, styleColors, files } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({
@@ -67,36 +83,10 @@ class Render3D extends PureComponent {
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
 
-    /* Textures */
-    const loader = new THREE.TextureLoader()
-    loader.crossOrigin = ''
-
-    /* Get the texture configuration */
-    // This maybe change for a graph query
-    const { areas, textures } = jerseyTextures('C02-D01') || {}
-
-    /* Load area textures */
-    const loadedTextures = {}
-    for (const key in textures) {
-      loadedTextures[key] = loader.load(textures[key])
-      if (key !== 'flatlock') {
-        loadedTextures[key].minFilter = THREE.LinearFilter
-      }
-    }
-
-    const loadedAreas = areas.map(areaUri => {
-      const areaTexture = loader.load(areaUri)
-      areaTexture.minFilter = THREE.LinearFilter
-      return areaTexture
-    })
-
     /* Camera */
-    const camera = new THREE.PerspectiveCamera(
-      25,
-      clientWidth / clientHeight,
-      0.1,
-      1000
-    )
+    const aspect = clientWidth / clientHeight
+    const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
+
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
@@ -111,30 +101,71 @@ class Render3D extends PureComponent {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
     directionalLight.position.copy(camera.position)
 
-    const mtlLoader = new THREE.MTLLoader()
-
     scene.add(camera)
     scene.add(ambient)
     scene.add(directionalLight)
 
-    /* Object and MTL load */
+    /* Loaders */
+    const mtlLoader = new THREE.MTLLoader()
+    const objLoader = new THREE.OBJLoader()
+    const imgLoader = new THREE.TextureLoader()
 
-    mtlLoader.setPath('./models/')
-    mtlLoader.load('Tour_v2.mtl', materials => {
+    this.scene = scene
+    this.camera = camera
+    this.renderer = renderer
+    this.controls = controls
+    this.directionalLight = directionalLight
+
+    this.mtlLoader = mtlLoader
+    this.objLoader = objLoader
+    this.imgLoader = imgLoader
+
+    this.container.appendChild(this.renderer.domElement)
+    this.start()
+  }
+
+  componentWillUnmount() {
+    this.stop()
+    this.container.removeChild(this.renderer.domElement)
+  }
+
+  loadObject = files => {
+    /* Object and MTL load */
+    const { onLoadModel, styleColors } = this.props
+
+    /* Get the texture configuration */
+    // This maybe change for a graph query
+    const { /* areas, */ textures } = jerseyTextures('C02-D01') || {}
+
+    /* Load area textures */
+    const loadedTextures = {}
+    for (const key in textures) {
+      loadedTextures[key] = this.imgLoader.load(textures[key])
+      if (key !== 'flatlock') {
+        loadedTextures[key].minFilter = THREE.LinearFilter
+      }
+    }
+
+    const bumpMapTexture = this.imgLoader.load(files.bumpMap)
+
+    const loadedAreas = files.areas.map(areaUri => {
+      const areaTexture = this.imgLoader.load(areaUri)
+      areaTexture.minFilter = THREE.LinearFilter
+      return areaTexture
+    })
+
+    this.mtlLoader.load(files.mtl, materials => {
       onLoadModel(true)
       materials.preload()
-      const objLoader = new THREE.OBJLoader()
-      objLoader.setMaterials(materials)
-      objLoader.setPath('./models/')
-      objLoader.load(
-        'Tour_v2.obj',
+      this.objLoader.setMaterials(materials)
+      this.objLoader.load(
+        files.obj,
         object => {
           onLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
           /* Object materials */
-
           // Stitching
           const flatlockMaterial = new THREE.MeshLambertMaterial({
             map: loadedTextures.flatlock
@@ -147,6 +178,10 @@ class Render3D extends PureComponent {
             side: THREE.BackSide,
             color: '#000000'
           })
+
+          console.log('---------------OBJECT-------------')
+          console.log(object)
+          console.log('------------------------------------')
 
           // Setup the texture layers
           const areasLayers = loadedAreas.map(() => object.children[5].clone())
@@ -164,7 +199,7 @@ class Render3D extends PureComponent {
               ].material = new THREE.MeshPhongMaterial({
                 map: loadedAreas[index],
                 side: THREE.FrontSide,
-                bumpMap: loadedTextures.bumpMap,
+                bumpMap: bumpMapTexture,
                 color: styleColors[index],
                 transparent: true
               }))
@@ -173,31 +208,12 @@ class Render3D extends PureComponent {
           /* Object Config */
           object.position.y = -40
           object.name = 'jersey'
-          scene.add(object)
+          this.scene.add(object)
         },
         this.onProgress,
         this.onError
       )
     })
-
-    this.scene = scene
-    this.camera = camera
-    this.renderer = renderer
-    this.loader = mtlLoader
-    this.controls = controls
-    this.directionalLight = directionalLight
-
-    if (!window.scene) {
-      window.scene = this.scene
-    }
-
-    this.container.appendChild(this.renderer.domElement)
-    this.start()
-  }
-
-  componentWillUnmount() {
-    this.stop()
-    this.container.removeChild(this.renderer.domElement)
   }
 
   onProgress = xhr => {
@@ -242,18 +258,20 @@ class Render3D extends PureComponent {
   setupColors = colors => {
     const { objectChilds } = this.state
     const object = this.scene.getObjectByName('jersey')
-    colors.forEach((color, index) => {
-      if (object.children[objectChilds + index]) {
-        object.children[objectChilds + index].material.color.set(color)
-      }
-    })
+    if (object) {
+      colors.forEach((color, index) => {
+        if (object.children[objectChilds + index]) {
+          object.children[objectChilds + index].material.color.set(color)
+        }
+      })
+    }
   }
 
   setupHoverColor = colorBlockHovered => {
+    const object = this.scene.getObjectByName('jersey')
     const { objectChilds } = this.state
     const { colors } = this.props
-    if (colorBlockHovered >= 0) {
-      const object = this.scene.getObjectByName('jersey')
+    if (object && colorBlockHovered >= 0) {
       object.children[objectChilds + colorBlockHovered].material.color.set(
         '#f2f2f2'
       )
@@ -262,80 +280,15 @@ class Render3D extends PureComponent {
     }
   }
 
-  // TODO: WIP
-  handleOnKeyDown = event => {
-    let charCode = String.fromCharCode(event.which).toLowerCase()
-    if (event.shiftKey && event.ctrlKey && charCode === 'z') {
-      // TODO: Handle ctrl+shift+z
-    } else if (event.ctrlKey && charCode === 'z') {
-      // TODO: Handle ctrl+z
-    }
-
-    // For MAC we can use metaKey to detect cmd key
-    if (event.shiftKey && event.metaKey && charCode === 'z') {
-      // TODO: Handle cmd+shift+z
-    } else if (event.metaKey && charCode === 'z') {
-      // TODO: Handle cmd+z
-    }
-  }
-
-  handleOnClickUndo = () => this.props.onUndoAction()
-
-  handleOnClickRedo = () => this.props.onRedoAction()
-
-  handleOnClickReset = () => this.props.onResetAction()
-
-  handleOnClickClear = () => this.props.onClearAction()
-
-  handleOnChange3DModel = () => {}
-
-  handleOnPressLeft = () => {
-    const { currentView } = this.state
-    const nextView = currentView === 0 ? 3 : currentView - 1
-    const viewPosition = viewPositions[nextView]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: nextView })
-  }
-
-  handleOnPressRight = () => {
-    const { currentView } = this.state
-    const nextView = currentView === 3 ? 0 : currentView + 1
-    const viewPosition = viewPositions[nextView]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: nextView })
-  }
-
-  handleOnChangeZoom = value => {
-    const zoomValue = value * 1.0 / 100
-    this.camera.zoom = zoomValue * 2
-    this.camera.updateProjectionMatrix()
-  }
-
-  saveDesign = previewImage => {
-    // TODO: Send base64 image
-    const { onOpenSaveDesign } = this.props
-    onOpenSaveDesign(true, previewImage)
-  }
-
-  takeDesignPicture = () => {
-    const viewPosition = viewPositions[2]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: 2 }, () =>
-      setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/png', 0.1)
-        this.saveDesign(dataUrl)
-      }, 200)
-    )
-  }
-
   render() {
     const { progress } = this.state
     const { loadingModel, files } = this.props
 
     return (
-      <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
+      <Container>
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
+          {!files && <Logo src={logo} />}
         </Render>
       </Container>
     )

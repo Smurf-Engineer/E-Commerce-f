@@ -11,12 +11,14 @@ interface Props {
   colorBlockHovered: number
   colors: string[]
   styleColors: string[]
-  files: string[]
+  files: any
   loadingModel: boolean
+  uploadingFiles: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onLoadModel: (loading: boolean) => void
   onHoverColorBlock: (index: number) => void
+  onUploadFiles: (files: any) => void
 }
 
 const DesignCenterCustomize = ({
@@ -29,7 +31,9 @@ const DesignCenterCustomize = ({
   loadingModel,
   onLoadModel,
   onHoverColorBlock,
-  files
+  files,
+  uploadingFiles,
+  onUploadFiles
 }: Props) => {
   return (
     <Container>
@@ -41,7 +45,9 @@ const DesignCenterCustomize = ({
           onHoverColorBlock,
           onSelectColor,
           colors,
-          styleColors
+          styleColors,
+          onUploadFiles,
+          uploadingFiles
         }}
       />
       <Render3D

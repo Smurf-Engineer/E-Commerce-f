@@ -16,7 +16,7 @@ const configureStore = (preloadedState = {}) => {
   const store = createStore(
     rootReducer,
     fromJS(preloadedState),
-    composeStore(applyMiddleware(loggerMiddleware, thunk))
+    composeStore(applyMiddleware(thunk, loggerMiddleware))
   )
 
   return store

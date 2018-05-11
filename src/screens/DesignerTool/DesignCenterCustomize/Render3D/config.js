@@ -3,18 +3,23 @@
  */
 
 export const jerseyTextures = (design = 'default') => ({
-  areas: [
-    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_1.png`,
-    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_2.png`,
-    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_3.png`,
-    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_4.png`,
-    `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_5.png`
-  ],
   textures: {
-    flatlock: './models/images/flatlock.png',
-    bumpMap: './models/images/Tour_v2-BumpMap.jpg'
+    flatlock: './models/images/flatlock.png'
   }
 })
+
+// areas: [
+//   `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_1.png`,
+//   `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_2.png`,
+//   `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_3.png`,
+//   `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_4.png`,
+//   `https://storage.googleapis.com/jakroo-storage/models/Tour/${design}/colorblock_5.png`
+// ],
+// textures: {
+//   flatlock: './models/images/flatlock.png',
+//   bumpMap:
+//     'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2-BumpMap.jpg'
+// }
 
 export const viewPositions = {
   0: {

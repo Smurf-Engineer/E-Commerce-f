@@ -7,7 +7,9 @@ import {
   SET_LOADING_MODEL,
   SET_COLOR_ACTION,
   SET_COLOR_BLOCK_ACTION,
-  COLOR_BLOCK_HOVERED_ACTION
+  COLOR_BLOCK_HOVERED_ACTION,
+  SET_UPLOADING_ACTION,
+  SET_UPLOADING_SUCCESS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -33,7 +35,8 @@ export const initialState = fromJS({
   savedDesignId: '',
   designBase64: '',
   saveDesignLoading: false,
-  files: []
+  uploadingFiles: false,
+  modelConfig: null
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -53,6 +56,13 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       const updatedColors = colors.updateIn([colorBlock], () => color)
       return state.set('colors', List.of(...updatedColors))
     }
+    case SET_UPLOADING_ACTION:
+      return state.set('uploadingFiles', action.isLoading)
+    case SET_UPLOADING_SUCCESS:
+      return state.merge({
+        uploadingFiles: false,
+        modelConfig: action.modelConfig
+      })
     default:
       return state
   }

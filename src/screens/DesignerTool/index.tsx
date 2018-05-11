@@ -6,6 +6,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import CustomizeTab from './DesignCenterCustomize'
 import * as designerToolActions from './actions'
+import * as designerToolApi from './api'
 import { Container } from './styledComponents'
 
 interface Props {
@@ -15,11 +16,16 @@ interface Props {
   colorBlockHovered: number
   loadingModel: boolean
   files: string[]
+  uploadingFiles: boolean
+  // TODO: Need more dynamic way for upload files
+  modelConfig: any
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
+  uploadFilesAction: (files: any) => void
+  setUploadingAction: (loading: boolean) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -34,7 +40,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       setColorAction,
       setColorBlockAction,
       setHoverColorBlockAction,
-      files
+      uploadFilesAction,
+      uploadingFiles,
+      modelConfig
     } = this.props
     return (
       <Container>
@@ -45,12 +53,14 @@ export class DesignerTool extends React.Component<Props, {}> {
             colorBlock,
             colorBlockHovered,
             loadingModel,
-            files
+            uploadingFiles
           }}
+          files={modelConfig}
           onLoadModel={setLoadingAction}
           onSelectColorBlock={setColorBlockAction}
           onHoverColorBlock={setHoverColorBlockAction}
           onSelectColor={setColorAction}
+          onUploadFiles={uploadFilesAction}
         />
       </Container>
     )
@@ -60,7 +70,7 @@ export class DesignerTool extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 
 const DesignerToolEnhance = compose(
-  connect(mapStateToProps, { ...designerToolActions })
+  connect(mapStateToProps, { ...designerToolActions, ...designerToolApi })
 )(DesignerTool)
 
 export default DesignerToolEnhance

@@ -44,6 +44,13 @@ export const Progress = styled(AntdProgress)`
   transform: translate(-50%, -50%);
 `
 
+export const Logo = styled.img`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
 export const Button = styled(AntdButton)`
   position: absolute;
   height: 40px;

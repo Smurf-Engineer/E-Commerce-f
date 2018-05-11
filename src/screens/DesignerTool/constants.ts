@@ -8,3 +8,5 @@ export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`
 export const SET_COLOR_BLOCK_ACTION = `${namespace}/SET_COLOR_BLOCK_ACTION`
 export const SET_COLOR_ACTION = `${namespace}/SET_COLOR_ACTION`
 export const COLOR_BLOCK_HOVERED_ACTION = `${namespace}/COLOR_BLOCK_HOVERED_ACTION`
+export const SET_UPLOADING_ACTION = `${namespace}/SET_UPLOADING_ACTION`
+export const SET_UPLOADING_SUCCESS = `${namespace}/SET_UPLOADING_SUCCESS`
