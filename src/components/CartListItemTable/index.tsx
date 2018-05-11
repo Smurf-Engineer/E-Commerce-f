@@ -109,6 +109,7 @@ class CartListItemTable extends React.Component<Props, {}> {
   }
 
   handleSizeChange = (value: any, detail: number) => {
+    // TODO: implement when sizes added
     // const { setDetailGender, itemIndex, cartItem } = this.props
     // const selectedGender = find(cartItem.product.genders, {
     //   name: value
