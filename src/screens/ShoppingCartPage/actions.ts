@@ -6,9 +6,17 @@ import {
   SET_ITEMS_ACTION,
   ADD_ITEM_DETAIL_ACTION,
   DELETE_ITEM_DETAIL_ACTION,
-  SET_LABEL_ITEM_DETAIL_ACTION
+  SET_LABEL_ITEM_DETAIL_ACTION,
+  SET_GENDER_ITEM_DETAIL_ACTION,
+  SET_SIZE_ITEM_DETAIL_ACTION,
+  SET_FIT_ITEM_DETAIL_ACTION,
+  SET_QUANTITY_ITEM_DETAIL_ACTION,
+  REMOVE_ITEM_ACTION,
+  SET_TOTAL_ACTION,
+  SET_SUBTOTAL_ACTION,
+  SET_SHIPPING_ACTION
 } from './constants'
-import { AnyAction, Product } from '../../types/common'
+import { AnyAction, Product, ItemDetailType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -36,9 +44,75 @@ export const deleteItemDetailAction = (
 
 export const setLabelItemDetailAction = (
   index: number,
-  detailIndex: number
+  detailIndex: number,
+  label: string
 ): AnyAction => ({
   type: SET_LABEL_ITEM_DETAIL_ACTION,
   index,
-  detailIndex
+  detailIndex,
+  label
+})
+
+export const setGenderItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  gender: ItemDetailType
+): AnyAction => ({
+  type: SET_GENDER_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  gender
+})
+
+export const setSizeItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  size: ItemDetailType
+): AnyAction => ({
+  type: SET_SIZE_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  size
+})
+
+export const setFitItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  fit: ItemDetailType
+): AnyAction => ({
+  type: SET_FIT_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  fit
+})
+
+export const setQuantityItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  quantity: string
+): AnyAction => ({
+  type: SET_QUANTITY_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  quantity
+})
+
+export const removeItemAction = (index: number): AnyAction => ({
+  type: REMOVE_ITEM_ACTION,
+  index
+})
+
+export const setTotalAction = (total: number): AnyAction => ({
+  type: SET_TOTAL_ACTION,
+  total
+})
+
+export const setSubtotalAction = (subtotal: number): AnyAction => ({
+  type: SET_SUBTOTAL_ACTION,
+  subtotal
+})
+
+export const setShippingAction = (shipping: number): AnyAction => ({
+  type: SET_SHIPPING_ACTION,
+  shipping
 })

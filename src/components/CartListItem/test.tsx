@@ -4,6 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import CartListItem from './index'
+import { ItemDetailType } from '../../types/common'
 
 describe('<CartListItem />', () => {
   test('renders without exploding', () => {
@@ -13,11 +14,42 @@ describe('<CartListItem />', () => {
       event: React.MouseEvent<EventTarget>,
       index: number
     ) => {}
+    const handleRemove = (
+      event: React.MouseEvent<EventTarget>,
+      index: number
+    ) => {}
     const handleDelete = (
       event: React.MouseEvent<EventTarget>,
       index: number,
       detailIndex: number
     ) => {}
+    const handleLabel = (
+      index: number,
+      detailIndex: number,
+      label: string
+    ) => {}
+    const handleQuantity = (
+      index: number,
+      detailIndex: number,
+      quantity: number
+    ) => {}
+
+    const handleGender = (
+      index: number,
+      detailIndex: number,
+      gender: ItemDetailType
+    ) => {}
+    const handleFit = (
+      index: number,
+      detailIndex: number,
+      fit: ItemDetailType
+    ) => {}
+    const handleSize = (
+      index: number,
+      detailIndex: number,
+      size: ItemDetailType
+    ) => {}
+
     const title = ''
     const description = ''
     const itemIndex = 0
@@ -39,6 +71,7 @@ describe('<CartListItem />', () => {
         ],
         type: '',
         description: '',
+        shortDescription: '',
         priceRange: [
           {
             quantity: '1',
@@ -94,6 +127,12 @@ describe('<CartListItem />', () => {
         handleAddItemDetail={handleAdd}
         handledeleteItemDetail={handleDelete}
         itemIndex={itemIndex}
+        setLabelItemDetail={handleLabel}
+        setDetailQuantity={handleQuantity}
+        setDetailFit={handleFit}
+        setDetailGender={handleGender}
+        setDetailSize={handleSize}
+        removeItem={handleRemove}
       />,
       div
     )

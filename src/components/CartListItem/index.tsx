@@ -19,7 +19,12 @@ import {
   BottomDivider
 } from './styledComponents'
 import CartListItemTable from '../../components/CartListItemTable'
-import { PriceRange, Product, CartItemDetail } from '../../types/common'
+import {
+  PriceRange,
+  Product,
+  CartItemDetail,
+  ItemDetailType
+} from '../../types/common'
 import messages from '../ProductInfo/messages'
 
 interface CartItems {
@@ -33,11 +38,39 @@ interface Props {
     event: React.MouseEvent<EventTarget>,
     index: number
   ) => void
+  removeItem: (event: React.MouseEvent<EventTarget>, index: number) => void
   handledeleteItemDetail: (
     event: React.MouseEvent<EventTarget>,
     index: number,
     detailIndex: number
   ) => void
+  setLabelItemDetail: (
+    index: number,
+    detailIndex: number,
+    label: string
+  ) => void
+  setDetailQuantity: (
+    index: number,
+    detailIndex: number,
+    quantity: number
+  ) => void
+
+  setDetailFit: (
+    index: number,
+    detailIndex: number,
+    fit: ItemDetailType
+  ) => void
+  setDetailGender: (
+    index: number,
+    detailIndex: number,
+    gender: ItemDetailType
+  ) => void
+  setDetailSize: (
+    index: number,
+    detailIndex: number,
+    size: ItemDetailType
+  ) => void
+
   title: string
   description: string
   price: PriceRange
@@ -57,7 +90,13 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem,
       handleAddItemDetail,
       handledeleteItemDetail,
-      itemIndex
+      itemIndex,
+      setLabelItemDetail,
+      setDetailQuantity,
+      setDetailFit,
+      setDetailGender,
+      setDetailSize,
+      removeItem
     } = this.props
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -100,11 +139,18 @@ class CartListItem extends React.Component<Props, {}> {
               cartItem={cartItem}
               handledeleteItemDetail={handledeleteItemDetail}
               itemIndex={itemIndex}
+              setLabelItemDetail={setLabelItemDetail}
+              setDetailQuantity={setDetailQuantity}
+              setDetailFit={setDetailFit}
+              setDetailGender={setDetailGender}
+              setDetailSize={setDetailSize}
             />
             <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
               {formatMessage(messages.addMore)}
             </AddMore>
-            <DeleteItem>{formatMessage(messages.delete)}</DeleteItem>
+            <DeleteItem onClick={e => removeItem(e, itemIndex)}>
+              {formatMessage(messages.delete)}
+            </DeleteItem>
           </ItemDetails>
         </Container>
         <BottomDivider />
