@@ -2,16 +2,14 @@
  * Shippping Component - Created by cazarez on 07/05/18.
  */
 import * as React from 'react'
-import { connect } from 'react-redux'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-import Input from 'antd/lib/input'
 import Dropdown from 'antd/lib/dropdown'
-import Checkbox from 'antd/lib/checkbox'
-import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import Menu, { ClickParam } from 'antd/lib/menu'
+import AnimateHeight from 'react-animate-height'
 import messages from './messages'
+import { GetAddressListQuery } from './data'
 import {
   Container,
   Title,
@@ -31,7 +29,14 @@ import {
 
 import MyAddresses from '../MyAddressesList'
 
+import { QueryProps, AddressType } from '../../types/common'
+
+interface Data extends QueryProps {
+  userAddresses: AddressType[]
+}
+
 interface Props {
+  data: Data
   firstName: string
   lastName: string
   street: string
@@ -42,14 +47,16 @@ interface Props {
   zipCode: string
   phone: string
   hasError: boolean
+  showForm: boolean
   formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
+  showAddressFormAction: (show: boolean) => void
 }
 
-class Shippping extends React.PureComponent<Props, {}> {
+export class Shippping extends React.PureComponent<Props, {}> {
   render() {
     const {
       firstName,
@@ -62,8 +69,15 @@ class Shippping extends React.PureComponent<Props, {}> {
       zipCode,
       phone,
       hasError,
-      formatMessage
+      formatMessage,
+      showAddressFormAction,
+      showForm,
+      data: { loading, userAddresses }
     } = this.props
+
+    if (loading) {
+      return null
+    }
 
     const shippingMethod = (
       <ShippingMethodContainer>
@@ -256,11 +270,20 @@ class Shippping extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        <MyAddresses formatMessage={formatMessage} />
-        <Title>
-          <FormattedMessage {...messages.title} />
-        </Title>
-        {form}
+        <MyAddresses
+          formatMessage={formatMessage}
+          items={userAddresses}
+          {...{ showAddressFormAction }}
+        />
+        <AnimateHeight
+          duration={500}
+          height={!userAddresses || showForm ? 'auto' : 0}
+        >
+          <Title>
+            <FormattedMessage {...messages.title} />
+          </Title>
+          {form}
+        </AnimateHeight>
         {shippingMethod}
       </Container>
     )
@@ -293,7 +316,6 @@ class Shippping extends React.PureComponent<Props, {}> {
     } = evt
 
     smsCheckAction(checked)
-    console.log('check ', evt.target)
   }
 
   handleEmailCheck = (evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -303,8 +325,8 @@ class Shippping extends React.PureComponent<Props, {}> {
     } = evt
 
     emailCheckAction(checked)
-    console.log('check ', evt.target)
   }
 }
 
-export default Shippping
+const ShippingEnhaced = compose(graphql(GetAddressListQuery))(Shippping)
+export default ShippingEnhaced

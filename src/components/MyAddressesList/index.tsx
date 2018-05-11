@@ -2,36 +2,73 @@
  * MyAddressesList Component - Created by cazarez on 10/05/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { compose, graphql } from 'react-apollo'
 import messages from './messages'
-import { Container, Content, Title, AddAddressBtn } from './styledComponents'
+import { GetAddressListQuery } from './data'
+import {
+  Container,
+  Content,
+  Title,
+  AddAddressBtn,
+  AddressesList
+} from './styledComponents'
 import MyAddress from '../MyAddress'
+import { QueryProps, AddressType } from '../../types/common'
 
 interface Props {
+  items: AddressType[]
   formatMessage: (messageDescriptor: any) => string
+  showAddressFormAction: (show: boolean) => void
 }
 
-class MyAddressesList extends React.Component<Props, {}> {
+export class MyAddressesList extends React.Component<Props, {}> {
   render() {
-    const { formatMessage } = this.props
+    const { formatMessage, items } = this.props
+
+    const showList = items && items.length > 0
+    const adressesList = items
+      ? items.map((address, key) => {
+          const {
+            firstName,
+            lastName,
+            street,
+            city,
+            stateProvince,
+            zipCode,
+            country
+          } = address
+          return (
+            <MyAddress
+              {...{ key }}
+              name={`${firstName} ${lastName}`}
+              street={street}
+              city={`${city} ${stateProvince}`}
+              zipCode={zipCode}
+              country={country}
+              {...{ formatMessage }}
+            />
+          )
+        })
+      : null
+
     return (
       <Container>
-        <Title>{formatMessage(messages.title)}</Title>
-        <Content>
-          <AddAddressBtn>
-            {formatMessage(messages.addAddressLabel)}
-          </AddAddressBtn>
-          <MyAddress
-            name={'Joe Smith'}
-            street={'1234 Street st'}
-            city={'San Francisco CA'}
-            zipCode={'12345'}
-            country={'USA'}
-            {...{ formatMessage }}
-          />
-        </Content>
+        {showList && <Title>{formatMessage(messages.title)}</Title>}
+        {showList && (
+          <Content>
+            <AddAddressBtn onClick={this.showAddressForm}>
+              {formatMessage(messages.addAddressLabel)}
+            </AddAddressBtn>
+            <AddressesList>{adressesList}</AddressesList>
+          </Content>
+        )}
       </Container>
     )
+  }
+
+  showAddressForm = () => {
+    const { showAddressFormAction } = this.props
+    showAddressFormAction(true)
   }
 }
 

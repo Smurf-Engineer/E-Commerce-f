@@ -13,6 +13,14 @@ export const QuickViewQuery = gql`
       description
       collections
       details
+      genders {
+        id
+        name: gender
+      }
+      fitStyles {
+        id
+        name: description
+      }
       materials: materials_info
       temperature: temperature_range
       priceRange {

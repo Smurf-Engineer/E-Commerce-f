@@ -8,6 +8,7 @@ const primaryColor = '#4a90e2'
 
 export const Container = styled.div`
   padding: 40px 32px;
+  background-color: #fff;
 `
 export const Content = styled.div`
   display: flex;
@@ -40,6 +41,7 @@ export const StepsContainer = styled.div`
 
 export const SummaryContainer = styled.div`
   width: 30%;
+  padding-left: 20px;
 `
 export const StepWrapper = styled.div`
   .ant-steps-item-process .ant-steps-item-icon {

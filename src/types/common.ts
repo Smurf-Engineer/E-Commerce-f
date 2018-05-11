@@ -251,3 +251,29 @@ export interface TeamstoreResult {
   fullCount: string
   teamStores: TeamstoreType[]
 }
+
+export type ItemDetailType = {
+  id: number
+  name: string
+}
+
+export type CartItemDetail = {
+  gender?: ItemDetailType
+  size?: ItemDetailType
+  fit?: ItemDetailType
+  label?: string
+  quantity: number
+}
+
+export interface AddressType {
+  id?: number
+  firstName: string
+  lastName: string
+  street: string
+  apartment: string
+  country: string
+  stateProvince: string
+  city: string
+  zipCode: string
+  phone: string
+}

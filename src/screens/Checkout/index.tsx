@@ -7,8 +7,10 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import Steps from 'antd/lib/steps'
+import SwipeableViews from 'react-swipeable-views'
 import * as checkoutActions from './actions'
 import messages from './messages'
+import { AddAddressMutation } from './data'
 import {
   Container,
   Content,
@@ -16,11 +18,13 @@ import {
   StepsContainer,
   SummaryContainer,
   ContinueButton,
-  StepWrapper,
-  SummaryTitle
+  StepWrapper
+  // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
+import OrderSummary from '../../components/OrderSummary'
+import { AddressType } from '../../types/common'
 
 const { Step } = Steps
 interface Props extends RouteComponentProps<any> {
@@ -36,18 +40,42 @@ interface Props extends RouteComponentProps<any> {
   phone: string
   currentStep: number
   hasError: boolean
+  showForm: boolean
+  addNewAddress: any
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
+  showAddressFormAction: (show: boolean) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 class Checkout extends React.Component<Props, {}> {
   render() {
-    const { intl, history, currentStep, hasError } = this.props
+    const {
+      intl,
+      history,
+      currentStep,
+      hasError,
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      state,
+      city,
+      zipCode,
+      phone,
+      showForm,
+      smsCheckAction,
+      emailCheckAction,
+      inputChangeAction,
+      selectDropdownAction,
+      showAddressFormAction
+    } = this.props
+
     const steps = stepperTitles.map((step, key) => (
       <Step title={step} {...{ key }} />
     ))
@@ -63,10 +91,39 @@ class Checkout extends React.Component<Props, {}> {
               <StepWrapper>
                 <Steps current={currentStep}>{steps}</Steps>
               </StepWrapper>
-              <div>{this.renderStepContent(currentStep)}</div>
+              <SwipeableViews index={currentStep}>
+                <Shipping
+                  {...{
+                    hasError,
+                    firstName,
+                    lastName,
+                    street,
+                    apartment,
+                    country,
+                    state,
+                    city,
+                    zipCode,
+                    phone,
+                    smsCheckAction,
+                    emailCheckAction,
+                    inputChangeAction,
+                    selectDropdownAction,
+                    showForm,
+                    showAddressFormAction
+                  }}
+                  formatMessage={intl.formatMessage}
+                />
+                <div>{'PAYMENT'}</div>
+                <div>{'REVIEW'}</div>
+              </SwipeableViews>
+              {/* <div>{this.renderStepContent(currentStep)}</div> */}
             </StepsContainer>
             <SummaryContainer>
-              <SummaryTitle>{'Order Summary'}</SummaryTitle>
+              <OrderSummary
+                total={434}
+                discount={10}
+                formatMessage={intl.formatMessage}
+              />
             </SummaryContainer>
           </Content>
           <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
@@ -84,20 +141,21 @@ class Checkout extends React.Component<Props, {}> {
       street,
       apartment,
       country,
-      state,
+      state: stateProvince,
       city,
       zipCode,
       phone,
       validFormAction,
-      smsCheckAction,
-      emailCheckAction
+      addNewAddress
+      //   smsCheckAction,
+      //   emailCheckAction
     } = this.props
     const error =
       !firstName ||
       !lastName ||
       !street ||
       !country ||
-      !state ||
+      !stateProvince ||
       !city ||
       !zipCode ||
       !phone
@@ -105,22 +163,34 @@ class Checkout extends React.Component<Props, {}> {
       validFormAction(error)
       return
     }
-    console.log(
-      'button ',
-      error,
+    const address = {
       firstName,
       lastName,
       street,
+      apartment,
       country,
-      state,
+      stateProvince,
+      city,
       zipCode,
       phone
-    )
+    }
+
     if (currentStep < stepperTitles.length - 1) {
+      this.saveAddress(address)
       stepAdvanceAction(currentStep + 1)
     }
   }
 
+  saveAddress = async (address: AddressType) => {
+    const { addNewAddress, showAddressFormAction } = this.props
+    const response = await addNewAddress({ variables: { address } })
+
+    if (response) {
+      showAddressFormAction(false)
+    }
+  }
+
+  // DELETE AFTER DEMO
   renderStepContent = (step: number) => {
     const {
       firstName,
@@ -134,10 +204,12 @@ class Checkout extends React.Component<Props, {}> {
       phone,
       hasError,
       intl,
+      showForm,
       smsCheckAction,
       emailCheckAction,
       inputChangeAction,
-      selectDropdownAction
+      selectDropdownAction,
+      showAddressFormAction
     } = this.props
     switch (step) {
       case 0:
@@ -157,7 +229,9 @@ class Checkout extends React.Component<Props, {}> {
               smsCheckAction,
               emailCheckAction,
               inputChangeAction,
-              selectDropdownAction
+              selectDropdownAction,
+              showForm,
+              showAddressFormAction
             }}
             formatMessage={intl.formatMessage}
           />
@@ -176,6 +250,7 @@ const mapStateToProps = (state: any) => state.get('checkout').toJS()
 
 const CheckoutEnhance = compose(
   injectIntl,
+  AddAddressMutation,
   connect(mapStateToProps, { ...checkoutActions })
 )(Checkout)
 

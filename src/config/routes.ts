@@ -1,5 +1,6 @@
 /* Routes */
 import Checkout from '../screens/Checkout'
+import ShoppingCartPage from '../screens/ShoppingCartPage'
 import StoreFront from '../screens/StoreFront'
 import CreateStore from '../screens/CreateStore'
 import SearchTeamstores from '../screens/SearchTeamstores'
@@ -20,6 +21,11 @@ const routes = [
     path: '/checkout',
     name: 'checkout',
     component: Checkout
+  },
+  {
+    path: '/shopping-cart',
+    name: 'shoppingCartPage',
+    component: ShoppingCartPage
   },
   {
     path: '/store-front',

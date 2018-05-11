@@ -8,7 +8,8 @@ import {
   CHANGE_INPUT,
   SELECT_DROPDOWN,
   SMS_CHECK,
-  EMAIL_CHECK
+  EMAIL_CHECK,
+  SHOW_ADDRESS_FORM
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -47,4 +48,9 @@ export const smsCheckAction = (checked: boolean): AnyAction => ({
 export const emailCheckAction = (checked: boolean): AnyAction => ({
   type: EMAIL_CHECK,
   checked
+})
+
+export const showAddressFormAction = (show: boolean): AnyAction => ({
+  type: SHOW_ADDRESS_FORM,
+  show
 })

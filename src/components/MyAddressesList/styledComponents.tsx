@@ -38,3 +38,8 @@ export const AddAddressBtn = styled(Button)`
     border-color: #4a90e2;
   }
 `
+
+export const AddressesList = styled.div`
+  display: flex;
+  justify-content: space-between;
+`

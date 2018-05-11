@@ -9,7 +9,8 @@ import {
   CHANGE_INPUT,
   SELECT_DROPDOWN,
   SMS_CHECK,
-  EMAIL_CHECK
+  EMAIL_CHECK,
+  SHOW_ADDRESS_FORM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -27,7 +28,8 @@ export const initialState = fromJS({
   phone: '',
   hasError: false,
   emailCheck: false,
-  smsCheck: false
+  smsCheck: false,
+  showForm: false
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -46,6 +48,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('smsCheck', action.checked)
     case EMAIL_CHECK:
       return state.set('emailCheck', action.checked)
+    case SHOW_ADDRESS_FORM:
+      return state.set('showForm', action.show)
     default:
       return state
   }

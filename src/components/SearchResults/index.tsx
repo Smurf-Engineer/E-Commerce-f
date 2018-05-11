@@ -85,7 +85,7 @@ export class SearchResults extends React.Component<Props, {}> {
                 <AddToCartButton
                   label={'ADD TO CART'}
                   renderForThumbnail={true}
-                  item={product}
+                  item={{ product }}
                 />
               )
             }

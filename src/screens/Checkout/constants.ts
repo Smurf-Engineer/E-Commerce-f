@@ -10,3 +10,4 @@ export const CHANGE_INPUT = `${namespace}/CHANGE_INPUT`
 export const SELECT_DROPDOWN = `${namespace}/SELECT_DROPDOWN`
 export const SMS_CHECK = `${namespace}/SMS_CHECK`
 export const EMAIL_CHECK = `${namespace}/EMAIL_CHECK`
+export const SHOW_ADDRESS_FORM = `${namespace}/SHOW_ADDRESS_FORM`

@@ -141,8 +141,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
-    const maleGender = get(genders, '0.gender', '')
-    const femaleGender = get(genders, '1.gender', '')
+    const maleGender = get(genders, '0.name', '')
+    const femaleGender = get(genders, '1.name', '')
     const genderMessage =
       femaleGender && maleGender
         ? formatMessage(messages.unisexGenderLabel)

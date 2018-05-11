@@ -91,7 +91,7 @@ export const ProductHorizontalList = ({
             <AddToCartButton
               label={'ADD TO CART'}
               renderForThumbnail={true}
-              item={product}
+              item={{ product }}
             />
           )
         }

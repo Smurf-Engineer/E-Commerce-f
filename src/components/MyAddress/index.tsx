@@ -2,7 +2,6 @@
  * MyAddress Component - Created by cazarez on 10/05/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import { Container, Text, StyledButton } from './styledComponents'
 

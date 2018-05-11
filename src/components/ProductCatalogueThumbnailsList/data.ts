@@ -31,6 +31,14 @@ export const GetProductsQuery = gql`
         customizable: design_center
         retailMen: men_retail
         retailWomen: women_retail
+        genders {
+          id
+          name: gender
+        }
+        fitStyles {
+          id
+          name: description
+        }
         priceRange {
           quantity
           price
