@@ -21,6 +21,7 @@ import Collapse from 'antd/lib/collapse'
 
 interface Props {
   total: number
+  subtotal: number
   discount?: number
   formatMessage: (messageDescriptor: any) => string
 }
@@ -29,7 +30,7 @@ const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
 class OrderSummary extends React.Component<Props, {}> {
   render() {
-    const { total, formatMessage, discount } = this.props
+    const { total, subtotal, formatMessage, discount } = this.props
     const renderDiscount = discount ? (
       <OrderItem>
         {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
@@ -59,7 +60,7 @@ class OrderSummary extends React.Component<Props, {}> {
         </SummaryTitle>
         <OrderItem>
           <FormattedMessage {...messages.subtotal} />
-          <div>{`USD$${total}`}</div>
+          <div>{`USD$${subtotal}`}</div>
         </OrderItem>
         <Divider />
         <OrderItem>
@@ -100,7 +101,7 @@ class OrderSummary extends React.Component<Props, {}> {
         </CollapseWrapper>
         <TotalOrderItem>
           <FormattedMessage {...messages.total} />
-          <div>{`USD$0`}</div>
+          <div>{`USD$${total}`}</div>
         </TotalOrderItem>
       </Container>
     )
