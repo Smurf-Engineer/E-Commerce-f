@@ -53,6 +53,7 @@ describe('<CartListItemTable />', () => {
           }
         ],
         type: '',
+        shortDescription: '',
         description: '',
         priceRange: [],
         collections: 0,

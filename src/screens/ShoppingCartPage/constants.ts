@@ -22,3 +22,9 @@ export const SET_FIT_ITEM_DETAIL_ACTION = `${namespace}/SET_FIT_ITEM_DETAIL_ACTI
 export const SET_QUANTITY_ITEM_DETAIL_ACTION = `${namespace}/SET_QUANTITY_ITEM_DETAIL_ACTION`
 
 export const REMOVE_ITEM_ACTION = `${namespace}/REMOVE_ITEM_ACTION`
+
+export const SET_TOTAL_ACTION = `${namespace}/SET_TOTAL_ACTION`
+
+export const SET_SUBTOTAL_ACTION = `${namespace}/SET_SUBTOTAL_ACTION`
+
+export const SET_SHIPPING_ACTION = `${namespace}/SET_SHIPPING_ACTION`

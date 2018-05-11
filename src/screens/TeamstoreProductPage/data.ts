@@ -67,6 +67,7 @@ export const GetProductsByIdQuery = gql`
       yotpoId: yotpo_id
       name
       type: short_description
+      shortDescription: short_description
       category_id
       sport_id
       sports {

@@ -11,7 +11,10 @@ import {
   SET_SIZE_ITEM_DETAIL_ACTION,
   SET_FIT_ITEM_DETAIL_ACTION,
   SET_QUANTITY_ITEM_DETAIL_ACTION,
-  REMOVE_ITEM_ACTION
+  REMOVE_ITEM_ACTION,
+  SET_TOTAL_ACTION,
+  SET_SUBTOTAL_ACTION,
+  SET_SHIPPING_ACTION
 } from './constants'
 import { AnyAction, Product, ItemDetailType } from '../../types/common'
 
@@ -97,4 +100,19 @@ export const setQuantityItemDetailAction = (
 export const removeItemAction = (index: number): AnyAction => ({
   type: REMOVE_ITEM_ACTION,
   index
+})
+
+export const setTotalAction = (total: number): AnyAction => ({
+  type: SET_TOTAL_ACTION,
+  total
+})
+
+export const setSubtotalAction = (subtotal: number): AnyAction => ({
+  type: SET_SUBTOTAL_ACTION,
+  subtotal
+})
+
+export const setShippingAction = (shipping: number): AnyAction => ({
+  type: SET_SHIPPING_ACTION,
+  shipping
 })

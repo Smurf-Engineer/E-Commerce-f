@@ -71,6 +71,7 @@ describe('<CartListItem />', () => {
         ],
         type: '',
         description: '',
+        shortDescription: '',
         priceRange: [
           {
             quantity: '1',

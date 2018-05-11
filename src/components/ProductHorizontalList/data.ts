@@ -26,6 +26,7 @@ export const productsQuery = gql`
           price
         }
         description: short_description
+        shortDescription: short_description
         collections
         isTopProduct
         customizable: design_center

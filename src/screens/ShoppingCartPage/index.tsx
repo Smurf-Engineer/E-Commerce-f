@@ -51,6 +51,9 @@ interface Props extends RouteComponentProps<any> {
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
   removeItemAction: (index: number) => void
+  setTotalAction: (total: number) => void
+  setSubtotalAction: (subtotal: number) => void
+  setShippingAction: (shipping: number) => void
   setLabelItemDetailAction: (
     index: number,
     detailIndex: number,
@@ -77,6 +80,7 @@ interface Props extends RouteComponentProps<any> {
     quantity: number
   ) => void
   setInitialData: () => void
+  saveToStorage: (cart: CartItems[]) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -93,12 +97,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   componentWillUnmount() {
-    const { cart } = this.props
-    try {
-      localStorage.setItem('cart', JSON.stringify(cart))
-    } catch (e) {
-      console.error('err', e)
-    }
+    const { cart, saveToStorage } = this.props
+    saveToStorage(cart)
   }
 
   handleAddItemDetail = (
@@ -179,7 +179,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               formatMessage={formatMessage}
               key={index}
               title={cartItem.product.name}
-              description={cartItem.product.description}
+              description={cartItem.product.shortDescription}
               price={cartItem.product.priceRange[0]}
               image={cartItem.product.images[0].front}
               cartItem={cartItem}
@@ -216,7 +216,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       <Layout {...{ history, intl }}>
         <div>
           <Title>
-            <FormattedMessage {...messages.title} />
+            {`${formatMessage(messages.title)} (${cart ? cart.length : 0})`}
           </Title>
           {!cart || cart.length < 1 ? (
             <EmptyContainer>

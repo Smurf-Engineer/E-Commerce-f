@@ -1,4 +1,10 @@
 import { setItemsAction } from './actions'
+import { Product, CartItemDetail } from '../../types/common'
+
+interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+}
 
 export const setInitialData = () => {
   return async (dispatch: any) => {
@@ -13,15 +19,10 @@ export const setInitialData = () => {
   }
 }
 
-export const saveToStorage = () => {
+export const saveToStorage = (cart: CartItems[]) => {
   return async (dispatch: any) => {
     try {
-      if (typeof window !== 'undefined') {
-        const cartList = JSON.parse(localStorage.getItem('cart') as any)
-        if (cartList) {
-          dispatch(setItemsAction(cartList))
-        }
-      }
+      localStorage.setItem('cart', JSON.stringify(cart))
     } catch (error) {}
   }
 }

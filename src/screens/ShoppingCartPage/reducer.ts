@@ -12,13 +12,19 @@ import {
   SET_GENDER_ITEM_DETAIL_ACTION,
   SET_SIZE_ITEM_DETAIL_ACTION,
   SET_FIT_ITEM_DETAIL_ACTION,
-  REMOVE_ITEM_ACTION
+  REMOVE_ITEM_ACTION,
+  SET_TOTAL_ACTION,
+  SET_SUBTOTAL_ACTION,
+  SET_SHIPPING_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
-  cart: null
+  cart: null,
+  subtotal: 0,
+  total: 0,
+  shipping: 0
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -38,13 +44,7 @@ const shoppingCartPageReducer: Reducer<any> = (
     case DELETE_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails'],
-        (itemDetails: any) => {
-          if (itemDetails.length > 1) {
-            return itemDetails.splice(action.detailIndex, 1)
-          } else {
-            return itemDetails
-          }
-        }
+        (itemDetails: any) => itemDetails.splice(action.index, 1)
       )
     case SET_LABEL_ITEM_DETAIL_ACTION:
       return state.updateIn(
@@ -91,6 +91,12 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.updateIn(['cart'], (items: any) =>
         items.splice(action.index, 1)
       )
+    case SET_TOTAL_ACTION:
+      return state.set('total', fromJS(action.total))
+    case SET_SUBTOTAL_ACTION:
+      return state.set('subtotal', fromJS(action.subtotal))
+    case SET_SHIPPING_ACTION:
+      return state.set('shipping', fromJS(action.shipping))
     default:
       return state
   }
