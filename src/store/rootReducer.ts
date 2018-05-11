@@ -18,6 +18,7 @@ import storeFront from '../screens/StoreFront/reducer'
 import subscriptionTest from '../screens/ResetPassword/reducer'
 import teamstoreProductPage from '../screens/TeamstoreProductPage/reducer'
 import searchTeamstores from '../screens/SearchTeamstores/reducer'
+import checkout from '../screens/Checkout/reducer'
 import menuGender from '../components/MenuGender/reducer'
 import menuSports from '../components/MenuSports/reducer'
 import layout from '../components/MainLayout/reducer'
@@ -28,6 +29,7 @@ import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  checkout: any
   designerTool: any
   shoppingCartPage: any
   storeFront: any
@@ -110,6 +112,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  checkout,
   designerTool,
   shoppingCartPage,
   storeFront,

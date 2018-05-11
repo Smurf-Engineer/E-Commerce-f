@@ -160,7 +160,9 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         : formatMessage(messages.oneGenderLabel)
     //    let renderPrices
     const fitStyles = get(design, 'product.fitStyles', [])
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const yotpoId = queryParams.yotpoId || ''
     const storeId = queryParams.store || ''
@@ -509,19 +511,25 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
 
   handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedGenderAction } = this.props
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     setSelectedGenderAction(id)
   }
 
   handleSelectedSize = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedSizeAction } = this.props
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     setSelectedSizeAction(parseInt(id, 10))
   }
 
   handleSelectedFit = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedFitAction } = this.props
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     setSelectedFitAction(parseInt(id, 10))
   }
 
@@ -536,7 +544,13 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
   }
 
   addtoCart = () => {
-    const { data: { design: { product: { name } } } } = this.props
+    const {
+      data: {
+        design: {
+          product: { name }
+        }
+      }
+    } = this.props
     Message.success(`${name} has been succesfully added to cart!`)
   }
 
@@ -567,7 +581,9 @@ const TeamstoreProductPageEnhance = compose(
   injectIntl,
   graphql<Data>(GetDesignQuery, {
     options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
+      const {
+        location: { search }
+      } = ownprops
       const queryParams = queryString.parse(search)
       return {
         fetchPolicy: 'network-only',

@@ -265,3 +265,16 @@ export type CartItemDetail = {
   label?: string
   quantity: number
 }
+
+export interface AddressType {
+  id?: number
+  firstName: string
+  lastName: string
+  street: string
+  apartment: string
+  country: string
+  stateProvince: string
+  city: string
+  zipCode: string
+  phone: string
+}

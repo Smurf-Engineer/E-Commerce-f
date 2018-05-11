@@ -3,7 +3,13 @@
  */
 import * as React from 'react'
 
-import { Container, FloatingText, StyledInput } from './styledComponents'
+import {
+  Container,
+  FloatingTitleContainer,
+  FloatingText,
+  StyledInput,
+  RequiredSpan
+} from './styledComponents'
 
 interface Props {
   placeholder?: string
@@ -12,6 +18,8 @@ interface Props {
   value?: string
   onChange?: any
   type?: string
+  required?: boolean
+  inputWidth?: string
 }
 
 const CustomInput = ({
@@ -20,11 +28,16 @@ const CustomInput = ({
   id,
   value,
   onChange,
-  type
+  type,
+  required,
+  inputWidth
 }: Props) => {
   return (
-    <Container>
-      <FloatingText>{topText}</FloatingText>
+    <Container {...{ inputWidth }}>
+      <FloatingTitleContainer>
+        <FloatingText>{topText}</FloatingText>
+        {required && <RequiredSpan>*</RequiredSpan>}
+      </FloatingTitleContainer>
       <StyledInput {...{ id, placeholder, value, onChange, type }} />
     </Container>
   )
