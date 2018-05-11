@@ -50,6 +50,7 @@ interface Props extends RouteComponentProps<any> {
   designName: string
   savedDesignId: string
   saveDesignLoading: boolean
+  style: number
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -75,6 +76,7 @@ interface Props extends RouteComponentProps<any> {
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
+  setStyleComplexity: (index: number, colors: string[]) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -102,9 +104,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const {
-      location: { search }
-    } = this.props
+    const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -145,6 +145,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       colors,
       designBase64,
       styleColors,
+      style,
       loadingModel,
       designName,
       saveDesignLoading,
@@ -165,12 +166,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       checkedTerms,
       setCheckedTermsAction,
       clearDesignInfoAction,
-      saveDesignLoadingAction
+      saveDesignLoadingAction,
+      setStyleComplexity
     } = this.props
 
-    const {
-      location: { search }
-    } = this.props
+    const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
 
@@ -202,7 +202,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model="NOVA"
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 1 && <StyleTab onSelectStyle={setStyleAction} />}
+              {currentTab === 1 && (
+                <StyleTab
+                  onSelectStyle={setStyleAction}
+                  onSelectStyleComplexity={setStyleComplexity}
+                />
+              )}
             </div>
             <CustomizeTab
               {...{
@@ -216,6 +221,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 paletteName,
                 palettes
               }}
+              currentStyle={style}
               formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}

@@ -25,7 +25,8 @@ import {
   COLOR_BLOCK_HOVERED_ACTION,
   SET_CHECKED_TERMS,
   CLEAR_DESIGN_INFO,
-  SAVE_DESIGN_LOADING
+  SAVE_DESIGN_LOADING,
+  SET_STYLE_COMPLEXITY_ACTION
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -118,8 +119,17 @@ export const setDesignNameAction = (param: string): AnyAction => {
 }
 
 // TODO: Temp any
-export const setStyleAction = (colors: any): AnyAction => ({
+export const setStyleAction = (style: any): AnyAction => ({
   type: SET_STYLE_SELECTED_ACTION,
+  style
+})
+
+export const setStyleComplexity = (
+  index: number,
+  colors: string[]
+): AnyAction => ({
+  type: SET_STYLE_COMPLEXITY_ACTION,
+  index,
   colors
 })
 

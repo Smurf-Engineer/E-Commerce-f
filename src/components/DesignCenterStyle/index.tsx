@@ -11,6 +11,8 @@ import messages from './messages'
 import StyleItem from '../Theme'
 import { StyleResult } from '../../types/common'
 import { Container, Title, Slider, Row, List } from './styledComponents'
+// TODO: TEST DATA
+import dummieData from '../../components/DesignCenterCustomize/Render3D/dummieData'
 
 interface Data extends QueryProps {
   styles?: StyleResult
@@ -19,6 +21,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   onSelectStyle: (style: any) => void
+  onSelectStyleComplexity: (index: number, colors: string[]) => void
 }
 
 const marks = {
@@ -33,6 +36,12 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     const allStyles = styles ? styles.styles || [] : []
     const colors = allStyles ? allStyles[index].colors : {}
     onSelectStyle(colors)
+  }
+
+  handleOnSelectComplexity = (value: any) => {
+    const { onSelectStyleComplexity } = this.props
+    const currentStyle = value - 1
+    onSelectStyleComplexity(currentStyle, dummieData[currentStyle].colors)
   }
 
   render() {
@@ -54,7 +63,13 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
         <Title>
           <FormattedMessage {...messages.title} />
         </Title>
-        <Slider marks={marks} defaultValue={0} min={1} max={3} />
+        <Slider
+          onChange={this.handleOnSelectComplexity}
+          marks={marks}
+          defaultValue={1}
+          min={1}
+          max={3}
+        />
         <List>
           <Row>{list}</Row>
         </List>
