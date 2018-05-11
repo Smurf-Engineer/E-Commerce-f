@@ -34,6 +34,7 @@ export const GetProductsQuery = gql`
           name: description
         }
         description: short_description
+        shortDescription: short_description
         collections
         isTopProduct
         priceRange {

@@ -7,13 +7,24 @@ import {
   SET_ITEMS_ACTION,
   ADD_ITEM_DETAIL_ACTION,
   DELETE_ITEM_DETAIL_ACTION,
-  SET_LABEL_ITEM_DETAIL_ACTION
+  SET_LABEL_ITEM_DETAIL_ACTION,
+  SET_QUANTITY_ITEM_DETAIL_ACTION,
+  SET_GENDER_ITEM_DETAIL_ACTION,
+  SET_SIZE_ITEM_DETAIL_ACTION,
+  SET_FIT_ITEM_DETAIL_ACTION,
+  REMOVE_ITEM_ACTION,
+  SET_TOTAL_ACTION,
+  SET_SUBTOTAL_ACTION,
+  SET_SHIPPING_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
-  cart: null
+  cart: null,
+  subtotal: 0,
+  total: 0,
+  shipping: 0
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -28,7 +39,7 @@ const shoppingCartPageReducer: Reducer<any> = (
     case ADD_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails'],
-        (itemDetails: any) => itemDetails.push({ quantity: 1 })
+        (itemDetails: any) => itemDetails.push(fromJS({ quantity: 1 }))
       )
     case DELETE_ITEM_DETAIL_ACTION:
       return state.updateIn(
@@ -37,9 +48,55 @@ const shoppingCartPageReducer: Reducer<any> = (
       )
     case SET_LABEL_ITEM_DETAIL_ACTION:
       return state.updateIn(
-        ['cart', action.index, 'itemDetails'],
-        (itemDetails: any) => itemDetails.splice(action.index, 1)
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('label', action.label)
+          return updateItem
+        }
       )
+    case SET_QUANTITY_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('quantity', action.quantity)
+          return updateItem
+        }
+      )
+
+    case SET_GENDER_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('gender', action.gender)
+          return updateItem
+        }
+      )
+    case SET_SIZE_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('size', action.size)
+          return updateItem
+        }
+      )
+    case SET_FIT_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('fit', action.fit)
+          return updateItem
+        }
+      )
+    case REMOVE_ITEM_ACTION:
+      return state.updateIn(['cart'], (items: any) =>
+        items.splice(action.index, 1)
+      )
+    case SET_TOTAL_ACTION:
+      return state.set('total', fromJS(action.total))
+    case SET_SUBTOTAL_ACTION:
+      return state.set('subtotal', fromJS(action.subtotal))
+    case SET_SHIPPING_ACTION:
+      return state.set('shipping', fromJS(action.shipping))
     default:
       return state
   }

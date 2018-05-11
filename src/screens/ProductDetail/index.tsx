@@ -56,7 +56,12 @@ import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import AddtoCartButton from '../../components/AddToCartButton'
-import { Product, QueryProps, ImageType } from '../../types/common'
+import {
+  Product,
+  QueryProps,
+  ImageType,
+  CartItemDetail
+} from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
 import RedColor from '../../assets/colorred.svg'
@@ -439,14 +444,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       intl: { formatMessage }
     } = this.props
 
-    let details
+    const details = [] as CartItemDetail[]
     if (product) {
-      details = {
+      const detail: CartItemDetail = {
         fit: selectedFit,
         size: selectedSize,
-        label: product.name,
         quantity: 1
       }
+      details.push(detail)
     }
     const itemToAdd = Object.assign(
       {},

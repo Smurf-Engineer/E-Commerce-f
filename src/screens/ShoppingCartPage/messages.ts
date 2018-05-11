@@ -19,7 +19,7 @@ export default defineMessages({
   },
   emptyMessage: {
     id: 'screens.ShoppingCartPage.emptyMessage',
-    defaultMessage: 'Browse through our slections and see what you like.'
+    defaultMessage: 'Browse through our selections and see what you like.'
   },
   summaryTitle: {
     id: 'screens.ShoppingCartPage.summaryTitle',
