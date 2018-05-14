@@ -50,7 +50,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
             onClick={this.gotoStore(store.shortId)}
           >
             <TeamStoreItem
-              image={TeamLogo}
+              image={store.banner || TeamLogo}
               name={store.name}
               onItemClick={this.gotoStore(store.shortId)}
               {...{ formatMessage }}
@@ -70,7 +70,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
         <FoundStoreItem key={index}>
           <TeamStoreItem
             showNameStore={true}
-            image={TeamLogo}
+            image={store.banner || ''}
             name={store.name}
             idStore={store.shortId}
             onItemClick={this.gotoStore(store.shortId)}

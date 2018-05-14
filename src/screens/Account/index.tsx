@@ -13,6 +13,7 @@ import { options, SCREEN_LOCKER } from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
+import MyTeamStores from '../../components/MyTeamStores'
 import {
   Container,
   SideBar,
@@ -49,16 +50,20 @@ export class Account extends React.Component<Props, {}> {
 
   handleOnSelectItem = ({ key }: any) => {
     const { setCurrentScreenAction } = this.props
+    console.log(key)
     setCurrentScreenAction(key)
   }
 
   getScreenComponent = (screen: string) => {
     const { intl, openQuickViewAction: openQuickView } = this.props
+    console.log(screen)
     switch (screen) {
       case SCREEN_LOCKER:
         return (
           <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
         )
+      case 'teamStores':
+        return <MyTeamStores formatMessage={intl.formatMessage} />
       default:
         return null
     }
