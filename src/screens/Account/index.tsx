@@ -9,10 +9,11 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import * as accountActions from './actions'
 import messages from './messages'
-import { options, SCREEN_LOCKER } from './constants'
+import { options, SCREEN_LOCKER, ADDRESSES } from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
+import MyAddresses from '../../components/MyAddresses'
 import {
   Container,
   SideBar,
@@ -59,6 +60,8 @@ export class Account extends React.Component<Props, {}> {
         return (
           <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
         )
+      case ADDRESSES:
+        return <MyAddresses formatMessage={intl.formatMessage} />
       default:
         return null
     }
@@ -67,18 +70,27 @@ export class Account extends React.Component<Props, {}> {
   render() {
     const { intl, history, openKeys, screen } = this.props
 
-    const menuOptions = options.map(({ title, options: submenus }) => (
-      <SubMenu
-        key={title}
-        title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
-      >
-        {submenus.map((label, index) => (
-          <Menu.Item key={label}>
-            <FormattedMessage {...messages[label]} />
+    const menuOptions = options.map(
+      ({ title, options: submenus }) =>
+        submenus.length > 0 ? (
+          <SubMenu
+            key={title}
+            title={
+              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+            }
+          >
+            {submenus.map((label, index) => (
+              <Menu.Item key={label}>
+                <FormattedMessage {...messages[label]} />
+              </Menu.Item>
+            ))}
+          </SubMenu>
+        ) : (
+          <Menu.Item key={title}>
+            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
           </Menu.Item>
-        ))}
-      </SubMenu>
-    ))
+        )
+    )
 
     const currentScreen = this.getScreenComponent(screen)
 
