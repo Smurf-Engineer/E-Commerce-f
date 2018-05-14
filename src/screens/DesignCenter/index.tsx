@@ -3,9 +3,10 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
+import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
@@ -21,9 +22,14 @@ import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
 import SaveDesign from '../../components/SaveDesign'
 import { Container, StyledTitle, BottomSheetWrapper } from './styledComponents'
-import { Palette } from '../../types/common'
+import { Palette, QueryProps, Product } from '../../types/common'
+import { getProductQuery } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
+
+interface Data extends QueryProps {
+  product?: Product
+}
 
 interface Change {
   type: string
@@ -31,6 +37,7 @@ interface Change {
 }
 
 interface Props extends RouteComponentProps<any> {
+  data: Data
   intl: InjectedIntl
   currentTab: number
   colorBlock: number
@@ -84,9 +91,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     open: false
   }
 
-  openBottomSheet(open: boolean) {
-    this.setState({ open })
-  }
+  openBottomSheet = (open: boolean) => this.setState({ open })
 
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
     this.openBottomSheet(!this.state.open)
@@ -167,12 +172,18 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCheckedTermsAction,
       clearDesignInfoAction,
       saveDesignLoadingAction,
-      setStyleComplexity
+      setStyleComplexity,
+      location: { search },
+      data
     } = this.props
 
-    const { location: { search } } = this.props
+    if (!search) {
+      return <Redirect to="/us?lang=en&currency=usd" />
+    }
+
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
+    const productName = data && data.product ? data.product.name : ''
 
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
@@ -186,7 +197,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="theme">
               <Info
                 label="theme"
-                model="NOVA"
+                model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
               {currentTab === 0 && (
@@ -199,7 +210,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="style">
               <Info
                 label="style"
-                model="NOVA"
+                model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
               {currentTab === 1 && (
@@ -219,7 +230,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 swipingView,
                 styleColors,
                 paletteName,
-                palettes
+                palettes,
+                productName
               }}
               currentStyle={style}
               formatMessage={intl.formatMessage}
@@ -247,7 +259,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 swipingView,
                 openShareModal,
                 openShareModalAction,
-                savedDesignId
+                savedDesignId,
+                productName
               }}
               formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
@@ -293,10 +306,24 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 }
 
+interface OwnProps {
+  location?: any
+}
+
 const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 
 const DesignCenterEnhance = compose(
   injectIntl,
+  graphql<Data>(getProductQuery, {
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        skip: !queryParams.id,
+        variables: { id: queryParams.id }
+      }
+    }
+  }),
   connect(mapStateToProps, { ...designCenterActions, openQuickViewAction })
 )(DesignCenter)
 
