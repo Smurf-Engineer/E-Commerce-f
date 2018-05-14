@@ -22,3 +22,19 @@ export const StyledButton = styled(Button)`
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 `
+
+export const EditButton = styled(Button)`
+  height: 40px;
+  width: 138.23px;
+  border: 1px solid #4a90e2;
+  background-color: #4a90e2;
+  color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  margin 8px 0;
+`
+
+export const SecondaryButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+`

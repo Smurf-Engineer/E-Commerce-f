@@ -7,14 +7,14 @@ export const addresesQuery = gql`
   query getUserAddresses {
     addresses: getUserAddresses {
       id
-      first_name
-      last_name
+      firstName: first_name
+      lastName: last_name
       street
       apartment
       country
-      state_province
+      stateProvince: state_province
       city
-      zip_code
+      zipCode: zip_code
       phone
     }
   }

@@ -12,5 +12,13 @@ export default defineMessages({
   useThisAddress: {
     id: 'components.MyAddress.useThisAddress',
     defaultMessage: 'Use this address'
+  },
+  edit: {
+    id: 'components.MyAddress.edit',
+    defaultMessage: 'Edit'
+  },
+  delete: {
+    id: 'components.MyAddress.delete',
+    defaultMessage: 'Delete'
   }
 })

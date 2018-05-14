@@ -3,7 +3,13 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { Container, Text, StyledButton } from './styledComponents'
+import {
+  Container,
+  Text,
+  StyledButton,
+  EditButton,
+  SecondaryButtons
+} from './styledComponents'
 
 interface Props {
   name: string
@@ -13,6 +19,7 @@ interface Props {
   state?: string
   zipCode: string
   country: string
+  showSecondaryButtons?: boolean
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -24,8 +31,17 @@ const MyAddress = ({
   state,
   zipCode,
   country,
-  formatMessage
+  formatMessage,
+  showSecondaryButtons
 }: Props) => {
+  const buttons = !showSecondaryButtons ? (
+    <StyledButton>{formatMessage(messages.useThisAddress)}</StyledButton>
+  ) : (
+    <SecondaryButtons>
+      <EditButton>{formatMessage(messages.edit)}</EditButton>{' '}
+      <StyledButton>{formatMessage(messages.delete)}</StyledButton>
+    </SecondaryButtons>
+  )
   return (
     <Container>
       <Text>{name}</Text>
@@ -35,7 +51,7 @@ const MyAddress = ({
       <Text>{state}</Text>
       <Text>{zipCode}</Text>
       <Text>{country}</Text>
-      <StyledButton>{formatMessage(messages.useThisAddress)}</StyledButton>
+      {buttons}
     </Container>
   )
 }

@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
 export const Container = styled.div`
-  background-color: #fff;
+  width: 100%;
 `
 
 export const Text = styled.div`
@@ -35,6 +35,7 @@ export const StyledEmptyButton = styled(Button)`
   border-color: #e61737;
   border-width: 2px;
   background-color: #fff;
-  margin: 16px 0;
+  margin-top: 16px;
+  margin-bottom: 24px;
   font-size: 18px;
 `

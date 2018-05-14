@@ -17,13 +17,15 @@ import { AddressType } from '../../types/common'
 
 interface Props {
   items: AddressType[]
+  hideTitle?: boolean
+  hideAddBtn?: boolean
   formatMessage: (messageDescriptor: any) => string
   showAddressFormAction: (show: boolean) => void
 }
 
 export class MyAddressesList extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, items } = this.props
+    const { formatMessage, items, hideTitle, hideAddBtn } = this.props
 
     const showList = items && items.length > 0
     const adressesList = items
@@ -53,12 +55,15 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
     return (
       <Container>
-        {showList && <Title>{formatMessage(messages.title)}</Title>}
+        {showList &&
+          !hideTitle && <Title>{formatMessage(messages.title)}</Title>}
         {showList && (
           <Content>
-            <AddAddressBtn onClick={this.showAddressForm}>
-              {formatMessage(messages.addAddressLabel)}
-            </AddAddressBtn>
+            {!hideAddBtn && (
+              <AddAddressBtn onClick={this.showAddressForm}>
+                {formatMessage(messages.addAddressLabel)}
+              </AddAddressBtn>
+            )}
             <AddressesList>{adressesList}</AddressesList>
           </Content>
         )}

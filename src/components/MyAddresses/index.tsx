@@ -5,7 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
-import MyAddressesList from '../../components/MyAddressesList'
+import MyAccountAddressesList from '../../components/MyAccountAddressesList'
 import { Container, Message, StyledEmptyButton } from './styledComponents'
 import { QueryProps, AddressType } from '../../types/common'
 import messages from './messages'
@@ -26,16 +26,12 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       data: { addresses },
       formatMessage
     } = this.props
-    const content =
-      addresses.length > 0 ? (
-        <MyAddressesList
-          {...{ formatMessage }}
-          items={addresses}
-          showAddressFormAction={() => {}}
-        />
-      ) : (
-        <Message>{formatMessage(messages.emptyMessage)}</Message>
-      )
+    console.log(addresses)
+    const content = addresses.length ? (
+      <MyAccountAddressesList {...{ formatMessage }} items={addresses} />
+    ) : (
+      <Message>{formatMessage(messages.emptyMessage)}</Message>
+    )
     return (
       <Container>
         <StyledEmptyButton type="danger" onClick={() => {}}>
