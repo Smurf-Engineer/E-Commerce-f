@@ -69,7 +69,7 @@ export class Account extends React.Component<Props, {}> {
 
     const menuOptions = options.map(
       ({ title, options: submenus }) =>
-        submenus.length > 0 ? (
+        submenus.length ? (
           <SubMenu
             key={title}
             title={
