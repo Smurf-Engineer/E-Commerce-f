@@ -4,6 +4,7 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
+import findIndex from 'lodash/findIndex'
 import {
   Container,
   Render,
@@ -173,14 +174,25 @@ class Render3D extends PureComponent {
             color: '#000000'
           })
 
+          let meshIndex = findIndex(
+            object.children,
+            mesh => mesh.name === 'FINAL Jersey_Mesh'
+          )
+
+          if (meshIndex < 0) {
+            meshIndex = 0
+          }
+
           // Setup the texture layers
-          const areasLayers = loadedAreas.map(() => object.children[5].clone())
+          const areasLayers = loadedAreas.map(() =>
+            object.children[meshIndex].clone()
+          )
           object.add(...areasLayers)
 
           /* Jersey label */
           object.children[4].material.color.set('#ffffff')
           object.children[6].material = flatlockMaterial
-          object.children[5].material = insideMaterial
+          object.children[meshIndex].material = insideMaterial
 
           loadedAreas.forEach(
             (materialTexture, index) =>
@@ -343,7 +355,8 @@ class Render3D extends PureComponent {
       undoEnabled,
       redoEnabled,
       loadingModel,
-      formatMessage
+      formatMessage,
+      productName
     } = this.props
 
     const menu = (
@@ -363,7 +376,7 @@ class Render3D extends PureComponent {
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
-          <Model>{'TOUR'}</Model>
+          <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
         <Render innerRef={container => (this.container = container)}>

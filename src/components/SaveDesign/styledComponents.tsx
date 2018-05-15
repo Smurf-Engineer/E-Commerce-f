@@ -19,7 +19,7 @@ export const Title = styled.div`
   line-height: 27px;
 `
 
-export const Text = styled.div`
+export const Text = styled.span`
   height: 42px;
   width: 303.78px;
   color: #8c8c8c;
