@@ -8,7 +8,8 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_FIT,
   SET_SELECTED_SIZE,
-  LOADING_3D_MODEL
+  LOADING_3D_MODEL,
+  ADD_ITEM_TO_CART
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -32,12 +33,12 @@ export const setSelectedGenderAction = (selected: string) => ({
   selected
 })
 
-export const setSelectedSizeAction = (selected: number) => ({
+export const setSelectedSizeAction = (selected: {}) => ({
   type: SET_SELECTED_SIZE,
   selected
 })
 
-export const setSelectedFitAction = (selected: number) => ({
+export const setSelectedFitAction = (selected: {}) => ({
   type: SET_SELECTED_FIT,
   selected
 })
@@ -45,4 +46,9 @@ export const setSelectedFitAction = (selected: number) => ({
 export const setLoadingModel = (loading: boolean): AnyAction => ({
   type: LOADING_3D_MODEL,
   loading
+})
+
+export const addItemToCartAction = (item: any): AnyAction => ({
+  type: ADD_ITEM_TO_CART,
+  item
 })

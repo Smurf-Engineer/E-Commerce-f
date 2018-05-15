@@ -75,5 +75,9 @@ export default defineMessages({
   shareModalTitle: {
     id: 'screen.StoreFront.shareModalTitle',
     defaultMessage: 'SHARE YOUR TEAMSTORE!'
+  },
+  contactManager: {
+    id: 'screen.StoreFront.contactManager',
+    defaultMessage: 'Contact store manager'
   }
 })

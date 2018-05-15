@@ -19,7 +19,7 @@ interface Props {
   onUpdateText: (text: string) => void
 }
 
-class TextTab extends React.PureComponent<Props, {}> {
+export class TextTab extends React.PureComponent<Props, {}> {
   handleOnUpdateText = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { onUpdateText } = this.props
     const { value } = e.target

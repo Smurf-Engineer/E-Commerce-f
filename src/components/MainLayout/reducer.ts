@@ -5,7 +5,8 @@ import {
   OPEN_QUICKVIEW_ACTION,
   OPEN_LOGIN_MODAL,
   SAVE_USER_TO_LOCAL,
-  LOGOUT
+  LOGOUT,
+  GET_TOTAL_CART_ITEMS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -14,8 +15,10 @@ export const initialState = fromJS({
   showSearchResults: false,
   productId: 0,
   yotpoId: '',
+  hideQuickViewSliderButtons: false,
   openLogin: false,
-  user: {}
+  user: {},
+  itemsInCart: 0
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -25,7 +28,11 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case SHOW_HEADER_SEARCH_RESULTS:
       return state.set('showSearchResults', action.show)
     case OPEN_QUICKVIEW_ACTION:
-      return state.merge({ productId: action.id, yotpoId: action.yotpoId })
+      return state.merge({
+        productId: action.id,
+        yotpoId: action.yotpoId,
+        hideQuickViewSliderButtons: action.hideSliderButtons
+      })
     case OPEN_LOGIN_MODAL:
       return state.set('openLogin', action.open)
     case SAVE_USER_TO_LOCAL: {
@@ -40,6 +47,14 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('user', {})
     }
+    case GET_TOTAL_CART_ITEMS: {
+      if (localStorage.getItem('cart')) {
+        const totalItems = JSON.parse(localStorage.getItem('cart') as string)
+        return state.set('itemsInCart', totalItems ? totalItems.length : 0)
+      }
+      return state
+    }
+
     default:
       return state
   }

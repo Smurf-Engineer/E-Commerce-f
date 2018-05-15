@@ -14,12 +14,14 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  currentStyle: number
   loadingModel: boolean
   undoEnabled: boolean
   redoEnabled: boolean
   currentTab: number
   swipingView: boolean
   text: string
+  productName: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -50,6 +52,7 @@ const DesignCenterCustomize = ({
   currentTab,
   colors,
   styleColors,
+  currentStyle,
   loadingModel,
   onLoadModel,
   onUndoAction,
@@ -64,7 +67,8 @@ const DesignCenterCustomize = ({
   onHoverColorBlock,
   formatMessage,
   text,
-  onUpdateText
+  onUpdateText,
+  productName
 }: Props) => {
   return (
     <Container>
@@ -103,7 +107,9 @@ const DesignCenterCustomize = ({
             undoEnabled,
             redoEnabled,
             onOpenSaveDesign,
-            formatMessage
+            formatMessage,
+            currentStyle,
+            productName
           }}
         />
       ) : null}

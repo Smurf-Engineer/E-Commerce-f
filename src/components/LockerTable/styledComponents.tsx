@@ -1,6 +1,11 @@
 /**
  * Styled Components - Created by david on 09/04/18.
  */
+interface RowProps {
+  noBorder?: boolean
+  rowPadding?: string
+}
+
 import styled from 'styled-components'
 
 export const Container = styled.div``
@@ -10,6 +15,10 @@ export const Table = styled.div`
   table-layout: fixed;
   width: 100%;
   margin-bottom: 20px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 0;
+  }
 `
 
 export const Body = styled.tbody``
@@ -17,10 +26,14 @@ export const Body = styled.tbody``
 export const Row = styled.div`
   display: flex;
   align-items: center;
-  border-bottom-width: 1px;
-  border-bottom-color: #dcdcdc;
-  border-bottom-style: solid;
-  padding: 8px 0;
+  border-bottom: ${({ noBorder }: RowProps) =>
+    noBorder ? 'none' : '1px solid #dcdcdc'};
+  padding: ${({ rowPadding }) => (rowPadding ? rowPadding : '8px 0')};
+  cursor: move;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    justify-content: space-between;
+  }
 `
 
 export const HeaderRow = styled.div`
@@ -101,4 +114,18 @@ export const Description = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+`
+export const MobileEmtpytable = styled.div`
+  padding: 50px 40px 50px;
+  border-bottom: 1px solid #dcdcdc;
+  color: #bebebe;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 21px;
+  text-align: center;
 `

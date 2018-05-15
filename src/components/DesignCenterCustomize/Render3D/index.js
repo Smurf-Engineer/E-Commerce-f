@@ -4,9 +4,7 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import vertexShader from './vertex'
-import fragmentShader from './fragment'
-import { fragmentCanvas, vertexCanvas } from './canvas'
+import findIndex from 'lodash/findIndex'
 import {
   Container,
   Render,
@@ -23,7 +21,7 @@ import {
   LoadingContainer,
   ButtonWrapper
 } from './styledComponents'
-import { jerseyTextures, viewPositions } from './config'
+import { viewPositions } from './config'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
@@ -36,6 +34,8 @@ import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import topIcon from '../../../assets/Cube-Top.svg'
 import backIcon from '../../../assets/Cube_back.svg'
+// TODO: Test data
+import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
@@ -47,7 +47,8 @@ class Render3D extends PureComponent {
     currentView: 2,
     currentModel: 0,
     zoomValue: 0,
-    progress: 0
+    progress: 0,
+    objectChilds: 0
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,58 +69,23 @@ class Render3D extends PureComponent {
     }
   }
 
-  // TODO:  Refactor this code
   componentDidMount() {
     /* Renderer config */
-    const { onLoadModel, styleColors } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true
       // preserveDrawingBuffer: true
     })
+
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
 
-    /* Textures */
-    const loader = new THREE.TextureLoader()
-
-    // BITMAP TEST
-
-    const textures = {
-      backPocket: {},
-      color1: {},
-      color2: {},
-      color3: {},
-      color4: {},
-      color5: {},
-      flatlock: {},
-      label: {},
-      bumpMap: {},
-      front: {},
-      logo: {}
-    }
-
-    for (const key in textures) {
-      textures[key] = loader.load(jerseyTextures[key])
-      if (key !== 'flatlock') {
-        textures[key].minFilter = THREE.LinearFilter
-      }
-    }
-
-    // const canvasTexture = this.createLabel('CULICHI', '#f23', 'Avenir', 12)
-    // // const canvasTexture = new THREE.Texture(canvas)
-    // // canvasTexture.needsUpdate = true
-    // textures.text = canvasTexture
-
     /* Camera */
-    const camera = new THREE.PerspectiveCamera(
-      25,
-      clientWidth / clientHeight,
-      0.1,
-      1000
-    )
+    const aspect = clientWidth / clientHeight
+    const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
+
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
@@ -134,190 +100,29 @@ class Render3D extends PureComponent {
     /* Scene and light */
     const scene = new THREE.Scene()
     const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.78)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
     directionalLight.position.copy(camera.position)
-
-    const mtlLoader = new THREE.MTLLoader()
 
     scene.add(camera)
     scene.add(ambient)
     scene.add(directionalLight)
 
-    /* Object and MTL load */
-
-    mtlLoader.setPath('./models/')
-    mtlLoader.load('Tour.mtl', materials => {
-      onLoadModel(true)
-      materials.preload()
-      const objLoader = new THREE.OBJLoader()
-      objLoader.setMaterials(materials)
-      objLoader.setPath('./models/')
-      objLoader.load(
-        'Tour.obj',
-        object => {
-          onLoadModel(false)
-
-          // Materials
-          /* Object material */
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock,
-            color: 0xffffff
-          })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
-
-          const customColors = {}
-          let i = 0
-          for (const color of styleColors) {
-            customColors[`customColor${i + 1}`] = {
-              type: 'c',
-              value: new THREE.Color(color)
-            }
-            i += 1
-          }
-
-          const uniforms = {
-            ...customColors,
-            positionX: { type: 'f', value: 1.0 },
-            positionY: { type: 'f', value: 1.0 },
-            color1: {},
-            color2: {},
-            color3: {},
-            color3: {},
-            color4: {},
-            color5: {},
-            logo: {},
-            text: {}
-          }
-
-          const x = clientWidth / 10
-          const y = clientHeight / 10
-          const textTexture = this.createLabel('Culichi', x, y, 0, 12, 'black')
-
-          const phongShader = THREE.ShaderLib.phong
-          const mergeUniforms = THREE.UniformsUtils.merge([
-            phongShader.uniforms,
-            uniforms
-          ])
-
-          const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-          uniformsWithPhong.color1.value = textures.color1
-          uniformsWithPhong.color2.value = textures.color2
-          uniformsWithPhong.color3.value = textures.color3
-          uniformsWithPhong.color4.value = textures.color4
-          uniformsWithPhong.color5.value = textures.color5
-          uniformsWithPhong.text.value = textTexture
-          uniformsWithPhong.text.name = 'text texture'
-          uniformsWithPhong.bumpMap.value = textures.bumpMap
-          uniformsWithPhong.bumpMapScale = 0.45
-          uniformsWithPhong.shininess.value = 15
-
-          this.uniformsWithPhong = uniformsWithPhong
-
-          const defines = {}
-          defines['USE_MAP'] = ''
-          defines['USE_COLOR'] = ''
-          defines['USE_BUMPMAP'] = ''
-
-          const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniformsWithPhong,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            side: THREE.DoubleSide,
-            defines: defines,
-            lights: true
-          })
-
-          shaderMaterial.extensions.derivatives = true
-
-          // Inside material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            // color: 0x000000,
-            side: THREE.DoubleSide,
-            map: textures.color1
-          })
-
-          /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({
-            map: textures.label
-          })
-          const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: textures.backPocket
-          })
-
-          // const textMaterial = new THREE.MeshBasicMaterial({
-          //   map: canvasTexture
-          // })
-
-          // const frontMaterial = new THREE.MeshBasicMaterial({
-          //   // wireframe: true,
-          //   map: canvasTexture,
-          //   side: THREE.FrontSide,
-          //   transparent: true
-          // })
-
-          // frontMaterial.name = 'MI MATERIAL'
-
-          // const customUniforms = {
-          //   text: { type: 't', value: textures.front }
-          // }
-
-          // const canvasMaterial = new THREE.ShaderMaterial({
-          //   // uniforms: uniformsWithPhong,
-          //   uniforms: customUniforms,
-          //   // map: textures.logo,
-          //   vertexShader: vertexCanvas,
-          //   fragmentShader: fragmentCanvas,
-          //   side: THREE.FrontSide,
-          //   transparent: true
-          //   //blending: THREE.AdditiveBlending
-          //   // defines: defines
-          //   // lights: true
-          // })
-
-          /* Assign materials */
-          const cloneObject = object.children[0].clone()
-          // const frontObject = object.children[0].clone()
-          //          frontObject.name = 'FRONT'
-          object.add(cloneObject)
-          // object.add(frontObject)
-
-          /* Jersey */
-          object.children[0].material = insideMaterial
-          // object.children[24].material = shaderMaterial
-          // object.children[25].material = frontMaterial
-          /* Flatlock */
-          for (let index = 1; index <= 10; index++) {
-            object.children[index].material = flatlockMaterial
-          }
-          /* Jersey label */
-          object.children[17].material = labelMaterial
-          /* Back pocket */
-          object.children[22].material = backPocketMaterial
-
-          console.log('------------------------------------')
-          console.log(object)
-          console.log('------------------------------------')
-
-          /* Object Config */
-          object.position.y = -30
-          object.name = 'jersey'
-          scene.add(object)
-          // if (!window.scene) {
-          //   window.scene = scene
-          // }
-        },
-        this.onProgress,
-        this.onError
-      )
-    })
+    /* Loaders */
+    const mtlLoader = new THREE.MTLLoader()
+    const objLoader = new THREE.OBJLoader()
+    const imgLoader = new THREE.TextureLoader()
 
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
-    //     this.loader = mtlLoader
     this.controls = controls
     this.directionalLight = directionalLight
+
+    this.mtlLoader = mtlLoader
+    this.objLoader = objLoader
+    this.imgLoader = imgLoader
+
+    this.render3DModel()
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
@@ -326,6 +131,91 @@ class Render3D extends PureComponent {
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
+  }
+
+  render3DModel = () => {
+    /* Object and MTL load */
+    const { onLoadModel, currentStyle } = this.props
+
+    /* Texture configuration */
+    const modelTextures = dummieData[currentStyle]
+    const flatlockTexture = this.imgLoader.load('./models/images/flatlock.png')
+    const bumpMapTexture = this.imgLoader.load(modelTextures.bumpMap)
+
+    const loadedAreas = modelTextures.areas.map(areaUri => {
+      const areaTexture = this.imgLoader.load(areaUri)
+      areaTexture.minFilter = THREE.LinearFilter
+      return areaTexture
+    })
+
+    this.mtlLoader.load(modelTextures.mtl, materials => {
+      onLoadModel(true)
+      materials.preload()
+      this.objLoader.setMaterials(materials)
+      this.objLoader.load(
+        modelTextures.obj,
+        object => {
+          onLoadModel(false)
+          const objectChilds = object.children.length
+          this.setState({ objectChilds })
+
+          /* Object materials */
+
+          // Stitching
+          const flatlockMaterial = new THREE.MeshPhongMaterial({
+            map: flatlockTexture
+          })
+          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
+          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+
+          // Back material
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.BackSide,
+            color: '#000000'
+          })
+
+          let meshIndex = findIndex(
+            object.children,
+            mesh => mesh.name === 'FINAL Jersey_Mesh'
+          )
+
+          if (meshIndex < 0) {
+            meshIndex = 0
+          }
+
+          // Setup the texture layers
+          const areasLayers = loadedAreas.map(() =>
+            object.children[meshIndex].clone()
+          )
+          object.add(...areasLayers)
+
+          /* Jersey label */
+          object.children[4].material.color.set('#ffffff')
+          object.children[6].material = flatlockMaterial
+          object.children[meshIndex].material = insideMaterial
+
+          loadedAreas.forEach(
+            (materialTexture, index) =>
+              (object.children[
+                objectChilds + index
+              ].material = new THREE.MeshPhongMaterial({
+                map: loadedAreas[index],
+                side: THREE.FrontSide,
+                bumpMap: bumpMapTexture,
+                color: modelTextures.colors[index],
+                transparent: true
+              }))
+          )
+
+          /* Object Config */
+          object.position.y = -30
+          object.name = 'jersey'
+          this.scene.add(object)
+        },
+        this.onProgress,
+        this.onError
+      )
+    })
   }
 
   createLabel = (text, color, font, size) => {
@@ -387,25 +277,25 @@ class Render3D extends PureComponent {
   }
 
   setupColors = colors => {
-    let colorNumber = 1
-    colors.forEach(color => {
-      let key = `customColor${colorNumber}`
-      if (color && this.uniformsWithPhong) {
-        this.uniformsWithPhong[key].value = new THREE.Color(color)
-      }
-      colorNumber += 1
-    })
+    const { objectChilds } = this.state
+    const object = this.scene.getObjectByName('jersey')
+    if (object) {
+      colors.forEach((color, index) => {
+        if (object.children[objectChilds + index]) {
+          object.children[objectChilds + index].material.color.set(color)
+        }
+      })
+    }
   }
 
   setupHoverColor = colorBlockHovered => {
+    const object = this.scene.getObjectByName('jersey')
+    const { objectChilds } = this.state
     const { colors } = this.props
-    let key = `customColor${colorBlockHovered + 1}`
-    if (
-      colorBlockHovered >= 0 &&
-      this.uniformsWithPhong &&
-      this.uniformsWithPhong[key]
-    ) {
-      this.uniformsWithPhong[key].value = new THREE.Color('#f2f2f2')
+    if (object && colorBlockHovered >= 0) {
+      object.children[objectChilds + colorBlockHovered].material.color.set(
+        '#f2f2f2'
+      )
     } else {
       this.setupColors(colors)
     }
@@ -471,7 +361,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/png')
+        const dataUrl = this.renderer.domElement.toDataURL('image/png', 0.1)
         this.saveDesign(dataUrl)
       }, 200)
     )
@@ -484,7 +374,8 @@ class Render3D extends PureComponent {
       undoEnabled,
       redoEnabled,
       loadingModel,
-      formatMessage
+      formatMessage,
+      productName
     } = this.props
 
     const menu = (
@@ -504,7 +395,7 @@ class Render3D extends PureComponent {
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
-          <Model>{'TOUR'}</Model>
+          <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
         <Render innerRef={container => (this.container = container)}>

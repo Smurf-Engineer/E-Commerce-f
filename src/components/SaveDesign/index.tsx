@@ -211,10 +211,11 @@ export class SaveDesign extends React.Component<Props, {}> {
             value={designName}
             placeholder={formatMessage(messages.placeholder)}
             onChange={this.handleInputChange}
+            maxLength="15"
           />
           <CheckWrapper>
             <Checkbox onChange={this.toggleChecked}>
-              <FormattedMessage {...messages.checkCopyright} />
+              {formatMessage(messages.checkCopyright)}
             </Checkbox>
           </CheckWrapper>
           <ButtonWrapper>

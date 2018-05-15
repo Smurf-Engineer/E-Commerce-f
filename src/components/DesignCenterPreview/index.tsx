@@ -24,6 +24,7 @@ interface Props {
   loadingModel: boolean
   openShareModal: boolean
   savedDesignId: string
+  productName: string
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
@@ -57,13 +58,14 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       onLoadModel,
       openShareModal,
       formatMessage,
-      savedDesignId
+      savedDesignId,
+      productName
     } = this.props
     return (
       <Container>
         <ButtonsContainer>
           <Row>
-            <Model>{'TOUR'}</Model>
+            <Model>{productName}</Model>
             <QuickView onClick={onPressQuickView} src={quickView} />
           </Row>
           <ButtonWrapper>

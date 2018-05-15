@@ -202,10 +202,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
               <Layout {...{ history, intl }}>
                 <Container>
                   <FiltersColumn>
-                    <FiltersTitle
-                      onClick={this.handleOpenSidebar}
-                      showChildren={true}
-                    >
+                    <FiltersTitle>
                       {intl.formatMessage(messages.filtersTitle)}
                     </FiltersTitle>
                     {renderFilters}
@@ -264,7 +261,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   toggleFilter = (evt: React.MouseEvent<HTMLImageElement>) => {
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     const stateValue = this.state[`show${id}Filters`]
 
     this.setState({ [`show${id}Filters`]: !stateValue } as any)
@@ -272,7 +271,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
   handleSelect = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const { setSelectedFilters } = this.props
-    const { target: { name, value } } = evt
+    const {
+      target: { name, value }
+    } = evt
 
     const noSpacesValue = value.replace(/\s/g, '')
     const filterObject = {

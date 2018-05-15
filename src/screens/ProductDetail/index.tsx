@@ -10,8 +10,7 @@ import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import map from 'lodash/map'
-import Message from 'antd/lib/message'
-// import AnimateHeight from 'react-animate-height'
+import findIndex from 'lodash/findIndex'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -21,7 +20,6 @@ import {
   TitleRow,
   Title,
   Subtitle,
-  // StyledInputNumber,
   ImagePreview,
   ProductData,
   AvailablePrices,
@@ -39,8 +37,6 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
-  // AddToCartRow,
-  // AddToCartButton,
   JakrooWidgetsTitle,
   Downloadtemplate,
   DownloadTemplateContainer,
@@ -59,7 +55,13 @@ import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
-import { Product, QueryProps, ImageType } from '../../types/common'
+import AddtoCartButton from '../../components/AddToCartButton'
+import {
+  Product,
+  QueryProps,
+  ImageType,
+  CartItemDetail
+} from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
 import RedColor from '../../assets/colorred.svg'
@@ -70,6 +72,11 @@ interface ProductTypes extends Product {
   intendedUse: string
   temperatures: string
   materials: string
+}
+
+interface SelectedType {
+  id: number
+  name: string
 }
 
 interface Data extends QueryProps {
@@ -83,16 +90,18 @@ interface Props extends RouteComponentProps<any> {
   data: Data
   showBuyNowSection: boolean
   openFitInfo: boolean
-  selectedGender: number
-  selectedSize: number
-  selectedFit: number
+  selectedGender: SelectedType
+  selectedSize: SelectedType
+  selectedFit: SelectedType
   loadingModel: boolean
+  itemToAddCart: any
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
-  setSelectedGenderAction: (selected: string) => void
-  setSelectedSizeAction: (selected: number) => void
-  setSelectedFitAction: (selected: number) => void
+  setSelectedGenderAction: (id: number) => void
+  setSelectedSizeAction: (selected: SelectedType) => void
+  setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
+  addItemToCartAction: (item: any) => void
 }
 
 interface StateProps {
@@ -133,19 +142,37 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const genders = get(product, 'genders', '')
 
     const isRetail =
-      get(product, 'retailMen', false) && get(product, 'retailWomen', false)
+      get(product, 'retailMen', false) || get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
-    const images = imagesArray[0]
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
-    const maleGender = get(genders, '0.gender', '')
-    const femaleGender = get(genders, '1.gender', '')
+    const maleGender = get(genders, '0.name', '')
+    const femaleGender = get(genders, '1.name', '')
     const genderMessage =
       femaleGender && maleGender
         ? formatMessage(messages.unisexGenderLabel)
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
     const fitStyles = get(product, 'fitStyles', [])
+
+    const {
+      location: { search }
+    } = this.props
+    const queryParams = queryString.parse(search)
+
+    const yotpoId = queryParams.yotpoId || ''
+
+    const genderId = queryParams.gender || 0
+    const genderIndex = findIndex(imagesArray, {
+      genderId: parseInt(genderId, 10)
+    })
+
+    const images = imagesArray[genderIndex] || imagesArray[0]
+
+    const moreImages =
+      genderIndex !== -1
+        ? []
+        : imagesArray.filter(post => post.genderId !== images.genderId)
 
     if (product) {
       renderPrices = product.priceRange.map((item: any, index: number) => (
@@ -209,8 +236,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       <div key={index}>
         <SectionButton
           id={index.toString()}
-          selected={index === selectedSize}
-          onClick={this.handleSelectedSize}
+          selected={index === selectedSize.id}
+          onClick={this.handleSelectedSize(index, size)}
         >
           {size}
         </SectionButton>
@@ -224,8 +251,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           <div key={index}>
             <SectionButton
               id={index.toString()}
-              selected={index === selectedFit}
-              onClick={this.handleSelectedFit}
+              selected={fit.id === selectedFit.id}
+              onClick={this.handleSelectedFit(fit)}
             >
               {fit.name}
             </SectionButton>
@@ -234,8 +261,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       ) : (
         <SectionButton
           id={'1'}
-          selected={1 === selectedFit}
-          onClick={this.handleSelectedFit}
+          selected={1 === selectedFit.id}
+          onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
         >
           {'Standard'}
         </SectionButton>
@@ -276,13 +303,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const addToCartRow = (
-      <ButtonsRow>
-        <StyledButton onClick={this.addtoCart}>
-          {formatMessage(messages.addToCartButtonLabel)}
-        </StyledButton>
-      </ButtonsRow>
-    )
+    const addToCartRow = this.renderAddButton()
+
     const collectionSelection = (
       <BuyNowOptions>
         {colorsSection}
@@ -292,18 +314,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </BuyNowOptions>
     )
 
-    const { location: { search } } = this.props
-    const queryParams = queryString.parse(search)
-
-    const yotpoId = queryParams.yotpoId || ''
-
     return (
       <Layout {...{ history, intl }}>
         <Container>
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider onLoadModel={setLoadingModel} {...{ images }} />
+                <ImagesSlider
+                  onLoadModel={setLoadingModel}
+                  {...{ images, moreImages }}
+                />
                 <Desktop>
                   <DownloadTemplateContainer>
                     <a href="https://www.jakroo.com/download/Tour_Template.pdf">
@@ -342,16 +362,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                       {formatMessage(messages.customizeLabel)}
                     </StyledButton>
                   )}
-                  {/* <StyledButton onClick={this.toggleBuyNowOptions}>
-                    {formatMessage(messages.buyNowLabel)}
-                </StyledButton>*/}
                 </ButtonsRow>
-                {/* <AnimateHeight
-                  duration={500}
-                  height={showBuyNowSection ? 'auto' : 0}
-                >*/}
                 {isRetail && collectionSelection}
-                {/* </AnimateHeight>*/}
                 {productInfo}
               </ProductData>
               <FitInfo
@@ -383,20 +395,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
   handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
     const { setSelectedGenderAction } = this.props
-    const { currentTarget: { id } } = evt
-    setSelectedGenderAction(id)
+    const {
+      currentTarget: { id }
+    } = evt
+    setSelectedGenderAction(parseInt(id, 10))
   }
 
-  handleSelectedSize = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedSize = (index: number, size: string) => () => {
     const { setSelectedSizeAction } = this.props
-    const { currentTarget: { id } } = evt
-    setSelectedSizeAction(parseInt(id, 10))
+
+    setSelectedSizeAction({ id: index, name: size })
   }
 
-  handleSelectedFit = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedFit = (size: SelectedType, index?: number) => () => {
     const { setSelectedFitAction } = this.props
-    const { currentTarget: { id } } = evt
-    setSelectedFitAction(parseInt(id, 10))
+    setSelectedFitAction(size)
   }
 
   handleOpenFitInfo = () => {
@@ -405,7 +418,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   gotoCustomize = () => {
-    const { history, data: { product } } = this.props
+    const {
+      history,
+      data: { product }
+    } = this.props
     const productId = get(product, 'id')
     history.push(`/design-center?id=${productId}`)
   }
@@ -415,9 +431,44 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     history.push('/fit-widget')
   }
 
-  addtoCart = () => {
-    const { data: { product: { name } } } = this.props
-    Message.success(`${name} has been succesfully added to cart!`)
+  validateAddtoCart = () => {
+    const { selectedSize, selectedFit } = this.props
+    return selectedSize.id >= 0 && selectedFit.id
+  }
+
+  renderAddButton = () => {
+    const {
+      selectedFit,
+      selectedSize,
+      data: { product },
+      intl: { formatMessage }
+    } = this.props
+
+    const details = [] as CartItemDetail[]
+    if (product) {
+      const detail: CartItemDetail = {
+        fit: selectedFit,
+        size: selectedSize,
+        quantity: 1
+      }
+      details.push(detail)
+    }
+    const itemToAdd = Object.assign(
+      {},
+      { product },
+      {
+        itemDetails: details
+      }
+    )
+    return (
+      <ButtonsRow>
+        <AddtoCartButton
+          onClick={this.validateAddtoCart}
+          label={formatMessage(messages.addToCartButtonLabel)}
+          item={itemToAdd}
+        />
+      </ButtonsRow>
+    )
   }
 
   closeFitInfoModal = () => {
@@ -443,7 +494,9 @@ const ProductDetailEnhance = compose(
   injectIntl,
   graphql<Data>(GetProductsByIdQuery, {
     options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
+      const {
+        location: { search }
+      } = ownprops
       const queryParams = queryString.parse(search)
       return {
         variables: {

@@ -93,7 +93,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
 
   gotoStore = (storeId: string) => () => {
     const { history } = this.props
-    console.log(storeId)
+
     history.push(`/store-front?storeId=${storeId}`)
   }
 }

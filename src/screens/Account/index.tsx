@@ -67,18 +67,27 @@ export class Account extends React.Component<Props, {}> {
   render() {
     const { intl, history, openKeys, screen } = this.props
 
-    const menuOptions = options.map(({ title, options: submenus }) => (
-      <SubMenu
-        key={title}
-        title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
-      >
-        {submenus.map((label, index) => (
-          <Menu.Item key={label}>
-            <FormattedMessage {...messages[label]} />
+    const menuOptions = options.map(
+      ({ title, options: submenus }) =>
+        submenus.length ? (
+          <SubMenu
+            key={title}
+            title={
+              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+            }
+          >
+            {submenus.map((label, index) => (
+              <Menu.Item key={label}>
+                <FormattedMessage {...messages[label]} />
+              </Menu.Item>
+            ))}
+          </SubMenu>
+        ) : (
+          <Menu.Item key={title}>
+            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
           </Menu.Item>
-        ))}
-      </SubMenu>
-    ))
+        )
+    )
 
     const currentScreen = this.getScreenComponent(screen)
 

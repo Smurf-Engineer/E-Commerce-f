@@ -23,13 +23,17 @@ interface Props {
   image?: string
   description?: string
   priceRange?: PriceRange[]
-  labelButton?: string
+  labelButton?: string | React.ReactNode
   isTopProduct: boolean
   collections?: number
   footer?: React.ReactNode
+  gender?: number
   hideCustomButton?: boolean
+  hideQuickView?: boolean
   yotpoId: string
   history: any
+  isStoreThumbnail?: boolean
+  teamStoreShortId?: string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -75,8 +79,19 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { id, yotpoId, history } = this.props
-    history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+    const { id, yotpoId, history, teamStoreShortId, gender } = this.props
+
+    if (teamStoreShortId) {
+      history.push(
+        `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
+      )
+    } else {
+      history.push(
+        `/product?id=${id}&yotpoId=${yotpoId}${
+          gender ? `&gender=${gender}` : ''
+        }`
+      )
+    }
   }
 
   render() {
@@ -90,7 +105,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       footer,
       labelButton,
       image,
-      hideCustomButton
+      hideCustomButton,
+      hideQuickView
     } = this.props
     const { isHovered, currentImage } = this.state
     const price =
@@ -106,7 +122,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             currentImage,
             labelButton,
             image,
-            hideCustomButton
+            hideCustomButton,
+            hideQuickView
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

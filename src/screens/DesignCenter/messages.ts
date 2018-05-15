@@ -8,5 +8,9 @@ export default defineMessages({
   title: {
     id: 'screens.DesignCenter.title',
     defaultMessage: 'DesignCenter'
+  },
+  inspirationTtitle: {
+    id: 'screens.DesignCenter.inspirationTtitle',
+    defaultMessage: 'Inspiration'
   }
 })

@@ -29,8 +29,9 @@ interface Props {
   images?: ImageType
   image?: string
   currentImage: number
-  labelButton?: string
+  labelButton?: string | React.ReactNode
   hideCustomButton?: boolean
+  hideQuickView?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -54,7 +55,8 @@ const ProductSlide = ({
   onPressBack,
   onPressNext,
   onPressThumbnail,
-  hideCustomButton
+  hideCustomButton,
+  hideQuickView
 }: Props) => {
   if (image) {
     return (
@@ -62,9 +64,11 @@ const ProductSlide = ({
         {...{ onMouseEnter, onMouseLeave, isTopProduct, hideCustomButton }}
       >
         <ImageTop>
-          <QuickView onClick={onPressQuickView}>
-            <img src={quickViewIcon} />
-          </QuickView>
+          {!hideQuickView && (
+            <QuickView onClick={onPressQuickView}>
+              <img src={quickViewIcon} />
+            </QuickView>
+          )}
           {isTopProduct && (
             <TopContainer>
               <TopText>TOP</TopText>
@@ -91,6 +95,15 @@ const ProductSlide = ({
       </Page>
     )
   })
+
+  const buttonToRender =
+    labelButton === 'CUSTOMIZE' ? (
+      <ButtonContainer onClick={onPressCustomize}>
+        <CustomizeButton>{labelButton}</CustomizeButton>
+      </ButtonContainer>
+    ) : (
+      labelButton
+    )
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
@@ -110,11 +123,7 @@ const ProductSlide = ({
           <Arrow src={nextIcon} onClick={onPressNext} />
         </Arrows>
       )}
-      {isHovered && (
-        <ButtonContainer onClick={onPressCustomize}>
-          <CustomizeButton>{labelButton}</CustomizeButton>
-        </ButtonContainer>
-      )}
+      {isHovered && buttonToRender}
     </ImageContainer>
   )
 }

@@ -16,7 +16,8 @@ describe('<QuickView />', () => {
             front: '',
             back: '',
             left: '',
-            right: ''
+            right: '',
+            genderId: 0
           }
         ],
         type: '',
@@ -26,6 +27,7 @@ describe('<QuickView />', () => {
         isTopProduct: false,
         details: '',
         specs: '',
+        shortDescription: '',
         name: '',
         temperature: '',
         materials: '',

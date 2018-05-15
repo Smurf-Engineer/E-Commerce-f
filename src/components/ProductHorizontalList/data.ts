@@ -11,14 +11,25 @@ export const productsQuery = gql`
       fullCount
       products {
         id
+        name
+        genders {
+          id
+          name: gender
+        }
+        fitStyles {
+          id
+          name: description
+        }
         yotpoId: yotpo_id
         type: name
         priceRange {
           price
         }
         description: short_description
+        shortDescription: short_description
         collections
         isTopProduct
+        customizable: design_center
         images: pictures {
           front: front_image
           back: back_image

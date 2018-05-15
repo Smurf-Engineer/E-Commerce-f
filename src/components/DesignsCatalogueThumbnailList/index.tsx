@@ -45,10 +45,12 @@ interface Props {
   history: any
   currentPage: number
   limit?: number
+  teamStoreShortId?: string
   designs?: DesignType[]
   onPressPrivate?: () => void
   onPressDelete?: () => void
   withoutPadding?: boolean
+  storeFront?: boolean
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -61,12 +63,13 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       handleChangePage,
       handleOrderBy,
       data,
+      teamStoreShortId,
       designs,
       onPressPrivate = () => {},
       onPressDelete = () => {},
-      withoutPadding
+      withoutPadding,
+      storeFront
     } = this.props
-
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -75,11 +78,11 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       total = designs.length.toString()
-      thumbnailsList = designs.map(({ id, name, product }, index) => {
+      thumbnailsList = designs.map(({ id, shortId, name, product }, index) => {
         return (
           <ThumbnailListItem key={index}>
             <ProductThumbnail
-              id={product.id}
+              id={storeFront ? shortId : product.id}
               yotpoId={product.yotpoId}
               footer={
                 <FooterThumbnailTeamStore
@@ -93,6 +96,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
               onPressCustomize={this.handleOnPressAddToCart}
               onPressQuickView={this.handlePressQuickView}
               image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
+              isStoreThumbnail={true}
+              {...{ teamStoreShortId }}
             />
           </ThumbnailListItem>
         )
@@ -217,6 +222,7 @@ type OwnProps = {
   limit?: number
   orderBy?: string
   skip?: number
+  teamStoreShortId?: string
   designs?: DesignType[]
 }
 

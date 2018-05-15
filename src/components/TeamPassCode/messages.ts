@@ -49,5 +49,13 @@ export default defineMessages({
     id: 'components.TeamPassCode.checkCopyright',
     defaultMessage:
       'I hereby agree that I have permission and the rights to  use all images I have uploaded to this design'
+  },
+  invalidPass: {
+    id: 'screen.TeamPassCode.invalidPass',
+    defaultMessage: 'Invalid passcode value.'
+  },
+  passcodeNeeded: {
+    id: 'screen.TeamPassCode.passcodeNeeded',
+    defaultMessage: 'Passcode needed.'
   }
 })

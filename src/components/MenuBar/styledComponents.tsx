@@ -69,4 +69,7 @@ export const TeamStoresMenuTitle = styled.div`
   line-height: 25px;
   border-bottom: 4px solid #e61737;
   padding: 21px 0;
+  &:hover {
+    cursor: pointer;
+  }
 `

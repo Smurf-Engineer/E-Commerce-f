@@ -96,3 +96,22 @@ declare module 'rc-drawer' {
   class Drawer extends React.Component<Props, any> {}
   export default Drawer
 }
+
+declare module 'react-swipeable-bottom-sheet' {
+  interface Props {
+    defaultOpen?: boolean
+    fullScreen?: boolean
+    marginTop?: number
+    overflowHeight?: number
+    overlay?: boolean
+    scrollTopAtClose?: boolean
+    shadowTip?: boolean
+    swipeableViewsProps?: object
+    topShadow?: boolean
+    open?: boolean
+    onChange?: () => void
+  }
+
+  class SwipeableBottomSheet extends React.Component<Props, any> {}
+  export default SwipeableBottomSheet
+}

@@ -12,6 +12,7 @@ export const getSingleTeamStore = gql`
       name
       banner
       private
+      owner
       cutoff_date {
         day
         dayOrdinal
@@ -28,6 +29,7 @@ export const getSingleTeamStore = gql`
           id
           name
           image
+          shortId: short_id
           product {
             id
             yotpoId: yotpo_id
@@ -62,6 +64,7 @@ export const getTeamStoreMutation = graphql(
         name
         banner
         private
+        owner
         cutoff_date {
           day
           dayOrdinal

@@ -7,6 +7,7 @@ export const GetProductsByIdQuery = gql`
       yotpoId: yotpo_id
       name
       type: short_description
+      shortDescription: short_description
       category_id
       sport_id
       sports {
@@ -21,13 +22,14 @@ export const GetProductsByIdQuery = gql`
       materials: materials_info
       temperatures: temperature_range
       genders {
-        gender
+        id
+        name: gender
       }
-      size_range
       fitStyles {
         id
         name: description
       }
+      size_range
       collections
       isTopProduct
       intendedUse: intended_use
@@ -36,6 +38,7 @@ export const GetProductsByIdQuery = gql`
         back: back_image
         left: left_image
         right: right_image
+        genderId: gender_id
       }
       priceRange {
         price

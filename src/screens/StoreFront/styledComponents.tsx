@@ -30,6 +30,7 @@ export const Title = styled.div`
   letter-spacing: 0.3px;
   line-height: 33px;
   text-transform: uppercase;
+  padding-right: 10px;
 `
 
 export const AboutTitle = styled.div`
@@ -41,6 +42,20 @@ export const AboutTitle = styled.div`
   line-height: 33px;
   text-transform: uppercase;
   text-align: center;
+  margin-bottom: 30px;
+`
+
+export const ErrorTitle = styled.div`
+  color: #e21530;
+  font-family: Avenir Next;
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  line-height: 33px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-top: 50px;
+  margin-bottom: 50px;
 `
 
 export const AboutContainer = styled.div`
@@ -58,7 +73,7 @@ export const OrderTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 19px;
-  text-align: center;
+  text-align: right;
 `
 
 export const Content = styled.div`
@@ -120,7 +135,6 @@ export const StyledSlider = styled(Slider)`
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   padding-right: 10px;
-  padding-left: 10px;
   .ant-btn-primary {
     background-color: #4a90e2;
     border-color: #4a90e2;
@@ -135,6 +149,10 @@ export const ButtonWrapper = styled.div`
 export const Button = styled(AntdButton)`
   height: 40px;
   width: 70px;
+`
+
+export const DefaultButton = styled(AntdButton)`
+  height: 40px;
 `
 
 export const ImageBanner = styled.img`
@@ -194,9 +212,18 @@ export const CalendarDay = styled.div`
 export const DatesContainer = styled.div`
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
   padding-top: 20px;
-  align-items: center;
-  justify-content: center;
+  align-items: right;
+  justify-content: flex-end;
+`
+
+export const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
 `
 
 export const CalendarContainer = styled.div`
