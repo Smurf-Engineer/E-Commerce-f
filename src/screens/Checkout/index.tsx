@@ -24,6 +24,7 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
+import Payment from '../../components/Payment'
 import OrderSummary from '../../components/OrderSummary'
 import { AddressType, CartItemDetail, Product } from '../../types/common'
 
@@ -143,7 +144,7 @@ class Checkout extends React.Component<Props, {}> {
                   }}
                   formatMessage={intl.formatMessage}
                 />
-                <div>{'PAYMENT'}</div>
+                <Payment />
                 <div>{'REVIEW'}</div>
               </SwipeableViews>
               {/* <div>{this.renderStepContent(currentStep)}</div> */}

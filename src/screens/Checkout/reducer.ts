@@ -16,7 +16,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
-  currentStep: 0,
+  currentStep: 1,
   firstName: '',
   lastName: '',
   street: '',
