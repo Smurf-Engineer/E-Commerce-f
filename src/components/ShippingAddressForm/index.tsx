@@ -47,7 +47,6 @@ class ShippingAddressForm extends React.Component<Props, {}> {
       phone,
       hasError
     } = this.props
-    console.log(hasError, 'hasError')
     const dropdownCountries = (
       <Menu onClick={this.selectedDropDown}>
         <Menu.Item id="country" class="country" key="usa">
