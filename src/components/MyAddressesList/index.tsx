@@ -17,17 +17,23 @@ import { AddressType } from '../../types/common'
 
 interface Props {
   items: AddressType[]
-  hideTitle?: boolean
-  hideAddBtn?: boolean
+  listForMyAccount?: boolean
   formatMessage: (messageDescriptor: any) => string
-  showAddressFormAction: (show: boolean) => void
+  showAddressFormAction: (show: boolean, index?: number) => void
+  showConfirmDeleteAction?: (index: number) => void
 }
 
 export class MyAddressesList extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, items, hideTitle, hideAddBtn } = this.props
+    const {
+      formatMessage,
+      items,
+      listForMyAccount,
+      showAddressFormAction,
+      showConfirmDeleteAction
+    } = this.props
 
-    const showList = items && items.length > 0
+    const showList = items && items.length
     const adressesList = items
       ? items.map((address, key) => {
           const {
@@ -37,17 +43,29 @@ export class MyAddressesList extends React.Component<Props, {}> {
             city,
             stateProvince,
             zipCode,
-            country
+            country,
+            apartment,
+            defaultBilling,
+            defaultShipping
           } = address
           return (
             <MyAddress
-              {...{ key }}
+              {...{
+                key,
+                formatMessage,
+                showAddressFormAction,
+                showConfirmDeleteAction,
+                defaultBilling,
+                defaultShipping
+              }}
+              addressIndex={key}
               name={`${firstName} ${lastName}`}
               street={street}
               city={`${city} ${stateProvince}`}
               zipCode={zipCode}
               country={country}
-              {...{ formatMessage }}
+              apartment={listForMyAccount ? apartment : undefined}
+              showSecondaryButtons={listForMyAccount}
             />
           )
         })
@@ -56,15 +74,17 @@ export class MyAddressesList extends React.Component<Props, {}> {
     return (
       <Container>
         {showList &&
-          !hideTitle && <Title>{formatMessage(messages.title)}</Title>}
+          !listForMyAccount && <Title>{formatMessage(messages.title)}</Title>}
         {showList && (
           <Content>
-            {!hideAddBtn && (
+            {!listForMyAccount && (
               <AddAddressBtn onClick={this.showAddressForm}>
                 {formatMessage(messages.addAddressLabel)}
               </AddAddressBtn>
             )}
-            <AddressesList>{adressesList}</AddressesList>
+            <AddressesList {...{ listForMyAccount }}>
+              {adressesList}
+            </AddressesList>
           </Content>
         )}
       </Container>

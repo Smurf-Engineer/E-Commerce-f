@@ -16,7 +16,11 @@ describe('<MyAddress />', () => {
         city={''}
         country={''}
         zipCode={''}
+        addressIndex={0}
         formatMessage={format}
+        showAddressFormAction={() => {}}
+        defaultBilling={false}
+        defaultShipping={false}
       />,
       div
     )

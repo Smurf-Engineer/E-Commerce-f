@@ -6,6 +6,7 @@ import messages from './messages'
 import {
   Container,
   Text,
+  ItalicText,
   StyledButton,
   EditButton,
   SecondaryButtons
@@ -19,8 +20,13 @@ interface Props {
   state?: string
   zipCode: string
   country: string
+  defaultBilling: boolean
+  defaultShipping: boolean
+  addressIndex: number
   showSecondaryButtons?: boolean
   formatMessage: (messageDescriptor: any) => string
+  showAddressFormAction: (show: boolean, index?: number) => void
+  showConfirmDeleteAction?: (index: number) => void
 }
 
 const MyAddress = ({
@@ -31,19 +37,46 @@ const MyAddress = ({
   state,
   zipCode,
   country,
+  defaultBilling,
+  defaultShipping,
+  addressIndex,
   formatMessage,
-  showSecondaryButtons
+  showSecondaryButtons,
+  showAddressFormAction,
+  showConfirmDeleteAction = () => {}
 }: Props) => {
+  const handleOnEdit = () => {
+    showAddressFormAction(true, addressIndex)
+  }
+  const handleOnDelete = () => {
+    showConfirmDeleteAction(addressIndex)
+  }
   const buttons = !showSecondaryButtons ? (
     <StyledButton>{formatMessage(messages.useThisAddress)}</StyledButton>
   ) : (
     <SecondaryButtons>
-      <EditButton>{formatMessage(messages.edit)}</EditButton>{' '}
-      <StyledButton>{formatMessage(messages.delete)}</StyledButton>
+      <EditButton type="primary" onClick={handleOnEdit}>
+        {formatMessage(messages.edit)}
+      </EditButton>
+      <StyledButton onClick={handleOnDelete}>
+        {formatMessage(messages.delete)}
+      </StyledButton>
     </SecondaryButtons>
   )
+  let footerMessageText
+  if (defaultBilling && defaultShipping) {
+    footerMessageText = messages.defaultBillingAndShipping
+  } else if (defaultBilling) {
+    footerMessageText = messages.defaultBilling
+  } else if (defaultShipping) {
+    footerMessageText = messages.defaultShipping
+  }
+  const footerMessage =
+    showSecondaryButtons && footerMessageText ? (
+      <ItalicText>{formatMessage(footerMessageText)}</ItalicText>
+    ) : null
   return (
-    <Container>
+    <Container {...{ showSecondaryButtons }}>
       <Text>{name}</Text>
       <Text>{street}</Text>
       {apartment && <Text>{apartment}</Text>}
@@ -51,6 +84,7 @@ const MyAddress = ({
       <Text>{state}</Text>
       <Text>{zipCode}</Text>
       <Text>{country}</Text>
+      {footerMessage}
       {buttons}
     </Container>
   )

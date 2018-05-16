@@ -20,5 +20,21 @@ export default defineMessages({
   delete: {
     id: 'components.MyAddress.delete',
     defaultMessage: 'Delete'
+  },
+  defaultShipping: {
+    id: 'components.MyAddress.defaultShipping',
+    defaultMessage: 'Default shipping address'
+  },
+  defaultBilling: {
+    id: 'components.MyAddress.defaultBilling',
+    defaultMessage: 'Default billing address'
+  },
+  defaultBillingAndShipping: {
+    id: 'components.MyAddress.defaultBillingAndShipping',
+    defaultMessage: 'Default shipping and billing address'
+  },
+  emptyMessage: {
+    id: 'components.MyAddress.emptyMessage',
+    defaultMessage: ''
   }
 })

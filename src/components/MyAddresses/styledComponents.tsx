@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Checkbox from 'antd/lib/checkbox'
 
 export const Container = styled.div`
   width: 100%;
@@ -38,4 +39,22 @@ export const StyledEmptyButton = styled(Button)`
   margin-top: 16px;
   margin-bottom: 24px;
   font-size: 18px;
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+  height: 22px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 5px 0;
+`
+
+export const DeleteConfirmMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
 `
