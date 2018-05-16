@@ -215,7 +215,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           />
           <CheckWrapper>
             <Checkbox onChange={this.toggleChecked}>
-              <FormattedMessage {...messages.checkCopyright} />
+              {formatMessage(messages.checkCopyright)}
             </Checkbox>
           </CheckWrapper>
           <ButtonWrapper>

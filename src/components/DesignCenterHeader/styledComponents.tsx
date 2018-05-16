@@ -14,6 +14,7 @@ export const Row = styled.div`
   flex-direction: row;
   padding: 10px 0px;
   justify-content: center;
+  align-items: center;
 `
 
 export const Divider = styled.div`
@@ -22,8 +23,10 @@ export const Divider = styled.div`
   background-color: #dcdcdc;
 `
 
-export const Logo = styled.div`
+export const Logo = styled.img`
   align-self: center;
+  width: 146px;
+  height: 34px;
 `
 
 export const BackButton = styled.div`
