@@ -171,14 +171,24 @@ class MyAddresses extends React.PureComponent<Props, {}> {
     )
   }
 
-  handleOnChangeDefaultShipping = (event: any) => {
+  handleOnChangeDefaultShipping = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { defaultShippingAction } = this.props
-    defaultShippingAction(event.target.checked)
+    const {
+      target: { checked }
+    } = event
+    defaultShippingAction(checked)
   }
 
-  handleOnChangeDefaultBilling = (event: any) => {
+  handleOnChangeDefaultBilling = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     const { defaultBillingAction } = this.props
-    defaultBillingAction(event.target.checked)
+    const {
+      target: { checked }
+    } = event
+    defaultBillingAction(checked)
   }
 
   handleOnShowModal = () => {
