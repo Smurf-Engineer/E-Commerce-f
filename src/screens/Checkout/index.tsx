@@ -203,7 +203,9 @@ class Checkout extends React.Component<Props, {}> {
       stateProvince,
       city,
       zipCode,
-      phone
+      phone,
+      defaultBilling: false,
+      defaultShipping: false
     }
 
     if (currentStep < stepperTitles.length - 1) {
