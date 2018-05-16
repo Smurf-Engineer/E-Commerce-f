@@ -54,6 +54,7 @@ interface Props {
   // reducer actions
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
+  validFormAction: (hasError: boolean) => void
   defaultShippingAction: (checked: boolean) => void
   defaultBillingAction: (checked: boolean) => void
   showAddressModalAction: (show: boolean, index?: string) => void
@@ -245,8 +246,22 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       updateAddress,
       data: { refetch },
       setModalLoadingAction,
-      resetReducerDataAction
+      resetReducerDataAction,
+      validFormAction
     } = this.props
+    const error =
+      !firstName ||
+      !lastName ||
+      !street ||
+      !country ||
+      !state ||
+      !city ||
+      !zipCode ||
+      !phone
+    if (error) {
+      validFormAction(error)
+      return
+    }
     const isUpdatingAddress = addressIdToMutate !== -1
     const address = {
       id: isUpdatingAddress ? addressIdToMutate : undefined,
