@@ -18,6 +18,7 @@ import MyAddresses from '../MyAddressesList'
 import ShippingAddressForm from '../ShippingAddressForm'
 
 import { QueryProps, AddressType } from '../../types/common'
+import { ClickParam } from 'antd/lib/menu'
 
 interface Data extends QueryProps {
   userAddresses: AddressType[]
