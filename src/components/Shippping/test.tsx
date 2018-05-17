@@ -4,6 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Shippping } from './index'
+import { AddressType } from '../../types/common'
 
 describe('<Shippping />', () => {
   test('renders without exploding', () => {
@@ -13,12 +14,13 @@ describe('<Shippping />', () => {
     const street = ''
     const apartment = ''
     const country = ''
-    const state = ''
+    const stateProvince = ''
     const city = ''
     const zipCode = ''
     const phone = ''
     const hasError = false
     const showForm = false
+    const indexAddressSelected = -1
     const data = {
       userAddresses: [],
       fetchMore: () => {}
@@ -29,6 +31,7 @@ describe('<Shippping />', () => {
     const smsCheckAction = (checked: boolean) => {}
     const emailCheckAction = (checked: boolean) => {}
     const showAddressFormAction = (show: boolean) => {}
+    const setSelectedAddress = (address: AddressType, index: number) => {}
     void ReactDOM.render(
       <Shippping
         formatMessage={format}
@@ -38,7 +41,7 @@ describe('<Shippping />', () => {
           street,
           apartment,
           country,
-          state,
+          stateProvince,
           city,
           zipCode,
           phone,
@@ -49,6 +52,8 @@ describe('<Shippping />', () => {
           smsCheckAction,
           emailCheckAction,
           showAddressFormAction,
+          setSelectedAddress,
+          indexAddressSelected,
           data
         }}
       />,

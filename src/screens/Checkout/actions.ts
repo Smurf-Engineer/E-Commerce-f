@@ -9,9 +9,12 @@ import {
   SELECT_DROPDOWN,
   SMS_CHECK,
   EMAIL_CHECK,
-  SHOW_ADDRESS_FORM
+  SHOW_ADDRESS_FORM,
+  SAME_BILLING_AND_SHIPPING_CHECKED,
+  SAME_BILLING_AND_SHIPPING_UNCHECKED,
+  SET_SELECTED_ADDRESS
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, AddressType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -53,4 +56,21 @@ export const emailCheckAction = (checked: boolean): AnyAction => ({
 export const showAddressFormAction = (show: boolean): AnyAction => ({
   type: SHOW_ADDRESS_FORM,
   show
+})
+
+export const sameBillingAndAddressCheckedAction = (): AnyAction => ({
+  type: SAME_BILLING_AND_SHIPPING_CHECKED
+})
+
+export const sameBillingAndAddressUncheckedAction = (): AnyAction => ({
+  type: SAME_BILLING_AND_SHIPPING_UNCHECKED
+})
+
+export const setSelectedAddressAction = (
+  address: AddressType,
+  index: number
+): AnyAction => ({
+  type: SET_SELECTED_ADDRESS,
+  address,
+  index
 })
