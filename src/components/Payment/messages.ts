@@ -24,13 +24,5 @@ export default defineMessages({
   methodBankTransfer: {
     id: 'components.Payment.methodBankTransfer',
     defaultMessage: 'Bank Transfer'
-  },
-  billingAddress: {
-    id: 'components.Payment.billingAddress',
-    defaultMessage: 'Billing Address'
-  },
-  sameShippingAddress: {
-    id: 'components.Payment.sameShippingAddress',
-    defaultMessage: 'Same as shipping address'
   }
 })

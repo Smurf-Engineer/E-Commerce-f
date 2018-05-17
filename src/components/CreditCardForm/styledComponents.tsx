@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
+import Checkbox from 'antd/lib/checkbox'
 
 interface InputProps {
   inputhWidth?: string
@@ -55,4 +56,19 @@ export const Label = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+`
+
+export const ContainerBilling = styled.div`
+  margin-top: 16px;
+  margin-bottom: 24px;
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+  height: 36px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 5px 0;
 `

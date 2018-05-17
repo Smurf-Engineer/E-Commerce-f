@@ -8,13 +8,9 @@ import {
   Container,
   Title,
   ContainerMethods,
-  MethodButton,
-  ContainerBilling,
-  StyledCheckbox
+  MethodButton
 } from './styledComponents'
-import ShippingAddressForm from '../ShippingAddressForm'
 import CreditCardForm from '../CreditCardForm'
-import MyAddress from '../MyAddress'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -75,7 +71,9 @@ class Payment extends React.PureComponent<Props, {}> {
       cardHolderName,
       sameBillingAndShipping,
       selectDropdownAction,
-      inputChangeAction
+      inputChangeAction,
+      sameBillingAndAddressCheckedAction,
+      sameBillingAndAddressUncheckedAction
     } = this.props
     const { stripe } = this.state
     return (
@@ -99,22 +97,7 @@ class Payment extends React.PureComponent<Props, {}> {
                 stripe,
                 formatMessage,
                 cardHolderName,
-                inputChangeAction
-              }}
-            />
-          </Elements>
-        </StripeProvider>
-        <ContainerBilling>
-          <Title>{formatMessage(messages.billingAddress)}</Title>
-          <StyledCheckbox
-            checked={sameBillingAndShipping}
-            onChange={this.handleOnChangeDefaultShipping}
-          >
-            {formatMessage(messages.sameShippingAddress)}
-          </StyledCheckbox>
-          {!sameBillingAndShipping ? (
-            <ShippingAddressForm
-              {...{
+                inputChangeAction,
                 firstName,
                 lastName,
                 street,
@@ -126,36 +109,15 @@ class Payment extends React.PureComponent<Props, {}> {
                 phone,
                 hasError,
                 selectDropdownAction,
-                inputChangeAction
+                sameBillingAndShipping,
+                sameBillingAndAddressCheckedAction,
+                sameBillingAndAddressUncheckedAction
               }}
             />
-          ) : (
-            <MyAddress
-              {...{ street, zipCode, country, formatMessage }}
-              name={`${firstName} ${lastName}`}
-              city={`${city} ${stateProvince}`}
-              addressIndex={-1}
-              hideBottomButtons={true}
-            />
-          )}
-        </ContainerBilling>
+          </Elements>
+        </StripeProvider>
       </Container>
     )
-  }
-
-  handleOnChangeDefaultShipping = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const {
-      sameBillingAndAddressCheckedAction,
-      sameBillingAndAddressUncheckedAction
-    } = this.props
-    const {
-      target: { checked }
-    } = event
-    checked
-      ? sameBillingAndAddressCheckedAction()
-      : sameBillingAndAddressUncheckedAction()
   }
 }
 

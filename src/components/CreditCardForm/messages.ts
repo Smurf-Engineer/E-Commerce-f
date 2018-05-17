@@ -20,5 +20,13 @@ export default defineMessages({
   securityCode: {
     id: 'components.CreditCardForm.cardNumber',
     defaultMessage: 'CVV/CVC'
+  },
+  billingAddress: {
+    id: 'components.CreditCardForm.billingAddress',
+    defaultMessage: 'Billing Address'
+  },
+  sameShippingAddress: {
+    id: 'components.CreditCardForm.sameShippingAddress',
+    defaultMessage: 'Same as shipping address'
   }
 })
