@@ -127,51 +127,48 @@ class Render3D extends PureComponent {
     this.objLoader = objLoader
     this.textureLoader = textureLoader
 
-    // this.render3DModel()
+    this.render3DModel()
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
 
-    const svgTexture = Snap('#svg')
+    // const svgTexture = Snap('#svg')
 
-    const bigCircle = svgTexture.circle(100, 100, 50)
+    // const textureList = []
+    // const loadMulti = list => {
+    //   let image,
+    //     fragLoadedCount = 0,
+    //     listLength = list.length
 
-    // Snap.load('./testsvg/colorblock_5.svg', f => {
-    //   s.append(f.select('g'))
-    // })
-    const textureList = []
-    const loadMulti = list => {
-      let image,
-        fragLoadedCount = 0,
-        listLength = list.length
+    //   for (let count = 0; count < listLength; count++) {
+    //     ;(() => {
+    //       let wichEl = count
+    //       image = Snap.load(list[wichEl], loadedFragment => {
+    //         fragLoadedCount++
+    //         textureList[wichEl] = loadedFragment
+    //         if (fragLoadedCount >= listLength) {
+    //           addLoadedFrags(textureList)
+    //         }
+    //       })
+    //     })()
+    //   }
+    // }
 
-      for (let count = 0; count < listLength; count++) {
-        ;(() => {
-          let wichEl = count
-          image = Snap.load(list[wichEl], loadedFragment => {
-            fragLoadedCount++
-            textureList[wichEl] = loadedFragment
-            if (fragLoadedCount >= listLength) {
-              addLoadedFrags(textureList)
-            }
-          })
-        })()
-      }
-    }
+    // const addLoadedFrags = list => {
+    //   for (let count = 0; count < list.length; count++) {
+    //     svgTexture.append(textureList[count].select('g'))
+    //   }
 
-    const addLoadedFrags = list => {
-      for (let count = 0; count < list.length; count++) {
-        svgTexture.append(textureList[count])
-      }
-    }
-    const listSvg = [
-      './testsvg/colorblock_5.svg',
-      './testsvg/colorblock_4.svg',
-      './testsvg/colorblock_3.svg',
-      './testsvg/colorblock_2.svg',
-      './testsvg/colorblock_1.svg'
-    ]
-    loadMulti(listSvg)
+    //   svgTexture.select("#colorblock_x5F_1[fill='#099']")
+    // }
+    // const listSvg = [
+    //   './testsvg/colorblock_5.svg',
+    //   './testsvg/colorblock_4.svg',
+    //   './testsvg/colorblock_3.svg',
+    //   './testsvg/colorblock_2.svg',
+    //   './testsvg/colorblock_1.svg'
+    // ]
+    // loadMulti(listSvg)
   }
 
   componentWillUnmount() {
@@ -208,7 +205,9 @@ class Render3D extends PureComponent {
           this.setState({ objectChilds })
 
           // TODO: TEXT Test
-          const logoTexture = this.textureLoader.load('./testsvg/C01-D01.svg')
+          const logoTexture = this.textureLoader.load(
+            'https://storage.googleapis.com/jakroo-storage/models/Tour/CD03-D01.svg'
+          )
 
           // logoTexture.wrapS = logoTexture.wrapT = THREE.RepeatWrapping
 
@@ -312,6 +311,7 @@ class Render3D extends PureComponent {
           object.children[4].material.color.set('#ffffff')
           object.children[6].material = flatlockMaterial
 
+          object.children[meshIndex].material = insideMaterial
           object.children[objectChilds].material = materialLogo
           // object.children[objectChilds].rebuildTexture = rebuildTexture
 
@@ -519,9 +519,9 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
-        <div style={{ width: '100%', height: '100%' }} id="drawing">
+        {/* <div style={{ width: '100%', height: '100%' }} id="drawing">
           <svg id="svg" width="100%" height="100%" />
-        </div>
+    </div> */}
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
