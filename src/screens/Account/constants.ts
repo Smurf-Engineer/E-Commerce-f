@@ -4,6 +4,7 @@
 const namespace = 'src/Account'
 
 export const SCREEN_LOCKER = 'locker'
+export const ADDRESSES = 'addresses'
 
 // USE UNIQUE KEYS
 export const options = [

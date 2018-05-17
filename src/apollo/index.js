@@ -34,7 +34,7 @@ const wsLink = process.browser
   ? new WebSocketLink({
       uri: `ws://localhost:4040/api/subscriptions`,
       options: {
-        reconnect: true
+        reconnect: false // TODO: CHANGE TO TRUE LATER
       }
     })
   : null

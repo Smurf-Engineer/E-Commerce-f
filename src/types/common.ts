@@ -277,4 +277,6 @@ export interface AddressType {
   city: string
   zipCode: string
   phone: string
+  defaultBilling: boolean
+  defaultShipping: boolean
 }

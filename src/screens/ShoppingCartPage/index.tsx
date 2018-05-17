@@ -229,7 +229,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
-                <Ordersummary total={totalSum} {...{ formatMessage }} />
+                <Ordersummary
+                  total={totalSum}
+                  subtotal={totalSum}
+                  {...{ formatMessage }}
+                />
                 <ButtonWrapper>
                   <CheckoutButton type="primary" onClick={this.handleCheckout}>
                     <FormattedMessage {...messages.checkout} />

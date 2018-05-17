@@ -165,14 +165,25 @@ class Render3D extends PureComponent {
             color: '#000000'
           })
 
+          let meshIndex = findIndex(
+            object.children,
+            mesh => mesh.name === 'FINAL Jersey_Mesh'
+          )
+
+          if (meshIndex < 0) {
+            meshIndex = 0
+          }
+
           // Setup the texture layers
-          const areasLayers = loadedAreas.map(() => object.children[5].clone())
+          const areasLayers = loadedAreas.map(() =>
+            object.children[meshIndex].clone()
+          )
           object.add(...areasLayers)
 
           /* Jersey label */
           object.children[4].material.color.set('#ffffff')
           object.children[6].material = flatlockMaterial
-          object.children[5].material = insideMaterial
+          object.children[meshIndex].material = insideMaterial
 
           loadedAreas.forEach(
             (materialTexture, index) =>
@@ -182,7 +193,6 @@ class Render3D extends PureComponent {
                 map: loadedAreas[index],
                 side: THREE.FrontSide,
                 bumpMap: bumpMapTexture,
-                // color: styleColors[index], // TODO: For PNG with color
                 transparent: true
               }))
           )

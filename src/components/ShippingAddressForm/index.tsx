@@ -1,17 +1,11 @@
 /**
- * Shippping Component - Created by cazarez on 07/05/18.
+ * ShippingAddressForm Component - Created by miguelcanobbio on 15/05/18.
  */
 import * as React from 'react'
-import { compose, graphql } from 'react-apollo'
 import Dropdown from 'antd/lib/dropdown'
 import Icon from 'antd/lib/icon'
 import Menu, { ClickParam } from 'antd/lib/menu'
-import AnimateHeight from 'react-animate-height'
-import messages from './messages'
-import { GetAddressListQuery } from './data'
 import {
-  Container,
-  Title,
   ShippingFormContainer,
   Row,
   Column,
@@ -19,23 +13,11 @@ import {
   RequiredSpan,
   Label,
   InputTitleContainer,
-  ShippingMethodContainer,
-  ShippinPriorityText,
-  StyledCheckbox,
   DropDownPlaceHolder,
   ErrorMsg
 } from './styledComponents'
 
-import MyAddresses from '../MyAddressesList'
-
-import { QueryProps, AddressType } from '../../types/common'
-
-interface Data extends QueryProps {
-  userAddresses: AddressType[]
-}
-
 interface Props {
-  data: Data
   firstName: string
   lastName: string
   street: string
@@ -46,16 +28,12 @@ interface Props {
   zipCode: string
   phone: string
   hasError: boolean
-  showForm: boolean
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage?: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
-  smsCheckAction: (checked: boolean) => void
-  emailCheckAction: (checked: boolean) => void
-  showAddressFormAction: (show: boolean) => void
 }
 
-export class Shippping extends React.PureComponent<Props, {}> {
+class ShippingAddressForm extends React.Component<Props, {}> {
   render() {
     const {
       firstName,
@@ -67,38 +45,8 @@ export class Shippping extends React.PureComponent<Props, {}> {
       city,
       zipCode,
       phone,
-      hasError,
-      formatMessage,
-      showAddressFormAction,
-      showForm,
-      data: { loading, userAddresses }
+      hasError
     } = this.props
-
-    if (loading) {
-      return null
-    }
-
-    const shippingMethod = (
-      <ShippingMethodContainer>
-        <Title>{'Shipping Method'}</Title>
-        <ShippinPriorityText>
-          {
-            '$27.94 - FedEx International Priority® *All orders are shipped within 2 weeks'
-          }
-        </ShippinPriorityText>
-        <div>
-          <StyledCheckbox onChange={this.handleEmailCheck}>
-            {'Send me Shipment updates via email'}
-          </StyledCheckbox>
-        </div>
-        <div>
-          <StyledCheckbox onChange={this.handleSmsCheck}>
-            {'Send me Shipment updates via SMS'}
-          </StyledCheckbox>
-        </div>
-      </ShippingMethodContainer>
-    )
-
     const dropdownCountries = (
       <Menu onClick={this.selectedDropDown}>
         <Menu.Item id="country" class="country" key="usa">
@@ -138,8 +86,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
         </Menu.Item>
       </Menu>
     )
-
-    const form = (
+    return (
       <ShippingFormContainer>
         <Row>
           <Column inputhWidth={'49%'}>
@@ -270,29 +217,8 @@ export class Shippping extends React.PureComponent<Props, {}> {
         </Row>
       </ShippingFormContainer>
     )
-
-    return (
-      <Container>
-        <MyAddresses
-          formatMessage={formatMessage}
-          items={userAddresses}
-          {...{ showAddressFormAction }}
-        />
-        <AnimateHeight
-          duration={500}
-          height={
-            (userAddresses && userAddresses.length === 0) || showForm
-              ? 'auto'
-              : 0
-          }
-        >
-          <Title>{formatMessage(messages.title)}</Title>
-          {form}
-        </AnimateHeight>
-        {shippingMethod}
-      </Container>
-    )
   }
+
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { inputChangeAction } = this.props
     const {
@@ -318,25 +244,6 @@ export class Shippping extends React.PureComponent<Props, {}> {
     } = param
     selectDropdownAction(id, key)
   }
-
-  handleSmsCheck = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { smsCheckAction } = this.props
-    const {
-      target: { checked }
-    } = evt
-
-    smsCheckAction(checked)
-  }
-
-  handleEmailCheck = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    const { emailCheckAction } = this.props
-    const {
-      target: { checked }
-    } = evt
-
-    emailCheckAction(checked)
-  }
 }
 
-const ShippingEnhaced = compose(graphql(GetAddressListQuery))(Shippping)
-export default ShippingEnhaced
+export default ShippingAddressForm
