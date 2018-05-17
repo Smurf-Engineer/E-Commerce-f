@@ -35,7 +35,7 @@ import { Reducer } from '../../types/common'
 const colorsInit = fill(Array(5), '')
 
 export const initialState = fromJS({
-  currentTab: 2, // TODO: Change to 0
+  currentTab: 0,
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: ['#B9B9B9', '#D2D2D2', '#255B2D', '#096F39', '#A9A9A9'],

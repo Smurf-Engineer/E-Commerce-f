@@ -10,8 +10,7 @@ const renderHtml = (styleTags: any, html: any) => {
           <script type="text/javascript" src="js/loaders/MTLLoader.js"></script>
           <script type="text/javascript" src="js/loaders/OBJLoader.js"></script>
           <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
-          <script type="text/javascript" src="js/libs/stats.min.js"></script>
-          <script type="text/javascript" src="js/libs/dat.gui.min.js"></script>
+          <script src="js/snap.svg-min.js"></script>
           <script>
             window.fbAsyncInit = function() {
               FB.init({
@@ -32,7 +31,7 @@ const renderHtml = (styleTags: any, html: any) => {
           </script>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
-          <title>JR-Web</title>
+          <title>JAKROO.COM - Customized Cycling, Triathlon &amp; MTB Wear</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           ${
             assets.client.css

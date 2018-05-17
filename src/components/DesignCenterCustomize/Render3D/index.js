@@ -5,6 +5,7 @@ import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
+import SVG from 'svg.js'
 import {
   Container,
   Render,
@@ -39,6 +40,10 @@ import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
+
+const irnd = rng => {
+  return parseInt(Math.random() * rng)
+}
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -110,7 +115,7 @@ class Render3D extends PureComponent {
     /* Loaders */
     const mtlLoader = new THREE.MTLLoader()
     const objLoader = new THREE.OBJLoader()
-    const imgLoader = new THREE.TextureLoader()
+    const textureLoader = new THREE.TextureLoader()
 
     this.scene = scene
     this.camera = camera
@@ -120,12 +125,53 @@ class Render3D extends PureComponent {
 
     this.mtlLoader = mtlLoader
     this.objLoader = objLoader
-    this.imgLoader = imgLoader
+    this.textureLoader = textureLoader
 
-    this.render3DModel()
+    // this.render3DModel()
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
+
+    const svgTexture = Snap('#svg')
+
+    const bigCircle = svgTexture.circle(100, 100, 50)
+
+    // Snap.load('./testsvg/colorblock_5.svg', f => {
+    //   s.append(f.select('g'))
+    // })
+    const textureList = []
+    const loadMulti = list => {
+      let image,
+        fragLoadedCount = 0,
+        listLength = list.length
+
+      for (let count = 0; count < listLength; count++) {
+        ;(() => {
+          let wichEl = count
+          image = Snap.load(list[wichEl], loadedFragment => {
+            fragLoadedCount++
+            textureList[wichEl] = loadedFragment
+            if (fragLoadedCount >= listLength) {
+              addLoadedFrags(textureList)
+            }
+          })
+        })()
+      }
+    }
+
+    const addLoadedFrags = list => {
+      for (let count = 0; count < list.length; count++) {
+        svgTexture.append(textureList[count])
+      }
+    }
+    const listSvg = [
+      './testsvg/colorblock_5.svg',
+      './testsvg/colorblock_4.svg',
+      './testsvg/colorblock_3.svg',
+      './testsvg/colorblock_2.svg',
+      './testsvg/colorblock_1.svg'
+    ]
+    loadMulti(listSvg)
   }
 
   componentWillUnmount() {
@@ -139,11 +185,13 @@ class Render3D extends PureComponent {
 
     /* Texture configuration */
     const modelTextures = dummieData[currentStyle]
-    const flatlockTexture = this.imgLoader.load('./models/images/flatlock.png')
-    const bumpMapTexture = this.imgLoader.load(modelTextures.bumpMap)
+    const flatlockTexture = this.textureLoader.load(
+      './models/images/flatlock.png'
+    )
+    const bumpMapTexture = this.textureLoader.load(modelTextures.bumpMap)
 
     const loadedAreas = modelTextures.areas.map(areaUri => {
-      const areaTexture = this.imgLoader.load(areaUri)
+      const areaTexture = this.textureLoader.load(areaUri)
       areaTexture.minFilter = THREE.LinearFilter
       return areaTexture
     })
@@ -158,6 +206,77 @@ class Render3D extends PureComponent {
           onLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
+
+          // TODO: TEXT Test
+          const logoTexture = this.textureLoader.load('./testsvg/C01-D01.svg')
+
+          // logoTexture.wrapS = logoTexture.wrapT = THREE.RepeatWrapping
+
+          const materialLogo = new THREE.MeshPhongMaterial({
+            map: logoTexture,
+            bumpMap: bumpMapTexture,
+            side: THREE.FrontSide
+          })
+          // const cdim = 2048
+          // const canvas = document.createElement('canvas')
+          // canvas.width = canvas.height = cdim
+          // const compositeTexture = new THREE.Texture(canvas)
+          // compositeTexture.wrapS = compositeTexture.wrapT = THREE.RepeatWrapping
+
+          // const rebuildTexture = () => {
+          //   const ctx = canvas.getContext('2d')
+          //   ctx.globalCompositeOperation = 'source-over'
+          //   const fcolor = '#d12212'
+          //   ctx.fillStyle = fcolor
+
+          //   ctx.fillRect(0, 0, cdim, cdim)
+
+          //   for (let i = 0; i < 30; i++) {
+          //     const rdim = parseInt(360 * Math.random() + 10)
+          //     ctx.fillStyle = '#312121'
+          //     if (irnd(10) > 5) ctx.fillRect(irnd(cdim), irnd(cdim), rdim, rdim)
+          //     else {
+          //       ctx.beginPath()
+          //       ctx.arc(irnd(cdim), irnd(cdim), rdim, rdim, 2 * Math.PI)
+          //       ctx.fill()
+          //     }
+          //   }
+          //   ctx.globalCompositeOperation = 'normal'
+          //   const img = logoTexture.image
+
+          //   let iwid = img.width
+          //   let ihite = img.height
+          //   const max = Math.max(iwid, ihite)
+          //   const scl = cdim / max * 0.38
+          //   iwid *= scl
+          //   ihite *= scl
+          //   ctx.drawImage(
+          //     img,
+          //     cdim * 0.25 - iwid * 0.5,
+          //     cdim * 0.5 - ihite * 0.5,
+          //     iwid,
+          //     ihite
+          //   )
+
+          //   ctx.drawImage(
+          //     img,
+          //     cdim * 0.75 - iwid * 0.5,
+          //     cdim * 0.5 - ihite * 0.5,
+          //     iwid,
+          //     ihite
+          //   )
+
+          // ctx.font = '80px Georgia'
+          // ctx.textAlign = 'center'
+          // ctx.fillStyle = '#212000'
+          // ctx.fillText('DAVID', 1500, 1450)
+          //   compositeTexture.needsUpdate = true
+          //   materialLogo.map = compositeTexture
+
+          //   materialLogo.needsUpdate = true
+          // }
+
+          // rebuildTexture(materialLogo, canvas)
 
           /* Object materials */
 
@@ -192,20 +311,22 @@ class Render3D extends PureComponent {
           /* Jersey label */
           object.children[4].material.color.set('#ffffff')
           object.children[6].material = flatlockMaterial
-          object.children[meshIndex].material = insideMaterial
 
-          loadedAreas.forEach(
-            (materialTexture, index) =>
-              (object.children[
-                objectChilds + index
-              ].material = new THREE.MeshPhongMaterial({
-                map: loadedAreas[index],
-                side: THREE.FrontSide,
-                bumpMap: bumpMapTexture,
-                color: modelTextures.colors[index],
-                transparent: true
-              }))
-          )
+          object.children[objectChilds].material = materialLogo
+          // object.children[objectChilds].rebuildTexture = rebuildTexture
+
+          // loadedAreas.forEach(
+          //   (materialTexture, index) =>
+          //     (object.children[
+          //       objectChilds + index
+          //     ].material = new THREE.MeshPhongMaterial({
+          //       map: loadedAreas[index],
+          //       side: THREE.FrontSide,
+          //       bumpMap: bumpMapTexture,
+          //       color: modelTextures.colors[index],
+          //       transparent: true
+          //     }))
+          // )
 
           /* Object Config */
           object.position.y = -30
@@ -398,6 +519,9 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
+        <div style={{ width: '100%', height: '100%' }} id="drawing">
+          <svg id="svg" width="100%" height="100%" />
+        </div>
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
