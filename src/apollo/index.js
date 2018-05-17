@@ -26,13 +26,13 @@ const hasSubscriptionOperation = ({ query }) => {
 }
 
 const uploadLink = createUploadLink({
-  uri: 'https://api.jakroo.tailrecursive.co/api/graphql',
+  uri: 'http://localhost:4040/api/graphql',
   fetch
 })
 
 const wsLink = process.browser
   ? new WebSocketLink({
-      uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
+      uri: `ws://localhost:4040/api/subscriptions`,
       options: {
         reconnect: true
       }

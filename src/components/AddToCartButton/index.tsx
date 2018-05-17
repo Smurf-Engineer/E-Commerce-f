@@ -21,6 +21,7 @@ import { Product, CartItemDetail } from '../../types/common'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  store_design_id?: string
 }
 
 interface Props {

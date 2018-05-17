@@ -32,6 +32,7 @@ import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  store_design_id?: string
 }
 
 interface Props extends RouteComponentProps<any> {
