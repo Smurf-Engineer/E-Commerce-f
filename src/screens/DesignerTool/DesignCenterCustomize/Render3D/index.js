@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import filter from 'lodash/filter'
+import findIndex from 'lodash/findIndex'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
@@ -129,15 +130,9 @@ class Render3D extends PureComponent {
     const { onLoadModel, styleColors } = this.props
 
     /* Get the texture configuration */
-
     const bumpMapTexture = this.imgLoader.load(files.bumpMap)
     const flatLockTexture = this.imgLoader.load('./models/images/flatlock.png')
-
-    const loadedAreas = files.areas.map(areaUri => {
-      const areaTexture = this.imgLoader.load(areaUri)
-      areaTexture.minFilter = THREE.LinearFilter
-      return areaTexture
-    })
+    const texture = this.imgLoader.load(files.colorBlock1)
 
     this.mtlLoader.load(files.mtl, materials => {
       onLoadModel(true)
@@ -175,27 +170,21 @@ class Render3D extends PureComponent {
           }
 
           // Setup the texture layers
-          const areasLayers = loadedAreas.map(() =>
-            object.children[meshIndex].clone()
-          )
-          object.add(...areasLayers)
+          const textureMesh = object.children[meshIndex].clone()
+          object.add(textureMesh)
 
           /* Jersey label */
           object.children[4].material.color.set('#ffffff')
           object.children[6].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          loadedAreas.forEach(
-            (materialTexture, index) =>
-              (object.children[
-                objectChilds + index
-              ].material = new THREE.MeshPhongMaterial({
-                map: loadedAreas[index],
-                side: THREE.FrontSide,
-                bumpMap: bumpMapTexture,
-                transparent: true
-              }))
-          )
+          const textureMaterial = new THREE.MeshPhongMaterial({
+            map: texture,
+            side: THREE.FrontSide,
+            bumpMap: bumpMapTexture
+          })
+
+          object.children[objectChilds].material = textureMaterial
 
           /* Object Config */
           object.position.y = -40
