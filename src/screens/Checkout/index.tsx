@@ -25,6 +25,7 @@ import {
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
 import Payment from '../../components/Payment'
+import Review from '../../components/Review'
 import OrderSummary from '../../components/OrderSummary'
 import { AddressType, CartItemDetail, Product } from '../../types/common'
 
@@ -135,6 +136,30 @@ class Checkout extends React.Component<Props, {}> {
       cart
     } = this.props
 
+    const shippingAddress: AddressType = {
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone
+    }
+
+    const billingAddress: AddressType = {
+      firstName: billingFirstName,
+      lastName: billingLastName,
+      street: billingStreet,
+      apartment: billingApartment,
+      country: billingCountry,
+      stateProvince: billingStateProvince,
+      city: billingCity,
+      zipCode: billingZipCode,
+      phone: billingPhone
+    }
+
     let totalSum = 0
     if (cart) {
       const total = cart.map((cartItem, index) => {
@@ -169,15 +194,7 @@ class Checkout extends React.Component<Props, {}> {
                 <Shipping
                   {...{
                     hasError,
-                    firstName,
-                    lastName,
-                    street,
-                    apartment,
-                    country,
-                    stateProvince,
-                    city,
-                    zipCode,
-                    phone,
+                    shippingAddress,
                     smsCheckAction,
                     emailCheckAction,
                     inputChangeAction,
@@ -192,17 +209,9 @@ class Checkout extends React.Component<Props, {}> {
                 <Payment
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
-                  firstName={billingFirstName}
-                  lastName={billingLastName}
-                  street={billingStreet}
-                  apartment={billingApartment}
-                  country={billingCountry}
-                  stateProvince={billingStateProvince}
-                  city={billingCity}
-                  zipCode={billingZipCode}
-                  phone={billingPhone}
                   nextStep={this.nextStep}
                   {...{
+                    billingAddress,
                     cardHolderName,
                     stripeError,
                     setStripeErrorAction,
@@ -217,7 +226,10 @@ class Checkout extends React.Component<Props, {}> {
                     setStripeTokenAction
                   }}
                 />
-                <div>{'REVIEW'}</div>
+                <Review
+                  formatMessage={intl.formatMessage}
+                  {...{ shippingAddress, billingAddress }}
+                />
               </SwipeableViews>
               {/* <div>{this.renderStepContent(currentStep)}</div> */}
             </StepsContainer>

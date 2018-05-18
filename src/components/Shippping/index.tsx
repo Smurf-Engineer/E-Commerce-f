@@ -26,15 +26,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  firstName: string
-  lastName: string
-  street: string
-  apartment: string
-  country: string
-  stateProvince: string
-  city: string
-  zipCode: string
-  phone: string
+  shippingAddress: AddressType
   hasError: boolean
   showForm: boolean
   indexAddressSelected: number
@@ -50,15 +42,17 @@ interface Props {
 export class Shippping extends React.PureComponent<Props, {}> {
   render() {
     const {
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
+      shippingAddress: {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        city,
+        zipCode,
+        phone
+      },
       hasError,
       formatMessage,
       showAddressFormAction,

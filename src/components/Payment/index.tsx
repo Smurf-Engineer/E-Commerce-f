@@ -12,18 +12,11 @@ import {
   MethodButton
 } from './styledComponents'
 import CreditCardForm from '../CreditCardForm'
+import { AddressType } from '../../types/common'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  firstName: string
-  lastName: string
-  street: string
-  apartment: string
-  country: string
-  stateProvince: string
-  city: string
-  zipCode: string
-  phone: string
+  billingAddress: AddressType
   hasError: boolean
   cardHolderName: string
   sameBillingAndShipping: boolean
@@ -66,15 +59,7 @@ class Payment extends React.PureComponent<Props, {}> {
   render() {
     const {
       formatMessage,
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
+      billingAddress,
       hasError,
       cardHolderName,
       sameBillingAndShipping,
@@ -111,15 +96,7 @@ class Payment extends React.PureComponent<Props, {}> {
                 stripe,
                 formatMessage,
                 cardHolderName,
-                firstName,
-                lastName,
-                street,
-                apartment,
-                country,
-                stateProvince,
-                city,
-                zipCode,
-                phone,
+                billingAddress,
                 hasError,
                 stripeError,
                 loadingBilling,
