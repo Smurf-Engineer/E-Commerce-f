@@ -83,11 +83,11 @@ class Payment extends React.PureComponent<Props, {}> {
           <MethodButton>
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          <MethodButton>{formatMessage(messages.methodPaypal)}</MethodButton>
+          {/* <MethodButton>{formatMessage(messages.methodPaypal)}</MethodButton>
           <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
           <MethodButton>
             {formatMessage(messages.methodBankTransfer)}
-          </MethodButton>
+          </MethodButton> */}
         </ContainerMethods>
         <Title>{formatMessage(messages.methodCreditCard)}</Title>
         <StripeProvider {...{ stripe }}>

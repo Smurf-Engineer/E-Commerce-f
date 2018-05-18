@@ -72,3 +72,36 @@ export const StyledCheckbox = styled(Checkbox)`
   line-height: 22px;
   margin: 5px 0;
 `
+
+export const ErrorMsg = styled.div`
+  height: 16px;
+  width: 127.9px;
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+`
+
+export const Title = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  margin: 24px 0;
+`
+
+export const ContinueButton = styled.button`
+  height: 40px;
+  width: 138.23px;
+  border-radius: 2px;
+  background-color: #4a90e2;
+  color: #fff;
+
+  &:hover {
+    border-color: #4a90e2;
+    background-color: #4a90e2;
+    color: #fff;
+  }
+`

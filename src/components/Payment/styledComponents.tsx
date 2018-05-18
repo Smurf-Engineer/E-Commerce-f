@@ -25,7 +25,8 @@ export const ContainerMethods = styled.div`
 export const MethodButton = styled(Button)`
   height: 40px;
   width: 138.23px;
-  border: 1px solid #dcdcdc;
+  color: #4a90e2;
+  border: 1px solid #4a90e2;
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);

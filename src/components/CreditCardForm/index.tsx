@@ -13,10 +13,12 @@ import {
   RequiredSpan,
   ContainerInput,
   StyledInput,
-  ContainerBilling
+  ContainerBilling,
+  Title,
+  ErrorMsg,
+  StyledCheckbox,
+  ContinueButton
 } from './styledComponents'
-import { Title } from '../DesignSupport/styledComponents'
-import { StyledCheckbox } from '../MyAddress/styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddress from '../MyAddress'
 
@@ -90,6 +92,8 @@ class CreditCardForm extends React.Component<Props, {}> {
                 value={cardHolderName}
                 onChange={this.handleInputChange}
               />
+              {!cardHolderName &&
+                hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
             </Column>
           </Row>
           <ContainerBilling>
@@ -127,7 +131,7 @@ class CreditCardForm extends React.Component<Props, {}> {
               />
             )}
           </ContainerBilling>
-          <button>process payment</button>
+          <ContinueButton>{formatMessage(messages.continue)}</ContinueButton>
         </form>
       </Container>
     )
@@ -136,14 +140,23 @@ class CreditCardForm extends React.Component<Props, {}> {
   handleSubmit = async (ev: any) => {
     // We don't want to let default form submission happen here, which would refresh the page.
     ev.preventDefault()
-    const { stripe } = this.props
-    // Within the context of `Elements`, this call to createToken knows which Element to
-    // tokenize, since there's only one in this group.
-    const token = await stripe.createToken({ name: 'Jenny Rosen' })
-    console.log('Received Stripe token:', token)
+    const {
+      stripe,
+      cardHolderName,
+      sameBillingAndShipping,
+      setBillingError
+    } = this.props
 
-    // However, this line of code will do the same thing:
-    // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+    if (cardHolderName && sameBillingAndShipping) {
+      // Within the context of `Elements`, this call to createToken knows which Element to
+      // tokenize, since there's only one in this group.
+      const token = await stripe.createToken({ name: cardHolderName })
+      console.log('Received Stripe token:', token)
+
+      // However, this line of code will do the same thing:
+      // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+    } else {
+    }
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {

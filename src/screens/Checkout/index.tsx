@@ -211,7 +211,11 @@ class Checkout extends React.Component<Props, {}> {
               />
             </SummaryContainer>
           </Content>
-          <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
+          {currentStep !== 1 ? (
+            <ContinueButton onClick={this.nextStep}>
+              {'Continue'}
+            </ContinueButton>
+          ) : null}
         </Container>
       </Layout>
     )

@@ -28,5 +28,9 @@ export default defineMessages({
   sameShippingAddress: {
     id: 'components.CreditCardForm.sameShippingAddress',
     defaultMessage: 'Same as shipping address'
+  },
+  continue: {
+    id: 'components.CreditCardForm.continue',
+    defaultMessage: 'Continue'
   }
 })
