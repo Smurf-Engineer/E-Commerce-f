@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { StripeProvider, Elements } from 'react-stripe-elements'
+import upperFirst from 'lodash/upperFirst'
 import messages from './messages'
 import {
   Container,
@@ -26,10 +27,17 @@ interface Props {
   hasError: boolean
   cardHolderName: string
   sameBillingAndShipping: boolean
+  stripeError: string
+  loadingBilling: boolean
+  setStripeTokenAction: (token: string) => void
+  setLoadingBillingAction: (loading: boolean) => void
+  setStripeErrorAction: (error: string) => void
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
+  validBillingFormAction: (hasError: boolean) => void
+  nextStep: () => void
 }
 
 interface MyWindow extends Window {
@@ -70,10 +78,15 @@ class Payment extends React.PureComponent<Props, {}> {
       hasError,
       cardHolderName,
       sameBillingAndShipping,
-      selectDropdownAction,
-      inputChangeAction,
+      stripeError,
+      setStripeErrorAction,
+      loadingBilling,
+      setLoadingBillingAction,
       sameBillingAndAddressCheckedAction,
-      sameBillingAndAddressUncheckedAction
+      sameBillingAndAddressUncheckedAction,
+      validBillingFormAction,
+      setStripeTokenAction,
+      nextStep
     } = this.props
     const { stripe } = this.state
     return (
@@ -87,7 +100,8 @@ class Payment extends React.PureComponent<Props, {}> {
           <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
           <MethodButton>
             {formatMessage(messages.methodBankTransfer)}
-          </MethodButton> */}
+          </MethodButton> */}{' '}
+          {/* TODO: uncomment MethodButtons when paypal, alipay and bank transfer are able */}
         </ContainerMethods>
         <Title>{formatMessage(messages.methodCreditCard)}</Title>
         <StripeProvider {...{ stripe }}>
@@ -97,7 +111,6 @@ class Payment extends React.PureComponent<Props, {}> {
                 stripe,
                 formatMessage,
                 cardHolderName,
-                inputChangeAction,
                 firstName,
                 lastName,
                 street,
@@ -108,16 +121,38 @@ class Payment extends React.PureComponent<Props, {}> {
                 zipCode,
                 phone,
                 hasError,
-                selectDropdownAction,
+                stripeError,
+                loadingBilling,
+                setLoadingBillingAction,
+                setStripeErrorAction,
                 sameBillingAndShipping,
                 sameBillingAndAddressCheckedAction,
-                sameBillingAndAddressUncheckedAction
+                sameBillingAndAddressUncheckedAction,
+                validBillingFormAction,
+                setStripeTokenAction,
+                nextStep
               }}
+              selectDropdownAction={this.handleOnDropdownAction}
+              inputChangeAction={this.handleOnChangeInput}
             />
           </Elements>
         </StripeProvider>
       </Container>
     )
+  }
+  handleOnChangeInput = (id: string, value: string) => {
+    const { inputChangeAction } = this.props
+    if (id !== 'cardHolderName') {
+      const customId = 'billing' + upperFirst(id)
+      inputChangeAction(customId, value)
+      return
+    }
+    inputChangeAction(id, value)
+  }
+  handleOnDropdownAction = (id: string, value: string) => {
+    const { selectDropdownAction } = this.props
+    const customId = 'billing' + upperFirst(id)
+    selectDropdownAction(customId, value)
   }
 }
 

@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Checkbox from 'antd/lib/checkbox'
+import Button from 'antd/lib/button'
 
 interface InputProps {
   inputhWidth?: string
@@ -75,7 +76,6 @@ export const StyledCheckbox = styled(Checkbox)`
 
 export const ErrorMsg = styled.div`
   height: 16px;
-  width: 127.9px;
   color: #e61737;
   font-family: 'Avenir Next';
   font-size: 12px;
@@ -92,7 +92,7 @@ export const Title = styled.div`
   margin: 24px 0;
 `
 
-export const ContinueButton = styled.button`
+export const ContinueButton = styled(Button)`
   height: 40px;
   width: 138.23px;
   border-radius: 2px;

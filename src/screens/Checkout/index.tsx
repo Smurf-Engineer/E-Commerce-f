@@ -64,8 +64,14 @@ interface Props extends RouteComponentProps<any> {
   currentStep: number
   addNewAddress: any
   cardHolderName: string
+  stripeError: string
+  loadingBilling: boolean
+  setStripeTokenAction: (token: string) => void
+  setLoadingBillingAction: (loading: boolean) => void
+  setStripeErrorAction: (error: string) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
+  validBillingFormAction: (hasError: boolean) => void
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   smsCheckAction: (checked: boolean) => void
@@ -120,6 +126,12 @@ class Checkout extends React.Component<Props, {}> {
       showAddressFormAction,
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
+      validBillingFormAction,
+      stripeError,
+      setStripeErrorAction,
+      loadingBilling,
+      setLoadingBillingAction,
+      setStripeTokenAction,
       cart
     } = this.props
 
@@ -189,13 +201,20 @@ class Checkout extends React.Component<Props, {}> {
                   city={billingCity}
                   zipCode={billingZipCode}
                   phone={billingPhone}
+                  nextStep={this.nextStep}
                   {...{
+                    cardHolderName,
+                    stripeError,
+                    setStripeErrorAction,
                     inputChangeAction,
                     selectDropdownAction,
                     sameBillingAndShipping,
                     sameBillingAndAddressCheckedAction,
                     sameBillingAndAddressUncheckedAction,
-                    cardHolderName
+                    validBillingFormAction,
+                    loadingBilling,
+                    setLoadingBillingAction,
+                    setStripeTokenAction
                   }}
                 />
                 <div>{'REVIEW'}</div>

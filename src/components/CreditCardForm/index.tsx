@@ -35,12 +35,19 @@ interface Props {
   zipCode: string
   phone: string
   hasError: boolean
+  stripeError: string
+  loadingBilling: boolean
+  setStripeTokenAction: (token: string) => void
+  setLoadingBillingAction: (loading: boolean) => void
   sameBillingAndShipping: boolean
+  setStripeErrorAction: (error: string) => void
+  validBillingFormAction: (hasError: boolean) => void
   selectDropdownAction: (id: string, value: string) => void
   formatMessage: (messageDescriptor: any) => string
   inputChangeAction: (id: string, value: string) => void
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
+  nextStep: () => void
 }
 
 class CreditCardForm extends React.Component<Props, {}> {
@@ -58,104 +65,144 @@ class CreditCardForm extends React.Component<Props, {}> {
       zipCode,
       phone,
       hasError,
+      stripeError,
+      loadingBilling,
       selectDropdownAction,
       inputChangeAction,
       sameBillingAndShipping
     } = this.props
     return (
       <Container>
-        <form onSubmit={this.handleSubmit}>
-          <Row>
-            <Column inputhWidth={'70%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.cardNumber)}</Label>
-                <RequiredSpan>*</RequiredSpan>
-              </InputTitleContainer>
-              <ContainerInput>
-                <CardElement
-                  hidePostalCode={true}
-                  style={{
-                    base: { fontSize: '18px', fontFamily: 'Avenir Next' }
-                  }}
-                />
-              </ContainerInput>
-            </Column>
-          </Row>
-          <Row>
-            <Column inputhWidth={'70%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.cardholderName)}</Label>
-                <RequiredSpan>*</RequiredSpan>
-              </InputTitleContainer>
-              <StyledInput
-                id={'cardHolderName'}
-                value={cardHolderName}
-                onChange={this.handleInputChange}
-              />
-              {!cardHolderName &&
-                hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
-            </Column>
-          </Row>
-          <ContainerBilling>
-            <Title>{formatMessage(messages.billingAddress)}</Title>
-            <StyledCheckbox
-              checked={sameBillingAndShipping}
-              onChange={this.handleOnChangeDefaultShipping}
-            >
-              {formatMessage(messages.sameShippingAddress)}
-            </StyledCheckbox>
-            {!sameBillingAndShipping ? (
-              <ShippingAddressForm
-                {...{
-                  firstName,
-                  lastName,
-                  street,
-                  apartment,
-                  country,
-                  stateProvince,
-                  city,
-                  zipCode,
-                  phone,
-                  hasError,
-                  selectDropdownAction,
-                  inputChangeAction
+        <Row>
+          <Column inputhWidth={'70%'}>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.cardNumber)}</Label>
+              <RequiredSpan>*</RequiredSpan>
+            </InputTitleContainer>
+            <ContainerInput>
+              <CardElement
+                hidePostalCode={true}
+                style={{
+                  base: { fontSize: '18px', fontFamily: 'Avenir Next' }
                 }}
               />
-            ) : (
-              <MyAddress
-                {...{ street, zipCode, country, formatMessage }}
-                name={`${firstName} ${lastName}`}
-                city={`${city} ${stateProvince}`}
-                addressIndex={-1}
-                hideBottomButtons={true}
-              />
-            )}
-          </ContainerBilling>
-          <ContinueButton>{formatMessage(messages.continue)}</ContinueButton>
-        </form>
+            </ContainerInput>
+            {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
+          </Column>
+        </Row>
+        <Row>
+          <Column inputhWidth={'70%'}>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.cardholderName)}</Label>
+              <RequiredSpan>*</RequiredSpan>
+            </InputTitleContainer>
+            <StyledInput
+              id={'cardHolderName'}
+              value={cardHolderName}
+              onChange={this.handleInputChange}
+            />
+            {!cardHolderName &&
+              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+          </Column>
+        </Row>
+        <ContainerBilling>
+          <Title>{formatMessage(messages.billingAddress)}</Title>
+          <StyledCheckbox
+            checked={sameBillingAndShipping}
+            onChange={this.handleOnChangeDefaultShipping}
+          >
+            {formatMessage(messages.sameShippingAddress)}
+          </StyledCheckbox>
+          {!sameBillingAndShipping ? (
+            <ShippingAddressForm
+              {...{
+                firstName,
+                lastName,
+                street,
+                apartment,
+                country,
+                stateProvince,
+                city,
+                zipCode,
+                phone,
+                hasError,
+                selectDropdownAction,
+                inputChangeAction
+              }}
+            />
+          ) : (
+            <MyAddress
+              {...{ street, zipCode, country, formatMessage }}
+              name={`${firstName} ${lastName}`}
+              city={`${city} ${stateProvince}`}
+              addressIndex={-1}
+              hideBottomButtons={true}
+            />
+          )}
+        </ContainerBilling>
+        <ContinueButton
+          onClick={this.handleOnContinue}
+          loading={loadingBilling}
+        >
+          {formatMessage(messages.continue)}
+        </ContinueButton>
       </Container>
     )
   }
 
-  handleSubmit = async (ev: any) => {
-    // We don't want to let default form submission happen here, which would refresh the page.
-    ev.preventDefault()
+  handleOnContinue = async (ev: any) => {
     const {
       stripe,
       cardHolderName,
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone,
       sameBillingAndShipping,
-      setBillingError
+      validBillingFormAction,
+      setStripeErrorAction,
+      setLoadingBillingAction,
+      setStripeTokenAction,
+      nextStep
     } = this.props
 
-    if (cardHolderName && sameBillingAndShipping) {
-      // Within the context of `Elements`, this call to createToken knows which Element to
-      // tokenize, since there's only one in this group.
-      const token = await stripe.createToken({ name: cardHolderName })
-      console.log('Received Stripe token:', token)
+    const error =
+      !sameBillingAndShipping &&
+      (!firstName ||
+        !lastName ||
+        !street ||
+        !apartment ||
+        !country ||
+        !stateProvince ||
+        !city ||
+        !zipCode ||
+        !phone)
 
-      // However, this line of code will do the same thing:
-      // this.props.stripe.createToken({type: 'card', name: 'Jenny Rosen'});
+    if (cardHolderName && !error) {
+      const stripeTokenData = {
+        name: cardHolderName,
+        address_line1: `${street}`,
+        address_line2: `${apartment}`,
+        address_city: `${city}`,
+        address_state: `${stateProvince}`,
+        address_zip: `${zipCode}`,
+        address_country: 'US' // TODO: add correct country code
+      }
+      setLoadingBillingAction(true)
+      const stripeResponse = await stripe.createToken(stripeTokenData)
+      if (stripeResponse.error) {
+        setStripeErrorAction(stripeResponse.error.message)
+        return
+      }
+      setStripeTokenAction(stripeResponse.token.id)
+      nextStep()
     } else {
+      validBillingFormAction(true)
     }
   }
 
