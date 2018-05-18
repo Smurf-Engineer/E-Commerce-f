@@ -280,3 +280,10 @@ export interface AddressType {
   defaultBilling?: boolean
   defaultShipping?: boolean
 }
+
+export interface StripeCardData {
+  cardNumber: string
+  cardExpDate: string
+  cardBrand: string
+  stripeToken: string
+}

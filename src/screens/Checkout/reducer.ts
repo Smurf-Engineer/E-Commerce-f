@@ -17,7 +17,8 @@ import {
   SET_SELECTED_ADDRESS,
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
-  SET_STRIPE_TOKEN
+  SET_STRIPE_TOKEN,
+  SET_STRIPE_CARD_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -52,6 +53,9 @@ export const initialState = fromJS({
   billingHasError: false,
   sameBillingAndShipping: false,
   cardHolderName: '',
+  cardNumber: '',
+  cardExpDate: '',
+  cardBrand: '',
   stripeError: '',
   loadingBilling: false,
   stripeToken: ''
@@ -131,6 +135,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         stripeError: '',
         loadingBilling: false
       })
+    case SET_STRIPE_CARD_DATA:
+      return state.merge({ ...action.stripeCardData })
     default:
       return state
   }

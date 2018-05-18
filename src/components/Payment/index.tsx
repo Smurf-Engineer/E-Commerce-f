@@ -12,7 +12,7 @@ import {
   MethodButton
 } from './styledComponents'
 import CreditCardForm from '../CreditCardForm'
-import { AddressType } from '../../types/common'
+import { AddressType, StripeCardData } from '../../types/common'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -22,7 +22,7 @@ interface Props {
   sameBillingAndShipping: boolean
   stripeError: string
   loadingBilling: boolean
-  setStripeTokenAction: (token: string) => void
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   selectDropdownAction: (id: string, value: string) => void
@@ -70,7 +70,7 @@ class Payment extends React.PureComponent<Props, {}> {
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
-      setStripeTokenAction,
+      setStripeCardDataAction,
       nextStep
     } = this.props
     const { stripe } = this.state
@@ -106,7 +106,7 @@ class Payment extends React.PureComponent<Props, {}> {
                 sameBillingAndAddressCheckedAction,
                 sameBillingAndAddressUncheckedAction,
                 invalidBillingFormAction,
-                setStripeTokenAction,
+                setStripeCardDataAction,
                 nextStep
               }}
               selectDropdownAction={this.handleOnDropdownAction}

@@ -27,7 +27,12 @@ import Shipping from '../../components/Shippping'
 import Payment from '../../components/Payment'
 import Review from '../../components/Review'
 import OrderSummary from '../../components/OrderSummary'
-import { AddressType, CartItemDetail, Product } from '../../types/common'
+import {
+  AddressType,
+  CartItemDetail,
+  Product,
+  StripeCardData
+} from '../../types/common'
 
 const { Step } = Steps
 
@@ -67,7 +72,7 @@ interface Props extends RouteComponentProps<any> {
   cardHolderName: string
   stripeError: string
   loadingBilling: boolean
-  setStripeTokenAction: (token: string) => void
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   stepAdvanceAction: (step: number) => void
@@ -132,7 +137,7 @@ class Checkout extends React.Component<Props, {}> {
       setStripeErrorAction,
       loadingBilling,
       setLoadingBillingAction,
-      setStripeTokenAction,
+      setStripeCardDataAction,
       cart
     } = this.props
 
@@ -223,7 +228,7 @@ class Checkout extends React.Component<Props, {}> {
                     invalidBillingFormAction,
                     loadingBilling,
                     setLoadingBillingAction,
-                    setStripeTokenAction
+                    setStripeCardDataAction
                   }}
                 />
                 <Review
