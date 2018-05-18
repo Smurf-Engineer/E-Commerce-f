@@ -35,7 +35,7 @@ export const validFormAction = (hasError: boolean): AnyAction => ({
   hasError
 })
 
-export const validBillingFormAction = (hasError: boolean): AnyAction => ({
+export const invalidBillingFormAction = (hasError: boolean): AnyAction => ({
   type: VALID_BILLING_FORM,
   hasError
 })

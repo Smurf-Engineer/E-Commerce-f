@@ -71,7 +71,7 @@ interface Props extends RouteComponentProps<any> {
   setStripeErrorAction: (error: string) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
-  validBillingFormAction: (hasError: boolean) => void
+  invalidBillingFormAction: (hasError: boolean) => void
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   smsCheckAction: (checked: boolean) => void
@@ -126,7 +126,7 @@ class Checkout extends React.Component<Props, {}> {
       showAddressFormAction,
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
-      validBillingFormAction,
+      invalidBillingFormAction,
       stripeError,
       setStripeErrorAction,
       loadingBilling,
@@ -211,7 +211,7 @@ class Checkout extends React.Component<Props, {}> {
                     sameBillingAndShipping,
                     sameBillingAndAddressCheckedAction,
                     sameBillingAndAddressUncheckedAction,
-                    validBillingFormAction,
+                    invalidBillingFormAction,
                     loadingBilling,
                     setLoadingBillingAction,
                     setStripeTokenAction

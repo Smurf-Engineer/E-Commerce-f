@@ -32,5 +32,9 @@ export default defineMessages({
   continue: {
     id: 'components.CreditCardForm.continue',
     defaultMessage: 'Continue'
+  },
+  requiredField: {
+    id: 'components.CreditCardForm.requiredField',
+    defaultMessage: 'This field is required'
   }
 })

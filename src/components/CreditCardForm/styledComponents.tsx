@@ -105,3 +105,10 @@ export const ContinueButton = styled(Button)`
     color: #fff;
   }
 `
+export const StripeCardElement = {
+  base: {
+    fontSize: 'medium',
+    fontFamily: 'Avenir Next',
+    color: '#5f6062'
+  }
+}

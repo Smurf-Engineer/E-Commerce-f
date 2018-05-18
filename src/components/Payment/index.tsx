@@ -36,7 +36,7 @@ interface Props {
   inputChangeAction: (id: string, value: string) => void
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
-  validBillingFormAction: (hasError: boolean) => void
+  invalidBillingFormAction: (hasError: boolean) => void
   nextStep: () => void
 }
 
@@ -84,7 +84,7 @@ class Payment extends React.PureComponent<Props, {}> {
       setLoadingBillingAction,
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
-      validBillingFormAction,
+      invalidBillingFormAction,
       setStripeTokenAction,
       nextStep
     } = this.props
@@ -128,7 +128,7 @@ class Payment extends React.PureComponent<Props, {}> {
                 sameBillingAndShipping,
                 sameBillingAndAddressCheckedAction,
                 sameBillingAndAddressUncheckedAction,
-                validBillingFormAction,
+                invalidBillingFormAction,
                 setStripeTokenAction,
                 nextStep
               }}
