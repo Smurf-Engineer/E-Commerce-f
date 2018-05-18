@@ -83,7 +83,11 @@ class CreditCardForm extends React.Component<Props, {}> {
               <CardElement
                 hidePostalCode={true}
                 style={{
-                  base: { fontSize: '18px', fontFamily: 'Avenir Next' }
+                  base: {
+                    fontSize: 'medium',
+                    fontFamily: 'Avenir Next',
+                    color: '#5f6062'
+                  }
                 }}
               />
             </ContainerInput>
