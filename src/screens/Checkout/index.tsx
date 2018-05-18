@@ -255,16 +255,8 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   verifyStepTwo = () => {
-    const {
-      currentStep,
-      stepAdvanceAction,
-      sameBillingAndShipping,
-      cardHolderName
-    } = this.props
-    if (sameBillingAndShipping && cardHolderName) {
-      stepAdvanceAction(currentStep + 1)
-      return
-    }
+    const { currentStep, stepAdvanceAction } = this.props
+    stepAdvanceAction(currentStep + 1)
   }
 
   verifyStepOne = () => {
