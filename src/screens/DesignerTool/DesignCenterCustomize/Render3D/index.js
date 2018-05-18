@@ -184,8 +184,6 @@ class Render3D extends PureComponent {
             bumpMap: bumpMapTexture
           })
 
-          console.log('CHILDS', objectChilds)
-
           object.children[objectChilds].material = textureMaterial
 
           /* Object Config */

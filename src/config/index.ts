@@ -15,8 +15,7 @@ const config: ConfigType = {
   graphQlUrl: process.env.RAZZLE_GRAPHQL_URL,
   googleId: process.env.RAZZLE_GOOGLE_ID,
   facebookId: process.env.RAZZLE_FACEBOOK_ID,
-  graphqlUriBase: 'http://localhost:4040/api/',
-  // graphqlUriBase: 'https://api.jakroo.tailrecursive.co/api/', // TODO: Uncomment for PR
+  graphqlUriBase: 'https://api.jakroo.tailrecursive.co/api/',
   baseUrl: 'https://dev.jakroo.tailrecursive.co/',
   storageUrl: 'https://storage.googleapis.com/jakroo-storage'
 }
