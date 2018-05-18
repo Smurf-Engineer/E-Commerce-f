@@ -26,15 +26,19 @@ export const uploadFilesAction = (files: any) => {
       })
 
       const responseJson = await response.json()
+
+      console.log('---------------------------')
+      console.log(responseJson)
+      console.log('---------------------------')
+
       const modelConfig: any = {}
-
       // TODO: Do this code more dynamic
-      modelConfig.obj = responseJson[0]
-      modelConfig.mtl = responseJson[1]
-      modelConfig.bumpMap = responseJson[2]
-      modelConfig.areas = responseJson.splice(3, 8)
+      // modelConfig.obj = responseJson[0]
+      // modelConfig.mtl = responseJson[1]
+      // modelConfig.bumpMap = responseJson[2]
+      // modelConfig.areas = responseJson.splice(3, 8)
 
-      dispatch(setUploadingSuccess(modelConfig))
+      // dispatch(setUploadingSuccess(modelConfig))
     } catch (e) {
       dispatch(setUploadingAction(false))
       message.error(e.message)
