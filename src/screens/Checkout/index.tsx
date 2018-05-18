@@ -11,7 +11,6 @@ import SwipeableViews from 'react-swipeable-views'
 import * as checkoutActions from './actions'
 import messages from './messages'
 import { AddAddressMutation } from './data'
-import { GetAddressListQuery } from '../../components/Shippping/data'
 import {
   Container,
   Content,
@@ -220,8 +219,7 @@ class Checkout extends React.Component<Props, {}> {
     const {
       data: { createUserAddress }
     } = await addNewAddress({
-      variables: { address },
-      refetchQueries: [{ query: GetAddressListQuery }]
+      variables: { address }
     })
 
     return createUserAddress

@@ -74,6 +74,7 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
             name={store.name}
             idStore={store.shortId}
             onItemClick={this.gotoStore(store.shortId)}
+            withShareButton={true}
             {...{ formatMessage, openShareModalAction }}
           />
         </FoundStoreItem>

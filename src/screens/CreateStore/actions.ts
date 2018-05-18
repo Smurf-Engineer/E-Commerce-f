@@ -17,11 +17,12 @@ import {
   SET_ITEM_VISIBLE_ACTION,
   SET_LOADING_ACTION,
   CREATE_STORE_SUCCESS,
-  MOVE_ROW
+  MOVE_ROW,
+  SET_STORE_DATA_TO_EDIT
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
-import { AnyAction, DesignType } from '../../types/common'
+import { AnyAction, DesignType, TeamstoreType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -130,4 +131,9 @@ export const moveRowAction = (index: number, hoverIndex: number, row: any) => ({
   index,
   hoverIndex,
   row
+})
+
+export const setDataToEditAction = (data: TeamstoreType): AnyAction => ({
+  type: SET_STORE_DATA_TO_EDIT,
+  data
 })

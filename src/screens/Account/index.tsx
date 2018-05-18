@@ -34,9 +34,16 @@ interface Props extends RouteComponentProps<any> {
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
+  clearReducerAction: () => void
 }
 
 export class Account extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { clearReducerAction } = this.props
+    console.log('UNMOUNT ACCOUNT')
+    clearReducerAction()
+  }
+
   handleOnSelectedKeys = (keys: string[]) => {
     const { setOpenKeysAction } = this.props
     const openKeys = ['']
@@ -50,20 +57,20 @@ export class Account extends React.Component<Props, {}> {
 
   handleOnSelectItem = ({ key }: any) => {
     const { setCurrentScreenAction } = this.props
-    console.log(key)
     setCurrentScreenAction(key)
   }
 
   getScreenComponent = (screen: string) => {
-    const { intl, openQuickViewAction: openQuickView } = this.props
-    console.log(screen)
+    const { intl, history, openQuickViewAction: openQuickView } = this.props
     switch (screen) {
       case SCREEN_LOCKER:
         return (
           <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
         )
       case 'teamStores':
-        return <MyTeamStores formatMessage={intl.formatMessage} />
+        return (
+          <MyTeamStores formatMessage={intl.formatMessage} {...{ history }} />
+        )
       default:
         return null
     }

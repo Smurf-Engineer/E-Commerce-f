@@ -16,38 +16,28 @@ export const createStoreMutation = graphql(
 )
 
 export const GetTeamStoreQuery = gql`
-  query GetTeamStore($teamstoreId: String!) {
-    getTeamStore(teamStoreId: $teamstoreId) {
+  query GetTeamStore($teamStoreId: String!) {
+    teamStore: getTeamStore(teamStoreId: $teamStoreId) {
       id
-      short_id
+      shortId: short_id
       name
       banner
-      cutoff_date {
-        day
-        dayOrdinal
-        month
-        year
-      }
-      delivery_date {
-        day
-        dayOrdinal
-        month
-        year
-      }
-      private
+      startDate: cutOffDateString
+      endDate: deliveryDateString
+      privateStore: private
       created_at
       items {
         id
-        design_id
+        desigId: design_id
         design {
           id
           name
         }
       }
-      on_demand_mode
-      team_size_id
+      onDemand: on_demand_mode
       teamSize {
         id
+        size
       }
       owner
     }

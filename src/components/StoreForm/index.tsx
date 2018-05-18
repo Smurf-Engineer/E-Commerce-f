@@ -96,8 +96,10 @@ const StoreForm = ({
     )
   }
 
-  const handleOnSelectStart = (date: Moment, dateString: string) =>
+  const handleOnSelectStart = (date: Moment, dateString: string) => {
+    console.log(date, dateString)
     onSelectStartDate(date, dateString)
+  }
 
   const handleOnSelectEnd = async (date: Moment, dateString: string) => {
     if (date) {

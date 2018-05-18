@@ -2,6 +2,7 @@
  * CreateStore Reducer - Created by david on 09/04/18.
  */
 import { fromJS } from 'immutable'
+import moment from 'moment'
 import {
   DEFAULT_ACTION,
   SET_TEAM_SIZE_ACTION,
@@ -18,7 +19,8 @@ import {
   SET_ITEM_VISIBLE_ACTION,
   SET_LOADING_ACTION,
   CREATE_STORE_SUCCESS,
-  MOVE_ROW
+  MOVE_ROW,
+  SET_STORE_DATA_TO_EDIT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -31,7 +33,7 @@ export const initialState = fromJS({
   endDate: '',
   endDateMoment: null,
   privateStore: true,
-  onDemand: false,
+  onDemand: null,
   passCode: '',
   openLocker: false,
   selectedItems: {},
@@ -107,7 +109,22 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const updatedItems = items.splice(index, 1).insert(hoverIndex, row)
       return state.set('items', updatedItems)
     }
-
+    case SET_STORE_DATA_TO_EDIT: {
+      console.log('REDUCER ', action.data)
+      return state.merge({
+        name: action.data.name,
+        startDate: action.data.startDate,
+        startDateMoment: moment(action.data.startDate),
+        endDate: action.data.endDate,
+        endDateMoment: moment(action.data.endDate),
+        teamSizeId: action.data.teamSize.id,
+        teamSizeRange: action.data.teamSize.size,
+        items: action.data.items,
+        privateStore: action.data.privateStore,
+        onDemand: action.data.onDemand,
+        banner: action.data.banner
+      })
+    }
     default:
       return state
   }

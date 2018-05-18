@@ -3,10 +3,12 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
+import moment from 'moment'
 import { compose, withApollo, graphql } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
+import get from 'lodash/get'
 import Button from 'antd/lib/button'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
@@ -21,7 +23,13 @@ import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
 import TeamSizes from '../../components/TeamSizes'
 import { createStoreMutation, GetTeamStoreQuery } from './data'
-import { DesignType, SelectedItem } from '../../types/common'
+import {
+  DesignType,
+  SelectedItem,
+  TeamstoreType,
+  QueryProps,
+  TeamstoreResult
+} from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
 import {
@@ -43,7 +51,12 @@ import {
 } from './styledComponents'
 import config from '../../config/index'
 
+interface Data extends QueryProps {
+  teamStore: TeamstoreType
+}
+
 interface Props extends RouteComponentProps<any> {
+  data: Data
   teamSizeId: number
   intl: InjectedIntl
   name: string
@@ -82,18 +95,23 @@ interface Props extends RouteComponentProps<any> {
   setLoadingAction: (loading: boolean) => void
   clearStoreAction: () => void
   moveRowAction: (index: number, row: any) => void
+  setDataToEditAction: (data: TeamstoreType) => void
 }
 
 interface StateProps {
   hasError: boolean
   file: string | null
   imagePreviewUrl: string | null
+  privateStoreDefault: boolean
+  firstTimeSetPrivate: boolean
 }
 export class CreateStore extends React.Component<Props, StateProps> {
   state = {
     file: null,
-    imagePreviewUrl: null,
-    hasError: false
+    imagePreviewUrl: '',
+    hasError: false,
+    privateStoreDefault: true,
+    firstTimeSetPrivate: true
   }
   private lockerTable: any
 
@@ -235,7 +253,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
         demandMode: onDemand,
         banner: banner.image
       }
-      const { data: { store } } = await createStore({
+      console.log(teamStore)
+      const {
+        data: { store }
+      } = await createStore({
         variables: { teamStore }
       })
       const { shortId } = store as any
@@ -256,8 +277,74 @@ export class CreateStore extends React.Component<Props, StateProps> {
     return checkedItems
   }
 
+  handlePrivateSwitch = (checked: boolean) => {
+    const { updatePrivateAction } = this.props
+    this.setState({ firstTimeSetPrivate: false })
+    updatePrivateAction(checked)
+  }
+
+  async componentDidMount() {
+    const {
+      setDataToEditAction,
+      location: { search },
+      client: { query }
+    } = this.props
+    const { storeId } = queryString.parse(search)
+
+    if (storeId) {
+      const {
+        data: { teamStore }
+      } = await query({
+        query: GetTeamStoreQuery,
+        variables: { teamStoreId: storeId }
+      })
+      console.log('DID MOUNT ', teamStore)
+      setDataToEditAction(teamStore)
+    }
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      file: null,
+      imagePreviewUrl: '',
+      hasError: false,
+      privateStoreDefault: true,
+      firstTimeSetPrivate: true
+    })
+    console.log('UNMOUNT ===== ')
+  }
+  // componentDidMount() {
+  //   const {
+  //     updatePrivateAction,
+  //     location: { search }
+  //   } = this.props
+  //   const { firstTimeSetPrivate: defaultValue } = this.state
+  //   const { storeId } = queryString.parse(search)
+  //   console.log('DID MOUNT ', storeId)
+  //   if (!storeId) {
+  //     this.setState(
+  //       ({ firstTimeSetPrivate, privateStoreDefault }: StateProps) => ({
+  //         firstTimeSetPrivate: !firstTimeSetPrivate
+  //       })
+  //     )
+  //     updatePrivateAction(defaultValue)
+  //   }
+  // }
+
+  // componentWillReceiveProps(nextProps: Props) {
+  //   const {
+  //     updatePrivateAction,
+  //     location: { search }
+  //   } = this.props
+  //   const { firstTimeSetPrivate } = this.state
+  // }
   render() {
-    const { imagePreviewUrl, hasError } = this.state
+    const {
+      imagePreviewUrl,
+      hasError,
+      firstTimeSetPrivate,
+      privateStoreDefault
+    } = this.state
     const {
       intl,
       history,
@@ -283,24 +370,43 @@ export class CreateStore extends React.Component<Props, StateProps> {
       items,
       teamSizeRange,
       loading,
-      location: { search }
+      location: { search },
+      data
     } = this.props
     const { formatMessage } = intl
+    const { storeId } = queryString.parse(search)
+    const teamStore = get(data, 'teamStore', false)
+    console.log('PROPS ', this.props)
     if (
       typeof window !== 'undefined' &&
       !JSON.parse(localStorage.getItem('user') as string)
     ) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
-    const bannerComponent = imagePreviewUrl ? (
-      <PreviewImage src={imagePreviewUrl} />
-    ) : (
-      <Dragger onSelectImage={this.beforeUpload} />
-    )
+
+    const bannerImage = teamStore
+      ? get(teamStore, 'banner', '')
+      : imagePreviewUrl
+
+    const bannerComponent =
+      imagePreviewUrl || storeId ? (
+        <PreviewImage src={bannerImage} />
+      ) : (
+        <Dragger onSelectImage={this.beforeUpload} />
+      )
 
     const tableItems = this.getCheckedItems(items)
-    const { storeId } = queryString.parse(search)
 
+    const startDate =
+      moment(get(teamStore, 'startDate', false)) || startDateMoment
+    const endDateToEdit = moment(get(teamStore, 'endDate', ''))
+    const editPrivateStore = get(teamStore, 'privateStore', '')
+    const editOnDemandStore = get(teamStore, 'onDemand')
+    const editName = get(teamStore, 'name')
+    const privateStoreCheckd =
+      teamStore && firstTimeSetPrivate ? editPrivateStore : privateStore
+    console.log('start DAte ', startDate, endDateToEdit, editPrivateStore)
+    // const momentEditStartDate =
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -308,7 +414,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <FormattedMessage {...messages.title} />
           </Title>
           <StoreForm
-            {...{ name, formatMessage }}
+            {...{ formatMessage }}
+            name={name}
             startDate={startDateMoment}
             endDate={endDateMoment}
             onUpdateName={updateNameAction}
@@ -323,7 +430,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <FormattedMessage {...messages.teamSizeMessage} />
           </Message>
           <TeamSizes
-            currentSelected={teamSizeId}
+            currentSelected={get(teamStore, 'teamSize.id', false) || teamSizeId}
             onSelectRange={this.handleOnSelectRange}
           />
           <Subtitle>
@@ -358,7 +465,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <FormattedMessage {...messages.stock} />
           </Subtitle>
           <LockerTable
-            {...{ formatMessage, items, teamSizeRange }}
+            {...{ formatMessage, teamSizeRange }}
+            items={items}
             onPressDelete={this.handleOnDeleteItem}
             onPressQuickView={this.handleOnPressQuickView}
             onPressVisible={this.handleOnPressVisible}
@@ -373,7 +481,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
                 {`(${formatMessage(messages.optional)})`}
               </OptionalLabel>
             </BannerTitleContainer>
-            {!!imagePreviewUrl && (
+            {(!!imagePreviewUrl || storeId) && (
               <RowButtons>
                 <Upload
                   beforeUpload={this.beforeUpload}
@@ -393,10 +501,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
           <RowSwitch>
             <SwitchWithLabel
               hasError={hasError}
+              defaultChecked={true}
               {...{ passCode, updatePassCodeAction }}
               withInput={true}
               checked={privateStore}
-              onChange={updatePrivateAction}
+              onChange={this.handlePrivateSwitch}
               label={formatMessage(messages.privateLabel)}
               message={formatMessage(messages.privateMessage)}
               errorLabel={formatMessage(messages.requiredFieldLabel)}
@@ -441,19 +550,21 @@ type OwnProps = {
 const CreateStoreEnhance = compose(
   injectIntl,
   withApollo,
-  graphql(GetTeamStoreQuery, {
-    options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
-      const queryParams = queryString.parse(search)
-      return {
-        fetchPolicy: 'network-only',
-        skip: !queryParams.storeId,
-        variables: {
-          teamstoreId: queryParams ? queryParams.storeId : null
-        }
-      }
-    }
-  }),
+  // graphql(GetTeamStoreQuery, {
+  //   options: (ownprops: OwnProps) => {
+  //     const {
+  //       location: { search }
+  //     } = ownprops
+  //     const queryParams = queryString.parse(search)
+  //     return {
+  //       fetchPolicy: 'network-only',
+  //       skip: !queryParams.storeId,
+  //       variables: {
+  //         teamstoreId: queryParams ? queryParams.storeId : null
+  //       }
+  //     }
+  //   }
+  // }),
   createStoreMutation,
   connect(mapStateToProps, { ...createStoreActions })
 )(CreateStore)
