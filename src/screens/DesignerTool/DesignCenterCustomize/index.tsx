@@ -49,6 +49,7 @@ const DesignCenterCustomize = ({
           onUploadFiles,
           uploadingFiles
         }}
+        uploadNewModel={files}
       />
       <Render3D
         {...{

@@ -5,6 +5,14 @@ import styled from 'styled-components'
 
 export const Container = styled.div``
 
+export const ContainerReset = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+`
+
 export const Buttons = styled.div`
   padding: 16px;
 `

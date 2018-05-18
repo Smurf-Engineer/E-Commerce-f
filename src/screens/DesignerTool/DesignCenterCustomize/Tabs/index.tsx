@@ -5,8 +5,9 @@ import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import UploadTab from '../UploadTab'
-import ColorTab from '../ColorTab'
-import colorIcon from '../../../../assets/color_white.svg'
+// TODO: Not ready
+// import ColorTab from '../ColorTab'
+// import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import { Container } from './styledComponents'
 
@@ -18,6 +19,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   uploadingFiles: boolean
+  uploadNewModel: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
@@ -33,14 +35,16 @@ const Tabs = ({
   colors,
   styleColors,
   onUploadFiles,
-  uploadingFiles
+  uploadingFiles,
+  uploadNewModel
 }: Props) => {
   return (
     <Container>
       <AntdTabs defaultActiveKey="1" size="large">
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="1">
-          <UploadTab {...{ onUploadFiles, uploadingFiles }} />
+          <UploadTab {...{ onUploadFiles, uploadingFiles, uploadNewModel }} />
         </TabPane>
+        {/* // TODO: NO READY
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="4">
           <ColorTab
             {...{
@@ -53,7 +57,7 @@ const Tabs = ({
               styleColors
             }}
           />
-        </TabPane>
+          </TabPane> */}
       </AntdTabs>
     </Container>
   )

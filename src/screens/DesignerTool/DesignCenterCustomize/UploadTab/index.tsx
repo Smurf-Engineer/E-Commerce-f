@@ -5,18 +5,24 @@ import * as React from 'react'
 import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
+import message from 'antd/lib/message'
 import {
   Container,
   Top,
   Text,
   Buttons,
-  ButtonWrapper
+  ButtonWrapper,
+  ContainerReset
 } from './styledComponents'
 
 interface Props {
   onUploadFiles: (files: any) => void
+  uploadNewModel: boolean
   uploadingFiles: boolean
 }
+
+const getFileExtension = (filename: string) =>
+  filename.replace(/.*?(?:\.(\w+))?$/, '$1').toLowerCase()
 
 class UploadTab extends React.PureComponent<Props, {}> {
   state = {
@@ -28,12 +34,31 @@ class UploadTab extends React.PureComponent<Props, {}> {
     const { fileList } = this.state
     const { onUploadFiles } = this.props
 
-    if (fileList.length && fileList.length <= 8) {
+    if (fileList.length) {
       onUploadFiles(fileList)
     }
   }
 
   beforeUpload = (file: any) => {
+    const { fileList: list } = this.state
+
+    const extension = getFileExtension(file.name) || ''
+
+    if (list.length === 0 && extension !== 'obj') {
+      message.error('Please select a valid OBJ file')
+      return false
+    }
+
+    if (list.length === 1 && extension !== 'mtl') {
+      message.error('Please select a valid MTL file')
+      return false
+    }
+
+    if (list.length > 2 && file.type !== 'image/svg+xml') {
+      message.error('Please select a valid SVG file')
+      return false
+    }
+
     this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))
     return false
   }
@@ -49,9 +74,22 @@ class UploadTab extends React.PureComponent<Props, {}> {
     })
   }
 
+  handleReset = () => window.location.replace('/designer-tool')
+
   render() {
     const { fileList } = this.state
-    const { uploadingFiles } = this.props
+    const { uploadingFiles, uploadNewModel } = this.props
+
+    if (uploadNewModel) {
+      return (
+        <ContainerReset>
+          <Button size="large" type="primary" onClick={this.handleReset}>
+            Upload new model
+          </Button>
+        </ContainerReset>
+      )
+    }
+
     return (
       <Container>
         <Top>
@@ -60,7 +98,8 @@ class UploadTab extends React.PureComponent<Props, {}> {
             <p>1. OBJ file</p>
             <p>2. MTL file</p>
             <p>3. Bumpmap file</p>
-            <p> 4. ColorBlock 1 - 5</p>
+            <p> 4. ColorBlock 5 ... 1 </p>
+            <p> 5. Branding </p>
           </Text>
           <Button
             size="large"
