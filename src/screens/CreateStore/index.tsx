@@ -22,13 +22,19 @@ import SwitchWithLabel from '../../components/SwitchWithLabel'
 import Dragger from '../../components/TeamDragger'
 import StoreForm from '../../components/StoreForm'
 import TeamSizes from '../../components/TeamSizes'
-import { createStoreMutation, GetTeamStoreQuery } from './data'
+import {
+  createStoreMutation,
+  GetTeamStoreQuery,
+  updateStoreMutation
+} from './data'
 import {
   DesignType,
   SelectedItem,
   TeamstoreType,
   QueryProps,
-  TeamstoreResult
+  TeamstoreResult,
+  DesignResultType,
+  TeamStoreResultType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -52,7 +58,7 @@ import {
 import config from '../../config/index'
 
 interface Data extends QueryProps {
-  teamStore: TeamstoreType
+  teamStore: DesignResultType
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -72,8 +78,11 @@ interface Props extends RouteComponentProps<any> {
   items: DesignType[]
   teamSizeRange: string
   createStore: any
+  updateStore: any
   loading: boolean
   client: any
+  banner: string
+  storeId: number
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -96,6 +105,7 @@ interface Props extends RouteComponentProps<any> {
   clearStoreAction: () => void
   moveRowAction: (index: number, row: any) => void
   setDataToEditAction: (data: TeamstoreType) => void
+  deleteBannerOnEditAction: () => void
 }
 
 interface StateProps {
@@ -164,8 +174,13 @@ export class CreateStore extends React.Component<Props, StateProps> {
     setTeamSizeAction(id, range)
   }
 
-  handleOnDeleteImage = () =>
+  handleOnDeleteImage = () => {
+    const { banner, deleteBannerOnEditAction: deleteBanner } = this.props
+    if (banner) {
+      deleteBanner()
+    }
     this.setState({ file: null, imagePreviewUrl: null })
+  }
 
   handleOnAddItem = () => {
     const { setOpenLockerAction } = this.props
@@ -189,12 +204,24 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   handleOnPressVisible = (index: number, visible: boolean) => {
     const { setItemVisibleAction } = this.props
+    console.log('HANDLE VISIBLE ', index, visible)
     setItemVisibleAction(index, visible)
+  }
+
+  getStoreId = () => {
+    const {
+      location: { search }
+    } = this.props
+    const { storeId } = queryString.parse(search)
+    console.log(storeId)
+    return storeId
   }
 
   handleBuildTeamStore = async () => {
     const {
+      storeId: id,
       createStore,
+      updateStore,
       name,
       startDate,
       endDate,
@@ -220,8 +247,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       return
     }
 
+    const storeShortId = this.getStoreId()
+    console.log(storeShortId)
     setLoadingAction(true)
-    const items = itemsSelected.map(({ id, visible, shortId }) => ({
+    const items = itemsSelected.map(({ visible, shortId }) => ({
       design_id: shortId,
       visible: !!visible
     }))
@@ -243,6 +272,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
       const banner = await uploadResp.json()
 
       const teamStore = {
+        id: storeShortId ? id : undefined,
         name,
         cutoffDate: startDate,
         deliveryDate: endDate,
@@ -253,14 +283,23 @@ export class CreateStore extends React.Component<Props, StateProps> {
         demandMode: onDemand,
         banner: banner.image
       }
-      console.log(teamStore)
-      const {
-        data: { store }
-      } = await createStore({
-        variables: { teamStore }
-      })
-      const { shortId } = store as any
-      history.push(`/store-front?storeId=${shortId}`)
+
+      if (storeShortId) {
+        const response = await updateStore({
+          variables: { teamStore }
+        })
+        console.log('UPDATE', response)
+      } else {
+        console.log('SAVE EDIT')
+        const {
+          data: { store }
+        } = await createStore({
+          variables: { teamStore }
+        })
+
+        const { shortId } = store as any
+        history.push(`/store-front?storeId=${shortId}`)
+      }
       clearStoreAction()
     } catch (error) {
       message.error('Something wrong happened. Please try again!')
@@ -279,7 +318,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   handlePrivateSwitch = (checked: boolean) => {
     const { updatePrivateAction } = this.props
-    this.setState({ firstTimeSetPrivate: false })
+    // this.setState({ firstTimeSetPrivate: false })
     updatePrivateAction(checked)
   }
 
@@ -292,14 +331,24 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const { storeId } = queryString.parse(search)
 
     if (storeId) {
-      const {
-        data: { teamStore }
-      } = await query({
+      // const {
+      //   data: { teamStore }
+      // } = await query({
+      //   query: GetTeamStoreQuery,
+      //   variables: { teamStoreId: storeId }
+      // })
+
+      // setDataToEditAction(teamStore)
+      query({
         query: GetTeamStoreQuery,
         variables: { teamStoreId: storeId }
       })
-      console.log('DID MOUNT ', teamStore)
-      setDataToEditAction(teamStore)
+        .then(({ data: { teamStore } }: any) => {
+          setDataToEditAction(teamStore)
+        })
+        .catch((err: any) => {
+          console.error(err)
+        })
     }
   }
 
@@ -311,40 +360,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       privateStoreDefault: true,
       firstTimeSetPrivate: true
     })
-    console.log('UNMOUNT ===== ')
   }
-  // componentDidMount() {
-  //   const {
-  //     updatePrivateAction,
-  //     location: { search }
-  //   } = this.props
-  //   const { firstTimeSetPrivate: defaultValue } = this.state
-  //   const { storeId } = queryString.parse(search)
-  //   console.log('DID MOUNT ', storeId)
-  //   if (!storeId) {
-  //     this.setState(
-  //       ({ firstTimeSetPrivate, privateStoreDefault }: StateProps) => ({
-  //         firstTimeSetPrivate: !firstTimeSetPrivate
-  //       })
-  //     )
-  //     updatePrivateAction(defaultValue)
-  //   }
-  // }
 
-  // componentWillReceiveProps(nextProps: Props) {
-  //   const {
-  //     updatePrivateAction,
-  //     location: { search }
-  //   } = this.props
-  //   const { firstTimeSetPrivate } = this.state
-  // }
   render() {
-    const {
-      imagePreviewUrl,
-      hasError,
-      firstTimeSetPrivate,
-      privateStoreDefault
-    } = this.state
+    const { imagePreviewUrl, hasError, firstTimeSetPrivate } = this.state
     const {
       intl,
       history,
@@ -370,13 +389,12 @@ export class CreateStore extends React.Component<Props, StateProps> {
       items,
       teamSizeRange,
       loading,
-      location: { search },
-      data
+      banner,
+      location: { search }
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
-    const teamStore = get(data, 'teamStore', false)
-    console.log('PROPS ', this.props)
+
     if (
       typeof window !== 'undefined' &&
       !JSON.parse(localStorage.getItem('user') as string)
@@ -384,29 +402,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
-    const bannerImage = teamStore
-      ? get(teamStore, 'banner', '')
-      : imagePreviewUrl
-
     const bannerComponent =
-      imagePreviewUrl || storeId ? (
-        <PreviewImage src={bannerImage} />
+      imagePreviewUrl || (storeId && banner) ? (
+        <PreviewImage src={imagePreviewUrl || banner} />
       ) : (
         <Dragger onSelectImage={this.beforeUpload} />
       )
 
     const tableItems = this.getCheckedItems(items)
 
-    const startDate =
-      moment(get(teamStore, 'startDate', false)) || startDateMoment
-    const endDateToEdit = moment(get(teamStore, 'endDate', ''))
-    const editPrivateStore = get(teamStore, 'privateStore', '')
-    const editOnDemandStore = get(teamStore, 'onDemand')
-    const editName = get(teamStore, 'name')
-    const privateStoreCheckd =
-      teamStore && firstTimeSetPrivate ? editPrivateStore : privateStore
-    console.log('start DAte ', startDate, endDateToEdit, editPrivateStore)
-    // const momentEditStartDate =
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -430,7 +434,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
             <FormattedMessage {...messages.teamSizeMessage} />
           </Message>
           <TeamSizes
-            currentSelected={get(teamStore, 'teamSize.id', false) || teamSizeId}
+            currentSelected={teamSizeId}
             onSelectRange={this.handleOnSelectRange}
           />
           <Subtitle>
@@ -566,6 +570,7 @@ const CreateStoreEnhance = compose(
   //   }
   // }),
   createStoreMutation,
+  updateStoreMutation,
   connect(mapStateToProps, { ...createStoreActions })
 )(CreateStore)
 

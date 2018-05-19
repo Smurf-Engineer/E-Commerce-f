@@ -59,7 +59,6 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       }
     } = this.props
 
-    console.log('====My TEAMSTORES ', teamStores)
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
 
     let myTeamstoresList
@@ -98,7 +97,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
           onCancel={this.toggleDeleteModal()}
           confirmLoading={deleteLoading}
           okText={'Delete'}
-          onOk={this.deleteTeamStore}
+          onOk={this.handleDeleteTeamStore}
         >
           <DeleteConfirmMessage>
             {formatMessage(messages.messageDeleteModal)}
@@ -120,7 +119,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     history.push('/create-store')
   }
 
-  deleteTeamStore = async () => {
+  handleDeleteTeamStore = async () => {
     const {
       storeId,
       deleteTeamStore,
@@ -128,11 +127,12 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       clearReducerAction,
       data: { refetch }
     } = this.props
+    console.log(storeId)
     deleteLoadingAction(true)
     const response = await deleteTeamStore({
       variables: { id: storeId }
     })
-    clearReducerAction()
+
     refetch()
 
     console.log('DELETE STORE RESP ', response)

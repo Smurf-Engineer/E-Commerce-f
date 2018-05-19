@@ -1,7 +1,7 @@
 /**
  * CreateStore Reducer - Created by david on 09/04/18.
  */
-import { fromJS } from 'immutable'
+import { fromJS, List } from 'immutable'
 import moment from 'moment'
 import {
   DEFAULT_ACTION,
@@ -20,7 +20,8 @@ import {
   SET_LOADING_ACTION,
   CREATE_STORE_SUCCESS,
   MOVE_ROW,
-  SET_STORE_DATA_TO_EDIT
+  SET_STORE_DATA_TO_EDIT,
+  DELETE_BANNER_ON_EDIT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -33,7 +34,7 @@ export const initialState = fromJS({
   endDate: '',
   endDateMoment: null,
   privateStore: true,
-  onDemand: null,
+  onDemand: false,
   passCode: '',
   openLocker: false,
   selectedItems: {},
@@ -86,9 +87,11 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_ITEMS_ADD_ACTION: {
       const items = state.get('items')
-      const updatedItems = items.push(...action.items)
+      const addItem = items.push(...action.items)
+      const itemsMap = addItem.map((item: any) => fromJS(item))
+      // const updatedItems = items.push(...itemsMap)
       return state.merge({
-        items: updatedItems,
+        items: itemsMap,
         openLocker: false,
         selectedItems: {}
       })
@@ -96,12 +99,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case SET_ITEM_VISIBLE_ACTION: {
       const { index, visible } = action
       const items = state.get('items')
-      const updatedItems = items.update(index, (item: any) => {
-        const updatedItem = Object.assign({}, item)
-        updatedItem.visible = visible
-        return updatedItem
-      })
-      return state.set('items', updatedItems)
+      const updatedItems = items.setIn([index, 'visible'], visible)
+      return state.merge({ items: updatedItems })
     }
     case MOVE_ROW: {
       const { index, hoverIndex, row } = action
@@ -110,21 +109,38 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('items', updatedItems)
     }
     case SET_STORE_DATA_TO_EDIT: {
-      console.log('REDUCER ', action.data)
+      const {
+        data: {
+          id,
+          shortId,
+          name,
+          banner,
+          startDate,
+          endDate,
+          privateStore,
+          onDemand,
+          items,
+          teamSize: { id: sizeId, size }
+        }
+      } = action
       return state.merge({
-        name: action.data.name,
-        startDate: action.data.startDate,
-        startDateMoment: moment(action.data.startDate),
-        endDate: action.data.endDate,
-        endDateMoment: moment(action.data.endDate),
-        teamSizeId: action.data.teamSize.id,
-        teamSizeRange: action.data.teamSize.size,
-        items: action.data.items,
-        privateStore: action.data.privateStore,
-        onDemand: action.data.onDemand,
-        banner: action.data.banner
+        storeId: id,
+        storeShortId: shortId,
+        name: name,
+        startDate: startDate,
+        startDateMoment: moment(startDate),
+        endDate: endDate,
+        endDateMoment: moment(endDate),
+        teamSizeId: sizeId,
+        teamSizeRange: size,
+        items: items,
+        privateStore: privateStore,
+        onDemand: onDemand,
+        banner: banner
       })
     }
+    case DELETE_BANNER_ON_EDIT:
+      return state.merge({ banner: '' })
     default:
       return state
   }

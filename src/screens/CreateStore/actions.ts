@@ -18,7 +18,8 @@ import {
   SET_LOADING_ACTION,
   CREATE_STORE_SUCCESS,
   MOVE_ROW,
-  SET_STORE_DATA_TO_EDIT
+  SET_STORE_DATA_TO_EDIT,
+  DELETE_BANNER_ON_EDIT
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -136,4 +137,8 @@ export const moveRowAction = (index: number, hoverIndex: number, row: any) => ({
 export const setDataToEditAction = (data: TeamstoreType): AnyAction => ({
   type: SET_STORE_DATA_TO_EDIT,
   data
+})
+
+export const deleteBannerOnEditAction = () => ({
+  type: DELETE_BANNER_ON_EDIT
 })
