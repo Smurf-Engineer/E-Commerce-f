@@ -78,13 +78,10 @@ export const ThumbnailsList = styled.ul`
 `
 
 export const ThumbnailListItem = styled.li`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+  list-style: none;
+  display: inline-block;
   width: calc(100% / 4);
   padding-bottom: 20px;
-  align-items: center;
-  justify-content: center;
 
   @media (min-width: 481px) and (max-width: 1024px) {
     width: calc(100% / 3);

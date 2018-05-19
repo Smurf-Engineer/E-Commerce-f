@@ -23,7 +23,7 @@ export const StyledButton = styled(Button)`
 
 export const ButtonContainer = styled.div`
   user-select: none;
-  display: flex;
+  display: flex !important;
   position: absolute;
   width: 200px;
   justify-content: center;

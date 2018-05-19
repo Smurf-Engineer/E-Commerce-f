@@ -30,7 +30,7 @@ import messages from '../ProductInfo/messages'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
-  store_design_id?: string
+  storeDesignId?: string
 }
 
 interface Props {

@@ -33,7 +33,6 @@ const FooterThumbnailTeamStore = ({
   id,
   name,
   description,
-  date,
   onPressPrivate,
   onPressDelete
 }: Props) => {

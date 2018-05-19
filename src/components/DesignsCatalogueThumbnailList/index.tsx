@@ -11,6 +11,7 @@ import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import FooterThumbnailTeamStore from '../FooterThumbnailTeamStore'
+import AddToCartButton from '../AddToCartButton'
 import { QueryProps, ProductType, DesignType } from '../../types/common'
 import {
   Container,
@@ -91,7 +92,14 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                   date="03/03/2018" // TODO: Get design date
                 />
               }
-              labelButton="ADD TO CART"
+              labelButton={
+                <AddToCartButton
+                  label={'ADD TO CART'}
+                  renderForThumbnail={true}
+                  item={{ product }}
+                  {...{ formatMessage }}
+                />
+              }
               isTopProduct={product.isTopProduct}
               onPressCustomize={this.handleOnPressAddToCart}
               onPressQuickView={this.handlePressQuickView}
