@@ -22,7 +22,7 @@ interface Props {
   country: string
   defaultBilling?: boolean
   defaultShipping?: boolean
-  addressIndex: number
+  addressIndex?: number
   isSelected?: boolean
   showSecondaryButtons?: boolean
   hideBottomButtons?: boolean
@@ -54,10 +54,10 @@ const MyAddress = ({
     showAddressFormAction(true, addressIndex)
   }
   const handleOnDelete = () => {
-    showConfirmDeleteAction(addressIndex)
+    showConfirmDeleteAction(addressIndex as number)
   }
   const handleOnSelectAddress = () => {
-    selectAddressAction(addressIndex)
+    selectAddressAction(addressIndex as number)
   }
   const buttons = !showSecondaryButtons ? (
     <StyledCheckbox checked={isSelected} onChange={handleOnSelectAddress}>

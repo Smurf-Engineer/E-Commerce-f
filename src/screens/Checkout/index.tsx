@@ -71,6 +71,9 @@ interface Props extends RouteComponentProps<any> {
   addNewAddress: any
   cardHolderName: string
   stripeError: string
+  cardNumber: string
+  cardExpDate: string
+  cardBrand: string
   loadingBilling: boolean
   setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -124,6 +127,9 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       billingHasError,
       cardHolderName,
+      cardNumber,
+      cardExpDate,
+      cardBrand,
       sameBillingAndShipping,
       smsCheckAction,
       emailCheckAction,
@@ -152,7 +158,6 @@ class Checkout extends React.Component<Props, {}> {
       zipCode,
       phone
     }
-
     const billingAddress: AddressType = {
       firstName: billingFirstName,
       lastName: billingLastName,
@@ -163,6 +168,11 @@ class Checkout extends React.Component<Props, {}> {
       city: billingCity,
       zipCode: billingZipCode,
       phone: billingPhone
+    }
+    const cardData: StripeCardData = {
+      cardNumber,
+      cardExpDate,
+      cardBrand
     }
 
     let totalSum = 0
@@ -233,7 +243,12 @@ class Checkout extends React.Component<Props, {}> {
                 />
                 <Review
                   formatMessage={intl.formatMessage}
-                  {...{ shippingAddress, billingAddress }}
+                  {...{
+                    shippingAddress,
+                    billingAddress,
+                    cardData,
+                    cardHolderName
+                  }}
                 />
               </SwipeableViews>
               {/* <div>{this.renderStepContent(currentStep)}</div> */}

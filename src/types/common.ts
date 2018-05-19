@@ -285,5 +285,5 @@ export interface StripeCardData {
   cardNumber: string
   cardExpDate: string
   cardBrand: string
-  stripeToken: string
+  stripeToken?: string
 }
