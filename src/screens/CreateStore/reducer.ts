@@ -91,7 +91,6 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const items = state.get('items')
       const addItem = items.push(...action.items)
       const itemsMap = addItem.map((item: any) => fromJS(item))
-      // const updatedItems = items.push(...itemsMap)
       return state.merge({
         items: itemsMap,
         openLocker: false,
@@ -102,7 +101,6 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const { index, visible } = action
       const items = state.get('items')
       const updatedItems = items.setIn([index, 'visible'], visible)
-      console.log('CREATE REDUCER ', updatedItems)
       return state.merge({ items: updatedItems })
     }
     case MOVE_ROW: {

@@ -97,7 +97,6 @@ const StoreForm = ({
   }
 
   const handleOnSelectStart = (date: Moment, dateString: string) => {
-    console.log(date, dateString)
     onSelectStartDate(date, dateString)
   }
 

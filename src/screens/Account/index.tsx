@@ -41,7 +41,6 @@ interface Props extends RouteComponentProps<any> {
 export class Account extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { clearReducerAction } = this.props
-    console.log('UNMOUNT ACCOUNT')
     clearReducerAction()
   }
 

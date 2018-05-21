@@ -88,11 +88,9 @@ class LockerTable extends React.PureComponent<Props, {}> {
       </MediaQuery>
     )
 
-    // if (items.length > 0) {
     const itemsSelected = items.map(({ design, visible }: any, index) => {
       const name = get(design, 'name')
       const product = get(design, 'product')
-      // const visible = get(design, 'visible')
       const pricesArray = get(product, 'priceRange')
       const startingPrice = this.getTierPrice(pricesArray)
       const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
@@ -127,7 +125,6 @@ class LockerTable extends React.PureComponent<Props, {}> {
         />
       )
     })
-    // }
 
     const renderTable =
       items.length > 0 ? (

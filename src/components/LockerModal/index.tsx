@@ -49,8 +49,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     const itemsIndex = Object.keys(filteredItems)
     const items = itemsIndex.map(index => {
       const item = designs[index]
-      const returnItem = Object.assign({}, { visible: true }, { design: item })
-      return returnItem
+      // const returnItem = Object.assign({}, { visible: true }, { design: item })
+      return Object.assign({}, { visible: true }, { design: item })
     })
     onAddItems(items)
   }
