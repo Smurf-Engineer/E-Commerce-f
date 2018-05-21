@@ -102,6 +102,7 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const { index, visible } = action
       const items = state.get('items')
       const updatedItems = items.setIn([index, 'visible'], visible)
+      console.log('CREATE REDUCER ', updatedItems)
       return state.merge({ items: updatedItems })
     }
     case MOVE_ROW: {

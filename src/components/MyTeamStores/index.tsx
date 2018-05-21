@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
+import message from 'antd/lib/message'
 import messages from './messages'
 import * as MyTeamStoresActions from './actions'
 import { GetTeamMyStoresQuery, DeleteTeamStoreMutation } from './data'
@@ -91,7 +92,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
           visible={openDeleteModal}
           maskClosable={false}
           closable={false}
-          // destroyOnClose={true}
+          destroyOnClose={true}
           onCancel={this.closeDeleteModal}
           confirmLoading={deleteLoading}
           okText={'Delete'}
@@ -124,15 +125,13 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       deleteLoadingAction,
       data: { refetch }
     } = this.props
-    console.log(storeId)
     deleteLoadingAction(true)
-    const response = await deleteTeamStore({
-      variables: { id: storeId }
-    })
-
-    refetch()
-
-    console.log('DELETE STORE RESP ', response)
+    try {
+      await deleteTeamStore({ variables: { id: storeId } })
+      refetch()
+    } catch (err) {
+      message.error('Something wrong happened. Please try again!', err)
+    }
   }
 
   editTeamStore = (storeId: string) => () => {
@@ -158,7 +157,6 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
   handleOpenShareModal = (id?: string) => () => {
     const { openShare, openShareModalAction } = this.props
-    console.log('openshar modal')
     openShareModalAction(!openShare, id)
   }
 }

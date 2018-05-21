@@ -284,7 +284,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: onDemand,
-        banner: banner || bannerResp.image
+        banner: bannerResp.image || banner
       }
 
       if (storeShortId) {
@@ -305,8 +305,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         if (messageResp) {
           message.success(messageResp)
         }
-        setLoadingAction(false)
-        // history.push(`/store-front?storeId=${storeShortId}`)
+
+        history.push(`/store-front?storeId=${storeShortId}`)
       } else {
         const {
           data: { store }
@@ -317,8 +317,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
         const { shortId } = store as any
         history.push(`/store-front?storeId=${shortId}`)
       }
-      // this.clearState()
-      // clearStoreAction()
     } catch (error) {
       message.error('Something wrong happened. Please try again!')
       setLoadingAction(false)
@@ -343,19 +341,16 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const {
       setDataToEditAction,
       location: { search },
-      client
+      client: { query }
     } = this.props
     const { storeId } = queryString.parse(search)
 
     if (storeId) {
-      client
-        .query({
-          query: GetTeamStoreQuery,
-          variables: { teamStoreId: storeId },
-          options: {
-            fetchPolicy: 'network-only'
-          }
-        })
+      query({
+        query: GetTeamStoreQuery,
+        variables: { teamStoreId: storeId },
+        fetchPolicy: 'network-only'
+      })
         .then(({ data: { teamStore } }: any) => {
           setDataToEditAction(teamStore)
         })
