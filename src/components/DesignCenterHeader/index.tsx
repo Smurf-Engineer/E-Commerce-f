@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
+import moment from 'moment'
 import backIcon from '../../assets/rightarrow.svg'
 import {
   Container,
@@ -15,12 +16,19 @@ import {
   Divider,
   BackIcon
 } from './styledComponents'
+import expressLogo from '../../assets/JakrooExpressLogo.svg'
 
 interface Props {
   onPressBack: () => void
 }
 
+const getDeliveryDate = (): string => {
+  const currentDate = moment().add(14, 'days')
+  return currentDate.format('MMMM DD')
+}
+
 const DesignCenterHeader = ({ onPressBack }: Props) => {
+  const date = getDeliveryDate()
   return (
     <Container>
       <Row>
@@ -30,11 +38,9 @@ const DesignCenterHeader = ({ onPressBack }: Props) => {
             <FormattedMessage {...messages.back} />
           </Back>
         </BackButton>
-        {/* TODO: Logo */}
-        <Logo>LOGO</Logo>
+        <Logo src={expressLogo} />
         <Date>
-          {/* TODO: Date from query */}
-          <FormattedMessage {...messages.date} values={{ date: 'March 10' }} />
+          <FormattedMessage {...messages.date} values={{ date }} />
         </Date>
       </Row>
       <Divider />

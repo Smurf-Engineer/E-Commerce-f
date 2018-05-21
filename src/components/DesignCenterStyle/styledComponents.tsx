@@ -26,7 +26,6 @@ export const Slider = styled(AntdSlider)`
 
 export const List = styled.div`
   background-color: #fff;
-  padding: 18px 120px;
   text-align: center;
 `
 

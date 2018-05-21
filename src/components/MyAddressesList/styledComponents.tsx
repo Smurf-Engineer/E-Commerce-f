@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
+interface MyAddressesListProps {
+  listForMyAccount?: boolean
+}
+
 export const Container = styled.div`
   width: 100%;
 `
@@ -41,5 +45,6 @@ export const AddAddressBtn = styled(Button)`
 
 export const AddressesList = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: ${({ listForMyAccount }: MyAddressesListProps) =>
+    listForMyAccount ? 'flex-start' : 'space-between'};
 `

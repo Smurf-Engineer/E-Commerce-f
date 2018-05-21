@@ -20,6 +20,7 @@ interface Props {
   redoEnabled: boolean
   currentTab: number
   swipingView: boolean
+  productName: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -62,7 +63,8 @@ const DesignCenterCustomize = ({
   swipingView,
   onOpenSaveDesign,
   onHoverColorBlock,
-  formatMessage
+  formatMessage,
+  productName
 }: Props) => {
   return (
     <Container>
@@ -99,7 +101,8 @@ const DesignCenterCustomize = ({
             redoEnabled,
             onOpenSaveDesign,
             formatMessage,
-            currentStyle
+            currentStyle,
+            productName
           }}
         />
       ) : null}
