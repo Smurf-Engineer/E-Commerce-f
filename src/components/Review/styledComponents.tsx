@@ -6,6 +6,16 @@ import Button from 'antd/lib/button'
 
 export const Container = styled.div`
   width: 100%;
+  padding-top: 24px;
+`
+
+export const CartContent = styled.div`
+  width: 100%;
+`
+
+export const CartList = styled.ul`
+  padding: 0;
+  height: 100%;
 `
 
 export const Title = styled.div`
@@ -14,7 +24,7 @@ export const Title = styled.div`
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
-  margin: 24px 0;
+  margin-bottom: 24px;
 `
 
 export const BottomContainer = styled.div`
@@ -52,6 +62,7 @@ export const EditInfoButton = styled(Button)`
   background-color: #4a90e2;
   color: #fff;
   margin: 8px 0;
+  margin-left: 0.5px;
 
   &:hover {
     border-color: #4a90e2;

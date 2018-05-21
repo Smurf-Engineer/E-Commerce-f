@@ -9,6 +9,10 @@ export default defineMessages({
     id: 'components.Review.tittle',
     defaultMessage: 'Review'
   },
+  items: {
+    id: 'components.Review.items',
+    defaultMessage: 'Items'
+  },
   shippingAddress: {
     id: 'components.Review.shippingAddress',
     defaultMessage: 'Shipping Address'

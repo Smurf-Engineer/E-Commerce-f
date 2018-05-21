@@ -11,17 +11,31 @@ import {
   PaymentText,
   CardNumber,
   StyledImage,
-  EditInfoButton
+  EditInfoButton,
+  CartList,
+  CartContent
 } from './styledComponents'
-import { AddressType, StripeCardData } from '../../types/common'
+import {
+  AddressType,
+  StripeCardData,
+  CartItemDetail,
+  Product
+} from '../../types/common'
 import MyAddress from '../MyAddress'
+import CartListItem from '../../components/CartListItem'
 import iconVisa from '../../assets/card-visa.svg'
 import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 
+interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+}
+
 interface Props {
+  cart: CartItems[]
   shippingAddress: AddressType
   billingAddress: AddressType
   cardData: StripeCardData
@@ -55,11 +69,33 @@ class Review extends React.Component<Props, {}> {
         apartment: billingApartment
       },
       cardData,
-      cardHolderName
+      cardHolderName,
+      cart
     } = this.props
+    const renderList = cart
+      ? cart.map((cartItem, index) => {
+          return (
+            <CartListItem
+              formatMessage={formatMessage}
+              key={index}
+              title={cartItem.product.name}
+              description={cartItem.product.shortDescription}
+              price={cartItem.product.priceRange[0]}
+              image={cartItem.product.images[0].front}
+              cartItem={cartItem}
+              itemIndex={index}
+              onlyRead={true}
+            />
+          )
+        })
+      : null
     let cardIcon = this.getCardIcon(cardData.cardBrand)
     return (
       <Container>
+        <CartContent>
+          <Title>{formatMessage(messages.items)}</Title>
+          <CartList>{renderList}</CartList>
+        </CartContent>
         <BottomContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.shippingAddress)}</Title>

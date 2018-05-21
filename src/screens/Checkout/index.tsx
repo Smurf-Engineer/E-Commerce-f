@@ -248,7 +248,8 @@ class Checkout extends React.Component<Props, {}> {
                     shippingAddress,
                     billingAddress,
                     cardData,
-                    cardHolderName
+                    cardHolderName,
+                    cart
                   }}
                 />
               </SwipeableViews>
