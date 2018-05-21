@@ -1,7 +1,7 @@
 /**
  * CreateStore Reducer - Created by david on 09/04/18.
  */
-import { fromJS, List } from 'immutable'
+import { fromJS } from 'immutable'
 import moment from 'moment'
 import {
   DEFAULT_ACTION,
@@ -21,7 +21,8 @@ import {
   CREATE_STORE_SUCCESS,
   MOVE_ROW,
   SET_STORE_DATA_TO_EDIT,
-  DELETE_BANNER_ON_EDIT
+  DELETE_BANNER_ON_EDIT,
+  CLEAR_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -39,7 +40,8 @@ export const initialState = fromJS({
   openLocker: false,
   selectedItems: {},
   items: [],
-  loading: false
+  loading: false,
+  banner: ''
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
@@ -141,6 +143,24 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     }
     case DELETE_BANNER_ON_EDIT:
       return state.merge({ banner: '' })
+    case CLEAR_DATA:
+      return state.merge({
+        teamSizeId: 1,
+        teamSizeRange: '2-5',
+        name: '',
+        startDate: '',
+        startDateMoment: null,
+        endDate: '',
+        endDateMoment: null,
+        privateStore: true,
+        onDemand: false,
+        passCode: '',
+        openLocker: false,
+        selectedItems: {},
+        items: [],
+        loading: false,
+        banner: ''
+      })
     default:
       return state
   }

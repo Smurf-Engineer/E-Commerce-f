@@ -3,8 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage, InjectedIntl, injectIntl } from 'react-intl'
-import moment from 'moment'
-import { compose, withApollo, graphql } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
@@ -32,9 +31,7 @@ import {
   SelectedItem,
   TeamstoreType,
   QueryProps,
-  TeamstoreResult,
-  DesignResultType,
-  TeamStoreResultType
+  DesignResultType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -106,22 +103,19 @@ interface Props extends RouteComponentProps<any> {
   moveRowAction: (index: number, row: any) => void
   setDataToEditAction: (data: TeamstoreType) => void
   deleteBannerOnEditAction: () => void
+  clearDataAction: () => void
 }
 
 interface StateProps {
   hasError: boolean
   file: string | null
   imagePreviewUrl: string | null
-  privateStoreDefault: boolean
-  firstTimeSetPrivate: boolean
 }
 export class CreateStore extends React.Component<Props, StateProps> {
   state = {
     file: null,
     imagePreviewUrl: '',
-    hasError: false,
-    privateStoreDefault: true,
-    firstTimeSetPrivate: true
+    hasError: false
   }
   private lockerTable: any
 
@@ -204,7 +198,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   handleOnPressVisible = (index: number, visible: boolean) => {
     const { setItemVisibleAction } = this.props
-    console.log('HANDLE VISIBLE ', index, visible)
     setItemVisibleAction(index, visible)
   }
 
@@ -213,13 +206,21 @@ export class CreateStore extends React.Component<Props, StateProps> {
       location: { search }
     } = this.props
     const { storeId } = queryString.parse(search)
-    console.log(storeId)
+
     return storeId
+  }
+
+  clearState = () => {
+    this.setState({
+      file: null,
+      imagePreviewUrl: '',
+      hasError: false
+    })
   }
 
   handleBuildTeamStore = async () => {
     const {
-      storeId: id,
+      storeId,
       createStore,
       updateStore,
       name,
@@ -229,10 +230,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       passCode,
       items: itemsSelected,
       setLoadingAction,
-      clearStoreAction,
       history,
       teamSizeId,
-      onDemand
+      onDemand,
+      banner
     } = this.props
     const { file } = this.state
     const validForm = this.validateForm(
@@ -248,12 +249,14 @@ export class CreateStore extends React.Component<Props, StateProps> {
     }
 
     const storeShortId = this.getStoreId()
-    console.log(storeShortId)
     setLoadingAction(true)
-    const items = itemsSelected.map(({ visible, shortId }) => ({
-      design_id: shortId,
-      visible: !!visible
-    }))
+    const items = itemsSelected.map(item => {
+      return {
+        design_id: get(item, 'design.shortId'),
+        visible: get(item, 'visible')
+      }
+    })
+
     try {
       const formData = new FormData()
 
@@ -264,15 +267,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
         method: 'POST',
         headers: {
           Accept: 'application/json',
-
           Authorization: `Bearer ${user.token}`
         },
         body: formData
       })
-      const banner = await uploadResp.json()
+      const bannerResp = await uploadResp.json()
 
       const teamStore = {
-        id: storeShortId ? id : undefined,
+        id: storeId,
+        short_id: storeShortId,
         name,
         cutoffDate: startDate,
         deliveryDate: endDate,
@@ -281,16 +284,30 @@ export class CreateStore extends React.Component<Props, StateProps> {
         items,
         teamsizeId: teamSizeId,
         demandMode: onDemand,
-        banner: banner.image
+        banner: banner || bannerResp.image
       }
 
       if (storeShortId) {
-        const response = await updateStore({
-          variables: { teamStore }
+        const {
+          data: {
+            store: { message: messageResp }
+          }
+        } = await updateStore({
+          variables: { teamStore },
+          refetchQueries: [
+            {
+              query: GetTeamStoreQuery,
+              variables: { teamStoreId: storeShortId }
+            }
+          ]
         })
-        console.log('UPDATE', response)
+
+        if (messageResp) {
+          message.success(messageResp)
+        }
+        setLoadingAction(false)
+        // history.push(`/store-front?storeId=${storeShortId}`)
       } else {
-        console.log('SAVE EDIT')
         const {
           data: { store }
         } = await createStore({
@@ -300,7 +317,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
         const { shortId } = store as any
         history.push(`/store-front?storeId=${shortId}`)
       }
-      clearStoreAction()
+      // this.clearState()
+      // clearStoreAction()
     } catch (error) {
       message.error('Something wrong happened. Please try again!')
       setLoadingAction(false)
@@ -318,7 +336,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
   handlePrivateSwitch = (checked: boolean) => {
     const { updatePrivateAction } = this.props
-    // this.setState({ firstTimeSetPrivate: false })
     updatePrivateAction(checked)
   }
 
@@ -326,23 +343,19 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const {
       setDataToEditAction,
       location: { search },
-      client: { query }
+      client
     } = this.props
     const { storeId } = queryString.parse(search)
 
     if (storeId) {
-      // const {
-      //   data: { teamStore }
-      // } = await query({
-      //   query: GetTeamStoreQuery,
-      //   variables: { teamStoreId: storeId }
-      // })
-
-      // setDataToEditAction(teamStore)
-      query({
-        query: GetTeamStoreQuery,
-        variables: { teamStoreId: storeId }
-      })
+      client
+        .query({
+          query: GetTeamStoreQuery,
+          variables: { teamStoreId: storeId },
+          options: {
+            fetchPolicy: 'network-only'
+          }
+        })
         .then(({ data: { teamStore } }: any) => {
           setDataToEditAction(teamStore)
         })
@@ -353,17 +366,17 @@ export class CreateStore extends React.Component<Props, StateProps> {
   }
 
   componentWillUnmount() {
+    const { clearDataAction } = this.props
     this.setState({
       file: null,
       imagePreviewUrl: '',
-      hasError: false,
-      privateStoreDefault: true,
-      firstTimeSetPrivate: true
+      hasError: false
     })
+    clearDataAction()
   }
 
   render() {
-    const { imagePreviewUrl, hasError, firstTimeSetPrivate } = this.state
+    const { imagePreviewUrl, hasError } = this.state
     const {
       intl,
       history,
@@ -372,7 +385,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
       updateNameAction,
       updateStartDateAction,
       updateEndDateAction,
-      updatePrivateAction,
       updateOnDemandAction,
       updatePassCodeAction,
       setItemSelectedAction,
@@ -547,28 +559,9 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
 const mapStateToProps = (state: any) => state.get('createStore').toJS()
 
-type OwnProps = {
-  location?: any
-}
-
 const CreateStoreEnhance = compose(
   injectIntl,
   withApollo,
-  // graphql(GetTeamStoreQuery, {
-  //   options: (ownprops: OwnProps) => {
-  //     const {
-  //       location: { search }
-  //     } = ownprops
-  //     const queryParams = queryString.parse(search)
-  //     return {
-  //       fetchPolicy: 'network-only',
-  //       skip: !queryParams.storeId,
-  //       variables: {
-  //         teamstoreId: queryParams ? queryParams.storeId : null
-  //       }
-  //     }
-  //   }
-  // }),
   createStoreMutation,
   updateStoreMutation,
   connect(mapStateToProps, { ...createStoreActions })

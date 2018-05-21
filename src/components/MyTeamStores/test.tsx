@@ -10,7 +10,7 @@ describe('<MyTeamStores />', () => {
     const div = document.createElement('div')
     const format = (message: any) => 'string'
     const data: any = {
-      myTeamStores: [],
+      teamStores: {},
       fetchMore: () => {}
     }
     const history = {}
@@ -23,6 +23,7 @@ describe('<MyTeamStores />', () => {
     const deleteLoadingAction = (loading: boolean) => {}
     const clearReducerAction = () => {}
     const openShareModalAction = () => {}
+    const setIdStoreAction = () => {}
     ReactDOM.render(
       <MyTeamStores
         formatMessage={format}
@@ -37,7 +38,8 @@ describe('<MyTeamStores />', () => {
           deleteTeamStore,
           deleteLoadingAction,
           clearReducerAction,
-          openShareModalAction
+          openShareModalAction,
+          setIdStoreAction
         }}
       />,
       div

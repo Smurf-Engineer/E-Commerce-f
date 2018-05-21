@@ -50,8 +50,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     const items = itemsIndex.map(index => {
       const item = designs[index]
       const returnItem = Object.assign({}, { visible: true }, { design: item })
-
-      console.log('add item ', returnItem)
       return returnItem
     })
     onAddItems(items)
@@ -65,7 +63,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       selectedItems,
       tableItems
     } = this.props
-
     const designs = loading || error ? [] : pagination.designs
 
     const list = designs.map(

@@ -63,7 +63,11 @@ const TeamStoreItem = ({
     <Container>
       <TeamStoreCard>
         <TeamCardHeader>
-          {showNameStore && <CardTitle>{name}</CardTitle>}
+          {showNameStore && (
+            <CardTitle onClick={!image ? onItemClick : () => {}}>
+              {name}
+            </CardTitle>
+          )}
           <ButtonsContainer>
             {withEditButton && (
               <ShareButton onClick={handleClickEdit}>{'Edit'}</ShareButton>

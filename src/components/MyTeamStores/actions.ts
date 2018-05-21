@@ -1,8 +1,8 @@
 import {
   OPEN_DELETE_MODAL,
-  DELETE_LOADING,
   CLEAR_REDUCER,
-  OPEN_SHARE_MODAL
+  OPEN_SHARE_MODAL,
+  SET_STOREID_TO_DELETE
 } from './constants'
 
 import { AnyAction } from '../../types/common'
@@ -35,3 +35,8 @@ export const openShareModalAction = (
     storeId
   }
 }
+
+export const setIdStoreAction = (storeId: string): AnyAction => ({
+  type: SET_STOREID_TO_DELETE,
+  storeId
+})

@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
-import { RouteComponentProps } from 'react-router-dom'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import messages from './messages'
 import * as MyTeamStoresActions from './actions'
@@ -17,12 +17,7 @@ import {
 } from './styledComponents'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
-import {
-  QueryProps,
-  TeamstoreType,
-  TeamstoreResult,
-  TeamStoreResultType
-} from '../../types/common'
+import { QueryProps, TeamstoreResult } from '../../types/common'
 import config from '../../config/index'
 import TeamStore from '../../components/TeamStoreItem'
 import ShareTeamStore from '../../components/ShareDesignModal'
@@ -44,6 +39,7 @@ interface Props {
   deleteLoadingAction: (loading: boolean) => void
   openShareModalAction: (open: boolean, id?: string) => void
   clearReducerAction: () => void
+  setIdStoreAction: (storeId: string) => void
 }
 
 export class MyTeamStores extends React.PureComponent<Props, {}> {
@@ -54,29 +50,31 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       openShare,
       openDeleteModal,
       formatMessage,
-      data: {
-        myTeamstores: { teamStores }
-      }
+      data: { myTeamstores }
     } = this.props
 
     const shareStoreUrl = `${config.baseUrl}store-front?storeId=${storeId}`
-
+    const teamStores = get(myTeamstores, 'teamStores', false)
     let myTeamstoresList
     if (teamStores) {
-      myTeamstoresList = teamStores.map((teamstore, key) => (
-        <TeamStore
-          name={teamstore.name}
-          showNameStore={true}
-          image={teamstore.banner || ''}
-          withEditButton={true}
-          withShareButton={true}
-          withDeleteButton={true}
-          onEditClick={this.editTeamStore(teamstore.shortId)}
-          onDeleteClick={this.toggleDeleteModal(teamstore.shortId)}
-          openShareModalAction={this.handleOpenShareModal(teamstore.shortId)}
-          {...{ key, formatMessage }}
-        />
-      ))
+      myTeamstoresList = teamStores.map((teamstore, key) => {
+        const { shortId } = teamstore
+        return (
+          <TeamStore
+            name={teamstore.name}
+            showNameStore={true}
+            image={teamstore.banner || ''}
+            withEditButton={true}
+            withShareButton={true}
+            withDeleteButton={true}
+            onEditClick={this.editTeamStore(shortId)}
+            onDeleteClick={this.openDeleteModal(shortId)}
+            openShareModalAction={this.handleOpenShareModal(shortId)}
+            onItemClick={this.gotoTeamStore(shortId)}
+            {...{ key, formatMessage }}
+          />
+        )
+      })
     }
 
     return (
@@ -93,8 +91,8 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
           visible={openDeleteModal}
           maskClosable={false}
           closable={false}
-          destroyOnClose={true}
-          onCancel={this.toggleDeleteModal()}
+          // destroyOnClose={true}
+          onCancel={this.closeDeleteModal}
           confirmLoading={deleteLoading}
           okText={'Delete'}
           onOk={this.handleDeleteTeamStore}
@@ -124,7 +122,6 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       storeId,
       deleteTeamStore,
       deleteLoadingAction,
-      clearReducerAction,
       data: { refetch }
     } = this.props
     console.log(storeId)
@@ -143,9 +140,20 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
     history.push(`/create-store?storeId=${storeId}`)
   }
 
-  toggleDeleteModal = (storeId?: string) => () => {
-    const { openDeleteModal, openDeleteModalAction } = this.props
-    openDeleteModalAction(!openDeleteModal, storeId)
+  gotoTeamStore = (storeId: string) => () => {
+    const { history } = this.props
+    history.push(`/store-front?storeId=${storeId}`)
+  }
+
+  openDeleteModal = (storeId: string) => () => {
+    const { openDeleteModalAction, setIdStoreAction } = this.props
+    setIdStoreAction(storeId)
+    openDeleteModalAction(true)
+  }
+
+  closeDeleteModal = () => {
+    const { openDeleteModalAction } = this.props
+    openDeleteModalAction(false)
   }
 
   handleOpenShareModal = (id?: string) => () => {

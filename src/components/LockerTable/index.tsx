@@ -49,8 +49,6 @@ interface Props {
 
 class LockerTable extends React.PureComponent<Props, {}> {
   getTierPrice = (prices: PriceRange[], range = '2-5'): number => {
-    console.log('GET PRICES ', prices)
-
     const index = findIndex(prices, ({ quantity }) => quantity === range)
     return index < 0 ? prices[prices.length - 1].price : prices[index].price
   }
@@ -70,7 +68,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
       onPressVisible,
       teamSizeRange
     } = this.props
-    console.log('LOCKER TABLE ITEMS ', items)
+
     const header = (
       <MediaQuery minDeviceWidth={480}>
         {matches => {

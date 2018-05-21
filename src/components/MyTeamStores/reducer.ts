@@ -1,5 +1,9 @@
 import { fromJS } from 'immutable'
-import { OPEN_DELETE_MODAL, OPEN_SHARE_MODAL } from './constants'
+import {
+  OPEN_DELETE_MODAL,
+  OPEN_SHARE_MODAL,
+  SET_STOREID_TO_DELETE
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -20,6 +24,8 @@ const myTeamStoresReducer: Reducer<any> = (state = initialState, action) => {
         openShare: action.open,
         storeId: action.storeId
       })
+    case SET_STOREID_TO_DELETE:
+      return state.set('storeId', action.storeId)
     default:
       return state
   }
