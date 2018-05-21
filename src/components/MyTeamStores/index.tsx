@@ -120,6 +120,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
 
   handleDeleteTeamStore = async () => {
     const {
+      formatMessage,
       storeId,
       deleteTeamStore,
       deleteLoadingAction,
@@ -130,7 +131,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
       await deleteTeamStore({ variables: { id: storeId } })
       refetch()
     } catch (err) {
-      message.error('Something wrong happened. Please try again!', err)
+      message.error(formatMessage(messages.errorMessage), err)
     }
   }
 

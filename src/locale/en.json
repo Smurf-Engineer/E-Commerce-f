@@ -224,5 +224,15 @@
   "components.LockerTable.visible": "Visible",
   "components.StoreForm.requiredFieldLabel": "This field is required",
   "components.StoreForm.changeLabel": "Change",
-  "componentes.StoreForm.deleteLabel": "Delete"
+  "componentes.StoreForm.deleteLabel": "Delete",
+  "components.MyTeamStores.tittle": "My TeamStores",
+  "components.MyTeamStores.addTeamstoreLabel": "+ ADD NEW TEAM STORE",
+  "components.MyTeamStores.createTeamStoreText":
+    "Creating a team store enables your team memebers to place their orders separately for team kits.",
+  "components.MyAddresses.titleDeleteModal": "Are you sure?",
+  "components.MyAddresses.messageDeleteModal":
+    "This will permanently delete this address",
+  "screen.Teamstores.shareModalTitle": "SHARE YOUR TEAMSTORE!",
+  "screen.Teamstores.errorMessage":
+    "Something wrong happened. Please try again!"
 }

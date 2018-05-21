@@ -29,5 +29,9 @@ export default defineMessages({
   shareModalTitle: {
     id: 'screen.Teamstores.shareModalTitle',
     defaultMessage: 'SHARE YOUR TEAMSTORE!'
+  },
+  errorMessage: {
+    id: 'screen.Teamstores.errorMessage',
+    defaultMessage: 'Something wrong happened. Please try again!'
   }
 })
