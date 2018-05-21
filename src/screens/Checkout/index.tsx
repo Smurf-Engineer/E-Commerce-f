@@ -243,6 +243,7 @@ class Checkout extends React.Component<Props, {}> {
                 />
                 <Review
                   formatMessage={intl.formatMessage}
+                  goToStep={this.handleOnGoToStep}
                   {...{
                     shippingAddress,
                     billingAddress,
@@ -262,7 +263,7 @@ class Checkout extends React.Component<Props, {}> {
               />
             </SummaryContainer>
           </Content>
-          {currentStep !== 1 ? (
+          {currentStep === 0 ? (
             <ContinueButton onClick={this.nextStep}>
               {'Continue'}
             </ContinueButton>
@@ -284,6 +285,11 @@ class Checkout extends React.Component<Props, {}> {
       default:
         break
     }
+  }
+
+  handleOnGoToStep = (step: number) => {
+    const { stepAdvanceAction } = this.props
+    stepAdvanceAction(step - 1)
   }
 
   verifyStepTwo = () => {

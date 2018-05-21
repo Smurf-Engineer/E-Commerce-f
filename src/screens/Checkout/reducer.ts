@@ -136,7 +136,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         loadingBilling: false
       })
     case SET_STRIPE_CARD_DATA:
-      return state.merge({ ...action.stripeCardData })
+      return state.merge({ ...action.stripeCardData, loadingBilling: false })
     default:
       return state
   }
