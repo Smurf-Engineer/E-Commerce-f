@@ -15,8 +15,6 @@ import {
   ContainerReset
 } from './styledComponents'
 
-declare const Snap: any
-
 interface Props {
   onUploadFiles: (files: any) => void
   uploadNewModel: boolean
@@ -34,19 +32,6 @@ class UploadTab extends React.PureComponent<Props, {}> {
   }
 
   preview: any
-
-  getSvgColor = (uri: any) => {
-    Snap.load(uri, (f: any) => {
-      const g = f.select('g')
-      const shape = g.select('polygon')
-      if (shape) {
-        const attributes = shape.attr()
-        console.log('---------------------------')
-        console.log(attributes.style)
-        console.log('---------------------------')
-      }
-    })
-  }
 
   handleUpload = () => {
     const { fileList } = this.state
@@ -72,19 +57,14 @@ class UploadTab extends React.PureComponent<Props, {}> {
       return false
     }
 
-    if (list.length > 2 && file.type !== 'image/svg+xml') {
+    if (list.length === 3 && file.type !== 'application/json') {
+      message.error('Please select a valid JSON file')
+      return false
+    }
+
+    if (list.length === 4 && file.type !== 'image/svg+xml') {
       message.error('Please select a valid SVG file')
       return false
-    } else if (file.type === 'image/svg+xml') {
-      const reader = new FileReader()
-
-      reader.onloadend = () => {
-        this.getSvgColor(reader.result)
-      }
-
-      if (file) {
-        reader.readAsDataURL(file)
-      }
     }
 
     this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))
@@ -126,8 +106,9 @@ class UploadTab extends React.PureComponent<Props, {}> {
             <p>1. OBJ file</p>
             <p>2. MTL file</p>
             <p>3. Bumpmap file</p>
-            <p> 4. ColorBlock 5 ... 1 </p>
+            <p> 4. Config file (JSON) </p>
             <p> 5. Branding </p>
+            <p> 6. Color Blocks </p>
           </Text>
           <Button
             size="large"

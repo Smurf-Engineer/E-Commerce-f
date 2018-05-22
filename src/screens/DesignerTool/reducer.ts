@@ -18,8 +18,8 @@ export const initialState = fromJS({
   currentTab: 0,
   colorBlock: -1,
   colorBlockHovered: -1,
-  colors: ['#13185C', '#3296DC', '#363EAF', '#000000', '#13185C'],
-  styleColors: ['#13185C', '#3296DC', '#363EAF', '#000000', '#13185C'],
+  colors: [],
+  styleColors: [],
   palettes: [],
   paletteName: '',
   designName: '',
@@ -61,7 +61,9 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_UPLOADING_SUCCESS:
       return state.merge({
         uploadingFiles: false,
-        modelConfig: action.modelConfig
+        modelConfig: action.modelConfig,
+        colors: List.of(...action.modelConfig.design.colors),
+        styleColors: List.of(...action.modelConfig.design.colors)
       })
     default:
       return state
