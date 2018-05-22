@@ -218,7 +218,6 @@ class Checkout extends React.Component<Props, {}> {
                 />
                 <div>{'REVIEW'}</div>
               </SwipeableViews>
-              {/* <div>{this.renderStepContent(currentStep)}</div> */}
             </StepsContainer>
             <SummaryContainer>
               <OrderSummary
@@ -331,61 +330,6 @@ class Checkout extends React.Component<Props, {}> {
   handleOnSelectAddress = (address: AddressType, index: number) => {
     const { setSelectedAddressAction } = this.props
     setSelectedAddressAction(address, index)
-  }
-
-  // DELETE AFTER DEMO
-  renderStepContent = (step: number) => {
-    const {
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
-      hasError,
-      intl,
-      showForm,
-      smsCheckAction,
-      emailCheckAction,
-      inputChangeAction,
-      selectDropdownAction,
-      showAddressFormAction
-    } = this.props
-    switch (step) {
-      case 0:
-        return (
-          <Shipping
-            {...{
-              hasError,
-              firstName,
-              lastName,
-              street,
-              apartment,
-              country,
-              stateProvince,
-              city,
-              zipCode,
-              phone,
-              smsCheckAction,
-              emailCheckAction,
-              inputChangeAction,
-              selectDropdownAction,
-              showForm,
-              showAddressFormAction
-            }}
-            formatMessage={intl.formatMessage}
-          />
-        )
-      case 1:
-        return 'step two'
-      case 2:
-        return 'step three'
-      default:
-        return null
-    }
   }
 }
 
