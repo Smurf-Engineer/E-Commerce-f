@@ -10,7 +10,9 @@ import {
   TeamCardHeader,
   StyledImg,
   CardTitle,
-  ShareButton
+  ShareButton,
+  ButtonsContainer,
+  DeleteLabel
 } from './styledComponents'
 
 interface Props {
@@ -18,9 +20,14 @@ interface Props {
   idStore?: string
   name?: string
   showNameStore?: boolean
+  withShareButton?: boolean
+  withEditButton?: boolean
+  withDeleteButton?: boolean
   formatMessage: (messageDescriptor: any) => string
   openShareModalAction?: (id?: string) => void
   onItemClick?: () => void
+  onEditClick?: () => void
+  onDeleteClick?: () => void
 }
 
 const TeamStoreItem = ({
@@ -30,26 +37,54 @@ const TeamStoreItem = ({
   formatMessage,
   openShareModalAction,
   showNameStore = false,
-  onItemClick
+  withEditButton = false,
+  withShareButton = false,
+  withDeleteButton = false,
+  onItemClick,
+  onEditClick,
+  onDeleteClick
 }: Props) => {
   const handleClickShare = () => {
     if (openShareModalAction) {
       openShareModalAction(idStore)
     }
   }
+  const handleClickEdit = () => {
+    if (onEditClick) {
+      onEditClick()
+    }
+  }
+  const handleClickDelete = () => {
+    if (onDeleteClick) {
+      onDeleteClick()
+    }
+  }
   return (
     <Container>
       <TeamStoreCard>
-        {showNameStore && (
-          <TeamCardHeader>
-            <CardTitle>{name}</CardTitle>
-            <ShareButton onClick={handleClickShare}>
-              {formatMessage(messages.shareButtonLabel)}
-            </ShareButton>
-          </TeamCardHeader>
-        )}
+        <TeamCardHeader>
+          {showNameStore && (
+            <CardTitle onClick={!image ? onItemClick : () => {}}>
+              {name}
+            </CardTitle>
+          )}
+          <ButtonsContainer>
+            {withEditButton && (
+              <ShareButton onClick={handleClickEdit}>{'Edit'}</ShareButton>
+            )}
+            {withShareButton && (
+              <ShareButton onClick={handleClickShare}>
+                {formatMessage(messages.shareButtonLabel)}
+              </ShareButton>
+            )}
+            {withDeleteButton && (
+              <DeleteLabel onClick={handleClickDelete}>{'Delete'}</DeleteLabel>
+            )}
+          </ButtonsContainer>
+        </TeamCardHeader>
+
         <CardContent>
-          <StyledImg src={image} onClick={onItemClick} />
+          {image && <StyledImg src={image} onClick={onItemClick} />}
         </CardContent>
       </TeamStoreCard>
     </Container>

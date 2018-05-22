@@ -2,6 +2,7 @@
  * CreateStore Reducer - Created by david on 09/04/18.
  */
 import { fromJS } from 'immutable'
+import moment from 'moment'
 import {
   DEFAULT_ACTION,
   SET_TEAM_SIZE_ACTION,
@@ -18,7 +19,10 @@ import {
   SET_ITEM_VISIBLE_ACTION,
   SET_LOADING_ACTION,
   CREATE_STORE_SUCCESS,
-  MOVE_ROW
+  MOVE_ROW,
+  SET_STORE_DATA_TO_EDIT,
+  DELETE_BANNER_ON_EDIT,
+  CLEAR_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -36,7 +40,8 @@ export const initialState = fromJS({
   openLocker: false,
   selectedItems: {},
   items: [],
-  loading: false
+  loading: false,
+  banner: ''
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
@@ -84,9 +89,10 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_ITEMS_ADD_ACTION: {
       const items = state.get('items')
-      const updatedItems = items.push(...action.items)
+      const addItem = items.push(...action.items)
+      const itemsMap = addItem.map((item: any) => fromJS(item))
       return state.merge({
-        items: updatedItems,
+        items: itemsMap,
         openLocker: false,
         selectedItems: {}
       })
@@ -94,12 +100,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
     case SET_ITEM_VISIBLE_ACTION: {
       const { index, visible } = action
       const items = state.get('items')
-      const updatedItems = items.update(index, (item: any) => {
-        const updatedItem = Object.assign({}, item)
-        updatedItem.visible = visible
-        return updatedItem
-      })
-      return state.set('items', updatedItems)
+      const updatedItems = items.setIn([index, 'visible'], visible)
+      return state.merge({ items: updatedItems })
     }
     case MOVE_ROW: {
       const { index, hoverIndex, row } = action
@@ -107,7 +109,57 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
       const updatedItems = items.splice(index, 1).insert(hoverIndex, row)
       return state.set('items', updatedItems)
     }
-
+    case SET_STORE_DATA_TO_EDIT: {
+      const {
+        data: {
+          id,
+          shortId,
+          name,
+          banner,
+          startDate,
+          endDate,
+          privateStore,
+          onDemand,
+          items,
+          teamSize: { id: sizeId, size }
+        }
+      } = action
+      return state.merge({
+        storeId: id,
+        storeShortId: shortId,
+        name: name,
+        startDate: startDate,
+        startDateMoment: moment(startDate),
+        endDate: endDate,
+        endDateMoment: moment(endDate),
+        teamSizeId: sizeId,
+        teamSizeRange: size,
+        items: items,
+        privateStore: privateStore,
+        onDemand: onDemand,
+        banner: banner
+      })
+    }
+    case DELETE_BANNER_ON_EDIT:
+      return state.merge({ banner: '' })
+    case CLEAR_DATA:
+      return state.merge({
+        teamSizeId: 1,
+        teamSizeRange: '2-5',
+        name: '',
+        startDate: '',
+        startDateMoment: null,
+        endDate: '',
+        endDateMoment: null,
+        privateStore: true,
+        onDemand: false,
+        passCode: '',
+        openLocker: false,
+        selectedItems: {},
+        items: [],
+        loading: false,
+        banner: ''
+      })
     default:
       return state
   }

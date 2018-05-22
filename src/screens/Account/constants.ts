@@ -41,3 +41,4 @@ export const options = [
 export const DEFAULT_ACTION = `${namespace}/DEFAULT_ACTION`
 export const SET_OPEN_KEYS = `${namespace}/SET_OPEN_KEYS`
 export const SET_CURRENT_SCREEN = `${namespace}/SET_CURRENT_SCREEN`
+export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`

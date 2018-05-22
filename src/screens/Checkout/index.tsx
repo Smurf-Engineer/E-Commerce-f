@@ -13,7 +13,6 @@ import forEach from 'lodash/forEach'
 import * as checkoutActions from './actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
-import { GetAddressListQuery } from '../../components/Shippping/data'
 import {
   Container,
   Content,
@@ -261,7 +260,6 @@ class Checkout extends React.Component<Props, {}> {
                   }}
                 />
               </SwipeableViews>
-              {/* <div>{this.renderStepContent(currentStep)}</div> */}
             </StepsContainer>
             <SummaryContainer>
               <OrderSummary
@@ -378,8 +376,7 @@ class Checkout extends React.Component<Props, {}> {
     const {
       data: { createUserAddress }
     } = await addNewAddress({
-      variables: { address },
-      refetchQueries: [{ query: GetAddressListQuery }]
+      variables: { address }
     })
 
     return createUserAddress

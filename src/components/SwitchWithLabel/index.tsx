@@ -17,11 +17,12 @@ interface Props {
   label: string
   message: string
   passCode?: string
-  checked: boolean
+  checked?: boolean
   width?: string
   withInput?: boolean
   errorLabel?: string
   hasError?: boolean
+  defaultChecked?: boolean
   onChange: (checked: boolean) => void
   updatePassCodeAction?: (code: string) => void
 }
@@ -36,10 +37,13 @@ const SwitchWithLabel = ({
   width,
   errorLabel,
   hasError,
+  defaultChecked,
   updatePassCodeAction = () => {}
 }: Props) => {
   const handleUpdatePassCode = (evnt: React.ChangeEvent<HTMLInputElement>) => {
-    const { target: { value } } = evnt
+    const {
+      target: { value }
+    } = evnt
 
     if (value.length > 15) {
       return
@@ -52,7 +56,7 @@ const SwitchWithLabel = ({
     <Container {...{ width }}>
       <Row>
         <Label>{label}</Label>
-        <Switch {...{ onChange, checked }} />
+        <Switch {...{ defaultChecked, onChange, checked }} />
       </Row>
       <Message>{message}</Message>
       {withInput && (
