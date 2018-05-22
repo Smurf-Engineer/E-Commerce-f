@@ -17,7 +17,9 @@ import {
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
-  SET_STRIPE_CARD_DATA
+  SET_STRIPE_CARD_DATA,
+  SET_LOADING_PLACE_ORDER,
+  RESET_DATA
 } from './constants'
 import { AnyAction, AddressType, StripeCardData } from '../../types/common'
 
@@ -105,4 +107,13 @@ export const setStripeCardDataAction = (
 ): AnyAction => ({
   type: SET_STRIPE_CARD_DATA,
   stripeCardData
+})
+
+export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_PLACE_ORDER,
+  loading
+})
+
+export const resetReducerAction = (): AnyAction => ({
+  type: RESET_DATA
 })

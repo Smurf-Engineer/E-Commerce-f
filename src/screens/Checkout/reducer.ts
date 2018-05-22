@@ -18,7 +18,9 @@ import {
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
-  SET_STRIPE_CARD_DATA
+  SET_STRIPE_CARD_DATA,
+  SET_LOADING_PLACE_ORDER,
+  RESET_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -58,7 +60,9 @@ export const initialState = fromJS({
   cardBrand: '',
   stripeError: '',
   loadingBilling: false,
-  stripeToken: ''
+  stripeToken: '',
+  // Review
+  loadingPlaceOrder: false
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -137,6 +141,10 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_STRIPE_CARD_DATA:
       return state.merge({ ...action.stripeCardData, loadingBilling: false })
+    case SET_LOADING_PLACE_ORDER:
+      return state.set('loadingPlaceOrder', action.loading)
+    case RESET_DATA:
+      return state.set(initialState)
     default:
       return state
   }

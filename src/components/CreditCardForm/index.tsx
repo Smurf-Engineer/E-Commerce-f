@@ -195,7 +195,6 @@ class CreditCardForm extends React.Component<Props, {}> {
     if (stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else {
-      console.log(stripeResponse)
       const {
         token: {
           id,
