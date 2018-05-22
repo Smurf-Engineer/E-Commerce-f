@@ -22,23 +22,16 @@ import {
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddress from '../MyAddress'
+import { AddressType, StripeCardData } from '../../types/common'
 
 interface Props {
   stripe: any
   cardHolderName: string
-  firstName: string
-  lastName: string
-  street: string
-  apartment: string
-  country: string
-  stateProvince: string
-  city: string
-  zipCode: string
-  phone: string
+  billingAddress: AddressType
   hasError: boolean
   stripeError: string
   loadingBilling: boolean
-  setStripeTokenAction: (token: string) => void
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   sameBillingAndShipping: boolean
   setStripeErrorAction: (error: string) => void
@@ -56,15 +49,17 @@ class CreditCardForm extends React.Component<Props, {}> {
     const {
       formatMessage,
       cardHolderName,
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
+      billingAddress: {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        city,
+        zipCode,
+        phone
+      },
       hasError,
       stripeError,
       loadingBilling,
@@ -152,20 +147,22 @@ class CreditCardForm extends React.Component<Props, {}> {
     const {
       stripe,
       cardHolderName,
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
+      billingAddress: {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        city,
+        zipCode,
+        phone
+      },
       sameBillingAndShipping,
       invalidBillingFormAction,
       setStripeErrorAction,
       setLoadingBillingAction,
-      setStripeTokenAction,
+      setStripeCardDataAction,
       nextStep
     } = this.props
 
@@ -198,7 +195,22 @@ class CreditCardForm extends React.Component<Props, {}> {
     if (stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else {
-      setStripeTokenAction(stripeResponse.token.id)
+      const {
+        token: {
+          id,
+          card: { brand, last4, exp_month, exp_year }
+        }
+      } = stripeResponse
+      const year = String(exp_year).substring(2, 4)
+      const month = exp_month > 9 ? exp_month : `0${exp_month}`
+      const cardExpDate = `${month}/${year}`
+      const stripeDataAction: StripeCardData = {
+        cardNumber: last4,
+        cardExpDate,
+        cardBrand: brand,
+        stripeToken: id
+      }
+      setStripeCardDataAction(stripeDataAction)
       nextStep()
     }
   }

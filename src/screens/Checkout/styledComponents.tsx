@@ -36,11 +36,11 @@ export const SummaryTitle = styled.div`
 `
 
 export const StepsContainer = styled.div`
-  width: 60%;
+  width: 70%;
 `
 
 export const SummaryContainer = styled.div`
-  width: 30%;
+  width: 25%;
   padding-left: 20px;
 `
 export const StepWrapper = styled.div`
@@ -72,6 +72,20 @@ export const StepWrapper = styled.div`
 export const ContinueButton = styled(Button)`
   height: 40px;
   width: 138.23px;
+  border-radius: 2px;
+  background-color: ${primaryColor};
+  color: #fff;
+
+  &:hover {
+    border-color: ${primaryColor};
+    background-color: ${primaryColor};
+    color: #fff;
+  }
+`
+
+export const PlaceOrderButton = styled(Button)`
+  height: 40px;
+  width: 100%;
   border-radius: 2px;
   background-color: ${primaryColor};
   color: #fff;

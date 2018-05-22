@@ -16,9 +16,12 @@ import {
   SET_SELECTED_ADDRESS,
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
-  SET_STRIPE_TOKEN
+  SET_STRIPE_TOKEN,
+  SET_STRIPE_CARD_DATA,
+  SET_LOADING_PLACE_ORDER,
+  RESET_DATA
 } from './constants'
-import { AnyAction, AddressType } from '../../types/common'
+import { AnyAction, AddressType, StripeCardData } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -97,4 +100,20 @@ export const setLoadingBillingAction = (loading: boolean): AnyAction => ({
 export const setStripeTokenAction = (token: string): AnyAction => ({
   type: SET_STRIPE_TOKEN,
   token
+})
+
+export const setStripeCardDataAction = (
+  stripeCardData: StripeCardData
+): AnyAction => ({
+  type: SET_STRIPE_CARD_DATA,
+  stripeCardData
+})
+
+export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_PLACE_ORDER,
+  loading
+})
+
+export const resetReducerAction = (): AnyAction => ({
+  type: RESET_DATA
 })

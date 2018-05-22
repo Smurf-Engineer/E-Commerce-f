@@ -9,15 +9,17 @@ import { AddressType } from '../../types/common'
 describe('<Shippping />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const firstName = ''
-    const lastName = ''
-    const street = ''
-    const apartment = ''
-    const country = ''
-    const stateProvince = ''
-    const city = ''
-    const zipCode = ''
-    const phone = ''
+    const shippingAddress: AddressType = {
+      firstName: '',
+      lastName: '',
+      street: '',
+      apartment: '',
+      country: '',
+      stateProvince: '',
+      city: '',
+      zipCode: '',
+      phone: ''
+    }
     const hasError = false
     const showForm = false
     const indexAddressSelected = -1
@@ -36,15 +38,7 @@ describe('<Shippping />', () => {
       <Shippping
         formatMessage={format}
         {...{
-          firstName,
-          lastName,
-          street,
-          apartment,
-          country,
-          stateProvince,
-          city,
-          zipCode,
-          phone,
+          shippingAddress,
           hasError,
           showForm,
           selectDropdownAction,
