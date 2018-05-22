@@ -58,6 +58,7 @@ interface Data extends QueryProps {
 }
 
 interface Props {
+  history: any
   formatMessage: (messageDescriptor: any) => string
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   openEmailContactDialogAction: (open: boolean) => void
@@ -89,6 +90,16 @@ export class StoreFrontContent extends React.Component<Props, {}> {
 
   handleOnPressDelete = (id: number) => {
     // TODO: Handle delete
+  }
+
+  handleOnPressEdit = () => {
+    const { history } = this.props
+    const {
+      data: { getTeamStore }
+    } = this.props
+
+    const storeShortId = get(getTeamStore, 'short_id', '')
+    history.push(`/create-store?storeId=${storeShortId}`)
   }
 
   handleOnOpenQuickView = (id: number, yotpoId: string) => {
@@ -241,7 +252,7 @@ export class StoreFrontContent extends React.Component<Props, {}> {
                   </ButtonWrapper>
                   {teamStoreOwner ? (
                     <ButtonWrapper>
-                      <Button type="primary">
+                      <Button type="primary" onClick={this.handleOnPressEdit}>
                         <FormattedMessage {...messages.edit} />
                       </Button>
                     </ButtonWrapper>

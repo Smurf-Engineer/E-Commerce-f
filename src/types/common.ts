@@ -242,6 +242,7 @@ export type TeamstoreType = {
   id: number
   shortId: string
   name: string
+  banner: string
   cutOffDate: string
   deliveryDate: string
   private: boolean

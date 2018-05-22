@@ -119,6 +119,7 @@ export class StoreFront extends React.Component<Props, {}> {
             setEmailMessageAction={setEmailMessageAction}
             sendMessageLoadingAction={sendMessageLoadingAction}
             setPassCodeAction={setPassCodeAction}
+            {...{ history }}
           />
         </Container>
       </TeamsLayout>

@@ -20,6 +20,7 @@ export const SearchStoresQuery = gql`
         id
         shortId: short_id
         name
+        banner
         items {
           design {
             id
