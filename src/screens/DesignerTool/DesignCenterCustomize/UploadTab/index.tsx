@@ -15,6 +15,8 @@ import {
   ContainerReset
 } from './styledComponents'
 
+declare const Snap: any
+
 interface Props {
   onUploadFiles: (files: any) => void
   uploadNewModel: boolean
@@ -27,7 +29,23 @@ const getFileExtension = (filename: string) =>
 class UploadTab extends React.PureComponent<Props, {}> {
   state = {
     fileList: [],
-    uploading: false
+    uploading: false,
+    color: []
+  }
+
+  preview: any
+
+  getSvgColor = (uri: any) => {
+    Snap.load(uri, (f: any) => {
+      const g = f.select('g')
+      const shape = g.select('polygon')
+      if (shape) {
+        const attributes = shape.attr()
+        console.log('---------------------------')
+        console.log(attributes.style)
+        console.log('---------------------------')
+      }
+    })
   }
 
   handleUpload = () => {
@@ -57,6 +75,16 @@ class UploadTab extends React.PureComponent<Props, {}> {
     if (list.length > 2 && file.type !== 'image/svg+xml') {
       message.error('Please select a valid SVG file')
       return false
+    } else if (file.type === 'image/svg+xml') {
+      const reader = new FileReader()
+
+      reader.onloadend = () => {
+        this.getSvgColor(reader.result)
+      }
+
+      if (file) {
+        reader.readAsDataURL(file)
+      }
     }
 
     this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))

@@ -41,3 +41,11 @@ export const Top = styled.div`
   padding: 16px;
   background-color: #eff2f4;
 `
+
+export const Preview = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  background-color: #eff2f4;
+`

@@ -12,6 +12,10 @@ const renderHtml = (styleTags: any, html: any) => {
           <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
           <script type="text/javascript" src="js/libs/stats.min.js"></script>
           <script type="text/javascript" src="js/libs/dat.gui.min.js"></script>
+          <script type="text/javascript" src="js/snap.svg-min.js"></script>
+          <script type="text/javascript" src="http://canvg.github.io/canvg/rgbcolor.js"></script> 
+          <script type="text/javascript" src="http://canvg.github.io/canvg/StackBlur.js"></script>
+          <script type="text/javascript" src="http://canvg.github.io/canvg/canvg.js"></script> 
           <script>
             window.fbAsyncInit = function() {
               FB.init({
