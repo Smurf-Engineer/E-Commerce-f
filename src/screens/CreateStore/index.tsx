@@ -326,7 +326,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
   getCheckedItems = (items: DesignType[]) => {
     const checkedItems = {}
     for (const item of items) {
-      checkedItems[item.id] = true
+      const itemId = get(item, 'design.id', item.id)
+      checkedItems[itemId] = true
     }
 
     return checkedItems
