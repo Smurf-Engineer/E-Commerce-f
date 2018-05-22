@@ -26,7 +26,7 @@ export const initialState = fromJS({
   street: '',
   apartment: '',
   country: '',
-  state: '',
+  stateProvince: '',
   city: '',
   zipCode: '',
   phone: '',
@@ -72,7 +72,6 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
     case SET_ADDRESS_UPDATE:
       return state.merge({
         ...action.address,
-        state: action.address.stateProvince,
         addressIdToMutate: action.address.id,
         showAddressModal: true
       })

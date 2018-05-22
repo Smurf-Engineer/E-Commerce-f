@@ -7,6 +7,7 @@ import {
   Container,
   Text,
   ItalicText,
+  StyledCheckbox,
   StyledButton,
   EditButton,
   SecondaryButtons
@@ -17,15 +18,17 @@ interface Props {
   street: string
   apartment?: string
   city: string
-  state?: string
   zipCode: string
   country: string
-  defaultBilling: boolean
-  defaultShipping: boolean
+  defaultBilling?: boolean
+  defaultShipping?: boolean
   addressIndex: number
+  isSelected?: boolean
   showSecondaryButtons?: boolean
+  hideBottomButtons?: boolean
   formatMessage: (messageDescriptor: any) => string
-  showAddressFormAction: (show: boolean, index?: number) => void
+  selectAddressAction?: (index: number) => void
+  showAddressFormAction?: (show: boolean, index?: number) => void
   showConfirmDeleteAction?: (index: number) => void
 }
 
@@ -34,7 +37,6 @@ const MyAddress = ({
   street,
   apartment,
   city,
-  state,
   zipCode,
   country,
   defaultBilling,
@@ -42,7 +44,10 @@ const MyAddress = ({
   addressIndex,
   formatMessage,
   showSecondaryButtons,
-  showAddressFormAction,
+  hideBottomButtons,
+  isSelected = false,
+  selectAddressAction = () => {},
+  showAddressFormAction = () => {},
   showConfirmDeleteAction = () => {}
 }: Props) => {
   const handleOnEdit = () => {
@@ -51,8 +56,13 @@ const MyAddress = ({
   const handleOnDelete = () => {
     showConfirmDeleteAction(addressIndex)
   }
+  const handleOnSelectAddress = () => {
+    selectAddressAction(addressIndex)
+  }
   const buttons = !showSecondaryButtons ? (
-    <StyledButton>{formatMessage(messages.useThisAddress)}</StyledButton>
+    <StyledCheckbox checked={isSelected} onChange={handleOnSelectAddress}>
+      {formatMessage(messages.useThisAddress)}
+    </StyledCheckbox>
   ) : (
     <SecondaryButtons>
       <EditButton type="primary" onClick={handleOnEdit}>
@@ -76,16 +86,15 @@ const MyAddress = ({
       <ItalicText>{formatMessage(footerMessageText)}</ItalicText>
     ) : null
   return (
-    <Container {...{ showSecondaryButtons }}>
+    <Container {...{ showSecondaryButtons, isSelected }}>
       <Text>{name}</Text>
       <Text>{street}</Text>
       {apartment && <Text>{apartment}</Text>}
       <Text>{city}</Text>
-      <Text>{state}</Text>
       <Text>{zipCode}</Text>
       <Text>{country}</Text>
       {footerMessage}
-      {buttons}
+      {!hideBottomButtons ? buttons : null}
     </Container>
   )
 }

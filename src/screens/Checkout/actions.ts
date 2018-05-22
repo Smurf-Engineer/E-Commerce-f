@@ -5,13 +5,20 @@ import {
   DEFAULT_ACTION,
   STEP_ADVANCE,
   VALID_FORM,
+  VALID_BILLING_FORM,
   CHANGE_INPUT,
   SELECT_DROPDOWN,
   SMS_CHECK,
   EMAIL_CHECK,
-  SHOW_ADDRESS_FORM
+  SHOW_ADDRESS_FORM,
+  SAME_BILLING_AND_SHIPPING_CHECKED,
+  SAME_BILLING_AND_SHIPPING_UNCHECKED,
+  SET_SELECTED_ADDRESS,
+  SET_STRIPE_ERROR,
+  SET_LOADING_BILLING,
+  SET_STRIPE_TOKEN
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, AddressType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -25,6 +32,11 @@ export const stepAdvanceAction = (step: number): AnyAction => ({
 
 export const validFormAction = (hasError: boolean): AnyAction => ({
   type: VALID_FORM,
+  hasError
+})
+
+export const invalidBillingFormAction = (hasError: boolean): AnyAction => ({
+  type: VALID_BILLING_FORM,
   hasError
 })
 
@@ -53,4 +65,36 @@ export const emailCheckAction = (checked: boolean): AnyAction => ({
 export const showAddressFormAction = (show: boolean): AnyAction => ({
   type: SHOW_ADDRESS_FORM,
   show
+})
+
+export const sameBillingAndAddressCheckedAction = (): AnyAction => ({
+  type: SAME_BILLING_AND_SHIPPING_CHECKED
+})
+
+export const sameBillingAndAddressUncheckedAction = (): AnyAction => ({
+  type: SAME_BILLING_AND_SHIPPING_UNCHECKED
+})
+
+export const setSelectedAddressAction = (
+  address: AddressType,
+  index: number
+): AnyAction => ({
+  type: SET_SELECTED_ADDRESS,
+  address,
+  index
+})
+
+export const setStripeErrorAction = (error: string): AnyAction => ({
+  type: SET_STRIPE_ERROR,
+  error
+})
+
+export const setLoadingBillingAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING_BILLING,
+  loading
+})
+
+export const setStripeTokenAction = (token: string): AnyAction => ({
+  type: SET_STRIPE_TOKEN,
+  token
 })

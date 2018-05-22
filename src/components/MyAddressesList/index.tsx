@@ -18,9 +18,12 @@ import { AddressType } from '../../types/common'
 interface Props {
   items: AddressType[]
   listForMyAccount?: boolean
+  showForm?: boolean
+  indexAddressSelected?: number
   formatMessage: (messageDescriptor: any) => string
   showAddressFormAction: (show: boolean, index?: number) => void
   showConfirmDeleteAction?: (index: number) => void
+  selectAddressAction?: (index: number) => void
 }
 
 export class MyAddressesList extends React.Component<Props, {}> {
@@ -30,7 +33,9 @@ export class MyAddressesList extends React.Component<Props, {}> {
       items,
       listForMyAccount,
       showAddressFormAction,
-      showConfirmDeleteAction
+      showConfirmDeleteAction,
+      selectAddressAction,
+      indexAddressSelected
     } = this.props
 
     const showList = items && items.length
@@ -56,8 +61,10 @@ export class MyAddressesList extends React.Component<Props, {}> {
                 showAddressFormAction,
                 showConfirmDeleteAction,
                 defaultBilling,
-                defaultShipping
+                defaultShipping,
+                selectAddressAction
               }}
+              isSelected={indexAddressSelected === key}
               addressIndex={key}
               name={`${firstName} ${lastName}`}
               street={street}
@@ -92,8 +99,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
   }
 
   showAddressForm = () => {
-    const { showAddressFormAction } = this.props
-    showAddressFormAction(true)
+    const { showAddressFormAction, showForm } = this.props
+    showAddressFormAction(!showForm)
   }
 }
 

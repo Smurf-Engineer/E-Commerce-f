@@ -23,6 +23,7 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
+import Payment from '../../components/Payment'
 import OrderSummary from '../../components/OrderSummary'
 import { AddressType, CartItemDetail, Product } from '../../types/common'
 
@@ -41,21 +42,43 @@ interface Props extends RouteComponentProps<any> {
   street: string
   apartment: string
   country: string
-  state: string
+  stateProvince: string
   city: string
   zipCode: string
   phone: string
-  currentStep: number
   hasError: boolean
   showForm: boolean
+  indexAddressSelected: number
+  billingFirstName: string
+  billingLastName: string
+  billingStreet: string
+  billingApartment: string
+  billingCountry: string
+  billingStateProvince: string
+  billingCity: string
+  billingZipCode: string
+  billingPhone: string
+  billingHasError: boolean
+  sameBillingAndShipping: boolean
+  currentStep: number
   addNewAddress: any
+  cardHolderName: string
+  stripeError: string
+  loadingBilling: boolean
+  setStripeTokenAction: (token: string) => void
+  setLoadingBillingAction: (loading: boolean) => void
+  setStripeErrorAction: (error: string) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
+  invalidBillingFormAction: (hasError: boolean) => void
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
+  setSelectedAddressAction: (address: AddressType, indexAddress: number) => void
+  sameBillingAndAddressCheckedAction: () => void
+  sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
   cart: CartItems[]
 }
@@ -77,16 +100,37 @@ class Checkout extends React.Component<Props, {}> {
       street,
       apartment,
       country,
-      state,
+      stateProvince,
       city,
       zipCode,
       phone,
       showForm,
+      indexAddressSelected,
+      billingFirstName,
+      billingLastName,
+      billingStreet,
+      billingApartment,
+      billingCountry,
+      billingStateProvince,
+      billingCity,
+      billingZipCode,
+      billingPhone,
+      billingHasError,
+      cardHolderName,
+      sameBillingAndShipping,
       smsCheckAction,
       emailCheckAction,
       inputChangeAction,
       selectDropdownAction,
       showAddressFormAction,
+      sameBillingAndAddressCheckedAction,
+      sameBillingAndAddressUncheckedAction,
+      invalidBillingFormAction,
+      stripeError,
+      setStripeErrorAction,
+      loadingBilling,
+      setLoadingBillingAction,
+      setStripeTokenAction,
       cart
     } = this.props
 
@@ -129,7 +173,7 @@ class Checkout extends React.Component<Props, {}> {
                     street,
                     apartment,
                     country,
-                    state,
+                    stateProvince,
                     city,
                     zipCode,
                     phone,
@@ -138,14 +182,42 @@ class Checkout extends React.Component<Props, {}> {
                     inputChangeAction,
                     selectDropdownAction,
                     showForm,
-                    showAddressFormAction
+                    showAddressFormAction,
+                    indexAddressSelected
                   }}
+                  setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                 />
-                <div>{'PAYMENT'}</div>
+                <Payment
+                  formatMessage={intl.formatMessage}
+                  hasError={billingHasError}
+                  firstName={billingFirstName}
+                  lastName={billingLastName}
+                  street={billingStreet}
+                  apartment={billingApartment}
+                  country={billingCountry}
+                  stateProvince={billingStateProvince}
+                  city={billingCity}
+                  zipCode={billingZipCode}
+                  phone={billingPhone}
+                  nextStep={this.nextStep}
+                  {...{
+                    cardHolderName,
+                    stripeError,
+                    setStripeErrorAction,
+                    inputChangeAction,
+                    selectDropdownAction,
+                    sameBillingAndShipping,
+                    sameBillingAndAddressCheckedAction,
+                    sameBillingAndAddressUncheckedAction,
+                    invalidBillingFormAction,
+                    loadingBilling,
+                    setLoadingBillingAction,
+                    setStripeTokenAction
+                  }}
+                />
                 <div>{'REVIEW'}</div>
               </SwipeableViews>
-              {/* <div>{this.renderStepContent(currentStep)}</div> */}
             </StepsContainer>
             <SummaryContainer>
               <OrderSummary
@@ -156,13 +228,36 @@ class Checkout extends React.Component<Props, {}> {
               />
             </SummaryContainer>
           </Content>
-          <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
+          {currentStep !== 1 ? (
+            <ContinueButton onClick={this.nextStep}>
+              {'Continue'}
+            </ContinueButton>
+          ) : null}
         </Container>
       </Layout>
     )
   }
 
   nextStep = () => {
+    const { currentStep } = this.props
+    switch (currentStep) {
+      case 0:
+        this.verifyStepOne()
+        break
+      case 1:
+        this.verifyStepTwo()
+        break
+      default:
+        break
+    }
+  }
+
+  verifyStepTwo = () => {
+    const { currentStep, stepAdvanceAction } = this.props
+    stepAdvanceAction(currentStep + 1)
+  }
+
+  verifyStepOne = () => {
     const {
       currentStep,
       stepAdvanceAction,
@@ -171,15 +266,20 @@ class Checkout extends React.Component<Props, {}> {
       street,
       apartment,
       country,
-      state: stateProvince,
+      stateProvince,
       city,
       zipCode,
       phone,
       validFormAction,
-      showAddressFormAction
+      showAddressFormAction,
+      indexAddressSelected
       //   smsCheckAction,
       //   emailCheckAction
     } = this.props
+    if (indexAddressSelected !== -1) {
+      stepAdvanceAction(currentStep + 1)
+      return
+    }
     const error =
       !firstName ||
       !lastName ||
@@ -227,59 +327,9 @@ class Checkout extends React.Component<Props, {}> {
     return createUserAddress
   }
 
-  // DELETE AFTER DEMO
-  renderStepContent = (step: number) => {
-    const {
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      state,
-      city,
-      zipCode,
-      phone,
-      hasError,
-      intl,
-      showForm,
-      smsCheckAction,
-      emailCheckAction,
-      inputChangeAction,
-      selectDropdownAction,
-      showAddressFormAction
-    } = this.props
-    switch (step) {
-      case 0:
-        return (
-          <Shipping
-            {...{
-              hasError,
-              firstName,
-              lastName,
-              street,
-              apartment,
-              country,
-              state,
-              city,
-              zipCode,
-              phone,
-              smsCheckAction,
-              emailCheckAction,
-              inputChangeAction,
-              selectDropdownAction,
-              showForm,
-              showAddressFormAction
-            }}
-            formatMessage={intl.formatMessage}
-          />
-        )
-      case 1:
-        return 'step two'
-      case 2:
-        return 'step three'
-      default:
-        return null
-    }
+  handleOnSelectAddress = (address: AddressType, index: number) => {
+    const { setSelectedAddressAction } = this.props
+    setSelectedAddressAction(address, index)
   }
 }
 

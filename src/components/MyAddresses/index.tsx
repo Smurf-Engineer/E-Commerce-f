@@ -38,7 +38,7 @@ interface Props {
   street: string
   apartment: string
   country: string
-  state: string
+  stateProvince: string
   city: string
   zipCode: string
   phone: string
@@ -63,6 +63,7 @@ interface Props {
   setModalLoadingAction: (loading: boolean) => void
   setDeleteLoadingAction: (loading: boolean) => void
   setAddressToUpdateAction: (address: AddressType) => void
+  selectAddressAction?: (index: number) => void
   resetReducerDataAction: () => void
   addNewAddress: (variables: {}) => void
   updateAddress: (variables: {}) => void
@@ -83,7 +84,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       street,
       apartment,
       country,
-      state,
+      stateProvince,
       city,
       zipCode,
       phone,
@@ -91,11 +92,12 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       selectDropdownAction,
       inputChangeAction,
       defaultShipping,
-      defaultBilling
+      defaultBilling,
+      selectAddressAction
     } = this.props
     const content = addresses.length ? (
       <MyAddressesList
-        {...{ formatMessage }}
+        {...{ formatMessage, selectAddressAction }}
         items={addresses}
         showAddressFormAction={this.handleOnEditAddress}
         showConfirmDeleteAction={this.handleOnShowDeleteAddressConfirm}
@@ -129,7 +131,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
               street,
               apartment,
               country,
-              state,
+              stateProvince,
               city,
               zipCode,
               phone,
@@ -246,7 +248,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       street,
       apartment,
       country,
-      state,
+      stateProvince,
       city,
       zipCode,
       phone,
@@ -264,7 +266,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       !lastName ||
       !street ||
       !country ||
-      !state ||
+      !stateProvince ||
       !city ||
       !zipCode ||
       !phone
@@ -280,7 +282,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       street,
       apartment,
       country,
-      stateProvince: state,
+      stateProvince,
       city,
       zipCode,
       phone,

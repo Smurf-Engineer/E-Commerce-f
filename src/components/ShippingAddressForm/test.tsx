@@ -13,7 +13,7 @@ describe('<ShippingAddressForm />', () => {
     const street = ''
     const apartment = ''
     const country = ''
-    const state = ''
+    const stateProvince = ''
     const city = ''
     const zipCode = ''
     const phone = ''
@@ -27,7 +27,7 @@ describe('<ShippingAddressForm />', () => {
           street,
           apartment,
           country,
-          state,
+          stateProvince,
           city,
           zipCode,
           phone,
