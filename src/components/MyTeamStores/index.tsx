@@ -95,7 +95,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
           destroyOnClose={true}
           onCancel={this.closeDeleteModal}
           confirmLoading={deleteLoading}
-          okText={'Delete'}
+          okText={formatMessage(messages.deleteModalLabel)}
           onOk={this.handleDeleteTeamStore}
         >
           <DeleteConfirmMessage>

@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.MyTeamStores.tittle',
-    defaultMessage: 'My   TeamStores'
+    defaultMessage: 'My TeamStores'
   },
   addTeamstoreLabel: {
     id: 'components.MyTeamStores.addTeamstoreLabel',
@@ -33,5 +33,9 @@ export default defineMessages({
   errorMessage: {
     id: 'screen.Teamstores.errorMessage',
     defaultMessage: 'Something wrong happened. Please try again!'
+  },
+  deleteModalLabel: {
+    id: 'screen.Teamstores.deleteModalLabel',
+    defaultMessage: 'Delete'
   }
 })
