@@ -50,7 +50,7 @@ class Payment extends React.PureComponent<Props, {}> {
     stripeJs.async = true
     stripeJs.onload = () => {
       this.setState({
-        stripe: window.Stripe('pk_test_lkyGYEP7Utu0LB0RytmjtAcA')
+        stripe: window.Stripe('pk_test_USJaHD7YvJFcFsgwOixnJDrq')
       })
     }
     // tslint:disable-next-line:no-unused-expression

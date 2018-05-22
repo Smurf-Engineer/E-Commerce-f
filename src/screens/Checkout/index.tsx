@@ -10,7 +10,7 @@ import Steps from 'antd/lib/steps'
 import SwipeableViews from 'react-swipeable-views'
 import * as checkoutActions from './actions'
 import messages from './messages'
-import { AddAddressMutation } from './data'
+import { AddAddressMutation, PlaceOrderMutation } from './data'
 import { GetAddressListQuery } from '../../components/Shippping/data'
 import {
   Container,
@@ -19,7 +19,8 @@ import {
   StepsContainer,
   SummaryContainer,
   ContinueButton,
-  StepWrapper
+  StepWrapper,
+  PlaceOrderButton
   // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
@@ -36,7 +37,6 @@ import {
 
 const { Step } = Steps
 
-// DELETE WHEN FUNCTION TO GET TOTAL GETS IMPLEMENTED
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
@@ -69,11 +69,13 @@ interface Props extends RouteComponentProps<any> {
   sameBillingAndShipping: boolean
   currentStep: number
   addNewAddress: any
+  placeOrder: any
   cardHolderName: string
   stripeError: string
   cardNumber: string
   cardExpDate: string
   cardBrand: string
+  stripeToken: string
   loadingBilling: boolean
   setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -262,6 +264,11 @@ class Checkout extends React.Component<Props, {}> {
                 discount={10}
                 formatMessage={intl.formatMessage}
               />
+              {currentStep === 2 ? (
+                <PlaceOrderButton onClick={this.handleOnPlaceOrder}>
+                  {intl.formatMessage(messages.placeOrder)}
+                </PlaceOrderButton>
+              ) : null}
             </SummaryContainer>
           </Content>
           {currentStep === 0 ? (
@@ -374,6 +381,70 @@ class Checkout extends React.Component<Props, {}> {
     setSelectedAddressAction(address, index)
   }
 
+  handleOnPlaceOrder = async () => {
+    const {
+      placeOrder,
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone,
+      billingFirstName,
+      billingLastName,
+      billingStreet,
+      billingApartment,
+      billingCountry,
+      billingStateProvince,
+      billingCity,
+      billingZipCode,
+      billingPhone,
+      stripeToken,
+      cart
+    } = this.props
+    const shippingAddress: AddressType = {
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone
+    }
+    const billingAddress: AddressType = {
+      firstName: billingFirstName,
+      lastName: billingLastName,
+      street: billingStreet,
+      apartment: billingApartment,
+      country: billingCountry,
+      stateProvince: billingStateProvince,
+      city: billingCity,
+      zipCode: billingZipCode,
+      phone: billingPhone
+    }
+    const orderObj = {
+      paymentMethod: 'credit card',
+      token: stripeToken,
+      cart,
+      shippingAddress,
+      billingAddress
+    }
+    console.log(JSON.stringify(orderObj))
+    try {
+      const response = await placeOrder({
+        variables: { orderObj }
+      })
+      console.log(response)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   // DELETE AFTER DEMO
   renderStepContent = (step: number) => {
     const {
@@ -440,6 +511,7 @@ const mapStateToProps = (state: any) => {
 const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
+  PlaceOrderMutation,
   connect(mapStateToProps, { ...checkoutActions })
 )(Checkout)
 
