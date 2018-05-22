@@ -12,24 +12,17 @@ import {
   MethodButton
 } from './styledComponents'
 import CreditCardForm from '../CreditCardForm'
+import { AddressType, StripeCardData } from '../../types/common'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  firstName: string
-  lastName: string
-  street: string
-  apartment: string
-  country: string
-  stateProvince: string
-  city: string
-  zipCode: string
-  phone: string
+  billingAddress: AddressType
   hasError: boolean
   cardHolderName: string
   sameBillingAndShipping: boolean
   stripeError: string
   loadingBilling: boolean
-  setStripeTokenAction: (token: string) => void
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   selectDropdownAction: (id: string, value: string) => void
@@ -57,7 +50,7 @@ class Payment extends React.PureComponent<Props, {}> {
     stripeJs.async = true
     stripeJs.onload = () => {
       this.setState({
-        stripe: window.Stripe('pk_test_lkyGYEP7Utu0LB0RytmjtAcA')
+        stripe: window.Stripe('pk_test_USJaHD7YvJFcFsgwOixnJDrq')
       })
     }
     // tslint:disable-next-line:no-unused-expression
@@ -66,15 +59,7 @@ class Payment extends React.PureComponent<Props, {}> {
   render() {
     const {
       formatMessage,
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
+      billingAddress,
       hasError,
       cardHolderName,
       sameBillingAndShipping,
@@ -85,7 +70,7 @@ class Payment extends React.PureComponent<Props, {}> {
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
-      setStripeTokenAction,
+      setStripeCardDataAction,
       nextStep
     } = this.props
     const { stripe } = this.state
@@ -111,15 +96,7 @@ class Payment extends React.PureComponent<Props, {}> {
                 stripe,
                 formatMessage,
                 cardHolderName,
-                firstName,
-                lastName,
-                street,
-                apartment,
-                country,
-                stateProvince,
-                city,
-                zipCode,
-                phone,
+                billingAddress,
                 hasError,
                 stripeError,
                 loadingBilling,
@@ -129,7 +106,7 @@ class Payment extends React.PureComponent<Props, {}> {
                 sameBillingAndAddressCheckedAction,
                 sameBillingAndAddressUncheckedAction,
                 invalidBillingFormAction,
-                setStripeTokenAction,
+                setStripeCardDataAction,
                 nextStep
               }}
               selectDropdownAction={this.handleOnDropdownAction}

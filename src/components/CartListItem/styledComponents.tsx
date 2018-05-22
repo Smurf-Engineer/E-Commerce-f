@@ -119,7 +119,7 @@ export const DeleteItem = styled.div`
 
 export const BottomDivider = styled.div`
   box-sizing: border-box;
-  height: 2px;
+  height: 1px;
   background-color: #dcdcdc;
   margin-right: 16px;
   margin-bottom: 30px;

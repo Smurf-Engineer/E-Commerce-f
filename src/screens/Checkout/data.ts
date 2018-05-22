@@ -13,3 +13,18 @@ export const AddAddressMutation = graphql(
     name: 'addNewAddress'
   }
 )
+
+export const PlaceOrderMutation = graphql(
+  gql`
+    mutation charge($orderObj: OrderInput!) {
+      charge(order: $orderObj) {
+        id
+        short_id
+        created_at
+      }
+    }
+  `,
+  {
+    name: 'placeOrder'
+  }
+)

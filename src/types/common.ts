@@ -278,6 +278,13 @@ export interface AddressType {
   city: string
   zipCode: string
   phone: string
-  defaultBilling: boolean
-  defaultShipping: boolean
+  defaultBilling?: boolean
+  defaultShipping?: boolean
+}
+
+export interface StripeCardData {
+  cardNumber: string
+  cardExpDate: string
+  cardBrand: string
+  stripeToken?: string
 }

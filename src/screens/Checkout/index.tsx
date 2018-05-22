@@ -8,9 +8,11 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import Steps from 'antd/lib/steps'
 import SwipeableViews from 'react-swipeable-views'
+import unset from 'lodash/unset'
+import forEach from 'lodash/forEach'
 import * as checkoutActions from './actions'
 import messages from './messages'
-import { AddAddressMutation } from './data'
+import { AddAddressMutation, PlaceOrderMutation } from './data'
 import {
   Container,
   Content,
@@ -18,18 +20,24 @@ import {
   StepsContainer,
   SummaryContainer,
   ContinueButton,
-  StepWrapper
+  StepWrapper,
+  PlaceOrderButton
   // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
 import Payment from '../../components/Payment'
+import Review from '../../components/Review'
 import OrderSummary from '../../components/OrderSummary'
-import { AddressType, CartItemDetail, Product } from '../../types/common'
+import {
+  AddressType,
+  CartItemDetail,
+  Product,
+  StripeCardData
+} from '../../types/common'
 
 const { Step } = Steps
 
-// DELETE WHEN FUNCTION TO GET TOTAL GETS IMPLEMENTED
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
@@ -62,11 +70,18 @@ interface Props extends RouteComponentProps<any> {
   sameBillingAndShipping: boolean
   currentStep: number
   addNewAddress: any
+  placeOrder: any
   cardHolderName: string
   stripeError: string
+  cardNumber: string
+  cardExpDate: string
+  cardBrand: string
+  stripeToken: string
   loadingBilling: boolean
-  setStripeTokenAction: (token: string) => void
+  loadingPlaceOrder: boolean
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
+  setLoadingPlaceOrderAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
@@ -80,14 +95,15 @@ interface Props extends RouteComponentProps<any> {
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
+  resetReducerAction: () => void
   cart: CartItems[]
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 class Checkout extends React.Component<Props, {}> {
   componentWillUnmount() {
-    const { stepAdvanceAction } = this.props
-    stepAdvanceAction(0)
+    const { resetReducerAction } = this.props
+    resetReducerAction()
   }
   render() {
     const {
@@ -117,7 +133,13 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       billingHasError,
       cardHolderName,
+      cardNumber,
+      cardExpDate,
+      cardBrand,
       sameBillingAndShipping,
+      stripeError,
+      loadingBilling,
+      loadingPlaceOrder,
       smsCheckAction,
       emailCheckAction,
       inputChangeAction,
@@ -126,13 +148,39 @@ class Checkout extends React.Component<Props, {}> {
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
-      stripeError,
       setStripeErrorAction,
-      loadingBilling,
       setLoadingBillingAction,
-      setStripeTokenAction,
+      setStripeCardDataAction,
       cart
     } = this.props
+
+    const shippingAddress: AddressType = {
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone
+    }
+    const billingAddress: AddressType = {
+      firstName: billingFirstName,
+      lastName: billingLastName,
+      street: billingStreet,
+      apartment: billingApartment,
+      country: billingCountry,
+      stateProvince: billingStateProvince,
+      city: billingCity,
+      zipCode: billingZipCode,
+      phone: billingPhone
+    }
+    const cardData: StripeCardData = {
+      cardNumber,
+      cardExpDate,
+      cardBrand
+    }
 
     let totalSum = 0
     if (cart) {
@@ -168,15 +216,7 @@ class Checkout extends React.Component<Props, {}> {
                 <Shipping
                   {...{
                     hasError,
-                    firstName,
-                    lastName,
-                    street,
-                    apartment,
-                    country,
-                    stateProvince,
-                    city,
-                    zipCode,
-                    phone,
+                    shippingAddress,
                     smsCheckAction,
                     emailCheckAction,
                     inputChangeAction,
@@ -191,17 +231,9 @@ class Checkout extends React.Component<Props, {}> {
                 <Payment
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
-                  firstName={billingFirstName}
-                  lastName={billingLastName}
-                  street={billingStreet}
-                  apartment={billingApartment}
-                  country={billingCountry}
-                  stateProvince={billingStateProvince}
-                  city={billingCity}
-                  zipCode={billingZipCode}
-                  phone={billingPhone}
                   nextStep={this.nextStep}
                   {...{
+                    billingAddress,
                     cardHolderName,
                     stripeError,
                     setStripeErrorAction,
@@ -213,10 +245,20 @@ class Checkout extends React.Component<Props, {}> {
                     invalidBillingFormAction,
                     loadingBilling,
                     setLoadingBillingAction,
-                    setStripeTokenAction
+                    setStripeCardDataAction
                   }}
                 />
-                <div>{'REVIEW'}</div>
+                <Review
+                  formatMessage={intl.formatMessage}
+                  goToStep={this.handleOnGoToStep}
+                  {...{
+                    shippingAddress,
+                    billingAddress,
+                    cardData,
+                    cardHolderName,
+                    cart
+                  }}
+                />
               </SwipeableViews>
             </StepsContainer>
             <SummaryContainer>
@@ -226,9 +268,17 @@ class Checkout extends React.Component<Props, {}> {
                 discount={10}
                 formatMessage={intl.formatMessage}
               />
+              {currentStep === 2 ? (
+                <PlaceOrderButton
+                  onClick={this.handleOnPlaceOrder}
+                  loading={loadingPlaceOrder}
+                >
+                  {intl.formatMessage(messages.placeOrder)}
+                </PlaceOrderButton>
+              ) : null}
             </SummaryContainer>
           </Content>
-          {currentStep !== 1 ? (
+          {currentStep === 0 ? (
             <ContinueButton onClick={this.nextStep}>
               {'Continue'}
             </ContinueButton>
@@ -250,6 +300,11 @@ class Checkout extends React.Component<Props, {}> {
       default:
         break
     }
+  }
+
+  handleOnGoToStep = (step: number) => {
+    const { stepAdvanceAction } = this.props
+    stepAdvanceAction(step - 1)
   }
 
   verifyStepTwo = () => {
@@ -331,6 +386,104 @@ class Checkout extends React.Component<Props, {}> {
     const { setSelectedAddressAction } = this.props
     setSelectedAddressAction(address, index)
   }
+
+  handleOnPlaceOrder = async () => {
+    const {
+      placeOrder,
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone,
+      billingFirstName,
+      billingLastName,
+      billingStreet,
+      billingApartment,
+      billingCountry,
+      billingStateProvince,
+      billingCity,
+      billingZipCode,
+      billingPhone,
+      stripeToken,
+      cart,
+      setLoadingPlaceOrderAction
+    } = this.props
+    const shippingAddress: AddressType = {
+      firstName,
+      lastName,
+      street,
+      apartment,
+      country,
+      stateProvince,
+      city,
+      zipCode,
+      phone
+    }
+    const billingAddress: AddressType = {
+      firstName: billingFirstName,
+      lastName: billingLastName,
+      street: billingStreet,
+      apartment: billingApartment,
+      country: billingCountry,
+      stateProvince: billingStateProvince,
+      city: billingCity,
+      zipCode: billingZipCode,
+      phone: billingPhone
+    }
+
+    /*
+    * TODO: Find a better solution to unset these properties
+    * from cart Object.
+    * Maybe don't save them on localStorage
+    */
+    forEach(cart, cartItem => {
+      unset(cartItem, 'product.shortDescription')
+      unset(cartItem, 'product.isTopProduct')
+      unset(cartItem, 'product.__typename')
+      unset(cartItem, 'product.genders')
+      unset(cartItem, 'product.fitStyles')
+      unset(cartItem, 'product.retailMen')
+      unset(cartItem, 'product.collections')
+      unset(cartItem, 'product.images')
+      unset(cartItem, 'product.type')
+      unset(cartItem, 'product.retailWomen')
+      unset(cartItem, 'product.customizable')
+      unset(cartItem, 'product.description')
+      forEach(cartItem.product.priceRange, priceRange => {
+        unset(priceRange, '__typename')
+      })
+      forEach(cartItem.itemDetails, itemDetail => {
+        unset(itemDetail, 'gender.__typename')
+        unset(itemDetail, 'fit.__typename')
+      })
+    })
+    const orderObj = {
+      paymentMethod: 'credit card',
+      token: stripeToken,
+      cart,
+      shippingAddress,
+      billingAddress
+    }
+    try {
+      setLoadingPlaceOrderAction(true)
+      // TODO: assing response to a variable
+      await placeOrder({
+        variables: { orderObj }
+      })
+      // TODO: able delete cart object from localStorage and use responseData
+      // const { short_id: orderId, created_at: orderDate } = response
+      // localStorage.removeItem('cart')
+      setLoadingPlaceOrderAction(false)
+      const { history } = this.props
+      history.push('/account')
+    } catch (e) {
+      setLoadingPlaceOrderAction(false)
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => {
@@ -343,6 +496,7 @@ const mapStateToProps = (state: any) => {
 const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
+  PlaceOrderMutation,
   connect(mapStateToProps, { ...checkoutActions })
 )(Checkout)
 
