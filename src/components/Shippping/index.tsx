@@ -186,5 +186,11 @@ export class Shippping extends React.PureComponent<Props, {}> {
   }
 }
 
-const ShippingEnhaced = compose(graphql(GetAddressListQuery))(Shippping)
+const ShippingEnhaced = compose(
+  graphql(GetAddressListQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(Shippping)
 export default ShippingEnhaced

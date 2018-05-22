@@ -28,7 +28,7 @@ interface Props {
   onSelectItem: (id: number, checked: boolean) => void
   onUnselectItem: (index: number) => void
   onRequestClose: () => void
-  onAddItems: (items: DesignType[]) => void
+  onAddItems: (items: any) => void
 }
 
 export class LockerModal extends React.PureComponent<Props, {}> {
@@ -41,13 +41,15 @@ export class LockerModal extends React.PureComponent<Props, {}> {
     const {
       onAddItems,
       selectedItems,
-      data: { pagination: { designs } }
+      data: {
+        pagination: { designs }
+      }
     } = this.props
     const filteredItems = omitBy(selectedItems, checked => !checked)
     const itemsIndex = Object.keys(filteredItems)
     const items = itemsIndex.map(index => {
       const item = designs[index]
-      return Object.assign({}, { visible: true }, item)
+      return Object.assign({}, { visible: true }, { design: item })
     })
     onAddItems(items)
   }
@@ -60,7 +62,6 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       selectedItems,
       tableItems
     } = this.props
-
     const designs = loading || error ? [] : pagination.designs
 
     const list = designs.map(
