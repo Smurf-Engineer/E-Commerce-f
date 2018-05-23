@@ -23,7 +23,7 @@ interface Props {
   street: string
   apartment: string
   country: string
-  state: string
+  stateProvince: string
   city: string
   zipCode: string
   phone: string
@@ -41,7 +41,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
       street,
       apartment,
       country,
-      state,
+      stateProvince,
       city,
       zipCode,
       phone,
@@ -62,13 +62,13 @@ class ShippingAddressForm extends React.Component<Props, {}> {
     )
     const dropdownStates = (
       <Menu onClick={this.selectedDropDown}>
-        <Menu.Item id="state" key="california">
+        <Menu.Item id="stateProvince" key="california">
           {'California'}
         </Menu.Item>
-        <Menu.Item id="state" key="quebec">
+        <Menu.Item id="stateProvince" key="quebec">
           {'Quebec'}
         </Menu.Item>
-        <Menu.Item id="state" key="arizona">
+        <Menu.Item id="stateProvince" key="arizona">
           {'Arizona'}
         </Menu.Item>
       </Menu>
@@ -163,11 +163,11 @@ class ShippingAddressForm extends React.Component<Props, {}> {
             </InputTitleContainer>
             <Dropdown overlay={dropdownStates}>
               <DropDownPlaceHolder>
-                {state ? state : 'Select State/Providence'}
+                {stateProvince ? stateProvince : 'Select State/Providence'}
                 <Icon type="down" />
               </DropDownPlaceHolder>
             </Dropdown>
-            {!state &&
+            {!stateProvince &&
               hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
           </Column>
           <Column inputhWidth={'32%'}>

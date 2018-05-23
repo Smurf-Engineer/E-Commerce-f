@@ -35,38 +35,38 @@ interface CartItems {
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  handleAddItemDetail: (
+  handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
   ) => void
-  removeItem: (event: React.MouseEvent<EventTarget>, index: number) => void
-  handledeleteItemDetail: (
+  removeItem?: (event: React.MouseEvent<EventTarget>, index: number) => void
+  handledeleteItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number,
     detailIndex: number
   ) => void
-  setLabelItemDetail: (
+  setLabelItemDetail?: (
     index: number,
     detailIndex: number,
     label: string
   ) => void
-  setDetailQuantity: (
+  setDetailQuantity?: (
     index: number,
     detailIndex: number,
     quantity: number
   ) => void
 
-  setDetailFit: (
+  setDetailFit?: (
     index: number,
     detailIndex: number,
     fit: ItemDetailType
   ) => void
-  setDetailGender: (
+  setDetailGender?: (
     index: number,
     detailIndex: number,
     gender: ItemDetailType
   ) => void
-  setDetailSize: (
+  setDetailSize?: (
     index: number,
     detailIndex: number,
     size: ItemDetailType
@@ -78,6 +78,7 @@ interface Props {
   image: string
   cartItem: CartItems
   itemIndex: number
+  onlyRead?: boolean
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -89,15 +90,16 @@ class CartListItem extends React.Component<Props, {}> {
       price,
       image,
       cartItem,
-      handleAddItemDetail,
-      handledeleteItemDetail,
       itemIndex,
-      setLabelItemDetail,
-      setDetailQuantity,
-      setDetailFit,
-      setDetailGender,
-      setDetailSize,
-      removeItem
+      onlyRead,
+      handleAddItemDetail = () => {},
+      handledeleteItemDetail = () => {},
+      setLabelItemDetail = () => {},
+      setDetailQuantity = () => {},
+      setDetailFit = () => {},
+      setDetailGender = () => {},
+      setDetailSize = () => {},
+      removeItem = () => {}
     } = this.props
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -136,6 +138,7 @@ class CartListItem extends React.Component<Props, {}> {
               </PriceContainer>
             </ItemDetailsHeader>
             <CartListItemTable
+              {...{ onlyRead }}
               formatMessage={formatMessage}
               cartItem={cartItem}
               handledeleteItemDetail={handledeleteItemDetail}
@@ -146,12 +149,16 @@ class CartListItem extends React.Component<Props, {}> {
               setDetailGender={setDetailGender}
               setDetailSize={setDetailSize}
             />
-            <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
-              {formatMessage(messages.addMore)}
-            </AddMore>
-            <DeleteItem onClick={e => removeItem(e, itemIndex)}>
-              {formatMessage(messages.delete)}
-            </DeleteItem>
+            {!onlyRead ? (
+              <div>
+                <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
+                  {formatMessage(messages.addMore)}
+                </AddMore>
+                <DeleteItem onClick={e => removeItem(e, itemIndex)}>
+                  {formatMessage(messages.delete)}
+                </DeleteItem>
+              </div>
+            ) : null}
           </ItemDetails>
         </Container>
         <BottomDivider />

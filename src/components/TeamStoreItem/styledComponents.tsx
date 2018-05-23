@@ -61,6 +61,7 @@ export const ShareButton = styled(Button)`
   border-radius: 0;
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  margin-left: 10px;
 
   span {
     color: #5f6062;
@@ -70,4 +71,13 @@ export const ShareButton = styled(Button)`
     line-height: 19px;
     text-align: center;
   }
+`
+export const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 40%;
+`
+export const DeleteLabel = styled.span`
+  color: #e61737;
+  margin-left: 10px;
 `

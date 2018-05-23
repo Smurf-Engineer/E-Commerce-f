@@ -27,9 +27,11 @@ import forgot from '../components/ForgotPassword/reducer'
 import fitInfo from '../components/FitInfo/reducer'
 import addresses from '../components/MyAddresses/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
+import myTeamStores from '../components/MyTeamStores/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  myTeamStores: any
   checkout: any
   designerTool: any
   shoppingCartPage: any
@@ -114,6 +116,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  myTeamStores,
   checkout,
   designerTool,
   shoppingCartPage,

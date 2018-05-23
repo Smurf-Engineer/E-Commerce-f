@@ -243,6 +243,7 @@ export type TeamstoreType = {
   id: number
   shortId: string
   name: string
+  banner: string
   cutOffDate: string
   deliveryDate: string
   private: boolean
@@ -279,6 +280,13 @@ export interface AddressType {
   city: string
   zipCode: string
   phone: string
-  defaultBilling: boolean
-  defaultShipping: boolean
+  defaultBilling?: boolean
+  defaultShipping?: boolean
+}
+
+export interface StripeCardData {
+  cardNumber: string
+  cardExpDate: string
+  cardBrand: string
+  stripeToken?: string
 }

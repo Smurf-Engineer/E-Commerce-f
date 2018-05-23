@@ -133,29 +133,42 @@ class Render3D extends PureComponent {
     this.container.removeChild(this.renderer.domElement)
   }
 
-  render3DModel = () => {
+  loadTextures = modelTextures =>
+    new Promise((resolve, reject) => {
+      try {
+        const loadedTextures = {}
+        loadedTextures.flatlock = this.imgLoader.load(
+          './models/images/flatlock.png'
+        )
+        loadedTextures.bumpMap = this.imgLoader.load(modelTextures.bumpMap)
+
+        const loadedAreas = modelTextures.areas.map(areaUri => {
+          const areaTexture = this.imgLoader.load(areaUri)
+          areaTexture.minFilter = THREE.LinearFilter
+          return areaTexture
+        })
+        loadedTextures.areas = loadedAreas
+        resolve(loadedTextures)
+      } catch (error) {
+        reject(error)
+      }
+    })
+
+  render3DModel = async () => {
     /* Object and MTL load */
     const { onLoadModel, currentStyle } = this.props
+    onLoadModel(true)
 
     /* Texture configuration */
     const modelTextures = dummieData[currentStyle]
-    const flatlockTexture = this.imgLoader.load('./models/images/flatlock.png')
-    const bumpMapTexture = this.imgLoader.load(modelTextures.bumpMap)
-
-    const loadedAreas = modelTextures.areas.map(areaUri => {
-      const areaTexture = this.imgLoader.load(areaUri)
-      areaTexture.minFilter = THREE.LinearFilter
-      return areaTexture
-    })
+    const loadedTextures = await this.loadTextures(modelTextures)
 
     this.mtlLoader.load(modelTextures.mtl, materials => {
-      onLoadModel(true)
       materials.preload()
       this.objLoader.setMaterials(materials)
       this.objLoader.load(
         modelTextures.obj,
         object => {
-          onLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
@@ -163,7 +176,7 @@ class Render3D extends PureComponent {
 
           // Stitching
           const flatlockMaterial = new THREE.MeshPhongMaterial({
-            map: flatlockTexture
+            map: loadedTextures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -184,7 +197,7 @@ class Render3D extends PureComponent {
           }
 
           // Setup the texture layers
-          const areasLayers = loadedAreas.map(() =>
+          const areasLayers = loadedTextures.areas.map(() =>
             object.children[meshIndex].clone()
           )
           object.add(...areasLayers)
@@ -194,14 +207,14 @@ class Render3D extends PureComponent {
           object.children[6].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          loadedAreas.forEach(
+          loadedTextures.areas.forEach(
             (materialTexture, index) =>
               (object.children[
                 objectChilds + index
               ].material = new THREE.MeshPhongMaterial({
-                map: loadedAreas[index],
+                map: loadedTextures.areas[index],
                 side: THREE.FrontSide,
-                bumpMap: bumpMapTexture,
+                bumpMap: loadedTextures.bumpMap,
                 color: modelTextures.colors[index],
                 transparent: true
               }))
@@ -211,6 +224,8 @@ class Render3D extends PureComponent {
           object.position.y = -30
           object.name = 'jersey'
           this.scene.add(object)
+
+          onLoadModel(false)
         },
         this.onProgress,
         this.onError

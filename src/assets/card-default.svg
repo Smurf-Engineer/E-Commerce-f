@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="56px" height="34px" viewBox="0 0 56 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Payment/creditcard/selected</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Payment/Button/Creditcard" transform="translate(-41.000000, -8.000000)">
+            <g id="Payment/creditcard/selected" transform="translate(41.000000, 8.000000)">
+                <g id="creditcard">
+                    <rect id="Rectangle" stroke="#4A90E2" stroke-width="0.25" fill="#4A90E2" x="0.125" y="0.125" width="55.75" height="33.75" rx="2"></rect>
+                    <rect id="Rectangle-path" fill="#FFFFFF" fill-rule="nonzero" x="0" y="3.3442623" width="56" height="8.52786885"></rect>
+                    <rect id="Rectangle-path" fill="#FFFFFF" fill-rule="nonzero" x="26.6138614" y="26" width="29.3861386" height="2.42622951"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

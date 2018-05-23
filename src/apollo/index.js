@@ -5,6 +5,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { setContext } from 'apollo-link-context'
 import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
+import config from '../config'
 import fetch from 'node-fetch'
 
 const authLink = setContext((_, { headers }) => {
@@ -26,7 +27,7 @@ const hasSubscriptionOperation = ({ query }) => {
 }
 
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:4040/api/graphql',
+  uri: `${config.graphqlUriBase}graphql`,
   fetch
 })
 

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Checkbox from 'antd/lib/checkbox'
 
 interface MyAddresProps {
   showSecondaryButtons?: boolean
@@ -31,6 +32,16 @@ export const ItalicText = styled.div`
   line-height: 23px;
   font-style: italic;
   margin-top: 8px;
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+  height: 22px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 5px 0;
 `
 
 export const StyledButton = styled(Button)`

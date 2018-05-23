@@ -5,6 +5,14 @@ import styled from 'styled-components'
 
 export const Container = styled.div``
 
+export const ContainerReset = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+`
+
 export const Buttons = styled.div`
   padding: 16px;
 `
@@ -29,6 +37,14 @@ export const Text = styled.div`
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #eff2f4;
+`
+
+export const Preview = styled.div`
+  display: flex;
+  justify-content: center;
   align-items: center;
   padding: 16px;
   background-color: #eff2f4;
