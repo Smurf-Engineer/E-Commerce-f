@@ -15,7 +15,7 @@ export default defineMessages({
   },
   kits: {
     id: 'components.footer.teams.kits',
-    defaultMessage: 'Team Kits'
+    defaultMessage: 'Team Ordering'
   },
   sponsor: {
     id: 'components.footer.teams.sponsor',

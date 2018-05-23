@@ -19,12 +19,15 @@ import {
   NeedHelp,
   GetStartedButton,
   SearchContainer,
-  SearchBarContent
+  SearchBarContent,
+  PropositionTilesContainer,
+  PropositionTile
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
+import FeaturedProducts from '../../components/FeaturedProducts'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
@@ -127,6 +130,7 @@ export class Home extends React.Component<Props, {}> {
                 search={this.onSearch}
                 formatMessage={intl.formatMessage}
               />
+              {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
               <HelpContainer>
                 <NeedHelp>
                   <FormattedMessage {...messages.helpFind} />
@@ -137,7 +141,7 @@ export class Home extends React.Component<Props, {}> {
                 >
                   <FormattedMessage {...messages.startButton} />
                 </GetStartedButton>
-              </HelpContainer>
+              </HelpContainer>*/}
             </SearchBarContent>
           </SearchContainer>
           <div
@@ -147,6 +151,21 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
+          <FeaturedProducts />
+          <PropositionTilesContainer>
+            <PropositionTile>
+              <FormattedMessage {...messages.flexibleLabel} />
+              <FormattedMessage {...messages.desigOptionsLabel} />
+            </PropositionTile>
+            <PropositionTile>
+              <FormattedMessage {...messages.superUltraLabel} />
+              <FormattedMessage {...messages.fastDeliveryLabel} />
+            </PropositionTile>
+            <PropositionTile>
+              <FormattedMessage {...messages.easyLabel} />
+              <FormattedMessage {...messages.orderingLabel} />
+            </PropositionTile>
+          </PropositionTilesContainer>
           <ImagesGrid {...{ fakeWidth }} />
           <YotpoHome />
         </Container>

@@ -20,5 +20,9 @@ export default defineMessages({
   fit: {
     id: 'components.footer.designSupport.fit',
     defaultMessage: 'Fit & Sizing'
+  },
+  technology: {
+    id: 'components.footer.aboutUs.technology',
+    defaultMessage: 'Technology'
   }
 })
