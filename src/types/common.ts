@@ -280,3 +280,10 @@ export interface AddressType {
   defaultBilling: boolean
   defaultShipping: boolean
 }
+
+export interface ModelConfig {
+  obj: string
+  mtl: string
+  bumpMap: string
+  areas: string[]
+}

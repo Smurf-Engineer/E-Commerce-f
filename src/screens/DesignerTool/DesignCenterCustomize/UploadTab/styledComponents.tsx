@@ -17,7 +17,14 @@ export const Buttons = styled.div`
   padding: 16px;
 `
 
+export const Footer = styled.div`
+  position: absolute;
+  padding: 0px 16px;
+  bottom: 0px;
+`
+
 export const ButtonWrapper = styled.div`
+  margin-bottom: 16px;
   .ant-btn-primary  {
     width: 45%px;
   }
