@@ -129,7 +129,7 @@ class Render3D extends PureComponent {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
 
-    // TODO: Need testing
+    // TODO: Need tests
     if (this.scene) {
       const object = this.scene.getObjectByName('jersey')
       if (object) {
