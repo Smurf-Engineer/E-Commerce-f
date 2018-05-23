@@ -27,7 +27,7 @@ export const ButtonContainer = styled.div`
   position: absolute;
   width: 200px;
   justify-content: center;
-  top: 170px;
+  top: 5px;
 `
 
 export const CustomizeButton = styled.div`

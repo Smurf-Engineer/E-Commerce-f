@@ -13,6 +13,7 @@ export const getSingleTeamStore = gql`
       private
       owner
       owner_name
+      team_size_id
       cutoff_date {
         day
         dayOrdinal
@@ -37,6 +38,14 @@ export const getSingleTeamStore = gql`
             description: short_description
             collections
             isTopProduct
+            genders {
+              id
+              name: gender
+            }
+            fitStyles {
+              id
+              name: description
+            }
             priceRange {
               quantity
               price
@@ -49,7 +58,9 @@ export const getSingleTeamStore = gql`
             }
           }
         }
+        totalOrders
       }
+      totalItems
     }
   }
 `

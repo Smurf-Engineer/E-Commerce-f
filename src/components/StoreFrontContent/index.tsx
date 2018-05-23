@@ -83,14 +83,6 @@ export class StoreFrontContent extends React.Component<Props, {}> {
     this.setState({ [`show${id}`]: !stateValue } as any)
   }
 
-  handleOnPressPrivate = (id: number, isPrivate: boolean) => {
-    // TODO: Handle private
-  }
-
-  handleOnPressDelete = (id: number) => {
-    // TODO: Handle delete
-  }
-
   handleOnOpenQuickView = (id: number, yotpoId: string) => {
     const { openQuickViewAction: openQuickView } = this.props
     openQuickView(id, yotpoId)
@@ -176,14 +168,16 @@ export class StoreFrontContent extends React.Component<Props, {}> {
     const cutOffMonth = get(getTeamStore, 'cutoff_date.month', 'month')
     const deliveryMonth = get(getTeamStore, 'delivery_date.month', 'month')
     const items = getTeamStore ? getTeamStore.items || [] : []
+    const totalItems = get(getTeamStore, 'totalItems', 0)
+    // const teamSizeId = get(getTeamStore, 'team_size_id', 0)
 
     const shareStoreUrl = `${
       config.baseUrl
     }store-front?storeId=${teamStoreShortId}`
 
-    const designs = items.map(x => {
-      return x.design
-    })
+    // const designItems = items.map(x => {
+    //   return x.design
+    // })
 
     // TODO: dynamic
     const marks = {
@@ -306,17 +300,20 @@ export class StoreFrontContent extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.tierDescription} />
               </TierDescription>
               <SliderWrapper>
-                <StyledSlider marks={marks} disabled={true} defaultValue={37} />
+                <StyledSlider
+                  marks={marks}
+                  disabled={true}
+                  defaultValue={totalItems}
+                  value={totalItems}
+                />
               </SliderWrapper>
             </TierContainer>
             <ListContainer>
               <ProductList
                 {...{ formatMessage }}
                 withoutPadding={true}
-                onPressPrivate={this.handleOnPressPrivate}
-                onPressDelete={this.handleOnPressDelete}
                 openQuickView={this.handleOnOpenQuickView}
-                designs={designs}
+                designs={items}
               />
             </ListContainer>
           </div>

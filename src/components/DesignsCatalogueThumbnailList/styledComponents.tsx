@@ -1,6 +1,3 @@
-/**
- * Styled Components - Created by gustavomedina on 12/04/18.
- */
 import styled from 'styled-components'
 
 export const Container = styled.div``
@@ -61,8 +58,6 @@ export const ThumbnailsList = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
-  align-items: center;
-  justify-content: center;
 
   @media (min-width: 768px) and (max-width: 1024px) {
     padding: 0;

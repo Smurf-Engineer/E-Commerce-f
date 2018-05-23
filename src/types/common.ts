@@ -106,6 +106,7 @@ export type TeamStoreItemtype = {
   design: DesignType
   expected_quantity: number
   visible: boolean
+  totalOrders: number
 }
 
 export type DesignResultType = {
@@ -246,6 +247,7 @@ export type TeamstoreType = {
   deliveryDate: string
   private: boolean
   items: TeamstoreItemType[]
+  totalItems: number
 }
 
 export interface TeamstoreResult {

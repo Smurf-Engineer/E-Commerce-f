@@ -13,16 +13,16 @@ import {
   Label,
   PricesContainer,
   PriceLabel,
-  RedPriceLabel
+  RedPriceLabel,
+  ProgressWrapper,
+  ProgressText
 } from './styledComponents'
 
 interface Props {
   id: number
   name: string
   description: string
-  date: string
-  onPressPrivate: (id: number, isPrivate: boolean) => void
-  onPressDelete: (id: number) => void
+  progress: number
 }
 
 // TODO: get from query
@@ -33,8 +33,7 @@ const FooterThumbnailTeamStore = ({
   id,
   name,
   description,
-  onPressPrivate,
-  onPressDelete
+  progress
 }: Props) => {
   return (
     <Footer>
@@ -53,7 +52,10 @@ const FooterThumbnailTeamStore = ({
         <RedPriceLabel>{currentPrice}</RedPriceLabel>
       </PricesContainer>
       <Bottom>
-        <Progress percent={30} />
+        <ProgressWrapper>
+          <ProgressText>{`${progress}/50`}</ProgressText>
+          <Progress percent={progress} />
+        </ProgressWrapper>
       </Bottom>
     </Footer>
   )
