@@ -1,10 +1,10 @@
-import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const getOrderQuery = gql`
   query getOrderById($orderId: String!) {
-    getOrder(orderId: $orderId) {
+    orderData: getOrder(orderId: $orderId) {
       id
+      orderDate: created_at
       paymentMethod: payment_method
       firstName: shipping_address_first_name
       lastName: shipping_address_last_name
@@ -23,13 +23,26 @@ export const getOrderQuery = gql`
       billingZipCode: billing_address_zip_code
       billingCountry: billing_address_country
       payment: payment_object {
-        source {
+        cardData: source {
           name
           last4
           brand
           exp_month
           exp_year
         }
+      }
+      cart {
+        product {
+          name
+          short_description
+        }
+        itemDetails {
+          label
+          quantity
+        }
+        designId
+        unitPrice
+        productTotal
       }
     }
   }

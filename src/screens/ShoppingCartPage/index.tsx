@@ -70,6 +70,7 @@ interface Props extends RouteComponentProps<any> {
     quantity: number
   ) => void
   setInitialData: () => void
+  resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
 }
 
@@ -90,8 +91,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   componentWillUnmount() {
-    const { cart, saveToStorage } = this.props
+    const { cart, saveToStorage, resetReducerData } = this.props
     saveToStorage(cart)
+    resetReducerData()
   }
 
   handleAddItemDetail = (

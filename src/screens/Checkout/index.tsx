@@ -10,7 +10,9 @@ import Steps from 'antd/lib/steps'
 import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
+import get from 'lodash/get'
 import * as checkoutActions from './actions'
+import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
 import {
@@ -96,6 +98,7 @@ interface Props extends RouteComponentProps<any> {
   sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
   resetReducerAction: () => void
+  getTotalItemsIncart: () => void
   cart: CartItems[]
 }
 
@@ -410,7 +413,8 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       stripeToken,
       cart,
-      setLoadingPlaceOrderAction
+      setLoadingPlaceOrderAction,
+      getTotalItemsIncart: getTotalItemsIncartAction
     } = this.props
     const shippingAddress: AddressType = {
       firstName,
@@ -473,14 +477,15 @@ class Checkout extends React.Component<Props, {}> {
       const response = await placeOrder({
         variables: { orderObj }
       })
-      // TODO: able delete cart object from localStorage and use responseData
-      const { short_id: orderId, created_at: orderDate } = response
-      console.log(response)
-      // localStorage.removeItem('cart')
+      const orderId = get(response, 'data.charge.short_id', '')
+      console.log(orderId)
+      localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
+      getTotalItemsIncartAction()
       const { history } = this.props
-      history.push('/order-placed')
+      history.push(`/order-placed?orderId=${orderId}`)
     } catch (e) {
+      console.log(e)
       setLoadingPlaceOrderAction(false)
     }
   }
@@ -497,7 +502,10 @@ const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
   PlaceOrderMutation,
-  connect(mapStateToProps, { ...checkoutActions })
+  connect(mapStateToProps, {
+    ...checkoutActions,
+    getTotalItemsIncart
+  })
 )(Checkout)
 
 export default CheckoutEnhance

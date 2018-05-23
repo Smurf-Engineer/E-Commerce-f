@@ -14,7 +14,8 @@ import {
   REMOVE_ITEM_ACTION,
   SET_TOTAL_ACTION,
   SET_SUBTOTAL_ACTION,
-  SET_SHIPPING_ACTION
+  SET_SHIPPING_ACTION,
+  RESET_REDUCER_DATA
 } from './constants'
 import { AnyAction, Product, ItemDetailType } from '../../types/common'
 
@@ -115,4 +116,8 @@ export const setSubtotalAction = (subtotal: number): AnyAction => ({
 export const setShippingAction = (shipping: number): AnyAction => ({
   type: SET_SHIPPING_ACTION,
   shipping
+})
+
+export const resetReducerData = (): AnyAction => ({
+  type: RESET_REDUCER_DATA
 })
