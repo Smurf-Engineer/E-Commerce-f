@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 import upperFirst from 'lodash/upperFirst'
+import config from '../../config'
 import messages from './messages'
 import {
   Container,
@@ -50,7 +51,7 @@ class Payment extends React.PureComponent<Props, {}> {
     stripeJs.async = true
     stripeJs.onload = () => {
       this.setState({
-        stripe: window.Stripe('pk_test_USJaHD7YvJFcFsgwOixnJDrq')
+        stripe: window.Stripe(config.pkStripe)
       })
     }
     // tslint:disable-next-line:no-unused-expression
@@ -85,7 +86,7 @@ class Payment extends React.PureComponent<Props, {}> {
           <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
           <MethodButton>
             {formatMessage(messages.methodBankTransfer)}
-          </MethodButton> */}{' '}
+          </MethodButton> */}
           {/* TODO: uncomment MethodButtons when paypal, alipay and bank transfer are able */}
         </ContainerMethods>
         <Title>{formatMessage(messages.methodCreditCard)}</Title>

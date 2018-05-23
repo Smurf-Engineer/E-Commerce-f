@@ -470,16 +470,16 @@ class Checkout extends React.Component<Props, {}> {
     }
     try {
       setLoadingPlaceOrderAction(true)
-      // TODO: assing response to a variable
-      await placeOrder({
+      const response = await placeOrder({
         variables: { orderObj }
       })
       // TODO: able delete cart object from localStorage and use responseData
-      // const { short_id: orderId, created_at: orderDate } = response
+      const { short_id: orderId, created_at: orderDate } = response
+      console.log(response)
       // localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
       const { history } = this.props
-      history.push('/account')
+      history.push('/order-placed')
     } catch (e) {
       setLoadingPlaceOrderAction(false)
     }
