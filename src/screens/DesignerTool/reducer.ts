@@ -9,34 +9,21 @@ import {
   SET_COLOR_BLOCK_ACTION,
   COLOR_BLOCK_HOVERED_ACTION,
   SET_UPLOADING_ACTION,
-  SET_UPLOADING_SUCCESS
+  SET_UPLOADING_SUCCESS,
+  SET_UPLOADING_DESIGN_SUCCESS
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
-  currentTab: 0,
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
   styleColors: [],
-  palettes: [],
-  paletteName: '',
-  designName: '',
   loadingModel: false,
-  undoChanges: [],
-  redoChanges: [],
-  swipingView: false,
-  themeId: null,
-  style: null,
-  openShareModal: false,
-  openSaveDesign: false,
-  checkedTerms: false,
-  savedDesignId: '',
-  designBase64: '',
-  saveDesignLoading: false,
   uploadingFiles: false,
-  modelConfig: null
+  modelConfig: null,
+  areas: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -62,8 +49,13 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         uploadingFiles: false,
         modelConfig: action.modelConfig,
-        colors: List.of(...action.modelConfig.design.colors),
-        styleColors: List.of(...action.modelConfig.design.colors)
+        colors: List.of(...action.modelConfig.design.colors)
+      })
+    case SET_UPLOADING_DESIGN_SUCCESS:
+      return state.merge({
+        uploadingFiles: false,
+        areas: List.of(...action.design.areas),
+        colors: List.of(...action.design.design.colors)
       })
     default:
       return state
