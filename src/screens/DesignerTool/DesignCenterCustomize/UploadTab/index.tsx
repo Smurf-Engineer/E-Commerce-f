@@ -27,8 +27,11 @@ const getFileExtension = (filename: string) =>
 class UploadTab extends React.PureComponent<Props, {}> {
   state = {
     fileList: [],
-    uploading: false
+    uploading: false,
+    color: []
   }
+
+  preview: any
 
   handleUpload = () => {
     const { fileList } = this.state
@@ -54,7 +57,12 @@ class UploadTab extends React.PureComponent<Props, {}> {
       return false
     }
 
-    if (list.length > 2 && file.type !== 'image/svg+xml') {
+    if (list.length === 3 && file.type !== 'application/json') {
+      message.error('Please select a valid JSON file')
+      return false
+    }
+
+    if (list.length === 4 && file.type !== 'image/svg+xml') {
       message.error('Please select a valid SVG file')
       return false
     }
@@ -98,8 +106,9 @@ class UploadTab extends React.PureComponent<Props, {}> {
             <p>1. OBJ file</p>
             <p>2. MTL file</p>
             <p>3. Bumpmap file</p>
-            <p> 4. ColorBlock 5 ... 1 </p>
+            <p> 4. Config file (JSON) </p>
             <p> 5. Branding </p>
+            <p> 6. Color Blocks </p>
           </Text>
           <Button
             size="large"

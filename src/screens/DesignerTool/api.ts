@@ -3,6 +3,7 @@
  */
 import message from 'antd/lib/message'
 import config from '../../config/index'
+import reverse from 'lodash/reverse'
 import { setUploadingAction, setUploadingSuccess } from './actions'
 
 export const uploadFilesAction = (files: any) => {
@@ -17,8 +18,9 @@ export const uploadFilesAction = (files: any) => {
         formData.append('obj', files[0])
         formData.append('mtl', files[1])
         formData.append('bumpMap', files[2])
+        formData.append('config', files[3])
 
-        const areas = files.slice(3, files.length)
+        const areas = reverse(files.slice(4, files.length))
 
         areas.forEach((file: any, index: number) =>
           formData.append(`colorBlock${index + 1}`, file as any)
