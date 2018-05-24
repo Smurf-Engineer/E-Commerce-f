@@ -103,11 +103,10 @@ export const FooterItem = styled.div`
 
 export const AddMore = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
+  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
-  /* text-align: right; */
   cursor: pointer;
   padding-right: 16px;
 `
@@ -115,11 +114,10 @@ export const AddMore = styled.div`
 export const DeleteItem = styled.div`
   margin-top: 20px;
   color: #e61737;
-  font-family: 'Avenir Next';
+  font-family: Avenir Next;
   font-size: 12px;
   letter-spacing: 0.09px;
   line-height: 16px;
-  /* text-align: right; */
   cursor: pointer;
   padding-right: 16px;
 `

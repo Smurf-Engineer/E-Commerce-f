@@ -31,7 +31,6 @@ export const ButtonContainer = styled.div`
   position: absolute;
   width: 200px;
   justify-content: center;
-  /* top: 5px; */
   top: ${({ withoutTop }: ButtonContainerProps) =>
     withoutTop ? '5px' : '170px'};
 `
