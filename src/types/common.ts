@@ -297,3 +297,41 @@ export interface ModelConfig {
   bumpMap: string
   areas: string[]
 }
+
+export interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+  productTotal?: number
+  unitPrice?: number
+  designId?: number | string
+}
+
+export interface OrderDataInfo {
+  orderDate: string
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  stateProvince: string
+  zipCode: string
+  country: string
+  apartment: string
+  billingFirstName: string
+  billingLastName: string
+  billingStreet: string
+  billingCity: string
+  billingStateProvince: string
+  billingZipCode: string
+  billingCountry: string
+  billingApartment: string
+  payment: {
+    cardData: {
+      name: string
+      last4: string
+      brand: string
+      exp_month: number
+      exp_year: number
+    }
+  }
+  cart: CartItems[]
+}

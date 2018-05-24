@@ -2,7 +2,7 @@
  * OrderPlaced Screen - Created by cazarez on 22/05/18.
  */
 import * as React from 'react'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
@@ -24,17 +24,6 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class OrderPlaced extends React.Component<Props, {}> {
-  componentDidMount() {
-    const {
-      location: { search }
-    } = this.props
-    const queryParams = queryString.parse(search)
-
-    if (!get(queryParams, 'orderId', '')) {
-      window.location.replace('/')
-    }
-  }
-
   render() {
     const {
       intl,
@@ -47,15 +36,17 @@ export class OrderPlaced extends React.Component<Props, {}> {
     } = this.props
 
     const queryParams = queryString.parse(search)
-
     const orderId = get(queryParams, 'orderId', '')
+
+    if (!orderId) {
+      return <Redirect to="/us?lang=en&currency=usd" />
+    }
 
     const title = messages.title.defaultMessage
 
     return (
       <Layout {...{ history, intl }}>
         <Container>
-          {/* <Title>{intl.formatMessage(messages.title)}</Title> */}
           <OrderDataContent
             formatMessage={intl.formatMessage}
             {...{

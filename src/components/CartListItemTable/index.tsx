@@ -5,6 +5,7 @@ import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import find from 'lodash/find'
 import dropRight from 'lodash/dropRight'
+import get from 'lodash/get'
 import Select from 'antd/lib/select'
 
 import InputNumber from 'antd/lib/input-number'
@@ -21,7 +22,13 @@ import {
   StyledSelect,
   StyledInput
 } from './styledComponents'
-import { CartItemDetail, Product, ItemDetailType } from '../../types/common'
+import {
+  CartItemDetail,
+  Product,
+  ItemDetailType,
+  FitStyle,
+  Filter
+} from '../../types/common'
 
 const Option = Select.Option
 
@@ -162,26 +169,25 @@ class CartListItemTable extends React.Component<Props, {}> {
       </MediaQuery>
     )
 
-    const fitOptions = cartItem.product.fitStyles
-      ? cartItem.product.fitStyles.map((fs, key) => {
-          return (
-            <Option key={fs.id} value={fs.name}>
-              {fs.name}
-            </Option>
-          )
-        })
-      : null
+    const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
+    const fitOptions = fitStyles.map((fs, key) => {
+      return (
+        <Option key={fs.id} value={fs.name}>
+          {fs.name}
+        </Option>
+      )
+    })
+
     const fits = cartItem.product.fitStyles && cartItem.product.fitStyles[0].id
 
-    const genderOptions = cartItem.product.genders
-      ? cartItem.product.genders.map((gender, genderKey) => {
-          return (
-            <Option key={gender.id} value={gender.name}>
-              {gender.name}
-            </Option>
-          )
-        })
-      : null
+    const genders: Filter[] = get(cartItem, 'product.genders', [])
+    const genderOptions = genders.map((gender, genderKey) => {
+      return (
+        <Option key={gender.id} value={gender.name}>
+          {gender.name}
+        </Option>
+      )
+    })
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {

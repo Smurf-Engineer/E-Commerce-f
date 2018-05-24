@@ -26,6 +26,7 @@ import {
   ItemDetailType
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
+import { FormattedMessage } from 'react-intl'
 
 interface CartItems {
   product: Product
@@ -116,6 +117,7 @@ class CartListItem extends React.Component<Props, {}> {
         : 0
     const total = itemTotal || productTotal
     const unitaryPrice = price.price || unitPrice
+    const numProductsToPriceLow = 1 // TODO: add real num of products
 
     return (
       <ItemDetails>
@@ -137,9 +139,13 @@ class CartListItem extends React.Component<Props, {}> {
                 </ItemDetailsHeaderPriceDetail>
                 {!onlyRead ? (
                   <ItemDetailsHeaderPriceDetail>
-                    {`${formatMessage(messages.add)} 1 ${formatMessage(
-                      messages.moreFor
-                    )} $${price.price || 0}`}
+                    <FormattedMessage
+                      {...messages.addMoreFor}
+                      values={{
+                        price: price.price,
+                        products: numProductsToPriceLow
+                      }}
+                    />
                   </ItemDetailsHeaderPriceDetail>
                 ) : null}
               </PriceContainer>

@@ -36,47 +36,11 @@ import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
-import { QueryProps, Product, CartItemDetail } from '../../types/common'
+import { QueryProps, OrderDataInfo } from '../../types/common'
 import CartListItem from '../CartListItem'
 
-interface CartItems {
-  product: Product
-  itemDetails: CartItemDetail[]
-  productTotal?: number
-  unitPrice?: number
-  designId?: number | string
-}
-
 interface Data extends QueryProps {
-  orderData: {
-    orderDate: string
-    firstName: string
-    lastName: string
-    street: string
-    city: string
-    stateProvince: string
-    zipCode: string
-    country: string
-    apartment: string
-    billingFirstName: string
-    billingLastName: string
-    billingStreet: string
-    billingCity: string
-    billingStateProvince: string
-    billingZipCode: string
-    billingCountry: string
-    billingApartment: string
-    payment: {
-      cardData: {
-        name: string
-        last4: string
-        brand: string
-        exp_month: number
-        exp_year: number
-      }
-    }
-    cart: CartItems[]
-  }
+  orderData: OrderDataInfo
 }
 
 interface Props {
