@@ -21,13 +21,19 @@ export const StyledButton = styled(Button)`
   }
 `
 
+interface ButtonContainerProps {
+  withoutTop?: boolean
+}
+
 export const ButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
   position: absolute;
   width: 200px;
   justify-content: center;
-  top: 5px;
+  /* top: 5px; */
+  top: ${({ withoutTop }: ButtonContainerProps) =>
+    withoutTop ? '5px' : '170px'};
 `
 
 export const CustomizeButton = styled.div`

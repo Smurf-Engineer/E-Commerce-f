@@ -103,122 +103,122 @@ class Render3D extends PureComponent {
 
     /* Object and MTL load */
 
-    mtlLoader.setPath('./models/')
-    mtlLoader.load('Tour.mtl', materials => {
-      this.handleOnLoadModel(true)
-      materials.preload()
-      const objLoader = new THREE.OBJLoader()
-      objLoader.setMaterials(materials)
-      objLoader.setPath('./models/')
-      objLoader.load(
-        'Tour.obj',
-        object => {
-          this.handleOnLoadModel(false)
+    mtlLoader.load(
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.mtl',
+      materials => {
+        this.handleOnLoadModel(true)
+        materials.preload()
+        const objLoader = new THREE.OBJLoader()
+        objLoader.setMaterials(materials)
+        objLoader.load(
+          'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.obj',
+          object => {
+            this.handleOnLoadModel(false)
 
-          // Materials
-          /* Object material */
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock,
-            color: 0xffffff
-          })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+            // Materials
+            /* Object material */
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              map: textures.flatlock,
+              color: 0xffffff
+            })
+            flatlockMaterial.map.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
-          const customColors = {}
-          let i = 0
-          for (const { color } of colors) {
-            customColors[`customColor${i + 1}`] = {
-              type: 'c',
-              value: new THREE.Color(color)
+            const customColors = {}
+            let i = 0
+            for (const { color } of colors) {
+              customColors[`customColor${i + 1}`] = {
+                type: 'c',
+                value: new THREE.Color(color)
+              }
+              i += 1
             }
-            i += 1
-          }
 
-          const uniforms = {
-            ...customColors,
-            positionX: { type: 'f', value: 1.0 },
-            positionY: { type: 'f', value: 1.0 },
-            color1: {},
-            color2: {},
-            color3: {},
-            color4: {},
-            color5: {},
-            logo: {}
-          }
+            const uniforms = {
+              ...customColors,
+              positionX: { type: 'f', value: 1.0 },
+              positionY: { type: 'f', value: 1.0 },
+              color1: {},
+              color2: {},
+              color3: {},
+              color4: {},
+              color5: {},
+              logo: {}
+            }
 
-          const phongShader = THREE.ShaderLib.phong
-          const mergeUniforms = THREE.UniformsUtils.merge([
-            phongShader.uniforms,
-            uniforms
-          ])
+            const phongShader = THREE.ShaderLib.phong
+            const mergeUniforms = THREE.UniformsUtils.merge([
+              phongShader.uniforms,
+              uniforms
+            ])
 
-          const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-          uniformsWithPhong.color1.value = textures.color1
-          uniformsWithPhong.color2.value = textures.color2
-          uniformsWithPhong.color3.value = textures.color3
-          uniformsWithPhong.color4.value = textures.color4
-          uniformsWithPhong.color5.value = textures.color5
-          uniformsWithPhong.bumpMap.value = textures.bumpMap
-          uniformsWithPhong.bumpMapScale = 0.45
-          uniformsWithPhong.shininess.value = 15
+            const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
+            uniformsWithPhong.color1.value = textures.color1
+            uniformsWithPhong.color2.value = textures.color2
+            uniformsWithPhong.color3.value = textures.color3
+            uniformsWithPhong.color4.value = textures.color4
+            uniformsWithPhong.color5.value = textures.color5
+            uniformsWithPhong.bumpMap.value = textures.bumpMap
+            uniformsWithPhong.bumpMapScale = 0.45
+            uniformsWithPhong.shininess.value = 15
 
-          this.uniformsWithPhong = uniformsWithPhong
+            this.uniformsWithPhong = uniformsWithPhong
 
-          const defines = {}
-          defines['USE_MAP'] = ''
-          defines['USE_COLOR'] = ''
-          defines['USE_BUMPMAP'] = ''
+            const defines = {}
+            defines['USE_MAP'] = ''
+            defines['USE_COLOR'] = ''
+            defines['USE_BUMPMAP'] = ''
 
-          const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniformsWithPhong,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            side: THREE.FrontSide,
-            defines: defines,
-            lights: true
-          })
+            const shaderMaterial = new THREE.ShaderMaterial({
+              uniforms: uniformsWithPhong,
+              vertexShader: vertexShader,
+              fragmentShader: fragmentShader,
+              side: THREE.FrontSide,
+              defines: defines,
+              lights: true
+            })
 
-          shaderMaterial.extensions.derivatives = true
+            shaderMaterial.extensions.derivatives = true
 
-          // Inside material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide
-          })
+            // Inside material
+            const insideMaterial = new THREE.MeshPhongMaterial({
+              color: 0x000000,
+              side: THREE.BackSide
+            })
 
-          /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({
-            map: textures.label
-          })
-          const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: textures.backPocket
-          })
+            /* Texture materials */
+            const labelMaterial = new THREE.MeshPhongMaterial({
+              map: textures.label
+            })
+            const backPocketMaterial = new THREE.MeshPhongMaterial({
+              map: textures.backPocket
+            })
 
-          /* Assign materials */
-          const cloneObject = object.children[0].clone()
-          object.add(cloneObject)
+            /* Assign materials */
+            const cloneObject = object.children[5].clone()
+            object.add(cloneObject)
 
-          /* jersey */
-          object.children[0].material = insideMaterial
-          object.children[24].material = shaderMaterial
-          /* flatlock */
-          for (let index = 1; index <= 10; index++) {
-            object.children[index].material = flatlockMaterial
-          }
-          /* Jersey label */
-          object.children[17].material = labelMaterial
-          /* back pocket */
-          object.children[22].material = backPocketMaterial
+            /* jersey */
+            object.children[5].material = insideMaterial
+            object.children[15].material = shaderMaterial
+            /* flatlock */
+            object.children[6].material = flatlockMaterial
 
-          /* Object Conig */
-          object.position.y = -30
-          object.name = 'jersey'
-          scene.add(object)
-        },
-        this.onProgress,
-        this.onError
-      )
-    })
+            /* Jersey label */
+            object.children[4].material.color.set('#FFF')
+            /* back pocket */
+            // object.children[22].material = backPocketMaterial
+
+            /* Object Conig */
+            object.position.y = -30
+            object.name = 'jersey'
+            scene.add(object)
+          },
+          this.onProgress,
+          this.onError
+        )
+      }
+    )
 
     this.scene = scene
     this.camera = camera

@@ -16,7 +16,8 @@ import {
   QueryProps,
   ProductType,
   DesignType,
-  TeamStoreItemtype
+  TeamStoreItemtype,
+  Filter
 } from '../../types/common'
 import {
   Container,
@@ -55,6 +56,7 @@ interface Props {
   designs?: TeamStoreItemtype[]
   withoutPadding?: boolean
   storeFront?: boolean
+  targetRange?: Filter
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -70,7 +72,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       teamStoreShortId,
       designs,
       withoutPadding,
-      storeFront
+      targetRange
     } = this.props
     let thumbnailsList
     let total = ''
@@ -88,11 +90,11 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                id={storeFront ? shortId : product.id}
+                id={shortId}
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailTeamStore
-                    {...{ id, name }}
+                    {...{ id, name, targetRange }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
                   />
@@ -103,12 +105,18 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                     renderForThumbnail={true}
                     item={{ product }}
                     {...{ formatMessage }}
+                    withoutTop={true}
+                    designId={shortId}
+                    designName={name}
+                    designImage={image}
+                    teamStoreId={teamStoreShortId}
                   />
                 }
+                teamStoreShortId={teamStoreShortId || ''}
                 isTopProduct={product.isTopProduct}
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}
-                image={image} // TODO: Get design image
+                image={image}
                 isStoreThumbnail={true}
                 {...{ teamStoreShortId }}
               />

@@ -14,6 +14,10 @@ export const getSingleTeamStore = gql`
       owner
       owner_name
       team_size_id
+      priceRanges {
+        id
+        name: quantity_description
+      }
       cutoff_date {
         day
         dayOrdinal
@@ -30,12 +34,14 @@ export const getSingleTeamStore = gql`
           id
           name
           image
+          shortId: short_id
           product {
             id
             yotpoId: yotpo_id
             name
             type: name
             description: short_description
+            shortDescription: short_description
             collections
             isTopProduct
             genders {

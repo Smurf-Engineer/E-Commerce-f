@@ -128,6 +128,7 @@ export type TeamStoreType = {
   private: boolean
   created_at: string
   items: TeamStoreItemtype[]
+  priceRanges: ItemDetailType[]
 }
 
 export type DateObjectType = {

@@ -77,6 +77,7 @@ export const ItemDetailsHeaderPriceDetail = styled.div`
 export const ItemDetailsContent = styled.div``
 
 export const Image = styled.img`
+  object-fit: cover;
   user-select: none;
   height: 200.29px;
   width: 180.44px;
@@ -94,13 +95,19 @@ export const Image = styled.img`
   }
 `
 
+export const FooterItem = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+`
+
 export const AddMore = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
+  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
-  text-align: right;
+  /* text-align: right; */
   cursor: pointer;
   padding-right: 16px;
 `
@@ -108,11 +115,11 @@ export const AddMore = styled.div`
 export const DeleteItem = styled.div`
   margin-top: 20px;
   color: #e61737;
-  font-family: Avenir Next;
+  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.09px;
   line-height: 16px;
-  text-align: right;
+  /* text-align: right; */
   cursor: pointer;
   padding-right: 16px;
 `

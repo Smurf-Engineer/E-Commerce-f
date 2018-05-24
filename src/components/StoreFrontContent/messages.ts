@@ -32,7 +32,7 @@ export default defineMessages({
   },
   tierTitle: {
     id: 'screens.StoreFrontContent.tierTitle',
-    defaultMessage: 'This store’s estimate price tier is 25-49.'
+    defaultMessage: 'This store’s estimate price tier is '
   },
   tierDescription: {
     id: 'screens.StoreFrontContent.tierDescription',
