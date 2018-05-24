@@ -74,6 +74,8 @@ interface Props {
   title: string
   description: string
   price: PriceRange
+  productTotal?: number
+  unitPrice?: number
   image: string
   cartItem: CartItems
   itemIndex: number
@@ -91,6 +93,8 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
+      productTotal,
+      unitPrice,
       handleAddItemDetail = () => {},
       handledeleteItemDetail = () => {},
       setLabelItemDetail = () => {},
@@ -110,6 +114,8 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem.product && cartItem.product.priceRange
         ? cartItem.product.priceRange[0].price * quantitySum
         : 0
+    const total = itemTotal || productTotal
+    const unitaryPrice = price.price || unitPrice
 
     return (
       <ItemDetails>
@@ -124,16 +130,18 @@ class CartListItem extends React.Component<Props, {}> {
                 </ItemDetailsHeaderNameDetail>
               </NameContainer>
               <PriceContainer>
-                <ItemDetailsHeaderPrice>{`$${itemTotal ||
+                <ItemDetailsHeaderPrice>{`$${total ||
                   0}`}</ItemDetailsHeaderPrice>
                 <ItemDetailsHeaderPriceDetail>
-                  {`${formatMessage(messages.unitPrice)} $${price.price || 0}`}
+                  {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
                 </ItemDetailsHeaderPriceDetail>
-                <ItemDetailsHeaderPriceDetail>
-                  {`${formatMessage(messages.add)} 1 ${formatMessage(
-                    messages.moreFor
-                  )} $${price.price || 0}`}
-                </ItemDetailsHeaderPriceDetail>
+                {!onlyRead ? (
+                  <ItemDetailsHeaderPriceDetail>
+                    {`${formatMessage(messages.add)} 1 ${formatMessage(
+                      messages.moreFor
+                    )} $${price.price || 0}`}
+                  </ItemDetailsHeaderPriceDetail>
+                ) : null}
               </PriceContainer>
             </ItemDetailsHeader>
             <CartListItemTable

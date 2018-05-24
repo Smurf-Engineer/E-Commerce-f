@@ -478,14 +478,13 @@ class Checkout extends React.Component<Props, {}> {
         variables: { orderObj }
       })
       const orderId = get(response, 'data.charge.short_id', '')
-      console.log(orderId)
       localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
       getTotalItemsIncartAction()
       const { history } = this.props
       history.push(`/order-placed?orderId=${orderId}`)
     } catch (e) {
-      console.log(e)
+      // TODO: handle error
       setLoadingPlaceOrderAction(false)
     }
   }

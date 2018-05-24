@@ -162,22 +162,26 @@ class CartListItemTable extends React.Component<Props, {}> {
       </MediaQuery>
     )
 
-    const fitOptions = cartItem.product.fitStyles.map((fs, key) => {
-      return (
-        <Option key={fs.id} value={fs.name}>
-          {fs.name}
-        </Option>
-      )
-    })
+    const fitOptions = cartItem.product.fitStyles
+      ? cartItem.product.fitStyles.map((fs, key) => {
+          return (
+            <Option key={fs.id} value={fs.name}>
+              {fs.name}
+            </Option>
+          )
+        })
+      : null
     const fits = cartItem.product.fitStyles && cartItem.product.fitStyles[0].id
 
-    const genderOptions = cartItem.product.genders.map((gender, genderKey) => {
-      return (
-        <Option key={gender.id} value={gender.name}>
-          {gender.name}
-        </Option>
-      )
-    })
+    const genderOptions = cartItem.product.genders
+      ? cartItem.product.genders.map((gender, genderKey) => {
+          return (
+            <Option key={gender.id} value={gender.name}>
+              {gender.name}
+            </Option>
+          )
+        })
+      : null
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
@@ -241,11 +245,17 @@ class CartListItemTable extends React.Component<Props, {}> {
             </Row>
           ) : (
             <Row key={index}>
-              <InfoCell>{item.gender ? item.gender.name : '-'}</InfoCell>
-              <InfoCell>{item.size ? item.size.name : '-'}</InfoCell>
-              <InfoCell>{item.fit ? item.fit.name : '-'}</InfoCell>
-              <InfoCell>{item.label || '-'}</InfoCell>
-              <InfoCell>{item.quantity || '1'}</InfoCell>
+              <InfoCell>
+                {item.gender && item.gender.name ? item.gender.name : '-'}
+              </InfoCell>
+              <InfoCell>
+                {item.size && item.size.name ? item.size.name : '-'}
+              </InfoCell>
+              <InfoCell>
+                {item.fit && item.fit.name ? item.fit.name : '-'}
+              </InfoCell>
+              <InfoCell>{item.label ? item.label : '-'}</InfoCell>
+              <InfoCell>{item.quantity ? item.quantity : '-'}</InfoCell>
             </Row>
           )
         })

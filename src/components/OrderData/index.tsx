@@ -14,7 +14,11 @@ import {
   StyledImage,
   SummaryContainer,
   OrderNumberContainer,
-  OrderNumber
+  StyledText,
+  StyledDropText,
+  TitleStyled,
+  CartList,
+  StyledCheckbox
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -28,7 +32,16 @@ import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
-import { QueryProps } from '../../types/common'
+import { QueryProps, Product, CartItemDetail } from '../../types/common'
+import CartListItem from '../CartListItem'
+
+interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+  productTotal?: number
+  unitPrice?: number
+  designId?: number | string
+}
 
 interface Data extends QueryProps {
   orderData: {
@@ -58,7 +71,7 @@ interface Data extends QueryProps {
         exp_year: number
       }
     }
-    cart: any
+    cart: CartItems[]
   }
 }
 
@@ -102,18 +115,52 @@ class OrderData extends React.Component<Props, {}> {
     const expYear = String(exp_year).substring(2, 4)
     const expMonth = exp_month > 9 ? exp_month : `0${exp_month}`
     let cardIcon = this.getCardIcon(brand)
-    console.log(cart)
+    let isThereTeamstoreProduct = true // FIXME: CHANGE TO FALSE
+    const renderList = cart
+      ? cart.map((cartItem, index) => {
+          const priceRange = {
+            quantity: '0',
+            price: 0
+          }
+          if (!isThereTeamstoreProduct && cartItem.designId) {
+            isThereTeamstoreProduct = true
+          }
+          return (
+            <CartListItem
+              formatMessage={formatMessage}
+              key={index}
+              title={cartItem.product.name}
+              description={cartItem.product.shortDescription}
+              price={priceRange}
+              productTotal={cartItem.productTotal}
+              unitPrice={cartItem.unitPrice}
+              image={cartItem.product.images[0].front}
+              cartItem={cartItem}
+              itemIndex={index}
+              onlyRead={true}
+            />
+          )
+        })
+      : null
     return (
       <Container>
         <InfoContainer>
           <OrderNumberContainer>
-            <SubTitle>{formatMessage(messages.orderNumber)}</SubTitle>
-            <OrderNumber>{orderId}</OrderNumber>
+            <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
+            <StyledText>{orderId}</StyledText>
           </OrderNumberContainer>
           <OrderNumberContainer>
-            <SubTitle>{formatMessage(messages.orderDate)}</SubTitle>
-            <OrderNumber>{orderDate}</OrderNumber>
+            <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
+            <StyledText>{orderDate}</StyledText>
           </OrderNumberContainer>
+          <StyledText>
+            {formatMessage(
+              isThereTeamstoreProduct
+                ? messages.messageTeamstore
+                : messages.messageReatil
+            )}
+            {/* TODO: add correct text for reatil */}
+          </StyledText>
           <ShippingBillingContainer>
             <div>
               <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
@@ -147,6 +194,26 @@ class OrderData extends React.Component<Props, {}> {
               <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
             </div>
           </ShippingBillingContainer>
+          <TitleStyled>{formatMessage(messages.items)}</TitleStyled>
+          <CartList>{renderList}</CartList>
+          {isThereTeamstoreProduct ? (
+            <div>
+              <Subtitle>{formatMessage(messages.priceDropAlert)}</Subtitle>
+              <StyledDropText>
+                {formatMessage(messages.priceDropMessage)}
+              </StyledDropText>
+              <div>
+                <StyledCheckbox>
+                  {formatMessage(messages.sendEmail)}
+                </StyledCheckbox>
+              </div>
+              <div>
+                <StyledCheckbox>
+                  {formatMessage(messages.sendSms)}
+                </StyledCheckbox>
+              </div>
+            </div>
+          ) : null}
         </InfoContainer>
         <SummaryContainer>
           <OrderSummary

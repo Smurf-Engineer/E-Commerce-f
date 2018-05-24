@@ -50,7 +50,6 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case GET_TOTAL_CART_ITEMS: {
       if (localStorage.getItem('cart')) {
         const totalItems = JSON.parse(localStorage.getItem('cart') as string)
-        console.log(totalItems)
         return state.set('itemsInCart', totalItems ? totalItems.length : 0)
       }
       return state.set('itemsInCart', 0)

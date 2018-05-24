@@ -35,10 +35,22 @@ export const getOrderQuery = gql`
         product {
           name
           short_description
+          images: pictures {
+            front: front_image
+          }
         }
         itemDetails {
           label
           quantity
+          gender {
+            name
+          }
+          size {
+            name
+          }
+          fit {
+            name
+          }
         }
         designId
         unitPrice

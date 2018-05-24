@@ -88,6 +88,8 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  productTotal?: number
+  unitPrice?: number
 }
 
 export type DesignType = {

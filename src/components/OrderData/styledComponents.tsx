@@ -2,6 +2,7 @@
  * Styled Components - Created by miguelcanobbio on 23/05/18.
  */
 import styled from 'styled-components'
+import Checkbox from 'antd/lib/checkbox'
 
 export const Container = styled.div`
   display: flex;
@@ -35,7 +36,7 @@ export const CardNumber = styled.div`
 export const ShippingBillingContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-right: 10%;
+  margin 24px 10% 24px 0;
 `
 
 export const PaymentText = styled.div`
@@ -57,10 +58,44 @@ export const OrderNumberContainer = styled.div`
   display: flex;
   flex-direction: row;
 `
-export const OrderNumber = styled.div`
+
+export const TitleStyled = styled.div`
+  width: 300px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 24px;
+`
+
+export const StyledText = styled.div`
   color: #5f6062;
   font-family: 'Avenir Next';
   letter-spacing: 0.11px;
   line-height: 23px;
   font-size: 16px;
+`
+
+export const StyledDropText = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  font-size: 16px;
+  white-space: pre;
+`
+
+export const CartList = styled.ul`
+  padding: 0;
+`
+
+export const StyledCheckbox = styled(Checkbox)`
+  height: 36px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin: 5px 0;
 `
