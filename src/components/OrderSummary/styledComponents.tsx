@@ -3,6 +3,11 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+
+interface TotalProps {
+  onlyRead?: boolean
+}
+
 export const Container = styled.div``
 
 export const Text = styled.div`
@@ -83,6 +88,7 @@ export const TotalOrderItem = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
+  margin-top: ${(props: TotalProps) => (props.onlyRead ? '10px' : '0')};
   color: #5f6062;
   font-family: Avenir Next;
   font-size: 16px;

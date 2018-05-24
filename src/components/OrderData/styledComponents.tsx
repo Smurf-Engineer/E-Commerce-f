@@ -4,9 +4,22 @@
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
 
-export const Container = styled.div`
+export const Container = styled.div``
+
+export const Content = styled.div`
   display: flex;
   justify-content: space-between;
+`
+
+export const Title = styled.div`
+  height: 27px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  margin-bottom: 40px;
 `
 
 export const InfoContainer = styled.div`
@@ -78,7 +91,7 @@ export const StyledText = styled.div`
 `
 
 export const StyledDropText = styled.div`
-  color: #5f6062;
+  color: #8c8c8c;
   font-family: 'Avenir Next';
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -90,6 +103,12 @@ export const CartList = styled.ul`
   padding: 0;
 `
 
+export const ContainerCheckBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-top: 16px;
+`
+
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
   color: #5f6062;
@@ -97,5 +116,13 @@ export const StyledCheckbox = styled(Checkbox)`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
-  margin: 5px 0;
+`
+
+export const StyledEmailPhoneText = styled.div`
+  color: #bebebe;
+  font-family: 'Avenir Next';
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  font-size: 16px;
+  white-space: pre;
 `

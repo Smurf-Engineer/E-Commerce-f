@@ -10,12 +10,17 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 import * as orderPlacedActions from './actions'
 import messages from './messages'
-import { Container, Title } from './styledComponents'
+import { Container } from './styledComponents'
 import OrderDataContent from '../../components/OrderData'
 import Layout from '../../components/MainLayout'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
+  sendEmailAlert: boolean
+  sendSmsAlert: boolean
+  // Reducer Actions
+  emailAlertCheckedAction: (checked: boolean) => void
+  smsAlertCheckedAction: (checked: boolean) => void
 }
 
 export class OrderPlaced extends React.Component<Props, {}> {
@@ -34,20 +39,33 @@ export class OrderPlaced extends React.Component<Props, {}> {
     const {
       intl,
       history,
-      location: { search }
+      location: { search },
+      emailAlertCheckedAction,
+      smsAlertCheckedAction,
+      sendEmailAlert,
+      sendSmsAlert
     } = this.props
 
     const queryParams = queryString.parse(search)
 
     const orderId = get(queryParams, 'orderId', '')
 
+    const title = messages.title.defaultMessage
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
-          <Title>{intl.formatMessage(messages.title)}</Title>
+          {/* <Title>{intl.formatMessage(messages.title)}</Title> */}
           <OrderDataContent
             formatMessage={intl.formatMessage}
-            {...{ orderId }}
+            {...{
+              orderId,
+              emailAlertCheckedAction,
+              smsAlertCheckedAction,
+              sendEmailAlert,
+              sendSmsAlert,
+              title
+            }}
           />
         </Container>
       </Layout>

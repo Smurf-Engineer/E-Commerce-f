@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.ProductInfo.tittle',
-    defaultMessage: 'ProductInfo'
+    defaultMessage: 'YOUR ORDER HAS BEEN PLACED!'
   },
   unitPrice: {
     id: 'components.ProductInfo.unitPrice',

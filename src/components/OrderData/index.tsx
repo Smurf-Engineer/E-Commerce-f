@@ -18,7 +18,11 @@ import {
   StyledDropText,
   TitleStyled,
   CartList,
-  StyledCheckbox
+  StyledCheckbox,
+  ContainerCheckBox,
+  StyledEmailPhoneText,
+  Title,
+  Content
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
@@ -78,7 +82,13 @@ interface Data extends QueryProps {
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   orderId: string
+  title: string
   data: Data
+  sendEmailAlert: boolean
+  sendSmsAlert: boolean
+  // actions
+  emailAlertCheckedAction: (checked: boolean) => void
+  smsAlertCheckedAction: (checked: boolean) => void
 }
 
 class OrderData extends React.Component<Props, {}> {
@@ -86,6 +96,7 @@ class OrderData extends React.Component<Props, {}> {
     const {
       formatMessage,
       orderId,
+      title,
       data: {
         orderData: {
           orderDate,
@@ -110,12 +121,14 @@ class OrderData extends React.Component<Props, {}> {
           },
           cart
         }
-      }
+      },
+      sendEmailAlert,
+      sendSmsAlert
     } = this.props
     const expYear = String(exp_year).substring(2, 4)
     const expMonth = exp_month > 9 ? exp_month : `0${exp_month}`
     let cardIcon = this.getCardIcon(brand)
-    let isThereTeamstoreProduct = true // FIXME: CHANGE TO FALSE
+    let isThereTeamstoreProduct = false
     const renderList = cart
       ? cart.map((cartItem, index) => {
           const priceRange = {
@@ -142,87 +155,119 @@ class OrderData extends React.Component<Props, {}> {
           )
         })
       : null
+    let totalSum = 0
+    if (cart) {
+      const total = cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        const unitPrice = cartItem.unitPrice as number
+
+        return unitPrice * quantitySum
+      })
+
+      totalSum = total.reduce((a, b) => a + b, 0)
+    }
     return (
       <Container>
-        <InfoContainer>
-          <OrderNumberContainer>
-            <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
-            <StyledText>{orderId}</StyledText>
-          </OrderNumberContainer>
-          <OrderNumberContainer>
-            <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
-            <StyledText>{orderDate}</StyledText>
-          </OrderNumberContainer>
-          <StyledText>
-            {formatMessage(
-              isThereTeamstoreProduct
-                ? messages.messageTeamstore
-                : messages.messageReatil
-            )}
-            {/* TODO: add correct text for reatil */}
-          </StyledText>
-          <ShippingBillingContainer>
-            <div>
-              <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
-              <MyAddress
-                hideBottomButtons={true}
-                name={`${firstName} ${lastName}`}
-                city={`${city} ${stateProvince}`}
-                {...{ street, zipCode, country, apartment, formatMessage }}
-              />
-            </div>
-            <div>
-              <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
-              <MyAddress
-                hideBottomButtons={true}
-                name={`${billingFirstName} ${billingLastName}`}
-                street={billingStreet}
-                city={`${billingCity} ${billingStateProvince}`}
-                zipCode={billingZipCode}
-                country={billingCountry}
-                apartment={billingApartment}
-                {...{ formatMessage }}
-              />
-            </div>
-            <div>
-              <SubTitle>{formatMessage(messages.payment)}</SubTitle>
-              <PaymentText>{name}</PaymentText>
-              <CardNumber>
-                <PaymentText>{`X-${last4}`}</PaymentText>
-                <StyledImage src={cardIcon} />
-              </CardNumber>
-              <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
-            </div>
-          </ShippingBillingContainer>
-          <TitleStyled>{formatMessage(messages.items)}</TitleStyled>
-          <CartList>{renderList}</CartList>
-          {isThereTeamstoreProduct ? (
-            <div>
-              <Subtitle>{formatMessage(messages.priceDropAlert)}</Subtitle>
-              <StyledDropText>
-                {formatMessage(messages.priceDropMessage)}
-              </StyledDropText>
+        <Title>{title}</Title>
+        <Content>
+          <InfoContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderNumber)}</TitleStyled>
+              <StyledText>{orderId}</StyledText>
+            </OrderNumberContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
+              <StyledText>{orderDate}</StyledText>
+            </OrderNumberContainer>
+            <StyledText>
+              {formatMessage(
+                isThereTeamstoreProduct
+                  ? messages.messageTeamstore
+                  : messages.messageReatil
+              )}
+              {/* TODO: add correct text for reatil */}
+            </StyledText>
+            <ShippingBillingContainer>
               <div>
-                <StyledCheckbox>
-                  {formatMessage(messages.sendEmail)}
-                </StyledCheckbox>
+                <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
+                <MyAddress
+                  hideBottomButtons={true}
+                  name={`${firstName} ${lastName}`}
+                  city={`${city} ${stateProvince}`}
+                  {...{ street, zipCode, country, apartment, formatMessage }}
+                />
               </div>
               <div>
-                <StyledCheckbox>
-                  {formatMessage(messages.sendSms)}
-                </StyledCheckbox>
+                <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
+                <MyAddress
+                  hideBottomButtons={true}
+                  name={`${billingFirstName} ${billingLastName}`}
+                  street={billingStreet}
+                  city={`${billingCity} ${billingStateProvince}`}
+                  zipCode={billingZipCode}
+                  country={billingCountry}
+                  apartment={billingApartment}
+                  {...{ formatMessage }}
+                />
               </div>
-            </div>
-          ) : null}
-        </InfoContainer>
-        <SummaryContainer>
-          <OrderSummary
-            total={10}
-            subtotal={10}
-            discount={10}
-            {...{ formatMessage }}
-          />
-        </SummaryContainer>
+              <div>
+                <SubTitle>{formatMessage(messages.payment)}</SubTitle>
+                <PaymentText>{name}</PaymentText>
+                <CardNumber>
+                  <PaymentText>{`X-${last4}`}</PaymentText>
+                  <StyledImage src={cardIcon} />
+                </CardNumber>
+                <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
+              </div>
+            </ShippingBillingContainer>
+            <TitleStyled>{formatMessage(messages.items)}</TitleStyled>
+            <CartList>{renderList}</CartList>
+            {isThereTeamstoreProduct ? (
+              <div>
+                <SubTitle>{formatMessage(messages.priceDropAlert)}</SubTitle>
+                <StyledDropText>
+                  {formatMessage(messages.priceDropMessage)}
+                </StyledDropText>
+                {/* TODO: Add button to save these alerts settings*/}
+                <ContainerCheckBox>
+                  <StyledCheckbox
+                    checked={sendEmailAlert}
+                    onChange={this.handleOnCheckedSendEmailAlert}
+                  >
+                    {formatMessage(messages.sendEmail)}
+                  </StyledCheckbox>
+                  {/* TODO: get real email*/}
+                  <StyledEmailPhoneText>joe@smith.com</StyledEmailPhoneText>
+                </ContainerCheckBox>
+                <ContainerCheckBox>
+                  <StyledCheckbox
+                    checked={sendSmsAlert}
+                    onChange={this.handleOnCheckedSendSmsAlert}
+                  >
+                    {formatMessage(messages.sendSms)}
+                  </StyledCheckbox>
+                  {/* TODO: get real phone*/}
+                  <StyledEmailPhoneText> 111-111-1111</StyledEmailPhoneText>
+                </ContainerCheckBox>
+              </div>
+            ) : null}
+          </InfoContainer>
+          <SummaryContainer>
+            {/* TODO: add discount*/}
+            <OrderSummary
+              total={totalSum}
+              subtotal={totalSum}
+              discount={0}
+              onlyRead={true}
+              {...{ formatMessage }}
+            />
+          </SummaryContainer>
+        </Content>
       </Container>
     )
   }
@@ -239,6 +284,24 @@ class OrderData extends React.Component<Props, {}> {
       default:
         return iconCreditCard
     }
+  }
+  handleOnCheckedSendEmailAlert = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { emailAlertCheckedAction } = this.props
+    const {
+      target: { checked }
+    } = event
+    emailAlertCheckedAction(checked)
+  }
+  handleOnCheckedSendSmsAlert = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { smsAlertCheckedAction } = this.props
+    const {
+      target: { checked }
+    } = event
+    smsAlertCheckedAction(checked)
   }
 }
 
