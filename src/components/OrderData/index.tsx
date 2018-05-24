@@ -157,19 +157,10 @@ class OrderData extends React.Component<Props, {}> {
       : null
     let totalSum = 0
     if (cart) {
-      const total = cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
-          return itemDetail.quantity
-        })
-
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        const unitPrice = cartItem.unitPrice as number
-
-        return unitPrice * quantitySum
+      cart.map((cartItem, index) => {
+        const productTotal = cartItem.productTotal as number
+        totalSum = totalSum + productTotal
       })
-
-      totalSum = total.reduce((a, b) => a + b, 0)
     }
     return (
       <Container>
