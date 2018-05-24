@@ -33,7 +33,7 @@ const uploadLink = createUploadLink({
 
 const wsLink = process.browser
   ? new WebSocketLink({
-      uri: `ws://localhost:4040/api/subscriptions`,
+      uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
       options: {
         reconnect: false // TODO: CHANGE TO TRUE LATER
       }
