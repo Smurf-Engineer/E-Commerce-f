@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   overflow: auto;
-  height: 333px;
+  height: 450px;
   padding: 0px 32px;
 `
 

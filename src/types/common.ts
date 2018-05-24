@@ -290,3 +290,10 @@ export interface StripeCardData {
   cardBrand: string
   stripeToken?: string
 }
+
+export interface ModelConfig {
+  obj: string
+  mtl: string
+  bumpMap: string
+  areas: string[]
+}
