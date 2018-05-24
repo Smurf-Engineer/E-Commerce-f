@@ -140,11 +140,15 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         loadingBilling: false
       })
     case SET_STRIPE_CARD_DATA:
-      return state.merge({ ...action.stripeCardData, loadingBilling: false })
+      return state.merge({
+        ...action.stripeCardData,
+        loadingBilling: false,
+        stripeError: false
+      })
     case SET_LOADING_PLACE_ORDER:
       return state.set('loadingPlaceOrder', action.loading)
     case RESET_DATA:
-      return state.set(initialState)
+      return initialState
     default:
       return state
   }

@@ -80,20 +80,21 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
     return (
       <Container>
-        {showList &&
-          !listForMyAccount && <Title>{formatMessage(messages.title)}</Title>}
-        {showList && (
+        {showList ? (
           <Content>
-            {!listForMyAccount && (
+            {!listForMyAccount ? (
+              <Title>{formatMessage(messages.title)}</Title>
+            ) : null}
+            {!listForMyAccount ? (
               <AddAddressBtn onClick={this.showAddressForm}>
                 {formatMessage(messages.addAddressLabel)}
               </AddAddressBtn>
-            )}
+            ) : null}
             <AddressesList {...{ listForMyAccount }}>
               {adressesList}
             </AddressesList>
           </Content>
-        )}
+        ) : null}
       </Container>
     )
   }

@@ -5,14 +5,17 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import Steps from 'antd/lib/steps'
+import Message from 'antd/lib/message'
 import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
+import { resetReducerData as resetReducerShoppingCartAction } from '../ShoppingCartPage/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
 import {
@@ -98,6 +101,7 @@ interface Props extends RouteComponentProps<any> {
   sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
   resetReducerAction: () => void
+  resetReducerShoppingCartAction: () => void
   getTotalItemsIncart: () => void
   cart: CartItems[]
 }
@@ -105,8 +109,12 @@ interface Props extends RouteComponentProps<any> {
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 class Checkout extends React.Component<Props, {}> {
   componentWillUnmount() {
-    const { resetReducerAction } = this.props
+    const {
+      resetReducerAction,
+      resetReducerShoppingCartAction: resetReducerCartAction
+    } = this.props
     resetReducerAction()
+    resetReducerCartAction()
   }
   render() {
     const {
@@ -183,6 +191,10 @@ class Checkout extends React.Component<Props, {}> {
       cardNumber,
       cardExpDate,
       cardBrand
+    }
+
+    if (isEmpty(cart)) {
+      return <Redirect to="/us?lang=en&currency=usd" />
     }
 
     let totalSum = 0
@@ -416,6 +428,7 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction
     } = this.props
+
     const shippingAddress: AddressType = {
       firstName,
       lastName,
@@ -481,11 +494,14 @@ class Checkout extends React.Component<Props, {}> {
       localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
       getTotalItemsIncartAction()
+
       const { history } = this.props
       history.push(`/order-placed?orderId=${orderId}`)
-    } catch (e) {
-      // TODO: handle error
+    } catch (error) {
       setLoadingPlaceOrderAction(false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+      console.error(error)
     }
   }
 }
@@ -503,7 +519,8 @@ const CheckoutEnhance = compose(
   PlaceOrderMutation,
   connect(mapStateToProps, {
     ...checkoutActions,
-    getTotalItemsIncart
+    getTotalItemsIncart,
+    resetReducerShoppingCartAction
   })
 )(Checkout)
 

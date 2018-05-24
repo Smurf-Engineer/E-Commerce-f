@@ -12,7 +12,7 @@ export const Container = styled.div`
   width: 100%;
 `
 export const Content = styled.div`
-  padding: 20px 0 30px;
+  padding-bottom: 30px;
 `
 export const Title = styled.div`
   height: 22px;
@@ -35,7 +35,7 @@ export const AddAddressBtn = styled(Button)`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 20px 0;
 
   &:hover {
     color: #4a90e2;
