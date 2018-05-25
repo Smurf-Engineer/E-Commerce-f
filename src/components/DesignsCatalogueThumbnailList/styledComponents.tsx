@@ -1,6 +1,3 @@
-/**
- * Styled Components - Created by gustavomedina on 12/04/18.
- */
 import styled from 'styled-components'
 
 export const Container = styled.div``
