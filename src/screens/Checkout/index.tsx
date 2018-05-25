@@ -332,22 +332,14 @@ class Checkout extends React.Component<Props, {}> {
       firstName,
       lastName,
       street,
-      apartment,
       country,
       stateProvince,
       city,
       zipCode,
       phone,
-      validFormAction,
-      showAddressFormAction,
-      indexAddressSelected
-      //   smsCheckAction,
-      //   emailCheckAction
+      validFormAction
     } = this.props
-    if (indexAddressSelected !== -1) {
-      stepAdvanceAction(currentStep + 1)
-      return
-    }
+
     const error =
       !firstName ||
       !lastName ||
@@ -361,27 +353,7 @@ class Checkout extends React.Component<Props, {}> {
       validFormAction(error)
       return
     }
-    const address = {
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
-      defaultBilling: false,
-      defaultShipping: false
-    }
-
-    if (currentStep < stepperTitles.length - 1) {
-      this.saveAddress(address)
-      const response = stepAdvanceAction(currentStep + 1)
-      if (response) {
-        showAddressFormAction(false)
-      }
-    }
+    stepAdvanceAction(currentStep + 1)
   }
 
   saveAddress = async (address: AddressType) => {
@@ -450,12 +422,17 @@ class Checkout extends React.Component<Props, {}> {
       phone: billingPhone
     }
 
+    this.saveAddress(shippingAddress)
+    this.saveAddress(billingAddress)
+
     /*
     * TODO: Find a better solution to unset these properties
     * from cart Object.
     * Maybe don't save them on localStorage
     */
     forEach(cart, cartItem => {
+      unset(cartItem, 'designImage')
+      unset(cartItem, 'designName')
       unset(cartItem, 'product.shortDescription')
       unset(cartItem, 'product.isTopProduct')
       unset(cartItem, 'product.__typename')
@@ -499,7 +476,6 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction(false)
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
-      console.error(error)
     }
   }
 }
