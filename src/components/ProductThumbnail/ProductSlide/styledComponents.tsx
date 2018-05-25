@@ -37,6 +37,7 @@ export const Page = styled.div`
 `
 
 export const Image = styled.img`
+  object-fit: cover;
   user-select: none;
   height: 200.29px;
   width: 100%;

@@ -10,8 +10,15 @@ import Menu, { ClickParam } from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
+import AddToCartButton from '../AddToCartButton'
 import FooterThumbnailTeamStore from '../FooterThumbnailTeamStore'
-import { QueryProps, ProductType, DesignType } from '../../types/common'
+import {
+  QueryProps,
+  ProductType,
+  DesignType,
+  TeamStoreItemtype,
+  Filter
+} from '../../types/common'
 import {
   Container,
   Content,
@@ -46,11 +53,10 @@ interface Props {
   currentPage: number
   limit?: number
   teamStoreShortId?: string
-  designs?: DesignType[]
-  onPressPrivate?: () => void
-  onPressDelete?: () => void
+  designs?: TeamStoreItemtype[]
   withoutPadding?: boolean
   storeFront?: boolean
+  targetRange?: Filter
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -65,10 +71,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       data,
       teamStoreShortId,
       designs,
-      onPressPrivate = () => {},
-      onPressDelete = () => {},
       withoutPadding,
-      storeFront
+      targetRange
     } = this.props
     let thumbnailsList
     let total = ''
@@ -78,30 +82,48 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       total = designs.length.toString()
-      thumbnailsList = designs.map(({ id, shortId, name, product }, index) => {
-        return (
-          <ThumbnailListItem key={index}>
-            <ProductThumbnail
-              id={storeFront ? shortId : product.id}
-              yotpoId={product.yotpoId}
-              footer={
-                <FooterThumbnailTeamStore
-                  {...{ id, name, onPressPrivate, onPressDelete }}
-                  description={`${product.type} ${product.description}`}
-                  date="03/03/2018" // TODO: Get design date
-                />
-              }
-              labelButton="ADD TO CART"
-              isTopProduct={product.isTopProduct}
-              onPressCustomize={this.handleOnPressAddToCart}
-              onPressQuickView={this.handlePressQuickView}
-              image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
-              isStoreThumbnail={true}
-              {...{ teamStoreShortId }}
-            />
-          </ThumbnailListItem>
-        )
-      })
+      thumbnailsList = designs.map(
+        (
+          { design: { id, shortId, name, product, image }, totalOrders },
+          index
+        ) => {
+          return (
+            <ThumbnailListItem key={index}>
+              <ProductThumbnail
+                id={shortId}
+                yotpoId={product.yotpoId}
+                footer={
+                  <FooterThumbnailTeamStore
+                    {...{ id, name, targetRange }}
+                    description={`${product.type} ${product.description}`}
+                    progress={totalOrders}
+                  />
+                }
+                labelButton={
+                  <AddToCartButton
+                    label={'ADD TO CART'}
+                    renderForThumbnail={true}
+                    item={{ product }}
+                    {...{ formatMessage }}
+                    withoutTop={true}
+                    designId={shortId}
+                    designName={name}
+                    designImage={image}
+                    teamStoreId={teamStoreShortId}
+                  />
+                }
+                teamStoreShortId={teamStoreShortId || ''}
+                isTopProduct={product.isTopProduct}
+                onPressCustomize={this.handleOnPressAddToCart}
+                onPressQuickView={this.handlePressQuickView}
+                image={image}
+                isStoreThumbnail={true}
+                {...{ teamStoreShortId }}
+              />
+            </ThumbnailListItem>
+          )
+        }
+      )
       renderThumbnailList = (
         <ThumbnailsList withoutPadding={!!withoutPadding}>
           {thumbnailsList}

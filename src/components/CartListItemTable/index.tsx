@@ -35,6 +35,7 @@ const Option = Select.Option
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
 }
 
 interface Props {

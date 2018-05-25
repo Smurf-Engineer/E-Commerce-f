@@ -129,7 +129,7 @@ export const StyledSlider = styled(Slider)`
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 80%;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 80%;

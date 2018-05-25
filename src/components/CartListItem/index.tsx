@@ -16,7 +16,8 @@ import {
   PriceContainer,
   AddMore,
   DeleteItem,
-  BottomDivider
+  BottomDivider,
+  FooterItem
 } from './styledComponents'
 import CartListItemTable from '../../components/CartListItemTable'
 import {
@@ -31,6 +32,11 @@ import { FormattedMessage } from 'react-intl'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
+  designId?: string
+  designName?: string
+  designImage?: string
+  teamStoreId?: string
 }
 
 interface Props {
@@ -163,14 +169,14 @@ class CartListItem extends React.Component<Props, {}> {
               setDetailSize={setDetailSize}
             />
             {!onlyRead ? (
-              <div>
+              <FooterItem>
                 <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
                   {formatMessage(messages.addMore)}
                 </AddMore>
                 <DeleteItem onClick={e => removeItem(e, itemIndex)}>
                   {formatMessage(messages.delete)}
                 </DeleteItem>
-              </div>
+              </FooterItem>
             ) : null}
           </ItemDetails>
         </Container>

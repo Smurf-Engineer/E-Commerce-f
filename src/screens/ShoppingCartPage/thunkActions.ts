@@ -4,6 +4,7 @@ import { Product, CartItemDetail } from '../../types/common'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
 }
 
 export const setInitialData = () => {
