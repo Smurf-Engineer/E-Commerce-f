@@ -6,7 +6,7 @@ import * as React from 'react'
 // import messages from './messages'
 import { Container, Text, StyledImg } from './styledComponents'
 
-import image1 from '../../assets/racesuits.jpg'
+import image1 from '../../assets/Racesuits.jpg'
 import image2 from '../../assets/Outerwear.jpg'
 import image3 from '../../assets/racesuits-2.jpg'
 
