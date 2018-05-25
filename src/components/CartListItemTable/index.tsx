@@ -35,6 +35,7 @@ const Option = Select.Option
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
 }
 
 interface Props {
@@ -191,6 +192,7 @@ class CartListItemTable extends React.Component<Props, {}> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
+          const { gender, size, fit, label, quantity } = item
           return !onlyRead ? (
             <Row key={index}>
               <Cell>
@@ -199,7 +201,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   showSearch={false}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
-                  value={item.gender ? item.gender.name : undefined}
+                  value={gender ? gender.name : undefined}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -219,7 +221,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
                   disabled={!fits}
-                  value={item.fit ? item.fit.name : undefined}
+                  value={fit ? fit.name : undefined}
                 >
                   {fitOptions}
                 </StyledSelect>
@@ -228,7 +230,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                 <StyledInput
                   id={`input${index}`}
                   placeholder={formatMessage(messages.labelPlaceholder)}
-                  value={item.label || ''}
+                  value={label || ''}
                   onChange={e => this.handleLabelChange(e, index)}
                 />
               </Cell>
@@ -238,7 +240,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   onChange={e => this.handleQuantityChange(e, index)}
                   min={1}
                   max={100}
-                  value={item.quantity || undefined}
+                  value={quantity || undefined}
                 />
               </Cell>
               <Cell width={10}>
@@ -251,17 +253,11 @@ class CartListItemTable extends React.Component<Props, {}> {
             </Row>
           ) : (
             <Row key={index}>
-              <InfoCell>
-                {item.gender && item.gender.name ? item.gender.name : '-'}
-              </InfoCell>
-              <InfoCell>
-                {item.size && item.size.name ? item.size.name : '-'}
-              </InfoCell>
-              <InfoCell>
-                {item.fit && item.fit.name ? item.fit.name : '-'}
-              </InfoCell>
-              <InfoCell>{item.label ? item.label : '-'}</InfoCell>
-              <InfoCell>{item.quantity ? item.quantity : '-'}</InfoCell>
+              <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
+              <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
+              <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
+              <InfoCell>{label || '-'}</InfoCell>
+              <InfoCell>{quantity || '-'}</InfoCell>
             </Row>
           )
         })

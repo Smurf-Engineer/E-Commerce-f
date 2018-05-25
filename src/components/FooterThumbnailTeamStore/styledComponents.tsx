@@ -28,7 +28,7 @@ export const Description = styled.div`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
-  padding 2px 0px;
+  padding: 2px 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -49,7 +49,7 @@ export const Bottom = styled.div`
 export const Label = styled.div`
   user-select: none;
   color: #5f6062;
-  padding 4px 0px;
+  padding: 4px 0px;
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
@@ -59,7 +59,7 @@ export const Label = styled.div`
 export const PriceLabel = styled.div`
   user-select: none;
   color: #5f6062;
-  padding 4px 0px;
+  padding: 4px 0px;
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
@@ -70,8 +70,8 @@ export const PriceLabel = styled.div`
 
 export const RedPriceLabel = styled.div`
   user-select: none;
-  color: #E61737;
-  padding 4px 0px;
+  color: #e61737;
+  padding: 4px 0px;
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
@@ -109,4 +109,32 @@ export const PricesContainer = styled.div`
   flex-direction: row;
   align-items: right;
   justify-content: flex-end;
+`
+
+export const ProgressWrapper = styled.div`
+  width: 100%;
+  .ant-progress-bg {
+    height: 13px !important;
+    background-color: #94d6fd;
+  }
+
+  .ant-progress-outer {
+    display: block;
+    padding-right: 0;
+  }
+
+  .ant-progress-text {
+    overflow: hidden;
+    color: transparent;
+    display: none;
+  }
+`
+
+export const ProgressText = styled.div`
+  font-size: 10px;
+  position: absolute;
+  z-index: 1;
+  margin-top: 6px;
+  margin-left: 4px;
+  font-family: 'Avenir Next';
 `

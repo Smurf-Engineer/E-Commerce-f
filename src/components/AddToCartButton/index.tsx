@@ -21,6 +21,11 @@ import { Product, CartItemDetail } from '../../types/common'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
+  designId?: string
+  designName?: string
+  designImage?: string
+  teamStoreId?: string
 }
 
 interface Props {
@@ -28,6 +33,11 @@ interface Props {
   label: string
   renderForThumbnail?: boolean
   item: CartItems
+  designId?: string
+  designName?: string
+  designImage?: string
+  teamStoreId?: string
+  withoutTop?: boolean
   onClick: () => boolean
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
@@ -35,10 +45,10 @@ interface Props {
 
 export class AddToCartButton extends React.PureComponent<Props, {}> {
   render() {
-    const { label, renderForThumbnail } = this.props
+    const { label, renderForThumbnail, withoutTop } = this.props
 
     const renderView = renderForThumbnail ? (
-      <ButtonContainer>
+      <ButtonContainer withoutTop={!!withoutTop}>
         <CustomizeButton onClick={this.addToCart}>{label}</CustomizeButton>
       </ButtonContainer>
     ) : (
@@ -51,7 +61,16 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   }
 
   addToCart = () => {
-    const { onClick, renderForThumbnail, intl, item } = this.props
+    const {
+      onClick,
+      renderForThumbnail,
+      intl,
+      item,
+      designId,
+      teamStoreId,
+      designName,
+      designImage
+    } = this.props
     if (renderForThumbnail) {
       const details = [] as CartItemDetail[]
       const detail = {
@@ -63,7 +82,11 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
         { product: item.product },
         {
           itemDetails: details
-        }
+        },
+        { designId },
+        { designName },
+        { designImage },
+        { teamStoreId }
       )
       this.saveInLocalStorage(itemToAdd)
     } else {

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Progress from 'antd/lib/progress'
 import messages from './messages'
+import { Filter } from '../../types/common'
 import {
   Footer,
   Type,
@@ -13,16 +14,17 @@ import {
   Label,
   PricesContainer,
   PriceLabel,
-  RedPriceLabel
+  RedPriceLabel,
+  ProgressWrapper,
+  ProgressText
 } from './styledComponents'
 
 interface Props {
   id: number
   name: string
   description: string
-  date: string
-  onPressPrivate: (id: number, isPrivate: boolean) => void
-  onPressDelete: (id: number) => void
+  progress: number
+  targetRange?: Filter
 }
 
 // TODO: get from query
@@ -33,10 +35,14 @@ const FooterThumbnailTeamStore = ({
   id,
   name,
   description,
-  date,
-  onPressPrivate,
-  onPressDelete
+  progress,
+  targetRange
 }: Props) => {
+  const totalPercentage: number = targetRange
+    ? parseInt(targetRange.name.split('-')[0], 10)
+    : 0
+  const percentage = progress / (totalPercentage / 100)
+
   return (
     <Footer>
       <Type>{name}</Type>
@@ -54,7 +60,12 @@ const FooterThumbnailTeamStore = ({
         <RedPriceLabel>{currentPrice}</RedPriceLabel>
       </PricesContainer>
       <Bottom>
-        <Progress percent={30} />
+        <ProgressWrapper>
+          <ProgressText>{`${progress}/${
+            targetRange ? targetRange.name.split('-')[0] : 0
+          }`}</ProgressText>
+          <Progress percent={percentage < 100 ? percentage : 100} />
+        </ProgressWrapper>
       </Bottom>
     </Footer>
   )
