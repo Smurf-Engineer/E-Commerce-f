@@ -173,7 +173,7 @@ export class Home extends React.Component<Props, {}> {
               <FormattedMessage {...messages.orderingLabel} />
             </PropositionTile>
           </PropositionTilesContainer>
-          <ImagesGrid {...{ fakeWidth }} />
+          <ImagesGrid {...{ fakeWidth, history }} />
           <YotpoHome />
         </Container>
       </Layout>
