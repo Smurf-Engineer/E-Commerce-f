@@ -107,6 +107,7 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
           modalTitle={formatMessage(messages.shareModalTitle)}
           requestClose={this.handleOpenShareModal()}
           url={shareStoreUrl}
+          messageForShare={formatMessage(messages.shareTeamStoreMessage)}
           {...{ formatMessage }}
         />
       </Container>

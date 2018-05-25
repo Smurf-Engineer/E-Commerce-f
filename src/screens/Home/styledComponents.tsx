@@ -70,6 +70,12 @@ export const PropositionTilesContainer = styled.div`
   color: #fff;
   padding: 21px 0 29px;
   justify-content: space-around;
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    padding: 0;
+    flex-direction: column;
+    height: 401px;
+  }
 `
 export const PropositionTile = styled.div`
   color: #ffffff;

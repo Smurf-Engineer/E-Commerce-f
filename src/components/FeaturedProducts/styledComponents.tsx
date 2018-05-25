@@ -4,10 +4,64 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  padding: 30px 32px 70px
+  padding: 30px 32px 70px;
   background-color: #fff;
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    padding: 22px 15px 37px;
+    border-top: 1px solid #dcdcdc;
+  }
 `
 
-export const Text = styled.div`
-  color: #fff;
+export const Title = styled.div`
+  height: 27px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  text-align: center;
+  margin-bottom: 23px;
+`
+
+export const FeaturedContent = styled.ul`
+  overflow-x: scroll;
+  display: -webkit-box;
+  list-style: none;
+  padding: 0;
+`
+export const ThumbnailListItem = styled.li`
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 50%;
+    margin: 0 5px;
+  }
+`
+
+export const ItemContainer = styled.div`
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 0 5px;
+  }
+`
+
+export const CarouselContent = styled.div`
+  margin: 0;
+  padding: 0;
+`
+
+export const ArrowWrapper = styled.div``
+export const Arrow = styled.img`
+  height: 20px;
+  width: 37.39px;
+`
+export const Loading = styled.div`
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 0 5px;
+    height: 30vh;
+  }
 `

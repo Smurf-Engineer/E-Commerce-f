@@ -15,9 +15,10 @@ import Layout from '../../components/MainLayout'
 import {
   Container,
   SearchBackground,
-  HelpContainer,
-  NeedHelp,
-  GetStartedButton,
+  // TODO: Comented code to hide everything related with fitting widget, it'll be implemented in phase 2 of Jakroo
+  //  HelpContainer,
+  //  NeedHelp,
+  //  GetStartedButton,
   SearchContainer,
   SearchBarContent,
   PropositionTilesContainer,
@@ -28,6 +29,7 @@ import SearchBar from '../../components/SearchBar'
 import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
+import FeaturedContent from '../../components/FeaturedContent'
 import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
@@ -151,7 +153,12 @@ export class Home extends React.Component<Props, {}> {
           >
             {searchResults}
           </div>
-          <FeaturedProducts />
+          <FeaturedProducts
+            formatMessage={intl.formatMessage}
+            openQuickView={this.handleOnQuickView}
+            {...{ history }}
+          />
+          <FeaturedContent {...{ history }} />
           <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />

@@ -24,7 +24,7 @@ export default defineMessages({
   },
   messageDeleteModal: {
     id: 'components.MyAddresses.messageDeleteModal',
-    defaultMessage: 'This will permanently delete this address'
+    defaultMessage: 'This will permanently delete this Teamstore.'
   },
   shareModalTitle: {
     id: 'screen.Teamstores.shareModalTitle',
@@ -37,5 +37,9 @@ export default defineMessages({
   deleteModalLabel: {
     id: 'screen.Teamstores.deleteModalLabel',
     defaultMessage: 'Delete'
+  },
+  shareTeamStoreMessage: {
+    id: 'screen.Teamstores.shareTeamStoreMessage',
+    defatulMessage: 'Check out this awesome teamstore!'
   }
 })
