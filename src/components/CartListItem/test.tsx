@@ -5,11 +5,13 @@ import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import CartListItem from './index'
 import { ItemDetailType } from '../../types/common'
+import { IntlProvider } from 'react-intl'
 
 describe('<CartListItem />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const format = (message: string) => 'string'
+    const props = { locale: 'en' }
     const handleAdd = (
       event: React.MouseEvent<EventTarget>,
       index: number
@@ -117,23 +119,25 @@ describe('<CartListItem />', () => {
     }
     const image = ''
     ReactDOM.render(
-      <CartListItem
-        formatMessage={format}
-        title={title}
-        description={description}
-        price={price}
-        image={image}
-        cartItem={item}
-        handleAddItemDetail={handleAdd}
-        handledeleteItemDetail={handleDelete}
-        itemIndex={itemIndex}
-        setLabelItemDetail={handleLabel}
-        setDetailQuantity={handleQuantity}
-        setDetailFit={handleFit}
-        setDetailGender={handleGender}
-        setDetailSize={handleSize}
-        removeItem={handleRemove}
-      />,
+      <IntlProvider {...props}>
+        <CartListItem
+          formatMessage={format}
+          title={title}
+          description={description}
+          price={price}
+          image={image}
+          cartItem={item}
+          handleAddItemDetail={handleAdd}
+          handledeleteItemDetail={handleDelete}
+          itemIndex={itemIndex}
+          setLabelItemDetail={handleLabel}
+          setDetailQuantity={handleQuantity}
+          setDetailFit={handleFit}
+          setDetailGender={handleGender}
+          setDetailSize={handleSize}
+          removeItem={handleRemove}
+        />
+      </IntlProvider>,
       div
     )
   })

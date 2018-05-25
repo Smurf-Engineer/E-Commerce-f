@@ -23,6 +23,7 @@ interface Props {
   total: number
   subtotal: number
   discount?: number
+  onlyRead?: boolean
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -30,7 +31,7 @@ const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
 class OrderSummary extends React.Component<Props, {}> {
   render() {
-    const { total, subtotal, formatMessage, discount } = this.props
+    const { total, subtotal, formatMessage, discount, onlyRead } = this.props
     const renderDiscount = discount ? (
       <OrderItem>
         {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
@@ -39,6 +40,7 @@ class OrderSummary extends React.Component<Props, {}> {
           <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
         </FlexWrapper>
         <div>{`USD$${discount}`}</div> */}
+        {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
       </OrderItem>
     ) : (
       <ZipCodeInputWrapper>
@@ -71,35 +73,37 @@ class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.shipping} />
           <div>{`USD$0`}</div>
         </OrderItem>
-        {renderDiscount}
+        {!onlyRead ? renderDiscount : null}
         <CodeDivider />
-        <CollapseWrapper>
-          <Collapse bordered={false}>
-            <Panel header={formatMessage(messages.discountCode)} key="1">
-              <ZipCodeInputWrapper>
-                <ShareLinkInput
-                  disabled={true}
-                  id="url"
-                  enterButton={formatMessage(messages.apply)}
-                  placeholder={formatMessage(messages.promoCodePlaceholder)}
-                  size="default"
-                  onChange={() => {}}
-                />
-              </ZipCodeInputWrapper>
-              <ZipCodeInputWrapper>
-                <ShareLinkInput
-                  disabled={true}
-                  id="url"
-                  enterButton={formatMessage(messages.apply)}
-                  placeholder={formatMessage(messages.giftPlaceholder)}
-                  size="default"
-                  onChange={() => {}}
-                />
-              </ZipCodeInputWrapper>
-            </Panel>
-          </Collapse>
-        </CollapseWrapper>
-        <TotalOrderItem>
+        {!onlyRead ? (
+          <CollapseWrapper>
+            <Collapse bordered={false}>
+              <Panel header={formatMessage(messages.discountCode)} key="1">
+                <ZipCodeInputWrapper>
+                  <ShareLinkInput
+                    disabled={true}
+                    id="url"
+                    enterButton={formatMessage(messages.apply)}
+                    placeholder={formatMessage(messages.promoCodePlaceholder)}
+                    size="default"
+                    onChange={() => {}}
+                  />
+                </ZipCodeInputWrapper>
+                <ZipCodeInputWrapper>
+                  <ShareLinkInput
+                    disabled={true}
+                    id="url"
+                    enterButton={formatMessage(messages.apply)}
+                    placeholder={formatMessage(messages.giftPlaceholder)}
+                    size="default"
+                    onChange={() => {}}
+                  />
+                </ZipCodeInputWrapper>
+              </Panel>
+            </Collapse>
+          </CollapseWrapper>
+        ) : null}
+        <TotalOrderItem {...{ onlyRead }}>
           <FormattedMessage {...messages.total} />
           <div>{`USD$${total}`}</div>
         </TotalOrderItem>

@@ -32,6 +32,11 @@ import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
+  designId?: string
+  designName?: string
+  designImage?: string
+  teamStoreId?: string
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -70,6 +75,7 @@ interface Props extends RouteComponentProps<any> {
     quantity: number
   ) => void
   setInitialData: () => void
+  resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
 }
 
@@ -90,8 +96,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   componentWillUnmount() {
-    const { cart, saveToStorage } = this.props
+    const { cart, saveToStorage, resetReducerData } = this.props
     saveToStorage(cart)
+    resetReducerData()
   }
 
   handleAddItemDetail = (
@@ -171,10 +178,24 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
             <ListItem
               formatMessage={formatMessage}
               key={index}
-              title={cartItem.product.name}
-              description={cartItem.product.shortDescription}
+              title={
+                cartItem.designId
+                  ? cartItem.designName || 'Design'
+                  : cartItem.product.name
+              }
+              description={
+                cartItem.designId
+                  ? `${cartItem.product.name} ${
+                      cartItem.product.shortDescription
+                    }`
+                  : cartItem.product.shortDescription
+              }
               price={cartItem.product.priceRange[0]}
-              image={cartItem.product.images[0].front}
+              image={
+                cartItem.designId
+                  ? cartItem.designImage || ''
+                  : cartItem.product.images[0].front
+              }
               cartItem={cartItem}
               handleAddItemDetail={this.handleAddItemDetail}
               handledeleteItemDetail={this.handledeleteItemDetail}

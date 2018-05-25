@@ -5,6 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import find from 'lodash/find'
 import messages from './messages'
 import { getSingleTeamStore } from './data'
 import {
@@ -82,14 +83,6 @@ export class StoreFrontContent extends React.Component<Props, {}> {
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[`show${id}`]
     this.setState({ [`show${id}`]: !stateValue } as any)
-  }
-
-  handleOnPressPrivate = (id: number, isPrivate: boolean) => {
-    // TODO: Handle private
-  }
-
-  handleOnPressDelete = (id: number) => {
-    // TODO: Handle delete
   }
 
   handleOnPressEdit = () => {
@@ -187,54 +180,51 @@ export class StoreFrontContent extends React.Component<Props, {}> {
     const cutOffMonth = get(getTeamStore, 'cutoff_date.month', 'month')
     const deliveryMonth = get(getTeamStore, 'delivery_date.month', 'month')
     const items = getTeamStore ? getTeamStore.items || [] : []
+    const totalItems = get(getTeamStore, 'totalItems', 0)
+    const teamSizeId = get(getTeamStore, 'team_size_id', 0)
+    const priceRanges = getTeamStore ? getTeamStore.priceRanges || [] : []
 
     const shareStoreUrl = `${
       config.baseUrl
     }store-front?storeId=${teamStoreShortId}`
 
-    const designs = items.map(x => {
-      return x.design
-    })
+    const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
 
-    // TODO: dynamic
-    const marks = {
-      1: {
-        style: sliderStyle,
-        label: <p>1</p>
-      },
-      5: {
-        style: sliderStyle,
-        label: (
-          <p>
-            2-5<br />10% OFF
-          </p>
-        )
-      },
-      24: {
-        style: sliderStyle,
-        label: (
-          <p>
-            6-24<br />10% OFF
-          </p>
-        )
-      },
-      49: {
-        style: sliderStyle,
-        label: (
-          <p>
-            25-49<br />10% OFF
-          </p>
-        )
-      },
-      99: {
+    let marksArray: any = {}
+    priceRanges.map((priceRange, index) => {
+      if (index === 0) {
+        marksArray[1] = {
+          style: sliderStyle,
+          label: <p>1</p>
+        }
+        return
+      }
+      if (priceRange.id === teamSizeId) {
+        marksArray[priceRange.name.split('-')[0]] = {
+          style: sliderStyle,
+          label: (
+            <p>
+              <strong style={{ color: '#f50' }}>Target Price</strong>
+              <br />
+              {priceRange.name}
+              <br />10% OFF
+            </p>
+          )
+        }
+        return
+      }
+
+      marksArray[priceRange.name.split('-')[0]] = {
         style: sliderStyle,
         label: (
           <p>
-            50-99<br />10% OFF
+            {priceRange.name}
+            <br />10% OFF
           </p>
         )
       }
-    }
+      return
+    })
 
     return (
       <Container>
@@ -311,23 +301,28 @@ export class StoreFrontContent extends React.Component<Props, {}> {
           <div>
             <TierContainer>
               <TierTitle>
-                <FormattedMessage {...messages.tierTitle} />
+                {`${formatMessage(messages.tierTitle)} ${
+                  targetRange ? targetRange.name : 'Not selected'
+                }`}
               </TierTitle>
               <TierDescription>
                 <FormattedMessage {...messages.tierDescription} />
               </TierDescription>
               <SliderWrapper>
-                <StyledSlider marks={marks} disabled={true} defaultValue={37} />
+                <StyledSlider
+                  marks={marksArray}
+                  disabled={true}
+                  value={totalItems}
+                />
               </SliderWrapper>
             </TierContainer>
             <ListContainer>
               <ProductList
-                {...{ formatMessage }}
+                {...{ targetRange, formatMessage }}
                 withoutPadding={true}
-                onPressPrivate={this.handleOnPressPrivate}
-                onPressDelete={this.handleOnPressDelete}
                 openQuickView={this.handleOnOpenQuickView}
-                designs={designs}
+                designs={items}
+                teamStoreShortId={teamStoreShortId}
               />
             </ListContainer>
           </div>

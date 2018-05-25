@@ -30,7 +30,9 @@ const ProductInfo = ({
   children
 }: Props) => {
   const onToggleView = (evt: React.MouseEvent<HTMLImageElement>) => {
-    const { currentTarget: { id: targetId } } = evt
+    const {
+      currentTarget: { id: targetId }
+    } = evt
     return toggleView(targetId)
   }
   return (

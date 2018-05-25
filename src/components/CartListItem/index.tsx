@@ -16,7 +16,8 @@ import {
   PriceContainer,
   AddMore,
   DeleteItem,
-  BottomDivider
+  BottomDivider,
+  FooterItem
 } from './styledComponents'
 import CartListItemTable from '../../components/CartListItemTable'
 import {
@@ -26,10 +27,16 @@ import {
   ItemDetailType
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
+import { FormattedMessage } from 'react-intl'
 
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
+  storeDesignId?: string
+  designId?: string
+  designName?: string
+  designImage?: string
+  teamStoreId?: string
 }
 
 interface Props {
@@ -74,6 +81,8 @@ interface Props {
   title: string
   description: string
   price: PriceRange
+  productTotal?: number
+  unitPrice?: number
   image: string
   cartItem: CartItems
   itemIndex: number
@@ -91,6 +100,8 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
+      productTotal,
+      unitPrice,
       handleAddItemDetail = () => {},
       handledeleteItemDetail = () => {},
       setLabelItemDetail = () => {},
@@ -110,6 +121,9 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem.product && cartItem.product.priceRange
         ? cartItem.product.priceRange[0].price * quantitySum
         : 0
+    const total = itemTotal || productTotal
+    const unitaryPrice = price.price || unitPrice
+    const numProductsToPriceLow = 1 // TODO: add real num of products
 
     return (
       <ItemDetails>
@@ -124,16 +138,22 @@ class CartListItem extends React.Component<Props, {}> {
                 </ItemDetailsHeaderNameDetail>
               </NameContainer>
               <PriceContainer>
-                <ItemDetailsHeaderPrice>{`$${itemTotal ||
+                <ItemDetailsHeaderPrice>{`$${total ||
                   0}`}</ItemDetailsHeaderPrice>
                 <ItemDetailsHeaderPriceDetail>
-                  {`${formatMessage(messages.unitPrice)} $${price.price || 0}`}
+                  {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
                 </ItemDetailsHeaderPriceDetail>
-                <ItemDetailsHeaderPriceDetail>
-                  {`${formatMessage(messages.add)} 1 ${formatMessage(
-                    messages.moreFor
-                  )} $${price.price || 0}`}
-                </ItemDetailsHeaderPriceDetail>
+                {!onlyRead ? (
+                  <ItemDetailsHeaderPriceDetail>
+                    <FormattedMessage
+                      {...messages.addMoreFor}
+                      values={{
+                        price: price.price,
+                        products: numProductsToPriceLow
+                      }}
+                    />
+                  </ItemDetailsHeaderPriceDetail>
+                ) : null}
               </PriceContainer>
             </ItemDetailsHeader>
             <CartListItemTable
@@ -149,14 +169,14 @@ class CartListItem extends React.Component<Props, {}> {
               setDetailSize={setDetailSize}
             />
             {!onlyRead ? (
-              <div>
+              <FooterItem>
                 <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
                   {formatMessage(messages.addMore)}
                 </AddMore>
                 <DeleteItem onClick={e => removeItem(e, itemIndex)}>
                   {formatMessage(messages.delete)}
                 </DeleteItem>
-              </div>
+              </FooterItem>
             ) : null}
           </ItemDetails>
         </Container>

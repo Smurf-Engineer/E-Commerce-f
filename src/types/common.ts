@@ -88,6 +88,8 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  productTotal?: number
+  unitPrice?: number
 }
 
 export type DesignType = {
@@ -106,6 +108,7 @@ export type TeamStoreItemtype = {
   design: DesignType
   expected_quantity: number
   visible: boolean
+  totalOrders: number
 }
 
 export type DesignResultType = {
@@ -127,6 +130,7 @@ export type TeamStoreType = {
   private: boolean
   created_at: string
   items: TeamStoreItemtype[]
+  priceRanges: ItemDetailType[]
 }
 
 export type DateObjectType = {
@@ -247,6 +251,7 @@ export type TeamstoreType = {
   deliveryDate: string
   private: boolean
   items: TeamstoreItemType[]
+  totalItems: number
 }
 
 export interface TeamstoreResult {
@@ -294,4 +299,42 @@ export interface ModelConfig {
   mtl: string
   bumpMap: string
   areas: string[]
+}
+
+export interface CartItems {
+  product: Product
+  itemDetails: CartItemDetail[]
+  productTotal?: number
+  unitPrice?: number
+  designId?: string
+}
+
+export interface OrderDataInfo {
+  orderDate: string
+  firstName: string
+  lastName: string
+  street: string
+  city: string
+  stateProvince: string
+  zipCode: string
+  country: string
+  apartment: string
+  billingFirstName: string
+  billingLastName: string
+  billingStreet: string
+  billingCity: string
+  billingStateProvince: string
+  billingZipCode: string
+  billingCountry: string
+  billingApartment: string
+  payment: {
+    cardData: {
+      name: string
+      last4: string
+      brand: string
+      exp_month: number
+      exp_year: number
+    }
+  }
+  cart: CartItems[]
 }
