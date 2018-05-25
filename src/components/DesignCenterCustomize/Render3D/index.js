@@ -84,6 +84,7 @@ class Render3D extends PureComponent {
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       precision
+      // preserveDrawingBuffer: true // TODO: Uncomment
     })
 
     const devicePixelRatio = window.devicePixelRatio
@@ -225,30 +226,28 @@ class Render3D extends PureComponent {
 
           const cdim = 3880.016
           const canvas = document.createElement('canvas')
+          const canvasTexture = new THREE.CanvasTexture(canvas)
           canvas.width = canvas.height = cdim
           var c = new fabric.Canvas(canvas)
+          c.on('after:render', () => (canvasTexture.needsUpdate = true))
 
           // create a rectangle object
-          var rect = new fabric.Rect({
-            left: 1000,
+          var rect = new fabric.Text('Jakroo', {
+            left: 800,
             top: 1000,
-            fill: 'red',
-            width: 500,
-            height: 500
+            fontSize: 100,
+            fontWeight: 'bold'
           })
 
           // "add" rectangle onto canvas
           c.add(rect)
 
-          const canvasTexture = new THREE.CanvasTexture(c.cacheCanvasEl)
           // const ctx = canvas.getContext('2d')
           // ctx.globalCompositeOperation = 'normal'
           // ctx.font = '100px Fira Code'
           // ctx.textAlign = 'center'
           // ctx.fillStyle = '#f21222'
           // ctx.fillText('JAKROO', 1000, 1000)
-
-          canvasTexture.needsUpdate = true
 
           const canvasMaterial = new THREE.MeshPhongMaterial({
             map: canvasTexture,
@@ -424,7 +423,8 @@ class Render3D extends PureComponent {
       redoEnabled,
       loadingModel,
       formatMessage,
-      productName
+      productName,
+      text
     } = this.props
 
     const menu = (

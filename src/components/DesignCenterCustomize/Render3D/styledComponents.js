@@ -8,11 +8,13 @@ import AntdButton from 'antd/lib/button'
 export const Container = styled.div`
   position: relative;
   width: 74.6%;
+  display: flex;
+  justify-content: center;
 `
 
 export const Render = styled.div`
-  width: 100%;
-  height: 90vh;
+  width: 600px;
+  height: 600px;
 `
 
 export const Model = styled.div`
@@ -26,7 +28,7 @@ export const Model = styled.div`
 
 export const Row = styled.div`
   display: flex;
-  align-items center;
+  align-items: center;
   position: absolute;
   top: 18px;
   left: 26px;
