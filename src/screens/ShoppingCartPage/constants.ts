@@ -28,3 +28,4 @@ export const SET_TOTAL_ACTION = `${namespace}/SET_TOTAL_ACTION`
 export const SET_SUBTOTAL_ACTION = `${namespace}/SET_SUBTOTAL_ACTION`
 
 export const SET_SHIPPING_ACTION = `${namespace}/SET_SHIPPING_ACTION`
+export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`

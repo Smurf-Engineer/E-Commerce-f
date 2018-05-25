@@ -19,6 +19,7 @@ import subscriptionTest from '../screens/ResetPassword/reducer'
 import teamstoreProductPage from '../screens/TeamstoreProductPage/reducer'
 import searchTeamstores from '../screens/SearchTeamstores/reducer'
 import checkout from '../screens/Checkout/reducer'
+import orderPlaced from '../screens/OrderPlaced/reducer'
 import menuGender from '../components/MenuGender/reducer'
 import menuSports from '../components/MenuSports/reducer'
 import layout from '../components/MainLayout/reducer'
@@ -31,6 +32,7 @@ import myTeamStores from '../components/MyTeamStores/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  orderPlaced: any
   myTeamStores: any
   checkout: any
   designerTool: any
@@ -116,6 +118,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  orderPlaced,
   myTeamStores,
   checkout,
   designerTool,

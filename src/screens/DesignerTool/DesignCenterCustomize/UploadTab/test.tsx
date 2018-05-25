@@ -11,6 +11,7 @@ describe('<UploadTab />', () => {
     ReactDOM.render(
       <UploadTab
         onUploadFiles={() => {}}
+        onUploadDesign={() => {}}
         uploadingFiles={false}
         uploadNewModel={false}
       />,

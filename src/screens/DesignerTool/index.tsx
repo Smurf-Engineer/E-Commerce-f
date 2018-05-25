@@ -8,23 +8,24 @@ import CustomizeTab from './DesignCenterCustomize'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { Container } from './styledComponents'
+import { ModelConfig } from '../../types/common'
 
 interface Props {
   colors: string[]
   styleColors: string[]
+  areas: string[]
   colorBlock: number
   colorBlockHovered: number
   loadingModel: boolean
-  files: string[]
   uploadingFiles: boolean
-  // TODO: Need more dynamic way for upload files
-  modelConfig: any
+  modelConfig: ModelConfig
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
   uploadFilesAction: (files: any) => void
+  uploadDesignAction: (files: any) => void
   setUploadingAction: (loading: boolean) => void
 }
 
@@ -41,8 +42,10 @@ export class DesignerTool extends React.Component<Props, {}> {
       setColorBlockAction,
       setHoverColorBlockAction,
       uploadFilesAction,
+      uploadDesignAction,
       uploadingFiles,
-      modelConfig
+      modelConfig,
+      areas
     } = this.props
     return (
       <Container>
@@ -53,7 +56,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             colorBlock,
             colorBlockHovered,
             loadingModel,
-            uploadingFiles
+            uploadingFiles,
+            areas
           }}
           files={modelConfig}
           onLoadModel={setLoadingAction}
@@ -61,6 +65,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           onHoverColorBlock={setHoverColorBlockAction}
           onSelectColor={setColorAction}
           onUploadFiles={uploadFilesAction}
+          onUploadDesign={uploadDesignAction}
         />
       </Container>
     )

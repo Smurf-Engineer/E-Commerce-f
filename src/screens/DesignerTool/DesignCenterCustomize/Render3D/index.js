@@ -36,14 +36,21 @@ class Render3D extends PureComponent {
     const {
       colors,
       colorBlockHovered: oldColorBlockHovered,
-      files: oldFiles
+      files: oldFiles,
+      areas
     } = this.props
     const {
       colors: nextColors,
-      styleColors,
+      areas: nextAreas,
       colorBlockHovered,
       files
     } = nextProps
+
+    const areasHasChange = isEqual(areas, nextAreas)
+    if (!areasHasChange) {
+      this.loadDesign(nextAreas, nextColors)
+      return
+    }
 
     const filesHasChange = isEqual(files, oldFiles)
     if (!filesHasChange) {
@@ -53,9 +60,7 @@ class Render3D extends PureComponent {
 
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
-      const emptyColors = filter(nextColors, color => !!!color)
-      const isResetingColors = emptyColors.length >= colors.length
-      this.setupColors(isResetingColors ? styleColors : nextColors)
+      this.setupColors(nextColors)
       return
     }
 
@@ -123,6 +128,18 @@ class Render3D extends PureComponent {
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
+
+    // TODO: Need tests
+    if (this.scene) {
+      const object = this.scene.getObjectByName('jersey')
+      if (object) {
+        object.children.forEach(mesh => {
+          mesh.material.dispose()
+          object.dispose()
+          this.scene.dispose()
+        })
+      }
+    }
   }
 
   loadTextures = modelTextures =>
@@ -145,6 +162,35 @@ class Render3D extends PureComponent {
         reject(error)
       }
     })
+
+  loadDesign = async (textureUrls, colors) => {
+    const loadedTextures = await new Promise((resolve, reject) => {
+      try {
+        const loadedAreas = textureUrls.map(areaUrl => {
+          const areaTexture = this.imgLoader.load(areaUrl)
+          areaTexture.minFilter = THREE.LinearFilter
+          return areaTexture
+        })
+        resolve(loadedAreas)
+      } catch (error) {
+        reject(error)
+      }
+    })
+    if (loadedTextures.length) {
+      const { objectChilds } = this.state
+      const object = this.scene.getObjectByName('jersey')
+      if (object) {
+        loadedTextures.forEach((texture, index) => {
+          if (object.children[objectChilds + index]) {
+            object.children[objectChilds + index].material.color.set(
+              colors[index]
+            )
+            object.children[objectChilds + index].material.map = texture
+          }
+        })
+      }
+    }
+  }
 
   loadObject = async files => {
     /* Object and MTL load */
