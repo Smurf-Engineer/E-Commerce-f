@@ -5,6 +5,8 @@ import LanguageProvider from '../../screens/LanguageProvider'
 import { translationMessages } from '../../locale'
 import './theme.ant'
 import './App.css'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
 
 const App = (props: any) => (
   <LanguageProvider messages={translationMessages}>

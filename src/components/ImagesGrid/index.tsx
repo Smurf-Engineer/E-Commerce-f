@@ -4,16 +4,18 @@
 import * as React from 'react'
 import Slider from 'react-slick'
 import { FormattedMessage } from 'react-intl'
-import MediaQuery from 'react-responsive'
+// TODO: Remove commented code after verify it wont be needed at all
+// import MediaQuery from 'react-responsive'
 import messages from './messages'
 import {
   Container,
   CarouselContent,
   Slide,
-  QuoteContent,
-  ImageQuote,
-  CardQuote,
-  TextQuote
+  //  QuoteContent,
+  //  ImageQuote,
+  //  CardQuote,
+  //  TextQuote,
+  ScenesFromTitle
 } from './styledComponents'
 
 const settings = {
@@ -34,7 +36,8 @@ interface Props {
 const ImagesGrid = ({ fakeWidth }: Props) => {
   return (
     <Container>
-      <QuoteContent>
+      {/* TODO: Remove after verify it wount be needed  */}
+      {/* <QuoteContent>
         <CardQuote>
           <TextQuote>
             <FormattedMessage {...messages.quote} />
@@ -56,7 +59,10 @@ const ImagesGrid = ({ fakeWidth }: Props) => {
             }
           }}
         </MediaQuery>
-      </QuoteContent>
+        </QuoteContent>*/}
+      <ScenesFromTitle>
+        <FormattedMessage {...messages.scenesFromLabel} />
+      </ScenesFromTitle>
       <CarouselContent>
         <Slider {...settings}>
           <div>

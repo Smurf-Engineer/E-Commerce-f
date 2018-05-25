@@ -11,25 +11,34 @@
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",
   "components.menuSupport.terms": "Terms of Use",
-  "components.menuSupport.pricing": "Pricing Chart",
+  "components.menuSupport.pricing": "Pricing",
   "components.menuSupport.warranty": "Warranty",
   "components.menuSupport.design": "Design Support",
   "components.ImagesGrid.quote":
     "Something evocative about community and their importance to Jakroo. Maybe a quote” -Jakroo",
+  "components.ImagesGrid.scenesFromLabel": "SCENES FROM OUR COMMUNITY",
   "components.searchBar.hint": "Search for a product",
   "screens.Home.help.find": "Not sure? We'll help you find out.",
   "screens.Home.start.button": "GET STARTED",
+  "screens.Home.flexibleLabel": "FLEXIBLE",
+  "screens.Home.designOptionsLabel": "Design Options",
+  "screens.Home.superUltraLabel": "SUPER ULTRA",
+  "screens.Home.fastDelivery": "Fast Delivery",
+  "screens.Home.easyLabel": "EASY",
+  "screens.Home.orderingLabe": "Ordering",
   "components.footer.contactInfo.title": "CONTACT INFO",
   "components.footer.customerSupport.title": "CUSTOMER SUPPORT",
   "components.footer.customerSupport.warranty": "Warranty Program",
+  "components.footer.customerSupport.privacyPolicy": "Privacy Policy",
   "components.footer.designSupport.title": "DESIGN SUPPORT",
   "components.footer.designSupport.artwork": "Artwork Specs",
   "components.footer.designSupport.template": "Template Download",
   "components.footer.designSupport.fit": " Fit & Sizing",
+  "components.footer.designSupport.technology": "Technology",
   "components.footer.aboutUs.title": "ABOUT US",
   "components.footer.aboutUs.company": "Company",
-  "components.footer.aboutUs.technology": "Technology",
   "components.footer.aboutUs.jobs": "Job Opportunities",
+  "components.footer.aboutUs.investorsRelations": "Investors Relations",
   "components.footer.teams.title": "TEAMS",
   "components.footer.teams.stores": "Team Stores",
   "components.footer.teams.kits": "Team Kits",
@@ -259,6 +268,7 @@
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
   "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
+<<<<<<< HEAD
 
   "screens.StoreFrontContent.tittle": "My team store",
   "screens.StoreFrontContent.orderTitle": "Order by",
@@ -293,4 +303,7 @@
   "screen.StoreFrontContent.contactManager": "Contact store manager",
   "screen.StoreFrontContent.invalidPass": "Invalid passcode value.",
   "screen.StoreFrontContent.passcodeNeeded": "Passcode needed."
+=======
+  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS"
+>>>>>>> 9a111c1749dd7adaa21c5b65cf7f1f0d12d0b442
 }

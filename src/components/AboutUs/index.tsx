@@ -19,14 +19,20 @@ const AboutUs = ({ formatMessage }: Props) => {
           {formatMessage(messages.company)}
         </Span>
       </Text>
+      {/* TODO: Remove after verify it wount be needed 
       <Text>
         <Span link="https://www.jakroo.com/us/technology.html">
           {formatMessage(messages.technology)}
         </Span>
-      </Text>
+     </Text>*/}
       <Text>
         <Span link="https://www.jakroo.com/us/job-opportunities.html">
           {formatMessage(messages.jobs)}
+        </Span>
+      </Text>
+      <Text>
+        <Span link="https://www.jakroo.com/us/investor-relations.html">
+          {formatMessage(messages.investorsRelations)}
         </Span>
       </Text>
     </Container>

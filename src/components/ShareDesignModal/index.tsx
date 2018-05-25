@@ -44,6 +44,7 @@ interface Props {
 
   url?: string
   modalTitle?: string
+  messageForShare?: string
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -52,19 +53,22 @@ class ShareDesignModal extends React.Component<Props, {}> {
   private copyInput: any
 
   handleShareOnFacebook = (designURL: string) => () => {
+    const { messageForShare } = this.props
     window.FB.ui(
       {
         method: 'share',
         href: designURL,
         display: 'popup',
-        quote: 'Check my awesome design!'
+        quote: messageForShare || 'Check my awesome design!'
       },
       (response: any) => {}
     )
   }
 
   copyToClipboard = (value: string) => {
-    const { input: { input } } = this.copyInput
+    const {
+      input: { input }
+    } = this.copyInput
     this.copyInput.focus()
     input.setSelectionRange(0, value.length)
 

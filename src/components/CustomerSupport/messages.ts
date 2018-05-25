@@ -19,10 +19,14 @@ export default defineMessages({
   },
   pricing: {
     id: 'components.menuSupport.pricing',
-    defaultMessage: 'Pricing Chart'
+    defaultMessage: 'Pricing'
   },
   warranty: {
     id: 'components.footer.customerSupport.warranty',
     defaultMessage: 'Warranty Program'
+  },
+  privacyPolicy: {
+    id: 'components.footer.customerSupport.privacyPolicy',
+    defaultMessage: 'Privacy Policy'
   }
 })
