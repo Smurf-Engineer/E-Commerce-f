@@ -395,6 +395,8 @@ class Checkout extends React.Component<Props, {}> {
       billingPhone,
       stripeToken,
       cart,
+      indexAddressSelected,
+      sameBillingAndShipping,
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction
     } = this.props
@@ -422,8 +424,12 @@ class Checkout extends React.Component<Props, {}> {
       phone: billingPhone
     }
 
-    this.saveAddress(shippingAddress)
-    this.saveAddress(billingAddress)
+    if (indexAddressSelected === -1) {
+      this.saveAddress(shippingAddress)
+    }
+    if (!sameBillingAndShipping) {
+      this.saveAddress(billingAddress)
+    }
 
     /*
     * TODO: Find a better solution to unset these properties
