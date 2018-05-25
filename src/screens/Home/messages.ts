@@ -28,7 +28,7 @@ export default defineMessages({
   },
   fastDeliveryLabel: {
     id: 'screens.Home.fastDelivery',
-    defaultMessage: 'Faste Delivery'
+    defaultMessage: 'Fast Delivery'
   },
   easyLabel: {
     id: 'screens.Home.easyLabel',
