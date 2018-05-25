@@ -5,6 +5,7 @@ import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import find from 'lodash/find'
 import dropRight from 'lodash/dropRight'
+import get from 'lodash/get'
 import Select from 'antd/lib/select'
 
 import InputNumber from 'antd/lib/input-number'
@@ -21,7 +22,13 @@ import {
   StyledSelect,
   StyledInput
 } from './styledComponents'
-import { CartItemDetail, Product, ItemDetailType } from '../../types/common'
+import {
+  CartItemDetail,
+  Product,
+  ItemDetailType,
+  FitStyle,
+  Filter
+} from '../../types/common'
 
 const Option = Select.Option
 
@@ -162,16 +169,19 @@ class CartListItemTable extends React.Component<Props, {}> {
       </MediaQuery>
     )
 
-    const fitOptions = cartItem.product.fitStyles.map((fs, key) => {
+    const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
+    const fitOptions = fitStyles.map((fs, key) => {
       return (
         <Option key={fs.id} value={fs.name}>
           {fs.name}
         </Option>
       )
     })
+
     const fits = cartItem.product.fitStyles && cartItem.product.fitStyles[0].id
 
-    const genderOptions = cartItem.product.genders.map((gender, genderKey) => {
+    const genders: Filter[] = get(cartItem, 'product.genders', [])
+    const genderOptions = genders.map((gender, genderKey) => {
       return (
         <Option key={gender.id} value={gender.name}>
           {gender.name}
@@ -181,6 +191,7 @@ class CartListItemTable extends React.Component<Props, {}> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
+          const { gender, size, fit, label, quantity } = item
           return !onlyRead ? (
             <Row key={index}>
               <Cell>
@@ -189,7 +200,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   showSearch={false}
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
-                  value={item.gender ? item.gender.name : undefined}
+                  value={gender ? gender.name : undefined}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -209,7 +220,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   placeholder={formatMessage(messages.fitPlaceholder)}
                   optionFilterProp="children"
                   disabled={!fits}
-                  value={item.fit ? item.fit.name : undefined}
+                  value={fit ? fit.name : undefined}
                 >
                   {fitOptions}
                 </StyledSelect>
@@ -218,7 +229,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                 <StyledInput
                   id={`input${index}`}
                   placeholder={formatMessage(messages.labelPlaceholder)}
-                  value={item.label || ''}
+                  value={label || ''}
                   onChange={e => this.handleLabelChange(e, index)}
                 />
               </Cell>
@@ -228,7 +239,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   onChange={e => this.handleQuantityChange(e, index)}
                   min={1}
                   max={100}
-                  value={item.quantity || undefined}
+                  value={quantity || undefined}
                 />
               </Cell>
               <Cell width={10}>
@@ -241,11 +252,11 @@ class CartListItemTable extends React.Component<Props, {}> {
             </Row>
           ) : (
             <Row key={index}>
-              <InfoCell>{item.gender ? item.gender.name : '-'}</InfoCell>
-              <InfoCell>{item.size ? item.size.name : '-'}</InfoCell>
-              <InfoCell>{item.fit ? item.fit.name : '-'}</InfoCell>
-              <InfoCell>{item.label || '-'}</InfoCell>
-              <InfoCell>{item.quantity || '1'}</InfoCell>
+              <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
+              <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
+              <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
+              <InfoCell>{label || '-'}</InfoCell>
+              <InfoCell>{quantity || '-'}</InfoCell>
             </Row>
           )
         })

@@ -234,5 +234,29 @@
     "This will permanently delete this address",
   "screen.Teamstores.shareModalTitle": "SHARE YOUR TEAMSTORE!",
   "screen.Teamstores.errorMessage":
-    "Something wrong happened. Please try again!"
+    "Something wrong happened. Please try again!",
+
+  "components.OrderData.shippingAddress": "Shipping Address",
+  "components.OrderData.billingAddress": "Billing Address",
+  "components.OrderData.payment": "Payment",
+  "components.OrderData.orderNumber": "Order Number",
+  "components.OrderData.orderDate": "Order Date",
+  "components.OrderData.items": "Items",
+  "components.OrderData.messageReatil":
+    "Text about shipping needing signature. And other important information. Voluptate reprehenderit quis non excepteur deserunt veniam anim mollit. Amet occaecat aliquip elit nisi eu deserunt amet laboris magna adipisicing aute minim velit occaecat. Cillum aliquip enim excepteur anim. Id officia fugiat incididunt elit tempor excepteur id laborum minim magna sint velit officia. Sunt deserunt culpa sunt esse aliqua reprehenderit exercitation eu enim. Elit duis cillum pariatur excepteur non fugiat ipsum minim in consequat consequat.",
+  "components.OrderData.messageTeamstore":
+    "Pricing will drop as ordered quantities reach the next discount level. Your final purchase price will be confirmed at the end of the ordering period.",
+  "components.OrderData.priceDropAlert": "Price Drop Alert",
+  "components.OrderData.priceDropMessage":
+    "It looks like you have purchased an item from a team store.\nGet an alert anytime the price drops for your team when\nmore people place their orders.",
+  "components.OrderData.sendEmail": "Send alert via email",
+  "components.OrderData.sendSms": "Send alert via SMS",
+
+  "screens.OrderPlaced.title": "YOUR ORDER HAS BEEN PLACED!",
+
+  "components.ProductInfo.tittle": "YOUR ORDER HAS BEEN PLACED!",
+  "components.ProductInfo.unitPrice": "Unit price:",
+  "components.ProductInfo.addMore": "+ Add More",
+  "components.ProductInfo.delete": "Delete",
+  "components.ProductInfo.addMoreFor": "Add {products} more for ${price}"
 }

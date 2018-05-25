@@ -1,4 +1,5 @@
 /* Routes */
+import OrderPlaced from '../screens/OrderPlaced'
 import Checkout from '../screens/Checkout'
 import DesignerTool from '../screens/DesignerTool'
 import ShoppingCartPage from '../screens/ShoppingCartPage'
@@ -18,6 +19,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/order-placed',
+    name: 'orderPlaced',
+    component: OrderPlaced
+  },
   {
     path: '/checkout',
     name: 'checkout',
