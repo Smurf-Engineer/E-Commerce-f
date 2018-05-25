@@ -307,6 +307,8 @@ export interface CartItems {
   productTotal?: number
   unitPrice?: number
   designId?: string
+  designName?: string
+  designImage?: string
 }
 
 export interface OrderDataInfo {
