@@ -27,7 +27,6 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
     const {
       data: { featuredContent }
     } = this.props
-    console.log('FEATURED CONTEND ', featuredContent)
 
     let content
     if (featuredContent) {
@@ -48,7 +47,6 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
   // TODO: use this function when service returns route not full url
   handleGoTo = (link: string) => () => {
     const { history } = this.props
-    console.log('CLICK')
     history.push(`/${link}`)
   }
 }

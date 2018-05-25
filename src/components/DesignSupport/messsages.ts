@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'Fit & Sizing'
   },
   technology: {
-    id: 'components.footer.aboutUs.technology',
+    id: 'components.footer.designSupport.technology',
     defaultMessage: 'Technology'
   }
 })

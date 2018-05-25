@@ -11,7 +11,7 @@
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",
   "components.menuSupport.terms": "Terms of Use",
-  "components.menuSupport.pricing": "Pricing Chart",
+  "components.menuSupport.pricing": "Pricing",
   "components.menuSupport.warranty": "Warranty",
   "components.menuSupport.design": "Design Support",
   "components.ImagesGrid.quote":
@@ -22,14 +22,16 @@
   "components.footer.contactInfo.title": "CONTACT INFO",
   "components.footer.customerSupport.title": "CUSTOMER SUPPORT",
   "components.footer.customerSupport.warranty": "Warranty Program",
+  "components.footer.customerSupport.privacyPolicy": "Privacy Policy",
   "components.footer.designSupport.title": "DESIGN SUPPORT",
   "components.footer.designSupport.artwork": "Artwork Specs",
   "components.footer.designSupport.template": "Template Download",
   "components.footer.designSupport.fit": " Fit & Sizing",
+  "components.footer.designSupport.technology": "Technology",
   "components.footer.aboutUs.title": "ABOUT US",
   "components.footer.aboutUs.company": "Company",
-  "components.footer.aboutUs.technology": "Technology",
   "components.footer.aboutUs.jobs": "Job Opportunities",
+  "components.footer.aboutUs.investorsRelations": "Investors Relations",
   "components.footer.teams.title": "TEAMS",
   "components.footer.teams.stores": "Team Stores",
   "components.footer.teams.kits": "Team Kits",
@@ -258,5 +260,6 @@
   "components.ProductInfo.unitPrice": "Unit price:",
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
-  "components.ProductInfo.addMoreFor": "Add {products} more for ${price}"
+  "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
+  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS"
 }
