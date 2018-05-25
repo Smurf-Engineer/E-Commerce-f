@@ -22,7 +22,7 @@ export const Title = styled.div`
 `
 
 export const ShippingMethodContainer = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 `
 
 export const ShippinPriorityText = styled.div`
