@@ -13,5 +13,9 @@ export default defineMessages({
     id: 'components.ImagesGrid.quote',
     defaultMessage:
       'Something evocative about community and their importance to Jakroo. Maybe a quote” -Jakroo'
+  },
+  scenesFromLabel: {
+    id: 'components.ImagesGrid.scenesFromLabel',
+    defaultMessage: 'SCENES FROM OUR COMMUNITY'
   }
 })

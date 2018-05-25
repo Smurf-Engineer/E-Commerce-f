@@ -64,3 +64,24 @@ export const GetStartedButton = styled(Button)`
   font-size: 16px;
   line-height: 22px;
 `
+export const PropositionTilesContainer = styled.div`
+  display: flex;
+  background-color: #231f20;
+  color: #fff;
+  padding: 21px 0 29px;
+  justify-content: space-around;
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    padding: 0;
+    flex-direction: column;
+    height: 401px;
+  }
+`
+export const PropositionTile = styled.div`
+  color: #ffffff;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  text-align: center;
+`

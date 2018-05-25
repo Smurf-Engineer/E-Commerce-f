@@ -26,11 +26,12 @@ const Teams = ({ formatMessage, history }: Props) => {
           {formatMessage(messages.kits)}
         </Span>
       </Text>
+      {/* TODO: Remove after verify it wount be needed 
       <Text>
         <Span link="https://www.jakroo.com/us/get-sponsored.html">
           {formatMessage(messages.sponsor)}
         </Span>
-      </Text>
+      </Text>*/}
     </Container>
   )
 }

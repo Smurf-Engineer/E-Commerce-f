@@ -34,6 +34,11 @@ const CustomerSupport = ({ formatMessage }: Props) => {
           {formatMessage(messages.warranty)}
         </Span>
       </Text>
+      <Text>
+        <Span link="https://www.jakroo.com/us/privacy-policy.html">
+          {formatMessage(messages.privacyPolicy)}
+        </Span>
+      </Text>
     </Container>
   )
 }
