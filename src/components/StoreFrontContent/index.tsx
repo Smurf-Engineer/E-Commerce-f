@@ -44,7 +44,8 @@ import {
   ErrorTitle,
   FlexContainer,
   SliderWrapper,
-  sliderStyle
+  sliderStyle,
+  StyledSliderTitle
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -223,7 +224,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               {priceRange.name}
               <br />10% OFF
               <br />
-              <strong style={{ color: '#f50' }}>Target Price</strong>
+              <StyledSliderTitle>Target Price</StyledSliderTitle>
             </p>
           )
         }
