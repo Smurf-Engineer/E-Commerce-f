@@ -14,6 +14,7 @@ module.exports = {
   collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
   setupTestFrameworkScriptFile: './src/setupTests.js',
   moduleNameMapper: {
-    '^.+\\.svg?$': '<rootDir>/__mocks__/svgTransform.js'
+    '^.+\\.svg?$': '<rootDir>/__mocks__/svgTransform.js',
+    '^.+\\.jpg?$': '<rootDir>/__mocks__/jpgTransform.js'
   }
 }
