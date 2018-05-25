@@ -9,10 +9,12 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import * as accountActions from './actions'
 import messages from './messages'
-import { options, SCREEN_LOCKER } from './constants'
+import { options, SCREEN_LOCKER, ADDRESSES } from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
+import MyTeamStores from '../../components/MyTeamStores'
+import MyAddresses from '../../components/MyAddresses'
 import {
   Container,
   SideBar,
@@ -33,9 +35,15 @@ interface Props extends RouteComponentProps<any> {
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
+  clearReducerAction: () => void
 }
 
 export class Account extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { clearReducerAction } = this.props
+    clearReducerAction()
+  }
+
   handleOnSelectedKeys = (keys: string[]) => {
     const { setOpenKeysAction } = this.props
     const openKeys = ['']
@@ -53,12 +61,18 @@ export class Account extends React.Component<Props, {}> {
   }
 
   getScreenComponent = (screen: string) => {
-    const { intl, openQuickViewAction: openQuickView } = this.props
+    const { intl, history, openQuickViewAction: openQuickView } = this.props
     switch (screen) {
       case SCREEN_LOCKER:
         return (
           <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
         )
+      case 'teamStores':
+        return (
+          <MyTeamStores formatMessage={intl.formatMessage} {...{ history }} />
+        )
+      case ADDRESSES:
+        return <MyAddresses formatMessage={intl.formatMessage} />
       default:
         return null
     }

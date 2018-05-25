@@ -5,13 +5,15 @@ import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import { Container } from './styledComponents'
+import { ModelConfig } from '../../../types/common'
 
 interface Props {
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
   styleColors: string[]
-  files: any
+  areas: string[]
+  files: ModelConfig
   loadingModel: boolean
   uploadingFiles: boolean
   onSelectColorBlock: (index: number) => void
@@ -19,6 +21,7 @@ interface Props {
   onLoadModel: (loading: boolean) => void
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any) => void
+  onUploadDesign: (files: any) => void
 }
 
 const DesignCenterCustomize = ({
@@ -33,7 +36,9 @@ const DesignCenterCustomize = ({
   onHoverColorBlock,
   files,
   uploadingFiles,
-  onUploadFiles
+  onUploadFiles,
+  onUploadDesign,
+  areas
 }: Props) => {
   return (
     <Container>
@@ -47,8 +52,10 @@ const DesignCenterCustomize = ({
           colors,
           styleColors,
           onUploadFiles,
+          onUploadDesign,
           uploadingFiles
         }}
+        uploadNewModel={!!files}
       />
       <Render3D
         {...{
@@ -57,7 +64,8 @@ const DesignCenterCustomize = ({
           styleColors,
           onLoadModel,
           loadingModel,
-          files
+          files,
+          areas
         }}
       />
     </Container>

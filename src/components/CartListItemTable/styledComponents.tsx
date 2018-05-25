@@ -59,6 +59,14 @@ export const Cell = styled.div`
  width ${({ width }: CellProps) => (width ? width : 100)}%;
 `
 
+export const InfoCell = styled.div`
+  width: 100%;
+  text-align: left;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+`
+
 export const HeaderCell = styled.div`
  text-align: left;
  width ${({ width }: CellProps) => (width ? width : 100)}%;

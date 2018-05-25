@@ -10,7 +10,7 @@ const renderHtml = (styleTags: any, html: any) => {
           <script type="text/javascript" src="js/loaders/MTLLoader.js"></script>
           <script type="text/javascript" src="js/loaders/OBJLoader.js"></script>
           <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
-          <script src="js/snap.svg-min.js"></script>
+          <script type="text/javascript" src="js/fabric.min.js"></script>
           <script>
             window.fbAsyncInit = function() {
               FB.init({

@@ -2,6 +2,7 @@
  * LockerTable Component - Created by david on 09/04/18.
  */
 import * as React from 'react'
+import get from 'lodash/get'
 import messsages from './messages'
 import {
   Table,
@@ -67,6 +68,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
       onPressVisible,
       teamSizeRange
     } = this.props
+
     const header = (
       <MediaQuery minDeviceWidth={480}>
         {matches => {
@@ -86,45 +88,43 @@ class LockerTable extends React.PureComponent<Props, {}> {
       </MediaQuery>
     )
 
-    const itemsSelected = items.map(
-      (
-        {
-          image,
-          name,
-          visible,
-          product: { type, description, id: productId, yotpoId, priceRange }
-        },
-        index
-      ) => {
-        const startingPrice = this.getTierPrice(priceRange)
-        const targetPrice = this.getTierPrice(priceRange, teamSizeRange)
-
-        return (
-          <Product
-            {...{
-              index,
-              image,
-              name,
-              description,
-              productId,
-              startingPrice,
-              targetPrice,
-              onPressDelete,
-              onPressQuickView,
-              onPressVisible,
-              yotpoId,
-              formatMessage
-            }}
-            key={index}
-            description={`${type} ${description}`}
-            currentOrders={0} // TODO: Get from the query
-            currentPrice={startingPrice}
-            visible={!!visible}
-            moveRow={this.moveRow}
-          />
-        )
-      }
-    )
+    const itemsSelected = items.map(({ design, visible }: any, index) => {
+      const name = get(design, 'name')
+      const product = get(design, 'product')
+      const pricesArray = get(product, 'priceRange')
+      const startingPrice = this.getTierPrice(pricesArray)
+      const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
+      const image = get(design, 'image')
+      const description =
+        get(product, 'shortDescription', false) || get(product, 'description')
+      const productId = get(product, 'id')
+      const yotpoId = get(product, 'yotpoId')
+      const type = get(product, 'type')
+      return (
+        <Product
+          {...{
+            index,
+            image,
+            name,
+            description,
+            productId,
+            startingPrice,
+            targetPrice,
+            onPressDelete,
+            onPressQuickView,
+            onPressVisible,
+            yotpoId,
+            formatMessage
+          }}
+          key={index}
+          description={`${type} ${description}`}
+          currentOrders={0} // TODO: Get from the query
+          currentPrice={startingPrice}
+          visible={visible}
+          moveRow={this.moveRow}
+        />
+      )
+    })
 
     const renderTable =
       items.length > 0 ? (

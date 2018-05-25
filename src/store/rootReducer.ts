@@ -25,10 +25,13 @@ import layout from '../components/MainLayout/reducer'
 import menu from '../components/DropdownList/reducer'
 import forgot from '../components/ForgotPassword/reducer'
 import fitInfo from '../components/FitInfo/reducer'
+import addresses from '../components/MyAddresses/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
+import myTeamStores from '../components/MyTeamStores/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  myTeamStores: any
   checkout: any
   designerTool: any
   shoppingCartPage: any
@@ -56,6 +59,7 @@ export interface ReducersObject {
   quickView: any
   fitInfo: any
   responsiveReducer: any
+  addresses: any
 }
 
 const appInitialState = fromJS({
@@ -112,6 +116,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  myTeamStores,
   checkout,
   designerTool,
   shoppingCartPage,
@@ -135,6 +140,7 @@ const rootReducer = combineReducers({
   menuSports,
   layout,
   fitInfo,
+  addresses,
   responsive: responsiveReducer,
   app: appReducer
 })

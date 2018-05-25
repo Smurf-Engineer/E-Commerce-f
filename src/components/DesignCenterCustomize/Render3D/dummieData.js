@@ -11,11 +11,11 @@ const designs = [
       'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.mtl',
     colors: ['#B9B9B9', '#D2D2D2', '#255B2D', '#096F39', '#A9A9A9'],
     areas: [
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01/colorblock_1.png',
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01/colorblock_2.png',
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01/colorblock_3.png',
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01/colorblock_4.png',
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01/colorblock_5.png'
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/PNGTEST/colorblock_5.svg.png',
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/PNGTEST/colorblock_4.svg.png',
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/PNGTEST/colorblock_3.svg.png',
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/PNGTEST/colorblock_2.svg.png',
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/PNGTEST/colorblock_1.svg.png'
     ],
     flatLock:
       'https://storage.googleapis.com/jakroo-storage/models/Tour/flatlock.png',

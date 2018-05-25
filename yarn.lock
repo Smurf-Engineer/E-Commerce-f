@@ -173,6 +173,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-stripe-elements@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@types/react-stripe-elements/-/react-stripe-elements-1.1.2.tgz#b6abe463e4e8b0eb3c33f38f9feb84451392a2f0"
+  dependencies:
+    "@types/react" "*"
+    "@types/stripe-v3" "*"
+
 "@types/react-swipeable-views@^0.12.0":
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/@types/react-swipeable-views/-/react-swipeable-views-0.12.0.tgz#36494b35911038bdbc962b451486de6dfa089d71"
@@ -216,6 +223,10 @@
   dependencies:
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
+
+"@types/stripe-v3@*":
+  version "3.0.7"
+  resolved "https://registry.yarnpkg.com/@types/stripe-v3/-/stripe-v3-3.0.7.tgz#b5e888e54a5e0ca37dcfc7774c3e33b7a4212225"
 
 "@types/webpack-env@^1.13.3":
   version "1.13.3"
@@ -7648,6 +7659,12 @@ react-star-ratings@^2.2.0:
     classnames "^2.2.1"
     prop-types "^15.6.0"
     react "^16.1.0"
+
+react-stripe-elements@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/react-stripe-elements/-/react-stripe-elements-1.6.0.tgz#1433bf6b7a83479f2cdb9ba459bf36fb201b97be"
+  dependencies:
+    prop-types "^15.5.10"
 
 react-swipeable-bottom-sheet@^1.1.1:
   version "1.1.1"

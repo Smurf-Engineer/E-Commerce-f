@@ -4,6 +4,7 @@
 import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import find from 'lodash/find'
+import dropRight from 'lodash/dropRight'
 import Select from 'antd/lib/select'
 
 import InputNumber from 'antd/lib/input-number'
@@ -12,6 +13,7 @@ import {
   Table,
   HeaderRow,
   Cell,
+  InfoCell,
   Title,
   Row,
   HeaderCell,
@@ -30,6 +32,7 @@ interface CartItems {
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
+  onlyRead?: boolean
   handledeleteItemDetail: (
     event: React.MouseEvent<EventTarget>,
     index: number,
@@ -140,12 +143,13 @@ class CartListItemTable extends React.Component<Props, {}> {
   }
 
   render() {
-    const { formatMessage, cartItem, itemIndex } = this.props
+    const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
+    const headers = onlyRead ? dropRight(headerTitles) : headerTitles
     const header = (
       <MediaQuery minDeviceWidth={480}>
         {matches => {
           if (matches) {
-            const head = headerTitles.map(({ width, message }, key) => (
+            const head = headers.map(({ width, message }, key) => (
               <HeaderCell {...{ key, width }}>
                 <Title>{message ? formatMessage(messages[message]) : ''}</Title>
               </HeaderCell>
@@ -177,7 +181,7 @@ class CartListItemTable extends React.Component<Props, {}> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-          return (
+          return !onlyRead ? (
             <Row key={index}>
               <Cell>
                 <StyledSelect
@@ -234,6 +238,14 @@ class CartListItemTable extends React.Component<Props, {}> {
                   —
                 </DeleteItem>
               </Cell>
+            </Row>
+          ) : (
+            <Row key={index}>
+              <InfoCell>{item.gender ? item.gender.name : '-'}</InfoCell>
+              <InfoCell>{item.size ? item.size.name : '-'}</InfoCell>
+              <InfoCell>{item.fit ? item.fit.name : '-'}</InfoCell>
+              <InfoCell>{item.label || '-'}</InfoCell>
+              <InfoCell>{item.quantity || '1'}</InfoCell>
             </Row>
           )
         })

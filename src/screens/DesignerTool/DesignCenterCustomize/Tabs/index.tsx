@@ -18,10 +18,12 @@ interface Props {
   colors: string[]
   styleColors: string[]
   uploadingFiles: boolean
+  uploadNewModel: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any) => void
+  onUploadDesign: (files: any) => void
 }
 
 const Tabs = ({
@@ -33,13 +35,22 @@ const Tabs = ({
   colors,
   styleColors,
   onUploadFiles,
-  uploadingFiles
+  uploadingFiles,
+  uploadNewModel,
+  onUploadDesign
 }: Props) => {
   return (
     <Container>
-      <AntdTabs defaultActiveKey="1" size="large">
+      <AntdTabs style={{ height: '100%' }} defaultActiveKey="1" size="large">
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="1">
-          <UploadTab {...{ onUploadFiles, uploadingFiles }} />
+          <UploadTab
+            {...{
+              onUploadFiles,
+              uploadingFiles,
+              uploadNewModel,
+              onUploadDesign
+            }}
+          />
         </TabPane>
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="4">
           <ColorTab

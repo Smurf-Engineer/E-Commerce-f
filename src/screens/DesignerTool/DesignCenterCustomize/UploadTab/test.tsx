@@ -9,7 +9,12 @@ describe('<UploadTab />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <UploadTab onUploadFiles={() => {}} uploadingFiles={false} />,
+      <UploadTab
+        onUploadFiles={() => {}}
+        onUploadDesign={() => {}}
+        uploadingFiles={false}
+        uploadNewModel={false}
+      />,
       div
     )
   })

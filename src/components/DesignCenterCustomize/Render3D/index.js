@@ -78,11 +78,17 @@ class Render3D extends PureComponent {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
 
+    const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
+      .matches
+    const precision = largeScreen ? 'highp' : 'lowp'
     const renderer = new THREE.WebGLRenderer({
-      antialias: true
-      // preserveDrawingBuffer: true
+      antialias: true,
+      precision
     })
 
+    const devicePixelRatio = window.devicePixelRatio
+      ? window.devicePixelRatio
+      : 1
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
@@ -100,7 +106,7 @@ class Render3D extends PureComponent {
     controls.enableKeys = false
     controls.minDistance = 0
     controls.maxDistance = 350
-    // controls.enableZoom = isMobile
+    controls.enableZoom = isMobile
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -131,44 +137,6 @@ class Render3D extends PureComponent {
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
-
-    // const svgTexture = Snap('#svg')
-
-    // const textureList = []
-    // const loadMulti = list => {
-    //   let image,
-    //     fragLoadedCount = 0,
-    //     listLength = list.length
-
-    //   for (let count = 0; count < listLength; count++) {
-    //     ;(() => {
-    //       let wichEl = count
-    //       image = Snap.load(list[wichEl], loadedFragment => {
-    //         fragLoadedCount++
-    //         textureList[wichEl] = loadedFragment
-    //         if (fragLoadedCount >= listLength) {
-    //           addLoadedFrags(textureList)
-    //         }
-    //       })
-    //     })()
-    //   }
-    // }
-
-    // const addLoadedFrags = list => {
-    //   for (let count = 0; count < list.length; count++) {
-    //     svgTexture.append(textureList[count].select('g'))
-    //   }
-
-    //   svgTexture.select("#colorblock_x5F_1[fill='#099']")
-    // }
-    // const listSvg = [
-    //   './testsvg/colorblock_5.svg',
-    //   './testsvg/colorblock_4.svg',
-    //   './testsvg/colorblock_3.svg',
-    //   './testsvg/colorblock_2.svg',
-    //   './testsvg/colorblock_1.svg'
-    // ]
-    // loadMulti(listSvg)
   }
 
   componentWillUnmount() {
@@ -176,112 +144,50 @@ class Render3D extends PureComponent {
     this.container.removeChild(this.renderer.domElement)
   }
 
-  render3DModel = () => {
+  loadTextures = modelTextures =>
+    new Promise((resolve, reject) => {
+      try {
+        const loadedTextures = {}
+        loadedTextures.flatlock = this.textureLoader.load(
+          './models/images/flatlock.png'
+        )
+        loadedTextures.bumpMap = this.textureLoader.load(modelTextures.bumpMap)
+
+        const loadedAreas = modelTextures.areas.map(areaUri => {
+          const areaTexture = this.textureLoader.load(areaUri)
+          areaTexture.minFilter = THREE.LinearFilter
+          return areaTexture
+        })
+        loadedTextures.areas = loadedAreas
+        resolve(loadedTextures)
+      } catch (error) {
+        reject(error)
+      }
+    })
+
+  render3DModel = async () => {
     /* Object and MTL load */
     const { onLoadModel, currentStyle } = this.props
+    onLoadModel(true)
 
     /* Texture configuration */
     const modelTextures = dummieData[currentStyle]
-    const flatlockTexture = this.textureLoader.load(
-      './models/images/flatlock.png'
-    )
-    const bumpMapTexture = this.textureLoader.load(modelTextures.bumpMap)
-
-    const loadedAreas = modelTextures.areas.map(areaUri => {
-      const areaTexture = this.textureLoader.load(areaUri)
-      areaTexture.minFilter = THREE.LinearFilter
-      return areaTexture
-    })
+    const loadedTextures = await this.loadTextures(modelTextures)
 
     this.mtlLoader.load(modelTextures.mtl, materials => {
-      onLoadModel(true)
       materials.preload()
       this.objLoader.setMaterials(materials)
       this.objLoader.load(
         modelTextures.obj,
         object => {
-          onLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
-
-          // TODO: TEXT Test
-          const logoTexture = this.textureLoader.load(
-            'https://storage.googleapis.com/jakroo-storage/models/Tour/CD03-D01.svg'
-          )
-
-          // logoTexture.wrapS = logoTexture.wrapT = THREE.RepeatWrapping
-
-          const materialLogo = new THREE.MeshPhongMaterial({
-            map: logoTexture,
-            bumpMap: bumpMapTexture,
-            side: THREE.FrontSide
-          })
-          // const cdim = 2048
-          // const canvas = document.createElement('canvas')
-          // canvas.width = canvas.height = cdim
-          // const compositeTexture = new THREE.Texture(canvas)
-          // compositeTexture.wrapS = compositeTexture.wrapT = THREE.RepeatWrapping
-
-          // const rebuildTexture = () => {
-          //   const ctx = canvas.getContext('2d')
-          //   ctx.globalCompositeOperation = 'source-over'
-          //   const fcolor = '#d12212'
-          //   ctx.fillStyle = fcolor
-
-          //   ctx.fillRect(0, 0, cdim, cdim)
-
-          //   for (let i = 0; i < 30; i++) {
-          //     const rdim = parseInt(360 * Math.random() + 10)
-          //     ctx.fillStyle = '#312121'
-          //     if (irnd(10) > 5) ctx.fillRect(irnd(cdim), irnd(cdim), rdim, rdim)
-          //     else {
-          //       ctx.beginPath()
-          //       ctx.arc(irnd(cdim), irnd(cdim), rdim, rdim, 2 * Math.PI)
-          //       ctx.fill()
-          //     }
-          //   }
-          //   ctx.globalCompositeOperation = 'normal'
-          //   const img = logoTexture.image
-
-          //   let iwid = img.width
-          //   let ihite = img.height
-          //   const max = Math.max(iwid, ihite)
-          //   const scl = cdim / max * 0.38
-          //   iwid *= scl
-          //   ihite *= scl
-          //   ctx.drawImage(
-          //     img,
-          //     cdim * 0.25 - iwid * 0.5,
-          //     cdim * 0.5 - ihite * 0.5,
-          //     iwid,
-          //     ihite
-          //   )
-
-          //   ctx.drawImage(
-          //     img,
-          //     cdim * 0.75 - iwid * 0.5,
-          //     cdim * 0.5 - ihite * 0.5,
-          //     iwid,
-          //     ihite
-          //   )
-
-          // ctx.font = '80px Georgia'
-          // ctx.textAlign = 'center'
-          // ctx.fillStyle = '#212000'
-          // ctx.fillText('DAVID', 1500, 1450)
-          //   compositeTexture.needsUpdate = true
-          //   materialLogo.map = compositeTexture
-
-          //   materialLogo.needsUpdate = true
-          // }
-
-          // rebuildTexture(materialLogo, canvas)
 
           /* Object materials */
 
           // Stitching
           const flatlockMaterial = new THREE.MeshPhongMaterial({
-            map: flatlockTexture
+            map: loadedTextures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -302,7 +208,7 @@ class Render3D extends PureComponent {
           }
 
           // Setup the texture layers
-          const areasLayers = loadedAreas.map(() =>
+          const areasLayers = loadedTextures.areas.map(() =>
             object.children[meshIndex].clone()
           )
           object.add(...areasLayers)
@@ -310,52 +216,74 @@ class Render3D extends PureComponent {
           /* Jersey label */
           object.children[4].material.color.set('#ffffff')
           object.children[6].material = flatlockMaterial
-
           object.children[meshIndex].material = insideMaterial
-          object.children[objectChilds].material = materialLogo
-          // object.children[objectChilds].rebuildTexture = rebuildTexture
 
-          // loadedAreas.forEach(
-          //   (materialTexture, index) =>
-          //     (object.children[
-          //       objectChilds + index
-          //     ].material = new THREE.MeshPhongMaterial({
-          //       map: loadedAreas[index],
-          //       side: THREE.FrontSide,
-          //       bumpMap: bumpMapTexture,
-          //       color: modelTextures.colors[index],
-          //       transparent: true
-          //     }))
-          // )
+          // START CANVAS TEST
+
+          const canvasObj = object.children[meshIndex].clone()
+          object.add(canvasObj)
+
+          const cdim = 3880.016
+          const canvas = document.createElement('canvas')
+          canvas.width = canvas.height = cdim
+          var c = new fabric.Canvas(canvas)
+
+          // create a rectangle object
+          var rect = new fabric.Rect({
+            left: 1000,
+            top: 1000,
+            fill: 'red',
+            width: 500,
+            height: 500
+          })
+
+          // "add" rectangle onto canvas
+          c.add(rect)
+
+          const canvasTexture = new THREE.CanvasTexture(c.cacheCanvasEl)
+          // const ctx = canvas.getContext('2d')
+          // ctx.globalCompositeOperation = 'normal'
+          // ctx.font = '100px Fira Code'
+          // ctx.textAlign = 'center'
+          // ctx.fillStyle = '#f21222'
+          // ctx.fillText('JAKROO', 1000, 1000)
+
+          canvasTexture.needsUpdate = true
+
+          const canvasMaterial = new THREE.MeshPhongMaterial({
+            map: canvasTexture,
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            transparent: true
+          })
+          // END CANVAS TEST
+
+          loadedTextures.areas.forEach(
+            (materialTexture, index) =>
+              (object.children[
+                objectChilds + index
+              ].material = new THREE.MeshPhongMaterial({
+                map: loadedTextures.areas[index],
+                side: THREE.FrontSide,
+                bumpMap: loadedTextures.bumpMap,
+                color: modelTextures.colors[index],
+                transparent: true
+              }))
+          )
+
+          object.children[20].material = canvasMaterial
 
           /* Object Config */
           object.position.y = -30
           object.name = 'jersey'
           this.scene.add(object)
+
+          onLoadModel(false)
         },
         this.onProgress,
         this.onError
       )
     })
-  }
-
-  createLabel = (text, color, font, size) => {
-    size = size || 24
-    const canvas = document.createElement('canvas')
-    const ctx = canvas.getContext('2d')
-    const fontStr = (font || 'Arial') + ' ' + (size + 'px')
-    ctx.font = fontStr
-    const w = ctx.measureText(text).width
-    const h = Math.ceil(size * 1.25)
-    canvas.width = w
-    canvas.height = h
-    ctx.font = fontStr
-    ctx.fillStyle = color || 'black'
-    ctx.fillText(text, 0, size)
-    const tex = new THREE.CanvasTexture(canvas)
-    // tex.needsUpdate = true
-
-    return tex
   }
 
   onProgress = xhr => {
@@ -519,9 +447,6 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
-        {/* <div style={{ width: '100%', height: '100%' }} id="drawing">
-          <svg id="svg" width="100%" height="100%" />
-    </div> */}
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>

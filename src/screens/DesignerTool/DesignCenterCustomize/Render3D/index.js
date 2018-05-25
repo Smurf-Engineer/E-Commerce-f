@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import filter from 'lodash/filter'
+import findIndex from 'lodash/findIndex'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
@@ -35,14 +36,21 @@ class Render3D extends PureComponent {
     const {
       colors,
       colorBlockHovered: oldColorBlockHovered,
-      files: oldFiles
+      files: oldFiles,
+      areas
     } = this.props
     const {
       colors: nextColors,
-      styleColors,
+      areas: nextAreas,
       colorBlockHovered,
       files
     } = nextProps
+
+    const areasHasChange = isEqual(areas, nextAreas)
+    if (!areasHasChange) {
+      this.loadDesign(nextAreas, nextColors)
+      return
+    }
 
     const filesHasChange = isEqual(files, oldFiles)
     if (!filesHasChange) {
@@ -52,9 +60,7 @@ class Render3D extends PureComponent {
 
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
-      const emptyColors = filter(nextColors, color => !!!color)
-      const isResetingColors = emptyColors.length >= colors.length
-      this.setupColors(isResetingColors ? styleColors : nextColors)
+      this.setupColors(nextColors)
       return
     }
 
@@ -122,22 +128,76 @@ class Render3D extends PureComponent {
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
+
+    // TODO: Need tests
+    if (this.scene) {
+      const object = this.scene.getObjectByName('jersey')
+      if (object) {
+        object.children.forEach(mesh => {
+          mesh.material.dispose()
+          object.dispose()
+          this.scene.dispose()
+        })
+      }
+    }
   }
 
-  loadObject = files => {
+  loadTextures = modelTextures =>
+    new Promise((resolve, reject) => {
+      try {
+        const loadedTextures = {}
+        loadedTextures.flatlock = this.imgLoader.load(
+          './models/images/flatlock.png'
+        )
+        loadedTextures.bumpMap = this.imgLoader.load(modelTextures.bumpMap)
+
+        const loadedAreas = modelTextures.areas.map(areaUri => {
+          const areaTexture = this.imgLoader.load(areaUri)
+          areaTexture.minFilter = THREE.LinearFilter
+          return areaTexture
+        })
+        loadedTextures.areas = loadedAreas
+        resolve(loadedTextures)
+      } catch (error) {
+        reject(error)
+      }
+    })
+
+  loadDesign = async (textureUrls, colors) => {
+    const loadedTextures = await new Promise((resolve, reject) => {
+      try {
+        const loadedAreas = textureUrls.map(areaUrl => {
+          const areaTexture = this.imgLoader.load(areaUrl)
+          areaTexture.minFilter = THREE.LinearFilter
+          return areaTexture
+        })
+        resolve(loadedAreas)
+      } catch (error) {
+        reject(error)
+      }
+    })
+    if (loadedTextures.length) {
+      const { objectChilds } = this.state
+      const object = this.scene.getObjectByName('jersey')
+      if (object) {
+        loadedTextures.forEach((texture, index) => {
+          if (object.children[objectChilds + index]) {
+            object.children[objectChilds + index].material.color.set(
+              colors[index]
+            )
+            object.children[objectChilds + index].material.map = texture
+          }
+        })
+      }
+    }
+  }
+
+  loadObject = async files => {
     /* Object and MTL load */
     const { onLoadModel, styleColors } = this.props
 
-    /* Get the texture configuration */
-
-    const bumpMapTexture = this.imgLoader.load(files.bumpMap)
-    const flatLockTexture = this.imgLoader.load('./models/images/flatlock.png')
-
-    const loadedAreas = files.areas.map(areaUri => {
-      const areaTexture = this.imgLoader.load(areaUri)
-      areaTexture.minFilter = THREE.LinearFilter
-      return areaTexture
-    })
+    /* Texture configuration */
+    const loadedTextures = await this.loadTextures(files)
 
     this.mtlLoader.load(files.mtl, materials => {
       onLoadModel(true)
@@ -146,15 +206,13 @@ class Render3D extends PureComponent {
       this.objLoader.load(
         files.obj,
         object => {
-          onLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
           /* Object materials */
           // Stitching
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: flatLockTexture,
-            transparent: true
+          const flatlockMaterial = new THREE.MeshPhongMaterial({
+            map: loadedTextures.flatlock
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -175,7 +233,7 @@ class Render3D extends PureComponent {
           }
 
           // Setup the texture layers
-          const areasLayers = loadedAreas.map(() =>
+          const areasLayers = loadedTextures.areas.map(() =>
             object.children[meshIndex].clone()
           )
           object.add(...areasLayers)
@@ -185,14 +243,15 @@ class Render3D extends PureComponent {
           object.children[6].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          loadedAreas.forEach(
+          loadedTextures.areas.forEach(
             (materialTexture, index) =>
               (object.children[
                 objectChilds + index
               ].material = new THREE.MeshPhongMaterial({
-                map: loadedAreas[index],
+                map: loadedTextures.areas[index],
                 side: THREE.FrontSide,
-                bumpMap: bumpMapTexture,
+                bumpMap: loadedTextures.bumpMap,
+                color: files.design.colors[index],
                 transparent: true
               }))
           )
@@ -201,6 +260,7 @@ class Render3D extends PureComponent {
           object.position.y = -40
           object.name = 'jersey'
           this.scene.add(object)
+          onLoadModel(false)
         },
         this.onProgress,
         this.onError
