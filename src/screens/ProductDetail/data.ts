@@ -29,7 +29,10 @@ export const GetProductsByIdQuery = gql`
         id
         name: description
       }
-      size_range
+      sizeRange: size_range {
+        id
+        name
+      }
       collections
       isTopProduct
       intendedUse: intended_use
