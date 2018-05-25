@@ -258,5 +258,39 @@
   "components.ProductInfo.unitPrice": "Unit price:",
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
-  "components.ProductInfo.addMoreFor": "Add {products} more for ${price}"
+  "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
+
+  "screens.StoreFrontContent.tittle": "My team store",
+  "screens.StoreFrontContent.orderTitle": "Order by",
+  "screens.StoreFrontContent.orderTitle2": "and receive your order by",
+  "screens.StoreFrontContent.priceDropTitle": "DYANMIC PRICE DROP",
+  "screens.StoreFrontContent.priceDropSubTitle":
+    "With JAKROO’s Dynamic Price Drop, everybody wins!",
+  "screens.StoreFrontContent.priceDropDescription":
+    "As team members place their orders and reach the next discount level, the price automatically drops for everyone, even for those who placed their order before the drop. Final Pricing for all items will be based on the highest discount level achieved for one item. Payment is processed after the close of the order period so everybody receives the same low price, regardless of when your order was placed. Yes, it’s that cool!",
+  "screens.StoreFrontContent.tierTitle": "This store’s estimate price tier is ",
+  "screens.StoreFrontContent.tierDescription":
+    "To get to the target price, at least one item has to be over 25 orders",
+  "screens.StoreFrontContent.aboutOrdering": "About Team Store Ordering",
+  "screens.StoreFrontContent.howMuchTitle": "How much will you pay?",
+  "screens.StoreFrontContent.howMuchDesc":
+    "When ordering through the Jakroo Team Store portal, JAKROO’s dynamic price calculators track all orders being placed by individual team members and update the pricing on the site in real time. Team members can subscribe to Price drops alerts and will be notified each time the team achieves the next discount level. The price you pay will be based on the FINAL quantities ordered by the team and any additional qualifying volume discounts.",
+  "screens.StoreFrontContent.whenTitle": "When will payment be processed?",
+  "screens.StoreFrontContent.whenDesc":
+    "With team ordering, payment method is validated at the time the order is placed. Payment, however, will be taken after the Team ordering period has closed and all discounts applied. This way, everyone pays the same low price, regardless of when the order was placed during the ordering period.",
+  "screens.StoreFrontContent.howLongTitle":
+    "How long will it take to receive my order?",
+  "screens.StoreFrontContent.howLongDesc":
+    "Estimated delivery times for all orders are displayed on the Team Store and during checkout. Most orders are delivered within 2 weeks or less, based on the order cut-off date. In the case of large volume orders exceeding 100 pieces, delivery times may be longer. Contact our staff to confirm the delivery time of your order, if it exceeds 100 pieces. While we are committed to always meet delivery dates, delays beyond our direct control such as weather, force majeure, and customs may affect delivery. If you have a specific deadline for your delivery, we recommend factoring a few additional days into the ordering period.",
+  "screens.StoreFrontContent.CanIORder": "Can i reorder?",
+  "screens.StoreFrontContent.CanIORderDesc":
+    "You will always have the opportunity to reorder your products once your initial order period has passed and your Team Store has been reopened or switched to On-Demand Mode. Contact your Team Manager to request a store be reopened.",
+  "screens.StoreFrontContent.share": "Share",
+  "screens.StoreFrontContent.edit": "Edit",
+  "screens.StoreFrontContent.cutOff": "Cut-off date",
+  "screens.StoreFrontContent.estimatedArrival": "Estimated arrival",
+  "screen.StoreFrontContent.shareModalTitle": "SHARE YOUR TEAMSTORE!",
+  "screen.StoreFrontContent.contactManager": "Contact store manager",
+  "screen.StoreFrontContent.invalidPass": "Invalid passcode value.",
+  "screen.StoreFrontContent.passcodeNeeded": "Passcode needed."
 }
