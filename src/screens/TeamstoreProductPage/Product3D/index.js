@@ -4,8 +4,7 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import vertexShader from './vertex'
-import fragmentShader from './fragment'
+import findIndex from 'lodash/findIndex'
 import {
   Container,
   Render,
@@ -39,7 +38,8 @@ class Render3D extends PureComponent {
     zoomValue: 0,
     progress: 0,
     // TODO: Temp fix use redux from parent
-    isLoading: false
+    isLoading: false,
+    objectChilds: 0
   }
 
   componentDidMount() {
@@ -52,22 +52,16 @@ class Render3D extends PureComponent {
     renderer.setSize(clientWidth, clientHeight)
 
     /* Textures */
-    const loader = new THREE.TextureLoader()
+    const textureLoader = new THREE.TextureLoader()
 
     const textures = {
-      backPocket: {},
-      color1: {},
-      color2: {},
-      color3: {},
-      color4: {},
-      color5: {},
+      texture: {},
       flatlock: {},
-      label: {},
       bumpMap: {}
     }
 
     for (const key in textures) {
-      textures[key] = loader.load(jerseyTextures[key])
+      textures[key] = textureLoader.load(jerseyTextures.images[key])
       if (key !== 'flatlock') {
         textures[key].minFilter = THREE.LinearFilter
       }
@@ -103,127 +97,74 @@ class Render3D extends PureComponent {
 
     /* Object and MTL load */
 
-    mtlLoader.load(
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.mtl',
-      materials => {
-        this.handleOnLoadModel(true)
-        materials.preload()
-        const objLoader = new THREE.OBJLoader()
-        objLoader.setMaterials(materials)
-        objLoader.load(
-          'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.obj',
-          object => {
-            this.handleOnLoadModel(false)
+    mtlLoader.load(jerseyTextures.mtl, materials => {
+      this.handleOnLoadModel(true)
+      materials.preload()
+      const objLoader = new THREE.OBJLoader()
+      objLoader.setMaterials(materials)
+      objLoader.load(
+        jerseyTextures.obj,
+        object => {
+          const objectChilds = object.children.length
+          this.setState({ objectChilds })
+          // Materials
+          /* Object material */
+          const flatlockMaterial = new THREE.MeshLambertMaterial({
+            map: textures.flatlock
+          })
+          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
+          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
-            // Materials
-            /* Object material */
-            const flatlockMaterial = new THREE.MeshLambertMaterial({
-              map: textures.flatlock,
-              color: 0xffffff
-            })
-            flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-            flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+          // Back material
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            color: 0x000000,
+            side: THREE.BackSide
+          })
 
-            const customColors = {}
-            let i = 0
-            for (const { color } of colors) {
-              customColors[`customColor${i + 1}`] = {
-                type: 'c',
-                value: new THREE.Color(color)
-              }
-              i += 1
-            }
+          // Front material
+          const frontMaterial = new THREE.MeshPhongMaterial({
+            map: textures.texture,
+            bumpMap: textures.bumpMap,
+            side: THREE.FrontSide
+          })
 
-            const uniforms = {
-              ...customColors,
-              positionX: { type: 'f', value: 1.0 },
-              positionY: { type: 'f', value: 1.0 },
-              color1: {},
-              color2: {},
-              color3: {},
-              color4: {},
-              color5: {},
-              logo: {}
-            }
+          let meshIndex = findIndex(
+            object.children,
+            mesh => mesh.name === 'FINAL Jersey_Mesh'
+          )
 
-            const phongShader = THREE.ShaderLib.phong
-            const mergeUniforms = THREE.UniformsUtils.merge([
-              phongShader.uniforms,
-              uniforms
-            ])
+          if (meshIndex < 0) {
+            meshIndex = 0
+          }
 
-            const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-            uniformsWithPhong.color1.value = textures.color1
-            uniformsWithPhong.color2.value = textures.color2
-            uniformsWithPhong.color3.value = textures.color3
-            uniformsWithPhong.color4.value = textures.color4
-            uniformsWithPhong.color5.value = textures.color5
-            uniformsWithPhong.bumpMap.value = textures.bumpMap
-            uniformsWithPhong.bumpMapScale = 0.45
-            uniformsWithPhong.shininess.value = 15
+          /* Assign materials */
+          const cloneObject = object.children[meshIndex].clone()
+          object.add(cloneObject)
 
-            this.uniformsWithPhong = uniformsWithPhong
+          /* Jersey label */
+          object.children[4].material.color.set('#FFF')
+          /* flatlock */
+          object.children[6].material = flatlockMaterial
+          /* jersey */
+          object.children[meshIndex].material = insideMaterial
+          object.children[objectChilds].material = frontMaterial
 
-            const defines = {}
-            defines['USE_MAP'] = ''
-            defines['USE_COLOR'] = ''
-            defines['USE_BUMPMAP'] = ''
+          /* Object Conig */
+          object.position.y = -30
+          object.name = 'jersey'
+          scene.add(object)
 
-            const shaderMaterial = new THREE.ShaderMaterial({
-              uniforms: uniformsWithPhong,
-              vertexShader: vertexShader,
-              fragmentShader: fragmentShader,
-              side: THREE.FrontSide,
-              defines: defines,
-              lights: true
-            })
-
-            shaderMaterial.extensions.derivatives = true
-
-            // Inside material
-            const insideMaterial = new THREE.MeshPhongMaterial({
-              color: 0x000000,
-              side: THREE.BackSide
-            })
-
-            /* Texture materials */
-            const labelMaterial = new THREE.MeshPhongMaterial({
-              map: textures.label
-            })
-            const backPocketMaterial = new THREE.MeshPhongMaterial({
-              map: textures.backPocket
-            })
-
-            /* Assign materials */
-            const cloneObject = object.children[5].clone()
-            object.add(cloneObject)
-
-            /* jersey */
-            object.children[5].material = insideMaterial
-            object.children[15].material = shaderMaterial
-            /* flatlock */
-            object.children[6].material = flatlockMaterial
-
-            /* Jersey label */
-            object.children[4].material.color.set('#FFF')
-            /* back pocket */
-            // object.children[22].material = backPocketMaterial
-
-            /* Object Conig */
-            object.position.y = -30
-            object.name = 'jersey'
-            scene.add(object)
-          },
-          this.onProgress,
-          this.onError
-        )
-      }
-    )
+          this.handleOnLoadModel(false)
+        },
+        this.onProgress,
+        this.onError
+      )
+    })
 
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
-    this.loader = mtlLoader
+    this.textureLoader = mtlLoader
     this.controls = controls
     this.directionalLight = directionalLight
 
@@ -312,9 +253,11 @@ class Render3D extends PureComponent {
         <Render innerRef={container => (this.container = container)}>
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
-        <DragText>
-          <FormattedMessage {...messages.drag} />
-        </DragText>
+        {showDragmessage && (
+          <DragText>
+            <FormattedMessage {...messages.drag} />
+          </DragText>
+        )}
       </Container>
     )
   }

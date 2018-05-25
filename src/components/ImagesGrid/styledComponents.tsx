@@ -116,3 +116,13 @@ export const TextQuote = styled.div`
     width: 100%;
   }
 `
+export const ScenesFromTitle = styled.div`
+  padding: 36px 0 26px;
+  text-align: center;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+`

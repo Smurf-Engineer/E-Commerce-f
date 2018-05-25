@@ -20,5 +20,9 @@ export default defineMessages({
   jobs: {
     id: 'components.footer.aboutUs.jobs',
     defaultMessage: 'Job Opportunities'
+  },
+  investorsRelations: {
+    id: 'components.footer.aboutUs.investorsRelations',
+    defaultMessage: 'Investors Relations'
   }
 })

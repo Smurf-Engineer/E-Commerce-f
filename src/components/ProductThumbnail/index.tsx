@@ -34,6 +34,7 @@ interface Props {
   history: any
   isStoreThumbnail?: boolean
   teamStoreShortId?: string
+  customizable?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -101,12 +102,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
       description,
       priceRange,
       isTopProduct,
-      collections,
       footer,
       labelButton,
       image,
       hideCustomButton,
-      hideQuickView
+      hideQuickView,
+      customizable
     } = this.props
     const { isHovered, currentImage } = this.state
     const price =
@@ -140,7 +141,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
             <Type>{type}</Type>
             <Description>{description}</Description>
             <InfoContainer>
-              <Label>{`${collections || 0} Collections`}</Label>
+              <Label>{customizable ? 'Customize' : ''}</Label>
               <Price>{price}</Price>
             </InfoContainer>
           </Footer>
