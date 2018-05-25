@@ -304,5 +304,13 @@
   "screen.StoreFrontContent.passcodeNeeded": "Passcode needed.",
   "screen.StoreFrontContent.targetPrice": "Target Price",
 
-  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS"
+  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS",
+
+  "components.CreditCardForm.cardNumber": "CVV/CVC",
+  "components.CreditCardForm.cardholderName": "Cardholder name",
+  "components.CreditCardForm.expiryDate": "Expiry date",
+  "components.CreditCardForm.billingAddress": "Billing Address",
+  "components.CreditCardForm.sameShippingAddress": "Same as shipping address",
+  "components.CreditCardForm.continue": "Continue",
+  "components.CreditCardForm.requiredField": "This field is required"
 }
