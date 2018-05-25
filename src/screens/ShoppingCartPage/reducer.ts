@@ -15,7 +15,8 @@ import {
   REMOVE_ITEM_ACTION,
   SET_TOTAL_ACTION,
   SET_SUBTOTAL_ACTION,
-  SET_SHIPPING_ACTION
+  SET_SHIPPING_ACTION,
+  RESET_REDUCER_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -97,6 +98,8 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.set('subtotal', fromJS(action.subtotal))
     case SET_SHIPPING_ACTION:
       return state.set('shipping', fromJS(action.shipping))
+    case RESET_REDUCER_DATA:
+      return state.set(initialState)
     default:
       return state
   }

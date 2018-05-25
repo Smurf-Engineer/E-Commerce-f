@@ -5,18 +5,21 @@ import * as React from 'react'
 import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
+import Collapse from 'antd/lib/collapse'
 import message from 'antd/lib/message'
 import {
   Container,
-  Top,
   Text,
   Buttons,
   ButtonWrapper,
-  ContainerReset
+  Footer
 } from './styledComponents'
+
+const { Panel } = Collapse
 
 interface Props {
   onUploadFiles: (files: any) => void
+  onUploadDesign: (files: any) => void
   uploadNewModel: boolean
   uploadingFiles: boolean
 }
@@ -26,17 +29,20 @@ const getFileExtension = (filename: string) =>
 
 class UploadTab extends React.PureComponent<Props, {}> {
   state = {
-    fileList: [],
-    uploading: false
+    fileList: []
   }
 
   handleUpload = () => {
     const { fileList } = this.state
-    const { onUploadFiles } = this.props
+    const { onUploadFiles, uploadNewModel, onUploadDesign } = this.props
 
-    if (fileList.length) {
+    if (uploadNewModel) {
+      onUploadDesign(fileList)
+    } else {
       onUploadFiles(fileList)
     }
+
+    this.setState({ fileList: [] })
   }
 
   beforeUpload = (file: any) => {
@@ -54,7 +60,29 @@ class UploadTab extends React.PureComponent<Props, {}> {
       return false
     }
 
-    if (list.length > 2 && file.type !== 'image/svg+xml') {
+    if (list.length === 3 && file.type !== 'application/json') {
+      message.error('Please select a valid JSON file')
+      return false
+    }
+
+    if (list.length > 3 && file.type !== 'image/svg+xml') {
+      message.error('Please select a valid SVG file')
+      return false
+    }
+
+    this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))
+    return false
+  }
+
+  beforeUploadDesign = (file: any) => {
+    const { fileList: list } = this.state
+
+    if (list.length === 0 && file.type !== 'application/json') {
+      message.error('Please select a valid JSON file')
+      return false
+    }
+
+    if (list.length > 0 && file.type !== 'image/svg+xml') {
       message.error('Please select a valid SVG file')
       return false
     }
@@ -80,41 +108,34 @@ class UploadTab extends React.PureComponent<Props, {}> {
     const { fileList } = this.state
     const { uploadingFiles, uploadNewModel } = this.props
 
-    if (uploadNewModel) {
-      return (
-        <ContainerReset>
-          <Button size="large" type="primary" onClick={this.handleReset}>
-            Upload new model
-          </Button>
-        </ContainerReset>
-      )
-    }
-
     return (
       <Container>
-        <Top>
-          <Text>
-            Upload your files:
-            <p>1. OBJ file</p>
-            <p>2. MTL file</p>
-            <p>3. Bumpmap file</p>
-            <p> 4. ColorBlock 5 ... 1 </p>
-            <p> 5. Branding </p>
-          </Text>
-          <Button
-            size="large"
-            type="primary"
-            onClick={this.handleUpload}
-            disabled={!fileList.length}
-            loading={uploadingFiles}
-          >
-            {uploadingFiles ? 'Uploading' : 'Upload'}
-          </Button>
-        </Top>
+        <Collapse>
+          <Panel header="Help" key="1">
+            {uploadNewModel ? (
+              <Text>
+                <p> 1. Config file (JSON) </p>
+                <p> 2. Branding </p>
+                <p> 3. Color Blocks </p>
+              </Text>
+            ) : (
+              <Text>
+                <p>1. OBJ file</p>
+                <p>2. MTL file</p>
+                <p>3. Bumpmap file</p>
+                <p> 4. Config file (JSON) </p>
+                <p> 5. Branding </p>
+                <p> 6. Color Blocks </p>
+              </Text>
+            )}
+          </Panel>
+        </Collapse>
         <Buttons>
           <Upload
             {...{ fileList }}
-            beforeUpload={this.beforeUpload}
+            beforeUpload={
+              uploadNewModel ? this.beforeUploadDesign : this.beforeUpload
+            }
             onRemove={this.onRemove}
           >
             <ButtonWrapper>
@@ -124,6 +145,31 @@ class UploadTab extends React.PureComponent<Props, {}> {
             </ButtonWrapper>
           </Upload>
         </Buttons>
+        <Footer>
+          {uploadNewModel && (
+            <ButtonWrapper>
+              <Button
+                size="large"
+                type="primary"
+                ghost={true}
+                onClick={this.handleReset}
+              >
+                Upload new model
+              </Button>
+            </ButtonWrapper>
+          )}
+          <ButtonWrapper>
+            <Button
+              size="large"
+              type="primary"
+              onClick={this.handleUpload}
+              disabled={!(fileList.length > 4)}
+              loading={uploadingFiles}
+            >
+              {uploadNewModel ? 'Upload design' : 'Upload model'}
+            </Button>
+          </ButtonWrapper>
+        </Footer>
       </Container>
     )
   }

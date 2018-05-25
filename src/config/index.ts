@@ -9,6 +9,7 @@ interface ConfigType {
   graphqlUriBase?: string
   baseUrl?: string
   storageUrl: string
+  pkStripe: string
 }
 
 const config: ConfigType = {
@@ -17,7 +18,8 @@ const config: ConfigType = {
   facebookId: process.env.RAZZLE_FACEBOOK_ID,
   graphqlUriBase: 'https://api.jakroo.tailrecursive.co/api/',
   baseUrl: 'https://dev.jakroo.tailrecursive.co/',
-  storageUrl: 'https://storage.googleapis.com/jakroo-storage'
+  storageUrl: 'https://storage.googleapis.com/jakroo-storage',
+  pkStripe: 'pk_test_USJaHD7YvJFcFsgwOixnJDrq'
 }
 
 export default config
