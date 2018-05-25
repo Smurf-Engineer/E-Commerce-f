@@ -116,5 +116,9 @@ export default defineMessages({
   passcodeNeeded: {
     id: 'screen.StoreFrontContent.passcodeNeeded',
     defaultMessage: 'Passcode needed.'
+  },
+  targetPrice: {
+    id: 'screen.StoreFrontContent.targetPrice',
+    defaultMessage: 'Target Price'
   }
 })

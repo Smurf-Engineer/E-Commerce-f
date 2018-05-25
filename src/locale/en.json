@@ -302,6 +302,7 @@
   "screen.StoreFrontContent.contactManager": "Contact store manager",
   "screen.StoreFrontContent.invalidPass": "Invalid passcode value.",
   "screen.StoreFrontContent.passcodeNeeded": "Passcode needed.",
+  "screen.StoreFrontContent.targetPrice": "Target Price",
 
   "components.FeaturedProducts.tittle": "FEATURED PRODUCTS"
 }

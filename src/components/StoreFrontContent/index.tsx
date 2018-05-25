@@ -224,7 +224,9 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
               {priceRange.name}
               <br />10% OFF
               <br />
-              <StyledSliderTitle>Target Price</StyledSliderTitle>
+              <StyledSliderTitle>
+                {formatMessage(messages.targetPrice)}
+              </StyledSliderTitle>
             </p>
           )
         }
