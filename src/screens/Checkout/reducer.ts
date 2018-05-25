@@ -88,7 +88,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_ADDRESS:
       return state.merge({
         ...action.address,
-        indexAddressSelected: action.index
+        indexAddressSelected: action.index,
+        showForm: false
       })
     case SAME_BILLING_AND_SHIPPING_UNCHECKED:
       return state.merge({
@@ -129,8 +130,26 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         billingPhone: phone
       })
     }
-    case SHOW_ADDRESS_FORM:
-      return state.set('showForm', action.show)
+    case SHOW_ADDRESS_FORM: {
+      if (action.show) {
+        return state.merge({
+          showForm: true,
+          firstName: '',
+          lastName: '',
+          street: '',
+          apartment: '',
+          country: '',
+          stateProvince: '',
+          city: '',
+          zipCode: '',
+          phone: '',
+          hasError: false,
+          indexAddressSelected: -1
+        })
+      }
+      return state.set('showForm', false)
+    }
+
     case SET_LOADING_BILLING:
       return state.set('loadingBilling', action.loading)
     case SET_STRIPE_TOKEN:

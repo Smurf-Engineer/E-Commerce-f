@@ -203,9 +203,7 @@ class Checkout extends React.Component<Props, {}> {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
           return itemDetail.quantity
         })
-
         const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
         return cartItem.product.priceRange[0].price * quantitySum
       })
 
