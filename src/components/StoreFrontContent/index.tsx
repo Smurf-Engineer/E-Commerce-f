@@ -200,21 +200,21 @@ export class StoreFrontContent extends React.Component<Props, {}> {
         return
       }
       if (priceRange.id === teamSizeId) {
-        marksArray[priceRange.name.split('-')[1]] = {
+        marksArray[priceRange.name.split('-')[0]] = {
           style: sliderStyle,
           label: (
             <p>
+              <strong style={{ color: '#f50' }}>Target Price</strong>
+              <br />
               {priceRange.name}
               <br />10% OFF
-              <br />
-              <strong style={{ color: '#f50' }}>Target Price</strong>
             </p>
           )
         }
         return
       }
 
-      marksArray[priceRange.name.split('-')[1]] = {
+      marksArray[priceRange.name.split('-')[0]] = {
         style: sliderStyle,
         label: (
           <p>
@@ -312,7 +312,6 @@ export class StoreFrontContent extends React.Component<Props, {}> {
                 <StyledSlider
                   marks={marksArray}
                   disabled={true}
-                  defaultValue={totalItems}
                   value={totalItems}
                 />
               </SliderWrapper>
