@@ -306,7 +306,7 @@ export interface CartItems {
   itemDetails: CartItemDetail[]
   productTotal?: number
   unitPrice?: number
-  designId?: number | string
+  designId?: string
 }
 
 export interface OrderDataInfo {
