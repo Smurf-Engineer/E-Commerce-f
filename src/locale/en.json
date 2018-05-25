@@ -268,7 +268,6 @@
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
   "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
-<<<<<<< HEAD
 
   "screens.StoreFrontContent.tittle": "My team store",
   "screens.StoreFrontContent.orderTitle": "Order by",
@@ -302,8 +301,7 @@
   "screen.StoreFrontContent.shareModalTitle": "SHARE YOUR TEAMSTORE!",
   "screen.StoreFrontContent.contactManager": "Contact store manager",
   "screen.StoreFrontContent.invalidPass": "Invalid passcode value.",
-  "screen.StoreFrontContent.passcodeNeeded": "Passcode needed."
-=======
+  "screen.StoreFrontContent.passcodeNeeded": "Passcode needed.",
+
   "components.FeaturedProducts.tittle": "FEATURED PRODUCTS"
->>>>>>> 9a111c1749dd7adaa21c5b65cf7f1f0d12d0b442
 }
