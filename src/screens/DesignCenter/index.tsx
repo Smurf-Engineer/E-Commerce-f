@@ -58,6 +58,7 @@ interface Props extends RouteComponentProps<any> {
   savedDesignId: string
   saveDesignLoading: boolean
   style: number
+  openAddToStoreModal: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -84,6 +85,7 @@ interface Props extends RouteComponentProps<any> {
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
   setStyleComplexity: (index: number, colors: string[]) => void
+  openAddToTeamStoreModalAction: (open: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -109,7 +111,9 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -172,7 +176,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCheckedTermsAction,
       clearDesignInfoAction,
       saveDesignLoadingAction,
+      openAddToTeamStoreModalAction,
       setStyleComplexity,
+      openAddToStoreModal,
       location: { search },
       data
     } = this.props
@@ -253,6 +259,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
             <PreviewTab
               {...{
+                history,
                 colors,
                 loadingModel,
                 currentTab,
@@ -260,7 +267,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openShareModal,
                 openShareModalAction,
                 savedDesignId,
-                productName
+                productName,
+                openAddToTeamStoreModalAction,
+                openAddToStoreModal
               }}
               formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}

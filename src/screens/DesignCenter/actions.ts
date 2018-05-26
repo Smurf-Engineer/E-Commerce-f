@@ -26,7 +26,8 @@ import {
   SET_CHECKED_TERMS,
   CLEAR_DESIGN_INFO,
   SAVE_DESIGN_LOADING,
-  SET_STYLE_COMPLEXITY_ACTION
+  SET_STYLE_COMPLEXITY_ACTION,
+  OPEN_ADD_TOTEAMSTORE
 } from './constants'
 import { AnyAction, Palette } from '../../types/common'
 
@@ -155,4 +156,9 @@ export const setCheckedTermsAction = (checked: boolean): AnyAction => ({
 
 export const clearDesignInfoAction = (): AnyAction => ({
   type: CLEAR_DESIGN_INFO
+})
+
+export const openAddToTeamStoreModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_ADD_TOTEAMSTORE,
+  open
 })

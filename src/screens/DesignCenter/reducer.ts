@@ -27,14 +27,15 @@ import {
   SET_CHECKED_TERMS,
   CLEAR_DESIGN_INFO,
   SAVE_DESIGN_LOADING,
-  SET_STYLE_COMPLEXITY_ACTION
+  SET_STYLE_COMPLEXITY_ACTION,
+  OPEN_ADD_TOTEAMSTORE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 const colorsInit = fill(Array(5), '')
 
 export const initialState = fromJS({
-  currentTab: 0,
+  currentTab: 3,
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: ['#B9B9B9', '#D2D2D2', '#255B2D', '#096F39', '#A9A9A9'],
@@ -52,7 +53,8 @@ export const initialState = fromJS({
   checkedTerms: false,
   savedDesignId: '',
   designBase64: '',
-  saveDesignLoading: false
+  saveDesignLoading: false,
+  openAddToStoreModal: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -173,6 +175,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('saveDesignLoading', action.loading)
     case CLEAR_DESIGN_INFO:
       return state.merge({ checkedTerms: false, designName: '' })
+    case OPEN_ADD_TOTEAMSTORE:
+      return state.set('openAddToStoreModal', action.open)
     default:
       return state
   }
