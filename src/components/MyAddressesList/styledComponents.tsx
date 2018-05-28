@@ -4,15 +4,11 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
-interface MyAddressesListProps {
-  listForMyAccount?: boolean
-}
-
 export const Container = styled.div`
   width: 100%;
 `
 export const Content = styled.div`
-  padding: 20px 0 30px;
+  padding-bottom: 30px;
 `
 export const Title = styled.div`
   height: 22px;
@@ -35,7 +31,7 @@ export const AddAddressBtn = styled(Button)`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
-  margin-bottom: 20px;
+  margin: 20px 0;
 
   &:hover {
     color: #4a90e2;
@@ -45,6 +41,5 @@ export const AddAddressBtn = styled(Button)`
 
 export const AddressesList = styled.div`
   display: flex;
-  justify-content: ${({ listForMyAccount }: MyAddressesListProps) =>
-    listForMyAccount ? 'flex-start' : 'space-between'};
+  justify-content: flex-start;
 `

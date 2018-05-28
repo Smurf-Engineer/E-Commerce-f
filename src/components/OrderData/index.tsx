@@ -102,16 +102,25 @@ class OrderData extends React.Component<Props, {}> {
           if (!isThereTeamstoreProduct && cartItem.designId) {
             isThereTeamstoreProduct = true
           }
+          const itemImage = cartItem.designId
+            ? cartItem.designImage || ''
+            : cartItem.product.images[0].front
+          const itemTitle = cartItem.designId
+            ? cartItem.designName || ''
+            : cartItem.product.name
+          const itemDescription = cartItem.designId
+            ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
+            : cartItem.product.shortDescription
           return (
             <CartListItem
               formatMessage={formatMessage}
               key={index}
-              title={cartItem.product.name}
-              description={cartItem.product.shortDescription}
+              image={itemImage}
+              title={itemTitle}
+              description={itemDescription}
               price={priceRange}
               productTotal={cartItem.productTotal}
               unitPrice={cartItem.unitPrice}
-              image={cartItem.product.images[0].front}
               cartItem={cartItem}
               itemIndex={index}
               onlyRead={true}

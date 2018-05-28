@@ -31,7 +31,9 @@ export const GetDesignQuery = gql`
           id
           name: gender
         }
-        size_range
+        size_range {
+          id
+        }
         fitStyles {
           id
           name: description
@@ -84,7 +86,9 @@ export const GetProductsByIdQuery = gql`
         id
         name: gender
       }
-      size_range
+      size_range {
+        id
+      }
       fitStyles {
         id
         name: description

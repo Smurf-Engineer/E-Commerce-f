@@ -301,7 +301,11 @@ class MyAddresses extends React.PureComponent<Props, {}> {
 const mapStateToProps = (state: any) => state.get('addresses').toJS()
 
 const MyAddressesEnhance = compose(
-  graphql(addresesQuery),
+  graphql(addresesQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
   withLoading,
   withError,
   addAddressMutation,
