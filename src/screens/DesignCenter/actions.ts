@@ -27,9 +27,10 @@ import {
   CLEAR_DESIGN_INFO,
   SAVE_DESIGN_LOADING,
   SET_STYLE_COMPLEXITY_ACTION,
-  OPEN_ADD_TOTEAMSTORE
+  OPEN_ADD_TOTEAMSTORE,
+  SET_ITEM_TOADD
 } from './constants'
-import { AnyAction, Palette } from '../../types/common'
+import { AnyAction, Palette, TeamStoreItemtype } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -161,4 +162,13 @@ export const clearDesignInfoAction = (): AnyAction => ({
 export const openAddToTeamStoreModalAction = (open: boolean): AnyAction => ({
   type: OPEN_ADD_TOTEAMSTORE,
   open
+})
+
+export const setItemToAddAction = (
+  teamStoreItem: TeamStoreItemtype,
+  teamStoreId: string
+): AnyAction => ({
+  type: SET_ITEM_TOADD,
+  teamStoreItem,
+  teamStoreId
 })

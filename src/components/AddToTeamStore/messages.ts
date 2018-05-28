@@ -14,11 +14,11 @@ export default defineMessages({
     defaultMessage: 'My Team Stores'
   },
   addTeamstoreLabel: {
-    id: 'components.MyTeamStores.addTeamstoreLabel',
+    id: 'components.AddToTeamStore.addTeamstoreLabel',
     defaultMessage: '+ ADD NEW TEAM STORE'
   },
   addDesignButtonLabel: {
-    id: 'components.MyTeamStores.addDesignButtonLabel',
+    id: 'components.AddToTeamStore.addDesignButtonLabel',
     defaultMessage: 'Add'
   }
 })

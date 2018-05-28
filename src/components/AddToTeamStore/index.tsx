@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+
 import messages from './messages'
 import { GetTeamMyStoresQuery } from './data'
 import {
@@ -24,25 +25,35 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   history: any
+  savedDesignId: string
+  teamStoreId: string
   openAddToTeamStoreModalAction: (open: boolean) => void
+  setItemToAddAction: (itemToAdd: {}, teamStoreId: string) => void
+  addItemToStore: () => void
 }
 
 export class AddToTeamStore extends React.PureComponent<Props, {}> {
   render() {
     const {
+      addItemToStore,
+      teamStoreId,
       data: { loading, myTeamstores }
     } = this.props
 
-    console.log('DATA ', myTeamstores)
     if (loading) {
       return null
     }
 
     const { teamStores } = myTeamstores
     const teamstores = teamStores.map((store, key) => {
-      const { name, shortId } = store
+      const { name, shortId: teamStoreShortId, id } = store
+
       return (
-        <ListItem id={shortId} {...{ key }}>
+        <ListItem
+          selected={teamStoreShortId === teamStoreId}
+          onClick={this.onClickItem(id, teamStoreShortId)}
+          {...{ key }}
+        >
           {name}
         </ListItem>
       )
@@ -61,7 +72,7 @@ export class AddToTeamStore extends React.PureComponent<Props, {}> {
         </ListTitle>
         <TeamstoresListContainer>{teamstores}</TeamstoresListContainer>
         <AddButtonRow>
-          <AddDesignButton onClick={this.handleAddItem}>
+          <AddDesignButton onClick={addItemToStore}>
             <FormattedMessage {...messages.addDesignButtonLabel} />
           </AddDesignButton>
         </AddButtonRow>
@@ -74,9 +85,14 @@ export class AddToTeamStore extends React.PureComponent<Props, {}> {
     history.push('/create-store')
   }
 
-  handleAddItem = () => {
-    const { openAddToTeamStoreModalAction } = this.props
-    openAddToTeamStoreModalAction(false)
+  onClickItem = (storeId: number, shortId: string) => () => {
+    const { savedDesignId, setItemToAddAction } = this.props
+    const itemToAdd = {
+      team_store_id: storeId,
+      design_id: savedDesignId,
+      visible: true
+    }
+    setItemToAddAction(itemToAdd, shortId)
   }
 }
 

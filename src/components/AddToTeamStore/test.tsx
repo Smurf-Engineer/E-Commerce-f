@@ -12,6 +12,8 @@ describe('<AddToTeamStore />', () => {
     const openAddToTeamStoreModalAction = () => {}
     const props = { locale: 'en' }
     const history = {}
+    const savedDesignId = ''
+    const teamStoreId = ''
     const data: any = {
       myTeamstores: {
         fullCount: 0,
@@ -19,11 +21,20 @@ describe('<AddToTeamStore />', () => {
       },
       fetchMore: () => {}
     }
+    const setItemToAddAction = () => {}
+    const addItemToStore = () => {}
     ReactDOM.render(
       <IntlProvider {...props}>
         <AddToTeamStore
           data={data}
-          {...{ history, openAddToTeamStoreModalAction }}
+          {...{
+            history,
+            savedDesignId,
+            openAddToTeamStoreModalAction,
+            setItemToAddAction,
+            teamStoreId,
+            addItemToStore
+          }}
         />
       </IntlProvider>,
       div

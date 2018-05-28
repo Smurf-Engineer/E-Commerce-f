@@ -14,11 +14,14 @@ export const getProductQuery = gql`
 
 export const addTeamStoreItemMutation = graphql(
   gql`
-    mutation AddTeamStore(
+    mutation AddTeamStoreItem(
       $teamStoreItem: TeamStoreItem!
-      $teamStoreId: string!
+      $teamStoreId: String!
     ) {
-      addTeamStoreItem(teamStoreItem: teamStoreItem, teamStoreId: teamStoreId) {
+      addTeamStoreItem(
+        teamStoreItem: $teamStoreItem
+        teamStoreId: $teamStoreId
+      ) {
         message
       }
     }

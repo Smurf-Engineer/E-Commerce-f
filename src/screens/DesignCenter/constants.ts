@@ -32,3 +32,4 @@ export const CLEAR_DESIGN_INFO = `${namespace}/CLEAR_DESIGN_INFO`
 export const SAVE_DESIGN_LOADING = `${namespace}/SAVE_DESIGN_LOADING`
 
 export const OPEN_ADD_TOTEAMSTORE = `${namespace}/ADD_TOTEAMSTORE`
+export const SET_ITEM_TOADD = `${namespace}/SET_ITEM_TOADD`

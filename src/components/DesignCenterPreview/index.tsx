@@ -29,12 +29,15 @@ interface Props {
   savedDesignId: string
   productName: string
   openAddToStoreModal: boolean
+  teamStoreId: string
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
   onSelectTab: (tab: number) => void
   openShareModalAction: (open: boolean) => void
   openAddToTeamStoreModalAction: (open: boolean) => void
+  setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
+  addItemToStore: () => void
 }
 
 class DesignCenterPreview extends React.PureComponent<Props, {}> {
@@ -67,7 +70,10 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       savedDesignId,
       productName,
       openAddToStoreModal,
-      openAddToTeamStoreModalAction
+      openAddToTeamStoreModalAction,
+      setItemToAddAction,
+      teamStoreId,
+      addItemToStore
     } = this.props
     return (
       <Container>
@@ -102,8 +108,22 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
           requestClose={this.handleRequestCloseShare}
           {...{ formatMessage, savedDesignId }}
         />
-        <Modal visible={openAddToStoreModal} closable={false} footer={null}>
-          <AddToTeamStore {...{ history, openAddToTeamStoreModalAction }} />
+        <Modal
+          visible={openAddToStoreModal}
+          closable={false}
+          footer={null}
+          maskClosable={true}
+        >
+          <AddToTeamStore
+            {...{
+              history,
+              savedDesignId,
+              openAddToTeamStoreModalAction,
+              setItemToAddAction,
+              teamStoreId,
+              addItemToStore
+            }}
+          />
         </Modal>
       </Container>
     )

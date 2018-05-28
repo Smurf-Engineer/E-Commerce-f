@@ -2,7 +2,9 @@
  * Styled Components - Created by cazarez on 25/05/18.
  */
 
-// interface ContainerProps {}
+interface ContainerProps {
+  selected: boolean
+}
 
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
@@ -32,7 +34,8 @@ export const TeamstoresListContainer = styled.div`
 export const ListItem = styled.div`
   height: 23px;
   width: 121px;
-  color: #5f6062;
+  color: ${({ selected }: ContainerProps) =>
+    selected ? '#e61737' : '#5f6062'};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;

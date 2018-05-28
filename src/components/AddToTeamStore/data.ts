@@ -8,6 +8,12 @@ export const GetTeamMyStoresQuery = gql`
         id
         shortId: short_id
         name
+        items {
+          design {
+            shortId: short_id
+          }
+          visible
+        }
       }
     }
   }

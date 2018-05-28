@@ -238,6 +238,15 @@
   "components.MyTeamStores.addTeamstoreLabel": "+ ADD NEW TEAM STORE",
   "components.MyTeamStores.createTeamStoreText":
     "Creating a team store enables your team memebers to place their orders separately for team kits.",
+  "components.MyTeamStores.titleDeleteModal": "Are you sure?",
+  "components.MyTeamStores.messageDeleteModal":
+    "This will permanently delete this Teamstore.",
+  "screen.MyTeamStores.shareModalTitle": "SHARE YOUR TEAMSTORE!",
+  "screen.MyTeamStores.errorMessage":
+    "Something wrong happened. Please try again!",
+  "screen.MyTeamStores.deleteModalLabel": "Delete",
+  "screen.MyTeamStores.shareTeamStoreMessage":
+    "Check out this awesome teamstore!",
   "components.MyAddresses.titleDeleteModal": "Are you sure?",
   "components.MyAddresses.messageDeleteModal":
     "This will permanently delete this address",
@@ -268,5 +277,9 @@
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
   "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
-  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS"
+  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS",
+  "components.AddToTeamStore.tittle": "ADD TO TEAM STORE",
+  "components.AddToTeamStore.teamstoreListTitle": "My Team Stores",
+  "components.AddToTeamStore.addTeamstoreLabel": "+ ADD NEW TEAM STORE",
+  "components.AddToTeamStore.addDesignButtonLabel": "Add"
 }
