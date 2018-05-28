@@ -109,6 +109,7 @@ export type TeamStoreItemtype = {
   expected_quantity: number
   visible: boolean
   totalOrders: number
+  itemOrder?: number
 }
 
 export type DesignResultType = {

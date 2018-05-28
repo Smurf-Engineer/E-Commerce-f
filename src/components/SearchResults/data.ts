@@ -5,11 +5,27 @@ export const searchResultsQuery = gql`
     productSearch(text: $search) {
       id
       yotpoId: yotpo_id
+      name
       type: name
       description: short_description
+      shortDescription: short_description
       collections
       isTopProduct
       customizable: design_center
+      retailMen: men_retail
+      retailWomen: women_retail
+      genders {
+        id
+        name: gender
+      }
+      fitStyles {
+        id
+        name: description
+      }
+      priceRange {
+        quantity
+        price
+      }
       images: pictures {
         front: front_image
         back: back_image

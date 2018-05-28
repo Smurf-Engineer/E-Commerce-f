@@ -27,7 +27,9 @@ import {
   SET_CHECKED_TERMS,
   CLEAR_DESIGN_INFO,
   SAVE_DESIGN_LOADING,
-  SET_STYLE_COMPLEXITY_ACTION
+  SET_STYLE_COMPLEXITY_ACTION,
+  OPEN_ADD_TOTEAMSTORE,
+  SET_ITEM_TOADD
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -52,7 +54,10 @@ export const initialState = fromJS({
   checkedTerms: false,
   savedDesignId: '',
   designBase64: '',
-  saveDesignLoading: false
+  saveDesignLoading: false,
+  openAddToStoreModal: false,
+  teamStoreId: '',
+  itemToAdd: {}
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -173,6 +178,13 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('saveDesignLoading', action.loading)
     case CLEAR_DESIGN_INFO:
       return state.merge({ checkedTerms: false, designName: '' })
+    case OPEN_ADD_TOTEAMSTORE:
+      return state.set('openAddToStoreModal', action.open)
+    case SET_ITEM_TOADD:
+      return state.merge({
+        teamStoreId: action.teamStoreId,
+        itemToAdd: action.teamStoreItem
+      })
     default:
       return state
   }
