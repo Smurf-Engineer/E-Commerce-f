@@ -17,16 +17,27 @@ import {
 interface Props {
   text: string
   onUpdateText: (text: string) => void
+  onApplyText: (text: string) => void
 }
 
 export class TextTab extends React.PureComponent<Props, {}> {
+  state = {
+    text: ''
+  }
   handleOnUpdateText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { onUpdateText } = this.props
-    const { value } = e.target
-    onUpdateText(value)
+    const { value: text } = e.target
+    this.setState({ text })
+  }
+
+  handleOnApplyText = () => {
+    const { text } = this.state
+    const { onApplyText } = this.props
+    this.setState({ text: '' })
+    onApplyText(text)
   }
 
   render() {
+    const { text } = this.state
     return (
       <Container>
         <Header>
@@ -36,10 +47,10 @@ export class TextTab extends React.PureComponent<Props, {}> {
         </Header>
         <InputWrapper>
           <Input
-            // value={}
+            value={text}
             onChange={this.handleOnUpdateText}
             placeholder="Enter Text"
-            addonAfter={<Button onClick={() => {}}>Apply</Button>}
+            addonAfter={<Button onClick={this.handleOnApplyText}>Apply</Button>}
           />
         </InputWrapper>
         <OptionText title="Font" option="Heveltica" />

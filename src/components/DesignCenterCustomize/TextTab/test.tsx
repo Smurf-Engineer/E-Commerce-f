@@ -12,7 +12,7 @@ describe('<TextTab />', () => {
     const div = document.createElement('div')
     ReactDOM.render(
       <IntlProvider {...props}>
-        <TextTab text="text" onUpdateText={() => {}} />
+        <TextTab text="text" onUpdateText={() => {}} onApplyText={() => {}} />
       </IntlProvider>,
       div
     )

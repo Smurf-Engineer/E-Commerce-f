@@ -30,6 +30,7 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
+  onApplyText: (text: string) => void
 }
 
 const Tabs = ({
@@ -46,7 +47,8 @@ const Tabs = ({
   colors,
   styleColors,
   onUpdateText,
-  text
+  text,
+  onApplyText
 }: Props) => {
   return (
     <Container>
@@ -70,7 +72,7 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
-          <TextTab {...{ text, onUpdateText }} />
+          <TextTab {...{ text, onUpdateText, onApplyText }} />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           Content of Tab Pane 3

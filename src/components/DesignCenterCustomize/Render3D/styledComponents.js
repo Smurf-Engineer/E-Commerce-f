@@ -13,8 +13,8 @@ export const Container = styled.div`
 `
 
 export const Render = styled.div`
-  width: 600px;
-  height: 600px;
+  width: 800px;
+  height: 800px;
 `
 
 export const Model = styled.div`
@@ -93,7 +93,7 @@ export const ViewControls = styled.div`
   display: flex;
   width: 76px;
   justify-content: space-between;
-  alignitem: center;
+  align-items: center;
   position: absolute;
   top: 68px;
   right: 26px;

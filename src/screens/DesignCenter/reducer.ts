@@ -149,10 +149,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_THEME_SELECTED_ACTION:
       return state.merge({
         themeId: action.id,
+        swipingView: true,
         currentTab: 1
       })
     case SET_STYLE_SELECTED_ACTION:
-      return state.set('currentTab', 2)
+      return state.merge({
+        swipingView: true,
+        currentTab: 2
+      })
     case SET_STYLE_COMPLEXITY_ACTION:
       return state.merge({
         style: action.index,

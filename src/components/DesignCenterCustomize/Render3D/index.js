@@ -82,16 +82,17 @@ class Render3D extends PureComponent {
       .matches
     const precision = largeScreen ? 'highp' : 'lowp'
     const renderer = new THREE.WebGLRenderer({
+      alpha: true,
       antialias: true,
-      precision
-      // preserveDrawingBuffer: true // TODO: Uncomment
+      precision,
+      preserveDrawingBuffer: true
     })
 
     const devicePixelRatio = window.devicePixelRatio
       ? window.devicePixelRatio
       : 1
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor('#fff')
+    renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
 
     /* Camera */
@@ -228,19 +229,11 @@ class Render3D extends PureComponent {
           const canvas = document.createElement('canvas')
           const canvasTexture = new THREE.CanvasTexture(canvas)
           canvas.width = canvas.height = cdim
-          var c = new fabric.Canvas(canvas)
-          c.on('after:render', () => (canvasTexture.needsUpdate = true))
-
-          // create a rectangle object
-          var rect = new fabric.Text('Jakroo', {
-            left: 800,
-            top: 1000,
-            fontSize: 100,
-            fontWeight: 'bold'
-          })
-
-          // "add" rectangle onto canvas
-          c.add(rect)
+          this.canvasTexture = new fabric.Canvas(canvas)
+          this.canvasTexture.on(
+            'after:render',
+            () => (canvasTexture.needsUpdate = true)
+          )
 
           // const ctx = canvas.getContext('2d')
           // ctx.globalCompositeOperation = 'normal'
@@ -273,7 +266,7 @@ class Render3D extends PureComponent {
           object.children[20].material = canvasMaterial
 
           /* Object Config */
-          object.position.y = -30
+          object.position.y = -20
           object.name = 'jersey'
           this.scene.add(object)
 
@@ -325,6 +318,9 @@ class Render3D extends PureComponent {
   }
 
   setupColors = colors => {
+    if (!this.scene) {
+      return
+    }
     const { objectChilds } = this.state
     const object = this.scene.getObjectByName('jersey')
     if (object) {
@@ -337,6 +333,9 @@ class Render3D extends PureComponent {
   }
 
   setupHoverColor = colorBlockHovered => {
+    if (!this.scene) {
+      return
+    }
     const object = this.scene.getObjectByName('jersey')
     const { objectChilds } = this.state
     const { colors } = this.props
@@ -399,7 +398,6 @@ class Render3D extends PureComponent {
   }
 
   saveDesign = previewImage => {
-    // TODO: Send base64 image
     const { onOpenSaveDesign } = this.props
     onOpenSaveDesign(true, previewImage)
   }
@@ -409,7 +407,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/png', 0.1)
+        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.4)
         this.saveDesign(dataUrl)
       }, 200)
     )
@@ -455,12 +453,15 @@ class Render3D extends PureComponent {
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
-        <Dropdown overlay={menu}>
+        {/*
+          // TODO: JV2 - Phase II
+          <Dropdown overlay={menu}>
           <ModelType>
             <ModelText>3D Model: Product Only</ModelText>
             <img src={arrowDown} />
           </ModelType>
         </Dropdown>
+        */}
         <ButtonWrapper>
           <Button type="primary" onClick={this.takeDesignPicture}>
             Save
@@ -481,6 +482,23 @@ class Render3D extends PureComponent {
         </ViewControls>
       </Container>
     )
+  }
+
+  applyText = text => {
+    if (!this.scene || !text) {
+      return
+    }
+    const object = this.scene.getObjectByName('jersey')
+    // create a rectangle object
+    const rect = new fabric.Textbox(text, {
+      left: 800,
+      top: 1000,
+      fontSize: 100,
+      fontWeight: 'bold'
+    })
+
+    // "add" text onto canvas
+    this.canvasTexture.add(rect)
   }
 }
 
