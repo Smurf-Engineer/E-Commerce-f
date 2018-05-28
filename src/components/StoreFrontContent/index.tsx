@@ -44,7 +44,8 @@ import {
   ErrorTitle,
   FlexContainer,
   SliderWrapper,
-  sliderStyle
+  sliderStyle,
+  StyledSliderTitle
 } from './styledComponents'
 import config from '../../config/index'
 import ProductInfo from '../../components/ProductInfo'
@@ -56,6 +57,13 @@ import TeamPassCode from '../../components/TeamPassCode'
 interface Data extends QueryProps {
   teamStores: TeamStoreResultType
   getTeamStore: TeamStoreType
+}
+
+interface StateProps {
+  showMuch: boolean
+  showLong: boolean
+  showCani: boolean
+  showWhen: boolean
 }
 
 interface Props {
@@ -79,7 +87,14 @@ interface Props {
   setPassCodeAction: (passCode: string) => void
 }
 
-export class StoreFrontContent extends React.Component<Props, {}> {
+export class StoreFrontContent extends React.Component<Props, StateProps> {
+  state = {
+    showMuch: false,
+    showCani: false,
+    showLong: false,
+    showWhen: false
+  }
+
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[`show${id}`]
     this.setState({ [`show${id}`]: !stateValue } as any)
@@ -152,6 +167,8 @@ export class StoreFrontContent extends React.Component<Props, {}> {
       setPassCodeAction
     } = this.props
 
+    const { showMuch, showCani, showLong, showWhen } = this.state
+
     const errorMessage = error
       ? (error.graphQLErrors.length && error.graphQLErrors[0].message) ||
         error.message ||
@@ -204,10 +221,12 @@ export class StoreFrontContent extends React.Component<Props, {}> {
           style: sliderStyle,
           label: (
             <p>
-              <strong style={{ color: '#f50' }}>Target Price</strong>
-              <br />
               {priceRange.name}
               <br />10% OFF
+              <br />
+              <StyledSliderTitle>
+                {formatMessage(messages.targetPrice)}
+              </StyledSliderTitle>
             </p>
           )
         }
@@ -333,28 +352,38 @@ export class StoreFrontContent extends React.Component<Props, {}> {
             <FormattedMessage {...messages.aboutOrdering} />
           </AboutTitle>
           <ProductInfo
-            id="much"
+            id="Much"
             title={formatMessage(messages.howMuchTitle)}
-            showContent={false}
+            showContent={showMuch}
             toggleView={this.toggleProductInfo}
           >
-            <div />
+            <p>{formatMessage(messages.howMuchDesc)}</p>
           </ProductInfo>
+
           <ProductInfo
-            id="long"
+            id="When"
+            title={formatMessage(messages.whenTitle)}
+            showContent={showWhen}
+            toggleView={this.toggleProductInfo}
+          >
+            <p>{formatMessage(messages.whenDesc)}</p>
+          </ProductInfo>
+
+          <ProductInfo
+            id="Long"
             title={formatMessage(messages.howLongTitle)}
-            showContent={false}
+            showContent={showLong}
             toggleView={this.toggleProductInfo}
           >
-            <div />
+            <p>{formatMessage(messages.howLongDesc)}</p>
           </ProductInfo>
           <ProductInfo
-            id="cani"
+            id="Cani"
             title={formatMessage(messages.CanIORder)}
-            showContent={false}
+            showContent={showCani}
             toggleView={this.toggleProductInfo}
           >
-            <div />
+            <p>{formatMessage(messages.CanIORderDesc)}</p>
           </ProductInfo>
         </AboutContainer>
 

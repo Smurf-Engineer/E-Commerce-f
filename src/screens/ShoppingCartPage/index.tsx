@@ -96,9 +96,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   componentWillUnmount() {
-    const { cart, saveToStorage, resetReducerData } = this.props
+    const { cart, saveToStorage } = this.props
     saveToStorage(cart)
-    resetReducerData()
   }
 
   handleAddItemDetail = (

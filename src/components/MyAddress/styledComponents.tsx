@@ -5,13 +5,8 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
 
-interface MyAddresProps {
-  showSecondaryButtons?: boolean
-}
-
 export const Container = styled.div`
-  margin-right: ${({ showSecondaryButtons }: MyAddresProps) =>
-    showSecondaryButtons ? '10%' : '0'};
+  margin-right: 10%;
 `
 
 export const Text = styled.div`

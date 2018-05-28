@@ -29,16 +29,18 @@ interface Props {
 export class MyAddressesList extends React.Component<Props, {}> {
   render() {
     const {
+      showForm,
       formatMessage,
       items,
       listForMyAccount,
       showAddressFormAction,
       showConfirmDeleteAction,
-      selectAddressAction,
+      selectAddressAction = () => {},
       indexAddressSelected
     } = this.props
 
     const showList = items && items.length
+    let atLeastOneIsSelected = false
     const adressesList = items
       ? items.map((address, key) => {
           const {
@@ -53,6 +55,22 @@ export class MyAddressesList extends React.Component<Props, {}> {
             defaultBilling,
             defaultShipping
           } = address
+          const isSelected =
+            !showForm &&
+            ((defaultShipping && indexAddressSelected === -1) ||
+              indexAddressSelected === key)
+          if (!showForm && isSelected) {
+            selectAddressAction(key)
+            atLeastOneIsSelected = true
+          }
+          if (
+            key === items.length - 1 &&
+            !atLeastOneIsSelected &&
+            items &&
+            !showForm
+          ) {
+            selectAddressAction(0)
+          }
           return (
             <MyAddress
               {...{
@@ -62,9 +80,9 @@ export class MyAddressesList extends React.Component<Props, {}> {
                 showConfirmDeleteAction,
                 defaultBilling,
                 defaultShipping,
-                selectAddressAction
+                selectAddressAction,
+                isSelected
               }}
-              isSelected={indexAddressSelected === key}
               addressIndex={key}
               name={`${firstName} ${lastName}`}
               street={street}
@@ -80,20 +98,21 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
     return (
       <Container>
-        {showList &&
-          !listForMyAccount && <Title>{formatMessage(messages.title)}</Title>}
-        {showList && (
+        {showList ? (
           <Content>
-            {!listForMyAccount && (
+            {!listForMyAccount ? (
+              <Title>{formatMessage(messages.title)}</Title>
+            ) : null}
+            {!listForMyAccount ? (
               <AddAddressBtn onClick={this.showAddressForm}>
                 {formatMessage(messages.addAddressLabel)}
               </AddAddressBtn>
-            )}
+            ) : null}
             <AddressesList {...{ listForMyAccount }}>
               {adressesList}
             </AddressesList>
           </Content>
-        )}
+        ) : null}
       </Container>
     )
   }

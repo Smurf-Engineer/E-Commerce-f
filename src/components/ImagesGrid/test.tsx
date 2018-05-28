@@ -10,10 +10,11 @@ describe('<ImagesGrid />', () => {
   it('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
+    const history = {}
     // tslint:disable-next-line:no-empty
     ReactDOM.render(
       <IntlProvider {...props}>
-        <ImagesGrid fakeWidth={1200} />
+        <ImagesGrid fakeWidth={1200} {...{ history }} />
       </IntlProvider>,
       div
     )

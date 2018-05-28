@@ -68,7 +68,7 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
     case SET_DELETE_LOADING:
       return state.set('deleteLoading', action.loading)
     case RESET_REDUCER_DATA:
-      return state.merge(initialState)
+      return initialState
     case SET_ADDRESS_UPDATE:
       return state.merge({
         ...action.address,
