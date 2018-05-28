@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
-
+import Spin from 'antd/lib/spin'
 import messages from './messages'
 import { GetTeamMyStoresQuery } from './data'
 import {
@@ -15,7 +15,8 @@ import {
   ListItem,
   AddTeamStoreButton,
   AddDesignButton,
-  AddButtonRow
+  AddButtonRow,
+  LoadingContainer
 } from './styledComponents'
 import { QueryProps, TeamstoreResult } from '../../types/common'
 
@@ -41,7 +42,11 @@ export class AddToTeamStore extends React.PureComponent<Props, {}> {
     } = this.props
 
     if (loading) {
-      return null
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
     }
 
     const { teamStores } = myTeamstores

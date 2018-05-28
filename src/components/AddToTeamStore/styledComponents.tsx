@@ -86,3 +86,10 @@ export const AddDesignButton = styled(Button)`
     border-color: #4a90e2;
   }
 `
+
+export const LoadingContainer = styled.div`
+  height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
