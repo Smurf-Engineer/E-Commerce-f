@@ -1,5 +1,5 @@
 /**
- * Checkout Types - Created by miguel canobbio on 05/15/18.
+ * MyAddresses Types - Created by miguel canobbio on 05/15/18.
  */
 const namespace = 'src/MyAccount/Addresses'
 

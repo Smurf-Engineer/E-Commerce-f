@@ -8,6 +8,7 @@ import MyCards from './index'
 describe('<MyCards />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<MyCards  />, div)
+    const format = (message: any) => 'string'
+    ReactDOM.render(<MyCards formatMessage={format} />, div)
   })
 })

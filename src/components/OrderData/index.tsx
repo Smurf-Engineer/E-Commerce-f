@@ -89,8 +89,8 @@ class OrderData extends React.Component<Props, {}> {
       sendEmailAlert,
       sendSmsAlert
     } = this.props
-    const expYear = String(exp_year).substring(2, 4)
-    const expMonth = exp_month > 9 ? exp_month : `0${exp_month}`
+    const year = String(expYear).substring(2, 4)
+    const month = expMonth > 9 ? expMonth : `0${expMonth}`
     let cardIcon = this.getCardIcon(brand)
     let isThereTeamstoreProduct = false
     const renderList = cart
