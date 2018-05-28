@@ -81,7 +81,7 @@ class OrderData extends React.Component<Props, {}> {
           billingCountry,
           billingApartment,
           payment: {
-            cardData: { name, last4, brand, exp_month, exp_year }
+            cardData: { name, last4, brand, expMonth, expYear }
           },
           cart
         }
