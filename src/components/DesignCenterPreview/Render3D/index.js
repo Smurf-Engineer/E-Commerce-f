@@ -296,6 +296,11 @@ class Render3D extends PureComponent {
     this.camera.updateProjectionMatrix()
   }
 
+  openAddToStoreModal = () => {
+    const { openAddToTeamStoreModalAction } = this.props
+    openAddToTeamStoreModalAction(true)
+  }
+
   render() {
     const { showDragmessage, currentView, zoomValue, progress } = this.state
     const {
@@ -337,7 +342,7 @@ class Render3D extends PureComponent {
         </Dropdown>
         <BottomButtons>
           <ButtonWrapper>
-            <Button>
+            <Button onClick={this.openAddToStoreModal}>
               <FormattedMessage {...messages.addToTeam} />
             </Button>
           </ButtonWrapper>
