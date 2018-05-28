@@ -59,9 +59,17 @@ export class MyAddressesList extends React.Component<Props, {}> {
             !showForm &&
             ((defaultShipping && indexAddressSelected === -1) ||
               indexAddressSelected === key)
-          if (!showForm && (defaultShipping || isSelected)) {
+          if (!showForm && isSelected) {
             selectAddressAction(key)
             atLeastOneIsSelected = true
+          }
+          if (
+            key === items.length - 1 &&
+            !atLeastOneIsSelected &&
+            items &&
+            !showForm
+          ) {
+            selectAddressAction(0)
           }
           return (
             <MyAddress
@@ -87,10 +95,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
           )
         })
       : null
-
-    if (!atLeastOneIsSelected && items && !showForm) {
-      selectAddressAction(0)
-    }
 
     return (
       <Container>
