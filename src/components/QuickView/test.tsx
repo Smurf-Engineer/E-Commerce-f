@@ -51,6 +51,12 @@ describe('<QuickView />', () => {
             name: ''
           }
         ],
+        sizeRange: [
+          {
+            id: 0,
+            name: ''
+          }
+        ],
         bodyChartId: 0,
         retailMen: false,
         retailWomen: false

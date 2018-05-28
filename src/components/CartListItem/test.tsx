@@ -89,6 +89,12 @@ describe('<CartListItem />', () => {
         materials: '',
         customizable: false,
         yotpoId: '',
+        sizeRange: [
+          {
+            id: 0,
+            name: ''
+          }
+        ],
         yotpoAverageScore: {
           total: 0,
           averageScore: 0

@@ -90,6 +90,7 @@ export interface Product {
   shortDescription: string
   productTotal?: number
   unitPrice?: number
+  sizeRange: ItemDetailType[]
 }
 
 export type DesignType = {

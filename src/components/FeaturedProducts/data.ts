@@ -50,6 +50,10 @@ export const GetProductsQuery = gql`
           left: left_image
           right: right_image
         }
+        sizeRange: size_range {
+          id
+          name
+        }
       }
     }
   }
