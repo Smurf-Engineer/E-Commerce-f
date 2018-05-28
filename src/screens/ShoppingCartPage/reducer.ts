@@ -99,7 +99,7 @@ const shoppingCartPageReducer: Reducer<any> = (
     case SET_SHIPPING_ACTION:
       return state.set('shipping', fromJS(action.shipping))
     case RESET_REDUCER_DATA:
-      return state.set(initialState)
+      return initialState
     default:
       return state
   }

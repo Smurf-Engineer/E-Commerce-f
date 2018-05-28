@@ -34,7 +34,7 @@ export const getOrderQuery = gql`
       cart {
         product {
           name
-          short_description
+          shortDescription: short_description
           images: pictures {
             front: front_image
           }
@@ -53,6 +53,8 @@ export const getOrderQuery = gql`
           }
         }
         designId
+        designName
+        designImage
         unitPrice
         productTotal
       }

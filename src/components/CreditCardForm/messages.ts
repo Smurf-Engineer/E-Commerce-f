@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   cardNumber: {
     id: 'components.CreditCardForm.cardNumber',
-    defaultMessage: 'Card'
+    defaultMessage: 'Card information'
   },
   cardholderName: {
     id: 'components.CreditCardForm.cardholderName',
