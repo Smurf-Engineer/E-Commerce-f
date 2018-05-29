@@ -489,7 +489,7 @@ class Render3D extends PureComponent {
       return
     }
     const object = this.scene.getObjectByName('jersey')
-    // create a rectangle object
+    // create a text object
     const rect = new fabric.Textbox(text, {
       left: 800,
       top: 1000,

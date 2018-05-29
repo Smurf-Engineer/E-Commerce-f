@@ -42,9 +42,6 @@ interface Props {
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
   handleOnApplyText = (text: string) => {
-    console.log('---------CUSTOM---------')
-    console.log(text)
-    console.log('---------------------------')
     this.render3D.applyText(text)
   }
   render() {
