@@ -26,6 +26,7 @@ import {
   SET_CHECKED_TERMS,
   CLEAR_DESIGN_INFO,
   SAVE_DESIGN_LOADING,
+  SET_TEXT_ACTION,
   SET_STYLE_COMPLEXITY_ACTION,
   OPEN_ADD_TOTEAMSTORE,
   SET_ITEM_TOADD
@@ -157,6 +158,11 @@ export const setCheckedTermsAction = (checked: boolean): AnyAction => ({
 
 export const clearDesignInfoAction = (): AnyAction => ({
   type: CLEAR_DESIGN_INFO
+})
+
+export const setTextAction = (text: string): AnyAction => ({
+  type: SET_TEXT_ACTION,
+  text
 })
 
 export const openAddToTeamStoreModalAction = (open: boolean): AnyAction => ({

@@ -1,12 +1,12 @@
 /**
- * Tabs -  Messages
+ * OptionText -  Messages
  */
 
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'components.Tabs.title',
-    defaultMessage: 'Add Text'
+    id: 'components.OptionText.tittle',
+    defaultMessage: 'OptionText'
   }
 })

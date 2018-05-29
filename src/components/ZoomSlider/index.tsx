@@ -15,7 +15,7 @@ interface State {
 
 class ZoomSlider extends React.PureComponent<Props, State> {
   state = {
-    value: 50
+    value: 62
   }
 
   handleOnChangeValue = (value: number) =>
@@ -52,7 +52,7 @@ class ZoomSlider extends React.PureComponent<Props, State> {
         <Button onClick={this.handleZoomIn}>+</Button>
         <Slider
           min={25}
-          max={70}
+          max={100}
           value={value}
           tooltip={false}
           orientation="vertical"
