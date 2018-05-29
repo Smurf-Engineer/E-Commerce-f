@@ -261,7 +261,7 @@ class Render3D extends PureComponent {
           object.children[20].material = canvasMaterial
 
           /* Object Config */
-          object.position.y = -20
+          object.position.y = -30
           object.name = 'jersey'
           this.scene.add(object)
 
@@ -399,6 +399,7 @@ class Render3D extends PureComponent {
 
   takeDesignPicture = () => {
     const viewPosition = viewPositions[2]
+    this.handleOnChangeZoom(62)
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
