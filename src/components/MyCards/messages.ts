@@ -13,6 +13,14 @@ export default defineMessages({
     id: 'components.MyCards.addCard',
     defaultMessage: '+ ADD CREDIT CARD'
   },
+  deleteCard: {
+    id: 'components.MyCards.deleteCard',
+    defaultMessage: 'Delete'
+  },
+  titleDeleteModal: {
+    id: 'components.MyCards.titleDeleteModal',
+    defaultMessage: 'Are you sure?'
+  },
   messageDeleteModal: {
     id: 'components.MyCards.messageDeleteModal',
     defaultMessage: 'This will permanently delete this card'

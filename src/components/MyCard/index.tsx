@@ -2,7 +2,6 @@
  * MyCard Component - Created by miguelcanobbio on 28/05/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import {
   Container,
@@ -10,9 +9,9 @@ import {
   CardNumber,
   StyledImage,
   SecondaryButtons,
-  EditButton,
   StyledButton,
-  ItalicText
+  StyledCheckbox
+  // ItalicText
 } from './styledComponents'
 
 import iconVisa from '../../assets/card-visa.svg'
@@ -20,7 +19,6 @@ import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
-import { showAddressFormAction } from '../../screens/Checkout/actions'
 
 interface Props {
   last4: string
@@ -28,9 +26,9 @@ interface Props {
   name: string
   expMonth: number
   expYear: number
-  defaultPayment?: boolean
+  markedAsDefault?: boolean
   cardIndex: number
-  showCardFormAction?: (show: boolean, index?: number) => void
+  showCardFormAction?: (show: boolean) => void
   showConfirmDeleteAction?: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -41,32 +39,34 @@ const MyCard = ({
   expMonth,
   expYear,
   name,
-  defaultPayment,
+  markedAsDefault,
   cardIndex,
   showCardFormAction = () => {},
   showConfirmDeleteAction = () => {},
   formatMessage
 }: Props) => {
-  const handleOnEdit = () => {
-    showCardFormAction(true, cardIndex)
-  }
+  // const handleOnEdit = () => {
+  //   showCardFormAction(true)
+  // }
   const handleOnDelete = () => {
     showConfirmDeleteAction(cardIndex as number)
   }
   const buttons = (
     <SecondaryButtons>
-      <EditButton type="primary" onClick={handleOnEdit}>
-        {formatMessage(messages.edit)}
-      </EditButton>
+      <StyledCheckbox checked={markedAsDefault}>
+        {formatMessage(messages.asDefault)}
+      </StyledCheckbox>
       <StyledButton onClick={handleOnDelete}>
         {formatMessage(messages.delete)}
       </StyledButton>
     </SecondaryButtons>
   )
-  const footerMessage = defaultPayment ? (
-    <ItalicText>{formatMessage(messages.defaultPayment)}</ItalicText>
-  ) : null
+  // const footerMessage = defaultPayment ? (
+  //   <ItalicText>{formatMessage(messages.defaultPayment)}</ItalicText>
+  // ) : null
   const cardIcon = getCardIcon(brand)
+  const year = String(expYear).substring(2, 4)
+  const month = expMonth > 9 ? expMonth : `0${expMonth}`
   return (
     <Container>
       <PaymentText>{name}</PaymentText>
@@ -74,8 +74,8 @@ const MyCard = ({
         <PaymentText>{`X-${last4}`}</PaymentText>
         <StyledImage src={cardIcon} />
       </CardNumber>
-      <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
-      {footerMessage}
+      <PaymentText>{`EXP ${month}/${year}`}</PaymentText>
+      {/* {footerMessage} */}
       {buttons}
     </Container>
   )

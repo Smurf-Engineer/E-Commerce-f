@@ -5,13 +5,13 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Modal from 'antd/lib/modal'
+import { StripeProvider, Elements } from 'react-stripe-elements'
 import config from '../../config'
 import * as MyCardsActions from './actions'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
-import MyCard from '../MyCard'
 import MyCardsList from '../MyCardsList'
-import CreditCardForm from '../CreditCardForm'
+import ModalCreditCard from '../ModalCreditCard'
 import messages from './messages'
 import {
   cardsQuery,
@@ -20,53 +20,26 @@ import {
   deleteCardMutation
 } from './data'
 
-import { CreditCardData } from '../../types/common'
+import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
   Container,
   StyledEmptyButton,
   DeleteConfirmMessage
 } from './styledComponents'
 
-const dummyCards: CreditCardData[] = [
-  {
-    id: '1',
-    name: 'Miguel Canobbio',
-    last4: '1234',
-    brand: 'Visa',
-    expMonth: 4,
-    expYear: 21,
-    defaultPayment: true
-  },
-  {
-    id: '2',
-    name: 'Carlos Cazarez',
-    last4: '9876',
-    brand: 'Visa',
-    expMonth: 12,
-    expYear: 18
-  },
-  {
-    id: '3',
-    name: 'Gustavo Medina',
-    last4: '4242',
-    brand: 'Master Card',
-    expMonth: 1,
-    expYear: 19
-  },
-  {
-    id: '4',
-    name: 'David Gonzalez',
-    last4: '5579',
-    brand: 'Master Card',
-    expMonth: 1,
-    expYear: 19
+interface Data extends QueryProps {
+  userCards: {
+    cards: CreditCardData[]
+    default: string
   }
-]
+}
 
 interface Props {
+  data: Data
   cardHolderName: string
   stripeError: string
   cardIdToMutate: number
+  cardAsDefaultPayment: boolean
   showCardModal: boolean
   showDeleteCardConfirm: boolean
   modalLoading: boolean
@@ -76,15 +49,22 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
-  inputChangeAction: (id: number, value: string) => void
+  inputChangeAction: (id: string, value: string) => void
   defaultPaymentAction: (checked: boolean) => void
   showCardModalAction: (show: boolean) => void
-  showDeleteCardConfirmAction: (cardId: number) => void
+  showDeleteCardConfirmAction: (cardId: string) => void
   hideDeleteCardConfirmAction: () => void
   setModalLoadingAction: (loading: boolean) => void
   setDeleteLoadingAction: (loading: boolean) => void
+  setDefaultPaymentCheckedAction: (checked: boolean) => void
   setCardToUpdateAction: (card: CreditCardData) => void
   resetReducerDataAction: () => void
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
+  setStripeErrorAction: (error: string) => void
+  // mutations apollo
+  addNewCard: (variables: {}) => void
+  updateCard: (variables: {}) => void
+  deleteCard: (variables: {}) => void
 }
 
 interface MyWindow extends Window {
@@ -112,14 +92,24 @@ class MyCards extends React.Component<Props, {}> {
   }
   render() {
     const {
+      data: {
+        userCards: { cards, default: idDefaultCard }
+      },
       formatMessage,
       cardHolderName,
       stripeError,
       showCardModal,
+      showCardModalAction,
       showDeleteCardConfirm,
+      cardAsDefaultPayment,
       modalLoading,
       deleteLoading,
-      hasError
+      hasError,
+      inputChangeAction,
+      setStripeErrorAction,
+      setModalLoadingAction,
+      setDefaultPaymentCheckedAction,
+      validFormAction
     } = this.props
     const { stripe } = this.state
     return (
@@ -127,29 +117,42 @@ class MyCards extends React.Component<Props, {}> {
         <StyledEmptyButton type="danger" onClick={this.handleOnAddNewAddress}>
           {formatMessage(messages.addCard)}
         </StyledEmptyButton>
-        <MyCardsList items={dummyCards} {...{ formatMessage }} />
-        <Modal visible={showCardModal} confirmLoading={modalLoading}>
-          {/* <CreditCardForm
-            {...{
-              stripe,
-              formatMessage,
-              cardHolderName,
-              billingAddress,
-              hasError,
-              stripeError,
-              loadingBilling,
-              setLoadingBillingAction,
-              setStripeErrorAction,
-              sameBillingAndShipping,
-              sameBillingAndAddressCheckedAction,
-              sameBillingAndAddressUncheckedAction,
-              invalidBillingFormAction,
-              setStripeCardDataAction,
-              nextStep
-            }}
-          /> */}
-        </Modal>
-        <Modal visible={showDeleteCardConfirm} confirmLoading={deleteLoading}>
+        <MyCardsList
+          items={cards}
+          {...{ formatMessage, idDefaultCard }}
+          showConfirmDeleteAction={this.handleOnShowDeleteCardConfirm}
+        />
+        <StripeProvider {...{ stripe }}>
+          <Elements>
+            <ModalCreditCard
+              {...{
+                stripe,
+                formatMessage,
+                cardHolderName,
+                hasError,
+                stripeError,
+                inputChangeAction,
+                setStripeErrorAction,
+                showCardModalAction,
+                validFormAction,
+                setModalLoadingAction,
+                setDefaultPaymentCheckedAction,
+                cardAsDefaultPayment
+              }}
+              saveAddress={this.handleOnSaveCard}
+              visible={showCardModal}
+              newCardLoading={modalLoading}
+            />
+          </Elements>
+        </StripeProvider>
+        <Modal
+          visible={showDeleteCardConfirm}
+          confirmLoading={deleteLoading}
+          maskClosable={false}
+          okText={formatMessage(messages.deleteCard)}
+          onOk={this.handleOnDeleteCard}
+          onCancel={this.handleOnHideDeleteCardConfirm}
+        >
           <DeleteConfirmMessage>
             {formatMessage(messages.messageDeleteModal)}
           </DeleteConfirmMessage>
@@ -160,6 +163,55 @@ class MyCards extends React.Component<Props, {}> {
   handleOnAddNewAddress = () => {
     const { showCardModalAction } = this.props
     showCardModalAction(true)
+  }
+
+  handleOnShowDeleteCardConfirm = (index: number) => {
+    const {
+      showDeleteCardConfirmAction,
+      data: {
+        userCards: { cards }
+      }
+    } = this.props
+    const cardId = cards[index].id
+    showDeleteCardConfirmAction(cardId as string)
+  }
+
+  handleOnHideDeleteCardConfirm = () => {
+    const { hideDeleteCardConfirmAction } = this.props
+    hideDeleteCardConfirmAction()
+  }
+
+  handleOnDeleteCard = async () => {
+    const {
+      cardIdToMutate,
+      deleteCard,
+      setDeleteLoadingAction,
+      resetReducerDataAction
+    } = this.props
+    setDeleteLoadingAction(true)
+    await deleteCard({
+      variables: { cardId: cardIdToMutate },
+      refetchQueries: [{ query: cardsQuery }]
+    })
+    resetReducerDataAction()
+  }
+
+  handleOnResetData = () => {
+    const { resetReducerDataAction } = this.props
+    resetReducerDataAction()
+  }
+
+  handleOnSaveCard = async (stripeToken: string) => {
+    const {
+      resetReducerDataAction,
+      addNewCard,
+      cardAsDefaultPayment
+    } = this.props
+    await addNewCard({
+      variables: { token: stripeToken, defaultValue: cardAsDefaultPayment },
+      refetchQueries: [{ query: cardsQuery }]
+    })
+    resetReducerDataAction()
   }
 }
 

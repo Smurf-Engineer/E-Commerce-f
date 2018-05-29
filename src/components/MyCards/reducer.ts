@@ -13,7 +13,9 @@ import {
   SET_MODAL_LOADING,
   SET_DELETE_LOADING,
   RESET_REDUCER_DATA,
-  SET_CARD_UPDATE
+  SET_CARD_UPDATE,
+  SET_STRIPE_ERROR,
+  SET_DEFAULT_PAYMENT_CHECKED
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -21,7 +23,8 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   cardHolderName: '',
   stripeError: '',
-  cardIdToMutate: -1,
+  cardIdToMutate: '',
+  cardAsDefaultPayment: false,
   showCardModal: false,
   showDeleteCardConfirm: false,
   modalLoading: false,
@@ -38,15 +41,23 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('hasError', action.hasError)
     case CHANGE_INPUT:
       return state.merge({ [action.id]: action.value })
-    case SHOW_CARD_MODAL:
-      return state.set('showCardModal', action.show)
+    case SHOW_CARD_MODAL: {
+      if (action.show) {
+        return state.set('showCardModal', true)
+      } else {
+        return initialState
+      }
+    }
     case SHOW_DELETE_CARD_CONFIRM:
       return state.merge({
         showDeleteCardConfirm: true,
         cardIdToMutate: action.cardId
       })
     case HIDE_DELETE_CARD_CONFIRM:
-      return state.set('showDeleteCardConfirm', false)
+      return state.merge({
+        showDeleteCardConfirm: false,
+        cardIdToMutate: ''
+      })
     case DEFAULT_PAYMENT_CHECK:
       return state.set('defaultPayment', action.checked)
     case SET_MODAL_LOADING:
@@ -61,6 +72,14 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
         cardIdToMutate: action.card.id,
         showCardModal: true
       })
+    case SET_STRIPE_ERROR:
+      return state.merge({
+        stripeError: action.error,
+        hasError: true,
+        modalLoading: false
+      })
+    case SET_DEFAULT_PAYMENT_CHECKED:
+      return state.set('cardAsDefaultPayment', action.checked)
     default:
       return state
   }

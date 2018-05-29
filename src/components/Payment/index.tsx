@@ -12,7 +12,7 @@ import {
   ContainerMethods,
   MethodButton
 } from './styledComponents'
-import CreditCardForm from '../CreditCardForm'
+import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData } from '../../types/common'
 
 interface Props {

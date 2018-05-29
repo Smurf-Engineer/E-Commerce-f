@@ -9,9 +9,9 @@ export default defineMessages({
     id: 'components.MyCard.tittle',
     defaultMessage: 'MyCard'
   },
-  edit: {
-    id: 'components.MyCard.edit',
-    defaultMessage: 'Edit'
+  asDefault: {
+    id: 'components.MyCard.asDefault',
+    defaultMessage: 'Default payment method'
   },
   delete: {
     id: 'components.MyCard.delete',

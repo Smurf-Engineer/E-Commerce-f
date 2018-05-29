@@ -10,7 +10,11 @@ describe('<MyCardsList />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     const format = (message: any) => 'string'
+    const idDefaultCard = ''
     const items: CreditCardData[] = []
-    ReactDOM.render(<MyCardsList formatMessage={format} {...{ items }} />, div)
+    ReactDOM.render(
+      <MyCardsList formatMessage={format} {...{ items, idDefaultCard }} />,
+      div
+    )
   })
 })

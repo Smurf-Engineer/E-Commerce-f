@@ -12,7 +12,9 @@ import {
   SET_MODAL_LOADING,
   SET_DELETE_LOADING,
   RESET_REDUCER_DATA,
-  SET_CARD_UPDATE
+  SET_CARD_UPDATE,
+  SET_STRIPE_ERROR,
+  SET_DEFAULT_PAYMENT_CHECKED
 } from './constants'
 import { AnyAction, CreditCardData } from '../../types/common'
 
@@ -26,7 +28,14 @@ export const validFormAction = (hasError: boolean): AnyAction => ({
   hasError
 })
 
-export const inputChangeAction = (id: number, value: string): AnyAction => ({
+export const setDefaultPaymentCheckedAction = (
+  checked: boolean
+): AnyAction => ({
+  type: SET_DEFAULT_PAYMENT_CHECKED,
+  checked
+})
+
+export const inputChangeAction = (id: string, value: string): AnyAction => ({
   type: CHANGE_INPUT,
   id,
   value
@@ -42,7 +51,7 @@ export const showCardModalAction = (show: boolean): AnyAction => ({
   show
 })
 
-export const showDeleteCardConfirmAction = (cardId: number): AnyAction => ({
+export const showDeleteCardConfirmAction = (cardId: string): AnyAction => ({
   type: SHOW_DELETE_CARD_CONFIRM,
   cardId
 })
@@ -68,4 +77,9 @@ export const resetReducerDataAction = (): AnyAction => ({
 export const setCardToUpdateAction = (card: CreditCardData): AnyAction => ({
   type: SET_CARD_UPDATE,
   card
+})
+
+export const setStripeErrorAction = (error: string): AnyAction => ({
+  type: SET_STRIPE_ERROR,
+  error
 })
