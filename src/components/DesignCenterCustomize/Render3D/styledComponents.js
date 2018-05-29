@@ -14,7 +14,7 @@ export const Container = styled.div`
 
 export const Render = styled.div`
   width: 800px;
-  height: 800px;
+  height: 600px;
 `
 
 export const Model = styled.div`
