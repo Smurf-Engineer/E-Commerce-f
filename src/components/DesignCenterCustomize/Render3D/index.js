@@ -5,7 +5,6 @@ import { FormattedMessage } from 'react-intl'
 import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
-import SVG from 'svg.js'
 import {
   Container,
   Render,
@@ -40,10 +39,6 @@ import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
-
-const irnd = rng => {
-  return parseInt(Math.random() * rng)
-}
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -220,7 +215,7 @@ class Render3D extends PureComponent {
           object.children[6].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          // START CANVAS TEST
+          // TODO: WIP Text canvas
 
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
@@ -407,7 +402,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.4)
+        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
         this.saveDesign(dataUrl)
       }, 200)
     )

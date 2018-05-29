@@ -28,10 +28,9 @@ import {
   CLEAR_DESIGN_INFO,
   SAVE_DESIGN_LOADING,
   SET_TEXT_ACTION,
-  SET_STYLE_COMPLEXITY_ACTION
   SET_STYLE_COMPLEXITY_ACTION,
   OPEN_ADD_TOTEAMSTORE,
-  SET_ITEM_TOADD,
+  SET_ITEM_TOADD
 } from './constants'
 import { Reducer } from '../../types/common'
 
