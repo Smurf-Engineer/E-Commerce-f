@@ -37,6 +37,10 @@ export const GetProductsQuery = gql`
         shortDescription: short_description
         collections
         isTopProduct
+        sizeRange: size_range {
+          id
+          name
+        }
         priceRange {
           quantity
           price

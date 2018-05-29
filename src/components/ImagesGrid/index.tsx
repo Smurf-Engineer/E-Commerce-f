@@ -17,6 +17,7 @@ import {
   //  TextQuote,
   ScenesFromTitle
 } from './styledComponents'
+import FeaturedCategory from '../FeaturedCategory'
 
 const settings = {
   dots: false,
@@ -31,9 +32,10 @@ const settings = {
 
 interface Props {
   fakeWidth: number
+  history: any
 }
 
-const ImagesGrid = ({ fakeWidth }: Props) => {
+const ImagesGrid = ({ fakeWidth, history }: Props) => {
   return (
     <Container>
       {/* TODO: Remove after verify it wount be needed  */}
@@ -60,6 +62,7 @@ const ImagesGrid = ({ fakeWidth }: Props) => {
           }}
         </MediaQuery>
         </QuoteContent>*/}
+      <FeaturedCategory {...{ history }} />
       <ScenesFromTitle>
         <FormattedMessage {...messages.scenesFromLabel} />
       </ScenesFromTitle>

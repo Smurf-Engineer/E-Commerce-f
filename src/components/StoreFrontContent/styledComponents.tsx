@@ -62,6 +62,10 @@ export const AboutContainer = styled.div`
   padding: 30px;
 `
 
+export const StyledSliderTitle = styled.strong`
+  color: #f50;
+`
+
 export const TierContainer = styled.div`
   padding-top: 40px;
 `

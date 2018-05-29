@@ -19,27 +19,27 @@ export default defineMessages({
       'Creating a team store enables your team memebers to place their orders separately for team kits.'
   },
   titleDeleteModal: {
-    id: 'components.MyAddresses.titleDeleteModal',
+    id: 'components.MyTeamStores.titleDeleteModal',
     defaultMessage: 'Are you sure?'
   },
   messageDeleteModal: {
-    id: 'components.MyAddresses.messageDeleteModal',
+    id: 'components.MyTeamStores.messageDeleteModal',
     defaultMessage: 'This will permanently delete this Teamstore.'
   },
   shareModalTitle: {
-    id: 'screen.Teamstores.shareModalTitle',
+    id: 'screen.MyTeamStores.shareModalTitle',
     defaultMessage: 'SHARE YOUR TEAMSTORE!'
   },
   errorMessage: {
-    id: 'screen.Teamstores.errorMessage',
+    id: 'screen.MyTeamStores.errorMessage',
     defaultMessage: 'Something wrong happened. Please try again!'
   },
   deleteModalLabel: {
-    id: 'screen.Teamstores.deleteModalLabel',
+    id: 'screen.MyTeamStores.deleteModalLabel',
     defaultMessage: 'Delete'
   },
   shareTeamStoreMessage: {
-    id: 'screen.Teamstores.shareTeamStoreMessage',
+    id: 'screen.MyTeamStores.shareTeamStoreMessage',
     defatulMessage: 'Check out this awesome teamstore!'
   }
 })
