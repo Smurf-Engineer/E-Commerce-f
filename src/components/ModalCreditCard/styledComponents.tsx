@@ -104,7 +104,7 @@ export const StyledCheckbox = styled(Checkbox)`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
-  margin: 5px 0;
+  margin-top 
 `
 
 export const StripeCardElement = {

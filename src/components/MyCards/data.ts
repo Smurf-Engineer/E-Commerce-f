@@ -38,8 +38,8 @@ export const addCardMutation = graphql(
 // TODO: add mutation
 export const updateCardMutation = graphql(
   gql`
-    mutation updatecard {
-      updateUserCard(cardId: "card_1CWqUsIyE32jr4Uz1T1Ui7T5") {
+    mutation updatecard($cardId: String!) {
+      updateUserCard(cardId: $cardId) {
         message
       }
     }

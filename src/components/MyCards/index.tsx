@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Modal from 'antd/lib/modal'
+import Spin from 'antd/lib/spin'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 import config from '../../config'
 import * as MyCardsActions from './actions'
@@ -24,7 +25,8 @@ import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
   Container,
   StyledEmptyButton,
-  DeleteConfirmMessage
+  DeleteConfirmMessage,
+  LoadingContainer
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -42,6 +44,7 @@ interface Props {
   cardAsDefaultPayment: boolean
   showCardModal: boolean
   showDeleteCardConfirm: boolean
+  loading: boolean
   modalLoading: boolean
   deleteLoading: boolean
   defaultPayment: boolean
@@ -54,6 +57,7 @@ interface Props {
   showCardModalAction: (show: boolean) => void
   showDeleteCardConfirmAction: (cardId: string) => void
   hideDeleteCardConfirmAction: () => void
+  setLoadingAction: (loading: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
   setDeleteLoadingAction: (loading: boolean) => void
   setDefaultPaymentCheckedAction: (checked: boolean) => void
@@ -109,9 +113,17 @@ class MyCards extends React.Component<Props, {}> {
       setStripeErrorAction,
       setModalLoadingAction,
       setDefaultPaymentCheckedAction,
-      validFormAction
+      validFormAction,
+      loading
     } = this.props
     const { stripe } = this.state
+    if (loading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
+    }
     return (
       <Container>
         <StyledEmptyButton type="danger" onClick={this.handleOnAddNewAddress}>
@@ -120,7 +132,8 @@ class MyCards extends React.Component<Props, {}> {
         <MyCardsList
           items={cards}
           {...{ formatMessage, idDefaultCard }}
-          showConfirmDeleteAction={this.handleOnShowDeleteCardConfirm}
+          showConfirmDelete={this.handleOnShowDeleteCardConfirm}
+          selectCardAsDefault={this.handleOnSelectCardAsDefault}
         />
         <StripeProvider {...{ stripe }}>
           <Elements>
@@ -212,6 +225,25 @@ class MyCards extends React.Component<Props, {}> {
       refetchQueries: [{ query: cardsQuery }]
     })
     resetReducerDataAction()
+  }
+  handleOnSelectCardAsDefault = async (index: number) => {
+    const {
+      updateCard,
+      resetReducerDataAction,
+      setLoadingAction,
+      data: {
+        refetch,
+        userCards: { cards }
+      }
+    } = this.props
+    setLoadingAction(true)
+    const cardId = cards[index].id
+    await updateCard({
+      variables: { cardId }
+    })
+    await refetch()
+    resetReducerDataAction()
+    setLoadingAction(false)
   }
 }
 

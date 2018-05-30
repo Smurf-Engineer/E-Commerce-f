@@ -14,7 +14,8 @@ import {
   RESET_REDUCER_DATA,
   SET_CARD_UPDATE,
   SET_STRIPE_ERROR,
-  SET_DEFAULT_PAYMENT_CHECKED
+  SET_DEFAULT_PAYMENT_CHECKED,
+  SET_LOADING
 } from './constants'
 import { AnyAction, CreditCardData } from '../../types/common'
 
@@ -82,4 +83,9 @@ export const setCardToUpdateAction = (card: CreditCardData): AnyAction => ({
 export const setStripeErrorAction = (error: string): AnyAction => ({
   type: SET_STRIPE_ERROR,
   error
+})
+
+export const setLoadingAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING,
+  loading
 })

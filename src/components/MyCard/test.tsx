@@ -16,8 +16,8 @@ describe('<MyCard />', () => {
     const defaultPayment = false
     const cardIndex = 1
     const formatMessage = (message: any) => 'string'
-    const showCardFormAction = (show: boolean) => {}
-    const showConfirmDeleteAction = (index: number) => {}
+    const showCardForm = (show: boolean) => {}
+    const showConfirmDelete = (index: number) => {}
     ReactDOM.render(
       <MyCard
         {...{
@@ -29,8 +29,8 @@ describe('<MyCard />', () => {
           formatMessage,
           defaultPayment,
           cardIndex,
-          showCardFormAction,
-          showConfirmDeleteAction
+          showCardForm,
+          showConfirmDelete
         }}
       />,
       div

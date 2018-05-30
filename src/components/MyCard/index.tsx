@@ -28,8 +28,9 @@ interface Props {
   expYear: number
   markedAsDefault?: boolean
   cardIndex: number
-  showCardFormAction?: (show: boolean) => void
-  showConfirmDeleteAction?: (index: number) => void
+  showCardForm?: (show: boolean) => void
+  showConfirmDelete?: (index: number) => void
+  selectCardAsDefault?: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -41,19 +42,23 @@ const MyCard = ({
   name,
   markedAsDefault,
   cardIndex,
-  showCardFormAction = () => {},
-  showConfirmDeleteAction = () => {},
+  showCardForm = () => {},
+  showConfirmDelete = () => {},
+  selectCardAsDefault = () => {},
   formatMessage
 }: Props) => {
-  // const handleOnEdit = () => {
-  //   showCardFormAction(true)
-  // }
+  const handleOnSelectAsDefault = () => {
+    selectCardAsDefault(cardIndex as number)
+  }
   const handleOnDelete = () => {
-    showConfirmDeleteAction(cardIndex as number)
+    showConfirmDelete(cardIndex as number)
   }
   const buttons = (
     <SecondaryButtons>
-      <StyledCheckbox checked={markedAsDefault}>
+      <StyledCheckbox
+        checked={markedAsDefault}
+        onChange={handleOnSelectAsDefault}
+      >
         {formatMessage(messages.asDefault)}
       </StyledCheckbox>
       <StyledButton onClick={handleOnDelete}>

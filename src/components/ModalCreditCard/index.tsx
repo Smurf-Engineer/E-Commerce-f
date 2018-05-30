@@ -83,7 +83,7 @@ class ModalCreditCard extends React.Component<Props, {}> {
               {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
             </Column>
           </Row>
-          <Row withoutMargin={true}>
+          <Row>
             <Column inputhWidth={'100%'}>
               <InputTitleContainer>
                 <Label>{formatMessage(messages.cardholderName)}</Label>
@@ -100,7 +100,7 @@ class ModalCreditCard extends React.Component<Props, {}> {
                 )}
             </Column>
           </Row>
-          <Row>
+          <Row withoutMargin={true}>
             <StyledCheckbox
               checked={cardAsDefaultPayment}
               onChange={this.handleOnDefaultChecked}
@@ -143,15 +143,21 @@ class ModalCreditCard extends React.Component<Props, {}> {
       setModalLoadingAction,
       saveAddress
     } = this.props
+
     if (!cardHolderName) {
-      validFormAction(false)
+      validFormAction(true)
+    } else {
+      setModalLoadingAction(true)
     }
-    setModalLoadingAction(true)
     const stripeResponse = await stripe.createToken({ name: cardHolderName })
     const { error } = stripeResponse
     if (error) {
       setStripeErrorAction(error.message)
     } else {
+      if (!cardHolderName) {
+        setModalLoadingAction(false)
+        return
+      }
       const {
         token: { id }
       } = stripeResponse

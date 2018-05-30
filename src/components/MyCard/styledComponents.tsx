@@ -47,7 +47,6 @@ export const SecondaryButtons = styled.div`
 `
 
 export const StyledButton = styled(Button)`
-  margin-top: 16px;
   height: 40px;
   width: 138.23px;
   border: 1px solid #dcdcdc;

@@ -11,8 +11,8 @@ interface Props {
   idDefaultCard: string
   formatMessage: (messageDescriptor: any) => string
   showCardFormAction?: (show: boolean) => void
-  showConfirmDeleteAction?: (index: number) => void
-  selectCardAction?: (index: number) => void
+  showConfirmDelete?: (index: number) => void
+  selectCardAsDefault?: (index: number) => void
 }
 
 class MyCardsList extends React.Component<Props, {}> {
@@ -21,7 +21,8 @@ class MyCardsList extends React.Component<Props, {}> {
       items,
       formatMessage,
       showCardFormAction,
-      showConfirmDeleteAction,
+      showConfirmDelete,
+      selectCardAsDefault,
       idDefaultCard
     } = this.props
     const cardsList = items.map((cardItem, key) => {
@@ -38,6 +39,7 @@ class MyCardsList extends React.Component<Props, {}> {
         <MyCard
           cardIndex={key}
           markedAsDefault={String(id) === idDefaultCard}
+          showCardForm={showCardFormAction}
           {...{
             key,
             last4,
@@ -47,8 +49,8 @@ class MyCardsList extends React.Component<Props, {}> {
             expYear,
             defaultPayment,
             formatMessage,
-            showCardFormAction,
-            showConfirmDeleteAction
+            showConfirmDelete,
+            selectCardAsDefault
           }}
         />
       )

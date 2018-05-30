@@ -8,6 +8,14 @@ export const Container = styled.div`
   width: 100%;
 `
 
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+`
+
 export const MyCardsList = styled.div`
   display: flex;
   justify-content: flex-start;

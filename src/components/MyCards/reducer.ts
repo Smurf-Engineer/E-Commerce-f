@@ -15,7 +15,8 @@ import {
   RESET_REDUCER_DATA,
   SET_CARD_UPDATE,
   SET_STRIPE_ERROR,
-  SET_DEFAULT_PAYMENT_CHECKED
+  SET_DEFAULT_PAYMENT_CHECKED,
+  SET_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -30,7 +31,8 @@ export const initialState = fromJS({
   modalLoading: false,
   deleteLoading: false,
   defaultPayment: false,
-  hasError: false
+  hasError: false,
+  loading: false
 })
 
 const adressesReducer: Reducer<any> = (state = initialState, action) => {
@@ -80,6 +82,8 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_DEFAULT_PAYMENT_CHECKED:
       return state.set('cardAsDefaultPayment', action.checked)
+    case SET_LOADING:
+      return state.set('loading', action.loading)
     default:
       return state
   }
