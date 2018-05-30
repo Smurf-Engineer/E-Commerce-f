@@ -1,5 +1,5 @@
 /**
- * Complience Screen - Created by miguelcanobbio on 30/05/18.
+ * Compliance Screen - Created by miguelcanobbio on 30/05/18.
  */
 import * as React from 'react'
 import { InjectedIntl, injectIntl } from 'react-intl'
@@ -43,7 +43,7 @@ const bsciMessages = [
   messages.bsciContent15
 ]
 
-export class Complience extends React.Component<Props, {}> {
+export class Compliance extends React.Component<Props, {}> {
   render() {
     const { intl, history } = this.props
     const { formatMessage } = intl
@@ -79,6 +79,6 @@ export class Complience extends React.Component<Props, {}> {
   }
 }
 
-const ComplienceEnhance = compose(injectIntl)(Complience)
+const ComplianceEnhance = compose(injectIntl)(Compliance)
 
-export default ComplienceEnhance
+export default ComplianceEnhance
