@@ -1,4 +1,5 @@
 /* Routes */
+import Complience from '../screens/Complience'
 import OrderPlaced from '../screens/OrderPlaced'
 import Checkout from '../screens/Checkout'
 import DesignerTool from '../screens/DesignerTool'
@@ -19,6 +20,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/complience',
+    name: 'complience',
+    component: Complience
+  },
   {
     path: '/order-placed',
     name: 'orderPlaced',
