@@ -31,6 +31,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const Tabs = ({
@@ -48,7 +49,8 @@ const Tabs = ({
   styleColors,
   onUpdateText,
   text,
-  onApplyText
+  onApplyText,
+  formatMessage
 }: Props) => {
   return (
     <Container>
@@ -72,7 +74,7 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
-          <TextTab {...{ text, onUpdateText, onApplyText }} />
+          <TextTab {...{ text, onUpdateText, onApplyText, formatMessage }} />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           Content of Tab Pane 3

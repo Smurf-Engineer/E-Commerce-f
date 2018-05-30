@@ -69,7 +69,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  componentDidMount() {
+  _componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
 

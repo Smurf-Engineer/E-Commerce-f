@@ -8,12 +8,13 @@ import { Container, Title, Option, Circle, Row, Icon } from './styledComponents'
 interface Props {
   title: string
   option: string
-  color?: string
+  color?: string | null
+  onClick: () => void
 }
 
-const OptionText = ({ title, option, color }: Props) => {
+const OptionText = ({ title, option, color, onClick }: Props) => {
   return (
-    <Container>
+    <Container {...{ onClick }}>
       <Title>{title}</Title>
       <Row>
         {!color && <Option>{option}</Option>}

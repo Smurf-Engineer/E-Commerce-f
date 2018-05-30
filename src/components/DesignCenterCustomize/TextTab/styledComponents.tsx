@@ -18,6 +18,17 @@ export const InputWrapper = styled.div`
   }
 `
 
+export const ArrowIcon = styled.img`
+  padding-right: 8px;
+`
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+`
+
 export const Header = styled.div`
   background-color: #f1f4f5;
   padding: 10px 30px;

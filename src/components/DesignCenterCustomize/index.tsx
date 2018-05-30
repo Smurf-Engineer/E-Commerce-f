@@ -94,7 +94,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             paletteName,
             onSetPalettes,
             text,
-            onUpdateText
+            onUpdateText,
+            formatMessage
           }}
           onApplyText={this.handleOnApplyText}
         />

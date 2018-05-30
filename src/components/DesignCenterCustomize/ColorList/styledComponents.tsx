@@ -6,7 +6,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
   overflow: auto;
   height: 333px;
-  padding: 0px 32px;
+  padding: 0px 32px 32px 32px;
 `
 
 export const Dot = styled.div`
