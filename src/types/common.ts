@@ -313,6 +313,16 @@ export interface CartItems {
   designImage?: string
 }
 
+export interface CreditCardData {
+  id?: string
+  name: string
+  last4: string
+  brand: string
+  expMonth: number
+  expYear: number
+  defaultPayment?: boolean
+}
+
 export interface OrderDataInfo {
   orderDate: string
   firstName: string
@@ -332,13 +342,7 @@ export interface OrderDataInfo {
   billingCountry: string
   billingApartment: string
   payment: {
-    cardData: {
-      name: string
-      last4: string
-      brand: string
-      exp_month: number
-      exp_year: number
-    }
+    cardData: CreditCardData
   }
   cart: CartItems[]
 }

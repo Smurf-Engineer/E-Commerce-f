@@ -227,8 +227,8 @@ class MyAddresses extends React.PureComponent<Props, {}> {
     } = this.props
     setDeleteLoadingAction(true)
     await deleteAddress({ variables: { addressId: addressIdToMutate } })
+    await refetch()
     resetReducerDataAction()
-    refetch()
   }
 
   handleOnEditAddress = (show: boolean, index?: number) => {

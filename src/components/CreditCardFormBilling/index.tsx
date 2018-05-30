@@ -1,5 +1,5 @@
 /**
- * CreditCardForm Component - Created by miguelcanobbio on 16/05/18.
+ * CreditCardFormBilling Component - Created by miguelcanobbio on 16/05/18.
  */
 import * as React from 'react'
 import { injectStripe, CardElement } from 'react-stripe-elements'
@@ -44,7 +44,7 @@ interface Props {
   nextStep: () => void
 }
 
-class CreditCardForm extends React.Component<Props, {}> {
+class CreditCardFormBilling extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
@@ -246,4 +246,4 @@ class CreditCardForm extends React.Component<Props, {}> {
   }
 }
 
-export default injectStripe(CreditCardForm)
+export default injectStripe(CreditCardFormBilling)
