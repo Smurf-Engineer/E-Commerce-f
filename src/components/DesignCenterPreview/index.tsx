@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Button from 'antd/lib/button'
+import Modal from 'antd/lib/modal'
 import {
   Container,
   ButtonsContainer,
@@ -16,8 +17,10 @@ import Render3D from './Render3D'
 import messages from './messages'
 import ShareDesignModal from '../ShareDesignModal'
 import quickView from '../../assets/quickview.svg'
+import AddToTeamStore from '../AddToTeamStore'
 
 interface Props {
+  history: any
   swipingView: boolean
   colors: string[]
   currentTab: number
@@ -25,11 +28,16 @@ interface Props {
   openShareModal: boolean
   savedDesignId: string
   productName: string
+  openAddToStoreModal: boolean
+  teamStoreId: string
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
   onSelectTab: (tab: number) => void
   openShareModalAction: (open: boolean) => void
+  openAddToTeamStoreModalAction: (open: boolean) => void
+  setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
+  addItemToStore: () => void
 }
 
 class DesignCenterPreview extends React.PureComponent<Props, {}> {
@@ -50,6 +58,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
 
   render() {
     const {
+      history,
       colors,
       currentTab,
       swipingView,
@@ -59,7 +68,12 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       openShareModal,
       formatMessage,
       savedDesignId,
-      productName
+      productName,
+      openAddToStoreModal,
+      openAddToTeamStoreModalAction,
+      setItemToAddAction,
+      teamStoreId,
+      addItemToStore
     } = this.props
     return (
       <Container>
@@ -84,7 +98,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             {...{
               colors,
               onLoadModel,
-              loadingModel
+              loadingModel,
+              openAddToTeamStoreModalAction
             }}
           />
         ) : null}
@@ -93,6 +108,23 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
           requestClose={this.handleRequestCloseShare}
           {...{ formatMessage, savedDesignId }}
         />
+        <Modal
+          visible={openAddToStoreModal}
+          closable={false}
+          footer={null}
+          maskClosable={true}
+        >
+          <AddToTeamStore
+            {...{
+              history,
+              savedDesignId,
+              openAddToTeamStoreModalAction,
+              setItemToAddAction,
+              teamStoreId,
+              addItemToStore
+            }}
+          />
+        </Modal>
       </Container>
     )
   }

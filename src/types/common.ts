@@ -90,6 +90,7 @@ export interface Product {
   shortDescription: string
   productTotal?: number
   unitPrice?: number
+  sizeRange: ItemDetailType[]
 }
 
 export type DesignType = {
@@ -109,6 +110,7 @@ export type TeamStoreItemtype = {
   expected_quantity: number
   visible: boolean
   totalOrders: number
+  itemOrder?: number
 }
 
 export type DesignResultType = {

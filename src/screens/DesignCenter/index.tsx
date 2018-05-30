@@ -10,6 +10,8 @@ import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
+import Message from 'antd/lib/message'
+import get from 'lodash/get'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -22,8 +24,13 @@ import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
 import SaveDesign from '../../components/SaveDesign'
 import { Container, StyledTitle, BottomSheetWrapper } from './styledComponents'
-import { Palette, QueryProps, Product } from '../../types/common'
-import { getProductQuery } from './data'
+import {
+  Palette,
+  QueryProps,
+  Product,
+  TeamStoreItemtype
+} from '../../types/common'
+import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 
@@ -57,7 +64,12 @@ interface Props extends RouteComponentProps<any> {
   designName: string
   savedDesignId: string
   saveDesignLoading: boolean
+  text: string
   style: number
+  openAddToStoreModal: boolean
+  addItemToStore: any
+  teamStoreId: string
+  itemToAdd: TeamStoreItemtype
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -83,7 +95,10 @@ interface Props extends RouteComponentProps<any> {
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
+  setTextAction: (text: string) => void
   setStyleComplexity: (index: number, colors: string[]) => void
+  openAddToTeamStoreModalAction: (open: boolean) => void
+  setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -130,10 +145,33 @@ export class DesignCenter extends React.Component<Props, {}> {
     openSaveDesignAction(false, '')
   }
 
+  saveItemToStore = async () => {
+    const {
+      addItemToStore,
+      itemToAdd,
+      teamStoreId,
+      openAddToTeamStoreModalAction
+    } = this.props
+
+    try {
+      const { data } = await addItemToStore({
+        variables: { teamStoreItem: itemToAdd, teamStoreId }
+      })
+      const responseMessage = get(data, 'addTeamStoreItem.message')
+      if (responseMessage) {
+        Message.success(responseMessage)
+      }
+      openAddToTeamStoreModalAction(false)
+    } catch (error) {
+      Message.error(error)
+    }
+  }
+
   render() {
     const {
       intl,
       history,
+      text,
       currentTab,
       setColorBlockAction,
       setHoverColorBlockAction,
@@ -172,7 +210,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCheckedTermsAction,
       clearDesignInfoAction,
       saveDesignLoadingAction,
+      setTextAction,
+      openAddToTeamStoreModalAction,
       setStyleComplexity,
+      openAddToStoreModal,
+      setItemToAddAction,
+      teamStoreId,
       location: { search },
       data
     } = this.props
@@ -189,7 +232,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs {...{ currentTab }} onSelectTab={() => {}} />
+          <Tabs {...{ currentTab }} />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}
@@ -231,9 +274,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 styleColors,
                 paletteName,
                 palettes,
+                text,
                 productName
               }}
               currentStyle={style}
+              onUpdateText={setTextAction}
               formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
@@ -253,6 +298,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
             <PreviewTab
               {...{
+                history,
                 colors,
                 loadingModel,
                 currentTab,
@@ -260,12 +306,17 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openShareModal,
                 openShareModalAction,
                 savedDesignId,
-                productName
+                productName,
+                openAddToTeamStoreModalAction,
+                openAddToStoreModal,
+                setItemToAddAction,
+                teamStoreId
               }}
               formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
               onSelectTab={this.handleOnSelectTab}
+              addItemToStore={this.saveItemToStore}
             />
           </SwipeableViews>
           <SaveDesign
@@ -314,6 +365,8 @@ const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 
 const DesignCenterEnhance = compose(
   injectIntl,
+  addTeamStoreItemMutation,
+  connect(mapStateToProps, { ...designCenterActions, openQuickViewAction }),
   graphql<Data>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
@@ -323,8 +376,7 @@ const DesignCenterEnhance = compose(
         variables: { id: queryParams.id }
       }
     }
-  }),
-  connect(mapStateToProps, { ...designCenterActions, openQuickViewAction })
+  })
 )(DesignCenter)
 
 export default DesignCenterEnhance

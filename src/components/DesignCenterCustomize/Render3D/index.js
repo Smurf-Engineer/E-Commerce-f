@@ -73,13 +73,21 @@ class Render3D extends PureComponent {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
 
+    const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
+      .matches
+    const precision = largeScreen ? 'highp' : 'lowp'
     const renderer = new THREE.WebGLRenderer({
+      alpha: true,
       antialias: true,
+      precision,
       preserveDrawingBuffer: true
     })
 
+    const devicePixelRatio = window.devicePixelRatio
+      ? window.devicePixelRatio
+      : 1
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor('#fff')
+    renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
 
     /* Camera */
@@ -93,7 +101,7 @@ class Render3D extends PureComponent {
       .matches
 
     controls.enableKeys = false
-    controls.minDistance = 150
+    controls.minDistance = 0
     controls.maxDistance = 350
     controls.enableZoom = isMobile
 
@@ -110,7 +118,7 @@ class Render3D extends PureComponent {
     /* Loaders */
     const mtlLoader = new THREE.MTLLoader()
     const objLoader = new THREE.OBJLoader()
-    const imgLoader = new THREE.TextureLoader()
+    const textureLoader = new THREE.TextureLoader()
 
     this.scene = scene
     this.camera = camera
@@ -120,7 +128,7 @@ class Render3D extends PureComponent {
 
     this.mtlLoader = mtlLoader
     this.objLoader = objLoader
-    this.imgLoader = imgLoader
+    this.textureLoader = textureLoader
 
     this.render3DModel()
 
@@ -137,13 +145,13 @@ class Render3D extends PureComponent {
     new Promise((resolve, reject) => {
       try {
         const loadedTextures = {}
-        loadedTextures.flatlock = this.imgLoader.load(
+        loadedTextures.flatlock = this.textureLoader.load(
           './models/images/flatlock.png'
         )
-        loadedTextures.bumpMap = this.imgLoader.load(modelTextures.bumpMap)
+        loadedTextures.bumpMap = this.textureLoader.load(modelTextures.bumpMap)
 
         const loadedAreas = modelTextures.areas.map(areaUri => {
-          const areaTexture = this.imgLoader.load(areaUri)
+          const areaTexture = this.textureLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
         })
@@ -207,6 +215,36 @@ class Render3D extends PureComponent {
           object.children[6].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
+          // TODO: WIP Text canvas
+
+          const canvasObj = object.children[meshIndex].clone()
+          object.add(canvasObj)
+
+          const cdim = 3880.016
+          const canvas = document.createElement('canvas')
+          const canvasTexture = new THREE.CanvasTexture(canvas)
+          canvas.width = canvas.height = cdim
+          this.canvasTexture = new fabric.Canvas(canvas)
+          this.canvasTexture.on(
+            'after:render',
+            () => (canvasTexture.needsUpdate = true)
+          )
+
+          // const ctx = canvas.getContext('2d')
+          // ctx.globalCompositeOperation = 'normal'
+          // ctx.font = '100px Fira Code'
+          // ctx.textAlign = 'center'
+          // ctx.fillStyle = '#f21222'
+          // ctx.fillText('JAKROO', 1000, 1000)
+
+          const canvasMaterial = new THREE.MeshPhongMaterial({
+            map: canvasTexture,
+            side: THREE.FrontSide,
+            bumpMap: loadedTextures.bumpMap,
+            transparent: true
+          })
+          // END CANVAS TEST
+
           loadedTextures.areas.forEach(
             (materialTexture, index) =>
               (object.children[
@@ -219,6 +257,8 @@ class Render3D extends PureComponent {
                 transparent: true
               }))
           )
+
+          object.children[20].material = canvasMaterial
 
           /* Object Config */
           object.position.y = -30
@@ -273,6 +313,9 @@ class Render3D extends PureComponent {
   }
 
   setupColors = colors => {
+    if (!this.scene) {
+      return
+    }
     const { objectChilds } = this.state
     const object = this.scene.getObjectByName('jersey')
     if (object) {
@@ -285,6 +328,9 @@ class Render3D extends PureComponent {
   }
 
   setupHoverColor = colorBlockHovered => {
+    if (!this.scene) {
+      return
+    }
     const object = this.scene.getObjectByName('jersey')
     const { objectChilds } = this.state
     const { colors } = this.props
@@ -347,17 +393,17 @@ class Render3D extends PureComponent {
   }
 
   saveDesign = previewImage => {
-    // TODO: Send base64 image
     const { onOpenSaveDesign } = this.props
     onOpenSaveDesign(true, previewImage)
   }
 
   takeDesignPicture = () => {
     const viewPosition = viewPositions[2]
+    this.handleOnChangeZoom(62)
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/png', 0.1)
+        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
         this.saveDesign(dataUrl)
       }, 200)
     )
@@ -371,7 +417,8 @@ class Render3D extends PureComponent {
       redoEnabled,
       loadingModel,
       formatMessage,
-      productName
+      productName,
+      text
     } = this.props
 
     const menu = (
@@ -402,12 +449,15 @@ class Render3D extends PureComponent {
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
-        <Dropdown overlay={menu}>
+        {/*
+          // TODO: JV2 - Phase II
+          <Dropdown overlay={menu}>
           <ModelType>
             <ModelText>3D Model: Product Only</ModelText>
             <img src={arrowDown} />
           </ModelType>
         </Dropdown>
+        */}
         <ButtonWrapper>
           <Button type="primary" onClick={this.takeDesignPicture}>
             Save
@@ -428,6 +478,23 @@ class Render3D extends PureComponent {
         </ViewControls>
       </Container>
     )
+  }
+
+  applyText = text => {
+    if (!this.scene || !text) {
+      return
+    }
+    const object = this.scene.getObjectByName('jersey')
+    // create a text object
+    const rect = new fabric.Textbox(text, {
+      left: 800,
+      top: 1000,
+      fontSize: 100,
+      fontWeight: 'bold'
+    })
+
+    // "add" text onto canvas
+    this.canvasTexture.add(rect)
   }
 }
 
