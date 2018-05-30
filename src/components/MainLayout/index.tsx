@@ -116,11 +116,13 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks
-              formatMessage={intl.formatMessage}
-              fakeWidth={fakeWidth}
-              {...{ history }}
-            />
+            <a href="/complience">
+              <ContactAndLinks
+                formatMessage={intl.formatMessage}
+                fakeWidth={fakeWidth}
+                {...{ history }}
+              />
+            </a>
             <SocialMedia />
           </Footer>
         )}
