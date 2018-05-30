@@ -345,5 +345,28 @@
   "components.MyCards.deleteCard": "Delete",
   "components.MyCards.titleDeleteModal": "Are you sure?",
   "components.MyCards.messageDeleteModal":
-    "This will permanently delete this card"
+    "This will permanently delete this card",
+
+  "screens.Compliance.title": "COMPLIANCE",
+  "screens.Compliance.bsciMessage":
+    "The Business Social Compliance Initiative (BSCI) is a leading supply chain management system that supports companies to drive social compliance and improvements within factories.",
+  "screens.Compliance.bsciSubtitle": "JAKROO is BSCI compliant:",
+  "screens.Compliance.bsciContent1":
+    "• The Rights of Freedom of Association and Collective Bargaining",
+  "screens.Compliance.bsciContent2": "• Fair Remuneration",
+  "screens.Compliance.bsciContent3": "• Occupational Health and Safety",
+  "screens.Compliance.bsciContent4": "• Social Protection for Young Workers",
+  "screens.Compliance.bsciContent5": "• No Bonded Labor",
+  "screens.Compliance.bsciContent6": "• Ethical Business Behavior",
+  "screens.Compliance.bsciContent7": "• No Discrimination",
+  "screens.Compliance.bsciContent8": "• Decent Working Hours",
+  "screens.Compliance.bsciContent9": "• No Child Labor",
+  "screens.Compliance.bsciContent10": "• No Precarious Employment",
+  "screens.Compliance.bsciContent11": "• Protection of the Environment",
+  "screens.Compliance.bsciContent12": "• Code Observance",
+  "screens.Compliance.bsciContent13": "• Workers’ Involvement and Protection",
+  "screens.Compliance.bsciContent14":
+    "• Supply Chain Management and Cascade Effect",
+  "screens.Compliance.bsciContent15":
+    "Proposition 65, officially known as the Safe Drinking Water and Toxic Enforcement Act of 1986, was enacted to protect the state’s drinking water sources from being contaminated with chemicals known to cause cancer, birth defects, or other reproductive harm, and requires businesses to inform Californians about exposures to such chemicals. JAKROO products have been tested by Bureau Veritas and are Prop 65 compliant."
 }
