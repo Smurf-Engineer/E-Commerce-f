@@ -64,6 +64,7 @@ interface Props extends RouteComponentProps<any> {
   designName: string
   savedDesignId: string
   saveDesignLoading: boolean
+  text: string
   style: number
   openAddToStoreModal: boolean
   addItemToStore: any
@@ -94,6 +95,7 @@ interface Props extends RouteComponentProps<any> {
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
+  setTextAction: (text: string) => void
   setStyleComplexity: (index: number, colors: string[]) => void
   openAddToTeamStoreModalAction: (open: boolean) => void
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
@@ -122,9 +124,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const {
-      location: { search }
-    } = this.props
+    const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -171,6 +171,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const {
       intl,
       history,
+      text,
       currentTab,
       setColorBlockAction,
       setHoverColorBlockAction,
@@ -209,6 +210,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCheckedTermsAction,
       clearDesignInfoAction,
       saveDesignLoadingAction,
+      setTextAction,
       openAddToTeamStoreModalAction,
       setStyleComplexity,
       openAddToStoreModal,
@@ -230,7 +232,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs {...{ currentTab }} onSelectTab={() => {}} />
+          <Tabs {...{ currentTab }} />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}
@@ -272,9 +274,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 styleColors,
                 paletteName,
                 palettes,
+                text,
                 productName
               }}
               currentStyle={style}
+              onUpdateText={setTextAction}
               formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}

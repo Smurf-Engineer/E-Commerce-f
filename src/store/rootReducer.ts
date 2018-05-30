@@ -27,6 +27,7 @@ import menu from '../components/DropdownList/reducer'
 import forgot from '../components/ForgotPassword/reducer'
 import fitInfo from '../components/FitInfo/reducer'
 import addresses from '../components/MyAddresses/reducer'
+import cards from '../components/MyCards/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import myTeamStores from '../components/MyTeamStores/reducer'
 import { Reducer } from '../types/common'
@@ -62,6 +63,7 @@ export interface ReducersObject {
   fitInfo: any
   responsiveReducer: any
   addresses: any
+  cards: any
 }
 
 const appInitialState = fromJS({
@@ -144,6 +146,7 @@ const rootReducer = combineReducers({
   layout,
   fitInfo,
   addresses,
+  cards,
   responsive: responsiveReducer,
   app: appReducer
 })

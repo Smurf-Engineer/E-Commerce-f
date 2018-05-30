@@ -23,7 +23,7 @@ export default defineMessages({
   },
   creditCards: {
     id: 'screens.Account.menu.creditCards',
-    defaultMessage: 'CREDIT CARS'
+    defaultMessage: 'CREDIT CARDS'
   },
   profileSettings: {
     id: 'screens.Account.menu.profileSettings',

@@ -30,6 +30,10 @@ export const productsQuery = gql`
         collections
         isTopProduct
         customizable: design_center
+        sizeRange: size_range {
+          id
+          name
+        }
         images: pictures {
           front: front_image
           back: back_image

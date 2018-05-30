@@ -20,6 +20,7 @@ interface Props {
   redoEnabled: boolean
   currentTab: number
   swipingView: boolean
+  text: string
   productName: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -35,79 +36,95 @@ interface Props {
   onOpenSaveDesign: (open: boolean, imageBase64: string) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
+  onUpdateText: (text: string) => void
 }
 
-const DesignCenterCustomize = ({
-  onSelectColorBlock,
-  colorBlock,
-  colorBlockHovered,
-  onSelectColor,
-  onSelectPalette,
-  onChangePaletteName,
-  paletteName,
-  palettes,
-  onSetPalettes,
-  currentTab,
-  colors,
-  styleColors,
-  currentStyle,
-  loadingModel,
-  onLoadModel,
-  onUndoAction,
-  onRedoAction,
-  onResetAction,
-  onClearAction,
-  onPressQuickView,
-  undoEnabled,
-  redoEnabled,
-  swipingView,
-  onOpenSaveDesign,
-  onHoverColorBlock,
-  formatMessage,
-  productName
-}: Props) => {
-  return (
-    <Container>
-      <Tabs
-        {...{
-          palettes,
-          colorBlock,
-          colorBlockHovered,
-          onSelectColorBlock,
-          onHoverColorBlock,
-          onSelectColor,
-          colors,
-          styleColors,
-          onSelectPalette,
-          onChangePaletteName,
-          paletteName,
-          onSetPalettes
-        }}
-      />
-      {currentTab === 2 && !swipingView ? (
-        <Render3D
+class DesignCenterCustomize extends React.PureComponent<Props> {
+  render3D: any
+  handleOnApplyText = (text: string) => {
+    this.render3D.applyText(text)
+  }
+  render() {
+    const {
+      onSelectColorBlock,
+      colorBlock,
+      colorBlockHovered,
+      onSelectColor,
+      onSelectPalette,
+      onChangePaletteName,
+      paletteName,
+      palettes,
+      onSetPalettes,
+      currentTab,
+      colors,
+      styleColors,
+      currentStyle,
+      loadingModel,
+      onLoadModel,
+      onUndoAction,
+      onRedoAction,
+      onResetAction,
+      onClearAction,
+      onPressQuickView,
+      undoEnabled,
+      redoEnabled,
+      swipingView,
+      onOpenSaveDesign,
+      onHoverColorBlock,
+      formatMessage,
+      text,
+      onUpdateText,
+      productName
+    } = this.props
+
+    return (
+      <Container>
+        <Tabs
           {...{
-            colors,
+            palettes,
+            colorBlock,
             colorBlockHovered,
+            onSelectColorBlock,
+            onHoverColorBlock,
+            onSelectColor,
+            colors,
             styleColors,
-            onLoadModel,
-            loadingModel,
-            onUndoAction,
-            onRedoAction,
-            onResetAction,
-            onClearAction,
-            onPressQuickView,
-            undoEnabled,
-            redoEnabled,
-            onOpenSaveDesign,
-            formatMessage,
-            currentStyle,
-            productName
+            onSelectPalette,
+            onChangePaletteName,
+            paletteName,
+            onSetPalettes,
+            text,
+            onUpdateText
           }}
+          onApplyText={this.handleOnApplyText}
         />
-      ) : null}
-    </Container>
-  )
+        {currentTab === 2 && !swipingView ? (
+          <Render3D
+            ref={render3D => (this.render3D = render3D)}
+            {...{
+              text,
+              colors,
+              colorBlockHovered,
+              styleColors,
+              onLoadModel,
+              loadingModel,
+              onUndoAction,
+              onRedoAction,
+              onResetAction,
+              onClearAction,
+              onPressQuickView,
+              undoEnabled,
+              redoEnabled,
+              onOpenSaveDesign,
+              formatMessage,
+              currentStyle,
+              productName
+            }}
+          />
+        ) : null}
+      </Container>
+    )
+  }
 }
 
 export default DesignCenterCustomize

@@ -81,7 +81,7 @@ class OrderData extends React.Component<Props, {}> {
           billingCountry,
           billingApartment,
           payment: {
-            cardData: { name, last4, brand, exp_month, exp_year }
+            cardData: { name, last4, brand, expMonth, expYear }
           },
           cart
         }
@@ -89,8 +89,9 @@ class OrderData extends React.Component<Props, {}> {
       sendEmailAlert,
       sendSmsAlert
     } = this.props
-    const expYear = String(exp_year).substring(2, 4)
-    const expMonth = exp_month > 9 ? exp_month : `0${exp_month}`
+    // TODO: add MyCard component
+    // const year = String(expYear).substring(2, 4)
+    // const month = expMonth > 9 ? expMonth : `0${expMonth}`
     let cardIcon = this.getCardIcon(brand)
     let isThereTeamstoreProduct = false
     const renderList = cart
