@@ -11,7 +11,6 @@ import {
   SecondaryButtons,
   StyledButton,
   StyledCheckbox
-  // ItalicText
 } from './styledComponents'
 
 import iconVisa from '../../assets/card-visa.svg'
@@ -66,9 +65,6 @@ const MyCard = ({
       </StyledButton>
     </SecondaryButtons>
   )
-  // const footerMessage = defaultPayment ? (
-  //   <ItalicText>{formatMessage(messages.defaultPayment)}</ItalicText>
-  // ) : null
   const cardIcon = getCardIcon(brand)
   const year = String(expYear).substring(2, 4)
   const month = expMonth > 9 ? expMonth : `0${expMonth}`
@@ -80,7 +76,6 @@ const MyCard = ({
         <StyledImage src={cardIcon} />
       </CardNumber>
       <PaymentText>{`EXP ${month}/${year}`}</PaymentText>
-      {/* {footerMessage} */}
       {buttons}
     </Container>
   )

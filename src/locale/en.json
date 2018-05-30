@@ -316,5 +316,34 @@
   "screen.StoreFrontContent.contactManager": "Contact store manager",
   "screen.StoreFrontContent.invalidPass": "Invalid passcode value.",
   "screen.StoreFrontContent.passcodeNeeded": "Passcode needed.",
-  "screen.StoreFrontContent.targetPrice": "Target Price"
+  "screen.StoreFrontContent.targetPrice": "Target Price",
+
+  "components.CreditCardFormBilling.cardNumber": "CVV/CVC",
+  "components.CreditCardFormBilling.cardholderName": "Cardholder name",
+  "components.CreditCardFormBilling.expiryDate": "Expiry date",
+  "components.CreditCardFormBilling.billingAddress": "Billing Address",
+  "components.CreditCardFormBilling.sameShippingAddress":
+    "Same as shipping address",
+  "components.CreditCardFormBilling.continue": "Continue",
+  "components.CreditCardFormBilling.requiredField": "This field is required",
+
+  "components.CreditCardForm.tittle": "CreditCardForm",
+  "components.CreditCardForm.cardNumber": "Card information",
+  "components.CreditCardForm.cardholderName": "Cardholder name",
+  "components.CreditCardForm.requiredField": "This field is required",
+  "components.CreditCardForm.saveCard": "Save",
+  "components.CreditCardForm.cancel": "Cancel",
+  "components.CreditCardForm.defaultPayment": "Make default payment method",
+
+  "components.MyCard.tittle": "MyCard",
+  "components.MyCard.asDefault": "Default payment method",
+  "components.MyCard.delete": "Delete",
+  "components.MyCard.defaultPayment": "Default payment method",
+
+  "components.MyCards.tittle": "MyCards",
+  "components.MyCards.addCard": "+ ADD CREDIT CARD",
+  "components.MyCards.deleteCard": "Delete",
+  "components.MyCards.titleDeleteModal": "Are you sure?",
+  "components.MyCards.messageDeleteModal":
+    "This will permanently delete this card"
 }
