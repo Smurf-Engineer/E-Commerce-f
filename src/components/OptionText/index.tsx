@@ -7,7 +7,7 @@ import { Container, Title, Option, Circle, Row, Icon } from './styledComponents'
 
 interface Props {
   title: string
-  option: string
+  option?: string
   color?: string | null
   onClick: () => void
 }

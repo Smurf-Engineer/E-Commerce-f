@@ -24,5 +24,21 @@ export default defineMessages({
   effect: {
     id: 'components.TextTab.effect',
     defaultMessage: 'Effect'
+  },
+  selectFont: {
+    id: 'components.TextTab.selectFont',
+    defaultMessage: 'Select Font'
+  },
+  selectFill: {
+    id: 'components.TextTab.selectFill',
+    defaultMessage: 'Select Fill'
+  },
+  selectOutline: {
+    id: 'components.TextTab.selectOutline',
+    defaultMessage: 'Select Outline'
+  },
+  addEffect: {
+    id: 'components.TextTab.addEffect',
+    defaultMessage: 'Add an Effect'
   }
 })

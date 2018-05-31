@@ -69,12 +69,14 @@ class Render3D extends PureComponent {
     }
   }
 
-  _componentDidMount() {
+  componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
 
+    const devicePixelRatio = window.devicePixelRatio || 1
     const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
       .matches
+
     const precision = largeScreen ? 'highp' : 'lowp'
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -83,9 +85,6 @@ class Render3D extends PureComponent {
       preserveDrawingBuffer: true
     })
 
-    const devicePixelRatio = window.devicePixelRatio
-      ? window.devicePixelRatio
-      : 1
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
@@ -93,12 +92,12 @@ class Render3D extends PureComponent {
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
+    const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
+      .matches
 
     camera.position.z = 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
-    const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
-      .matches
 
     controls.enableKeys = false
     controls.minDistance = 0
@@ -137,8 +136,10 @@ class Render3D extends PureComponent {
   }
 
   componentWillUnmount() {
-    this.stop()
-    this.container.removeChild(this.renderer.domElement)
+    if (this.renderer) {
+      this.stop()
+      this.container.removeChild(this.renderer.domElement)
+    }
   }
 
   loadTextures = modelTextures =>
@@ -308,8 +309,10 @@ class Render3D extends PureComponent {
   }
 
   cameraUpdate = ({ x, y, z }) => {
-    this.camera.position.set(x, y, z)
-    this.controls.update()
+    if (this.camera) {
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
   }
 
   setupColors = colors => {
@@ -387,9 +390,11 @@ class Render3D extends PureComponent {
   }
 
   handleOnChangeZoom = value => {
-    const zoomValue = value * 1.0 / 100
-    this.camera.zoom = zoomValue * 2
-    this.camera.updateProjectionMatrix()
+    if (this.camera) {
+      const zoomValue = value * 1.0 / 100
+      this.camera.zoom = zoomValue * 2
+      this.camera.updateProjectionMatrix()
+    }
   }
 
   saveDesign = previewImage => {
@@ -480,7 +485,7 @@ class Render3D extends PureComponent {
     )
   }
 
-  applyText = text => {
+  applyText = (text, style) => {
     if (!this.scene || !text) {
       return
     }
@@ -490,7 +495,7 @@ class Render3D extends PureComponent {
       left: 800,
       top: 1000,
       fontSize: 100,
-      fontWeight: 'bold'
+      ...style
     })
 
     // "add" text onto canvas

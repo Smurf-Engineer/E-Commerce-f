@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   background-color: #fff;
+  height: 80vh;
   width: 25.4%;
   padding-bottom: 32px;
   z-index: 1;

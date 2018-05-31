@@ -16,25 +16,41 @@ const OUTLINE_COLOR = 2
 interface Props {
   text: string
   option: number
+  onSelectFont: (font: string) => void
+  onSelectFill: (color: string) => void
+  onSelectStrokeWidth: (width: number) => void
+  onSelectStrokeColor: (color: string) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 class TextEditor extends React.PureComponent<Props, {}> {
   getEditorComponent = (component: number): React.ReactNode => {
-    const { text } = this.props
+    const {
+      text,
+      onSelectFont,
+      formatMessage,
+      onSelectFill,
+      onSelectStrokeWidth,
+      onSelectStrokeColor
+    } = this.props
     switch (component) {
       case FONT_LIST:
-        return <FontList {...{ text }} />
+        return <FontList {...{ text, onSelectFont }} />
       case FILL_COLOR:
-        return <FillColor />
+        return <FillColor {...{ onSelectFill }} />
       case OUTLINE_COLOR:
-        return <OutlineColor />
+        return (
+          <OutlineColor
+            {...{ formatMessage, onSelectStrokeWidth, onSelectStrokeColor }}
+          />
+        )
       default:
         return null
     }
   }
 
   render() {
-    const { text, option } = this.props
+    const { text, option, formatMessage } = this.props
 
     const optionComponent = this.getEditorComponent(option)
 

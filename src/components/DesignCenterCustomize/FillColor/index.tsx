@@ -3,16 +3,19 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import ColorList from '../ColorList'
 import messages from './messages'
 import { Container, Text } from './styledComponents'
 
-interface Props {}
+interface Props {
+  onSelectFill: (color: string) => void
+}
 
-const FillColor = (props: Props) => {
+const FillColor = ({ onSelectFill }: Props) => {
   return (
     <Container>
-        <FormattedMessage {...messages.title} />
-      </Container>
+      <ColorList onSelectColor={onSelectFill} height={52} />
+    </Container>
   )
 }
 

@@ -8,6 +8,6 @@ import FillColor from './index'
 describe('<FillColor />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<FillColor  />, div)
+    ReactDOM.render(<FillColor onSelectFill={() => {}} />, div)
   })
 })

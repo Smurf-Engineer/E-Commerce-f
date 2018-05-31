@@ -41,8 +41,8 @@ interface Props {
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
-  handleOnApplyText = (text: string) => {
-    this.render3D.applyText(text)
+  handleOnApplyText = (text: string, style: any) => {
+    this.render3D.applyText(text, style)
   }
   render() {
     const {
@@ -95,7 +95,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onSetPalettes,
             text,
             onUpdateText,
-            formatMessage
+            formatMessage,
+            productName
           }}
           onApplyText={this.handleOnApplyText}
         />

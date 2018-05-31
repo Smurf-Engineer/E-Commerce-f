@@ -3,9 +3,13 @@
  */
 import styled from 'styled-components'
 
+interface ContainerProps {
+  height: number
+}
+
 export const Container = styled.div`
   overflow: auto;
-  height: 333px;
+  height: ${({ height }: ContainerProps) => height}vh;
   padding: 0px 32px 32px 32px;
 `
 

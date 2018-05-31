@@ -23,6 +23,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   text: string
+  productName: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -30,7 +31,7 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
-  onApplyText: (text: string) => void
+  onApplyText: (text: string, style: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -50,7 +51,8 @@ const Tabs = ({
   onUpdateText,
   text,
   onApplyText,
-  formatMessage
+  formatMessage,
+  productName
 }: Props) => {
   return (
     <Container>
@@ -74,7 +76,9 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
-          <TextTab {...{ text, onUpdateText, onApplyText, formatMessage }} />
+          <TextTab
+            {...{ text, onUpdateText, onApplyText, formatMessage, productName }}
+          />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           Content of Tab Pane 3

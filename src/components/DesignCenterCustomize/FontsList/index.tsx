@@ -4,27 +4,37 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container, Text } from './styledComponents'
+import { Container, Text, Item, Font } from './styledComponents'
 
 // TODO: Dummie data
-const fonts = ['Arial Black', 'Courier New', 'Luminari', 'Sathu', 'Trattatello']
+const fonts = [
+  'Arial Black',
+  'Avenir',
+  'Bangla',
+  'Baskerville',
+  'Circular Std',
+  'Courier New',
+  'Fira Code',
+  'Gill Sans',
+  'Luminari',
+  'Sathu',
+  'Trattatello',
+  'Verdana'
+]
 
 interface Props {
   text: string
+  onSelectFont: (font: string) => void
 }
 
-const FontsList = ({ text }: Props) => {
-  console.log('---------------------------')
-  console.log(text)
-  console.log('---------------------------')
+const FontsList = ({ text, onSelectFont }: Props) => {
+  const handleOnSelect = (font: string) => () => onSelectFont(font)
   const list = fonts.map((font, index) => (
-    <Text key={index} {...{ font }}>
-      {text}
-    </Text>
+    <Item key={index} onClick={handleOnSelect(font)}>
+      <Text {...{ font }}>{text}</Text>
+      <Font>{font}</Font>
+    </Item>
   ))
-  console.log('---------------------------')
-  console.log(list)
-  console.log('---------------------------')
   return <Container>{list}</Container>
 }
 

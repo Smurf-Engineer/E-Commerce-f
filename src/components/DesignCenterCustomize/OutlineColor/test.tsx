@@ -8,6 +8,13 @@ import OutlineColor from './index'
 describe('<OutlineColor />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<OutlineColor  />, div)
+    ReactDOM.render(
+      <OutlineColor
+        formatMessage={() => ''}
+        onSelectStrokeColor={() => {}}
+        onSelectStrokeWidth={() => {}}
+      />,
+      div
+    )
   })
 })
