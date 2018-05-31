@@ -1,4 +1,5 @@
 /* Routes */
+import Faq from '../screens/Faq'
 import Compliance from '../screens/Compliance'
 import OrderPlaced from '../screens/OrderPlaced'
 import Checkout from '../screens/Checkout'
@@ -20,6 +21,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/faq',
+    name: 'faq',
+    component: Faq
+  },
   {
     path: '/compliance',
     name: 'compliance',
