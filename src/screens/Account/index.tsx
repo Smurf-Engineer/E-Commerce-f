@@ -9,7 +9,14 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import * as accountActions from './actions'
 import messages from './messages'
-import { options, SCREEN_LOCKER, ADDRESSES, CREDIT_CARDS } from './constants'
+import {
+  options,
+  SCREEN_LOCKER,
+  ADDRESSES,
+  CREDIT_CARDS,
+  TEAMSTORES,
+  PROFILE_SETTINGS
+} from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
@@ -25,6 +32,7 @@ import {
   menuStyle,
   OptionMenu
 } from './styledComponents'
+import ProfileSettings from '../../components/ProfileSettings'
 
 const { SubMenu } = Menu
 
@@ -62,20 +70,22 @@ export class Account extends React.Component<Props, {}> {
   }
 
   getScreenComponent = (screen: string) => {
-    const { intl, history, openQuickViewAction: openQuickView } = this.props
+    const {
+      intl: { formatMessage },
+      history,
+      openQuickViewAction: openQuickView
+    } = this.props
     switch (screen) {
-      case SCREEN_LOCKER:
-        return (
-          <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
-        )
-      case 'teamStores':
-        return (
-          <MyTeamStores formatMessage={intl.formatMessage} {...{ history }} />
-        )
       case ADDRESSES:
-        return <MyAddresses formatMessage={intl.formatMessage} />
+        return <MyAddresses {...{ formatMessage }} />
       case CREDIT_CARDS:
-        return <MyCards formatMessage={intl.formatMessage} />
+        return <MyCards {...{ formatMessage }} />
+      case PROFILE_SETTINGS:
+        return <ProfileSettings {...{ formatMessage }} />
+      case TEAMSTORES:
+        return <MyTeamStores {...{ history, formatMessage }} />
+      case SCREEN_LOCKER:
+        return <MyLocker {...{ openQuickView, formatMessage }} />
       default:
         return null
     }
