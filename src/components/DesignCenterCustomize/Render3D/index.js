@@ -158,8 +158,8 @@ class Render3D extends PureComponent {
         })
         loadedTextures.areas = loadedAreas
         resolve(loadedTextures)
-      } catch (error) {
-        reject(error)
+      } catch (e) {
+        reject(e)
       }
     })
 
@@ -221,22 +221,46 @@ class Render3D extends PureComponent {
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
 
-          const cdim = 3880.016
+          /* TODO: SnapJs Test */
+          // const svg = Snap(3880.016, 3880.016)
+          // const r = svg.text(800, 800, 'DAVID').attr({
+          //   stroke: '#123456',
+          //   strokeWidth: 5,
+          //   fill: 'red',
+          //   font: '600 100px Fira Code'
+          // })
+
+          // const drawContainer = document.createElement('div')
+          // drawContainer.setAttribute('id', 'drawing')
+          // drawContainer.style.width = 3880 + 'px'
+          // drawContainer.style.height = 3880 + 'px'
+          // drawContainer.onload = () => {
+          //   console.log('------------------------------------')
+          //   console.log('CARGO')
+          //   console.log('------------------------------------')
+          //   const draw = SVG('drawing')
+          // }
+
+          /* TODO: FrabircJS Test */
+          // const canvas = document.createElement('canvas')
+          // canvg(canvas, svg.toString())
+          /* TODO: SVGjs Test */
+          // canvg(canvas, draw.svg())
+
+          /* TODO: FrabircJS Test */
+          const canvasDimension = 3880
           const canvas = document.createElement('canvas')
+          canvas.width = canvasDimension
+          canvas.height = canvasDimension
           const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvas.width = canvas.height = cdim
+          canvasTexture.minFilter = THREE.LinearFilter
+
+          /* TODO: FrabircJS Test */
           this.canvasTexture = new fabric.Canvas(canvas)
           this.canvasTexture.on(
             'after:render',
             () => (canvasTexture.needsUpdate = true)
           )
-
-          // const ctx = canvas.getContext('2d')
-          // ctx.globalCompositeOperation = 'normal'
-          // ctx.font = '100px Fira Code'
-          // ctx.textAlign = 'center'
-          // ctx.fillStyle = '#f21222'
-          // ctx.fillText('JAKROO', 1000, 1000)
 
           const canvasMaterial = new THREE.MeshPhongMaterial({
             map: canvasTexture,
@@ -245,6 +269,10 @@ class Render3D extends PureComponent {
             transparent: true
           })
           // END CANVAS TEST
+
+          console.log('------------------------------------')
+          console.log(object)
+          console.log('------------------------------------')
 
           loadedTextures.areas.forEach(
             (materialTexture, index) =>
@@ -426,7 +454,10 @@ class Render3D extends PureComponent {
       text
     } = this.props
 
-    const menu = (
+    {
+      /*
+      // TODO: JV2 - Phase II
+      const menu = (
       <Menu onClick={this.handleOnChange3DModel}>
         <Menu.Item key="1">
           <FormattedMessage {...messages.productOnly} />
@@ -438,7 +469,8 @@ class Render3D extends PureComponent {
           <FormattedMessage {...messages.onBike} />
         </Menu.Item>
       </Menu>
-    )
+    )*/
+    }
 
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
@@ -486,20 +518,20 @@ class Render3D extends PureComponent {
   }
 
   applyText = (text, style) => {
-    if (!this.scene || !text) {
+    if (!this.canvasTexture || !text) {
       return
     }
-    const object = this.scene.getObjectByName('jersey')
+
     // create a text object
-    const rect = new fabric.Textbox(text, {
+    const txt = new fabric.Text(text, {
       left: 800,
-      top: 1000,
+      top: 1200,
       fontSize: 100,
       ...style
     })
 
     // "add" text onto canvas
-    this.canvasTexture.add(rect)
+    this.canvasTexture.add(txt)
   }
 }
 

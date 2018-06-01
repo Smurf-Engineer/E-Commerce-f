@@ -5,16 +5,7 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import ColorList from '../ColorList'
 import messages from './messages'
-import {
-  Container,
-  Title,
-  Row,
-  Value,
-  Slider,
-  Header
-} from './styledComponents'
-
-const emptys = ['', '', '', '']
+import { Container, Title, Slider, Header } from './styledComponents'
 
 interface Props {
   onSelectStrokeWidth: (width: number) => void
@@ -27,11 +18,14 @@ const OutlineColor = ({
   onSelectStrokeWidth,
   onSelectStrokeColor
 }: Props) => {
-  const marks = [
-    formatMessage(messages.thin),
-    ...emptys,
-    formatMessage(messages.thick)
-  ]
+  const marks = {
+    0: formatMessage(messages.thin),
+    1: '',
+    2: '',
+    3: '',
+    4: '',
+    5: formatMessage(messages.thick)
+  }
   const handleOnSelectStrokeWidth = (value: any) => onSelectStrokeWidth(value)
   return (
     <Container>

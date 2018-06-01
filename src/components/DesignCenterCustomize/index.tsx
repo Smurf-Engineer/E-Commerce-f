@@ -4,7 +4,7 @@
 import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
-import { Palette } from '../../types/common'
+import { Palette, TextFormat } from '../../types/common'
 import { Container } from './styledComponents'
 
 interface Props {
@@ -41,7 +41,7 @@ interface Props {
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
-  handleOnApplyText = (text: string, style: any) => {
+  handleOnApplyText = (text: string, style: TextFormat) => {
     this.render3D.applyText(text, style)
   }
   render() {

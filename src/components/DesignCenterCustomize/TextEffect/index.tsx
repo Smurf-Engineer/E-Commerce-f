@@ -4,15 +4,15 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container, Text } from './styledComponents'
+import { Container } from './styledComponents'
 
 interface Props {}
 
 const TextEffect = (props: Props) => {
   return (
     <Container>
-        <FormattedMessage {...messages.title} />
-      </Container>
+      <FormattedMessage {...messages.title} />
+    </Container>
   )
 }
 

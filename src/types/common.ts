@@ -342,3 +342,10 @@ export interface OrderDataInfo {
   }
   cart: CartItems[]
 }
+
+export interface TextFormat {
+  fontFamily: string
+  stroke: string
+  fill: string
+  strokeWidth: number
+}

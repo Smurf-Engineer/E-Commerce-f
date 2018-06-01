@@ -8,6 +8,7 @@ import messages from './messages'
 import OptionText from '../../OptionText'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
+import { TextFormat } from '../../../types/common'
 import {
   Container,
   Header,
@@ -24,20 +25,12 @@ const SELECT_FILL = 1
 const SELECT_OUTLINE = 2
 const ADD_EFFECT = 3
 
-// TODO: Option effect disabled
-const options = ['font', 'fill', 'outline' /* , 'effect' */]
-
 interface Props {
   text: string
   productName: string
   onUpdateText: (text: string) => void
-  onApplyText: (text: string, style: any) => void // TODO: Type style
+  onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
-}
-
-interface Option {
-  name: string
-  value: string | null
 }
 
 interface State {
@@ -62,15 +55,7 @@ export class TextTab extends React.PureComponent<Props, State> {
   }
 
   render() {
-    const {
-      text,
-      page,
-      option,
-      font,
-      fillColor,
-      strokeWidth,
-      strokeColor
-    } = this.state
+    const { text, page, option, font, fillColor, strokeColor } = this.state
     const { formatMessage, productName } = this.props
 
     const headerTitle = this.getHeaderTitle(option, page)

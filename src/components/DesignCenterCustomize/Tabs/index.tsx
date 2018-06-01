@@ -10,7 +10,7 @@ import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
-import { Palette } from '../../../types/common'
+import { Palette, TextFormat } from '../../../types/common'
 import { Container } from './styledComponents'
 
 const { TabPane } = AntdTabs
@@ -31,7 +31,7 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
-  onApplyText: (text: string, style: any) => void
+  onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
 }
 

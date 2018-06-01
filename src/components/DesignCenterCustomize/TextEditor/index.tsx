@@ -2,12 +2,10 @@
  * TextEditor Component - Created by david on 29/05/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import FontList from '../FontsList'
 import FillColor from '../FillColor'
 import OutlineColor from '../OutlineColor'
-import messages from './messages'
-import { Container, Text } from './styledComponents'
+import { Container } from './styledComponents'
 
 const FONT_LIST = 0
 const FILL_COLOR = 1
@@ -50,7 +48,7 @@ class TextEditor extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { text, option, formatMessage } = this.props
+    const { option } = this.props
 
     const optionComponent = this.getEditorComponent(option)
 
