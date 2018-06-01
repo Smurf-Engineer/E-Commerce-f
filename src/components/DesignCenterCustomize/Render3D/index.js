@@ -197,10 +197,6 @@ class Render3D extends PureComponent {
 
           const { children } = object
 
-          console.log('------------------------------------')
-          console.log(children)
-          console.log('------------------------------------')
-
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
             return index < 0 ? 0 : index
