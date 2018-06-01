@@ -19,7 +19,7 @@ export const Title = styled.div`
 
 export const ContainerMethods = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
 `
 
 export const MethodButton = styled(Button)`
@@ -30,4 +30,5 @@ export const MethodButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  margin-left: 5px;
 `

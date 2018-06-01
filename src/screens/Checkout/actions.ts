@@ -19,7 +19,8 @@ import {
   SET_STRIPE_TOKEN,
   SET_STRIPE_CARD_DATA,
   SET_LOADING_PLACE_ORDER,
-  RESET_DATA
+  RESET_DATA,
+  SET_PAYMENT_METHOD
 } from './constants'
 import { AnyAction, AddressType, StripeCardData } from '../../types/common'
 
@@ -116,4 +117,9 @@ export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({
 
 export const resetReducerAction = (): AnyAction => ({
   type: RESET_DATA
+})
+
+export const setPaymentMethodAction = (method: string): AnyAction => ({
+  type: SET_PAYMENT_METHOD,
+  method
 })

@@ -32,6 +32,7 @@ interface Props {
   sameBillingAndAddressUncheckedAction: () => void
   invalidBillingFormAction: (hasError: boolean) => void
   nextStep: () => void
+  setPaymentMethodAction: (method: string) => void
 }
 
 interface MyWindow extends Window {
@@ -57,6 +58,18 @@ class Payment extends React.PureComponent<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
   }
+
+  handlePaypalClick = () => {
+    const { setPaymentMethodAction, nextStep } = this.props
+    setPaymentMethodAction('paypal')
+    nextStep()
+  }
+
+  handleCreditCardClick = () => {
+    const { setPaymentMethodAction } = this.props
+    setPaymentMethodAction('credit card')
+  }
+
   render() {
     const {
       formatMessage,
@@ -79,11 +92,13 @@ class Payment extends React.PureComponent<Props, {}> {
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
         <ContainerMethods>
-          <MethodButton>
+          <MethodButton onClick={this.handleCreditCardClick}>
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          {/* <MethodButton>{formatMessage(messages.methodPaypal)}</MethodButton>
-          <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
+          <MethodButton onClick={this.handlePaypalClick}>
+            {formatMessage(messages.methodPaypal)}
+          </MethodButton>
+          {/* <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
           <MethodButton>
             {formatMessage(messages.methodBankTransfer)}
           </MethodButton> */}

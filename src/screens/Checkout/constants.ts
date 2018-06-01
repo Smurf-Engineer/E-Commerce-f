@@ -24,3 +24,4 @@ export const SET_STRIPE_TOKEN = `${namespace}/SET_STRIPE_TOKEN`
 export const SET_STRIPE_CARD_DATA = `${namespace}/SET_STRIPE_CARD_DATA`
 // Review
 export const SET_LOADING_PLACE_ORDER = `${namespace}/SET_LOADING_PLACE_ORDER`
+export const SET_PAYMENT_METHOD = `${namespace}/SET_PAYMENT_METHOD`
