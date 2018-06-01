@@ -89,7 +89,7 @@ export class TermsOfUse extends React.Component<Props, {}> {
     const {
       currentTarget: { id }
     } = evt
-    console.log(evt)
+
     switch (id) {
       case 'terms':
         zenscroll.to(this.termsAndConditions)
