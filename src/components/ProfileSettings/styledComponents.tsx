@@ -26,8 +26,9 @@ export const Title = styled.div`
   margin-bottom: 24px;
 `
 
-export const ProfileContainer = styled.div`
+export const SectionContainer = styled.div`
   width: 50%;
+  margin-bottom: 40px;
 `
 
 export const Row = styled.div`

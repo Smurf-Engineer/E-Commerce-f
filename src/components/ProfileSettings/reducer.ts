@@ -4,7 +4,6 @@
 import { fromJS } from 'immutable'
 import {
   DEFAULT_ACTION,
-  VALID_FORM,
   CHANGE_INPUT,
   SELECT_DROPDOWN,
   DEFAULT_SHIPPING_CHECK,
