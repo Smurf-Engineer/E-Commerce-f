@@ -92,7 +92,7 @@ class Payment extends React.PureComponent<Props, {}> {
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
         <ContainerMethods>
-          <MethodButton onClick={this.handleCreditCardClick}>
+          <MethodButton selected={true} onClick={this.handleCreditCardClick}>
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
           <MethodButton onClick={this.handlePaypalClick}>

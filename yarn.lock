@@ -7578,9 +7578,9 @@ react-lazy-load@^3.0.12:
     lodash.throttle "^4.0.0"
     prop-types "^15.5.8"
 
-react-paypal-express-checkout@^1.0.4:
+"react-paypal-express-checkout@git+https://github.com/gustavomc/react-paypal-express-checkout":
   version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-paypal-express-checkout/-/react-paypal-express-checkout-1.0.4.tgz#282ccfc8ebfc1ca358193ddce8dba0f09fb6f6fb"
+  resolved "git+https://github.com/gustavomc/react-paypal-express-checkout#b832b0c12df1f495fd394fca51104176ac4e4ec0"
   dependencies:
     babel-runtime "^6.6.1"
     prop-types "^15.5.10"

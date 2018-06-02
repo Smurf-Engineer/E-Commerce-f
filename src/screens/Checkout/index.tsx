@@ -41,6 +41,7 @@ import {
   Product,
   StripeCardData
 } from '../../types/common'
+import config from '../../config/index'
 
 const { Step } = Steps
 
@@ -219,31 +220,36 @@ class Checkout extends React.Component<Props, {}> {
       <Step title={step} {...{ key }} />
     ))
 
-    const client = {
-      sandbox:
-        'AbZ3seF-h636HxsdaKolVn-D24c3eSN3EQGeysVYQTf1Y7cSw2QSSevNRXwTwAUOxHohWXlK40Uzl1p-',
-      production: 'AGADNEU6XCMATJGU'
+    const paypalClient = {
+      sandbox: config.paypalClientId,
+      production: ''
     }
 
-    const style = {
-      size: 'large',
+    const paypalButtonStyle = {
+      label: 'paypal',
+      size: 'responsive',
       color: 'blue',
       shape: 'rect',
       tagline: false
     }
 
+    console.log('-------------totalSum--------------')
+    console.log(totalSum)
+    console.log('---------------------------')
+
     const orderButton =
       paymentMethod === 'paypal' ? (
         <PaypalExpressBtn
-          env={'sandbox'}
-          client={client}
+          env={config.paypalEnv}
+          client={paypalClient}
           currency={'USD'}
-          total={30.0}
+          total={totalSum}
           shipping={1}
-          onError={this.onPaypalError}
           onSuccess={this.onPaypalSuccess}
           onCancel={this.onPaypalCancel}
-          style={style}
+          onError={this.onPaypalError}
+          style={paypalButtonStyle}
+          paymentOptions={{ intent: 'authorize' }}
         />
       ) : (
         <PlaceOrderButton
@@ -410,6 +416,11 @@ class Checkout extends React.Component<Props, {}> {
   onPaypalSuccess = (payment: any) => {
     // Congratulation, it came here means everything's fine!
     console.log('The payment was succeeded!', payment)
+    const obj = {
+      paymentId: payment.paymentID,
+      payerId: payment.payerID
+    }
+    this.handleOnPlaceOrder(obj)
   }
 
   onPaypalCancel = (data: AnalyserNode) => {
@@ -420,9 +431,10 @@ class Checkout extends React.Component<Props, {}> {
   onPaypalError = (err: any) => {
     // The main Paypal's script cannot be loaded or somethings block the loading of that script!
     console.log('Error!', err)
+    Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async () => {
+  handleOnPlaceOrder = async (paypalObj?: object) => {
     const {
       placeOrder,
       firstName,
@@ -502,6 +514,7 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.retailWomen')
       unset(cartItem, 'product.customizable')
       unset(cartItem, 'product.description')
+      unset(cartItem, 'product.sizeRange')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
       })
@@ -515,7 +528,8 @@ class Checkout extends React.Component<Props, {}> {
       token: stripeToken,
       cart,
       shippingAddress,
-      billingAddress
+      billingAddress,
+      paypalData: paypalObj
     }
     try {
       setLoadingPlaceOrderAction(true)

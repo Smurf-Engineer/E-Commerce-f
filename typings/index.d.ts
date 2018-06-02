@@ -127,6 +127,7 @@ declare module 'react-paypal-express-checkout' {
     onError: any
     onSuccess: any
     onCancel: any
+    paymentOptions?: object
   }
 
   class PaypalExpressBtn extends React.Component<Props, any> {}
