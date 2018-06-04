@@ -33,7 +33,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
         </Span>
       </Text>
       <Text>
-        <Span link="https://www.jakroo.com/us/privacy-policy.html">
+        <Span link="/terms-of-use#PrivacyPolicy">
           {formatMessage(messages.privacyPolicy)}
         </Span>
       </Text>

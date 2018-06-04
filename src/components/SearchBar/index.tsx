@@ -42,9 +42,9 @@ class SearchBar extends React.Component<Props, StateProps> {
       placeHolderLabel
     } = this.props
     const { width, searchValue } = this.state
-
+    console.log('SEARCHBAR ', onHeader)
     return (
-      <Container {...{ searchWidth }}>
+      <Container {...{ searchWidth, onHeader }}>
         <SearchInput
           size="large"
           placeholder={
@@ -84,7 +84,9 @@ class SearchBar extends React.Component<Props, StateProps> {
   }
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
 
     this.setState({ searchValue: value.trim() }, () => {
       this.raiseSearchWhenUserStopsTyping()
