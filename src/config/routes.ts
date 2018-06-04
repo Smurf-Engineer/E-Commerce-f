@@ -1,4 +1,5 @@
 /* Routes */
+import TeamKits from '../screens/TeamKits'
 import TermsOfUse from '../screens/TermsOfUse'
 import Faq from '../screens/Faq'
 import Compliance from '../screens/Compliance'
@@ -22,6 +23,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/team-kits',
+    name: 'teamKits',
+    component: TeamKits
+  },
   {
     path: '/terms-of-use',
     name: 'termsOfUse',

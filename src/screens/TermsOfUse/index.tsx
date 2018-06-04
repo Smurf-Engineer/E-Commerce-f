@@ -68,7 +68,7 @@ export class TermsOfUse extends React.Component<Props, {}> {
                 this.privacyPolicy = section
               }}
             >
-              <SectionTitle>
+              <SectionTitle id="PrivacyPolicy">
                 {intl
                   .formatMessage(messages.privacyPolicyBtnLabel)
                   .toLocaleUpperCase()}
