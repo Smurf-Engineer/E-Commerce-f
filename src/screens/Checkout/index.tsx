@@ -411,7 +411,6 @@ class Checkout extends React.Component<Props, {}> {
 
   onPaypalSuccess = (payment: any) => {
     // paypal payment succeded
-    console.log('The payment was succeeded!', payment)
     const obj = {
       paymentId: payment.paymentID,
       payerId: payment.payerID
