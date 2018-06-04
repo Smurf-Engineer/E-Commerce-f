@@ -410,7 +410,7 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   onPaypalSuccess = (payment: any) => {
-    // Congratulation, it came here means everything's fine!
+    // paypal payment succeded
     console.log('The payment was succeeded!', payment)
     const obj = {
       paymentId: payment.paymentID,
@@ -421,12 +421,12 @@ class Checkout extends React.Component<Props, {}> {
 
   onPaypalCancel = (data: AnalyserNode) => {
     // User pressed "cancel" or close Paypal's popup!
-    console.log('The payment was cancelled!', data)
+    console.error('The payment was cancelled!', data)
   }
 
   onPaypalError = (err: any) => {
     // The main Paypal's script cannot be loaded or somethings block the loading of that script!
-    console.log('Error!', err)
+    console.error('Error!', err)
     Message.error(err, 5)
   }
 
