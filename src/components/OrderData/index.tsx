@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
@@ -90,11 +91,11 @@ class OrderData extends React.Component<Props, {}> {
       sendSmsAlert
     } = this.props
 
-    const cardName = stripeCharge.cardData.name || ''
-    const cardExpYear = stripeCharge.cardData.expYear || 0
-    const cardExpMonth = stripeCharge.cardData.expMonth || 0
-    const cardLast4 = stripeCharge.cardData.last4 || ''
-    const cardBrand = stripeCharge.cardData.brand || ''
+    const cardName = get(stripeCharge, 'cardData.name', '')
+    const cardExpYear = get(stripeCharge, 'cardData.expYear', 0)
+    const cardExpMonth = get(stripeCharge, 'cardData.expMonth', 0)
+    const cardLast4 = get(stripeCharge, 'cardData.last4', '')
+    const cardBrand = get(stripeCharge, 'cardData.brand', '')
 
     const expYear = String(cardExpYear).substring(2, 4)
     const expMonth = cardExpMonth > 9 ? cardExpMonth : `0${cardExpMonth}`
