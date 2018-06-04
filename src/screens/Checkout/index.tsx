@@ -233,10 +233,6 @@ class Checkout extends React.Component<Props, {}> {
       tagline: false
     }
 
-    console.log('-------------totalSum--------------')
-    console.log(totalSum)
-    console.log('---------------------------')
-
     const orderButton =
       paymentMethod === 'paypal' ? (
         <PaypalExpressBtn
@@ -253,7 +249,7 @@ class Checkout extends React.Component<Props, {}> {
         />
       ) : (
         <PlaceOrderButton
-          onClick={this.handleOnPlaceOrder}
+          onClick={e => this.handleOnPlaceOrder(e, {})}
           loading={loadingPlaceOrder}
         >
           {intl.formatMessage(messages.placeOrder)}
@@ -420,7 +416,7 @@ class Checkout extends React.Component<Props, {}> {
       paymentId: payment.paymentID,
       payerId: payment.payerID
     }
-    this.handleOnPlaceOrder(obj)
+    this.handleOnPlaceOrder(undefined, obj)
   }
 
   onPaypalCancel = (data: AnalyserNode) => {
@@ -434,7 +430,7 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (paypalObj?: object) => {
+  handleOnPlaceOrder = async (event?: any, paypalObj?: object) => {
     const {
       placeOrder,
       firstName,
@@ -529,7 +525,7 @@ class Checkout extends React.Component<Props, {}> {
       cart,
       shippingAddress,
       billingAddress,
-      paypalData: paypalObj
+      paypalData: paypalObj || null
     }
     try {
       setLoadingPlaceOrderAction(true)

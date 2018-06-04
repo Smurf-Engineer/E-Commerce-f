@@ -36,6 +36,7 @@ import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
+import iconPaypal from '../../assets/Paypal.svg'
 import { QueryProps, OrderDataInfo } from '../../types/common'
 import CartListItem from '../CartListItem'
 
@@ -80,18 +81,39 @@ class OrderData extends React.Component<Props, {}> {
           billingZipCode,
           billingCountry,
           billingApartment,
-          payment: {
-            cardData: { name, last4, brand, exp_month, exp_year }
-          },
-          cart
+          payment: { stripeCharge },
+          cart,
+          paymentMethod
         }
       },
       sendEmailAlert,
       sendSmsAlert
     } = this.props
-    const expYear = String(exp_year).substring(2, 4)
-    const expMonth = exp_month > 9 ? exp_month : `0${exp_month}`
-    let cardIcon = this.getCardIcon(brand)
+
+    const cardName = stripeCharge ? stripeCharge.cardData.name : ''
+    const cardExpYear = stripeCharge ? stripeCharge.cardData.exp_year : 0
+    const cardExpMonth = stripeCharge ? stripeCharge.cardData.exp_month : 0
+    const cardLast4 = stripeCharge ? stripeCharge.cardData.last4 : ''
+    const cardBrand = stripeCharge ? stripeCharge.cardData.brand : ''
+
+    const expYear = String(cardExpYear).substring(2, 4)
+    const expMonth = cardExpMonth > 9 ? cardExpMonth : `0${cardExpMonth}`
+    let cardIcon = this.getCardIcon(cardBrand)
+
+    const paymentMethodInfo =
+      paymentMethod === 'credit card' ? (
+        <div>
+          <PaymentText>{cardName}</PaymentText>
+          <CardNumber>
+            <PaymentText>{`X-${cardLast4}`}</PaymentText>
+            <StyledImage src={cardIcon} />
+          </CardNumber>
+          <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
+        </div>
+      ) : (
+        <StyledImage src={iconPaypal} />
+      )
+
     let isThereTeamstoreProduct = false
     const renderList = cart
       ? cart.map((cartItem, index) => {
@@ -181,12 +203,7 @@ class OrderData extends React.Component<Props, {}> {
               </div>
               <div>
                 <SubTitle>{formatMessage(messages.payment)}</SubTitle>
-                <PaymentText>{name}</PaymentText>
-                <CardNumber>
-                  <PaymentText>{`X-${last4}`}</PaymentText>
-                  <StyledImage src={cardIcon} />
-                </CardNumber>
-                <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
+                {paymentMethodInfo}
               </div>
             </ShippingBillingContainer>
             <TitleStyled>{formatMessage(messages.items)}</TitleStyled>

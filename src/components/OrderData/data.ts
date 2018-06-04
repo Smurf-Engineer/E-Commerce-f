@@ -23,10 +23,10 @@ export const getOrderQuery = gql`
       billingZipCode: billing_address_zip_code
       billingCountry: billing_address_country
       payment: payment_object {
-        paypalCharge{
+        paypalCharge {
           id
         }
-        stripeCharge: {
+        stripeCharge {
           cardData: source {
             name
             last4
