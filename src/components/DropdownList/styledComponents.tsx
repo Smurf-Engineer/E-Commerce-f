@@ -16,7 +16,7 @@ export const OptionDropdown = styled.div`
   cursor: pointer;
 `
 export const Option = styled.div`
-  heigth: 100%;
+  height: 100%;
 `
 
 export const overStyle = {
@@ -28,5 +28,6 @@ export const menuStyle = {
   borderBottom: 0,
   display: 'flex',
   width: '100%',
-  justifyContent: 'space-between'
+  justifyContent: 'space-between',
+  backgroundColor: 'transparent'
 } as React.CSSProperties
