@@ -42,7 +42,7 @@ class SearchBar extends React.Component<Props, StateProps> {
       placeHolderLabel
     } = this.props
     const { width, searchValue } = this.state
-    console.log('SEARCHBAR ', onHeader)
+
     return (
       <Container {...{ searchWidth, onHeader }}>
         <SearchInput
