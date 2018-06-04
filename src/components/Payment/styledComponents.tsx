@@ -19,7 +19,7 @@ export const Title = styled.div`
 
 export const ContainerMethods = styled.div`
   display: flex;
-  /* justify-content: space-between; */
+  /* justify-content: space-between; TODO: uncomment when left payment methods*/
 `
 
 interface ButtonProps {
