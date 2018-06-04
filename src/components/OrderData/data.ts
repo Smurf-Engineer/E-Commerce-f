@@ -31,8 +31,8 @@ export const getOrderQuery = gql`
             name
             last4
             brand
-            exp_month
-            exp_year
+            expMonth: exp_month
+            expYear: exp_year
           }
         }
       }

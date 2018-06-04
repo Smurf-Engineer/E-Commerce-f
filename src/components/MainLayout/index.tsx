@@ -2,10 +2,12 @@
  * MainLayout Component - Created by david on 12/02/18.
  */
 import * as React from 'react'
+import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
+import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { RegionConfig } from '../../types/common'
@@ -18,7 +20,7 @@ import SearchResults from '../SearchResults'
 
 const { Content } = Layout
 
-interface Props {
+interface Props extends RouteComponentProps<any> {
   children: React.ReactChild
   intl: InjectedIntl
   history: any
@@ -54,6 +56,21 @@ class MainLayout extends React.Component<Props, {}> {
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
     setSearchParam(value)
+  }
+
+  componentDidMount() {
+    const {
+      openLoginAction,
+      history: {
+        location: { search, pathname }
+      }
+    } = this.props
+    const { login } = queryString.parse(search)
+    const userLogged = !!localStorage.getItem('user')
+
+    if (pathname === '/faq' && login === 'open' && !userLogged) {
+      openLoginAction(true)
+    }
   }
 
   render() {

@@ -195,14 +195,16 @@ class Render3D extends PureComponent {
             color: '#000000'
           })
 
-          let meshIndex = findIndex(
-            object.children,
-            mesh => mesh.name === 'FINAL Jersey_Mesh'
-          )
+          const { children } = object
 
-          if (meshIndex < 0) {
-            meshIndex = 0
+          const getMeshIndex = meshName => {
+            const index = findIndex(children, mesh => mesh.name === meshName)
+            return index < 0 ? 0 : index
           }
+
+          const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
+          const labelIndex = getMeshIndex('Red_Tag FINAL')
+          const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
 
           // Setup the texture layers
           const areasLayers = loadedTextures.areas.map(() =>
@@ -210,9 +212,9 @@ class Render3D extends PureComponent {
           )
           object.add(...areasLayers)
 
-          /* Jersey label */
-          object.children[4].material.color.set('#ffffff')
-          object.children[6].material = flatlockMaterial
+          /* Model label */
+          object.children[labelIndex].material.color.set('#ffffff')
+          object.children[flatlockIndex].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
           // TODO: WIP Text canvas
@@ -261,7 +263,7 @@ class Render3D extends PureComponent {
           object.children[20].material = canvasMaterial
 
           /* Object Config */
-          object.position.y = -20
+          object.position.y = -30
           object.name = 'jersey'
           this.scene.add(object)
 
@@ -399,6 +401,7 @@ class Render3D extends PureComponent {
 
   takeDesignPicture = () => {
     const viewPosition = viewPositions[2]
+    this.handleOnChangeZoom(62)
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {

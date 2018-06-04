@@ -91,8 +91,8 @@ class OrderData extends React.Component<Props, {}> {
     } = this.props
 
     const cardName = stripeCharge ? stripeCharge.cardData.name : ''
-    const cardExpYear = stripeCharge ? stripeCharge.cardData.exp_year : 0
-    const cardExpMonth = stripeCharge ? stripeCharge.cardData.exp_month : 0
+    const cardExpYear = stripeCharge ? stripeCharge.cardData.expYear : 0
+    const cardExpMonth = stripeCharge ? stripeCharge.cardData.expMonth : 0
     const cardLast4 = stripeCharge ? stripeCharge.cardData.last4 : ''
     const cardBrand = stripeCharge ? stripeCharge.cardData.brand : ''
 

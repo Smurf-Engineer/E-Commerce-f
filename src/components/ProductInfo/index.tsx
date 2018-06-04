@@ -17,6 +17,8 @@ import upArrowIcon from '../../assets/uparrow.svg'
 interface Props {
   id?: string | undefined
   title: string
+  titleWidth?: string
+  titleColor?: string
   showContent: boolean
   toggleView: (id: string) => void
   children?: React.ReactNode
@@ -25,6 +27,8 @@ interface Props {
 const ProductInfo = ({
   id,
   title,
+  titleWidth,
+  titleColor,
   showContent,
   toggleView,
   children
@@ -38,7 +42,7 @@ const ProductInfo = ({
   return (
     <Container>
       <ProductInfoTitle>
-        <Title>{title}</Title>
+        <Title {...{ titleWidth, titleColor }}>{title}</Title>
         <UpDownArrow
           src={showContent ? upArrowIcon : downArrowIcon}
           onClick={onToggleView}

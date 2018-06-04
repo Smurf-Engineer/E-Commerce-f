@@ -40,8 +40,12 @@ const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
               <AboutUs {...{ history, formatMessage }} />
               <Teams {...{ history, formatMessage }} />
               <ComplianceLogos>
-                <StyledImg alt="logo" src={BSCILogo} />
-                <StyledImg alt="logo" src={CaliPropLogo} />
+                <a href="/compliance">
+                  <StyledImg alt="logo" src={BSCILogo} />
+                </a>
+                <a href="/compliance">
+                  <StyledImg alt="logo" src={CaliPropLogo} />
+                </a>
               </ComplianceLogos>
             </Container>
           )

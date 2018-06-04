@@ -1,40 +1,40 @@
 /**
- * CreditCardForm -  Messages
+ * CreditCardFormBilling -  Messages
  */
 
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   cardNumber: {
-    id: 'components.CreditCardForm.cardNumber',
+    id: 'components.CreditCardFormBilling.cardNumber',
     defaultMessage: 'Card information'
   },
   cardholderName: {
-    id: 'components.CreditCardForm.cardholderName',
+    id: 'components.CreditCardFormBilling.cardholderName',
     defaultMessage: 'Cardholder name'
   },
   expiryDate: {
-    id: 'components.CreditCardForm.expiryDate',
+    id: 'components.CreditCardFormBilling.expiryDate',
     defaultMessage: 'Expiry date'
   },
   securityCode: {
-    id: 'components.CreditCardForm.cardNumber',
+    id: 'components.CreditCardFormBilling.cardNumber',
     defaultMessage: 'CVV/CVC'
   },
   billingAddress: {
-    id: 'components.CreditCardForm.billingAddress',
+    id: 'components.CreditCardFormBilling.billingAddress',
     defaultMessage: 'Billing Address'
   },
   sameShippingAddress: {
-    id: 'components.CreditCardForm.sameShippingAddress',
+    id: 'components.CreditCardFormBilling.sameShippingAddress',
     defaultMessage: 'Same as shipping address'
   },
   continue: {
-    id: 'components.CreditCardForm.continue',
+    id: 'components.CreditCardFormBilling.continue',
     defaultMessage: 'Continue'
   },
   requiredField: {
-    id: 'components.CreditCardForm.requiredField',
+    id: 'components.CreditCardFormBilling.requiredField',
     defaultMessage: 'This field is required'
   }
 })

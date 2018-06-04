@@ -84,8 +84,12 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
     const {
       openQuickView,
       formatMessage,
-      data: { loading, featuredProducts }
+      data: { loading, featuredProducts, error }
     } = this.props
+
+    if (error) {
+      return null
+    }
 
     if (loading) {
       return (
