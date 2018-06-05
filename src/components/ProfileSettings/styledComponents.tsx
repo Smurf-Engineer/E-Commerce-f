@@ -61,21 +61,6 @@ export const Label = styled.div`
   line-height: 19px;
 `
 
-export const DropDownPlaceHolder = styled(Button)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40px;
-  width: 100%;
-  border: 1px solid #bebebe;
-  border-radius: 0;
-  margin-top: 5px;
-  &:hover {
-    border: 1px solid #bebebe;
-    color: #bebebe;
-  }
-`
-
 export const StyledButton = styled(Button)`
   height: 40px;
   width: 100%;
@@ -105,14 +90,6 @@ export const StyledInputUnity = styled(Input)`
   width: 20%;
 `
 
-export const StyledInput = styled(Input)`
-  height: 40px;
-  width: 100%;
-  border: 1px solid #bebebe;
-  border-radius: 0;
-  margin-top: 5px;
-`
-
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
   color: #5f6062;
@@ -121,4 +98,19 @@ export const StyledCheckbox = styled(Checkbox)`
   letter-spacing: 0.2px;
   line-height: 22px;
   margin: 5px 0;
+`
+
+export const DropDownPlaceHolder = styled(Button)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  width: 100%;
+  border: 1px solid #bebebe;
+  border-radius: 0;
+  margin-top: 5px;
+  &:hover {
+    border: 1px solid #bebebe;
+    color: #bebebe;
+  }
 `

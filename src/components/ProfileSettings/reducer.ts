@@ -8,9 +8,12 @@ import {
   SELECT_DROPDOWN,
   SHOW_PASSWORD_MODAL,
   SET_MODAL_LOADING,
+  SET_PASSWORD_FORM_HAS_ERROR,
   SET_SMS_CONFIRMATION_CHECKED,
   SET_SMS_UPDATES_CHECKED,
   SET_EMAIL_NEWSLETTER_CHECKED,
+  SET_MSRMNT_SYSTEM,
+  SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -21,11 +24,11 @@ export const initialState = fromJS({
   lastName: '',
   email: '',
   phone: '',
-  regionId: '',
-  languageId: '',
-  currencyId: '',
-  msrmntMetricSelected: true,
-  msrmntManSelected: true,
+  region: '',
+  language: '',
+  currency: '',
+  msrmntSystemSelected: 'metric',
+  msrmntGenderSelected: 'man',
   weight: '',
   heightFirst: '',
   heightSecond: '',
@@ -42,7 +45,8 @@ export const initialState = fromJS({
   newPassword: '',
   newPasswordConfirm: '',
   showPasswordModal: false,
-  passwordModalLoading: false
+  passwordModalLoading: false,
+  modalPasswordHasError: false
 })
 
 const adressesReducer: Reducer<any> = (state = initialState, action) => {
@@ -63,6 +67,12 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('smsUpdatesChecked', action.checked)
     case SET_EMAIL_NEWSLETTER_CHECKED:
       return state.set('emailNewsletterChecked', action.checked)
+    case SET_MSRMNT_SYSTEM:
+      return state.set('msrmntSystemSelected', action.system)
+    case SET_MSRMNT_GENDER:
+      return state.set('msrmntGenderSelected', action.gender)
+    case SET_PASSWORD_FORM_HAS_ERROR:
+      return state.set('modalPasswordHasError', action.hasError)
     case RESET_REDUCER_DATA:
       return initialState
     default:

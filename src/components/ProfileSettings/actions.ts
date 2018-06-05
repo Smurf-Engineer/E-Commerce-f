@@ -7,9 +7,12 @@ import {
   SELECT_DROPDOWN,
   SHOW_PASSWORD_MODAL,
   SET_MODAL_LOADING,
+  SET_PASSWORD_FORM_HAS_ERROR,
   SET_SMS_CONFIRMATION_CHECKED,
   SET_SMS_UPDATES_CHECKED,
   SET_EMAIL_NEWSLETTER_CHECKED,
+  SET_MSRMNT_SYSTEM,
+  SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA
 } from './constants'
 import { AnyAction } from '../../types/common'
@@ -41,6 +44,11 @@ export const setModalLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
+export const setPasswordModalValid = (hasError: boolean): AnyAction => ({
+  type: SET_PASSWORD_FORM_HAS_ERROR,
+  hasError
+})
+
 export const resetReducerDataAction = (): AnyAction => ({
   type: RESET_REDUCER_DATA
 })
@@ -58,4 +66,14 @@ export const setSmsUpdatesChecked = (checked: boolean): AnyAction => ({
 export const setEmailConfirmationChecked = (checked: boolean): AnyAction => ({
   type: SET_EMAIL_NEWSLETTER_CHECKED,
   checked
+})
+
+export const SetMsrmntSystemAction = (system: string): AnyAction => ({
+  type: SET_MSRMNT_SYSTEM,
+  system
+})
+
+export const SetMsrmntGenderAction = (gender: string): AnyAction => ({
+  type: SET_MSRMNT_GENDER,
+  gender
 })

@@ -2,13 +2,12 @@
  * ProfileSettings Component - Created by miguelcanobbio on 31/05/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import RadioGroup from 'antd/lib/radio/group'
-import RadioButton from 'antd/lib/radio/radioButton'
 import * as ProfileSettingsActions from './actions'
-// import withError from '../WithError'
-// import withLoading from '../WithLoading'
+import withError from '../WithError'
+import withLoading from '../WithLoading'
+import { regionsQuery } from './data'
 import messages from './messages'
 import {
   Container,
@@ -16,24 +15,31 @@ import {
   SectionContainer,
   Row,
   Column,
-  InputTitleContainer,
-  Label,
-  StyledInput,
   StyledButton,
   StyledCheckbox
 } from './styledComponents'
+import ProfileForm from '../ProfileForm'
+import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
+import MeasurementsForm from '../MeasurementsForm'
+import { ClickParam, QueryProps, Region } from '../../types/common'
+import ChangePasswordModal from '../ChangePasswordModal'
+
+interface Data extends QueryProps {
+  regionsOptions: Region[]
+}
 
 interface Props {
+  data: Data
   formatMessage: (messageDescriptor: any) => string
   firstName: string
   lastName: string
   email: string
   phone: string
-  regionId: string
-  languageId: string
-  currencyId: string
-  msrmntMetricSelected: true
-  msrmntManSelected: true
+  region: string
+  language: string
+  currency: string
+  msrmntSystemSelected: string
+  msrmntGenderSelected: string
   weight: string
   heightFirst: string
   heightSecond: string
@@ -56,16 +62,28 @@ interface Props {
   setSmsConfirmationChecked: (checked: boolean) => void
   setSmsUpdatesChecked: (checked: boolean) => void
   setEmailConfirmationChecked: (checked: boolean) => void
+  SetMsrmntSystemAction: (system: string) => void
+  SetMsrmntGenderAction: (gender: string) => void
+  selectDropdownAction: (id: string, value: string) => void
+  showPasswordModalAction: (show: boolean) => void
+  setPasswordModalValid: (hasError: boolean) => void
+  setModalLoadingAction: (loading: boolean) => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
   render() {
     const {
+      data: { regionsOptions },
       formatMessage,
       firstName,
       lastName,
       email,
       phone,
+      region,
+      language,
+      currency,
+      msrmntSystemSelected,
+      msrmntGenderSelected,
       weight,
       heightFirst,
       heightSecond,
@@ -77,71 +95,54 @@ class ProfileSettings extends React.Component<Props, {}> {
       neckSize,
       smsConfirmationChecked,
       smsUpdatesChecked,
-      emailNewsletterChecked
+      emailNewsletterChecked,
+      currentPassword,
+      newPassword,
+      newPasswordConfirm,
+      showPasswordModal,
+      passwordModalLoading
     } = this.props
+
+    console.log(regionsOptions)
+
+    const profileButtonDisabled = !firstName || !lastName || !email || !phone
+    const languageButtonDisabled = !region || !language || !currency
+    const measurementsButtonDisabled =
+      !weight ||
+      !heightFirst ||
+      !heightSecond ||
+      !chestSize ||
+      !waistSize ||
+      !hipsSize ||
+      !inseamSize ||
+      !shouldersSize ||
+      !neckSize
+    const smsButtonDisabled = false
+    const emailButtonDisabled = false
     return (
       <Container>
         {/* PROFILE */}
         <Title>{formatMessage(messages.profileTitle)}</Title>
         <SectionContainer>
-          <Row>
-            <Column inputhWidth={'48%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.firstName)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="firstName"
-                value={firstName}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-            <Column inputhWidth={'48%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.lastName)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="lastName"
-                value={lastName}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-          </Row>
-          <Row>
-            <Column inputhWidth={'100%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.email)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="email"
-                value={email}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-          </Row>
-          <Row>
-            <Column inputhWidth={'100%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.phone)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="phone"
-                value={phone}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-          </Row>
+          <ProfileForm
+            handleInputChange={this.handleInputChange}
+            {...{ formatMessage, firstName, lastName, email, phone }}
+          />
           <Row>
             <Column inputhWidth={'27%'}>
-              <StyledButton type="primary" disabled={true}>
+              <StyledButton
+                type="primary"
+                disabled={profileButtonDisabled}
+                onClick={this.handleOnSaveProfileSettings}
+              >
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
             <Column inputhWidth={'40%'}>
-              <StyledButton type="primary">
+              <StyledButton
+                type="primary"
+                onClick={this.handleOnToggleModalPassword}
+              >
                 {formatMessage(messages.changePassword)}
               </StyledButton>
             </Column>
@@ -152,25 +153,18 @@ class ProfileSettings extends React.Component<Props, {}> {
         <Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>
           <Row>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.region)}</Label>
-              </InputTitleContainer>
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.language)}</Label>
-              </InputTitleContainer>
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.currency)}</Label>
-              </InputTitleContainer>
-            </Column>
+            <LanguageAndCurrencyForm
+              selectedDropDown={this.selectedDropDown}
+              {...{ regionsOptions, region, language, currency, formatMessage }}
+            />
           </Row>
           <Row>
             <Column inputhWidth={'27%'}>
-              <StyledButton type="primary" disabled={true}>
+              <StyledButton
+                type="primary"
+                disabled={languageButtonDisabled}
+                onClick={this.handleOnSaveLanguageSettings}
+              >
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
@@ -181,140 +175,33 @@ class ProfileSettings extends React.Component<Props, {}> {
         <Title>{formatMessage(messages.measurementsTitle)}</Title>
         <SectionContainer>
           <Row>
-            <Column inputhWidth={'31%'}>
-              <RadioGroup
-                value="metric"
-                onChange={this.handleOnUnitMsrmntChange}
-              >
-                <RadioButton value="metric">
-                  {formatMessage(messages.metric)}
-                </RadioButton>
-                <RadioButton value="imperial">
-                  {formatMessage(messages.imperial)}
-                </RadioButton>
-              </RadioGroup>
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <RadioGroup value="man">
-                <RadioButton value="man">
-                  {formatMessage(messages.man)}
-                </RadioButton>
-                <RadioButton value="woman">
-                  {formatMessage(messages.woman)}
-                </RadioButton>
-              </RadioGroup>
-            </Column>
-            <Column inputhWidth={'31%'} />
-          </Row>
-          <Row>
-            <Column inputhWidth={'48%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.weight)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="weight"
-                value={weight}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-            <Column inputhWidth={'48%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.height)}</Label>
-              </InputTitleContainer>
-              <Row marginBottom={'0'}>
-                <Column inputhWidth={'48%'}>
-                  <StyledInput
-                    id="heightFirst"
-                    value={heightFirst}
-                    onChange={this.handleInputChange}
-                    maxLength="50"
-                  />
-                </Column>
-                <Column inputhWidth={'48%'}>
-                  <StyledInput
-                    id="heightSecond"
-                    value={heightSecond}
-                    onChange={this.handleInputChange}
-                    maxLength="50"
-                  />
-                </Column>
-              </Row>
-            </Column>
-          </Row>
-          <Row>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.chest)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="chestSize"
-                value={chestSize}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.waist)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="waistSize"
-                value={waistSize}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.hips)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="hipsSize"
-                value={hipsSize}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-          </Row>
-          <Row>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.inseam)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="inseamSize"
-                value={inseamSize}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.shoulders)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="shouldersSize"
-                value={shouldersSize}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
-            <Column inputhWidth={'31%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.neck)}</Label>
-              </InputTitleContainer>
-              <StyledInput
-                id="neckSize"
-                value={neckSize}
-                onChange={this.handleInputChange}
-                maxLength="50"
-              />
-            </Column>
+            <MeasurementsForm
+              handleInputChange={this.handleInputChange}
+              handleOnMsrmntGenderChange={this.handleOnMsrmntGenderChange}
+              handleOnMsrmntSystemChange={this.handleOnMsrmntSystemChange}
+              {...{
+                formatMessage,
+                msrmntSystemSelected,
+                msrmntGenderSelected,
+                weight,
+                heightFirst,
+                heightSecond,
+                chestSize,
+                waistSize,
+                hipsSize,
+                inseamSize,
+                shouldersSize,
+                neckSize
+              }}
+            />
           </Row>
           <Row>
             <Column inputhWidth={'27%'}>
-              <StyledButton type="primary" disabled={true}>
+              <StyledButton
+                type="primary"
+                disabled={measurementsButtonDisabled}
+                onClick={this.handleOnSaveMeasurementsSettings}
+              >
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
@@ -342,7 +229,11 @@ class ProfileSettings extends React.Component<Props, {}> {
           </Row>
           <Row>
             <Column inputhWidth={'27%'}>
-              <StyledButton type="primary" disabled={true}>
+              <StyledButton
+                type="primary"
+                disabled={smsButtonDisabled}
+                onClick={this.handleOnSaveSmsSettings}
+              >
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
@@ -362,13 +253,29 @@ class ProfileSettings extends React.Component<Props, {}> {
           </Row>
           <Row>
             <Column inputhWidth={'27%'}>
-              <StyledButton type="primary" disabled={true}>
+              <StyledButton
+                type="primary"
+                disabled={emailButtonDisabled}
+                onClick={this.handleOnSaveEmailSettings}
+              >
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
             <Column inputhWidth={'51%'} />
           </Row>
         </SectionContainer>
+        <ChangePasswordModal
+          {...{
+            formatMessage,
+            currentPassword,
+            newPassword,
+            newPasswordConfirm,
+            showPasswordModal,
+            passwordModalLoading
+          }}
+          toggleModalPassword={this.handleOnToggleModalPassword}
+          handleInputChange={this.handleInputChange}
+        />
       </Container>
     )
   }
@@ -398,8 +305,31 @@ class ProfileSettings extends React.Component<Props, {}> {
     inputChangeAction(id, value)
   }
 
-  handleOnUnitMsrmntChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(event)
+  selectedDropDown = (param: ClickParam) => {
+    const { selectDropdownAction } = this.props
+    const {
+      key,
+      item: {
+        props: { id }
+      }
+    } = param
+    selectDropdownAction(id, key)
+  }
+
+  handleOnMsrmntSystemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value: system }
+    } = event
+    const { SetMsrmntSystemAction } = this.props
+    SetMsrmntSystemAction(system)
+  }
+
+  handleOnMsrmntGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value: gender }
+    } = event
+    const { SetMsrmntGenderAction } = this.props
+    SetMsrmntGenderAction(gender)
   }
 
   handleOnSmsConfirmationChecked = (
@@ -427,11 +357,33 @@ class ProfileSettings extends React.Component<Props, {}> {
     const { setEmailConfirmationChecked } = this.props
     setEmailConfirmationChecked(checked)
   }
+
+  handleOnToggleModalPassword = () => {
+    const { showPasswordModal, showPasswordModalAction } = this.props
+    showPasswordModalAction(!showPasswordModal)
+  }
+
+  handleOnSaveProfileSettings = () => {}
+
+  handleOnSaveLanguageSettings = () => {}
+
+  handleOnSaveMeasurementsSettings = () => {}
+
+  handleOnSaveSmsSettings = () => {}
+
+  handleOnSaveEmailSettings = () => {}
 }
 
 const mapStateToProps = (state: any) => state.get('profileSettings').toJS()
 
 const ProfileSettingsEnhance = compose(
+  graphql(regionsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  }),
+  withLoading,
+  withError,
   connect(mapStateToProps, { ...ProfileSettingsActions })
 )(ProfileSettings)
 

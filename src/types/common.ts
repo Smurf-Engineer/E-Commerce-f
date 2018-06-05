@@ -346,3 +346,10 @@ export interface OrderDataInfo {
   }
   cart: CartItems[]
 }
+
+export interface ClickParam {
+  key: string
+  keyPath: Array<string>
+  item: any
+  domEvent: any
+}
