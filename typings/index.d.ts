@@ -116,7 +116,7 @@ declare module 'react-swipeable-bottom-sheet' {
   export default SwipeableBottomSheet
 }
 
-declare module 'react-paypal-express-checkout' {
+declare module 'react-paypal-express-checkout-authorize' {
   interface Props {
     currency: string
     env: string
