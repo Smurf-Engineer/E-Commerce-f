@@ -119,6 +119,53 @@ class Render3D extends PureComponent {
     const objLoader = new THREE.OBJLoader()
     const textureLoader = new THREE.TextureLoader()
 
+    // TODO: Test PixiJS
+    const scene2D = new PIXI.Stage(0x66ff99)
+    const canvas2D = PIXI.autoDetectRenderer(3880, 3880, {
+      transparent: true
+    })
+    const style = new PIXI.TextStyle({
+      fontFamily: 'Arial',
+      fontSize: 100,
+      fontStyle: 'italic',
+      fontWeight: 'bold',
+      fill: ['#ffffff', '#00ff99'], // gradient
+      stroke: '#4a1850',
+      strokeThickness: 5,
+      dropShadow: true,
+      dropShadowColor: '#000000',
+      dropShadowBlur: 4,
+      dropShadowAngle: Math.PI / 6,
+      dropShadowDistance: 6,
+      wordWrap: true,
+      wordWrapWidth: 440
+    })
+    const basicText = new PIXI.Text('DAVID', style)
+    basicText.interactive = true
+    // basicText
+    //   .on('mousedown', onDragStart)
+    //   .on('touchstart', onDragStart)
+    //   // events for drag end
+    //   .on('mouseup', onDragEnd)
+    //   .on('mouseupoutside', onDragEnd)
+    //   .on('touchend', onDragEnd)
+    //   .on('touchendoutside', onDragEnd)
+    //   // events for drag move
+    //   .on('mousemove', onDragMove)
+    //   .on('touchmove', onDragMove)
+
+    basicText.x = 700
+    basicText.y = 1050
+    canvas2D.view.style.position = 'absolute'
+    canvas2D.view.style.top = '0px'
+    canvas2D.view.style.left = '0px'
+
+    scene2D.addChild(basicText)
+
+    this.scene2D = scene2D
+    this.scene2D = scene2D
+    this.canvas2D = canvas2D
+
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
@@ -223,49 +270,43 @@ class Render3D extends PureComponent {
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
 
-          /* TODO: SnapJs Test */
-          // const svg = Snap(3880.016, 3880.016)
-          // const r = svg.text(800, 800, 'DAVID').attr({
-          //   stroke: '#123456',
-          //   strokeWidth: 5,
-          //   fill: 'red',
-          //   font: '600 100px Fira Code'
+          /*
+          /* TODO: FrabircJS Test */
+          // const canvasDimension = 3880
+          // const canvas = document.createElement('canvas')
+          // canvas.width = canvasDimension
+          // canvas.height = canvasDimension
+          // const canvasTexture = new THREE.CanvasTexture(canvas)
+          // canvasTexture.minFilter = THREE.LinearFilter
+
+          /* TODO: FrabircJS Test */
+          // this.canvasTexture = new fabric.Canvas(canvas, {
+          //   hoverCursor: 'pointer'
+          // })
+          // this.canvasTexture.on(
+          //   'after:render',
+          //   () => (canvasTexture.needsUpdate = true)
+          // )
+          // this.canvasTexture.on('mouse:down', () => {
+          //   console.log('------------------------------------')
+          //   console.log('mouse:down')
+          //   console.log('------------------------------------')
+          // })
+          // this.canvasTexture.on('mouse:move', () => {
+          //   console.log('------------------------------------')
+          //   console.log('mouse:move')
+          //   console.log('------------------------------------')
+          // })
+          // this.canvasTexture.on('mouse:up', () => {
+          //   console.log('------------------------------------')
+          //   console.log('mouse:up')
+          //   console.log('------------------------------------')
           // })
 
-          // const drawContainer = document.createElement('div')
-          // drawContainer.setAttribute('id', 'drawing')
-          // drawContainer.style.width = 3880 + 'px'
-          // drawContainer.style.height = 3880 + 'px'
-          // drawContainer.onload = () => {
-          //   console.log('------------------------------------')
-          //   console.log('CARGO')
-          //   console.log('------------------------------------')
-          //   const draw = SVG('drawing')
-          // }
-
-          /* TODO: FrabircJS Test */
-          // const canvas = document.createElement('canvas')
-          // canvg(canvas, svg.toString())
-          /* TODO: SVGjs Test */
-          // canvg(canvas, draw.svg())
-
-          /* TODO: FrabircJS Test */
-          const canvasDimension = 3880
-          const canvas = document.createElement('canvas')
-          canvas.width = canvasDimension
-          canvas.height = canvasDimension
-          const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvasTexture.minFilter = THREE.LinearFilter
-
-          /* TODO: FrabircJS Test */
-          this.canvasTexture = new fabric.Canvas(canvas)
-          this.canvasTexture.on(
-            'after:render',
-            () => (canvasTexture.needsUpdate = true)
-          )
+          const texture_UI = new THREE.CanvasTexture(this.canvas2D.view)
 
           const canvasMaterial = new THREE.MeshPhongMaterial({
-            map: canvasTexture,
+            map: texture_UI,
             side: THREE.FrontSide,
             bumpMap: loadedTextures.bumpMap,
             transparent: true
@@ -291,6 +332,27 @@ class Render3D extends PureComponent {
           object.position.y = -30
           object.name = 'jersey'
           this.scene.add(object)
+
+          // TODO: Test for onClik on 3D model.
+          // const onDocumentMouseDown = event => {
+          //   const objects = []
+          //   objects.push(object)
+          //   const mouse3D = new THREE.Vector3(
+          //     event.clientX / window.innerWidth * 2 - 1,
+          //     -(event.clientY / window.innerHeight) * 2 + 1,
+          //     1
+          //   )
+
+          //   const raycaster = new THREE.Raycaster(
+          //     this.camera.position,
+          //     mouse3D.sub(this.camera.position).normalize()
+          //   )
+          //   // raycaster.setFromCamera(mouse3D, this.camera)
+          //   const intersects = raycaster.intersectObjects(objects)
+          //   console.log(intersects)
+          // }
+
+          // document.addEventListener('mousedown', onDocumentMouseDown)
 
           onLoadModel(false)
         },
@@ -323,6 +385,10 @@ class Render3D extends PureComponent {
   }
 
   rendeScene = () => {
+    console.log('------------------------------------')
+    console.log(this.canvas2D)
+    console.log('------------------------------------')
+    this.canvas2D.render(this.scene2D)
     this.renderer.render(this.scene, this.camera)
   }
 
@@ -516,20 +582,21 @@ class Render3D extends PureComponent {
   }
 
   applyText = (text, style) => {
-    if (!this.canvasTexture || !text) {
-      return
-    }
+    // if (!this.canvasTexture || !text) {
+    //   return
+    // }
 
     // create a text object
+    // TODO: FabricJS
     const txt = new fabric.Text(text, {
       left: 800,
-      top: 1200,
+      top: 1050,
       fontSize: 100,
       ...style
     })
 
-    // "add" text onto canvas
-    this.canvasTexture.add(txt)
+    // TODO: FabricJS
+    this.canvasTexture.add(txt).setActiveObject(txt)
   }
 }
 
