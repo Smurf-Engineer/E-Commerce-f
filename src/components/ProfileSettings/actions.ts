@@ -3,29 +3,20 @@
  */
 import {
   DEFAULT_ACTION,
-  VALID_FORM,
   CHANGE_INPUT,
   SELECT_DROPDOWN,
-  DEFAULT_SHIPPING_CHECK,
-  DEFAULT_BILLING_CHECK,
-  SHOW_ADDRESS_MODAL,
-  SHOW_DELETE_ADDRESS_CONFIRM,
-  HIDE_DELETE_ADDRESS_CONFIRM,
+  SHOW_PASSWORD_MODAL,
   SET_MODAL_LOADING,
-  SET_DELETE_LOADING,
-  RESET_REDUCER_DATA,
-  SET_ADDRESS_UPDATE
+  SET_SMS_CONFIRMATION_CHECKED,
+  SET_SMS_UPDATES_CHECKED,
+  SET_EMAIL_NEWSLETTER_CHECKED,
+  RESET_REDUCER_DATA
 } from './constants'
-import { AnyAction, AddressType } from '../../types/common'
+import { AnyAction } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
   someValue
-})
-
-export const validFormAction = (hasError: boolean): AnyAction => ({
-  type: VALID_FORM,
-  hasError
 })
 
 export const inputChangeAction = (id: number, value: string): AnyAction => ({
@@ -40,30 +31,9 @@ export const selectDropdownAction = (id: string, key: string): AnyAction => ({
   key
 })
 
-export const defaultShippingAction = (checked: boolean): AnyAction => ({
-  type: DEFAULT_SHIPPING_CHECK,
-  checked
-})
-
-export const defaultBillingAction = (checked: boolean): AnyAction => ({
-  type: DEFAULT_BILLING_CHECK,
-  checked
-})
-
-export const showAddressModalAction = (show: boolean): AnyAction => ({
-  type: SHOW_ADDRESS_MODAL,
+export const showPasswordModalAction = (show: boolean): AnyAction => ({
+  type: SHOW_PASSWORD_MODAL,
   show
-})
-
-export const showDeleteAddressConfirmAction = (
-  addressId: number
-): AnyAction => ({
-  type: SHOW_DELETE_ADDRESS_CONFIRM,
-  addressId
-})
-
-export const hideDeleteAddressConfirmAction = (): AnyAction => ({
-  type: HIDE_DELETE_ADDRESS_CONFIRM
 })
 
 export const setModalLoadingAction = (loading: boolean): AnyAction => ({
@@ -71,16 +41,21 @@ export const setModalLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const setDeleteLoadingAction = (loading: boolean): AnyAction => ({
-  type: SET_DELETE_LOADING,
-  loading
-})
-
 export const resetReducerDataAction = (): AnyAction => ({
   type: RESET_REDUCER_DATA
 })
 
-export const setAddressToUpdateAction = (address: AddressType): AnyAction => ({
-  type: SET_ADDRESS_UPDATE,
-  address
+export const setSmsConfirmationChecked = (checked: boolean): AnyAction => ({
+  type: SET_SMS_CONFIRMATION_CHECKED,
+  checked
+})
+
+export const setSmsUpdatesChecked = (checked: boolean): AnyAction => ({
+  type: SET_SMS_UPDATES_CHECKED,
+  checked
+})
+
+export const setEmailConfirmationChecked = (checked: boolean): AnyAction => ({
+  type: SET_EMAIL_NEWSLETTER_CHECKED,
+  checked
 })

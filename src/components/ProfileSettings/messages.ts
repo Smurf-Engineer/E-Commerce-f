@@ -53,6 +53,46 @@ export default defineMessages({
     id: 'components.ProfileSettings.measurementsTitle',
     defaultMessage: 'Measurements'
   },
+  metric: {
+    id: 'components.ProfileSettings.metric',
+    defaultMessage: 'Metric'
+  },
+  imperial: {
+    id: 'components.ProfileSettings.imperial',
+    defaultMessage: 'Imperial'
+  },
+  man: {
+    id: 'components.ProfileSettings.man',
+    defaultMessage: 'Man'
+  },
+  woman: {
+    id: 'components.ProfileSettings.woman',
+    defaultMessage: 'Woman'
+  },
+  lbs: {
+    id: 'components.ProfileSettings.lbs',
+    defaultMessage: 'lbs'
+  },
+  in: {
+    id: 'components.ProfileSettings.in',
+    defaultMessage: 'In'
+  },
+  ft: {
+    id: 'components.ProfileSettings.ft',
+    defaultMessage: 'ft'
+  },
+  kg: {
+    id: 'components.ProfileSettings.kg',
+    defaultMessage: 'kg'
+  },
+  cm: {
+    id: 'components.ProfileSettings.cm',
+    defaultMessage: 'cm'
+  },
+  mts: {
+    id: 'components.ProfileSettings.mts',
+    defaultMessage: 'mts'
+  },
   weight: {
     id: 'components.ProfileSettings.weight',
     defaultMessage: 'Weight'
@@ -84,5 +124,25 @@ export default defineMessages({
   neck: {
     id: 'components.ProfileSettings.neck',
     defaultMessage: 'Neck'
+  },
+  smsTitle: {
+    id: 'components.ProfileSettings.smsTitle',
+    defaultMessage: 'SMS Preferences'
+  },
+  smsOrderConfirmation: {
+    id: 'components.ProfileSettings.smsOrderConfirmation',
+    defaultMessage: 'Order / Shipping Confirmation'
+  },
+  smsProDesignUpdates: {
+    id: 'components.ProfileSettings.smsProDesignUpdates',
+    defaultMessage: 'Pro Design Updates'
+  },
+  emailTitle: {
+    id: 'components.ProfileSettings.emailTitle',
+    defaultMessage: 'E-mail Preferences'
+  },
+  emailSignUpNewsLetter: {
+    id: 'components.ProfileSettings.emailSignUpNewsLetter',
+    defaultMessage: 'Yes, I would like to sign up for your Newsletter'
   }
 })

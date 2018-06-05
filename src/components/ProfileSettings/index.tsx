@@ -4,6 +4,8 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import RadioGroup from 'antd/lib/radio/group'
+import RadioButton from 'antd/lib/radio/radioButton'
 import * as ProfileSettingsActions from './actions'
 // import withError from '../WithError'
 // import withLoading from '../WithLoading'
@@ -17,7 +19,8 @@ import {
   InputTitleContainer,
   Label,
   StyledInput,
-  StyledButton
+  StyledButton,
+  StyledCheckbox
 } from './styledComponents'
 
 interface Props {
@@ -40,19 +43,42 @@ interface Props {
   inseamSize: string
   shouldersSize: string
   neckSize: string
-  smsOrderShippingChecked: boolean
-  smsDesignUpdatesChecked: boolean
+  smsConfirmationChecked: boolean
+  smsUpdatesChecked: boolean
   emailNewsletterChecked: boolean
   currentPassword: string
   newPassword: string
   newPasswordConfirm: string
   showPasswordModal: boolean
   passwordModalLoading: boolean
+  // redux actions
+  inputChangeAction: (id: string, value: string) => void
+  setSmsConfirmationChecked: (checked: boolean) => void
+  setSmsUpdatesChecked: (checked: boolean) => void
+  setEmailConfirmationChecked: (checked: boolean) => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
   render() {
-    const { formatMessage } = this.props
+    const {
+      formatMessage,
+      firstName,
+      lastName,
+      email,
+      phone,
+      weight,
+      heightFirst,
+      heightSecond,
+      chestSize,
+      waistSize,
+      hipsSize,
+      inseamSize,
+      shouldersSize,
+      neckSize,
+      smsConfirmationChecked,
+      smsUpdatesChecked,
+      emailNewsletterChecked
+    } = this.props
     return (
       <Container>
         {/* PROFILE */}
@@ -65,8 +91,8 @@ class ProfileSettings extends React.Component<Props, {}> {
               </InputTitleContainer>
               <StyledInput
                 id="firstName"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                value={firstName}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -76,8 +102,8 @@ class ProfileSettings extends React.Component<Props, {}> {
               </InputTitleContainer>
               <StyledInput
                 id="lastName"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                value={lastName}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -89,8 +115,8 @@ class ProfileSettings extends React.Component<Props, {}> {
               </InputTitleContainer>
               <StyledInput
                 id="email"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                value={email}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -102,8 +128,8 @@ class ProfileSettings extends React.Component<Props, {}> {
               </InputTitleContainer>
               <StyledInput
                 id="phone"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                value={phone}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -155,14 +181,40 @@ class ProfileSettings extends React.Component<Props, {}> {
         <Title>{formatMessage(messages.measurementsTitle)}</Title>
         <SectionContainer>
           <Row>
+            <Column inputhWidth={'31%'}>
+              <RadioGroup
+                value="metric"
+                onChange={this.handleOnUnitMsrmntChange}
+              >
+                <RadioButton value="metric">
+                  {formatMessage(messages.metric)}
+                </RadioButton>
+                <RadioButton value="imperial">
+                  {formatMessage(messages.imperial)}
+                </RadioButton>
+              </RadioGroup>
+            </Column>
+            <Column inputhWidth={'31%'}>
+              <RadioGroup value="man">
+                <RadioButton value="man">
+                  {formatMessage(messages.man)}
+                </RadioButton>
+                <RadioButton value="woman">
+                  {formatMessage(messages.woman)}
+                </RadioButton>
+              </RadioGroup>
+            </Column>
+            <Column inputhWidth={'31%'} />
+          </Row>
+          <Row>
             <Column inputhWidth={'48%'}>
               <InputTitleContainer>
                 <Label>{formatMessage(messages.weight)}</Label>
               </InputTitleContainer>
               <StyledInput
-                id="firstName"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                id="weight"
+                value={weight}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -170,18 +222,24 @@ class ProfileSettings extends React.Component<Props, {}> {
               <InputTitleContainer>
                 <Label>{formatMessage(messages.height)}</Label>
               </InputTitleContainer>
-              <StyledInput
-                id="heightFirst"
-                // value={firstName}
-                // onChange={this.handleInputChange}
-                maxLength="50"
-              />
-              <StyledInput
-                id="heightSecond"
-                // value={firstName}
-                // onChange={this.handleInputChange}
-                maxLength="50"
-              />
+              <Row marginBottom={'0'}>
+                <Column inputhWidth={'48%'}>
+                  <StyledInput
+                    id="heightFirst"
+                    value={heightFirst}
+                    onChange={this.handleInputChange}
+                    maxLength="50"
+                  />
+                </Column>
+                <Column inputhWidth={'48%'}>
+                  <StyledInput
+                    id="heightSecond"
+                    value={heightSecond}
+                    onChange={this.handleInputChange}
+                    maxLength="50"
+                  />
+                </Column>
+              </Row>
             </Column>
           </Row>
           <Row>
@@ -190,9 +248,9 @@ class ProfileSettings extends React.Component<Props, {}> {
                 <Label>{formatMessage(messages.chest)}</Label>
               </InputTitleContainer>
               <StyledInput
-                id="chest"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                id="chestSize"
+                value={chestSize}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -201,9 +259,9 @@ class ProfileSettings extends React.Component<Props, {}> {
                 <Label>{formatMessage(messages.waist)}</Label>
               </InputTitleContainer>
               <StyledInput
-                id="waist"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                id="waistSize"
+                value={waistSize}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -212,22 +270,44 @@ class ProfileSettings extends React.Component<Props, {}> {
                 <Label>{formatMessage(messages.hips)}</Label>
               </InputTitleContainer>
               <StyledInput
-                id="hips"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                id="hipsSize"
+                value={hipsSize}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
           </Row>
           <Row>
-            <Column inputhWidth={'100%'}>
+            <Column inputhWidth={'31%'}>
               <InputTitleContainer>
-                <Label>{formatMessage(messages.phone)}</Label>
+                <Label>{formatMessage(messages.inseam)}</Label>
               </InputTitleContainer>
               <StyledInput
-                id="phone"
-                // value={firstName}
-                // onChange={this.handleInputChange}
+                id="inseamSize"
+                value={inseamSize}
+                onChange={this.handleInputChange}
+                maxLength="50"
+              />
+            </Column>
+            <Column inputhWidth={'31%'}>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.shoulders)}</Label>
+              </InputTitleContainer>
+              <StyledInput
+                id="shouldersSize"
+                value={shouldersSize}
+                onChange={this.handleInputChange}
+                maxLength="50"
+              />
+            </Column>
+            <Column inputhWidth={'31%'}>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.neck)}</Label>
+              </InputTitleContainer>
+              <StyledInput
+                id="neckSize"
+                value={neckSize}
+                onChange={this.handleInputChange}
                 maxLength="50"
               />
             </Column>
@@ -241,8 +321,111 @@ class ProfileSettings extends React.Component<Props, {}> {
             <Column inputhWidth={'51%'} />
           </Row>
         </SectionContainer>
+        {/*SMS Preferences*/}
+        <SectionContainer>
+          <Title>{formatMessage(messages.smsTitle)}</Title>
+          <Row marginBottom={'0'}>
+            <StyledCheckbox
+              onChange={this.handleOnSmsConfirmationChecked}
+              checked={smsConfirmationChecked}
+            >
+              {formatMessage(messages.smsOrderConfirmation)}
+            </StyledCheckbox>
+          </Row>
+          <Row>
+            <StyledCheckbox
+              onChange={this.handleOnSmsUpdatesChecked}
+              checked={smsUpdatesChecked}
+            >
+              {formatMessage(messages.smsProDesignUpdates)}
+            </StyledCheckbox>
+          </Row>
+          <Row>
+            <Column inputhWidth={'27%'}>
+              <StyledButton type="primary" disabled={true}>
+                {formatMessage(messages.save)}
+              </StyledButton>
+            </Column>
+            <Column inputhWidth={'51%'} />
+          </Row>
+        </SectionContainer>
+        {/*Email Preferences*/}
+        <SectionContainer>
+          <Title>{formatMessage(messages.emailTitle)}</Title>
+          <Row>
+            <StyledCheckbox
+              onChange={this.handleOnEmailNewsletterChecked}
+              checked={emailNewsletterChecked}
+            >
+              {formatMessage(messages.emailSignUpNewsLetter)}
+            </StyledCheckbox>
+          </Row>
+          <Row>
+            <Column inputhWidth={'27%'}>
+              <StyledButton type="primary" disabled={true}>
+                {formatMessage(messages.save)}
+              </StyledButton>
+            </Column>
+            <Column inputhWidth={'51%'} />
+          </Row>
+        </SectionContainer>
       </Container>
     )
+  }
+
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { inputChangeAction } = this.props
+    const {
+      currentTarget: { id, value }
+    } = evt
+
+    const regex = /^\d*(\.\d*)?$/
+    const regexPhone = /^\d+$/
+
+    const isNumber = regex.test(value)
+    const isValidPhone = regexPhone.test(value)
+
+    const checkIsDecimalNumber = id.match(
+      /^(weight|heightFirst|heightSecond|chestSize|waistSize|hipsSize|inseamSize|shouldersSize|neckSize)$/
+    )
+
+    if (value && checkIsDecimalNumber && !isNumber) {
+      return
+    }
+    if (value && id === 'phone' && !isValidPhone) {
+      return
+    }
+    inputChangeAction(id, value)
+  }
+
+  handleOnUnitMsrmntChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(event)
+  }
+
+  handleOnSmsConfirmationChecked = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const {
+      target: { checked }
+    } = event
+    const { setSmsConfirmationChecked } = this.props
+    setSmsConfirmationChecked(checked)
+  }
+  handleOnSmsUpdatesChecked = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { checked }
+    } = event
+    const { setSmsUpdatesChecked } = this.props
+    setSmsUpdatesChecked(checked)
+  }
+  handleOnEmailNewsletterChecked = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const {
+      target: { checked }
+    } = event
+    const { setEmailConfirmationChecked } = this.props
+    setEmailConfirmationChecked(checked)
   }
 }
 
