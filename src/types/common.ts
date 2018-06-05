@@ -353,3 +353,58 @@ export interface ClickParam {
   item: any
   domEvent: any
 }
+
+export interface UserProfileSettings {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+}
+
+export interface UserRegionSettings {
+  region: {
+    id?: string
+    name?: string
+    icon?: string
+    code?: string
+  }
+  language: {
+    id?: string
+    name?: string
+    shortName?: string
+  }
+  currency: {
+    id?: string
+    name?: string
+    shortName?: string
+    abbreviation?: string
+  }
+}
+
+export interface MeasurementSettings {
+  weight: string
+  height: string
+  chest: string
+  waist: string
+  hips: string
+  inseam: string
+  shoulders: string
+  neck: string
+}
+
+export interface SmsSettings {
+  orderConfirmation: boolean
+  desingUpdates: boolean
+}
+
+export interface EmailSettings {
+  newsletter: boolean
+}
+
+export interface ProfileSettings {
+  userProfile?: UserProfileSettings
+  languageSettings: UserRegionSettings
+  measurementSettings: MeasurementSettings
+  smsSettings: SmsSettings
+  emailSettings: EmailSettings
+}

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import * as ProfileSettingsActions from './actions'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
-import { regionsQuery } from './data'
+import { profileSettingsQuery } from './data'
 import messages from './messages'
 import {
   Container,
@@ -26,6 +26,7 @@ import ChangePasswordModal from '../ChangePasswordModal'
 
 interface Data extends QueryProps {
   regionsOptions: Region[]
+  profileData: any
 }
 
 interface Props {
@@ -73,7 +74,7 @@ interface Props {
 class ProfileSettings extends React.Component<Props, {}> {
   render() {
     const {
-      data: { regionsOptions },
+      data,
       formatMessage,
       firstName,
       lastName,
@@ -103,7 +104,9 @@ class ProfileSettings extends React.Component<Props, {}> {
       passwordModalLoading
     } = this.props
 
-    console.log(regionsOptions)
+    console.log(data)
+
+    const regionsOptions: Region[] = []
 
     const profileButtonDisabled = !firstName || !lastName || !email || !phone
     const languageButtonDisabled = !region || !language || !currency
@@ -377,7 +380,7 @@ class ProfileSettings extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('profileSettings').toJS()
 
 const ProfileSettingsEnhance = compose(
-  graphql(regionsQuery, {
+  graphql(profileSettingsQuery, {
     options: {
       fetchPolicy: 'network-only'
     }
