@@ -28,6 +28,7 @@ import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
+import iconPaypal from '../../assets/Paypal.svg'
 
 interface CartItems {
   product: Product
@@ -40,6 +41,7 @@ interface Props {
   billingAddress: AddressType
   cardData: StripeCardData
   cardHolderName: string
+  paymentMethod: string
   formatMessage: (messageDescriptor: any) => string
   goToStep: (step: number) => void
 }
@@ -70,7 +72,8 @@ class Review extends React.Component<Props, {}> {
       },
       cardData,
       cardHolderName,
-      cart
+      cart,
+      paymentMethod
     } = this.props
     const renderList = cart
       ? cart.map((cartItem, index) => {
@@ -90,6 +93,7 @@ class Review extends React.Component<Props, {}> {
         })
       : null
     let cardIcon = this.getCardIcon(cardData.cardBrand)
+
     return (
       <Container>
         <CartContent>
@@ -127,15 +131,21 @@ class Review extends React.Component<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
-            <PaymentText>{cardHolderName}</PaymentText>
-            <CardNumber>
-              <PaymentText>{`X-${cardData.cardNumber}`}</PaymentText>
-              <StyledImage src={cardIcon} />
-            </CardNumber>
-            <PaymentText>{`EXP ${cardData.cardExpDate}`}</PaymentText>
-            <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-              {formatMessage(messages.edit)}
-            </EditInfoButton>
+            {paymentMethod === 'credit card' ? (
+              <div>
+                <PaymentText>{cardHolderName}</PaymentText>
+                <CardNumber>
+                  <PaymentText>{`X-${cardData.cardNumber}`}</PaymentText>
+                  <StyledImage src={cardIcon} />
+                </CardNumber>
+                <PaymentText>{`EXP ${cardData.cardExpDate}`}</PaymentText>
+                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                  {formatMessage(messages.edit)}
+                </EditInfoButton>
+              </div>
+            ) : (
+              <img src={iconPaypal} />
+            )}
           </InfoContainer>
         </BottomContainer>
       </Container>

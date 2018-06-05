@@ -13,6 +13,7 @@ import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import isEmpty from 'lodash/isEmpty'
+import PaypalExpressBtn from 'react-paypal-express-checkout'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import { resetReducerData as resetReducerShoppingCartAction } from '../ShoppingCartPage/actions'
@@ -40,6 +41,7 @@ import {
   Product,
   StripeCardData
 } from '../../types/common'
+import config from '../../config/index'
 
 const { Step } = Steps
 
@@ -84,6 +86,7 @@ interface Props extends RouteComponentProps<any> {
   stripeToken: string
   loadingBilling: boolean
   loadingPlaceOrder: boolean
+  paymentMethod: string
   setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -103,6 +106,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerAction: () => void
   resetReducerShoppingCartAction: () => void
   getTotalItemsIncart: () => void
+  setPaymentMethodAction: (method: string) => void
   cart: CartItems[]
 }
 
@@ -162,7 +166,9 @@ class Checkout extends React.Component<Props, {}> {
       setStripeErrorAction,
       setLoadingBillingAction,
       setStripeCardDataAction,
-      cart
+      setPaymentMethodAction,
+      cart,
+      paymentMethod
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -214,6 +220,42 @@ class Checkout extends React.Component<Props, {}> {
       <Step title={step} {...{ key }} />
     ))
 
+    const paypalClient = {
+      sandbox: config.paypalClientId,
+      production: ''
+    }
+
+    const paypalButtonStyle = {
+      label: 'paypal',
+      size: 'responsive',
+      color: 'blue',
+      shape: 'rect',
+      tagline: false
+    }
+
+    const orderButton =
+      paymentMethod === 'paypal' ? (
+        <PaypalExpressBtn
+          env={config.paypalEnv}
+          client={paypalClient}
+          currency={'USD'}
+          total={totalSum}
+          shipping={1}
+          onSuccess={this.onPaypalSuccess}
+          onCancel={this.onPaypalCancel}
+          onError={this.onPaypalError}
+          style={paypalButtonStyle}
+          paymentOptions={{ intent: 'authorize' }}
+        />
+      ) : (
+        <PlaceOrderButton
+          onClick={e => this.handleOnPlaceOrder(e, {})}
+          loading={loadingPlaceOrder}
+        >
+          {intl.formatMessage(messages.placeOrder)}
+        </PlaceOrderButton>
+      )
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -258,7 +300,8 @@ class Checkout extends React.Component<Props, {}> {
                     invalidBillingFormAction,
                     loadingBilling,
                     setLoadingBillingAction,
-                    setStripeCardDataAction
+                    setStripeCardDataAction,
+                    setPaymentMethodAction
                   }}
                 />
                 <Review
@@ -269,7 +312,8 @@ class Checkout extends React.Component<Props, {}> {
                     billingAddress,
                     cardData,
                     cardHolderName,
-                    cart
+                    cart,
+                    paymentMethod
                   }}
                 />
               </SwipeableViews>
@@ -281,14 +325,7 @@ class Checkout extends React.Component<Props, {}> {
                 discount={10}
                 formatMessage={intl.formatMessage}
               />
-              {currentStep === 2 ? (
-                <PlaceOrderButton
-                  onClick={this.handleOnPlaceOrder}
-                  loading={loadingPlaceOrder}
-                >
-                  {intl.formatMessage(messages.placeOrder)}
-                </PlaceOrderButton>
-              ) : null}
+              {currentStep === 2 ? orderButton : null}
             </SummaryContainer>
           </Content>
           {currentStep === 0 ? (
@@ -372,7 +409,27 @@ class Checkout extends React.Component<Props, {}> {
     setSelectedAddressAction(address, index)
   }
 
-  handleOnPlaceOrder = async () => {
+  onPaypalSuccess = (payment: any) => {
+    // paypal payment succeded
+    const obj = {
+      paymentId: payment.paymentID,
+      payerId: payment.payerID
+    }
+    this.handleOnPlaceOrder(undefined, obj)
+  }
+
+  onPaypalCancel = (data: AnalyserNode) => {
+    // User pressed "cancel" or close Paypal's popup!
+    console.error('The payment was cancelled!', data)
+  }
+
+  onPaypalError = (err: any) => {
+    // The main Paypal's script cannot be loaded or somethings block the loading of that script!
+    console.error('Error!', err)
+    Message.error(err, 5)
+  }
+
+  handleOnPlaceOrder = async (event?: any, paypalObj?: object) => {
     const {
       placeOrder,
       firstName,
@@ -398,7 +455,8 @@ class Checkout extends React.Component<Props, {}> {
       indexAddressSelected,
       sameBillingAndShipping,
       setLoadingPlaceOrderAction,
-      getTotalItemsIncart: getTotalItemsIncartAction
+      getTotalItemsIncart: getTotalItemsIncartAction,
+      paymentMethod
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -451,6 +509,7 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.retailWomen')
       unset(cartItem, 'product.customizable')
       unset(cartItem, 'product.description')
+      unset(cartItem, 'product.sizeRange')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
       })
@@ -460,11 +519,12 @@ class Checkout extends React.Component<Props, {}> {
       })
     })
     const orderObj = {
-      paymentMethod: 'credit card',
+      paymentMethod,
       token: stripeToken,
       cart,
       shippingAddress,
-      billingAddress
+      billingAddress,
+      paypalData: paypalObj || null
     }
     try {
       setLoadingPlaceOrderAction(true)

@@ -19,8 +19,12 @@ export const Title = styled.div`
 
 export const ContainerMethods = styled.div`
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; TODO: uncomment when left payment methods*/
 `
+
+interface ButtonProps {
+  selected?: boolean
+}
 
 export const MethodButton = styled(Button)`
   height: 40px;
@@ -30,4 +34,8 @@ export const MethodButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  margin-left: 5px;
+
+  border: 0.5px solid
+    ${({ selected }: ButtonProps) => (selected ? 'red' : '#4a90e2')};
 `

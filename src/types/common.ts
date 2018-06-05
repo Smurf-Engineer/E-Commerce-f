@@ -342,7 +342,10 @@ export interface OrderDataInfo {
   billingCountry: string
   billingApartment: string
   payment: {
-    cardData: CreditCardData
+    stripeCharge: {
+      cardData: CreditCardData
+    }
   }
   cart: CartItems[]
+  paymentMethod: string
 }

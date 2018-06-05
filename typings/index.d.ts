@@ -115,3 +115,21 @@ declare module 'react-swipeable-bottom-sheet' {
   class SwipeableBottomSheet extends React.Component<Props, any> {}
   export default SwipeableBottomSheet
 }
+
+declare module 'react-paypal-express-checkout' {
+  interface Props {
+    currency: string
+    env: string
+    total: number
+    shipping: number
+    client: object
+    style?: object
+    onError: any
+    onSuccess: any
+    onCancel: any
+    paymentOptions?: object
+  }
+
+  class PaypalExpressBtn extends React.Component<Props, any> {}
+  export default PaypalExpressBtn
+}
