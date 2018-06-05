@@ -74,7 +74,7 @@
     "react-facebook-login": "^4.0.0",
     "react-google-login": "^3.0.4",
     "react-intl": "^2.4.0",
-    "react-paypal-express-checkout": "git+https://github.com/gustavomc/react-paypal-express-checkout",
+    "react-paypal-express-checkout-authorize": "^1.0.4",
     "react-rangeslider": "^2.2.0",
     "react-redux": "^5.0.6",
     "react-responsive": "^4.1.0",
