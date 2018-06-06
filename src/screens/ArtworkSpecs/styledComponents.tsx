@@ -18,6 +18,16 @@ export const Text = styled.div`
   text-align: center;
 `
 
+export const ColorWrapper = styled.div`
+  width: 80%;
+  text-align: center;
+  align-content: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 32px;
+`
+
 export const Subtitle = styled.div`
   height: 40px;
   color: #5f6062;
@@ -41,6 +51,53 @@ export const MainTitle = styled.div`
   text-align: center;
 `
 
+export const SecondaryTitle = styled.div`
+  height: 25px;
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  margin: 32px;
+`
+
+export const SectionText = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  margin-left: 32px;
+  margin-right: 32px;
+
+  .highlight {
+    color: red;
+    font-style: italic;
+  }
+
+  b {
+    font-weight: 700;
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 30px 10px 0px;
+    flex-direction: column;
+  }
+`
+
+export const ThirdTitle = styled.div`
+  height: 27px;
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.25px;
+  line-height: 27px;
+  text-align: center;
+  margin-top: 32px;
+`
+
 export const ContentContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -48,12 +105,35 @@ export const ContentContainer = styled.div`
   padding-left: 32px;
   padding-right: 32px;
   margin-top: 28px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
+`
+
+export const DesignText = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  margin-top: 25px;
 `
 
 export const StyledImage = styled.img`
   height: 254px;
   width: 302px;
   margin-right: 35px;
+`
+
+export const StyledFlatLockImage = styled.img`
+  width: 70%;
+  margin-top: 28px;
+  text-align: center;
+  align-content: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 export const LineCopy = styled.div`
@@ -63,4 +143,16 @@ export const LineCopy = styled.div`
   border: 1px solid #dcdcdc;
   background-color: #dcdcdc;
   margin-top: 36px;
+`
+
+export const FlatLockText = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  text-align: center;
+  margin-left: 32px;
+  margin-right: 32px;
+  margin-top: 28px;
 `
