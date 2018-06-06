@@ -1,4 +1,5 @@
 /* Routes */
+import ArtworkSpecs from '../screens/ArtworkSpecs'
 import TeamKits from '../screens/TeamKits'
 import TermsOfUse from '../screens/TermsOfUse'
 import Faq from '../screens/Faq'
@@ -23,6 +24,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/artwork-specs',
+    name: 'artworkSpecs',
+    component: ArtworkSpecs
+  },
   {
     path: '/team-kits',
     name: 'teamKits',
