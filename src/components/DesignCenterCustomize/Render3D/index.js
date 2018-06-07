@@ -75,6 +75,10 @@ class Render3D extends PureComponent {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
 
+    this.raycaster = new THREE.Raycaster()
+    this.mouse = new THREE.Vector2()
+    this.onClickPosition = new THREE.Vector2()
+
     const devicePixelRatio = window.devicePixelRatio || 1
     const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
       .matches
@@ -133,13 +137,13 @@ class Render3D extends PureComponent {
     })
     const basicText = new PIXI.Text('DAVID', style)
     // this.createDragAndDropFor(basicText)
-    basicText.interactive = true
-    basicText.buttonMode = true
-    basicText
-      .on('pointerdown', () => console.log('pointerdown'))
-      .on('pointerup', () => console.log('pointerup'))
-      .on('pointerupoutside', () => console.log('pointerupoutside'))
-      .on('pointermove', () => console.log('pointermove'))
+    // basicText.interactive = true
+    // basicText.buttonMode = true
+    // basicText
+    //   .on('pointerdown', () => console.log('pointerdown'))
+    //   .on('pointerup', () => console.log('pointerup'))
+    //   .on('pointerupoutside', () => console.log('pointerupoutside'))
+    //   .on('pointermove', () => console.log('pointermove'))
 
     basicText.x = 700
     basicText.y = 1050
@@ -172,7 +176,46 @@ class Render3D extends PureComponent {
     // controls.enabled = false
 
     this.controls = controls
+    this.container.addEventListener('mousemove', this.onMouseMove, false)
     this.start()
+  }
+
+  onMouseMove = evt => {
+    evt.preventDefault()
+
+    const array = this.getMousePosition(
+      this.container,
+      evt.clientX,
+      evt.clientY
+    )
+    this.onClickPosition.fromArray(array)
+
+    const intersects = this.getIntersects(
+      this.onClickPosition,
+      this.scene.children
+    )
+
+    if (intersects.length > 0 && intersects[0].uv) {
+      const uv = intersects[0].uv
+      intersects[0].object.material.map.transformUv(uv)
+      console.log('------------------------------------')
+      console.log(uv)
+      console.log('------------------------------------')
+      // canvas.setCrossPosition(uv.x, uv.y);
+    }
+  }
+
+  getMousePosition = (dom, x, y) => {
+    const rect = dom.getBoundingClientRect()
+    return [(x - rect.left) / rect.width, (y - rect.top) / rect.height]
+  }
+
+  getIntersects = (point, objects) => {
+    this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
+
+    this.raycaster.setFromCamera(this.mouse, this.camera)
+
+    return this.raycaster.intersectObjects(objects)
   }
 
   componentWillUnmount() {
