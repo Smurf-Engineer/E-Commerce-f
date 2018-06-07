@@ -113,6 +113,10 @@ export const ParagraphContainer = styled.div`
   margin-top: 114px;
   margin-left: 40px;
   margin-right: 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 export const OkoeImg = styled.img`
   height: 96px;
@@ -123,6 +127,10 @@ export const OkoeImg = styled.img`
 export const TechImg = styled.img`
   width: 700px;
   margin-right: 29px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 300px;
+  }
 `
 
 export const LineCopy = styled.div`
@@ -163,6 +171,10 @@ export const TechContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   margin: 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 
 export const ProContainer = styled.div`
@@ -184,6 +196,16 @@ export const ProItem = styled.div`
 
 export const ProText = styled.div`
   width: 300px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+
+  .highlight {
+    color: red;
+  }
+
+  b {
+    font-weight: 600;
+  }
 `
 
 export const ImgItem = styled.img`
