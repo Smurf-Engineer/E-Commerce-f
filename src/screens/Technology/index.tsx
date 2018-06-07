@@ -26,7 +26,8 @@ import {
   ProContainer,
   ProItem,
   ImgItem,
-  ProText
+  ProText,
+  TechParagraph
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 
@@ -195,7 +196,7 @@ export class Technology extends React.Component<Props, {}> {
                 'https://storage.googleapis.com/jakroo-storage/screens/tech/tech1.webp'
               }
             />
-            <Paragraph
+            <TechParagraph
               dangerouslySetInnerHTML={{
                 __html: intl.formatMessage(messages.chamoisTech)
               }}
@@ -207,7 +208,7 @@ export class Technology extends React.Component<Props, {}> {
                 'https://storage.googleapis.com/jakroo-storage/screens/tech/JakrooPRO.webp'
               }
             />
-            <Paragraph
+            <TechParagraph
               dangerouslySetInnerHTML={{
                 __html: intl.formatMessage(messages.proContent)
               }}

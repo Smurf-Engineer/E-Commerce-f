@@ -89,6 +89,25 @@ export const ButtonsContainer = styled.div`
   align-self: flex-end;
 `
 
+export const ParagraphContainer = styled.div`
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 114px;
+  padding-left: 40px;
+  padding-right: 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+  }
+`
+export const OkoeImg = styled.img`
+  height: 96px;
+  width: 302px;
+  margin-right: 29px;
+`
+
 export const Paragraph = styled.div`
   color: #5f6062;
   font-family: Avenir Next;
@@ -105,31 +124,29 @@ export const Paragraph = styled.div`
   }
 `
 
-export const ParagraphContainer = styled.div`
-  background-color: #fff;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin-top: 114px;
-  margin-left: 40px;
-  margin-right: 40px;
-
-  @media (min-width: 320px) and (max-width: 480px) {
-    flex-direction: column;
-  }
-`
-export const OkoeImg = styled.img`
-  height: 96px;
-  width: 302px;
-  margin-right: 29px;
-`
-
 export const TechImg = styled.img`
-  width: 700px;
+  width: 30%;
   margin-right: 29px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 300px;
+  }
+`
+
+export const TechParagraph = styled.div`
+  color: #5f6062;
+  font-family: Avenir Next;
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  width: 70%;
+
+  .highlight {
+    color: red;
+  }
+
+  b {
+    font-weight: 600;
   }
 `
 
@@ -170,7 +187,7 @@ export const TechContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin: 40px;
+  padding: 40px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;

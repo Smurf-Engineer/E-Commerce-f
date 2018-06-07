@@ -1,4 +1,5 @@
 /* Routes */
+import WarrantyProgram from '../screens/WarrantyProgram'
 import Technology from '../screens/Technology'
 import ArtworkSpecs from '../screens/ArtworkSpecs'
 import TeamKits from '../screens/TeamKits'
@@ -25,6 +26,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/warranty-program',
+    name: 'warrantyProgram',
+    component: WarrantyProgram
+  },
   {
     path: '/technology',
     name: 'technology',
