@@ -34,6 +34,65 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
 }
 
+const fabricsArray = [
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/Fullmoon.webp',
+    id: 'fullMoonContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/Timeout.webp',
+    id: 'timeOutContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/Saphire.webp',
+    id: 'saphireContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/Diamond.webp',
+    id: 'diamondContent'
+  },
+  {
+    url: 'https://storage.googleapis.com/jakroo-storage/screens/tech/Onyx.webp',
+    id: 'onyxContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/Fastflow.webp',
+    id: 'fastFlowContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/airsteam.webp',
+    id: 'airStreamContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/atom85.webp',
+    id: 'atomContent'
+  }
+]
+
+const techArray = [
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/standard.webp',
+    id: 'standardContent'
+  },
+  {
+    url: 'https://storage.googleapis.com/jakroo-storage/screens/tech/Tri.webp',
+    id: 'triContent'
+  },
+  {
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/tech/Youth.webp',
+    id: 'youthContent'
+  }
+]
+
 export class Technology extends React.Component<Props, {}> {
   private tech: any
   private fabrics: any
@@ -53,75 +112,13 @@ export class Technology extends React.Component<Props, {}> {
 
   render() {
     const { intl, history } = this.props
-
-    const fabricsArray = [
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Fullmoon.webp',
-        message: messages.fullMoonContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Timeout.webp',
-        message: messages.timeOutContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Saphire.webp',
-        message: messages.saphireContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Diamond.webp',
-        message: messages.diamondContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Onyx.webp',
-        message: messages.onyxContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Fastflow.webp',
-        message: messages.fastFlowContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/airsteam.webp',
-        message: messages.airStreamContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/atom85.webp',
-        message: messages.atomContent
-      }
-    ]
-
-    const techArray = [
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/standard.webp',
-        message: messages.standardContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Tri.webp',
-        message: messages.triContent
-      },
-      {
-        url:
-          'https://storage.googleapis.com/jakroo-storage/screens/tech/Youth.webp',
-        message: messages.youthContent
-      }
-    ]
-
     const fabricsList = fabricsArray.map((fabric, index) => {
       return (
         <ProItem key={index}>
           <ImgItem src={fabric.url} />
           <ProText
             dangerouslySetInnerHTML={{
-              __html: intl.formatMessage(fabric.message)
+              __html: intl.formatMessage(messages[fabric.id])
             }}
           />
         </ProItem>
@@ -134,7 +131,7 @@ export class Technology extends React.Component<Props, {}> {
           <ImgItem src={tech.url} />
           <ProText
             dangerouslySetInnerHTML={{
-              __html: intl.formatMessage(tech.message)
+              __html: intl.formatMessage(messages[tech.id])
             }}
           />
         </ProItem>
