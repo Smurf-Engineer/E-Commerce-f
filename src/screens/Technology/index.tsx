@@ -38,7 +38,7 @@ export class Technology extends React.Component<Props, {}> {
   private tech: any
   private fabrics: any
 
-  handleOnButtonClick = (event: any, index: number) => {
+  handleOnButtonClick = (index: number) => () => {
     switch (index) {
       case 0:
         zenscroll.to(this.tech)
@@ -53,6 +53,94 @@ export class Technology extends React.Component<Props, {}> {
 
   render() {
     const { intl, history } = this.props
+
+    const fabricsArray = [
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Fullmoon.webp',
+        message: messages.fullMoonContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Timeout.webp',
+        message: messages.timeOutContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Saphire.webp',
+        message: messages.saphireContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Diamond.webp',
+        message: messages.diamondContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Onyx.webp',
+        message: messages.onyxContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Fastflow.webp',
+        message: messages.fastFlowContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/airsteam.webp',
+        message: messages.airStreamContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/atom85.webp',
+        message: messages.atomContent
+      }
+    ]
+
+    const techArray = [
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/standard.webp',
+        message: messages.standardContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Tri.webp',
+        message: messages.triContent
+      },
+      {
+        url:
+          'https://storage.googleapis.com/jakroo-storage/screens/tech/Youth.webp',
+        message: messages.youthContent
+      }
+    ]
+
+    const fabricsList = fabricsArray.map((fabric, index) => {
+      return (
+        <ProItem key={index}>
+          <ImgItem src={fabric.url} />
+          <ProText
+            dangerouslySetInnerHTML={{
+              __html: intl.formatMessage(fabric.message)
+            }}
+          />
+        </ProItem>
+      )
+    })
+
+    const proList = techArray.map((tech, index) => {
+      return (
+        <ProItem key={index}>
+          <ImgItem src={tech.url} />
+          <ProText
+            dangerouslySetInnerHTML={{
+              __html: intl.formatMessage(tech.message)
+            }}
+          />
+        </ProItem>
+      )
+    })
+
     return (
       <Layout {...{ intl, history }}>
         <Container>
@@ -67,10 +155,10 @@ export class Technology extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.title} />
               </Title>
               <ButtonsContainer>
-                <TopImageButton onClick={e => this.handleOnButtonClick(e, 0)}>
+                <TopImageButton onClick={this.handleOnButtonClick(0)}>
                   <FormattedMessage {...messages.chamoisTitle} />
                 </TopImageButton>
-                <TopImageButton onClick={e => this.handleOnButtonClick(e, 1)}>
+                <TopImageButton onClick={this.handleOnButtonClick(1)}>
                   <FormattedMessage {...messages.fabricsTitle} />
                 </TopImageButton>
               </ButtonsContainer>
@@ -125,44 +213,7 @@ export class Technology extends React.Component<Props, {}> {
               }}
             />
           </TechContainer>
-          <ProContainer>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/standard.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.standardContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Tri.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.triContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Youth.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.youthContent)
-                }}
-              />
-            </ProItem>
-          </ProContainer>
+          <ProContainer>{proList}</ProContainer>
           <LineCopy />
           <div
             ref={section => {
@@ -173,104 +224,7 @@ export class Technology extends React.Component<Props, {}> {
               <FormattedMessage {...messages.fabricsTitle} />
             </SecondTitle>
           </div>
-          <ProContainer>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Fullmoon.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.fullMoonContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Timeout.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.timeOutContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Saphire.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.saphireContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Diamond.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.diamondContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Onyx.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.onyxContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/Fastflow.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.fastFlowContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/airsteam.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.airStreamContent)
-                }}
-              />
-            </ProItem>
-            <ProItem>
-              <ImgItem
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/tech/atom85.webp'
-                }
-              />
-              <ProText
-                dangerouslySetInnerHTML={{
-                  __html: intl.formatMessage(messages.atomContent)
-                }}
-              />
-            </ProItem>
-          </ProContainer>
+          <ProContainer>{fabricsList}</ProContainer>
         </Container>
       </Layout>
     )
