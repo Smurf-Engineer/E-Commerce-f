@@ -30,7 +30,7 @@ const DesignSupport = ({ formatMessage }: Props) => {
         </UnderlinedLink>
       </Text>
       <Text>
-        <UnderlinedLink link="https://www.jakroo.com/us/technology.html">
+        <UnderlinedLink link="/technology">
           {formatMessage(messages.technology)}
         </UnderlinedLink>
       </Text>

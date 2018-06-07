@@ -57,7 +57,7 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
           <ContentContainer>
             <StyledImage
               src={
-                'https://storage.googleapis.com/jakroo-storage/screens/raster.png'
+                'https://storage.googleapis.com/jakroo-storage/screens/artwork/raster.webp'
               }
             />
             <DesignText>
@@ -89,7 +89,7 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
           </FlatLockText>
           <StyledFlatLockImage
             src={
-              'https://storage.googleapis.com/jakroo-storage/screens/FSC.png'
+              'https://storage.googleapis.com/jakroo-storage/screens/artwork/FSCW.webp'
             }
           />
         </Container>
