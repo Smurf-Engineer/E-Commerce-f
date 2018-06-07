@@ -1,4 +1,5 @@
 /* Routes */
+import Technology from '../screens/Technology'
 import ArtworkSpecs from '../screens/ArtworkSpecs'
 import TeamKits from '../screens/TeamKits'
 import TermsOfUse from '../screens/TermsOfUse'
@@ -24,6 +25,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/technology',
+    name: 'technology',
+    component: Technology
+  },
   {
     path: '/artwork-specs',
     name: 'artworkSpecs',
