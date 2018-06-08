@@ -179,30 +179,32 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       currency = region.currencies[currencyIndex] || {}
     }
 
+    const innerContent = (
+      <Menu
+        regions={regionsResult}
+        currentRegion={
+          currentRegionTemp !== null ? currentRegionTemp : regionIndex
+        }
+        currentLanguage={
+          currentLanguageTemp !== null ? currentLanguageTemp : languageIndex
+        }
+        currentCurrency={
+          currentCurrencyTemp !== null ? currentCurrencyTemp : currencyIndex
+        }
+        onSelectRegion={this.handleOnSelectRegion}
+        onSelectLanguage={this.handleOnSelectLanguage}
+        onSelectCurrency={this.handleOnSelectCurrency}
+        onClickConfirm={this.handleOnClickConfirm}
+      />
+    )
+
     return !isMobile ? (
       <Popover
         overlayStyle={overStyle}
         trigger="hover"
         placement="bottom"
         onVisibleChange={this.handleOnVisibleChange}
-        content={
-          <Menu
-            regions={regionsResult}
-            currentRegion={
-              currentRegionTemp !== null ? currentRegionTemp : regionIndex
-            }
-            currentLanguage={
-              currentLanguageTemp !== null ? currentLanguageTemp : languageIndex
-            }
-            currentCurrency={
-              currentCurrencyTemp !== null ? currentCurrencyTemp : currencyIndex
-            }
-            onSelectRegion={this.handleOnSelectRegion}
-            onSelectLanguage={this.handleOnSelectLanguage}
-            onSelectCurrency={this.handleOnSelectCurrency}
-            onClickConfirm={this.handleOnClickConfirm}
-          />
-        }
+        content={innerContent}
       >
         <Regions>
           <img src={region.icon} />
@@ -229,24 +231,9 @@ export class MenuRegion extends React.PureComponent<Props, State> {
           closable={false}
           maskClosable={true}
           destroyOnClose={true}
-          style={{ width: '80%' }}
+          width={'80%'}
         >
-          <Menu
-            regions={regionsResult}
-            currentRegion={
-              currentRegionTemp !== null ? currentRegionTemp : regionIndex
-            }
-            currentLanguage={
-              currentLanguageTemp !== null ? currentLanguageTemp : languageIndex
-            }
-            currentCurrency={
-              currentCurrencyTemp !== null ? currentCurrencyTemp : currencyIndex
-            }
-            onSelectRegion={this.handleOnSelectRegion}
-            onSelectLanguage={this.handleOnSelectLanguage}
-            onSelectCurrency={this.handleOnSelectCurrency}
-            onClickConfirm={this.handleOnClickConfirm}
-          />
+          {innerContent}
         </Modal>
       </div>
     )

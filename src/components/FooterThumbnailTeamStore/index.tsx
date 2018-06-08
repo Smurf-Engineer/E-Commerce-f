@@ -25,18 +25,18 @@ interface Props {
   description: string
   progress: number
   targetRange?: Filter
+  targetPrice: number
+  currentPrice: number
 }
-
-// TODO: get from query
-const estimatedPrice = '$63'
-const currentPrice = '$119'
 
 const FooterThumbnailTeamStore = ({
   id,
   name,
   description,
   progress,
-  targetRange
+  targetRange,
+  targetPrice,
+  currentPrice
 }: Props) => {
   const totalPercentage: number = targetRange
     ? parseInt(targetRange.name.split('-')[0], 10)
@@ -51,13 +51,13 @@ const FooterThumbnailTeamStore = ({
         <Label>
           <FormattedMessage {...messages.estimatedPrice} />
         </Label>
-        <PriceLabel>{estimatedPrice}</PriceLabel>
+        <PriceLabel>{`$${targetPrice}`}</PriceLabel>
       </PricesContainer>
       <PricesContainer>
         <Label>
           <FormattedMessage {...messages.currentPrice} />
         </Label>
-        <RedPriceLabel>{currentPrice}</RedPriceLabel>
+        <RedPriceLabel>{`$${currentPrice}`}</RedPriceLabel>
       </PricesContainer>
       <Bottom>
         <ProgressWrapper>
