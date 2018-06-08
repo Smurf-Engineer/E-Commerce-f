@@ -49,6 +49,7 @@ interface Props {
 
 interface StateProps {
   openForgotPassword: boolean
+  isMobile: boolean
 }
 
 class MenuBar extends React.Component<Props, StateProps> {
@@ -56,7 +57,15 @@ class MenuBar extends React.Component<Props, StateProps> {
     hideBottom: false
   }
   state = {
-    openForgotPassword: false
+    openForgotPassword: false,
+    isMobile: false
+  }
+
+  componentDidMount() {
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    this.setState({ isMobile })
   }
 
   handleOnGoHome = () => window.location.replace('/')
@@ -67,7 +76,7 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { openForgotPassword } = this.state
+    const { openForgotPassword, isMobile } = this.state
     const {
       history,
       searchFunc,
@@ -107,7 +116,8 @@ class MenuBar extends React.Component<Props, StateProps> {
           onChangeLocation,
           currentRegion,
           currentLanguage,
-          currentCurrency
+          currentCurrency,
+          isMobile
         }}
       />
     )
