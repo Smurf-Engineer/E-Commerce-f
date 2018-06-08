@@ -8,9 +8,10 @@ import colors from './colors'
 
 interface Props {
   onSelectColor: (color: string) => void
+  height?: string
 }
 
-const ColorList = ({ onSelectColor }: Props) => {
+const ColorList = ({ onSelectColor, height }: Props) => {
   const handleOnSelectColor = (color: string) => () => onSelectColor(color)
   const colorsList = colors.map(({ value, name }, index) => (
     <Tooltip key={index} title={name}>
@@ -20,7 +21,7 @@ const ColorList = ({ onSelectColor }: Props) => {
     </Tooltip>
   ))
   return (
-    <Container>
+    <Container height={height}>
       <Row>{colorsList}</Row>
     </Container>
   )

@@ -8,6 +8,7 @@ const Search = Input.Search
 
 interface StyledProps {
   searchWidth?: string
+  onHeader?: boolean
 }
 export const Container = styled.div`
   ${({ searchWidth }: StyledProps) =>
@@ -20,6 +21,8 @@ export const Text = styled.div`
 
 export const SearchInput = styled(Search)`
   height: 50px;
+  background-color: ${({ onHeader }: StyledProps) =>
+    onHeader ? 'transparent' : '#fff'};
   input {
     width: ${(props: any) => props.width};
     border-radius: 0px;
@@ -39,7 +42,9 @@ export const SearchInput = styled(Search)`
 
   .ant-btn-primary {
     color: grey;
-    background-color: #fff;
-    border-color: #fff;
+    background-color: ${({ onHeader }: StyledProps) =>
+      onHeader ? 'transparent' : '#fff'};
+    border-color: ${({ onHeader }: StyledProps) =>
+      onHeader ? 'transparent' : '#fff'};
   }
 `

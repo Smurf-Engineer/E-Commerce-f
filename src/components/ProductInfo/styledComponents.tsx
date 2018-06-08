@@ -1,6 +1,11 @@
 /**
  * Styled Components - Created by cazarez on 13/03/18.
  */
+interface TitleProps {
+  titleWidth?: string
+  titleColor?: string
+}
+
 import styled from 'styled-components'
 import Divider from 'antd/lib/divider'
 
@@ -9,8 +14,10 @@ export const Container = styled.div`
 `
 
 export const Title = styled.div`
-  width: 411.45px;
-  color: #5f6062;
+  width: ${({ titleWidth }: TitleProps) =>
+    titleWidth ? titleWidth : '411.45px'};
+  color: ${({ titleColor }: TitleProps) =>
+    titleColor ? titleColor : '#5f6062'};
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;

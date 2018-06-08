@@ -1,4 +1,10 @@
 /* Routes */
+import Technology from '../screens/Technology'
+import ArtworkSpecs from '../screens/ArtworkSpecs'
+import TeamKits from '../screens/TeamKits'
+import TermsOfUse from '../screens/TermsOfUse'
+import Faq from '../screens/Faq'
+import Compliance from '../screens/Compliance'
 import OrderPlaced from '../screens/OrderPlaced'
 import Checkout from '../screens/Checkout'
 import DesignerTool from '../screens/DesignerTool'
@@ -19,6 +25,36 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/technology',
+    name: 'technology',
+    component: Technology
+  },
+  {
+    path: '/artwork-specs',
+    name: 'artworkSpecs',
+    component: ArtworkSpecs
+  },
+  {
+    path: '/team-kits',
+    name: 'teamKits',
+    component: TeamKits
+  },
+  {
+    path: '/terms-of-use',
+    name: 'termsOfUse',
+    component: TermsOfUse
+  },
+  {
+    path: '/faq',
+    name: 'faq',
+    component: Faq
+  },
+  {
+    path: '/compliance',
+    name: 'compliance',
+    component: Compliance
+  },
   {
     path: '/order-placed',
     name: 'orderPlaced',

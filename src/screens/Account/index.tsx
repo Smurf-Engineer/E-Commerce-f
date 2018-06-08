@@ -9,12 +9,13 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import * as accountActions from './actions'
 import messages from './messages'
-import { options, SCREEN_LOCKER, ADDRESSES } from './constants'
+import { options, SCREEN_LOCKER, ADDRESSES, CREDIT_CARDS } from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyAddresses from '../../components/MyAddresses'
+import MyCards from '../../components/MyCards'
 import {
   Container,
   SideBar,
@@ -73,6 +74,8 @@ export class Account extends React.Component<Props, {}> {
         )
       case ADDRESSES:
         return <MyAddresses formatMessage={intl.formatMessage} />
+      case CREDIT_CARDS:
+        return <MyCards formatMessage={intl.formatMessage} />
       default:
         return null
     }

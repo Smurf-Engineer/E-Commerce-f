@@ -15,9 +15,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
       <Text>
-        <Span link="https://www.jakroo.com/us/faq.html">
-          {formatMessage(messages.faq)}
-        </Span>
+        <Span link="/faq">{formatMessage(messages.faq)}</Span>
       </Text>
       <Text>
         <Span link="http://www.jakroo.com/price-sheets/2018Q1-USD_RETAIL_COND-2.pdf">
@@ -35,7 +33,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
         </Span>
       </Text>
       <Text>
-        <Span link="https://www.jakroo.com/us/privacy-policy.html">
+        <Span link="/terms-of-use#PrivacyPolicy">
           {formatMessage(messages.privacyPolicy)}
         </Span>
       </Text>
