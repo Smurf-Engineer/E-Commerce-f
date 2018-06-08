@@ -179,10 +179,17 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (!totalItems) {
         break
       }
+
+      if (!priceRangeItem.quantity) {
+        break
+      }
+
       const val =
-        priceRangeItem.quantity === 'Personal'
+        priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
           ? 1
-          : parseInt(priceRangeItem.quantity.split('-')[1], 10)
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
 
       if (val >= totalItems) {
         markslider = priceRangeItem

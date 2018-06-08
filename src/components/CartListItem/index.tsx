@@ -100,7 +100,9 @@ class CartListItem extends React.Component<Props, {}> {
       const val =
         priceRangeItem.quantity === 'Personal'
           ? 1
-          : parseInt(priceRangeItem.quantity.split('-')[1], 10)
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
 
       if (val >= totalItems) {
         markslider = priceRangeItem
@@ -112,7 +114,7 @@ class CartListItem extends React.Component<Props, {}> {
 
   getNextPrice(priceRanges: PriceRange[], totalItems: number) {
     const priceRange = priceRanges[priceRanges.length - 1]
-    let markslider = { items: 1, price: priceRange.price }
+    let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
     for (const priceRangeItem of priceRanges) {
       if (!totalItems) {
         break
@@ -120,7 +122,9 @@ class CartListItem extends React.Component<Props, {}> {
       const val =
         priceRangeItem.quantity === 'Personal'
           ? 1
-          : parseInt(priceRangeItem.quantity.split('-')[0], 10)
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
 
       if (val > totalItems) {
         markslider = { items: val - totalItems, price: priceRangeItem.price }
@@ -162,16 +166,15 @@ class CartListItem extends React.Component<Props, {}> {
     let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
 
     priceRange =
-      priceRange.price === 0
+      priceRange && priceRange.price === 0
         ? productPriceRanges[productPriceRanges.length - 1]
         : priceRange
 
-    const itemTotal =
-      cartItem.product && productPriceRanges
-        ? priceRange.price * quantitySum
-        : 0
+    const itemTotal = priceRange
+      ? priceRange.price * quantitySum
+      : unitPrice || 0 * quantitySum
     const total = itemTotal || productTotal
-    const unitaryPrice = priceRange.price || unitPrice
+    const unitaryPrice = priceRange ? priceRange.price : unitPrice
 
     const nextPrice = this.getNextPrice(productPriceRanges, quantitySum)
 
