@@ -557,11 +557,14 @@ const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
   PlaceOrderMutation,
-  connect(mapStateToProps, {
-    ...checkoutActions,
-    getTotalItemsIncart,
-    resetReducerShoppingCartAction
-  })
+  connect(
+    mapStateToProps,
+    {
+      ...checkoutActions,
+      getTotalItemsIncart,
+      resetReducerShoppingCartAction
+    }
+  )
 )(Checkout)
 
 export default CheckoutEnhance

@@ -230,7 +230,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
           footer={null}
           closable={false}
           maskClosable={true}
-          destroyOnClose={true}
+          onCancel={this.handleModalClick}
           width={'80%'}
         >
           {innerContent}

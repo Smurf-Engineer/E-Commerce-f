@@ -19,6 +19,7 @@ import {
   BottomDivider,
   FooterItem
 } from './styledComponents'
+import get from 'lodash/get'
 import CartListItemTable from '../../components/CartListItemTable'
 import {
   PriceRange,
@@ -90,12 +91,50 @@ interface Props {
 }
 
 class CartListItem extends React.Component<Props, {}> {
+  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+    let markslider = { quantity: '0', price: 0 }
+    for (const priceRangeItem of priceRanges) {
+      if (!totalItems) {
+        break
+      }
+      const val =
+        priceRangeItem.quantity === 'Personal'
+          ? 1
+          : parseInt(priceRangeItem.quantity.split('-')[1], 10)
+
+      if (val >= totalItems) {
+        markslider = priceRangeItem
+        break
+      }
+    }
+    return markslider
+  }
+
+  getNextPrice(priceRanges: PriceRange[], totalItems: number) {
+    const priceRange = priceRanges[priceRanges.length - 1]
+    let markslider = { items: 1, price: priceRange.price }
+    for (const priceRangeItem of priceRanges) {
+      if (!totalItems) {
+        break
+      }
+      const val =
+        priceRangeItem.quantity === 'Personal'
+          ? 1
+          : parseInt(priceRangeItem.quantity.split('-')[0], 10)
+
+      if (val > totalItems) {
+        markslider = { items: val - totalItems, price: priceRangeItem.price }
+        break
+      }
+    }
+    return markslider
+  }
+
   render() {
     const {
       formatMessage,
       title,
       description,
-      price,
       image,
       cartItem,
       itemIndex,
@@ -117,13 +156,24 @@ class CartListItem extends React.Component<Props, {}> {
     })
 
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+    const productPriceRanges = get(cartItem, 'product.priceRange', [])
+
+    let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
+
+    priceRange =
+      priceRange.price === 0
+        ? productPriceRanges[productPriceRanges.length - 1]
+        : priceRange
+
     const itemTotal =
-      cartItem.product && cartItem.product.priceRange
-        ? cartItem.product.priceRange[0].price * quantitySum
+      cartItem.product && productPriceRanges
+        ? priceRange.price * quantitySum
         : 0
     const total = itemTotal || productTotal
-    const unitaryPrice = price.price || unitPrice
-    const numProductsToPriceLow = 1 // TODO: add real num of products
+    const unitaryPrice = priceRange.price || unitPrice
+
+    const nextPrice = this.getNextPrice(productPriceRanges, quantitySum)
 
     return (
       <ItemDetails>
@@ -148,8 +198,8 @@ class CartListItem extends React.Component<Props, {}> {
                     <FormattedMessage
                       {...messages.addMoreFor}
                       values={{
-                        price: price.price,
-                        products: numProductsToPriceLow
+                        price: nextPrice.price,
+                        products: nextPrice.items
                       }}
                     />
                   </ItemDetailsHeaderPriceDetail>
