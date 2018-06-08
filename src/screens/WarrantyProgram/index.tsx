@@ -12,13 +12,13 @@ import messages from './messages'
 import {
   Container,
   Text,
-  LineCopy,
-  TitleParagraph,
-  CoverageTitle,
-  CoverageSubTitle,
-  CoverageText
+  SectionContainder,
+  SectionTitle,
+  SectionText,
+  SectionSubTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
+import Divider from 'antd/lib/divider'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -30,26 +30,31 @@ export class WarrantyProgram extends React.Component<Props, {}> {
     return (
       <Layout {...{ intl, history }}>
         <Container>
-          <Text>
-            <FormattedMessage {...messages.title} />
-          </Text>
-          <TitleParagraph
-            dangerouslySetInnerHTML={{
-              __html: intl.formatMessage(messages.titleText)
-            }}
-          />
-          <LineCopy />
-          <CoverageTitle>
-            <FormattedMessage {...messages.warrantyTitle} />
-          </CoverageTitle>
-          <CoverageSubTitle>
-            <FormattedMessage {...messages.warrantySubtitle} />
-          </CoverageSubTitle>
-          <CoverageText
-            dangerouslySetInnerHTML={{
-              __html: intl.formatMessage(messages.warrantyText)
-            }}
-          />
+          <SectionContainder>
+            <Text>
+              <FormattedMessage {...messages.title} />
+            </Text>
+            <SectionText
+              dangerouslySetInnerHTML={{
+                __html: intl.formatMessage(messages.titleText)
+              }}
+            />
+          </SectionContainder>
+          <Divider />
+          <SectionContainder>
+            <SectionTitle id="TermsAndConditions">
+              {intl.formatMessage(messages.warrantyTitle).toLocaleUpperCase()}
+            </SectionTitle>
+            <SectionSubTitle>
+              {intl.formatMessage(messages.warrantySubtitle)}
+            </SectionSubTitle>
+            <SectionText
+              dangerouslySetInnerHTML={{
+                __html: intl.formatMessage(messages.warrantyText)
+              }}
+            />
+          </SectionContainder>
+          <Divider />
         </Container>
       </Layout>
     )

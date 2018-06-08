@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import findIndex from 'lodash/findIndex'
+import Modal from 'antd/lib/modal'
 import { regionsQuery } from './data'
 import Popover from 'antd/lib/popover'
 import Menu from './Menu'
@@ -25,12 +26,14 @@ interface Props {
   currentRegion: string
   currentLanguage: string
   currentCurrency: string
+  isMobile?: boolean
 }
 
 interface State {
   currentRegionTemp: number | null
   currentLanguageTemp: number | null
   currentCurrencyTemp: number | null
+  openModal: boolean
 }
 
 export class MenuRegion extends React.PureComponent<Props, State> {
@@ -39,7 +42,8 @@ export class MenuRegion extends React.PureComponent<Props, State> {
   state = {
     currentRegionTemp: null,
     currentLanguageTemp: null,
-    currentCurrencyTemp: null
+    currentCurrencyTemp: null,
+    openModal: false
   }
 
   handleOnSelectRegion = ({ key }: any) =>
@@ -56,6 +60,11 @@ export class MenuRegion extends React.PureComponent<Props, State> {
 
   handleOnSelectCurrency = (currentCurrencyTemp: number) => {
     this.setState({ currentCurrencyTemp })
+  }
+
+  handleModalClick = () => {
+    const { openModal } = this.state
+    this.setState({ openModal: !openModal })
   }
 
   getCurrentIndex = (list: any[], param: string, key: string): number => {
@@ -135,12 +144,14 @@ export class MenuRegion extends React.PureComponent<Props, State> {
     const {
       currentRegionTemp,
       currentLanguageTemp,
-      currentCurrencyTemp
+      currentCurrencyTemp,
+      openModal
     } = this.state
     const {
       currentRegion,
       currentLanguage,
       currentCurrency,
+      isMobile,
       data: { regionsResult, loading, error }
     } = this.props
 
@@ -168,7 +179,7 @@ export class MenuRegion extends React.PureComponent<Props, State> {
       currency = region.currencies[currencyIndex] || {}
     }
 
-    return (
+    return !isMobile ? (
       <Popover
         overlayStyle={overStyle}
         trigger="hover"
@@ -202,6 +213,42 @@ export class MenuRegion extends React.PureComponent<Props, State> {
           </TopText>
         </Regions>
       </Popover>
+    ) : (
+      <div>
+        <Regions onClick={this.handleModalClick}>
+          <img src={region.icon} />
+          <TopText>
+            {loading || error || !currency.shortName
+              ? null
+              : currency.shortName.toUpperCase()}
+          </TopText>
+        </Regions>
+        <Modal
+          visible={openModal}
+          footer={null}
+          closable={false}
+          maskClosable={true}
+          destroyOnClose={true}
+          style={{ width: '80%' }}
+        >
+          <Menu
+            regions={regionsResult}
+            currentRegion={
+              currentRegionTemp !== null ? currentRegionTemp : regionIndex
+            }
+            currentLanguage={
+              currentLanguageTemp !== null ? currentLanguageTemp : languageIndex
+            }
+            currentCurrency={
+              currentCurrencyTemp !== null ? currentCurrencyTemp : currencyIndex
+            }
+            onSelectRegion={this.handleOnSelectRegion}
+            onSelectLanguage={this.handleOnSelectLanguage}
+            onSelectCurrency={this.handleOnSelectCurrency}
+            onClickConfirm={this.handleOnClickConfirm}
+          />
+        </Modal>
+      </div>
     )
   }
 }
