@@ -97,6 +97,7 @@ export const ParagraphContainer = styled.div`
   margin-top: 114px;
   padding-left: 40px;
   padding-right: 40px;
+  font-family: 'Avenir Next';
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;
@@ -135,7 +136,7 @@ export const TechImg = styled.img`
 
 export const TechParagraph = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
+  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -188,6 +189,7 @@ export const TechContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   padding: 40px;
+  font-family: 'Avenir Next';
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;
@@ -202,6 +204,7 @@ export const ProContainer = styled.div`
   justify-content: space-evenly;
   width: 100%;
   padding: 40px;
+  font-family: 'Avenir Next';
 `
 
 export const ProItem = styled.div`

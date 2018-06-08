@@ -100,7 +100,9 @@ class CartListItem extends React.Component<Props, {}> {
       const val =
         priceRangeItem.quantity === 'Personal'
           ? 1
-          : parseInt(priceRangeItem.quantity.split('-')[1], 10)
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
 
       if (val >= totalItems) {
         markslider = priceRangeItem
@@ -120,7 +122,9 @@ class CartListItem extends React.Component<Props, {}> {
       const val =
         priceRangeItem.quantity === 'Personal'
           ? 1
-          : parseInt(priceRangeItem.quantity.split('-')[0], 10)
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
 
       if (val > totalItems) {
         markslider = { items: val - totalItems, price: priceRangeItem.price }
@@ -141,7 +145,6 @@ class CartListItem extends React.Component<Props, {}> {
       onlyRead,
       productTotal,
       unitPrice,
-      price,
       handleAddItemDetail = () => {},
       handledeleteItemDetail = () => {},
       setLabelItemDetail = () => {},
@@ -160,28 +163,12 @@ class CartListItem extends React.Component<Props, {}> {
 
     const productPriceRanges = get(cartItem, 'product.priceRange', [])
 
-    console.log('--------------cartItem-------------')
-    console.log(cartItem)
-    console.log('---------------------------')
-
-    console.log('--------------unitPrice-------------')
-    console.log(unitPrice)
-    console.log('---------------------------')
-
     let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
 
     priceRange =
       priceRange && priceRange.price === 0
         ? productPriceRanges[productPriceRanges.length - 1]
         : priceRange
-
-    console.log('------------priceRange---------------')
-    console.log(priceRange)
-    console.log('---------------------------')
-
-    console.log('-----------price----------------')
-    console.log(price)
-    console.log('---------------------------')
 
     const itemTotal = priceRange
       ? priceRange.price * quantitySum
