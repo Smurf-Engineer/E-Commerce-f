@@ -56,6 +56,5 @@ export const MenuOption = styled.div`
 `
 
 export const menuStyle = {
-  // width: 150,
   marginLeft: 58
 }
