@@ -75,6 +75,10 @@ class Render3D extends PureComponent {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
 
+    this.raycaster = new THREE.Raycaster()
+    this.mouse = new THREE.Vector2()
+    this.onClickPosition = new THREE.Vector2()
+
     const devicePixelRatio = window.devicePixelRatio || 1
     const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
       .matches
@@ -114,6 +118,41 @@ class Render3D extends PureComponent {
     const objLoader = new THREE.OBJLoader()
     const textureLoader = new THREE.TextureLoader()
 
+    // TODO: Test PixiJS
+    const scene2D = new PIXI.Stage()
+    const canvas2D = PIXI.autoDetectRenderer(3880, 3880, {
+      transparent: true
+    })
+    canvas2D.view.style.position = 'absolute'
+    canvas2D.view.style.top = '0px'
+    canvas2D.view.style.left = '0px'
+
+    // const style = new PIXI.TextStyle({
+    //   fontFamily: 'Avenir',
+    //   fontSize: 120,
+    //   fontWeight: 'bold',
+    //   fill: 'green',
+    //   stroke: 'red',
+    //   strokeThickness: 3
+    // })
+    // const basicText = new PIXI.Text('DAVID', style)
+    // this.createDragAndDropFor(basicText)
+    // basicText.interactive = true
+    // basicText.buttonMode = true
+    // basicText
+    //   .on('pointerdown', () => console.log('pointerdown'))
+    //   .on('pointerup', () => console.log('pointerup'))
+    //   .on('pointerupoutside', () => console.log('pointerupoutside'))
+    //   .on('pointermove', () => console.log('pointermove'))
+
+    // basicText.x = 700
+    // basicText.y = 1050
+
+    // scene2D.addChild(basicText)
+
+    this.scene2D = scene2D
+    this.canvas2D = canvas2D
+
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
@@ -134,10 +173,49 @@ class Render3D extends PureComponent {
     controls.minDistance = 0
     controls.maxDistance = 350
     controls.enableZoom = isMobile
-    controls.enabled = false
+    // controls.enabled = false
 
     this.controls = controls
+    // this.container.addEventListener('mousemove', this.onMouseMove, false)
     this.start()
+  }
+
+  onMouseMove = evt => {
+    evt.preventDefault()
+
+    const array = this.getMousePosition(
+      this.container,
+      evt.clientX,
+      evt.clientY
+    )
+    this.onClickPosition.fromArray(array)
+
+    const intersects = this.getIntersects(
+      this.onClickPosition,
+      this.scene.children
+    )
+
+    if (intersects.length > 0 && intersects[0].uv) {
+      const uv = intersects[0].uv
+      intersects[0].object.material.map.transformUv(uv)
+      console.log('------------------------------------')
+      console.log(uv)
+      console.log('------------------------------------')
+      // canvas.setCrossPosition(uv.x, uv.y);
+    }
+  }
+
+  getMousePosition = (dom, x, y) => {
+    const rect = dom.getBoundingClientRect()
+    return [(x - rect.left) / rect.width, (y - rect.top) / rect.height]
+  }
+
+  getIntersects = (point, objects) => {
+    this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
+
+    this.raycaster.setFromCamera(this.mouse, this.camera)
+
+    return this.raycaster.intersectObjects(objects)
   }
 
   componentWillUnmount() {
@@ -229,67 +307,10 @@ class Render3D extends PureComponent {
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
 
-          /*
-          /* TODO: FrabircJS Test */
-          const canvasDimension = 3880
-          const canvas = document.createElement('canvas')
-          canvas.width = canvasDimension
-          canvas.height = canvasDimension
-          const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvasTexture.minFilter = THREE.LinearFilter
-
-          /* TODO: FrabircJS Test */
-          this.canvasTexture = new fabric.Canvas(canvas, {
-            hoverCursor: 'pointer'
-          })
-
-          // TODO: FabricJS
-          const rect = new fabric.Rect({
-            left: 800,
-            top: 1050,
-            fill: 'green',
-            width: 200,
-            height: 200
-          })
-
-          // TODO: FabricJS
-          this.canvasTexture.add(rect)
-
-          this.canvasTexture.on(
-            'after:render',
-            () => (canvasTexture.needsUpdate = true)
-          )
-          this.canvasTexture.on('mouse:over', e => {
-            e.target.set('fill', 'red')
-            this.canvasTexture.renderAll()
-            console.log('------------------------------------')
-            console.log('mouse:over')
-            console.log('------------------------------------')
-            canvasTexture.needsUpdate = true
-          })
-          this.canvasTexture.on('object:modified', () => {
-            console.log('------------------------------------')
-            console.log('object:modified')
-            console.log('------------------------------------')
-          })
-          this.canvasTexture.on('mouse:down', () => {
-            console.log('------------------------------------')
-            console.log('mouse:down')
-            console.log('------------------------------------')
-          })
-          this.canvasTexture.on('mouse:move', () => {
-            console.log('------------------------------------')
-            console.log('mouse:move')
-            console.log('------------------------------------')
-          })
-          this.canvasTexture.on('mouse:up', () => {
-            console.log('------------------------------------')
-            console.log('mouse:up')
-            console.log('------------------------------------')
-          })
+          const texture_UI = new THREE.CanvasTexture(this.canvas2D.view)
 
           const canvasMaterial = new THREE.MeshPhongMaterial({
-            map: canvasTexture,
+            map: texture_UI,
             side: THREE.FrontSide,
             bumpMap: loadedTextures.bumpMap,
             transparent: true
@@ -319,7 +340,7 @@ class Render3D extends PureComponent {
           // TODO: Test for onClik on 3D model.
           // const onDocumentMouseDown = event => {
           //   const objects = []
-          //   objects.push(object)
+          //   objects.push(object.children)
           //   const mouse3D = new THREE.Vector3(
           //     event.clientX / window.innerWidth * 2 - 1,
           //     -(event.clientY / window.innerHeight) * 2 + 1,
@@ -331,10 +352,11 @@ class Render3D extends PureComponent {
           //     mouse3D.sub(this.camera.position).normalize()
           //   )
           //   // raycaster.setFromCamera(mouse3D, this.camera)
-          //   const intersects = raycaster.intersectObjects(objects)
+          //   const intersects = raycaster.intersectObjects(object.children)
           //   console.log(intersects)
           // }
 
+          // this.container.addEventListener('mousedown', onDocumentMouseDown)
           // document.addEventListener('mousedown', onDocumentMouseDown)
 
           onLoadModel(false)
@@ -368,6 +390,7 @@ class Render3D extends PureComponent {
   }
 
   rendeScene = () => {
+    this.canvas2D.render(this.scene2D)
     this.renderer.render(this.scene, this.camera)
   }
 
@@ -560,26 +583,54 @@ class Render3D extends PureComponent {
     )
   }
 
-  applyText = (text, style) => {
+  applyText = (
+    text,
+    { fill, fontFamily, stroke, strokeWidth: strokeThickness }
+  ) => {
     // if (!this.canvasTexture || !text) {
     //   return
     // }
 
-    // const object = this.scene.getObjectByName('jersey')
-    // if (object) {
-    //   object.children[20].material.map.needsUpdate = true
-    // }
-
-    // TODO: FabricJS
-    const txt = new fabric.Text(text, {
-      left: 800,
-      top: 1050,
+    // TODO: PixiJS
+    const style = new PIXI.TextStyle({
+      fontFamily,
       fontSize: 100,
-      ...style
+      // fontStyle: 'italic',
+      // fontWeight: 'bold',
+      fill,
+      stroke,
+      strokeThickness
     })
+    const basicText = new PIXI.Text(text, style)
+    // this.createDragAndDropFor(basicText)
+    basicText.interactive = true
+    console.log('------------------------------------')
+    console.log(this.controls)
+    console.log('------------------------------------')
+    console.log('------------------------------------')
+    console.log(this.container)
+    console.log('------------------------------------')
+    basicText
+      .on('mousedown', () => console.log('mousedown'), this.controls)
+      .on('touchstart', () => console.log('touchstart'), this.controls)
+      // events for drag end
+      .on('mouseup', () => console.log('mouseup'), this)
+      .on('mouseupoutside', () => console.log('mouseupoutside'), this)
+      .on('touchend', () => console.log('touchend'))
+      .on('touchendoutside', () => console.log('touchendoutside'))
+      // events for drag move
+      .on('mousemove', () => console.log('mousemove'))
+      .on('touchmove', () => console.log('touchmove'))
 
-    // TODO: FabricJS
-    this.canvasTexture.add(txt)
+    basicText.x = 700
+    basicText.y = 1050
+
+    this.scene2D.addChild(basicText)
+
+    const object = this.scene.getObjectByName('jersey')
+    if (object) {
+      object.children[20].material.map.needsUpdate = true
+    }
   }
 }
 
