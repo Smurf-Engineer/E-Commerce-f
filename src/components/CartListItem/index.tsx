@@ -112,7 +112,7 @@ class CartListItem extends React.Component<Props, {}> {
 
   getNextPrice(priceRanges: PriceRange[], totalItems: number) {
     const priceRange = priceRanges[priceRanges.length - 1]
-    let markslider = { items: 1, price: priceRange.price }
+    let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
     for (const priceRangeItem of priceRanges) {
       if (!totalItems) {
         break
@@ -141,6 +141,7 @@ class CartListItem extends React.Component<Props, {}> {
       onlyRead,
       productTotal,
       unitPrice,
+      price,
       handleAddItemDetail = () => {},
       handledeleteItemDetail = () => {},
       setLabelItemDetail = () => {},
@@ -159,19 +160,34 @@ class CartListItem extends React.Component<Props, {}> {
 
     const productPriceRanges = get(cartItem, 'product.priceRange', [])
 
+    console.log('--------------cartItem-------------')
+    console.log(cartItem)
+    console.log('---------------------------')
+
+    console.log('--------------unitPrice-------------')
+    console.log(unitPrice)
+    console.log('---------------------------')
+
     let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
 
     priceRange =
-      priceRange.price === 0
+      priceRange && priceRange.price === 0
         ? productPriceRanges[productPriceRanges.length - 1]
         : priceRange
 
-    const itemTotal =
-      cartItem.product && productPriceRanges
-        ? priceRange.price * quantitySum
-        : 0
+    console.log('------------priceRange---------------')
+    console.log(priceRange)
+    console.log('---------------------------')
+
+    console.log('-----------price----------------')
+    console.log(price)
+    console.log('---------------------------')
+
+    const itemTotal = priceRange
+      ? priceRange.price * quantitySum
+      : unitPrice || 0 * quantitySum
     const total = itemTotal || productTotal
-    const unitaryPrice = priceRange.price || unitPrice
+    const unitaryPrice = priceRange ? priceRange.price : unitPrice
 
     const nextPrice = this.getNextPrice(productPriceRanges, quantitySum)
 
