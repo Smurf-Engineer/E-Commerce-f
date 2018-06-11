@@ -31,9 +31,11 @@ import cards from '../components/MyCards/reducer'
 import profileSettings from '../components/ProfileSettings/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import myTeamStores from '../components/MyTeamStores/reducer'
+import warrantyProgram from '../screens/WarrantyProgram/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  warrantyProgram: any
   orderPlaced: any
   myTeamStores: any
   checkout: any
@@ -122,6 +124,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  warrantyProgram,
   orderPlaced,
   myTeamStores,
   checkout,

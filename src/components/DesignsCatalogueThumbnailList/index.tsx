@@ -7,6 +7,7 @@ import Spin from 'antd/lib/spin'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
 import Menu from 'antd/lib/menu'
+import find from 'lodash/find'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
@@ -58,6 +59,8 @@ interface Props {
   withoutPadding?: boolean
   storeFront?: boolean
   targetRange?: Filter
+  currentRange: Filter
+  targetPrice: string
 }
 
 export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
@@ -73,7 +76,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       teamStoreShortId,
       designs,
       withoutPadding,
-      targetRange
+      targetRange,
+      currentRange
     } = this.props
     let thumbnailsList
     let total = ''
@@ -88,6 +92,21 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           { design: { id, shortId, name, product, image }, totalOrders },
           index
         ) => {
+          const targetPriceValue: any = targetRange
+            ? find(product.priceRange, { quantity: targetRange.name }) || {
+                price: 0
+              }
+            : { price: 0 }
+
+          const currentPriceValue: any = currentRange
+            ? find(product.priceRange, {
+                quantity:
+                  currentRange.name === '0-0' ? 'Personal' : currentRange.name
+              }) || {
+                price: 0
+              }
+            : { price: 0 }
+
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -98,6 +117,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                     {...{ id, name, targetRange }}
                     description={`${product.type} ${product.description}`}
                     progress={totalOrders}
+                    targetPrice={targetPriceValue.price}
+                    currentPrice={currentPriceValue.price}
                   />
                 }
                 labelButton={

@@ -128,24 +128,24 @@ class Render3D extends PureComponent {
             side: THREE.FrontSide
           })
 
-          let meshIndex = findIndex(
-            object.children,
-            mesh => mesh.name === 'FINAL Jersey_Mesh'
-          )
+          const { children } = object
 
-          if (meshIndex < 0) {
-            meshIndex = 0
+          const getMeshIndex = meshName => {
+            const index = findIndex(children, mesh => mesh.name === meshName)
+            return index < 0 ? 0 : index
           }
+
+          const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
+          const labelIndex = getMeshIndex('Red_Tag FINAL')
+          const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
 
           /* Assign materials */
           const cloneObject = object.children[meshIndex].clone()
           object.add(cloneObject)
 
-          /* Jersey label */
-          object.children[4].material.color.set('#FFF')
-          /* flatlock */
-          object.children[6].material = flatlockMaterial
-          /* jersey */
+          /* Model */
+          object.children[labelIndex].material.color.set('#FFF')
+          object.children[flatlockIndex].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
           object.children[objectChilds].material = frontMaterial
 

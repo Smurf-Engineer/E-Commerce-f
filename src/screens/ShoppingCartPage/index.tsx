@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+import get from 'lodash/get'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -27,7 +28,12 @@ import {
 import ListItem from '../../components/CartListItem'
 
 import Ordersummary from '../../components/OrderSummary'
-import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
+import {
+  Product,
+  CartItemDetail,
+  ItemDetailType,
+  PriceRange
+} from '../../types/common'
 
 interface CartItems {
   product: Product
@@ -167,6 +173,32 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
+  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+    let markslider = { quantity: '0', price: 0 }
+    for (const priceRangeItem of priceRanges) {
+      if (!totalItems) {
+        break
+      }
+
+      if (!priceRangeItem.quantity) {
+        break
+      }
+
+      const val =
+        priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
+          ? 1
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
+
+      if (val >= totalItems) {
+        markslider = priceRangeItem
+        break
+      }
+    }
+    return markslider
+  }
+
   render() {
     const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
@@ -219,7 +251,16 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
         const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
-        return cartItem.product.priceRange[0].price * quantitySum
+        const productPriceRanges = get(cartItem, 'product.priceRange', [])
+
+        let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
+
+        priceRange =
+          priceRange.price === 0
+            ? productPriceRanges[productPriceRanges.length - 1]
+            : priceRange
+
+        return priceRange.price * quantitySum
       })
 
       totalSum = total.reduce((a, b) => a + b, 0)
@@ -274,7 +315,10 @@ const mapStateToProps = (state: any) => state.get('shoppingCartPage').toJS()
 
 const ShoppingCartPageEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...shoppingCartPageActions, ...thunkActions })
+  connect(
+    mapStateToProps,
+    { ...shoppingCartPageActions, ...thunkActions }
+  )
 )(ShoppingCartPage)
 
 export default ShoppingCartPageEnhance
