@@ -25,7 +25,7 @@ export default defineMessages({
     defaultMessage: 'Please read carefuly'
   },
   warrantyText: {
-    id: 'screens.WarrantyProgram.titleText',
+    id: 'screens.WarrantyProgram.warrantyText',
     defaultMessage: `
     <p>In case of an approved warranty claim, JAKROO will repair or replace without charge at our discretion any item that has been returned. Please make sure to read crash replacement program and garment care information. This warranty covers the original owner of a JAKROO product for 1 year from the delivery date of that product.</p>
     <p><b>THIS WARRANTY COVERS:</b></p>
@@ -56,4 +56,92 @@ export default defineMessages({
     <p>5. Get out there and enjoy your gear!</p>
     `
   },
+  formTitle: {
+    id: 'screens.WarrantyProgram.formTitle',
+    defaultMessage: 'Enter you warranty claim here'
+  },
+  nameInfo: {
+    id: 'screens.WarrantyProgram.nameInfo',
+    defaultMessage:
+      '*Claimant must be original purchaser or have proof of purchase.'
+  },
+  emailInfo: {
+    id: 'screens.WarrantyProgram.emailInfo',
+    defaultMessage:
+      '*We will use this email to track and update you with the warranty process.'
+  },
+  orderNumberInfo: {
+    id: 'screens.WarrantyProgram.orderNumberInfo',
+    defaultMessage:
+      '*If you can not locate your order confirmation or delivery notice, that is ok, we can look it up other ways.'
+  },
+  productsAffectedInfo: {
+    id: 'screens.WarrantyProgram.productsAffectedInfo',
+    defaultMessage:
+      '*Please identify which product(s) are affected. For example TOUR jersey or SOLAR bib. If your not sure of the name, describe the product. (ex. Long sleeve jersey or arm warmer).'
+  },
+  genderInfo: {
+    id: 'screens.WarrantyProgram.genderInfo',
+    defaultMessage:
+      '*Gender and Size information is located on the INSIDE white label typically sewn in the side seam of the garment'
+  },
+  issueInfo: {
+    id: 'screens.WarrantyProgram.issueInfo',
+    defaultMessage:
+      '*Please provide a detailed description of the damaged area. Providing photos of the damaged area(s) will help expedite the warranty process.'
+  },
+  uploadInfo: {
+    id: 'screens.WarrantyProgram.uploadInfo',
+    defaultMessage:
+      '*A picture is worth a 1000 words. Close-ups are even better.'
+  },
+
+  firstName: {
+    id: 'screens.WarrantyProgram.firstName',
+    defaultMessage: 'First Name'
+  },
+  lastName: {
+    id: 'screens.WarrantyProgram.lastName',
+    defaultMessage: 'Last Name'
+  },
+  email: {
+    id: 'screens.WarrantyProgram.email',
+    defaultMessage: 'E-Mail'
+  },
+  orderNumber: {
+    id: 'screens.WarrantyProgram.orderNumber',
+    defaultMessage: 'Order Number (ex. US1234-SO, CA1234-SO)'
+  },
+  productsAffected: {
+    id: 'screens.WarrantyProgram.productsAffected',
+    defaultMessage: 'Product(s) affected'
+  },
+  productIs: {
+    id: 'screens.WarrantyProgram.uploadInfo',
+    defaultMessage: 'The product(s) is:'
+  },
+  gender: {
+    id: 'screens.WarrantyProgram.gender',
+    defaultMessage: 'Gender:'
+  },
+  size: {
+    id: 'screens.WarrantyProgram.size',
+    defaultMessage: 'Size:'
+  },
+  problems: {
+    id: 'screens.WarrantyProgram.problems',
+    defaultMessage: 'Problems (Check all that applies):'
+  },
+  description: {
+    id: 'screens.WarrantyProgram.description',
+    defaultMessage: 'Description of warranty issue'
+  },
+  attachPicture: {
+    id: 'screens.WarrantyProgram.uploadInfo',
+    defaultMessage: 'Attach a picture:'
+  },
+  submit: {
+    id: 'screens.WarrantyProgram.uploadInfo',
+    defaultMessage: 'Submit'
+  }
 })
