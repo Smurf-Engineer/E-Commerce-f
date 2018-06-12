@@ -386,13 +386,16 @@ export interface UserRegionSettings {
 
 export interface MeasurementSettings {
   weight: string
-  height: string
+  heightFirst: string
+  heightSecond: string
   chest: string
   waist: string
   hips: string
   inseam: string
   shoulders: string
   neck: string
+  msrmntSystemSelected: string
+  msrmntGenderSelected: string
 }
 
 export interface SmsSettings {
@@ -404,10 +407,35 @@ export interface EmailSettings {
   newsletter: boolean
 }
 
-export interface ProfileSettings {
+// tslint:disable-next-line:interface-name
+export interface IProfileSettings {
   userProfile?: UserProfileSettings
   languageSettings: UserRegionSettings
   measurementSettings: MeasurementSettings
   smsSettings: SmsSettings
   emailSettings: EmailSettings
+}
+
+export interface ProfileSettingsReducer {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  region: string
+  language: string
+  currency: string
+  msrmntSystemSelected: string
+  msrmntGenderSelected: string
+  weight: string
+  heightFirst: string
+  heightSecond: string
+  chestSize: string
+  waistSize: string
+  hipsSize: string
+  inseamSize: string
+  shouldersSize: string
+  neckSize: string
+  smsConfirmationChecked: boolean
+  smsUpdatesChecked: boolean
+  emailNewsletterChecked: boolean
 }

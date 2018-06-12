@@ -7,7 +7,11 @@ import { connect } from 'react-redux'
 import * as ProfileSettingsActions from './actions'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
-import { profileSettingsQuery } from './data'
+import {
+  profileSettingsQuery,
+  UpdateSmsOptionsMutation,
+  UpdateEmailOptionsMutation
+} from './data'
 import messages from './messages'
 import {
   Container,
@@ -21,12 +25,18 @@ import {
 import ProfileForm from '../ProfileForm'
 import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
 import MeasurementsForm from '../MeasurementsForm'
-import { ClickParam, QueryProps, Region } from '../../types/common'
+import {
+  ClickParam,
+  QueryProps,
+  Region,
+  ProfileSettingsReducer,
+  IProfileSettings
+} from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
 
 interface Data extends QueryProps {
   regionsOptions: Region[]
-  profileData: any
+  profileData: IProfileSettings
 }
 
 interface Props {
@@ -58,23 +68,29 @@ interface Props {
   newPasswordConfirm: string
   showPasswordModal: boolean
   passwordModalLoading: boolean
+  dataFromApollo: boolean
   // redux actions
   inputChangeAction: (id: string, value: string) => void
   setSmsConfirmationChecked: (checked: boolean) => void
   setSmsUpdatesChecked: (checked: boolean) => void
   setEmailConfirmationChecked: (checked: boolean) => void
-  SetMsrmntSystemAction: (system: string) => void
-  SetMsrmntGenderAction: (gender: string) => void
+  setMsrmntSystemAction: (system: string) => void
+  setMsrmntGenderAction: (gender: string) => void
   selectDropdownAction: (id: string, value: string) => void
   showPasswordModalAction: (show: boolean) => void
   setPasswordModalValid: (hasError: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
+  setDataFromApolloAction: (profileSettings: ProfileSettingsReducer) => void
+  // mutations
+  updateEmailOptions: (variables: {}) => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
   render() {
     const {
-      data,
+      data: {
+        profileData: { smsSettings, emailSettings }
+      },
       formatMessage,
       firstName,
       lastName,
@@ -101,10 +117,13 @@ class ProfileSettings extends React.Component<Props, {}> {
       newPassword,
       newPasswordConfirm,
       showPasswordModal,
-      passwordModalLoading
+      passwordModalLoading,
+      dataFromApollo
     } = this.props
 
-    console.log(data)
+    if (!dataFromApollo) {
+      this.setDataFromApollo()
+    }
 
     const regionsOptions: Region[] = []
 
@@ -120,8 +139,11 @@ class ProfileSettings extends React.Component<Props, {}> {
       !inseamSize ||
       !shouldersSize ||
       !neckSize
-    const smsButtonDisabled = false
-    const emailButtonDisabled = false
+    const smsButtonDisabled =
+      smsSettings.desingUpdates === smsUpdatesChecked ||
+      smsSettings.orderConfirmation === smsConfirmationChecked
+    const emailButtonDisabled =
+      emailSettings.newsletter === emailNewsletterChecked
     return (
       <Container>
         {/* PROFILE */}
@@ -323,16 +345,16 @@ class ProfileSettings extends React.Component<Props, {}> {
     const {
       target: { value: system }
     } = event
-    const { SetMsrmntSystemAction } = this.props
-    SetMsrmntSystemAction(system)
+    const { setMsrmntSystemAction } = this.props
+    setMsrmntSystemAction(system)
   }
 
   handleOnMsrmntGenderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
       target: { value: gender }
     } = event
-    const { SetMsrmntGenderAction } = this.props
-    SetMsrmntGenderAction(gender)
+    const { setMsrmntGenderAction } = this.props
+    setMsrmntGenderAction(gender)
   }
 
   handleOnSmsConfirmationChecked = (
@@ -374,7 +396,54 @@ class ProfileSettings extends React.Component<Props, {}> {
 
   handleOnSaveSmsSettings = () => {}
 
-  handleOnSaveEmailSettings = () => {}
+  handleOnSaveEmailSettings = async () => {
+    const { updateEmailOptions, emailNewsletterChecked } = this.props
+    updateEmailOptions(emailNewsletterChecked)
+    await updateEmailOptions({
+      variables: { subscribed: emailNewsletterChecked }
+    })
+  }
+
+  setDataFromApollo = () => {
+    const {
+      setDataFromApolloAction,
+      data: {
+        profileData: {
+          userProfile,
+          languageSettings,
+          measurementSettings,
+          smsSettings,
+          emailSettings
+        }
+      }
+    } = this.props
+    const profileData: ProfileSettingsReducer = {
+      firstName: (userProfile && userProfile.firstName) || '',
+      lastName: (userProfile && userProfile.lastName) || '',
+      email: (userProfile && userProfile.email) || '',
+      phone: (userProfile && userProfile.phone) || '',
+      region: languageSettings.region.id || '',
+      language: languageSettings.language.id || '',
+      currency: languageSettings.currency.id || '',
+      msrmntSystemSelected:
+        measurementSettings.msrmntSystemSelected || 'metric',
+      msrmntGenderSelected: measurementSettings.msrmntGenderSelected || 'man',
+      weight: measurementSettings.weight || '',
+      heightFirst: measurementSettings.heightFirst || '',
+      heightSecond: measurementSettings.heightSecond || '',
+      chestSize: measurementSettings.chest || '',
+      waistSize: measurementSettings.waist || '',
+      hipsSize: measurementSettings.hips || '',
+      inseamSize: measurementSettings.inseam || '',
+      shouldersSize: measurementSettings.shoulders || '',
+      neckSize: measurementSettings.neck || '',
+      smsConfirmationChecked: smsSettings.orderConfirmation,
+      smsUpdatesChecked: smsSettings.desingUpdates,
+      emailNewsletterChecked: emailSettings.newsletter
+    }
+    console.log(profileData, 'userProfile')
+    setDataFromApolloAction(profileData)
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('profileSettings').toJS()
@@ -387,7 +456,12 @@ const ProfileSettingsEnhance = compose(
   }),
   withLoading,
   withError,
-  connect(mapStateToProps, { ...ProfileSettingsActions })
+  UpdateEmailOptionsMutation,
+  UpdateSmsOptionsMutation,
+  connect(
+    mapStateToProps,
+    { ...ProfileSettingsActions }
+  )
 )(ProfileSettings)
 
 export default ProfileSettingsEnhance

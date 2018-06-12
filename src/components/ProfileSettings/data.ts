@@ -1,4 +1,4 @@
-// import { graphql } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const profileSettingsQuery = gql`
@@ -31,7 +31,8 @@ export const profileSettingsQuery = gql`
       }
       measurementSettings: userMeasurementsOptions {
         weight
-        height
+        heightFirst: height
+        heightSecond
         chest
         waist
         hips
@@ -72,17 +73,28 @@ export const regionsQuery = gql`
   }
 `
 
-// export const PlaceOrderMutation = graphql(
-//   gql`
-//     mutation charge($orderObj: OrderInput!) {
-//       charge(order: $orderObj) {
-//         id
-//         short_id
-//         created_at
-//       }
-//     }
-//   `,
-//   {
-//     name: 'placeOrder'
-//   }
-// )
+export const UpdateSmsOptionsMutation = graphql(
+  gql`
+    mutation updateSmsOptions($smsOptions: SmsOptionInput!) {
+      setSmsOption(smsOptions: $smsOptions) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateSmsOptions'
+  }
+)
+
+export const UpdateEmailOptionsMutation = graphql(
+  gql`
+    mutation updateEmailOptions($subscribed: Boolean!) {
+      updateEmailSubscription(subscribed: $subscribed) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateEmailOptions'
+  }
+)

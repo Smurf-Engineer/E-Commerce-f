@@ -13,9 +13,10 @@ import {
   SET_EMAIL_NEWSLETTER_CHECKED,
   SET_MSRMNT_SYSTEM,
   SET_MSRMNT_GENDER,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  SET_APOLLO_DATA
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, ProfileSettingsReducer } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -68,12 +69,19 @@ export const setEmailConfirmationChecked = (checked: boolean): AnyAction => ({
   checked
 })
 
-export const SetMsrmntSystemAction = (system: string): AnyAction => ({
+export const setMsrmntSystemAction = (system: string): AnyAction => ({
   type: SET_MSRMNT_SYSTEM,
   system
 })
 
-export const SetMsrmntGenderAction = (gender: string): AnyAction => ({
+export const setMsrmntGenderAction = (gender: string): AnyAction => ({
   type: SET_MSRMNT_GENDER,
   gender
+})
+
+export const setDataFromApolloAction = (
+  profileSettings: ProfileSettingsReducer
+): AnyAction => ({
+  type: SET_APOLLO_DATA,
+  profileSettings
 })
