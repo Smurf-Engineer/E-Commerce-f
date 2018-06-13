@@ -13,7 +13,8 @@ import {
   UpdateSmsOptionsMutation,
   UpdateEmailOptionsMutation,
   UpdateUserProfileOptionsMutation,
-  UpdateMeasurementsMutation
+  UpdateMeasurementsMutation,
+  UpdateRegionOptionsMutation
 } from './data'
 import messages from './messages'
 import {
@@ -101,6 +102,7 @@ interface Props {
   updateEmailOptions: (variables: {}) => void
   updateSmsOptions: (variables: {}) => void
   updateMeasurements: (variables: {}) => void
+  updateRegionOptions: (variables: {}) => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
@@ -175,7 +177,11 @@ class ProfileSettings extends React.Component<Props, {}> {
 
     const regionsOptions: Region[] = regions || []
 
-    const languageButtonDisabled = !region || !language || !currency
+    const languageButtonDisabled =
+      (languageSettings.region.id === region &&
+        languageSettings.language.id === language &&
+        languageSettings.currency.id === currency) ||
+      (!region || !language || !currency)
 
     const smsButtonDisabled =
       smsSettings.desingUpdates === smsUpdatesChecked &&
@@ -208,8 +214,8 @@ class ProfileSettings extends React.Component<Props, {}> {
           <Row>
             <LanguageAndCurrencyForm
               selectedDropDown={this.selectedDropDown}
+              regionsAndLanguageOptions={regionsOptions}
               {...{
-                regionsOptions,
                 languageSettings,
                 region,
                 language,
@@ -443,7 +449,30 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSaveLanguageSettings = async () => {}
+  handleOnSaveLanguageSettings = async () => {
+    const {
+      region,
+      language,
+      currency,
+      updateRegionOptions,
+      profileData: {
+        profileData: { languageSettings }
+      }
+    } = this.props
+    const payload = {
+      userRegion: {
+        regionId: region || languageSettings.region.id,
+        languageId: language || languageSettings.language.id,
+        currencyId: currency || languageSettings.currency.id
+      }
+    }
+    await this.updateSetting(
+      'loadingRegion',
+      payload,
+      updateRegionOptions,
+      messages.languageSuccessMessage
+    )
+  }
 
   handleOnSaveMeasurementsSettings = async () => {
     const {
@@ -586,7 +615,6 @@ class ProfileSettings extends React.Component<Props, {}> {
       smsUpdatesChecked: smsSettings.desingUpdates,
       emailNewsletterChecked: emailSettings.newsletter
     }
-    console.log(profileData, 'userProfile')
     setDataFromApolloAction(profileData)
   }
 }
@@ -610,6 +638,7 @@ const ProfileSettingsEnhance = compose(
   UpdateSmsOptionsMutation,
   UpdateUserProfileOptionsMutation,
   UpdateMeasurementsMutation,
+  UpdateRegionOptionsMutation,
   connect(
     mapStateToProps,
     { ...ProfileSettingsActions }

@@ -88,6 +88,19 @@ export const UpdateMeasurementsMutation = graphql(
   }
 )
 
+export const UpdateRegionOptionsMutation = graphql(
+  gql`
+    mutation updateRegionOptions($userRegion: UserRegionData!) {
+      setRegionOptions(userRegion: $userRegion) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateRegionOptions'
+  }
+)
+
 export const UpdateUserProfileOptionsMutation = graphql(
   gql`
     mutation updateProfile($userData: UserProfile!) {

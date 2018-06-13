@@ -164,6 +164,7 @@ export interface Region {
   icon: string
   label: string
   code: string
+  id: number
   languages: Language[]
   currencies: Currency[]
 }
@@ -179,6 +180,7 @@ export interface Currency {
   name: string
   abbreviation: string
   shortName: string
+  label: string
 }
 
 export interface RegionConfig {

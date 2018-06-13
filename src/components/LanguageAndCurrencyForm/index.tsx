@@ -5,6 +5,8 @@ import * as React from 'react'
 import Dropdown from 'antd/lib/dropdown'
 import Icon from 'antd/lib/icon'
 import Menu from 'antd/lib/menu'
+import upperFirst from 'lodash/upperFirst'
+import find from 'lodash/find'
 import messages from './messages'
 import {
   Container,
@@ -12,7 +14,9 @@ import {
   Column,
   InputTitleContainer,
   Label,
-  DropDownPlaceHolder
+  DropDownPlaceHolder,
+  Option,
+  MenuOption
 } from './styledComponents'
 import { ClickParam, Region, UserRegionSettings } from '../../types/common'
 
@@ -21,51 +25,65 @@ interface Props {
   language: string
   currency: string
   languageSettings: UserRegionSettings
-  regionsOptions: Region[]
+  regionsAndLanguageOptions: Region[]
   formatMessage: (messageDescriptor: any) => string
   selectedDropDown: (param: ClickParam) => void
 }
 
 const LanguageAndCurrencyForm = ({
-  regionsOptions,
+  regionsAndLanguageOptions,
   region,
   language,
   currency,
   formatMessage,
   selectedDropDown
 }: Props) => {
-  console.log(regionsOptions)
-  const regionOptions = (
-    <Menu onClick={selectedDropDown}>
-      <Menu.Item id="region" key={'Global'}>
-        {'Global'}
-      </Menu.Item>
-      <Menu.Item id="region" key={'Canada'}>
-        {'Canada'}
-      </Menu.Item>
-      <Menu.Item id="region" key={'Europe'}>
-        {'Europe'}
-      </Menu.Item>
-    </Menu>
-  )
+  const regionItems = regionsAndLanguageOptions.map(({ icon, label, id }) => (
+    <Menu.Item id="region" key={id}>
+      <Option>
+        <img src={icon} />
+        <MenuOption>{upperFirst(label)}</MenuOption>
+      </Option>
+    </Menu.Item>
+  ))
+  const regionOptions = <Menu onClick={selectedDropDown}>{regionItems}</Menu>
+
+  const currentRegion = region
+    ? find(regionsAndLanguageOptions, r => r.id === Number(region))
+    : undefined
+
+  const languageItems = currentRegion
+    ? currentRegion.languages.map(({ id, name }) => (
+        <Menu.Item id="language" key={id}>
+          {upperFirst(name)}
+        </Menu.Item>
+      ))
+    : []
 
   const languageOptions = (
-    <Menu onClick={selectedDropDown}>
-      <Menu.Item id="language" key={'English'}>
-        {'English'}
-      </Menu.Item>
-      {/* <Menu.Item id="language" key={'Japanese'}>
-        {'Japanese'}
-      </Menu.Item> */}
-    </Menu>
+    <Menu onClick={selectedDropDown}>{languageItems}</Menu>
   )
+
+  const currentLanguage = language
+    ? find((currentRegion as Region).languages, l => l.id === Number(language))
+    : undefined
+
+  const currencyItems = currentRegion
+    ? currentRegion.currencies.map(({ id, shortName }) => (
+        <Menu.Item id="currency" key={id}>
+          {shortName.toUpperCase()}
+        </Menu.Item>
+      ))
+    : []
+
   const currencyOptions = (
-    <Menu onClick={selectedDropDown}>
-      <Menu.Item id="currency" key={'$USD'}>
-        {'$USD'}
-      </Menu.Item>
-    </Menu>
+    <Menu onClick={selectedDropDown}>{currencyItems}</Menu>
   )
+
+  const currentCurrency = currency
+    ? find((currentRegion as Region).currencies, c => c.id === Number(currency))
+    : undefined
+
   return (
     <Container>
       <Row>
@@ -75,7 +93,14 @@ const LanguageAndCurrencyForm = ({
           </InputTitleContainer>
           <Dropdown overlay={regionOptions}>
             <DropDownPlaceHolder>
-              {region ? region : 'Select Region'}
+              {currentRegion ? (
+                <Option>
+                  <img src={currentRegion.icon} />
+                  <MenuOption>{upperFirst(currentRegion.label)}</MenuOption>
+                </Option>
+              ) : (
+                'Select Region'
+              )}
               <Icon type="down" />
             </DropDownPlaceHolder>
           </Dropdown>
@@ -84,9 +109,11 @@ const LanguageAndCurrencyForm = ({
           <InputTitleContainer>
             <Label>{formatMessage(messages.language)}</Label>
           </InputTitleContainer>
-          <Dropdown overlay={languageOptions}>
+          <Dropdown disabled={!currentRegion} overlay={languageOptions}>
             <DropDownPlaceHolder>
-              {language ? language : 'Select Language'}
+              {currentLanguage
+                ? upperFirst(currentLanguage.name)
+                : 'Select Language'}
               <Icon type="down" />
             </DropDownPlaceHolder>
           </Dropdown>
@@ -95,9 +122,11 @@ const LanguageAndCurrencyForm = ({
           <InputTitleContainer>
             <Label>{formatMessage(messages.currency)}</Label>
           </InputTitleContainer>
-          <Dropdown overlay={currencyOptions}>
+          <Dropdown disabled={!currentRegion} overlay={currencyOptions}>
             <DropDownPlaceHolder>
-              {currency ? currency : 'Select Currency'}
+              {currentCurrency
+                ? currentCurrency.shortName.toUpperCase()
+                : 'Select Currency'}
               <Icon type="down" />
             </DropDownPlaceHolder>
           </Dropdown>

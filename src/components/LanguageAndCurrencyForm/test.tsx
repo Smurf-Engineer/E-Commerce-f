@@ -11,7 +11,7 @@ describe('<LanguageAndCurrencyForm />', () => {
     const region = ''
     const language = ''
     const currency = ''
-    const regionsOptions: Region[] = []
+    const regionsAndLanguageOptions: Region[] = []
     const formatMessage = (messageDescriptor: any) => ''
     const selectedDropDown = (param: ClickParam) => {}
     const div = document.createElement('div')
@@ -29,7 +29,7 @@ describe('<LanguageAndCurrencyForm />', () => {
           currency,
           formatMessage,
           selectedDropDown,
-          regionsOptions
+          regionsAndLanguageOptions
         }}
       />,
       div
