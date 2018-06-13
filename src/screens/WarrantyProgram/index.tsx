@@ -41,7 +41,7 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import DivInfo from '../../components/ProductInfo'
-// import config from '../../config/index'
+import config from '../../config/index'
 import { requestWarrantyMutation } from './data'
 
 const RadioGroup = Radio.Group
@@ -233,8 +233,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       requestWarranty,
       resetReducerDataAction
     } = this.props
-    // const { file } = this.state
-    // let fileResponse = ''
+    const { file } = this.state
+    let fileResponse = ''
 
     validFormAction(false)
 
@@ -257,26 +257,26 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
 
     setLoadingAction(true)
     try {
-      // if (file) {
-      // const formData = new FormData()
-      // formData.append('file', file as any)
-      // const user = JSON.parse(localStorage.getItem('user') || '')
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file as any)
+        const user = JSON.parse(localStorage.getItem('user') || '')
 
-      // const uploadResp = await fetch(
-      //   `${config.graphqlUriBase}uploadWarrantyImage`,
-      //   {
-      //     method: 'POST',
-      //     headers: {
-      //       Accept: 'application/json',
-      //       Authorization: `Bearer ${user.token}`
-      //     },
-      //     body: formData
-      //   }
-      // )
-      // const bannerResp = await uploadResp.json()
+        const uploadResp = await fetch(
+          `${config.graphqlUriBase}uploadWarrantyImage`,
+          {
+            method: 'POST',
+            headers: {
+              Accept: 'application/json',
+              Authorization: `Bearer ${user.token}`
+            },
+            body: formData
+          }
+        )
+        const bannerResp = await uploadResp.json()
 
-      // fileResponse = bannerResp.image
-      // }
+        fileResponse = bannerResp.image
+      }
 
       const warrantyObject = {
         firstName,
@@ -289,7 +289,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
         gender,
         size,
         problems,
-        productIs
+        productIs,
+        image: fileResponse
       }
 
       const {
