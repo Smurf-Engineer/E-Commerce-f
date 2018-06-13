@@ -13,6 +13,8 @@ import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
 import Input from 'antd/lib/input'
+import message from 'antd/lib/message'
+import Divider from 'antd/lib/divider'
 import * as warrantyProgramActions from './actions'
 import messages from './messages'
 import {
@@ -33,11 +35,14 @@ import {
   InputsContainer,
   TwoInputsContainer,
   StyledRadioGroup,
-  ButtonWrapper
+  ButtonWrapper,
+  UploadedFile,
+  SmallInputsContainer
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import DivInfo from '../../components/ProductInfo'
-import Divider from 'antd/lib/divider'
+// import config from '../../config/index'
+import { requestWarrantyMutation } from './data'
 
 const RadioGroup = Radio.Group
 const CheckboxGroup = Checkbox.Group
@@ -45,6 +50,8 @@ const { TextArea } = Input
 
 interface StateProps {
   openForm: boolean
+  file: string | null
+  fileName: string
 }
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -59,6 +66,9 @@ interface Props extends RouteComponentProps<any> {
   problems: string[]
   issueDescription: string
   hasError: boolean
+  loadingSend: boolean
+  requestWarranty: any
+  resetReducerDataAction: () => void
   inputChangeAction: (id: string, value: string) => void
   setFirstName: (value: string) => void
   setLastName: (value: string) => void
@@ -68,8 +78,10 @@ interface Props extends RouteComponentProps<any> {
   setProductIs: (value: string) => void
   setGender: (value: string) => void
   setSize: (value: string) => void
-  setProblems: (value: string) => void
+  setProblems: (value: string[]) => void
   setIssueDescription: (value: string) => void
+  setLoadingAction: (loading: boolean) => void
+  validFormAction: (hasError: boolean) => void
 }
 
 const oldOptions = [
@@ -99,7 +111,23 @@ const problemsOptions = [
 
 export class WarrantyProgram extends React.Component<Props, StateProps> {
   state: StateProps = {
-    openForm: true
+    openForm: true,
+    file: null,
+    fileName: ''
+  }
+
+  beforeUpload = (file: any) => {
+    const reader = new FileReader()
+
+    reader.onloadend = () => {
+      this.setState({ file, fileName: file.name })
+    }
+
+    if (file) {
+      reader.readAsDataURL(file)
+    }
+
+    return false
   }
 
   handleToggleRow = () => {
@@ -116,6 +144,173 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     setFirstName(value)
   }
 
+  handleLastNameChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { setLastName } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    setLastName(value)
+  }
+
+  handleEmailChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { setEmail } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    setEmail(value)
+  }
+
+  handleOrderNumberChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { setOrderNumber } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    setOrderNumber(value)
+  }
+
+  handleProductsAffectedChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { setProductsAffected } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    setProductsAffected(value)
+  }
+
+  handleDescriptionChange = (evt: React.FormEvent<HTMLTextAreaElement>) => {
+    const { setIssueDescription } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    setIssueDescription(value)
+  }
+
+  handleOldProductChange = (e: any) => {
+    console.log('radio checked', e.target.value)
+    const { setProductIs } = this.props
+    setProductIs(e.target.value)
+  }
+
+  handleGenderChange = (e: any) => {
+    const { setGender } = this.props
+    setGender(e.target.value)
+  }
+
+  handleSizeChange = (e: any) => {
+    const { setSize } = this.props
+    setSize(e.target.value)
+  }
+
+  handleProblemsChange = (checkedValues: any) => {
+    console.log('checked = ', checkedValues)
+    const { setProblems } = this.props
+    setProblems(checkedValues)
+  }
+
+  validateEmail = (email: string) => {
+    const emailPattern = /[a-z0-9!#$%&'*+\=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
+    return emailPattern.test(email)
+  }
+
+  handleSendData = async () => {
+    const {
+      setLoadingAction,
+      firstName,
+      lastName,
+      email,
+      orderNumber,
+      productsAffected,
+      issueDescription,
+      validFormAction,
+      gender,
+      size,
+      problems,
+      productIs,
+      requestWarranty,
+      resetReducerDataAction
+    } = this.props
+    // const { file } = this.state
+    // let fileResponse = ''
+
+    validFormAction(false)
+
+    if (
+      !firstName ||
+      !lastName ||
+      !email ||
+      !this.validateEmail(email) ||
+      !orderNumber ||
+      !productsAffected ||
+      !issueDescription ||
+      !gender ||
+      !size ||
+      !problems.length ||
+      !productIs
+    ) {
+      validFormAction(true)
+      return
+    }
+
+    setLoadingAction(true)
+    try {
+      // if (file) {
+      // const formData = new FormData()
+      // formData.append('file', file as any)
+      // const user = JSON.parse(localStorage.getItem('user') || '')
+
+      // const uploadResp = await fetch(
+      //   `${config.graphqlUriBase}uploadWarrantyImage`,
+      //   {
+      //     method: 'POST',
+      //     headers: {
+      //       Accept: 'application/json',
+      //       Authorization: `Bearer ${user.token}`
+      //     },
+      //     body: formData
+      //   }
+      // )
+      // const bannerResp = await uploadResp.json()
+
+      // fileResponse = bannerResp.image
+      // }
+
+      const warrantyObject = {
+        firstName,
+        lastName,
+        email,
+        orderNumber,
+        productsAffected,
+        issueDescription,
+        validFormAction,
+        gender,
+        size,
+        problems,
+        productIs
+      }
+
+      const {
+        data: { warrantyProgramRequest }
+      } = await requestWarranty({
+        variables: { warrantyObject }
+      })
+
+      message.success(warrantyProgramRequest.message)
+
+      resetReducerDataAction()
+      this.setState({ file: null, fileName: '' })
+      this.handleToggleRow()
+
+      setLoadingAction(false)
+    } catch (error) {
+      message.error('Something wrong happened. Please try again!')
+      setLoadingAction(false)
+    }
+  }
+
   render() {
     const {
       history,
@@ -126,8 +321,14 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       orderNumber,
       productsAffected,
       issueDescription,
-      hasError
+      gender,
+      size,
+      problems,
+      productIs,
+      hasError,
+      loadingSend
     } = this.props
+    const { fileName } = this.state
     const { openForm } = this.state
     return (
       <Layout {...{ intl, history }}>
@@ -166,7 +367,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
             >
               <FlexContainer>
                 <TwoInputsContainer>
-                  <InputsContainer>
+                  <SmallInputsContainer>
                     <InputTitleContainer>
                       <Label>{intl.formatMessage(messages.firstName)}</Label>
                       <RequiredSpan>*</RequiredSpan>
@@ -181,8 +382,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                       hasError && (
                         <ErrorMsg>{'This field is required'}</ErrorMsg>
                       )}
-                  </InputsContainer>
-                  <InputsContainer>
+                  </SmallInputsContainer>
+                  <SmallInputsContainer>
                     <InputTitleContainer>
                       <Label>{intl.formatMessage(messages.lastName)}</Label>
                       <RequiredSpan>*</RequiredSpan>
@@ -190,14 +391,14 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <StyledInput
                       id="lastName"
                       value={lastName}
-                      onChange={this.handleInputChange}
+                      onChange={this.handleLastNameChange}
                       maxLength="50"
                     />
                     {!lastName &&
                       hasError && (
                         <ErrorMsg>{'This field is required'}</ErrorMsg>
                       )}
-                  </InputsContainer>
+                  </SmallInputsContainer>
                 </TwoInputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.nameInfo} />
@@ -212,10 +413,10 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="email"
                     value={email}
-                    onChange={this.handleInputChange}
+                    onChange={this.handleEmailChange}
                     maxLength="100"
                   />
-                  {!firstName &&
+                  {(!email || !this.validateEmail(email)) &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
                 <FormInfo>
@@ -230,11 +431,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="orderNumber"
                     value={orderNumber}
-                    onChange={this.handleInputChange}
+                    onChange={this.handleOrderNumberChange}
                     maxLength="100"
                   />
-                  {!firstName &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.orderNumberInfo} />
@@ -251,10 +450,10 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="productsAffected"
                     value={productsAffected}
-                    onChange={this.handleInputChange}
+                    onChange={this.handleProductsAffectedChange}
                     maxLength="100"
                   />
-                  {!firstName &&
+                  {!productsAffected &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
                 <FormInfo>
@@ -269,9 +468,13 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <RequiredSpan>*</RequiredSpan>
                   </InputTitleContainer>
                   <StyledRadioGroup>
-                    <RadioGroup options={oldOptions} />
+                    <RadioGroup
+                      options={oldOptions}
+                      onChange={this.handleOldProductChange}
+                      value={productIs}
+                    />
                   </StyledRadioGroup>
-                  {!firstName &&
+                  {!productIs &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
               </FlexContainer>
@@ -283,9 +486,13 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <RequiredSpan>*</RequiredSpan>
                   </InputTitleContainer>
                   <StyledRadioGroup>
-                    <RadioGroup options={genderOptions} />
+                    <RadioGroup
+                      options={genderOptions}
+                      onChange={this.handleGenderChange}
+                      value={gender}
+                    />
                   </StyledRadioGroup>
-                  {!firstName &&
+                  {!gender &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
                 <FormInfo>
@@ -300,9 +507,13 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <RequiredSpan>*</RequiredSpan>
                   </InputTitleContainer>
                   <StyledRadioGroup>
-                    <RadioGroup options={sizeOptions} />
+                    <RadioGroup
+                      options={sizeOptions}
+                      onChange={this.handleSizeChange}
+                      value={size}
+                    />
                   </StyledRadioGroup>
-                  {!firstName &&
+                  {!size &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
               </FlexContainer>
@@ -314,9 +525,12 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <RequiredSpan>*</RequiredSpan>
                   </InputTitleContainer>
                   <StyledRadioGroup>
-                    <CheckboxGroup options={problemsOptions} />
+                    <CheckboxGroup
+                      options={problemsOptions}
+                      onChange={this.handleProblemsChange}
+                    />
                   </StyledRadioGroup>
-                  {!firstName &&
+                  {!problems.length &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
               </FlexContainer>
@@ -331,8 +545,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     id="issueDescription"
                     value={issueDescription}
                     rows={7}
+                    onChange={this.handleDescriptionChange}
                   />
-                  {!firstName &&
+                  {!issueDescription &&
                     hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
                 </InputsContainer>
                 <FormInfo>
@@ -344,9 +559,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                 <InputsContainer>
                   <InputTitleContainer>
                     <Label>{intl.formatMessage(messages.attachPicture)}</Label>
-                    <RequiredSpan>*</RequiredSpan>
                   </InputTitleContainer>
                   <Upload
+                    beforeUpload={this.beforeUpload}
                     multiple={false}
                     showUploadList={true}
                     supportServerRender={true}
@@ -355,8 +570,12 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                       <Icon type="upload" /> Select File
                     </Button>
                   </Upload>
-                  {!firstName &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+
+                  {fileName !== '' && (
+                    <UploadedFile>
+                      <Icon type="paper-clip" /> {fileName}
+                    </UploadedFile>
+                  )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.uploadInfo} />
@@ -365,8 +584,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
               <ButtonWrapper>
                 <Button
                   type="primary"
-                  // onClick={this.handleSendMessage}
-                  // loading={sendMessageLoading}
+                  onClick={this.handleSendData}
+                  loading={loadingSend}
                 >
                   <FormattedMessage {...messages.submit} />
                 </Button>
@@ -383,6 +602,7 @@ const mapStateToProps = (state: any) => state.get('warrantyProgram').toJS()
 
 const WarrantyProgramEnhance = compose(
   injectIntl,
+  requestWarrantyMutation,
   connect(
     mapStateToProps,
     { ...warrantyProgramActions }

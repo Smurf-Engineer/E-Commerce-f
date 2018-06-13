@@ -13,7 +13,10 @@ import {
   SET_GENDER,
   SET_SIZE,
   SET_PROBLEMS,
-  SET_ISSUE_DESCRIPTION
+  SET_ISSUE_DESCRIPTION,
+  SET_LOADING_ACTION,
+  VALID_FORM,
+  RESET_REDUCER_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -28,7 +31,9 @@ export const initialState = fromJS({
   gender: '',
   size: '',
   problems: [],
-  issueDescription: ''
+  issueDescription: '',
+  loadingSend: false,
+  hasError: false
 })
 
 const warrantyProgramReducer: Reducer<any> = (state = initialState, action) => {
@@ -55,6 +60,12 @@ const warrantyProgramReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('problems', action.someValue)
     case SET_ISSUE_DESCRIPTION:
       return state.set('issueDescription', action.someValue)
+    case SET_LOADING_ACTION:
+      return state.set('loadingSend', action.someValue)
+    case VALID_FORM:
+      return state.set('hasError', action.someValue)
+    case RESET_REDUCER_DATA:
+      return initialState
     default:
       return state
   }

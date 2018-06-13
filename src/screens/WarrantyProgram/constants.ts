@@ -14,3 +14,6 @@ export const SET_GENDER = `${namespace}/SET_GENDER`
 export const SET_SIZE = `${namespace}/SET_SIZE`
 export const SET_PROBLEMS = `${namespace}/SET_PROBLEMS`
 export const SET_ISSUE_DESCRIPTION = `${namespace}/SET_ISSUE_DESCRIPTION`
+export const SET_LOADING_ACTION = `${namespace}/SET_LOADING_ACTION`
+export const VALID_FORM = `${namespace}/VALID_FORM`
+export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`

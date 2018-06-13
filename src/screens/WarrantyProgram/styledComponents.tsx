@@ -190,10 +190,16 @@ export const InputsContainer = styled.div`
   }
 `
 
+export const SmallInputsContainer = styled.div`
+  width: 45%;
+  margin-top: 5px;
+`
+
 export const TwoInputsContainer = styled.div`
   width: 50%;
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
   }
@@ -230,4 +236,13 @@ export const ButtonWrapper = styled.div`
     background-color: #4a90e2;
     border-color: #4a90e2;
   }
+`
+
+export const UploadedFile = styled.div`
+  color: #bebebe;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  margin-top: 10px;
 `

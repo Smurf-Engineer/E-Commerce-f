@@ -12,7 +12,10 @@ import {
   SET_GENDER,
   SET_SIZE,
   SET_PROBLEMS,
-  SET_ISSUE_DESCRIPTION
+  SET_ISSUE_DESCRIPTION,
+  SET_LOADING_ACTION,
+  VALID_FORM,
+  RESET_REDUCER_DATA
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -53,11 +56,22 @@ export const setSize = (someValue: string): AnyAction => ({
   type: SET_SIZE,
   someValue
 })
-export const setProblems = (someValue: string): AnyAction => ({
+export const setProblems = (someValue: string[]): AnyAction => ({
   type: SET_PROBLEMS,
   someValue
 })
 export const setIssueDescription = (someValue: string): AnyAction => ({
   type: SET_ISSUE_DESCRIPTION,
   someValue
+})
+export const setLoadingAction = (someValue: boolean): AnyAction => ({
+  type: SET_LOADING_ACTION,
+  someValue
+})
+export const validFormAction = (someValue: boolean): AnyAction => ({
+  type: VALID_FORM,
+  someValue
+})
+export const resetReducerDataAction = (): AnyAction => ({
+  type: RESET_REDUCER_DATA
 })
