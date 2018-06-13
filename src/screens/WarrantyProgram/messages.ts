@@ -117,7 +117,7 @@ export default defineMessages({
     defaultMessage: 'Product(s) affected'
   },
   productIs: {
-    id: 'screens.WarrantyProgram.uploadInfo',
+    id: 'screens.WarrantyProgram.productIs',
     defaultMessage: 'The product(s) is:'
   },
   gender: {
@@ -137,11 +137,11 @@ export default defineMessages({
     defaultMessage: 'Description of warranty issue'
   },
   attachPicture: {
-    id: 'screens.WarrantyProgram.uploadInfo',
+    id: 'screens.WarrantyProgram.attachPicture',
     defaultMessage: 'Attach a picture:'
   },
   submit: {
-    id: 'screens.WarrantyProgram.uploadInfo',
+    id: 'screens.WarrantyProgram.submit',
     defaultMessage: 'Submit'
   }
 })
