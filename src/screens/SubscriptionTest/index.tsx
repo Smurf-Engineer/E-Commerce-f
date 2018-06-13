@@ -40,7 +40,10 @@ export class SubscriptionTest extends React.Component<Props, {}> {
       subscribeToMore({
         document: commentsSubscription,
         updateQuery: (prev: any, { subscriptionData }: any) => {
-          // const { data } = subscriptionData
+          const { data } = subscriptionData
+          console.log('-------------data--------------')
+          console.log(data)
+          console.log('---------------------------')
           return prev
         }
       })
@@ -78,7 +81,10 @@ const mapStateToProps = (state: any) => state.get('subscriptionTest').toJS()
 
 const SubscriptionTestEnhance = compose(
   graphql(commentsQuery),
-  connect(mapStateToProps, { ...subscriptionTestActions })
+  connect(
+    mapStateToProps,
+    { ...subscriptionTestActions }
+  )
 )(SubscriptionTest)
 
 export default SubscriptionTestEnhance
