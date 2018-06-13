@@ -15,10 +15,14 @@ describe('<ChangePasswordModal />', () => {
     const newPasswordConfirm = ''
     const formatMessage = (messageDescriptor: any) => 'string'
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {}
+    const onChangePassword = () => {}
+    const hasError = false
     const toggleModalPassword = () => {}
     ReactDOM.render(
       <ChangePasswordModal
         {...{
+          onChangePassword,
+          hasError,
           toggleModalPassword,
           showPasswordModal,
           passwordModalLoading,

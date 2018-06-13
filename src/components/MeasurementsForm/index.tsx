@@ -19,6 +19,7 @@ import RadioButton from 'antd/lib/radio/radioButton'
 import { MeasurementSettings } from '../../types/common'
 
 interface Props {
+  isMobile: boolean
   measurementSettings: MeasurementSettings
   loading: boolean
   msrmntSystemSelected: string
@@ -44,6 +45,7 @@ interface Props {
 }
 
 const MeasurementsForm = ({
+  isMobile,
   measurementSettings,
   msrmntSystemSelected,
   msrmntGenderSelected,
@@ -90,10 +92,205 @@ const MeasurementsForm = ({
   const weightUnit = metricSistemSelected ? 'kgs' : 'lbs'
   const lengthShortUnit = metricSistemSelected ? 'cm' : 'in'
   const lengthLongUnit = metricSistemSelected ? 'mts' : 'ft'
+
+  const weightComponent = (
+    <Column inputhWidth={!isMobile ? '48%' : '75%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.weight)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '80%', borderRadius: 0 }}
+          id="weight"
+          value={weight}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '20%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={weightUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+  const heightComponent = (
+    <Column inputhWidth={!isMobile ? '48%' : '75%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.height)}</Label>
+      </InputTitleContainer>
+      <Row marginBottom={'0'}>
+        <Column inputhWidth={'48%'}>
+          <InputGroup compact={true}>
+            <StyledInput
+              style={{ width: '60%', borderRadius: 0 }}
+              id="heightFirst"
+              value={heightFirst}
+              onChange={handleInputChange}
+              maxLength="50"
+            />
+            <LabeledInput
+              style={{ width: '40%', borderLeft: 0, borderRadius: 0 }}
+              placeholder={lengthLongUnit}
+              disabled={true}
+            />
+          </InputGroup>
+        </Column>
+        <Column inputhWidth={'48%'}>
+          <InputGroup compact={true}>
+            <StyledInput
+              style={{ width: '60%', borderRadius: 0 }}
+              id="heightSecond"
+              value={heightSecond}
+              onChange={handleInputChange}
+              maxLength="50"
+            />
+            <LabeledInput
+              style={{ width: '40%', borderLeft: 0, borderRadius: 0 }}
+              placeholder={lengthShortUnit}
+              disabled={true}
+            />
+          </InputGroup>
+        </Column>
+      </Row>
+    </Column>
+  )
+  const chestComponent = (
+    <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.chest)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '70%', borderRadius: 0 }}
+          id="chestSize"
+          value={chestSize}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={lengthShortUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+
+  const waistComponent = (
+    <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.waist)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '70%', borderRadius: 0 }}
+          id="waistSize"
+          value={waistSize}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={lengthShortUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+
+  const hipsComponent = (
+    <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.hips)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '70%', borderRadius: 0 }}
+          id="hipsSize"
+          value={hipsSize}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={lengthShortUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+
+  const inseamComponent = (
+    <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.inseam)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '70%', borderRadius: 0 }}
+          id="inseamSize"
+          value={inseamSize}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={lengthShortUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+
+  const shouldersComponent = (
+    <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.shoulders)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '70%', borderRadius: 0 }}
+          id="shouldersSize"
+          value={shouldersSize}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={lengthShortUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+
+  const neckComponent = (
+    <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.neck)}</Label>
+      </InputTitleContainer>
+      <InputGroup compact={true}>
+        <StyledInput
+          style={{ width: '70%', borderRadius: 0 }}
+          id="neckSize"
+          value={neckSize}
+          onChange={handleInputChange}
+          maxLength="50"
+        />
+        <LabeledInput
+          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          placeholder={lengthShortUnit}
+          disabled={true}
+        />
+      </InputGroup>
+    </Column>
+  )
+
   return (
     <Container>
       <Row>
-        <Column inputhWidth={'31%'}>
+        <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
             value={msrmntSystemSelected || 'metric'}
             onChange={handleOnMsrmntSystemChange}
@@ -106,7 +303,7 @@ const MeasurementsForm = ({
             </RadioButton>
           </RadioGroup>
         </Column>
-        <Column inputhWidth={'31%'}>
+        <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
             value={msrmntGenderSelected || 'man'}
             onChange={handleOnMsrmntGenderChange}
@@ -117,188 +314,45 @@ const MeasurementsForm = ({
             </RadioButton>
           </RadioGroup>
         </Column>
-        <Column inputhWidth={'31%'} />
+        {!isMobile ? <Column inputhWidth={'31%'} /> : null}
       </Row>
-      <Row>
-        <Column inputhWidth={'48%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.weight)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '80%', borderRadius: 0 }}
-              id="weight"
-              value={weight}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '20%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={weightUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-        <Column inputhWidth={'48%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.height)}</Label>
-          </InputTitleContainer>
-          <Row marginBottom={'0'}>
-            <Column inputhWidth={'48%'}>
-              <InputGroup compact={true}>
-                <StyledInput
-                  style={{ width: '60%', borderRadius: 0 }}
-                  id="heightFirst"
-                  value={heightFirst}
-                  onChange={handleInputChange}
-                  maxLength="50"
-                />
-                <LabeledInput
-                  style={{ width: '40%', borderLeft: 0, borderRadius: 0 }}
-                  placeholder={lengthLongUnit}
-                  disabled={true}
-                />
-              </InputGroup>
-            </Column>
-            <Column inputhWidth={'48%'}>
-              <InputGroup compact={true}>
-                <StyledInput
-                  style={{ width: '60%', borderRadius: 0 }}
-                  id="heightSecond"
-                  value={heightSecond}
-                  onChange={handleInputChange}
-                  maxLength="50"
-                />
-                <LabeledInput
-                  style={{ width: '40%', borderLeft: 0, borderRadius: 0 }}
-                  placeholder={lengthShortUnit}
-                  disabled={true}
-                />
-              </InputGroup>
-            </Column>
+      {!isMobile ? (
+        <div>
+          <Row>
+            {weightComponent}
+            {heightComponent}
           </Row>
-        </Column>
-      </Row>
+          <Row>
+            {chestComponent}
+            {waistComponent}
+            {hipsComponent}
+          </Row>
+          <Row>
+            {inseamComponent}
+            {shouldersComponent}
+            {neckComponent}
+          </Row>
+        </div>
+      ) : (
+        <div>
+          <Row>{weightComponent}</Row>
+          <Row>{heightComponent}</Row>
+          <Row>
+            {chestComponent}
+            {waistComponent}
+          </Row>
+          <Row>
+            {hipsComponent}
+            {inseamComponent}
+          </Row>
+          <Row>
+            {shouldersComponent}
+            {neckComponent}
+          </Row>
+        </div>
+      )}
       <Row>
-        <Column inputhWidth={'31%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.chest)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '70%', borderRadius: 0 }}
-              id="chestSize"
-              value={chestSize}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={lengthShortUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-        <Column inputhWidth={'31%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.waist)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '70%', borderRadius: 0 }}
-              id="waistSize"
-              value={waistSize}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={lengthShortUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-        <Column inputhWidth={'31%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.hips)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '70%', borderRadius: 0 }}
-              id="hipsSize"
-              value={hipsSize}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={lengthShortUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-      </Row>
-      <Row>
-        <Column inputhWidth={'31%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.inseam)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '70%', borderRadius: 0 }}
-              id="inseamSize"
-              value={inseamSize}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={lengthShortUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-        <Column inputhWidth={'31%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.shoulders)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '70%', borderRadius: 0 }}
-              id="shouldersSize"
-              value={shouldersSize}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={lengthShortUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-        <Column inputhWidth={'31%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.neck)}</Label>
-          </InputTitleContainer>
-          <InputGroup compact={true}>
-            <StyledInput
-              style={{ width: '70%', borderRadius: 0 }}
-              id="neckSize"
-              value={neckSize}
-              onChange={handleInputChange}
-              maxLength="50"
-            />
-            <LabeledInput
-              style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
-              placeholder={lengthShortUnit}
-              disabled={true}
-            />
-          </InputGroup>
-        </Column>
-      </Row>
-      <Row>
-        <Column inputhWidth={'27%'}>
+        <Column inputhWidth={!isMobile ? '27%' : '48%'}>
           <StyledButton
             {...{ loading, disabled }}
             type="primary"
@@ -307,7 +361,6 @@ const MeasurementsForm = ({
             {formatMessage(messages.save)}
           </StyledButton>
         </Column>
-        <Column inputhWidth={'51%'} />
       </Row>
     </Container>
   )

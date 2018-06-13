@@ -20,6 +20,11 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding-top: 24px;
+    padding: 0 8px;
+  }
 `
 
 export const Title = styled.div`
@@ -34,6 +39,11 @@ export const Title = styled.div`
 export const SectionContainer = styled.div`
   width: 50%;
   margin-bottom: 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 24px;
+  }
 `
 
 export const Row = styled.div`

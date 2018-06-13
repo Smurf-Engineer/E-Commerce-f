@@ -51,3 +51,12 @@ export const RequiredSpan = styled.span`
   color: #e61737;
   margin: 0 5px;
 `
+
+export const ErrorMsg = styled.div`
+  height: 16px;
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+`

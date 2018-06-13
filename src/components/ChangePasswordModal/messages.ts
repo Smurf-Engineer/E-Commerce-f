@@ -24,5 +24,13 @@ export default defineMessages({
   save: {
     id: 'components.ChangePasswordModal.save',
     defaultMessage: 'Save'
+  },
+  requiredField: {
+    id: 'components.ChangePasswordModal.requiredField',
+    defaultMessage: 'This field is required'
+  },
+  confirmPasswordError: {
+    id: 'components.ChangePasswordModal.requiredField',
+    defaultMessage: 'This field is required and must be equal to newPassword'
   }
 })

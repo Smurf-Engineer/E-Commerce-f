@@ -191,7 +191,10 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const HomeEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Home)
 
 export default HomeEnhance

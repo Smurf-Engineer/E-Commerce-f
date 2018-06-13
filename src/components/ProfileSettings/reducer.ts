@@ -16,7 +16,8 @@ import {
   SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
-  SET_APOLLO_DATA
+  SET_APOLLO_DATA,
+  CHANGE_PASSWORD_SUCCESS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -31,8 +32,8 @@ export const initialState = fromJS({
   language: '',
   currency: '',
   loadingRegion: false,
-  msrmntSystemSelected: 'metric',
-  msrmntGenderSelected: 'man',
+  msrmntSystemSelected: '',
+  msrmntGenderSelected: '',
   weight: '',
   heightFirst: '',
   heightSecond: '',
@@ -65,8 +66,18 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ [action.id]: action.value })
     case SELECT_DROPDOWN:
       return state.merge({ [action.id]: action.key })
-    case SHOW_PASSWORD_MODAL:
-      return state.set('showPasswordModal', action.show)
+    case SHOW_PASSWORD_MODAL: {
+      if (!action.show) {
+        return state.merge({
+          showPasswordModal: false,
+          newPassword: '',
+          currentPassword: '',
+          newPasswordConfirm: ''
+        })
+      } else {
+        return state.set('showPasswordModal', true)
+      }
+    }
     case SET_MODAL_LOADING:
       return state.set('modalLoading', action.loading)
     case SET_SMS_CONFIRMATION_CHECKED:
@@ -81,6 +92,12 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('msrmntGenderSelected', action.gender)
     case SET_PASSWORD_FORM_HAS_ERROR:
       return state.set('modalPasswordHasError', action.hasError)
+    case CHANGE_PASSWORD_SUCCESS:
+      return state.merge({
+        modalPasswordHasError: false,
+        showPasswordModal: false,
+        modalLoading: false
+      })
     case SET_SETTINGS_LOADING:
       return state.set(action.key, action.loading)
     case SET_APOLLO_DATA:
@@ -102,6 +119,8 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
         inseamSize: action.profileSettings.inseamSize,
         shouldersSize: action.profileSettings.shouldersSize,
         neckSize: action.profileSettings.neckSize,
+        msrmntSystemSelected: action.profileSettings.msrmntSystemSelected,
+        msrmntGenderSelected: action.profileSettings.msrmntGenderSelected,
         smsConfirmationChecked: action.profileSettings.smsConfirmationChecked,
         smsUpdatesChecked: action.profileSettings.smsUpdatesChecked,
         emailNewsletterChecked: action.profileSettings.emailNewsletterChecked

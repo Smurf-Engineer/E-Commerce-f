@@ -24,9 +24,11 @@ describe('<ProfileForm />', () => {
     const handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {}
     const onSaveProfileSettings = () => {}
     const onToggleModalPassword = () => {}
+    const isMobile = false
     ReactDOM.render(
       <ProfileForm
         {...{
+          isMobile,
           onToggleModalPassword,
           onSaveProfileSettings,
           userProfile,

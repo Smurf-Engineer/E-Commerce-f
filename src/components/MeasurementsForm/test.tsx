@@ -43,9 +43,11 @@ describe('<MeasurementsForm />', () => {
     ) => {}
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {}
     const onSaveMeasurementsSettings = () => {}
+    const isMobile = false
     ReactDOM.render(
       <MeasurementsForm
         {...{
+          isMobile,
           onSaveMeasurementsSettings,
           loading,
           measurementSettings,

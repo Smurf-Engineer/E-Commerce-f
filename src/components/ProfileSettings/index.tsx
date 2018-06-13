@@ -49,6 +49,7 @@ interface RegionOptions extends QueryProps {
 }
 
 interface Props {
+  isMobile: boolean
   regionsOptions: RegionOptions
   profileData: ProfileData
   formatMessage: (messageDescriptor: any) => string
@@ -84,6 +85,7 @@ interface Props {
   showPasswordModal: boolean
   passwordModalLoading: boolean
   dataFromApollo: boolean
+  modalPasswordHasError: boolean
   // redux actions
   inputChangeAction: (id: string, value: string) => void
   setSmsConfirmationChecked: (checked: boolean) => void
@@ -93,10 +95,11 @@ interface Props {
   setMsrmntGenderAction: (gender: string) => void
   selectDropdownAction: (id: string, value: string) => void
   showPasswordModalAction: (show: boolean) => void
-  setPasswordModalValid: (hasError: boolean) => void
+  setPasswordModalHasError: (hasError: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
   setSettingsLoadingAction: (key: string, loading: boolean) => void
   setDataFromApolloAction: (profileSettings: ProfileSettingsReducer) => void
+  changePasswordSuccessAction: () => void
   // mutations
   updateUserProfile: (variables: {}) => void
   updateEmailOptions: (variables: {}) => void
@@ -126,6 +129,7 @@ class ProfileSettings extends React.Component<Props, {}> {
       )
     }
     const {
+      isMobile,
       profileData: {
         profileData: {
           userProfile,
@@ -168,6 +172,7 @@ class ProfileSettings extends React.Component<Props, {}> {
       newPasswordConfirm,
       showPasswordModal,
       passwordModalLoading,
+      modalPasswordHasError,
       dataFromApollo
     } = this.props
 
@@ -204,14 +209,15 @@ class ProfileSettings extends React.Component<Props, {}> {
               lastName,
               email,
               phone,
-              userProfile
+              userProfile,
+              isMobile
             }}
           />
         </SectionContainer>
         {/* REGION */}
         <Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>
-          <Row>
+          <Row marginBottom={'0'}>
             <LanguageAndCurrencyForm
               selectedDropDown={this.selectedDropDown}
               regionsAndLanguageOptions={regionsOptions}
@@ -220,12 +226,13 @@ class ProfileSettings extends React.Component<Props, {}> {
                 region,
                 language,
                 currency,
-                formatMessage
+                formatMessage,
+                isMobile
               }}
             />
           </Row>
           <Row>
-            <Column inputhWidth={'27%'}>
+            <Column inputhWidth={!isMobile ? '27%' : '48%'}>
               <StyledButton
                 loading={loadingRegion}
                 type="primary"
@@ -235,7 +242,6 @@ class ProfileSettings extends React.Component<Props, {}> {
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
-            <Column inputhWidth={'51%'} />
           </Row>
         </SectionContainer>
         {/* MEASUREMENTS */}
@@ -260,7 +266,8 @@ class ProfileSettings extends React.Component<Props, {}> {
               inseamSize,
               shouldersSize,
               neckSize,
-              measurementSettings
+              measurementSettings,
+              isMobile
             }}
           />
         </SectionContainer>
@@ -284,7 +291,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             </StyledCheckbox>
           </Row>
           <Row>
-            <Column inputhWidth={'27%'}>
+            <Column inputhWidth={!isMobile ? '27%' : '48%'}>
               <StyledButton
                 loading={loadingSms}
                 type="primary"
@@ -294,7 +301,6 @@ class ProfileSettings extends React.Component<Props, {}> {
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
-            <Column inputhWidth={'51%'} />
           </Row>
         </SectionContainer>
         {/*Email Preferences*/}
@@ -309,7 +315,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             </StyledCheckbox>
           </Row>
           <Row>
-            <Column inputhWidth={'27%'}>
+            <Column inputhWidth={!isMobile ? '27%' : '48%'}>
               <StyledButton
                 loading={loadingEmail}
                 type="primary"
@@ -319,7 +325,6 @@ class ProfileSettings extends React.Component<Props, {}> {
                 {formatMessage(messages.save)}
               </StyledButton>
             </Column>
-            <Column inputhWidth={'51%'} />
           </Row>
         </SectionContainer>
         <ChangePasswordModal
@@ -331,11 +336,46 @@ class ProfileSettings extends React.Component<Props, {}> {
             showPasswordModal,
             passwordModalLoading
           }}
+          hasError={modalPasswordHasError}
+          onChangePassword={this.handleOnChangePassword}
           toggleModalPassword={this.handleOnToggleModalPassword}
           handleInputChange={this.handleInputChange}
         />
       </Container>
     )
+  }
+
+  handleOnChangePassword = () => {
+    const {
+      currentPassword,
+      newPassword,
+      newPasswordConfirm,
+      setPasswordModalHasError,
+      setModalLoadingAction,
+      changePasswordSuccessAction,
+      formatMessage
+    } = this.props
+    if (
+      !currentPassword ||
+      !newPassword ||
+      newPasswordConfirm !== newPassword
+    ) {
+      setPasswordModalHasError(true)
+      return
+    } else {
+      setModalLoadingAction(true)
+      try {
+        setTimeout(() => {
+          changePasswordSuccessAction()
+          Message.success(formatMessage(messages.passwordSuccessMessage))
+          // tslint:disable-next-line:align
+        }, 500)
+      } catch (error) {
+        setModalLoadingAction(false)
+        const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+        Message.error(errorMessage, 5)
+      }
+    }
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {

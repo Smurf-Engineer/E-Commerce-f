@@ -40,17 +40,27 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   openKeys: string[]
   screen: string
+  isMobile: boolean
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
+  setIsMobileAction: (isMobile: boolean) => void
 }
 
 export class Account extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
+  }
+
+  componentDidMount() {
+    const { setIsMobileAction } = this.props
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    setIsMobileAction(isMobile)
   }
 
   handleOnSelectedKeys = (keys: string[]) => {
@@ -71,6 +81,7 @@ export class Account extends React.Component<Props, {}> {
 
   getScreenComponent = (screen: string) => {
     const {
+      isMobile,
       intl: { formatMessage },
       history,
       openQuickViewAction: openQuickView
@@ -81,7 +92,7 @@ export class Account extends React.Component<Props, {}> {
       case CREDIT_CARDS:
         return <MyCards {...{ formatMessage }} />
       case PROFILE_SETTINGS:
-        return <ProfileSettings {...{ formatMessage }} />
+        return <ProfileSettings {...{ isMobile, formatMessage }} />
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
@@ -151,7 +162,10 @@ const mapStateToProps = (state: any) => state.get('account').toJS()
 
 const AccountEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...accountActions, openQuickViewAction })
+  connect(
+    mapStateToProps,
+    { ...accountActions, openQuickViewAction }
+  )
 )(Account)
 
 export default AccountEnhance

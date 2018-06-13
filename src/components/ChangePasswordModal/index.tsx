@@ -11,10 +11,12 @@ import {
   InputTitleContainer,
   Label,
   StyledInput,
-  RequiredSpan
+  RequiredSpan,
+  ErrorMsg
 } from './styledComponents'
 
 interface Props {
+  hasError: boolean
   showPasswordModal: boolean
   passwordModalLoading: boolean
   currentPassword: string
@@ -23,6 +25,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   toggleModalPassword: () => void
+  onChangePassword: () => void
 }
 
 const ChangePasswordModal = ({
@@ -33,7 +36,9 @@ const ChangePasswordModal = ({
   newPasswordConfirm,
   formatMessage,
   handleInputChange,
-  toggleModalPassword
+  toggleModalPassword,
+  hasError,
+  onChangePassword
 }: Props) => {
   return (
     <Modal
@@ -41,7 +46,7 @@ const ChangePasswordModal = ({
       title={formatMessage(messages.title)}
       confirmLoading={passwordModalLoading}
       okText={formatMessage(messages.save)}
-      onOk={() => {}}
+      onOk={onChangePassword}
       onCancel={toggleModalPassword}
       closable={false}
       maskClosable={false}
@@ -60,6 +65,10 @@ const ChangePasswordModal = ({
               onChange={handleInputChange}
               type="Password"
             />
+            {!currentPassword &&
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+              )}
           </Column>
         </Row>
         <Row>
@@ -74,6 +83,10 @@ const ChangePasswordModal = ({
               onChange={handleInputChange}
               type="Password"
             />
+            {!newPassword &&
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+              )}
           </Column>
         </Row>
         <Row>
@@ -88,6 +101,12 @@ const ChangePasswordModal = ({
               onChange={handleInputChange}
               type="Password"
             />
+            {(!newPasswordConfirm || newPasswordConfirm !== newPassword) &&
+              hasError && (
+                <ErrorMsg>
+                  {formatMessage(messages.confirmPasswordError)}
+                </ErrorMsg>
+              )}
           </Column>
         </Row>
       </Container>

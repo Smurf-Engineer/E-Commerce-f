@@ -15,6 +15,7 @@ import {
 import { UserProfileSettings } from '../../types/common'
 
 interface Props {
+  isMobile: boolean
   loading: boolean
   userProfile: UserProfileSettings
   firstName: string
@@ -28,6 +29,7 @@ interface Props {
 }
 
 const ProfileForm = ({
+  isMobile,
   firstName,
   lastName,
   email,
@@ -45,32 +47,45 @@ const ProfileForm = ({
       userProfile.email === email &&
       userProfile.phone === phone) ||
     (!firstName || !lastName || !email || !phone)
+  const firstNameComponent = (
+    <Column inputhWidth={!isMobile ? '48%' : '100%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.firstName)}</Label>
+      </InputTitleContainer>
+      <StyledInput
+        id="firstName"
+        value={firstName}
+        onChange={handleInputChange}
+        maxLength="50"
+      />
+    </Column>
+  )
+  const lastNameComponent = (
+    <Column inputhWidth={!isMobile ? '48%' : '100%'}>
+      <InputTitleContainer>
+        <Label>{formatMessage(messages.lastName)}</Label>
+      </InputTitleContainer>
+      <StyledInput
+        id="lastName"
+        value={lastName}
+        onChange={handleInputChange}
+        maxLength="50"
+      />
+    </Column>
+  )
   return (
     <Container>
-      <Row>
-        <Column inputhWidth={'48%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.firstName)}</Label>
-          </InputTitleContainer>
-          <StyledInput
-            id="firstName"
-            value={firstName}
-            onChange={handleInputChange}
-            maxLength="50"
-          />
-        </Column>
-        <Column inputhWidth={'48%'}>
-          <InputTitleContainer>
-            <Label>{formatMessage(messages.lastName)}</Label>
-          </InputTitleContainer>
-          <StyledInput
-            id="lastName"
-            value={lastName}
-            onChange={handleInputChange}
-            maxLength="50"
-          />
-        </Column>
-      </Row>
+      {!isMobile ? (
+        <Row>
+          {firstNameComponent}
+          {lastNameComponent}
+        </Row>
+      ) : (
+        <div>
+          <Row>{firstNameComponent}</Row>
+          <Row>{lastNameComponent}</Row>
+        </div>
+      )}
       <Row>
         <Column inputhWidth={'100%'}>
           <InputTitleContainer>
@@ -99,7 +114,7 @@ const ProfileForm = ({
         </Column>
       </Row>
       <Row>
-        <Column inputhWidth={'27%'}>
+        <Column inputhWidth={!isMobile ? '27%' : '48%'}>
           <StyledButton
             {...{ loading, disabled }}
             type="primary"
@@ -108,12 +123,12 @@ const ProfileForm = ({
             {formatMessage(messages.save)}
           </StyledButton>
         </Column>
-        <Column inputhWidth={'40%'}>
+        <Column inputhWidth={!isMobile ? '40%' : '48%'}>
           <StyledButton type="primary" onClick={onToggleModalPassword}>
             {formatMessage(messages.changePassword)}
           </StyledButton>
         </Column>
-        <Column inputhWidth={'11%'} />
+        {!isMobile ? <Column inputhWidth={'11%'} /> : null}
       </Row>
     </Container>
   )

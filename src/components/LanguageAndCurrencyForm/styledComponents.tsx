@@ -22,11 +22,20 @@ export const Row = styled.div`
   width: 100%;
   margin-bottom: ${({ marginBottom }: RowProps) =>
     marginBottom ? marginBottom : '16px'};
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
 `
 
 export const Column = styled.div`
   width: ${({ inputhWidth }: InputProps) =>
     inputhWidth ? inputhWidth : '400px'};
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 16px;
+  }
 `
 export const InputTitleContainer = styled.div`
   display: flex;

@@ -21,6 +21,7 @@ import {
 import { ClickParam, Region, UserRegionSettings } from '../../types/common'
 
 interface Props {
+  isMobile: boolean
   region: string
   language: string
   currency: string
@@ -31,6 +32,7 @@ interface Props {
 }
 
 const LanguageAndCurrencyForm = ({
+  isMobile,
   regionsAndLanguageOptions,
   region,
   language,
@@ -64,9 +66,13 @@ const LanguageAndCurrencyForm = ({
     <Menu onClick={selectedDropDown}>{languageItems}</Menu>
   )
 
-  const currentLanguage = language
-    ? find((currentRegion as Region).languages, l => l.id === Number(language))
-    : undefined
+  const currentLanguage =
+    language && currentRegion
+      ? find(
+          (currentRegion as Region).languages,
+          l => l.id === Number(language)
+        )
+      : undefined
 
   const currencyItems = currentRegion
     ? currentRegion.currencies.map(({ id, shortName }) => (
@@ -80,14 +86,18 @@ const LanguageAndCurrencyForm = ({
     <Menu onClick={selectedDropDown}>{currencyItems}</Menu>
   )
 
-  const currentCurrency = currency
-    ? find((currentRegion as Region).currencies, c => c.id === Number(currency))
-    : undefined
+  const currentCurrency =
+    currency && currentRegion
+      ? find(
+          (currentRegion as Region).currencies,
+          c => c.id === Number(currency)
+        )
+      : undefined
 
   return (
     <Container>
       <Row>
-        <Column inputhWidth={'31%'}>
+        <Column inputhWidth={!isMobile ? '31%' : '100%'}>
           <InputTitleContainer>
             <Label>{formatMessage(messages.region)}</Label>
           </InputTitleContainer>
@@ -105,7 +115,7 @@ const LanguageAndCurrencyForm = ({
             </DropDownPlaceHolder>
           </Dropdown>
         </Column>
-        <Column inputhWidth={'31%'}>
+        <Column inputhWidth={!isMobile ? '31%' : '100%'}>
           <InputTitleContainer>
             <Label>{formatMessage(messages.language)}</Label>
           </InputTitleContainer>
@@ -118,7 +128,7 @@ const LanguageAndCurrencyForm = ({
             </DropDownPlaceHolder>
           </Dropdown>
         </Column>
-        <Column inputhWidth={'31%'}>
+        <Column inputhWidth={!isMobile ? '31%' : '100%'}>
           <InputTitleContainer>
             <Label>{formatMessage(messages.currency)}</Label>
           </InputTitleContainer>

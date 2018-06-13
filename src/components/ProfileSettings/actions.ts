@@ -15,7 +15,8 @@ import {
   SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
-  SET_APOLLO_DATA
+  SET_APOLLO_DATA,
+  CHANGE_PASSWORD_SUCCESS
 } from './constants'
 import { AnyAction, ProfileSettingsReducer } from '../../types/common'
 
@@ -46,9 +47,13 @@ export const setModalLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const setPasswordModalValid = (hasError: boolean): AnyAction => ({
+export const setPasswordModalHasError = (hasError: boolean): AnyAction => ({
   type: SET_PASSWORD_FORM_HAS_ERROR,
   hasError
+})
+
+export const changePasswordSuccessAction = (): AnyAction => ({
+  type: CHANGE_PASSWORD_SUCCESS
 })
 
 export const resetReducerDataAction = (): AnyAction => ({
@@ -90,7 +95,8 @@ export const setSettingsLoadingAction = (
 })
 
 export const setDataFromApolloAction = (
-  profileSettings: ProfileSettingsReducer
+  profileSettings: ProfileSettingsReducer,
+  data: any
 ): AnyAction => ({
   type: SET_APOLLO_DATA,
   profileSettings
