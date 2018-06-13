@@ -15,4 +15,5 @@ export const SET_EMAIL_NEWSLETTER_CHECKED = `${namespace}/SET_EMAIL_NEWSLETTER_C
 export const SET_MSRMNT_SYSTEM = `${namespace}/SET_MSRMNT_SYSTEM`
 export const SET_MSRMNT_GENDER = `${namespace}/SET_MSRMNT_GENDER`
 export const SET_PASSWORD_FORM_HAS_ERROR = `${namespace}/SET_PASSWORD_FORM_HAS_ERROR`
+export const SET_SETTINGS_LOADING = `${namespace}/SET_SETTINGS_LOADING`
 export const SET_APOLLO_DATA = `${namespace}/SET_APOLLO_DATA`

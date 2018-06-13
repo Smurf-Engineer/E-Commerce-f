@@ -4,13 +4,16 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import Message from 'antd/lib/message'
+import Spin from 'antd/lib/spin'
 import * as ProfileSettingsActions from './actions'
-import withError from '../WithError'
-import withLoading from '../WithLoading'
 import {
+  regionsQuery,
   profileSettingsQuery,
   UpdateSmsOptionsMutation,
-  UpdateEmailOptionsMutation
+  UpdateEmailOptionsMutation,
+  UpdateUserProfileOptionsMutation,
+  UpdateMeasurementsMutation
 } from './data'
 import messages from './messages'
 import {
@@ -20,7 +23,9 @@ import {
   Row,
   Column,
   StyledButton,
-  StyledCheckbox
+  StyledCheckbox,
+  LoadingErrorContainer,
+  ErrorMessage
 } from './styledComponents'
 import ProfileForm from '../ProfileForm'
 import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
@@ -34,21 +39,27 @@ import {
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
 
-interface Data extends QueryProps {
-  regionsOptions: Region[]
+interface ProfileData extends QueryProps {
   profileData: IProfileSettings
 }
 
+interface RegionOptions extends QueryProps {
+  regions: Region[]
+}
+
 interface Props {
-  data: Data
+  regionsOptions: RegionOptions
+  profileData: ProfileData
   formatMessage: (messageDescriptor: any) => string
   firstName: string
   lastName: string
   email: string
   phone: string
+  loadingProfile: boolean
   region: string
   language: string
   currency: string
+  loadingRegion: boolean
   msrmntSystemSelected: string
   msrmntGenderSelected: string
   weight: string
@@ -60,9 +71,12 @@ interface Props {
   inseamSize: string
   shouldersSize: string
   neckSize: string
+  loadingMeasurements: boolean
   smsConfirmationChecked: boolean
   smsUpdatesChecked: boolean
+  loadingSms: boolean
   emailNewsletterChecked: boolean
+  loadingEmail: boolean
   currentPassword: string
   newPassword: string
   newPasswordConfirm: string
@@ -80,25 +94,56 @@ interface Props {
   showPasswordModalAction: (show: boolean) => void
   setPasswordModalValid: (hasError: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
+  setSettingsLoadingAction: (key: string, loading: boolean) => void
   setDataFromApolloAction: (profileSettings: ProfileSettingsReducer) => void
   // mutations
+  updateUserProfile: (variables: {}) => void
   updateEmailOptions: (variables: {}) => void
+  updateSmsOptions: (variables: {}) => void
+  updateMeasurements: (variables: {}) => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
   render() {
     const {
-      data: {
-        profileData: { smsSettings, emailSettings }
+      profileData: { loading, error }
+    } = this.props
+    if (loading) {
+      return (
+        <LoadingErrorContainer>
+          <Spin />
+        </LoadingErrorContainer>
+      )
+    }
+    if (error) {
+      return (
+        <LoadingErrorContainer>
+          <Title>Oops!</Title>
+          <ErrorMessage>Something went wrong</ErrorMessage>
+        </LoadingErrorContainer>
+      )
+    }
+    const {
+      profileData: {
+        profileData: {
+          userProfile,
+          languageSettings,
+          measurementSettings,
+          smsSettings,
+          emailSettings
+        }
       },
+      regionsOptions: { regions },
       formatMessage,
       firstName,
       lastName,
       email,
       phone,
+      loadingProfile,
       region,
       language,
       currency,
+      loadingRegion,
       msrmntSystemSelected,
       msrmntGenderSelected,
       weight,
@@ -110,9 +155,12 @@ class ProfileSettings extends React.Component<Props, {}> {
       inseamSize,
       shouldersSize,
       neckSize,
+      loadingMeasurements,
       smsConfirmationChecked,
       smsUpdatesChecked,
+      loadingSms,
       emailNewsletterChecked,
+      loadingEmail,
       currentPassword,
       newPassword,
       newPasswordConfirm,
@@ -125,22 +173,12 @@ class ProfileSettings extends React.Component<Props, {}> {
       this.setDataFromApollo()
     }
 
-    const regionsOptions: Region[] = []
+    const regionsOptions: Region[] = regions || []
 
-    const profileButtonDisabled = !firstName || !lastName || !email || !phone
     const languageButtonDisabled = !region || !language || !currency
-    const measurementsButtonDisabled =
-      !weight ||
-      !heightFirst ||
-      !heightSecond ||
-      !chestSize ||
-      !waistSize ||
-      !hipsSize ||
-      !inseamSize ||
-      !shouldersSize ||
-      !neckSize
+
     const smsButtonDisabled =
-      smsSettings.desingUpdates === smsUpdatesChecked ||
+      smsSettings.desingUpdates === smsUpdatesChecked &&
       smsSettings.orderConfirmation === smsConfirmationChecked
     const emailButtonDisabled =
       emailSettings.newsletter === emailNewsletterChecked
@@ -151,41 +189,39 @@ class ProfileSettings extends React.Component<Props, {}> {
         <SectionContainer>
           <ProfileForm
             handleInputChange={this.handleInputChange}
-            {...{ formatMessage, firstName, lastName, email, phone }}
+            loading={loadingProfile}
+            onSaveProfileSettings={this.handleOnSaveProfileSettings}
+            onToggleModalPassword={this.handleOnToggleModalPassword}
+            {...{
+              formatMessage,
+              firstName,
+              lastName,
+              email,
+              phone,
+              userProfile
+            }}
           />
-          <Row>
-            <Column inputhWidth={'27%'}>
-              <StyledButton
-                type="primary"
-                disabled={profileButtonDisabled}
-                onClick={this.handleOnSaveProfileSettings}
-              >
-                {formatMessage(messages.save)}
-              </StyledButton>
-            </Column>
-            <Column inputhWidth={'40%'}>
-              <StyledButton
-                type="primary"
-                onClick={this.handleOnToggleModalPassword}
-              >
-                {formatMessage(messages.changePassword)}
-              </StyledButton>
-            </Column>
-            <Column inputhWidth={'11%'} />
-          </Row>
         </SectionContainer>
-        {/* LANGUAGE */}
+        {/* REGION */}
         <Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>
           <Row>
             <LanguageAndCurrencyForm
               selectedDropDown={this.selectedDropDown}
-              {...{ regionsOptions, region, language, currency, formatMessage }}
+              {...{
+                regionsOptions,
+                languageSettings,
+                region,
+                language,
+                currency,
+                formatMessage
+              }}
             />
           </Row>
           <Row>
             <Column inputhWidth={'27%'}>
               <StyledButton
+                loading={loadingRegion}
                 type="primary"
                 disabled={languageButtonDisabled}
                 onClick={this.handleOnSaveLanguageSettings}
@@ -199,39 +235,28 @@ class ProfileSettings extends React.Component<Props, {}> {
         {/* MEASUREMENTS */}
         <Title>{formatMessage(messages.measurementsTitle)}</Title>
         <SectionContainer>
-          <Row>
-            <MeasurementsForm
-              handleInputChange={this.handleInputChange}
-              handleOnMsrmntGenderChange={this.handleOnMsrmntGenderChange}
-              handleOnMsrmntSystemChange={this.handleOnMsrmntSystemChange}
-              {...{
-                formatMessage,
-                msrmntSystemSelected,
-                msrmntGenderSelected,
-                weight,
-                heightFirst,
-                heightSecond,
-                chestSize,
-                waistSize,
-                hipsSize,
-                inseamSize,
-                shouldersSize,
-                neckSize
-              }}
-            />
-          </Row>
-          <Row>
-            <Column inputhWidth={'27%'}>
-              <StyledButton
-                type="primary"
-                disabled={measurementsButtonDisabled}
-                onClick={this.handleOnSaveMeasurementsSettings}
-              >
-                {formatMessage(messages.save)}
-              </StyledButton>
-            </Column>
-            <Column inputhWidth={'51%'} />
-          </Row>
+          <MeasurementsForm
+            loading={loadingMeasurements}
+            onSaveMeasurementsSettings={this.handleOnSaveMeasurementsSettings}
+            handleInputChange={this.handleInputChange}
+            handleOnMsrmntGenderChange={this.handleOnMsrmntGenderChange}
+            handleOnMsrmntSystemChange={this.handleOnMsrmntSystemChange}
+            {...{
+              formatMessage,
+              msrmntSystemSelected,
+              msrmntGenderSelected,
+              weight,
+              heightFirst,
+              heightSecond,
+              chestSize,
+              waistSize,
+              hipsSize,
+              inseamSize,
+              shouldersSize,
+              neckSize,
+              measurementSettings
+            }}
+          />
         </SectionContainer>
         {/*SMS Preferences*/}
         <SectionContainer>
@@ -255,6 +280,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           <Row>
             <Column inputhWidth={'27%'}>
               <StyledButton
+                loading={loadingSms}
                 type="primary"
                 disabled={smsButtonDisabled}
                 onClick={this.handleOnSaveSmsSettings}
@@ -279,6 +305,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           <Row>
             <Column inputhWidth={'27%'}>
               <StyledButton
+                loading={loadingEmail}
                 type="primary"
                 disabled={emailButtonDisabled}
                 onClick={this.handleOnSaveEmailSettings}
@@ -388,26 +415,144 @@ class ProfileSettings extends React.Component<Props, {}> {
     showPasswordModalAction(!showPasswordModal)
   }
 
-  handleOnSaveProfileSettings = () => {}
+  handleOnSaveProfileSettings = async () => {
+    const {
+      updateUserProfile,
+      firstName,
+      lastName,
+      email,
+      phone,
+      profileData: {
+        profileData: { userProfile }
+      }
+    } = this.props
 
-  handleOnSaveLanguageSettings = () => {}
+    const payload = {
+      userData: {
+        firstName: firstName || userProfile.firstName,
+        lastName: lastName || userProfile.lastName,
+        email: email || userProfile.email,
+        phone: phone || userProfile.phone
+      }
+    }
+    await this.updateSetting(
+      'loadingProfile',
+      payload,
+      updateUserProfile,
+      messages.profileSuccessMessage
+    )
+  }
 
-  handleOnSaveMeasurementsSettings = () => {}
+  handleOnSaveLanguageSettings = async () => {}
 
-  handleOnSaveSmsSettings = () => {}
+  handleOnSaveMeasurementsSettings = async () => {
+    const {
+      updateMeasurements,
+      msrmntSystemSelected,
+      msrmntGenderSelected,
+      weight,
+      heightFirst,
+      heightSecond,
+      chestSize,
+      waistSize,
+      hipsSize,
+      inseamSize,
+      shouldersSize,
+      neckSize,
+      profileData: {
+        profileData: { measurementSettings }
+      }
+    } = this.props
+    const payload = {
+      userMeasurements: {
+        weight: weight || measurementSettings.weight,
+        height: heightFirst || measurementSettings.heightFirst,
+        heightSecond: heightSecond || measurementSettings.heightSecond,
+        chest: chestSize || measurementSettings.chest,
+        waist: waistSize || measurementSettings.waist,
+        hips: hipsSize || measurementSettings.hips,
+        inseam: inseamSize || measurementSettings.inseam,
+        shoulders: shouldersSize || measurementSettings.shoulders,
+        neck: neckSize || measurementSettings.neck,
+        system:
+          msrmntSystemSelected || measurementSettings.msrmntSystemSelected,
+        gender: msrmntGenderSelected || measurementSettings.msrmntGenderSelected
+      }
+    }
+    await this.updateSetting(
+      'loadingMeasurements',
+      payload,
+      updateMeasurements,
+      messages.measurementsSuccessMessage
+    )
+  }
+
+  handleOnSaveSmsSettings = async () => {
+    const {
+      updateSmsOptions,
+      smsConfirmationChecked,
+      smsUpdatesChecked
+    } = this.props
+
+    const payload = {
+      smsOptions: {
+        orderConfirmation: smsConfirmationChecked,
+        desingUpdates: smsUpdatesChecked
+      }
+    }
+    await this.updateSetting(
+      'loadingSms',
+      payload,
+      updateSmsOptions,
+      messages.smsSuccessMessage
+    )
+  }
 
   handleOnSaveEmailSettings = async () => {
     const { updateEmailOptions, emailNewsletterChecked } = this.props
-    updateEmailOptions(emailNewsletterChecked)
-    await updateEmailOptions({
-      variables: { subscribed: emailNewsletterChecked }
-    })
+
+    const payload = { subscribed: emailNewsletterChecked }
+    await this.updateSetting(
+      'loadingEmail',
+      payload,
+      updateEmailOptions,
+      messages.emailSuccessMessage
+    )
+  }
+
+  updateSetting = async (
+    setting: string,
+    payload: {},
+    mutation: any,
+    successMessage: any
+  ) => {
+    const { setSettingsLoadingAction, formatMessage } = this.props
+    try {
+      setSettingsLoadingAction(setting, true)
+      await mutation({
+        variables: payload,
+        refetchQueries: [
+          {
+            query: profileSettingsQuery,
+            options: {
+              fetchPolicy: 'network-only'
+            }
+          }
+        ]
+      })
+      setSettingsLoadingAction(setting, false)
+      Message.success(formatMessage(successMessage), 4)
+    } catch (error) {
+      setSettingsLoadingAction(setting, false)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
+    }
   }
 
   setDataFromApollo = () => {
     const {
       setDataFromApolloAction,
-      data: {
+      profileData: {
         profileData: {
           userProfile,
           languageSettings,
@@ -452,12 +597,19 @@ const ProfileSettingsEnhance = compose(
   graphql(profileSettingsQuery, {
     options: {
       fetchPolicy: 'network-only'
-    }
+    },
+    name: 'profileData'
   }),
-  withLoading,
-  withError,
+  graphql(regionsQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    },
+    name: 'regionsOptions'
+  }),
   UpdateEmailOptionsMutation,
   UpdateSmsOptionsMutation,
+  UpdateUserProfileOptionsMutation,
+  UpdateMeasurementsMutation,
   connect(
     mapStateToProps,
     { ...ProfileSettingsActions }

@@ -3,6 +3,8 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
+import inputGroup from 'antd/lib/input/Group'
+import Button from 'antd/lib/button'
 
 interface InputProps {
   inputhWidth?: string
@@ -40,10 +42,27 @@ export const Label = styled.div`
   line-height: 19px;
 `
 
+export const InputGroup = styled(inputGroup)`
+  border-radius: 0px;
+`
+
 export const StyledInput = styled(Input)`
   height: 40px;
-  width: 100%;
   border: 1px solid #bebebe;
   border-radius: 0;
   margin-top: 5px;
+`
+
+export const LabeledInput = styled(Input)`
+  height: 40px;
+  border: 1px solid #bebebe;
+  border-radius: 0;
+  margin-top: 5px;
+  background-color: #fff;
+`
+
+export const StyledButton = styled(Button)`
+  height: 40px;
+  width: 100%;
+  border-radius: 2px;
 `

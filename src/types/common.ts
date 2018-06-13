@@ -409,7 +409,7 @@ export interface EmailSettings {
 
 // tslint:disable-next-line:interface-name
 export interface IProfileSettings {
-  userProfile?: UserProfileSettings
+  userProfile: UserProfileSettings
   languageSettings: UserRegionSettings
   measurementSettings: MeasurementSettings
   smsSettings: SmsSettings

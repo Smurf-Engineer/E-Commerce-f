@@ -4,7 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import LanguageAndCurrencyForm from './index'
-import { ClickParam, Region } from '../../types/common'
+import { ClickParam, Region, UserRegionSettings } from '../../types/common'
 
 describe('<LanguageAndCurrencyForm />', () => {
   test('renders without exploding', () => {
@@ -15,9 +15,15 @@ describe('<LanguageAndCurrencyForm />', () => {
     const formatMessage = (messageDescriptor: any) => ''
     const selectedDropDown = (param: ClickParam) => {}
     const div = document.createElement('div')
+    const languageSettings: UserRegionSettings = {
+      region: {},
+      language: {},
+      currency: {}
+    }
     ReactDOM.render(
       <LanguageAndCurrencyForm
         {...{
+          languageSettings,
           region,
           language,
           currency,

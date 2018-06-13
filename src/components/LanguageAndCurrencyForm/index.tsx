@@ -14,12 +14,13 @@ import {
   Label,
   DropDownPlaceHolder
 } from './styledComponents'
-import { ClickParam, Region } from '../../types/common'
+import { ClickParam, Region, UserRegionSettings } from '../../types/common'
 
 interface Props {
   region: string
   language: string
   currency: string
+  languageSettings: UserRegionSettings
   regionsOptions: Region[]
   formatMessage: (messageDescriptor: any) => string
   selectedDropDown: (param: ClickParam) => void

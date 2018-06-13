@@ -14,8 +14,9 @@ import {
   SET_EMAIL_NEWSLETTER_CHECKED,
   SET_MSRMNT_SYSTEM,
   SET_MSRMNT_GENDER,
-  SET_APOLLO_DATA,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  SET_SETTINGS_LOADING,
+  SET_APOLLO_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -25,9 +26,11 @@ export const initialState = fromJS({
   lastName: '',
   email: '',
   phone: '',
+  loadingProfile: false,
   region: '',
   language: '',
   currency: '',
+  loadingRegion: false,
   msrmntSystemSelected: 'metric',
   msrmntGenderSelected: 'man',
   weight: '',
@@ -39,9 +42,12 @@ export const initialState = fromJS({
   inseamSize: '',
   shouldersSize: '',
   neckSize: '',
+  loadingMeasurements: false,
   smsConfirmationChecked: false,
   smsUpdatesChecked: false,
+  loadingSms: false,
   emailNewsletterChecked: false,
+  loadingEmail: false,
   currentPassword: '',
   newPassword: '',
   newPasswordConfirm: '',
@@ -75,6 +81,8 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('msrmntGenderSelected', action.gender)
     case SET_PASSWORD_FORM_HAS_ERROR:
       return state.set('modalPasswordHasError', action.hasError)
+    case SET_SETTINGS_LOADING:
+      return state.set(action.key, action.loading)
     case SET_APOLLO_DATA:
       return state.merge({
         dataFromApollo: true,

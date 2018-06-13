@@ -53,3 +53,16 @@ export const DropDownPlaceHolder = styled(Button)`
     color: #bebebe;
   }
 `
+
+export const Option = styled.div`
+  display: flex;
+  align-items: center;
+`
+
+export const MenuOption = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  margin-left: 12px;
+  font-size: 14px;
+  line-height: 22px;
+`

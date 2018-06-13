@@ -4,6 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import ProfileForm from './index'
+import { UserProfileSettings } from '../../types/common'
 
 describe('<ProfileForm />', () => {
   test('renders without exploding', () => {
@@ -12,20 +13,33 @@ describe('<ProfileForm />', () => {
     const lastName = ''
     const email = ''
     const phone = ''
+    const loading = false
+    const userProfile: UserProfileSettings = {
+      firstName,
+      lastName,
+      email,
+      phone
+    }
     const formatMessage = (messageDescriptor: any) => ''
-    const handleInputChange = (evt: React.FormEvent<HTMLInputElement>) =>
-      void ReactDOM.render(
-        <ProfileForm
-          {...{
-            firstName,
-            lastName,
-            email,
-            phone,
-            formatMessage,
-            handleInputChange
-          }}
-        />,
-        div
-      )
+    const handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {}
+    const onSaveProfileSettings = () => {}
+    const onToggleModalPassword = () => {}
+    ReactDOM.render(
+      <ProfileForm
+        {...{
+          onToggleModalPassword,
+          onSaveProfileSettings,
+          userProfile,
+          loading,
+          firstName,
+          lastName,
+          email,
+          phone,
+          formatMessage,
+          handleInputChange
+        }}
+      />,
+      div
+    )
   })
 })

@@ -4,6 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import MeasurementsForm from './index'
+import { MeasurementSettings } from '../../types/common'
 
 describe('<MeasurementsForm />', () => {
   test('renders without exploding', () => {
@@ -19,6 +20,20 @@ describe('<MeasurementsForm />', () => {
     const inseamSize = ''
     const shouldersSize = ''
     const neckSize = ''
+    const measurementSettings: MeasurementSettings = {
+      msrmntSystemSelected,
+      msrmntGenderSelected,
+      weight,
+      heightFirst,
+      heightSecond,
+      chest: chestSize,
+      waist: waistSize,
+      hips: hipsSize,
+      inseam: inseamSize,
+      shoulders: shouldersSize,
+      neck: neckSize
+    }
+    const loading = false
     const formatMessage = (messageDescriptor: any) => ''
     const handleOnMsrmntSystemChange = (
       event: React.ChangeEvent<HTMLInputElement>
@@ -27,9 +42,13 @@ describe('<MeasurementsForm />', () => {
       event: React.ChangeEvent<HTMLInputElement>
     ) => {}
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {}
+    const onSaveMeasurementsSettings = () => {}
     ReactDOM.render(
       <MeasurementsForm
         {...{
+          onSaveMeasurementsSettings,
+          loading,
+          measurementSettings,
           msrmntSystemSelected,
           msrmntGenderSelected,
           weight,

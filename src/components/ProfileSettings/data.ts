@@ -32,13 +32,15 @@ export const profileSettingsQuery = gql`
       measurementSettings: userMeasurementsOptions {
         weight
         heightFirst: height
-        heightSecond
+        heightSecond: height
         chest
         waist
         hips
         inseam
         shoulders
         neck
+        msrmntSystemSelected: system
+        msrmntGenderSelected: gender
       }
       smsSettings: smsPreferences {
         orderConfirmation
@@ -53,7 +55,7 @@ export const profileSettingsQuery = gql`
 
 export const regionsQuery = gql`
   query regions {
-    regionsOptions: regions {
+    regions {
       id
       label: name
       icon
@@ -72,6 +74,32 @@ export const regionsQuery = gql`
     }
   }
 `
+
+export const UpdateMeasurementsMutation = graphql(
+  gql`
+    mutation updateMeasurements($userMeasurements: UserMeasurementsData!) {
+      setMeasurementOptions(userMeasurements: $userMeasurements) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateMeasurements'
+  }
+)
+
+export const UpdateUserProfileOptionsMutation = graphql(
+  gql`
+    mutation updateProfile($userData: UserProfile!) {
+      updateUserProfile(userData: $userData) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateUserProfile'
+  }
+)
 
 export const UpdateSmsOptionsMutation = graphql(
   gql`

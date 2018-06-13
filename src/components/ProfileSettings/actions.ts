@@ -14,6 +14,7 @@ import {
   SET_MSRMNT_SYSTEM,
   SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA,
+  SET_SETTINGS_LOADING,
   SET_APOLLO_DATA
 } from './constants'
 import { AnyAction, ProfileSettingsReducer } from '../../types/common'
@@ -77,6 +78,15 @@ export const setMsrmntSystemAction = (system: string): AnyAction => ({
 export const setMsrmntGenderAction = (gender: string): AnyAction => ({
   type: SET_MSRMNT_GENDER,
   gender
+})
+
+export const setSettingsLoadingAction = (
+  key: string,
+  loading: boolean
+): AnyAction => ({
+  type: SET_SETTINGS_LOADING,
+  key,
+  loading
 })
 
 export const setDataFromApolloAction = (

@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
+import Button from 'antd/lib/button'
 
 interface InputProps {
   inputhWidth?: string
@@ -45,4 +46,10 @@ export const StyledInput = styled(Input)`
   border: 1px solid #bebebe;
   border-radius: 0;
   margin-top: 5px;
+`
+
+export const StyledButton = styled(Button)`
+  height: 40px;
+  width: 100%;
+  border-radius: 2px;
 `

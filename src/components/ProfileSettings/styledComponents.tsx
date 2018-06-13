@@ -114,3 +114,19 @@ export const DropDownPlaceHolder = styled(Button)`
     color: #bebebe;
   }
 `
+
+export const LoadingErrorContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+`
+
+export const ErrorMessage = styled.div`
+  margin-top: 16px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
+`

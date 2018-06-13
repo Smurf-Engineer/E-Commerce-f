@@ -6,19 +6,27 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   firstName: {
-    id: 'components.ProfileSettings.firstName',
+    id: 'components.ProfileForm.firstName',
     defaultMessage: 'First Name'
   },
   lastName: {
-    id: 'components.ProfileSettings.lastName',
+    id: 'components.ProfileForm.lastName',
     defaultMessage: 'Last Name'
   },
   email: {
-    id: 'components.ProfileSettings.email',
+    id: 'components.ProfileForm.email',
     defaultMessage: 'E-mail'
   },
   phone: {
-    id: 'components.ProfileSettings.phone',
+    id: 'components.ProfileForm.phone',
     defaultMessage: 'Phone'
+  },
+  save: {
+    id: 'components.ProfileForm.save',
+    defaultMessage: 'Save'
+  },
+  changePassword: {
+    id: 'components.ProfileForm.phone',
+    defaultMessage: 'Change Password'
   }
 })

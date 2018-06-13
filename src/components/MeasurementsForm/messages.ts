@@ -76,5 +76,9 @@ export default defineMessages({
   neck: {
     id: 'components.MeasurementsForm.neck',
     defaultMessage: 'Neck'
+  },
+  save: {
+    id: 'components.MeasurementsForm.save',
+    defaultMessage: 'Save'
   }
 })
