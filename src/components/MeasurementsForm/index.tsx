@@ -46,7 +46,19 @@ interface Props {
 
 const MeasurementsForm = ({
   isMobile,
-  measurementSettings,
+  measurementSettings: {
+    msrmntSystemSelected: msrmntSystemSelectedMS,
+    msrmntGenderSelected: msrmntGenderSelectedMS,
+    weight: weightMS,
+    heightFirst: heightFirstMS,
+    heightSecond: heightSecondMS,
+    chest: chestMS,
+    waist: waistMS,
+    hips: hipsMS,
+    inseam: inseamMS,
+    shoulders: shouldersMS,
+    neck: neckMS
+  },
   msrmntSystemSelected,
   msrmntGenderSelected,
   weight,
@@ -66,29 +78,31 @@ const MeasurementsForm = ({
   onSaveMeasurementsSettings
 }: Props) => {
   const disabled =
-    (measurementSettings.msrmntSystemSelected === msrmntSystemSelected &&
-      measurementSettings.msrmntGenderSelected === msrmntGenderSelected &&
-      measurementSettings.weight === weight &&
-      measurementSettings.heightFirst === heightFirst &&
-      measurementSettings.heightSecond === heightSecond &&
-      measurementSettings.chest === chestSize &&
-      measurementSettings.waist === waistSize &&
-      measurementSettings.hips === hipsSize &&
-      measurementSettings.inseam === inseamSize &&
-      measurementSettings.shoulders === shouldersSize &&
-      measurementSettings.neck === neckSize) ||
-    (!weight ||
-      !heightFirst ||
-      !heightSecond ||
-      !chestSize ||
-      !waistSize ||
-      !hipsSize ||
-      !inseamSize ||
-      !shouldersSize ||
-      !neckSize)
+    (msrmntSystemSelected !== null && !msrmntSystemSelected) ||
+    !msrmntSystemSelectedMS ||
+    (msrmntGenderSelected !== null && !msrmntGenderSelected) ||
+    !msrmntGenderSelectedMS ||
+    (weight !== null && !weight) ||
+    !weightMS ||
+    (heightFirst !== null && !heightFirst) ||
+    !heightFirstMS ||
+    (heightSecond !== null && !heightSecond) ||
+    !heightSecondMS ||
+    (chestSize !== null && !chestSize) ||
+    !chestMS ||
+    (waistSize !== null && !waistSize) ||
+    !waistMS ||
+    (hipsSize !== null && !hipsSize) ||
+    !hipsMS ||
+    (inseamSize !== null && !inseamSize) ||
+    !inseamMS ||
+    (shouldersSize !== null && !shouldersSize) ||
+    !shouldersMS ||
+    (neckSize !== null && !neckSize) ||
+    !neckMS
+
   const metricSistemSelected =
-    (msrmntSystemSelected || measurementSettings.msrmntSystemSelected) ===
-    'metric'
+    (msrmntSystemSelected || msrmntSystemSelectedMS) === 'metric'
   const weightUnit = metricSistemSelected ? 'kgs' : 'lbs'
   const lengthShortUnit = metricSistemSelected ? 'cm' : 'in'
   const lengthLongUnit = metricSistemSelected ? 'mts' : 'ft'
@@ -102,7 +116,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '80%', borderRadius: 0 }}
           id="weight"
-          value={weight !== null ? weight : measurementSettings.weight}
+          value={weight !== null ? weight : weightMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -125,11 +139,7 @@ const MeasurementsForm = ({
             <StyledInput
               style={{ width: '60%', borderRadius: 0 }}
               id="heightFirst"
-              value={
-                heightFirst !== null
-                  ? heightFirst
-                  : measurementSettings.heightFirst
-              }
+              value={heightFirst !== null ? heightFirst : heightFirstMS}
               onChange={handleInputChange}
               maxLength="50"
             />
@@ -145,11 +155,7 @@ const MeasurementsForm = ({
             <StyledInput
               style={{ width: '60%', borderRadius: 0 }}
               id="heightSecond"
-              value={
-                heightSecond !== null
-                  ? heightSecond
-                  : measurementSettings.heightSecond
-              }
+              value={heightSecond !== null ? heightSecond : heightSecondMS}
               onChange={handleInputChange}
               maxLength="50"
             />
@@ -172,7 +178,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="chestSize"
-          value={chestSize !== null ? chestSize : measurementSettings.chest}
+          value={chestSize !== null ? chestSize : chestMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -194,7 +200,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="waistSize"
-          value={waistSize !== null ? waistSize : measurementSettings.waist}
+          value={waistSize !== null ? waistSize : waistMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -216,7 +222,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="hipsSize"
-          value={hipsSize !== null ? hipsSize : measurementSettings.hips}
+          value={hipsSize !== null ? hipsSize : hipsMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -238,7 +244,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="inseamSize"
-          value={inseamSize !== null ? inseamSize : measurementSettings.inseam}
+          value={inseamSize !== null ? inseamSize : inseamMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -260,11 +266,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="shouldersSize"
-          value={
-            shouldersSize !== null
-              ? shouldersSize
-              : measurementSettings.shoulders
-          }
+          value={shouldersSize !== null ? shouldersSize : shouldersMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -286,7 +288,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="neckSize"
-          value={neckSize !== null ? neckSize : measurementSettings.neck}
+          value={neckSize !== null ? neckSize : neckMS}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -304,11 +306,7 @@ const MeasurementsForm = ({
       <Row>
         <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
-            value={
-              msrmntSystemSelected ||
-              measurementSettings.msrmntSystemSelected ||
-              'metric'
-            }
+            value={msrmntSystemSelected || msrmntSystemSelectedMS || 'metric'}
             onChange={handleOnMsrmntSystemChange}
           >
             <RadioButton value="metric">
@@ -321,11 +319,7 @@ const MeasurementsForm = ({
         </Column>
         <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
-            value={
-              msrmntGenderSelected ||
-              measurementSettings.msrmntGenderSelected ||
-              'man'
-            }
+            value={msrmntGenderSelected || msrmntGenderSelectedMS || 'man'}
             onChange={handleOnMsrmntGenderChange}
           >
             <RadioButton value="man">{formatMessage(messages.man)}</RadioButton>

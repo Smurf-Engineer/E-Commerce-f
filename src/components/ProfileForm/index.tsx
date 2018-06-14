@@ -37,19 +37,23 @@ const ProfileForm = ({
   formatMessage,
   handleInputChange,
   loading,
-  userProfile,
+  userProfile: {
+    firstName: firstNameUP,
+    lastName: lastNameUP,
+    email: emailUP,
+    phone: phoneUP
+  },
   onSaveProfileSettings,
   onToggleModalPassword
 }: Props) => {
+  const firstNameChanged =
+    firstName !== null && firstNameUP !== firstName && firstName
+  const lastNameChanged =
+    lastName !== null && lastNameUP !== lastName && lastName
+  const emailChanged = email !== null && emailUP !== email && email
+  const phoneChanged = phone !== null && phoneUP !== phone && phone
   const disabled =
-    (firstName !== null && !firstName) ||
-    !userProfile.firstName ||
-    (lastName !== null && !lastName) ||
-    !userProfile.lastName ||
-    (email !== null && !email) ||
-    !userProfile.email ||
-    (phone !== null && !phone) ||
-    !userProfile.phone
+    !firstNameChanged && !lastNameChanged && !emailChanged && !phoneChanged
   const firstNameComponent = (
     <Column inputhWidth={!isMobile ? '48%' : '100%'}>
       <InputTitleContainer>
@@ -57,7 +61,7 @@ const ProfileForm = ({
       </InputTitleContainer>
       <StyledInput
         id="firstName"
-        value={firstName !== null ? firstName : userProfile.firstName}
+        value={firstName !== null ? firstName : firstNameUP}
         onChange={handleInputChange}
         maxLength="50"
       />
@@ -70,7 +74,7 @@ const ProfileForm = ({
       </InputTitleContainer>
       <StyledInput
         id="lastName"
-        value={lastName !== null ? lastName : userProfile.lastName}
+        value={lastName !== null ? lastName : lastNameUP}
         onChange={handleInputChange}
         maxLength="50"
       />
@@ -97,7 +101,7 @@ const ProfileForm = ({
           <StyledInput
             disabled={true} // TODO: ask flow to change email
             id="email"
-            value={email !== null ? email : userProfile.email}
+            value={email !== null ? email : emailUP}
             onChange={handleInputChange}
             maxLength="50"
           />
@@ -110,7 +114,7 @@ const ProfileForm = ({
           </InputTitleContainer>
           <StyledInput
             id="phone"
-            value={phone !== null ? phone : userProfile.phone}
+            value={phone !== null ? phone : phoneUP}
             onChange={handleInputChange}
             maxLength="50"
           />

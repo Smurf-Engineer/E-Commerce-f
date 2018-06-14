@@ -61,8 +61,16 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
-    case CHANGE_INPUT:
+    case CHANGE_INPUT: {
+      if (action.id === 'region') {
+        return state.merge({
+          region: action.value,
+          language: null,
+          currency: null
+        })
+      }
       return state.merge({ [action.id]: action.value })
+    }
     case SELECT_DROPDOWN:
       return state.merge({ [action.id]: action.key })
     case SHOW_PASSWORD_MODAL: {
@@ -73,9 +81,8 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
           currentPassword: '',
           newPasswordConfirm: ''
         })
-      } else {
-        return state.set('showPasswordModal', true)
       }
+      return state.set('showPasswordModal', true)
     }
     case SET_MODAL_LOADING:
       return state.set('modalLoading', action.loading)
@@ -95,7 +102,10 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         modalPasswordHasError: false,
         showPasswordModal: false,
-        modalLoading: false
+        modalLoading: false,
+        newPassword: '',
+        currentPassword: '',
+        newPasswordConfirm: ''
       })
     case SET_SETTINGS_LOADING:
       return state.set(action.key, action.loading)

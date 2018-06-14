@@ -32,7 +32,7 @@ export const profileSettingsQuery = gql`
       measurementSettings: userMeasurementsOptions {
         weight
         heightFirst: height
-        heightSecond: height
+        heightSecond: height_s
         chest
         waist
         hips
@@ -137,5 +137,18 @@ export const UpdateEmailOptionsMutation = graphql(
   `,
   {
     name: 'updateEmailOptions'
+  }
+)
+
+export const ChangePasswordMutation = graphql(
+  gql`
+    mutation changePassword($currentPassword: String!, $password: String!) {
+      changePassword(currentPassword: $currentPassword, password: $password) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'changePassword'
   }
 )

@@ -75,3 +75,9 @@ export const MenuOption = styled.div`
   font-size: 14px;
   line-height: 22px;
 `
+
+export const StyledButton = styled(Button)`
+  height: 40px;
+  width: 100%;
+  border-radius: 2px;
+`

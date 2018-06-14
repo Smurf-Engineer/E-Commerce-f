@@ -21,9 +21,13 @@ describe('<LanguageAndCurrencyForm />', () => {
       currency: {}
     }
     const isMobile = false
+    const loading = false
+    const onSaveLanguageSettings = () => {}
     ReactDOM.render(
       <LanguageAndCurrencyForm
         {...{
+          onSaveLanguageSettings,
+          loading,
           isMobile,
           languageSettings,
           region,

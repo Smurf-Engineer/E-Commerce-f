@@ -14,7 +14,8 @@ import {
   UpdateEmailOptionsMutation,
   UpdateUserProfileOptionsMutation,
   UpdateMeasurementsMutation,
-  UpdateRegionOptionsMutation
+  UpdateRegionOptionsMutation,
+  ChangePasswordMutation
 } from './data'
 import messages from './messages'
 import {
@@ -104,6 +105,7 @@ interface Props {
   updateSmsOptions: (variables: {}) => void
   updateMeasurements: (variables: {}) => void
   updateRegionOptions: (variables: {}) => void
+  changePassword: (variables: {}) => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
@@ -175,15 +177,13 @@ class ProfileSettings extends React.Component<Props, {}> {
 
     const regionsOptions: Region[] = regions || []
 
-    const languageButtonDisabled =
-      (!languageSettings.region.id && !region) ||
-      (!languageSettings.language.id && !language) ||
-      (!languageSettings.currency.id && !currency)
-
     const smsButtonDisabled =
-      smsSettings.desingUpdates === smsUpdatesChecked &&
-      smsSettings.orderConfirmation === smsConfirmationChecked
+      (smsUpdatesChecked === null ||
+        smsSettings.desingUpdates === smsUpdatesChecked) &&
+      (smsConfirmationChecked === null ||
+        smsSettings.orderConfirmation === smsConfirmationChecked)
     const emailButtonDisabled =
+      emailNewsletterChecked === null ||
       emailSettings.newsletter === emailNewsletterChecked
     return (
       <Container>
@@ -213,6 +213,8 @@ class ProfileSettings extends React.Component<Props, {}> {
             <LanguageAndCurrencyForm
               selectedDropDown={this.selectedDropDown}
               regionsAndLanguageOptions={regionsOptions}
+              onSaveLanguageSettings={this.handleOnSaveLanguageSettings}
+              loading={loadingRegion}
               {...{
                 languageSettings,
                 region,
@@ -222,18 +224,6 @@ class ProfileSettings extends React.Component<Props, {}> {
                 isMobile
               }}
             />
-          </Row>
-          <Row>
-            <Column inputhWidth={!isMobile ? '27%' : '48%'}>
-              <StyledButton
-                loading={loadingRegion}
-                type="primary"
-                disabled={languageButtonDisabled}
-                onClick={this.handleOnSaveLanguageSettings}
-              >
-                {formatMessage(messages.save)}
-              </StyledButton>
-            </Column>
           </Row>
         </SectionContainer>
         {/* MEASUREMENTS */}
@@ -349,7 +339,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
-  handleOnChangePassword = () => {
+  handleOnChangePassword = async () => {
     const {
       currentPassword,
       newPassword,
@@ -357,6 +347,7 @@ class ProfileSettings extends React.Component<Props, {}> {
       setPasswordModalHasError,
       setModalLoadingAction,
       changePasswordSuccessAction,
+      changePassword,
       formatMessage
     } = this.props
     if (
@@ -369,11 +360,11 @@ class ProfileSettings extends React.Component<Props, {}> {
     } else {
       setModalLoadingAction(true)
       try {
-        setTimeout(() => {
-          changePasswordSuccessAction()
-          Message.success(formatMessage(messages.passwordSuccessMessage))
-          // tslint:disable-next-line:align
-        }, 500)
+        await changePassword({
+          variables: { currentPassword, password: newPassword }
+        })
+        changePasswordSuccessAction()
+        Message.success(formatMessage(messages.passwordSuccessMessage))
       } catch (error) {
         setModalLoadingAction(false)
         const errorMessage = error.graphQLErrors.map((x: any) => x.message)
@@ -643,6 +634,7 @@ const ProfileSettingsEnhance = compose(
   UpdateUserProfileOptionsMutation,
   UpdateMeasurementsMutation,
   UpdateRegionOptionsMutation,
+  ChangePasswordMutation,
   connect(
     mapStateToProps,
     { ...ProfileSettingsActions }

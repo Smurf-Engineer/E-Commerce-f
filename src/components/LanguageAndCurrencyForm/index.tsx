@@ -16,12 +16,14 @@ import {
   Label,
   DropDownPlaceHolder,
   Option,
-  MenuOption
+  MenuOption,
+  StyledButton
 } from './styledComponents'
 import { ClickParam, Region, UserRegionSettings } from '../../types/common'
 
 interface Props {
   isMobile: boolean
+  loading: boolean
   region: string
   language: string
   currency: string
@@ -29,17 +31,24 @@ interface Props {
   regionsAndLanguageOptions: Region[]
   formatMessage: (messageDescriptor: any) => string
   selectedDropDown: (param: ClickParam) => void
+  onSaveLanguageSettings: () => void
 }
 
 const LanguageAndCurrencyForm = ({
-  languageSettings,
+  languageSettings: {
+    region: regionLS,
+    language: languageLS,
+    currency: currencyLS
+  },
+  loading,
   isMobile,
   regionsAndLanguageOptions,
   region,
   language,
   currency,
   formatMessage,
-  selectedDropDown
+  selectedDropDown,
+  onSaveLanguageSettings
 }: Props) => {
   const regionItems = regionsAndLanguageOptions.map(({ icon, label, id }) => (
     <Menu.Item id="region" key={id}>
@@ -51,10 +60,7 @@ const LanguageAndCurrencyForm = ({
   ))
   const regionOptions = <Menu onClick={selectedDropDown}>{regionItems}</Menu>
 
-  const currentRegionId =
-    region !== null
-      ? region
-      : languageSettings.region && languageSettings.region.id
+  const currentRegionId = region !== null ? region : regionLS && regionLS.id
   const currentRegion = currentRegionId
     ? find(regionsAndLanguageOptions, r => r.id === Number(currentRegionId))
     : undefined
@@ -72,9 +78,7 @@ const LanguageAndCurrencyForm = ({
   )
 
   const currentLanguageId =
-    language !== null
-      ? language
-      : languageSettings.language && languageSettings.language.id
+    language !== null ? language : languageLS && languageLS.id
   const currentLanguage =
     currentRegion && currentLanguageId
       ? find(
@@ -96,9 +100,7 @@ const LanguageAndCurrencyForm = ({
   )
 
   const currentCurrencyId =
-    currency != null
-      ? currency
-      : languageSettings.currency && languageSettings.currency.id
+    currency != null ? currency : currencyLS && currencyLS.id
   const currentCurrency =
     currentRegion && currentCurrencyId
       ? find(
@@ -106,6 +108,14 @@ const LanguageAndCurrencyForm = ({
           c => c.id === Number(currentCurrencyId)
         )
       : undefined
+
+  const languageButtonDisabled =
+    (currentRegionId === regionLS.id &&
+      currentLanguageId === languageLS.id &&
+      currentCurrencyId === currencyLS.id) ||
+    !currentRegion ||
+    !currentLanguage ||
+    !currentCurrency
 
   return (
     <Container>
@@ -153,6 +163,18 @@ const LanguageAndCurrencyForm = ({
               <Icon type="down" />
             </DropDownPlaceHolder>
           </Dropdown>
+        </Column>
+      </Row>
+      <Row>
+        <Column inputhWidth={!isMobile ? '27%' : '48%'}>
+          <StyledButton
+            {...{ loading }}
+            type="primary"
+            disabled={languageButtonDisabled}
+            onClick={onSaveLanguageSettings}
+          >
+            {formatMessage(messages.save)}
+          </StyledButton>
         </Column>
       </Row>
     </Container>
