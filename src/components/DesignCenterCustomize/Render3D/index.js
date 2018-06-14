@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
+import get from 'lodash/get'
 import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
@@ -78,43 +79,44 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
 
-    fabric.Canvas.prototype.customiseControls({
-      tl: {
-        action: 'remove',
-        icon: 'delete.svg',
-        cursor: 'pointer'
-      },
-      tr: {
-        action: () => {
-          console.log('------------------------------------')
-          console.log('COPY')
-          console.log('------------------------------------')
-        },
-        icon: 'duplicate.svg',
-        cursor: 'pointer'
-      },
-      bl: {
-        action: 'rotate',
-        icon: 'rotate.svg',
-        cursor: 'pointer'
-      },
-      br: {
-        action: 'scale',
-        icon: 'expand.svg',
-        cursor: 'pointer'
-      },
-      mb: {
-        action: 'moveUp',
-        icon: 'layer.svg',
-        cursor: 'pointer'
-      }
-    })
+    // fabric.Canvas.prototype.customiseControls({
+    //   tl: {
+    //     action: 'remove',
+    //     icon: 'delete.svg',
+    //     cursor: 'pointer'
+    //   },
+    //   tr: {
+    //     action: () => {
+    //       console.log('------------------------------------')
+    //       console.log('COPY')
+    //       console.log('------------------------------------')
+    //     },
+    //     icon: 'duplicate.svg',
+    //     cursor: 'pointer'
+    //   },
+    //   bl: {
+    //     action: 'rotate',
+    //     icon: 'rotate.svg',
+    //     cursor: 'pointer'
+    //   },
+    //   br: {
+    //     action: 'scale',
+    //     icon: 'expand.svg',
+    //     cursor: 'pointer'
+    //   },
+    //   mb: {
+    //     action: 'moveUp',
+    //     icon: 'layer.svg',
+    //     cursor: 'pointer'
+    //   }
+    // })
 
     fabric.Object.prototype.customiseCornerIcons({
       settings: {
         borderColor: 'black',
         borderWidth: 20,
-        cornerSize: 70
+        cornerSize: 70,
+        cornerPadding: 10
       },
       tl: {
         icon: 'delete.svg'
@@ -242,10 +244,12 @@ class Render3D extends PureComponent {
 
     if (intersects.length > 0 && intersects[0].uv) {
       const uv = intersects[0].uv
+      let allDeactive = true
       this.canvasTexture.forEachObject(el => {
         const boundingBox = el.getBoundingRect()
         const isInside = isMouseOver(boundingBox, uv)
         if (isInside) {
+          allDeactive = false
           const left = uv.x * 2048
           const top = (1 - uv.y) * 2048
           const differenceX = left - boundingBox.left
@@ -257,8 +261,11 @@ class Render3D extends PureComponent {
         } else {
           el.set('active', false)
         }
-        this.canvasTexture.renderAll()
       })
+      if (allDeactive) {
+        this.canvasTexture.discardActiveObject()
+      }
+      this.canvasTexture.renderAll()
     }
   }
 
@@ -277,22 +284,19 @@ class Render3D extends PureComponent {
       this.scene.children
     )
 
-    if (
-      intersects.length > 0 &&
-      intersects[0].uv &&
-      intersects[0].object &&
-      intersects[0].object.name === 'FINAL JV2_Design_Mesh' &&
-      !!this.dragComponent
-    ) {
-      const { element, differenceX, differenceY } = this.dragComponent
-      const uv = intersects[0].uv
-      const left = uv.x * 2048 - differenceX
-      const top = (1 - uv.y) * 2048 - differenceY
-      this.canvasTexture
-        .item(element.id)
-        .set({ left, top })
-        .setCoords()
-      this.canvasTexture.renderAll()
+    if (intersects.length > 0 && intersects[0].uv && !!this.dragComponent) {
+      const meshName = get(intersects[0], 'object.name', '')
+      if (meshName === 'FINAL JV2_Design_Mesh' || meshName === 'Canvas_Mesh') {
+        const { element, differenceX, differenceY } = this.dragComponent
+        const uv = intersects[0].uv
+        const left = uv.x * 2048 - differenceX
+        const top = (1 - uv.y) * 2048 - differenceY
+        this.canvasTexture
+          .item(element.id)
+          .set({ left, top })
+          .setCoords()
+        this.canvasTexture.renderAll()
+      }
     }
   }
 
