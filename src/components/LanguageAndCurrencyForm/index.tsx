@@ -110,9 +110,9 @@ const LanguageAndCurrencyForm = ({
       : undefined
 
   const languageButtonDisabled =
-    (currentRegionId === regionLS.id &&
-      currentLanguageId === languageLS.id &&
-      currentCurrencyId === currencyLS.id) ||
+    ((region === null || region === String(regionLS.id)) &&
+      (language === null || language === String(languageLS.id)) &&
+      (currency === null || currency === String(currencyLS.id))) ||
     !currentRegion ||
     !currentLanguage ||
     !currentCurrency
