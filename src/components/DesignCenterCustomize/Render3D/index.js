@@ -242,20 +242,20 @@ class Render3D extends PureComponent {
 
     if (intersects.length > 0 && intersects[0].uv) {
       const uv = intersects[0].uv
-      this.canvasTexture.forEachObject(obj => {
-        const boundingBox = obj.getBoundingRect()
+      this.canvasTexture.forEachObject(el => {
+        const boundingBox = el.getBoundingRect()
         const isInside = isMouseOver(boundingBox, uv)
         if (isInside) {
           const left = uv.x * 2048
           const top = (1 - uv.y) * 2048
           const differenceX = left - boundingBox.left
           const differenceY = top - boundingBox.top
-          const dragComponent = { element: obj, differenceX, differenceY }
+          const dragComponent = { element: el, differenceX, differenceY }
           this.controls.enabled = false
           this.dragComponent = dragComponent
-          this.canvasTexture.setActiveObject(obj)
+          this.canvasTexture.setActiveObject(el)
         } else {
-          obj.set('active', false)
+          el.set('active', false)
         }
         this.canvasTexture.renderAll()
       })
@@ -277,7 +277,13 @@ class Render3D extends PureComponent {
       this.scene.children
     )
 
-    if (intersects.length > 0 && intersects[0].uv && !!this.dragComponent) {
+    if (
+      intersects.length > 0 &&
+      intersects[0].uv &&
+      intersects[0].object &&
+      intersects[0].object.name === 'FINAL JV2_Design_Mesh' &&
+      !!this.dragComponent
+    ) {
       const { element, differenceX, differenceY } = this.dragComponent
       const uv = intersects[0].uv
       const left = uv.x * 2048 - differenceX
