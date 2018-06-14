@@ -12,10 +12,11 @@ import {
   StyledInput,
   StyledButton,
   InputGroup,
-  LabeledInput
+  LabeledInput,
+  RadioButton
 } from './styledComponents'
 import RadioGroup from 'antd/lib/radio/group'
-import RadioButton from 'antd/lib/radio/radioButton'
+
 import { MeasurementSettings } from '../../types/common'
 
 interface Props {

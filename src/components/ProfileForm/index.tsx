@@ -121,7 +121,7 @@ const ProfileForm = ({
         </Column>
       </Row>
       <Row>
-        <Column inputhWidth={!isMobile ? '27%' : '48%'}>
+        <Column inputhWidth={!isMobile ? '27%' : '37%'}>
           <StyledButton
             {...{ loading, disabled }}
             type="primary"
@@ -130,7 +130,7 @@ const ProfileForm = ({
             {formatMessage(messages.save)}
           </StyledButton>
         </Column>
-        <Column inputhWidth={!isMobile ? '40%' : '48%'}>
+        <Column inputhWidth={!isMobile ? '40%' : '60%'}>
           <StyledButton type="primary" onClick={onToggleModalPassword}>
             {formatMessage(messages.changePassword)}
           </StyledButton>

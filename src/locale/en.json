@@ -526,6 +526,9 @@
   "components.LanguageAndCurrencyForm.language": "Language",
   "components.LanguageAndCurrencyForm.currency": "Currency",
   "components.LanguageAndCurrencyForm.save": "Save",
+  "components.LanguageAndCurrencyForm.selectRegion": "Select Region",
+  "components.LanguageAndCurrencyForm.selectLanguage": "Select Language",
+  "components.LanguageAndCurrencyForm.selectCurrency": "Select Currency",
 
   "components.MeasurementsForm.metric": "Metric",
   "components.MeasurementsForm.imperial": "Imperial",

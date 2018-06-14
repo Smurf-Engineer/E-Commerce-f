@@ -61,9 +61,10 @@ const LanguageAndCurrencyForm = ({
   const regionOptions = <Menu onClick={selectedDropDown}>{regionItems}</Menu>
 
   const currentRegionId = region !== null ? region : regionLS && regionLS.id
-  const currentRegion = currentRegionId
-    ? find(regionsAndLanguageOptions, r => r.id === Number(currentRegionId))
-    : undefined
+  const currentRegion = find(
+    regionsAndLanguageOptions,
+    r => r.id === Number(currentRegionId)
+  )
 
   const languageItems = currentRegion
     ? currentRegion.languages.map(({ id, name }) => (
@@ -80,12 +81,11 @@ const LanguageAndCurrencyForm = ({
   const currentLanguageId =
     language !== null ? language : languageLS && languageLS.id
   const currentLanguage =
-    currentRegion && currentLanguageId
-      ? find(
-          (currentRegion as Region).languages,
-          l => l.id === Number(currentLanguageId)
-        )
-      : undefined
+    currentRegion &&
+    find(
+      (currentRegion as Region).languages,
+      l => l.id === Number(currentLanguageId)
+    )
 
   const currencyItems = currentRegion
     ? currentRegion.currencies.map(({ id, shortName }) => (
@@ -102,12 +102,11 @@ const LanguageAndCurrencyForm = ({
   const currentCurrencyId =
     currency != null ? currency : currencyLS && currencyLS.id
   const currentCurrency =
-    currentRegion && currentCurrencyId
-      ? find(
-          (currentRegion as Region).currencies,
-          c => c.id === Number(currentCurrencyId)
-        )
-      : undefined
+    currentRegion &&
+    find(
+      (currentRegion as Region).currencies,
+      c => c.id === Number(currentCurrencyId)
+    )
 
   const languageButtonDisabled =
     ((region === null || region === String(regionLS.id)) &&
@@ -132,7 +131,7 @@ const LanguageAndCurrencyForm = ({
                   <MenuOption>{upperFirst(currentRegion.label)}</MenuOption>
                 </Option>
               ) : (
-                'Select Region'
+                formatMessage(messages.selectRegion)
               )}
               <Icon type="down" />
             </DropDownPlaceHolder>
@@ -146,7 +145,7 @@ const LanguageAndCurrencyForm = ({
             <DropDownPlaceHolder>
               {currentLanguage
                 ? upperFirst(currentLanguage.name)
-                : 'Select Language'}
+                : formatMessage(messages.selectLanguage)}
               <Icon type="down" />
             </DropDownPlaceHolder>
           </Dropdown>
@@ -159,7 +158,7 @@ const LanguageAndCurrencyForm = ({
             <DropDownPlaceHolder>
               {currentCurrency
                 ? currentCurrency.shortName.toUpperCase()
-                : 'Select Currency'}
+                : formatMessage(messages.selectCurrency)}
               <Icon type="down" />
             </DropDownPlaceHolder>
           </Dropdown>

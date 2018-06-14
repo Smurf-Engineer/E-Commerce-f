@@ -20,5 +20,17 @@ export default defineMessages({
   save: {
     id: 'components.LanguageAndCurrencyForm.save',
     defaultMessage: 'Save'
+  },
+  selectRegion: {
+    id: 'components.LanguageAndCurrencyForm.selectRegion',
+    defaultMessage: 'Select Region'
+  },
+  selectLanguage: {
+    id: 'components.LanguageAndCurrencyForm.selectLanguage',
+    defaultMessage: 'Select Language'
+  },
+  selectCurrency: {
+    id: 'components.LanguageAndCurrencyForm.selectCurrency',
+    defaultMessage: 'Select Currency'
   }
 })

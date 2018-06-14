@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import inputGroup from 'antd/lib/input/Group'
 import Button from 'antd/lib/button'
+import radioButton from 'antd/lib/radio/radioButton'
 
 interface InputProps {
   inputhWidth?: string
@@ -44,6 +45,10 @@ export const Label = styled.div`
 
 export const InputGroup = styled(inputGroup)`
   border-radius: 0px;
+`
+
+export const RadioButton = styled(radioButton)`
+  padding: 0 8px;
 `
 
 export const StyledInput = styled(Input)`

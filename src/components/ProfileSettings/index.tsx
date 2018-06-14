@@ -456,7 +456,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     showPasswordModalAction(!showPasswordModal)
   }
 
-  handleOnSaveProfileSettings = async () => {
+  handleOnSaveProfileSettings = () => {
     const {
       updateUserProfile,
       firstName,
@@ -476,7 +476,7 @@ class ProfileSettings extends React.Component<Props, {}> {
         phone: phone || userProfile.phone
       }
     }
-    await this.updateSetting(
+    this.updateSetting(
       'loadingProfile',
       payload,
       updateUserProfile,
@@ -484,7 +484,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSaveLanguageSettings = async () => {
+  handleOnSaveLanguageSettings = () => {
     const {
       region,
       language,
@@ -501,7 +501,7 @@ class ProfileSettings extends React.Component<Props, {}> {
         currencyId: currency || languageSettings.currency.id
       }
     }
-    await this.updateSetting(
+    this.updateSetting(
       'loadingRegion',
       payload,
       updateRegionOptions,
@@ -509,7 +509,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSaveMeasurementsSettings = async () => {
+  handleOnSaveMeasurementsSettings = () => {
     const {
       updateMeasurements,
       msrmntSystemSelected,
@@ -543,7 +543,7 @@ class ProfileSettings extends React.Component<Props, {}> {
         gender: msrmntGenderSelected || measurementSettings.msrmntGenderSelected
       }
     }
-    await this.updateSetting(
+    this.updateSetting(
       'loadingMeasurements',
       payload,
       updateMeasurements,
@@ -551,7 +551,7 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSaveSmsSettings = async () => {
+  handleOnSaveSmsSettings = () => {
     const {
       updateSmsOptions,
       smsConfirmationChecked,
@@ -564,7 +564,7 @@ class ProfileSettings extends React.Component<Props, {}> {
         desingUpdates: smsUpdatesChecked
       }
     }
-    await this.updateSetting(
+    this.updateSetting(
       'loadingSms',
       payload,
       updateSmsOptions,
@@ -572,11 +572,11 @@ class ProfileSettings extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSaveEmailSettings = async () => {
+  handleOnSaveEmailSettings = () => {
     const { updateEmailOptions, emailNewsletterChecked } = this.props
 
     const payload = { subscribed: emailNewsletterChecked }
-    await this.updateSetting(
+    this.updateSetting(
       'loadingEmail',
       payload,
       updateEmailOptions,
