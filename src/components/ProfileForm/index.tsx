@@ -42,11 +42,14 @@ const ProfileForm = ({
   onToggleModalPassword
 }: Props) => {
   const disabled =
-    (userProfile.firstName === firstName &&
-      userProfile.lastName === lastName &&
-      userProfile.email === email &&
-      userProfile.phone === phone) ||
-    (!firstName || !lastName || !email || !phone)
+    (firstName !== null && !firstName) ||
+    !userProfile.firstName ||
+    (lastName !== null && !lastName) ||
+    !userProfile.lastName ||
+    (email !== null && !email) ||
+    !userProfile.email ||
+    (phone !== null && !phone) ||
+    !userProfile.phone
   const firstNameComponent = (
     <Column inputhWidth={!isMobile ? '48%' : '100%'}>
       <InputTitleContainer>
@@ -54,7 +57,7 @@ const ProfileForm = ({
       </InputTitleContainer>
       <StyledInput
         id="firstName"
-        value={firstName}
+        value={firstName !== null ? firstName : userProfile.firstName}
         onChange={handleInputChange}
         maxLength="50"
       />
@@ -67,7 +70,7 @@ const ProfileForm = ({
       </InputTitleContainer>
       <StyledInput
         id="lastName"
-        value={lastName}
+        value={lastName !== null ? lastName : userProfile.lastName}
         onChange={handleInputChange}
         maxLength="50"
       />
@@ -94,7 +97,7 @@ const ProfileForm = ({
           <StyledInput
             disabled={true} // TODO: ask flow to change email
             id="email"
-            value={email}
+            value={email !== null ? email : userProfile.email}
             onChange={handleInputChange}
             maxLength="50"
           />
@@ -107,7 +110,7 @@ const ProfileForm = ({
           </InputTitleContainer>
           <StyledInput
             id="phone"
-            value={phone}
+            value={phone !== null ? phone : userProfile.phone}
             onChange={handleInputChange}
             maxLength="50"
           />

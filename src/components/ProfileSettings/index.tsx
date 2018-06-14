@@ -35,7 +35,6 @@ import {
   ClickParam,
   QueryProps,
   Region,
-  ProfileSettingsReducer,
   IProfileSettings
 } from '../../types/common'
 import ChangePasswordModal from '../ChangePasswordModal'
@@ -98,7 +97,6 @@ interface Props {
   setPasswordModalHasError: (hasError: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
   setSettingsLoadingAction: (key: string, loading: boolean) => void
-  setDataFromApolloAction: (profileSettings: ProfileSettingsReducer) => void
   changePasswordSuccessAction: () => void
   // mutations
   updateUserProfile: (variables: {}) => void
@@ -172,21 +170,15 @@ class ProfileSettings extends React.Component<Props, {}> {
       newPasswordConfirm,
       showPasswordModal,
       passwordModalLoading,
-      modalPasswordHasError,
-      dataFromApollo
+      modalPasswordHasError
     } = this.props
-
-    if (!dataFromApollo) {
-      this.setDataFromApollo()
-    }
 
     const regionsOptions: Region[] = regions || []
 
     const languageButtonDisabled =
-      (languageSettings.region.id === region &&
-        languageSettings.language.id === language &&
-        languageSettings.currency.id === currency) ||
-      (!region || !language || !currency)
+      (!languageSettings.region.id && !region) ||
+      (!languageSettings.language.id && !language) ||
+      (!languageSettings.currency.id && !currency)
 
     const smsButtonDisabled =
       smsSettings.desingUpdates === smsUpdatesChecked &&
@@ -277,7 +269,11 @@ class ProfileSettings extends React.Component<Props, {}> {
           <Row marginBottom={'0'}>
             <StyledCheckbox
               onChange={this.handleOnSmsConfirmationChecked}
-              checked={smsConfirmationChecked}
+              checked={
+                smsConfirmationChecked !== null
+                  ? smsConfirmationChecked
+                  : smsSettings.orderConfirmation
+              }
             >
               {formatMessage(messages.smsOrderConfirmation)}
             </StyledCheckbox>
@@ -285,7 +281,11 @@ class ProfileSettings extends React.Component<Props, {}> {
           <Row>
             <StyledCheckbox
               onChange={this.handleOnSmsUpdatesChecked}
-              checked={smsUpdatesChecked}
+              checked={
+                smsUpdatesChecked !== null
+                  ? smsUpdatesChecked
+                  : smsSettings.desingUpdates
+              }
             >
               {formatMessage(messages.smsProDesignUpdates)}
             </StyledCheckbox>
@@ -309,7 +309,11 @@ class ProfileSettings extends React.Component<Props, {}> {
           <Row>
             <StyledCheckbox
               onChange={this.handleOnEmailNewsletterChecked}
-              checked={emailNewsletterChecked}
+              checked={
+                emailNewsletterChecked !== null
+                  ? emailNewsletterChecked
+                  : emailSettings.newsletter
+              }
             >
               {formatMessage(messages.emailSignUpNewsLetter)}
             </StyledCheckbox>
@@ -616,46 +620,6 @@ class ProfileSettings extends React.Component<Props, {}> {
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
     }
-  }
-
-  setDataFromApollo = () => {
-    const {
-      setDataFromApolloAction,
-      profileData: {
-        profileData: {
-          userProfile,
-          languageSettings,
-          measurementSettings,
-          smsSettings,
-          emailSettings
-        }
-      }
-    } = this.props
-    const profileData: ProfileSettingsReducer = {
-      firstName: (userProfile && userProfile.firstName) || '',
-      lastName: (userProfile && userProfile.lastName) || '',
-      email: (userProfile && userProfile.email) || '',
-      phone: (userProfile && userProfile.phone) || '',
-      region: languageSettings.region.id || '',
-      language: languageSettings.language.id || '',
-      currency: languageSettings.currency.id || '',
-      msrmntSystemSelected:
-        measurementSettings.msrmntSystemSelected || 'metric',
-      msrmntGenderSelected: measurementSettings.msrmntGenderSelected || 'man',
-      weight: measurementSettings.weight || '',
-      heightFirst: measurementSettings.heightFirst || '',
-      heightSecond: measurementSettings.heightSecond || '',
-      chestSize: measurementSettings.chest || '',
-      waistSize: measurementSettings.waist || '',
-      hipsSize: measurementSettings.hips || '',
-      inseamSize: measurementSettings.inseam || '',
-      shouldersSize: measurementSettings.shoulders || '',
-      neckSize: measurementSettings.neck || '',
-      smsConfirmationChecked: smsSettings.orderConfirmation,
-      smsUpdatesChecked: smsSettings.desingUpdates,
-      emailNewsletterChecked: emailSettings.newsletter
-    }
-    setDataFromApolloAction(profileData)
   }
 }
 

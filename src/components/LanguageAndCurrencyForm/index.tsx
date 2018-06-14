@@ -32,6 +32,7 @@ interface Props {
 }
 
 const LanguageAndCurrencyForm = ({
+  languageSettings,
   isMobile,
   regionsAndLanguageOptions,
   region,
@@ -50,8 +51,12 @@ const LanguageAndCurrencyForm = ({
   ))
   const regionOptions = <Menu onClick={selectedDropDown}>{regionItems}</Menu>
 
-  const currentRegion = region
-    ? find(regionsAndLanguageOptions, r => r.id === Number(region))
+  const currentRegionId =
+    region !== null
+      ? region
+      : languageSettings.region && languageSettings.region.id
+  const currentRegion = currentRegionId
+    ? find(regionsAndLanguageOptions, r => r.id === Number(currentRegionId))
     : undefined
 
   const languageItems = currentRegion
@@ -66,11 +71,15 @@ const LanguageAndCurrencyForm = ({
     <Menu onClick={selectedDropDown}>{languageItems}</Menu>
   )
 
+  const currentLanguageId =
+    language !== null
+      ? language
+      : languageSettings.language && languageSettings.language.id
   const currentLanguage =
-    language && currentRegion
+    currentRegion && currentLanguageId
       ? find(
           (currentRegion as Region).languages,
-          l => l.id === Number(language)
+          l => l.id === Number(currentLanguageId)
         )
       : undefined
 
@@ -86,11 +95,15 @@ const LanguageAndCurrencyForm = ({
     <Menu onClick={selectedDropDown}>{currencyItems}</Menu>
   )
 
+  const currentCurrencyId =
+    currency != null
+      ? currency
+      : languageSettings.currency && languageSettings.currency.id
   const currentCurrency =
-    currency && currentRegion
+    currentRegion && currentCurrencyId
       ? find(
           (currentRegion as Region).currencies,
-          c => c.id === Number(currency)
+          c => c.id === Number(currentCurrencyId)
         )
       : undefined
 

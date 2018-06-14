@@ -15,10 +15,9 @@ import {
   SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
-  SET_APOLLO_DATA,
   CHANGE_PASSWORD_SUCCESS
 } from './constants'
-import { AnyAction, ProfileSettingsReducer } from '../../types/common'
+import { AnyAction } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -92,12 +91,4 @@ export const setSettingsLoadingAction = (
   type: SET_SETTINGS_LOADING,
   key,
   loading
-})
-
-export const setDataFromApolloAction = (
-  profileSettings: ProfileSettingsReducer,
-  data: any
-): AnyAction => ({
-  type: SET_APOLLO_DATA,
-  profileSettings
 })

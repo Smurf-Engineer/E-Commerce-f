@@ -102,7 +102,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '80%', borderRadius: 0 }}
           id="weight"
-          value={weight}
+          value={weight !== null ? weight : measurementSettings.weight}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -125,7 +125,11 @@ const MeasurementsForm = ({
             <StyledInput
               style={{ width: '60%', borderRadius: 0 }}
               id="heightFirst"
-              value={heightFirst}
+              value={
+                heightFirst !== null
+                  ? heightFirst
+                  : measurementSettings.heightFirst
+              }
               onChange={handleInputChange}
               maxLength="50"
             />
@@ -141,7 +145,11 @@ const MeasurementsForm = ({
             <StyledInput
               style={{ width: '60%', borderRadius: 0 }}
               id="heightSecond"
-              value={heightSecond}
+              value={
+                heightSecond !== null
+                  ? heightSecond
+                  : measurementSettings.heightSecond
+              }
               onChange={handleInputChange}
               maxLength="50"
             />
@@ -164,7 +172,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="chestSize"
-          value={chestSize}
+          value={chestSize !== null ? chestSize : measurementSettings.chest}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -186,7 +194,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="waistSize"
-          value={waistSize}
+          value={waistSize !== null ? waistSize : measurementSettings.waist}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -208,7 +216,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="hipsSize"
-          value={hipsSize}
+          value={hipsSize !== null ? hipsSize : measurementSettings.hips}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -230,7 +238,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="inseamSize"
-          value={inseamSize}
+          value={inseamSize !== null ? inseamSize : measurementSettings.inseam}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -252,7 +260,11 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="shouldersSize"
-          value={shouldersSize}
+          value={
+            shouldersSize !== null
+              ? shouldersSize
+              : measurementSettings.shoulders
+          }
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -274,7 +286,7 @@ const MeasurementsForm = ({
         <StyledInput
           style={{ width: '70%', borderRadius: 0 }}
           id="neckSize"
-          value={neckSize}
+          value={neckSize !== null ? neckSize : measurementSettings.neck}
           onChange={handleInputChange}
           maxLength="50"
         />
@@ -292,7 +304,11 @@ const MeasurementsForm = ({
       <Row>
         <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
-            value={msrmntSystemSelected || 'metric'}
+            value={
+              msrmntSystemSelected ||
+              measurementSettings.msrmntSystemSelected ||
+              'metric'
+            }
             onChange={handleOnMsrmntSystemChange}
           >
             <RadioButton value="metric">
@@ -305,7 +321,11 @@ const MeasurementsForm = ({
         </Column>
         <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
-            value={msrmntGenderSelected || 'man'}
+            value={
+              msrmntGenderSelected ||
+              measurementSettings.msrmntGenderSelected ||
+              'man'
+            }
             onChange={handleOnMsrmntGenderChange}
           >
             <RadioButton value="man">{formatMessage(messages.man)}</RadioButton>
