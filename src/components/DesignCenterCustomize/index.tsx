@@ -41,9 +41,6 @@ interface Props {
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
-  handleOnApplyText = (text: string, style: TextFormat) => {
-    this.render3D.applyText(text, style)
-  }
   render() {
     const {
       onSelectColorBlock,
@@ -99,6 +96,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             productName
           }}
           onApplyText={this.handleOnApplyText}
+          onApplyImage={this.handleOnApplyImage}
         />
         {currentTab === 2 && !swipingView ? (
           <Render3D
@@ -126,6 +124,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         ) : null}
       </Container>
     )
+  }
+
+  handleOnApplyText = (text: string, style: TextFormat) => {
+    this.render3D.applyText(text, style)
+  }
+
+  handleOnApplyImage = (base64: string) => {
+    this.render3D.applyImage(base64)
   }
 }
 

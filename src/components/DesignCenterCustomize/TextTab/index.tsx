@@ -150,15 +150,16 @@ export class TextTab extends React.PureComponent<Props, State> {
     onApplyText(text, textStyle)
   }
 
-  handleOnSelectFont = (font: string) => this.setState({ font })
+  handleOnSelectFont = (font: string) => this.setState({ font, page: 0 })
 
-  handleOnSelectFill = (fillColor: string) => this.setState({ fillColor })
+  handleOnSelectFill = (fillColor: string) =>
+    this.setState({ fillColor, page: 0 })
 
   handleOnSelectStrokeWidth = (strokeWidth: number) =>
     this.setState({ strokeWidth })
 
   handleOnSelectStrokeColor = (strokeColor: string) =>
-    this.setState({ strokeColor })
+    this.setState({ strokeColor, page: 0 })
 
   changePage = (page: number, option: number) => () =>
     this.setState({ page, option })

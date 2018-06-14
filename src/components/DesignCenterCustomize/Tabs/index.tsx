@@ -6,6 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import ColorTab from '../ColorTab'
 import TextTab from '../TextTab'
+import UploadTab from '../UploadTab'
 import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
@@ -32,6 +33,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
+  onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -51,6 +53,7 @@ const Tabs = ({
   onUpdateText,
   text,
   onApplyText,
+  onApplyImage,
   formatMessage,
   productName
 }: Props) => {
@@ -84,7 +87,7 @@ const Tabs = ({
           Content of Tab Pane 3
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
-          Content of Tab Pane 3
+          <UploadTab {...{ formatMessage, onApplyImage }} />
         </TabPane>
       </AntdTabs>
     </Container>
