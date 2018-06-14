@@ -17,7 +17,7 @@ export const Row = styled.div`
 
 export const Line = styled(Divider)`
   align-self: center;
-  margin 10px 0px;
+  margin: 10px 0px;
   width: 276px;
 `
 export const LineVertical = styled(Divider)`
@@ -56,6 +56,5 @@ export const MenuOption = styled.div`
 `
 
 export const menuStyle = {
-  width: 140,
   marginLeft: 58
 }

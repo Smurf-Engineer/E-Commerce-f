@@ -28,6 +28,11 @@ describe('<DesignsCatalogueThumbnailList />', () => {
         handleOrderBy={() => {}}
         currentPage={0}
         limit={0}
+        targetPrice={''}
+        currentRange={{
+          id: 0,
+          name: ''
+        }}
       />,
       div
     )

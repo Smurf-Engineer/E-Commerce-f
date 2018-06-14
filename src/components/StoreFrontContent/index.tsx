@@ -150,6 +150,15 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
     setOpenPassCodeDialog(false)
   }
 
+  closestValue = (array: number[], val: number) => {
+    return Math.max.apply(
+      null,
+      array.filter((v: number) => {
+        return v >= val
+      })
+    )
+  }
+
   render() {
     const {
       data: { error, getTeamStore },
@@ -207,6 +216,24 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
 
+    let markslider = { name: '0-0' }
+    for (const priceRangeItem of priceRanges) {
+      if (!totalItems) {
+        break
+      }
+      let val = 0
+      if (priceRangeItem.name === 'Personal') {
+        val = 1
+      } else {
+        val = parseInt(priceRangeItem.name.split('-')[1], 10)
+      }
+
+      if (val >= totalItems) {
+        markslider = priceRangeItem
+        break
+      }
+    }
+
     let marksArray: any = {}
     priceRanges.map((priceRange, index) => {
       if (index === 0) {
@@ -217,7 +244,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         return
       }
       if (priceRange.id === teamSizeId) {
-        marksArray[priceRange.name.split('-')[0]] = {
+        marksArray[priceRange.name.split('-')[1]] = {
           style: sliderStyle,
           label: (
             <p>
@@ -233,7 +260,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         return
       }
 
-      marksArray[priceRange.name.split('-')[0]] = {
+      marksArray[priceRange.name.split('-')[1]] = {
         style: sliderStyle,
         label: (
           <p>
@@ -331,7 +358,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <StyledSlider
                   marks={marksArray}
                   disabled={true}
-                  value={totalItems}
+                  value={parseInt(markslider.name.split('-')[1], 10)}
                 />
               </SliderWrapper>
             </TierContainer>
@@ -342,6 +369,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 openQuickView={this.handleOnOpenQuickView}
                 designs={items}
                 teamStoreShortId={teamStoreShortId}
+                targentPrice={targetRange.name}
+                currentRange={markslider}
               />
             </ListContainer>
           </div>

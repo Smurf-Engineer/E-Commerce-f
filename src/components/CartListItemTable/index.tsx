@@ -239,7 +239,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   key={index}
                   onChange={e => this.handleQuantityChange(e, index)}
                   min={1}
-                  max={100}
+                  max={99}
                   value={quantity || undefined}
                 />
               </Cell>
