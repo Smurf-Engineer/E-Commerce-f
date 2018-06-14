@@ -48,7 +48,9 @@ export const InputGroup = styled(inputGroup)`
 `
 
 export const RadioButton = styled(radioButton)`
-  padding: 0 8px;
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0 8px;
+  }
 `
 
 export const StyledInput = styled(Input)`

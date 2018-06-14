@@ -555,13 +555,22 @@ class ProfileSettings extends React.Component<Props, {}> {
     const {
       updateSmsOptions,
       smsConfirmationChecked,
-      smsUpdatesChecked
+      smsUpdatesChecked,
+      profileData: {
+        profileData: { smsSettings }
+      }
     } = this.props
 
     const payload = {
       smsOptions: {
-        orderConfirmation: smsConfirmationChecked,
-        desingUpdates: smsUpdatesChecked
+        orderConfirmation:
+          smsConfirmationChecked !== null
+            ? smsConfirmationChecked
+            : smsSettings.orderConfirmation,
+        desingUpdates:
+          smsUpdatesChecked !== null
+            ? smsUpdatesChecked
+            : smsSettings.desingUpdates
       }
     }
     this.updateSetting(
