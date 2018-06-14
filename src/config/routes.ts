@@ -1,4 +1,5 @@
 /* Routes */
+import JerseyComparison from '../screens/JerseyComparison'
 import WarrantyProgram from '../screens/WarrantyProgram'
 import Technology from '../screens/Technology'
 import ArtworkSpecs from '../screens/ArtworkSpecs'
@@ -26,6 +27,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/jersey-comparison',
+    name: 'jerseyComparison',
+    component: JerseyComparison
+  },
   {
     path: '/warranty-program',
     name: 'warrantyProgram',
