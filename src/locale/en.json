@@ -512,5 +512,66 @@
     "    <p><b>JAKROO <span class=\"highlight\">TRI</span></b></p>    <p>The minimized and contoured profile of the Super Tri Chamois disappears when you are not on the bike, providing non-chaffing and comfortable performance during swims and runs.</p>    ",
   "screens.Technology.youthTitle": "JAKROO YOUTH",
   "screens.Technology.youthContent":
-    "    <p><b>ATOM 85</b></p><p><b>•  Composition:</b>  87% Polyester, 13% Spandex</p><p><b>•  Weight:</b> 115g/m2</p><p><b>•  Features:</b> Technical feel, Stretchy- WP (10,000mm) Breathable (11,000mm)</p><p><b>•  Use:</b> Sublimation</p><p><b>•  Country:</b> Italy</p><p><b>•  Products:</b> <span class=\"highlight\">Barrier Pro and Epic Pro</span></p>    "
+    "    <p><b>ATOM 85</b></p><p><b>•  Composition:</b>  87% Polyester, 13% Spandex</p><p><b>•  Weight:</b> 115g/m2</p><p><b>•  Features:</b> Technical feel, Stretchy- WP (10,000mm) Breathable (11,000mm)</p><p><b>•  Use:</b> Sublimation</p><p><b>•  Country:</b> Italy</p><p><b>•  Products:</b> <span class=\"highlight\">Barrier Pro and Epic Pro</span></p>    ",
+
+  "components.ChangePasswordModal.title": "Change Password",
+  "components.ChangePasswordModal.currentPassword": "Current Password",
+  "components.ChangePasswordModal.newPassword": "New Password",
+  "components.ChangePasswordModal.reEnterPassword": "Re-enter New Password",
+  "components.ChangePasswordModal.save": "Save",
+  "components.ChangePasswordModal.requiredField":
+    "This field is required and must be equal to newPassword",
+
+  "components.LanguageAndCurrencyForm.region": "Region",
+  "components.LanguageAndCurrencyForm.language": "Language",
+  "components.LanguageAndCurrencyForm.currency": "Currency",
+  "components.LanguageAndCurrencyForm.save": "Save",
+
+  "components.MeasurementsForm.metric": "Metric",
+  "components.MeasurementsForm.imperial": "Imperial",
+  "components.MeasurementsForm.man": "Man",
+  "components.MeasurementsForm.woman": "Woman",
+  "components.MeasurementsForm.lbs": "lbs",
+  "components.MeasurementsForm.in": "In",
+  "components.MeasurementsForm.ft": "ft",
+  "components.MeasurementsForm.kg": "kg",
+  "components.MeasurementsForm.cm": "cm",
+  "components.MeasurementsForm.mts": "mts",
+  "components.MeasurementsForm.weight": "Weight",
+  "components.MeasurementsForm.height": "Height",
+  "components.MeasurementsForm.chest": "Chest",
+  "components.MeasurementsForm.waist": "Waist",
+  "components.MeasurementsForm.hips": "Hips",
+  "components.MeasurementsForm.inseam": "Inseam",
+  "components.MeasurementsForm.shoulders": "Shoulders",
+  "components.MeasurementsForm.neck": "Neck",
+  "components.MeasurementsForm.save": "Save",
+
+  "components.ProfileForm.firstName": "First Name",
+  "components.ProfileForm.lastName": "Last Name",
+  "components.ProfileForm.email": "E-mail",
+  "components.ProfileForm.phone": "Change Password",
+  "components.ProfileForm.save": "Save",
+
+  "components.ProfileSettings.profileTitle": "Profile",
+  "components.ProfileSettings.profileSuccessMessage":
+    "Your profile has been updated!",
+  "components.ProfileSettings.save": "Save",
+  "components.ProfileSettings.passwordSuccessMessage":
+    "Your e-mail preferences has been updated!",
+  "components.ProfileSettings.languageTitle": "Language and Currency Settings",
+  "components.ProfileSettings.languageSuccessMessage":
+    "Your language and currency settings has been updated!",
+  "components.ProfileSettings.measurementsTitle": "Measurements",
+  "components.ProfileSettings.measurementsSuccessMessage":
+    "Your measurements has been updated!",
+  "components.ProfileSettings.smsTitle": "SMS Preferences",
+  "components.ProfileSettings.smsSuccessMessage":
+    "Your SMS preferences has been updated!",
+  "components.ProfileSettings.smsOrderConfirmation":
+    "Order / Shipping Confirmation",
+  "components.ProfileSettings.smsProDesignUpdates": "Pro Design Updates",
+  "components.ProfileSettings.emailTitle": "E-mail Preferences",
+  "components.ProfileSettings.emailSignUpNewsLetter":
+    "Yes, I would like to sign up for your Newsletter"
 }
