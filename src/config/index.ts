@@ -12,6 +12,7 @@ interface ConfigType {
   pkStripe: string
   paypalClientId: string
   paypalEnv: string
+  googleMapKey: string
 }
 
 const config: ConfigType = {
@@ -24,7 +25,8 @@ const config: ConfigType = {
   pkStripe: 'pk_test_USJaHD7YvJFcFsgwOixnJDrq',
   paypalClientId:
     'AbZ3seF-h636HxsdaKolVn-D24c3eSN3EQGeysVYQTf1Y7cSw2QSSevNRXwTwAUOxHohWXlK40Uzl1p-',
-  paypalEnv: 'sandbox'
+  paypalEnv: 'sandbox',
+  googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U'
 }
 
 export default config

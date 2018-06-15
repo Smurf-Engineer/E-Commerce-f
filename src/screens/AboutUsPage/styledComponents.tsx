@@ -50,7 +50,7 @@ export const HeaderTextContainer = styled.div`
 
   margin: 0px;
   position: absolute;
-  bottom: 36px;
+  bottom: 70px;
   right: 36px;
 
   @media (min-width: 320px) and (max-width: 480px) {
@@ -211,4 +211,8 @@ export const ImageContainer = styled.div`
   &:hover .text {
     visibility: visible;
   } */
+`
+
+export const IFrameContainer = styled.div`
+  margin-top: 31px;
 `

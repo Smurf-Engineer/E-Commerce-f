@@ -28,7 +28,8 @@ import {
   PeoplePosition,
   MapContainer,
   MapMarker,
-  ImageContainer
+  ImageContainer,
+  IFrameContainer
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import config from '../../config/index'
@@ -221,6 +222,13 @@ export class AboutUsPage extends React.Component<Props, {}> {
           <MeetTitle>
             <FormattedMessage {...messages.historyTitle} />
           </MeetTitle>
+          <IFrameContainer>
+            <iframe
+              src="https://cdn.knightlab.com/libs/timeline3/latest/embed/index.html?source=165999Jr4OyxZo-hBomSVxAwdyZUKLTT2uZF6L3XSXRg&font=Default&lang=en&initial_zoom=2&height=650"
+              width="100%"
+              height="650"
+            />
+          </IFrameContainer>
           <Divider />
           <MeetTitle>
             <FormattedMessage {...messages.locationTitle} />
