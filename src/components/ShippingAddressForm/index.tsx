@@ -4,7 +4,7 @@
 import * as React from 'react'
 import Dropdown from 'antd/lib/dropdown'
 import Icon from 'antd/lib/icon'
-import Menu, { ClickParam } from 'antd/lib/menu'
+import Menu from 'antd/lib/menu'
 import {
   ShippingFormContainer,
   Row,
@@ -16,6 +16,7 @@ import {
   DropDownPlaceHolder,
   ErrorMsg
 } from './styledComponents'
+import { ClickParam } from '../../types/common'
 
 interface Props {
   firstName: string

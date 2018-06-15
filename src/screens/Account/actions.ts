@@ -5,7 +5,8 @@ import {
   DEFAULT_ACTION,
   SET_OPEN_KEYS,
   SET_CURRENT_SCREEN,
-  CLEAR_REDUCER
+  CLEAR_REDUCER,
+  SET_IS_MOBILE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -26,4 +27,9 @@ export const setCurrentScreenAction = (screen: string): AnyAction => ({
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
+})
+
+export const setIsMobileAction = (isMobile: boolean): AnyAction => ({
+  type: SET_IS_MOBILE,
+  isMobile
 })

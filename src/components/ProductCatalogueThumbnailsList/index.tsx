@@ -6,13 +6,18 @@ import { graphql, compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import Dropdown from 'antd/lib/dropdown'
 import Pagination from 'antd/lib/pagination'
-import Menu, { ClickParam } from 'antd/lib/menu'
+import Menu from 'antd/lib/menu'
 import messages from './messages'
 import { GetProductsQuery } from './data'
 import ProductThumbnail from '../ProductThumbnail'
 import FooterThumbnailLocker from '../FooterThumbnailLocker'
 import AddToCartButton from '../AddToCartButton'
-import { QueryProps, ProductType, DesignType } from '../../types/common'
+import {
+  QueryProps,
+  ProductType,
+  DesignType,
+  ClickParam
+} from '../../types/common'
 import {
   Container,
   Content,
