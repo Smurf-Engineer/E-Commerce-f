@@ -13,7 +13,14 @@ export default defineMessages({
     id: 'screens.AboutUsPage.meetTitle',
     defaultMessage: 'MEET US'
   },
-
+  historyTitle: {
+    id: 'screens.AboutUsPage.historyTitle',
+    defaultMessage: 'OUR HISTORY'
+  },
+  locationTitle: {
+    id: 'screens.AboutUsPage.locationTitle',
+    defaultMessage: 'OUR LOCATION'
+  },
   comunnityTitle: {
     id: 'screens.AboutUsPage.comunnityTitle',
     defaultMessage: 'COMMUNITY'

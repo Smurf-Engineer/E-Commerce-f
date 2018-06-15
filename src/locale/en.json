@@ -548,5 +548,22 @@
   "screens.WarrantyProgram.problems": "Problems (Check all that applies):",
   "screens.WarrantyProgram.description": "Description of warranty issue",
   "screens.WarrantyProgram.attachPicture": "Attach a picture:",
-  "screens.WarrantyProgram.submit": "Submit"
+  "screens.WarrantyProgram.submit": "Submit",
+  "screens.AboutUsPage.tittle":
+    "AT THE INTERSECTION OF INNOVATION AND CREATIVITY IS JAKROO",
+  "screens.AboutUsPage.meetTitle": "MEET US",
+  "screens.AboutUsPage.historyTitle": "OUR HISTORY",
+  "screens.AboutUsPage.locationTitle": "OUR LOCATION",
+  "screens.AboutUsPage.comunnityTitle": "COMMUNITY",
+  "screens.AboutUsPage.comunnityContent":
+    "Our business is tied to the community both locally and globally. Creating opportunities to support the community is a key part of our growth strategy and longevity",
+  "screens.AboutUsPage.integrityTitle": "INTEGRITY",
+  "screens.AboutUsPage.integrityContent":
+    "We place the highest value on building trust and being honest, respectful and transparent. We are accountable for our actions, both successes and failures.",
+  "screens.AboutUsPage.teamWorkTitle": "TEAMWORK",
+  "screens.AboutUsPage.teamWorkContent":
+    "The best ideas come from teamwork. We value diversity yet work together for a common goal building win/win partnerships with all our stakeholders.",
+  "screens.AboutUsPage.innovationTitle": "INNOVATION",
+  "screens.AboutUsPage.innovationContent":
+    "Innovation is crucial to our ongoing success. We innovate because we are passionate about creating products and services that enrich the experience of our customers."
 }

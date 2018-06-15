@@ -136,6 +136,9 @@ export const PeopleItem = styled.div`
 
 export const PeopleImage = styled.img`
   width: 300px;
+  height: 300px;
+  object-fit: cover;
+  display: block;
 `
 export const PeopleName = styled.div`
   color: #5f6062;
@@ -152,4 +155,60 @@ export const PeoplePosition = styled.div`
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 19px;
+`
+
+export const MapContainer = styled.div`
+  height: 645px;
+  width: 100%;
+  margin-top: 38px;
+`
+
+export const MapMarker = styled.img`
+  height: 33px;
+  width: 34px;
+
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+`
+
+export const ImageContainer = styled.div`
+  position: relative;
+  width: 300px;
+  height: 300px;
+
+  .cornerLink {
+    opacity: 0;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    padding: 2px 0px;
+    color: #ffffff;
+    background: #000000;
+    text-decoration: none;
+    text-align: left;
+    -webkit-transition: opacity 500ms;
+    -moz-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms;
+    width: 300px;
+    height: 300px;
+  }
+
+  &:hover .cornerLink {
+    opacity: 0.8;
+  }
+
+  /* .text {
+    position: relative;
+    bottom: 0px;
+    left: 0px;
+    visibility: hidden;
+  }
+
+  &:hover .text {
+    visibility: visible;
+  } */
 `
