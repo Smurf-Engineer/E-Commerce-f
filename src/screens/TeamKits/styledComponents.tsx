@@ -16,6 +16,11 @@ export const TeamsKitsTitle = styled.div`
   letter-spacing: 0.61px;
   line-height: 66px;
 
+  @media (min-width: 481px) and (max-width: 768px) {
+    font-size: 30px;
+    line-height: 48px;
+  }
+
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 24px;
     letter-spacing: 0.3px;
@@ -27,8 +32,12 @@ export const HeaderTextContainer = styled.div`
   text-align: right;
   margin-right: 40px;
   position: absolute;
-  top: 50%;
   right: 0;
+  bottom: 36px;
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    bottom: 16px;
+  }
 
   @media (min-width: 320px) and (max-width: 480px) {
     top: 40%;
@@ -161,7 +170,9 @@ export const FullDetailsRow = styled.div`
   margin-top: 25px;
   display: flex;
   justify-content: flex-end;
+  cursor: pointer;
 `
+
 export const ButtonRow = styled.div`
   text-align: center;
   padding: 85px 0 100px;
@@ -183,6 +194,7 @@ export const FreeDesignButton = styled(Button)`
   line-height: 22px;
   text-align: center;
 `
+
 export const ArrowRight = styled.img`
   margin-left: 10px;
 `
