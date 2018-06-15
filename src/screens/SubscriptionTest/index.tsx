@@ -78,7 +78,10 @@ const mapStateToProps = (state: any) => state.get('subscriptionTest').toJS()
 
 const SubscriptionTestEnhance = compose(
   graphql(commentsQuery),
-  connect(mapStateToProps, { ...subscriptionTestActions })
+  connect(
+    mapStateToProps,
+    { ...subscriptionTestActions }
+  )
 )(SubscriptionTest)
 
 export default SubscriptionTestEnhance
