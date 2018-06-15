@@ -17,3 +17,4 @@ export const SET_ISSUE_DESCRIPTION = `${namespace}/SET_ISSUE_DESCRIPTION`
 export const SET_LOADING_ACTION = `${namespace}/SET_LOADING_ACTION`
 export const VALID_FORM = `${namespace}/VALID_FORM`
 export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`
+export const CHANGE_INPUT = `${namespace}/CHANGE_INPUT`

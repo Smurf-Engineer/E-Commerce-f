@@ -549,6 +549,8 @@
   "screens.WarrantyProgram.description": "Description of warranty issue",
   "screens.WarrantyProgram.attachPicture": "Attach a picture:",
   "screens.WarrantyProgram.submit": "Submit",
+  "screens.WarrantyProgram.required": "This field is required",
+  "screens.WarrantyProgram.selectFile": " Select File",
 
   "components.ChangePasswordModal.title": "Change Password",
   "components.ChangePasswordModal.currentPassword": "Current Password",

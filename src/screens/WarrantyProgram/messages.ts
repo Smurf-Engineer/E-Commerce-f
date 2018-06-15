@@ -143,5 +143,13 @@ export default defineMessages({
   submit: {
     id: 'screens.WarrantyProgram.submit',
     defaultMessage: 'Submit'
+  },
+  required: {
+    id: 'screens.WarrantyProgram.required',
+    defaultMessage: 'This field is required'
+  },
+  selectFile: {
+    id: 'screens.WarrantyProgram.selectFile',
+    defaultMessage: ' Select File'
   }
 })

@@ -136,48 +136,12 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setFirstName } = this.props
+    const { inputChangeAction } = this.props
     const {
-      currentTarget: { value }
+      currentTarget: { id, value }
     } = evt
-    evt.persist()
-    setFirstName(value)
-  }
 
-  handleLastNameChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setLastName } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setLastName(value)
-  }
-
-  handleEmailChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setEmail } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setEmail(value)
-  }
-
-  handleOrderNumberChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setOrderNumber } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setOrderNumber(value)
-  }
-
-  handleProductsAffectedChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setProductsAffected } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setProductsAffected(value)
+    inputChangeAction(id, value)
   }
 
   handleDescriptionChange = (evt: React.FormEvent<HTMLTextAreaElement>) => {
@@ -381,7 +345,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                     {!firstName &&
                       hasError && (
-                        <ErrorMsg>{'This field is required'}</ErrorMsg>
+                        <ErrorMsg>
+                          <FormattedMessage {...messages.required} />
+                        </ErrorMsg>
                       )}
                   </SmallInputsContainer>
                   <SmallInputsContainer>
@@ -392,12 +358,14 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <StyledInput
                       id="lastName"
                       value={lastName}
-                      onChange={this.handleLastNameChange}
+                      onChange={this.handleInputChange}
                       maxLength="50"
                     />
                     {!lastName &&
                       hasError && (
-                        <ErrorMsg>{'This field is required'}</ErrorMsg>
+                        <ErrorMsg>
+                          <FormattedMessage {...messages.required} />
+                        </ErrorMsg>
                       )}
                   </SmallInputsContainer>
                 </TwoInputsContainer>
@@ -414,11 +382,15 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="email"
                     value={email}
-                    onChange={this.handleEmailChange}
+                    onChange={this.handleInputChange}
                     maxLength="100"
                   />
                   {(!email || !this.validateEmail(email)) &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.emailInfo} />
@@ -432,7 +404,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="orderNumber"
                     value={orderNumber}
-                    onChange={this.handleOrderNumberChange}
+                    onChange={this.handleInputChange}
                     maxLength="100"
                   />
                 </InputsContainer>
@@ -451,11 +423,15 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="productsAffected"
                     value={productsAffected}
-                    onChange={this.handleProductsAffectedChange}
+                    onChange={this.handleInputChange}
                     maxLength="100"
                   />
                   {!productsAffected &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.productsAffectedInfo} />
@@ -476,7 +452,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!productIs &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -494,7 +474,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!gender &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.genderInfo} />
@@ -515,7 +499,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!size &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -532,7 +520,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!problems.length &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -549,7 +541,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     onChange={this.handleDescriptionChange}
                   />
                   {!issueDescription &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.issueInfo} />
@@ -568,7 +564,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     supportServerRender={true}
                   >
                     <Button>
-                      <Icon type="upload" /> Select File
+                      <Icon type="upload" />
+                      {intl.formatMessage(messages.selectFile)}
                     </Button>
                   </Upload>
 
