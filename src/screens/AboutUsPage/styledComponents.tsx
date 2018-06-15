@@ -53,7 +53,7 @@ export const HeaderTextContainer = styled.div`
   bottom: 70px;
   right: 36px;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 815px) {
     right: 5px;
     width: 100%;
   }
@@ -115,6 +115,7 @@ export const ItemsContainer = styled.div`
   justify-content: space-between;
   width: 100%;
   padding: 30px;
+  margin-top: 50px;
 `
 
 export const MeetTitle = styled.div`
@@ -179,12 +180,15 @@ export const ImageContainer = styled.div`
   height: 300px;
 
   .cornerLink {
+    overflow: auto;
     opacity: 0;
     position: absolute;
     bottom: 0px;
     left: 0px;
     right: 0px;
-    padding: 2px 0px;
+    top: 0px;
+    padding: 36px;
+
     color: #ffffff;
     background: #000000;
     text-decoration: none;
@@ -200,19 +204,72 @@ export const ImageContainer = styled.div`
   &:hover .cornerLink {
     opacity: 0.8;
   }
-
-  /* .text {
-    position: relative;
-    bottom: 0px;
-    left: 0px;
-    visibility: hidden;
-  }
-
-  &:hover .text {
-    visibility: visible;
-  } */
 `
 
 export const IFrameContainer = styled.div`
   margin-top: 31px;
+`
+
+export const MapRelativeContainer = styled.div`
+  position: relative;
+  width: 100%;
+`
+
+export const LineText = styled.div`
+  color: #ffffff;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  letter-spacing: 0.13px;
+  line-height: 25px;
+`
+
+export const MapTextContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  text-align: left;
+  width: 374px;
+  padding: 22px;
+
+  margin: 0px;
+  position: absolute;
+  bottom: 400px;
+  right: 0px;
+
+  background-color: #e61737;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+`
+
+export const HeaderDialog = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+
+  text-align: left;
+  width: 50%;
+  height: 150px;
+  padding: 22px;
+
+  margin: 0px;
+  position: absolute;
+  bottom: -80px;
+  right: 0px;
+
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  letter-spacing: 0.2px;
+  line-height: 25px;
+
+  background-color: #ffffff;
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    width: 100%;
+  }
 `

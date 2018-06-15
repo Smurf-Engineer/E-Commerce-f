@@ -59,5 +59,10 @@ export default defineMessages({
     id: 'screens.AboutUsPage.innovationContent',
     defaultMessage:
       'Innovation is crucial to our ongoing success. We innovate because we are passionate about creating products and services that enrich the experience of our customers.'
+  },
+  headerDialog: {
+    id: 'screens.AboutUsPage.headerDialog',
+    defaultMessage:
+      'A friendly place where ideas come together and become reality.Our core values shape our company and define everything we do.'
   }
 })
