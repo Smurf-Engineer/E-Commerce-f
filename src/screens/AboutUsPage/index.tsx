@@ -3,7 +3,8 @@
  */
 // tslint:disable:max-line-length
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
+import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
@@ -29,9 +30,12 @@ import {
   MapMarker,
   ImageContainer
 } from './styledComponents'
+import Layout from '../../components/MainLayout'
 import config from '../../config/index'
 
-interface Props {}
+interface Props extends RouteComponentProps<any> {
+  intl: InjectedIntl
+}
 
 const idealsArray = [
   {
@@ -145,6 +149,8 @@ const peopleArray = [
 
 export class AboutUsPage extends React.Component<Props, {}> {
   render() {
+    const { intl, history } = this.props
+
     const MarkComponent = ({ text }: any) => (
       <div>
         <MapMarker
@@ -191,45 +197,47 @@ export class AboutUsPage extends React.Component<Props, {}> {
     })
 
     return (
-      <Container>
-        <ImageTitleContainer>
-          <StyledImg
-            src={
-              'https://storage.googleapis.com/jakroo-storage/screens/aboutus.jpg'
-            }
-          />
-          <HeaderTextContainer>
-            <Title>
-              <FormattedMessage {...messages.title} />
-            </Title>
-          </HeaderTextContainer>
-        </ImageTitleContainer>
-        <ItemsContainer>{idealsList}</ItemsContainer>
-        <Divider />
-        <MeetTitle>
-          <FormattedMessage {...messages.meetTitle} />
-        </MeetTitle>
-        <ItemsContainer>{peopleList}</ItemsContainer>
-        <Divider />
-        <MeetTitle>
-          <FormattedMessage {...messages.historyTitle} />
-        </MeetTitle>
-        <Divider />
-        <MeetTitle>
-          <FormattedMessage {...messages.locationTitle} />
-        </MeetTitle>
-        <MapContainer>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: config.googleMapKey
-            }}
-            defaultCenter={center}
-            defaultZoom={zoom}
-          >
-            <MarkComponent lat={marker.lat} lng={marker.lng} text={''} />
-          </GoogleMapReact>
-        </MapContainer>
-      </Container>
+      <Layout {...{ intl, history }}>
+        <Container>
+          <ImageTitleContainer>
+            <StyledImg
+              src={
+                'https://storage.googleapis.com/jakroo-storage/screens/aboutus.jpg'
+              }
+            />
+            <HeaderTextContainer>
+              <Title>
+                <FormattedMessage {...messages.title} />
+              </Title>
+            </HeaderTextContainer>
+          </ImageTitleContainer>
+          <ItemsContainer>{idealsList}</ItemsContainer>
+          <Divider />
+          <MeetTitle>
+            <FormattedMessage {...messages.meetTitle} />
+          </MeetTitle>
+          <ItemsContainer>{peopleList}</ItemsContainer>
+          <Divider />
+          <MeetTitle>
+            <FormattedMessage {...messages.historyTitle} />
+          </MeetTitle>
+          <Divider />
+          <MeetTitle>
+            <FormattedMessage {...messages.locationTitle} />
+          </MeetTitle>
+          <MapContainer>
+            <GoogleMapReact
+              bootstrapURLKeys={{
+                key: config.googleMapKey
+              }}
+              defaultCenter={center}
+              defaultZoom={zoom}
+            >
+              <MarkComponent lat={marker.lat} lng={marker.lng} text={''} />
+            </GoogleMapReact>
+          </MapContainer>
+        </Container>
+      </Layout>
     )
   }
 }
@@ -237,6 +245,7 @@ export class AboutUsPage extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('aboutUsPage').toJS()
 
 const AboutUsPageEnhance = compose(
+  injectIntl,
   connect(
     mapStateToProps,
     { ...aboutUsPageActions }
