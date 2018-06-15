@@ -30,6 +30,10 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import RightArrowIcon from '../../assets/rightarrow.svg'
+import teamkits from '../../assets/teamkits.jpg'
+import teamkits1 from '../../assets/teamkits1.jpg'
+import teamkits2 from '../../assets/teamkits2.jpg'
+import teamkits3 from '../../assets/teamkits3.jpg'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -42,11 +46,7 @@ export class TeamKits extends React.Component<Props, {}> {
       <Layout {...{ intl, history }}>
         <Container>
           <ImageTitleContainer>
-            <StyledImg
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/teamkits.webp'
-              }
-            />
+            <StyledImg src={teamkits} />
             <HeaderTextContainer>
               <TeamsKitsTitle>
                 <FormattedMessage {...messages.title} />
@@ -61,11 +61,7 @@ export class TeamKits extends React.Component<Props, {}> {
               <FormattedMessage {...messages.cyclingToTriathlon} />
             </SectionTitle>
             <DesignRow>
-              <DesignImage
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/teamkits1.webp'
-                }
-              />
+              <DesignImage src={teamkits1} />
               <SectionText>
                 <SectionSubtitle>
                   <FormattedMessage {...messages.profesionalDesign} />
@@ -75,11 +71,7 @@ export class TeamKits extends React.Component<Props, {}> {
             </DesignRow>
             <OrderingAndFabricRow>
               <Section>
-                <OrderingAndFabricImage
-                  src={
-                    'https://storage.googleapis.com/jakroo-storage/screens/teamkits2.webp'
-                  }
-                />
+                <OrderingAndFabricImage src={teamkits2} />
                 <OrderAndFabricText>
                   <SectionSubtitle>
                     <FormattedMessage {...messages.orderingTitle} />
@@ -88,22 +80,15 @@ export class TeamKits extends React.Component<Props, {}> {
                 </OrderAndFabricText>
               </Section>
               <Section>
-                <OrderingAndFabricImage
-                  src={
-                    'https://storage.googleapis.com/jakroo-storage/screens/teamkits3.webp'
-                  }
-                />
+                <OrderingAndFabricImage src={teamkits3} />
                 <OrderAndFabricText>
                   <SectionSubtitle>
                     <FormattedMessage {...messages.technologyTitle} />
                   </SectionSubtitle>
                   <FormattedMessage {...messages.technologyText} />
-                  <FullDetailsRow>
+                  <FullDetailsRow onClick={this.handleFullDetailsClick}>
                     <FormattedMessage {...messages.fullDetailsLabel} />
-                    <ArrowRight
-                      src={RightArrowIcon}
-                      onClick={this.handleFullDetailsClick}
-                    />
+                    <ArrowRight src={RightArrowIcon} />
                   </FullDetailsRow>
                 </OrderAndFabricText>
               </Section>
