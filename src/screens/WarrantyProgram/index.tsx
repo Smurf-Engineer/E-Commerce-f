@@ -8,7 +8,8 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import Radio from 'antd/lib/radio'
-import Checkbox from 'antd/lib/checkbox'
+import CheckboxGroup from 'antd/lib/checkbox/Group'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
@@ -45,7 +46,6 @@ import config from '../../config/index'
 import { requestWarrantyMutation } from './data'
 
 const RadioGroup = Radio.Group
-const CheckboxGroup = Checkbox.Group
 const { TextArea } = Input
 
 interface StateProps {
@@ -70,11 +70,6 @@ interface Props extends RouteComponentProps<any> {
   requestWarranty: any
   resetReducerDataAction: () => void
   inputChangeAction: (id: string, value: string) => void
-  setFirstName: (value: string) => void
-  setLastName: (value: string) => void
-  setEmail: (value: string) => void
-  setOrderNumber: (value: string) => void
-  setProductsAffected: (value: string) => void
   setProductIs: (value: string) => void
   setGender: (value: string) => void
   setSize: (value: string) => void
@@ -153,26 +148,24 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     setIssueDescription(value)
   }
 
-  handleOldProductChange = (e: any) => {
-    console.log('radio checked', e.target.value)
+  handleOldProductChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setProductIs } = this.props
     setProductIs(e.target.value)
   }
 
-  handleGenderChange = (e: any) => {
+  handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setGender } = this.props
     setGender(e.target.value)
   }
 
-  handleSizeChange = (e: any) => {
+  handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setSize } = this.props
     setSize(e.target.value)
   }
 
-  handleProblemsChange = (checkedValues: any) => {
-    console.log('checked = ', checkedValues)
+  handleProblemsChange = (checkedValues: Array<CheckboxValueType>) => {
     const { setProblems } = this.props
-    setProblems(checkedValues)
+    setProblems(checkedValues as string[])
   }
 
   validateEmail = (email: string) => {
