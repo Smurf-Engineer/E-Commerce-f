@@ -350,11 +350,19 @@ class Render3D extends PureComponent {
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
+          console.log('------------------------------------')
+          console.log(object)
+          console.log('------------------------------------')
+
           /* Object materials */
 
           // Stitching
           const flatlockMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.flatlock
+            map: loadedTextures.flatlock,
+            blending: THREE.AdditiveBlending,
+            specular: new THREE.Color('rgb(255,255,255)'),
+            depthTest: 0,
+            blending: 1
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -406,6 +414,24 @@ class Render3D extends PureComponent {
             height: 2048
           })
 
+          const ctx = this.canvasTexture.getContext('2d')
+          fabric.loadSVGFromURL(
+            'https://storage.googleapis.com/jakroo-storage/models/Tour/C02-D01/colorblock_1.png',
+            (objects, options) => {
+              console.log('------------------------------------')
+              console.log(objects)
+              console.log('------------------------------------')
+              // const shape = fabric.util.groupSVGElements(objects, options)
+              // console.log('------------------------------------')
+              // console.log(shape)
+              // console.log('------------------------------------')
+              // canvas.clipTo = ctx => {
+              //   shape.render(ctx)
+              // }
+              // canvas.renderAll()
+            }
+          )
+
           this.canvasTexture.on(
             'after:render',
             () => (canvasTexture.needsUpdate = true)
@@ -450,12 +476,54 @@ class Render3D extends PureComponent {
           object.name = 'jersey'
           this.scene.add(object)
 
+          // if (!window.scene) {
+          //   window.scene = this.scene
+          // }
+
           onLoadModel(false)
         },
         this.onProgress,
         this.onError
       )
     })
+  }
+
+  renderControls = ({ x, y, z }) => {
+    const spriteGroup = new THREE.Object3D()
+
+    const mapDelete = this.textureLoader.load('controls/delete.png')
+    const materialDelete = new THREE.SpriteMaterial({ map: mapDelete })
+    const spriteDelete = new THREE.Sprite(materialDelete)
+
+    const mapDuplicate = this.textureLoader.load('dupcontrols/duplicate.png')
+    const materialDuplicate = new THREE.SpriteMaterial({ map: mapDuplicate })
+    const spriteDuplicate = new THREE.Sprite(materialDuplicate)
+
+    const mapRotate = this.textureLoader.load('controls/rotate.png')
+    const materialRotate = new THREE.SpriteMaterial({ map: mapRotate })
+    const spriteRotate = new THREE.Sprite(materialRotate)
+
+    const mapLayer = this.textureLoader.load('controls/layer.png')
+    const materialLayer = new THREE.SpriteMaterial({ map: mapLayer })
+    const spriteLayer = new THREE.Sprite(materialLayer)
+
+    const mapScale = this.textureLoader.load('controls/expand.png')
+    const materialScale = new THREE.SpriteMaterial({ map: mapScale })
+    const spriteScale = new THREE.Sprite(materialScale)
+
+    spriteDelete.position.set(x, y, z)
+    spriteDuplicate.position.set(x + 20, y, z)
+    spriteRotate.position.set(x, -y, z)
+    spriteLayer.position.set(x + 10, -y, z)
+    spriteScale.position.set(x + 20, -y, z)
+
+    spriteGroup.add(spriteDelete)
+    spriteGroup.add(spriteDuplicate)
+    spriteGroup.add(spriteRotate)
+    spriteGroup.add(spriteLayer)
+    spriteGroup.add(spriteScale)
+
+    this.scene.add(spriteGroup)
   }
 
   onProgress = xhr => {
@@ -679,6 +747,7 @@ class Render3D extends PureComponent {
         oImg.scale(0.1).set({
           id: this.canvasTexture.getObjects().length,
           hasRotatingPoint: false,
+          hasControls: false,
           left: 409.6,
           top: 409.6
         })
@@ -694,9 +763,10 @@ class Render3D extends PureComponent {
     const txt = new fabric.Text(text, {
       id: this.canvasTexture.getObjects().length,
       hasRotatingPoint: false,
+      // hasControls: false,
       left: 1433.6,
       top: 409.6,
-      fontSize: 100,
+      fontSize: 75,
       ...style
     })
 
