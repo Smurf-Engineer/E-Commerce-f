@@ -560,7 +560,10 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
-  connect(mapStateToProps, { ...createStoreActions })
+  connect(
+    mapStateToProps,
+    { ...createStoreActions }
+  )
 )(CreateStore)
 
 export default CreateStoreEnhance
