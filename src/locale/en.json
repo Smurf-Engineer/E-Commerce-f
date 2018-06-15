@@ -566,6 +566,8 @@
   "screens.AboutUsPage.innovationTitle": "INNOVATION",
   "screens.AboutUsPage.innovationContent":
     "Innovation is crucial to our ongoing success. We innovate because we are passionate about creating products and services that enrich the experience of our customers.",
+  "screens.WarrantyProgram.required": "This field is required",
+  "screens.WarrantyProgram.selectFile": " Select File",
 
   "components.ChangePasswordModal.title": "Change Password",
   "components.ChangePasswordModal.currentPassword": "Current Password",

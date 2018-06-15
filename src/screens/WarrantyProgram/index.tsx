@@ -8,7 +8,8 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import Radio from 'antd/lib/radio'
-import Checkbox from 'antd/lib/checkbox'
+import CheckboxGroup from 'antd/lib/checkbox/Group'
+import { CheckboxValueType } from 'antd/lib/checkbox/Group'
 import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
@@ -45,7 +46,6 @@ import config from '../../config/index'
 import { requestWarrantyMutation } from './data'
 
 const RadioGroup = Radio.Group
-const CheckboxGroup = Checkbox.Group
 const { TextArea } = Input
 
 interface StateProps {
@@ -70,11 +70,6 @@ interface Props extends RouteComponentProps<any> {
   requestWarranty: any
   resetReducerDataAction: () => void
   inputChangeAction: (id: string, value: string) => void
-  setFirstName: (value: string) => void
-  setLastName: (value: string) => void
-  setEmail: (value: string) => void
-  setOrderNumber: (value: string) => void
-  setProductsAffected: (value: string) => void
   setProductIs: (value: string) => void
   setGender: (value: string) => void
   setSize: (value: string) => void
@@ -136,48 +131,12 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setFirstName } = this.props
+    const { inputChangeAction } = this.props
     const {
-      currentTarget: { value }
+      currentTarget: { id, value }
     } = evt
-    evt.persist()
-    setFirstName(value)
-  }
 
-  handleLastNameChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setLastName } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setLastName(value)
-  }
-
-  handleEmailChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setEmail } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setEmail(value)
-  }
-
-  handleOrderNumberChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setOrderNumber } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setOrderNumber(value)
-  }
-
-  handleProductsAffectedChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setProductsAffected } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
-    evt.persist()
-    setProductsAffected(value)
+    inputChangeAction(id, value)
   }
 
   handleDescriptionChange = (evt: React.FormEvent<HTMLTextAreaElement>) => {
@@ -189,26 +148,24 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     setIssueDescription(value)
   }
 
-  handleOldProductChange = (e: any) => {
-    console.log('radio checked', e.target.value)
+  handleOldProductChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setProductIs } = this.props
     setProductIs(e.target.value)
   }
 
-  handleGenderChange = (e: any) => {
+  handleGenderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setGender } = this.props
     setGender(e.target.value)
   }
 
-  handleSizeChange = (e: any) => {
+  handleSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { setSize } = this.props
     setSize(e.target.value)
   }
 
-  handleProblemsChange = (checkedValues: any) => {
-    console.log('checked = ', checkedValues)
+  handleProblemsChange = (checkedValues: Array<CheckboxValueType>) => {
     const { setProblems } = this.props
-    setProblems(checkedValues)
+    setProblems(checkedValues as string[])
   }
 
   validateEmail = (email: string) => {
@@ -381,7 +338,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                     {!firstName &&
                       hasError && (
-                        <ErrorMsg>{'This field is required'}</ErrorMsg>
+                        <ErrorMsg>
+                          <FormattedMessage {...messages.required} />
+                        </ErrorMsg>
                       )}
                   </SmallInputsContainer>
                   <SmallInputsContainer>
@@ -392,12 +351,14 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <StyledInput
                       id="lastName"
                       value={lastName}
-                      onChange={this.handleLastNameChange}
+                      onChange={this.handleInputChange}
                       maxLength="50"
                     />
                     {!lastName &&
                       hasError && (
-                        <ErrorMsg>{'This field is required'}</ErrorMsg>
+                        <ErrorMsg>
+                          <FormattedMessage {...messages.required} />
+                        </ErrorMsg>
                       )}
                   </SmallInputsContainer>
                 </TwoInputsContainer>
@@ -414,11 +375,15 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="email"
                     value={email}
-                    onChange={this.handleEmailChange}
+                    onChange={this.handleInputChange}
                     maxLength="100"
                   />
                   {(!email || !this.validateEmail(email)) &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.emailInfo} />
@@ -432,7 +397,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="orderNumber"
                     value={orderNumber}
-                    onChange={this.handleOrderNumberChange}
+                    onChange={this.handleInputChange}
                     maxLength="100"
                   />
                 </InputsContainer>
@@ -451,11 +416,15 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   <StyledInput
                     id="productsAffected"
                     value={productsAffected}
-                    onChange={this.handleProductsAffectedChange}
+                    onChange={this.handleInputChange}
                     maxLength="100"
                   />
                   {!productsAffected &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.productsAffectedInfo} />
@@ -476,7 +445,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!productIs &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -494,7 +467,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!gender &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.genderInfo} />
@@ -515,7 +492,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!size &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -532,7 +513,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     />
                   </StyledRadioGroup>
                   {!problems.length &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
               </FlexContainer>
 
@@ -549,7 +534,11 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     onChange={this.handleDescriptionChange}
                   />
                   {!issueDescription &&
-                    hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+                    hasError && (
+                      <ErrorMsg>
+                        <FormattedMessage {...messages.required} />
+                      </ErrorMsg>
+                    )}
                 </InputsContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.issueInfo} />
@@ -568,7 +557,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     supportServerRender={true}
                   >
                     <Button>
-                      <Icon type="upload" /> Select File
+                      <Icon type="upload" />
+                      {intl.formatMessage(messages.selectFile)}
                     </Button>
                   </Upload>
 

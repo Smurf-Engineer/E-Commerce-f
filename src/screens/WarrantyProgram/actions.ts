@@ -3,11 +3,6 @@
  */
 import {
   DEFAULT_ACTION,
-  SET_FIRST_NAME,
-  SET_LAST_NAME,
-  SET_EMAIL,
-  SET_ORDER_NUMBER,
-  SET_PRODUCTS_AFFECTED,
   SET_PRODUCT_IS,
   SET_GENDER,
   SET_SIZE,
@@ -15,33 +10,13 @@ import {
   SET_ISSUE_DESCRIPTION,
   SET_LOADING_ACTION,
   VALID_FORM,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  CHANGE_INPUT
 } from './constants'
 import { AnyAction } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
-  someValue
-})
-
-export const setFirstName = (someValue: string): AnyAction => ({
-  type: SET_FIRST_NAME,
-  someValue
-})
-export const setLastName = (someValue: string): AnyAction => ({
-  type: SET_LAST_NAME,
-  someValue
-})
-export const setEmail = (someValue: string): AnyAction => ({
-  type: SET_EMAIL,
-  someValue
-})
-export const setOrderNumber = (someValue: string): AnyAction => ({
-  type: SET_ORDER_NUMBER,
-  someValue
-})
-export const setProductsAffected = (someValue: string): AnyAction => ({
-  type: SET_PRODUCTS_AFFECTED,
   someValue
 })
 export const setProductIs = (someValue: string): AnyAction => ({
@@ -74,4 +49,9 @@ export const validFormAction = (someValue: boolean): AnyAction => ({
 })
 export const resetReducerDataAction = (): AnyAction => ({
   type: RESET_REDUCER_DATA
+})
+export const inputChangeAction = (id: string, value: string): AnyAction => ({
+  type: CHANGE_INPUT,
+  id,
+  value
 })

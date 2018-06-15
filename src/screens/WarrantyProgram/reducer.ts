@@ -3,12 +3,6 @@
  */
 import { fromJS } from 'immutable'
 import {
-  DEFAULT_ACTION,
-  SET_FIRST_NAME,
-  SET_LAST_NAME,
-  SET_EMAIL,
-  SET_ORDER_NUMBER,
-  SET_PRODUCTS_AFFECTED,
   SET_PRODUCT_IS,
   SET_GENDER,
   SET_SIZE,
@@ -16,7 +10,8 @@ import {
   SET_ISSUE_DESCRIPTION,
   SET_LOADING_ACTION,
   VALID_FORM,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  CHANGE_INPUT
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -38,18 +33,6 @@ export const initialState = fromJS({
 
 const warrantyProgramReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state.set('someKey', action.someValue)
-    case SET_FIRST_NAME:
-      return state.set('firstName', action.someValue)
-    case SET_LAST_NAME:
-      return state.set('lastName', action.someValue)
-    case SET_EMAIL:
-      return state.set('email', action.someValue)
-    case SET_ORDER_NUMBER:
-      return state.set('orderNumber', action.someValue)
-    case SET_PRODUCTS_AFFECTED:
-      return state.set('productsAffected', action.someValue)
     case SET_PRODUCT_IS:
       return state.set('productIs', action.someValue)
     case SET_GENDER:
@@ -66,6 +49,8 @@ const warrantyProgramReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('hasError', action.someValue)
     case RESET_REDUCER_DATA:
       return initialState
+    case CHANGE_INPUT:
+      return state.merge({ [action.id]: action.value })
     default:
       return state
   }
