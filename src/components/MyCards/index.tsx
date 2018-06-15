@@ -260,7 +260,10 @@ const MyCardsEnhance = compose(
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,
-  connect(mapStateToProps, { ...MyCardsActions })
+  connect(
+    mapStateToProps,
+    { ...MyCardsActions }
+  )
 )(MyCards)
 
 export default MyCardsEnhance

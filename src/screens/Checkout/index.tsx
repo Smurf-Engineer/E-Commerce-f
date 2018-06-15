@@ -485,7 +485,7 @@ class Checkout extends React.Component<Props, {}> {
     if (indexAddressSelected === -1) {
       this.saveAddress(shippingAddress)
     }
-    if (!sameBillingAndShipping) {
+    if (paymentMethod === 'credit card' && !sameBillingAndShipping) {
       this.saveAddress(billingAddress)
     }
 

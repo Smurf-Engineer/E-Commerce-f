@@ -12,7 +12,6 @@ import Drawer from 'rc-drawer'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
-import { ClickParam } from 'antd/lib/menu'
 import Layout from '../../components/MainLayout'
 import FilterComponent from '../../components/ProductCatalogFilterComponent'
 import ProductsThumbnailList from '../../components/ProductCatalogueThumbnailsList'
@@ -25,7 +24,7 @@ import {
   FiltersTitle,
   ResultsColumn
 } from './styledComponents'
-import { QueryProps } from '../../types/common'
+import { QueryProps, ClickParam } from '../../types/common'
 import { GetFiltersQuery } from './data'
 
 interface FilterOptions {
