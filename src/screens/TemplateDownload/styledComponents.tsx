@@ -10,6 +10,13 @@ export const Container = styled.div`
   align-items: center;
   padding: 0 36px 48px 36px;
 `
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+`
 
 export const Title = styled.div`
   width: 100%;
@@ -50,4 +57,20 @@ export const TemplatesList = styled.div`
   @media (min-width: 320px) and (max-width: 575px) {
     width: 252px;
   }
+`
+
+export const TitleError = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+`
+
+export const Message = styled.div`
+  margin-top: 16px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
 `

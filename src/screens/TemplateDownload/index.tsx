@@ -6,13 +6,19 @@ import { graphql, compose } from 'react-apollo'
 import { RouteComponentProps } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import messages from './messages'
-import { Container, Title, TemplatesList } from './styledComponents'
+import {
+  Container,
+  Title,
+  TemplatesList,
+  LoadingContainer,
+  TitleError,
+  Message
+} from './styledComponents'
 import Layout from '../../components/MainLayout'
+import Spin from 'antd/lib/spin'
 import TemplateDownloadItem from '../../components/TemplateDownloadItem'
 import { QueryProps, ITemplateDownload } from '../../types/common'
 import { templatesQuery } from './data'
-import withError from '../../components/WithError'
-import withLoading from '../../components/WithLoading'
 
 interface Data extends QueryProps {
   templates: ITemplateDownload[]
@@ -29,9 +35,27 @@ export class TemplateDownload extends React.Component<Props, {}> {
     const {
       intl,
       history,
-      data: { templates }
+      data: { templates, loading, error }
     } = this.props
-    console.log(templates)
+    if (loading) {
+      return (
+        <Layout {...{ intl, history }}>
+          <LoadingContainer>
+            <Spin />
+          </LoadingContainer>
+        </Layout>
+      )
+    }
+    if (error) {
+      return (
+        <Layout {...{ intl, history }}>
+          <LoadingContainer>
+            <TitleError>Oops!</TitleError>
+            <Message>Something went wrong</Message>
+          </LoadingContainer>
+        </Layout>
+      )
+    }
     const { formatMessage } = intl
     const templatesList = templates.map(
       ({ pictures, name, description, fileUrl }, i) => (
@@ -59,8 +83,6 @@ const TemplateDownloadEnhanced = compose(
       fetchPolicy: 'network-only'
     }
   }),
-  withLoading,
-  withError,
   injectIntl
 )(TemplateDownload)
 
