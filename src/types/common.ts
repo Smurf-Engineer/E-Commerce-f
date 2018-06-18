@@ -441,3 +441,15 @@ export interface ProfileSettingsReducer {
   smsUpdatesChecked: boolean
   emailNewsletterChecked: boolean
 }
+
+// tslint:disable-next-line:interface-name
+export interface ITemplateDownload {
+  name: string
+  description: string
+  pictures: [
+    {
+      imageSource: string
+    }
+  ]
+  fileUrl: string
+}

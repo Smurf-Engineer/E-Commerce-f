@@ -45,8 +45,7 @@ import {
   DetailsList,
   DetailsListItem,
   ProductAvailableColor,
-  TitleSubtitleContainer,
-  StyledLink
+  TitleSubtitleContainer
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -341,11 +340,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                   </TitleSubtitleContainer>
-                  <StyledLink href="https://www.jakroo.com/us/jersey-comparison.html">
-                    <CompareButton>
-                      {formatMessage(messages.compareLabe)}
-                    </CompareButton>
-                  </StyledLink>
+                  <CompareButton onClick={this.gotoCompare}>
+                    {formatMessage(messages.compareLabe)}
+                  </CompareButton>
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings
@@ -431,6 +428,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     history.push('/fit-widget')
   }
 
+  gotoCompare = () => {
+    const { history } = this.props
+    history.push('/jersey-comparison')
+  }
+
   validateAddtoCart = () => {
     const { selectedSize, selectedFit } = this.props
     return selectedSize.id >= 0 && selectedFit.id
@@ -505,7 +507,10 @@ const ProductDetailEnhance = compose(
       }
     }
   }),
-  connect(mapStateToProps, { ...productDetailActions })
+  connect(
+    mapStateToProps,
+    { ...productDetailActions }
+  )
 )(ProductDetail)
 
 export default ProductDetailEnhance

@@ -4,7 +4,6 @@
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-// TODO: add query
 export const cardsQuery = gql`
   query getusercards {
     userCards: getUserCards {
@@ -21,7 +20,6 @@ export const cardsQuery = gql`
   }
 `
 
-// TODO: add mutation
 export const addCardMutation = graphql(
   gql`
     mutation addusercard($token: String!, $defaultValue: Boolean!) {
@@ -35,7 +33,6 @@ export const addCardMutation = graphql(
   }
 )
 
-// TODO: add mutation
 export const updateCardMutation = graphql(
   gql`
     mutation updatecard($cardId: String!) {
@@ -49,7 +46,6 @@ export const updateCardMutation = graphql(
   }
 )
 
-// TODO: add mutation
 export const deleteCardMutation = graphql(
   gql`
     mutation deleteCard($cardId: String!) {
