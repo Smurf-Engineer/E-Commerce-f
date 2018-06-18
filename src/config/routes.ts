@@ -1,4 +1,5 @@
 /* Routes */
+import TemplateDownload from '../screens/TemplateDownload'
 import JerseyComparison from '../screens/JerseyComparison'
 import WarrantyProgram from '../screens/WarrantyProgram'
 import Technology from '../screens/Technology'
@@ -27,6 +28,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/template-download',
+    name: 'templateDownload',
+    component: TemplateDownload
+  },
   {
     path: '/jersey-comparison',
     name: 'jerseyComparison',
