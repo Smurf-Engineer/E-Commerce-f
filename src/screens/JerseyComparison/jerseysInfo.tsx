@@ -1,13 +1,10 @@
 import messages from './messages'
 
-import fondoImage from '../../assets/comp_fondo.png'
-import tourImage from '../../assets/comp_tour.png'
-import novaImage from '../../assets/comp_nova.png'
-
 const jerseysInfo = [
   {
     title: messages.fondoTitle,
-    image: fondoImage,
+    image:
+      'https://storage.googleapis.com/jakroo-storage/screens/jersey_comparison/comp_fondo.png',
     message: messages.fondoMessage,
     details: [
       messages.fondoDetail1,
@@ -35,7 +32,8 @@ const jerseysInfo = [
   },
   {
     title: messages.tourTitle,
-    image: tourImage,
+    image:
+      'https://storage.googleapis.com/jakroo-storage/screens/jersey_comparison/comp_tour.png',
     message: messages.tourMessage,
     details: [
       messages.tourDetail1,
@@ -65,7 +63,8 @@ const jerseysInfo = [
   },
   {
     title: messages.novaTitle,
-    image: novaImage,
+    image:
+      'https://storage.googleapis.com/jakroo-storage/screens/jersey_comparison/comp_nova.png',
     message: messages.novaMessage,
     details: [
       messages.novaDetail1,
