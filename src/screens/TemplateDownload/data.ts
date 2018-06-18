@@ -3,7 +3,6 @@
  */
 import gql from 'graphql-tag'
 
-// TODO: add query
 export const templatesQuery = gql`
   query getTemplates {
     templates: getProductsWithTemplate {
