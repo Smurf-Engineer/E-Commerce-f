@@ -46,17 +46,17 @@ export class TemplateDownload extends React.Component<Props, {}> {
         </Layout>
       )
     }
+    const { formatMessage } = intl
     if (error) {
       return (
         <Layout {...{ intl, history }}>
           <LoadingContainer>
-            <TitleError>Oops!</TitleError>
-            <Message>Something went wrong</Message>
+            <TitleError>{formatMessage(messages.errorTitle)}</TitleError>
+            <Message>{formatMessage(messages.errorMessage)}</Message>
           </LoadingContainer>
         </Layout>
       )
     }
-    const { formatMessage } = intl
     const templatesList = templates.map(
       ({ pictures, name, description, fileUrl }, i) => (
         <TemplateDownloadItem

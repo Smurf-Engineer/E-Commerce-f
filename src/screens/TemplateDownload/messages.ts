@@ -6,7 +6,7 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'screens.TemplateDownload.tittle',
+    id: 'screens.TemplateDownload.title',
     defaultMessage: 'TEMPLATE DOWNLOAD'
   },
   name: {
@@ -16,5 +16,13 @@ export default defineMessages({
   description: {
     id: 'screens.TemplateDownload.description',
     defaultMessage: 'SHORT SLEEVE JERSEY'
+  },
+  errorTitle: {
+    id: 'screens.TemplateDownload.errorTitle',
+    defaultMessage: 'Oops!'
+  },
+  errorMessage: {
+    id: 'screens.TemplateDownload.errorMessage',
+    defaultMessage: 'Something went wrong'
   }
 })
