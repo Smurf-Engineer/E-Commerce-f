@@ -702,5 +702,11 @@
   "components.ProfileSettings.smsProDesignUpdates": "Pro Design Updates",
   "components.ProfileSettings.emailTitle": "E-mail Preferences",
   "components.ProfileSettings.emailSignUpNewsLetter":
-    "Yes, I would like to sign up for your Newsletter"
+    "Yes, I would like to sign up for your Newsletter",
+
+  "screens.TemplateDownload.tittle": "TEMPLATE DOWNLOAD",
+  "screens.TemplateDownload.name": "TOUR",
+  "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",
+
+  "components.TemplateDownloadItem.downloadTemplate": "Download Template"
 }
