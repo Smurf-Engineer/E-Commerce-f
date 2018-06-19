@@ -45,6 +45,8 @@ import dummieData from './dummieData'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
+const CANVAS_SIZE = 2048
+
 /* eslint-disable */
 class Render3D extends PureComponent {
   state = {
@@ -111,29 +113,29 @@ class Render3D extends PureComponent {
     //   }
     // })
 
-    fabric.Object.prototype.customiseCornerIcons({
-      settings: {
-        borderColor: 'black',
-        borderWidth: 20,
-        cornerSize: 70,
-        cornerPadding: 10
-      },
-      tl: {
-        icon: 'delete.svg'
-      },
-      tr: {
-        icon: 'duplicate.svg'
-      },
-      bl: {
-        icon: 'rotate.svg'
-      },
-      br: {
-        icon: 'expand.svg'
-      },
-      mb: {
-        icon: 'layer.svg'
-      }
-    })
+    // fabric.Object.prototype.customiseCornerIcons({
+    //   settings: {
+    //     borderColor: 'black',
+    //     borderWidth: 20,
+    //     cornerSize: 70,
+    //     cornerPadding: 10
+    //   },
+    //   tl: {
+    //     icon: 'delete.svg'
+    //   },
+    //   tr: {
+    //     icon: 'duplicate.svg'
+    //   },
+    //   bl: {
+    //     icon: 'rotate.svg'
+    //   },
+    //   br: {
+    //     icon: 'expand.svg'
+    //   },
+    //   mb: {
+    //     icon: 'layer.svg'
+    //   }
+    // })
 
     const { clientWidth, clientHeight } = this.container
 
@@ -244,14 +246,21 @@ class Render3D extends PureComponent {
 
     if (intersects.length > 0 && intersects[0].uv) {
       const uv = intersects[0].uv
+      console.log('-------------OBJECt---------------')
+      console.log(intersects[0])
+      console.log('------------------------------------')
+      this.renderControls(intersects[0].point)
       let allDeactive = true
       this.canvasTexture.forEachObject(el => {
         const boundingBox = el.getBoundingRect()
         const isInside = isMouseOver(boundingBox, uv)
         if (isInside) {
+          console.log('-----------------EL---------------')
+          console.log(el)
+          console.log('------------------------------------')
           allDeactive = false
-          const left = uv.x * 2048
-          const top = (1 - uv.y) * 2048
+          const left = uv.x * CANVAS_SIZE
+          const top = (1 - uv.y) * CANVAS_SIZE
           const differenceX = left - boundingBox.left
           const differenceY = top - boundingBox.top
           const dragComponent = { element: el, differenceX, differenceY }
@@ -350,19 +359,12 @@ class Render3D extends PureComponent {
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
-          console.log('------------------------------------')
-          console.log(object)
-          console.log('------------------------------------')
-
           /* Object materials */
 
           // Stitching
           const flatlockMaterial = new THREE.MeshPhongMaterial({
             map: loadedTextures.flatlock,
-            blending: THREE.AdditiveBlending,
-            specular: new THREE.Color('rgb(255,255,255)'),
-            depthTest: 0,
-            blending: 1
+            specular: new THREE.Color('#000000')
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -399,38 +401,19 @@ class Render3D extends PureComponent {
 
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
-
           /*
           /* TODO: FrabircJS Test */
           const canvas = document.createElement('canvas')
-          canvas.width = 2048
-          canvas.height = 2048
+          canvas.width = CANVAS_SIZE
+          canvas.height = CANVAS_SIZE
           const canvasTexture = new THREE.CanvasTexture(canvas)
           canvasTexture.minFilter = THREE.LinearFilter
 
           /* TODO: Dynamic size? */
           this.canvasTexture = new fabric.Canvas(canvas, {
-            width: 2048,
-            height: 2048
+            width: CANVAS_SIZE,
+            height: CANVAS_SIZE
           })
-
-          const ctx = this.canvasTexture.getContext('2d')
-          fabric.loadSVGFromURL(
-            'https://storage.googleapis.com/jakroo-storage/models/Tour/C02-D01/colorblock_1.png',
-            (objects, options) => {
-              console.log('------------------------------------')
-              console.log(objects)
-              console.log('------------------------------------')
-              // const shape = fabric.util.groupSVGElements(objects, options)
-              // console.log('------------------------------------')
-              // console.log(shape)
-              // console.log('------------------------------------')
-              // canvas.clipTo = ctx => {
-              //   shape.render(ctx)
-              // }
-              // canvas.renderAll()
-            }
-          )
 
           this.canvasTexture.on(
             'after:render',
@@ -457,17 +440,6 @@ class Render3D extends PureComponent {
               }))
           )
 
-          // TODO: Normalized texture image
-          // const planeCoordsTexture = this.textureLoader.load(
-          //   './eliminar/colorblock_2_coords.png'
-          // )
-
-          // object.children[objectChilds].material = new THREE.MeshPhongMaterial({
-          //   map: planeCoordsTexture,
-          //   side: THREE.FrontSide,
-          //   transparent: true
-          // })
-
           object.children[20].material = canvasMaterial
           object.children[20].name = 'Canvas_Mesh'
 
@@ -476,9 +448,9 @@ class Render3D extends PureComponent {
           object.name = 'jersey'
           this.scene.add(object)
 
-          // if (!window.scene) {
-          //   window.scene = this.scene
-          // }
+          if (!window.scene) {
+            window.scene = this.scene
+          }
 
           onLoadModel(false)
         },
@@ -494,28 +466,40 @@ class Render3D extends PureComponent {
     const mapDelete = this.textureLoader.load('controls/delete.png')
     const materialDelete = new THREE.SpriteMaterial({ map: mapDelete })
     const spriteDelete = new THREE.Sprite(materialDelete)
+    spriteDelete.name = 'delete'
 
-    const mapDuplicate = this.textureLoader.load('dupcontrols/duplicate.png')
+    const mapDuplicate = this.textureLoader.load('controls/duplicate.png')
     const materialDuplicate = new THREE.SpriteMaterial({ map: mapDuplicate })
     const spriteDuplicate = new THREE.Sprite(materialDuplicate)
+    spriteDuplicate.name = 'duplicate'
 
     const mapRotate = this.textureLoader.load('controls/rotate.png')
     const materialRotate = new THREE.SpriteMaterial({ map: mapRotate })
     const spriteRotate = new THREE.Sprite(materialRotate)
+    spriteRotate.name = 'rotate'
 
     const mapLayer = this.textureLoader.load('controls/layer.png')
     const materialLayer = new THREE.SpriteMaterial({ map: mapLayer })
     const spriteLayer = new THREE.Sprite(materialLayer)
+    spriteLayer.name = 'layer'
 
     const mapScale = this.textureLoader.load('controls/expand.png')
     const materialScale = new THREE.SpriteMaterial({ map: mapScale })
     const spriteScale = new THREE.Sprite(materialScale)
+    spriteScale.name = 'scale'
 
-    spriteDelete.position.set(x, y, z)
-    spriteDuplicate.position.set(x + 20, y, z)
-    spriteRotate.position.set(x, -y, z)
-    spriteLayer.position.set(x + 10, -y, z)
-    spriteScale.position.set(x + 20, -y, z)
+    spriteDelete.position.set(x, y, z + 10)
+    spriteDuplicate.position.set(x + 15, y, z + 10)
+    spriteRotate.position.set(x, y - 10, z + 10)
+    spriteLayer.position.set(x + 7.5, y - 10, z + 10)
+    spriteScale.position.set(x + 15, y - 10, z + 10)
+
+    spriteDelete.scale.set(4, 4, 4)
+    spriteDelete.scale.set(4, 4, 4)
+    spriteDuplicate.scale.set(4, 4, 4)
+    spriteRotate.scale.set(4, 4, 4)
+    spriteLayer.scale.set(4, 4, 4)
+    spriteScale.scale.set(4, 4, 4)
 
     spriteGroup.add(spriteDelete)
     spriteGroup.add(spriteDuplicate)
@@ -763,8 +747,8 @@ class Render3D extends PureComponent {
     const txt = new fabric.Text(text, {
       id: this.canvasTexture.getObjects().length,
       hasRotatingPoint: false,
-      // hasControls: false,
-      left: 1433.6,
+      hasControls: false,
+      left: 700,
       top: 409.6,
       fontSize: 75,
       ...style
