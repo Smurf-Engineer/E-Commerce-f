@@ -6,9 +6,7 @@ import * as React from 'react'
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
-import { connect } from 'react-redux'
 import GoogleMapReact from 'google-map-react'
-import * as aboutUsPageActions from './actions'
 import messages from './messages'
 import Divider from 'antd/lib/divider'
 import {
@@ -280,14 +278,6 @@ export class AboutUsPage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('aboutUsPage').toJS()
-
-const AboutUsPageEnhance = compose(
-  injectIntl,
-  connect(
-    mapStateToProps,
-    { ...aboutUsPageActions }
-  )
-)(AboutUsPage)
+const AboutUsPageEnhance = compose(injectIntl)(AboutUsPage)
 
 export default AboutUsPageEnhance
