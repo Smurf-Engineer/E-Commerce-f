@@ -28,6 +28,15 @@ export const SideBar = styled.div`
   padding-right: 20px;
 `
 
+export const AddOneMoreMessage = styled.div`
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+  margin-bottom: 8px;
+`
+
 export const EmptyTitle = styled.div`
   color: #5f6062;
   font-family: Avenir Next;

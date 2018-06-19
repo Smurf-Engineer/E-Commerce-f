@@ -68,5 +68,10 @@ export default defineMessages({
   giftPlaceholder: {
     id: 'screens.ShoppingCartPage.giftPlaceholder',
     defaultMessage: 'Gift Certificate'
+  },
+  addOneMoreMessage: {
+    id: 'screens.ShoppingCartPage.addOneMoreMessage',
+    defaultMessage:
+      '*Add 1 more item to your cart to save 25% on your entire order'
   }
 })

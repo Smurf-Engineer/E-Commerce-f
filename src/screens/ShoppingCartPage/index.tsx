@@ -23,7 +23,8 @@ import {
   EmptyItems,
   EmptyTitle,
   EmptyDescription,
-  StyledEmptyButton
+  StyledEmptyButton,
+  AddOneMoreMessage
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
 
@@ -203,6 +204,46 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
 
+    let totalSum = 0
+    let priceRangeToApply = 0
+    let show25PercentMessage = false
+    let justOneOfEveryItem = true
+    if (cart) {
+      const total = cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        if (quantitySum === 1 && cart.length === 1) {
+          show25PercentMessage = true
+        }
+
+        if (quantitySum !== 1) {
+          justOneOfEveryItem = false
+        }
+
+        const productPriceRanges = get(cartItem, 'product.priceRange', [])
+
+        console.log(productPriceRanges)
+
+        let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
+
+        priceRange =
+          priceRange.price === 0
+            ? productPriceRanges[productPriceRanges.length - 1]
+            : priceRange
+
+        return priceRange.price * quantitySum
+      })
+
+      totalSum = total.reduce((a, b) => a + b, 0)
+      if (justOneOfEveryItem && cart.length) {
+        priceRangeToApply = 1
+      }
+    }
+
     const renderList = cart
       ? cart.map((cartItem, index) => {
           return (
@@ -221,7 +262,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     }`
                   : cartItem.product.shortDescription
               }
-              price={cartItem.product.priceRange[0]}
+              price={cartItem.product.priceRange[priceRangeToApply]}
               image={
                 cartItem.designId
                   ? cartItem.designImage || ''
@@ -242,29 +283,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
         })
       : null
 
-    let totalSum = 0
-    if (cart) {
-      const total = cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
-          return itemDetail.quantity
-        })
-
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        const productPriceRanges = get(cartItem, 'product.priceRange', [])
-
-        let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
-
-        priceRange =
-          priceRange.price === 0
-            ? productPriceRanges[productPriceRanges.length - 1]
-            : priceRange
-
-        return priceRange.price * quantitySum
-      })
-
-      totalSum = total.reduce((a, b) => a + b, 0)
-    }
+    const sideHeaderMessage = show25PercentMessage ? (
+      <AddOneMoreMessage>
+        {formatMessage(messages.addOneMoreMessage)}
+      </AddOneMoreMessage>
+    ) : null
 
     return (
       <Layout {...{ history, intl }}>
@@ -289,6 +312,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
+                {sideHeaderMessage}
                 <Ordersummary
                   total={totalSum}
                   subtotal={totalSum}
