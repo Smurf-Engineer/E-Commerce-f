@@ -704,9 +704,11 @@
   "components.ProfileSettings.emailSignUpNewsLetter":
     "Yes, I would like to sign up for your Newsletter",
 
-  "screens.TemplateDownload.tittle": "TEMPLATE DOWNLOAD",
+  "screens.TemplateDownload.title": "TEMPLATE DOWNLOAD",
   "screens.TemplateDownload.name": "TOUR",
   "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",
+  "screens.TemplateDownload.errorTitle": "Oops!",
+  "screens.TemplateDownload.errorMessage": "Something went wrong",
 
   "components.TemplateDownloadItem.downloadTemplate": "Download Template"
 }
