@@ -174,14 +174,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+  getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
     let markslider = { quantity: '0', price: 0 }
     for (const priceRangeItem of priceRanges) {
-      if (!totalItems) {
-        break
-      }
-
-      if (!priceRangeItem.quantity) {
+      if (!totalItems || !priceRangeItem.quantity) {
         break
       }
 
@@ -200,16 +196,32 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     return markslider
   }
 
+  getPriceRangeToApply = (items: number) => {
+    if (items >= 2 && items <= 5) {
+      return 1
+    } else if (items >= 6 && items <= 24) {
+      return 2
+    } else if (items >= 25 && items <= 49) {
+      return 3
+    } else if (items >= 50) {
+      return 4
+    } else {
+      return 0
+    }
+  }
+
   render() {
     const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
 
     let totalSum = 0
+    let totalWithoutDiscount = 0
     let priceRangeToApply = 0
     let show25PercentMessage = false
     let justOneOfEveryItem = true
+    let maxquantity = 0
     if (cart) {
-      const total = cart.map((cartItem, index) => {
+      cart.map(cartItem => {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
           return itemDetail.quantity
         })
@@ -224,11 +236,45 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           justOneOfEveryItem = false
         }
 
+        if (quantitySum > maxquantity) {
+          maxquantity = quantitySum
+        }
+
+        totalWithoutDiscount =
+          totalWithoutDiscount +
+          quantitySum * cartItem.product.priceRange[0].price
+      })
+      if (justOneOfEveryItem && cart.length) {
+        console.log('first case')
+        console.log(cart.length)
+        console.log('first case')
+        priceRangeToApply = this.getPriceRangeToApply(cart.length)
+      } else {
+        if (cart.length) {
+          console.log('second case')
+          console.log(maxquantity)
+          console.log('second case')
+          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
+        }
+      }
+
+      console.log('priceRangeToApply')
+      console.log(priceRangeToApply)
+      console.log('priceRangeToApply')
+
+      const total = cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+          return itemDetail.quantity
+        })
+
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
         const productPriceRanges = get(cartItem, 'product.priceRange', [])
 
-        console.log(productPriceRanges)
-
-        let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
+        let priceRange =
+          priceRangeToApply !== 0
+            ? cartItem.product.priceRange[priceRangeToApply]
+            : this.getPriceRange(productPriceRanges, quantitySum)
 
         priceRange =
           priceRange.price === 0
@@ -239,9 +285,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       })
 
       totalSum = total.reduce((a, b) => a + b, 0)
-      if (justOneOfEveryItem && cart.length) {
-        priceRangeToApply = 1
-      }
     }
 
     const renderList = cart
@@ -316,7 +359,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                 <Ordersummary
                   total={totalSum}
                   subtotal={totalSum}
-                  {...{ formatMessage }}
+                  {...{ formatMessage, totalWithoutDiscount }}
                 />
                 <ButtonWrapper>
                   <CheckoutButton type="primary" onClick={this.handleCheckout}>
