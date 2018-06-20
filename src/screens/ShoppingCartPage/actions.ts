@@ -15,6 +15,7 @@ import {
   SET_TOTAL_ACTION,
   SET_SUBTOTAL_ACTION,
   SET_SHIPPING_ACTION,
+  SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA
 } from './constants'
 import { AnyAction, Product, ItemDetailType } from '../../types/common'
@@ -120,4 +121,9 @@ export const setShippingAction = (shipping: number): AnyAction => ({
 
 export const resetReducerData = (): AnyAction => ({
   type: RESET_REDUCER_DATA
+})
+
+export const showDeleteLastItemModalAction = (show: boolean): AnyAction => ({
+  type: SHOW_DELETE_LAST_ITEM_MODAL,
+  show
 })

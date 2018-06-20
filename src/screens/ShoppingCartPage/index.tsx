@@ -24,7 +24,8 @@ import {
   EmptyTitle,
   EmptyDescription,
   StyledEmptyButton,
-  AddOneMoreMessage
+  AddOneMoreMessage,
+  DeleteConfirmMessage
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
 
@@ -35,6 +36,7 @@ import {
   ItemDetailType,
   PriceRange
 } from '../../types/common'
+import Modal from 'antd/lib/modal/Modal'
 
 interface CartItems {
   product: Product
@@ -49,6 +51,7 @@ interface CartItems {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   cart: CartItems[]
+  showDeleteLastItemModal: boolean
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -82,6 +85,7 @@ interface Props extends RouteComponentProps<any> {
     quantity: number
   ) => void
   setInitialData: () => void
+  showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
 }
@@ -116,8 +120,26 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   handleRemoveItem = (event: React.MouseEvent<EventTarget>, index: number) => {
-    const { removeItemAction } = this.props
+    const { showDeleteLastItemModalAction, removeItemAction, cart } = this.props
+    if (cart.length === 1) {
+      showDeleteLastItemModalAction(true)
+      return
+    }
     removeItemAction(index)
+  }
+
+  handleOnRemoveLastItem = () => {
+    const { removeItemAction, showDeleteLastItemModalAction } = this.props
+    removeItemAction(0)
+    showDeleteLastItemModalAction(false)
+  }
+
+  toggleDeleteLastItemModal = () => {
+    const {
+      showDeleteLastItemModalAction,
+      showDeleteLastItemModal
+    } = this.props
+    showDeleteLastItemModalAction(!showDeleteLastItemModal)
   }
 
   handledeleteItemDetail = (
@@ -211,7 +233,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, cart } = this.props
+    const { intl, history, cart, showDeleteLastItemModal } = this.props
     const formatMessage = intl.formatMessage
 
     let totalSum = 0
@@ -221,11 +243,18 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     let justOneOfEveryItem = true
     let maxquantity = 0
     let numberOfProducts = 0
+    let nameOfFirstProduct = ''
     if (cart) {
       cart.map(cartItem => {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
           return itemDetail.quantity
         })
+
+        console.log(cartItem)
+
+        if (!nameOfFirstProduct) {
+          nameOfFirstProduct = cartItem.product.name
+        }
 
         const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
@@ -365,6 +394,20 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </Content>
             </Container>
           )}
+          <Modal
+            visible={showDeleteLastItemModal}
+            title={formatMessage(messages.titleDeleteModal)}
+            okText={formatMessage(messages.delete)}
+            onOk={this.handleOnRemoveLastItem}
+            onCancel={this.toggleDeleteLastItemModal}
+          >
+            <DeleteConfirmMessage>
+              <FormattedMessage
+                {...messages.messageDeleteItem}
+                values={{ nameOfFirstProduct }}
+              />
+            </DeleteConfirmMessage>
+          </Modal>
         </div>
       </Layout>
     )

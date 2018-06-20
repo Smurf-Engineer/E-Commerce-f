@@ -101,7 +101,6 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
 
     let numberOfProducts = 0
-
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
       cart.map(cartItem => {
