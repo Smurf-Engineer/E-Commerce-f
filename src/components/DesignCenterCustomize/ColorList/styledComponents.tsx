@@ -11,6 +11,10 @@ export const Container = styled.div`
   overflow: auto;
   height: ${({ height }: ContainerProps) => height}vh;
   padding: 0px 32px 32px 32px;
+
+  @media (min-height: 800px) {
+    height: 50vh;
+  }
 `
 
 export const Dot = styled.div`

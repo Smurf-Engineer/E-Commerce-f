@@ -28,7 +28,7 @@ import { viewPositions } from './config'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
-import { isMouseOver } from './utils'
+import { isMouseOver, clickOnCorner } from './utils'
 // TODO: JV2 - Phase II
 // import arrowDown from '../../../assets/downarrow.svg'
 // import topIcon from '../../../assets/Cube-Top.svg'
@@ -81,61 +81,28 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
 
-    // fabric.Canvas.prototype.customiseControls({
-    //   tl: {
-    //     action: 'remove',
-    //     icon: 'delete.svg',
-    //     cursor: 'pointer'
-    //   },
-    //   tr: {
-    //     action: () => {
-    //       console.log('------------------------------------')
-    //       console.log('COPY')
-    //       console.log('------------------------------------')
-    //     },
-    //     icon: 'duplicate.svg',
-    //     cursor: 'pointer'
-    //   },
-    //   bl: {
-    //     action: 'rotate',
-    //     icon: 'rotate.svg',
-    //     cursor: 'pointer'
-    //   },
-    //   br: {
-    //     action: 'scale',
-    //     icon: 'expand.svg',
-    //     cursor: 'pointer'
-    //   },
-    //   mb: {
-    //     action: 'moveUp',
-    //     icon: 'layer.svg',
-    //     cursor: 'pointer'
-    //   }
-    // })
-
-    // fabric.Object.prototype.customiseCornerIcons({
-    //   settings: {
-    //     borderColor: 'black',
-    //     borderWidth: 20,
-    //     cornerSize: 70,
-    //     cornerPadding: 10
-    //   },
-    //   tl: {
-    //     icon: 'delete.svg'
-    //   },
-    //   tr: {
-    //     icon: 'duplicate.svg'
-    //   },
-    //   bl: {
-    //     icon: 'rotate.svg'
-    //   },
-    //   br: {
-    //     icon: 'expand.svg'
-    //   },
-    //   mb: {
-    //     icon: 'layer.svg'
-    //   }
-    // })
+    fabric.Object.prototype.customiseCornerIcons({
+      settings: {
+        borderColor: 'black',
+        cornerSize: 70,
+        cornerPadding: 10
+      },
+      tl: {
+        icon: 'delete.svg'
+      },
+      tr: {
+        icon: 'duplicate.svg'
+      },
+      bl: {
+        icon: 'rotate.svg'
+      },
+      br: {
+        icon: 'expand.svg'
+      },
+      mb: {
+        icon: 'layer.svg'
+      }
+    })
 
     const { clientWidth, clientHeight } = this.container
 
@@ -225,8 +192,8 @@ class Render3D extends PureComponent {
   onMouseUp = evt => {
     evt.preventDefault()
 
-    this.controls.enabled = true
     this.dragComponent = null
+    this.controls.enabled = true
   }
 
   onMouseDown = evt => {
@@ -246,18 +213,28 @@ class Render3D extends PureComponent {
 
     if (intersects.length > 0 && intersects[0].uv) {
       const uv = intersects[0].uv
-      console.log('-------------OBJECt---------------')
-      console.log(intersects[0])
-      console.log('------------------------------------')
-      this.renderControls(intersects[0].point)
+      // this.renderControls(intersects[0].point)
+      const activeEl = this.canvasTexture.getActiveObject()
+      if (activeEl && !this.dragComponent) {
+        const boundingBox = activeEl.getBoundingRect()
+        const isInsideOfCorner = clickOnCorner(
+          boundingBox,
+          activeEl.oCoords,
+          uv
+        )
+        if (isInsideOfCorner) {
+          console.log('------------------------------------')
+          console.log(activeEl.oCoords)
+          console.log('------------------------------------')
+          return
+        }
+      }
+
       let allDeactive = true
       this.canvasTexture.forEachObject(el => {
         const boundingBox = el.getBoundingRect()
         const isInside = isMouseOver(boundingBox, uv)
         if (isInside) {
-          console.log('-----------------EL---------------')
-          console.log(el)
-          console.log('------------------------------------')
           allDeactive = false
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
@@ -271,9 +248,11 @@ class Render3D extends PureComponent {
           el.set('active', false)
         }
       })
+
       if (allDeactive) {
         this.canvasTexture.discardActiveObject()
       }
+
       this.canvasTexture.renderAll()
     }
   }
@@ -489,23 +468,22 @@ class Render3D extends PureComponent {
     spriteScale.name = 'scale'
 
     spriteDelete.position.set(x, y, z + 10)
-    spriteDuplicate.position.set(x + 15, y, z + 10)
-    spriteRotate.position.set(x, y - 10, z + 10)
-    spriteLayer.position.set(x + 7.5, y - 10, z + 10)
-    spriteScale.position.set(x + 15, y - 10, z + 10)
+    // spriteDuplicate.position.set(x + 15, y, z + 10)
+    // spriteRotate.position.set(x, y - 10, z + 10)
+    // spriteLayer.position.set(x + 7.5, y - 10, z + 10)
+    // spriteScale.position.set(x + 15, y - 10, z + 10)
 
     spriteDelete.scale.set(4, 4, 4)
-    spriteDelete.scale.set(4, 4, 4)
-    spriteDuplicate.scale.set(4, 4, 4)
-    spriteRotate.scale.set(4, 4, 4)
-    spriteLayer.scale.set(4, 4, 4)
-    spriteScale.scale.set(4, 4, 4)
+    // spriteDuplicate.scale.set(4, 4, 4)
+    // spriteRotate.scale.set(4, 4, 4)
+    // spriteLayer.scale.set(4, 4, 4)
+    // spriteScale.scale.set(4, 4, 4)
 
     spriteGroup.add(spriteDelete)
-    spriteGroup.add(spriteDuplicate)
-    spriteGroup.add(spriteRotate)
-    spriteGroup.add(spriteLayer)
-    spriteGroup.add(spriteScale)
+    // spriteGroup.add(spriteDuplicate)
+    // spriteGroup.add(spriteRotate)
+    // spriteGroup.add(spriteLayer)
+    // spriteGroup.add(spriteScale)
 
     this.scene.add(spriteGroup)
   }
@@ -731,7 +709,7 @@ class Render3D extends PureComponent {
         oImg.scale(0.1).set({
           id: this.canvasTexture.getObjects().length,
           hasRotatingPoint: false,
-          hasControls: false,
+          //  hasControls: false,
           left: 409.6,
           top: 409.6
         })
@@ -747,7 +725,7 @@ class Render3D extends PureComponent {
     const txt = new fabric.Text(text, {
       id: this.canvasTexture.getObjects().length,
       hasRotatingPoint: false,
-      hasControls: false,
+      // hasControls: false,
       left: 700,
       top: 409.6,
       fontSize: 75,
