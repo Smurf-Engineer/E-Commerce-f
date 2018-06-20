@@ -220,6 +220,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     let show25PercentMessage = false
     let justOneOfEveryItem = true
     let maxquantity = 0
+    let numberOfProducts = 0
     if (cart) {
       cart.map(cartItem => {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -227,6 +228,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
         })
 
         const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        numberOfProducts = numberOfProducts + quantitySum
 
         if (quantitySum === 1 && cart.length === 1) {
           show25PercentMessage = true
@@ -245,22 +248,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           quantitySum * cartItem.product.priceRange[0].price
       })
       if (justOneOfEveryItem && cart.length) {
-        console.log('first case')
-        console.log(cart.length)
-        console.log('first case')
         priceRangeToApply = this.getPriceRangeToApply(cart.length)
       } else {
         if (cart.length) {
-          console.log('second case')
-          console.log(maxquantity)
-          console.log('second case')
           priceRangeToApply = this.getPriceRangeToApply(maxquantity)
         }
       }
-
-      console.log('priceRangeToApply')
-      console.log(priceRangeToApply)
-      console.log('priceRangeToApply')
 
       const total = cart.map((cartItem, index) => {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -336,7 +329,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       <Layout {...{ history, intl }}>
         <div>
           <Title>
-            {`${formatMessage(messages.title)} (${cart ? cart.length : 0})`}
+            {`${formatMessage(messages.title)} (${numberOfProducts})`}
           </Title>
           {!cart || cart.length < 1 ? (
             <EmptyContainer>

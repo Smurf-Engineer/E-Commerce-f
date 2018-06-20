@@ -65,7 +65,6 @@ class OrderSummary extends React.Component<Props, {}> {
       </ZipCodeInputWrapper>
     )
     const youSaved = Number(totalWithoutDiscount) - total
-    console.log(youSaved)
     return (
       <Container>
         <SummaryTitle>

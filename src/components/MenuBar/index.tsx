@@ -68,7 +68,10 @@ class MenuBar extends React.Component<Props, StateProps> {
     this.setState({ isMobile })
   }
 
-  handleOnGoHome = () => window.location.replace('/')
+  handleOnGoHome = () => {
+    const { history } = this.props
+    history.replace('/us?lang=en&currency=usd')
+  }
 
   handleMyAccount = () => {
     const { history } = this.props
