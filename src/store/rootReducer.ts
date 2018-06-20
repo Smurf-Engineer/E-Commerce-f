@@ -35,7 +35,6 @@ import warrantyProgram from '../screens/WarrantyProgram/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
-  aboutUsPage: any
   warrantyProgram: any
   orderPlaced: any
   myTeamStores: any
