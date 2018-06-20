@@ -250,8 +250,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           return itemDetail.quantity
         })
 
-        console.log(cartItem)
-
         if (!nameOfFirstProduct) {
           nameOfFirstProduct = cartItem.product.name
         }
