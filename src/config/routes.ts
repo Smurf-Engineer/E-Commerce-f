@@ -1,4 +1,5 @@
 /* Routes */
+import AboutUsPage from '../screens/AboutUsPage'
 import TemplateDownload from '../screens/TemplateDownload'
 import JerseyComparison from '../screens/JerseyComparison'
 import WarrantyProgram from '../screens/WarrantyProgram'
@@ -28,6 +29,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/about-us-page',
+    name: 'aboutUsPage',
+    component: AboutUsPage
+  },
   {
     path: '/template-download',
     name: 'templateDownload',
