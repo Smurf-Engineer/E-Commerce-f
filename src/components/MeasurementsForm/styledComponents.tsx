@@ -56,14 +56,14 @@ export const RadioButton = styled(radioButton)`
 export const StyledInput = styled(Input)`
   height: 40px;
   border: 1px solid #bebebe;
-  border-radius: 0;
   margin-top: 5px;
+  border-right: 1px;
+  border-right-color: #fff;
 `
 
 export const LabeledInput = styled(Input)`
   height: 40px;
   border: 1px solid #bebebe;
-  border-radius: 0;
   margin-top: 5px;
   background-color: #fff;
   pointer-events: none;
