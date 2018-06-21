@@ -13,7 +13,7 @@ export const setInitialData = () => {
     try {
       if (typeof window !== 'undefined') {
         const cartListFromLS = JSON.parse(localStorage.getItem('cart') as any)
-        let cartList: any[] = []
+        let cartList: CartItems[] = []
         for (let i = 0; i < cartListFromLS.length; i++) {
           const item = cartListFromLS[i]
           if (i === 0) {

@@ -91,6 +91,16 @@ interface Props {
 }
 
 class CartListItem extends React.Component<Props, {}> {
+  getQuantity = (priceRange: PriceRange) => {
+    let val = 0
+    if (priceRange.quantity === 'Personal') {
+      val = 1
+    } else if (priceRange.quantity) {
+      val = parseInt(priceRange.quantity.split('-')[0], 10)
+    }
+    return val
+  }
+
   getPriceRange(priceRanges: PriceRange[], totalItems: number) {
     const { price } = this.props
     let markslider = { quantity: '0', price: 0 }
@@ -101,12 +111,7 @@ class CartListItem extends React.Component<Props, {}> {
         if (!totalItems) {
           break
         }
-        const val =
-          priceRangeItem.quantity === 'Personal'
-            ? 1
-            : priceRangeItem.quantity
-              ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-              : 0
+        const val = this.getQuantity(priceRangeItem)
 
         if (val >= totalItems) {
           markslider = priceRangeItem
@@ -138,12 +143,8 @@ class CartListItem extends React.Component<Props, {}> {
         if (!totalItems) {
           break
         }
-        const val =
-          priceRangeItem.quantity === 'Personal'
-            ? 1
-            : priceRangeItem.quantity
-              ? parseInt(priceRangeItem.quantity.split('-')[0], 10)
-              : 0
+
+        const val = this.getQuantity(priceRangeItem)
 
         if (val > totalItems) {
           markslider = { items: val - totalItems, price: priceRangeItem.price }
