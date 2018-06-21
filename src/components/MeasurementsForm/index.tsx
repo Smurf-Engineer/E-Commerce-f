@@ -120,11 +120,11 @@ const MeasurementsForm = ({
     !shouldersSizeChanged &&
     !neckSizeChanged
 
-  const metricSistemSelected =
+  const metricSystemSelected =
     (msrmntSystemSelected || msrmntSystemSelectedMS) === 'metric'
-  const weightUnit = metricSistemSelected ? 'kgs' : 'lbs'
-  const lengthShortUnit = metricSistemSelected ? 'cm' : 'in'
-  const lengthLongUnit = metricSistemSelected ? 'mts' : 'ft'
+  const weightUnit = metricSystemSelected ? 'kgs' : 'lbs'
+  const lengthShortUnit = metricSystemSelected ? 'cm' : 'in'
+  const lengthLongUnit = metricSystemSelected ? 'mts' : 'ft'
 
   const weightComponent = (
     <Column inputhWidth={!isMobile ? '48%' : '75%'}>
@@ -140,7 +140,11 @@ const MeasurementsForm = ({
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '20%', borderLeft: 0, borderRadius: 0 }}
+          style={{
+            width: '20%',
+            borderLeft: 0,
+            borderRadius: 0
+          }}
           placeholder={weightUnit}
           disabled={true}
         />
@@ -325,7 +329,7 @@ const MeasurementsForm = ({
       <Row>
         <Column inputhWidth={!isMobile ? '31%' : '48%'}>
           <RadioGroup
-            value={msrmntSystemSelected || msrmntSystemSelectedMS || 'metric'}
+            value={msrmntSystemSelected || msrmntSystemSelectedMS || 'imperial'}
             onChange={handleOnMsrmntSystemChange}
           >
             <RadioButton value="metric">

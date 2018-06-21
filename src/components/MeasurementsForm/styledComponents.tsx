@@ -66,6 +66,7 @@ export const LabeledInput = styled(Input)`
   border-radius: 0;
   margin-top: 5px;
   background-color: #fff;
+  pointer-events: none;
 `
 
 export const StyledButton = styled(Button)`
