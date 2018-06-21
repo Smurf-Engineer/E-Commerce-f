@@ -6,6 +6,11 @@ image: node:9.4.0
 options:
   docker: true
 
+definitions:
+  services:
+    docker:
+      memory: 2048
+
 pipelines:
   default:
   - step:
