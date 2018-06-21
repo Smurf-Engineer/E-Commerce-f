@@ -74,3 +74,20 @@ export const StyledButton = styled(Button)`
   width: 100%;
   border-radius: 2px;
 `
+
+export const styledInputStyle = {
+  width: '70%',
+  borderRadius: 0
+}
+
+export const labeledInputStyle = {
+  width: '30%',
+  borderLeft: 0,
+  borderRadius: 0
+}
+
+export const styledInputWithCustomWidth = (width: string) =>
+  Object.assign({}, styledInputStyle, { width })
+
+export const labeledInputWithCustomWidth = (width: string) =>
+  Object.assign({}, labeledInputStyle, { width })

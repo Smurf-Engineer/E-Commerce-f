@@ -13,7 +13,11 @@ import {
   StyledButton,
   InputGroup,
   LabeledInput,
-  RadioButton
+  RadioButton,
+  labeledInputStyle,
+  styledInputStyle,
+  styledInputWithCustomWidth,
+  labeledInputWithCustomWidth
 } from './styledComponents'
 import RadioGroup from 'antd/lib/radio/group'
 
@@ -133,18 +137,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '80%', borderRadius: 0 }}
+          style={styledInputWithCustomWidth('80%')}
           id="weight"
           value={weight !== null ? weight : weightMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{
-            width: '20%',
-            borderLeft: 0,
-            borderRadius: 0
-          }}
+          style={labeledInputWithCustomWidth('20%')}
           placeholder={weightUnit}
           disabled={true}
         />
@@ -160,14 +160,14 @@ const MeasurementsForm = ({
         <Column inputhWidth={'48%'}>
           <InputGroup compact={true}>
             <StyledInput
-              style={{ width: '60%', borderRadius: 0 }}
+              style={styledInputWithCustomWidth('60%')}
               id="heightFirst"
               value={heightFirst !== null ? heightFirst : heightFirstMS}
               onChange={handleInputChange}
               maxLength="50"
             />
             <LabeledInput
-              style={{ width: '40%', borderLeft: 0, borderRadius: 0 }}
+              style={labeledInputWithCustomWidth('40%')}
               placeholder={lengthLongUnit}
               disabled={true}
             />
@@ -176,14 +176,14 @@ const MeasurementsForm = ({
         <Column inputhWidth={'48%'}>
           <InputGroup compact={true}>
             <StyledInput
-              style={{ width: '60%', borderRadius: 0 }}
+              style={styledInputWithCustomWidth('60%')}
               id="heightSecond"
               value={heightSecond !== null ? heightSecond : heightSecondMS}
               onChange={handleInputChange}
               maxLength="50"
             />
             <LabeledInput
-              style={{ width: '40%', borderLeft: 0, borderRadius: 0 }}
+              style={labeledInputWithCustomWidth('40%')}
               placeholder={lengthShortUnit}
               disabled={true}
             />
@@ -199,14 +199,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '70%', borderRadius: 0 }}
+          style={styledInputStyle}
           id="chestSize"
           value={chestSize !== null ? chestSize : chestSizeMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          style={labeledInputStyle}
           placeholder={lengthShortUnit}
           disabled={true}
         />
@@ -221,14 +221,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '70%', borderRadius: 0 }}
+          style={styledInputStyle}
           id="waistSize"
           value={waistSize !== null ? waistSize : waistSizeMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          style={labeledInputStyle}
           placeholder={lengthShortUnit}
           disabled={true}
         />
@@ -243,14 +243,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '70%', borderRadius: 0 }}
+          style={styledInputStyle}
           id="hipsSize"
           value={hipsSize !== null ? hipsSize : hipsSizeMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          style={labeledInputStyle}
           placeholder={lengthShortUnit}
           disabled={true}
         />
@@ -265,14 +265,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '70%', borderRadius: 0 }}
+          style={styledInputStyle}
           id="inseamSize"
           value={inseamSize !== null ? inseamSize : inseamSizeMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          style={labeledInputStyle}
           placeholder={lengthShortUnit}
           disabled={true}
         />
@@ -287,14 +287,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '70%', borderRadius: 0 }}
+          style={styledInputStyle}
           id="shouldersSize"
           value={shouldersSize !== null ? shouldersSize : shouldersSizeMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          style={labeledInputStyle}
           placeholder={lengthShortUnit}
           disabled={true}
         />
@@ -309,14 +309,14 @@ const MeasurementsForm = ({
       </InputTitleContainer>
       <InputGroup compact={true}>
         <StyledInput
-          style={{ width: '70%', borderRadius: 0 }}
+          style={styledInputStyle}
           id="neckSize"
           value={neckSize !== null ? neckSize : neckSizeMS}
           onChange={handleInputChange}
           maxLength="50"
         />
         <LabeledInput
-          style={{ width: '30%', borderLeft: 0, borderRadius: 0 }}
+          style={labeledInputStyle}
           placeholder={lengthShortUnit}
           disabled={true}
         />
