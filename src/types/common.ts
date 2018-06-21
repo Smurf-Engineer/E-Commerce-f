@@ -453,3 +453,35 @@ export interface ITemplateDownload {
   ]
   fileUrl: string
 }
+
+export interface NetsuiteTax {
+  internalId: string
+  rate: string
+  countryCode: string
+  ratePST: string
+  rateGST: string
+  state: string
+  zip: string
+}
+
+export interface NetsuiteShipping {
+  restrictions: NetsuiteShippingRestrictions
+  weightTable: NetsuiteShippingWeighTable[]
+  internalId: string
+  subsidiary: string
+  name: string
+  flatRate: string
+  rateType: string
+}
+
+export interface NetsuiteShippingRestrictions {
+  limitOrExcludeCountries: string
+  limitOrExcludeStates: string
+  countries: string[]
+  states: string[]
+}
+
+export interface NetsuiteShippingWeighTable {
+  minimum: number
+  amount: number
+}

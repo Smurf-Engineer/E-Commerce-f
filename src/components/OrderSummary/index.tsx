@@ -3,6 +3,9 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import { compose, graphql } from 'react-apollo'
+import { QueryProps, NetsuiteTax, NetsuiteShipping } from '../../types/common'
+import { getTaxQuery } from './data'
 import messages from './messages'
 import {
   Container,
@@ -19,7 +22,13 @@ import {
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 
+interface Data extends QueryProps {
+  taxes: NetsuiteTax[]
+  shipping: NetsuiteShipping[]
+}
+
 interface Props {
+  data: Data
   total: number
   subtotal: number
   discount?: number
@@ -112,4 +121,12 @@ class OrderSummary extends React.Component<Props, {}> {
   }
 }
 
-export default OrderSummary
+const OrderSummaryEnhance = compose(
+  graphql(getTaxQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(OrderSummary)
+
+export default OrderSummaryEnhance
