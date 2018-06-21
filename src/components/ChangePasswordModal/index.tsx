@@ -92,7 +92,7 @@ const ChangePasswordModal = ({
         <Row>
           <Column inputhWidth={'100%'}>
             <InputTitleContainer>
-              <Label>{formatMessage(messages.currentPassword)}</Label>
+              <Label>{formatMessage(messages.reEnterPassword)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <StyledInput
