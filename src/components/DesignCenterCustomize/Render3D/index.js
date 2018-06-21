@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl'
 // import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
+import shortid from 'shortid'
 import {
   Container,
   Render,
@@ -24,7 +25,15 @@ import {
   ButtonWrapper,
   CanvasContainer
 } from './styledComponents'
-import { viewPositions } from './config'
+import {
+  viewPositions,
+  DELETE_ACTION,
+  DUPLICATE_ACTION,
+  BRING_TO_FRONT_ACTION,
+  ROTATE_ACTION,
+  SCALE_ACTION,
+  DRAG_ACTION
+} from './config'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
@@ -189,105 +198,6 @@ class Render3D extends PureComponent {
     }
   }
 
-  onMouseUp = evt => {
-    evt.preventDefault()
-
-    this.dragComponent = null
-    this.controls.enabled = true
-  }
-
-  onMouseDown = evt => {
-    evt.preventDefault()
-
-    const array = this.getMousePosition(
-      this.container,
-      evt.clientX,
-      evt.clientY
-    )
-    this.onClickPosition.fromArray(array)
-
-    const intersects = this.getIntersects(
-      this.onClickPosition,
-      this.scene.children
-    )
-
-    if (intersects.length > 0 && intersects[0].uv) {
-      const uv = intersects[0].uv
-      // this.renderControls(intersects[0].point)
-      const activeEl = this.canvasTexture.getActiveObject()
-      if (activeEl && !this.dragComponent) {
-        const boundingBox = activeEl.getBoundingRect()
-        const isInsideOfCorner = clickOnCorner(
-          boundingBox,
-          activeEl.oCoords,
-          uv
-        )
-        if (isInsideOfCorner) {
-          console.log('------------------------------------')
-          console.log(activeEl.oCoords)
-          console.log('------------------------------------')
-          return
-        }
-      }
-
-      let allDeactive = true
-      this.canvasTexture.forEachObject(el => {
-        const boundingBox = el.getBoundingRect()
-        const isInside = isMouseOver(boundingBox, uv)
-        if (isInside) {
-          allDeactive = false
-          const left = uv.x * CANVAS_SIZE
-          const top = (1 - uv.y) * CANVAS_SIZE
-          const differenceX = left - boundingBox.left
-          const differenceY = top - boundingBox.top
-          const dragComponent = { element: el, differenceX, differenceY }
-          this.controls.enabled = false
-          this.dragComponent = dragComponent
-          this.canvasTexture.setActiveObject(el)
-        } else {
-          el.set('active', false)
-        }
-      })
-
-      if (allDeactive) {
-        this.canvasTexture.discardActiveObject()
-      }
-
-      this.canvasTexture.renderAll()
-    }
-  }
-
-  onMouseMove = evt => {
-    evt.preventDefault()
-
-    const array = this.getMousePosition(
-      this.container,
-      evt.clientX,
-      evt.clientY
-    )
-    this.onClickPosition.fromArray(array)
-
-    const intersects = this.getIntersects(
-      this.onClickPosition,
-      this.scene.children
-    )
-
-    if (intersects.length > 0 && intersects[0].uv && !!this.dragComponent) {
-      const meshName = get(intersects[0], 'object.name', '')
-      if (meshName === 'FINAL JV2_Design_Mesh' || meshName === 'Canvas_Mesh') {
-        const { element, differenceX, differenceY } = this.dragComponent
-        const uv = intersects[0].uv
-        const left = uv.x * 2048 - differenceX
-        const top = (1 - uv.y) * 2048 - differenceY
-        this.canvasTexture
-          .item(element.id)
-          .set({ left, top })
-          .setCoords()
-        this.canvasTexture.renderAll()
-      }
-    }
-  }
-
   getMousePosition = (dom, x, y) => {
     const rect = dom.getBoundingClientRect()
     return [(x - rect.left) / rect.width, (y - rect.top) / rect.height]
@@ -376,12 +286,9 @@ class Render3D extends PureComponent {
           object.children[flatlockIndex].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          // TODO: WIP Text canvas
-
+          /* Canvas */
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
-          /*
-          /* TODO: FrabircJS Test */
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
@@ -427,65 +334,12 @@ class Render3D extends PureComponent {
           object.name = 'jersey'
           this.scene.add(object)
 
-          if (!window.scene) {
-            window.scene = this.scene
-          }
-
           onLoadModel(false)
         },
         this.onProgress,
         this.onError
       )
     })
-  }
-
-  renderControls = ({ x, y, z }) => {
-    const spriteGroup = new THREE.Object3D()
-
-    const mapDelete = this.textureLoader.load('controls/delete.png')
-    const materialDelete = new THREE.SpriteMaterial({ map: mapDelete })
-    const spriteDelete = new THREE.Sprite(materialDelete)
-    spriteDelete.name = 'delete'
-
-    const mapDuplicate = this.textureLoader.load('controls/duplicate.png')
-    const materialDuplicate = new THREE.SpriteMaterial({ map: mapDuplicate })
-    const spriteDuplicate = new THREE.Sprite(materialDuplicate)
-    spriteDuplicate.name = 'duplicate'
-
-    const mapRotate = this.textureLoader.load('controls/rotate.png')
-    const materialRotate = new THREE.SpriteMaterial({ map: mapRotate })
-    const spriteRotate = new THREE.Sprite(materialRotate)
-    spriteRotate.name = 'rotate'
-
-    const mapLayer = this.textureLoader.load('controls/layer.png')
-    const materialLayer = new THREE.SpriteMaterial({ map: mapLayer })
-    const spriteLayer = new THREE.Sprite(materialLayer)
-    spriteLayer.name = 'layer'
-
-    const mapScale = this.textureLoader.load('controls/expand.png')
-    const materialScale = new THREE.SpriteMaterial({ map: mapScale })
-    const spriteScale = new THREE.Sprite(materialScale)
-    spriteScale.name = 'scale'
-
-    spriteDelete.position.set(x, y, z + 10)
-    // spriteDuplicate.position.set(x + 15, y, z + 10)
-    // spriteRotate.position.set(x, y - 10, z + 10)
-    // spriteLayer.position.set(x + 7.5, y - 10, z + 10)
-    // spriteScale.position.set(x + 15, y - 10, z + 10)
-
-    spriteDelete.scale.set(4, 4, 4)
-    // spriteDuplicate.scale.set(4, 4, 4)
-    // spriteRotate.scale.set(4, 4, 4)
-    // spriteLayer.scale.set(4, 4, 4)
-    // spriteScale.scale.set(4, 4, 4)
-
-    spriteGroup.add(spriteDelete)
-    // spriteGroup.add(spriteDuplicate)
-    // spriteGroup.add(spriteRotate)
-    // spriteGroup.add(spriteLayer)
-    // spriteGroup.add(spriteScale)
-
-    this.scene.add(spriteGroup)
   }
 
   onProgress = xhr => {
@@ -706,10 +560,9 @@ class Render3D extends PureComponent {
   applyImage = base64 => {
     fabric.Image.fromURL(base64, oImg => {
       this.canvasTexture.add(
-        oImg.scale(0.1).set({
-          id: this.canvasTexture.getObjects().length,
+        oImg.scale(1).set({
+          id: shortid.generate(),
           hasRotatingPoint: false,
-          //  hasControls: false,
           left: 409.6,
           top: 409.6
         })
@@ -723,9 +576,8 @@ class Render3D extends PureComponent {
     }
 
     const txt = new fabric.Text(text, {
-      id: this.canvasTexture.getObjects().length,
+      id: shortid.generate(),
       hasRotatingPoint: false,
-      // hasControls: false,
       left: 700,
       top: 409.6,
       fontSize: 75,
@@ -733,6 +585,200 @@ class Render3D extends PureComponent {
     })
 
     this.canvasTexture.add(txt)
+  }
+
+  applyClipArt = el => {}
+
+  deleteElement = el => {
+    this.canvasTexture.remove(el)
+  }
+
+  duplicateElement = el => {
+    const boundingBox = el.getBoundingRect()
+    const clonedEl = fabric.util.object.clone(el)
+    clonedEl.set({
+      id: shortid.generate(),
+      top: boundingBox.top + 100,
+      left: boundingBox.left + 100
+    })
+    this.canvasTexture.add(clonedEl)
+  }
+
+  setLayerElement = el => {
+    this.canvasTexture.bringToFront(el)
+  }
+
+  onMouseUp = evt => {
+    evt.preventDefault()
+
+    this.dragComponent = null
+    this.controls.enabled = true
+  }
+
+  onMouseDown = evt => {
+    evt.preventDefault()
+
+    const array = this.getMousePosition(
+      this.container,
+      evt.clientX,
+      evt.clientY
+    )
+    this.onClickPosition.fromArray(array)
+
+    const intersects = this.getIntersects(
+      this.onClickPosition,
+      this.scene.children
+    )
+
+    if (intersects.length > 0 && intersects[0].uv) {
+      const uv = intersects[0].uv
+      const activeEl = this.canvasTexture.getActiveObject()
+      if (activeEl && !this.dragComponent) {
+        const boundingBox = activeEl.getBoundingRect()
+        const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
+        if (action) {
+          switch (action) {
+            case DELETE_ACTION:
+              this.deleteElement(activeEl)
+              break
+            case DUPLICATE_ACTION:
+              this.duplicateElement(activeEl)
+              break
+            case BRING_TO_FRONT_ACTION:
+              this.setLayerElement(activeEl)
+              break
+            case SCALE_ACTION: {
+              this.controls.enabled = false
+              this.dragComponent = { action: SCALE_ACTION }
+              break
+            }
+            case ROTATE_ACTION: {
+              const x = uv.x * 2048
+              const y = (1 - uv.y) * 2048
+              const startPoint = { h_x: x, h_y: y }
+              this.controls.enabled = false
+              this.dragComponent = { action: ROTATE_ACTION, startPoint }
+              break
+            }
+            default:
+              break
+          }
+          return
+        }
+      }
+
+      let allDeactive = true
+      this.canvasTexture.forEachObject(el => {
+        const boundingBox = el.getBoundingRect()
+        const isInside = isMouseOver(boundingBox, uv)
+        if (isInside) {
+          allDeactive = false
+          const left = uv.x * CANVAS_SIZE
+          const top = (1 - uv.y) * CANVAS_SIZE
+          const differenceX = left - boundingBox.left
+          const differenceY = top - boundingBox.top
+          const dragComponent = {
+            differenceX,
+            differenceY,
+            action: DRAG_ACTION
+          }
+          this.controls.enabled = false
+          this.dragComponent = dragComponent
+          this.canvasTexture.setActiveObject(el)
+        } else {
+          el.set('active', false)
+        }
+      })
+
+      if (allDeactive) {
+        this.canvasTexture.discardActiveObject()
+      }
+
+      this.canvasTexture.renderAll()
+    }
+  }
+
+  onMouseMove = evt => {
+    evt.preventDefault()
+
+    const array = this.getMousePosition(
+      this.container,
+      evt.clientX,
+      evt.clientY
+    )
+    this.onClickPosition.fromArray(array)
+
+    const intersects = this.getIntersects(
+      this.onClickPosition,
+      this.scene.children
+    )
+
+    if (intersects.length > 0 && intersects[0].uv && !!this.dragComponent) {
+      const meshName = get(intersects[0], 'object.name', '')
+      if (meshName === 'FINAL JV2_Design_Mesh' || meshName === 'Canvas_Mesh') {
+        const activeEl = this.canvasTexture.getActiveObject()
+        const { differenceX, differenceY, action } = this.dragComponent
+        const uv = intersects[0].uv
+        switch (action) {
+          case DRAG_ACTION: {
+            const left = uv.x * 2048 - differenceX
+            const top = (1 - uv.y) * 2048 - differenceY
+            activeEl.set({ left, top }).setCoords()
+            this.canvasTexture.renderAll()
+            break
+          }
+          case SCALE_ACTION: {
+            const cursorLeft = uv.x * 2048
+            const cursorTop = (1 - uv.y) * 2048
+            const width = cursorLeft - activeEl.left
+            const height = cursorTop - activeEl.top
+            const scaleX = width / activeEl.width
+            const scaleY = height / activeEl.height
+            activeEl
+              .set({
+                scaleX: scaleX > 0 ? scaleX : 0,
+                scaleY: scaleY > 0 ? scaleY : 0
+              })
+              .setCoords()
+            this.canvasTexture.renderAll()
+            break
+          }
+          case ROTATE_ACTION: {
+            const { startPoint } = this.dragComponent
+            const s_x = uv.x * 2048
+            const s_y = (1 - uv.y) * 2048
+
+            const s_rad = Math.atan2(s_y - startPoint.h_y, s_x - startPoint.h_x)
+            // const rotatePoint = fabric.util.rotatePoint(
+            //   new fabric.Point(s_x, s_y),
+            //   new fabric.Point(activeEl.width / 2, activeEl.height / 2),
+            //   s_rad
+            // )
+
+            const rotatePoint = new fabric.Point(s_x, s_y)
+            // const degree = fabric.util.radiansToDegrees(s_rad)
+            console.log('------------------------------------')
+            console.log(rotatePoint)
+            console.log('------------------------------------')
+            activeEl.rotate(rotatePoint.x, rotatePoint.y)
+            console.log('------------------------------------')
+            console.log(activeEl)
+            console.log('------------------------------------')
+            this.canvasTexture.renderAll()
+            // activeEl
+            //   .set({
+            //     left: point.x,
+            //     top: point.y
+            //   })
+            //   .setCoords()
+            // this.canvasTexture.renderAll()
+            // const rotatePoint = fabric.util.rotatePoint()
+          }
+          default:
+            break
+        }
+      }
+    }
   }
 }
 
