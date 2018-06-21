@@ -2,22 +2,24 @@
  * MyLocker Component - Created by david on 06/04/18.
  */
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
-import withError from '../../components/WithError'
-import withLoading from '../../components/WithLoading'
+import { withApollo, compose } from 'react-apollo'
+import { connect } from 'react-redux'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
-import { QueryProps, DesignResultType } from '../../types/common'
+import { DesignResultType, DesignType } from '../../types/common'
 import { desginsQuery } from './data'
+import * as myLockerActions from './actions'
 import { Container } from './styledComponents'
 
-interface Data extends QueryProps {
-  designs: DesignResultType
-}
-
 interface Props {
-  data: Data
+  client: any
+  limit: number
+  offset: number
+  currentPage: number
+  fullCount: string
+  designs: DesignType[]
   openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: string) => string
+  setDesignsData: (data: DesignResultType) => void
 }
 
 export class MyLocker extends React.PureComponent<Props, {}> {
@@ -34,12 +36,26 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     openQuickView(id, yotpoId)
   }
 
-  render() {
+  async componentDidMount() {
     const {
-      formatMessage,
-      data: { designs }
+      client: { query },
+      limit,
+      offset,
+      setDesignsData
     } = this.props
-    const myDesigns = designs ? designs.designs : []
+    try {
+      const data = await query({
+        query: desginsQuery,
+        variables: { limit, offset },
+        fetchPolicy: 'network-only'
+      })
+      setDesignsData(data)
+    } catch (e) {}
+  }
+
+  render() {
+    console.log(this.props)
+    const { formatMessage, designs } = this.props
 
     return (
       <Container>
@@ -49,15 +65,21 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           onPressPrivate={this.handleOnPressPrivate}
           onPressDelete={this.handleOnPressDelete}
           openQuickView={this.handleOnOpenQuickView}
-          designs={myDesigns}
+          designs={designs}
         />
       </Container>
     )
   }
 }
 
-const MyLockerEnhance = compose(graphql(desginsQuery), withLoading, withError)(
-  MyLocker
-)
+const mapStateToProps = (state: any) => state.get('myLocker').toJS()
+
+const MyLockerEnhance = compose(
+  withApollo,
+  connect(
+    mapStateToProps,
+    { ...myLockerActions }
+  )
+)(MyLocker)
 
 export default MyLockerEnhance
