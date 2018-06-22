@@ -10,7 +10,7 @@ import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
-import { RegionConfig, CartItems } from '../../types/common'
+import { RegionConfig } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -45,7 +45,6 @@ interface Props extends RouteComponentProps<any> {
   teamStoresHeader?: boolean
   hideQuickViewSliderButtons?: boolean
   itemsInCart: number
-  shoppingCart: any
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -96,35 +95,14 @@ class MainLayout extends React.Component<Props, {}> {
       fakeWidth,
       teamStoresHeader,
       hideQuickViewSliderButtons,
-      itemsInCart,
-      shoppingCart
+      itemsInCart
     } = this.props
-
-    let numberOfProducts = 0
-    if (shoppingCart.cart) {
-      const cart = shoppingCart.cart as CartItems[]
-      cart.map(cartItem => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
-          return itemDetail.quantity
-        })
-
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        numberOfProducts = numberOfProducts + quantitySum
-      })
-    }
-
-    const numeroDeElementosEnElCarritoCuleroDeMierda = shoppingCart.cart
-      ? numberOfProducts
-      : itemsInCart
-
     return (
       <Layout>
         <Header {...{ hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
-            itemsInCart={numeroDeElementosEnElCarritoCuleroDeMierda}
             {...{
               fakeWidth,
               history,
@@ -138,7 +116,8 @@ class MainLayout extends React.Component<Props, {}> {
               openLoginAction,
               logoutAction,
               saveUserToLocal,
-              teamStoresHeader
+              teamStoresHeader,
+              itemsInCart
             }}
             hideBottom={hideBottomHeader}
           />
@@ -194,19 +173,10 @@ const mapStateToProps = (state: any) => {
   const layoutProps = state.get('layout').toJS()
   const langProps = state.get('languageProvider').toJS()
   const responsive = state.get('responsive').toJS()
-  const shoppingCart = state.get('shoppingCartPage').toJS()
-  return {
-    ...layoutProps,
-    ...langProps,
-    ...responsive,
-    shoppingCart: { ...shoppingCart }
-  }
+  return { ...layoutProps, ...langProps, ...responsive }
 }
 
 const LayoutEnhance = compose(
-  connect(
-    mapStateToProps,
-    { ...LayoutActions, ...LocaleActions }
-  )
+  connect(mapStateToProps, { ...LayoutActions, ...LocaleActions })
 )(MainLayout)
 export default LayoutEnhance

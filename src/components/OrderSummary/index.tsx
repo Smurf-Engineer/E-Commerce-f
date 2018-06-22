@@ -12,8 +12,7 @@ import {
   Divider,
   CodeDivider,
   ZipCodeInputWrapper,
-  CollapseWrapper,
-  YouSavedOrderItem
+  CollapseWrapper
   //  FlexWrapper,  UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
   //  DeleteLabel
 } from './styledComponents'
@@ -23,7 +22,6 @@ import Collapse from 'antd/lib/collapse'
 interface Props {
   total: number
   subtotal: number
-  totalWithoutDiscount?: number
   discount?: number
   onlyRead?: boolean
   formatMessage: (messageDescriptor: any) => string
@@ -33,14 +31,7 @@ const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
 class OrderSummary extends React.Component<Props, {}> {
   render() {
-    const {
-      total,
-      subtotal,
-      formatMessage,
-      discount,
-      totalWithoutDiscount,
-      onlyRead
-    } = this.props
+    const { total, subtotal, formatMessage, discount, onlyRead } = this.props
     const renderDiscount = discount ? (
       <OrderItem>
         {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
@@ -64,7 +55,6 @@ class OrderSummary extends React.Component<Props, {}> {
         />
       </ZipCodeInputWrapper>
     )
-    const youSaved = Number(totalWithoutDiscount) - total
     return (
       <Container>
         <SummaryTitle>
@@ -113,16 +103,10 @@ class OrderSummary extends React.Component<Props, {}> {
             </Collapse>
           </CollapseWrapper>
         ) : null}
-        <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
+        <TotalOrderItem {...{ onlyRead }}>
           <FormattedMessage {...messages.total} />
           <div>{`USD$${total}`}</div>
         </TotalOrderItem>
-        {youSaved > 0 ? (
-          <YouSavedOrderItem {...{ onlyRead }}>
-            <FormattedMessage {...messages.youSaved} />
-            <div>{`$${youSaved}`}</div>
-          </YouSavedOrderItem>
-        ) : null}
       </Container>
     )
   }

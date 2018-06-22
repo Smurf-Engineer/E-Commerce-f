@@ -16,7 +16,6 @@ import {
   SET_TOTAL_ACTION,
   SET_SUBTOTAL_ACTION,
   SET_SHIPPING_ACTION,
-  SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -26,8 +25,7 @@ export const initialState = fromJS({
   cart: null,
   subtotal: 0,
   total: 0,
-  shipping: 0,
-  showDeleteLastItemModal: false
+  shipping: 0
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -100,8 +98,6 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.set('subtotal', fromJS(action.subtotal))
     case SET_SHIPPING_ACTION:
       return state.set('shipping', fromJS(action.shipping))
-    case SHOW_DELETE_LAST_ITEM_MODAL:
-      return state.set('showDeleteLastItemModal', action.show)
     case RESET_REDUCER_DATA:
       return initialState
     default:

@@ -15,17 +15,16 @@ import {
   SET_TOTAL_ACTION,
   SET_SUBTOTAL_ACTION,
   SET_SHIPPING_ACTION,
-  SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA
 } from './constants'
-import { AnyAction, ItemDetailType, CartItems } from '../../types/common'
+import { AnyAction, Product, ItemDetailType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
   someValue
 })
 
-export const setItemsAction = (items: CartItems[]): AnyAction => ({
+export const setItemsAction = (items: Product[]): AnyAction => ({
   type: SET_ITEMS_ACTION,
   items
 })
@@ -121,9 +120,4 @@ export const setShippingAction = (shipping: number): AnyAction => ({
 
 export const resetReducerData = (): AnyAction => ({
   type: RESET_REDUCER_DATA
-})
-
-export const showDeleteLastItemModalAction = (show: boolean): AnyAction => ({
-  type: SHOW_DELETE_LAST_ITEM_MODAL,
-  show
 })

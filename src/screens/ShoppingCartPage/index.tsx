@@ -23,9 +23,7 @@ import {
   EmptyItems,
   EmptyTitle,
   EmptyDescription,
-  StyledEmptyButton,
-  AddOneMoreMessage,
-  DeleteConfirmMessage
+  StyledEmptyButton
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
 
@@ -36,7 +34,6 @@ import {
   ItemDetailType,
   PriceRange
 } from '../../types/common'
-import Modal from 'antd/lib/modal/Modal'
 
 interface CartItems {
   product: Product
@@ -51,7 +48,6 @@ interface CartItems {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   cart: CartItems[]
-  showDeleteLastItemModal: boolean
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -85,7 +81,6 @@ interface Props extends RouteComponentProps<any> {
     quantity: number
   ) => void
   setInitialData: () => void
-  showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
 }
@@ -120,26 +115,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   handleRemoveItem = (event: React.MouseEvent<EventTarget>, index: number) => {
-    const { showDeleteLastItemModalAction, removeItemAction, cart } = this.props
-    if (cart.length === 1) {
-      showDeleteLastItemModalAction(true)
-      return
-    }
+    const { removeItemAction } = this.props
     removeItemAction(index)
-  }
-
-  handleOnRemoveLastItem = () => {
-    const { removeItemAction, showDeleteLastItemModalAction } = this.props
-    removeItemAction(0)
-    showDeleteLastItemModalAction(false)
-  }
-
-  toggleDeleteLastItemModal = () => {
-    const {
-      showDeleteLastItemModalAction,
-      showDeleteLastItemModal
-    } = this.props
-    showDeleteLastItemModalAction(!showDeleteLastItemModal)
   }
 
   handledeleteItemDetail = (
@@ -196,10 +173,14 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
-  getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
+  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
     let markslider = { quantity: '0', price: 0 }
     for (const priceRangeItem of priceRanges) {
-      if (!totalItems || !priceRangeItem.quantity) {
+      if (!totalItems) {
+        break
+      }
+
+      if (!priceRangeItem.quantity) {
         break
       }
 
@@ -218,137 +199,78 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     return markslider
   }
 
-  getPriceRangeToApply = (items: number) => {
-    if (items >= 2 && items <= 5) {
-      return 1
-    } else if (items >= 6 && items <= 24) {
-      return 2
-    } else if (items >= 25 && items <= 49) {
-      return 3
-    } else if (items >= 50) {
-      return 4
-    } else {
-      return 0
-    }
-  }
-
   render() {
-    const { intl, history, cart, showDeleteLastItemModal } = this.props
+    const { intl, history, cart } = this.props
     const formatMessage = intl.formatMessage
 
+    const renderList = cart
+      ? cart.map((cartItem, index) => {
+          return (
+            <ListItem
+              formatMessage={formatMessage}
+              key={index}
+              title={
+                cartItem.designId
+                  ? cartItem.designName || 'Design'
+                  : cartItem.product.name
+              }
+              description={
+                cartItem.designId
+                  ? `${cartItem.product.name} ${
+                      cartItem.product.shortDescription
+                    }`
+                  : cartItem.product.shortDescription
+              }
+              price={cartItem.product.priceRange[0]}
+              image={
+                cartItem.designId
+                  ? cartItem.designImage || ''
+                  : cartItem.product.images[0].front
+              }
+              cartItem={cartItem}
+              handleAddItemDetail={this.handleAddItemDetail}
+              handledeleteItemDetail={this.handledeleteItemDetail}
+              itemIndex={index}
+              setLabelItemDetail={this.handleSetDetailLabel}
+              setDetailQuantity={this.handleSetDetailQuantity}
+              setDetailFit={this.handleSetDetailFit}
+              setDetailGender={this.handleSetDetailGender}
+              setDetailSize={this.handleSetDetailSize}
+              removeItem={this.handleRemoveItem}
+            />
+          )
+        })
+      : null
+
     let totalSum = 0
-    let totalWithoutDiscount = 0
-    let priceRangeToApply = 0
-    let show25PercentMessage = false
-    let justOneOfEveryItem = true
-    let maxquantity = 0
-    let numberOfProducts = 0
-    let nameOfFirstProduct = ''
     if (cart) {
-      cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map(itemDetail => {
+      const total = cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
           return itemDetail.quantity
         })
+
         const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
-        // increase number of products in cart
-        numberOfProducts = numberOfProducts + quantitySum
-        // change flag to show/hide 25 percentMessage
-        show25PercentMessage = !index && quantitySum === 1
+        const productPriceRanges = get(cartItem, 'product.priceRange', [])
 
-        if (!index) {
-          nameOfFirstProduct = cartItem.product.name
-        }
+        let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
 
-        // Verify if at least one item has quantity > 1
-        if (quantitySum !== 1) {
-          justOneOfEveryItem = false
-        }
+        priceRange =
+          priceRange.price === 0
+            ? productPriceRanges[productPriceRanges.length - 1]
+            : priceRange
 
-        // Get the maxquantity of articles of a product
-        if (quantitySum > maxquantity) {
-          maxquantity = quantitySum
-        }
-
-        totalWithoutDiscount =
-          totalWithoutDiscount +
-          quantitySum * cartItem.product.priceRange[0].price
+        return priceRange.price * quantitySum
       })
-      if (justOneOfEveryItem && cart.length) {
-        priceRangeToApply = this.getPriceRangeToApply(cart.length)
-      } else {
-        if (cart.length) {
-          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
-        }
-      }
+
+      totalSum = total.reduce((a, b) => a + b, 0)
     }
-
-    const cartItems = cart || []
-    const renderList = cartItems.map((cartItem, index) => {
-      const quantities = cartItem.itemDetails.map(itemDetail => {
-        return itemDetail.quantity
-      })
-      const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-      const productPriceRanges = get(cartItem, 'product.priceRange', [])
-      let priceRange =
-        priceRangeToApply !== 0
-          ? cartItem.product.priceRange[priceRangeToApply]
-          : this.getPriceRange(productPriceRanges, quantitySum)
-
-      priceRange =
-        priceRange.price === 0
-          ? productPriceRanges[productPriceRanges.length - 1]
-          : priceRange
-
-      // increase the total
-      totalSum = totalSum + priceRange.price * quantitySum
-
-      return (
-        <ListItem
-          formatMessage={formatMessage}
-          key={index}
-          title={
-            cartItem.designId
-              ? cartItem.designName || 'Design'
-              : cartItem.product.name
-          }
-          description={
-            cartItem.designId
-              ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
-              : cartItem.product.shortDescription
-          }
-          price={cartItem.product.priceRange[priceRangeToApply]}
-          image={
-            cartItem.designId
-              ? cartItem.designImage || ''
-              : cartItem.product.images[0].front
-          }
-          cartItem={cartItem}
-          handleAddItemDetail={this.handleAddItemDetail}
-          handledeleteItemDetail={this.handledeleteItemDetail}
-          itemIndex={index}
-          setLabelItemDetail={this.handleSetDetailLabel}
-          setDetailQuantity={this.handleSetDetailQuantity}
-          setDetailFit={this.handleSetDetailFit}
-          setDetailGender={this.handleSetDetailGender}
-          setDetailSize={this.handleSetDetailSize}
-          removeItem={this.handleRemoveItem}
-        />
-      )
-    })
-
-    const sideHeaderMessage = show25PercentMessage ? (
-      <AddOneMoreMessage>
-        {formatMessage(messages.addOneMoreMessage)}
-      </AddOneMoreMessage>
-    ) : null
 
     return (
       <Layout {...{ history, intl }}>
         <div>
           <Title>
-            {`${formatMessage(messages.title)} (${numberOfProducts})`}
+            {`${formatMessage(messages.title)} (${cart ? cart.length : 0})`}
           </Title>
           {!cart || cart.length < 1 ? (
             <EmptyContainer>
@@ -367,11 +289,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
-                {sideHeaderMessage}
                 <Ordersummary
                   total={totalSum}
                   subtotal={totalSum}
-                  {...{ formatMessage, totalWithoutDiscount }}
+                  {...{ formatMessage }}
                 />
                 <ButtonWrapper>
                   <CheckoutButton type="primary" onClick={this.handleCheckout}>
@@ -384,20 +305,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </Content>
             </Container>
           )}
-          <Modal
-            visible={showDeleteLastItemModal}
-            title={formatMessage(messages.titleDeleteModal)}
-            okText={formatMessage(messages.delete)}
-            onOk={this.handleOnRemoveLastItem}
-            onCancel={this.toggleDeleteLastItemModal}
-          >
-            <DeleteConfirmMessage>
-              <FormattedMessage
-                {...messages.messageDeleteItem}
-                values={{ nameOfFirstProduct }}
-              />
-            </DeleteConfirmMessage>
-          </Modal>
         </div>
       </Layout>
     )
