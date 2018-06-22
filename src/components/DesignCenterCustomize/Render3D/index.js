@@ -1,10 +1,13 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
+import get from 'lodash/get'
 import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
-import Dropdown from 'antd/lib/dropdown'
+// TODO: JV2 - Phase II
+// import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
+import shortid from 'shortid'
 import {
   Container,
   Render,
@@ -19,26 +22,39 @@ import {
   ViewControls,
   ViewButton,
   LoadingContainer,
-  ButtonWrapper
+  ButtonWrapper,
+  CanvasContainer
 } from './styledComponents'
-import { viewPositions } from './config'
+import {
+  viewPositions,
+  DELETE_ACTION,
+  DUPLICATE_ACTION,
+  BRING_TO_FRONT_ACTION,
+  ROTATE_ACTION,
+  SCALE_ACTION,
+  DRAG_ACTION
+} from './config'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
+import { isMouseOver, clickOnCorner } from './utils'
+// TODO: JV2 - Phase II
+// import arrowDown from '../../../assets/downarrow.svg'
+// import topIcon from '../../../assets/Cube-Top.svg'
 import quickView from '../../../assets/quickview.svg'
-import arrowDown from '../../../assets/downarrow.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
-import topIcon from '../../../assets/Cube-Top.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 // TODO: Test data
 import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
+
+const CANVAS_SIZE = 2048
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -50,6 +66,8 @@ class Render3D extends PureComponent {
     progress: 0,
     objectChilds: 0
   }
+
+  dragComponent = null
 
   componentWillReceiveProps(nextProps) {
     const { colors, colorBlockHovered: oldColorBlockHovered } = this.props
@@ -71,10 +89,36 @@ class Render3D extends PureComponent {
 
   componentDidMount() {
     /* Renderer config */
+
+    fabric.Object.prototype.customiseCornerIcons({
+      settings: {
+        borderColor: 'black',
+        cornerSize: 70,
+        cornerPadding: 10
+      },
+      tl: {
+        icon: 'delete.svg'
+      },
+      tr: {
+        icon: 'duplicate.svg'
+      },
+      bl: {
+        icon: 'rotate.svg'
+      },
+      br: {
+        icon: 'expand.svg'
+      },
+      mb: {
+        icon: 'layer.svg'
+      }
+    })
+
     const { clientWidth, clientHeight } = this.container
 
+    const devicePixelRatio = window.devicePixelRatio || 1
     const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
       .matches
+
     const precision = largeScreen ? 'highp' : 'lowp'
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
@@ -83,9 +127,6 @@ class Render3D extends PureComponent {
       preserveDrawingBuffer: true
     })
 
-    const devicePixelRatio = window.devicePixelRatio
-      ? window.devicePixelRatio
-      : 1
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
@@ -93,17 +134,10 @@ class Render3D extends PureComponent {
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
-
-    camera.position.z = 250
-    const controls = new THREE.OrbitControls(camera, renderer.domElement)
-    controls.addEventListener('change', this.lightUpdate)
     const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
       .matches
 
-    controls.enableKeys = false
-    controls.minDistance = 0
-    controls.maxDistance = 350
-    controls.enableZoom = isMobile
+    camera.position.z = 250
 
     /* Scene and light */
     const scene = new THREE.Scene()
@@ -120,10 +154,17 @@ class Render3D extends PureComponent {
     const objLoader = new THREE.OBJLoader()
     const textureLoader = new THREE.TextureLoader()
 
+    const raycaster = new THREE.Raycaster()
+    const mouse = new THREE.Vector2()
+    const onClickPosition = new THREE.Vector2()
+
+    this.raycaster = raycaster
+    this.mouse = mouse
+    this.onClickPosition = onClickPosition
+
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
-    this.controls = controls
     this.directionalLight = directionalLight
 
     this.mtlLoader = mtlLoader
@@ -133,12 +174,39 @@ class Render3D extends PureComponent {
     this.render3DModel()
 
     this.container.appendChild(this.renderer.domElement)
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement)
+    controls.addEventListener('change', this.lightUpdate)
+
+    controls.enableKeys = false
+    controls.minDistance = 0
+    controls.maxDistance = 350
+    controls.enableZoom = isMobile
+
+    this.container.addEventListener('mousedown', this.onMouseDown, false)
+    this.container.addEventListener('mouseup', this.onMouseUp, false)
+    this.container.addEventListener('mousemove', this.onMouseMove, false)
+
+    this.controls = controls
     this.start()
   }
 
   componentWillUnmount() {
-    this.stop()
-    this.container.removeChild(this.renderer.domElement)
+    if (this.renderer) {
+      this.stop()
+      this.container.removeChild(this.renderer.domElement)
+    }
+  }
+
+  getMousePosition = (dom, x, y) => {
+    const rect = dom.getBoundingClientRect()
+    return [(x - rect.left) / rect.width, (y - rect.top) / rect.height]
+  }
+
+  getIntersects = (point, objects) => {
+    this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
+    this.raycaster.setFromCamera(this.mouse, this.camera)
+    return this.raycaster.intersectObjects(objects, true)
   }
 
   loadTextures = modelTextures =>
@@ -157,8 +225,8 @@ class Render3D extends PureComponent {
         })
         loadedTextures.areas = loadedAreas
         resolve(loadedTextures)
-      } catch (error) {
-        reject(error)
+      } catch (e) {
+        reject(e)
       }
     })
 
@@ -184,7 +252,8 @@ class Render3D extends PureComponent {
 
           // Stitching
           const flatlockMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.flatlock
+            map: loadedTextures.flatlock,
+            specular: new THREE.Color('#000000')
           })
           flatlockMaterial.map.wrapS = THREE.RepeatWrapping
           flatlockMaterial.map.wrapT = THREE.RepeatWrapping
@@ -212,32 +281,30 @@ class Render3D extends PureComponent {
           )
           object.add(...areasLayers)
 
-          /* Model label */
+          /* Jersey label */
           object.children[labelIndex].material.color.set('#ffffff')
           object.children[flatlockIndex].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          // TODO: WIP Text canvas
-
+          /* Canvas */
           const canvasObj = object.children[meshIndex].clone()
           object.add(canvasObj)
-
-          const cdim = 3880.016
           const canvas = document.createElement('canvas')
+          canvas.width = CANVAS_SIZE
+          canvas.height = CANVAS_SIZE
           const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvas.width = canvas.height = cdim
-          this.canvasTexture = new fabric.Canvas(canvas)
+          canvasTexture.minFilter = THREE.LinearFilter
+
+          /* TODO: Dynamic size? */
+          this.canvasTexture = new fabric.Canvas(canvas, {
+            width: CANVAS_SIZE,
+            height: CANVAS_SIZE
+          })
+
           this.canvasTexture.on(
             'after:render',
             () => (canvasTexture.needsUpdate = true)
           )
-
-          // const ctx = canvas.getContext('2d')
-          // ctx.globalCompositeOperation = 'normal'
-          // ctx.font = '100px Fira Code'
-          // ctx.textAlign = 'center'
-          // ctx.fillStyle = '#f21222'
-          // ctx.fillText('JAKROO', 1000, 1000)
 
           const canvasMaterial = new THREE.MeshPhongMaterial({
             map: canvasTexture,
@@ -245,7 +312,6 @@ class Render3D extends PureComponent {
             bumpMap: loadedTextures.bumpMap,
             transparent: true
           })
-          // END CANVAS TEST
 
           loadedTextures.areas.forEach(
             (materialTexture, index) =>
@@ -261,6 +327,7 @@ class Render3D extends PureComponent {
           )
 
           object.children[20].material = canvasMaterial
+          object.children[20].name = 'Canvas_Mesh'
 
           /* Object Config */
           object.position.y = -30
@@ -310,8 +377,10 @@ class Render3D extends PureComponent {
   }
 
   cameraUpdate = ({ x, y, z }) => {
-    this.camera.position.set(x, y, z)
-    this.controls.update()
+    if (this.camera) {
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
   }
 
   setupColors = colors => {
@@ -345,6 +414,30 @@ class Render3D extends PureComponent {
     }
   }
 
+  handleOnPressLeft = () => {
+    const { currentView } = this.state
+    const nextView = currentView === 0 ? 3 : currentView - 1
+    const viewPosition = viewPositions[nextView]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: nextView })
+  }
+
+  handleOnPressRight = () => {
+    const { currentView } = this.state
+    const nextView = currentView === 3 ? 0 : currentView + 1
+    const viewPosition = viewPositions[nextView]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: nextView })
+  }
+
+  handleOnChangeZoom = value => {
+    if (this.camera) {
+      const zoomValue = value * 1.0 / 100
+      this.camera.zoom = zoomValue * 2
+      this.camera.updateProjectionMatrix()
+    }
+  }
+
   // TODO: WIP
   handleOnKeyDown = event => {
     let charCode = String.fromCharCode(event.which).toLowerCase()
@@ -372,28 +465,6 @@ class Render3D extends PureComponent {
 
   handleOnChange3DModel = () => {}
 
-  handleOnPressLeft = () => {
-    const { currentView } = this.state
-    const nextView = currentView === 0 ? 3 : currentView - 1
-    const viewPosition = viewPositions[nextView]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: nextView })
-  }
-
-  handleOnPressRight = () => {
-    const { currentView } = this.state
-    const nextView = currentView === 3 ? 0 : currentView + 1
-    const viewPosition = viewPositions[nextView]
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: nextView })
-  }
-
-  handleOnChangeZoom = value => {
-    const zoomValue = value * 1.0 / 100
-    this.camera.zoom = zoomValue * 2
-    this.camera.updateProjectionMatrix()
-  }
-
   saveDesign = previewImage => {
     const { onOpenSaveDesign } = this.props
     onOpenSaveDesign(true, previewImage)
@@ -405,7 +476,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
+        const dataUrl = this.renderer.domElement.toDataURL('image/jpeg', 0.4)
         this.saveDesign(dataUrl)
       }, 200)
     )
@@ -423,7 +494,10 @@ class Render3D extends PureComponent {
       text
     } = this.props
 
-    const menu = (
+    {
+      /*
+      // TODO: JV2 - Phase II
+      const menu = (
       <Menu onClick={this.handleOnChange3DModel}>
         <Menu.Item key="1">
           <FormattedMessage {...messages.productOnly} />
@@ -435,7 +509,8 @@ class Render3D extends PureComponent {
           <FormattedMessage {...messages.onBike} />
         </Menu.Item>
       </Menu>
-    )
+    )*/
+    }
 
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
@@ -482,21 +557,308 @@ class Render3D extends PureComponent {
     )
   }
 
-  applyText = text => {
-    if (!this.scene || !text) {
+  applyImage = base64 => {
+    fabric.Image.fromURL(base64, oImg => {
+      this.canvasTexture.add(
+        oImg.scale(1).set({
+          id: shortid.generate(),
+          hasRotatingPoint: false,
+          left: 409.6,
+          top: 409.6
+        })
+      )
+    })
+  }
+
+  applyText = (text, style) => {
+    if (!this.canvasTexture || !text) {
       return
     }
-    const object = this.scene.getObjectByName('jersey')
-    // create a text object
-    const rect = new fabric.Textbox(text, {
-      left: 800,
-      top: 1000,
-      fontSize: 100,
-      fontWeight: 'bold'
-    })
 
-    // "add" text onto canvas
-    this.canvasTexture.add(rect)
+    const activeEl = this.canvasTexture.getActiveObject()
+    const { onApplyCanvasEl } = this.props
+
+    let txtEl = {}
+    if (activeEl) {
+      activeEl.set({ text, ...style })
+      this.canvasTexture.renderAll()
+    } else {
+      txtEl = new fabric.Text(text, {
+        id: shortid.generate(),
+        hasRotatingPoint: false,
+        left: 700,
+        top: 409.6,
+        fontSize: 75,
+        snapAngle: 1,
+        snapThreshold: 45,
+        ...style
+      })
+      this.canvasTexture.add(txtEl)
+    }
+
+    const el = {
+      id: activeEl ? activeEl.id : txtEl.id,
+      text,
+      textFormat: style
+    }
+    onApplyCanvasEl(el, 'text', !!activeEl)
+  }
+
+  applyClipArt = el => {}
+
+  deleteElement = el => {
+    const { onRemoveEl } = this.props
+    onRemoveEl(el.id, el.get('type'))
+    this.canvasTexture.remove(el)
+  }
+
+  duplicateElement = el => {
+    const { onApplyCanvasEl } = this.props
+    const boundingBox = el.getBoundingRect()
+    const textFormat = {
+      fontFamily: el.fontFamily,
+      stroke: el.stroke,
+      fill: el.fill,
+      strokeWidth: el.strokeWidth
+    }
+
+    const elementType = el.get('type')
+    let canvasEl = {}
+    switch (elementType) {
+      case 'text':
+        {
+          const text = el.get('text')
+          const clonedEl = new fabric.Text(text, {
+            id: shortid.generate(),
+            hasRotatingPoint: false,
+            left: boundingBox.left,
+            top: boundingBox.top + 100,
+            fontSize: 75,
+            scaleX: el.scaleX,
+            scaleY: el.scaleY,
+            ...textFormat
+          })
+          canvasEl = {
+            id: clonedEl.id,
+            text,
+            textFormat
+          }
+          this.canvasTexture.add(clonedEl)
+        }
+        break
+      case 'image': {
+        const boundingBox = el.getBoundingRect()
+        const clonedEl = fabric.util.object.clone(el)
+        clonedEl.set({
+          id: shortid.generate(),
+          top: boundingBox.top + 100
+        })
+        this.canvasTexture.add(clonedEl)
+        break
+      }
+      default:
+        break
+    }
+
+    onApplyCanvasEl(canvasEl, elementType)
+  }
+
+  setLayerElement = el => {
+    this.canvasTexture.bringToFront(el)
+  }
+
+  onMouseUp = evt => {
+    evt.preventDefault()
+
+    this.dragComponent = null
+    this.controls.enabled = true
+  }
+
+  onMouseDown = evt => {
+    evt.preventDefault()
+
+    const array = this.getMousePosition(
+      this.container,
+      evt.clientX,
+      evt.clientY
+    )
+    this.onClickPosition.fromArray(array)
+
+    const intersects = this.getIntersects(
+      this.onClickPosition,
+      this.scene.children
+    )
+
+    if (!!intersects.length && intersects[0].uv) {
+      const uv = intersects[0].uv
+      const activeEl = this.canvasTexture.getActiveObject()
+      if (activeEl && !this.dragComponent) {
+        const boundingBox = activeEl.getBoundingRect()
+        const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
+        if (action) {
+          switch (action) {
+            case DELETE_ACTION:
+              this.deleteElement(activeEl)
+              break
+            case DUPLICATE_ACTION:
+              this.duplicateElement(activeEl)
+              break
+            case BRING_TO_FRONT_ACTION:
+              this.setLayerElement(activeEl)
+              break
+            case SCALE_ACTION: {
+              this.controls.enabled = false
+              this.dragComponent = { action: SCALE_ACTION }
+              break
+            }
+            case ROTATE_ACTION: {
+              const x = uv.x * 2048
+              const y = (1 - uv.y) * 2048
+              const startPoint = { h_x: x, h_y: y }
+              this.controls.enabled = false
+              this.dragComponent = { action: ROTATE_ACTION, startPoint }
+              break
+            }
+            default:
+              break
+          }
+          return
+        }
+      }
+
+      let allDeactive = true
+      const { onSelectEl } = this.props
+      this.canvasTexture.forEachObject(el => {
+        const boundingBox = el.getBoundingRect()
+        const isInside = isMouseOver(boundingBox, uv)
+        if (isInside) {
+          allDeactive = false
+          onSelectEl(el.id, el.get('type'))
+          const left = uv.x * CANVAS_SIZE
+          const top = (1 - uv.y) * CANVAS_SIZE
+          const differenceX = left - boundingBox.left
+          const differenceY = top - boundingBox.top
+          const dragComponent = {
+            differenceX,
+            differenceY,
+            action: DRAG_ACTION
+          }
+          this.controls.enabled = false
+          this.dragComponent = dragComponent
+          this.canvasTexture.setActiveObject(el)
+        } else {
+          el.set('active', false)
+        }
+      })
+
+      if (allDeactive && activeEl) {
+        onSelectEl('')
+        this.canvasTexture.discardActiveObject()
+      }
+
+      this.canvasTexture.renderAll()
+    }
+  }
+
+  onMouseMove = evt => {
+    evt.preventDefault()
+
+    const array = this.getMousePosition(
+      this.container,
+      evt.clientX,
+      evt.clientY
+    )
+    this.onClickPosition.fromArray(array)
+
+    const intersects = this.getIntersects(
+      this.onClickPosition,
+      this.scene.children
+    )
+
+    if (!!intersects.length && intersects[0].uv && !!this.dragComponent) {
+      const meshName = get(intersects[0], 'object.name', '')
+      if (meshName === 'FINAL JV2_Design_Mesh' || meshName === 'Canvas_Mesh') {
+        const activeEl = this.canvasTexture.getActiveObject()
+        const { differenceX, differenceY, action } = this.dragComponent
+        const uv = intersects[0].uv
+        switch (action) {
+          case DRAG_ACTION: {
+            const left = uv.x * 2048 - differenceX
+            const top = (1 - uv.y) * 2048 - differenceY
+            activeEl.set({ left, top }).setCoords()
+            this.canvasTexture.renderAll()
+            break
+          }
+          case SCALE_ACTION: {
+            const cursorLeft = uv.x * 2048
+            const cursorTop = (1 - uv.y) * 2048
+            const width = cursorLeft - activeEl.left
+            const height = cursorTop - activeEl.top
+            const scaleX = width / activeEl.width
+            const scaleY = height / activeEl.height
+            activeEl
+              .set({
+                scaleX: scaleX > 0 ? scaleX : 0,
+                scaleY: scaleY > 0 ? scaleY : 0
+              })
+              .setCoords()
+            this.canvasTexture.renderAll()
+            break
+          }
+          case 'TODO': /* ROTATE_ACTION: */ {
+            // TODO: <------  WIP   --------->
+            const { startPoint } = this.dragComponent
+            const s_x = uv.x * 2048
+            const s_y = (1 - uv.y) * 2048
+
+            const s_rad = Math.atan2(s_y - startPoint.h_y, s_x - startPoint.h_x)
+            // const rotatePoint = fabric.util.rotatePoint(
+            //   new fabric.Point(s_x, s_y),
+            //   new fabric.Point(activeEl.width / 2, activeEl.height / 2),
+            //   s_rad
+            // )
+            // const rotatePoint = new fabric.Point(s_x, s_y)
+            // activeEl.rotate(degree).setCoords()
+
+            const angle = angle
+            this.rotateObject(
+              activeEl,
+              s_rad - 1.5708,
+              activeEl.width / 2,
+              activeEl.height / 2
+            )
+            this.canvasTexture.renderAll()
+            // TODO: <------  WIP   --------->
+          }
+          default:
+            break
+        }
+      }
+    }
+  }
+
+  rotateObject = (fabObj, angleRadian, pivotX, pivotY) => {
+    const ty = pivotY - fabObj.height / 2.0
+    const tx = pivotX - fabObj.width / 2.0
+    if (angleRadian >= Math.PI * 2) {
+      angleRadian -= Math.PI * 2
+    }
+    const angle2 = Math.atan2(ty, tx)
+    const angle3 = (2 * angle2 + angleRadian - Math.PI) / 2.0
+    const pdist_sq = tx * tx + ty * ty
+    const disp = Math.sqrt(2 * pdist_sq * (1 - Math.cos(angleRadian)))
+    fabObj
+      .set({
+        transformMatrix: [
+          Math.cos(angleRadian),
+          Math.sin(angleRadian),
+          -Math.sin(angleRadian),
+          Math.cos(angleRadian),
+          disp * Math.cos(angle3),
+          disp * Math.sin(angle3)
+        ]
+      })
+      .setCoords()
   }
 }
 

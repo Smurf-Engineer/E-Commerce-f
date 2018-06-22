@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="26px" height="26px" viewBox="0 0 26 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>expand</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Design-Tools/Adjust-Tools" transform="translate(-171.000000, -55.000000)">
+            <g id="expand" transform="translate(171.000000, 55.022654)">
+                <circle id="Oval-Copy-3" fill="#4A90E2" cx="12.6140451" cy="12.5421027" r="12.5"></circle>
+                <g id="Group-3" transform="translate(12.614045, 12.542103) rotate(-45.000000) translate(-12.614045, -12.542103) translate(8.614045, 4.542103)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4.07158832,1.71274786 L4.07158832,15.0817269" id="Line"></path>
+                    <polyline id="Triangle" transform="translate(4.071588, 3.834084) rotate(-225.000000) translate(-4.071588, -3.834084) " points="6.27321014 6.0357055 1.88657349 6.0190985 1.86996649 1.63246185"></polyline>
+                    <polyline id="Triangle-Copy" transform="translate(4.071588, 12.764202) scale(1, -1) rotate(-225.000000) translate(-4.071588, -12.764202) " points="6.27321014 14.9658237 1.88657349 14.9492167 1.86996649 10.56258"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

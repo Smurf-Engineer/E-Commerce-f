@@ -6,11 +6,12 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import ColorTab from '../ColorTab'
 import TextTab from '../TextTab'
+import UploadTab from '../UploadTab'
 import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
-import { Palette } from '../../../types/common'
+import { Palette, TextFormat, CanvasType } from '../../../types/common'
 import { Container } from './styledComponents'
 
 const { TabPane } = AntdTabs
@@ -23,6 +24,10 @@ interface Props {
   colors: string[]
   styleColors: string[]
   text: string
+  productName: string
+  canvas: CanvasType
+  selectedElement: string
+  textFormat: TextFormat
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -30,7 +35,10 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
-  onApplyText: (text: string) => void
+  onApplyText: (text: string, style: TextFormat) => void
+  onApplyImage: (base64: string) => void
+  formatMessage: (messageDescriptor: any) => string
+  onSelectTextFormat: (key: string, value: string | number) => void
 }
 
 const Tabs = ({
@@ -48,7 +56,14 @@ const Tabs = ({
   styleColors,
   onUpdateText,
   text,
-  onApplyText
+  onApplyText,
+  onApplyImage,
+  formatMessage,
+  productName,
+  canvas,
+  selectedElement,
+  textFormat,
+  onSelectTextFormat
 }: Props) => {
   return (
     <Container>
@@ -72,13 +87,25 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
-          <TextTab {...{ text, onUpdateText, onApplyText }} />
+          <TextTab
+            elements={canvas.text}
+            {...{
+              text,
+              onUpdateText,
+              onApplyText,
+              formatMessage,
+              productName,
+              selectedElement,
+              textFormat,
+              onSelectTextFormat
+            }}
+          />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           Content of Tab Pane 3
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
-          Content of Tab Pane 3
+          <UploadTab {...{ formatMessage, onApplyImage }} />
         </TabPane>
       </AntdTabs>
     </Container>

@@ -4,7 +4,12 @@
 import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
-import { Palette } from '../../types/common'
+import {
+  Palette,
+  CanvasElement,
+  TextFormat,
+  CanvasType
+} from '../../types/common'
 import { Container } from './styledComponents'
 
 interface Props {
@@ -22,6 +27,9 @@ interface Props {
   swipingView: boolean
   text: string
   productName: string
+  canvas: CanvasType
+  selectedElement: string
+  textFormat: TextFormat
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -37,13 +45,18 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
   onUpdateText: (text: string) => void
+  onApplyCanvasEl: (
+    text: CanvasElement,
+    typeEl: string,
+    update?: boolean
+  ) => void
+  onRemoveEl: (id: string, typeEl: string) => void
+  onSelectEl: (id: string, typeEl: string) => void
+  onSelectTextFormat: (key: string, value: string | number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
-  handleOnApplyText = (text: string) => {
-    this.render3D.applyText(text)
-  }
   render() {
     const {
       onSelectColorBlock,
@@ -74,7 +87,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       formatMessage,
       text,
       onUpdateText,
-      productName
+      productName,
+      canvas,
+      onSelectEl,
+      onRemoveEl,
+      onApplyCanvasEl,
+      selectedElement,
+      textFormat,
+      onSelectTextFormat
     } = this.props
 
     return (
@@ -94,9 +114,16 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             paletteName,
             onSetPalettes,
             text,
-            onUpdateText
+            onUpdateText,
+            formatMessage,
+            productName,
+            canvas,
+            selectedElement,
+            textFormat,
+            onSelectTextFormat
           }}
           onApplyText={this.handleOnApplyText}
+          onApplyImage={this.handleOnApplyImage}
         />
         {currentTab === 2 && !swipingView ? (
           <Render3D
@@ -118,12 +145,23 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onOpenSaveDesign,
               formatMessage,
               currentStyle,
-              productName
+              productName,
+              onApplyCanvasEl,
+              onSelectEl,
+              onRemoveEl
             }}
           />
         ) : null}
       </Container>
     )
+  }
+
+  handleOnApplyText = (text: string, style: TextFormat) => {
+    this.render3D.applyText(text, style)
+  }
+
+  handleOnApplyImage = (base64: string) => {
+    this.render3D.applyImage(base64)
   }
 }
 

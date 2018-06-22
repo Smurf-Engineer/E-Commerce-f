@@ -12,6 +12,14 @@ export const Container = styled.div`
   justify-content: center;
 `
 
+export const CanvasContainer = styled.div`
+  width: 388px;
+  height: 388px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #432021;
+`
+
 export const Render = styled.div`
   width: 800px;
   height: 600px;

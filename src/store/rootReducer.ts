@@ -32,6 +32,7 @@ import profileSettings from '../components/ProfileSettings/reducer'
 import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import myTeamStores from '../components/MyTeamStores/reducer'
 import warrantyProgram from '../screens/WarrantyProgram/reducer'
+import myLocker from '../components/MyLocker/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
@@ -68,6 +69,7 @@ export interface ReducersObject {
   addresses: any
   cards: any
   profileSettings: any
+  myLocker: any
 }
 
 const appInitialState = fromJS({
@@ -153,6 +155,7 @@ const rootReducer = combineReducers({
   addresses,
   cards,
   profileSettings,
+  myLocker,
   responsive: responsiveReducer,
   app: appReducer
 })

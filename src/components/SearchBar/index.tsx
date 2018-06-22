@@ -84,9 +84,7 @@ class SearchBar extends React.Component<Props, StateProps> {
   }
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value }
-    } = evt
+    const { currentTarget: { value } } = evt
 
     this.setState({ searchValue: value.trim() }, () => {
       this.raiseSearchWhenUserStopsTyping()
