@@ -13,13 +13,9 @@ describe('<OrderSummary />', () => {
     const format = (message: any) => 'string'
     const total = 0
     const subtotal = 0
-    const totalWithoutDiscount = 0
     ReactDOM.render(
       <IntlProvider {...props}>
-        <OrderSummary
-          formatMessage={format}
-          {...{ total, subtotal, totalWithoutDiscount }}
-        />
+        <OrderSummary formatMessage={format} {...{ total, subtotal }} />
       </IntlProvider>,
       div
     )

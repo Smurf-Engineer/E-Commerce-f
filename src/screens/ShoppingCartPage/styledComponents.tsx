@@ -28,15 +28,6 @@ export const SideBar = styled.div`
   padding-right: 20px;
 `
 
-export const AddOneMoreMessage = styled.div`
-  color: #e61737;
-  font-family: 'Avenir Next';
-  font-size: 12px;
-  letter-spacing: 0.15px;
-  line-height: 16px;
-  margin-bottom: 8px;
-`
-
 export const EmptyTitle = styled.div`
   color: #5f6062;
   font-family: Avenir Next;
@@ -229,11 +220,3 @@ export const CartList = styled.ul`
 `
 
 export const menuStyle = { width: '100%', marginLeft: -24, paddingTop: 52 }
-
-export const DeleteConfirmMessage = styled.div`
-  color: #5f6062;
-  font-family: 'Avenir Next';
-  font-size: 16px;
-  letter-spacing: 0.2px;
-  line-height: 22px;
-`

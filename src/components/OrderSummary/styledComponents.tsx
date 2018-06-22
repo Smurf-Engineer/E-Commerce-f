@@ -6,7 +6,6 @@ import Button from 'antd/lib/button'
 
 interface TotalProps {
   onlyRead?: boolean
-  withoutMarginBottom?: boolean
 }
 
 export const Container = styled.div``
@@ -88,9 +87,8 @@ export const TotalOrderItem = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: ${({ withoutMarginBottom }: TotalProps) =>
-    withoutMarginBottom ? '4px' : '20px'};
-  margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
+  margin-bottom: 20px;
+  margin-top: ${(props: TotalProps) => (props.onlyRead ? '10px' : '0')};
   color: #5f6062;
   font-family: Avenir Next;
   font-size: 16px;
@@ -98,20 +96,6 @@ export const TotalOrderItem = styled.div`
   letter-spacing: 0.11px;
   line-height: 22px;
 `
-
-export const YouSavedOrderItem = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
-  color: #e61737;
-  font-family: 'Avenir Next';
-  font-size: 16px;
-  letter-spacing: 0.2px;
-  line-height: 22px;
-`
-
 export const ZipCodeInputWrapper = styled.div`
   margin-bottom: 10px;
   input {
