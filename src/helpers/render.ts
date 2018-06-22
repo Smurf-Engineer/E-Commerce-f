@@ -12,7 +12,6 @@ const renderHtml = (styleTags: any, html: any) => {
           <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
           <script type="text/javascript" src="js/fabric.min.js"></script>
           <script type="text/javascript" src="js/customiseControls.min.js"></script>
-          <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
           <script>
             window.fbAsyncInit = function() {
               FB.init({
