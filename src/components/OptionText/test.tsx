@@ -8,6 +8,9 @@ import OptionText from './index'
 describe('<OptionText />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<OptionText title="title" option="option" />, div)
+    ReactDOM.render(
+      <OptionText title="title" option="option" onClick={() => {}} />,
+      div
+    )
   })
 })

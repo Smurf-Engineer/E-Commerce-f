@@ -30,7 +30,11 @@ import {
   SET_TEXT_ACTION,
   SET_STYLE_COMPLEXITY_ACTION,
   OPEN_ADD_TOTEAMSTORE,
-  SET_ITEM_TOADD
+  SET_ITEM_TOADD,
+  SET_CANVAS_ELEMENT_ACTION,
+  SET_SELECTED_ELEMENT_ACTION,
+  REMOVE_CANVAS_ELEMENT_ACTION,
+  SET_TEXT_FORMAT_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -59,7 +63,19 @@ export const initialState = fromJS({
   text: '',
   openAddToStoreModal: false,
   teamStoreId: '',
-  itemToAdd: {}
+  itemToAdd: {},
+  canvas: {
+    text: {},
+    image: {},
+    art: {}
+  },
+  textFormat: {
+    fontFamily: 'Avenir',
+    stroke: '#000',
+    fill: '#000',
+    strokeWidth: 0
+  },
+  selectedElement: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -193,6 +209,41 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         teamStoreId: action.teamStoreId,
         itemToAdd: action.teamStoreItem
       })
+    case SET_CANVAS_ELEMENT_ACTION: {
+      const { el, typeEl } = action
+      const canvas = state.get('canvas')
+      const selectedElement = state.get('selectedElement')
+      const updatedCanvas = canvas.setIn([typeEl, el.id], el)
+      if (selectedElement) {
+        return state.set('canvas', updatedCanvas)
+      }
+      return state.merge({
+        canvas: updatedCanvas,
+        text: ''
+      })
+    }
+    case SET_SELECTED_ELEMENT_ACTION: {
+      const { id, typeEl } = action
+      const canvasElement = state.getIn(['canvas', typeEl, id])
+      const selectedElement = state.get('selectedElement')
+      if (typeEl === 'text' && canvasElement) {
+        return state.merge({
+          selectedElement: id,
+          textFormat: canvasElement.textFormat,
+          text: canvasElement.text
+        })
+      }
+
+      if (!id && selectedElement) {
+        return state.merge({ text: '', selectedElement: id })
+      }
+
+      return state.set('selectedElement', id)
+    }
+    case REMOVE_CANVAS_ELEMENT_ACTION:
+      return state.deleteIn(['canvas', action.typeEl, action.id])
+    case SET_TEXT_FORMAT_ACTION:
+      return state.setIn(['textFormat', action.key], action.value)
     default:
       return state
   }

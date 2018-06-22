@@ -28,3 +28,11 @@ export const viewPositions = {
     z: -10.96374119486817
   }
 }
+
+/* Canvas element actions  */
+export const DELETE_ACTION = 'DELETE_ACTION'
+export const DUPLICATE_ACTION = 'DUPLICATE_ACTION'
+export const BRING_TO_FRONT_ACTION = 'BRING_TO_FRONT_ACTION'
+export const ROTATE_ACTION = 'ROTATE_ACTION'
+export const SCALE_ACTION = 'SCALE_ACTION'
+export const DRAG_ACTION = 'DRAG_ACTION'

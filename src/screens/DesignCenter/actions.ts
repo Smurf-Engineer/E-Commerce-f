@@ -29,9 +29,18 @@ import {
   SET_TEXT_ACTION,
   SET_STYLE_COMPLEXITY_ACTION,
   OPEN_ADD_TOTEAMSTORE,
-  SET_ITEM_TOADD
+  SET_ITEM_TOADD,
+  SET_CANVAS_ELEMENT_ACTION,
+  SET_SELECTED_ELEMENT_ACTION,
+  REMOVE_CANVAS_ELEMENT_ACTION,
+  SET_TEXT_FORMAT_ACTION
 } from './constants'
-import { AnyAction, Palette, TeamStoreItemtype } from '../../types/common'
+import {
+  AnyAction,
+  Palette,
+  TeamStoreItemtype,
+  CanvasElement
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -177,4 +186,36 @@ export const setItemToAddAction = (
   type: SET_ITEM_TOADD,
   teamStoreItem,
   teamStoreId
+})
+
+export const setCanvasElement = (
+  el: CanvasElement,
+  typeEl: string,
+  update = false
+): AnyAction => ({
+  type: SET_CANVAS_ELEMENT_ACTION,
+  el,
+  typeEl,
+  update
+})
+
+export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({
+  type: SET_SELECTED_ELEMENT_ACTION,
+  id,
+  typeEl
+})
+
+export const removeCanvasElement = (id: string, typeEl: string): AnyAction => ({
+  type: REMOVE_CANVAS_ELEMENT_ACTION,
+  id,
+  typeEl
+})
+
+export const setTextFormatAction = (
+  key: string,
+  value: string | number
+): AnyAction => ({
+  type: SET_TEXT_FORMAT_ACTION,
+  key,
+  value
 })

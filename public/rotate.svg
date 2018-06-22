@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="25px" height="26px" viewBox="0 0 25 26" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>rotate</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Design-Tools/Adjust-Tools" transform="translate(0.000000, -55.000000)">
+            <g id="rotate" transform="translate(0.000000, 55.022654)">
+                <circle id="Oval-Copy" fill="#4A90E2" cx="12.5" cy="12.5421027" r="12.5"></circle>
+                <g id="Group" transform="translate(6.500000, 5.542103)" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M1.76173322,3.83189261 C2.45756246,3.05072615 3.38168318,2.45713683 4.46768996,2.16614219 C7.42962485,1.37249413 10.4741264,3.13023791 11.2677744,6.0921728 C12.0614225,9.05410769 10.3036787,12.0986092 7.34174383,12.8922573 C4.37980894,13.6859053 1.33530742,11.9281616 0.541659354,8.96622667" id="Oval-2"></path>
+                    <polyline id="Triangle" points="5.31202011 4.18372472 1.54119972 4.16944908 1.52692408 0.398628689"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
