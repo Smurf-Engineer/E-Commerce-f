@@ -5,8 +5,12 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.MyLocker.tittle',
-    defaultMessage: 'MyLocker'
+  titleError: {
+    id: 'components.MyLocker.titleError',
+    defaultMessage: 'Oops!'
+  },
+  messageError: {
+    id: 'components.MyLocker.messageError',
+    defaultMessage: 'Something went wrong'
   }
 })

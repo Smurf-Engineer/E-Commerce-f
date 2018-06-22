@@ -727,5 +727,8 @@
   "screens.TemplateDownload.errorTitle": "Oops!",
   "screens.TemplateDownload.errorMessage": "Something went wrong",
 
-  "components.TemplateDownloadItem.downloadTemplate": "Download Template"
+  "components.TemplateDownloadItem.downloadTemplate": "Download Template",
+
+  "components.MyLocker.titleError": "Oops!",
+  "components.MyLocker.messageError": "Something went wrong"
 }

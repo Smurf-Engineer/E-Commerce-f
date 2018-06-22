@@ -9,6 +9,7 @@ import { DesignResultType, DesignType } from '../../types/common'
 import Pagination from 'antd/lib/pagination/Pagination'
 import { desginsQuery } from './data'
 import * as myLockerActions from './actions'
+import messages from './messages'
 import {
   Container,
   PaginationRow,
@@ -28,7 +29,7 @@ interface Props {
   loading: boolean
   error: boolean
   openQuickView: (id: number, yotpoId: string | null) => void
-  formatMessage: (messageDescriptor: string) => string
+  formatMessage: (messageDescriptor: any) => string
   setDesignsData: (data: DesignResultType, offset: number, page: number) => void
   setLoadingAction: (loading: boolean) => void
   setErrorAction: (error: boolean) => void
@@ -89,8 +90,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     if (error) {
       return (
         <LoadingContainer>
-          <TitleError>Oops!</TitleError>
-          <MessageError>Something went wrong</MessageError>
+          <TitleError>{formatMessage(messages.titleError)}</TitleError>
+          <MessageError>{formatMessage(messages.messageError)}</MessageError>
         </LoadingContainer>
       )
     }
