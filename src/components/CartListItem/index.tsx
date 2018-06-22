@@ -2,7 +2,7 @@
  * CartListItem Component - Created by gustavomedina on 04/05/18.
  */
 import * as React from 'react'
-// import messages from './messages'
+import findIndex from 'lodash/findIndex'
 import {
   Container,
   Image,
@@ -91,22 +91,32 @@ interface Props {
 }
 
 class CartListItem extends React.Component<Props, {}> {
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
-    let markslider = { quantity: '0', price: 0 }
-    for (const priceRangeItem of priceRanges) {
-      if (!totalItems) {
-        break
-      }
-      const val =
-        priceRangeItem.quantity === 'Personal'
-          ? 1
-          : priceRangeItem.quantity
-            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-            : 0
+  getQuantity = (priceRange: PriceRange) => {
+    let val = 0
+    if (priceRange.quantity === 'Personal') {
+      val = 1
+    } else if (priceRange.quantity) {
+      val = parseInt(priceRange.quantity.split('-')[0], 10)
+    }
+    return val
+  }
 
-      if (val >= totalItems) {
-        markslider = priceRangeItem
-        break
+  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+    const { price } = this.props
+    let markslider = { quantity: '0', price: 0 }
+    if (price.quantity !== 'Personal') {
+      markslider = price
+    } else {
+      for (const priceRangeItem of priceRanges) {
+        if (!totalItems) {
+          break
+        }
+        const val = this.getQuantity(priceRangeItem)
+
+        if (val >= totalItems) {
+          markslider = priceRangeItem
+          break
+        }
       }
     }
     return markslider
@@ -115,20 +125,32 @@ class CartListItem extends React.Component<Props, {}> {
   getNextPrice(priceRanges: PriceRange[], totalItems: number) {
     const priceRange = priceRanges[priceRanges.length - 1]
     let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
-    for (const priceRangeItem of priceRanges) {
-      if (!totalItems) {
-        break
+    const { price } = this.props
+    if (price.quantity !== 'Personal') {
+      let priceIndex = findIndex(
+        priceRanges,
+        pr => pr.quantity === price.quantity
+      )
+      priceIndex =
+        priceIndex !== priceRanges.length - 1 ? priceIndex + 1 : priceIndex
+      const priceRangeItem = priceRanges[priceIndex]
+      const val = parseInt(priceRangeItem.quantity.split('-')[0], 10)
+      markslider = {
+        items: val - totalItems,
+        price: priceRangeItem.price
       }
-      const val =
-        priceRangeItem.quantity === 'Personal'
-          ? 1
-          : priceRangeItem.quantity
-            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-            : 0
+    } else {
+      for (const priceRangeItem of priceRanges) {
+        if (!totalItems) {
+          break
+        }
 
-      if (val > totalItems) {
-        markslider = { items: val - totalItems, price: priceRangeItem.price }
-        break
+        const val = this.getQuantity(priceRangeItem)
+
+        if (val > totalItems) {
+          markslider = { items: val - totalItems, price: priceRangeItem.price }
+          break
+        }
       }
     }
     return markslider
@@ -196,7 +218,7 @@ class CartListItem extends React.Component<Props, {}> {
                 <ItemDetailsHeaderPriceDetail>
                   {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
                 </ItemDetailsHeaderPriceDetail>
-                {!onlyRead ? (
+                {!onlyRead && nextPrice.items > 0 ? (
                   <ItemDetailsHeaderPriceDetail>
                     <FormattedMessage
                       {...messages.addMoreFor}
