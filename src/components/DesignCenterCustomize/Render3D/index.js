@@ -635,8 +635,8 @@ class Render3D extends PureComponent {
           const clonedEl = new fabric.Text(text, {
             id: shortid.generate(),
             hasRotatingPoint: false,
-            left: boundingBox.left,
-            top: boundingBox.top + 100,
+            left: boundingBox.left + 30,
+            top: boundingBox.top + 30,
             fontSize: 75,
             scaleX: el.scaleX,
             scaleY: el.scaleY,
