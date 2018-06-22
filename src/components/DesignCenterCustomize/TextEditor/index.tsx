@@ -14,6 +14,7 @@ const OUTLINE_COLOR = 2
 interface Props {
   text: string
   option: number
+  strokeWidth: number
   onSelectFont: (font: string) => void
   onSelectFill: (color: string) => void
   onSelectStrokeWidth: (width: number) => void
@@ -29,7 +30,8 @@ class TextEditor extends React.PureComponent<Props, {}> {
       formatMessage,
       onSelectFill,
       onSelectStrokeWidth,
-      onSelectStrokeColor
+      onSelectStrokeColor,
+      strokeWidth
     } = this.props
     switch (component) {
       case FONT_LIST:
@@ -39,7 +41,12 @@ class TextEditor extends React.PureComponent<Props, {}> {
       case OUTLINE_COLOR:
         return (
           <OutlineColor
-            {...{ formatMessage, onSelectStrokeWidth, onSelectStrokeColor }}
+            {...{
+              formatMessage,
+              onSelectStrokeWidth,
+              onSelectStrokeColor,
+              strokeWidth
+            }}
           />
         )
       default:

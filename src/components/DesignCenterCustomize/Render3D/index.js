@@ -476,7 +476,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
+        const dataUrl = this.renderer.domElement.toDataURL('image/jpeg', 0.4)
         this.saveDesign(dataUrl)
       }, 200)
     )
@@ -575,33 +575,90 @@ class Render3D extends PureComponent {
       return
     }
 
-    const txt = new fabric.Text(text, {
-      id: shortid.generate(),
-      hasRotatingPoint: false,
-      left: 700,
-      top: 409.6,
-      fontSize: 75,
-      ...style
-    })
+    const activeEl = this.canvasTexture.getActiveObject()
+    const { onApplyCanvasEl } = this.props
 
-    this.canvasTexture.add(txt)
+    let txtEl = {}
+    if (activeEl) {
+      activeEl.set({ text, ...style })
+      this.canvasTexture.renderAll()
+    } else {
+      txtEl = new fabric.Text(text, {
+        id: shortid.generate(),
+        hasRotatingPoint: false,
+        left: 700,
+        top: 409.6,
+        fontSize: 75,
+        ...style
+      })
+      this.canvasTexture.add(txtEl)
+    }
+
+    const el = {
+      id: activeEl ? activeEl.id : txtEl.id,
+      text,
+      textFormat: style
+    }
+    onApplyCanvasEl(el, 'text', !!activeEl)
   }
 
   applyClipArt = el => {}
 
   deleteElement = el => {
+    const { onRemoveEl } = this.props
+    onRemoveEl(el.id, el.get('type'))
     this.canvasTexture.remove(el)
   }
 
   duplicateElement = el => {
+    const { onApplyCanvasEl } = this.props
     const boundingBox = el.getBoundingRect()
-    const clonedEl = fabric.util.object.clone(el)
-    clonedEl.set({
-      id: shortid.generate(),
-      top: boundingBox.top + 100,
-      left: boundingBox.left + 100
-    })
-    this.canvasTexture.add(clonedEl)
+    const textFormat = {
+      fontFamily: el.fontFamily,
+      stroke: el.stroke,
+      fill: el.fill,
+      strokeWidth: el.strokeWidth
+    }
+
+    const elementType = el.get('type')
+    let canvasEl = {}
+    switch (elementType) {
+      case 'text':
+        {
+          const text = el.get('text')
+          const clonedEl = new fabric.Text(text, {
+            id: shortid.generate(),
+            hasRotatingPoint: false,
+            left: boundingBox.left,
+            top: boundingBox.top + 100,
+            fontSize: 75,
+            scaleX: el.scaleX,
+            scaleY: el.scaleY,
+            ...textFormat
+          })
+          canvasEl = {
+            id: clonedEl.id,
+            text,
+            textFormat
+          }
+          this.canvasTexture.add(clonedEl)
+        }
+        break
+      case 'image': {
+        const boundingBox = el.getBoundingRect()
+        const clonedEl = fabric.util.object.clone(el)
+        clonedEl.set({
+          id: shortid.generate(),
+          top: boundingBox.top + 100
+        })
+        this.canvasTexture.add(clonedEl)
+        break
+      }
+      default:
+        break
+    }
+
+    onApplyCanvasEl(canvasEl, elementType)
   }
 
   setLayerElement = el => {
@@ -668,11 +725,13 @@ class Render3D extends PureComponent {
       }
 
       let allDeactive = true
+      const { onSelectEl } = this.props
       this.canvasTexture.forEachObject(el => {
         const boundingBox = el.getBoundingRect()
         const isInside = isMouseOver(boundingBox, uv)
         if (isInside) {
           allDeactive = false
+          onSelectEl(el.id, el.get('type'))
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
           const differenceX = left - boundingBox.left
@@ -690,7 +749,8 @@ class Render3D extends PureComponent {
         }
       })
 
-      if (allDeactive) {
+      if (allDeactive && activeEl) {
+        onSelectEl('')
         this.canvasTexture.discardActiveObject()
       }
 
@@ -743,7 +803,8 @@ class Render3D extends PureComponent {
             this.canvasTexture.renderAll()
             break
           }
-          case ROTATE_ACTION: {
+          case 'TODO': /* ROTATE_ACTION: */ {
+            // TODO: <------  WIP   --------->
             const { startPoint } = this.dragComponent
             const s_x = uv.x * 2048
             const s_y = (1 - uv.y) * 2048
@@ -757,13 +818,7 @@ class Render3D extends PureComponent {
 
             const rotatePoint = new fabric.Point(s_x, s_y)
             // const degree = fabric.util.radiansToDegrees(s_rad)
-            console.log('------------------------------------')
-            console.log(rotatePoint)
-            console.log('------------------------------------')
             activeEl.rotate(rotatePoint.x, rotatePoint.y)
-            console.log('------------------------------------')
-            console.log(activeEl)
-            console.log('------------------------------------')
             this.canvasTexture.renderAll()
             // activeEl
             //   .set({
@@ -773,6 +828,7 @@ class Render3D extends PureComponent {
             //   .setCoords()
             // this.canvasTexture.renderAll()
             // const rotatePoint = fabric.util.rotatePoint()
+            // TODO: <------  WIP   --------->
           }
           default:
             break

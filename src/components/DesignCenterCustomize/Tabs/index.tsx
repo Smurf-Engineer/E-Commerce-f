@@ -11,7 +11,7 @@ import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
-import { Palette, TextFormat } from '../../../types/common'
+import { Palette, TextFormat, CanvasType } from '../../../types/common'
 import { Container } from './styledComponents'
 
 const { TabPane } = AntdTabs
@@ -25,6 +25,9 @@ interface Props {
   styleColors: string[]
   text: string
   productName: string
+  canvas: CanvasType
+  selectedElement: string
+  textFormat: TextFormat
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -35,6 +38,7 @@ interface Props {
   onApplyText: (text: string, style: TextFormat) => void
   onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
+  onSelectTextFormat: (key: string, value: string | number) => void
 }
 
 const Tabs = ({
@@ -55,7 +59,11 @@ const Tabs = ({
   onApplyText,
   onApplyImage,
   formatMessage,
-  productName
+  productName,
+  canvas,
+  selectedElement,
+  textFormat,
+  onSelectTextFormat
 }: Props) => {
   return (
     <Container>
@@ -80,7 +88,17 @@ const Tabs = ({
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
           <TextTab
-            {...{ text, onUpdateText, onApplyText, formatMessage, productName }}
+            elements={canvas.text}
+            {...{
+              text,
+              onUpdateText,
+              onApplyText,
+              formatMessage,
+              productName,
+              selectedElement,
+              textFormat,
+              onSelectTextFormat
+            }}
           />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">

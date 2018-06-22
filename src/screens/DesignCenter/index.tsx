@@ -28,7 +28,10 @@ import {
   Palette,
   QueryProps,
   Product,
-  TeamStoreItemtype
+  TeamStoreItemtype,
+  TextFormat,
+  CanvasElement,
+  CanvasType
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -70,6 +73,9 @@ interface Props extends RouteComponentProps<any> {
   addItemToStore: any
   teamStoreId: string
   itemToAdd: TeamStoreItemtype
+  canvas: CanvasType
+  selectedElement: string
+  textFormat: TextFormat
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -99,6 +105,14 @@ interface Props extends RouteComponentProps<any> {
   setStyleComplexity: (index: number, colors: string[]) => void
   openAddToTeamStoreModalAction: (open: boolean) => void
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
+  setCanvasElement: (
+    text: CanvasElement,
+    typeEl: string,
+    update?: boolean
+  ) => void
+  setSelectedElement: (id: string, typeEl: string) => void
+  removeCanvasElement: (id: string, typeEl: string) => void
+  setTextFormatAction: (key: string, value: string | number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -217,7 +231,14 @@ export class DesignCenter extends React.Component<Props, {}> {
       setItemToAddAction,
       teamStoreId,
       location: { search },
-      data
+      data,
+      canvas,
+      setCanvasElement,
+      setSelectedElement,
+      removeCanvasElement,
+      selectedElement,
+      textFormat,
+      setTextFormatAction
     } = this.props
 
     if (!search) {
@@ -275,7 +296,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 paletteName,
                 palettes,
                 text,
-                productName
+                productName,
+                canvas,
+                selectedElement,
+                textFormat
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
@@ -295,6 +319,10 @@ export class DesignCenter extends React.Component<Props, {}> {
               onClearAction={designClearAction}
               onPressQuickView={this.handleOpenQuickView}
               onOpenSaveDesign={openSaveDesignAction}
+              onApplyCanvasEl={setCanvasElement}
+              onSelectEl={setSelectedElement}
+              onRemoveEl={removeCanvasElement}
+              onSelectTextFormat={setTextFormatAction}
             />
             <PreviewTab
               {...{

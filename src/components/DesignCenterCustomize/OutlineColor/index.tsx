@@ -8,6 +8,7 @@ import messages from './messages'
 import { Container, Title, Slider, Header } from './styledComponents'
 
 interface Props {
+  strokeWidth: number
   onSelectStrokeWidth: (width: number) => void
   onSelectStrokeColor: (color: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -16,7 +17,8 @@ interface Props {
 const OutlineColor = ({
   formatMessage,
   onSelectStrokeWidth,
-  onSelectStrokeColor
+  onSelectStrokeColor,
+  strokeWidth
 }: Props) => {
   const marks = {
     0: formatMessage(messages.thin),
@@ -37,6 +39,7 @@ const OutlineColor = ({
           {...{ marks }}
           onChange={handleOnSelectStrokeWidth}
           defaultValue={0}
+          value={strokeWidth}
           min={0}
           max={5}
         />

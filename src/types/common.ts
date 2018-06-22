@@ -356,3 +356,24 @@ export interface TextFormat {
   fill: string
   strokeWidth: number
 }
+
+export interface CanvasElement {
+  id: string
+  text?: string
+  width?: number
+  height?: number
+  textFormat?: TextFormat
+  artIndex?: number
+}
+
+export interface CanvasType {
+  text: {
+    [id: string]: CanvasElement
+  }
+  image: {
+    [id: string]: CanvasElement
+  }
+  art: {
+    [id: string]: CanvasElement
+  }
+}
