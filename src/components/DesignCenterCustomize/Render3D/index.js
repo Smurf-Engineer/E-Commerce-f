@@ -687,7 +687,7 @@ class Render3D extends PureComponent {
       this.scene.children
     )
 
-    if (intersects.length > 0 && intersects[0].uv) {
+    if (!!intersects.length && intersects[0].uv) {
       const uv = intersects[0].uv
       const activeEl = this.canvasTexture.getActiveObject()
       if (activeEl && !this.dragComponent) {
@@ -773,7 +773,7 @@ class Render3D extends PureComponent {
       this.scene.children
     )
 
-    if (intersects.length > 0 && intersects[0].uv && !!this.dragComponent) {
+    if (!!intersects.length && intersects[0].uv && !!this.dragComponent) {
       const meshName = get(intersects[0], 'object.name', '')
       if (meshName === 'FINAL JV2_Design_Mesh' || meshName === 'Canvas_Mesh') {
         const activeEl = this.canvasTexture.getActiveObject()
