@@ -127,9 +127,10 @@ class CartListItem extends React.Component<Props, {}> {
     let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
     const { price } = this.props
     if (price.quantity !== 'Personal') {
-      let priceIndex = findIndex(priceRanges, pr => {
-        return pr.quantity === price.quantity
-      })
+      let priceIndex = findIndex(
+        priceRanges,
+        pr => pr.quantity === price.quantity
+      )
       priceIndex =
         priceIndex !== priceRanges.length - 1 ? priceIndex + 1 : priceIndex
       const priceRangeItem = priceRanges[priceIndex]

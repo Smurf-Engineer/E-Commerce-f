@@ -245,27 +245,27 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     let numberOfProducts = 0
     let nameOfFirstProduct = ''
     if (cart) {
-      cart.map(cartItem => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+      cart.map((cartItem, index) => {
+        const quantities = cartItem.itemDetails.map(itemDetail => {
           return itemDetail.quantity
         })
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
-        if (!nameOfFirstProduct) {
+        // increase number of products in cart
+        numberOfProducts = numberOfProducts + quantitySum
+        // change flag to show/hide 25 percentMessage
+        show25PercentMessage = !index && quantitySum === 1
+
+        if (!index) {
           nameOfFirstProduct = cartItem.product.name
         }
 
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        numberOfProducts = numberOfProducts + quantitySum
-
-        if (quantitySum === 1 && cart.length === 1) {
-          show25PercentMessage = true
-        }
-
+        // Verify if at least one item has quantity > 1
         if (quantitySum !== 1) {
           justOneOfEveryItem = false
         }
 
+        // Get the maxquantity of articles of a product
         if (quantitySum > maxquantity) {
           maxquantity = quantitySum
         }
@@ -281,70 +281,62 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           priceRangeToApply = this.getPriceRangeToApply(maxquantity)
         }
       }
-
-      const total = cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
-          return itemDetail.quantity
-        })
-
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        const productPriceRanges = get(cartItem, 'product.priceRange', [])
-
-        let priceRange =
-          priceRangeToApply !== 0
-            ? cartItem.product.priceRange[priceRangeToApply]
-            : this.getPriceRange(productPriceRanges, quantitySum)
-
-        priceRange =
-          priceRange.price === 0
-            ? productPriceRanges[productPriceRanges.length - 1]
-            : priceRange
-
-        return priceRange.price * quantitySum
-      })
-
-      totalSum = total.reduce((a, b) => a + b, 0)
     }
 
-    const renderList = cart
-      ? cart.map((cartItem, index) => {
-          return (
-            <ListItem
-              formatMessage={formatMessage}
-              key={index}
-              title={
-                cartItem.designId
-                  ? cartItem.designName || 'Design'
-                  : cartItem.product.name
-              }
-              description={
-                cartItem.designId
-                  ? `${cartItem.product.name} ${
-                      cartItem.product.shortDescription
-                    }`
-                  : cartItem.product.shortDescription
-              }
-              price={cartItem.product.priceRange[priceRangeToApply]}
-              image={
-                cartItem.designId
-                  ? cartItem.designImage || ''
-                  : cartItem.product.images[0].front
-              }
-              cartItem={cartItem}
-              handleAddItemDetail={this.handleAddItemDetail}
-              handledeleteItemDetail={this.handledeleteItemDetail}
-              itemIndex={index}
-              setLabelItemDetail={this.handleSetDetailLabel}
-              setDetailQuantity={this.handleSetDetailQuantity}
-              setDetailFit={this.handleSetDetailFit}
-              setDetailGender={this.handleSetDetailGender}
-              setDetailSize={this.handleSetDetailSize}
-              removeItem={this.handleRemoveItem}
-            />
-          )
-        })
-      : null
+    const cartItems = cart || []
+    const renderList = cartItems.map((cartItem, index) => {
+      const quantities = cartItem.itemDetails.map(itemDetail => {
+        return itemDetail.quantity
+      })
+      const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+      const productPriceRanges = get(cartItem, 'product.priceRange', [])
+      let priceRange =
+        priceRangeToApply !== 0
+          ? cartItem.product.priceRange[priceRangeToApply]
+          : this.getPriceRange(productPriceRanges, quantitySum)
+
+      priceRange =
+        priceRange.price === 0
+          ? productPriceRanges[productPriceRanges.length - 1]
+          : priceRange
+
+      // increase the total
+      totalSum = totalSum + priceRange.price * quantitySum
+
+      return (
+        <ListItem
+          formatMessage={formatMessage}
+          key={index}
+          title={
+            cartItem.designId
+              ? cartItem.designName || 'Design'
+              : cartItem.product.name
+          }
+          description={
+            cartItem.designId
+              ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
+              : cartItem.product.shortDescription
+          }
+          price={cartItem.product.priceRange[priceRangeToApply]}
+          image={
+            cartItem.designId
+              ? cartItem.designImage || ''
+              : cartItem.product.images[0].front
+          }
+          cartItem={cartItem}
+          handleAddItemDetail={this.handleAddItemDetail}
+          handledeleteItemDetail={this.handledeleteItemDetail}
+          itemIndex={index}
+          setLabelItemDetail={this.handleSetDetailLabel}
+          setDetailQuantity={this.handleSetDetailQuantity}
+          setDetailFit={this.handleSetDetailFit}
+          setDetailGender={this.handleSetDetailGender}
+          setDetailSize={this.handleSetDetailSize}
+          removeItem={this.handleRemoveItem}
+        />
+      )
+    })
 
     const sideHeaderMessage = show25PercentMessage ? (
       <AddOneMoreMessage>
