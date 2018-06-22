@@ -164,6 +164,7 @@ export interface Region {
   icon: string
   label: string
   code: string
+  id: number
   languages: Language[]
   currencies: Currency[]
 }
@@ -179,6 +180,7 @@ export interface Currency {
   name: string
   abbreviation: string
   shortName: string
+  label: string
 }
 
 export interface RegionConfig {
@@ -376,4 +378,105 @@ export interface CanvasType {
   art: {
     [id: string]: CanvasElement
   }
+}
+export interface ClickParam {
+  key: string
+  keyPath: Array<string>
+  item: any
+  domEvent: any
+}
+
+export interface UserProfileSettings {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+}
+
+export interface UserRegionSettings {
+  region: {
+    id?: string
+    name?: string
+    icon?: string
+    code?: string
+  }
+  language: {
+    id?: string
+    name?: string
+    shortName?: string
+  }
+  currency: {
+    id?: string
+    name?: string
+    shortName?: string
+    abbreviation?: string
+  }
+}
+
+export interface MeasurementSettings {
+  weight: string
+  heightFirst: string
+  heightSecond: string
+  chest: string
+  waist: string
+  hips: string
+  inseam: string
+  shoulders: string
+  neck: string
+  msrmntSystemSelected: string
+  msrmntGenderSelected: string
+}
+
+export interface SmsSettings {
+  orderConfirmation: boolean
+  desingUpdates: boolean
+}
+
+export interface EmailSettings {
+  newsletter: boolean
+}
+
+// tslint:disable-next-line:interface-name
+export interface IProfileSettings {
+  userProfile: UserProfileSettings
+  languageSettings: UserRegionSettings
+  measurementSettings: MeasurementSettings
+  smsSettings: SmsSettings
+  emailSettings: EmailSettings
+}
+
+export interface ProfileSettingsReducer {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  region: string
+  language: string
+  currency: string
+  msrmntSystemSelected: string
+  msrmntGenderSelected: string
+  weight: string
+  heightFirst: string
+  heightSecond: string
+  chestSize: string
+  waistSize: string
+  hipsSize: string
+  inseamSize: string
+  shouldersSize: string
+  neckSize: string
+  smsConfirmationChecked: boolean
+  smsUpdatesChecked: boolean
+  emailNewsletterChecked: boolean
+}
+
+// tslint:disable-next-line:interface-name
+export interface ITemplateDownload {
+  name: string
+  description: string
+  pictures: [
+    {
+      imageSource: string
+    }
+  ]
+  fileUrl: string
 }

@@ -15,6 +15,6 @@ export default defineMessages({
   },
   currentPrice: {
     id: 'components.FooterThumbnailTeamStore.currentPrice',
-    defaultMessage: 'Estimate price'
+    defaultMessage: 'Current price'
   }
 })

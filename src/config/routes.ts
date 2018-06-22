@@ -1,4 +1,8 @@
 /* Routes */
+import AboutUsPage from '../screens/AboutUsPage'
+import TemplateDownload from '../screens/TemplateDownload'
+import JerseyComparison from '../screens/JerseyComparison'
+import WarrantyProgram from '../screens/WarrantyProgram'
 import Technology from '../screens/Technology'
 import ArtworkSpecs from '../screens/ArtworkSpecs'
 import TeamKits from '../screens/TeamKits'
@@ -25,6 +29,26 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/about-us-page',
+    name: 'aboutUsPage',
+    component: AboutUsPage
+  },
+  {
+    path: '/template-download',
+    name: 'templateDownload',
+    component: TemplateDownload
+  },
+  {
+    path: '/jersey-comparison',
+    name: 'jerseyComparison',
+    component: JerseyComparison
+  },
+  {
+    path: '/warranty-program',
+    name: 'warrantyProgram',
+    component: WarrantyProgram
+  },
   {
     path: '/technology',
     name: 'technology',

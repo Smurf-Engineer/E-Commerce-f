@@ -216,7 +216,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
 
-    let markslider = 0
+    let markslider = { name: '0-0' }
     for (const priceRangeItem of priceRanges) {
       if (!totalItems) {
         break
@@ -229,7 +229,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       }
 
       if (val >= totalItems) {
-        markslider = val
+        markslider = priceRangeItem
         break
       }
     }
@@ -358,7 +358,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <StyledSlider
                   marks={marksArray}
                   disabled={true}
-                  value={markslider}
+                  value={parseInt(markslider.name.split('-')[1], 10)}
                 />
               </SliderWrapper>
             </TierContainer>
@@ -369,6 +369,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 openQuickView={this.handleOnOpenQuickView}
                 designs={items}
                 teamStoreShortId={teamStoreShortId}
+                targentPrice={targetRange.name}
+                currentRange={markslider}
               />
             </ListContainer>
           </div>

@@ -9,7 +9,14 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import * as accountActions from './actions'
 import messages from './messages'
-import { options, SCREEN_LOCKER, ADDRESSES, CREDIT_CARDS } from './constants'
+import {
+  options,
+  SCREEN_LOCKER,
+  ADDRESSES,
+  CREDIT_CARDS,
+  TEAMSTORES,
+  PROFILE_SETTINGS
+} from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import MyLocker from '../../components/MyLocker'
@@ -25,6 +32,7 @@ import {
   menuStyle,
   OptionMenu
 } from './styledComponents'
+import ProfileSettings from '../../components/ProfileSettings'
 
 const { SubMenu } = Menu
 
@@ -32,17 +40,27 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   openKeys: string[]
   screen: string
+  isMobile: boolean
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
+  setIsMobileAction: (isMobile: boolean) => void
 }
 
 export class Account extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
+  }
+
+  componentDidMount() {
+    const { setIsMobileAction } = this.props
+    const isMobile = window.matchMedia(
+      '(min-width: 320px) and (max-width: 480px)'
+    ).matches
+    setIsMobileAction(isMobile)
   }
 
   handleOnSelectedKeys = (keys: string[]) => {
@@ -62,20 +80,23 @@ export class Account extends React.Component<Props, {}> {
   }
 
   getScreenComponent = (screen: string) => {
-    const { intl, history, openQuickViewAction: openQuickView } = this.props
+    const {
+      isMobile,
+      intl: { formatMessage },
+      history,
+      openQuickViewAction: openQuickView
+    } = this.props
     switch (screen) {
-      case SCREEN_LOCKER:
-        return (
-          <MyLocker {...{ openQuickView }} formatMessage={intl.formatMessage} />
-        )
-      case 'teamStores':
-        return (
-          <MyTeamStores formatMessage={intl.formatMessage} {...{ history }} />
-        )
       case ADDRESSES:
-        return <MyAddresses formatMessage={intl.formatMessage} />
+        return <MyAddresses {...{ formatMessage }} />
       case CREDIT_CARDS:
-        return <MyCards formatMessage={intl.formatMessage} />
+        return <MyCards {...{ formatMessage }} />
+      case PROFILE_SETTINGS:
+        return <ProfileSettings {...{ isMobile, formatMessage }} />
+      case TEAMSTORES:
+        return <MyTeamStores {...{ history, formatMessage }} />
+      case SCREEN_LOCKER:
+        return <MyLocker {...{ openQuickView, formatMessage }} />
       default:
         return null
     }
@@ -141,7 +162,10 @@ const mapStateToProps = (state: any) => state.get('account').toJS()
 
 const AccountEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...accountActions, openQuickViewAction })
+  connect(
+    mapStateToProps,
+    { ...accountActions, openQuickViewAction }
+  )
 )(Account)
 
 export default AccountEnhance
