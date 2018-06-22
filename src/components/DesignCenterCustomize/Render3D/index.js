@@ -329,8 +329,12 @@ class Render3D extends PureComponent {
           object.children[20].material = canvasMaterial
           object.children[20].name = 'Canvas_Mesh'
 
+          const largeHeight = window.matchMedia(
+            'only screen and (min-height: 800px)'
+          ).matches
+
           /* Object Config */
-          object.position.y = -30
+          object.position.y = largeHeight ? -50 : -30
           object.name = 'jersey'
           this.scene.add(object)
 
@@ -670,6 +674,10 @@ class Render3D extends PureComponent {
   onMouseUp = evt => {
     evt.preventDefault()
 
+    if (this.dragComponent && this.dragComponent.oldAngle) {
+      this.dragComponent.el.oldAngle = this.dragComponent.oldAngle
+    }
+
     this.dragComponent = null
     this.controls.enabled = true
   }
@@ -712,11 +720,19 @@ class Render3D extends PureComponent {
               break
             }
             case ROTATE_ACTION: {
-              const x = uv.x * 2048
-              const y = (1 - uv.y) * 2048
-              const startPoint = { h_x: x, h_y: y }
+              const sX = uv.x * 2048
+              const sY = (1 - uv.y) * 2048
+              const startPoint = { x: sX, y: sY }
+              const oX = activeEl.left + activeEl.width / 2
+              const oY = activeEl.top + activeEl.height / 2
+              const originPoint = { x: oX, y: oY }
               this.controls.enabled = false
-              this.dragComponent = { action: ROTATE_ACTION, startPoint }
+              this.dragComponent = {
+                el: activeEl,
+                action: ROTATE_ACTION,
+                startPoint,
+                originPoint
+              }
               break
             }
             default:
@@ -805,30 +821,29 @@ class Render3D extends PureComponent {
             this.canvasTexture.renderAll()
             break
           }
-          case 'TODO': /* ROTATE_ACTION: */ {
-            // TODO: <------  WIP   --------->
-            const { startPoint } = this.dragComponent
-            const s_x = uv.x * 2048
-            const s_y = (1 - uv.y) * 2048
+          case ROTATE_ACTION: {
+            const { startPoint, originPoint } = this.dragComponent
+            const cX = uv.x * 2048
+            const cY = (1 - uv.y) * 2048
 
-            const s_rad = Math.atan2(s_y - startPoint.h_y, s_x - startPoint.h_x)
-            // const rotatePoint = fabric.util.rotatePoint(
-            //   new fabric.Point(s_x, s_y),
-            //   new fabric.Point(activeEl.width / 2, activeEl.height / 2),
-            //   s_rad
-            // )
-            // const rotatePoint = new fabric.Point(s_x, s_y)
-            // activeEl.rotate(degree).setCoords()
+            if (!activeEl.oldAngle) {
+              activeEl.oldAngle = fabric.util.degreesToRadians(90)
+            }
+            let radians = Math.atan2(cY - originPoint.y, cX - originPoint.x)
+            radians -= Math.atan2(
+              startPoint.y - originPoint.y,
+              startPoint.x - originPoint.x
+            )
+            radians += activeEl.oldAngle
+            this.dragComponent.oldAngle = radians
 
-            const angle = angle
             this.rotateObject(
               activeEl,
-              s_rad - 1.5708,
+              radians - 1.5708,
               activeEl.width / 2,
               activeEl.height / 2
             )
             this.canvasTexture.renderAll()
-            // TODO: <------  WIP   --------->
           }
           default:
             break
