@@ -589,6 +589,8 @@ class Render3D extends PureComponent {
         left: 700,
         top: 409.6,
         fontSize: 75,
+        snapAngle: 1,
+        snapThreshold: 45,
         ...style
       })
       this.canvasTexture.add(txtEl)
@@ -803,7 +805,7 @@ class Render3D extends PureComponent {
             this.canvasTexture.renderAll()
             break
           }
-          case 'TODO': /* ROTATE_ACTION: */ {
+          case ROTATE_ACTION: {
             // TODO: <------  WIP   --------->
             const { startPoint } = this.dragComponent
             const s_x = uv.x * 2048
@@ -815,19 +817,17 @@ class Render3D extends PureComponent {
             //   new fabric.Point(activeEl.width / 2, activeEl.height / 2),
             //   s_rad
             // )
+            // const rotatePoint = new fabric.Point(s_x, s_y)
+            // activeEl.rotate(degree).setCoords()
 
-            const rotatePoint = new fabric.Point(s_x, s_y)
-            // const degree = fabric.util.radiansToDegrees(s_rad)
-            activeEl.rotate(rotatePoint.x, rotatePoint.y)
+            const angle = angle
+            this.rotateObject(
+              activeEl,
+              s_rad - 1.5708,
+              activeEl.width / 2,
+              activeEl.height / 2
+            )
             this.canvasTexture.renderAll()
-            // activeEl
-            //   .set({
-            //     left: point.x,
-            //     top: point.y
-            //   })
-            //   .setCoords()
-            // this.canvasTexture.renderAll()
-            // const rotatePoint = fabric.util.rotatePoint()
             // TODO: <------  WIP   --------->
           }
           default:
@@ -835,6 +835,30 @@ class Render3D extends PureComponent {
         }
       }
     }
+  }
+
+  rotateObject = (fabObj, angleRadian, pivotX, pivotY) => {
+    const ty = pivotY - fabObj.height / 2.0
+    const tx = pivotX - fabObj.width / 2.0
+    if (angleRadian >= Math.PI * 2) {
+      angleRadian -= Math.PI * 2
+    }
+    const angle2 = Math.atan2(ty, tx)
+    const angle3 = (2 * angle2 + angleRadian - Math.PI) / 2.0
+    const pdist_sq = tx * tx + ty * ty
+    const disp = Math.sqrt(2 * pdist_sq * (1 - Math.cos(angleRadian)))
+    fabObj
+      .set({
+        transformMatrix: [
+          Math.cos(angleRadian),
+          Math.sin(angleRadian),
+          -Math.sin(angleRadian),
+          Math.cos(angleRadian),
+          disp * Math.cos(angle3),
+          disp * Math.sin(angle3)
+        ]
+      })
+      .setCoords()
   }
 }
 

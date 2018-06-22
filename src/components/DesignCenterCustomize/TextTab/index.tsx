@@ -52,13 +52,7 @@ export class TextTab extends React.PureComponent<Props, State> {
 
   render() {
     const { page, option } = this.state
-    const {
-      text,
-      formatMessage,
-      productName,
-
-      textFormat
-    } = this.props
+    const { text, formatMessage, productName, textFormat } = this.props
 
     const headerTitle = this.getHeaderTitle(option, page)
 
