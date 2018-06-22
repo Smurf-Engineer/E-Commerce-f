@@ -15,7 +15,8 @@ import {
   Divider,
   CodeDivider,
   ZipCodeInputWrapper,
-  CollapseWrapper
+  CollapseWrapper,
+  CalculationsWrapper
   //  FlexWrapper,  UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
   //  DeleteLabel
 } from './styledComponents'
@@ -38,7 +39,7 @@ interface Props {
 
 const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
-class OrderSummary extends React.Component<Props, {}> {
+export class OrderSummary extends React.Component<Props, {}> {
   render() {
     const { total, subtotal, formatMessage, discount, onlyRead } = this.props
     const renderDiscount = discount ? (
@@ -73,16 +74,18 @@ class OrderSummary extends React.Component<Props, {}> {
           <FormattedMessage {...messages.subtotal} />
           <div>{`USD$${subtotal}`}</div>
         </OrderItem>
-        <Divider />
-        <OrderItem>
-          <FormattedMessage {...messages.taxes} />
-          <div>{`USD$0`}</div>
-        </OrderItem>
-        <OrderItem>
-          <FormattedMessage {...messages.shipping} />
-          <div>{`USD$0`}</div>
-        </OrderItem>
-        {!onlyRead ? renderDiscount : null}
+        <CalculationsWrapper>
+          <Divider />
+          <OrderItem>
+            <FormattedMessage {...messages.taxes} />
+            <div>{`USD$0`}</div>
+          </OrderItem>
+          <OrderItem>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`USD$0`}</div>
+          </OrderItem>
+          {!onlyRead ? renderDiscount : null}
+        </CalculationsWrapper>
         <CodeDivider />
         {!onlyRead ? (
           <CollapseWrapper>

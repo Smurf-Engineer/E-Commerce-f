@@ -6,13 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
 import messages from './messages'
 import { GetAddressListQuery } from './data'
-import {
-  Container,
-  Title,
-  ShippingMethodContainer,
-  ShippinPriorityText,
-  StyledCheckbox
-} from './styledComponents'
+import { Container, Title } from './styledComponents'
 
 import MyAddresses from '../MyAddressesList'
 import ShippingAddressForm from '../ShippingAddressForm'
@@ -66,26 +60,26 @@ export class Shippping extends React.PureComponent<Props, {}> {
       return null
     }
 
-    const shippingMethod = (
-      <ShippingMethodContainer>
-        <Title>{'Shipping Method'}</Title>
-        <ShippinPriorityText>
-          {
-            '$27.94 - FedEx International Priority® *All orders are shipped within 2 weeks'
-          }
-        </ShippinPriorityText>
-        <div>
-          <StyledCheckbox onChange={this.handleEmailCheck}>
-            {'Send me Shipment updates via email'}
-          </StyledCheckbox>
-        </div>
-        <div>
-          <StyledCheckbox onChange={this.handleSmsCheck}>
-            {'Send me Shipment updates via SMS'}
-          </StyledCheckbox>
-        </div>
-      </ShippingMethodContainer>
-    )
+    // const shippingMethod = (
+    //   <ShippingMethodContainer>
+    //     <Title>{'Shipping Method'}</Title>
+    //     <ShippinPriorityText>
+    //       {
+    //         '$27.94 - FedEx International Priority® *All orders are shipped within 2 weeks'
+    //       }
+    //     </ShippinPriorityText>
+    //     <div>
+    //       <StyledCheckbox onChange={this.handleEmailCheck}>
+    //         {'Send me Shipment updates via email'}
+    //       </StyledCheckbox>
+    //     </div>
+    //     <div>
+    //       <StyledCheckbox onChange={this.handleSmsCheck}>
+    //         {'Send me Shipment updates via SMS'}
+    //       </StyledCheckbox>
+    //     </div>
+    //   </ShippingMethodContainer>
+    // )
 
     return (
       <Container>
@@ -121,7 +115,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
             }}
           />
         </AnimateHeight>
-        {shippingMethod}
+        {/* {shippingMethod} */}
       </Container>
     )
   }

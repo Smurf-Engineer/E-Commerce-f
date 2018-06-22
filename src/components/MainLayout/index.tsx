@@ -68,7 +68,11 @@ class MainLayout extends React.Component<Props, {}> {
     const { login } = queryString.parse(search)
     const userLogged = !!localStorage.getItem('user')
 
-    if (pathname === '/faq' && login === 'open' && !userLogged) {
+    if (
+      (pathname === '/faq' || pathname === '/shopping-cart') &&
+      login === 'open' &&
+      !userLogged
+    ) {
       openLoginAction(true)
     }
   }
@@ -177,6 +181,9 @@ const mapStateToProps = (state: any) => {
 }
 
 const LayoutEnhance = compose(
-  connect(mapStateToProps, { ...LayoutActions, ...LocaleActions })
+  connect(
+    mapStateToProps,
+    { ...LayoutActions, ...LocaleActions }
+  )
 )(MainLayout)
 export default LayoutEnhance
