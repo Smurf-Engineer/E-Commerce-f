@@ -27,7 +27,8 @@ import {
   SummaryContainer,
   ContinueButton,
   StepWrapper,
-  PlaceOrderButton
+  PlaceOrderButton,
+  paypalButtonStyle
   // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
@@ -217,20 +218,18 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const steps = stepperTitles.map((step, key) => (
-      <Step title={step} {...{ key }} />
+      <Step
+        onClick={() => {
+          console.log(key)
+        }}
+        title={step}
+        {...{ key }}
+      />
     ))
 
     const paypalClient = {
       sandbox: config.paypalClientId,
       production: ''
-    }
-
-    const paypalButtonStyle = {
-      label: 'paypal',
-      size: 'responsive',
-      color: 'blue',
-      shape: 'rect',
-      tagline: false
     }
 
     const orderButton =
@@ -280,13 +279,11 @@ class Checkout extends React.Component<Props, {}> {
                     showAddressFormAction,
                     indexAddressSelected
                   }}
+                  showContent={currentStep === 0}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                 />
                 <Payment
-                  formatMessage={intl.formatMessage}
-                  hasError={billingHasError}
-                  nextStep={this.nextStep}
                   {...{
                     billingAddress,
                     cardHolderName,
@@ -303,10 +300,12 @@ class Checkout extends React.Component<Props, {}> {
                     setStripeCardDataAction,
                     setPaymentMethodAction
                   }}
+                  showContent={currentStep === 1}
+                  formatMessage={intl.formatMessage}
+                  hasError={billingHasError}
+                  nextStep={this.nextStep}
                 />
                 <Review
-                  formatMessage={intl.formatMessage}
-                  goToStep={this.handleOnGoToStep}
                   {...{
                     shippingAddress,
                     billingAddress,
@@ -315,6 +314,9 @@ class Checkout extends React.Component<Props, {}> {
                     cart,
                     paymentMethod
                   }}
+                  showContent={currentStep === 2}
+                  formatMessage={intl.formatMessage}
+                  goToStep={this.handleOnGoToStep}
                 />
               </SwipeableViews>
             </StepsContainer>

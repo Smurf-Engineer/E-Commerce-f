@@ -16,13 +16,14 @@ import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData } from '../../types/common'
 
 interface Props {
-  formatMessage: (messageDescriptor: any) => string
   billingAddress: AddressType
   hasError: boolean
   cardHolderName: string
   sameBillingAndShipping: boolean
   stripeError: string
   loadingBilling: boolean
+  showContent: boolean
+  formatMessage: (messageDescriptor: any) => string
   setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
@@ -85,9 +86,15 @@ class Payment extends React.PureComponent<Props, {}> {
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
       setStripeCardDataAction,
-      nextStep
+      nextStep,
+      showContent
     } = this.props
     const { stripe } = this.state
+
+    if (!showContent) {
+      return <div />
+    }
+
     return (
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
