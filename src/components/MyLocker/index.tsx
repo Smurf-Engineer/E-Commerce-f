@@ -6,9 +6,17 @@ import { withApollo, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import { DesignResultType, DesignType } from '../../types/common'
+import Pagination from 'antd/lib/pagination/Pagination'
 import { desginsQuery } from './data'
 import * as myLockerActions from './actions'
-import { Container } from './styledComponents'
+import {
+  Container,
+  PaginationRow,
+  LoadingContainer,
+  TitleError,
+  MessageError
+} from './styledComponents'
+import Spin from 'antd/lib/spin'
 
 interface Props {
   client: any
@@ -17,9 +25,13 @@ interface Props {
   currentPage: number
   fullCount: string
   designs: DesignType[]
+  loading: boolean
+  error: boolean
   openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: string) => string
-  setDesignsData: (data: DesignResultType) => void
+  setDesignsData: (data: DesignResultType, offset: number, page: number) => void
+  setLoadingAction: (loading: boolean) => void
+  setErrorAction: (error: boolean) => void
 }
 
 export class MyLocker extends React.PureComponent<Props, {}> {
@@ -41,7 +53,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       client: { query },
       limit,
       offset,
-      setDesignsData
+      setDesignsData,
+      setErrorAction
     } = this.props
     try {
       const data = await query({
@@ -49,13 +62,38 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         variables: { limit, offset },
         fetchPolicy: 'network-only'
       })
-      setDesignsData(data)
-    } catch (e) {}
+      setDesignsData(data, 0, 1)
+    } catch (e) {
+      setErrorAction(true)
+    }
   }
 
   render() {
-    console.log(this.props)
-    const { formatMessage, designs } = this.props
+    const {
+      loading,
+      error,
+      formatMessage,
+      designs,
+      currentPage,
+      fullCount
+    } = this.props
+
+    if (loading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
+    }
+
+    if (error) {
+      return (
+        <LoadingContainer>
+          <TitleError>Oops!</TitleError>
+          <MessageError>Something went wrong</MessageError>
+        </LoadingContainer>
+      )
+    }
 
     return (
       <Container>
@@ -67,8 +105,38 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           openQuickView={this.handleOnOpenQuickView}
           designs={designs}
         />
+        <PaginationRow>
+          <Pagination
+            current={currentPage}
+            pageSize={12}
+            total={Number(fullCount)}
+            onChange={this.handleOnChangePage}
+          />
+        </PaginationRow>
       </Container>
     )
+  }
+
+  handleOnChangePage = async (page: number) => {
+    const {
+      setLoadingAction,
+      client: { query },
+      limit,
+      setDesignsData,
+      setErrorAction
+    } = this.props
+    const offset = page > 1 ? (page - 1) * limit : 0
+    setLoadingAction(true)
+    try {
+      const data = await query({
+        query: desginsQuery,
+        variables: { limit, offset },
+        fetchPolicy: 'network-only'
+      })
+      setDesignsData(data, offset, page)
+    } catch (e) {
+      setErrorAction(true)
+    }
   }
 }
 
