@@ -805,7 +805,7 @@ class Render3D extends PureComponent {
             this.canvasTexture.renderAll()
             break
           }
-          case ROTATE_ACTION: {
+          case 'TODO': /* ROTATE_ACTION: */ {
             // TODO: <------  WIP   --------->
             const { startPoint } = this.dragComponent
             const s_x = uv.x * 2048
