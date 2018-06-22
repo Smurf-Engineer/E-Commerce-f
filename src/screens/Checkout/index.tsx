@@ -218,13 +218,7 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const steps = stepperTitles.map((step, key) => (
-      <Step
-        onClick={() => {
-          console.log(key)
-        }}
-        title={step}
-        {...{ key }}
-      />
+      <Step title={step} {...{ key }} />
     ))
 
     const paypalClient = {
