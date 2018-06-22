@@ -96,3 +96,11 @@ export const PlaceOrderButton = styled(Button)`
     color: #fff;
   }
 `
+
+export const paypalButtonStyle = {
+  label: 'paypal',
+  size: 'responsive',
+  color: 'blue',
+  shape: 'rect',
+  tagline: false
+}

@@ -36,6 +36,7 @@ interface CartItems {
 }
 
 interface Props {
+  showContent: boolean
   cart: CartItems[]
   shippingAddress: AddressType
   billingAddress: AddressType
@@ -49,6 +50,7 @@ interface Props {
 class Review extends React.Component<Props, {}> {
   render() {
     const {
+      showContent,
       formatMessage,
       shippingAddress: {
         firstName,
@@ -75,6 +77,11 @@ class Review extends React.Component<Props, {}> {
       cart,
       paymentMethod
     } = this.props
+
+    if (!showContent) {
+      return <div />
+    }
+
     const renderList = cart
       ? cart.map((cartItem, index) => {
           return (

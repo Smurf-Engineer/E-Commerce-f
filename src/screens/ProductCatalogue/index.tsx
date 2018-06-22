@@ -297,7 +297,10 @@ const mapStateToProps = (state: any) => {
 const ProductCatalogEnhance = compose(
   injectIntl,
   graphql<Data>(GetFiltersQuery, {}),
-  connect(mapStateToProps, { ...productCatalogActions, openQuickViewAction })
+  connect(
+    mapStateToProps,
+    { ...productCatalogActions, openQuickViewAction }
+  )
 )(ProductCatalog)
 
 export default ProductCatalogEnhance

@@ -116,8 +116,14 @@ export const TextQuote = styled.div`
     width: 100%;
   }
 `
+
+interface ScenesTitleProps {
+  withoutCarouselContent?: boolean
+}
+
 export const ScenesFromTitle = styled.div`
-  padding: 36px 0 26px;
+  padding: ${({ withoutCarouselContent }: ScenesTitleProps) =>
+    withoutCarouselContent ? '' : '36px 0 26px'};
   text-align: center;
   color: #5f6062;
   font-family: 'Avenir Next';

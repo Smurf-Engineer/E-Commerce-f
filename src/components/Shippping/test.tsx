@@ -34,10 +34,12 @@ describe('<Shippping />', () => {
     const emailCheckAction = (checked: boolean) => {}
     const showAddressFormAction = (show: boolean) => {}
     const setSelectedAddress = (address: AddressType, index: number) => {}
+    const showContent = true
     void ReactDOM.render(
       <Shippping
         formatMessage={format}
         {...{
+          showContent,
           shippingAddress,
           hasError,
           showForm,
