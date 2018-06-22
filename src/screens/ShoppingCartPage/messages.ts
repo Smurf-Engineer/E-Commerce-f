@@ -15,7 +15,7 @@ export default defineMessages({
   },
   emptyTitle: {
     id: 'screens.ShoppingCartPage.emptyTitle',
-    defaultMessage: 'You don’t have anything in your car yet!'
+    defaultMessage: 'You don’t have anything in your cart yet!'
   },
   emptyMessage: {
     id: 'screens.ShoppingCartPage.emptyMessage',
