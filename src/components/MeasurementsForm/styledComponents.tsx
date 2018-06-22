@@ -56,16 +56,17 @@ export const RadioButton = styled(radioButton)`
 export const StyledInput = styled(Input)`
   height: 40px;
   border: 1px solid #bebebe;
-  border-radius: 0;
   margin-top: 5px;
+  border-right: 1px;
+  border-right-color: #fff;
 `
 
 export const LabeledInput = styled(Input)`
   height: 40px;
   border: 1px solid #bebebe;
-  border-radius: 0;
   margin-top: 5px;
   background-color: #fff;
+  pointer-events: none;
 `
 
 export const StyledButton = styled(Button)`
@@ -73,3 +74,20 @@ export const StyledButton = styled(Button)`
   width: 100%;
   border-radius: 2px;
 `
+
+export const styledInputStyle = {
+  width: '70%',
+  borderRadius: 0
+}
+
+export const labeledInputStyle = {
+  width: '30%',
+  borderLeft: 0,
+  borderRadius: 0
+}
+
+export const styledInputWithCustomWidth = (width: string) =>
+  Object.assign({}, styledInputStyle, { width })
+
+export const labeledInputWithCustomWidth = (width: string) =>
+  Object.assign({}, labeledInputStyle, { width })
