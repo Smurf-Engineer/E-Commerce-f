@@ -40,6 +40,10 @@ export const GetProductsQuery = gql`
           id
           name: description
         }
+        sizeRange: size_range {
+          id
+          name
+        }
         priceRange {
           quantity
           price
