@@ -1,4 +1,4 @@
-import { setItemsAction } from './actions'
+import { setItemsAction, resetReducerData } from './actions'
 import { Product, CartItemDetail } from '../../types/common'
 import findIndex from 'lodash/findIndex'
 
@@ -45,6 +45,7 @@ export const saveToStorage = (cart: CartItems[]) => {
   return async (dispatch: any) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cart))
+      dispatch(resetReducerData())
     } catch (error) {}
   }
 }

@@ -97,8 +97,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   handleCheckout = () => {
-    const { history } = this.props
-    history.push('/checkout')
+    const { history, cart } = this.props
+    history.push('/checkout', { cart })
   }
 
   componentDidMount() {

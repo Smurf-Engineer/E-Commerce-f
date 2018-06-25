@@ -12,11 +12,9 @@ import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
 import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
-import { resetReducerData as resetReducerShoppingCartAction } from '../ShoppingCartPage/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
 import {
@@ -113,17 +111,14 @@ interface Props extends RouteComponentProps<any> {
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 class Checkout extends React.Component<Props, {}> {
   componentWillUnmount() {
-    const {
-      resetReducerAction,
-      resetReducerShoppingCartAction: resetReducerCartAction
-    } = this.props
+    const { resetReducerAction } = this.props
     resetReducerAction()
-    resetReducerCartAction()
   }
   render() {
     const {
       intl,
       history,
+      location,
       currentStep,
       hasError,
       firstName,
@@ -167,7 +162,6 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingBillingAction,
       setStripeCardDataAction,
       setPaymentMethodAction,
-      cart,
       paymentMethod
     } = this.props
 
@@ -199,13 +193,17 @@ class Checkout extends React.Component<Props, {}> {
       cardBrand
     }
 
-    if (isEmpty(cart)) {
+    const { state: stateLocation } = location
+
+    if (!stateLocation || !stateLocation.cart) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
+    const shoppingCart = stateLocation.cart as CartItems[]
+
     let totalSum = 0
-    if (cart) {
-      const total = cart.map((cartItem, index) => {
+    if (shoppingCart) {
+      const total = shoppingCart.map((cartItem, index) => {
         const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
           return itemDetail.quantity
         })
@@ -309,9 +307,9 @@ class Checkout extends React.Component<Props, {}> {
                     billingAddress,
                     cardData,
                     cardHolderName,
-                    cart,
                     paymentMethod
                   }}
+                  cart={shoppingCart}
                   showContent={currentStep === 2}
                   formatMessage={intl.formatMessage}
                   goToStep={this.handleOnGoToStep}
@@ -438,6 +436,7 @@ class Checkout extends React.Component<Props, {}> {
 
   handleOnPlaceOrder = async (event?: any, paypalObj?: object) => {
     const {
+      location,
       placeOrder,
       firstName,
       lastName,
@@ -458,7 +457,6 @@ class Checkout extends React.Component<Props, {}> {
       billingZipCode,
       billingPhone,
       stripeToken,
-      cart,
       indexAddressSelected,
       sameBillingAndShipping,
       setLoadingPlaceOrderAction,
@@ -496,12 +494,15 @@ class Checkout extends React.Component<Props, {}> {
       this.saveAddress(billingAddress)
     }
 
+    const { state: stateLocation } = location
+    const shoppingCart = stateLocation.cart as CartItems[]
+
     /*
     * TODO: Find a better solution to unset these properties
     * from cart Object.
     * Maybe don't save them on localStorage
     */
-    forEach(cart, cartItem => {
+    forEach(shoppingCart, cartItem => {
       unset(cartItem, 'designImage')
       unset(cartItem, 'designName')
       unset(cartItem, 'product.shortDescription')
@@ -528,7 +529,7 @@ class Checkout extends React.Component<Props, {}> {
     const orderObj = {
       paymentMethod,
       token: stripeToken,
-      cart,
+      cart: shoppingCart,
       shippingAddress,
       billingAddress,
       paypalData: paypalObj || null
@@ -553,12 +554,7 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  const checkout = state.get('checkout').toJS()
-  const shopppingCart = state.get('shoppingCartPage').toJS()
-
-  return { ...checkout, ...shopppingCart }
-}
+const mapStateToProps = (state: any) => state.get('checkout').toJS()
 
 const CheckoutEnhance = compose(
   injectIntl,
@@ -568,8 +564,7 @@ const CheckoutEnhance = compose(
     mapStateToProps,
     {
       ...checkoutActions,
-      getTotalItemsIncart,
-      resetReducerShoppingCartAction
+      getTotalItemsIncart
     }
   )
 )(Checkout)
