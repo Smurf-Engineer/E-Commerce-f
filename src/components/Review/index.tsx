@@ -29,6 +29,7 @@ import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
+import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
 interface CartItems {
   product: Product
@@ -82,38 +83,8 @@ class Review extends React.PureComponent<Props, {}> {
       return <div />
     }
 
-    let numberOfProducts = 0
-    let justOneOfEveryItem = true
-    let maxquantity = 0
-    let priceRangeToApply = 0
-    if (cart) {
-      cart.map(cartItem => {
-        const quantities = cartItem.itemDetails.map(itemDetail => {
-          return itemDetail.quantity
-        })
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        // increase number of products in cart
-        numberOfProducts = numberOfProducts + quantitySum
-
-        // Verify if at least one item has quantity > 1
-        if (quantitySum !== 1) {
-          justOneOfEveryItem = false
-        }
-
-        // Get the maxquantity of articles of a product
-        if (quantitySum > maxquantity) {
-          maxquantity = quantitySum
-        }
-      })
-      if (justOneOfEveryItem && cart.length) {
-        priceRangeToApply = this.getPriceRangeToApply(cart.length)
-      } else {
-        if (cart.length) {
-          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
-        }
-      }
-    }
+    const shoppingCartData = getShoppingCartData(cart)
+    const { priceRangeToApply } = shoppingCartData
 
     const renderList = cart
       ? cart.map((cartItem, index) => {

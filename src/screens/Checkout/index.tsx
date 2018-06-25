@@ -40,10 +40,10 @@ import {
   AddressType,
   CartItemDetail,
   Product,
-  StripeCardData,
-  PriceRange
+  StripeCardData
 } from '../../types/common'
 import config from '../../config/index'
+import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
 interface CartItems {
   product: Product
@@ -201,67 +201,8 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const shoppingCart = stateLocation.cart as CartItems[]
-
-    let totalSum = 0
-    let totalWithoutDiscount = 0
-    let priceRangeToApply = 0
-    let justOneOfEveryItem = true
-    let maxquantity = 0
-    let numberOfProducts = 0
-    if (shoppingCart) {
-      shoppingCart.map(cartItem => {
-        const quantities = cartItem.itemDetails.map(itemDetail => {
-          return itemDetail.quantity
-        })
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        // increase number of products in cart
-        numberOfProducts = numberOfProducts + quantitySum
-
-        // Verify if at least one item has quantity > 1
-        if (quantitySum !== 1) {
-          justOneOfEveryItem = false
-        }
-
-        // Get the maxquantity of articles of a product
-        if (quantitySum > maxquantity) {
-          maxquantity = quantitySum
-        }
-
-        totalWithoutDiscount =
-          totalWithoutDiscount +
-          quantitySum * cartItem.product.priceRange[0].price
-      })
-
-      if (justOneOfEveryItem && shoppingCart.length) {
-        priceRangeToApply = this.getPriceRangeToApply(shoppingCart.length)
-      } else {
-        if (shoppingCart.length) {
-          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
-        }
-      }
-
-      shoppingCart.map(cartItem => {
-        const quantities = cartItem.itemDetails.map(itemDetail => {
-          return itemDetail.quantity
-        })
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        const productPriceRanges = get(cartItem, 'product.priceRange', [])
-        let priceRange =
-          priceRangeToApply !== 0
-            ? cartItem.product.priceRange[priceRangeToApply]
-            : this.getPriceRange(productPriceRanges, quantitySum)
-
-        priceRange =
-          priceRange.price === 0
-            ? productPriceRanges[productPriceRanges.length - 1]
-            : priceRange
-
-        // increase the total
-        totalSum = totalSum + priceRange.price * quantitySum
-      })
-    }
+    const shoppingCartData = getShoppingCartData(shoppingCart)
+    const { total, totalWithoutDiscount } = shoppingCartData
 
     const steps = stepperTitles.map((step, key) => (
       <Step
@@ -283,13 +224,13 @@ class Checkout extends React.Component<Props, {}> {
           env={config.paypalEnv}
           client={paypalClient}
           currency={'USD'}
-          total={totalSum}
           shipping={1}
           onSuccess={this.onPaypalSuccess}
           onCancel={this.onPaypalCancel}
           onError={this.onPaypalError}
           style={paypalButtonStyle}
           paymentOptions={{ intent: 'authorize' }}
+          {...{ total }}
         />
       ) : (
         <PlaceOrderButton
@@ -367,11 +308,10 @@ class Checkout extends React.Component<Props, {}> {
             </StepsContainer>
             <SummaryContainer>
               <OrderSummary
-                total={totalSum}
-                subtotal={totalSum}
+                subtotal={total}
                 discount={10}
                 formatMessage={intl.formatMessage}
-                {...{ totalWithoutDiscount }}
+                {...{ total, totalWithoutDiscount }}
               />
               {currentStep === 2 ? orderButton : null}
             </SummaryContainer>
@@ -384,42 +324,6 @@ class Checkout extends React.Component<Props, {}> {
         </Container>
       </Layout>
     )
-  }
-
-  getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
-    let markslider = { quantity: '0', price: 0 }
-    for (const priceRangeItem of priceRanges) {
-      if (!totalItems || !priceRangeItem.quantity) {
-        break
-      }
-
-      const val =
-        priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
-          ? 1
-          : priceRangeItem.quantity
-            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-            : 0
-
-      if (val >= totalItems) {
-        markslider = priceRangeItem
-        break
-      }
-    }
-    return markslider
-  }
-
-  getPriceRangeToApply = (items: number) => {
-    if (items >= 2 && items <= 5) {
-      return 1
-    } else if (items >= 6 && items <= 24) {
-      return 2
-    } else if (items >= 25 && items <= 49) {
-      return 3
-    } else if (items >= 50) {
-      return 4
-    } else {
-      return 0
-    }
   }
 
   handleOnStepClick = (step: number) => () => {
