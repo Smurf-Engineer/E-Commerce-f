@@ -164,20 +164,6 @@ class Review extends React.PureComponent<Props, {}> {
     )
   }
 
-  getPriceRangeToApply = (items: number) => {
-    if (items >= 2 && items <= 5) {
-      return 1
-    } else if (items >= 6 && items <= 24) {
-      return 2
-    } else if (items >= 25 && items <= 49) {
-      return 3
-    } else if (items >= 50) {
-      return 4
-    } else {
-      return 0
-    }
-  }
-
   getCardIcon = (brand: string) => {
     switch (brand) {
       case 'Visa':
