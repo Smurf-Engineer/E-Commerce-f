@@ -28,7 +28,8 @@ import {
   ContinueButton,
   StepWrapper,
   PlaceOrderButton,
-  paypalButtonStyle
+  paypalButtonStyle,
+  Step
   // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
@@ -43,8 +44,6 @@ import {
   StripeCardData
 } from '../../types/common'
 import config from '../../config/index'
-
-const { Step } = Steps
 
 interface CartItems {
   product: Product
@@ -218,7 +217,12 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const steps = stepperTitles.map((step, key) => (
-      <Step title={step} {...{ key }} />
+      <Step
+        clickable={currentStep > key}
+        onClick={this.handleOnStepClick(key)}
+        title={step}
+        {...{ key }}
+      />
     ))
 
     const paypalClient = {
@@ -332,6 +336,13 @@ class Checkout extends React.Component<Props, {}> {
         </Container>
       </Layout>
     )
+  }
+
+  handleOnStepClick = (step: number) => () => {
+    const { currentStep } = this.props
+    if (step < currentStep) {
+      this.handleOnGoToStep(step + 1)
+    }
   }
 
   nextStep = () => {
