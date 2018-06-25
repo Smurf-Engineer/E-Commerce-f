@@ -68,5 +68,22 @@ export default defineMessages({
   giftPlaceholder: {
     id: 'screens.ShoppingCartPage.giftPlaceholder',
     defaultMessage: 'Gift Certificate'
+  },
+  addOneMoreMessage: {
+    id: 'screens.ShoppingCartPage.addOneMoreMessage',
+    defaultMessage:
+      '*Add 1 more item to your cart to save 25% on your entire order'
+  },
+  titleDeleteModal: {
+    id: 'screens.ShoppingCartPage.titleDeleteModal',
+    defaultMessage: 'Are you sure?'
+  },
+  messageDeleteItem: {
+    id: 'screens.ShoppingCartPage.messageDeleteItem',
+    defaultMessage: '"{nameOfFirstProduct}" will be deleted from your cart'
+  },
+  delete: {
+    id: 'screens.ShoppingCartPage.delete',
+    defaultMessage: 'Delete'
   }
 })
