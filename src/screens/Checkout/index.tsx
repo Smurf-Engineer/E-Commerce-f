@@ -12,6 +12,7 @@ import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
 import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
@@ -39,7 +40,8 @@ import {
   AddressType,
   CartItemDetail,
   Product,
-  StripeCardData
+  StripeCardData,
+  PriceRange
 } from '../../types/common'
 import config from '../../config/index'
 
@@ -105,7 +107,6 @@ interface Props extends RouteComponentProps<any> {
   resetReducerShoppingCartAction: () => void
   getTotalItemsIncart: () => void
   setPaymentMethodAction: (method: string) => void
-  cart: CartItems[]
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -202,16 +203,64 @@ class Checkout extends React.Component<Props, {}> {
     const shoppingCart = stateLocation.cart as CartItems[]
 
     let totalSum = 0
+    let totalWithoutDiscount = 0
+    let priceRangeToApply = 0
+    let justOneOfEveryItem = true
+    let maxquantity = 0
+    let numberOfProducts = 0
     if (shoppingCart) {
-      const total = shoppingCart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
+      shoppingCart.map(cartItem => {
+        const quantities = cartItem.itemDetails.map(itemDetail => {
           return itemDetail.quantity
         })
         const quantitySum = quantities.reduce((a, b) => a + b, 0)
-        return cartItem.product.priceRange[0].price * quantitySum
+
+        // increase number of products in cart
+        numberOfProducts = numberOfProducts + quantitySum
+
+        // Verify if at least one item has quantity > 1
+        if (quantitySum !== 1) {
+          justOneOfEveryItem = false
+        }
+
+        // Get the maxquantity of articles of a product
+        if (quantitySum > maxquantity) {
+          maxquantity = quantitySum
+        }
+
+        totalWithoutDiscount =
+          totalWithoutDiscount +
+          quantitySum * cartItem.product.priceRange[0].price
       })
 
-      totalSum = total.reduce((a, b) => a + b, 0)
+      if (justOneOfEveryItem && shoppingCart.length) {
+        priceRangeToApply = this.getPriceRangeToApply(shoppingCart.length)
+      } else {
+        if (shoppingCart.length) {
+          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
+        }
+      }
+
+      shoppingCart.map(cartItem => {
+        const quantities = cartItem.itemDetails.map(itemDetail => {
+          return itemDetail.quantity
+        })
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        const productPriceRanges = get(cartItem, 'product.priceRange', [])
+        let priceRange =
+          priceRangeToApply !== 0
+            ? cartItem.product.priceRange[priceRangeToApply]
+            : this.getPriceRange(productPriceRanges, quantitySum)
+
+        priceRange =
+          priceRange.price === 0
+            ? productPriceRanges[productPriceRanges.length - 1]
+            : priceRange
+
+        // increase the total
+        totalSum = totalSum + priceRange.price * quantitySum
+      })
     }
 
     const steps = stepperTitles.map((step, key) => (
@@ -322,6 +371,7 @@ class Checkout extends React.Component<Props, {}> {
                 subtotal={totalSum}
                 discount={10}
                 formatMessage={intl.formatMessage}
+                {...{ totalWithoutDiscount }}
               />
               {currentStep === 2 ? orderButton : null}
             </SummaryContainer>
@@ -334,6 +384,42 @@ class Checkout extends React.Component<Props, {}> {
         </Container>
       </Layout>
     )
+  }
+
+  getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
+    let markslider = { quantity: '0', price: 0 }
+    for (const priceRangeItem of priceRanges) {
+      if (!totalItems || !priceRangeItem.quantity) {
+        break
+      }
+
+      const val =
+        priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
+          ? 1
+          : priceRangeItem.quantity
+            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+            : 0
+
+      if (val >= totalItems) {
+        markslider = priceRangeItem
+        break
+      }
+    }
+    return markslider
+  }
+
+  getPriceRangeToApply = (items: number) => {
+    if (items >= 2 && items <= 5) {
+      return 1
+    } else if (items >= 6 && items <= 24) {
+      return 2
+    } else if (items >= 25 && items <= 49) {
+      return 3
+    } else if (items >= 50) {
+      return 4
+    } else {
+      return 0
+    }
   }
 
   handleOnStepClick = (step: number) => () => {
@@ -494,8 +580,10 @@ class Checkout extends React.Component<Props, {}> {
       this.saveAddress(billingAddress)
     }
 
-    const { state: stateLocation } = location
-    const shoppingCart = stateLocation.cart as CartItems[]
+    const {
+      state: { cart }
+    } = location
+    const shoppingCart = cloneDeep(cart) as CartItems[]
 
     /*
     * TODO: Find a better solution to unset these properties

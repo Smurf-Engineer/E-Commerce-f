@@ -47,7 +47,7 @@ interface Props {
   goToStep: (step: number) => void
 }
 
-class Review extends React.Component<Props, {}> {
+class Review extends React.PureComponent<Props, {}> {
   render() {
     const {
       showContent,
@@ -82,6 +82,39 @@ class Review extends React.Component<Props, {}> {
       return <div />
     }
 
+    let numberOfProducts = 0
+    let justOneOfEveryItem = true
+    let maxquantity = 0
+    let priceRangeToApply = 0
+    if (cart) {
+      cart.map(cartItem => {
+        const quantities = cartItem.itemDetails.map(itemDetail => {
+          return itemDetail.quantity
+        })
+        const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+        // increase number of products in cart
+        numberOfProducts = numberOfProducts + quantitySum
+
+        // Verify if at least one item has quantity > 1
+        if (quantitySum !== 1) {
+          justOneOfEveryItem = false
+        }
+
+        // Get the maxquantity of articles of a product
+        if (quantitySum > maxquantity) {
+          maxquantity = quantitySum
+        }
+      })
+      if (justOneOfEveryItem && cart.length) {
+        priceRangeToApply = this.getPriceRangeToApply(cart.length)
+      } else {
+        if (cart.length) {
+          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
+        }
+      }
+    }
+
     const renderList = cart
       ? cart.map((cartItem, index) => {
           return (
@@ -90,15 +123,16 @@ class Review extends React.Component<Props, {}> {
               key={index}
               title={cartItem.product.name}
               description={cartItem.product.shortDescription}
-              price={cartItem.product.priceRange[0]}
+              price={cartItem.product.priceRange[priceRangeToApply]}
               image={cartItem.product.images[0].front}
-              cartItem={cartItem}
               itemIndex={index}
               onlyRead={true}
+              {...{ cartItem }}
             />
           )
         })
       : null
+
     let cardIcon = this.getCardIcon(cardData.cardBrand)
 
     return (
@@ -158,6 +192,21 @@ class Review extends React.Component<Props, {}> {
       </Container>
     )
   }
+
+  getPriceRangeToApply = (items: number) => {
+    if (items >= 2 && items <= 5) {
+      return 1
+    } else if (items >= 6 && items <= 24) {
+      return 2
+    } else if (items >= 25 && items <= 49) {
+      return 3
+    } else if (items >= 50) {
+      return 4
+    } else {
+      return 0
+    }
+  }
+
   getCardIcon = (brand: string) => {
     switch (brand) {
       case 'Visa':
