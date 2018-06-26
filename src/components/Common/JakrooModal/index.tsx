@@ -9,7 +9,7 @@ import JakRooLogo from '../../../assets/Jackroologo.svg'
 
 interface Props {
   open: boolean
-  width?: string
+  width?: string | number
   requestClose?: () => void
   withLogo?: boolean | undefined
   children?: any
@@ -23,6 +23,7 @@ const CustomModal = ({
   children,
   title,
   style,
+  width,
   withLogo = true
 }: Props) => {
   return (
@@ -33,6 +34,7 @@ const CustomModal = ({
         closable={false}
         destroyOnClose={true}
         style={style}
+        width={width}
       >
         <CloseIcon src={closeIcon} onClick={requestClose} />
         {withLogo && (

@@ -7,6 +7,7 @@ export const GetTeamStoresQuery = gql`
         id
         shortId: short_id
         name
+        banner
       }
     }
   }

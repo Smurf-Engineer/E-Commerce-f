@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import Modal from 'antd/lib/modal'
+// import Modal from 'antd/lib/modal'
 import Input from 'antd/lib/input'
 import get from 'lodash/get'
 import message from 'antd/lib/message'
@@ -18,6 +18,7 @@ import {
 } from './styledComponents'
 const { TextArea } = Input
 import { contactManager } from './data'
+import Modal from '../Common/JakrooModal'
 
 interface Props {
   requestClose: () => void
@@ -113,13 +114,17 @@ export class EmailContact extends React.Component<Props, {}> {
     return (
       <Container>
         <Modal
-          visible={open}
-          footer={null}
-          closable={true}
-          maskClosable={false}
+          // visible={open}
+          open={open}
+          // footer={null}
+          // closable={true}
+          // maskClosable={false}
           width={'60%'}
-          destroyOnClose={true}
-          onCancel={this.handleCancel}
+          // destroyOnClose={true}
+          // onCancel={this.handleCancel}
+          requestClose={this.handleCancel}
+          withLogo={false}
+          style={{ width: '60%' }}
         >
           <Title>{formatMessage(messages.title)}</Title>
           <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||

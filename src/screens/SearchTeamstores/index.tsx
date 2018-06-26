@@ -35,9 +35,15 @@ interface Props extends RouteComponentProps<any> {
   storeId: string
   openShareModalAction: (open: boolean, id?: string) => void
   setSearchParamAction: (param: string) => void
+  clearReducerAction: () => void
 }
 
 export class SearchTeamstores extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { clearReducerAction } = this.props
+    clearReducerAction()
+  }
+
   render() {
     const { history, intl, searchString, openShare, storeId } = this.props
     const { formatMessage } = intl
@@ -113,7 +119,10 @@ const mapStateToProps = (state: any) => state.get('searchTeamstores').toJS()
 
 const TeamstoresEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...teamstoresActions })
+  connect(
+    mapStateToProps,
+    { ...teamstoresActions }
+  )
 )(SearchTeamstores)
 
 export default TeamstoresEnhance
