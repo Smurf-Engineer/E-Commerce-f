@@ -45,7 +45,7 @@ interface Props {
   onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
-  openPaletteModalAction: (key: string, open: boolean, value: number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
 const Tabs = ({

@@ -224,7 +224,7 @@ export const setTextFormatAction = (
 export const openPaletteModalAction = (
   key: string,
   open: boolean,
-  value: number
+  value: number = -1
 ) => ({
   type: OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
   open,

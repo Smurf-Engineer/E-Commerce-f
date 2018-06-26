@@ -31,7 +31,7 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onChangePaletteName: (name: string) => void
   formatMessage: (messageDescriptor: any) => string
-  openPaletteModalAction: (key: string, open: boolean, value: number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
 class MyPalette extends React.PureComponent<Props> {
@@ -99,7 +99,7 @@ class MyPalette extends React.PureComponent<Props> {
         localStorage.setItem('palettes', JSON.stringify(updatedPalettes))
         onSetPalettes(updatedPalettes)
       }
-      openPaletteModalAction('delete', false, -1)
+      openPaletteModalAction('delete', false)
     }
   }
 
@@ -112,12 +112,12 @@ class MyPalette extends React.PureComponent<Props> {
     } = this.props
     const colors = palettes[idPaletteToExecuteAction].colors
     onSelectPalette(colors)
-    openPaletteModalAction('apply', false, -1)
+    openPaletteModalAction('apply', false)
   }
 
   onCancelDeletePalette = () => {
     const { openPaletteModalAction } = this.props
-    openPaletteModalAction('delete', false, -1)
+    openPaletteModalAction('delete', false)
   }
 
   handleOnShowDeletePaletteModal = (index: number) => {
@@ -127,7 +127,7 @@ class MyPalette extends React.PureComponent<Props> {
 
   onCancelAppyPalette = () => {
     const { openPaletteModalAction } = this.props
-    openPaletteModalAction('apply', false, -1)
+    openPaletteModalAction('apply', false)
   }
 
   handleOnShowApplyPaletteModal = (index: number) => {

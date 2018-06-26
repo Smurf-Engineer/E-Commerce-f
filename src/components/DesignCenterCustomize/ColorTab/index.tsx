@@ -37,7 +37,7 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
-  openPaletteModalAction: (key: string, open: boolean, value: number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
 interface State {

@@ -115,7 +115,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
   setTextFormatAction: (key: string, value: string | number) => void
-  openPaletteModalAction: (key: string, open: boolean, value: number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {

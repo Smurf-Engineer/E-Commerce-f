@@ -55,7 +55,7 @@ interface Props {
   onRemoveEl: (id: string, typeEl: string) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
-  openPaletteModalAction: (key: string, open: boolean, value: number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
