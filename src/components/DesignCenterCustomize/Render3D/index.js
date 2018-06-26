@@ -87,7 +87,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  componentDidMount() {
+  _componentDidMount() {
     /* Renderer config */
 
     fabric.Object.prototype.customiseCornerIcons({
@@ -348,7 +348,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round(xhr.loaded / xhr.total * 100)
+      const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }
@@ -436,7 +436,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = value * 1.0 / 100
+      const zoomValue = (value * 1.0) / 100
       this.camera.zoom = zoomValue * 2
       this.camera.updateProjectionMatrix()
     }

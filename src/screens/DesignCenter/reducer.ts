@@ -34,7 +34,8 @@ import {
   SET_CANVAS_ELEMENT_ACTION,
   SET_SELECTED_ELEMENT_ACTION,
   REMOVE_CANVAS_ELEMENT_ACTION,
-  SET_TEXT_FORMAT_ACTION
+  SET_TEXT_FORMAT_ACTION,
+  OPEN_DELETE_OR_APPLY_PALETTE_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -75,7 +76,12 @@ export const initialState = fromJS({
     fill: '#000',
     strokeWidth: 0
   },
-  selectedElement: ''
+  selectedElement: '',
+  myPaletteModals: {
+    openDeletePaletteModal: false,
+    openApplyPaletteModal: false,
+    idPaletteToExecuteAction: -1
+  }
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -244,6 +250,23 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.deleteIn(['canvas', action.typeEl, action.id])
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)
+    case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
+      const { key, open, value } = action
+      const myPaletteModals = state.get('myPaletteModals')
+      let updatedMyPalette
+      if (key === 'delete') {
+        updatedMyPalette = myPaletteModals.merge({
+          openDeletePaletteModal: open,
+          idPaletteToExecuteAction: value
+        })
+      } else {
+        updatedMyPalette = myPaletteModals.merge({
+          openApplyPaletteModal: open,
+          idPaletteToExecuteAction: value
+        })
+      }
+      return state.set('myPaletteModals', updatedMyPalette)
+    }
     default:
       return state
   }

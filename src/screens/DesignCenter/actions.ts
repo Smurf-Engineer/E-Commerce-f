@@ -33,7 +33,8 @@ import {
   SET_CANVAS_ELEMENT_ACTION,
   SET_SELECTED_ELEMENT_ACTION,
   REMOVE_CANVAS_ELEMENT_ACTION,
-  SET_TEXT_FORMAT_ACTION
+  SET_TEXT_FORMAT_ACTION,
+  OPEN_DELETE_OR_APPLY_PALETTE_MODAL
 } from './constants'
 import {
   AnyAction,
@@ -218,4 +219,15 @@ export const setTextFormatAction = (
   type: SET_TEXT_FORMAT_ACTION,
   key,
   value
+})
+
+export const openPaletteModalAction = (
+  key: string,
+  open: boolean,
+  value: number
+) => ({
+  type: OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
+  open,
+  value,
+  key
 })

@@ -31,7 +31,8 @@ import {
   TeamStoreItemtype,
   TextFormat,
   CanvasElement,
-  CanvasType
+  CanvasType,
+  MyPaletteDesignCenterModals
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -76,6 +77,7 @@ interface Props extends RouteComponentProps<any> {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  myPaletteModals: MyPaletteDesignCenterModals
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -113,6 +115,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
   setTextFormatAction: (key: string, value: string | number) => void
+  openPaletteModalAction: (key: string, open: boolean, value: number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -138,7 +141,9 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -238,7 +243,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       removeCanvasElement,
       selectedElement,
       textFormat,
-      setTextFormatAction
+      setTextFormatAction,
+      openPaletteModalAction,
+      myPaletteModals
     } = this.props
 
     if (!search) {
@@ -299,7 +306,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 productName,
                 canvas,
                 selectedElement,
-                textFormat
+                textFormat,
+                openPaletteModalAction,
+                myPaletteModals
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
@@ -394,7 +403,10 @@ const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
-  connect(mapStateToProps, { ...designCenterActions, openQuickViewAction }),
+  connect(
+    mapStateToProps,
+    { ...designCenterActions, openQuickViewAction }
+  ),
   graphql<Data>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''

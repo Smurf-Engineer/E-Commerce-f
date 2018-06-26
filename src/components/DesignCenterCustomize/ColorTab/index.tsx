@@ -11,7 +11,7 @@ import MyPalette from '../MyPalette'
 import nextIcon from '../../../assets/rightarrow.svg'
 import backIcon from '../../../assets/leftarrow.svg'
 import messages from './messages'
-import { Palette } from '../../../types/common'
+import { Palette, MyPaletteDesignCenterModals } from '../../../types/common'
 import {
   Container,
   TextColors,
@@ -29,12 +29,15 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  myPaletteModals: MyPaletteDesignCenterModals
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
   onHoverColorBlock: (index: number) => void
+  formatMessage: (messageDescriptor: any) => string
+  openPaletteModalAction: (key: string, open: boolean, value: number) => void
 }
 
 interface State {
@@ -62,7 +65,10 @@ class ColorTab extends React.PureComponent<Props, State> {
       colors,
       styleColors,
       onSetPalettes,
-      onSelectPalette
+      onSelectPalette,
+      formatMessage,
+      openPaletteModalAction,
+      myPaletteModals
     } = this.props
     const { isFirstPage } = this.state
     const colorButtons = colorsBlocks.map((label, index) => {
@@ -111,7 +117,10 @@ class ColorTab extends React.PureComponent<Props, State> {
               paletteName,
               palettes,
               onSetPalettes,
-              colors
+              colors,
+              formatMessage,
+              openPaletteModalAction,
+              myPaletteModals
             }}
           />
         </SwipeableViews>
