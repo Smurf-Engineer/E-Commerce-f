@@ -35,7 +35,8 @@ import {
   SET_SELECTED_ELEMENT_ACTION,
   REMOVE_CANVAS_ELEMENT_ACTION,
   SET_TEXT_FORMAT_ACTION,
-  OPEN_DELETE_OR_APPLY_PALETTE_MODAL
+  OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
+  OPEN_RESET_DESIGN_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -81,7 +82,8 @@ export const initialState = fromJS({
     openDeletePaletteModal: false,
     openApplyPaletteModal: false,
     idPaletteToExecuteAction: -1
-  }
+  },
+  openResetDesignModal: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -170,7 +172,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_LOADING_MODEL:
       return state.set('loadingModel', action.loading)
     case DESIGN_RESET_ACTION:
-      return state.set('colors', List.of(...colorsInit))
+      return state.merge({
+        colors: List.of(...colorsInit),
+        openResetDesignModal: false
+      })
     case SET_SWIPING_TAB_ACTION:
       return state.set('swipingView', action.isSwiping)
     case SET_THEME_SELECTED_ACTION:
@@ -267,6 +272,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('myPaletteModals', updatedMyPalette)
     }
+    case OPEN_RESET_DESIGN_MODAL:
+      return state.set('openResetDesignModal', action.open)
     default:
       return state
   }

@@ -20,5 +20,22 @@ export default defineMessages({
   onBike: {
     id: 'components.Render3D.onBike',
     defaultMessage: 'On Bike'
+  },
+  modalResetTitle: {
+    id: 'components.Render3D.modalResetTitle',
+    defaultMessage: 'RESET'
+  },
+  modalResetMessage: {
+    id: 'components.Render3D.modalResetMessage',
+    defaultMessage:
+      'Restting the design will revert back to the original selected design.'
+  },
+  modalConfirmText: {
+    id: 'components.Render3D.modalConfirmText',
+    defaultMessage: 'Confirm'
+  },
+  modalCancelText: {
+    id: 'components.Render3D.modalCancelText',
+    defaultMessage: 'Cancel'
   }
 })

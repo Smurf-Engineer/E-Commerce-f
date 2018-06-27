@@ -181,6 +181,7 @@ class MyPalette extends React.PureComponent<Props> {
           onCancel={this.onCancelDeletePalette}
           closable={false}
           maskClosable={false}
+          destroyOnClose={true}
         >
           <ModalMessage>
             {formatMessage(messages.deletePaletteMessage)}
@@ -200,6 +201,7 @@ class MyPalette extends React.PureComponent<Props> {
           onCancel={this.onCancelAppyPalette}
           closable={false}
           maskClosable={false}
+          destroyOnClose={true}
         >
           <ModalMessage>
             {formatMessage(messages.applyPaletteMessage)}

@@ -32,6 +32,7 @@ interface Props {
   selectedElement: string
   textFormat: TextFormat
   myPaletteModals: MyPaletteDesignCenterModals
+  openResetDesignModal: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -56,6 +57,7 @@ interface Props {
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  openResetDesignModalAction: (open: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -99,7 +101,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       textFormat,
       onSelectTextFormat,
       openPaletteModalAction,
-      myPaletteModals
+      myPaletteModals,
+      openResetDesignModal,
+      openResetDesignModalAction
     } = this.props
 
     return (
@@ -155,7 +159,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               productName,
               onApplyCanvasEl,
               onSelectEl,
-              onRemoveEl
+              onRemoveEl,
+              openResetDesignModal,
+              openResetDesignModalAction
             }}
           />
         ) : null}

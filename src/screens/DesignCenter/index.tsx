@@ -78,6 +78,7 @@ interface Props extends RouteComponentProps<any> {
   selectedElement: string
   textFormat: TextFormat
   myPaletteModals: MyPaletteDesignCenterModals
+  openResetDesignModal: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -116,6 +117,7 @@ interface Props extends RouteComponentProps<any> {
   removeCanvasElement: (id: string, typeEl: string) => void
   setTextFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  openResetDesignModalAction: (open: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -245,7 +247,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       textFormat,
       setTextFormatAction,
       openPaletteModalAction,
-      myPaletteModals
+      myPaletteModals,
+      openResetDesignModalAction,
+      openResetDesignModal
     } = this.props
 
     if (!search) {
@@ -308,7 +312,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 selectedElement,
                 textFormat,
                 openPaletteModalAction,
-                myPaletteModals
+                myPaletteModals,
+                openResetDesignModal,
+                openResetDesignModalAction
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
