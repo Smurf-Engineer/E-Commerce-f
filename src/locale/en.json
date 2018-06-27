@@ -730,5 +730,19 @@
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
 
   "components.MyLocker.titleError": "Oops!",
-  "components.MyLocker.messageError": "Something went wrong"
+  "components.MyLocker.messageError": "Something went wrong",
+
+  "components.UploadTab.title": "Upload Logo and Images",
+  "components.UploadTab.imageError":
+    "Oh no! Your file has to be in eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd",
+
+  "components.MyPalette.paletteSaved": "Your Palette is saved",
+  "components.MyPalette.modalTitle": "ARE YOU SURE?",
+  "components.MyPalette.deletePaletteMessage":
+    "You're about to delete this palette",
+  "components.MyPalette.deletePaletteConfirm": "Confirm",
+  "components.MyPalette.deletePaletteCancel": "Cancel",
+  "components.MyPalette.applyPalette": "Apply {paletteNameToApply}",
+  "components.MyPalette.applyPaletteMessage":
+    "Using this palette will replace the colors currently in use."
 }

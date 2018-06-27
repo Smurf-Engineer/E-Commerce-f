@@ -43,3 +43,11 @@ export const ListContainer = styled.div`
   overflow: auto;
   height: 392px;
 `
+
+export const ModalMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+`
