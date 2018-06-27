@@ -54,7 +54,7 @@ import dummieData from './dummieData'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
-const CANVAS_SIZE = 2048
+const CANVAS_SIZE = 3880.016
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -93,7 +93,7 @@ class Render3D extends PureComponent {
     fabric.Object.prototype.customiseCornerIcons({
       settings: {
         borderColor: 'black',
-        cornerSize: 70,
+        cornerSize: 100,
         cornerPadding: 10
       },
       tl: {
@@ -472,6 +472,17 @@ class Render3D extends PureComponent {
   saveDesign = previewImage => {
     const { onOpenSaveDesign } = this.props
     onOpenSaveDesign(true, previewImage)
+
+    console.log('------------------------------------')
+    console.log(
+      this.canvasTexture.toSVG({
+        x: 0,
+        y: 0,
+        width: CANVAS_SIZE,
+        height: CANVAS_SIZE
+      })
+    )
+    console.log('------------------------------------')
   }
 
   takeDesignPicture = () => {
@@ -567,8 +578,8 @@ class Render3D extends PureComponent {
         oImg.scale(1).set({
           id: shortid.generate(),
           hasRotatingPoint: false,
-          left: 409.6,
-          top: 409.6
+          left: 900,
+          top: 900
         })
       )
     })
@@ -590,9 +601,9 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 700,
-        top: 409.6,
-        fontSize: 75,
+        left: 900,
+        top: 900,
+        fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
         ...style
@@ -720,8 +731,8 @@ class Render3D extends PureComponent {
               break
             }
             case ROTATE_ACTION: {
-              const sX = uv.x * 2048
-              const sY = (1 - uv.y) * 2048
+              const sX = uv.x * CANVAS_SIZE
+              const sY = (1 - uv.y) * CANVAS_SIZE
               const startPoint = { x: sX, y: sY }
               const oX = activeEl.left + activeEl.width / 2
               const oY = activeEl.top + activeEl.height / 2
@@ -799,15 +810,15 @@ class Render3D extends PureComponent {
         const uv = intersects[0].uv
         switch (action) {
           case DRAG_ACTION: {
-            const left = uv.x * 2048 - differenceX
-            const top = (1 - uv.y) * 2048 - differenceY
+            const left = uv.x * CANVAS_SIZE - differenceX
+            const top = (1 - uv.y) * CANVAS_SIZE - differenceY
             activeEl.set({ left, top }).setCoords()
             this.canvasTexture.renderAll()
             break
           }
           case SCALE_ACTION: {
-            const cursorLeft = uv.x * 2048
-            const cursorTop = (1 - uv.y) * 2048
+            const cursorLeft = uv.x * CANVAS_SIZE
+            const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
             const height = cursorTop - activeEl.top
             const scaleX = width / activeEl.width
@@ -823,8 +834,8 @@ class Render3D extends PureComponent {
           }
           case ROTATE_ACTION: {
             const { startPoint, originPoint } = this.dragComponent
-            const cX = uv.x * 2048
-            const cY = (1 - uv.y) * 2048
+            const cX = uv.x * CANVAS_SIZE
+            const cY = (1 - uv.y) * CANVAS_SIZE
 
             if (!activeEl.oldAngle) {
               activeEl.oldAngle = fabric.util.degreesToRadians(90)

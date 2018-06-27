@@ -10,6 +10,8 @@ import {
   ROTATE_ACTION
 } from './config'
 
+const CANVAS_SIZE = 3880.016
+
 const calculateTriangleArea = (A, B, C) =>
   C.x * B.y - B.x * C.y - (C.x * A.y - A.x * C.y) + (B.x * A.y - A.x * B.y)
 
@@ -30,7 +32,7 @@ const isPointInsideOfIcon = (coords, point) =>
   )
 
 export const isMouseOver = (bb, uv) => {
-  const point = { x: uv.x * 2048, y: (1 - uv.y) * 2048 }
+  const point = { x: uv.x * CANVAS_SIZE, y: (1 - uv.y) * CANVAS_SIZE }
 
   const rect = {
     a: { x: bb.left, y: bb.top },
@@ -44,7 +46,7 @@ export const isMouseOver = (bb, uv) => {
 
 // TODO: Canvas size from SVG files?
 export const clickOnCorner = (boundingBox = {}, corners = {}, uv = {}) => {
-  const point = { x: uv.x * 2048, y: (1 - uv.y) * 2048 }
+  const point = { x: uv.x * CANVAS_SIZE, y: (1 - uv.y) * CANVAS_SIZE }
 
   const horizontalLine = boundingBox.top + boundingBox.height / 2
   const verticalLine = boundingBox.left + boundingBox.width / 2
