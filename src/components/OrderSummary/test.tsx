@@ -18,12 +18,13 @@ describe('<OrderSummary />', () => {
       taxes: [],
       shipping: []
     }
+    const totalWithoutDiscount = 0
     ReactDOM.render(
       <IntlProvider {...props}>
         <OrderSummary
           {...{ data }}
           formatMessage={format}
-          {...{ total, subtotal }}
+          {...{ total, subtotal, totalWithoutDiscount }}
         />
       </IntlProvider>,
       div

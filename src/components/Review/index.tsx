@@ -29,6 +29,7 @@ import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
+import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
 interface CartItems {
   product: Product
@@ -36,6 +37,7 @@ interface CartItems {
 }
 
 interface Props {
+  showContent: boolean
   cart: CartItems[]
   shippingAddress: AddressType
   billingAddress: AddressType
@@ -46,9 +48,10 @@ interface Props {
   goToStep: (step: number) => void
 }
 
-class Review extends React.Component<Props, {}> {
+class Review extends React.PureComponent<Props, {}> {
   render() {
     const {
+      showContent,
       formatMessage,
       shippingAddress: {
         firstName,
@@ -75,6 +78,14 @@ class Review extends React.Component<Props, {}> {
       cart,
       paymentMethod
     } = this.props
+
+    if (!showContent) {
+      return <div />
+    }
+
+    const shoppingCartData = getShoppingCartData(cart)
+    const { priceRangeToApply } = shoppingCartData
+
     const renderList = cart
       ? cart.map((cartItem, index) => {
           return (
@@ -83,15 +94,16 @@ class Review extends React.Component<Props, {}> {
               key={index}
               title={cartItem.product.name}
               description={cartItem.product.shortDescription}
-              price={cartItem.product.priceRange[0]}
+              price={cartItem.product.priceRange[priceRangeToApply]}
               image={cartItem.product.images[0].front}
-              cartItem={cartItem}
               itemIndex={index}
               onlyRead={true}
+              {...{ cartItem }}
             />
           )
         })
       : null
+
     let cardIcon = this.getCardIcon(cardData.cardBrand)
 
     return (
@@ -151,6 +163,7 @@ class Review extends React.Component<Props, {}> {
       </Container>
     )
   }
+
   getCardIcon = (brand: string) => {
     switch (brand) {
       case 'Visa':

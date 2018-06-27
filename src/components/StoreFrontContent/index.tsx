@@ -216,9 +216,10 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
 
-    const maxValueOfY = items.length
-      ? Math.max(...items.map(o => o.totalOrders))
-      : 0
+    // TODO: uncomment if return to old method
+    // const maxValueOfY = items.length
+    //   ? Math.max(...items.map(o => o.totalOrders))
+    //   : 0
 
     let markslider = { name: '0-0' }
     for (const priceRangeItem of priceRanges) {
@@ -232,7 +233,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         val = parseInt(priceRangeItem.name.split('-')[1], 10)
       }
 
-      if (val >= maxValueOfY) {
+      if (val >= totalItems) {
         markslider = priceRangeItem
         break
       }

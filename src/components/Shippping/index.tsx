@@ -23,6 +23,7 @@ interface Props {
   hasError: boolean
   showForm: boolean
   indexAddressSelected: number
+  showContent: boolean
   formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
@@ -35,6 +36,7 @@ interface Props {
 export class Shippping extends React.PureComponent<Props, {}> {
   render() {
     const {
+      showContent,
       shippingAddress: {
         firstName,
         lastName,
@@ -58,6 +60,10 @@ export class Shippping extends React.PureComponent<Props, {}> {
 
     if (loading) {
       return null
+    }
+
+    if (!showContent) {
+      return <div />
     }
 
     // const shippingMethod = (

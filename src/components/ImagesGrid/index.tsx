@@ -2,15 +2,14 @@
  * ImagesGrid Component - Created by gustavomedina on 22/02/18.
  */
 import * as React from 'react'
-import Slider from 'react-slick'
 import { FormattedMessage } from 'react-intl'
 // TODO: Remove commented code after verify it wont be needed at all
 // import MediaQuery from 'react-responsive'
 import messages from './messages'
 import {
   Container,
-  CarouselContent,
-  Slide,
+  // CarouselContent, TODO: See if this is going to be necessary, is from carousel
+  // Slide, TODO: See if this is going to be necessary, is from carousel
   //  QuoteContent,
   //  ImageQuote,
   //  CardQuote,
@@ -19,16 +18,17 @@ import {
 } from './styledComponents'
 import FeaturedCategory from '../FeaturedCategory'
 
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 800,
-  autoplay: true,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  initialSlide: 0,
-  arrows: false
-}
+// TODO: See if this is going to be necessary, is from carousel
+// const settings = {
+//   dots: false,
+//   infinite: true,
+//   speed: 800,
+//   autoplay: true,
+//   slidesToShow: 3,
+//   slidesToScroll: 1,
+//   initialSlide: 0,
+//   arrows: false
+// }
 
 interface Props {
   fakeWidth: number
@@ -63,10 +63,11 @@ const ImagesGrid = ({ fakeWidth, history }: Props) => {
         </MediaQuery>
         </QuoteContent>*/}
       <FeaturedCategory {...{ history }} />
-      <ScenesFromTitle>
+      <ScenesFromTitle withoutCarouselContent={true}>
         <FormattedMessage {...messages.scenesFromLabel} />
       </ScenesFromTitle>
-      <CarouselContent>
+      {/* TODO: See if this is going to be needed */}
+      {/* <CarouselContent>
         <Slider {...settings}>
           <div>
             <Slide src="https://storage.googleapis.com/jakroo-storage/slider/herbalife-guys.jpg" />
@@ -84,7 +85,7 @@ const ImagesGrid = ({ fakeWidth, history }: Props) => {
             <Slide src="https://storage.googleapis.com/jakroo-storage/slider/uhc-ladies.jpg" />
           </div>
         </Slider>
-      </CarouselContent>
+      </CarouselContent> */}
     </Container>
   )
 }

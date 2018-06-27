@@ -3,10 +3,18 @@
  */
 import styled from 'styled-components'
 
+interface ContainerProps {
+  height: number
+}
+
 export const Container = styled.div`
   overflow: auto;
-  height: 333px;
-  padding: 0px 32px;
+  height: ${({ height }: ContainerProps) => height}vh;
+  padding: 0px 32px 32px 32px;
+
+  @media (min-height: 800px) {
+    height: 50vh;
+  }
 `
 
 export const Dot = styled.div`

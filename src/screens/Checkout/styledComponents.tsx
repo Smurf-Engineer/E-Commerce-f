@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Steps from 'antd/lib/steps'
 
 const primaryColor = '#4a90e2'
 
@@ -96,3 +97,19 @@ export const PlaceOrderButton = styled(Button)`
     color: #fff;
   }
 `
+
+interface StepProps {
+  clickable: boolean
+}
+
+export const Step = styled(Steps.Step)`
+  cursor: ${({ clickable }: StepProps) => (clickable ? 'pointer' : 'default')};
+`
+
+export const paypalButtonStyle = {
+  label: 'paypal',
+  size: 'responsive',
+  color: 'blue',
+  shape: 'rect',
+  tagline: false
+}

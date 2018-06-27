@@ -6,7 +6,6 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import get from 'lodash/get'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -23,17 +22,16 @@ import {
   EmptyItems,
   EmptyTitle,
   EmptyDescription,
-  StyledEmptyButton
+  StyledEmptyButton,
+  AddOneMoreMessage,
+  DeleteConfirmMessage
 } from './styledComponents'
 import ListItem from '../../components/CartListItem'
 
 import Ordersummary from '../../components/OrderSummary'
-import {
-  Product,
-  CartItemDetail,
-  ItemDetailType,
-  PriceRange
-} from '../../types/common'
+import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
+import Modal from 'antd/lib/modal/Modal'
+import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
 interface CartItems {
   product: Product
@@ -48,6 +46,7 @@ interface CartItems {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   cart: CartItems[]
+  showDeleteLastItemModal: boolean
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -81,6 +80,7 @@ interface Props extends RouteComponentProps<any> {
     quantity: number
   ) => void
   setInitialData: () => void
+  showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
 }
@@ -92,12 +92,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   handleCheckout = () => {
-    const { history } = this.props
+    const { history, cart } = this.props
+    // history.push('/checkout', { cart })
     const userLogged = !!localStorage.getItem('user')
     if (!userLogged) {
       window.location.replace('/shopping-cart?login=open')
     } else {
-      history.push('/checkout')
+      history.push('/checkout', { cart })
     }
   }
 
@@ -120,8 +121,26 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   handleRemoveItem = (event: React.MouseEvent<EventTarget>, index: number) => {
-    const { removeItemAction } = this.props
+    const { showDeleteLastItemModalAction, removeItemAction, cart } = this.props
+    if (cart.length === 1) {
+      showDeleteLastItemModalAction(true)
+      return
+    }
     removeItemAction(index)
+  }
+
+  handleOnRemoveLastItem = () => {
+    const { removeItemAction, showDeleteLastItemModalAction } = this.props
+    removeItemAction(0)
+    showDeleteLastItemModalAction(false)
+  }
+
+  toggleDeleteLastItemModal = () => {
+    const {
+      showDeleteLastItemModalAction,
+      showDeleteLastItemModal
+    } = this.props
+    showDeleteLastItemModalAction(!showDeleteLastItemModal)
   }
 
   handledeleteItemDetail = (
@@ -178,104 +197,67 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
-    let markslider = { quantity: '0', price: 0 }
-    for (const priceRangeItem of priceRanges) {
-      if (!totalItems) {
-        break
-      }
-
-      if (!priceRangeItem.quantity) {
-        break
-      }
-
-      const val =
-        priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
-          ? 1
-          : priceRangeItem.quantity
-            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-            : 0
-
-      if (val >= totalItems) {
-        markslider = priceRangeItem
-        break
-      }
-    }
-    return markslider
-  }
-
   render() {
-    const { intl, history, cart } = this.props
+    const { intl, history, cart, showDeleteLastItemModal } = this.props
     const formatMessage = intl.formatMessage
 
-    const renderList = cart
-      ? cart.map((cartItem, index) => {
-          return (
-            <ListItem
-              formatMessage={formatMessage}
-              key={index}
-              title={
-                cartItem.designId
-                  ? cartItem.designName || 'Design'
-                  : cartItem.product.name
-              }
-              description={
-                cartItem.designId
-                  ? `${cartItem.product.name} ${
-                      cartItem.product.shortDescription
-                    }`
-                  : cartItem.product.shortDescription
-              }
-              price={cartItem.product.priceRange[0]}
-              image={
-                cartItem.designId
-                  ? cartItem.designImage || ''
-                  : cartItem.product.images[0].front
-              }
-              cartItem={cartItem}
-              handleAddItemDetail={this.handleAddItemDetail}
-              handledeleteItemDetail={this.handledeleteItemDetail}
-              itemIndex={index}
-              setLabelItemDetail={this.handleSetDetailLabel}
-              setDetailQuantity={this.handleSetDetailQuantity}
-              setDetailFit={this.handleSetDetailFit}
-              setDetailGender={this.handleSetDetailGender}
-              setDetailSize={this.handleSetDetailSize}
-              removeItem={this.handleRemoveItem}
-            />
-          )
-        })
-      : null
+    const shoppingCartData = getShoppingCartData(cart)
+    const {
+      total,
+      totalWithoutDiscount,
+      priceRangeToApply,
+      show25PercentMessage,
+      nameOfFirstProduct,
+      numberOfProducts
+    } = shoppingCartData
 
-    let totalSum = 0
-    if (cart) {
-      const total = cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
-          return itemDetail.quantity
-        })
+    const cartItems = cart || []
+    const renderList = cartItems.map((cartItem, index) => {
+      return (
+        <ListItem
+          formatMessage={formatMessage}
+          key={index}
+          title={
+            cartItem.designId
+              ? cartItem.designName || 'Design'
+              : cartItem.product.name
+          }
+          description={
+            cartItem.designId
+              ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
+              : cartItem.product.shortDescription
+          }
+          price={cartItem.product.priceRange[priceRangeToApply]}
+          image={
+            cartItem.designId
+              ? cartItem.designImage || ''
+              : cartItem.product.images[0].front
+          }
+          cartItem={cartItem}
+          handleAddItemDetail={this.handleAddItemDetail}
+          handledeleteItemDetail={this.handledeleteItemDetail}
+          itemIndex={index}
+          setLabelItemDetail={this.handleSetDetailLabel}
+          setDetailQuantity={this.handleSetDetailQuantity}
+          setDetailFit={this.handleSetDetailFit}
+          setDetailGender={this.handleSetDetailGender}
+          setDetailSize={this.handleSetDetailSize}
+          removeItem={this.handleRemoveItem}
+        />
+      )
+    })
 
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        const productPriceRanges = get(cartItem, 'product.priceRange', [])
-
-        let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
-
-        priceRange =
-          priceRange.price === 0
-            ? productPriceRanges[productPriceRanges.length - 1]
-            : priceRange
-
-        return priceRange.price * quantitySum
-      })
-
-      totalSum = total.reduce((a, b) => a + b, 0)
-    }
+    const sideHeaderMessage = show25PercentMessage ? (
+      <AddOneMoreMessage>
+        {formatMessage(messages.addOneMoreMessage)}
+      </AddOneMoreMessage>
+    ) : null
 
     return (
       <Layout {...{ history, intl }}>
         <div>
           <Title>
-            {`${formatMessage(messages.title)} (${cart ? cart.length : 0})`}
+            {`${formatMessage(messages.title)} (${numberOfProducts})`}
           </Title>
           {!cart || cart.length < 1 ? (
             <EmptyContainer>
@@ -294,10 +276,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           ) : (
             <Container>
               <SideBar>
+                {sideHeaderMessage}
                 <Ordersummary
-                  total={totalSum}
-                  subtotal={totalSum}
-                  {...{ formatMessage }}
+                  subtotal={total}
+                  {...{ formatMessage, totalWithoutDiscount, total }}
                 />
                 <ButtonWrapper>
                   <CheckoutButton type="primary" onClick={this.handleCheckout}>
@@ -310,6 +292,20 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               </Content>
             </Container>
           )}
+          <Modal
+            visible={showDeleteLastItemModal}
+            title={formatMessage(messages.titleDeleteModal)}
+            okText={formatMessage(messages.delete)}
+            onOk={this.handleOnRemoveLastItem}
+            onCancel={this.toggleDeleteLastItemModal}
+          >
+            <DeleteConfirmMessage>
+              <FormattedMessage
+                {...messages.messageDeleteItem}
+                values={{ nameOfFirstProduct }}
+              />
+            </DeleteConfirmMessage>
+          </Modal>
         </div>
       </Layout>
     )

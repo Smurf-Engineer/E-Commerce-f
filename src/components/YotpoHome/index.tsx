@@ -28,7 +28,7 @@ class YotpoHome extends React.Component<Props, any> {
     try {
       const yotpoGrid = ReactDOM.findDOMNode(this.yotpo)
       yotpoGrid.setAttribute('class', 'yotpo yotpo-pictures-gallery')
-      yotpoGrid.setAttribute('data-layout-rows', '2')
+      yotpoGrid.setAttribute('data-layout-rows', '1')
       yotpoGrid.setAttribute('data-spacing', '1')
       yotpoGrid.setAttribute('data-source', 'all')
       yotpoGrid.setAttribute('data-title', '0')

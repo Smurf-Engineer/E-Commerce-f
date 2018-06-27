@@ -12,11 +12,10 @@ import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
 import forEach from 'lodash/forEach'
 import get from 'lodash/get'
-import isEmpty from 'lodash/isEmpty'
+import cloneDeep from 'lodash/cloneDeep'
 import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
-import { resetReducerData as resetReducerShoppingCartAction } from '../ShoppingCartPage/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
 import {
@@ -27,7 +26,9 @@ import {
   SummaryContainer,
   ContinueButton,
   StepWrapper,
-  PlaceOrderButton
+  PlaceOrderButton,
+  paypalButtonStyle,
+  Step
   // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
@@ -42,8 +43,7 @@ import {
   StripeCardData
 } from '../../types/common'
 import config from '../../config/index'
-
-const { Step } = Steps
+import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
 interface CartItems {
   product: Product
@@ -107,23 +107,19 @@ interface Props extends RouteComponentProps<any> {
   resetReducerShoppingCartAction: () => void
   getTotalItemsIncart: () => void
   setPaymentMethodAction: (method: string) => void
-  cart: CartItems[]
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
 class Checkout extends React.Component<Props, {}> {
   componentWillUnmount() {
-    const {
-      resetReducerAction,
-      resetReducerShoppingCartAction: resetReducerCartAction
-    } = this.props
+    const { resetReducerAction } = this.props
     resetReducerAction()
-    resetReducerCartAction()
   }
   render() {
     const {
       intl,
       history,
+      location,
       currentStep,
       hasError,
       firstName,
@@ -167,7 +163,6 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingBillingAction,
       setStripeCardDataAction,
       setPaymentMethodAction,
-      cart,
       paymentMethod
     } = this.props
 
@@ -199,38 +194,28 @@ class Checkout extends React.Component<Props, {}> {
       cardBrand
     }
 
-    if (isEmpty(cart)) {
+    const { state: stateLocation } = location
+
+    if (!stateLocation || !stateLocation.cart) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
-    let totalSum = 0
-    if (cart) {
-      const total = cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
-          return itemDetail.quantity
-        })
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-        return cartItem.product.priceRange[0].price * quantitySum
-      })
-
-      totalSum = total.reduce((a, b) => a + b, 0)
-    }
+    const shoppingCart = stateLocation.cart as CartItems[]
+    const shoppingCartData = getShoppingCartData(shoppingCart)
+    const { total, totalWithoutDiscount } = shoppingCartData
 
     const steps = stepperTitles.map((step, key) => (
-      <Step title={step} {...{ key }} />
+      <Step
+        clickable={currentStep > key}
+        onClick={this.handleOnStepClick(key)}
+        title={step}
+        {...{ key }}
+      />
     ))
 
     const paypalClient = {
       sandbox: config.paypalClientId,
       production: ''
-    }
-
-    const paypalButtonStyle = {
-      label: 'paypal',
-      size: 'responsive',
-      color: 'blue',
-      shape: 'rect',
-      tagline: false
     }
 
     const orderButton =
@@ -239,13 +224,13 @@ class Checkout extends React.Component<Props, {}> {
           env={config.paypalEnv}
           client={paypalClient}
           currency={'USD'}
-          total={totalSum}
           shipping={1}
           onSuccess={this.onPaypalSuccess}
           onCancel={this.onPaypalCancel}
           onError={this.onPaypalError}
           style={paypalButtonStyle}
           paymentOptions={{ intent: 'authorize' }}
+          {...{ total }}
         />
       ) : (
         <PlaceOrderButton
@@ -280,13 +265,11 @@ class Checkout extends React.Component<Props, {}> {
                     showAddressFormAction,
                     indexAddressSelected
                   }}
+                  showContent={currentStep === 0}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                 />
                 <Payment
-                  formatMessage={intl.formatMessage}
-                  hasError={billingHasError}
-                  nextStep={this.nextStep}
                   {...{
                     billingAddress,
                     cardHolderName,
@@ -303,27 +286,32 @@ class Checkout extends React.Component<Props, {}> {
                     setStripeCardDataAction,
                     setPaymentMethodAction
                   }}
+                  showContent={currentStep === 1}
+                  formatMessage={intl.formatMessage}
+                  hasError={billingHasError}
+                  nextStep={this.nextStep}
                 />
                 <Review
-                  formatMessage={intl.formatMessage}
-                  goToStep={this.handleOnGoToStep}
                   {...{
                     shippingAddress,
                     billingAddress,
                     cardData,
                     cardHolderName,
-                    cart,
                     paymentMethod
                   }}
+                  cart={shoppingCart}
+                  showContent={currentStep === 2}
+                  formatMessage={intl.formatMessage}
+                  goToStep={this.handleOnGoToStep}
                 />
               </SwipeableViews>
             </StepsContainer>
             <SummaryContainer>
               <OrderSummary
-                total={totalSum}
-                subtotal={totalSum}
+                subtotal={total}
                 discount={10}
                 formatMessage={intl.formatMessage}
+                {...{ total, totalWithoutDiscount }}
               />
               {currentStep === 2 ? orderButton : null}
             </SummaryContainer>
@@ -336,6 +324,13 @@ class Checkout extends React.Component<Props, {}> {
         </Container>
       </Layout>
     )
+  }
+
+  handleOnStepClick = (step: number) => () => {
+    const { currentStep } = this.props
+    if (step < currentStep) {
+      this.handleOnGoToStep(step + 1)
+    }
   }
 
   nextStep = () => {
@@ -431,6 +426,7 @@ class Checkout extends React.Component<Props, {}> {
 
   handleOnPlaceOrder = async (event?: any, paypalObj?: object) => {
     const {
+      location,
       placeOrder,
       firstName,
       lastName,
@@ -451,7 +447,6 @@ class Checkout extends React.Component<Props, {}> {
       billingZipCode,
       billingPhone,
       stripeToken,
-      cart,
       indexAddressSelected,
       sameBillingAndShipping,
       setLoadingPlaceOrderAction,
@@ -489,12 +484,17 @@ class Checkout extends React.Component<Props, {}> {
       this.saveAddress(billingAddress)
     }
 
+    const {
+      state: { cart }
+    } = location
+    const shoppingCart = cloneDeep(cart) as CartItems[]
+
     /*
     * TODO: Find a better solution to unset these properties
     * from cart Object.
     * Maybe don't save them on localStorage
     */
-    forEach(cart, cartItem => {
+    forEach(shoppingCart, cartItem => {
       unset(cartItem, 'designImage')
       unset(cartItem, 'designName')
       unset(cartItem, 'product.shortDescription')
@@ -521,7 +521,7 @@ class Checkout extends React.Component<Props, {}> {
     const orderObj = {
       paymentMethod,
       token: stripeToken,
-      cart,
+      cart: shoppingCart,
       shippingAddress,
       billingAddress,
       paypalData: paypalObj || null
@@ -546,12 +546,7 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  const checkout = state.get('checkout').toJS()
-  const shopppingCart = state.get('shoppingCartPage').toJS()
-
-  return { ...checkout, ...shopppingCart }
-}
+const mapStateToProps = (state: any) => state.get('checkout').toJS()
 
 const CheckoutEnhance = compose(
   injectIntl,
@@ -561,8 +556,7 @@ const CheckoutEnhance = compose(
     mapStateToProps,
     {
       ...checkoutActions,
-      getTotalItemsIncart,
-      resetReducerShoppingCartAction
+      getTotalItemsIncart
     }
   )
 )(Checkout)

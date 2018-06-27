@@ -60,5 +60,9 @@ export default defineMessages({
   total: {
     id: 'screens.ShoppingCartPage.total',
     defaultMessage: 'Total'
+  },
+  youSaved: {
+    id: 'screens.ShoppingCartPage.youSaved',
+    defaultMessage: 'You Saved'
   }
 })

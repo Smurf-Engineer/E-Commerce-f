@@ -80,7 +80,6 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderThumbnailList = null
     let renderLoading = null
     if (designs) {
-      total = designs.length.toString()
       thumbnailsList = designs.map(
         ({ id, name, product, image, createdAt, shortId }, index) => {
           return (
@@ -197,7 +196,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     return (
       <Container>
         <HeadRow withoutPadding={!!withoutPadding}>
-          <TotalItems>{`${total} Items`}</TotalItems>
+          {total ? <TotalItems>{`${total} Items`}</TotalItems> : null}
           {sortOptions && (
             <SortOptions>
               <SortByLabel>{formatMessage(messages.sortByLabel)}</SortByLabel>

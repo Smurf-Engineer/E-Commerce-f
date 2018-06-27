@@ -59,9 +59,6 @@ const ProductSlide = ({
   hideQuickView
 }: Props) => {
   if (image) {
-    console.log('----------entro por image-----------------')
-  }
-  if (image) {
     return (
       <ImageContainer
         {...{ onMouseEnter, onMouseLeave, isTopProduct, hideCustomButton }}

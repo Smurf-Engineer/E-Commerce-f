@@ -29,7 +29,6 @@ const TemplateDownloadItem = ({
   fileUrl,
   formatMessage
 }: Props) => {
-  console.log(imageSource)
   return (
     <Container>
       <StyledImage src={imageSource} />

@@ -4,15 +4,19 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  user-select: none;
-  cursor: pointer;
-  margin: 12px 32px;
-  padding-bottom: 10px;
+  margin: 0px 32px;
+  padding: 12px 2px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #dcdcdc;
+  user-select: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #fafafa;
+  }
 `
 
 export const Title = styled.div`
