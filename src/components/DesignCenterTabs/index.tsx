@@ -9,20 +9,22 @@ import { Container, Divider, Row, View, Tabs } from './styledComponents'
 
 interface Props {
   currentTab: number
-  onSelectTab?: (index: number) => void
+  onSelectTab: (index: number) => void
 }
 
 const steps = ['theme', 'style', 'customize', 'preview']
 
 const DesignCenterTabs = ({ currentTab, onSelectTab }: Props) => {
-  const handleOnSelectTab = (index: any) => () =>
-    onSelectTab ? onSelectTab(index) : null
+  const handleOnSelectTab = (index: any) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => (
     <Tab
       {...{ index }}
       key={index}
       selected={currentTab === index}
-      onSelectTab={handleOnSelectTab(index)}
+      activeOnClick={
+        currentTab > index && (currentTab === 1 || currentTab === 2)
+      }
+      onSelectTab={currentTab > index ? handleOnSelectTab(index) : undefined}
     >
       <FormattedMessage {...messages[step]} />
     </Tab>

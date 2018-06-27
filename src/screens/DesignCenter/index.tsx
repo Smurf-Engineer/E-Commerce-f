@@ -175,7 +175,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       teamStoreId,
       openAddToTeamStoreModalAction,
       intl: { formatMessage },
-      designName,
+      designName
     } = this.props
 
     const storeName = itemToAdd.team_store_name
@@ -188,7 +188,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
       const responseMessage = get(data, 'addTeamStoreItem.message')
       if (responseMessage) {
-        Message.success(formatMessage(messages.addedToStore, {designName, storeName}))
+        Message.success(
+          formatMessage(messages.addedToStore, { designName, storeName })
+        )
       }
       openAddToTeamStoreModalAction(false)
     } catch (error) {
@@ -198,8 +200,11 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOnAddToCart = () => {
-    const { designName, intl: {formatMessage} } = this.props
-    Message.success(formatMessage(messages.addedToCart, {designName}))
+    const {
+      designName,
+      intl: { formatMessage }
+    } = this.props
+    Message.success(formatMessage(messages.addedToCart, { designName }))
   }
 
   render() {
@@ -278,7 +283,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs {...{ currentTab }} />
+          <Tabs onSelectTab={this.handleOnSelectTab} {...{ currentTab }} />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}
@@ -369,7 +374,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openAddToStoreModal,
                 setItemToAddAction,
                 teamStoreId,
-                editDesignAction,
+                editDesignAction
               }}
               onAddToCart={this.handleOnAddToCart}
               formatMessage={intl.formatMessage}
