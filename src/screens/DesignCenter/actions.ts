@@ -5,6 +5,7 @@ import {
   DEFAULT_ACTION,
   CLEAR_STORE_ACTION,
   SET_CURRENT_TAB_ACTION,
+  EDIT_DESIGN_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
   SET_PALETTE_ACTION,
@@ -236,4 +237,8 @@ export const openPaletteModalAction = (
 export const openResetDesignModalAction = (open: boolean) => ({
   type: OPEN_RESET_DESIGN_MODAL,
   open
+})
+
+export const editDesignAction = () => ({
+  type: EDIT_DESIGN_ACTION
 })

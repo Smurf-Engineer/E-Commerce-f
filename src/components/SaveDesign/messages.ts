@@ -31,7 +31,7 @@ export default defineMessages({
   },
   saveSuccess: {
     id: 'components.SaveDesign.saveSuccess',
-    defaultMessage: 'Design saved'
+    defaultMessage: '"{designName}" has been saved to your locker'
   },
   save: {
     id: 'components.SaveDesign.save',
@@ -49,5 +49,6 @@ export default defineMessages({
     id: 'components.SaveDesign.checkCopyright',
     defaultMessage:
       'I hereby agree that I have permission and the rights to  use all images I have uploaded to this design'
-  }
+  },
+  
 })

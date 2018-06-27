@@ -100,6 +100,12 @@
   "components.Render3D.productOnly": "Product Only",
   "components.Render3D.withAvatar": "With Avatar",
   "components.Render3D.onBike": "On Bike",
+  "components.Render3D.modalWarningTitle": "QUALITY WARNING",
+  "components.Render3D.modalWarningButtonText": "Got it!",
+  "components.Render3D.modalFontMessage":
+    "Your file contains fonts, which will cause your text to look wrong. Please convert the font to outlined paths, you can add text using the designer text option. If none of this options work for you please e-mail or give us a call at 1.800.485.7067 ext 109",
+  "components.Render3D.modalResolutionMessage":
+    "The resolution of your graphic in its current size is too poor",
   "components.forgotPassword.emailLabel": "Email",
   "components.forgotPassword.invalidEmailLabel": "Invalid email!",
   "components.ResetPassword.passwordLabel": "Password",

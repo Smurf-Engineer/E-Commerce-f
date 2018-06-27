@@ -36,7 +36,8 @@ import {
   REMOVE_CANVAS_ELEMENT_ACTION,
   SET_TEXT_FORMAT_ACTION,
   OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
-  OPEN_RESET_DESIGN_MODAL
+  OPEN_RESET_DESIGN_MODAL,
+  EDIT_DESIGN_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -176,6 +177,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         colors: List.of(...colorsInit),
         openResetDesignModal: false
       })
+    case EDIT_DESIGN_ACTION:
+      return state.merge({
+        currentTab: 2,
+        designName: '',
+        checkedTerms: false
+      })
     case SET_SWIPING_TAB_ACTION:
       return state.set('swipingView', action.isSwiping)
     case SET_THEME_SELECTED_ACTION:
@@ -210,7 +217,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SAVE_DESIGN_LOADING:
       return state.set('saveDesignLoading', action.loading)
     case CLEAR_DESIGN_INFO:
-      return state.merge({ checkedTerms: false, designName: '' })
+      return state.merge({ checkedTerms: false })
     case SET_TEXT_ACTION:
       return state.set('text', action.text)
     case OPEN_ADD_TOTEAMSTORE:

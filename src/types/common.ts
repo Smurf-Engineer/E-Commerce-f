@@ -111,6 +111,7 @@ export type TeamStoreItemtype = {
   visible: boolean
   totalOrders: number
   itemOrder?: number
+  team_store_name?: string
 }
 
 export type DesignResultType = {

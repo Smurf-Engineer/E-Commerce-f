@@ -12,6 +12,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import get from 'lodash/get'
+import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -118,6 +119,7 @@ interface Props extends RouteComponentProps<any> {
   setTextFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
+  editDesignAction: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -171,8 +173,14 @@ export class DesignCenter extends React.Component<Props, {}> {
       addItemToStore,
       itemToAdd,
       teamStoreId,
-      openAddToTeamStoreModalAction
+      openAddToTeamStoreModalAction,
+      intl: { formatMessage },
+      designName,
     } = this.props
+
+    const storeName = itemToAdd.team_store_name
+
+    unset(itemToAdd, 'team_store_name')
 
     try {
       const { data } = await addItemToStore({
@@ -180,12 +188,18 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
       const responseMessage = get(data, 'addTeamStoreItem.message')
       if (responseMessage) {
-        Message.success(responseMessage)
+        Message.success(formatMessage(messages.addedToStore, {designName, storeName}))
       }
       openAddToTeamStoreModalAction(false)
     } catch (error) {
-      Message.error(error)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
     }
+  }
+
+  handleOnAddToCart = () => {
+    const { designName, intl: {formatMessage} } = this.props
+    Message.success(formatMessage(messages.addedToCart, {designName}))
   }
 
   render() {
@@ -229,7 +243,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       savedDesignId,
       checkedTerms,
       setCheckedTermsAction,
-      clearDesignInfoAction,
       saveDesignLoadingAction,
       setTextAction,
       openAddToTeamStoreModalAction,
@@ -249,7 +262,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModalAction,
-      openResetDesignModal
+      openResetDesignModal,
+      editDesignAction
     } = this.props
 
     if (!search) {
@@ -314,7 +328,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openPaletteModalAction,
                 myPaletteModals,
                 openResetDesignModal,
-                openResetDesignModalAction
+                openResetDesignModalAction,
+                designName
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
@@ -353,12 +368,13 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openAddToTeamStoreModalAction,
                 openAddToStoreModal,
                 setItemToAddAction,
-                teamStoreId
+                teamStoreId,
+                editDesignAction,
               }}
+              onAddToCart={this.handleOnAddToCart}
               formatMessage={intl.formatMessage}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
-              onSelectTab={this.handleOnSelectTab}
               addItemToStore={this.saveItemToStore}
             />
           </SwipeableViews>
@@ -375,7 +391,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             savedDesignId={savedDesignId}
             checkedTerms={checkedTerms}
             setCheckedTerms={setCheckedTermsAction}
-            clearDesignInfo={clearDesignInfoAction}
+            // clearDesignInfo={clearDesignInfoAction}
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />

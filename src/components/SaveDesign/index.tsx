@@ -38,12 +38,12 @@ interface Props {
   saveDesignLoading: boolean
   requestClose: () => void
   onDesignName: (name: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, values?: {}) => string
   saveDesignNameMutation: (variables: {}) => void
   saveDesignChangesMutation: (variables: {}) => void
   afterSaveDesign: (id: string) => void | undefined
   setCheckedTerms: (checked: boolean) => void
-  clearDesignInfo: () => void
+  // clearDesignInfo: () => void
   setSaveDesignLoading: (loading: boolean) => void
 }
 
@@ -99,7 +99,7 @@ export class SaveDesign extends React.Component<Props, {}> {
 
       if (data) {
         const { shortId } = data
-        message.success(formatMessage(messages.saveSuccess))
+        message.success(formatMessage(messages.saveSuccess, {designName}))
         afterSaveDesign(shortId)
         requestClose()
       }
@@ -156,10 +156,10 @@ export class SaveDesign extends React.Component<Props, {}> {
     setCheckedTerms(checked)
   }
 
-  handleClose = () => {
-    const { clearDesignInfo } = this.props
-    clearDesignInfo()
-  }
+  // handleClose = () => {
+  //   const { clearDesignInfo } = this.props
+  //   clearDesignInfo()
+  // }
 
   render() {
     const {
@@ -180,7 +180,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           width={'30%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
-          afterClose={this.handleClose}
+          // afterClose={this.handleClose}
         >
           <Title>
             <FormattedMessage {...messages.modalTitle} />
