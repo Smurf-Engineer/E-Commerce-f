@@ -37,7 +37,9 @@ import {
   SET_TEXT_FORMAT_ACTION,
   OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
   OPEN_RESET_DESIGN_MODAL,
-  EDIT_DESIGN_ACTION
+  EDIT_DESIGN_ACTION,
+  OPEN_NEW_THEME_MODAL,
+  OPEN_NEW_STYLE_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -84,7 +86,9 @@ export const initialState = fromJS({
     openApplyPaletteModal: false,
     idPaletteToExecuteAction: -1
   },
-  openResetDesignModal: false
+  openResetDesignModal: false,
+  openNewThemeModal: false,
+  openNewStyleModal: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -281,6 +285,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case OPEN_RESET_DESIGN_MODAL:
       return state.set('openResetDesignModal', action.open)
+    case OPEN_NEW_THEME_MODAL:
+      return state.set('openNewThemeModal', action.open)
+    case OPEN_NEW_STYLE_MODAL:
+      return state.set('openNewStyleModal', action.open)
     default:
       return state
   }

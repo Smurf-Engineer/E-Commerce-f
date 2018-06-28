@@ -80,6 +80,8 @@ interface Props extends RouteComponentProps<any> {
   textFormat: TextFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
+  openNewThemeModal: boolean
+  openNewStyleModal: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -119,6 +121,8 @@ interface Props extends RouteComponentProps<any> {
   setTextFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
+  openNewThemeModalAction: (open: boolean) => void
+  openNewStyleModalAction: (open: boolean) => void
   editDesignAction: () => void
 }
 
@@ -268,7 +272,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       myPaletteModals,
       openResetDesignModalAction,
       openResetDesignModal,
-      editDesignAction
+      editDesignAction,
+      openNewThemeModal,
+      openNewThemeModalAction,
+      openNewStyleModal,
+      openNewStyleModalAction
     } = this.props
 
     if (!search) {
@@ -296,7 +304,12 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 0 && (
                 <ThemeTab
-                  {...{ loadingModel }}
+                  {...{
+                    loadingModel,
+                    openNewThemeModal,
+                    openNewThemeModalAction
+                  }}
+                  formatMessage={intl.formatMessage}
                   onSelectTheme={setThemeAction}
                 />
               )}
@@ -309,8 +322,10 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 1 && (
                 <StyleTab
+                  formatMessage={intl.formatMessage}
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
+                  {...{ openNewStyleModal, openNewStyleModalAction }}
                 />
               )}
             </div>

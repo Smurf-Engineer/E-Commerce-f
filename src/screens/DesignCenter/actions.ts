@@ -36,7 +36,9 @@ import {
   REMOVE_CANVAS_ELEMENT_ACTION,
   SET_TEXT_FORMAT_ACTION,
   OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
-  OPEN_RESET_DESIGN_MODAL
+  OPEN_RESET_DESIGN_MODAL,
+  OPEN_NEW_THEME_MODAL,
+  OPEN_NEW_STYLE_MODAL
 } from './constants'
 import {
   AnyAction,
@@ -241,4 +243,14 @@ export const openResetDesignModalAction = (open: boolean) => ({
 
 export const editDesignAction = () => ({
   type: EDIT_DESIGN_ACTION
+})
+
+export const openNewThemeModalAction = (open: boolean) => ({
+  type: OPEN_NEW_THEME_MODAL,
+  open
+})
+
+export const openNewStyleModalAction = (open: boolean) => ({
+  type: OPEN_NEW_STYLE_MODAL,
+  open
 })

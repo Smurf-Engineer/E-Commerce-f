@@ -18,10 +18,18 @@ describe('<DesignCenterStyle />', () => {
         styles: []
       }
     }
+    const formatMessage = (messageDescriptor: any) => ''
+    const openNewStyleModalAction = (open: boolean) => {}
+    const openNewStyleModal = false
     ReactDOM.render(
       <IntlProvider {...props}>
         <DesignCenterStyle
-          {...{ data }}
+          {...{
+            data,
+            formatMessage,
+            openNewStyleModalAction,
+            openNewStyleModal
+          }}
           onSelectStyle={testFunc}
           onSelectStyleComplexity={() => {}}
         />
