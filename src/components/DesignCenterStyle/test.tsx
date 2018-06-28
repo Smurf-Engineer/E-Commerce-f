@@ -26,6 +26,7 @@ describe('<DesignCenterStyle />', () => {
       idStyle: -1
     }
     const currentStyle = 0
+    const designHasChanges = false
     ReactDOM.render(
       <IntlProvider {...props}>
         <DesignCenterStyle
@@ -34,7 +35,8 @@ describe('<DesignCenterStyle />', () => {
             data,
             formatMessage,
             openNewStyleModalAction,
-            styleModalData
+            styleModalData,
+            designHasChanges
           }}
           onSelectStyle={testFunc}
           onSelectStyleComplexity={() => {}}

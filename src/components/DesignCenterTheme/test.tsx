@@ -16,7 +16,12 @@ describe('<DesignCenterGrid />', () => {
     }
     const formatMessage = (messageDescriptor: any) => ''
     const openNewThemeModalAction = (open: boolean) => {}
-    const openNewThemeModal = false
+    const themeModalData = {
+      openNewThemeModal: false,
+      themeId: -1
+    }
+    const currentTheme = -1
+    const designHasChanges = false
     ReactDOM.render(
       <DesignCenterGrid
         {...{
@@ -24,7 +29,9 @@ describe('<DesignCenterGrid />', () => {
           data,
           formatMessage,
           openNewThemeModalAction,
-          openNewThemeModal
+          themeModalData,
+          currentTheme,
+          designHasChanges
         }}
         loadingModel={false}
         onSelectTheme={testFunc}

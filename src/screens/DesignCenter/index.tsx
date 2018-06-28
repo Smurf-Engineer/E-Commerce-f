@@ -34,7 +34,8 @@ import {
   CanvasElement,
   CanvasType,
   MyPaletteDesignCenterModals,
-  StyleModalTypes
+  StyleModalType,
+  ThemeModalType
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -72,6 +73,7 @@ interface Props extends RouteComponentProps<any> {
   saveDesignLoading: boolean
   text: string
   style: number
+  themeId: number
   openAddToStoreModal: boolean
   addItemToStore: any
   teamStoreId: string
@@ -81,8 +83,9 @@ interface Props extends RouteComponentProps<any> {
   textFormat: TextFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
-  openNewThemeModal: boolean
-  styleModalData: StyleModalTypes
+  themeModalData: ThemeModalType
+  styleModalData: StyleModalType
+  designHasChanges: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -122,7 +125,7 @@ interface Props extends RouteComponentProps<any> {
   setTextFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
-  openNewThemeModalAction: (open: boolean) => void
+  openNewThemeModalAction: (open: boolean, themeId: number) => void
   openNewStyleModalAction: (
     open: boolean,
     indexStyle?: any,
@@ -238,6 +241,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       designBase64,
       styleColors,
       style,
+      themeId,
       loadingModel,
       designName,
       saveDesignLoading,
@@ -278,10 +282,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       openResetDesignModalAction,
       openResetDesignModal,
       editDesignAction,
-      openNewThemeModal,
+      themeModalData,
       openNewThemeModalAction,
       styleModalData,
-      openNewStyleModalAction
+      openNewStyleModalAction,
+      designHasChanges
     } = this.props
 
     if (!search) {
@@ -296,7 +301,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs onSelectTab={this.handleOnSelectTab} {...{ currentTab }} />
+          <Tabs
+            currentStyle={style}
+            currentTheme={themeId}
+            onSelectTab={this.handleOnSelectTab}
+            {...{ currentTab, designHasChanges }}
+          />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}
@@ -309,13 +319,15 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 0 && (
                 <ThemeTab
-                  {...{
-                    loadingModel,
-                    openNewThemeModal,
-                    openNewThemeModalAction
-                  }}
+                  currentTheme={themeId}
                   formatMessage={intl.formatMessage}
                   onSelectTheme={setThemeAction}
+                  {...{
+                    loadingModel,
+                    themeModalData,
+                    openNewThemeModalAction,
+                    designHasChanges
+                  }}
                 />
               )}
             </div>
@@ -331,7 +343,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                   formatMessage={intl.formatMessage}
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
-                  {...{ styleModalData, openNewStyleModalAction }}
+                  {...{
+                    styleModalData,
+                    openNewStyleModalAction,
+                    designHasChanges
+                  }}
                 />
               )}
             </div>

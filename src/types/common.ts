@@ -488,8 +488,13 @@ export interface MyPaletteDesignCenterModals {
   idPaletteToExecuteAction: number
 }
 
-export interface StyleModalTypes {
+export interface StyleModalType {
   openNewStyleModal: boolean
   indexStyle: any
   idStyle: number
+}
+
+export interface ThemeModalType {
+  openNewThemeModal: boolean
+  themeId: number
 }

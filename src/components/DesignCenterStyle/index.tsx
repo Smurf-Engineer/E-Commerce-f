@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import withLoading from '../WithLoadingData'
-import { QueryProps, StyleModalTypes } from '../../types/common'
+import { QueryProps, StyleModalType } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
 import StyleItem from '../Theme'
@@ -28,8 +28,9 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  styleModalData: StyleModalTypes
+  styleModalData: StyleModalType
   currentStyle: number
+  designHasChanges: boolean
   onSelectStyle: (style: any, id: number, index: any) => void
   onSelectStyleComplexity: (index: number, colors: string[]) => void
   formatMessage: (messageDescriptor: any) => string
@@ -48,16 +49,21 @@ const marks = {
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
-    const { currentStyle, openNewStyleModalAction } = this.props
-    if (currentStyle !== -1 && currentStyle !== index) {
-      openNewStyleModalAction(true, index, id)
+    const indexToApply = index > 2 ? 0 : index
+    const {
+      currentStyle,
+      openNewStyleModalAction,
+      designHasChanges
+    } = this.props
+    if (currentStyle !== -1 && designHasChanges) {
+      openNewStyleModalAction(true, indexToApply, id)
       return
     }
-    this.selectStyle(id, index)
+    this.selectStyle(id, indexToApply)
   }
 
   selectStyle = (id: number, index: any) => {
-    // TODO: see what to do with this commented code
+    // TODO: see what to do with commented code
     const {
       onSelectStyle
       // data: { styles }

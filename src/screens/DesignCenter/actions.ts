@@ -38,7 +38,8 @@ import {
   OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
   OPEN_RESET_DESIGN_MODAL,
   OPEN_NEW_THEME_MODAL,
-  OPEN_NEW_STYLE_MODAL
+  OPEN_NEW_STYLE_MODAL,
+  SET_DESIGN_HAS_CHANGES
 } from './constants'
 import {
   AnyAction,
@@ -251,9 +252,13 @@ export const editDesignAction = () => ({
   type: EDIT_DESIGN_ACTION
 })
 
-export const openNewThemeModalAction = (open: boolean) => ({
+export const openNewThemeModalAction = (
+  open: boolean,
+  themeId: number = -1
+) => ({
   type: OPEN_NEW_THEME_MODAL,
-  open
+  open,
+  themeId
 })
 
 export const openNewStyleModalAction = (
@@ -265,4 +270,9 @@ export const openNewStyleModalAction = (
   open,
   indexStyle,
   idStyle
+})
+
+export const setDesignHasChangesAction = (hasChanges: boolean) => ({
+  type: SET_DESIGN_HAS_CHANGES,
+  hasChanges
 })

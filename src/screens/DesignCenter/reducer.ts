@@ -39,7 +39,8 @@ import {
   OPEN_RESET_DESIGN_MODAL,
   EDIT_DESIGN_ACTION,
   OPEN_NEW_THEME_MODAL,
-  OPEN_NEW_STYLE_MODAL
+  OPEN_NEW_STYLE_MODAL,
+  SET_DESIGN_HAS_CHANGES
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -57,7 +58,7 @@ export const initialState = fromJS({
   undoChanges: [],
   redoChanges: [],
   swipingView: false,
-  themeId: null,
+  themeId: -1,
   style: -1,
   openShareModal: false,
   openSaveDesign: false,
@@ -87,12 +88,16 @@ export const initialState = fromJS({
     idPaletteToExecuteAction: -1
   },
   openResetDesignModal: false,
-  openNewThemeModal: false,
+  themeModalData: {
+    openNewThemeModal: false,
+    themeId: -1
+  },
   styleModalData: {
     openNewStyleModal: false,
     indexStyle: -1,
     idStyle: -1
-  }
+  },
+  designHasChanges: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -126,7 +131,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         colors: List.of(...updatedColors),
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case SET_PALETTE_ACTION: {
@@ -145,7 +151,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         colors: List.of(...colors),
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case DESIGN_UNDO_ACTION: {
@@ -197,7 +204,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         themeId: action.id,
         swipingView: true,
-        currentTab: 1
+        currentTab: 1,
+        themeModalData: {
+          openNewThemeModal: false,
+          themeId: action.id
+        },
+        designHasChanges: false
       })
     case SET_STYLE_SELECTED_ACTION: {
       return state.merge({
@@ -208,7 +220,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           openNewStyleModal: false,
           indexStyle: action.index,
           idStyle: action.id
-        }
+        },
+        designHasChanges: false
       })
     }
     case SET_STYLE_COMPLEXITY_ACTION:
@@ -252,7 +265,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.merge({
         canvas: updatedCanvas,
-        text: ''
+        text: '',
+        designHasChanges: true
       })
     }
     case SET_SELECTED_ELEMENT_ACTION: {
@@ -296,8 +310,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case OPEN_RESET_DESIGN_MODAL:
       return state.set('openResetDesignModal', action.open)
-    case OPEN_NEW_THEME_MODAL:
-      return state.set('openNewThemeModal', action.open)
+    case OPEN_NEW_THEME_MODAL: {
+      const { open, themeId } = action
+      const newThemeId =
+        themeId !== -1 ? themeId : state.getIn(['themeModalData', 'themeId'])
+      const themeModalData = {
+        openNewThemeModal: open,
+        themeId: newThemeId
+      }
+      return state.set('themeModalData', themeModalData)
+    }
     case OPEN_NEW_STYLE_MODAL: {
       const { open, indexStyle, idStyle } = action
       const newIndexStyle =
@@ -313,6 +335,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('styleModalData', styleModalData)
     }
+    case SET_DESIGN_HAS_CHANGES:
+      return state.set('designHasChanges', action.hasChanges)
     default:
       return state
   }

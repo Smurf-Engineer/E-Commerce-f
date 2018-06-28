@@ -12,7 +12,13 @@ describe('<DesignCenterTabs />', () => {
     const props = { locale: 'en' }
     ReactDOM.render(
       <IntlProvider {...props}>
-        <DesignCenterTabs currentTab={0} onSelectTab={() => {}} />
+        <DesignCenterTabs
+          designHasChanges={false}
+          currentTheme={0}
+          currentStyle={0}
+          currentTab={0}
+          onSelectTab={() => {}}
+        />
       </IntlProvider>,
       div
     )

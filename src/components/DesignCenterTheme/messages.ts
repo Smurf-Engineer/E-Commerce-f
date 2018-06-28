@@ -11,12 +11,12 @@ export default defineMessages({
   },
   modalNewStyleTitle: {
     id: 'components.DesignCenterGrid.modalNewStyleTitle',
-    defaultMessage: 'NEW STYLE?'
+    defaultMessage: 'NEW THEME?'
   },
   modalNewStyleMessage: {
     id: 'components.DesignCenterGrid.modalNewStyleMessage',
     defaultMessage:
-      'By selecting a different style you have to restart the customization.'
+      'By selecting a different theme you have to restart the customization.'
   },
   modalNewStyleConfirm: {
     id: 'components.DesignCenterGrid.modalNewStyleConfirm',

@@ -43,3 +43,4 @@ export const OPEN_DELETE_OR_APPLY_PALETTE_MODAL = `${namespace}/OPEN_DELETE_OR_A
 export const OPEN_RESET_DESIGN_MODAL = `${namespace}/OPEN_RESET_DESIGN_MODAL`
 export const OPEN_NEW_THEME_MODAL = `${namespace}/OPEN_NEW_THEME_MODAL`
 export const OPEN_NEW_STYLE_MODAL = `${namespace}/OPEN_NEW_STYLE_MODAL`
+export const SET_DESIGN_HAS_CHANGES = `${namespace}/SET_DESIGN_HAS_CHANGES`
