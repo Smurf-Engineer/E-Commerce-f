@@ -41,12 +41,8 @@ export const DesignCenterGrid = ({
     return <div>Error</div>
   }
 
-  const selectTheme = (id?: number) => {
-    if (id === undefined) {
-      onSelectTheme(themeId)
-      return
-    }
-    onSelectTheme(id)
+  const selectTheme = () => {
+    onSelectTheme(themeId)
   }
 
   const handleOnSelectTheme = (id: number) => {
@@ -54,7 +50,7 @@ export const DesignCenterGrid = ({
       openNewThemeModalAction(true, id)
       return
     }
-    selectTheme(id)
+    onSelectTheme(id)
   }
 
   const cancelReselectTheme = () => {
@@ -76,9 +72,9 @@ export const DesignCenterGrid = ({
         visible={openNewThemeModal}
         title={formatMessage(messages.modalNewStyleTitle)}
         okText={formatMessage(messages.modalNewStyleConfirm)}
-        onOk={() => selectTheme()}
+        onOk={selectTheme}
         cancelText={formatMessage(messages.modalNewStyleCancel)}
-        onCancel={() => cancelReselectTheme()}
+        onCancel={cancelReselectTheme}
         closable={false}
         maskClosable={false}
         destroyOnClose={true}

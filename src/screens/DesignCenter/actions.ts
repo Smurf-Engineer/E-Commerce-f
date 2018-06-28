@@ -140,12 +140,14 @@ export const setDesignNameAction = (param: string): AnyAction => {
 export const setStyleAction = (
   style: any,
   id: number,
-  index: any
+  index: any,
+  colors: string[]
 ): AnyAction => ({
   type: SET_STYLE_SELECTED_ACTION,
   style,
   id,
-  index
+  index,
+  colors
 })
 
 export const setStyleComplexity = (

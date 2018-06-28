@@ -104,7 +104,7 @@ interface Props extends RouteComponentProps<any> {
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
   setThemeAction: (id: number) => void
-  setStyleAction: (style: any, id: number, index: any) => void
+  setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
   saveDesignIdAction: (id: string) => void
@@ -433,7 +433,6 @@ export class DesignCenter extends React.Component<Props, {}> {
             savedDesignId={savedDesignId}
             checkedTerms={checkedTerms}
             setCheckedTerms={setCheckedTermsAction}
-            // clearDesignInfo={clearDesignInfoAction}
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />

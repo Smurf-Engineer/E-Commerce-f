@@ -39,8 +39,7 @@ import {
   OPEN_RESET_DESIGN_MODAL,
   EDIT_DESIGN_ACTION,
   OPEN_NEW_THEME_MODAL,
-  OPEN_NEW_STYLE_MODAL,
-  SET_DESIGN_HAS_CHANGES
+  OPEN_NEW_STYLE_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -216,6 +215,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         swipingView: true,
         currentTab: 2,
         style: action.style,
+        colors: action.colors,
         styleModalData: {
           openNewStyleModal: false,
           indexStyle: action.index,
@@ -335,8 +335,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('styleModalData', styleModalData)
     }
-    case SET_DESIGN_HAS_CHANGES:
-      return state.set('designHasChanges', action.hasChanges)
     default:
       return state
   }

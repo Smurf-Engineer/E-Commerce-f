@@ -31,7 +31,7 @@ interface Props {
   styleModalData: StyleModalType
   currentStyle: number
   designHasChanges: boolean
-  onSelectStyle: (style: any, id: number, index: any) => void
+  onSelectStyle: (style: any, id: number, index: any, colors: string[]) => void
   onSelectStyleComplexity: (index: number, colors: string[]) => void
   formatMessage: (messageDescriptor: any) => string
   openNewStyleModalAction: (
@@ -70,7 +70,8 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     } = this.props
     // const allStyles = styles ? styles.styles || [] : []
     // const colors = allStyles ? allStyles[index].colors : {}
-    onSelectStyle(index, id, index)
+    const colors = dummieData[index].colors
+    onSelectStyle(index, id, index, colors)
   }
 
   reselectStyle = () => {
