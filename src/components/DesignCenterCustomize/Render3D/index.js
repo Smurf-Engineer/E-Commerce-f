@@ -480,7 +480,7 @@ class Render3D extends PureComponent {
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: 2 }, () =>
       setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/jpeg', 0.4)
+        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
         this.saveDesign(dataUrl)
       }, 200)
     )
