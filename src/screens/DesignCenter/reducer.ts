@@ -58,7 +58,7 @@ export const initialState = fromJS({
   redoChanges: [],
   swipingView: false,
   themeId: null,
-  style: 0,
+  style: -1,
   openShareModal: false,
   openSaveDesign: false,
   checkedTerms: false,
@@ -88,7 +88,11 @@ export const initialState = fromJS({
   },
   openResetDesignModal: false,
   openNewThemeModal: false,
-  openNewStyleModal: false
+  styleModalData: {
+    openNewStyleModal: false,
+    indexStyle: -1,
+    idStyle: -1
+  }
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -195,11 +199,18 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         swipingView: true,
         currentTab: 1
       })
-    case SET_STYLE_SELECTED_ACTION:
+    case SET_STYLE_SELECTED_ACTION: {
       return state.merge({
         swipingView: true,
-        currentTab: 2
+        currentTab: 2,
+        style: action.style,
+        styleModalData: {
+          openNewStyleModal: false,
+          indexStyle: action.index,
+          idStyle: action.id
+        }
       })
+    }
     case SET_STYLE_COMPLEXITY_ACTION:
       return state.merge({
         style: action.index,
@@ -287,8 +298,21 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('openResetDesignModal', action.open)
     case OPEN_NEW_THEME_MODAL:
       return state.set('openNewThemeModal', action.open)
-    case OPEN_NEW_STYLE_MODAL:
-      return state.set('openNewStyleModal', action.open)
+    case OPEN_NEW_STYLE_MODAL: {
+      const { open, indexStyle, idStyle } = action
+      const newIndexStyle =
+        indexStyle !== -1
+          ? indexStyle
+          : state.getIn(['styleModalData', 'indexStyle'])
+      const newIdStyle =
+        idStyle !== -1 ? idStyle : state.getIn(['styleModalData', 'idStyle'])
+      const styleModalData = {
+        openNewStyleModal: open,
+        indexStyle: newIndexStyle,
+        idStyle: newIdStyle
+      }
+      return state.set('styleModalData', styleModalData)
+    }
     default:
       return state
   }

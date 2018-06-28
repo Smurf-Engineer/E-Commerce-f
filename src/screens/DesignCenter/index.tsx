@@ -33,7 +33,8 @@ import {
   TextFormat,
   CanvasElement,
   CanvasType,
-  MyPaletteDesignCenterModals
+  MyPaletteDesignCenterModals,
+  StyleModalTypes
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -81,7 +82,7 @@ interface Props extends RouteComponentProps<any> {
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
   openNewThemeModal: boolean
-  openNewStyleModal: boolean
+  styleModalData: StyleModalTypes
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -100,7 +101,7 @@ interface Props extends RouteComponentProps<any> {
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
   setThemeAction: (id: number) => void
-  setStyleAction: (style: any) => void
+  setStyleAction: (style: any, id: number, index: any) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
   saveDesignIdAction: (id: string) => void
@@ -122,7 +123,11 @@ interface Props extends RouteComponentProps<any> {
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
   openNewThemeModalAction: (open: boolean) => void
-  openNewStyleModalAction: (open: boolean) => void
+  openNewStyleModalAction: (
+    open: boolean,
+    indexStyle?: any,
+    idStyle?: number
+  ) => void
   editDesignAction: () => void
 }
 
@@ -275,7 +280,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       editDesignAction,
       openNewThemeModal,
       openNewThemeModalAction,
-      openNewStyleModal,
+      styleModalData,
       openNewStyleModalAction
     } = this.props
 
@@ -322,10 +327,11 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 1 && (
                 <StyleTab
+                  currentStyle={style}
                   formatMessage={intl.formatMessage}
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
-                  {...{ openNewStyleModal, openNewStyleModalAction }}
+                  {...{ styleModalData, openNewStyleModalAction }}
                 />
               )}
             </div>

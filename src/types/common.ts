@@ -487,3 +487,9 @@ export interface MyPaletteDesignCenterModals {
   openApplyPaletteModal: boolean
   idPaletteToExecuteAction: number
 }
+
+export interface StyleModalTypes {
+  openNewStyleModal: boolean
+  indexStyle: any
+  idStyle: number
+}

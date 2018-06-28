@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import withLoading from '../WithLoadingData'
-import { QueryProps } from '../../types/common'
+import { QueryProps, StyleModalTypes } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
 import StyleItem from '../Theme'
@@ -28,11 +28,16 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  openNewStyleModal: boolean
-  onSelectStyle: (style: any) => void
+  styleModalData: StyleModalTypes
+  currentStyle: number
+  onSelectStyle: (style: any, id: number, index: any) => void
   onSelectStyleComplexity: (index: number, colors: string[]) => void
   formatMessage: (messageDescriptor: any) => string
-  openNewStyleModalAction: (open: boolean) => void
+  openNewStyleModalAction: (
+    open: boolean,
+    indexStyle?: any,
+    idStyle?: number
+  ) => void
 }
 
 const marks = {
@@ -43,13 +48,35 @@ const marks = {
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
+    const { currentStyle, openNewStyleModalAction } = this.props
+    if (currentStyle !== -1 && currentStyle !== index) {
+      openNewStyleModalAction(true, index, id)
+      return
+    }
+    this.selectStyle(id, index)
+  }
+
+  selectStyle = (id: number, index: any) => {
+    // TODO: see what to do with this commented code
     const {
-      onSelectStyle,
-      data: { styles }
+      onSelectStyle
+      // data: { styles }
     } = this.props
-    const allStyles = styles ? styles.styles || [] : []
-    const colors = allStyles ? allStyles[index].colors : {}
-    onSelectStyle(colors)
+    // const allStyles = styles ? styles.styles || [] : []
+    // const colors = allStyles ? allStyles[index].colors : {}
+    onSelectStyle(index, id, index)
+  }
+
+  reselectStyle = () => {
+    const {
+      styleModalData: { indexStyle, idStyle }
+    } = this.props
+    this.selectStyle(idStyle, indexStyle)
+  }
+
+  cancelReselectStyle = () => {
+    const { openNewStyleModalAction } = this.props
+    openNewStyleModalAction(false)
   }
 
   handleOnSelectComplexity = (value: any) => {
@@ -62,7 +89,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     const {
       data: { styles, error },
       formatMessage,
-      openNewStyleModal
+      styleModalData: { openNewStyleModal }
     } = this.props
     if (error) {
       return <div>Error</div>
@@ -95,9 +122,9 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
           visible={openNewStyleModal}
           title={formatMessage(messages.modalNewStyleTitle)}
           okText={formatMessage(messages.modalNewStyleConfirm)}
-          onOk={() => {}}
+          onOk={this.reselectStyle}
           cancelText={formatMessage(messages.modalNewStyleCancel)}
-          onCancel={() => {}}
+          onCancel={this.cancelReselectStyle}
           closable={false}
           maskClosable={false}
           destroyOnClose={true}

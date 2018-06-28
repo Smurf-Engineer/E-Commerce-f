@@ -136,9 +136,15 @@ export const setDesignNameAction = (param: string): AnyAction => {
 }
 
 // TODO: Temp any
-export const setStyleAction = (style: any): AnyAction => ({
+export const setStyleAction = (
+  style: any,
+  id: number,
+  index: any
+): AnyAction => ({
   type: SET_STYLE_SELECTED_ACTION,
-  style
+  style,
+  id,
+  index
 })
 
 export const setStyleComplexity = (
@@ -250,7 +256,13 @@ export const openNewThemeModalAction = (open: boolean) => ({
   open
 })
 
-export const openNewStyleModalAction = (open: boolean) => ({
+export const openNewStyleModalAction = (
+  open: boolean,
+  indexStyle: any = -1,
+  idStyle: number = -1
+) => ({
   type: OPEN_NEW_STYLE_MODAL,
-  open
+  open,
+  indexStyle,
+  idStyle
 })
