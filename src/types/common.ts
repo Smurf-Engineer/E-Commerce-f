@@ -480,3 +480,9 @@ export interface ITemplateDownload {
   ]
   fileUrl: string
 }
+
+export interface MyPaletteDesignCenterModals {
+  openDeletePaletteModal: boolean
+  openApplyPaletteModal: boolean
+  idPaletteToExecuteAction: number
+}

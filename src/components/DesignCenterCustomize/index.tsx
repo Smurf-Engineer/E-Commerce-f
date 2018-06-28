@@ -8,7 +8,8 @@ import {
   Palette,
   CanvasElement,
   TextFormat,
-  CanvasType
+  CanvasType,
+  MyPaletteDesignCenterModals
 } from '../../types/common'
 import { Container } from './styledComponents'
 
@@ -30,6 +31,8 @@ interface Props {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  myPaletteModals: MyPaletteDesignCenterModals
+  openResetDesignModal: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -53,6 +56,8 @@ interface Props {
   onRemoveEl: (id: string, typeEl: string) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  openResetDesignModalAction: (open: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -94,7 +99,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onApplyCanvasEl,
       selectedElement,
       textFormat,
-      onSelectTextFormat
+      onSelectTextFormat,
+      openPaletteModalAction,
+      myPaletteModals,
+      openResetDesignModal,
+      openResetDesignModalAction
     } = this.props
 
     return (
@@ -120,7 +129,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             canvas,
             selectedElement,
             textFormat,
-            onSelectTextFormat
+            onSelectTextFormat,
+            openPaletteModalAction,
+            myPaletteModals
           }}
           onApplyText={this.handleOnApplyText}
           onApplyImage={this.handleOnApplyImage}
@@ -148,7 +159,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               productName,
               onApplyCanvasEl,
               onSelectEl,
-              onRemoveEl
+              onRemoveEl,
+              openResetDesignModal,
+              openResetDesignModalAction
             }}
           />
         ) : null}

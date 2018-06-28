@@ -20,7 +20,7 @@ interface Props {
   id: number
   colors: string[]
   name: string
-  onSelectPalette: (colors: string[]) => void
+  onSelectPalette: (id: number) => void
   onClickDelete: (index: number) => void
 }
 
@@ -33,7 +33,7 @@ const PaletteCard = ({
   onSelectPalette,
   onClickDelete
 }: Props) => {
-  const handleOnSelectPalette = () => onSelectPalette(colors)
+  const handleOnSelectPalette = () => onSelectPalette(id)
   const handleOnClickDelete = () => onClickDelete(id)
   const colorButtons = colorsBlocks.map((label, index) => (
     <ColorButton

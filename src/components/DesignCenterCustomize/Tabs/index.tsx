@@ -12,7 +12,12 @@ import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
-import { Palette, TextFormat, CanvasType } from '../../../types/common'
+import {
+  Palette,
+  TextFormat,
+  CanvasType,
+  MyPaletteDesignCenterModals
+} from '../../../types/common'
 import { Container } from './styledComponents'
 
 const { TabPane } = AntdTabs
@@ -29,6 +34,7 @@ interface Props {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  myPaletteModals: MyPaletteDesignCenterModals
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -40,6 +46,7 @@ interface Props {
   onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
+  openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
 const Tabs = ({
@@ -64,7 +71,9 @@ const Tabs = ({
   canvas,
   selectedElement,
   textFormat,
-  onSelectTextFormat
+  onSelectTextFormat,
+  openPaletteModalAction,
+  myPaletteModals
 }: Props) => {
   return (
     <Container>
@@ -83,7 +92,10 @@ const Tabs = ({
               paletteName,
               palettes,
               onSelectPalette,
-              onSetPalettes
+              onSetPalettes,
+              formatMessage,
+              openPaletteModalAction,
+              myPaletteModals
             }}
           />
         </TabPane>
