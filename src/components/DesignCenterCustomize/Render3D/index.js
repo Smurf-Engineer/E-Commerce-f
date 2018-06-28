@@ -87,7 +87,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  componentDidMount() {
+  _componentDidMount() {
     /* Renderer config */
 
     fabric.Object.prototype.customiseCornerIcons({

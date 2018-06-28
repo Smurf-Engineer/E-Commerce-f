@@ -6,6 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import ColorTab from '../ColorTab'
 import TextTab from '../TextTab'
+import SymbolTab from '../SymbolTab'
 import UploadTab from '../UploadTab'
 import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
@@ -102,7 +103,7 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
-          Content of Tab Pane 3
+          <SymbolTab />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
           <UploadTab {...{ formatMessage, onApplyImage }} />
