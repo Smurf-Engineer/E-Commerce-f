@@ -43,7 +43,6 @@ describe('<SaveDesign />', () => {
           savedDesignId={savedDesignId}
           checkedTerms={checkedTerms}
           setCheckedTerms={setCheckedTerms}
-          // clearDesignInfo={clearDesignInfo}
           setSaveDesignLoading={setSaveDesignLoading}
           saveDesignLoading={saveDesignLoading}
         />

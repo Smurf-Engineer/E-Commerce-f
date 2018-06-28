@@ -27,8 +27,8 @@ const DesignCenterTabs = ({
   const handleOnSelectTab = (index: any) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => {
     const activeOnClick =
-      (currentTab === 0 && currentTheme !== -1 && index === 1) ||
-      (currentTab === 1 && currentStyle !== -1 && index === 2) ||
+      (index === 1 && currentTab === 0 && currentTheme !== -1) ||
+      (index === 2 && currentTab === 1 && currentStyle !== -1) ||
       (currentTab > index && (currentTab === 1 || currentTab === 2))
     return (
       <Tab
