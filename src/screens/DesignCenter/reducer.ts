@@ -46,7 +46,8 @@ export const initialState = fromJS({
   currentTab: 0,
   colorBlock: -1,
   colorBlockHovered: -1,
-  colors: ['#B9B9B9', '#D2D2D2', '#255B2D', '#096F39', '#A9A9A9'],
+  colors: [],
+  styleColors: [],
   palettes: [],
   paletteName: '',
   designName: '',
@@ -69,7 +70,7 @@ export const initialState = fromJS({
   canvas: {
     text: {},
     image: {},
-    art: {}
+    group: {}
   },
   textFormat: {
     fontFamily: 'Avenir',
@@ -173,7 +174,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingModel', action.loading)
     case DESIGN_RESET_ACTION:
       return state.merge({
-        colors: List.of(...colorsInit),
+        colors: state.get('styleColors'),
         openResetDesignModal: false
       })
     case SET_SWIPING_TAB_ACTION:
@@ -192,7 +193,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_STYLE_COMPLEXITY_ACTION:
       return state.merge({
         style: action.index,
-        colors: action.colors
+        colors: action.colors,
+        styleColors: action.colors
       })
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)

@@ -44,6 +44,7 @@ interface Props {
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   onApplyImage: (base64: string) => void
+  onApplyArt: (url: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
@@ -66,6 +67,7 @@ const Tabs = ({
   text,
   onApplyText,
   onApplyImage,
+  onApplyArt,
   formatMessage,
   productName,
   canvas,
@@ -115,7 +117,7 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
-          <SymbolTab />
+          <SymbolTab {...{ onApplyArt }} />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
           <UploadTab {...{ formatMessage, onApplyImage }} />

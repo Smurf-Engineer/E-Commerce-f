@@ -82,7 +82,7 @@ class ColorTab extends React.PureComponent<Props, State> {
             onSelectColorBlock,
             onHoverColorBlock
           }}
-          currentColor={colors[index] || styleColors[index]}
+          currentColor={colors[index]}
           selected={colorBlock === index}
         />
       )

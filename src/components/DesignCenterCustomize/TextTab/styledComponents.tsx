@@ -13,8 +13,20 @@ export const Input = styled(AntdInput)`
 
 export const InputWrapper = styled.div`
   padding: 12px 32px;
+
   .ant-input-group-addon  {
     border: 0px;
+  }
+
+  .ant-input:hover {
+    border-color: #4a90e2;
+  }
+
+  .ant-input:focus {
+    border-color: #4a90e2;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
   }
 `
 

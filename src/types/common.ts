@@ -486,3 +486,8 @@ export interface MyPaletteDesignCenterModals {
   openApplyPaletteModal: boolean
   idPaletteToExecuteAction: number
 }
+
+export interface ClipArt {
+  id: number
+  url: string
+}

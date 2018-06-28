@@ -135,6 +135,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           }}
           onApplyText={this.handleOnApplyText}
           onApplyImage={this.handleOnApplyImage}
+          onApplyArt={this.handleOnApplyArt}
         />
         {currentTab === 2 && !swipingView ? (
           <Render3D
@@ -175,6 +176,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
   handleOnApplyImage = (base64: string) => {
     this.render3D.applyImage(base64)
+  }
+
+  handleOnApplyArt = (url: string) => {
+    this.render3D.applyClipArt(url)
   }
 }
 

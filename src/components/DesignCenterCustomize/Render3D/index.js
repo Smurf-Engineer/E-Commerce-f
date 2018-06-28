@@ -89,7 +89,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  _componentDidMount() {
+  componentDidMount() {
     /* Renderer config */
 
     fabric.Object.prototype.customiseCornerIcons({
@@ -350,7 +350,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round((xhr.loaded / xhr.total) * 100)
+      const progress = Math.round(xhr.loaded / xhr.total * 100)
       this.setState({ progress })
     }
   }
@@ -438,7 +438,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = (value * 1.0) / 100
+      const zoomValue = value * 1.0 / 100
       this.camera.zoom = zoomValue * 2
       this.camera.updateProjectionMatrix()
     }
@@ -498,15 +498,17 @@ class Render3D extends PureComponent {
   }
 
   takeDesignPicture = () => {
-    const viewPosition = viewPositions[2]
-    this.handleOnChangeZoom(62)
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: 2 }, () =>
-      setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/jpeg', 0.4)
-        this.saveDesign(dataUrl)
-      }, 200)
-    )
+    if (this.renderer) {
+      const viewPosition = viewPositions[2]
+      this.handleOnChangeZoom(62)
+      this.cameraUpdate(viewPosition)
+      this.setState({ currentView: 2 }, () =>
+        setTimeout(() => {
+          const dataUrl = this.renderer.domElement.toDataURL('image/jpeg', 0.4)
+          this.saveDesign(dataUrl)
+        }, 200)
+      )
+    }
   }
 
   render() {
@@ -647,7 +649,21 @@ class Render3D extends PureComponent {
     onApplyCanvasEl(el, 'text', !!activeEl)
   }
 
-  applyClipArt = el => {}
+  applyClipArt = url => {
+    fabric.loadSVGFromURL(url, objects => {
+      const group = new fabric.Group(objects, {
+        id: shortid.generate(),
+        hasRotatingPoint: false,
+        left: 900,
+        top: 900
+      })
+      console.log('------------------------------------')
+      console.log(group)
+      console.log('------------------------------------')
+      group.setFill({ fill: '#ffffff' })
+      this.canvasTexture.add(group)
+    })
+  }
 
   deleteElement = el => {
     const { onRemoveEl } = this.props
@@ -690,7 +706,6 @@ class Render3D extends PureComponent {
         }
         break
       case 'image': {
-        const boundingBox = el.getBoundingRect()
         const clonedEl = fabric.util.object.clone(el)
         clonedEl.set({
           id: shortid.generate(),
@@ -698,6 +713,16 @@ class Render3D extends PureComponent {
         })
         this.canvasTexture.add(clonedEl)
         break
+      }
+      case 'group': {
+        const objects = el.getObjects()
+        const group = new fabric.Group(objects, {
+          id: shortid.generate(),
+          hasRotatingPoint: false,
+          left: boundingBox.left,
+          top: boundingBox.top + 100
+        })
+        this.canvasTexture.add(group)
       }
       default:
         break
