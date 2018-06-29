@@ -35,3 +35,11 @@ export const BottomSheetWrapper = styled.div`
     box-shadow: rgba(0, 0, 0, 0.157) 0px -1px 5px !important;
   }
 `
+
+export const ModalMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+`

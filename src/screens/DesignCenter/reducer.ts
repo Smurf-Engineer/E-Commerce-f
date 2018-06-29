@@ -39,7 +39,8 @@ import {
   OPEN_RESET_DESIGN_MODAL,
   EDIT_DESIGN_ACTION,
   OPEN_NEW_THEME_MODAL,
-  OPEN_NEW_STYLE_MODAL
+  OPEN_NEW_STYLE_MODAL,
+  OPEN_OUT_WITHOUT_SAVE_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -96,7 +97,8 @@ export const initialState = fromJS({
     indexStyle: -1,
     idStyle: -1
   },
-  designHasChanges: false
+  designHasChanges: false,
+  openWithoutSaveModal: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -335,6 +337,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('styleModalData', styleModalData)
     }
+    case OPEN_OUT_WITHOUT_SAVE_MODAL:
+      return state.set('openOutWithoutSaveModal', action.open)
     default:
       return state
   }

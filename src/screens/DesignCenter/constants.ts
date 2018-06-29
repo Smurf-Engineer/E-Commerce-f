@@ -39,6 +39,7 @@ export const SAVE_DESIGN_LOADING = `${namespace}/SAVE_DESIGN_LOADING`
 export const OPEN_ADD_TOTEAMSTORE = `${namespace}/ADD_TOTEAMSTORE`
 export const SET_ITEM_TOADD = `${namespace}/SET_ITEM_TOADD`
 
+export const OPEN_OUT_WITHOUT_SAVE_MODAL = `${namespace}/OPEN_OUT_WITHOUT_SAVE_MODAL`
 export const OPEN_DELETE_OR_APPLY_PALETTE_MODAL = `${namespace}/OPEN_DELETE_OR_APPLY_PALETTE_MODAL`
 export const OPEN_RESET_DESIGN_MODAL = `${namespace}/OPEN_RESET_DESIGN_MODAL`
 export const OPEN_NEW_THEME_MODAL = `${namespace}/OPEN_NEW_THEME_MODAL`

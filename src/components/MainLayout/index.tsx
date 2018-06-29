@@ -195,11 +195,13 @@ const mapStateToProps = (state: any) => {
   const langProps = state.get('languageProvider').toJS()
   const responsive = state.get('responsive').toJS()
   const shoppingCart = state.get('shoppingCartPage').toJS()
+  const designCenter = state.get('designCenter').toJS()
   return {
     ...layoutProps,
     ...langProps,
     ...responsive,
-    shoppingCart: { ...shoppingCart }
+    shoppingCart: { ...shoppingCart },
+    designCenter: { ...designCenter }
   }
 }
 

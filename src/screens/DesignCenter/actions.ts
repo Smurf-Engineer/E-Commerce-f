@@ -39,6 +39,7 @@ import {
   OPEN_RESET_DESIGN_MODAL,
   OPEN_NEW_THEME_MODAL,
   OPEN_NEW_STYLE_MODAL,
+  OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_DESIGN_HAS_CHANGES
 } from './constants'
 import {
@@ -277,4 +278,9 @@ export const openNewStyleModalAction = (
 export const setDesignHasChangesAction = (hasChanges: boolean) => ({
   type: SET_DESIGN_HAS_CHANGES,
   hasChanges
+})
+
+export const openOutWithoutSaveModalAction = (open: boolean) => ({
+  type: OPEN_OUT_WITHOUT_SAVE_MODAL,
+  open
 })
