@@ -40,7 +40,8 @@ import {
   EDIT_DESIGN_ACTION,
   OPEN_NEW_THEME_MODAL,
   OPEN_NEW_STYLE_MODAL,
-  OPEN_OUT_WITHOUT_SAVE_MODAL
+  OPEN_OUT_WITHOUT_SAVE_MODAL,
+  SET_CUSTOMIZE_3D_MOUNTED
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -99,18 +100,27 @@ export const initialState = fromJS({
   },
   designHasChanges: false,
   openOutWithoutSaveModal: false,
-  routeToGoWithoutSave: ''
+  routeToGoWithoutSave: '',
+  customize3dMounted: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case CLEAR_STORE_ACTION:
       return initialState
-    case SET_CURRENT_TAB_ACTION:
+    case SET_CURRENT_TAB_ACTION: {
+      if (action.index === 2) {
+        return state.merge({
+          currentTab: action.index,
+          swipingView: true,
+          customize3dMounted: true
+        })
+      }
       return state.merge({
         currentTab: action.index,
         swipingView: true
       })
+    }
     case SET_COLOR_BLOCK_ACTION:
       return state.set('colorBlock', action.index)
     case COLOR_BLOCK_HOVERED_ACTION:
@@ -211,7 +221,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           openNewThemeModal: false,
           themeId: action.id
         },
-        designHasChanges: false
+        designHasChanges: false,
+        customize3dMounted: false
       })
     case SET_STYLE_SELECTED_ACTION: {
       return state.merge({
@@ -224,7 +235,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           indexStyle: action.index,
           idStyle: action.id
         },
-        designHasChanges: false
+        designHasChanges: false,
+        customize3dMounted: false
       })
     }
     case SET_STYLE_COMPLEXITY_ACTION:
@@ -343,6 +355,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         openOutWithoutSaveModal: action.open,
         routeToGoWithoutSave: action.route
       })
+    case SET_CUSTOMIZE_3D_MOUNTED:
+      return state.set('customize3dMounted', action.mounted)
     default:
       return state
   }
