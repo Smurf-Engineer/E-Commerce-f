@@ -12,6 +12,7 @@ export const Container = styled.div`
 
 interface SelectedProps {
   selected: boolean
+  activeOnClick?: boolean
 }
 
 export const Tab = styled.div`
@@ -21,6 +22,18 @@ export const Tab = styled.div`
     selected ? '#e61737' : '#fff'};
   justify-content: center;
   align-items: center;
+  cursor: ${({ activeOnClick }: SelectedProps) =>
+    activeOnClick ? 'pointer' : 'default'};
+
+  &:hover {
+    background-color: ${({ activeOnClick, selected }: SelectedProps) => {
+      if (selected) {
+        return '#e61737'
+      }
+      return activeOnClick ? '#fafafa' : '#fff'
+    }};
+    }
+  }
 `
 
 export const Text = styled.div`

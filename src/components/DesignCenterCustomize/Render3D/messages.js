@@ -37,5 +37,23 @@ export default defineMessages({
   modalCancelText: {
     id: 'components.Render3D.modalCancelText',
     defaultMessage: 'Cancel'
+  },
+  modalWarningTitle: {
+    id: 'components.Render3D.modalWarningTitle',
+    defaultMessage: 'QUALITY WARNING'
+  },
+  modalWarningButtonText: {
+    id: 'components.Render3D.modalWarningButtonText',
+    defaultMessage: 'Got it!'
+  },
+  modalFontMessage: {
+    id: 'components.Render3D.modalFontMessage',
+    defaultMessage:
+      'Your file contains fonts, which will cause your text to look wrong. Please convert the font to outlined paths, you can add text using the designer text option. If none of this options work for you please e-mail or give us a call at 1.800.485.7067 ext 109'
+  },
+  modalResolutionMessage: {
+    id: 'components.Render3D.modalResolutionMessage',
+    defaultMessage:
+      'The resolution of your graphic in its current size is too poor'
   }
 })

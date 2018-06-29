@@ -3,11 +3,7 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  background-color: #fff;
-  padding: 18px 120px;
-  text-align: center;
-`
+export const Container = styled.div``
 
 export const Text = styled.div`
   color: #fff;
@@ -18,4 +14,12 @@ export const Row = styled.ul`
   flex-direction: row;
   flex-wrap: wrap;
   width: 100%;
+`
+
+export const ModalMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
 `

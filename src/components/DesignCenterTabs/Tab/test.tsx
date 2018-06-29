@@ -9,7 +9,7 @@ describe('<Tab />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <Tab index={0} onSelectTab={() => {}}>
+      <Tab activeOnClick={false} index={0} onSelectTab={() => {}}>
         <div />
       </Tab>,
       div

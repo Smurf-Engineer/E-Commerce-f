@@ -307,7 +307,8 @@ class Render3D extends PureComponent {
       onPressQuickView,
       undoEnabled,
       redoEnabled,
-      loadingModel
+      loadingModel,
+      onAddToCart,
     } = this.props
 
     const menu = (
@@ -347,7 +348,7 @@ class Render3D extends PureComponent {
             </Button>
           </ButtonWrapper>
           <ButtonWrapper>
-            <Button type="primary">
+            <Button type="primary" onClick={onAddToCart}>
               <FormattedMessage {...messages.addToCart} />
             </Button>
           </ButtonWrapper>

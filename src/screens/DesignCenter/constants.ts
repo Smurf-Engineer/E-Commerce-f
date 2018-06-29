@@ -9,6 +9,7 @@ export const SET_CURRENT_TAB_ACTION = `${namespace}/SET_CURRENT_TAB_ACTION`
 export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`
 export const DESIGN_UNDO_ACTION = `${namespace}/DESIGN_UNDO_ACTION`
 export const DESIGN_REDO_ACTION = `${namespace}/DESIGN_REDO_ACTION`
+export const EDIT_DESIGN_ACTION = `${namespace}/EDIT_DESIGN_ACTION`
 export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`
 
 export const SET_COLOR_BLOCK_ACTION = `${namespace}/SET_COLOR_BLOCK_ACTION`
@@ -38,5 +39,9 @@ export const SAVE_DESIGN_LOADING = `${namespace}/SAVE_DESIGN_LOADING`
 export const OPEN_ADD_TOTEAMSTORE = `${namespace}/ADD_TOTEAMSTORE`
 export const SET_ITEM_TOADD = `${namespace}/SET_ITEM_TOADD`
 
+export const OPEN_OUT_WITHOUT_SAVE_MODAL = `${namespace}/OPEN_OUT_WITHOUT_SAVE_MODAL`
 export const OPEN_DELETE_OR_APPLY_PALETTE_MODAL = `${namespace}/OPEN_DELETE_OR_APPLY_PALETTE_MODAL`
 export const OPEN_RESET_DESIGN_MODAL = `${namespace}/OPEN_RESET_DESIGN_MODAL`
+export const OPEN_NEW_THEME_MODAL = `${namespace}/OPEN_NEW_THEME_MODAL`
+export const OPEN_NEW_STYLE_MODAL = `${namespace}/OPEN_NEW_STYLE_MODAL`
+export const SET_DESIGN_HAS_CHANGES = `${namespace}/SET_DESIGN_HAS_CHANGES`
