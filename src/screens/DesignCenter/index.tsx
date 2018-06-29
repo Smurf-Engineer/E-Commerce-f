@@ -95,6 +95,7 @@ interface Props extends RouteComponentProps<any> {
   designHasChanges: boolean
   openOutWithoutSaveModal: boolean
   routeToGoWithoutSave: string
+  customize3dMounted: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -142,6 +143,7 @@ interface Props extends RouteComponentProps<any> {
   ) => void
   editDesignAction: () => void
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
+  setCustomize3dMountedAction: (mounted: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -345,7 +347,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       styleModalData,
       openNewStyleModalAction,
       designHasChanges,
-      openOutWithoutSaveModal
+      openOutWithoutSaveModal,
+      customize3dMounted,
+      setCustomize3dMountedAction
     } = this.props
 
     if (!search) {
@@ -432,7 +436,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openResetDesignModal,
                 openResetDesignModalAction,
                 designName,
-                formatMessage
+                formatMessage,
+                customize3dMounted,
+                setCustomize3dMountedAction
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
