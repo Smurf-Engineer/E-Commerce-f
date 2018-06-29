@@ -26,6 +26,7 @@ import {
 } from './styledComponents'
 import { QueryProps, ClickParam } from '../../types/common'
 import { GetFiltersQuery } from './data'
+import Icon from 'antd/lib/icon'
 
 interface FilterOptions {
   name: string
@@ -132,6 +133,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       <div>
         <FiltersTitle showChildren={openSidebar} color={'#e61737'}>
           {intl.formatMessage(messages.filtersTitle)}
+          <Icon type="down" style={{ color: '#e61737' }} />
         </FiltersTitle>
         {renderFilters}
       </div>
@@ -172,6 +174,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           showChildren={true}
                         >
                           {intl.formatMessage(messages.filtersTitle)}
+                          <Icon type="down" />
                         </FiltersTitle>
                         <ProductsThumbnailList
                           formatMessage={intl.formatMessage}
