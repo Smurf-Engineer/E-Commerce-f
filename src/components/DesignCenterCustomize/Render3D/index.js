@@ -484,17 +484,6 @@ class Render3D extends PureComponent {
   saveDesign = previewImage => {
     const { onOpenSaveDesign } = this.props
     onOpenSaveDesign(true, previewImage)
-
-    console.log('------------------------------------')
-    console.log(
-      this.canvasTexture.toSVG({
-        x: 0,
-        y: 0,
-        width: CANVAS_SIZE,
-        height: CANVAS_SIZE
-      })
-    )
-    console.log('------------------------------------')
   }
 
   takeDesignPicture = () => {
@@ -651,14 +640,18 @@ class Render3D extends PureComponent {
   }
 
   applyClipArt = url => {
-    fabric.loadSVGFromURL(url, objects => {
+    fabric.loadSVGFromURL(url, (objects, options) => {
+      console.log('------------OPTIONS--------------')
+      console.log(options)
+      console.log('------------------------------------')
       const group = new fabric.Group(objects, {
+        ...options,
         id: shortid.generate(),
         hasRotatingPoint: false,
         left: 900,
         top: 900
       })
-      console.log('------------------------------------')
+      console.log('------------GROUP----------------')
       console.log(group)
       console.log('------------------------------------')
       this.canvasTexture.add(group)
