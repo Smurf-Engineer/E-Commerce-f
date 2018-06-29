@@ -33,6 +33,7 @@ interface Props {
   textFormat: TextFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
+  customize3dMounted: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -58,6 +59,7 @@ interface Props {
   onSelectTextFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
+  setCustomize3dMountedAction: (mounted: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -103,7 +105,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModal,
-      openResetDesignModalAction
+      openResetDesignModalAction,
+      customize3dMounted,
+      setCustomize3dMountedAction
     } = this.props
 
     return (
@@ -137,7 +141,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           onApplyImage={this.handleOnApplyImage}
           onApplyArt={this.handleOnApplyArt}
         />
-        {currentTab === 2 && !swipingView ? (
+        {customize3dMounted || (currentTab === 2 && !swipingView) ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             {...{
@@ -162,7 +166,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectEl,
               onRemoveEl,
               openResetDesignModal,
-              openResetDesignModalAction
+              openResetDesignModalAction,
+              setCustomize3dMountedAction
             }}
           />
         ) : null}

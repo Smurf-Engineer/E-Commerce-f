@@ -40,7 +40,8 @@ import {
   OPEN_NEW_THEME_MODAL,
   OPEN_NEW_STYLE_MODAL,
   OPEN_OUT_WITHOUT_SAVE_MODAL,
-  SET_DESIGN_HAS_CHANGES
+  SET_DESIGN_HAS_CHANGES,
+  SET_CUSTOMIZE_3D_MOUNTED
 } from './constants'
 import {
   AnyAction,
@@ -287,4 +288,9 @@ export const openOutWithoutSaveModalAction = (
   type: OPEN_OUT_WITHOUT_SAVE_MODAL,
   open,
   route
+})
+
+export const setCustomize3dMountedAction = (mounted: boolean) => ({
+  type: SET_CUSTOMIZE_3D_MOUNTED,
+  mounted
 })

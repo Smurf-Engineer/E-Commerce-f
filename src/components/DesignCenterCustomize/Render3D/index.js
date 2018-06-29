@@ -191,6 +191,9 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
+
+    const { setCustomize3dMountedAction } = this.props
+    setCustomize3dMountedAction(true)
   }
 
   componentWillUnmount() {
@@ -198,6 +201,7 @@ class Render3D extends PureComponent {
       this.stop()
       this.container.removeChild(this.renderer.domElement)
     }
+    this.canvasTexture.dispose()
   }
 
   getMousePosition = (dom, x, y) => {
@@ -593,16 +597,23 @@ class Render3D extends PureComponent {
   }
 
   applyImage = base64 => {
+    const { onApplyCanvasEl } = this.props
+    const id = shortid.generate()
     fabric.Image.fromURL(base64, oImg => {
       this.canvasTexture.add(
         oImg.scale(1).set({
-          id: shortid.generate(),
+          id,
           hasRotatingPoint: false,
           left: 900,
           top: 900
         })
       )
     })
+
+    const el = {
+      id
+    }
+    onApplyCanvasEl(el, 'image')
   }
 
   applyText = (text, style) => {
