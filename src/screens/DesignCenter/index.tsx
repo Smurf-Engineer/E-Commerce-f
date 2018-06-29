@@ -11,7 +11,10 @@ import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
 import Message from 'antd/lib/message'
+import Modal from 'antd/lib/modal/Modal'
+import Button from 'antd/lib/button'
 import get from 'lodash/get'
+import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -23,7 +26,12 @@ import StyleTab from '../../components/DesignCenterStyle'
 import CustomizeTab from '../../components/DesignCenterCustomize'
 import PreviewTab from '../../components/DesignCenterPreview'
 import SaveDesign from '../../components/SaveDesign'
-import { Container, StyledTitle, BottomSheetWrapper } from './styledComponents'
+import {
+  Container,
+  StyledTitle,
+  BottomSheetWrapper,
+  ModalMessage
+} from './styledComponents'
 import {
   Palette,
   QueryProps,
@@ -32,7 +40,9 @@ import {
   TextFormat,
   CanvasElement,
   CanvasType,
-  MyPaletteDesignCenterModals
+  MyPaletteDesignCenterModals,
+  StyleModalType,
+  ThemeModalType
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -70,6 +80,7 @@ interface Props extends RouteComponentProps<any> {
   saveDesignLoading: boolean
   text: string
   style: number
+  themeId: number
   openAddToStoreModal: boolean
   addItemToStore: any
   teamStoreId: string
@@ -79,6 +90,11 @@ interface Props extends RouteComponentProps<any> {
   textFormat: TextFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
+  themeModalData: ThemeModalType
+  styleModalData: StyleModalType
+  designHasChanges: boolean
+  openOutWithoutSaveModal: boolean
+  routeToGoWithoutSave: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -97,7 +113,7 @@ interface Props extends RouteComponentProps<any> {
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
   setThemeAction: (id: number) => void
-  setStyleAction: (style: any) => void
+  setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
   saveDesignIdAction: (id: string) => void
@@ -118,6 +134,14 @@ interface Props extends RouteComponentProps<any> {
   setTextFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
+  openNewThemeModalAction: (open: boolean, themeId: number) => void
+  openNewStyleModalAction: (
+    open: boolean,
+    indexStyle?: any,
+    idStyle?: number
+  ) => void
+  editDesignAction: () => void
+  openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -129,6 +153,16 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
     this.openBottomSheet(!this.state.open)
+  }
+
+  componentDidMount() {
+    const { designHasChanges } = this.props
+    window.onbeforeunload = () => {
+      if (designHasChanges) {
+        return 'Changes you made may not be saved.'
+      }
+      return null
+    }
   }
 
   componentWillUnmount() {
@@ -152,7 +186,45 @@ export class DesignCenter extends React.Component<Props, {}> {
     openQuickView(productId)
   }
 
-  handleOnPressBack = () => window.location.replace('/')
+  handleOnPressBack = () => {
+    const { designHasChanges, openOutWithoutSaveModalAction } = this.props
+    if (designHasChanges) {
+      openOutWithoutSaveModalAction(true)
+      return
+    }
+    window.location.replace('/')
+  }
+
+  handleOnCancelOutWithoutSaveModal = () => {
+    const { openOutWithoutSaveModalAction } = this.props
+    openOutWithoutSaveModalAction(false)
+  }
+
+  handleOnDontSaveOutWithoutSaveModal = () => {
+    const {
+      openOutWithoutSaveModalAction,
+      routeToGoWithoutSave,
+      history
+    } = this.props
+    openOutWithoutSaveModalAction(false)
+    if (!routeToGoWithoutSave) {
+      window.location.replace('/')
+      return
+    }
+    history.push(routeToGoWithoutSave)
+  }
+
+  handleOnSaveOutWithoutSaveModal = () => {
+    const {
+      currentTab,
+      setCurrentTabAction,
+      openOutWithoutSaveModalAction
+    } = this.props
+    if (currentTab !== 2) {
+      setCurrentTabAction(2)
+    }
+    openOutWithoutSaveModalAction(false)
+  }
 
   handleOnSelectTab = (index: number) => {
     const { setCurrentTabAction } = this.props
@@ -171,8 +243,14 @@ export class DesignCenter extends React.Component<Props, {}> {
       addItemToStore,
       itemToAdd,
       teamStoreId,
-      openAddToTeamStoreModalAction
+      openAddToTeamStoreModalAction,
+      intl: { formatMessage },
+      designName
     } = this.props
+
+    const storeName = itemToAdd.team_store_name
+
+    unset(itemToAdd, 'team_store_name')
 
     try {
       const { data } = await addItemToStore({
@@ -180,12 +258,23 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
       const responseMessage = get(data, 'addTeamStoreItem.message')
       if (responseMessage) {
-        Message.success(responseMessage)
+        Message.success(
+          formatMessage(messages.addedToStore, { designName, storeName })
+        )
       }
       openAddToTeamStoreModalAction(false)
     } catch (error) {
-      Message.error(error)
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      Message.error(errorMessage, 5)
     }
+  }
+
+  handleOnAddToCart = () => {
+    const {
+      designName,
+      intl: { formatMessage }
+    } = this.props
+    Message.success(formatMessage(messages.addedToCart, { designName }))
   }
 
   render() {
@@ -210,6 +299,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       designBase64,
       styleColors,
       style,
+      themeId,
       loadingModel,
       designName,
       saveDesignLoading,
@@ -229,7 +319,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       savedDesignId,
       checkedTerms,
       setCheckedTermsAction,
-      clearDesignInfoAction,
       saveDesignLoadingAction,
       setTextAction,
       openAddToTeamStoreModalAction,
@@ -249,13 +338,21 @@ export class DesignCenter extends React.Component<Props, {}> {
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModalAction,
-      openResetDesignModal
+      openResetDesignModal,
+      editDesignAction,
+      themeModalData,
+      openNewThemeModalAction,
+      styleModalData,
+      openNewStyleModalAction,
+      designHasChanges,
+      openOutWithoutSaveModal
     } = this.props
 
     if (!search) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
+    const { formatMessage } = intl
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const productName = data && data.product ? data.product.name : ''
@@ -264,7 +361,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
-          <Tabs {...{ currentTab }} />
+          <Tabs
+            currentStyle={style}
+            currentTheme={themeId}
+            onSelectTab={this.handleOnSelectTab}
+            {...{ currentTab, designHasChanges }}
+          />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
             index={currentTab}
@@ -277,8 +379,15 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 0 && (
                 <ThemeTab
-                  {...{ loadingModel }}
+                  currentTheme={themeId}
                   onSelectTheme={setThemeAction}
+                  {...{
+                    loadingModel,
+                    themeModalData,
+                    openNewThemeModalAction,
+                    designHasChanges,
+                    formatMessage
+                  }}
                 />
               )}
             </div>
@@ -290,8 +399,15 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 1 && (
                 <StyleTab
+                  currentStyle={style}
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
+                  {...{
+                    styleModalData,
+                    openNewStyleModalAction,
+                    designHasChanges,
+                    formatMessage
+                  }}
                 />
               )}
             </div>
@@ -314,11 +430,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openPaletteModalAction,
                 myPaletteModals,
                 openResetDesignModal,
-                openResetDesignModalAction
+                openResetDesignModalAction,
+                designName,
+                formatMessage
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
-              formatMessage={intl.formatMessage}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
               onSelectColorBlock={setColorBlockAction}
@@ -353,20 +470,20 @@ export class DesignCenter extends React.Component<Props, {}> {
                 openAddToTeamStoreModalAction,
                 openAddToStoreModal,
                 setItemToAddAction,
-                teamStoreId
+                teamStoreId,
+                editDesignAction,
+                formatMessage
               }}
-              formatMessage={intl.formatMessage}
+              onAddToCart={this.handleOnAddToCart}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
-              onSelectTab={this.handleOnSelectTab}
               addItemToStore={this.saveItemToStore}
             />
           </SwipeableViews>
           <SaveDesign
-            {...{ productId }}
+            {...{ productId, formatMessage }}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
-            formatMessage={intl.formatMessage}
             onDesignName={setDesignNameAction}
             designName={designName}
             colors={colors}
@@ -375,7 +492,6 @@ export class DesignCenter extends React.Component<Props, {}> {
             savedDesignId={savedDesignId}
             checkedTerms={checkedTerms}
             setCheckedTerms={setCheckedTermsAction}
-            clearDesignInfo={clearDesignInfoAction}
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />
@@ -395,6 +511,38 @@ export class DesignCenter extends React.Component<Props, {}> {
             </BottomSheetWrapper>
           ) : null}
         </Container>
+        <Modal
+          visible={openOutWithoutSaveModal}
+          title={formatMessage(messages.outWithoutSaveModalTitle)}
+          footer={[
+            <Button
+              key="cancel"
+              onClick={this.handleOnCancelOutWithoutSaveModal}
+            >
+              {formatMessage(messages.outWithoutSaveDesignModalCancel)}
+            </Button>,
+            <Button
+              key={'dontSave'}
+              onClick={this.handleOnDontSaveOutWithoutSaveModal}
+            >
+              {formatMessage(messages.outWithoutSaveDesignModalDontSave)}
+            </Button>,
+            <Button
+              key={'save'}
+              type="primary"
+              onClick={this.handleOnSaveOutWithoutSaveModal}
+            >
+              {formatMessage(messages.outWithoutSaveDesignModalSave)}
+            </Button>
+          ]}
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>
+            {formatMessage(messages.outWithoutSaveDesignModalMessage)}
+          </ModalMessage>
+        </Modal>
       </Layout>
     )
   }

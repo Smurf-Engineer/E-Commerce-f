@@ -56,7 +56,7 @@ export class AddToTeamStore extends React.PureComponent<Props, {}> {
       return (
         <ListItem
           selected={teamStoreShortId === teamStoreId}
-          onClick={this.onClickItem(id, teamStoreShortId)}
+          onClick={this.onClickItem(id, teamStoreShortId, name)}
           {...{ key }}
         >
           {name}
@@ -90,9 +90,10 @@ export class AddToTeamStore extends React.PureComponent<Props, {}> {
     history.push('/create-store')
   }
 
-  onClickItem = (storeId: number, shortId: string) => () => {
+  onClickItem = (storeId: number, shortId: string, name: string) => () => {
     const { savedDesignId, setItemToAddAction } = this.props
     const itemToAdd = {
+      team_store_name: name,
       team_store_id: storeId,
       design_id: savedDesignId,
       visible: true

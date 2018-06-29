@@ -570,6 +570,7 @@ class Render3D extends PureComponent {
           <img src={cubeViews[currentView]} />
           <ViewButton onClick={this.handleOnPressRight} src={right} />
         </ViewControls>
+        {/* Reset Modal */}
         <Modal
           visible={openResetDesignModal}
           title={formatMessage(messages.modalResetTitle)}
@@ -902,6 +903,27 @@ class Render3D extends PureComponent {
         ]
       })
       .setCoords()
+  }
+
+  /* Warning modals */
+  showFontWarningModal = () => {
+    const { formatMessage } = this.props
+    Modal.warning({
+      title: formatMessage(messages.modalWarningTitle),
+      content: formatMessage(messages.modalFontMessage),
+      okText: formatMessage(messages.modalWarningButtonText),
+      maskClosable: true
+    })
+  }
+
+  showResolutionWarningModal = () => {
+    const { formatMessage } = this.props
+    Modal.warning({
+      title: formatMessage(messages.modalWarningTitle),
+      content: formatMessage(messages.modalResolutionMessage),
+      okText: formatMessage(messages.modalWarningButtonText),
+      maskClosable: true
+    })
   }
 }
 

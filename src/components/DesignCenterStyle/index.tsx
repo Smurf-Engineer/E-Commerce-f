@@ -4,13 +4,21 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import Modal from 'antd/lib/modal'
 import withLoading from '../WithLoadingData'
-import { QueryProps } from '../../types/common'
+import { QueryProps, StyleModalType } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
 import StyleItem from '../Theme'
 import { StyleResult } from '../../types/common'
-import { Container, Title, Slider, Row, List } from './styledComponents'
+import {
+  Container,
+  Title,
+  Slider,
+  Row,
+  List,
+  ModalMessage
+} from './styledComponents'
 // TODO: TEST DATA
 import dummieData from '../../components/DesignCenterCustomize/Render3D/dummieData'
 
@@ -20,8 +28,17 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  onSelectStyle: (style: any) => void
+  styleModalData: StyleModalType
+  currentStyle: number
+  designHasChanges: boolean
+  onSelectStyle: (style: any, id: number, index: any, colors: string[]) => void
   onSelectStyleComplexity: (index: number, colors: string[]) => void
+  formatMessage: (messageDescriptor: any) => string
+  openNewStyleModalAction: (
+    open: boolean,
+    indexStyle?: any,
+    idStyle?: number
+  ) => void
 }
 
 const marks = {
@@ -32,10 +49,41 @@ const marks = {
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
-    const { onSelectStyle, data: { styles } } = this.props
-    const allStyles = styles ? styles.styles || [] : []
-    const colors = allStyles ? allStyles[index].colors : {}
-    onSelectStyle(colors)
+    const indexToApply = index > 2 ? 0 : index
+    const {
+      currentStyle,
+      openNewStyleModalAction,
+      designHasChanges
+    } = this.props
+    if (currentStyle !== -1 && designHasChanges) {
+      openNewStyleModalAction(true, indexToApply, id)
+      return
+    }
+    this.selectStyle(id, indexToApply)
+  }
+
+  selectStyle = (id: number, index: any) => {
+    // TODO: see what to do with commented code
+    const {
+      onSelectStyle
+      // data: { styles }
+    } = this.props
+    // const allStyles = styles ? styles.styles || [] : []
+    // const colors = allStyles ? allStyles[index].colors : {}
+    const colors = dummieData[index].colors
+    onSelectStyle(index, id, index, colors)
+  }
+
+  reselectStyle = () => {
+    const {
+      styleModalData: { indexStyle, idStyle }
+    } = this.props
+    this.selectStyle(idStyle, indexStyle)
+  }
+
+  cancelReselectStyle = () => {
+    const { openNewStyleModalAction } = this.props
+    openNewStyleModalAction(false)
   }
 
   handleOnSelectComplexity = (value: any) => {
@@ -45,7 +93,11 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   }
 
   render() {
-    const { data: { styles, error } } = this.props
+    const {
+      data: { styles, error },
+      formatMessage,
+      styleModalData: { openNewStyleModal }
+    } = this.props
     if (error) {
       return <div>Error</div>
     }
@@ -73,6 +125,21 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
         <List>
           <Row>{list}</Row>
         </List>
+        <Modal
+          visible={openNewStyleModal}
+          title={formatMessage(messages.modalNewStyleTitle)}
+          okText={formatMessage(messages.modalNewStyleConfirm)}
+          onOk={this.reselectStyle}
+          cancelText={formatMessage(messages.modalNewStyleCancel)}
+          onCancel={this.cancelReselectStyle}
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>
+            {formatMessage(messages.modalNewStyleMessage)}
+          </ModalMessage>
+        </Modal>
       </Container>
     )
   }
