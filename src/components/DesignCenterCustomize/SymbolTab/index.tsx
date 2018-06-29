@@ -41,8 +41,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     page: 0
   }
   render() {
-    const { page, option } = this.state
-    const { data: { loading, error, clipArts } } = this.props
+    const { page } = this.state
+    const { data: { clipArts } } = this.props
 
     const artList = clipArts.map(({ id, url }) => (
       <Col key={id}>

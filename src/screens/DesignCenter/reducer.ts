@@ -2,7 +2,6 @@
  * DesignCenter Reducer - Created by david on 23/02/18.
  */
 import { fromJS, List } from 'immutable'
-import fill from 'lodash/fill'
 import isEqual from 'lodash/isEqual'
 import {
   CLEAR_STORE_ACTION,
@@ -39,8 +38,6 @@ import {
   OPEN_RESET_DESIGN_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
-
-const colorsInit = fill(Array(5), '')
 
 export const initialState = fromJS({
   currentTab: 0,

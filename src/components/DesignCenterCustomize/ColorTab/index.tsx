@@ -63,7 +63,6 @@ class ColorTab extends React.PureComponent<Props, State> {
       paletteName,
       palettes,
       colors,
-      styleColors,
       onSetPalettes,
       onSelectPalette,
       formatMessage,

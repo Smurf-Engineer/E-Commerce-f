@@ -660,7 +660,6 @@ class Render3D extends PureComponent {
       console.log('------------------------------------')
       console.log(group)
       console.log('------------------------------------')
-      group.setFill({ fill: '#ffffff' })
       this.canvasTexture.add(group)
     })
   }
