@@ -12,10 +12,10 @@ const FILL_COLOR = 1
 const OUTLINE_COLOR = 2
 
 interface Props {
-  text: string
+  text?: string
   option: number
   strokeWidth: number
-  onSelectFont: (font: string) => void
+  onSelectFont?: (font: string) => void
   onSelectFill: (color: string) => void
   onSelectStrokeWidth: (width: number) => void
   onSelectStrokeColor: (color: string) => void
@@ -35,7 +35,7 @@ class TextEditor extends React.PureComponent<Props, {}> {
     } = this.props
     switch (component) {
       case FONT_LIST:
-        return <FontList {...{ text, onSelectFont }} />
+        return <FontList text={text || ''} {...{ onSelectFont }} />
       case FILL_COLOR:
         return <FillColor {...{ onSelectFill }} />
       case OUTLINE_COLOR:

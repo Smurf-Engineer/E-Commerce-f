@@ -47,6 +47,7 @@ interface Props {
   onApplyArt: (url: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
@@ -75,7 +76,8 @@ const Tabs = ({
   textFormat,
   onSelectTextFormat,
   openPaletteModalAction,
-  myPaletteModals
+  myPaletteModals,
+  onSelectArtFormat
 }: Props) => {
   return (
     <Container>
@@ -117,7 +119,10 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
-          <SymbolTab {...{ onApplyArt }} />
+          <SymbolTab
+            {...{ onApplyArt, formatMessage, onSelectArtFormat }}
+            selectedElement={canvas.path[selectedElement]}
+          />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
           <UploadTab {...{ formatMessage, onApplyImage }} />

@@ -57,6 +57,7 @@ interface Props {
   onRemoveEl: (id: string, typeEl: string) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
@@ -107,7 +108,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       openResetDesignModal,
       openResetDesignModalAction,
       customize3dMounted,
-      setCustomize3dMountedAction
+      setCustomize3dMountedAction,
+      onSelectArtFormat
     } = this.props
 
     return (
@@ -134,6 +136,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             selectedElement,
             textFormat,
             onSelectTextFormat,
+            onSelectArtFormat,
             openPaletteModalAction,
             myPaletteModals
           }}

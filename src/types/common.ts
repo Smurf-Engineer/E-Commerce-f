@@ -367,6 +367,9 @@ export interface CanvasElement {
   height?: number
   textFormat?: TextFormat
   artIndex?: number
+  fill?: string
+  stroke?: string
+  strokeWidth?: number
 }
 
 export interface CanvasType {
@@ -376,7 +379,7 @@ export interface CanvasType {
   image: {
     [id: string]: CanvasElement
   }
-  art: {
+  path: {
     [id: string]: CanvasElement
   }
 }

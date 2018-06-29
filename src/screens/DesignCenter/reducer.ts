@@ -34,6 +34,7 @@ import {
   SET_SELECTED_ELEMENT_ACTION,
   REMOVE_CANVAS_ELEMENT_ACTION,
   SET_TEXT_FORMAT_ACTION,
+  SET_ART_FORMAT_ACTION,
   OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
   OPEN_RESET_DESIGN_MODAL,
   EDIT_DESIGN_ACTION,
@@ -72,7 +73,7 @@ export const initialState = fromJS({
   canvas: {
     text: {},
     image: {},
-    group: {}
+    path: {}
   },
   textFormat: {
     fontFamily: 'Avenir',
@@ -305,6 +306,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.deleteIn(['canvas', action.typeEl, action.id])
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)
+    case SET_ART_FORMAT_ACTION: {
+      const selectedElement = state.get('selectedElement')
+      console.log('---------------------------')
+      console.log(selectedElement)
+      console.log('---------------------------')
+      return state.setIn(
+        ['canvas', 'path', selectedElement, action.key],
+        action.value
+      )
+    }
     case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
       const { key, open, value } = action
       const myPaletteModals = state.get('myPaletteModals')

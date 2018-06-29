@@ -201,7 +201,9 @@ class Render3D extends PureComponent {
       this.stop()
       this.container.removeChild(this.renderer.domElement)
     }
-    this.canvasTexture.dispose()
+    if (this.canvasTexture) {
+      this.canvasTexture.dispose()
+    }
   }
 
   getMousePosition = (dom, x, y) => {
@@ -608,12 +610,10 @@ class Render3D extends PureComponent {
           top: 900
         })
       )
-    })
 
-    const el = {
-      id
-    }
-    onApplyCanvasEl(el, 'image')
+      const el = { id }
+      onApplyCanvasEl(el, 'image')
+    })
   }
 
   applyText = (text, style) => {
@@ -651,21 +651,19 @@ class Render3D extends PureComponent {
   }
 
   applyClipArt = url => {
+    const { onApplyCanvasEl } = this.props
     fabric.loadSVGFromURL(url, (objects, options) => {
-      console.log('------------OPTIONS--------------')
-      console.log(options)
-      console.log('------------------------------------')
-      const group = new fabric.Group(objects, {
-        ...options,
-        id: shortid.generate(),
+      const id = shortid.generate()
+      const shape = fabric.util.groupSVGElements(objects, options)
+      shape.set({
+        id,
         hasRotatingPoint: false,
-        left: 900,
-        top: 900
+        top: 900,
+        left: 900
       })
-      console.log('------------GROUP----------------')
-      console.log(group)
-      console.log('------------------------------------')
-      this.canvasTexture.add(group)
+      this.canvasTexture.add(shape)
+      const el = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
+      onApplyCanvasEl(el, 'path')
     })
   }
 
@@ -718,7 +716,7 @@ class Render3D extends PureComponent {
         this.canvasTexture.add(clonedEl)
         break
       }
-      case 'group': {
+      case 'path': {
         const objects = el.getObjects()
         const group = new fabric.Group(objects, {
           id: shortid.generate(),

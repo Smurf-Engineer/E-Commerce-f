@@ -133,6 +133,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
   setTextFormatAction: (key: string, value: string | number) => void
+  setArtFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
   openNewThemeModalAction: (open: boolean, themeId: number) => void
@@ -179,9 +180,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const {
-      location: { search }
-    } = this.props
+    const { location: { search } } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -272,10 +271,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOnAddToCart = () => {
-    const {
-      designName,
-      intl: { formatMessage }
-    } = this.props
+    const { designName, intl: { formatMessage } } = this.props
     Message.success(formatMessage(messages.addedToCart, { designName }))
   }
 
@@ -337,6 +333,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectedElement,
       textFormat,
       setTextFormatAction,
+      setArtFormatAction,
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModalAction,
@@ -461,6 +458,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onSelectEl={setSelectedElement}
               onRemoveEl={removeCanvasElement}
               onSelectTextFormat={setTextFormatAction}
+              onSelectArtFormat={setArtFormatAction}
             />
             <PreviewTab
               {...{
@@ -563,10 +561,7 @@ const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
-  connect(
-    mapStateToProps,
-    { ...designCenterActions, openQuickViewAction }
-  ),
+  connect(mapStateToProps, { ...designCenterActions, openQuickViewAction }),
   graphql<Data>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''

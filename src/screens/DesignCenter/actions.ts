@@ -41,7 +41,8 @@ import {
   OPEN_NEW_STYLE_MODAL,
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_DESIGN_HAS_CHANGES,
-  SET_CUSTOMIZE_3D_MOUNTED
+  SET_CUSTOMIZE_3D_MOUNTED,
+  SET_ART_FORMAT_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -232,6 +233,15 @@ export const setTextFormatAction = (
   value: string | number
 ): AnyAction => ({
   type: SET_TEXT_FORMAT_ACTION,
+  key,
+  value
+})
+
+export const setArtFormatAction = (
+  key: string,
+  value: string | number
+): AnyAction => ({
+  type: SET_ART_FORMAT_ACTION,
   key,
   value
 })

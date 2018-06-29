@@ -3,11 +3,13 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import SwipeableViews from 'react-swipeable-views'
 import { compose } from 'react-apollo'
 import withLoading from '../../WithLoading'
 import WithError from '../../WithError'
-import SwipeableViews from 'react-swipeable-views'
-import { QueryProps, ClipArt } from '../../../types/common'
+import OptionText from '../../OptionText'
+import TextEditor from '../TextEditor'
+import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'
@@ -32,7 +34,10 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
+  formatMessage: (messageDescriptor: any) => string
+  selectedElement?: CanvasElement
   onApplyArt: (url: string) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
 }
 
 class SymbolTab extends React.PureComponent<Props, {}> {
@@ -41,8 +46,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     page: 0
   }
   render() {
-    const { page } = this.state
-    const { data: { clipArts } } = this.props
+    const { page, option } = this.state
+    const { data: { clipArts }, selectedElement, formatMessage } = this.props
 
     const artList = clipArts.map(({ id, url }) => (
       <Col key={id}>
@@ -56,11 +61,35 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           <Row onClick={this.changePage(0, 0)}>
             {!!page && <ArrowIcon src={backIcon} />}
             <Title>
-              <FormattedMessage {...messages.headerTitle} />
+              <FormattedMessage
+                {...messages[selectedElement ? 'editSymbol' : 'addSymbol']}
+              />
             </Title>
           </Row>
         </Header>
-        <SwipeableViews index={page}>
+        {selectedElement ? (
+          <SwipeableViews index={page}>
+            <div>
+              <OptionText
+                onClick={this.changePage(1, 1)}
+                title={formatMessage(messages.fill)}
+                color={selectedElement.fill}
+              />
+              <OptionText
+                onClick={this.changePage(1, 2)}
+                title={formatMessage(messages.outline)}
+                color={selectedElement.stroke}
+              />
+            </div>
+            <TextEditor
+              {...{ option, formatMessage }}
+              strokeWidth={selectedElement.strokeWidth || 0}
+              onSelectFill={this.handleOnSelectFill}
+              onSelectStrokeWidth={this.handleOnSelectStrokeWidth}
+              onSelectStrokeColor={this.handleOnSelectStrokeColor}
+            />
+          </SwipeableViews>
+        ) : (
           <div>
             <InputWrapper>
               <Input
@@ -74,14 +103,36 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               <RowList>{artList}</RowList>
             </List>
           </div>
-          <div>FILL</div>
-        </SwipeableViews>
+        )}
       </Container>
     )
   }
 
   changePage = (page: number, option: number) => () =>
     this.setState({ page, option })
+
+  handleOnSelectFill = (fillColor: string) => {
+    const { selectedElement, onSelectArtFormat } = this.props
+    console.log('---------------------------')
+    console.log(selectedElement)
+    console.log('---------------------------')
+    onSelectArtFormat('fill', fillColor)
+    this.setState({ page: 0 })
+    // TODO: Apply fill color
+  }
+
+  handleOnSelectStrokeWidth = (strokeWidth: number) => {
+    const { onSelectArtFormat } = this.props
+    onSelectArtFormat('strokeWidth', strokeWidth)
+    // TODO: Apply fill color
+  }
+
+  handleOnSelectStrokeColor = (strokeColor: string) => {
+    const { onSelectArtFormat } = this.props
+    onSelectArtFormat('stroke', strokeColor)
+    // TODO: Apply stroke color
+    this.setState({ page: 0 })
+  }
 
   handleOnApplyArt = (url: string) => () => {
     const { onApplyArt } = this.props
