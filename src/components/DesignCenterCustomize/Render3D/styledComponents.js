@@ -123,3 +123,11 @@ export const ButtonWrapper = styled.div`
     border-color: #4a90e2;
   }
 `
+
+export const ModalMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+`

@@ -6,7 +6,6 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
-import get from 'lodash/get'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -30,13 +29,9 @@ import {
 import ListItem from '../../components/CartListItem'
 
 import Ordersummary from '../../components/OrderSummary'
-import {
-  Product,
-  CartItemDetail,
-  ItemDetailType,
-  PriceRange
-} from '../../types/common'
+import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
+import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
 interface CartItems {
   product: Product
@@ -97,8 +92,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   handleCheckout = () => {
-    const { history } = this.props
-    history.push('/checkout')
+    const { history, cart } = this.props
+    history.push('/checkout', { cart })
   }
 
   componentDidMount() {
@@ -196,114 +191,22 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
-  getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
-    let markslider = { quantity: '0', price: 0 }
-    for (const priceRangeItem of priceRanges) {
-      if (!totalItems || !priceRangeItem.quantity) {
-        break
-      }
-
-      const val =
-        priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
-          ? 1
-          : priceRangeItem.quantity
-            ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-            : 0
-
-      if (val >= totalItems) {
-        markslider = priceRangeItem
-        break
-      }
-    }
-    return markslider
-  }
-
-  getPriceRangeToApply = (items: number) => {
-    if (items >= 2 && items <= 5) {
-      return 1
-    } else if (items >= 6 && items <= 24) {
-      return 2
-    } else if (items >= 25 && items <= 49) {
-      return 3
-    } else if (items >= 50) {
-      return 4
-    } else {
-      return 0
-    }
-  }
-
   render() {
     const { intl, history, cart, showDeleteLastItemModal } = this.props
     const formatMessage = intl.formatMessage
 
-    let totalSum = 0
-    let totalWithoutDiscount = 0
-    let priceRangeToApply = 0
-    let show25PercentMessage = false
-    let justOneOfEveryItem = true
-    let maxquantity = 0
-    let numberOfProducts = 0
-    let nameOfFirstProduct = ''
-    if (cart) {
-      cart.map((cartItem, index) => {
-        const quantities = cartItem.itemDetails.map(itemDetail => {
-          return itemDetail.quantity
-        })
-        const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-        // increase number of products in cart
-        numberOfProducts = numberOfProducts + quantitySum
-        // change flag to show/hide 25 percentMessage
-        show25PercentMessage = !index && quantitySum === 1
-
-        if (!index) {
-          nameOfFirstProduct = cartItem.product.name
-        }
-
-        // Verify if at least one item has quantity > 1
-        if (quantitySum !== 1) {
-          justOneOfEveryItem = false
-        }
-
-        // Get the maxquantity of articles of a product
-        if (quantitySum > maxquantity) {
-          maxquantity = quantitySum
-        }
-
-        totalWithoutDiscount =
-          totalWithoutDiscount +
-          quantitySum * cartItem.product.priceRange[0].price
-      })
-      if (justOneOfEveryItem && cart.length) {
-        priceRangeToApply = this.getPriceRangeToApply(cart.length)
-      } else {
-        if (cart.length) {
-          priceRangeToApply = this.getPriceRangeToApply(maxquantity)
-        }
-      }
-    }
+    const shoppingCartData = getShoppingCartData(cart)
+    const {
+      total,
+      totalWithoutDiscount,
+      priceRangeToApply,
+      show25PercentMessage,
+      nameOfFirstProduct,
+      numberOfProducts
+    } = shoppingCartData
 
     const cartItems = cart || []
     const renderList = cartItems.map((cartItem, index) => {
-      const quantities = cartItem.itemDetails.map(itemDetail => {
-        return itemDetail.quantity
-      })
-      const quantitySum = quantities.reduce((a, b) => a + b, 0)
-
-      const productPriceRanges = get(cartItem, 'product.priceRange', [])
-      let priceRange =
-        priceRangeToApply !== 0
-          ? cartItem.product.priceRange[priceRangeToApply]
-          : this.getPriceRange(productPriceRanges, quantitySum)
-
-      priceRange =
-        priceRange.price === 0
-          ? productPriceRanges[productPriceRanges.length - 1]
-          : priceRange
-
-      // increase the total
-      totalSum = totalSum + priceRange.price * quantitySum
-
       return (
         <ListItem
           formatMessage={formatMessage}
@@ -369,9 +272,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               <SideBar>
                 {sideHeaderMessage}
                 <Ordersummary
-                  total={totalSum}
-                  subtotal={totalSum}
-                  {...{ formatMessage, totalWithoutDiscount }}
+                  subtotal={total}
+                  {...{ formatMessage, totalWithoutDiscount, total }}
                 />
                 <ButtonWrapper>
                   <CheckoutButton type="primary" onClick={this.handleCheckout}>

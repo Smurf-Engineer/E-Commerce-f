@@ -133,6 +133,7 @@ class CartListItem extends React.Component<Props, {}> {
       )
       priceIndex =
         priceIndex !== priceRanges.length - 1 ? priceIndex + 1 : priceIndex
+
       const priceRangeItem = priceRanges[priceIndex]
       const val = parseInt(priceRangeItem.quantity.split('-')[0], 10)
       markslider = {
@@ -195,10 +196,12 @@ class CartListItem extends React.Component<Props, {}> {
     const itemTotal = priceRange
       ? priceRange.price * quantitySum
       : unitPrice || 0 * quantitySum
-    const total = itemTotal || productTotal
+    const total = productTotal || itemTotal
     const unitaryPrice = priceRange ? priceRange.price : unitPrice
 
-    const nextPrice = this.getNextPrice(productPriceRanges, quantitySum)
+    const nextPrice = productPriceRanges.length
+      ? this.getNextPrice(productPriceRanges, quantitySum)
+      : { items: 0, price: 0 }
 
     return (
       <ItemDetails>
@@ -218,7 +221,7 @@ class CartListItem extends React.Component<Props, {}> {
                 <ItemDetailsHeaderPriceDetail>
                   {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
                 </ItemDetailsHeaderPriceDetail>
-                {!onlyRead && nextPrice.items > 0 ? (
+                {!onlyRead && nextPrice.items ? (
                   <ItemDetailsHeaderPriceDetail>
                     <FormattedMessage
                       {...messages.addMoreFor}

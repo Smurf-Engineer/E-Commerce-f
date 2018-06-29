@@ -5,6 +5,7 @@ import {
   DEFAULT_ACTION,
   CLEAR_STORE_ACTION,
   SET_CURRENT_TAB_ACTION,
+  EDIT_DESIGN_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
   SET_PALETTE_ACTION,
@@ -33,7 +34,14 @@ import {
   SET_CANVAS_ELEMENT_ACTION,
   SET_SELECTED_ELEMENT_ACTION,
   REMOVE_CANVAS_ELEMENT_ACTION,
-  SET_TEXT_FORMAT_ACTION
+  SET_TEXT_FORMAT_ACTION,
+  OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
+  OPEN_RESET_DESIGN_MODAL,
+  OPEN_NEW_THEME_MODAL,
+  OPEN_NEW_STYLE_MODAL,
+  OPEN_OUT_WITHOUT_SAVE_MODAL,
+  SET_DESIGN_HAS_CHANGES,
+  SET_CUSTOMIZE_3D_MOUNTED
 } from './constants'
 import {
   AnyAction,
@@ -131,9 +139,17 @@ export const setDesignNameAction = (param: string): AnyAction => {
 }
 
 // TODO: Temp any
-export const setStyleAction = (style: any): AnyAction => ({
+export const setStyleAction = (
+  style: any,
+  id: number,
+  index: any,
+  colors: string[]
+): AnyAction => ({
   type: SET_STYLE_SELECTED_ACTION,
-  style
+  style,
+  id,
+  index,
+  colors
 })
 
 export const setStyleComplexity = (
@@ -218,4 +234,63 @@ export const setTextFormatAction = (
   type: SET_TEXT_FORMAT_ACTION,
   key,
   value
+})
+
+export const openPaletteModalAction = (
+  key: string,
+  open: boolean,
+  value: number = -1
+) => ({
+  type: OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
+  open,
+  value,
+  key
+})
+
+export const openResetDesignModalAction = (open: boolean) => ({
+  type: OPEN_RESET_DESIGN_MODAL,
+  open
+})
+
+export const editDesignAction = () => ({
+  type: EDIT_DESIGN_ACTION
+})
+
+export const openNewThemeModalAction = (
+  open: boolean,
+  themeId: number = -1
+) => ({
+  type: OPEN_NEW_THEME_MODAL,
+  open,
+  themeId
+})
+
+export const openNewStyleModalAction = (
+  open: boolean,
+  indexStyle: any = -1,
+  idStyle: number = -1
+) => ({
+  type: OPEN_NEW_STYLE_MODAL,
+  open,
+  indexStyle,
+  idStyle
+})
+
+export const setDesignHasChangesAction = (hasChanges: boolean) => ({
+  type: SET_DESIGN_HAS_CHANGES,
+  hasChanges
+})
+
+export const openOutWithoutSaveModalAction = (
+  open: boolean,
+  route: string = ''
+) => ({
+  type: OPEN_OUT_WITHOUT_SAVE_MODAL,
+  open,
+  route
+})
+
+export const setCustomize3dMountedAction = (mounted: boolean) => ({
+  type: SET_CUSTOMIZE_3D_MOUNTED,
+  mounted
 })

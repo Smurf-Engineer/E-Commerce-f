@@ -12,16 +12,25 @@ import {
 interface Props {
   children: React.ReactNode
   selected?: boolean
+  activeOnClick: boolean
   index: number
-  onSelectTab: () => void
+  onSelectTab?: () => void
 }
 
-const Tab = ({ index, children, selected = false, onSelectTab }: Props) => {
+const Tab = ({
+  index,
+  children,
+  selected = false,
+  onSelectTab,
+  activeOnClick
+}: Props) => {
   return (
     <Container onClick={onSelectTab}>
       {index === 0 && <Divider type="vertical" />}
-      <TabContainer {...{ selected }}>
-        <Text {...{ selected }}>{React.Children.only(children)}</Text>
+      <TabContainer {...{ selected, activeOnClick }}>
+        <Text {...{ selected, activeOnClick }}>
+          {React.Children.only(children)}
+        </Text>
       </TabContainer>
       <Divider type="vertical" />
     </Container>

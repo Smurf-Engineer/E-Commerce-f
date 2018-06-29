@@ -9,9 +9,25 @@ import messages from './messages'
 import { Text, Link, menuStyle } from './styledComponents'
 import links from './links'
 
-interface Props {}
+interface Props {
+  history?: any
+  designHasChanges: boolean
+  openWithoutSaveModalAction: (open: boolean, route?: string) => void
+}
 
 const MenuSupport = (props: Props) => {
+  // TODO: implement this logic goTo function when links added propperly
+  /*const goTo = (routeToGo: string) => {
+    if (
+      (location.pathname as String).includes('design-center') &&
+      designHasChanges
+    ) {
+      openWithoutSaveModalAction(true, routeToGo)
+      return
+    }
+    push(routeToGo)
+  }*/
+
   const items = links.map(({ label, url }, index) => (
     <Menu.Item key={index}>
       <Link href={url}>

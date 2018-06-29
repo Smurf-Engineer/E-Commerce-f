@@ -45,6 +45,8 @@ interface Props {
   fakeWidth: number
   teamStoresHeader?: boolean | undefined
   itemsInCart: number
+  designHasChanges: boolean
+  openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
 interface StateProps {
@@ -74,8 +76,23 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   handleMyAccount = () => {
-    const { history } = this.props
-    history.push('account')
+    this.handleOnGoTo('account')
+  }
+
+  handleOnGoTo = (route: string) => {
+    const {
+      history: { location, push },
+      designHasChanges,
+      openWithoutSaveModalAction
+    } = this.props
+    if (
+      (location.pathname as String).includes('design-center') &&
+      designHasChanges
+    ) {
+      openWithoutSaveModalAction(true, route)
+      return
+    }
+    push(route)
   }
 
   render() {
@@ -94,7 +111,9 @@ class MenuBar extends React.Component<Props, StateProps> {
       saveUserToLocal,
       fakeWidth,
       teamStoresHeader,
-      itemsInCart
+      itemsInCart,
+      designHasChanges,
+      openWithoutSaveModalAction
     } = this.props
     let user: any
     if (typeof window !== 'undefined') {
@@ -158,10 +177,22 @@ class MenuBar extends React.Component<Props, StateProps> {
               return (
                 <Container>
                   <Row>
-                    <MenuSupport />
+                    <MenuSupport
+                      {...{
+                        designHasChanges,
+                        openWithoutSaveModalAction
+                      }}
+                    />
                     <TopRow>
                       {menuRegion}
-                      <Cart totalItems={itemsInCart} {...{ history }} />
+                      <Cart
+                        totalItems={itemsInCart}
+                        {...{
+                          history,
+                          designHasChanges,
+                          openWithoutSaveModalAction
+                        }}
+                      />
                       {loggedUser}
                     </TopRow>
                   </Row>

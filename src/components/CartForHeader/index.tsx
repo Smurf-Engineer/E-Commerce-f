@@ -12,7 +12,9 @@ import { getTotalItemsIncart } from '../MainLayout/actions'
 interface Props {
   history?: any
   totalItems: number
+  designHasChanges: boolean
   getTotalItemsIncart: () => void
+  openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
 export class CartForHeader extends React.PureComponent<Props, {}> {
@@ -33,13 +35,27 @@ export class CartForHeader extends React.PureComponent<Props, {}> {
   }
 
   gotoCartpage = () => {
-    const { history } = this.props
-    history.push('/shopping-cart')
+    const {
+      history: { location, push },
+      designHasChanges,
+      openWithoutSaveModalAction
+    } = this.props
+    if (
+      (location.pathname as String).includes('design-center') &&
+      designHasChanges
+    ) {
+      openWithoutSaveModalAction(true, '/shopping-cart')
+      return
+    }
+    push('/shopping-cart')
   }
 }
 const mapStateToProps = null
 const CartForHeaderEnhanced = compose(
-  connect(mapStateToProps, { getTotalItemsIncart })
+  connect(
+    mapStateToProps,
+    { getTotalItemsIncart }
+  )
 )(CartForHeader)
 
 export default CartForHeaderEnhanced
