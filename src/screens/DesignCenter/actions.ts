@@ -280,7 +280,11 @@ export const setDesignHasChangesAction = (hasChanges: boolean) => ({
   hasChanges
 })
 
-export const openOutWithoutSaveModalAction = (open: boolean) => ({
+export const openOutWithoutSaveModalAction = (
+  open: boolean,
+  route: string = ''
+) => ({
   type: OPEN_OUT_WITHOUT_SAVE_MODAL,
-  open
+  open,
+  route
 })

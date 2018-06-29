@@ -10,6 +10,7 @@ import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
+import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
 import { RegionConfig, CartItems } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
@@ -46,6 +47,8 @@ interface Props extends RouteComponentProps<any> {
   hideQuickViewSliderButtons?: boolean
   itemsInCart: number
   shoppingCart: any
+  designCenter: any
+  openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -97,7 +100,9 @@ class MainLayout extends React.Component<Props, {}> {
       teamStoresHeader,
       hideQuickViewSliderButtons,
       itemsInCart,
-      shoppingCart
+      shoppingCart,
+      designCenter: { designHasChanges },
+      openWithoutSaveModalAction
     } = this.props
 
     let numberOfProducts = 0
@@ -138,7 +143,9 @@ class MainLayout extends React.Component<Props, {}> {
               openLoginAction,
               logoutAction,
               saveUserToLocal,
-              teamStoresHeader
+              teamStoresHeader,
+              designHasChanges,
+              openWithoutSaveModalAction
             }}
             hideBottom={hideBottomHeader}
           />
@@ -208,7 +215,11 @@ const mapStateToProps = (state: any) => {
 const LayoutEnhance = compose(
   connect(
     mapStateToProps,
-    { ...LayoutActions, ...LocaleActions }
+    {
+      ...LayoutActions,
+      ...LocaleActions,
+      openWithoutSaveModalAction: openOutWithoutSaveModalAction
+    }
   )
 )(MainLayout)
 export default LayoutEnhance

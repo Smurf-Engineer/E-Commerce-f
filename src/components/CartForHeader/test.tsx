@@ -10,7 +10,12 @@ describe('<CartForHeader />', () => {
     const div = document.createElement('div')
     const getTotalItems = () => {}
     ReactDOM.render(
-      <CartForHeader totalItems={0} getTotalItemsIncart={getTotalItems} />,
+      <CartForHeader
+        totalItems={0}
+        designHasChanges={false}
+        getTotalItemsIncart={getTotalItems}
+        openWithoutSaveModalAction={() => {}}
+      />,
       div
     )
   })

@@ -10,9 +10,14 @@ describe('<MenuSupport />', () => {
   test('renders without exploding', () => {
     const props = { locale: 'en' }
     const div = document.createElement('div')
+    const history = { location: null }
     ReactDOM.render(
       <IntlProvider {...props}>
-        <MenuSupport />
+        <MenuSupport
+          {...{ history }}
+          designHasChanges={false}
+          openWithoutSaveModalAction={() => {}}
+        />
       </IntlProvider>,
       div
     )

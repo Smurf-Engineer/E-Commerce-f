@@ -98,7 +98,8 @@ export const initialState = fromJS({
     idStyle: -1
   },
   designHasChanges: false,
-  openWithoutSaveModal: false
+  openOutWithoutSaveModal: false,
+  routeToGoWithoutSave: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -241,7 +242,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID:
-      return state.set('savedDesignId', action.id)
+      return state.merge({ savedDesignId: action.id, designHasChanges: false })
     case SET_CHECKED_TERMS:
       return state.set('checkedTerms', action.checked)
     case SAVE_DESIGN_LOADING:
@@ -338,7 +339,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('styleModalData', styleModalData)
     }
     case OPEN_OUT_WITHOUT_SAVE_MODAL:
-      return state.set('openOutWithoutSaveModal', action.open)
+      return state.merge({
+        openOutWithoutSaveModal: action.open,
+        routeToGoWithoutSave: action.route
+      })
     default:
       return state
   }

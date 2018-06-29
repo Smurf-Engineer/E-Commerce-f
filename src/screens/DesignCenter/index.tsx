@@ -94,6 +94,7 @@ interface Props extends RouteComponentProps<any> {
   styleModalData: StyleModalType
   designHasChanges: boolean
   openOutWithoutSaveModal: boolean
+  routeToGoWithoutSave: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -140,7 +141,7 @@ interface Props extends RouteComponentProps<any> {
     idStyle?: number
   ) => void
   editDesignAction: () => void
-  openOutWithoutSaveModalAction: (open: boolean) => void
+  openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -200,9 +201,17 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOnDontSaveOutWithoutSaveModal = () => {
-    const { openOutWithoutSaveModalAction } = this.props
+    const {
+      openOutWithoutSaveModalAction,
+      routeToGoWithoutSave,
+      history
+    } = this.props
     openOutWithoutSaveModalAction(false)
-    window.location.replace('/')
+    if (!routeToGoWithoutSave) {
+      window.location.replace('/')
+      return
+    }
+    history.push(routeToGoWithoutSave)
   }
 
   handleOnSaveOutWithoutSaveModal = () => {
