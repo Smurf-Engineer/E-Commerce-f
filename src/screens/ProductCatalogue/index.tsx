@@ -54,7 +54,7 @@ interface Props extends RouteComponentProps<any> {
   sportFilters: FilterType
   categoryFilters: FilterType
   seasonFilters: FilterType
-  fitstyleFilters: FilterType
+  fit_styleFilters: FilterType
   temperatureFilters: FilterType
   orderBy: string
   limit: number
@@ -80,9 +80,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const {
       history,
       intl,
+      genderFilters,
       sportFilters,
       categoryFilters,
       seasonFilters,
+      fit_styleFilters: fitStyleFilters,
       orderBy,
       limit,
       skip,
@@ -139,16 +141,23 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       </div>
     )
 
-    const sportOptions = get(filtersGraph, '0.options', [])
-    const categoryOptions = get(filtersGraph, '1.options', [])
-    const seasonOptions = get(filtersGraph, '2.options', [])
+    const genderOptions = get(filtersGraph, '0.options', [])
+    const sportOptions = get(filtersGraph, '1.options', [])
+    const categoryOptions = get(filtersGraph, '2.options', [])
+    const seasonOptions = get(filtersGraph, '3.options', [])
+    const fitStyleOptions = get(filtersGraph, '4.options', [])
 
+    const genderIndexes = this.getFilterIndexes(genderOptions, genderFilters)
     const sportIndexes = this.getFilterIndexes(sportOptions, sportFilters)
     const categoryIndexes = this.getFilterIndexes(
       categoryOptions,
       categoryFilters
     )
     const seasonsIndexes = this.getFilterIndexes(seasonOptions, seasonFilters)
+    const fitSizeIndexes = this.getFilterIndexes(
+      fitStyleOptions,
+      fitStyleFilters
+    )
 
     const renderView = (
       <MediaQuery
@@ -178,9 +187,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         </FiltersTitle>
                         <ProductsThumbnailList
                           formatMessage={intl.formatMessage}
+                          genderFilters={genderIndexes}
                           sportFilters={sportIndexes}
                           categoryFilters={categoryIndexes}
                           seasonFilters={seasonsIndexes}
+                          fitFilters={fitSizeIndexes}
                           handleChangePage={this.handlechangePage}
                           handleOrderBy={this.handleOrderBy}
                           {...{
@@ -212,9 +223,11 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                   <ResultsColumn>
                     <ProductsThumbnailList
                       formatMessage={intl.formatMessage}
+                      genderFilters={genderIndexes}
                       sportFilters={sportIndexes}
                       categoryFilters={categoryIndexes}
                       seasonFilters={seasonsIndexes}
+                      fitFilters={fitSizeIndexes}
                       handleChangePage={this.handlechangePage}
                       handleOrderBy={this.handleOrderBy}
                       {...{
