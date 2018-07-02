@@ -117,7 +117,6 @@ export class EmailContact extends React.Component<Props, {}> {
           width={'60%'}
           requestClose={this.handleCancel}
           withLogo={false}
-          style={{ width: '60%' }}
         >
           <Title>{formatMessage(messages.title)}</Title>
           <TitleLabel>{`${formatMessage(messages.nameLabel)} ${ownerName ||
