@@ -78,12 +78,11 @@ const ProductSlide = ({
         <Page>
           <Image src={image} onClick={onPressThumbnail} />
         </Page>
-        {isHovered &&
-          !hideCustomButton && (
-            <ButtonContainer onClick={onPressCustomize}>
-              <CustomizeButton>{labelButton}</CustomizeButton>
-            </ButtonContainer>
-          )}
+        {isHovered && (
+          <ButtonContainer onClick={onPressCustomize}>
+            {labelButton}
+          </ButtonContainer>
+        )}
       </ImageContainer>
     )
   }

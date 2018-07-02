@@ -24,5 +24,15 @@ export default defineMessages({
   visible: {
     id: 'components.LockerTable.visible',
     defaultMessage: 'Visible'
+  },
+  cannotHide: {
+    id: 'components.LockerTable.cannotHide',
+    defaultMessage:
+      'During the ordering period, you cannot hide items with orders.'
+  },
+  cannotDelete: {
+    id: 'components.LockerTable.cannotDelete',
+    defaultMessage:
+      'During the ordering period, you cannot delete items with orders.'
   }
 })

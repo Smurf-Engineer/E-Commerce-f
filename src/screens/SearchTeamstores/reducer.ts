@@ -2,7 +2,12 @@
  * Teamstores Reducer - Created by cazarez on 10/04/18.
  */
 import { fromJS } from 'immutable'
-import { DEFAULT_ACTION, SET_SEARCH_PARAM, OPEN_SHARE_MODAL } from './constants'
+import {
+  DEFAULT_ACTION,
+  SET_SEARCH_PARAM,
+  OPEN_SHARE_MODAL,
+  CLEAR_REDUCER
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -22,6 +27,12 @@ const teamstoresReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         openShare: action.open,
         storeId: action.storeId
+      })
+    case CLEAR_REDUCER:
+      return state.merge({
+        searchString: '',
+        openShare: false,
+        storeId: ''
       })
     default:
       return state

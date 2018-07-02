@@ -64,6 +64,7 @@ const SwitchWithLabel = ({
           disabled={!checked}
           value={passCode}
           placeholder="Pass Code"
+          type="Password"
           size="large"
           onChange={handleUpdatePassCode}
           style={inputStyle}

@@ -4,7 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { IntlProvider } from 'react-intl'
-import OrderSummary from './index'
+import { OrderSummary } from './index'
 
 describe('<OrderSummary />', () => {
   test('renders without exploding', () => {
@@ -13,10 +13,16 @@ describe('<OrderSummary />', () => {
     const format = (message: any) => 'string'
     const total = 0
     const subtotal = 0
+    const data = {
+      fetchMore: () => {},
+      taxes: [],
+      shipping: []
+    }
     const totalWithoutDiscount = 0
     ReactDOM.render(
       <IntlProvider {...props}>
         <OrderSummary
+          {...{ data }}
           formatMessage={format}
           {...{ total, subtotal, totalWithoutDiscount }}
         />

@@ -216,6 +216,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
 
     const targetRange: any = find(priceRanges, { id: teamSizeId }) || 1
 
+    // TODO: uncomment if return to old method
+    // const maxValueOfY = items.length
+    //   ? Math.max(...items.map(o => o.totalOrders))
+    //   : 0
+
     let markslider = { name: '0-0' }
     for (const priceRangeItem of priceRanges) {
       if (!totalItems) {
@@ -271,6 +276,11 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
       }
       return
     })
+
+    const sliderValue =
+      markslider.name === 'Personal'
+        ? 1
+        : parseInt(markslider.name.split('-')[1], 10)
 
     return (
       <Container>
@@ -358,7 +368,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
                 <StyledSlider
                   marks={marksArray}
                   disabled={true}
-                  value={parseInt(markslider.name.split('-')[1], 10)}
+                  value={sliderValue}
                 />
               </SliderWrapper>
             </TierContainer>

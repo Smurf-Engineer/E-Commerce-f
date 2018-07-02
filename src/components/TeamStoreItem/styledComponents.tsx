@@ -17,7 +17,8 @@ export const Text = styled.div`
 
 export const StyledImg = styled.img`
   width: 100%;
-  object-fit: fill;
+  height: 128px;
+  object-fit: cover;
 `
 
 export const TeamStoreCard = styled.div`
