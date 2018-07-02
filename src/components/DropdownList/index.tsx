@@ -43,6 +43,7 @@ interface Props {
   data: Data
   sportOptions: Option[]
   genderOptions: Option[]
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export class DropdownList extends React.PureComponent<Props> {
@@ -82,7 +83,7 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 
   render() {
-    const { data, genderOptions, sportOptions } = this.props
+    const { data, genderOptions, sportOptions, formatMessage } = this.props
     const { genders, categories, sports } = data
 
     const genderMenus = genderOptions.map(({ label, visible }, index) => (
@@ -98,7 +99,7 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuGender
-              {...{ genders, sports, categories, visible }}
+              {...{ genders, sports, categories, visible, formatMessage }}
               type={index}
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
@@ -125,7 +126,7 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuSports
-              {...{ sports, categories, visible }}
+              {...{ sports, categories, visible, formatMessage }}
               type={index}
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
@@ -154,7 +155,10 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const DropdownListEnhance = compose(
   graphql<Data>(categoriesQuery),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(DropdownList)
 
 export default DropdownListEnhance
