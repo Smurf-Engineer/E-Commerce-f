@@ -6,7 +6,11 @@ import gql from 'graphql-tag'
 
 export const getSingleTeamStore = gql`
   query getTeamStore($teamStoreId: String!, $passCode: String) {
-    getTeamStore(teamStoreId: $teamStoreId, passCode: $passCode) {
+    getTeamStore(
+      teamStoreId: $teamStoreId
+      passCode: $passCode
+      storeFront: true
+    ) {
       id
       short_id
       name

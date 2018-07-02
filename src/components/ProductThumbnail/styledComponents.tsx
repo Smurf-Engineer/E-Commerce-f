@@ -83,7 +83,7 @@ export const Description = styled.div`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
-  padding 2px 0px;
+  padding: 2px 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -139,26 +139,4 @@ export const Arrows = styled.div`
 
 export const Arrow = styled.img`
   user-select: none;
-`
-
-export const ButtonContainer = styled.div`
-  display: flex;
-  position: absolute;
-  width: 200px;
-  justify-content: center;
-  top: 220px;
-`
-
-export const CustomizeButton = styled.div`
-  background-color: #e61737b3;
-  color: #fff;
-  font-family: 'Avenir Next';
-  font-size: 12px;
-  line-height: 16px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 2px;
-  padding: 6px 16px;
-  animation: ${fadeIn} 0.3s linear;
 `

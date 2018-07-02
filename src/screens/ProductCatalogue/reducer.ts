@@ -24,7 +24,7 @@ export const initialState = fromJS({
   sportFilters: {},
   categoryFilters: {},
   seasonFilters: {},
-  fitFilters: {},
+  fit_styleFilters: {},
   TemperatureFilters: {},
   openSidebar: false
 })
@@ -42,7 +42,9 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
     case SHOW_TYPE_FILTER:
       return state.merge({ [action.key]: action.filter })
     case SET_SELECTED_FILTERS:
-      const { filter: { type, name } } = action
+      const {
+        filter: { type, name }
+      } = action
       return state
         .updateIn([type, name], (value: any) => !!!value)
         .merge({ skip: 0, currentPage: 1 })

@@ -114,6 +114,14 @@ export type TeamStoreItemtype = {
   team_store_name?: string
 }
 
+export type LockerTableType = {
+  design: DesignType
+  design_id?: string
+  id?: number
+  totalOrders: number
+  visible: boolean
+}
+
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
@@ -482,6 +490,37 @@ export interface ITemplateDownload {
   fileUrl: string
 }
 
+export interface NetsuiteTax {
+  internalId: string
+  rate: string
+  countryCode: string
+  ratePST: string
+  rateGST: string
+  state: string
+  zip: string
+}
+
+export interface NetsuiteShipping {
+  restrictions: NetsuiteShippingRestrictions
+  weightTable: NetsuiteShippingWeighTable[]
+  internalId: string
+  subsidiary: string
+  name: string
+  flatRate: string
+  rateType: string
+}
+
+export interface NetsuiteShippingRestrictions {
+  limitOrExcludeCountries: string
+  limitOrExcludeStates: string
+  countries: string[]
+  states: string[]
+}
+
+export interface NetsuiteShippingWeighTable {
+  minimum: number
+  amount: number
+}
 export interface MyPaletteDesignCenterModals {
   openDeletePaletteModal: boolean
   openApplyPaletteModal: boolean

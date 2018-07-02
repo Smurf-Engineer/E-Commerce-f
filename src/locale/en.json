@@ -773,5 +773,9 @@
   "screens.DesignCenter.inspirationTtitle": "Inspiration",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
   "screens.DesignCenter.addedToStore":
-    "\"{designName}\" added to \"{storeName}\""
+    "\"{designName}\" added to \"{storeName}\"",
+  "components.LockerTable.cannotHide":
+    "During the ordering period, you cannot hide items with orders.",
+  "components.LockerTable.cannotDelete":
+    "During the ordering period, you cannot delete items with orders."
 }

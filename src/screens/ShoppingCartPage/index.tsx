@@ -93,7 +93,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
   handleCheckout = () => {
     const { history, cart } = this.props
-    history.push('/checkout', { cart })
+    const userLogged = !!localStorage.getItem('user')
+    if (!userLogged) {
+      window.location.replace('/shopping-cart?login=open')
+    } else {
+      history.push('/checkout', { cart })
+    }
   }
 
   componentDidMount() {
