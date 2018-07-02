@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   filtersTitle: {
     id: 'screens.ProductCatalog.filtersTitle',
-    defaultMessage: 'FILTERS'
+    defaultMessage: 'FILTERS '
   },
   sortByLabel: {
     id: 'components.ProductCatalogueThumbnailsList.sortByLabel',

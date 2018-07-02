@@ -257,6 +257,7 @@ const ThumbnailsListEnhance = compose(
       categoryFilters,
       sportFilters,
       seasonFilters,
+      fitFilters,
       limit,
       orderBy,
       skip,
@@ -268,6 +269,7 @@ const ThumbnailsListEnhance = compose(
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,
           season: seasonFilters ? seasonFilters : null,
+          fitStyle: fitFilters ? fitFilters : null,
           limit: limit ? limit : null,
           order: orderBy ? orderBy : null,
           offset: skip ? skip : null
