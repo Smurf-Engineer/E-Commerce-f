@@ -26,7 +26,7 @@ import {
   AddOneMoreMessage,
   DeleteConfirmMessage
 } from './styledComponents'
-import ListItem from '../../components/CartListItem'
+import CartItem from '../../components/CartListItem'
 
 import Ordersummary from '../../components/OrderSummary'
 import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
@@ -213,7 +213,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const cartItems = cart || []
     const renderList = cartItems.map((cartItem, index) => {
       return (
-        <ListItem
+        <CartItem
           formatMessage={formatMessage}
           key={index}
           title={

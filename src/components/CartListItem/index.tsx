@@ -17,7 +17,8 @@ import {
   AddMore,
   DeleteItem,
   BottomDivider,
-  FooterItem
+  FooterItem,
+  HeaderPriceDetailEmpty
 } from './styledComponents'
 import get from 'lodash/get'
 import CartListItemTable from '../../components/CartListItemTable'
@@ -221,7 +222,7 @@ class CartListItem extends React.Component<Props, {}> {
                 <ItemDetailsHeaderPriceDetail>
                   {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
                 </ItemDetailsHeaderPriceDetail>
-                {!onlyRead && nextPrice.items ? (
+                {!onlyRead && nextPrice.items > 0 ? (
                   <ItemDetailsHeaderPriceDetail>
                     <FormattedMessage
                       {...messages.addMoreFor}
@@ -231,7 +232,9 @@ class CartListItem extends React.Component<Props, {}> {
                       }}
                     />
                   </ItemDetailsHeaderPriceDetail>
-                ) : null}
+                ) : (
+                  <HeaderPriceDetailEmpty />
+                )}
               </PriceContainer>
             </ItemDetailsHeader>
             <CartListItemTable
