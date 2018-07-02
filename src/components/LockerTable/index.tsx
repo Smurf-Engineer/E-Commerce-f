@@ -16,7 +16,7 @@ import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
-import { DesignType, PriceRange } from '../../types/common'
+import { PriceRange, LockerTableType } from '../../types/common'
 import Product from './ProductRow'
 
 interface Header {
@@ -35,7 +35,7 @@ const headerTitles: Header[] = [
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  items: DesignType[]
+  items: LockerTableType[]
   teamSizeRange: string
   onPressDelete: (index: number) => void
   onPressQuickView: (
@@ -89,7 +89,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
     )
 
     const itemsSelected = items.map(
-      ({ design, visible, totalOrders }: any, index) => {
+      ({ design, visible, totalOrders }: LockerTableType, index) => {
         const name = get(design, 'name')
         const product = get(design, 'product')
         const pricesArray = get(product, 'priceRange')

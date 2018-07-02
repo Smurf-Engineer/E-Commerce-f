@@ -114,6 +114,14 @@ export type TeamStoreItemtype = {
   team_store_name?: string
 }
 
+export type LockerTableType = {
+  design: DesignType
+  design_id?: string
+  id?: number
+  totalOrders: number
+  visible: boolean
+}
+
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]

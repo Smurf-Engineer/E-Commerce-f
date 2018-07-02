@@ -29,12 +29,11 @@ const CustomModal = ({
   return (
     <Container>
       <Modal
+        {...{ style, width }}
         visible={open}
         footer={null}
         closable={false}
         destroyOnClose={true}
-        style={style}
-        width={width}
       >
         <CloseIcon src={closeIcon} onClick={requestClose} />
         {withLogo && (

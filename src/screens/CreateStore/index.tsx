@@ -31,7 +31,8 @@ import {
   SelectedItem,
   TeamstoreType,
   QueryProps,
-  DesignResultType
+  DesignResultType,
+  LockerTableType
 } from '../../types/common'
 import * as createStoreActions from './actions'
 import messages from './messages'
@@ -72,7 +73,7 @@ interface Props extends RouteComponentProps<any> {
   passCode: string
   openLocker: boolean
   selectedItems: SelectedItem
-  items: DesignType[]
+  items: LockerTableType[]
   teamSizeRange: string
   createStore: any
   updateStore: any
@@ -123,7 +124,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     name: string,
     startDate: string,
     endDate: string,
-    items: DesignType[],
+    items: LockerTableType[],
     passCode: string
   ) => {
     const { privateStore } = this.props
@@ -323,7 +324,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     }
   }
 
-  getCheckedItems = (items: DesignType[]) => {
+  getCheckedItems = (items: LockerTableType[]) => {
     const checkedItems = {}
     for (const item of items) {
       const itemId = get(item, 'design.id', item.id)

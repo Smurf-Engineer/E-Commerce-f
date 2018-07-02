@@ -83,7 +83,7 @@ export const Description = styled.div`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
-  padding: '2px 0px';
+  padding: 2px 0px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
