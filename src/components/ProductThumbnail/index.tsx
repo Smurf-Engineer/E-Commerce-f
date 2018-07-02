@@ -79,20 +79,20 @@ class ProductThumbnail extends React.Component<Props, {}> {
     onPressQuickView(id, yotpoId)
   }
 
-  handlePressThumbnail = () => {
-    const { id, yotpoId, history, teamStoreShortId, gender } = this.props
-
+  getUrlProduct = () => {
+    const { id, yotpoId, teamStoreShortId, gender } = this.props
     if (teamStoreShortId) {
-      history.push(
-        `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
-      )
-    } else {
-      history.push(
-        `/product?id=${id}&yotpoId=${yotpoId}${
-          gender ? `&gender=${gender}` : ''
-        }`
-      )
+      return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
     }
+    return `/product?id=${id}&yotpoId=${yotpoId}${
+      gender ? `&gender=${gender}` : ''
+    }`
+  }
+
+  handlePressThumbnail = () => {
+    const { history } = this.props
+
+    history.push(this.getUrlProduct)
   }
 
   render() {
@@ -113,6 +113,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
     const price =
       priceRange &&
       `$${priceRange[0].price} - $${priceRange[priceRange.length - 1].price}`
+
+    let urlProduct = this.getUrlProduct()
     return (
       <Container>
         <ImageSlide
@@ -124,7 +126,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             labelButton,
             image,
             hideCustomButton,
-            hideQuickView
+            hideQuickView,
+            urlProduct
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}
