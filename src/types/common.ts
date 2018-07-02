@@ -111,6 +111,7 @@ export type TeamStoreItemtype = {
   visible: boolean
   totalOrders: number
   itemOrder?: number
+  team_store_name?: string
 }
 
 export type DesignResultType = {
@@ -511,4 +512,20 @@ export interface NetsuiteShippingRestrictions {
 export interface NetsuiteShippingWeighTable {
   minimum: number
   amount: number
+}
+export interface MyPaletteDesignCenterModals {
+  openDeletePaletteModal: boolean
+  openApplyPaletteModal: boolean
+  idPaletteToExecuteAction: number
+}
+
+export interface StyleModalType {
+  openNewStyleModal: boolean
+  indexStyle: any
+  idStyle: number
+}
+
+export interface ThemeModalType {
+  openNewThemeModal: boolean
+  themeId: number
 }

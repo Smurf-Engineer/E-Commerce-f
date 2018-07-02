@@ -31,7 +31,7 @@ export default defineMessages({
   },
   saveSuccess: {
     id: 'components.SaveDesign.saveSuccess',
-    defaultMessage: 'Design saved'
+    defaultMessage: '"{designName}" has been saved to your locker'
   },
   save: {
     id: 'components.SaveDesign.save',

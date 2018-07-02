@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl'
 import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
 import shortid from 'shortid'
+import Modal from 'antd/lib/modal'
 import {
   Container,
   Render,
@@ -23,7 +24,8 @@ import {
   ViewButton,
   LoadingContainer,
   ButtonWrapper,
-  CanvasContainer
+  CanvasContainer,
+  ModalMessage
 } from './styledComponents'
 import {
   viewPositions,
@@ -189,6 +191,9 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
+
+    const { setCustomize3dMountedAction } = this.props
+    setCustomize3dMountedAction(true)
   }
 
   componentWillUnmount() {
@@ -196,6 +201,7 @@ class Render3D extends PureComponent {
       this.stop()
       this.container.removeChild(this.renderer.domElement)
     }
+    this.canvasTexture.dispose()
   }
 
   getMousePosition = (dom, x, y) => {
@@ -348,7 +354,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round(xhr.loaded / xhr.total * 100)
+      const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }
@@ -436,7 +442,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = value * 1.0 / 100
+      const zoomValue = (value * 1.0) / 100
       this.camera.zoom = zoomValue * 2
       this.camera.updateProjectionMatrix()
     }
@@ -463,7 +469,17 @@ class Render3D extends PureComponent {
 
   handleOnClickRedo = () => this.props.onRedoAction()
 
-  handleOnClickReset = () => this.props.onResetAction()
+  handleOnOpenResetModal = () => {
+    const { openResetDesignModalAction } = this.props
+    openResetDesignModalAction(true)
+  }
+
+  onCloseResetModal = () => {
+    const { openResetDesignModalAction } = this.props
+    openResetDesignModalAction(false)
+  }
+
+  onReset = () => this.props.onResetAction()
 
   handleOnClickClear = () => this.props.onClearAction()
 
@@ -495,7 +511,8 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
-      text
+      text,
+      openResetDesignModal
     } = this.props
 
     {
@@ -548,7 +565,7 @@ class Render3D extends PureComponent {
           {...{ undoEnabled, redoEnabled, formatMessage }}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
-          onClickReset={this.handleOnClickReset}
+          onClickReset={this.handleOnOpenResetModal}
           onClickClear={this.handleOnClickClear}
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
@@ -557,21 +574,44 @@ class Render3D extends PureComponent {
           <img src={cubeViews[currentView]} />
           <ViewButton onClick={this.handleOnPressRight} src={right} />
         </ViewControls>
+        {/* Reset Modal */}
+        <Modal
+          visible={openResetDesignModal}
+          title={formatMessage(messages.modalResetTitle)}
+          okText={formatMessage(messages.modalConfirmText)}
+          onOk={this.onReset}
+          cancelText={formatMessage(messages.modalCancelText)}
+          onCancel={this.onCloseResetModal}
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>
+            {formatMessage(messages.modalResetMessage)}
+          </ModalMessage>
+        </Modal>
       </Container>
     )
   }
 
   applyImage = base64 => {
+    const { onApplyCanvasEl } = this.props
+    const id = shortid.generate()
     fabric.Image.fromURL(base64, oImg => {
       this.canvasTexture.add(
         oImg.scale(1).set({
-          id: shortid.generate(),
+          id,
           hasRotatingPoint: false,
           left: 409.6,
           top: 409.6
         })
       )
     })
+
+    const el = {
+      id
+    }
+    onApplyCanvasEl(el, 'image')
   }
 
   applyText = (text, style) => {
@@ -874,6 +914,27 @@ class Render3D extends PureComponent {
         ]
       })
       .setCoords()
+  }
+
+  /* Warning modals */
+  showFontWarningModal = () => {
+    const { formatMessage } = this.props
+    Modal.warning({
+      title: formatMessage(messages.modalWarningTitle),
+      content: formatMessage(messages.modalFontMessage),
+      okText: formatMessage(messages.modalWarningButtonText),
+      maskClosable: true
+    })
+  }
+
+  showResolutionWarningModal = () => {
+    const { formatMessage } = this.props
+    Modal.warning({
+      title: formatMessage(messages.modalWarningTitle),
+      content: formatMessage(messages.modalResolutionMessage),
+      okText: formatMessage(messages.modalWarningButtonText),
+      maskClosable: true
+    })
   }
 }
 

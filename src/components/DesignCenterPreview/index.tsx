@@ -33,17 +33,18 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
-  onSelectTab: (tab: number) => void
+  editDesignAction: () => void
   openShareModalAction: (open: boolean) => void
   openAddToTeamStoreModalAction: (open: boolean) => void
   setItemToAddAction: (teamStoreItem: {}, teamStoreId: string) => void
   addItemToStore: () => void
+  onAddToCart: () => void
 }
 
 class DesignCenterPreview extends React.PureComponent<Props, {}> {
   handleOnPressEdit = () => {
-    const { onSelectTab } = this.props
-    onSelectTab(2)
+    const { editDesignAction } = this.props
+    editDesignAction()
   }
 
   handleOnPressShare = () => {
@@ -73,7 +74,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       openAddToTeamStoreModalAction,
       setItemToAddAction,
       teamStoreId,
-      addItemToStore
+      addItemToStore,
+      onAddToCart
     } = this.props
     return (
       <Container>
@@ -99,7 +101,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
               colors,
               onLoadModel,
               loadingModel,
-              openAddToTeamStoreModalAction
+              openAddToTeamStoreModalAction,
+              onAddToCart
             }}
           />
         ) : null}

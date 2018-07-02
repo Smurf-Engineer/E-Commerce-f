@@ -66,6 +66,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
       return <div />
     }
 
+    // TODO: uncomment if needed
     // const shippingMethod = (
     //   <ShippingMethodContainer>
     //     <Title>{'Shipping Method'}</Title>
@@ -121,7 +122,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
             }}
           />
         </AnimateHeight>
-        {/* {shippingMethod} */}
+        {/* TODO: uncomment if needed {shippingMethod} */}
       </Container>
     )
   }

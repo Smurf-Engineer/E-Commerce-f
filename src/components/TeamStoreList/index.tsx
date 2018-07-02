@@ -53,7 +53,6 @@ export class TeamStoreList extends React.PureComponent<Props, {}> {
               showNameStore={true}
               image={store.banner || TeamLogo}
               name={store.name}
-              // onItemClick={this.gotoStore(store.shortId)}
               {...{ formatMessage }}
             />
           </FeaturedStoreItem>
