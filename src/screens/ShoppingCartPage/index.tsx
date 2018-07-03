@@ -206,9 +206,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       itemDetails,
       product: { genders, fitStyles /* sizeRange */ }
     } = cartItem
-    const checkGender = genders.length > 1
-    const checkFit = fitStyles.length > 1
-    // const checkSize = sizeRange.length > 1
+    const checkGender = genders.length && genders[0].id
+    const checkFit = fitStyles.length && fitStyles[0].id
+    // const checkSize = sizeRange.length && sizeRange[0].id
     for (const details of itemDetails) {
       if (checkGender && !has(details, 'gender')) {
         return false
@@ -311,7 +311,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   subtotal={total}
                   {...{ formatMessage, totalWithoutDiscount, total }}
                 />
-                <ButtonWrapper>
+                <ButtonWrapper disabled={!activeCheckout}>
                   <CheckoutButton
                     disabled={!activeCheckout}
                     type="primary"
