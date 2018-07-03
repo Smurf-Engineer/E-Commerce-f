@@ -74,6 +74,10 @@ export const ItemDetailsHeaderPriceDetail = styled.div`
   text-align: right;
 `
 
+export const HeaderPriceDetailEmpty = styled.div`
+  height: 14px;
+`
+
 export const ItemDetailsContent = styled.div``
 
 export const Image = styled.img`

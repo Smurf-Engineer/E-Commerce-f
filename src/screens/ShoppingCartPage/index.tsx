@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+import has from 'lodash/has'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -26,7 +27,7 @@ import {
   AddOneMoreMessage,
   DeleteConfirmMessage
 } from './styledComponents'
-import ListItem from '../../components/CartListItem'
+import CartItem from '../../components/CartListItem'
 
 import Ordersummary from '../../components/OrderSummary'
 import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
@@ -196,6 +197,28 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
+  isAllSetInProduct = (cartItem: CartItems) => {
+    const {
+      itemDetails,
+      product: { genders, fitStyles, sizeRange }
+    } = cartItem
+    const checkGender = genders.length && genders[0].id
+    const checkFit = fitStyles.length && fitStyles[0].id
+    const checkSize = sizeRange.length && sizeRange[0].id
+    for (const details of itemDetails) {
+      if (checkGender && !has(details, 'gender')) {
+        return false
+      }
+      if (checkFit && !has(details, 'fit')) {
+        return false
+      }
+      if (checkSize && !has(details, 'size')) {
+        return false
+      }
+    }
+    return true
+  }
+
   render() {
     const { intl, history, cart, showDeleteLastItemModal } = this.props
     const formatMessage = intl.formatMessage
@@ -211,9 +234,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     } = shoppingCartData
 
     const cartItems = cart || []
+    let activeCheckout = true
     const renderList = cartItems.map((cartItem, index) => {
+      if (!this.isAllSetInProduct(cartItem)) {
+        activeCheckout = false
+      }
       return (
-        <ListItem
+        <CartItem
           formatMessage={formatMessage}
           key={index}
           title={
@@ -280,8 +307,12 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   subtotal={total}
                   {...{ formatMessage, totalWithoutDiscount, total }}
                 />
-                <ButtonWrapper>
-                  <CheckoutButton type="primary" onClick={this.handleCheckout}>
+                <ButtonWrapper disabled={!activeCheckout}>
+                  <CheckoutButton
+                    disabled={!activeCheckout}
+                    type="primary"
+                    onClick={this.handleCheckout}
+                  >
                     <FormattedMessage {...messages.checkout} />
                   </CheckoutButton>
                 </ButtonWrapper>

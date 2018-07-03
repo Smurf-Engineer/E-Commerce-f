@@ -44,6 +44,11 @@ export interface FitStyle {
   image: string
 }
 
+export interface SizeFilter {
+  id: number
+  name: string
+}
+
 export type ImageType = {
   front: string
   back: string

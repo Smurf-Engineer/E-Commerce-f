@@ -153,16 +153,23 @@ export const ScreenTitle = styled.div`
   line-height: 25px;
 `
 
+interface ButtonWrapperProps {
+  disabled: boolean
+}
+
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
-    width: 100%;
+    background-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? '#F5F5F5' : '#4a90e2'};
+    border-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? '#D9D9D9' : '#4a90e2'};
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? '#F5F5F5' : '#49aae2'};
+    border-color: ${({ disabled }: ButtonWrapperProps) =>
+      disabled ? '#D9D9D9' : '#49aae2'};
   }
 `
 
