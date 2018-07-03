@@ -6,6 +6,7 @@ import { findDOMNode } from 'react-dom'
 import { compose } from 'react-apollo'
 import MediaQuery from 'react-responsive'
 import { DragSource, DropTarget } from 'react-dnd'
+import screenMessage from 'antd/lib/message'
 import ItemTypes from '../dndTypes'
 import {
   Row,
@@ -34,6 +35,7 @@ interface Props {
   currentPrice: number
   visible: boolean
   yotpoId: string
+  totalOrders: number
   id?: number
   text?: string
   isDragging?: () => boolean
@@ -114,6 +116,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
       currentPrice,
       visible,
       yotpoId,
+      totalOrders,
       onPressDelete,
       onPressQuickView,
       onPressVisible,
@@ -122,9 +125,19 @@ class ProductRow extends React.PureComponent<Props, {}> {
       formatMessage
     } = this.props
 
-    const handleOnClick = () => onPressDelete(index)
+    const handleOnClick = () => {
+      if (totalOrders) {
+        screenMessage.error(formatMessage(messages.cannotDelete))
+        return
+      }
+      onPressDelete(index)
+    }
     const handleOnClickView = () => onPressQuickView(productId, yotpoId, true)
     const handleOnClickVisible = (e: React.ChangeEvent<HTMLInputElement>) => {
+      if (totalOrders) {
+        screenMessage.error(formatMessage(messages.cannotHide))
+        return
+      }
       const checked = e.target.checked
       onPressVisible(index, checked)
     }
@@ -241,5 +254,8 @@ const DropTargetHOC = DropTarget(ItemTypes.ROW, rowTarget, connect => ({
   connectDropTarget: connect.dropTarget()
 }))
 
-const ProductRowEnhance = compose(DragSourceHOC, DropTargetHOC)(ProductRow)
+const ProductRowEnhance = compose(
+  DragSourceHOC,
+  DropTargetHOC
+)(ProductRow)
 export default ProductRowEnhance

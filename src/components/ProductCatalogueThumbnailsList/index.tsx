@@ -81,7 +81,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       thumbnailsList = designs.map(
-        ({ id, name, product, image, createdAt }, index) => {
+        ({ id, name, product, image, createdAt, shortId }, index) => {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -94,7 +94,18 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                     date={createdAt}
                   />
                 }
-                labelButton="ADD TO CART"
+                labelButton={
+                  <AddToCartButton
+                    label={'ADD TO CART'}
+                    renderForThumbnail={true}
+                    item={{ product }}
+                    {...{ formatMessage }}
+                    withoutTop={true}
+                    designId={shortId}
+                    designName={name}
+                    designImage={image}
+                  />
+                }
                 isTopProduct={product.isTopProduct}
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}
@@ -246,6 +257,7 @@ const ThumbnailsListEnhance = compose(
       categoryFilters,
       sportFilters,
       seasonFilters,
+      fitFilters,
       limit,
       orderBy,
       skip,
@@ -257,6 +269,7 @@ const ThumbnailsListEnhance = compose(
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,
           season: seasonFilters ? seasonFilters : null,
+          fitStyle: fitFilters ? fitFilters : null,
           limit: limit ? limit : null,
           order: orderBy ? orderBy : null,
           offset: skip ? skip : null

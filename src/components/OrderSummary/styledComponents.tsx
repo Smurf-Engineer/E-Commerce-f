@@ -151,3 +151,12 @@ export const CollapseWrapper = styled.div`
     padding: 0 0 0 0;
   }
 `
+
+interface DisplayProps {
+  show?: boolean
+}
+
+export const CalculationsWrapper = styled.div`
+  display: ${(props: DisplayProps) => (props.show ? 'flex' : 'none')};
+  flex-direction: column;
+`

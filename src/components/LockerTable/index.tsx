@@ -16,7 +16,7 @@ import MediaQuery from 'react-responsive'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
-import { DesignType, PriceRange } from '../../types/common'
+import { PriceRange, LockerTableType } from '../../types/common'
 import Product from './ProductRow'
 
 interface Header {
@@ -35,7 +35,7 @@ const headerTitles: Header[] = [
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  items: DesignType[]
+  items: LockerTableType[]
   teamSizeRange: string
   onPressDelete: (index: number) => void
   onPressQuickView: (
@@ -88,43 +88,46 @@ class LockerTable extends React.PureComponent<Props, {}> {
       </MediaQuery>
     )
 
-    const itemsSelected = items.map(({ design, visible }: any, index) => {
-      const name = get(design, 'name')
-      const product = get(design, 'product')
-      const pricesArray = get(product, 'priceRange')
-      const startingPrice = this.getTierPrice(pricesArray)
-      const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
-      const image = get(design, 'image')
-      const description =
-        get(product, 'shortDescription', false) || get(product, 'description')
-      const productId = get(product, 'id')
-      const yotpoId = get(product, 'yotpoId')
-      const type = get(product, 'type')
-      return (
-        <Product
-          {...{
-            index,
-            image,
-            name,
-            description,
-            productId,
-            startingPrice,
-            targetPrice,
-            onPressDelete,
-            onPressQuickView,
-            onPressVisible,
-            yotpoId,
-            formatMessage
-          }}
-          key={index}
-          description={`${type} ${description}`}
-          currentOrders={0} // TODO: Get from the query
-          currentPrice={startingPrice}
-          visible={visible}
-          moveRow={this.moveRow}
-        />
-      )
-    })
+    const itemsSelected = items.map(
+      ({ design, visible, totalOrders }: LockerTableType, index) => {
+        const name = get(design, 'name')
+        const product = get(design, 'product')
+        const pricesArray = get(product, 'priceRange')
+        const startingPrice = this.getTierPrice(pricesArray)
+        const targetPrice = this.getTierPrice(pricesArray, teamSizeRange)
+        const image = get(design, 'image')
+        const description =
+          get(product, 'shortDescription', false) || get(product, 'description')
+        const productId = get(product, 'id')
+        const yotpoId = get(product, 'yotpoId')
+        const type = get(product, 'type')
+        return (
+          <Product
+            {...{
+              index,
+              image,
+              name,
+              description,
+              productId,
+              startingPrice,
+              targetPrice,
+              onPressDelete,
+              onPressQuickView,
+              onPressVisible,
+              yotpoId,
+              totalOrders,
+              formatMessage
+            }}
+            key={index}
+            description={`${type} ${description}`}
+            currentOrders={0} // TODO: Get from the query
+            currentPrice={startingPrice}
+            visible={visible}
+            moveRow={this.moveRow}
+          />
+        )
+      }
+    )
 
     const renderTable =
       items.length > 0 ? (
