@@ -16,7 +16,9 @@ import {
   Palette,
   TextFormat,
   CanvasType,
-  MyPaletteDesignCenterModals
+  MyPaletteDesignCenterModals,
+  ArtFormat,
+  PathType
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -34,6 +36,7 @@ interface Props {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -74,6 +77,7 @@ const Tabs = ({
   canvas,
   selectedElement,
   textFormat,
+  artFormat,
   onSelectTextFormat,
   openPaletteModalAction,
   myPaletteModals,
@@ -120,7 +124,11 @@ const Tabs = ({
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           <SymbolTab
-            {...{ onApplyArt, formatMessage, onSelectArtFormat }}
+            {...{
+              onApplyArt,
+              formatMessage,
+              onSelectArtFormat
+            }}
             selectedElement={canvas.path[selectedElement]}
           />
         </TabPane>

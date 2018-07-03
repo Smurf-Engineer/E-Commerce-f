@@ -360,6 +360,12 @@ export interface TextFormat {
   strokeWidth: number
 }
 
+export interface ArtFormat {
+  stroke: string
+  fill: string
+  strokeWidth: number
+}
+
 export interface CanvasElement {
   id: string
   text?: string
@@ -383,6 +389,11 @@ export interface CanvasType {
     [id: string]: CanvasElement
   }
 }
+
+export interface PathType {
+  [id: string]: CanvasElement
+}
+
 export interface ClickParam {
   key: string
   keyPath: Array<string>

@@ -9,7 +9,8 @@ import {
   CanvasElement,
   TextFormat,
   CanvasType,
-  MyPaletteDesignCenterModals
+  MyPaletteDesignCenterModals,
+  ArtFormat
 } from '../../types/common'
 import { Container } from './styledComponents'
 
@@ -31,6 +32,7 @@ interface Props {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
   customize3dMounted: boolean
@@ -102,6 +104,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onApplyCanvasEl,
       selectedElement,
       textFormat,
+      artFormat,
       onSelectTextFormat,
       openPaletteModalAction,
       myPaletteModals,
@@ -135,6 +138,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             canvas,
             selectedElement,
             textFormat,
+            artFormat,
             onSelectTextFormat,
             onSelectArtFormat,
             openPaletteModalAction,
@@ -186,8 +190,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     this.render3D.applyImage(base64)
   }
 
-  handleOnApplyArt = (url: string) => {
-    this.render3D.applyClipArt(url)
+  handleOnApplyArt = (url: string, style?: CanvasElement) => {
+    this.render3D.applyClipArt(url, style)
   }
 }
 

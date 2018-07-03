@@ -42,7 +42,9 @@ import {
   CanvasType,
   MyPaletteDesignCenterModals,
   StyleModalType,
-  ThemeModalType
+  ThemeModalType,
+  ArtFormat,
+  PathType
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -88,6 +90,7 @@ interface Props extends RouteComponentProps<any> {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
   themeModalData: ThemeModalType
@@ -332,6 +335,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       removeCanvasElement,
       selectedElement,
       textFormat,
+      artFormat,
       setTextFormatAction,
       setArtFormatAction,
       openPaletteModalAction,
@@ -428,6 +432,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 canvas,
                 selectedElement,
                 textFormat,
+                artFormat,
                 openPaletteModalAction,
                 myPaletteModals,
                 openResetDesignModal,

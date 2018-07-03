@@ -43,7 +43,7 @@ import {
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_CUSTOMIZE_3D_MOUNTED
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, CanvasElement } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -274,13 +274,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const { el, typeEl } = action
       const canvas = state.get('canvas')
       const selectedElement = state.get('selectedElement')
-      const updatedCanvas = canvas.setIn([typeEl, el.id], el)
+      const canvasEl = typeEl === 'path' ? fromJS(el) : el
+      const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
       if (selectedElement) {
         return state.set('canvas', updatedCanvas)
       }
+
       return state.merge({
+        selectedElement: el.id,
         canvas: updatedCanvas,
-        text: '',
         designHasChanges: true
       })
     }
@@ -302,19 +304,20 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.set('selectedElement', id)
     }
-    case REMOVE_CANVAS_ELEMENT_ACTION:
-      return state.deleteIn(['canvas', action.typeEl, action.id])
+    case REMOVE_CANVAS_ELEMENT_ACTION: {
+      const canvas = state.get('canvas')
+      const updatedCanvas = canvas.deleteIn([action.typeEl, action.id])
+      return state.merge({
+        canvas: updatedCanvas,
+        selectedElement: ''
+      })
+    }
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)
     case SET_ART_FORMAT_ACTION: {
+      const { key, value } = action
       const selectedElement = state.get('selectedElement')
-      console.log('---------------------------')
-      console.log(selectedElement)
-      console.log('---------------------------')
-      return state.setIn(
-        ['canvas', 'path', selectedElement, action.key],
-        action.value
-      )
+      return state.setIn(['canvas', 'path', selectedElement, key], value)
     }
     case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
       const { key, open, value } = action

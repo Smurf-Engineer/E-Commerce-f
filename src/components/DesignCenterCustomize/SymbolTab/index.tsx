@@ -9,7 +9,12 @@ import withLoading from '../../WithLoading'
 import WithError from '../../WithError'
 import OptionText from '../../OptionText'
 import TextEditor from '../TextEditor'
-import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
+import {
+  QueryProps,
+  ClipArt,
+  CanvasElement,
+  ArtFormat
+} from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'
@@ -35,8 +40,8 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   formatMessage: (messageDescriptor: any) => string
-  selectedElement?: CanvasElement
-  onApplyArt: (url: string) => void
+  selectedElement: CanvasElement
+  onApplyArt: (url: string, style?: CanvasElement) => void
   onSelectArtFormat: (key: string, value: string | number) => void
 }
 
@@ -83,7 +88,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
             </div>
             <TextEditor
               {...{ option, formatMessage }}
-              strokeWidth={selectedElement.strokeWidth || 0}
+              strokeWidth={selectedElement.strokeWidth}
               onSelectFill={this.handleOnSelectFill}
               onSelectStrokeWidth={this.handleOnSelectStrokeWidth}
               onSelectStrokeColor={this.handleOnSelectStrokeColor}
@@ -112,25 +117,25 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     this.setState({ page, option })
 
   handleOnSelectFill = (fillColor: string) => {
-    const { selectedElement, onSelectArtFormat } = this.props
-    console.log('---------------------------')
-    console.log(selectedElement)
-    console.log('---------------------------')
+    const { selectedElement, onSelectArtFormat, onApplyArt } = this.props
     onSelectArtFormat('fill', fillColor)
     this.setState({ page: 0 })
-    // TODO: Apply fill color
+    selectedElement.fill = fillColor
+    onApplyArt('', selectedElement)
   }
 
   handleOnSelectStrokeWidth = (strokeWidth: number) => {
-    const { onSelectArtFormat } = this.props
+    const { selectedElement, onSelectArtFormat, onApplyArt } = this.props
     onSelectArtFormat('strokeWidth', strokeWidth)
-    // TODO: Apply fill color
+    selectedElement.strokeWidth = strokeWidth
+    onApplyArt('', selectedElement)
   }
 
   handleOnSelectStrokeColor = (strokeColor: string) => {
-    const { onSelectArtFormat } = this.props
+    const { onSelectArtFormat, onApplyArt, selectedElement } = this.props
     onSelectArtFormat('stroke', strokeColor)
-    // TODO: Apply stroke color
+    selectedElement.stroke = strokeColor
+    onApplyArt('', selectedElement)
     this.setState({ page: 0 })
   }
 

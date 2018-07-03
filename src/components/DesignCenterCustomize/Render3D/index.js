@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
+import { fromJS } from 'immutable'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
@@ -56,7 +57,7 @@ import dummieData from './dummieData'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
-const CANVAS_SIZE = 3880.016
+const CANVAS_SIZE = 2048
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -95,7 +96,7 @@ class Render3D extends PureComponent {
     fabric.Object.prototype.customiseCornerIcons({
       settings: {
         borderColor: 'black',
-        cornerSize: 100,
+        cornerSize: 75,
         cornerPadding: 10
       },
       tl: {
@@ -602,17 +603,18 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
     const id = shortid.generate()
     fabric.Image.fromURL(base64, oImg => {
-      this.canvasTexture.add(
-        oImg.scale(1).set({
-          id,
-          hasRotatingPoint: false,
-          left: 900,
-          top: 900
-        })
-      )
+      const imageEl = oImg.scale(1).set({
+        id,
+        hasRotatingPoint: false,
+        left: 400,
+        top: 400
+      })
+      this.canvasTexture.add(imageEl)
 
       const el = { id }
       onApplyCanvasEl(el, 'image')
+      this.canvasTexture.setActiveObject(imageEl)
+      this.canvasTexture.renderAll()
     })
   }
 
@@ -625,21 +627,23 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
-    if (activeEl) {
+    if (activeEl && activeEl.type === 'text') {
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 900,
-        top: 900,
+        left: 400,
+        top: 400,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
         ...style
       })
       this.canvasTexture.add(txtEl)
+      this.canvasTexture.setActiveObject(txtEl)
+      this.canvasTexture.renderAll()
     }
 
     const el = {
@@ -650,21 +654,34 @@ class Render3D extends PureComponent {
     onApplyCanvasEl(el, 'text', !!activeEl)
   }
 
-  applyClipArt = url => {
-    const { onApplyCanvasEl } = this.props
-    fabric.loadSVGFromURL(url, (objects, options) => {
-      const id = shortid.generate()
-      const shape = fabric.util.groupSVGElements(objects, options)
-      shape.set({
-        id,
-        hasRotatingPoint: false,
-        top: 900,
-        left: 900
+  applyClipArt = (url, style) => {
+    const activeEl = this.canvasTexture.getActiveObject()
+    if (activeEl && activeEl.type === 'path') {
+      activeEl.set({ ...style })
+      this.canvasTexture.renderAll()
+    } else {
+      const { onApplyCanvasEl } = this.props
+      fabric.loadSVGFromURL(url, (objects, options) => {
+        const id = shortid.generate()
+        const shape = fabric.util.groupSVGElements(objects, options)
+        shape.set({
+          id,
+          hasRotatingPoint: false,
+          top: 400,
+          left: 400
+        })
+        const el = {
+          id,
+          fill: '#000000',
+          stroke: '#000000',
+          strokeWidth: 0
+        }
+        onApplyCanvasEl(el, 'path')
+        this.canvasTexture.add(shape)
+        this.canvasTexture.setActiveObject(shape)
+        this.canvasTexture.renderAll()
       })
-      this.canvasTexture.add(shape)
-      const el = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
-      onApplyCanvasEl(el, 'path')
-    })
+    }
   }
 
   deleteElement = el => {
@@ -676,18 +693,18 @@ class Render3D extends PureComponent {
   duplicateElement = el => {
     const { onApplyCanvasEl } = this.props
     const boundingBox = el.getBoundingRect()
-    const textFormat = {
-      fontFamily: el.fontFamily,
-      stroke: el.stroke,
-      fill: el.fill,
-      strokeWidth: el.strokeWidth
-    }
 
     const elementType = el.get('type')
     let canvasEl = {}
     switch (elementType) {
       case 'text':
         {
+          const textFormat = {
+            fontFamily: el.fontFamily,
+            stroke: el.stroke,
+            fill: el.fill,
+            strokeWidth: el.strokeWidth
+          }
           const text = el.get('text')
           const clonedEl = new fabric.Text(text, {
             id: shortid.generate(),
@@ -717,14 +734,12 @@ class Render3D extends PureComponent {
         break
       }
       case 'path': {
-        const objects = el.getObjects()
-        const group = new fabric.Group(objects, {
-          id: shortid.generate(),
-          hasRotatingPoint: false,
-          left: boundingBox.left,
-          top: boundingBox.top + 100
+        const id = shortid.generate()
+        el.clone(clone => {
+          clone.set({ id, top: boundingBox.top + 100 })
+          canvasEl = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
+          this.canvasTexture.add(clone)
         })
-        this.canvasTexture.add(group)
       }
       default:
         break
