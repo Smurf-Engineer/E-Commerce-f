@@ -222,7 +222,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   placeholder={formatMessage(messages.sizePlaceholder)}
                   optionFilterProp="children"
                   value={size ? size.name : undefined}
-                  disabled={!!!sizes.length}
+                  disabled={!sizes.length}
                 >
                   {sizeOptions}
                 </StyledSelect>
