@@ -264,6 +264,7 @@ const ThumbnailsListEnhance = compose(
       designs
     }: OwnProps) => {
       return {
+        fetchPolicy: 'network-only',
         variables: {
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,
