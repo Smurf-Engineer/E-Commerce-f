@@ -72,7 +72,7 @@ export class TextTab extends React.PureComponent<Props, State> {
               <Input
                 value={text}
                 onChange={this.handleOnUpdateText}
-                placeholder="Enter Text"
+                placeholder={formatMessage(messages.enterTextPlaceholder)}
                 addonAfter={
                   <Button onClick={this.handleOnApplyText}>Apply</Button>
                 }
@@ -138,27 +138,74 @@ export class TextTab extends React.PureComponent<Props, State> {
     onApplyText(text, textFormat)
   }
 
-  handleOnSelectFont = (font: string) => {
-    const { onSelectTextFormat } = this.props
-    onSelectTextFormat('fontFamily', font)
-    this.setState({ page: 0 })
+  handleOnSelectFont = (fontFamily: string) => {
+    const {
+      onSelectTextFormat,
+      textFormat,
+      onApplyText,
+      text,
+      selectedElement
+    } = this.props
+    if (selectedElement) {
+      const newTextFormat = Object.assign({}, textFormat)
+      newTextFormat.fontFamily = fontFamily
+      onApplyText(text, newTextFormat)
+    } else {
+      this.setState({ page: 0 })
+    }
+    onSelectTextFormat('fontFamily', fontFamily)
   }
 
-  handleOnSelectFill = (fillColor: string) => {
-    const { onSelectTextFormat } = this.props
-    onSelectTextFormat('fill', fillColor)
-    this.setState({ page: 0 })
+  handleOnSelectFill = (fill: string) => {
+    const {
+      onSelectTextFormat,
+      textFormat,
+      onApplyText,
+      text,
+      selectedElement
+    } = this.props
+    if (selectedElement) {
+      const updatedTextFormat = Object.assign({}, textFormat)
+      updatedTextFormat.fill = fill
+      onApplyText(text, updatedTextFormat)
+    } else {
+      this.setState({ page: 0 })
+    }
+    onSelectTextFormat('fill', fill)
   }
 
   handleOnSelectStrokeWidth = (strokeWidth: number) => {
-    const { onSelectTextFormat } = this.props
+    const {
+      onSelectTextFormat,
+      textFormat,
+      onApplyText,
+      text,
+      selectedElement
+    } = this.props
+    if (selectedElement) {
+      const updatedTextFormat = Object.assign({}, textFormat)
+      updatedTextFormat.strokeWidth = strokeWidth
+      onApplyText(text, updatedTextFormat)
+    }
     onSelectTextFormat('strokeWidth', strokeWidth)
   }
 
-  handleOnSelectStrokeColor = (strokeColor: string) => {
-    const { onSelectTextFormat } = this.props
-    onSelectTextFormat('stroke', strokeColor)
-    this.setState({ page: 0 })
+  handleOnSelectStrokeColor = (stroke: string) => {
+    const {
+      onSelectTextFormat,
+      textFormat,
+      onApplyText,
+      text,
+      selectedElement
+    } = this.props
+    if (selectedElement) {
+      const updatedTextFormat = Object.assign({}, textFormat)
+      updatedTextFormat.stroke = stroke
+      onApplyText(text, updatedTextFormat)
+    } else {
+      this.setState({ page: 0 })
+    }
+    onSelectTextFormat('stroke', stroke)
   }
 
   changePage = (page: number, option: number) => () =>

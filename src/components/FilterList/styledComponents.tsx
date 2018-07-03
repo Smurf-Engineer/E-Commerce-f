@@ -14,7 +14,7 @@ export const Text = styled.div`
 
 export const Option = styled.div`
   height: 30px;
-  width: fit-content;
+  width: max-content;
 `
 
 export const Line = styled.div`

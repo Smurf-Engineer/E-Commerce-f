@@ -368,6 +368,12 @@ export interface TextFormat {
   strokeWidth: number
 }
 
+export interface ArtFormat {
+  stroke: string
+  fill: string
+  strokeWidth: number
+}
+
 export interface CanvasElement {
   id: string
   text?: string
@@ -375,6 +381,9 @@ export interface CanvasElement {
   height?: number
   textFormat?: TextFormat
   artIndex?: number
+  fill?: string
+  stroke?: string
+  strokeWidth?: number
 }
 
 export interface CanvasType {
@@ -384,10 +393,15 @@ export interface CanvasType {
   image: {
     [id: string]: CanvasElement
   }
-  art: {
+  path: {
     [id: string]: CanvasElement
   }
 }
+
+export interface PathType {
+  [id: string]: CanvasElement
+}
+
 export interface ClickParam {
   key: string
   keyPath: Array<string>
@@ -525,6 +539,11 @@ export interface MyPaletteDesignCenterModals {
   openDeletePaletteModal: boolean
   openApplyPaletteModal: boolean
   idPaletteToExecuteAction: number
+}
+
+export interface ClipArt {
+  id: number
+  url: string
 }
 
 export interface StyleModalType {

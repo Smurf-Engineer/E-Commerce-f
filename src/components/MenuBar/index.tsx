@@ -144,12 +144,14 @@ class MenuBar extends React.Component<Props, StateProps> {
       />
     )
 
+    const { formatMessage } = intl
+
     const bottomRowContent = teamStoresHeader ? (
       <BottomRow>
         <LogoIcon src={logo} onClick={this.handleOnGoHome} />
         <TeamStoresMenuContainer>
           <TeamStoresMenuTitle onClick={this.gotoTeamStores}>
-            {intl.formatMessage(messages.teamStoresTitle)}
+            {formatMessage(messages.teamStoresTitle)}
           </TeamStoresMenuTitle>
         </TeamStoresMenuContainer>
         <div />
@@ -157,12 +159,8 @@ class MenuBar extends React.Component<Props, StateProps> {
     ) : (
       <BottomRow>
         <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList {...{ history }} />
-        <SearchBar
-          search={searchFunc}
-          onHeader={true}
-          formatMessage={intl.formatMessage}
-        />
+        <DropdownList {...{ history, formatMessage }} />
+        <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
       </BottomRow>
     )
 
@@ -214,15 +212,15 @@ class MenuBar extends React.Component<Props, StateProps> {
         <Login
           open={openLogin}
           requestClose={this.handleCloseLogin}
-          formatMessage={intl.formatMessage}
           handleForgotPassword={this.handleOpenForgotPassword}
           login={saveUserToLocal}
+          {...{ formatMessage }}
         />
         <ForgotPassword
           open={openForgotPassword}
-          formatMessage={intl.formatMessage}
           requestClose={this.handleOpenForgotPassword}
           openLogin={this.handleOpenLogin}
+          {...{ formatMessage }}
         />
       </div>
     )

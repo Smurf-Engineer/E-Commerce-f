@@ -25,9 +25,10 @@ describe('<ProductHorizontalList />', () => {
       products,
       fetchMore: () => {}
     }
+    const formatMessage = () => ''
     ReactDOM.render(
       <ProductHorizontalList
-        {...{ products, category, data, sportFilter }}
+        {...{ products, category, data, sportFilter, formatMessage }}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
         onPressQuickView={() => {}}

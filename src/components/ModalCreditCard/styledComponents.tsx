@@ -109,7 +109,7 @@ export const StyledCheckbox = styled(Checkbox)`
 
 export const StripeCardElement = {
   base: {
-    fontSize: 'medium',
+    fontSize: '16px',
     fontFamily: 'Avenir Next',
     color: '#5f6062'
   }

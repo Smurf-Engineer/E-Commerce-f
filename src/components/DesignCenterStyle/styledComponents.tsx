@@ -29,11 +29,16 @@ export const List = styled.div`
   text-align: center;
 `
 
-export const Row = styled.ul`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 100%;
+export const Row = styled.div`
+  display: grid;
+  grid-template-columns: 302px 302px 302px;
+  grid-gap: 50px 40px;
+  grid-template-rows: auto;
+  justify-content: center;
+
+  @media (max-width: 1020px) {
+    grid-template-columns: 302px 302px;
+  }
 `
 
 export const ModalMessage = styled.div`

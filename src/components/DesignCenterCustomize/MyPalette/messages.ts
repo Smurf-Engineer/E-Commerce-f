@@ -33,5 +33,9 @@ export default defineMessages({
     id: 'components.MyPalette.applyPaletteMessage',
     defaultMessage:
       'Using this palette will replace the colors currently in use.'
+  },
+  paletteNamePlaceHolder: {
+    id: 'components.MyPalette.paletteNamePlaceHolder',
+    defaultMessage: 'Name Palette'
   }
 })
