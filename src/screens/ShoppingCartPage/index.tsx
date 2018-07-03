@@ -6,6 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+import has from 'lodash/has'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -196,6 +197,32 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     setQuantityItemDetailAction(index, detailIndex, quantity)
   }
 
+  isAllSetInProduct = (cartItem: CartItems) => {
+    /**
+     * TODO: able and test commented code when size options be added
+     * is for check that size is setted if is available to set
+     */
+    const {
+      itemDetails,
+      product: { genders, fitStyles /* sizeRange */ }
+    } = cartItem
+    const checkGender = genders.length > 1
+    const checkFit = fitStyles.length > 1
+    // const checkSize = sizeRange.length > 1
+    for (const details of itemDetails) {
+      if (checkGender && !has(details, 'gender')) {
+        return false
+      }
+      if (checkFit && !has(details, 'fit')) {
+        return false
+      }
+      // if (checkSize && !has(itemDetails[0], 'size')){
+      //   return false
+      // }
+    }
+    return true
+  }
+
   render() {
     const { intl, history, cart, showDeleteLastItemModal } = this.props
     const formatMessage = intl.formatMessage
@@ -211,7 +238,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     } = shoppingCartData
 
     const cartItems = cart || []
+    let activeCheckout = true
     const renderList = cartItems.map((cartItem, index) => {
+      if (!this.isAllSetInProduct(cartItem)) {
+        activeCheckout = false
+      }
       return (
         <CartItem
           formatMessage={formatMessage}
@@ -281,7 +312,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   {...{ formatMessage, totalWithoutDiscount, total }}
                 />
                 <ButtonWrapper>
-                  <CheckoutButton type="primary" onClick={this.handleCheckout}>
+                  <CheckoutButton
+                    disabled={!activeCheckout}
+                    type="primary"
+                    onClick={this.handleCheckout}
+                  >
                     <FormattedMessage {...messages.checkout} />
                   </CheckoutButton>
                 </ButtonWrapper>
