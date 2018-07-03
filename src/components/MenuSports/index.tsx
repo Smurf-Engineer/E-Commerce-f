@@ -21,6 +21,7 @@ interface Props {
   sports: Filter[]
   categories: Filter[]
   visible: boolean
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export class MenuSports extends React.PureComponent<Props, {}> {
@@ -42,7 +43,8 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       onPressQuickView,
       categorySelected,
       categories,
-      sports
+      sports,
+      formatMessage
     } = this.props
 
     if (!visible) {
@@ -57,11 +59,14 @@ export class MenuSports extends React.PureComponent<Props, {}> {
             filterSelected={categorySelected}
             onHoverFilter={this.handleOnHoverCategory}
           />
-          <SeeAllButton onClick={this.handleOnPressSeeAll} />
+          <SeeAllButton
+            onClick={this.handleOnPressSeeAll}
+            {...{ formatMessage }}
+          />
         </Filters>
         <Divider type="vertical" />
         <ProductList
-          {...{ onPressCustomize, onPressQuickView }}
+          {...{ onPressCustomize, onPressQuickView, formatMessage }}
           width={'80%'}
           sportFilter={sports && sports[type]}
           category={categories && categories[categorySelected]}
@@ -75,7 +80,10 @@ export class MenuSports extends React.PureComponent<Props, {}> {
 const mapStateToProps = (state: any) => state.get('menuSports').toJS()
 
 const MenuGenderEnhance = compose(
-  connect(mapStateToProps, { ...menuSportActions })
+  connect(
+    mapStateToProps,
+    { ...menuSportActions }
+  )
 )(MenuSports)
 
 export default MenuGenderEnhance

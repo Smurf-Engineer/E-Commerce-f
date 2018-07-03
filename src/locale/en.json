@@ -807,5 +807,7 @@
   "components.TextTab.selectFill": "Select Fill",
   "components.TextTab.selectOutline": "Select Outline",
   "components.TextTab.addEffect": "Add an Effect",
-  "components.TextTab.enterTextPlaceholder": "Enter Text"
+  "components.TextTab.enterTextPlaceholder": "Enter Text",
+  "components.seAllButton.seeAll": "See All",
+  "components.seAllButton.seeAllFilters": "See All Filters"
 }

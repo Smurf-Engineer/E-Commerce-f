@@ -24,6 +24,7 @@ interface Props {
   onPressQuickView: (id: number) => void
   width?: string
   category: Filter
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export const ProductHorizontalList = ({
@@ -34,7 +35,8 @@ export const ProductHorizontalList = ({
   width = '60%',
   genderFilter,
   sportFilter,
-  category
+  category,
+  formatMessage
 }: Props) => {
   if (data.loading) {
     return (
@@ -102,7 +104,7 @@ export const ProductHorizontalList = ({
     <Container {...{ width }}>
       {list}
       <AllButton>
-        <SeeAllButton onClick={onPressSeeAll} />
+        <SeeAllButton {...{ formatMessage }} />
       </AllButton>
     </Container>
   )

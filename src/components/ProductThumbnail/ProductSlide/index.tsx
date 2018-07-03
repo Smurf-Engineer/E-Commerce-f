@@ -32,6 +32,7 @@ interface Props {
   labelButton?: string | React.ReactNode
   hideCustomButton?: boolean
   hideQuickView?: boolean
+  urlProduct: string
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -56,7 +57,8 @@ const ProductSlide = ({
   onPressNext,
   onPressThumbnail,
   hideCustomButton,
-  hideQuickView
+  hideQuickView,
+  urlProduct
 }: Props) => {
   if (image) {
     return (
@@ -76,7 +78,9 @@ const ProductSlide = ({
           )}
         </ImageTop>
         <Page>
-          <Image src={image} onClick={onPressThumbnail} />
+          <a href={urlProduct}>
+            <Image src={image} onClick={onPressThumbnail} />
+          </a>
         </Page>
         {isHovered && (
           <ButtonContainer onClick={onPressCustomize}>
@@ -90,7 +94,11 @@ const ProductSlide = ({
   const imagePages = imagesOrder.map((key, index) => {
     return (
       <Page key={index}>
-        {!!images && <Image src={images[key]} onClick={onPressThumbnail} />}
+        {!!images && (
+          <a href={urlProduct}>
+            <Image src={images[key]} onClick={onPressThumbnail} />{' '}
+          </a>
+        )}
       </Page>
     )
   })
