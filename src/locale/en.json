@@ -777,5 +777,7 @@
   "components.LockerTable.cannotHide":
     "During the ordering period, you cannot hide items with orders.",
   "components.LockerTable.cannotDelete":
-    "During the ordering period, you cannot delete items with orders."
+    "During the ordering period, you cannot delete items with orders.",
+  "componentes.StoreForm.save": "Save",
+  "componentes.StoreForm.cancel": "Cancel"
 }
