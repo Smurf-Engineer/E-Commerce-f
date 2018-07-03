@@ -28,9 +28,11 @@ describe('<DropdownList />', () => {
       fetchMore: () => {}
     }
 
+    const formatMessage = () => ''
+
     ReactDOM.render(
       <DropdownList
-        {...{ sportOptions, genderOptions, data }}
+        {...{ sportOptions, genderOptions, data, formatMessage }}
         history={{}}
         dispatch={{}}
       />,
