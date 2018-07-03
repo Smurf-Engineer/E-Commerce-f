@@ -27,7 +27,8 @@ import {
   Product,
   ItemDetailType,
   FitStyle,
-  Filter
+  Filter,
+  SizeFilter
 } from '../../types/common'
 
 const Option = Select.Option
@@ -120,12 +121,11 @@ class CartListItemTable extends React.Component<Props, {}> {
   }
 
   handleSizeChange = (value: any, detail: number) => {
-    // TODO: implement when sizes added
-    // const { setDetailGender, itemIndex, cartItem } = this.props
-    // const selectedGender = find(cartItem.product.genders, {
-    //   name: value
-    // }) as ItemDetailType
-    // setDetailGender(itemIndex, detail, selectedGender)
+    const { setDetailSize, itemIndex, cartItem } = this.props
+    const selectedSize = find(cartItem.product.sizeRange, {
+      name: value
+    }) as ItemDetailType
+    setDetailSize(itemIndex, detail, selectedSize)
   }
 
   handleFitChange = (value: any, detail: number) => {
@@ -171,7 +171,7 @@ class CartListItemTable extends React.Component<Props, {}> {
     )
 
     const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
-    const fitOptions = fitStyles.map((fs, key) => {
+    const fitOptions = fitStyles.map(fs => {
       return (
         <Option key={fs.id} value={fs.name}>
           {fs.name}
@@ -182,10 +182,19 @@ class CartListItemTable extends React.Component<Props, {}> {
     const fits = cartItem.product.fitStyles && cartItem.product.fitStyles[0].id
 
     const genders: Filter[] = get(cartItem, 'product.genders', [])
-    const genderOptions = genders.map((gender, genderKey) => {
+    const genderOptions = genders.map(gender => {
       return (
         <Option key={gender.id} value={gender.name}>
           {gender.name}
+        </Option>
+      )
+    })
+
+    const sizes: SizeFilter[] = get(cartItem, 'product.sizeRange', [])
+    const sizeOptions = sizes.map(size => {
+      return (
+        <Option key={size.id} value={size.name}>
+          {size.name}
         </Option>
       )
     })
@@ -208,11 +217,15 @@ class CartListItemTable extends React.Component<Props, {}> {
               </Cell>
               <Cell>
                 <StyledSelect
+                  onChange={e => this.handleSizeChange(e, index)}
                   showSearch={false}
                   placeholder={formatMessage(messages.sizePlaceholder)}
                   optionFilterProp="children"
-                  disabled={true}
-                />
+                  value={size ? size.name : undefined}
+                  disabled={!sizes.length}
+                >
+                  {sizeOptions}
+                </StyledSelect>
               </Cell>
               <Cell>
                 <StyledSelect
