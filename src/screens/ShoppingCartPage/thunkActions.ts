@@ -56,10 +56,6 @@ export const saveToStorage = (cart: CartItems[]) => {
 }
 
 const setItemDetails = (cartItem: CartItems) => {
-  /**
-   * TODO: able and test commented code when size options be added
-   * is for select a size as default when only be a single size option
-   */
   const {
     itemDetails,
     product: { genders, fitStyles, sizeRange }

@@ -199,9 +199,6 @@ class CartListItemTable extends React.Component<Props, {}> {
       )
     })
 
-    console.log(sizes)
-    console.log(sizeOptions)
-
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
           const { gender, size, fit, label, quantity } = item
