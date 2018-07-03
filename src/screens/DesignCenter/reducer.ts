@@ -2,7 +2,6 @@
  * DesignCenter Reducer - Created by david on 23/02/18.
  */
 import { fromJS, List } from 'immutable'
-import fill from 'lodash/fill'
 import isEqual from 'lodash/isEqual'
 import {
   CLEAR_STORE_ACTION,
@@ -35,6 +34,7 @@ import {
   SET_SELECTED_ELEMENT_ACTION,
   REMOVE_CANVAS_ELEMENT_ACTION,
   SET_TEXT_FORMAT_ACTION,
+  SET_ART_FORMAT_ACTION,
   OPEN_DELETE_OR_APPLY_PALETTE_MODAL,
   OPEN_RESET_DESIGN_MODAL,
   EDIT_DESIGN_ACTION,
@@ -45,13 +45,12 @@ import {
 } from './constants'
 import { Reducer } from '../../types/common'
 
-const colorsInit = fill(Array(5), '')
-
 export const initialState = fromJS({
   currentTab: 0,
   colorBlock: -1,
   colorBlockHovered: -1,
-  colors: ['#B9B9B9', '#D2D2D2', '#255B2D', '#096F39', '#A9A9A9'],
+  colors: [],
+  styleColors: [],
   palettes: [],
   paletteName: '',
   designName: '',
@@ -74,7 +73,7 @@ export const initialState = fromJS({
   canvas: {
     text: {},
     image: {},
-    art: {}
+    path: {}
   },
   textFormat: {
     fontFamily: 'Avenir',
@@ -201,7 +200,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingModel', action.loading)
     case DESIGN_RESET_ACTION:
       return state.merge({
-        colors: List.of(...colorsInit),
+        colors: state.get('styleColors'),
         openResetDesignModal: false
       })
     case EDIT_DESIGN_ACTION:
@@ -242,7 +241,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_STYLE_COMPLEXITY_ACTION:
       return state.merge({
         style: action.index,
-        colors: action.colors
+        colors: action.colors,
+        styleColors: action.colors
       })
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
@@ -274,13 +274,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const { el, typeEl } = action
       const canvas = state.get('canvas')
       const selectedElement = state.get('selectedElement')
-      const updatedCanvas = canvas.setIn([typeEl, el.id], el)
+      const canvasEl = typeEl === 'path' ? fromJS(el) : el
+      const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
       if (selectedElement) {
         return state.set('canvas', updatedCanvas)
       }
+
       return state.merge({
+        selectedElement: el.id,
         canvas: updatedCanvas,
-        text: '',
         designHasChanges: true
       })
     }
@@ -302,10 +304,21 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.set('selectedElement', id)
     }
-    case REMOVE_CANVAS_ELEMENT_ACTION:
-      return state.deleteIn(['canvas', action.typeEl, action.id])
+    case REMOVE_CANVAS_ELEMENT_ACTION: {
+      const canvas = state.get('canvas')
+      const updatedCanvas = canvas.deleteIn([action.typeEl, action.id])
+      return state.merge({
+        canvas: updatedCanvas,
+        selectedElement: ''
+      })
+    }
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)
+    case SET_ART_FORMAT_ACTION: {
+      const { key, value } = action
+      const selectedElement = state.get('selectedElement')
+      return state.setIn(['canvas', 'path', selectedElement, key], value)
+    }
     case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
       const { key, open, value } = action
       const myPaletteModals = state.get('myPaletteModals')

@@ -8,6 +8,7 @@ import SeeAllButton from './index'
 describe('<SeeAllButton />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<SeeAllButton  />, div)
+    const formatMessage = () => ''
+    ReactDOM.render(<SeeAllButton {...{ formatMessage }} />, div)
   })
 })

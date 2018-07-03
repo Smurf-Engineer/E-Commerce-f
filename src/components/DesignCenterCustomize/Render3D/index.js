@@ -95,7 +95,7 @@ class Render3D extends PureComponent {
     fabric.Object.prototype.customiseCornerIcons({
       settings: {
         borderColor: 'black',
-        cornerSize: 70,
+        cornerSize: 75,
         cornerPadding: 10
       },
       tl: {
@@ -201,7 +201,9 @@ class Render3D extends PureComponent {
       this.stop()
       this.container.removeChild(this.renderer.domElement)
     }
-    this.canvasTexture.dispose()
+    if (this.canvasTexture) {
+      this.canvasTexture.dispose()
+    }
   }
 
   getMousePosition = (dom, x, y) => {
@@ -354,7 +356,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round((xhr.loaded / xhr.total) * 100)
+      const progress = Math.round(xhr.loaded / xhr.total * 100)
       this.setState({ progress })
     }
   }
@@ -442,7 +444,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = (value * 1.0) / 100
+      const zoomValue = value * 1.0 / 100
       this.camera.zoom = zoomValue * 2
       this.camera.updateProjectionMatrix()
     }
@@ -491,15 +493,17 @@ class Render3D extends PureComponent {
   }
 
   takeDesignPicture = () => {
-    const viewPosition = viewPositions[2]
-    this.handleOnChangeZoom(62)
-    this.cameraUpdate(viewPosition)
-    this.setState({ currentView: 2 }, () =>
-      setTimeout(() => {
-        const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
-        this.saveDesign(dataUrl)
-      }, 200)
-    )
+    if (this.renderer) {
+      const viewPosition = viewPositions[2]
+      this.handleOnChangeZoom(62)
+      this.cameraUpdate(viewPosition)
+      this.setState({ currentView: 2 }, () =>
+        setTimeout(() => {
+          const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
+          this.saveDesign(dataUrl)
+        }, 200)
+      )
+    }
   }
 
   render() {
@@ -598,20 +602,19 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
     const id = shortid.generate()
     fabric.Image.fromURL(base64, oImg => {
-      this.canvasTexture.add(
-        oImg.scale(1).set({
-          id,
-          hasRotatingPoint: false,
-          left: 409.6,
-          top: 409.6
-        })
-      )
-    })
+      const imageEl = oImg.scale(1).set({
+        id,
+        hasRotatingPoint: false,
+        left: 400,
+        top: 400
+      })
+      this.canvasTexture.add(imageEl)
 
-    const el = {
-      id
-    }
-    onApplyCanvasEl(el, 'image')
+      const el = { id }
+      onApplyCanvasEl(el, 'image')
+      this.canvasTexture.setActiveObject(imageEl)
+      this.canvasTexture.renderAll()
+    })
   }
 
   applyText = (text, style) => {
@@ -623,21 +626,23 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
-    if (activeEl) {
+    if (activeEl && activeEl.type === 'text') {
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 700,
-        top: 409.6,
-        fontSize: 75,
+        left: 400,
+        top: 400,
+        fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
         ...style
       })
       this.canvasTexture.add(txtEl)
+      this.canvasTexture.setActiveObject(txtEl)
+      this.canvasTexture.renderAll()
     }
 
     const el = {
@@ -648,7 +653,35 @@ class Render3D extends PureComponent {
     onApplyCanvasEl(el, 'text', !!activeEl)
   }
 
-  applyClipArt = el => {}
+  applyClipArt = (url, style) => {
+    const activeEl = this.canvasTexture.getActiveObject()
+    if (activeEl && activeEl.type === 'path') {
+      activeEl.set({ ...style })
+      this.canvasTexture.renderAll()
+    } else {
+      const { onApplyCanvasEl } = this.props
+      fabric.loadSVGFromURL(url, (objects, options) => {
+        const id = shortid.generate()
+        const shape = fabric.util.groupSVGElements(objects, options)
+        shape.set({
+          id,
+          hasRotatingPoint: false,
+          top: 400,
+          left: 400
+        })
+        const el = {
+          id,
+          fill: '#000000',
+          stroke: '#000000',
+          strokeWidth: 0
+        }
+        onApplyCanvasEl(el, 'path')
+        this.canvasTexture.add(shape)
+        this.canvasTexture.setActiveObject(shape)
+        this.canvasTexture.renderAll()
+      })
+    }
+  }
 
   deleteElement = el => {
     const { onRemoveEl } = this.props
@@ -659,51 +692,43 @@ class Render3D extends PureComponent {
   duplicateElement = el => {
     const { onApplyCanvasEl } = this.props
     const boundingBox = el.getBoundingRect()
-    const textFormat = {
-      fontFamily: el.fontFamily,
-      stroke: el.stroke,
-      fill: el.fill,
-      strokeWidth: el.strokeWidth
-    }
 
     const elementType = el.get('type')
+    const id = shortid.generate()
     let canvasEl = {}
     switch (elementType) {
       case 'text':
         {
           const text = el.get('text')
-          const clonedEl = new fabric.Text(text, {
-            id: shortid.generate(),
-            hasRotatingPoint: false,
-            left: boundingBox.left + 30,
-            top: boundingBox.top + 30,
-            fontSize: 75,
-            scaleX: el.scaleX,
-            scaleY: el.scaleY,
-            ...textFormat
-          })
-          canvasEl = {
-            id: clonedEl.id,
-            text,
-            textFormat
+          const textFormat = {
+            fontFamily: el.fontFamily,
+            stroke: el.stroke,
+            fill: el.fill,
+            strokeWidth: el.strokeWidth
           }
-          this.canvasTexture.add(clonedEl)
+          canvasEl = { id, text, textFormat }
         }
         break
       case 'image': {
-        const boundingBox = el.getBoundingRect()
-        const clonedEl = fabric.util.object.clone(el)
-        clonedEl.set({
-          id: shortid.generate(),
-          top: boundingBox.top + 100
-        })
-        this.canvasTexture.add(clonedEl)
+        canvasEl = { id }
         break
+      }
+      case 'path': {
+        canvasEl = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
       }
       default:
         break
     }
 
+    el.clone(clone => {
+      clone.set({
+        id,
+        hasRotatingPoint: false,
+        left: boundingBox.left + 30,
+        top: boundingBox.top + 30
+      })
+      this.canvasTexture.add(clone)
+    })
     onApplyCanvasEl(canvasEl, elementType)
   }
 
@@ -760,8 +785,8 @@ class Render3D extends PureComponent {
               break
             }
             case ROTATE_ACTION: {
-              const sX = uv.x * 2048
-              const sY = (1 - uv.y) * 2048
+              const sX = uv.x * CANVAS_SIZE
+              const sY = (1 - uv.y) * CANVAS_SIZE
               const startPoint = { x: sX, y: sY }
               const oX = activeEl.left + activeEl.width / 2
               const oY = activeEl.top + activeEl.height / 2
@@ -839,15 +864,15 @@ class Render3D extends PureComponent {
         const uv = intersects[0].uv
         switch (action) {
           case DRAG_ACTION: {
-            const left = uv.x * 2048 - differenceX
-            const top = (1 - uv.y) * 2048 - differenceY
+            const left = uv.x * CANVAS_SIZE - differenceX
+            const top = (1 - uv.y) * CANVAS_SIZE - differenceY
             activeEl.set({ left, top }).setCoords()
             this.canvasTexture.renderAll()
             break
           }
           case SCALE_ACTION: {
-            const cursorLeft = uv.x * 2048
-            const cursorTop = (1 - uv.y) * 2048
+            const cursorLeft = uv.x * CANVAS_SIZE
+            const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
             const height = cursorTop - activeEl.top
             const scaleX = width / activeEl.width
@@ -863,8 +888,8 @@ class Render3D extends PureComponent {
           }
           case ROTATE_ACTION: {
             const { startPoint, originPoint } = this.dragComponent
-            const cX = uv.x * 2048
-            const cY = (1 - uv.y) * 2048
+            const cX = uv.x * CANVAS_SIZE
+            const cY = (1 - uv.y) * CANVAS_SIZE
 
             if (!activeEl.oldAngle) {
               activeEl.oldAngle = fabric.util.degreesToRadians(90)

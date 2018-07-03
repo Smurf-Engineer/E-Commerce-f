@@ -10,11 +10,11 @@ export default defineMessages({
     defaultMessage: 'Upload Logo and Images'
   },
   imageSizeError: {
-    id: 'components.UploadTab.imageError',
+    id: 'components.UploadTab.imageSizeError',
     defaultMessage: 'Oh no! Your image has to be Max. 20mb'
   },
   imageExtensionError: {
-    id: 'components.UploadTab.imageError',
+    id: 'components.UploadTab.imageExtensionError',
     defaultMessage:
       'Oh no! Your file has to be in eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd'
   }

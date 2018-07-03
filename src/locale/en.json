@@ -744,8 +744,10 @@
   "components.MyLocker.messageError": "Something went wrong",
 
   "components.UploadTab.title": "Upload Logo and Images",
-  "components.UploadTab.imageError":
+  "components.UploadTab.imageExtensionError":
     "Oh no! Your file has to be in eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd",
+  "components.UploadTab.imageSizeError":
+    "Oh no! Your image has to be Max. 20mb",
 
   "components.MyPalette.paletteSaved": "Your Palette is saved",
   "components.MyPalette.modalTitle": "ARE YOU SURE?",
@@ -756,7 +758,7 @@
   "components.MyPalette.applyPalette": "Apply {paletteNameToApply}",
   "components.MyPalette.applyPaletteMessage":
     "Using this palette will replace the colors currently in use.",
-
+  "components.MyPalette.paletteNamePlaceHolder": "Name Palette",
   "components.DesignCenterStyle.title": "Choose the complexity of the design",
   "components.DesignCenterStyle.modalNewStyleTitle": "NEW STYLE?",
   "components.DesignCenterStyle.modalNewStyleMessage":
@@ -774,8 +776,38 @@
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
   "screens.DesignCenter.addedToStore":
     "\"{designName}\" added to \"{storeName}\"",
+  "screens.DesignCenter.outWithoutSaveModalTitle": "SAVE CURRENT DESIGN",
+  "screens.DesignCenter.outWithoutSaveDesignModalMessage":
+    "The design you are working on is not saved yet. Would you like to save it to your locker?",
+  "screens.DesignCenter.outWithoutSaveDesignModalCancel":
+    "screens.DesignCenter.outWithoutSaveDesignModalCancel",
+  "screens.DesignCenter.outWithoutSaveDesignModalDontSave":
+    "screens.DesignCenter.outWithoutSaveDesignModalDontSave",
+  "screens.DesignCenter.outWithoutSaveDesignModalSave":
+    "screens.DesignCenter.outWithoutSaveDesignModalSave",
   "components.LockerTable.cannotHide":
     "During the ordering period, you cannot hide items with orders.",
   "components.LockerTable.cannotDelete":
-    "During the ordering period, you cannot delete items with orders."
+    "During the ordering period, you cannot delete items with orders.",
+  "components.OutlineColor.title": "Thickness",
+  "components.OutlineColor.thin": "Thin",
+  "components.OutlineColor.thick": "Thick",
+  "components.SymbolTab.addSymbol": "Add Symbol",
+  "components.SymbolTab.editSymbol": "Edit Symbol",
+  "components.SymbolTab.fill": "Fill",
+  "components.SymbolTab.outline": "Outline",
+  "components.SymbolTab.searchInputPlaceholder": "Search Symbol Library",
+  "components.Tabs.title": "Add Text",
+  "components.TextTab.title": "Add Text",
+  "components.TextTab.font": "Font",
+  "components.TextTab.fill": "Fill",
+  "components.TextTab.outline": "Outline",
+  "components.TextTab.effect": "Effect",
+  "components.TextTab.selectFont": "Select Font",
+  "components.TextTab.selectFill": "Select Fill",
+  "components.TextTab.selectOutline": "Select Outline",
+  "components.TextTab.addEffect": "Add an Effect",
+  "components.TextTab.enterTextPlaceholder": "Enter Text",
+  "components.seAllButton.seeAll": "See All",
+  "components.seAllButton.seeAllFilters": "See All Filters"
 }

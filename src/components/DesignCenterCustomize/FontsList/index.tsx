@@ -22,10 +22,10 @@ const fonts = [
 
 interface Props {
   text: string
-  onSelectFont: (font: string) => void
+  onSelectFont?: (font: string) => void
 }
 
-const FontsList = ({ text, onSelectFont }: Props) => {
+const FontsList = ({ text, onSelectFont = () => {} }: Props) => {
   const handleOnSelect = (font: string) => () => onSelectFont(font)
   const list = fonts.map((font, index) => (
     <Item key={index} onClick={handleOnSelect(font)}>
