@@ -20,5 +20,9 @@ export default defineMessages({
   outline: {
     id: 'components.SymbolTab.outline',
     defaultMessage: 'Outline'
+  },
+  searchInputPlaceholder: {
+    id: 'components.SymbolTab.searchInputPlaceholder',
+    defaultMessage: 'Search Symbol Library'
   }
 })

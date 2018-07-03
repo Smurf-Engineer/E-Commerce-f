@@ -72,7 +72,7 @@ export class TextTab extends React.PureComponent<Props, State> {
               <Input
                 value={text}
                 onChange={this.handleOnUpdateText}
-                placeholder="Enter Text"
+                placeholder={formatMessage(messages.enterTextPlaceholder)}
                 addonAfter={
                   <Button onClick={this.handleOnApplyText}>Apply</Button>
                 }

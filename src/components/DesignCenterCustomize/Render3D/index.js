@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
-import { fromJS } from 'immutable'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'

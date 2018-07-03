@@ -93,9 +93,10 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           <div>
             <InputWrapper>
               <Input
+                // TODO: Commented until implement search function.
                 // value={text}
                 // onChange={this.handleOnUpdateText}
-                placeholder="Search Symbol Library"
+                placeholder={formatMessage(messages.searchInputPlaceholder)}
                 addonAfter={<Button onClick={() => {}}>Search</Button>}
               />
             </InputWrapper>
