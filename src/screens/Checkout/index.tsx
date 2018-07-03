@@ -516,6 +516,7 @@ class Checkout extends React.Component<Props, {}> {
       forEach(cartItem.itemDetails, itemDetail => {
         unset(itemDetail, 'gender.__typename')
         unset(itemDetail, 'fit.__typename')
+        unset(itemDetail, 'size.__typename')
       })
     })
     const orderObj = {

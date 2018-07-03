@@ -238,16 +238,18 @@ class CartListItem extends React.Component<Props, {}> {
               </PriceContainer>
             </ItemDetailsHeader>
             <CartListItemTable
-              {...{ onlyRead }}
-              formatMessage={formatMessage}
-              cartItem={cartItem}
-              handledeleteItemDetail={handledeleteItemDetail}
-              itemIndex={itemIndex}
-              setLabelItemDetail={setLabelItemDetail}
-              setDetailQuantity={setDetailQuantity}
-              setDetailFit={setDetailFit}
-              setDetailGender={setDetailGender}
-              setDetailSize={setDetailSize}
+              {...{
+                onlyRead,
+                cartItem,
+                formatMessage,
+                handledeleteItemDetail,
+                itemIndex,
+                setLabelItemDetail,
+                setDetailQuantity,
+                setDetailFit,
+                setDetailGender,
+                setDetailSize
+              }}
             />
             {!onlyRead ? (
               <FooterItem>

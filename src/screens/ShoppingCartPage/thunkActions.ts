@@ -62,7 +62,7 @@ const setItemDetails = (cartItem: CartItems) => {
    */
   const {
     itemDetails,
-    product: { genders, fitStyles /* sizeRange */ }
+    product: { genders, fitStyles, sizeRange }
   } = cartItem
   if (!has(itemDetails[0], 'gender') && genders.length === 1 && genders[0].id) {
     itemDetails[0].gender = first(genders)
@@ -74,12 +74,12 @@ const setItemDetails = (cartItem: CartItems) => {
   ) {
     itemDetails[0].fit = first(fitStyles)
   }
-  // if (
-  //   !has(itemDetails[0], 'size') &&
-  //   sizeRange.length === 1 &&
-  //   sizeRange[0].id
-  // ) {
-  //   itemDetails[0].size = first(sizeRange)
-  // }
+  if (
+    !has(itemDetails[0], 'size') &&
+    sizeRange.length === 1 &&
+    sizeRange[0].id
+  ) {
+    itemDetails[0].size = first(sizeRange)
+  }
   return cartItem
 }

@@ -198,17 +198,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   isAllSetInProduct = (cartItem: CartItems) => {
-    /**
-     * TODO: able and test commented code when size options be added
-     * is for check that size is setted if is available to set
-     */
     const {
       itemDetails,
-      product: { genders, fitStyles /* sizeRange */ }
+      product: { genders, fitStyles, sizeRange }
     } = cartItem
     const checkGender = genders.length && genders[0].id
     const checkFit = fitStyles.length && fitStyles[0].id
-    // const checkSize = sizeRange.length && sizeRange[0].id
+    const checkSize = sizeRange.length && sizeRange[0].id
     for (const details of itemDetails) {
       if (checkGender && !has(details, 'gender')) {
         return false
@@ -216,9 +212,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       if (checkFit && !has(details, 'fit')) {
         return false
       }
-      // if (checkSize && !has(itemDetails[0], 'size')){
-      //   return false
-      // }
+      if (checkSize && !has(details, 'size')) {
+        return false
+      }
     }
     return true
   }
