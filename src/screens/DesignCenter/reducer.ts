@@ -43,7 +43,7 @@ import {
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_CUSTOMIZE_3D_MOUNTED
 } from './constants'
-import { Reducer, CanvasElement } from '../../types/common'
+import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,

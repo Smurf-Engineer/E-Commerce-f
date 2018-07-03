@@ -695,56 +695,41 @@ class Render3D extends PureComponent {
     const boundingBox = el.getBoundingRect()
 
     const elementType = el.get('type')
+    const id = shortid.generate()
     let canvasEl = {}
     switch (elementType) {
       case 'text':
         {
+          const text = el.get('text')
           const textFormat = {
             fontFamily: el.fontFamily,
             stroke: el.stroke,
             fill: el.fill,
             strokeWidth: el.strokeWidth
           }
-          const text = el.get('text')
-          const clonedEl = new fabric.Text(text, {
-            id: shortid.generate(),
-            hasRotatingPoint: false,
-            left: boundingBox.left + 30,
-            top: boundingBox.top + 30,
-            fontSize: 75,
-            scaleX: el.scaleX,
-            scaleY: el.scaleY,
-            ...textFormat
-          })
-          canvasEl = {
-            id: clonedEl.id,
-            text,
-            textFormat
-          }
-          this.canvasTexture.add(clonedEl)
+          canvasEl = { id, text, textFormat }
         }
         break
       case 'image': {
-        const clonedEl = fabric.util.object.clone(el)
-        clonedEl.set({
-          id: shortid.generate(),
-          top: boundingBox.top + 100
-        })
-        this.canvasTexture.add(clonedEl)
+        canvasEl = { id }
         break
       }
       case 'path': {
-        const id = shortid.generate()
-        el.clone(clone => {
-          clone.set({ id, top: boundingBox.top + 100 })
-          canvasEl = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
-          this.canvasTexture.add(clone)
-        })
+        canvasEl = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
       }
       default:
         break
     }
 
+    el.clone(clone => {
+      clone.set({
+        id,
+        hasRotatingPoint: false,
+        left: boundingBox.left + 30,
+        top: boundingBox.top + 30
+      })
+      this.canvasTexture.add(clone)
+    })
     onApplyCanvasEl(canvasEl, elementType)
   }
 

@@ -9,12 +9,7 @@ import withLoading from '../../WithLoading'
 import WithError from '../../WithError'
 import OptionText from '../../OptionText'
 import TextEditor from '../TextEditor'
-import {
-  QueryProps,
-  ClipArt,
-  CanvasElement,
-  ArtFormat
-} from '../../../types/common'
+import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'

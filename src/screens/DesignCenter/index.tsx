@@ -43,8 +43,7 @@ import {
   MyPaletteDesignCenterModals,
   StyleModalType,
   ThemeModalType,
-  ArtFormat,
-  PathType
+  ArtFormat
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'

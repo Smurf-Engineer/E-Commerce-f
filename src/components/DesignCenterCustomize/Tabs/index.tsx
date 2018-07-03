@@ -17,8 +17,7 @@ import {
   TextFormat,
   CanvasType,
   MyPaletteDesignCenterModals,
-  ArtFormat,
-  PathType
+  ArtFormat
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
