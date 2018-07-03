@@ -9,7 +9,8 @@ import {
   CanvasElement,
   TextFormat,
   CanvasType,
-  MyPaletteDesignCenterModals
+  MyPaletteDesignCenterModals,
+  ArtFormat
 } from '../../types/common'
 import { Container } from './styledComponents'
 
@@ -31,6 +32,7 @@ interface Props {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
   customize3dMounted: boolean
@@ -57,6 +59,7 @@ interface Props {
   onRemoveEl: (id: string, typeEl: string) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
@@ -101,13 +104,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onApplyCanvasEl,
       selectedElement,
       textFormat,
+      artFormat,
       onSelectTextFormat,
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModal,
       openResetDesignModalAction,
       customize3dMounted,
-      setCustomize3dMountedAction
+      setCustomize3dMountedAction,
+      onSelectArtFormat
     } = this.props
 
     return (
@@ -133,12 +138,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             canvas,
             selectedElement,
             textFormat,
+            artFormat,
             onSelectTextFormat,
+            onSelectArtFormat,
             openPaletteModalAction,
             myPaletteModals
           }}
           onApplyText={this.handleOnApplyText}
           onApplyImage={this.handleOnApplyImage}
+          onApplyArt={this.handleOnApplyArt}
         />
         {customize3dMounted || (currentTab === 2 && !swipingView) ? (
           <Render3D
@@ -180,6 +188,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
   handleOnApplyImage = (base64: string) => {
     this.render3D.applyImage(base64)
+  }
+
+  handleOnApplyArt = (url: string, style?: CanvasElement) => {
+    this.render3D.applyClipArt(url, style)
   }
 }
 

@@ -6,6 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import ColorTab from '../ColorTab'
 import TextTab from '../TextTab'
+import SymbolTab from '../SymbolTab'
 import UploadTab from '../UploadTab'
 import colorIcon from '../../../assets/color_white.svg'
 import textIcon from '../../../assets/text_white.svg'
@@ -15,7 +16,8 @@ import {
   Palette,
   TextFormat,
   CanvasType,
-  MyPaletteDesignCenterModals
+  MyPaletteDesignCenterModals,
+  ArtFormat
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -33,6 +35,7 @@ interface Props {
   canvas: CanvasType
   selectedElement: string
   textFormat: TextFormat
+  artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -43,8 +46,10 @@ interface Props {
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   onApplyImage: (base64: string) => void
+  onApplyArt: (url: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
@@ -65,14 +70,17 @@ const Tabs = ({
   text,
   onApplyText,
   onApplyImage,
+  onApplyArt,
   formatMessage,
   productName,
   canvas,
   selectedElement,
   textFormat,
+  artFormat,
   onSelectTextFormat,
   openPaletteModalAction,
-  myPaletteModals
+  myPaletteModals,
+  onSelectArtFormat
 }: Props) => {
   return (
     <Container>
@@ -114,7 +122,14 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
-          Content of Tab Pane 3
+          <SymbolTab
+            {...{
+              onApplyArt,
+              formatMessage,
+              onSelectArtFormat
+            }}
+            selectedElement={canvas.path[selectedElement]}
+          />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
           <UploadTab {...{ formatMessage, onApplyImage }} />

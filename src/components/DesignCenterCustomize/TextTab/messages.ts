@@ -40,5 +40,9 @@ export default defineMessages({
   addEffect: {
     id: 'components.TextTab.addEffect',
     defaultMessage: 'Add an Effect'
+  },
+  enterTextPlaceholder: {
+    id: 'components.TextTab.enterTextPlaceholder',
+    defaultMessage: 'Enter Text'
   }
 })

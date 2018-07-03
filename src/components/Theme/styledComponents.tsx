@@ -3,10 +3,9 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.li`
+export const Container = styled.div`
   list-style: none;
   display: inline-block;
-  width: calc(100% / 3);
   text-align: center;
 `
 
