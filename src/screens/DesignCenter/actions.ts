@@ -20,7 +20,7 @@ import {
   SET_THEME_SELECTED_ACTION,
   SET_STYLE_SELECTED_ACTION,
   OPEN_SHARE_MODAL,
-  OPEN_SAVEDESIGN,
+  OPEN_SAVE_DESIGN_ACTION,
   SET_DESIGN_NAME,
   SAVE_DESIGN_ID,
   COLOR_BLOCK_HOVERED_ACTION,
@@ -48,7 +48,8 @@ import {
   AnyAction,
   Palette,
   TeamStoreItemtype,
-  CanvasElement
+  CanvasElement,
+  SaveDesignType
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -126,10 +127,13 @@ export const setThemeAction = (id: number): AnyAction => ({
   id
 })
 
-export const openSaveDesignAction = (open: boolean, imageBase64: string) => ({
-  type: OPEN_SAVEDESIGN,
+export const openSaveDesignAction = (
+  open: boolean,
+  design: SaveDesignType
+) => ({
+  type: OPEN_SAVE_DESIGN_ACTION,
   open,
-  imageBase64
+  design
 })
 
 export const setDesignNameAction = (param: string): AnyAction => {

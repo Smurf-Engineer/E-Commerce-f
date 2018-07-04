@@ -115,7 +115,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
   handleOnSelectFill = (fillColor: string) => {
     const { selectedElement, onSelectArtFormat, onApplyArt } = this.props
     onSelectArtFormat('fill', fillColor)
-    this.setState({ page: 0 })
     selectedElement.fill = fillColor
     onApplyArt('', selectedElement)
   }
@@ -132,7 +131,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     onSelectArtFormat('stroke', strokeColor)
     selectedElement.stroke = strokeColor
     onApplyArt('', selectedElement)
-    this.setState({ page: 0 })
   }
 
   handleOnApplyArt = (url: string) => () => {

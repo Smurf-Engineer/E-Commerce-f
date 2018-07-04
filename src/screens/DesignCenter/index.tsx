@@ -43,7 +43,8 @@ import {
   MyPaletteDesignCenterModals,
   StyleModalType,
   ThemeModalType,
-  ArtFormat
+  ArtFormat,
+  SaveDesignType
 } from '../../types/common'
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -67,7 +68,7 @@ interface Props extends RouteComponentProps<any> {
   palettes: Palette[]
   paletteName: string
   colors: string[]
-  designBase64: string
+  design: SaveDesignType
   styleColors: string[]
   loadingModel: boolean
   undoChanges: Change[]
@@ -296,7 +297,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       setPalettesAction,
       swipingView,
       colors,
-      designBase64,
+      design,
       styleColors,
       style,
       themeId,
@@ -489,13 +490,11 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
           </SwipeableViews>
           <SaveDesign
-            {...{ productId, formatMessage }}
+            {...{ productId, formatMessage, design, colors, designName }}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             onDesignName={setDesignNameAction}
             designName={designName}
-            colors={colors}
-            designBase64={designBase64}
             afterSaveDesign={this.handleAfterSaveDesign}
             savedDesignId={savedDesignId}
             checkedTerms={checkedTerms}
