@@ -142,6 +142,7 @@ export class DropdownList extends React.PureComponent<Props> {
             <MenuSports
               {...{ sports, categories, visible, formatMessage }}
               type={index}
+              name={label}
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}

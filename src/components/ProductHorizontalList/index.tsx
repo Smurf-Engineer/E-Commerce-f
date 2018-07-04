@@ -16,6 +16,8 @@ interface Data extends QueryProps {
 }
 
 interface Props {
+  type?: number
+  name?: string
   data: Data
   genderFilter?: Filter
   sportFilter: Filter
@@ -114,19 +116,22 @@ type OwnProps = {
   genderFilter?: Filter
   category?: Filter
   sportFilter?: Filter
+  type?: number
+  name?: string
 }
 
 const ListEnhance = compose(
   graphql<Data>(productsQuery, {
-    options: ({ genderFilter, category, sportFilter }: OwnProps) => ({
-      variables: {
-        // TODO: ADD THIS PROPERTY WHEN IS CYCLING
-        // sportGroup: cycling | triathlon | nordic | active
-        gender: genderFilter ? genderFilter.id : null,
-        category: category ? category.id : null,
-        sport: sportFilter ? sportFilter.id : null
+    options: ({ genderFilter, category, sportFilter, name }: OwnProps) => {
+      return {
+        variables: {
+          sportGroup: name === 'cycling' ? name : null,
+          gender: genderFilter ? genderFilter.id : null,
+          category: category ? category.id : null,
+          sport: sportFilter ? sportFilter.id : null
+        }
       }
-    })
+    }
   })
 )(ProductHorizontalList)
 
