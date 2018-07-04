@@ -32,7 +32,7 @@ export const SET_ART_FORMAT_ACTION = `${namespace}/SET_ART_FORMAT_ACTION`
 export const SET_CUSTOMIZE_3D_MOUNTED = `${namespace}/SET_CUSTOMIZE_3D_MOUNTED`
 
 export const OPEN_SHARE_MODAL = `${namespace}/OPEN_SHARE_MODAL`
-export const OPEN_SAVEDESIGN = `${namespace}/OPEN_SAVEDESIGN`
+export const OPEN_SAVE_DESIGN_ACTION = `${namespace}/OPEN_SAVE_DESIGN_ACTION`
 export const SET_DESIGN_NAME = `${namespace}/SET_DESIGN_NAME`
 export const SAVE_DESIGN_ID = `${namespace}/SAVE_DESIGN_ID`
 export const SET_CHECKED_TERMS = `${namespace}/SET_CHECKED_TERMS`

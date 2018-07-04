@@ -95,7 +95,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             </Button>
           </ButtonWrapper>
         </ButtonsContainer>
-        {currentTab === 3 && !swipingView ? (
+        {/*currentTab === 3 && !swipingView ? (
           <Render3D
             {...{
               colors,
@@ -105,7 +105,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
               onAddToCart
             }}
           />
-        ) : null}
+        ) : null */}
         <ShareDesignModal
           open={openShareModal}
           requestClose={this.handleRequestCloseShare}

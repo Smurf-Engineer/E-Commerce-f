@@ -21,7 +21,12 @@ describe('<SaveDesign />', () => {
     const afterSaveDesign = () => {}
     const setSaveDesignLoading = () => {}
     const productId = ''
-    const designBase64 = ''
+    const design = {
+      designBase64: 'string',
+      canvasSvg: 'string',
+      canvasJson: 'string',
+      styleId: 0
+    }
     const checkedTerms = false
     const saveDesignLoading = false
     const div = document.createElement('div')
@@ -29,14 +34,13 @@ describe('<SaveDesign />', () => {
     ReactDOM.render(
       <IntlProvider {...props}>
         <SaveDesign
-          {...{ open, productId }}
+          {...{ open, productId, design }}
           open={open}
           requestClose={closeSaveDesignModal}
           formatMessage={format}
           onDesignName={setDesignNameAction}
-          designName={designName}
           colors={colors}
-          designBase64={designBase64}
+          designName={''}
           saveDesignNameMutation={saveDesignNameMutation}
           saveDesignChangesMutation={saveDesignChangesMutation}
           afterSaveDesign={afterSaveDesign}
