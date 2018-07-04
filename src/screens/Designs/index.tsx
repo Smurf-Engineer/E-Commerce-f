@@ -6,12 +6,12 @@ import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import get from 'lodash/get'
 import withLoading from '../../components/WithLoadingData/'
-import Header from '../../components/DesignCenterHeader'
+
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
-import Layout from '../../components/MainLayout'
+
 import ThreeD from './Render3D'
 import * as designsActions from './actions'
 import { styleQuery } from './data'
@@ -52,13 +52,13 @@ export class Designs extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, data: { error, design } } = this.props
+    const { data: { error, design } } = this.props
     const productName = get(design, 'product.name')
     const colors = get(design, 'colors')
+    const svg = get(design, 'svg')
 
     return (
-      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
-        <Header onPressBack={this.handleOnPressBack} />
+      <div>
         {error ? (
           <ContainerError>
             <Title>Oops!</Title>
@@ -72,10 +72,10 @@ export class Designs extends React.Component<Props, {}> {
               <Model>{productName}</Model>
               <QuickView onClick={this.handleOpenQuickView} src={quickView} />
             </Row>
-            <ThreeD {...{ colors }} />
+            <ThreeD {...{ colors, svg }} />
           </Container>
         )}
-      </Layout>
+      </div>
     )
   }
 }
