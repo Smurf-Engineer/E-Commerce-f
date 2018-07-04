@@ -44,10 +44,13 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ [action.key]: action.filter })
     case SET_SELECTED_FILTERS:
       const {
-        filter: { type, name }
+        filter: { type, name, firstGenderSet }
       } = action
       return state
-        .updateIn([type, name], (value: any) => !!!value)
+        .updateIn(
+          [type, name],
+          (value: any) => (firstGenderSet ? true : !!!value)
+        )
         .merge({ skip: 0, currentPage: 1 })
     case ORDERBY_SELECTED:
       return state.set('orderBy', action.orderBy)

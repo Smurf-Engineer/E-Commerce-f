@@ -77,9 +77,10 @@ describe('DropdownList Reducer', () => {
     expect(menuVisible).toEqual(true)
   })
 
-  it('Set the Active Menu Dropdown visible ', () => {
-    const state = reducer(initialState, setMenuSportSelectedAction(3, true))
-    const menuVisible = state.getIn(['sportOptions', 3, 'visible'])
-    expect(menuVisible).toEqual(true)
-  })
+  // TODO: uncomment when nordic sport will be added
+  // it('Set the Active Menu Dropdown visible ', () => {
+  //   const state = reducer(initialState, setMenuSportSelectedAction(3, true))
+  //   const menuVisible = state.getIn(['sportOptions', 3, 'visible'])
+  //   expect(menuVisible).toEqual(true)
+  // })
 })

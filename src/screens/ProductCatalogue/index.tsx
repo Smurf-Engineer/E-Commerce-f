@@ -88,7 +88,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     if (queryParams.gender) {
       const filterObject = {
         type: 'genderFilters',
-        name: upperFirst(queryParams.gender)
+        name: upperFirst(queryParams.gender),
+        firstGenderSet: true
       }
       setSelectedFilters(filterObject)
     }

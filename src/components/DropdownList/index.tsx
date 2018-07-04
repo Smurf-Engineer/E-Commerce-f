@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
+import queryString from 'query-string'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -51,8 +52,14 @@ export class DropdownList extends React.PureComponent<Props> {
     const {
       history: { push, location }
     } = this.props
-    const route = `/product-catalogue?gender=${type ? 'women' : 'men'}`
-    if ((location.pathname as String).includes('product-catalogue')) {
+    const queryParams = queryString.parse(location.search)
+    const gender = type ? 'women' : 'men'
+    const route = `/product-catalogue?gender=${gender}`
+    if (
+      (location.pathname as String).includes('product-catalogue') &&
+      queryParams.gender &&
+      queryParams.gender !== gender
+    ) {
       window.location.replace(route)
       return
     }
