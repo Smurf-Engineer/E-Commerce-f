@@ -9,7 +9,8 @@ import {
   SET_SELECTED_FILTERS,
   ORDERBY_SELECTED,
   SET_SKIP_VALUE,
-  OPEN_SIDEBAR_MOBILE
+  OPEN_SIDEBAR_MOBILE,
+  RESET_REDUCER_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -57,6 +58,8 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       })
     case OPEN_SIDEBAR_MOBILE:
       return state.set('openSidebar', action.open)
+    case RESET_REDUCER_DATA:
+      return initialState
     default:
       return state
   }

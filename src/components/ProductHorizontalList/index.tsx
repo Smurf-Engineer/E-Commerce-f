@@ -120,6 +120,8 @@ const ListEnhance = compose(
   graphql<Data>(productsQuery, {
     options: ({ genderFilter, category, sportFilter }: OwnProps) => ({
       variables: {
+        // TODO: ADD THIS PROPERTY WHEN IS CYCLING
+        // sportGroup: cycling | triathlon | nordic | active
         gender: genderFilter ? genderFilter.id : null,
         category: category ? category.id : null,
         sport: sportFilter ? sportFilter.id : null

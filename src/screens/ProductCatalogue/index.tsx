@@ -12,6 +12,8 @@ import Drawer from 'rc-drawer'
 import get from 'lodash/get'
 import has from 'lodash/has'
 import trimEnd from 'lodash/trimEnd'
+import upperFirst from 'lodash/upperFirst'
+import queryString from 'query-string'
 import Layout from '../../components/MainLayout'
 import FilterComponent from '../../components/ProductCatalogFilterComponent'
 import ProductsThumbnailList from '../../components/ProductCatalogueThumbnailsList'
@@ -68,12 +70,33 @@ interface Props extends RouteComponentProps<any> {
   sortBySelected: (sortBy: string) => void
   setSkipValue: (skip: number, page: number) => void
   openSidebarMobile: (open: boolean) => void
+  resetReducerAction: () => void
 }
 
 export class ProductCatalog extends React.Component<Props, StateProps> {
   state = {
     showTypeFilters: false,
     filters: []
+  }
+
+  componentWillMount() {
+    const {
+      location: { search },
+      setSelectedFilters
+    } = this.props
+    const queryParams = queryString.parse(search)
+    if (queryParams.gender) {
+      const filterObject = {
+        type: 'genderFilters',
+        name: upperFirst(queryParams.gender)
+      }
+      setSelectedFilters(filterObject)
+    }
+  }
+
+  componentWillUnmount() {
+    const { resetReducerAction } = this.props
+    resetReducerAction()
   }
 
   render() {
@@ -95,6 +118,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       data: { loading, filters: filtersGraph }
     } = this.props
 
+    console.log(genderFilters)
+
     let sortByLabel = ''
     if (loading) {
       return null
@@ -112,9 +137,18 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
         break
     }
 
+    const filters = [
+      genderFilters,
+      sportFilters,
+      categoryFilters,
+      seasonFilters,
+      fitStyleFilters
+    ]
+
     const renderFilters = filtersGraph.map(
       (filter: FilterType, index: number) => {
         const filterToShow = this.state[`show${filter.name}Filters`]
+        const activeFilters = filters[index]
         return (
           <div key={index}>
             <FilterComponent
@@ -125,6 +159,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
               showOptions={filterToShow}
               toggleOptions={this.toggleFilter}
               selectOption={this.handleSelect}
+              {...{ activeFilters }}
             />
           </div>
         )

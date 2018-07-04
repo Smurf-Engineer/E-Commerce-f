@@ -47,9 +47,16 @@ interface Props {
 }
 
 export class DropdownList extends React.PureComponent<Props> {
-  handleOnSeeAll = (type: string) => {
-    const { history } = this.props
-    history.push('/product-catalogue')
+  handleOnSeeAll = (type: number) => {
+    const {
+      history: { push, location }
+    } = this.props
+    const route = `/product-catalogue?gender=${type ? 'women' : 'men'}`
+    if ((location.pathname as String).includes('product-catalogue')) {
+      window.location.replace(route)
+      return
+    }
+    push(route)
   }
 
   handleOnCustomize = (id: string) => {

@@ -27,6 +27,7 @@ interface Props {
   title: string
   options: Options[]
   showOptions: boolean
+  activeFilters: {}
   toggleOptions: (evt: React.MouseEvent<HTMLImageElement>) => void
   selectOption: (evt: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -37,11 +38,17 @@ const ProductCatalogFilterComponent = ({
   options,
   showOptions,
   toggleOptions,
-  selectOption
+  selectOption,
+  activeFilters
 }: Props) => {
   const renderOptions = options.map((option, index) => (
     <ItemRow key={index}>
-      <Checkbox onChange={selectOption} name={get(option, 'name')} value={id}>
+      <Checkbox
+        checked={activeFilters[option.name]}
+        onChange={selectOption}
+        name={get(option, 'name')}
+        value={id}
+      >
         {get(option, 'name')}
       </Checkbox>
     </ItemRow>

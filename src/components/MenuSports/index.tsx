@@ -47,6 +47,8 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       formatMessage
     } = this.props
 
+    console.log(type)
+
     if (!visible) {
       return null
     }
