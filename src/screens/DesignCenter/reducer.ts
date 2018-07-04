@@ -100,7 +100,8 @@ export const initialState = fromJS({
   designHasChanges: false,
   openOutWithoutSaveModal: false,
   routeToGoWithoutSave: '',
-  customize3dMounted: false
+  customize3dMounted: false,
+  svgOutputUrl: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -254,7 +255,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID:
-      return state.merge({ savedDesignId: action.id, designHasChanges: false })
+      return state.merge({
+        savedDesignId: action.id,
+        designHasChanges: false,
+        svgOutputUrl: action.svgUrl
+      })
     case SET_CHECKED_TERMS:
       return state.set('checkedTerms', action.checked)
     case SAVE_DESIGN_LOADING:

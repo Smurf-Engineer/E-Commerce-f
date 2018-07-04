@@ -1,11 +1,7 @@
 import React, { PureComponent } from 'react'
-import isEqual from 'lodash/isEqual'
-import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
-import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
-import vertexShader from './vertex'
-import fragmentShader from './fragment'
+import findIndex from 'lodash/findIndex'
 import {
   Container,
   Render,
@@ -25,8 +21,6 @@ import {
   ButtonRight,
   ButtonWrapperRight
 } from './styledComponents'
-import { jerseyTextures } from './config'
-import arrowDown from '../../../assets/downarrow.svg'
 import messages from './messages'
 
 const { Item } = Menu
@@ -38,41 +32,19 @@ class Render3D extends PureComponent {
     currentModel: 0,
     zoomValue: 0,
     progress: 0,
-    // TODO: Temp fix use redux from parent
-    isLoading: false
+    isLoading: false,
+    objectChilds: 0
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     /* Renderer config */
-    const { onLoadModel, colors } = this.props
+    const { onLoadModel, svg } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor('#fff')
     renderer.setSize(clientWidth, clientHeight)
-
-    /* Textures */
-    const loader = new THREE.TextureLoader()
-
-    const textures = {
-      backPocket: {},
-      color1: {},
-      color2: {},
-      color3: {},
-      color4: {},
-      color5: {},
-      flatlock: {},
-      label: {},
-      bumpMap: {}
-    }
-
-    for (const key in textures) {
-      textures[key] = loader.load(jerseyTextures[key])
-      if (key !== 'flatlock') {
-        textures[key].minFilter = THREE.LinearFilter
-      }
-    }
 
     /* Camera */
     const camera = new THREE.PerspectiveCamera(
@@ -102,124 +74,81 @@ class Render3D extends PureComponent {
     scene.add(ambient)
     scene.add(directionalLight)
 
+    // TODO: Get this from data.design
+    const modelTextures = {
+      flatlock:
+        'https://storage.googleapis.com/jakroo-storage/models/Tour/flatlock.png',
+      bumpMap:
+        'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2-BumpMap.jpg',
+      texture: svg || ''
+    }
+
+    const loadedTextures = await this.loadTextures(modelTextures)
+
     /* Object and MTL load */
+    mtlLoader.load(
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.mtl',
+      materials => {
+        this.handleOnLoadModel(true)
+        materials.preload()
+        const objLoader = new THREE.OBJLoader()
+        objLoader.setMaterials(materials)
+        objLoader.load(
+          'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.obj',
+          object => {
+            this.handleOnLoadModel(false)
+            const objectChilds = object.children.length
+            this.setState({ objectChilds })
 
-    mtlLoader.setPath('./models/')
-    mtlLoader.load('Tour.mtl', materials => {
-      this.handleOnLoadModel(true)
-      materials.preload()
-      const objLoader = new THREE.OBJLoader()
-      objLoader.setMaterials(materials)
-      objLoader.setPath('./models/')
-      objLoader.load(
-        'Tour.obj',
-        object => {
-          this.handleOnLoadModel(false)
+            /* Object material */
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              map: loadedTextures.flatlock,
+              color: 0xffffff
+            })
+            flatlockMaterial.map.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.map.wrapT = THREE.RepeatWrapping
 
-          // Materials
-          /* Object material */
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            map: textures.flatlock,
-            color: 0xffffff
-          })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+            // Inside material
+            const insideMaterial = new THREE.MeshPhongMaterial({
+              side: THREE.BackSide,
+              color: '#000000'
+            })
 
-          const customColors = {}
-          let i = 0
-          for (const { color } of colors) {
-            customColors[`customColor${i + 1}`] = {
-              type: 'c',
-              value: new THREE.Color(color)
+            const frontMaterial = new THREE.MeshPhongMaterial({
+              map: loadedTextures.texture,
+              side: THREE.FrontSide,
+              bumpMap: loadedTextures.bumpMap
+            })
+
+            const { children } = object
+            const getMeshIndex = meshName => {
+              const index = findIndex(children, mesh => mesh.name === meshName)
+              return index < 0 ? 0 : index
             }
-            i += 1
-          }
 
-          const uniforms = {
-            ...customColors,
-            positionX: { type: 'f', value: 1.0 },
-            positionY: { type: 'f', value: 1.0 },
-            color1: {},
-            color2: {},
-            color3: {},
-            color4: {},
-            color5: {},
-            logo: {}
-          }
+            const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
+            const labelIndex = getMeshIndex('Red_Tag FINAL')
+            const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
 
-          const phongShader = THREE.ShaderLib.phong
-          const mergeUniforms = THREE.UniformsUtils.merge([
-            phongShader.uniforms,
-            uniforms
-          ])
+            // /* Assign materials */
+            const cloneObject = object.children[meshIndex].clone()
+            object.add(cloneObject)
 
-          const uniformsWithPhong = THREE.UniformsUtils.clone(mergeUniforms)
-          uniformsWithPhong.color1.value = textures.color1
-          uniformsWithPhong.color2.value = textures.color2
-          uniformsWithPhong.color3.value = textures.color3
-          uniformsWithPhong.color4.value = textures.color4
-          uniformsWithPhong.color5.value = textures.color5
-          uniformsWithPhong.bumpMap.value = textures.bumpMap
-          uniformsWithPhong.bumpMapScale = 0.45
-          uniformsWithPhong.shininess.value = 15
+            object.children[labelIndex].material.color.set('#ffffff')
+            object.children[flatlockIndex].material = flatlockMaterial
+            object.children[meshIndex].material = insideMaterial
+            object.children[objectChilds].material = frontMaterial
 
-          this.uniformsWithPhong = uniformsWithPhong
-
-          const defines = {}
-          defines['USE_MAP'] = ''
-          defines['USE_COLOR'] = ''
-          defines['USE_BUMPMAP'] = ''
-
-          const shaderMaterial = new THREE.ShaderMaterial({
-            uniforms: uniformsWithPhong,
-            vertexShader: vertexShader,
-            fragmentShader: fragmentShader,
-            side: THREE.FrontSide,
-            defines: defines,
-            lights: true
-          })
-
-          shaderMaterial.extensions.derivatives = true
-
-          // Inside material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            color: 0x000000,
-            side: THREE.BackSide
-          })
-
-          /* Texture materials */
-          const labelMaterial = new THREE.MeshPhongMaterial({
-            map: textures.label
-          })
-          const backPocketMaterial = new THREE.MeshPhongMaterial({
-            map: textures.backPocket
-          })
-
-          /* Assign materials */
-          const cloneObject = object.children[0].clone()
-          object.add(cloneObject)
-
-          /* jersey */
-          object.children[0].material = insideMaterial
-          object.children[24].material = shaderMaterial
-          /* flatlock */
-          for (let index = 1; index <= 10; index++) {
-            object.children[index].material = flatlockMaterial
-          }
-          /* Jersey label */
-          object.children[17].material = labelMaterial
-          /* back pocket */
-          object.children[22].material = backPocketMaterial
-
-          /* Object Conig */
-          object.position.y = -30
-          object.name = 'jersey'
-          scene.add(object)
-        },
-        this.onProgress,
-        this.onError
-      )
-    })
+            /* Object Conig */
+            object.position.y = -30
+            object.name = 'jersey'
+            scene.add(object)
+          },
+          this.onProgress,
+          this.onError
+        )
+      }
+    )
 
     this.scene = scene
     this.camera = camera
@@ -237,11 +166,26 @@ class Render3D extends PureComponent {
     this.container.removeChild(this.renderer.domElement)
   }
 
+  loadTextures = modelTextures =>
+    new Promise((resolve, reject) => {
+      try {
+        const loader = new THREE.TextureLoader()
+        const loadedTextures = {}
+        loadedTextures.flatlock = loader.load(modelTextures.flatlock)
+        loadedTextures.bumpMap = loader.load(modelTextures.bumpMap)
+        loadedTextures.texture = loader.load(modelTextures.texture)
+
+        resolve(loadedTextures)
+      } catch (e) {
+        reject(e)
+      }
+    })
+
   handleOnLoadModel = isLoading => this.setState({ loadingModel: isLoading })
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round((xhr.loaded / xhr.total) * 100)
+      const progress = Math.round(xhr.loaded / xhr.total * 100)
       this.setState({ progress })
     }
   }
@@ -278,31 +222,8 @@ class Render3D extends PureComponent {
     this.controls.update()
   }
 
-  handleOnChange3DModel = () => {}
-
   render() {
-    const {
-      showDragmessage,
-      currentView,
-      zoomValue,
-      progress,
-      loadingModel
-    } = this.state
-    const { onPressQuickView, undoEnabled, redoEnabled } = this.props
-
-    const menu = (
-      <Menu onClick={this.handleOnChange3DModel}>
-        <Menu.Item key="1">
-          <FormattedMessage {...messages.productOnly} />
-        </Menu.Item>
-        <Menu.Item key="2">
-          <FormattedMessage {...messages.withAvatar} />
-        </Menu.Item>
-        <Menu.Item key="3">
-          <FormattedMessage {...messages.onBike} />
-        </Menu.Item>
-      </Menu>
-    )
+    const { showDragmessage, progress, loadingModel } = this.state
 
     return (
       <Container onKeyDown={this.handleOnKeyDown}>
@@ -314,19 +235,6 @@ class Render3D extends PureComponent {
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}
-        <Dropdown overlay={menu}>
-          <ModelType>
-            <ModelText>3D Model: Product Only</ModelText>
-            <img src={arrowDown} />
-          </ModelType>
-        </Dropdown>
-        <BottomButtons>
-          <ButtonWrapper>
-            <Button type="primary">
-              <FormattedMessage {...messages.addToCart} />
-            </Button>
-          </ButtonWrapper>
-        </BottomButtons>
       </Container>
     )
   }

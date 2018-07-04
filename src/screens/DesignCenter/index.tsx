@@ -99,6 +99,7 @@ interface Props extends RouteComponentProps<any> {
   openOutWithoutSaveModal: boolean
   routeToGoWithoutSave: string
   customize3dMounted: boolean
+  svgOutputUrl: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -120,7 +121,7 @@ interface Props extends RouteComponentProps<any> {
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
-  saveDesignIdAction: (id: string) => void
+  saveDesignIdAction: (id: string, svgUrl: string) => void
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
@@ -176,9 +177,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     clearStoreAction()
   }
 
-  handleAfterSaveDesign = (id: string) => {
+  handleAfterSaveDesign = (id: string, svgUrl: string) => {
     const { saveDesignIdAction } = this.props
-    saveDesignIdAction(id)
+    saveDesignIdAction(id, svgUrl)
     this.handleOnSelectTab(3)
   }
 
@@ -350,7 +351,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       designHasChanges,
       openOutWithoutSaveModal,
       customize3dMounted,
-      setCustomize3dMountedAction
+      setCustomize3dMountedAction,
+      svgOutputUrl
     } = this.props
 
     if (!search) {
@@ -481,7 +483,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setItemToAddAction,
                 teamStoreId,
                 editDesignAction,
-                formatMessage
+                formatMessage,
+                svgOutputUrl
               }}
               onAddToCart={this.handleOnAddToCart}
               onLoadModel={setLoadingModel}

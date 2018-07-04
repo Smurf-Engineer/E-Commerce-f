@@ -9,6 +9,7 @@ export const saveDesignName = graphql(
         name
         shortId: short_id
         image
+        svg: output_svg
       }
     }
   `,
