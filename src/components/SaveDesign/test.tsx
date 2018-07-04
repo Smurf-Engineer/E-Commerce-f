@@ -34,13 +34,12 @@ describe('<SaveDesign />', () => {
     ReactDOM.render(
       <IntlProvider {...props}>
         <SaveDesign
-          {...{ open, productId, design }}
+          {...{ open, productId, design, designName }}
           open={open}
           requestClose={closeSaveDesignModal}
           formatMessage={format}
           onDesignName={setDesignNameAction}
           colors={colors}
-          designName={''}
           saveDesignNameMutation={saveDesignNameMutation}
           saveDesignChangesMutation={saveDesignChangesMutation}
           afterSaveDesign={afterSaveDesign}

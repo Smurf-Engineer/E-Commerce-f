@@ -56,7 +56,7 @@ import dummieData from './dummieData'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
-const CANVAS_SIZE = 2048
+const CANVAS_SIZE = 3880.016
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -617,8 +617,8 @@ class Render3D extends PureComponent {
       const imageEl = oImg.scale(1).set({
         id,
         hasRotatingPoint: false,
-        left: 400,
-        top: 400
+        left: 1400,
+        top: 1400
       })
       this.canvasTexture.add(imageEl)
 
@@ -645,8 +645,8 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 400,
-        top: 400,
+        left: 1400,
+        top: 1400,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
@@ -678,8 +678,8 @@ class Render3D extends PureComponent {
         shape.set({
           id,
           hasRotatingPoint: false,
-          top: 400,
-          left: 400
+          top: 1400,
+          left: 1400
         })
         const el = {
           id,

@@ -105,8 +105,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       if (data) {
         const { shortId } = data
         message.success(formatMessage(messages.saveSuccess, { designName }))
-        // afterSaveDesign(shortId)
-        // requestClose()
+        afterSaveDesign(shortId)
+        requestClose()
       }
     } catch (error) {
       setSaveDesignLoading(false)
