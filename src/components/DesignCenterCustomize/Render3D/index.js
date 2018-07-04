@@ -56,7 +56,7 @@ import dummieData from './dummieData'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
-const CANVAS_SIZE = 2048
+const CANVAS_SIZE = 3880.016
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -494,13 +494,25 @@ class Render3D extends PureComponent {
 
   takeDesignPicture = () => {
     if (this.renderer) {
+      const { onOpenSaveDesign, currentStyle } = this.props
+      this.canvasTexture.discardActiveObject()
+      this.canvasTexture.renderAll()
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(62)
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
-          const dataUrl = this.renderer.domElement.toDataURL('image/webp', 0.5)
-          this.saveDesign(dataUrl)
+          const designBase64 = this.renderer.domElement.toDataURL(
+            'image/webp',
+            0.5
+          )
+          const saveDesign = {
+            designBase64,
+            canvasSvg: this.canvasTexture.toSVG(),
+            canvasJson: JSON.stringify(this.canvasTexture),
+            styleId: currentStyle + 1
+          }
+          onOpenSaveDesign(true, saveDesign)
         }, 200)
       )
     }
@@ -605,8 +617,8 @@ class Render3D extends PureComponent {
       const imageEl = oImg.scale(1).set({
         id,
         hasRotatingPoint: false,
-        left: 400,
-        top: 400
+        left: 1400,
+        top: 1400
       })
       this.canvasTexture.add(imageEl)
 
@@ -633,8 +645,8 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 400,
-        top: 400,
+        left: 1400,
+        top: 1400,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
@@ -666,8 +678,8 @@ class Render3D extends PureComponent {
         shape.set({
           id,
           hasRotatingPoint: false,
-          top: 400,
-          left: 400
+          top: 1400,
+          left: 1400
         })
         const el = {
           id,
@@ -714,7 +726,12 @@ class Render3D extends PureComponent {
         break
       }
       case 'path': {
-        canvasEl = { id, fill: '#000000', stroke: '#000000', strokeWidth: 0 }
+        canvasEl = {
+          id,
+          fill: el.fill,
+          stroke: el.stroke,
+          strokeWidth: el.strokeWidth
+        }
       }
       default:
         break
@@ -725,7 +742,8 @@ class Render3D extends PureComponent {
         id,
         hasRotatingPoint: false,
         left: boundingBox.left + 30,
-        top: boundingBox.top + 30
+        top: boundingBox.top + 30,
+        stroke: el.stroke
       })
       this.canvasTexture.add(clone)
     })
