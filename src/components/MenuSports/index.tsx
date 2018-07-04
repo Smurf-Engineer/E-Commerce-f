@@ -68,7 +68,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
         </Filters>
         <Divider type="vertical" />
         <ProductList
-          {...{ onPressCustomize, onPressQuickView, formatMessage, type, name }}
+          {...{ onPressCustomize, onPressQuickView, formatMessage, name }}
           width={'80%'}
           sportFilter={sports && sports[type]}
           category={categories && categories[categorySelected]}

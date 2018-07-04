@@ -16,7 +16,6 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  type?: number
   name?: string
   data: Data
   genderFilter?: Filter
@@ -116,7 +115,6 @@ type OwnProps = {
   genderFilter?: Filter
   category?: Filter
   sportFilter?: Filter
-  type?: number
   name?: string
 }
 

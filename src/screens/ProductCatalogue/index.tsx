@@ -119,8 +119,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       data: { loading, filters: filtersGraph }
     } = this.props
 
-    console.log(genderFilters)
-
     let sortByLabel = ''
     if (loading) {
       return null
