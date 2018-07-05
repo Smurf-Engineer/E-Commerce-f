@@ -8,7 +8,8 @@ import {
   SHOW_TYPE_FILTER,
   SET_SELECTED_FILTERS,
   SET_SKIP_VALUE,
-  OPEN_SIDEBAR_MOBILE
+  OPEN_SIDEBAR_MOBILE,
+  RESET_REDUCER_DATA
 } from './constants'
 import { AnyAction, Filter } from '../../types/common'
 
@@ -46,4 +47,8 @@ export const setSkipValue = (skip: number, page: number) => ({
 export const openSidebarMobile = (open: boolean) => ({
   type: OPEN_SIDEBAR_MOBILE,
   open
+})
+
+export const resetReducerAction = () => ({
+  type: RESET_REDUCER_DATA
 })

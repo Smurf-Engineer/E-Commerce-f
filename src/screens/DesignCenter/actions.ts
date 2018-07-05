@@ -176,9 +176,10 @@ export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const saveDesignIdAction = (id: string): AnyAction => ({
+export const saveDesignIdAction = (id: string, svgUrl: string): AnyAction => ({
   type: SAVE_DESIGN_ID,
-  id
+  id,
+  svgUrl
 })
 
 export const setCheckedTermsAction = (checked: boolean): AnyAction => ({

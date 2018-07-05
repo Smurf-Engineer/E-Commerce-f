@@ -23,7 +23,7 @@ export default defineMessages({
     defaultMessage: 'Confirm'
   },
   modalNewStyleCancel: {
-    id: 'components.DesignCenterStyle.modalNewStyleConfirm',
+    id: 'components.DesignCenterStyle.modalNewStyleCancel',
     defaultMessage: 'Cancel'
   }
 })

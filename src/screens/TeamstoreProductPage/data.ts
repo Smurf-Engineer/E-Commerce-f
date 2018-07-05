@@ -5,6 +5,7 @@ export const GetDesignQuery = gql`
     design: sharedDesignShortId(designId: $searchParam) {
       id
       name
+      svg: output_svg
       shortId: short_id
       colors {
         id

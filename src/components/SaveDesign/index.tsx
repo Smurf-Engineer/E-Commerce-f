@@ -26,6 +26,7 @@ interface Data {
   id: number
   shortId: string
   name: string
+  svg: string
 }
 
 interface Props {
@@ -42,7 +43,7 @@ interface Props {
   formatMessage: (messageDescriptor: any, values?: {}) => string
   saveDesignNameMutation: (variables: {}) => void
   saveDesignChangesMutation: (variables: {}) => void
-  afterSaveDesign: (id: string) => void | undefined
+  afterSaveDesign: (id: string, svg: string) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   setSaveDesignLoading: (loading: boolean) => void
 }
@@ -103,9 +104,9 @@ export class SaveDesign extends React.Component<Props, {}> {
       setSaveDesignLoading(false)
 
       if (data) {
-        const { shortId } = data
+        const { shortId, svg } = data
         message.success(formatMessage(messages.saveSuccess, { designName }))
-        afterSaveDesign(shortId)
+        afterSaveDesign(shortId, svg)
         requestClose()
       }
     } catch (error) {

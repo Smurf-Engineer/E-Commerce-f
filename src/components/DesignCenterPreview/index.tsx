@@ -30,6 +30,7 @@ interface Props {
   productName: string
   openAddToStoreModal: boolean
   teamStoreId: string
+  svgOutputUrl: string
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
@@ -75,7 +76,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       setItemToAddAction,
       teamStoreId,
       addItemToStore,
-      onAddToCart
+      onAddToCart,
+      svgOutputUrl
     } = this.props
     return (
       <Container>
@@ -102,7 +104,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
               onLoadModel,
               loadingModel,
               openAddToTeamStoreModalAction,
-              onAddToCart
+              onAddToCart,
+              svgOutputUrl
             }}
           />
         ) : null}
