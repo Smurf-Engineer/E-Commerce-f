@@ -11,6 +11,15 @@ export const Container = styled.div`
   margin-right: -14px;
 `
 
+export const LoadingContainer = styled.div`
+  height: 22.67em;
+  width: 25%;
+  margin: -12px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 export const Filters = styled.div`
   display: flex;
   width: 15%;

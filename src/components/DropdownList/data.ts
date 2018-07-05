@@ -10,10 +10,6 @@ export const categoriesQuery = gql`
       id
       name: gender
     }
-    categories {
-      id
-      name
-    }
     sports {
       id
       name

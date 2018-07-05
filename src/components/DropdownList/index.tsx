@@ -7,6 +7,7 @@ import { FormattedMessage } from 'react-intl'
 import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
+import queryString from 'query-string'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -14,7 +15,8 @@ import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
 import {
   setMenuGenderSelectedAction,
-  setMenuSportSelectedAction
+  setMenuSportSelectedAction,
+  setGenderSportAction
 } from './actions'
 import { Filter, QueryProps } from '../../types/common'
 import {
@@ -28,7 +30,6 @@ import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 interface Data extends QueryProps {
   genders: Filter[]
-  categories: Filter[]
   sports: Filter[]
 }
 
@@ -41,13 +42,37 @@ interface Props {
   history: any
   dispatch: any
   data: Data
+  genderSportSelected: number
   sportOptions: Option[]
   genderOptions: Option[]
+  menuGender: any
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class DropdownList extends React.PureComponent<Props> {
-  handleOnSeeAll = (type: string) => {
+  handleOnSeeAllFilters = (type: number) => {
+    const {
+      history: { push, location }
+    } = this.props
+    const queryParams = queryString.parse(location.search)
+    const gender = type ? 'women' : 'men'
+    const route = `/product-catalogue?gender=${gender}`
+    const atProductCatalogue = (location.pathname as String).includes(
+      'product-catalogue'
+    )
+    if (
+      (atProductCatalogue && !queryParams.gender) ||
+      (atProductCatalogue &&
+        queryParams.gender &&
+        queryParams.gender !== gender)
+    ) {
+      window.location.replace(route)
+      return
+    }
+    push(route)
+  }
+
+  handleOnSeeAll = (type: number) => {
     const { history } = this.props
     history.push('/product-catalogue')
   }
@@ -82,9 +107,21 @@ export class DropdownList extends React.PureComponent<Props> {
     }
   }
 
+  handleOnGenderSportChange = (sportSelected: number) => {
+    const { dispatch } = this.props
+
+    dispatch(setGenderSportAction(sportSelected))
+  }
+
   render() {
-    const { data, genderOptions, sportOptions, formatMessage } = this.props
-    const { genders, categories, sports } = data
+    const {
+      data,
+      genderOptions,
+      sportOptions,
+      formatMessage,
+      genderSportSelected
+    } = this.props
+    const { genders, sports } = data
 
     const genderMenus = genderOptions.map(({ label, visible }, index) => (
       <Menu.Item key={label}>
@@ -99,11 +136,13 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuGender
-              {...{ genders, sports, categories, visible, formatMessage }}
+              {...{ genders, sports, visible, formatMessage }}
               type={index}
-              onPressSeeAll={this.handleOnSeeAll}
+              onPressSeeAll={this.handleOnSeeAllFilters}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
+              sportSelected={genderSportSelected}
+              setSportAction={this.handleOnGenderSportChange}
             />
           }
         >
@@ -126,8 +165,9 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuSports
-              {...{ sports, categories, visible, formatMessage }}
+              {...{ sports, visible, formatMessage }}
               type={index}
+              name={label}
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}

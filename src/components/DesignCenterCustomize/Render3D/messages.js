@@ -28,7 +28,7 @@ export default defineMessages({
   modalResetMessage: {
     id: 'components.Render3D.modalResetMessage',
     defaultMessage:
-      'Restting the design will revert back to the original selected design.'
+      'Resetting the design will revert back to the original selected design.'
   },
   modalConfirmText: {
     id: 'components.Render3D.modalConfirmText',

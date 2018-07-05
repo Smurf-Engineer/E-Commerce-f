@@ -108,7 +108,7 @@
     "The resolution of your graphic in its current size is too poor",
   "components.Render3D.modalResetTitle": "RESET",
   "components.Render3D.modalResetMessage":
-    "Restting the design will revert back to the original selected design.",
+    "Resetting the design will revert back to the original selected design.",
   "components.Render3D.modalConfirmText": "Confirm",
   "components.Render3D.modalCancelText": "Cancel",
   "components.forgotPassword.emailLabel": "Email",
@@ -763,13 +763,15 @@
   "components.DesignCenterStyle.modalNewStyleTitle": "NEW STYLE?",
   "components.DesignCenterStyle.modalNewStyleMessage":
     "By selecting a different style you have to restart the customization.",
-  "components.DesignCenterStyle.modalNewStyleConfirm": "Cancel",
+  "components.DesignCenterStyle.modalNewStyleConfirm": "Confirm",
+  "components.DesignCenterStyle.modalNewStyleCancel": "Cancel",
 
   "components.DesignCenterGrid.title": "DesignCenterGrid",
   "components.DesignCenterGrid.modalNewStyleTitle": "NEW THEME?",
   "components.DesignCenterGrid.modalNewStyleMessage":
     "By selecting a different theme you have to restart the customization.",
-  "components.DesignCenterGrid.modalNewStyleConfirm": "Cancel",
+  "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
+  "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
 
   "screens.DesignCenter.title": "DesignCenter",
   "screens.DesignCenter.inspirationTtitle": "Inspiration",
@@ -779,16 +781,15 @@
   "screens.DesignCenter.outWithoutSaveModalTitle": "SAVE CURRENT DESIGN",
   "screens.DesignCenter.outWithoutSaveDesignModalMessage":
     "The design you are working on is not saved yet. Would you like to save it to your locker?",
-  "screens.DesignCenter.outWithoutSaveDesignModalCancel":
-    "screens.DesignCenter.outWithoutSaveDesignModalCancel",
-  "screens.DesignCenter.outWithoutSaveDesignModalDontSave":
-    "screens.DesignCenter.outWithoutSaveDesignModalDontSave",
-  "screens.DesignCenter.outWithoutSaveDesignModalSave":
-    "screens.DesignCenter.outWithoutSaveDesignModalSave",
+  "screens.DesignCenter.outWithoutSaveDesignModalCancel": "Cancel",
+  "screens.DesignCenter.outWithoutSaveDesignModalDontSave": "Dont't Save",
+  "screens.DesignCenter.outWithoutSaveDesignModalSave": "Save",
   "components.LockerTable.cannotHide":
     "During the ordering period, you cannot hide items with orders.",
   "components.LockerTable.cannotDelete":
     "During the ordering period, you cannot delete items with orders.",
+  "componentes.StoreForm.save": "Save",
+  "componentes.StoreForm.cancel": "Cancel",
   "components.OutlineColor.title": "Thickness",
   "components.OutlineColor.thin": "Thin",
   "components.OutlineColor.thick": "Thick",

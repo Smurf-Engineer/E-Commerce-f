@@ -8,6 +8,7 @@ import ProductCatalogFilterComponent from './index'
 describe('<ProductCatalogFilterComponent />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const activeFilters = {}
     ReactDOM.render(
       <ProductCatalogFilterComponent
         title={''}
@@ -15,6 +16,7 @@ describe('<ProductCatalogFilterComponent />', () => {
         showOptions={false}
         toggleOptions={() => {}}
         selectOption={() => {}}
+        {...{ activeFilters }}
       />,
       div
     )
