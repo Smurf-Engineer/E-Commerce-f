@@ -16,7 +16,6 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  name?: string
   data: Data
   genderFilter?: Filter
   sportFilter: Filter
@@ -115,15 +114,15 @@ type OwnProps = {
   genderFilter?: Filter
   category?: Filter
   sportFilter?: Filter
-  name?: string
 }
 
 const ListEnhance = compose(
   graphql<Data>(productsQuery, {
-    options: ({ genderFilter, category, sportFilter, name }: OwnProps) => {
+    options: ({ genderFilter, category, sportFilter }: OwnProps) => {
+      const sportName = (sportFilter as Filter).name.toLowerCase()
       return {
         variables: {
-          sportGroup: name === 'cycling' ? name : null,
+          sportGroup: sportName === 'cycling' ? sportName : null,
           gender: genderFilter ? genderFilter.id : null,
           category: category ? category.id : null,
           sport: sportFilter ? sportFilter.id : null

@@ -35,6 +35,7 @@ describe('<DropdownList />', () => {
         {...{ sportOptions, genderOptions, data, formatMessage }}
         history={{}}
         dispatch={{}}
+        menuGender={{}}
       />,
       div
     )

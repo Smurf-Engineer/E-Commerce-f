@@ -8,6 +8,8 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
+import findIndex from 'lodash/findIndex'
+import upperFirst from 'lodash/upperFirst'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -44,6 +46,7 @@ interface Props {
   data: Data
   sportOptions: Option[]
   genderOptions: Option[]
+  menuGender: any
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -97,8 +100,34 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 
   render() {
-    const { data, genderOptions, sportOptions, formatMessage } = this.props
+    const {
+      data,
+      genderOptions,
+      sportOptions,
+      formatMessage,
+      menuGender: { sportSelected }
+    } = this.props
     const { genders, categories, sports } = data
+
+    // console.log('--------------------')
+    // const indexOfActiveSport = findIndex(sportOptions, ['visible', true])
+    // const activeSport =
+    //   indexOfActiveSport >= 0
+    //     ? sportOptions[indexOfActiveSport]
+    //     : sports && sports[sportSelected]
+    // if (activeSport) {
+    //   if (indexOfActiveSport < 0) {
+    //     const id = (activeSport as Filter).id
+    //     console.log(id)
+    //   } else if (sports) {
+    //     const sportName = upperFirst((activeSport as Option).label)
+    //     const index = findIndex(sports, ['name', sportName])
+    //     const id = index >= 0 && sports[index].id
+    //     console.log(sports)
+    //     console.log(index >= 0 && sports[index].id)
+    //   }
+    // }
+    // console.log('--------------------')
 
     const genderMenus = genderOptions.map(({ label, visible }, index) => (
       <Menu.Item key={label}>
@@ -164,7 +193,14 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('menu').toJS()
+const mapStateToProps = (state: any) => {
+  const menu = state.get('menu').toJS()
+  const menuGender = state.get('menuGender').toJS()
+  return {
+    ...menu,
+    menuGender
+  }
+}
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
