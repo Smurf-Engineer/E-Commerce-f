@@ -781,16 +781,15 @@
   "screens.DesignCenter.outWithoutSaveModalTitle": "SAVE CURRENT DESIGN",
   "screens.DesignCenter.outWithoutSaveDesignModalMessage":
     "The design you are working on is not saved yet. Would you like to save it to your locker?",
-  "screens.DesignCenter.outWithoutSaveDesignModalCancel":
-    "screens.DesignCenter.outWithoutSaveDesignModalCancel",
-  "screens.DesignCenter.outWithoutSaveDesignModalDontSave":
-    "screens.DesignCenter.outWithoutSaveDesignModalDontSave",
-  "screens.DesignCenter.outWithoutSaveDesignModalSave":
-    "screens.DesignCenter.outWithoutSaveDesignModalSave",
+  "screens.DesignCenter.outWithoutSaveDesignModalCancel": "Cancel",
+  "screens.DesignCenter.outWithoutSaveDesignModalDontSave": "Dont't Save",
+  "screens.DesignCenter.outWithoutSaveDesignModalSave": "Save",
   "components.LockerTable.cannotHide":
     "During the ordering period, you cannot hide items with orders.",
   "components.LockerTable.cannotDelete":
     "During the ordering period, you cannot delete items with orders.",
+  "componentes.StoreForm.save": "Save",
+  "componentes.StoreForm.cancel": "Cancel",
   "components.OutlineColor.title": "Thickness",
   "components.OutlineColor.thin": "Thin",
   "components.OutlineColor.thick": "Thick",

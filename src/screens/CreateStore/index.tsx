@@ -51,7 +51,9 @@ import {
   AddItem,
   ButtonBuildStyle,
   BannerTitleContainer,
-  OptionalLabel
+  OptionalLabel,
+  ButtonOptionStyle,
+  ButtonOptionsWrapper
 } from './styledComponents'
 import config from '../../config/index'
 
@@ -217,6 +219,10 @@ export class CreateStore extends React.Component<Props, StateProps> {
       imagePreviewUrl: '',
       hasError: false
     })
+  }
+
+  handleCancelTeamStore = () => {
+    history.back()
   }
 
   handleBuildTeamStore = async () => {
@@ -420,6 +426,8 @@ export class CreateStore extends React.Component<Props, StateProps> {
 
     const tableItems = this.getCheckedItems(items)
 
+    const storeShortId = this.getStoreId()
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -532,14 +540,35 @@ export class CreateStore extends React.Component<Props, StateProps> {
               />
             )}
           </RowSwitch>
-          <ButtonBuildStyle
-            {...{ loading }}
-            type="primary"
-            size="large"
-            onClick={this.handleBuildTeamStore}
-          >
-            {formatMessage(messages.buttonBuild)}
-          </ButtonBuildStyle>
+          {storeShortId ? (
+            <ButtonOptionsWrapper>
+              <ButtonOptionStyle
+                {...{ loading }}
+                type="primary"
+                size="large"
+                onClick={this.handleBuildTeamStore}
+              >
+                {formatMessage(messages.save)}
+              </ButtonOptionStyle>
+              <ButtonOptionStyle
+                {...{ loading }}
+                type="primary"
+                size="large"
+                onClick={this.handleCancelTeamStore}
+              >
+                {formatMessage(messages.cancel)}
+              </ButtonOptionStyle>
+            </ButtonOptionsWrapper>
+          ) : (
+            <ButtonBuildStyle
+              {...{ loading }}
+              type="primary"
+              size="large"
+              onClick={this.handleBuildTeamStore}
+            >
+              {formatMessage(messages.buttonBuild)}
+            </ButtonBuildStyle>
+          )}
           <LockerModal
             {...{ selectedItems, tableItems }}
             visible={openLocker}

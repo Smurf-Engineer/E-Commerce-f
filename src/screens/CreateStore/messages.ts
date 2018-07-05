@@ -100,5 +100,13 @@ export default defineMessages({
   deleteLabel: {
     id: 'componentes.StoreForm.deleteLabel',
     defaultMessage: 'Delete'
+  },
+  save: {
+    id: 'componentes.StoreForm.save',
+    defaultMessage: 'Save'
+  },
+  cancel: {
+    id: 'componentes.StoreForm.cancel',
+    defaultMessage: 'Cancel'
   }
 })

@@ -129,6 +129,24 @@ export const ButtonBuildStyle = styled(Button)`
   }
 `
 
+export const ButtonOptionsWrapper = styled.div`
+  width: 25%;
+  margin: 16px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+`
+
+export const ButtonOptionStyle = styled(Button)`
+  width: 45%;
+  margin: 16px 0px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+`
+
 export const draggerStyle = { padding: '30px 0px', marginBottom: 16 }
 
 export const BannerTitleContainer = styled.div`
