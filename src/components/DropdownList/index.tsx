@@ -8,8 +8,8 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
-import findIndex from 'lodash/findIndex'
-import upperFirst from 'lodash/upperFirst'
+// import findIndex from 'lodash/findIndex'
+// import upperFirst from 'lodash/upperFirst'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -31,7 +31,6 @@ import { openQuickViewAction } from '../../components/MainLayout/actions'
 
 interface Data extends QueryProps {
   genders: Filter[]
-  categories: Filter[]
   sports: Filter[]
 }
 
@@ -100,14 +99,8 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 
   render() {
-    const {
-      data,
-      genderOptions,
-      sportOptions,
-      formatMessage,
-      menuGender: { sportSelected }
-    } = this.props
-    const { genders, categories, sports } = data
+    const { data, genderOptions, sportOptions, formatMessage } = this.props
+    const { genders, sports } = data
 
     // console.log('--------------------')
     // const indexOfActiveSport = findIndex(sportOptions, ['visible', true])
@@ -142,11 +135,12 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuGender
-              {...{ genders, sports, categories, visible, formatMessage }}
+              {...{ genders, sports, visible, formatMessage }}
               type={index}
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
+              categories={[]}
             />
           }
         >
@@ -169,7 +163,7 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuSports
-              {...{ sports, categories, visible, formatMessage }}
+              {...{ sports, visible, formatMessage }}
               type={index}
               name={label}
               onPressSeeAll={this.handleOnSeeAll}
@@ -193,14 +187,7 @@ export class DropdownList extends React.PureComponent<Props> {
   }
 }
 
-const mapStateToProps = (state: any) => {
-  const menu = state.get('menu').toJS()
-  const menuGender = state.get('menuGender').toJS()
-  return {
-    ...menu,
-    menuGender
-  }
-}
+const mapStateToProps = (state: any) => state.get('menu').toJS()
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
