@@ -8,8 +8,6 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
-// import findIndex from 'lodash/findIndex'
-// import upperFirst from 'lodash/upperFirst'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -17,7 +15,8 @@ import { CLEAR_STATE_ACTION as CLEAR_MENU_GENDER } from '../MenuGender/constants
 import { CLEAR_STATE_ACTION as CLEAR_MENU_SPORTS } from '../MenuSports/constants'
 import {
   setMenuGenderSelectedAction,
-  setMenuSportSelectedAction
+  setMenuSportSelectedAction,
+  setGenderSportAction
 } from './actions'
 import { Filter, QueryProps } from '../../types/common'
 import {
@@ -43,6 +42,7 @@ interface Props {
   history: any
   dispatch: any
   data: Data
+  genderSportSelected: number
   sportOptions: Option[]
   genderOptions: Option[]
   menuGender: any
@@ -98,8 +98,20 @@ export class DropdownList extends React.PureComponent<Props> {
     }
   }
 
+  handleOnGenderSportChange = (sportSelected: number) => {
+    const { dispatch } = this.props
+
+    dispatch(setGenderSportAction(sportSelected))
+  }
+
   render() {
-    const { data, genderOptions, sportOptions, formatMessage } = this.props
+    const {
+      data,
+      genderOptions,
+      sportOptions,
+      formatMessage,
+      genderSportSelected
+    } = this.props
     const { genders, sports } = data
 
     const genderMenus = genderOptions.map(({ label, visible }, index) => (
@@ -120,7 +132,8 @@ export class DropdownList extends React.PureComponent<Props> {
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
-              categories={[]}
+              sportSelected={genderSportSelected}
+              setSportAction={this.handleOnGenderSportChange}
             />
           }
         >

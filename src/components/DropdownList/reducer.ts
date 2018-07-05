@@ -3,7 +3,11 @@
  */
 
 import { fromJS } from 'immutable'
-import { SET_MENU_GENDER_SELECTED, SET_MENU_SPORT_SELECTED } from './constants'
+import {
+  SET_MENU_GENDER_SELECTED,
+  SET_MENU_SPORT_SELECTED,
+  SET_GENDER_SPORT_SELECTED
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -16,7 +20,8 @@ export const initialState = fromJS({
     { label: 'triathlon', visible: false },
     // { label: 'nordic', visible: false }, TODO: uncomment when nordic will be needed
     { label: 'active', visible: false }
-  ]
+  ],
+  genderSportSelected: 0
 })
 
 const menuReducer: Reducer<any> = (state = initialState, action) => {
@@ -39,6 +44,8 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
       })
       return state.set('sportOptions', updatedSportOptions)
     }
+    case SET_GENDER_SPORT_SELECTED:
+      return state.set('genderSportSelected', action.sport)
     default:
       return state
   }
