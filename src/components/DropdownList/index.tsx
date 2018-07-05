@@ -102,26 +102,6 @@ export class DropdownList extends React.PureComponent<Props> {
     const { data, genderOptions, sportOptions, formatMessage } = this.props
     const { genders, sports } = data
 
-    // console.log('--------------------')
-    // const indexOfActiveSport = findIndex(sportOptions, ['visible', true])
-    // const activeSport =
-    //   indexOfActiveSport >= 0
-    //     ? sportOptions[indexOfActiveSport]
-    //     : sports && sports[sportSelected]
-    // if (activeSport) {
-    //   if (indexOfActiveSport < 0) {
-    //     const id = (activeSport as Filter).id
-    //     console.log(id)
-    //   } else if (sports) {
-    //     const sportName = upperFirst((activeSport as Option).label)
-    //     const index = findIndex(sports, ['name', sportName])
-    //     const id = index >= 0 && sports[index].id
-    //     console.log(sports)
-    //     console.log(index >= 0 && sports[index].id)
-    //   }
-    // }
-    // console.log('--------------------')
-
     const genderMenus = genderOptions.map(({ label, visible }, index) => (
       <Menu.Item key={label}>
         <Popover

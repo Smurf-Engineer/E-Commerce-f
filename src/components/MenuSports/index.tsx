@@ -70,8 +70,6 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       )
     }
 
-    console.log(sports)
-
     return (
       <Container>
         <Filters>
