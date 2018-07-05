@@ -19,7 +19,7 @@ import {
   SET_THEME_SELECTED_ACTION,
   SET_STYLE_SELECTED_ACTION,
   OPEN_SHARE_MODAL,
-  OPEN_SAVEDESIGN,
+  OPEN_SAVE_DESIGN_ACTION,
   SET_DESIGN_NAME,
   SAVE_DESIGN_ID,
   COLOR_BLOCK_HOVERED_ACTION,
@@ -64,7 +64,7 @@ export const initialState = fromJS({
   openSaveDesign: false,
   checkedTerms: false,
   savedDesignId: '',
-  designBase64: '',
+  design: {},
   saveDesignLoading: false,
   text: '',
   openAddToStoreModal: false,
@@ -100,7 +100,8 @@ export const initialState = fromJS({
   designHasChanges: false,
   openOutWithoutSaveModal: false,
   routeToGoWithoutSave: '',
-  customize3dMounted: false
+  customize3dMounted: false,
+  svgOutputUrl: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -246,15 +247,19 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
-    case OPEN_SAVEDESIGN:
+    case OPEN_SAVE_DESIGN_ACTION:
       return state.merge({
         openSaveDesign: action.open,
-        designBase64: action.imageBase64
+        design: action.design
       })
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID:
-      return state.merge({ savedDesignId: action.id, designHasChanges: false })
+      return state.merge({
+        savedDesignId: action.id,
+        designHasChanges: false,
+        svgOutputUrl: action.svgUrl
+      })
     case SET_CHECKED_TERMS:
       return state.set('checkedTerms', action.checked)
     case SAVE_DESIGN_LOADING:

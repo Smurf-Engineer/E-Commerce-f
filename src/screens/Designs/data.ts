@@ -13,10 +13,7 @@ export const styleQuery = gql`
         name
         id
       }
-      colors {
-        id
-        color
-      }
+      svg: output_svg
     }
   }
 `

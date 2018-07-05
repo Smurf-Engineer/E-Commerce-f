@@ -19,12 +19,14 @@ import {
   StyledSaveAs,
   CheckWrapper
 } from './styledComponents'
+import { SaveDesignType } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 
 interface Data {
   id: number
   shortId: string
   name: string
+  svg: string
 }
 
 interface Props {
@@ -34,14 +36,14 @@ interface Props {
   savedDesignId: string
   colors: string[]
   checkedTerms: boolean
-  designBase64: string
+  design: SaveDesignType
   saveDesignLoading: boolean
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
   saveDesignNameMutation: (variables: {}) => void
   saveDesignChangesMutation: (variables: {}) => void
-  afterSaveDesign: (id: string) => void | undefined
+  afterSaveDesign: (id: string, svg: string) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   setSaveDesignLoading: (loading: boolean) => void
 }
@@ -54,9 +56,7 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { onDesignName } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
+    const { currentTarget: { value } } = evt
     evt.persist()
     onDesignName(value)
   }
@@ -66,7 +66,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       productId,
       designName,
       colors,
-      designBase64,
+      design,
       formatMessage,
       saveDesignNameMutation,
       requestClose,
@@ -84,11 +84,16 @@ export class SaveDesign extends React.Component<Props, {}> {
       return
     }
 
+    const { designBase64, canvasSvg, canvasJson, styleId } = design
+
     try {
       const designObj = {
         name: designName,
         product_id: productId,
-        image: designBase64
+        image: designBase64,
+        styleId,
+        canvas: canvasJson,
+        svg: canvasSvg
       }
 
       setSaveDesignLoading(true)
@@ -99,9 +104,9 @@ export class SaveDesign extends React.Component<Props, {}> {
       setSaveDesignLoading(false)
 
       if (data) {
-        const { shortId } = data
+        const { shortId, svg } = data
         message.success(formatMessage(messages.saveSuccess, { designName }))
-        afterSaveDesign(shortId)
+        afterSaveDesign(shortId, svg)
         requestClose()
       }
     } catch (error) {
@@ -120,14 +125,14 @@ export class SaveDesign extends React.Component<Props, {}> {
       formatMessage,
       saveDesignChangesMutation,
       requestClose,
-      designBase64,
+      design,
       setSaveDesignLoading
     } = this.props
 
     const designObj = {
       name: '',
       product_id: 0,
-      image: designBase64
+      image: design.designBase64
     }
 
     try {
@@ -233,8 +238,5 @@ export class SaveDesign extends React.Component<Props, {}> {
   }
 }
 
-const SaveDesignEnhance = compose(
-  saveDesignName,
-  saveDesignChanges
-)(SaveDesign)
+const SaveDesignEnhance = compose(saveDesignName, saveDesignChanges)(SaveDesign)
 export default SaveDesignEnhance

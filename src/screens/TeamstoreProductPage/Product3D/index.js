@@ -43,7 +43,7 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
-    const { onLoadModel, colors } = this.props
+    const { onLoadModel, svgUrl } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -59,6 +59,11 @@ class Render3D extends PureComponent {
       flatlock: {},
       bumpMap: {}
     }
+
+    // TODO: Delete jersey textures and get from the design
+    jerseyTextures.images.texture =
+      svgUrl ||
+      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01.svg'
 
     for (const key in textures) {
       textures[key] = textureLoader.load(jerseyTextures.images[key])
@@ -172,12 +177,6 @@ class Render3D extends PureComponent {
     this.start()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { colors } = nextProps
-
-    this.setupColors(colors)
-  }
-
   componentWillUnmount() {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
@@ -224,29 +223,8 @@ class Render3D extends PureComponent {
     this.controls.update()
   }
 
-  handleOnChange3DModel = () => {}
-
-  setupColors = colors => {
-    let colorNumber = 1
-    colors.forEach(colorObject => {
-      let key = `customColor${colorNumber}`
-      const { color } = colorObject
-      if (color && this.uniformsWithPhong) {
-        this.uniformsWithPhong[key].value = new THREE.Color(color)
-      }
-      colorNumber += 1
-    })
-  }
-
   render() {
-    const {
-      showDragmessage,
-      currentView,
-      zoomValue,
-      progress,
-      loadingModel
-    } = this.state
-    const { onPressQuickView, undoEnabled, redoEnabled } = this.props
+    const { showDragmessage, progress, loadingModel } = this.state
 
     return (
       <Container onKeyDown={this.handleOnKeyDown}>

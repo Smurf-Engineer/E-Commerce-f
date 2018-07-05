@@ -108,6 +108,13 @@ export type DesignType = {
   createdAt: string
 }
 
+export type SaveDesignType = {
+  designBase64: string
+  canvasSvg: string
+  canvasJson: string
+  styleId: number
+}
+
 export type TeamStoreItemtype = {
   team_store_id: number
   design_id: string
