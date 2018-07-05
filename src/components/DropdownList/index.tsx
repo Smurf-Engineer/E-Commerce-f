@@ -50,22 +50,31 @@ interface Props {
 }
 
 export class DropdownList extends React.PureComponent<Props> {
-  handleOnSeeAll = (type: number) => {
+  handleOnSeeAllFilters = (type: number) => {
     const {
       history: { push, location }
     } = this.props
     const queryParams = queryString.parse(location.search)
     const gender = type ? 'women' : 'men'
     const route = `/product-catalogue?gender=${gender}`
+    const atProductCatalogue = (location.pathname as String).includes(
+      'product-catalogue'
+    )
     if (
-      (location.pathname as String).includes('product-catalogue') &&
-      queryParams.gender &&
-      queryParams.gender !== gender
+      (atProductCatalogue && !queryParams.gender) ||
+      (atProductCatalogue &&
+        queryParams.gender &&
+        queryParams.gender !== gender)
     ) {
       window.location.replace(route)
       return
     }
     push(route)
+  }
+
+  handleOnSeeAll = (type: number) => {
+    const { history } = this.props
+    history.push('/product-catalogue')
   }
 
   handleOnCustomize = (id: string) => {
@@ -129,7 +138,7 @@ export class DropdownList extends React.PureComponent<Props> {
             <MenuGender
               {...{ genders, sports, visible, formatMessage }}
               type={index}
-              onPressSeeAll={this.handleOnSeeAll}
+              onPressSeeAll={this.handleOnSeeAllFilters}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
               sportSelected={genderSportSelected}
