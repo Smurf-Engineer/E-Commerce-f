@@ -2,16 +2,29 @@
  * MenuGender Component - Created by david on 09/02/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as menuGenderActions from './actions'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import { Container, Filters, Categories, Divider } from './styledComponents'
-import { Filter } from '../../types/common'
+import {
+  Container,
+  Filters,
+  Categories,
+  Divider,
+  LoadingContainer
+} from './styledComponents'
+import { Filter, QueryProps } from '../../types/common'
+import { categoriesQuery } from './data'
+import Spin from 'antd/lib/spin'
+
+interface Data extends QueryProps {
+  categories: Filter[]
+}
 
 interface Props {
+  data: Data
   type: number
   onPressSeeAll: (type: number) => void
   onPressCustomize: (id: number) => void
@@ -22,7 +35,6 @@ interface Props {
   categorySelected: number
   genders?: Filter[]
   sports?: Filter[]
-  categories?: Filter[]
   visible: boolean
   formatMessage: (messageDescriptor: any) => string
 }
@@ -53,13 +65,27 @@ export class MenuGender extends React.PureComponent<Props, {}> {
       categorySelected,
       genders = [],
       sports = [],
-      categories = [],
-      formatMessage
+      formatMessage,
+      data: { categories, loading }
     } = this.props
 
     if (!visible) {
       return null
     }
+
+    const categoriesContent = loading ? (
+      <LoadingContainer>
+        <Spin />
+      </LoadingContainer>
+    ) : (
+      <Categories>
+        <FilterList
+          onHoverFilter={this.handleOnHoverCategory}
+          filters={categories}
+          filterSelected={categorySelected}
+        />
+      </Categories>
+    )
 
     return (
       <Container>
@@ -76,29 +102,43 @@ export class MenuGender extends React.PureComponent<Props, {}> {
           />
         </Filters>
         <Divider type="vertical" />
-        <Categories>
-          <FilterList
-            onHoverFilter={this.handleOnHoverCategory}
-            filters={categories}
-            filterSelected={categorySelected}
-          />
-        </Categories>
+        {categoriesContent}
         <Divider type="vertical" />
-        <ProductList
-          {...{ onPressCustomize, onPressQuickView, formatMessage }}
-          genderFilter={genders[type]}
-          sportFilter={sports[sportSelected]}
-          category={categories[categorySelected]}
-          onPressSeeAll={this.handleOnPressSeeAll}
-        />
+        {loading ? null : (
+          <ProductList
+            {...{ onPressCustomize, onPressQuickView, formatMessage }}
+            genderFilter={genders[type]}
+            sportFilter={sports[sportSelected]}
+            category={categories.length && categories[categorySelected]}
+            onPressSeeAll={this.handleOnPressSeeAll}
+          />
+        )}
       </Container>
     )
   }
 }
 
+type OwnProps = {
+  sportSelected?: number
+  sports?: Filter[]
+}
+
 const mapStateToProps = (state: any) => state.get('menuGender').toJS()
 
 const MenuGenderEnhance = compose(
+  graphql<Data>(categoriesQuery, {
+    options: ({ sportSelected, sports }: OwnProps) => {
+      const sportId =
+        sports !== undefined
+          ? (sports as Filter[])[sportSelected as number].id
+          : undefined
+      return {
+        variables: {
+          sportId: sportId !== undefined ? sportId : null
+        }
+      }
+    }
+  }),
   connect(
     mapStateToProps,
     { ...menuGenderActions }

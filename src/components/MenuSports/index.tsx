@@ -2,16 +2,28 @@
  * MenuSports Component - Created by david on 13/02/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import * as menuSportActions from './actions'
-import { Container, Divider, Filters } from './styledComponents'
+import {
+  Container,
+  Divider,
+  Filters,
+  LoadingContainer
+} from './styledComponents'
 import FilterList from '../FilterList'
 import SeeAllButton from '../SeeAllButton'
 import ProductList from '../ProductHorizontalList'
-import { Filter } from '../../types/common'
+import { Filter, QueryProps } from '../../types/common'
+import { categoriesQuery } from './data'
+import Spin from 'antd/lib/spin'
+
+interface Data extends QueryProps {
+  categories: Filter[]
+}
 
 interface Props {
+  data: Data
   type: number
   onPressSeeAll: (type: number) => void
   onPressCustomize: (id: number) => void
@@ -19,7 +31,6 @@ interface Props {
   setCategoryAction: (sport: number) => void
   categorySelected: number
   sports: Filter[]
-  categories: Filter[]
   visible: boolean
   formatMessage: (messageDescriptor: any) => string
 }
@@ -42,13 +53,21 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       onPressCustomize,
       onPressQuickView,
       categorySelected,
-      categories,
       sports,
-      formatMessage
+      formatMessage,
+      data: { categories, loading }
     } = this.props
 
     if (!visible) {
       return null
+    }
+
+    if (loading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
     }
 
     return (
@@ -69,7 +88,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
           {...{ onPressCustomize, onPressQuickView, formatMessage }}
           width={'80%'}
           sportFilter={sports && sports[type]}
-          category={categories && categories[categorySelected]}
+          category={categories.length && categories[categorySelected]}
           onPressSeeAll={this.handleOnPressSeeAll}
         />
       </Container>
@@ -79,7 +98,22 @@ export class MenuSports extends React.PureComponent<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('menuSports').toJS()
 
+type OwnProps = {
+  type?: number
+  sports?: Filter[]
+}
+
 const MenuGenderEnhance = compose(
+  graphql<Data>(categoriesQuery, {
+    options: ({ type, sports }: OwnProps) => {
+      const sportId = (sports as Filter[])[type as number].id
+      return {
+        variables: {
+          sportId: sportId !== undefined ? sportId : null
+        }
+      }
+    }
+  }),
   connect(
     mapStateToProps,
     { ...menuSportActions }

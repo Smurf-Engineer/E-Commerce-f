@@ -118,13 +118,17 @@ type OwnProps = {
 
 const ListEnhance = compose(
   graphql<Data>(productsQuery, {
-    options: ({ genderFilter, category, sportFilter }: OwnProps) => ({
-      variables: {
-        gender: genderFilter ? genderFilter.id : null,
-        category: category ? category.id : null,
-        sport: sportFilter ? sportFilter.id : null
+    options: ({ genderFilter, category, sportFilter }: OwnProps) => {
+      const sportName = (sportFilter as Filter).name.toLowerCase()
+      return {
+        variables: {
+          sportGroup: sportName === 'cycling' ? sportName : null,
+          gender: genderFilter ? genderFilter.id : null,
+          category: category ? category.id : null,
+          sport: sportFilter ? sportFilter.id : null
+        }
       }
-    })
+    }
   })
 )(ProductHorizontalList)
 
