@@ -101,6 +101,7 @@ export interface Product {
 export type DesignType = {
   id: number
   name: string
+  shared: boolean
   shortId?: string
   visible?: boolean
   product: Product

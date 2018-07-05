@@ -11,6 +11,7 @@ export const desginsQuery = gql`
         id
         name
         image
+        shared
         shortId: short_id
         createdAt: created_at
         product {
@@ -33,6 +34,14 @@ export const desginsQuery = gql`
           }
         }
       }
+    }
+  }
+`
+
+export const designAsPrivateMutation = gql`
+  mutation designAsPrivateMutation($designId: String!, $shared: Boolean!) {
+    shareDesign(designId: $designId, shared: $shared) {
+      message
     }
   }
 `

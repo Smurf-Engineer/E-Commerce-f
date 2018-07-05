@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import { DesignResultType, DesignType } from '../../types/common'
 import Pagination from 'antd/lib/pagination/Pagination'
-import { desginsQuery } from './data'
+import { desginsQuery, designAsPrivateMutation } from './data'
 import * as myLockerActions from './actions'
 import messages from './messages'
 import {
@@ -36,11 +36,30 @@ interface Props {
 }
 
 export class MyLocker extends React.PureComponent<Props, {}> {
-  handleOnPressPrivate = (id: number, isPrivate: boolean) => {
-    // TODO: Handle private
+  handleOnPressPrivate = async (id: string, isPrivate: boolean) => {
+    const {
+      client: { mutate, query },
+      setDesignsData,
+      limit
+    } = this.props
+    try {
+      await mutate({
+        mutation: designAsPrivateMutation,
+        variables: { designId: id, shared: !isPrivate }
+      })
+      const data = await query({
+        query: desginsQuery,
+        variables: { limit, offset: 0 },
+        fetchPolicy: 'network-only'
+      })
+      setDesignsData(data, 0, 1)
+    } catch (e) {}
   }
 
-  handleOnPressDelete = (id: number) => {
+  handleOnPressDelete = (id: string, name: string) => {
+    console.log('-----------------------')
+    console.log(id, 'delete')
+    console.log('-----------------------')
     // TODO: Handle delete
   }
 
