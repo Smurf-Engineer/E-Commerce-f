@@ -6,7 +6,10 @@ import {
   DEFAULT_ACTION,
   SET_LOADING,
   SET_ERROR,
-  SET_DESIGNS_DATA
+  SET_DESIGNS_DATA,
+  SET_DELETE_MODAL_DATA,
+  SET_MODAL_LOADING,
+  RESET_MODAL_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -18,7 +21,13 @@ export const initialState = fromJS({
   designs: [],
   limit: 12,
   offset: 0,
-  currentPage: 1
+  currentPage: 1,
+  deleteModal: {
+    openDeleteModal: false,
+    currentDesignId: '',
+    currentDesignName: '',
+    modalLoading: false
+  }
 })
 
 const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
@@ -42,6 +51,25 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         currentPage: action.page,
         loading: false
       })
+    }
+    case SET_DELETE_MODAL_DATA:
+      return state.set('deleteModal', action.payload)
+    case SET_MODAL_LOADING: {
+      const deleteModalData = state.get('deleteModal')
+      const deleteModal = {
+        ...deleteModalData,
+        modalLoading: action.loading
+      }
+      return state.set('deleteModal', deleteModal)
+    }
+    case RESET_MODAL_DATA: {
+      const deleteModal = {
+        openDeleteModal: false,
+        currentDesignId: '',
+        currentDesignName: '',
+        modalLoading: false
+      }
+      return state.set('deleteModal', deleteModal)
     }
     default:
       return state

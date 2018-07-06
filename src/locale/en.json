@@ -742,6 +742,10 @@
 
   "components.MyLocker.titleError": "Oops!",
   "components.MyLocker.messageError": "Something went wrong",
+  "components.MyLocker.deleteDesign": "Delete",
+  "components.MyLocker.titleDeleteModal": "Are you sure?",
+  "components.MyLocker.messageDeleteModal":
+    "\"{designName}\" will be deleted from your locker",
 
   "components.UploadTab.title": "Upload Logo and Images",
   "components.UploadTab.imageExtensionError":

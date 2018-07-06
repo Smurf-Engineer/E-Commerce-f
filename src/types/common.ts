@@ -569,3 +569,10 @@ export interface ThemeModalType {
   openNewThemeModal: boolean
   themeId: number
 }
+
+export interface DeleteDesignModal {
+  openDeleteModal: boolean
+  designId: string
+  designName: string
+  modalLoading: boolean
+}

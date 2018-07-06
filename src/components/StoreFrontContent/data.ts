@@ -61,6 +61,10 @@ export const getSingleTeamStore = gql`
               quantity
               price
             }
+            sizeRange: size_range {
+              id
+              name
+            }
             images: pictures {
               front: front_image
               back: back_image
