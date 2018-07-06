@@ -9,6 +9,7 @@ import {
   SET_GENDER_SPORT_SELECTED
 } from './constants'
 import { Reducer } from '../../types/common'
+import { CLEAR_STATE_ACTION } from '../MenuGender/constants'
 
 export const initialState = fromJS({
   genderOptions: [
@@ -46,6 +47,8 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_GENDER_SPORT_SELECTED:
       return state.set('genderSportSelected', action.sport)
+    case CLEAR_STATE_ACTION:
+      return state.set('genderSportSelected', 0)
     default:
       return state
   }

@@ -29,6 +29,7 @@ import {
   DeleteConfirmMessage
 } from './styledComponents'
 import Spin from 'antd/lib/spin'
+import ModalFooter from '../ModalFooter'
 
 interface Props {
   client: any
@@ -201,10 +202,15 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         <Modal
           visible={openDeleteModal}
           title={formatMessage(messages.titleDeleteModal)}
-          okText={formatMessage(messages.deleteDesign)}
-          onOk={this.handleOnDeleteDesign}
-          onCancel={this.handleOnHideDeleteModal}
-          confirmLoading={modalLoading}
+          footer={
+            <ModalFooter
+              okText={formatMessage(messages.deleteDesign)}
+              onOk={this.handleOnDeleteDesign}
+              onCancel={this.handleOnHideDeleteModal}
+              confirmLoading={modalLoading}
+              {...{ formatMessage }}
+            />
+          }
           destroyOnClose={false}
           maskClosable={false}
           closable={false}
