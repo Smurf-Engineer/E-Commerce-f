@@ -2,20 +2,103 @@
  * ConfirmCountryDialog Component - Created by gustavomedina on 05/07/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
+import { compose, graphql } from 'react-apollo'
+import Select from 'antd/lib/select'
+import {
+  Title,
+  ModalContent,
+  StyledSelect,
+  ButtonWrapper,
+  Button
+} from './styledComponents'
+import { QueryProps, CountrySubsidiary } from '../../types/common'
 import messages from './messages'
-import { Container } from './styledComponents'
+import Modal from '../Common/JakrooModal'
+import { subsidiaryQuery } from './data'
 
-interface Props {}
+const Option = Select.Option
 
-class ConfirmCountryDialog extends React.Component<Props, {}> {
+interface Data extends QueryProps {
+  countriesSubsidiaries: CountrySubsidiary[]
+}
+interface Props {
+  data: Data
+  requestClose: () => void
+  formatMessage: (messageDescriptor: any) => string
+  open: boolean
+  onSave: (countryId: number | null) => void
+}
+
+export class ConfirmCountryDialog extends React.Component<Props, {}> {
+  state = {
+    countryId: null
+  }
+
+  handleChange = (value: any) => {
+    this.setState({
+      countryId: value
+    })
+  }
+
+  handleSave = () => {
+    const { onSave } = this.props
+    const { countryId } = this.state
+    onSave(countryId)
+  }
+
   render() {
+    const { open, requestClose, formatMessage, data } = this.props
+    const { countriesSubsidiaries, error, loading } = data
+    const { countryId } = this.state
+
+    const countries = !error && !loading ? countriesSubsidiaries : []
+
+    const countryItems = countries.map((country, index) => {
+      return (
+        <Option key={index} value={country.id}>
+          {country.country}
+        </Option>
+      )
+    })
+
     return (
-      <Container>
-        <FormattedMessage {...messages.title} />
-      </Container>
+      <Modal
+        open={open}
+        width={'30%'}
+        requestClose={requestClose}
+        withLogo={false}
+      >
+        <ModalContent>
+          <Title>{formatMessage(messages.title)}</Title>
+          <StyledSelect
+            showSearch={false}
+            placeholder={formatMessage(messages.placeholder)}
+            onChange={this.handleChange}
+          >
+            {countryItems}
+          </StyledSelect>
+          <ButtonWrapper>
+            <Button
+              disabled={!countryId}
+              type="primary"
+              onClick={this.handleSave}
+            >
+              {formatMessage(messages.save)}
+            </Button>
+          </ButtonWrapper>
+        </ModalContent>
+      </Modal>
     )
   }
 }
 
-export default ConfirmCountryDialog
+const ConfirmCountryDialogEnhance = compose(
+  graphql<Data>(subsidiaryQuery, {
+    options: () => ({
+      fetchPolicy: 'network-only',
+      variables: {}
+    })
+  })
+)(ConfirmCountryDialog)
+
+export default ConfirmCountryDialogEnhance

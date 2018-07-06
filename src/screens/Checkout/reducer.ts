@@ -21,7 +21,8 @@ import {
   SET_STRIPE_CARD_DATA,
   SET_LOADING_PLACE_ORDER,
   RESET_DATA,
-  SET_PAYMENT_METHOD
+  SET_PAYMENT_METHOD,
+  SAVE_COUNTRY
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -64,7 +65,8 @@ export const initialState = fromJS({
   stripeToken: '',
   // Review
   loadingPlaceOrder: false,
-  paymentMethod: 'credit card'
+  paymentMethod: 'credit card',
+  countryId: null
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -172,6 +174,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return initialState
     case SET_PAYMENT_METHOD:
       return state.set('paymentMethod', action.method)
+    case SAVE_COUNTRY:
+      return state.set('countryId', action.countryId)
     default:
       return state
   }

@@ -174,7 +174,9 @@ export class Login extends React.Component<Props, StateProps> {
         requestClose()
       }
     } catch (error) {
-      message.error(formatMessage(messages.loginError))
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
       console.error(error)
     }
   }
