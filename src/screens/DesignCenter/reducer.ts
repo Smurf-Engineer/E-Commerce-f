@@ -226,17 +226,18 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_STYLE_SELECTED_ACTION: {
       return state.merge({
-        swipingView: true,
         currentTab: 2,
+        swipingView: true,
         style: action.style,
         colors: action.colors,
-        styleModalData: {
-          openNewStyleModal: false,
-          indexStyle: action.index,
-          idStyle: action.id
-        },
         designHasChanges: false,
-        customize3dMounted: false
+        styleColors: action.colors,
+        customize3dMounted: false,
+        styleModalData: {
+          idStyle: action.id,
+          indexStyle: action.index,
+          openNewStyleModal: false
+        }
       })
     }
     case SET_STYLE_COMPLEXITY_ACTION:

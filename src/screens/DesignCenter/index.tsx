@@ -442,7 +442,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 designName,
                 formatMessage,
                 customize3dMounted,
-                setCustomize3dMountedAction
+                setCustomize3dMountedAction,
+                design
               }}
               currentStyle={style}
               onUpdateText={setTextAction}

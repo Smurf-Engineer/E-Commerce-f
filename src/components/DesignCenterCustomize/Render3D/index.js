@@ -89,6 +89,12 @@ class Render3D extends PureComponent {
     }
   }
 
+  componentWillMount() {
+    console.log('------------THIS------------------')
+    console.log(this)
+    console.log('------------------------------------')
+  }
+
   componentDidMount() {
     /* Renderer config */
 
@@ -198,6 +204,12 @@ class Render3D extends PureComponent {
 
   componentWillUnmount() {
     if (this.renderer) {
+      delete this.raycaster
+      delete this.mouse
+      delete this.onClickPosition
+      delete this.scene
+      delete this.camera
+      delete this.directionalLight
       this.stop()
       this.container.removeChild(this.renderer.domElement)
     }
@@ -240,7 +252,7 @@ class Render3D extends PureComponent {
 
   render3DModel = async () => {
     /* Object and MTL load */
-    const { onLoadModel, currentStyle } = this.props
+    const { onLoadModel, currentStyle, colors, design } = this.props
     onLoadModel(true)
 
     /* Texture configuration */
@@ -309,6 +321,10 @@ class Render3D extends PureComponent {
             height: CANVAS_SIZE
           })
 
+          if (design && design.canvasJson) {
+            this.canvasTexture.loadFromJson(design.canvasJson)
+          }
+
           this.canvasTexture.on(
             'after:render',
             () => (canvasTexture.needsUpdate = true)
@@ -329,7 +345,7 @@ class Render3D extends PureComponent {
                 map: loadedTextures.areas[index],
                 side: THREE.FrontSide,
                 bumpMap: loadedTextures.bumpMap,
-                color: modelTextures.colors[index],
+                color: colors[index],
                 transparent: true
               }))
           )
@@ -617,8 +633,8 @@ class Render3D extends PureComponent {
       const imageEl = oImg.scale(1).set({
         id,
         hasRotatingPoint: false,
-        left: 1400,
-        top: 1400
+        left: 800,
+        top: 800
       })
       this.canvasTexture.add(imageEl)
 
@@ -645,8 +661,8 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 1400,
-        top: 1400,
+        left: 800,
+        top: 800,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
@@ -678,8 +694,8 @@ class Render3D extends PureComponent {
         shape.set({
           id,
           hasRotatingPoint: false,
-          top: 1400,
-          left: 1400
+          top: 800,
+          left: 800
         })
         const el = {
           id,
