@@ -52,8 +52,8 @@ interface Props {
   currentPage: number
   limit?: number
   designs?: DesignType[]
-  onPressPrivate?: () => void
-  onPressDelete?: () => void
+  onPressPrivate?: (id: string, isPrivate: boolean) => void
+  onPressDelete?: (id: string, name: string) => void
   withoutPadding?: boolean
 }
 
@@ -81,7 +81,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       thumbnailsList = designs.map(
-        ({ id, name, product, image, createdAt, shortId }, index) => {
+        ({ name, product, image, createdAt, shortId, shared }, index) => {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -89,14 +89,21 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailLocker
-                    {...{ id, name, onPressPrivate, onPressDelete }}
+                    {...{
+                      name,
+                      onPressPrivate,
+                      onPressDelete,
+                      formatMessage
+                    }}
+                    id={shortId as string}
+                    isPrivate={!shared}
                     description={`${product.type} ${product.description}`}
                     date={createdAt}
                   />
                 }
                 labelButton={
                   <AddToCartButton
-                    label={'ADD TO CART'}
+                    label={formatMessage(messages.addToCart)}
                     renderForThumbnail={true}
                     item={{ product }}
                     {...{ formatMessage }}
@@ -153,10 +160,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 priceRange={product.priceRange}
                 labelButton={
                   product.customizable ? (
-                    'CUSTOMIZE'
+                    formatMessage(messages.customize)
                   ) : (
                     <AddToCartButton
-                      label={'ADD TO CART'}
+                      label={formatMessage(messages.addToCart)}
                       renderForThumbnail={true}
                       item={{ product }}
                       {...{ formatMessage }}

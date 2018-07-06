@@ -11,6 +11,7 @@ export const desginsQuery = gql`
         id
         name
         image
+        shared
         shortId: short_id
         createdAt: created_at
         product {
@@ -25,6 +26,18 @@ export const desginsQuery = gql`
             quantity
             price
           }
+          genders {
+            id
+            name: gender
+          }
+          fitStyles {
+            id
+            name: description
+          }
+          sizeRange: size_range {
+            id
+            name
+          }
           images: pictures {
             front: front_image
             back: back_image
@@ -33,6 +46,22 @@ export const desginsQuery = gql`
           }
         }
       }
+    }
+  }
+`
+
+export const designAsPrivateMutation = gql`
+  mutation designAsPrivateMutation($designId: String!, $shared: Boolean!) {
+    shareDesign(designId: $designId, shared: $shared) {
+      message
+    }
+  }
+`
+
+export const deleteDesignMutation = gql`
+  mutation deleteDesign($designId: String!) {
+    deleteDesign(designId: $designId) {
+      message
     }
   }
 `

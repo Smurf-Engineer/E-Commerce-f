@@ -28,5 +28,17 @@ export default defineMessages({
   emptyResults: {
     id: 'components.ProductCatalogueThumbnailsList.emptyResults',
     defaultMessage: 'No results found'
+  },
+  addToCart: {
+    id: 'components.ProductCatalogueThumbnailsList.addToCart',
+    defaultMessage: 'ADD TO CART'
+  },
+  customize: {
+    id: 'components.ProductCatalogueThumbnailsList.customize',
+    defaultMessage: 'CUSTOMIZE'
+  },
+  edit: {
+    id: 'components.ProductCatalogueThumbnailsList.edit',
+    defaultMessage: 'EDIT'
   }
 })

@@ -46,6 +46,18 @@ export const getSingleTeamStore = gql`
               quantity
               price
             }
+            genders {
+              id
+              name: gender
+            }
+            fitStyles {
+              id
+              name: description
+            }
+            sizeRange: size_range {
+              id
+              name
+            }
             images: pictures {
               front: front_image
               back: back_image
@@ -96,6 +108,18 @@ export const getTeamStoreMutation = graphql(
               priceRange {
                 quantity
                 price
+              }
+              genders {
+                id
+                name: gender
+              }
+              fitStyles {
+                id
+                name: description
+              }
+              sizeRange: size_range {
+                id
+                name
               }
               images: pictures {
                 front: front_image

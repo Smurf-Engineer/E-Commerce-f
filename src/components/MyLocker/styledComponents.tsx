@@ -52,3 +52,11 @@ export const MessageError = styled.div`
   line-height: 23px;
   text-align: center;
 `
+
+export const DeleteConfirmMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+`
