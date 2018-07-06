@@ -101,6 +101,7 @@ export interface Product {
 export type DesignType = {
   id: number
   name: string
+  shared: boolean
   shortId?: string
   visible?: boolean
   product: Product
@@ -567,4 +568,11 @@ export interface StyleModalType {
 export interface ThemeModalType {
   openNewThemeModal: boolean
   themeId: number
+}
+
+export interface DeleteDesignModal {
+  openDeleteModal: boolean
+  designId: string
+  designName: string
+  modalLoading: boolean
 }

@@ -16,12 +16,14 @@ import {
 } from './styledComponents'
 
 interface Props {
-  id: number
+  id: string
   name: string
   description: string
   date: string
-  onPressPrivate: (id: number, isPrivate: boolean) => void
-  onPressDelete: (id: number) => void
+  isPrivate: boolean
+  onPressPrivate: (id: string, isPrivate: boolean) => void
+  onPressDelete: (id: string, name: string) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const FooterThumbnailLocker = ({
@@ -30,21 +32,25 @@ const FooterThumbnailLocker = ({
   description,
   date,
   onPressPrivate,
-  onPressDelete
+  onPressDelete,
+  formatMessage,
+  isPrivate
 }: Props) => {
-  const handleOnPressPrivate = (e: any) => {
-    onPressPrivate(id, e.target.checked)
+  const handleOnPressPrivate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { checked }
+    } = event
+    onPressPrivate(id, checked)
   }
-  const handleOnPressDelete = () => onPressDelete(id)
+  const handleOnPressDelete = () => onPressDelete(id, name)
   return (
     <Footer>
       <Type>{name}</Type>
       <Description>{description}</Description>
       <Label>{date}</Label>
       <Bottom>
-        <Checkbox onChange={handleOnPressPrivate}>
-          {/*TODO: Move to messages*/}
-          <Private>Private</Private>
+        <Checkbox checked={isPrivate} onChange={handleOnPressPrivate}>
+          <Private>{formatMessage(messages.private)}</Private>
         </Checkbox>
         <Delete onClick={handleOnPressDelete}>
           <FormattedMessage {...messages.delete} />
