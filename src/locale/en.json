@@ -135,6 +135,9 @@
   "components.ProductCatalogueThumbnailsList.hightestPriceLabel":
     "Hightest Price",
   "components.ProductCatalogueThumbnailsList.emptyResults": "No results found",
+  "components.ProductCatalogueThumbnailsList.addToCart": "ADD TO CART",
+  "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
+  "components.ProductCatalogueThumbnailsList.edit": "EDIT",
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
