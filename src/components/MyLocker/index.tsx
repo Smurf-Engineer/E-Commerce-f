@@ -30,6 +30,7 @@ import {
 } from './styledComponents'
 import Spin from 'antd/lib/spin'
 import ModalFooter from '../ModalFooter'
+import ModalTitle from '../ModalTitle'
 
 interface Props {
   client: any
@@ -201,7 +202,9 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         </PaginationRow>
         <Modal
           visible={openDeleteModal}
-          title={formatMessage(messages.titleDeleteModal)}
+          title={
+            <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
+          }
           footer={
             <ModalFooter
               okText={formatMessage(messages.deleteDesign)}
