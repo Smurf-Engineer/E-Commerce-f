@@ -515,29 +515,6 @@ class Render3D extends PureComponent {
           )
 
           const canvasJson = JSON.stringify(this.canvasTexture)
-          // TODO: Get this size from the design Query
-          // const scaleFactor = 3880.016 / CANVAS_SIZE
-
-          // this.canvasTexture.setDimensions({
-          //   width: CANVAS_SIZE * scaleFactor,
-          //   height: CANVAS_SIZE * scaleFactor
-          // })
-          // const objects = this.canvasTexture.getObjects()
-          // for (let el in objects) {
-          //   const { scaleX, scaleY, left, top } = objects[el] || {}
-
-          //   const tempScaleX = scaleX * scaleFactor
-          //   const tempScaleY = scaleY * scaleFactor
-          //   const tempLeft = left * scaleFactor
-          //   const tempTop = top * scaleFactor
-
-          //   objects[el].scaleX = tempScaleX
-          //   objects[el].scaleY = tempScaleY
-          //   objects[el].left = tempLeft
-          //   objects[el].top = tempTop
-          //   objects[el].setCoords()
-          // }
-
           const saveDesign = {
             designBase64,
             canvasSvg: this.canvasTexture.toSVG(),
