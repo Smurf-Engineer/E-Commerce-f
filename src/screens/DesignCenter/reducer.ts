@@ -41,7 +41,8 @@ import {
   OPEN_NEW_THEME_MODAL,
   OPEN_NEW_STYLE_MODAL,
   OPEN_OUT_WITHOUT_SAVE_MODAL,
-  SET_CUSTOMIZE_3D_MOUNTED
+  SET_CUSTOMIZE_3D_MOUNTED,
+  SET_CANVAS_JSON_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -248,11 +249,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
-    case OPEN_SAVE_DESIGN_ACTION:
-      return state.merge({
-        openSaveDesign: action.open,
-        design: action.design
-      })
+    case OPEN_SAVE_DESIGN_ACTION: {
+      if (action.open) {
+        return state.merge({
+          openSaveDesign: action.open,
+          design: action.design
+        })
+      }
+
+      return state.set('openSaveDesign', action.open)
+    }
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID:
@@ -376,6 +382,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_CUSTOMIZE_3D_MOUNTED:
       return state.set('customize3dMounted', action.mounted)
+    case SET_CANVAS_JSON_ACTION:
+      return state.setIn(['design', 'canvasJson'], action.canvas)
     default:
       return state
   }

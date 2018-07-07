@@ -65,6 +65,7 @@ interface Props {
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
+  onUnmountTab: (mounted: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -114,7 +115,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       openResetDesignModal,
       openResetDesignModalAction,
       setCustomize3dMountedAction,
-      onSelectArtFormat
+      onSelectArtFormat,
+      onUnmountTab
     } = this.props
 
     return (
@@ -177,7 +179,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onRemoveEl,
               openResetDesignModal,
               openResetDesignModalAction,
-              setCustomize3dMountedAction
+              setCustomize3dMountedAction,
+              onUnmountTab
             }}
           />
         ) : null}
