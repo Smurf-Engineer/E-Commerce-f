@@ -349,10 +349,6 @@ class Render3D extends PureComponent {
           this.scene.add(object)
 
           if (design && design.canvasJson) {
-            this.canvasTexture.setDimensions({
-              width: CANVAS_SIZE,
-              height: CANVAS_SIZE
-            })
             this.canvasTexture.loadFromJSON(design.canvasJson, () => {
               canvasTexture.needsUpdate = true
             })
@@ -626,8 +622,8 @@ class Render3D extends PureComponent {
       const imageEl = oImg.scale(1).set({
         id,
         hasRotatingPoint: false,
-        left: 800,
-        top: 800
+        left: 700,
+        top: 409
       })
       this.canvasTexture.add(imageEl)
 
@@ -654,8 +650,8 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 800,
-        top: 800,
+        left: 700,
+        top: 409,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
@@ -687,8 +683,8 @@ class Render3D extends PureComponent {
         shape.set({
           id,
           hasRotatingPoint: false,
-          top: 800,
-          left: 800
+          top: 700,
+          left: 409
         })
         const el = {
           id,
