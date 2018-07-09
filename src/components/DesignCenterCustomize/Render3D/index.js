@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
+import reverse from 'lodash/reverse'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
@@ -227,8 +228,8 @@ class Render3D extends PureComponent {
           './models/images/flatlock.png'
         )
         loadedTextures.bumpMap = this.textureLoader.load(modelTextures.bumpMap)
-
-        const loadedAreas = modelTextures.areas.map(areaUri => {
+        const reverseOrderAreas = reverse(modelTextures.areas)
+        const loadedAreas = reverseOrderAreas.map(areaUri => {
           const areaTexture = this.textureLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
@@ -246,7 +247,7 @@ class Render3D extends PureComponent {
     onLoadModel(true)
 
     /* Texture configuration */
-    const modelTextures = dummieData[currentStyle]
+    const modelTextures = dummieData[currentStyle] || dummieData[0]
     const loadedTextures = await this.loadTextures(modelTextures)
 
     this.mtlLoader.load(modelTextures.mtl, materials => {

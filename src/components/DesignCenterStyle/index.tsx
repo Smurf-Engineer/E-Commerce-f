@@ -49,17 +49,16 @@ const marks = {
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
-    const indexToApply = index > 2 ? 0 : index
     const {
       currentStyle,
       openNewStyleModalAction,
       designHasChanges
     } = this.props
     if (currentStyle !== -1 && designHasChanges) {
-      openNewStyleModalAction(true, indexToApply, id)
+      openNewStyleModalAction(true, index, id)
       return
     }
-    this.selectStyle(id, indexToApply)
+    this.selectStyle(id, index)
   }
 
   selectStyle = (id: number, index: any) => {
@@ -70,14 +69,12 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     } = this.props
     // const allStyles = styles ? styles.styles || [] : []
     // const colors = allStyles ? allStyles[index].colors : {}
-    const colors = dummieData[index].colors
+    const colors =  dummieData[index] ? dummieData[index].colors : dummieData[0].colors
     onSelectStyle(index, id, index, colors)
   }
 
   reselectStyle = () => {
-    const {
-      styleModalData: { indexStyle, idStyle }
-    } = this.props
+    const { styleModalData: { indexStyle, idStyle } } = this.props
     this.selectStyle(idStyle, indexStyle)
   }
 
