@@ -135,6 +135,9 @@
   "components.ProductCatalogueThumbnailsList.hightestPriceLabel":
     "Hightest Price",
   "components.ProductCatalogueThumbnailsList.emptyResults": "No results found",
+  "components.ProductCatalogueThumbnailsList.addToCart": "ADD TO CART",
+  "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
+  "components.ProductCatalogueThumbnailsList.edit": "EDIT",
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
@@ -742,6 +745,10 @@
 
   "components.MyLocker.titleError": "Oops!",
   "components.MyLocker.messageError": "Something went wrong",
+  "components.MyLocker.deleteDesign": "Delete",
+  "components.MyLocker.titleDeleteModal": "Are you sure?",
+  "components.MyLocker.messageDeleteModal":
+    "\"{designName}\" will be deleted from your locker",
 
   "components.UploadTab.title": "Upload Logo and Images",
   "components.UploadTab.imageExtensionError":
