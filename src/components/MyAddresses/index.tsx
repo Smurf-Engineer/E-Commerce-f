@@ -26,12 +26,15 @@ import {
   updateAddressMutation,
   deleteAddressMutation
 } from './data'
+import ModalFooter from '../ModalFooter'
+import ModalTitle from '../ModalTitle'
 
 interface Data extends QueryProps {
   addresses: AddressType[]
 }
 
 interface Props {
+  client: any
   data: Data
   firstName: string
   lastName: string
@@ -159,11 +162,18 @@ class MyAddresses extends React.PureComponent<Props, {}> {
         </Modal>
         <Modal
           visible={showDeleteAddressConfirm}
-          title={formatMessage(messages.titleDeleteModal)}
-          okText={formatMessage(messages.deleteAddress)}
-          onOk={this.handleOnDeleteAddress}
-          onCancel={this.handleOnHideDeleteAddressConfirm}
-          confirmLoading={deleteLoading}
+          title={
+            <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
+          }
+          footer={
+            <ModalFooter
+              okText={formatMessage(messages.deleteAddress)}
+              onOk={this.handleOnDeleteAddress}
+              onCancel={this.handleOnHideDeleteAddressConfirm}
+              confirmLoading={deleteLoading}
+              {...{ formatMessage }}
+            />
+          }
         >
           <DeleteConfirmMessage>
             {formatMessage(messages.messageDeleteModal)}
@@ -311,7 +321,10 @@ const MyAddressesEnhance = compose(
   addAddressMutation,
   updateAddressMutation,
   deleteAddressMutation,
-  connect(mapStateToProps, { ...MyAddressesActions })
+  connect(
+    mapStateToProps,
+    { ...MyAddressesActions }
+  )
 )(MyAddresses)
 
 export default MyAddressesEnhance

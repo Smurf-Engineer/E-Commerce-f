@@ -17,14 +17,6 @@ export default defineMessages({
     id: 'components.MyPalette.deletePaletteMessage',
     defaultMessage: `You're about to delete this palette`
   },
-  modalConfirmText: {
-    id: 'components.MyPalette.deletePaletteConfirm',
-    defaultMessage: 'Confirm'
-  },
-  modalCancelText: {
-    id: 'components.MyPalette.deletePaletteCancel',
-    defaultMessage: 'Cancel'
-  },
   applyPalette: {
     id: 'components.MyPalette.applyPalette',
     defaultMessage: 'Apply {paletteNameToApply}'

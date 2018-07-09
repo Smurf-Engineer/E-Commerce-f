@@ -53,14 +53,13 @@ class ModalCreditCard extends React.Component<Props, {}> {
     return (
       <Modal
         {...{ visible }}
-        closable={false}
-        maskClosable={false}
         confirmLoading={newCardLoading}
         footer={[
           <StyledGhostButton key="cancel" onClick={this.handleOnCancel}>
             {formatMessage(messages.cancel)}
           </StyledGhostButton>,
           <StyledButton
+            type="primary"
             key="submit"
             loading={newCardLoading}
             onClick={this.handleOnRequestToken}
@@ -68,6 +67,8 @@ class ModalCreditCard extends React.Component<Props, {}> {
             {formatMessage(messages.saveCard)}
           </StyledButton>
         ]}
+        closable={false}
+        maskClosable={false}
         destroyOnClose={true}
       >
         <Container>

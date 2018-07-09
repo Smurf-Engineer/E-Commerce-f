@@ -28,6 +28,8 @@ import {
   DeleteConfirmMessage,
   LoadingContainer
 } from './styledComponents'
+import ModalTitle from '../ModalTitle'
+import ModalFooter from '../ModalFooter'
 
 interface Data extends QueryProps {
   userCards: {
@@ -161,10 +163,20 @@ class MyCards extends React.Component<Props, {}> {
         <Modal
           visible={showDeleteCardConfirm}
           confirmLoading={deleteLoading}
+          title={
+            <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
+          }
+          footer={
+            <ModalFooter
+              okText={formatMessage(messages.deleteCard)}
+              onOk={this.handleOnDeleteCard}
+              onCancel={this.handleOnHideDeleteCardConfirm}
+              {...{ formatMessage }}
+            />
+          }
           maskClosable={false}
-          okText={formatMessage(messages.deleteCard)}
-          onOk={this.handleOnDeleteCard}
-          onCancel={this.handleOnHideDeleteCardConfirm}
+          closable={false}
+          destroyOnClose={true}
         >
           <DeleteConfirmMessage>
             {formatMessage(messages.messageDeleteModal)}

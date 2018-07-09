@@ -33,6 +33,8 @@ import Ordersummary from '../../components/OrderSummary'
 import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import ModalTitle from '../../components/ModalTitle'
+import ModalFooter from '../../components/ModalFooter'
 
 interface CartItems {
   product: Product
@@ -324,10 +326,20 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           )}
           <Modal
             visible={showDeleteLastItemModal}
-            title={formatMessage(messages.titleDeleteModal)}
-            okText={formatMessage(messages.delete)}
-            onOk={this.handleOnRemoveLastItem}
-            onCancel={this.toggleDeleteLastItemModal}
+            title={
+              <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
+            }
+            footer={
+              <ModalFooter
+                okText={formatMessage(messages.delete)}
+                onOk={this.handleOnRemoveLastItem}
+                onCancel={this.toggleDeleteLastItemModal}
+                {...{ formatMessage }}
+              />
+            }
+            maskClosable={false}
+            closable={false}
+            destroyOnClose={true}
           >
             <DeleteConfirmMessage>
               <FormattedMessage

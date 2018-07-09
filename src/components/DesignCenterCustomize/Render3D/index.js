@@ -36,6 +36,8 @@ import {
   SCALE_ACTION,
   DRAG_ACTION
 } from './config'
+import ModalFooter from '../../ModalFooter'
+import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
@@ -364,7 +366,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round(xhr.loaded / xhr.total * 100)
+      const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }
@@ -452,7 +454,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = value * 1.0 / 100
+      const zoomValue = (value * 1.0) / 100
       this.camera.zoom = zoomValue * 2
       this.camera.updateProjectionMatrix()
     }
@@ -598,11 +600,14 @@ class Render3D extends PureComponent {
         {/* Reset Modal */}
         <Modal
           visible={openResetDesignModal}
-          title={formatMessage(messages.modalResetTitle)}
-          okText={formatMessage(messages.modalConfirmText)}
-          onOk={this.onReset}
-          cancelText={formatMessage(messages.modalCancelText)}
-          onCancel={this.onCloseResetModal}
+          title={<ModalTitle title={formatMessage(messages.modalResetTitle)} />}
+          footer={
+            <ModalFooter
+              onOk={this.onReset}
+              onCancel={this.onCloseResetModal}
+              {...{ formatMessage }}
+            />
+          }
           closable={false}
           maskClosable={false}
           destroyOnClose={true}

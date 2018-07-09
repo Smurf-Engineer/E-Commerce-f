@@ -761,12 +761,9 @@
   "components.MyPalette.modalTitle": "ARE YOU SURE?",
   "components.MyPalette.deletePaletteMessage":
     "You're about to delete this palette",
-  "components.MyPalette.deletePaletteConfirm": "Confirm",
-  "components.MyPalette.deletePaletteCancel": "Cancel",
   "components.MyPalette.applyPalette": "Apply {paletteNameToApply}",
   "components.MyPalette.applyPaletteMessage":
     "Using this palette will replace the colors currently in use.",
-  "components.MyPalette.paletteNamePlaceHolder": "Name Palette",
   "components.DesignCenterStyle.title": "Choose the complexity of the design",
   "components.DesignCenterStyle.modalNewStyleTitle": "NEW STYLE?",
   "components.DesignCenterStyle.modalNewStyleMessage":
@@ -790,7 +787,7 @@
   "screens.DesignCenter.outWithoutSaveDesignModalMessage":
     "The design you are working on is not saved yet. Would you like to save it to your locker?",
   "screens.DesignCenter.outWithoutSaveDesignModalCancel": "Cancel",
-  "screens.DesignCenter.outWithoutSaveDesignModalDontSave": "Dont't Save",
+  "screens.DesignCenter.outWithoutSaveDesignModalDontSave": "Don't Save",
   "screens.DesignCenter.outWithoutSaveDesignModalSave": "Save",
   "components.LockerTable.cannotHide":
     "During the ordering period, you cannot hide items with orders.",
