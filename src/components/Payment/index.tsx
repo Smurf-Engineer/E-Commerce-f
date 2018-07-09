@@ -14,6 +14,7 @@ import {
 } from './styledComponents'
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData } from '../../types/common'
+import Modal from '../../components/ConfirmCountryDialog'
 
 interface Props {
   billingAddress: AddressType
@@ -34,6 +35,7 @@ interface Props {
   invalidBillingFormAction: (hasError: boolean) => void
   nextStep: () => void
   setPaymentMethodAction: (method: string) => void
+  saveCountryAction: (countryId: number | null) => void
 }
 
 interface MyWindow extends Window {
@@ -44,7 +46,8 @@ declare var window: MyWindow
 
 class Payment extends React.PureComponent<Props, {}> {
   state = {
-    stripe: null
+    stripe: null,
+    openConfirm: false
   }
   componentDidMount() {
     // In addition to loading asynchronously, this code is safe to server-side render.
@@ -60,10 +63,27 @@ class Payment extends React.PureComponent<Props, {}> {
     document.body && document.body.appendChild(stripeJs)
   }
 
-  handlePaypalClick = () => {
-    const { setPaymentMethodAction, nextStep } = this.props
-    setPaymentMethodAction('paypal')
+  handleCancelConfirm = () => {
+    this.setState({
+      openConfirm: false
+    })
+  }
+
+  handleConfirmSave = (countryId: number | null) => {
+    const { nextStep, saveCountryAction } = this.props
+    this.setState({
+      openConfirm: false
+    })
+    saveCountryAction(countryId)
     nextStep()
+  }
+
+  handlePaypalClick = () => {
+    const { setPaymentMethodAction } = this.props
+    setPaymentMethodAction('paypal')
+    this.setState({
+      openConfirm: true
+    })
   }
 
   handleCreditCardClick = () => {
@@ -89,7 +109,7 @@ class Payment extends React.PureComponent<Props, {}> {
       nextStep,
       showContent
     } = this.props
-    const { stripe } = this.state
+    const { stripe, openConfirm } = this.state
 
     if (!showContent) {
       return <div />
@@ -137,6 +157,12 @@ class Payment extends React.PureComponent<Props, {}> {
             />
           </Elements>
         </StripeProvider>
+        <Modal
+          {...{ formatMessage }}
+          open={openConfirm}
+          requestClose={this.handleCancelConfirm}
+          onSave={this.handleConfirmSave}
+        />
       </Container>
     )
   }

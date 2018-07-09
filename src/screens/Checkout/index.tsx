@@ -107,6 +107,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerShoppingCartAction: () => void
   getTotalItemsIncart: () => void
   setPaymentMethodAction: (method: string) => void
+  saveCountryAction: (countryId: number | null) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -163,7 +164,8 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingBillingAction,
       setStripeCardDataAction,
       setPaymentMethodAction,
-      paymentMethod
+      paymentMethod,
+      saveCountryAction
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -284,7 +286,8 @@ class Checkout extends React.Component<Props, {}> {
                     loadingBilling,
                     setLoadingBillingAction,
                     setStripeCardDataAction,
-                    setPaymentMethodAction
+                    setPaymentMethodAction,
+                    saveCountryAction
                   }}
                   showContent={currentStep === 1}
                   formatMessage={intl.formatMessage}
