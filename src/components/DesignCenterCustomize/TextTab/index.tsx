@@ -68,13 +68,15 @@ export class TextTab extends React.PureComponent<Props, State> {
         </Header>
         <SwipeableViews index={page}>
           <div>
-            <InputWrapper>
+            <InputWrapper disabled={!text}>
               <Input
                 value={text}
                 onChange={this.handleOnUpdateText}
                 placeholder={formatMessage(messages.enterTextPlaceholder)}
                 addonAfter={
-                  <Button onClick={this.handleOnApplyText}>Apply</Button>
+                  <Button disabled={!text} onClick={this.handleOnApplyText}>
+                    Apply
+                  </Button>
                 }
               />
             </InputWrapper>
@@ -135,6 +137,9 @@ export class TextTab extends React.PureComponent<Props, State> {
 
   handleOnApplyText = () => {
     const { onApplyText, textFormat, text } = this.props
+    if (!text) {
+      return
+    }
     onApplyText(text, textFormat)
   }
 

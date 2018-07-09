@@ -49,7 +49,9 @@ class MyPalette extends React.PureComponent<Props> {
 
   updatePaletteName = (event: React.FormEvent<HTMLInputElement>) => {
     const { onChangePaletteName } = this.props
-    const { currentTarget: { value } } = event
+    const {
+      currentTarget: { value }
+    } = event
     onChangePaletteName(value)
   }
 
@@ -61,6 +63,9 @@ class MyPalette extends React.PureComponent<Props> {
       colors,
       formatMessage
     } = this.props
+    if (!paletteName) {
+      return
+    }
     const palettesTest: Palette = {
       name: paletteName,
       colors
@@ -159,12 +164,16 @@ class MyPalette extends React.PureComponent<Props> {
     return (
       <Container>
         <Padding>
-          <InputWrapper>
+          <InputWrapper disabled={!paletteName}>
             <Input
               value={paletteName}
               onChange={this.updatePaletteName}
               placeholder={formatMessage(messages.paletteNamePlaceHolder)}
-              addonAfter={<Button onClick={this.onSavePalette}>Save</Button>}
+              addonAfter={
+                <Button disabled={!paletteName} onClick={this.onSavePalette}>
+                  Save
+                </Button>
+              }
             />
           </InputWrapper>
         </Padding>
