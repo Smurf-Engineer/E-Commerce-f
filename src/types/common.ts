@@ -182,6 +182,12 @@ export interface BodyChartItem {
   inseam: string
 }
 
+export interface CountrySubsidiary {
+  id: number
+  country: string
+  subsidiary: number
+}
+
 export interface Region {
   icon: string
   label: string

@@ -815,5 +815,10 @@
   "components.TextTab.addEffect": "Add an Effect",
   "components.TextTab.enterTextPlaceholder": "Enter Text",
   "components.seAllButton.seeAll": "See All",
-  "components.seAllButton.seeAllFilters": "See All Filters"
+  "components.seAllButton.seeAllFilters": "See All Filters",
+
+  "components.ConfirmCountryDialog.tittle":
+    "WHAT IS YOUR COUNTRY OF RESIDENCE?",
+  "components.ConfirmCountryDialog.save": "Save",
+  "components.ConfirmCountryDialog.placeholder": "Select country"
 }

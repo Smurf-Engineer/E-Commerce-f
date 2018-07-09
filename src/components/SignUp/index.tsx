@@ -149,7 +149,9 @@ class SignUp extends React.Component<Props, StateProps> {
     })
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { id, value } } = evt
+    const {
+      currentTarget: { id, value }
+    } = evt
     this.setState({ [id]: value } as any)
   }
 
@@ -195,7 +197,9 @@ class SignUp extends React.Component<Props, StateProps> {
       }
       closeSignUp()
     } catch (error) {
-      message.error(formatMessage(messages.createAccountError))
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
       console.error(error)
       this.clearState()
     }
