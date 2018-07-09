@@ -53,21 +53,16 @@ export class ConfirmCountryDialog extends React.Component<Props, {}> {
 
     const countries = !error && !loading ? countriesSubsidiaries : []
 
-    const countryItems = countries.map((country, index) => {
+    const countryItems = countries.map(({ id, country }, index) => {
       return (
-        <Option key={index} value={country.id}>
-          {country.country}
+        <Option key={index} value={id}>
+          {country}
         </Option>
       )
     })
 
     return (
-      <Modal
-        open={open}
-        width={'30%'}
-        requestClose={requestClose}
-        withLogo={false}
-      >
+      <Modal {...{ open, requestClose }} width={'30%'} withLogo={false}>
         <ModalContent>
           <Title>{formatMessage(messages.title)}</Title>
           <StyledSelect
