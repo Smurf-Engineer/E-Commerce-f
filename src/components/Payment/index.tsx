@@ -15,7 +15,6 @@ import {
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
-import { FormattedNumber } from 'react-intl'
 
 interface Props {
   billingAddress: AddressType
@@ -80,7 +79,7 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   handlePaypalClick = () => {
-    const { setPaymentMethodAction, nextStep } = this.props
+    const { setPaymentMethodAction } = this.props
     setPaymentMethodAction('paypal')
     this.setState({
       openConfirm: true
