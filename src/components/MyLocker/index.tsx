@@ -29,6 +29,8 @@ import {
   DeleteConfirmMessage
 } from './styledComponents'
 import Spin from 'antd/lib/spin'
+import ModalFooter from '../ModalFooter'
+import ModalTitle from '../ModalTitle'
 
 interface Props {
   client: any
@@ -200,11 +202,18 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         </PaginationRow>
         <Modal
           visible={openDeleteModal}
-          title={formatMessage(messages.titleDeleteModal)}
-          okText={formatMessage(messages.deleteDesign)}
-          onOk={this.handleOnDeleteDesign}
-          onCancel={this.handleOnHideDeleteModal}
-          confirmLoading={modalLoading}
+          title={
+            <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
+          }
+          footer={
+            <ModalFooter
+              okText={formatMessage(messages.deleteDesign)}
+              onOk={this.handleOnDeleteDesign}
+              onCancel={this.handleOnHideDeleteModal}
+              confirmLoading={modalLoading}
+              {...{ formatMessage }}
+            />
+          }
           destroyOnClose={false}
           maskClosable={false}
           closable={false}

@@ -14,7 +14,9 @@ export const Input = styled(AntdInput)`
 export const InputWrapper = styled.div`
   padding: 12px 32px;
 
-  .ant-input-group-addon  {
+  .ant-input-group-addon {
+    background-color: ${({ disabled }: ButtonProps) =>
+      disabled ? '#F5F5F5' : '#4a90e2'};
     border: 0px;
   }
 
@@ -27,6 +29,10 @@ export const InputWrapper = styled.div`
     outline: 0;
     -webkit-box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  }
+
+  .ant-input::selection {
+    background: #4a90e2;
   }
 `
 
@@ -58,10 +64,15 @@ export const Text = styled.div`
   color: #fff;
 `
 
+interface ButtonProps {
+  disabled: boolean
+}
+
 export const Button = styled.div`
-  cursor: pointer;
+  cursor: ${({ disabled }: ButtonProps) =>
+    disabled ? 'not-allowed' : 'pointer'};
   user-select: none;
-  color: #ffffff;
+  color: ${({ disabled }: ButtonProps) => (disabled ? '#A0A0A0' : '#ffffff')};
   font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;

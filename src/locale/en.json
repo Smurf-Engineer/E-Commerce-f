@@ -157,7 +157,8 @@
   "components.SaveDesign.modalSaveAsNewDesign": "Save as new design",
   "components.SaveDesign.placeholder": "Design name",
   "components.SaveDesign.invalidNameMessage": "Invalid design name",
-  "components.SaveDesign.saveSuccess": "Design saved",
+  "components.SaveDesign.saveSuccess":
+    "\"{designName}\" has been saved to your locker",
   "components.SaveDesign.save": "Save",
   "components.SaveDesign.saveChanges": "Save changes",
   "components.SaveDesign.invalidUser": "You must be logged in to save designs.",
