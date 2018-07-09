@@ -30,6 +30,7 @@ export const REMOVE_CANVAS_ELEMENT_ACTION = `${namespace}/REMOVE_CANVAS_ELEMENT_
 export const SET_TEXT_FORMAT_ACTION = `${namespace}/SET_TEXT_FORMAT_ACTION`
 export const SET_ART_FORMAT_ACTION = `${namespace}/SET_ART_FORMAT_ACTION`
 export const SET_CUSTOMIZE_3D_MOUNTED = `${namespace}/SET_CUSTOMIZE_3D_MOUNTED`
+export const SET_CANVAS_JSON_ACTION = `${namespace}/SET_CANVAS_JSON_ACTION`
 
 export const OPEN_SHARE_MODAL = `${namespace}/OPEN_SHARE_MODAL`
 export const OPEN_SAVE_DESIGN_ACTION = `${namespace}/OPEN_SAVE_DESIGN_ACTION`

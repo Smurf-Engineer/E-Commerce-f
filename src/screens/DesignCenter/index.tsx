@@ -149,6 +149,7 @@ interface Props extends RouteComponentProps<any> {
   editDesignAction: () => void
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
+  setCanvasJsonAction: (canvas: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -352,7 +353,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       openOutWithoutSaveModal,
       customize3dMounted,
       setCustomize3dMountedAction,
-      svgOutputUrl
+      svgOutputUrl,
+      setCanvasJsonAction
     } = this.props
 
     if (!search) {
@@ -442,7 +444,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 designName,
                 formatMessage,
                 customize3dMounted,
-                setCustomize3dMountedAction
+                setCustomize3dMountedAction,
+                design
               }}
               currentStyle={style}
               onUpdateText={setTextAction}
@@ -466,6 +469,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onRemoveEl={removeCanvasElement}
               onSelectTextFormat={setTextFormatAction}
               onSelectArtFormat={setArtFormatAction}
+              onUnmountTab={setCanvasJsonAction}
             />
             <PreviewTab
               {...{

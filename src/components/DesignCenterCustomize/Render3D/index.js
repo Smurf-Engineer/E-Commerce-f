@@ -56,7 +56,7 @@ import dummieData from './dummieData'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
 
-const CANVAS_SIZE = 3880.016
+const CANVAS_SIZE = 2048
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -91,7 +91,6 @@ class Render3D extends PureComponent {
 
   componentDidMount() {
     /* Renderer config */
-
     fabric.Object.prototype.customiseCornerIcons({
       settings: {
         borderColor: 'black',
@@ -197,6 +196,9 @@ class Render3D extends PureComponent {
   }
 
   componentWillUnmount() {
+    const { onUnmountTab } = this.props
+    const canvasJson = JSON.stringify(this.canvasTexture)
+    onUnmountTab(canvasJson)
     if (this.renderer) {
       this.stop()
       this.container.removeChild(this.renderer.domElement)
@@ -240,7 +242,7 @@ class Render3D extends PureComponent {
 
   render3DModel = async () => {
     /* Object and MTL load */
-    const { onLoadModel, currentStyle } = this.props
+    const { onLoadModel, currentStyle, colors, design } = this.props
     onLoadModel(true)
 
     /* Texture configuration */
@@ -329,7 +331,7 @@ class Render3D extends PureComponent {
                 map: loadedTextures.areas[index],
                 side: THREE.FrontSide,
                 bumpMap: loadedTextures.bumpMap,
-                color: modelTextures.colors[index],
+                color: colors[index],
                 transparent: true
               }))
           )
@@ -345,6 +347,12 @@ class Render3D extends PureComponent {
           object.position.y = largeHeight ? -50 : -30
           object.name = 'jersey'
           this.scene.add(object)
+
+          if (design && design.canvasJson) {
+            this.canvasTexture.loadFromJSON(design.canvasJson, () => {
+              canvasTexture.needsUpdate = true
+            })
+          }
 
           onLoadModel(false)
         },
@@ -487,11 +495,6 @@ class Render3D extends PureComponent {
 
   handleOnChange3DModel = () => {}
 
-  saveDesign = previewImage => {
-    const { onOpenSaveDesign } = this.props
-    onOpenSaveDesign(true, previewImage)
-  }
-
   takeDesignPicture = () => {
     if (this.renderer) {
       const { onOpenSaveDesign, currentStyle } = this.props
@@ -506,10 +509,12 @@ class Render3D extends PureComponent {
             'image/webp',
             0.5
           )
+
+          const canvasJson = JSON.stringify(this.canvasTexture)
           const saveDesign = {
             designBase64,
             canvasSvg: this.canvasTexture.toSVG(),
-            canvasJson: JSON.stringify(this.canvasTexture),
+            canvasJson,
             styleId: currentStyle + 1
           }
           onOpenSaveDesign(true, saveDesign)
@@ -617,8 +622,8 @@ class Render3D extends PureComponent {
       const imageEl = oImg.scale(1).set({
         id,
         hasRotatingPoint: false,
-        left: 1400,
-        top: 1400
+        left: 700,
+        top: 409
       })
       this.canvasTexture.add(imageEl)
 
@@ -645,8 +650,8 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 1400,
-        top: 1400,
+        left: 700,
+        top: 409,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
@@ -678,8 +683,8 @@ class Render3D extends PureComponent {
         shape.set({
           id,
           hasRotatingPoint: false,
-          top: 1400,
-          left: 1400
+          top: 700,
+          left: 409
         })
         const el = {
           id,

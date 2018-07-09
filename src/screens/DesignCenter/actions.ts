@@ -42,7 +42,8 @@ import {
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_DESIGN_HAS_CHANGES,
   SET_CUSTOMIZE_3D_MOUNTED,
-  SET_ART_FORMAT_ACTION
+  SET_ART_FORMAT_ACTION,
+  SET_CANVAS_JSON_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -308,4 +309,9 @@ export const openOutWithoutSaveModalAction = (
 export const setCustomize3dMountedAction = (mounted: boolean) => ({
   type: SET_CUSTOMIZE_3D_MOUNTED,
   mounted
+})
+
+export const setCanvasJsonAction = (canvas: string) => ({
+  type: SET_CANVAS_JSON_ACTION,
+  canvas
 })

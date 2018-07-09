@@ -10,7 +10,8 @@ import {
   TextFormat,
   CanvasType,
   MyPaletteDesignCenterModals,
-  ArtFormat
+  ArtFormat,
+  SaveDesignType
 } from '../../types/common'
 import { Container } from './styledComponents'
 
@@ -36,6 +37,7 @@ interface Props {
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
   customize3dMounted: boolean
+  design: SaveDesignType
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -63,6 +65,7 @@ interface Props {
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
+  onUnmountTab: (mounted: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -105,14 +108,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       selectedElement,
       textFormat,
       artFormat,
+      design,
       onSelectTextFormat,
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModal,
       openResetDesignModalAction,
-      customize3dMounted,
       setCustomize3dMountedAction,
-      onSelectArtFormat
+      onSelectArtFormat,
+      onUnmountTab
     } = this.props
 
     return (
@@ -148,12 +152,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           onApplyImage={this.handleOnApplyImage}
           onApplyArt={this.handleOnApplyArt}
         />
-        {customize3dMounted || (currentTab === 2 && !swipingView) ? (
+        {currentTab === 2 && !swipingView ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             {...{
               text,
               colors,
+              design,
               colorBlockHovered,
               styleColors,
               onLoadModel,
@@ -174,7 +179,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onRemoveEl,
               openResetDesignModal,
               openResetDesignModalAction,
-              setCustomize3dMountedAction
+              setCustomize3dMountedAction,
+              onUnmountTab
             }}
           />
         ) : null}
