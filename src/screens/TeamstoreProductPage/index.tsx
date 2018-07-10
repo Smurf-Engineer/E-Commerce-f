@@ -11,7 +11,6 @@ import filter from 'lodash/filter'
 import findIndex from 'lodash/findIndex'
 import capitalize from 'lodash/capitalize'
 import queryString from 'query-string'
-import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Divider from 'antd/lib/divider'
 import Breadcrumb from 'antd/lib/breadcrumb'
@@ -69,10 +68,10 @@ import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import ProductThumbnail from '../../components/ProductThumbnail'
+import AddtoCartButton from '../../components/AddToCartButton'
 import ThreeDRender from './Product3D'
 
 import {
-  Product,
   QueryProps,
   ImageType,
   PriceRange,
@@ -80,16 +79,8 @@ import {
   DesignType,
   TeamstoreItemType,
   CartItemDetail,
-  SizeFilter,
   SelectedType
 } from '../../types/common'
-import { stripTrailingSlash } from '../../../node_modules/@types/history/PathUtils'
-
-interface ProductTypes extends Product {
-  intendedUse: string
-  temperatures: string
-  materials: string
-}
 
 interface Data extends QueryProps {
   design: DesignType
@@ -264,7 +255,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
           <SectionButton
             id={String(id)}
             selected={id === selectedGender.id}
-            onClick={this.handleSelectedGender(id, genderName)}
+            onClick={this.handleSelectedGender({ id, name: genderName })}
           >
             {genderName}
           </SectionButton>
@@ -278,7 +269,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
           <SectionButton
             id={String(id)}
             selected={id === selectedSize.id}
-            onClick={this.handleSelectedSize(id, sizeName)}
+            onClick={this.handleSelectedSize({ id, name: sizeName })}
           >
             {sizeName}
           </SectionButton>
@@ -294,7 +285,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
             <SectionButton
               id={String(id)}
               selected={id === selectedFit.id}
-              onClick={this.handleSelectedFit(id, fitName)}
+              onClick={this.handleSelectedFit({ id, name: fitName })}
             >
               {fitName}
             </SectionButton>
@@ -304,7 +295,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         <SectionButton
           id={'1'}
           selected={1 === selectedFit.id}
-          onClick={this.handleSelectedFit(1, 'Standard')}
+          onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
         >
           {'Standard'}
         </SectionButton>
@@ -345,13 +336,8 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const addToCartRow = (
-      <ButtonsRow>
-        <StyledButton onClick={this.addtoCart}>
-          {formatMessage(messages.addToCartButtonLabel)}
-        </StyledButton>
-      </ButtonsRow>
-    )
+    const addToCartRow = this.renderAddButton()
+
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
@@ -515,19 +501,19 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     this.setState({ [`show${id}`]: !stateValue } as any)
   }
 
-  handleSelectedGender = (id: number, gender: string) => () => {
+  handleSelectedGender = (gender: SelectedType) => () => {
     const { setSelectedGenderAction } = this.props
-    setSelectedGenderAction({ id, name: gender })
+    setSelectedGenderAction(gender)
   }
 
-  handleSelectedSize = (id: number, size: string) => () => {
+  handleSelectedSize = (size: SelectedType) => () => {
     const { setSelectedSizeAction } = this.props
-    setSelectedSizeAction({ id, name: size })
+    setSelectedSizeAction(size)
   }
 
-  handleSelectedFit = (id: number, fit: string) => () => {
+  handleSelectedFit = (fitStyle: SelectedType) => () => {
     const { setSelectedFitAction } = this.props
-    setSelectedFitAction({ id, name: fit })
+    setSelectedFitAction(fitStyle)
   }
 
   handleOpenFitInfo = () => {
@@ -540,52 +526,58 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     history.push('/fit-widget')
   }
 
-  // renderAddButton = () => {
-  //   const {
-  //     selectedFit,
-  //     selectedSize,
-  //     data: {
-  //       design: { product }
-  //     },
-  //     intl: { formatMessage }
-  //   } = this.props
-
-  //   const details = [] as CartItemDetail[]
-  //   if (product) {
-  //     const detail: CartItemDetail = {
-  //       fit: selectedFit,
-  //       size: selectedSize,
-  //       quantity: 1
-  //     }
-  //     details.push(detail)
-  //   }
-  //   const itemToAdd = Object.assign(
-  //     {},
-  //     { product },
-  //     {
-  //       itemDetails: details
-  //     }
-  //   )
-  //   return (
-  //     <ButtonsRow>
-  //       <AddtoCartButton
-  //         onClick={this.validateAddtoCart}
-  //         label={formatMessage(messages.addToCartButtonLabel)}
-  //         item={itemToAdd}
-  //       />
-  //     </ButtonsRow>
-  //   )
-  // }
-
-  addtoCart = () => {
+  renderAddButton = () => {
     const {
-      data: {
-        design: {
-          product: { name }
-        }
-      }
+      selectedGender,
+      selectedFit,
+      selectedSize,
+      data: { design },
+      intl: { formatMessage },
+      location: { search }
     } = this.props
-    Message.success(`${name} has been succesfully added to cart!`)
+
+    const queryParams = queryString.parse(search)
+    const storeId = queryParams.store || ''
+
+    const { product, name, shortId, image } = design
+
+    const details = [] as CartItemDetail[]
+    if (product) {
+      const detail: CartItemDetail = {
+        fit: selectedFit,
+        size: selectedSize,
+        gender: selectedGender,
+        quantity: 1
+      }
+      details.push(detail)
+    }
+    const itemToAdd = Object.assign(
+      {},
+      { product },
+      {
+        itemDetails: details
+      }
+    )
+    return (
+      <ButtonsRow>
+        <AddtoCartButton
+          onClick={this.validateAddtoCart}
+          label={formatMessage(messages.addToCartButtonLabel)}
+          item={itemToAdd}
+          itemProdPage={true}
+          withoutTop={true}
+          designId={shortId}
+          designName={name}
+          designImage={image}
+          teamStoreId={storeId}
+        />
+      </ButtonsRow>
+    )
+  }
+
+  validateAddtoCart = () => {
+    const { selectedSize, selectedFit, selectedGender } = this.props
+    return selectedSize.id && selectedFit.id && selectedGender.id
   }
 
   closeFitInfoModal = () => {

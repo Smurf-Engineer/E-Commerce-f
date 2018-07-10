@@ -123,7 +123,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 }
                 labelButton={
                   <AddToCartButton
-                    label={'ADD TO CART'}
+                    label={formatMessage(messages.addToCart)}
                     renderForThumbnail={true}
                     item={{ product }}
                     {...{ formatMessage }}

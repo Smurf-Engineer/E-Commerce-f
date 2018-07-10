@@ -16,6 +16,7 @@ interface ThumbnailStyle {
 
 export const Container = styled.div`
   background-color: #fff;
+  padding-bottom: 8px;
 `
 
 export const Content = styled.div`
