@@ -772,8 +772,8 @@
   "components.DesignCenterStyle.modalNewStyleCancel": "Cancel",
 
   "components.DesignCenterGrid.title": "DesignCenterGrid",
-  "components.DesignCenterGrid.modalNewStyleTitle": "NEW THEME?",
-  "components.DesignCenterGrid.modalNewStyleMessage":
+  "components.DesignCenterGrid.modalNewTheme": "NEW THEME?",
+  "components.DesignCenterGrid.modalNewThemeMessage":
     "By selecting a different theme you have to restart the customization.",
   "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
@@ -820,5 +820,15 @@
   "components.ConfirmCountryDialog.tittle":
     "WHAT IS YOUR COUNTRY OF RESIDENCE?",
   "components.ConfirmCountryDialog.save": "Save",
-  "components.ConfirmCountryDialog.placeholder": "Select country"
+  "components.ConfirmCountryDialog.placeholder": "Select country",
+
+  "components.DesignsCatalogueThumbnailList.tittle":
+    "DesignsCatalogueThumbnailList",
+  "components.DesignsCatalogueThumbnailList.emptyResults": "No results found",
+  "components.DesignsCatalogueThumbnailList.sortByLabel": "Sort By:",
+  "components.DesignsCatalogueThumbnailList.topSellerLabel": "Top Seller",
+  "components.DesignsCatalogueThumbnailList.lowestPriceLabel": "Lowest Price",
+  "components.DesignsCatalogueThumbnailList.hightestPriceLabel":
+    "Hightest Price",
+  "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART"
 }
