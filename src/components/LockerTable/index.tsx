@@ -120,7 +120,7 @@ class LockerTable extends React.PureComponent<Props, {}> {
             }}
             key={index}
             description={`${type} ${description}`}
-            currentOrders={0} // TODO: Get from the query
+            currentOrders={totalOrders} // TODO: Get from the query
             currentPrice={startingPrice}
             visible={visible}
             moveRow={this.moveRow}
