@@ -7,11 +7,13 @@ import { compose } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+import queryString from 'query-string'
 import * as accountActions from './actions'
 import messages from './messages'
 import {
   options,
   SCREEN_LOCKER,
+  MY_FILES,
   ADDRESSES,
   CREDIT_CARDS,
   TEAMSTORES,
@@ -43,7 +45,7 @@ interface Props extends RouteComponentProps<any> {
   isMobile: boolean
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
-  setCurrentScreenAction: (screen: string) => void
+  setCurrentScreenAction: (screen: string, openCreations?: boolean) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
   setIsMobileAction: (isMobile: boolean) => void
@@ -53,6 +55,22 @@ export class Account extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
+  }
+
+  componentWillMount() {
+    const {
+      location: { search },
+      setCurrentScreenAction
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (option) {
+      if (option === SCREEN_LOCKER || option === MY_FILES) {
+        setCurrentScreenAction(option, true)
+        return
+      }
+      setCurrentScreenAction(option)
+    }
   }
 
   componentDidMount() {
@@ -75,6 +93,7 @@ export class Account extends React.Component<Props, {}> {
   }
 
   handleOnSelectItem = ({ key }: any) => {
+    console.log(key)
     const { setCurrentScreenAction } = this.props
     setCurrentScreenAction(key)
   }
@@ -114,7 +133,7 @@ export class Account extends React.Component<Props, {}> {
               <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
             }
           >
-            {submenus.map((label, index) => (
+            {submenus.map(label => (
               <Menu.Item key={label}>
                 <FormattedMessage {...messages[label]} />
               </Menu.Item>
@@ -140,6 +159,7 @@ export class Account extends React.Component<Props, {}> {
               {...{ openKeys }}
               mode="inline"
               onSelect={this.handleOnSelectItem}
+              selectedKeys={[screen]}
               onOpenChange={this.handleOnSelectedKeys}
               style={menuStyle}
             >

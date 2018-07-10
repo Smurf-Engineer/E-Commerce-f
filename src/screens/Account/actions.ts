@@ -20,9 +20,13 @@ export const setOpenKeysAction = (keys: string[]): AnyAction => ({
   keys
 })
 
-export const setCurrentScreenAction = (screen: string): AnyAction => ({
+export const setCurrentScreenAction = (
+  screen: string,
+  openCreations?: boolean
+): AnyAction => ({
   type: SET_CURRENT_SCREEN,
-  screen
+  screen,
+  openCreations
 })
 
 export const clearReducerAction = (): AnyAction => ({

@@ -9,7 +9,7 @@ describe('<Logout />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <Logout title={''} logout={() => {}} account={() => {}} />,
+      <Logout title={''} logout={() => {}} goTo={() => {}} />,
       div
     )
   })

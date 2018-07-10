@@ -29,24 +29,24 @@ export default defineMessages({
     id: 'screens.Account.menu.profileSettings',
     defaultMessage: 'PROFILE SETTINGS'
   },
-  teamStores: {
-    id: 'screens.Account.menu.teamStores',
+  myTeamStores: {
+    id: 'screens.Account.menu.myTeamStores',
     defaultMessage: 'MY TEAM STORES'
   },
-  creations: {
-    id: 'screens.Account.menu.creations',
+  myCreations: {
+    id: 'screens.Account.menu.myCreations',
     defaultMessage: 'MY CREATIONS'
   },
   logout: {
     id: 'screens.Account.menu.logout',
     defaultMessage: 'LOGOUT'
   },
-  locker: {
-    id: 'screens.Account.submenu.locker',
+  myLocker: {
+    id: 'screens.Account.submenu.myLocker',
     defaultMessage: 'My Locker'
   },
-  files: {
-    id: 'screens.Account.submenu.files',
+  myFiles: {
+    id: 'screens.Account.submenu.myFiles',
     defaultMessage: 'My Files'
   }
 })

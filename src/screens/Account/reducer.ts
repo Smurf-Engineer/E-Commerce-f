@@ -20,8 +20,16 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_OPEN_KEYS:
       return state.set('openKeys', action.keys)
-    case SET_CURRENT_SCREEN:
+    case SET_CURRENT_SCREEN: {
+      const { screen, openCreations } = action
+      if (openCreations) {
+        return state.merge({
+          screen,
+          openKeys: ['', 'myCreations']
+        })
+      }
       return state.set('screen', action.screen)
+    }
     case SET_IS_MOBILE:
       return state.set('isMobile', action.isMobile)
     case CLEAR_REDUCER:

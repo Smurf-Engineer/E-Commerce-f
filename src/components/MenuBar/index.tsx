@@ -75,8 +75,8 @@ class MenuBar extends React.Component<Props, StateProps> {
     history.replace('/us?lang=en&currency=usd')
   }
 
-  handleMyAccount = () => {
-    this.handleOnGoTo('account')
+  handleGoTo = (path: string) => {
+    this.handleOnGoTo(path)
   }
 
   handleOnGoTo = (route: string) => {
@@ -126,9 +126,10 @@ class MenuBar extends React.Component<Props, StateProps> {
       </TopText>
     ) : (
       <Logout
+        {...{ history }}
         title={`${String(user.name).toUpperCase()}`}
         logout={logoutAction}
-        account={this.handleMyAccount}
+        goTo={this.handleOnGoTo}
       />
     )
 
