@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import map from 'lodash/map'
 import findIndex from 'lodash/findIndex'
 import * as productDetailActions from './actions'
 import messages from './messages'
@@ -59,7 +58,8 @@ import {
   Product,
   QueryProps,
   ImageType,
-  CartItemDetail
+  CartItemDetail,
+  SelectedType
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
@@ -71,11 +71,6 @@ interface ProductTypes extends Product {
   intendedUse: string
   temperatures: string
   materials: string
-}
-
-interface SelectedType {
-  id: number
-  name: string
 }
 
 interface Data extends QueryProps {
@@ -108,9 +103,6 @@ interface StateProps {
   showSpecs: boolean
 }
 
-// TODO: Remove sizes
-const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', '2XL']
-
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: true,
@@ -138,7 +130,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', '')
+    const genders = get(product, 'genders', [])
 
     const isRetail =
       get(product, 'retailMen', false) || get(product, 'retailWomen', false)
@@ -152,7 +144,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         ? formatMessage(messages.unisexGenderLabel)
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
-    const fitStyles = get(product, 'fitStyles', [])
+    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    const sizeRange = get(product, 'sizeRange', []) as SelectedType[]
 
     const {
       location: { search }
@@ -231,41 +224,46 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       )
     }
 
-    const availableSizes = sizes.map((size, index) => (
-      <div key={index}>
-        <SectionButton
-          id={index.toString()}
-          selected={index === selectedSize.id}
-          onClick={this.handleSelectedSize(index, size)}
-        >
-          {size}
-        </SectionButton>
-      </div>
-    ))
+    const availableSizes = sizeRange.map(
+      ({ id, name: sizeName }: SelectedType, index: number) => (
+        <div key={index}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedSize.id}
+            onClick={this.handleSelectedSize({ id, name: sizeName })}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      )
+    )
 
     let availableFits
     if (product) {
-      availableFits = fitStyles[0].id ? (
-        map(fitStyles, (fit: any, index: number) => (
-          <div key={index}>
-            <SectionButton
-              id={index.toString()}
-              selected={fit.id === selectedFit.id}
-              onClick={this.handleSelectedFit(fit)}
-            >
-              {fit.name}
-            </SectionButton>
-          </div>
-        ))
-      ) : (
-        <SectionButton
-          id={'1'}
-          selected={1 === selectedFit.id}
-          onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
-        >
-          {'Standard'}
-        </SectionButton>
-      )
+      availableFits =
+        fitStyles.length && fitStyles[0].id ? (
+          fitStyles.map(
+            ({ id, name: fitName }: SelectedType, index: number) => (
+              <div key={index}>
+                <SectionButton
+                  id={id.toString()}
+                  selected={id === selectedFit.id}
+                  onClick={this.handleSelectedFit({ id, name: fitName })}
+                >
+                  {fitName}
+                </SectionButton>
+              </div>
+            )
+          )
+        ) : (
+          <SectionButton
+            id={'1'}
+            selected={1 === selectedFit.id}
+            onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
+          >
+            {'Standard'}
+          </SectionButton>
+        )
     }
     const colorsSection = (
       <SectionRow>
@@ -398,15 +396,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     setSelectedGenderAction(parseInt(id, 10))
   }
 
-  handleSelectedSize = (index: number, size: string) => () => {
+  handleSelectedSize = (size: SelectedType) => () => {
     const { setSelectedSizeAction } = this.props
-
-    setSelectedSizeAction({ id: index, name: size })
+    setSelectedSizeAction(size)
   }
 
-  handleSelectedFit = (size: SelectedType, index?: number) => () => {
+  handleSelectedFit = (fitStyle: SelectedType) => () => {
     const { setSelectedFitAction } = this.props
-    setSelectedFitAction(size)
+    setSelectedFitAction(fitStyle)
   }
 
   handleOpenFitInfo = () => {

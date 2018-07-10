@@ -14,6 +14,8 @@ import {
   RequiredSpan,
   ErrorMsg
 } from './styledComponents'
+import ModalFooter from '../ModalFooter'
+import ModalTitle from '../ModalTitle'
 
 interface Props {
   hasError: boolean
@@ -43,11 +45,16 @@ const ChangePasswordModal = ({
   return (
     <Modal
       visible={showPasswordModal}
-      title={formatMessage(messages.title)}
-      confirmLoading={passwordModalLoading}
-      okText={formatMessage(messages.save)}
-      onOk={onChangePassword}
-      onCancel={toggleModalPassword}
+      title={<ModalTitle title={formatMessage(messages.title)} />}
+      footer={
+        <ModalFooter
+          confirmLoading={passwordModalLoading}
+          okText={formatMessage(messages.save)}
+          onOk={onChangePassword}
+          onCancel={toggleModalPassword}
+          {...{ formatMessage }}
+        />
+      }
       closable={false}
       maskClosable={false}
       destroyOnClose={true}

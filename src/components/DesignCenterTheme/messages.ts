@@ -9,21 +9,13 @@ export default defineMessages({
     id: 'components.DesignCenterGrid.title',
     defaultMessage: 'DesignCenterGrid'
   },
-  modalNewStyleTitle: {
-    id: 'components.DesignCenterGrid.modalNewStyleTitle',
+  modalNewTheme: {
+    id: 'components.DesignCenterGrid.modalNewTheme',
     defaultMessage: 'NEW THEME?'
   },
-  modalNewStyleMessage: {
-    id: 'components.DesignCenterGrid.modalNewStyleMessage',
+  modalNewThemeMessage: {
+    id: 'components.DesignCenterGrid.modalNewThemeMessage',
     defaultMessage:
       'By selecting a different theme you have to restart the customization.'
-  },
-  modalNewStyleConfirm: {
-    id: 'components.DesignCenterGrid.modalNewStyleConfirm',
-    defaultMessage: 'Confirm'
-  },
-  modalNewStyleCancel: {
-    id: 'components.DesignCenterGrid.modalNewStyleCancel',
-    defaultMessage: 'Cancel'
   }
 })

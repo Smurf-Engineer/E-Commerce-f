@@ -28,21 +28,17 @@ export const Row = styled.div`
   padding: 14px 32px 6px 32px;
   align-items: center;
 `
-export const DeleteLabel = styled.div`
-  color: #e61737;
-  font-weight: 600;
-`
+export const deleteIcon = {
+  color: '#e61737',
+  fontSize: 18
+}
 
 export const Delete = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  height: 18px;
-  width: 18px;
   margin-left: 8px;
-  border: 1px solid #e61737;
 `
 export const TopRow = styled.div`
   display: flex;

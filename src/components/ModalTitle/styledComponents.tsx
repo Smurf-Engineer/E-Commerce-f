@@ -8,4 +8,12 @@ export const Container = styled.div`
   font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
+
+  .ant-modal-header {
+    padding: 16px 24px;
+    border-radius: 4px 4px 0 0;
+    background: #fff;
+    color: rgba(0, 0, 0, 0.65);
+    border-bottom: null;
+  }
 `
