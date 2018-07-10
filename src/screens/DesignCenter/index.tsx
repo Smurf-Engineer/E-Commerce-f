@@ -12,7 +12,6 @@ import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
-import Button from 'antd/lib/button'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
@@ -30,7 +29,9 @@ import {
   Container,
   StyledTitle,
   BottomSheetWrapper,
-  ModalMessage
+  ModalMessage,
+  StyledGhostButton,
+  StyledButton
 } from './styledComponents'
 import {
   Palette,
@@ -49,6 +50,7 @@ import {
 import { getProductQuery, addTeamStoreItemMutation } from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
+import ModalTitle from '../../components/ModalTitle'
 
 interface Data extends QueryProps {
   product?: Product
@@ -185,7 +187,9 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOpenQuickView = () => {
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const productId = queryParams.id || ''
     const { openQuickViewAction: openQuickView } = this.props
@@ -276,7 +280,10 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   handleOnAddToCart = () => {
-    const { designName, intl: { formatMessage } } = this.props
+    const {
+      designName,
+      intl: { formatMessage }
+    } = this.props
     Message.success(formatMessage(messages.addedToCart, { designName }))
   }
 
@@ -527,27 +534,31 @@ export class DesignCenter extends React.Component<Props, {}> {
         </Container>
         <Modal
           visible={openOutWithoutSaveModal}
-          title={formatMessage(messages.outWithoutSaveModalTitle)}
+          title={
+            <ModalTitle
+              title={formatMessage(messages.outWithoutSaveModalTitle)}
+            />
+          }
           footer={[
-            <Button
+            <StyledGhostButton
               key="cancel"
               onClick={this.handleOnCancelOutWithoutSaveModal}
             >
               {formatMessage(messages.outWithoutSaveDesignModalCancel)}
-            </Button>,
-            <Button
+            </StyledGhostButton>,
+            <StyledGhostButton
               key={'dontSave'}
               onClick={this.handleOnDontSaveOutWithoutSaveModal}
             >
               {formatMessage(messages.outWithoutSaveDesignModalDontSave)}
-            </Button>,
-            <Button
+            </StyledGhostButton>,
+            <StyledButton
               key={'save'}
               type="primary"
               onClick={this.handleOnSaveOutWithoutSaveModal}
             >
               {formatMessage(messages.outWithoutSaveDesignModalSave)}
-            </Button>
+            </StyledButton>
           ]}
           closable={false}
           maskClosable={false}
@@ -571,7 +582,10 @@ const mapStateToProps = (state: any) => state.get('designCenter').toJS()
 const DesignCenterEnhance = compose(
   injectIntl,
   addTeamStoreItemMutation,
-  connect(mapStateToProps, { ...designCenterActions, openQuickViewAction }),
+  connect(
+    mapStateToProps,
+    { ...designCenterActions, openQuickViewAction }
+  ),
   graphql<Data>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''

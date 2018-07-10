@@ -37,6 +37,8 @@ export interface Filter {
   name: string
 }
 
+export interface SelectedType extends Filter {}
+
 export interface FitStyle {
   id: number
   name: string

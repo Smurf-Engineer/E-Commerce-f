@@ -11,6 +11,8 @@ import { ThemeResult } from '../../types/common'
 import { themesQuery } from './data'
 import ThemeItem from '../Theme'
 import { Container, Row, ModalMessage } from './styledComponents'
+import ModalTitle from '../ModalTitle'
+import ModalFooter from '../ModalFooter'
 
 interface Data extends QueryProps {
   themes?: ThemeResult
@@ -70,17 +72,20 @@ export const DesignCenterGrid = ({
       <Row>{list}</Row>
       <Modal
         visible={openNewThemeModal}
-        title={formatMessage(messages.modalNewStyleTitle)}
-        okText={formatMessage(messages.modalNewStyleConfirm)}
-        onOk={selectTheme}
-        cancelText={formatMessage(messages.modalNewStyleCancel)}
-        onCancel={cancelReselectTheme}
+        title={<ModalTitle title={formatMessage(messages.modalNewTheme)} />}
+        footer={
+          <ModalFooter
+            onOk={selectTheme}
+            onCancel={cancelReselectTheme}
+            {...{ formatMessage }}
+          />
+        }
         closable={false}
         maskClosable={false}
         destroyOnClose={true}
       >
         <ModalMessage>
-          {formatMessage(messages.modalNewStyleMessage)}
+          {formatMessage(messages.modalNewThemeMessage)}
         </ModalMessage>
       </Modal>
     </Container>

@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 23/02/18.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button/button'
 
 export const Container = styled.div`
   background-color: #fff;
@@ -42,4 +43,31 @@ export const ModalMessage = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
+`
+
+export const StyledButton = styled(Button)`
+  height: 40px;
+  border-radius: 5px;
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+  color: #fff;
+
+  &:hover {
+    background-color: #6ea6e7;
+    border-color: #6ea6e7;
+  }
+`
+
+export const StyledGhostButton = styled(Button)`
+  height: 40px;
+  border: 1px solid #dcdcdc;
+  border-radius: 5px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  margin-right: 8px;
+
+  &:hover {
+    border-color: #4a90e2;
+    color: #4a90e2;
+  }
 `

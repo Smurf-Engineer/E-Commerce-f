@@ -5,6 +5,7 @@ export const GetDesignQuery = gql`
     design: sharedDesignShortId(designId: $searchParam) {
       id
       name
+      image
       svg: output_svg
       shortId: short_id
       colors {
@@ -15,19 +16,29 @@ export const GetDesignQuery = gql`
         id
         yotpoId: yotpo_id
         name
-        type: short_description
+        type: name
+        shortDescription: short_description
         category_id
-        sport_id
-        sports {
-          id
-          name
-        }
         retail_version
         customizable: design_center
         description
         details
         materials: materials_info
         temperatures: temperature_range
+        collections
+        isTopProduct
+        intendedUse: intended_use
+        images: pictures {
+          front: front_image
+          back: back_image
+          left: left_image
+          right: right_image
+        }
+        sport_id
+        sports {
+          id
+          name
+        }
         genders {
           id
           name: gender
@@ -39,15 +50,6 @@ export const GetDesignQuery = gql`
         fitStyles {
           id
           name: description
-        }
-        collections
-        isTopProduct
-        intendedUse: intended_use
-        images: pictures {
-          front: front_image
-          back: back_image
-          left: left_image
-          right: right_image
         }
         priceRange {
           price
