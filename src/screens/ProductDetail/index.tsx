@@ -59,7 +59,8 @@ import {
   Product,
   QueryProps,
   ImageType,
-  CartItemDetail
+  CartItemDetail,
+  SelectedType
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
@@ -71,11 +72,6 @@ interface ProductTypes extends Product {
   intendedUse: string
   temperatures: string
   materials: string
-}
-
-interface SelectedType {
-  id: number
-  name: string
 }
 
 interface Data extends QueryProps {
@@ -108,9 +104,6 @@ interface StateProps {
   showSpecs: boolean
 }
 
-// TODO: Remove sizes
-const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', '2XL']
-
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: true,
@@ -138,7 +131,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', '')
+    const genders = get(product, 'genders', [])
 
     const isRetail =
       get(product, 'retailMen', false) || get(product, 'retailWomen', false)
@@ -153,6 +146,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         : formatMessage(messages.oneGenderLabel)
     let renderPrices
     const fitStyles = get(product, 'fitStyles', [])
+    const sizeRange = get(product, 'sizeRange', []) as any
 
     const {
       location: { search }
@@ -231,17 +225,31 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       )
     }
 
-    const availableSizes = sizes.map((size, index) => (
-      <div key={index}>
-        <SectionButton
-          id={index.toString()}
-          selected={index === selectedSize.id}
-          onClick={this.handleSelectedSize(index, size)}
-        >
-          {size}
-        </SectionButton>
-      </div>
-    ))
+    // const availableSizes = sizes.map((size, index) => (
+    //   <div key={index}>
+    //     <SectionButton
+    //       id={index.toString()}
+    //       selected={index === selectedSize.id}
+    //       onClick={this.handleSelectedSize(index, size)}
+    //     >
+    //       {size}
+    //     </SectionButton>
+    //   </div>
+    // ))
+
+    const availableSizes = sizeRange.map(
+      ({ id, name: sizeName }: SelectedType, index: number) => (
+        <div key={index}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedSize.id}
+            onClick={this.handleSelectedSize(id, sizeName)}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      )
+    )
 
     let availableFits
     if (product) {

@@ -7,7 +7,6 @@ import { RouteComponentProps, Link } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
-import map from 'lodash/map'
 import filter from 'lodash/filter'
 import findIndex from 'lodash/findIndex'
 import capitalize from 'lodash/capitalize'
@@ -79,8 +78,12 @@ import {
   PriceRange,
   TeamstoreType,
   DesignType,
-  TeamstoreItemType
+  TeamstoreItemType,
+  CartItemDetail,
+  SizeFilter,
+  SelectedType
 } from '../../types/common'
+import { stripTrailingSlash } from '../../../node_modules/@types/history/PathUtils'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -99,17 +102,17 @@ interface Props extends RouteComponentProps<any> {
   data: Data
   showBuyNowSection: boolean
   openFitInfo: boolean
-  selectedGender: string
-  selectedSize: number
-  selectedFit: number
+  selectedGender: SelectedType
+  selectedSize: SelectedType
+  selectedFit: SelectedType
   loadingModel: boolean
   showDynamicPrice: boolean
   teamStoreItems: Data
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
-  setSelectedGenderAction: (selected: string) => void
-  setSelectedSizeAction: (selected: number) => void
-  setSelectedFitAction: (selected: number) => void
+  setSelectedGenderAction: (selected: SelectedType) => void
+  setSelectedSizeAction: (selected: SelectedType) => void
+  setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   openDynamicPriceModalAction: (open: boolean) => void
 }
@@ -118,9 +121,6 @@ interface StateProps {
   showDetails: boolean
   showSpecs: boolean
 }
-
-// TODO: Remove sizes
-const sizes = ['2XS', 'XS', 'S', 'M', 'L', 'XL', '2XL']
 
 export class TeamstoreProductPage extends React.Component<Props, StateProps> {
   state = {
@@ -153,6 +153,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     const temperatures = get(design, 'product.temperatures', '')
     const materials = get(design, 'product.materials', '')
     const genders = get(design, 'product.genders', [])
+    const sizeRange = get(design, 'product.sizeRange', [])
     const maleGender = get(design, 'product.genders[0].name', '')
     const femaleGender = get(design, 'product.genders[1].name', '')
     const genderMessage =
@@ -161,7 +162,9 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         : formatMessage(messages.oneGenderLabel)
     //    let renderPrices
     const fitStyles = get(design, 'product.fitStyles', [])
-    const { location: { search } } = this.props
+    const {
+      location: { search }
+    } = this.props
     const queryParams = queryString.parse(search)
     const yotpoId = queryParams.yotpoId || ''
     const storeId = queryParams.store || ''
@@ -255,49 +258,53 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       )
     }
 
-    const availableGenders = map(genders, (item: ProductTypes, index) => (
-      <div key={index}>
-        <SectionButton
-          id={item.name}
-          selected={item.name === selectedGender}
-          onClick={this.handleSelectedGender}
-        >
-          {item.name}
-        </SectionButton>
-      </div>
-    ))
+    const availableGenders = genders.map(
+      ({ id, name: genderName }: SelectedType, index: number) => (
+        <div key={index}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedGender.id}
+            onClick={this.handleSelectedGender(id, genderName)}
+          >
+            {genderName}
+          </SectionButton>
+        </div>
+      )
+    )
 
-    const availableSizes = sizes.map((size, index) => (
-      <div key={index}>
-        <SectionButton
-          id={index.toString()}
-          selected={index === selectedSize}
-          onClick={this.handleSelectedSize}
-        >
-          {size}
-        </SectionButton>
-      </div>
-    ))
+    const availableSizes = sizeRange.map(
+      ({ id, name: sizeName }: SelectedType, index: number) => (
+        <div key={index}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedSize.id}
+            onClick={this.handleSelectedSize(id, sizeName)}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      )
+    )
 
     let availableFits
     if (design.product) {
       availableFits = fitStyles[0].id ? (
-        map(fitStyles, (fit: any, index: number) => (
+        fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
           <div key={index}>
             <SectionButton
-              id={index.toString()}
-              selected={index === selectedFit}
-              onClick={this.handleSelectedFit}
+              id={String(id)}
+              selected={id === selectedFit.id}
+              onClick={this.handleSelectedFit(id, fitName)}
             >
-              {fit.name}
+              {fitName}
             </SectionButton>
           </div>
         ))
       ) : (
         <SectionButton
           id={'1'}
-          selected={1 === selectedFit}
-          onClick={this.handleSelectedFit}
+          selected={1 === selectedFit.id}
+          onClick={this.handleSelectedFit(1, 'Standard')}
         >
           {'Standard'}
         </SectionButton>
@@ -508,22 +515,19 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     this.setState({ [`show${id}`]: !stateValue } as any)
   }
 
-  handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedGender = (id: number, gender: string) => () => {
     const { setSelectedGenderAction } = this.props
-    const { currentTarget: { id } } = evt
-    setSelectedGenderAction(id)
+    setSelectedGenderAction({ id, name: gender })
   }
 
-  handleSelectedSize = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedSize = (id: number, size: string) => () => {
     const { setSelectedSizeAction } = this.props
-    const { currentTarget: { id } } = evt
-    setSelectedSizeAction(parseInt(id, 10))
+    setSelectedSizeAction({ id, name: size })
   }
 
-  handleSelectedFit = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedFit = (id: number, fit: string) => () => {
     const { setSelectedFitAction } = this.props
-    const { currentTarget: { id } } = evt
-    setSelectedFitAction(parseInt(id, 10))
+    setSelectedFitAction({ id, name: fit })
   }
 
   handleOpenFitInfo = () => {
@@ -536,8 +540,51 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     history.push('/fit-widget')
   }
 
+  // renderAddButton = () => {
+  //   const {
+  //     selectedFit,
+  //     selectedSize,
+  //     data: {
+  //       design: { product }
+  //     },
+  //     intl: { formatMessage }
+  //   } = this.props
+
+  //   const details = [] as CartItemDetail[]
+  //   if (product) {
+  //     const detail: CartItemDetail = {
+  //       fit: selectedFit,
+  //       size: selectedSize,
+  //       quantity: 1
+  //     }
+  //     details.push(detail)
+  //   }
+  //   const itemToAdd = Object.assign(
+  //     {},
+  //     { product },
+  //     {
+  //       itemDetails: details
+  //     }
+  //   )
+  //   return (
+  //     <ButtonsRow>
+  //       <AddtoCartButton
+  //         onClick={this.validateAddtoCart}
+  //         label={formatMessage(messages.addToCartButtonLabel)}
+  //         item={itemToAdd}
+  //       />
+  //     </ButtonsRow>
+  //   )
+  // }
+
   addtoCart = () => {
-    const { data: { design: { product: { name } } } } = this.props
+    const {
+      data: {
+        design: {
+          product: { name }
+        }
+      }
+    } = this.props
     Message.success(`${name} has been succesfully added to cart!`)
   }
 
@@ -568,7 +615,9 @@ const TeamstoreProductPageEnhance = compose(
   injectIntl,
   graphql<Data>(GetDesignQuery, {
     options: (ownprops: OwnProps) => {
-      const { location: { search } } = ownprops
+      const {
+        location: { search }
+      } = ownprops
       const queryParams = queryString.parse(search)
       return {
         fetchPolicy: 'network-only',
@@ -589,7 +638,10 @@ const TeamstoreProductPageEnhance = compose(
       }
     }
   }),
-  connect(mapStateToProps, { ...teamstoreProductPageActions })
+  connect(
+    mapStateToProps,
+    { ...teamstoreProductPageActions }
+  )
 )(TeamstoreProductPage)
 
 export default TeamstoreProductPageEnhance

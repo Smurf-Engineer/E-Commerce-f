@@ -10,7 +10,7 @@ import {
   LOADING_3D_MODEL,
   OPEN_DYNAMIC_PRICE_MODAL
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, SelectedType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -22,17 +22,17 @@ export const openFitInfoAction = (open: boolean) => ({
   open
 })
 
-export const setSelectedGenderAction = (selected: string) => ({
+export const setSelectedGenderAction = (selected: SelectedType) => ({
   type: SET_SELECTED_GENDER,
   selected
 })
 
-export const setSelectedSizeAction = (selected: number) => ({
+export const setSelectedSizeAction = (selected: SelectedType) => ({
   type: SET_SELECTED_SIZE,
   selected
 })
 
-export const setSelectedFitAction = (selected: number) => ({
+export const setSelectedFitAction = (selected: SelectedType) => ({
   type: SET_SELECTED_FIT,
   selected
 })
