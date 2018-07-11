@@ -68,7 +68,7 @@ class Render3D extends PureComponent {
     zoomValue: 0,
     progress: 0,
     objectChilds: 0,
-    el: null
+    canvasEl: null
   }
 
   dragComponent = null
