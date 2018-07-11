@@ -15,9 +15,9 @@ import { Reducer } from '../../types/common'
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   openFitInfo: false,
-  selectedGender: '',
-  selectedSize: -1,
-  selectedFit: -1,
+  selectedGender: {},
+  selectedSize: {},
+  selectedFit: {},
   showDynamicPrice: false
 })
 
@@ -33,9 +33,9 @@ const teamstoreProductPageReducer: Reducer<any> = (
     case SET_SELECTED_GENDER:
       return state.set('selectedGender', action.selected)
     case SET_SELECTED_SIZE:
-      return state.set('selectedSize', parseInt(action.selected, 10))
+      return state.set('selectedSize', action.selected)
     case SET_SELECTED_FIT:
-      return state.set('selectedFit', parseInt(action.selected, 10))
+      return state.set('selectedFit', action.selected)
     case OPEN_DYNAMIC_PRICE_MODAL:
       return state.set('showDynamicPrice', action.open)
     default:

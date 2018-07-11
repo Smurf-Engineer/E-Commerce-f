@@ -38,6 +38,7 @@ interface Props {
   designImage?: string
   teamStoreId?: string
   withoutTop?: boolean
+  itemProdPage?: boolean
   onClick: () => boolean
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
@@ -61,43 +62,58 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   }
 
   addToCart = () => {
-    const {
-      onClick,
-      renderForThumbnail,
-      intl,
-      item,
-      designId,
-      teamStoreId,
-      designName,
-      designImage
-    } = this.props
+    const { onClick, renderForThumbnail, intl, item, itemProdPage } = this.props
     if (renderForThumbnail) {
-      const details = [] as CartItemDetail[]
-      const detail = {
-        quantity: 1
-      }
-      details.push(detail)
-      const itemToAdd = Object.assign(
-        {},
-        { product: item.product },
-        {
-          itemDetails: details
-        },
-        { designId },
-        { designName },
-        { designImage },
-        { teamStoreId }
-      )
+      const itemToAdd = this.getItemWithDetails()
       this.saveInLocalStorage(itemToAdd)
     } else {
       const candAddToStore = onClick()
       if (!candAddToStore) {
-        Message.warning(intl.formatMessage(messages.validationMessage))
+        Message.warning(
+          intl.formatMessage(
+            itemProdPage
+              ? messages.validationMessageProdPage
+              : messages.validationMessage
+          )
+        )
         return
       } else {
+        if (itemProdPage) {
+          const itemToAdd = this.getItemWithDetails()
+          this.saveInLocalStorage(itemToAdd)
+          return
+        }
         this.saveInLocalStorage(item)
       }
     }
+  }
+
+  getItemWithDetails = () => {
+    const {
+      item,
+      designId,
+      teamStoreId,
+      designName,
+      designImage,
+      itemProdPage
+    } = this.props
+    const details = [] as CartItemDetail[]
+    const detail = {
+      quantity: 1
+    }
+    details.push(detail)
+    const itemToAdd = Object.assign(
+      {},
+      { product: item.product },
+      {
+        itemDetails: itemProdPage ? item.itemDetails : details
+      },
+      { designId },
+      { designName },
+      { designImage },
+      { teamStoreId }
+    )
+    return itemToAdd
   }
 
   saveInLocalStorage = (obj?: CartItems) => {
@@ -133,7 +149,10 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
 const AddToCartEnhanced = compose(
   injectIntl,
-  connect(null, { getTotalItemsIncart })
+  connect(
+    null,
+    { getTotalItemsIncart }
+  )
 )(AddToCartButton)
 
 export default AddToCartEnhanced

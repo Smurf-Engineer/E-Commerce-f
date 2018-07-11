@@ -21,6 +21,8 @@ import {
   List,
   ModalMessage
 } from './styledComponents'
+import ModalTitle from '../ModalTitle'
+import ModalFooter from '../ModalFooter'
 
 interface Data extends QueryProps {
   styles?: StyleResult
@@ -120,11 +122,16 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
         </List>
         <Modal
           visible={openNewStyleModal}
-          title={formatMessage(messages.modalNewStyleTitle)}
-          okText={formatMessage(messages.modalNewStyleConfirm)}
-          onOk={this.reselectStyle}
-          cancelText={formatMessage(messages.modalNewStyleCancel)}
-          onCancel={this.cancelReselectStyle}
+          title={
+            <ModalTitle title={formatMessage(messages.modalNewStyleTitle)} />
+          }
+          footer={
+            <ModalFooter
+              onOk={this.reselectStyle}
+              onCancel={this.cancelReselectStyle}
+              {...{ formatMessage }}
+            />
+          }
           closable={false}
           maskClosable={false}
           destroyOnClose={true}

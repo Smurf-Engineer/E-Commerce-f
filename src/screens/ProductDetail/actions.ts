@@ -11,7 +11,7 @@ import {
   LOADING_3D_MODEL,
   ADD_ITEM_TO_CART
 } from './constants'
-import { AnyAction } from '../../types/common'
+import { AnyAction, SelectedType } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -33,12 +33,12 @@ export const setSelectedGenderAction = (selected: string) => ({
   selected
 })
 
-export const setSelectedSizeAction = (selected: {}) => ({
+export const setSelectedSizeAction = (selected: SelectedType) => ({
   type: SET_SELECTED_SIZE,
   selected
 })
 
-export const setSelectedFitAction = (selected: {}) => ({
+export const setSelectedFitAction = (selected: SelectedType) => ({
   type: SET_SELECTED_FIT,
   selected
 })

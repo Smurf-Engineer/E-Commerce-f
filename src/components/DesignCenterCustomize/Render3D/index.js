@@ -37,6 +37,8 @@ import {
   SCALE_ACTION,
   DRAG_ACTION
 } from './config'
+import ModalFooter from '../../ModalFooter'
+import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
@@ -51,8 +53,6 @@ import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
-// TODO: Test data
-import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
@@ -224,6 +224,7 @@ class Render3D extends PureComponent {
   loadTextures = modelTextures =>
     new Promise((resolve, reject) => {
       try {
+        // TODO: Get flatlock, bumpmap and branding from the design.
         const loadedTextures = {}
         loadedTextures.flatlock = this.textureLoader.load(
           './models/images/flatlock.png'
@@ -255,7 +256,7 @@ class Render3D extends PureComponent {
     onLoadModel(true)
 
     const loadedTextures = await this.loadTextures(currentStyle)
-
+    // TODO: Get the OBJ and MTL from the design
     this.mtlLoader.load(
       'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.mtl',
       materials => {
@@ -624,11 +625,14 @@ class Render3D extends PureComponent {
         {/* Reset Modal */}
         <Modal
           visible={openResetDesignModal}
-          title={formatMessage(messages.modalResetTitle)}
-          okText={formatMessage(messages.modalConfirmText)}
-          onOk={this.onReset}
-          cancelText={formatMessage(messages.modalCancelText)}
-          onCancel={this.onCloseResetModal}
+          title={<ModalTitle title={formatMessage(messages.modalResetTitle)} />}
+          footer={
+            <ModalFooter
+              onOk={this.onReset}
+              onCancel={this.onCloseResetModal}
+              {...{ formatMessage }}
+            />
+          }
           closable={false}
           maskClosable={false}
           destroyOnClose={true}

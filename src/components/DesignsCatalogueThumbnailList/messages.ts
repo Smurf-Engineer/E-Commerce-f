@@ -28,5 +28,9 @@ export default defineMessages({
   hightestPriceLabel: {
     id: 'components.DesignsCatalogueThumbnailList.hightestPriceLabel',
     defaultMessage: 'Hightest Price'
+  },
+  addToCart: {
+    id: 'components.DesignsCatalogueThumbnailList.addToCart',
+    defaultMessage: 'ADD TO CART'
   }
 })

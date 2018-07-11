@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
@@ -25,6 +25,7 @@ interface Props extends RouteComponentProps<any> {
   children: React.ReactChild
   intl: InjectedIntl
   history: any
+  client: any
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
@@ -62,6 +63,21 @@ class MainLayout extends React.Component<Props, {}> {
     setSearchParam(value)
   }
 
+  onLogout = () => {
+    const {
+      logoutAction,
+      client: { cache },
+      history: {
+        location: { pathname }
+      }
+    } = this.props
+    cache.reset()
+    logoutAction()
+    if (pathname === '/account') {
+      window.location.replace('/')
+    }
+  }
+
   componentDidMount() {
     const {
       openLoginAction,
@@ -96,7 +112,6 @@ class MainLayout extends React.Component<Props, {}> {
       currentLanguage,
       currentCurrency,
       intl,
-      logoutAction,
       saveUserToLocal,
       hideBottomHeader,
       hideFooter,
@@ -145,12 +160,12 @@ class MainLayout extends React.Component<Props, {}> {
               currentCurrency,
               openLogin,
               openLoginAction,
-              logoutAction,
               saveUserToLocal,
               teamStoresHeader,
               designHasChanges,
               openWithoutSaveModalAction
             }}
+            logoutAction={this.onLogout}
             hideBottom={hideBottomHeader}
           />
         </Header>
@@ -217,6 +232,7 @@ const mapStateToProps = (state: any) => {
 }
 
 const LayoutEnhance = compose(
+  withApollo,
   connect(
     mapStateToProps,
     {
