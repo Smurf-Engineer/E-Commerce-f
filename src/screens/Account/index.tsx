@@ -93,7 +93,6 @@ export class Account extends React.Component<Props, {}> {
   }
 
   handleOnSelectItem = ({ key }: any) => {
-    console.log(key)
     const { setCurrentScreenAction } = this.props
     setCurrentScreenAction(key)
   }
@@ -115,7 +114,7 @@ export class Account extends React.Component<Props, {}> {
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
-        return <MyLocker {...{ openQuickView, formatMessage }} />
+        return <MyLocker {...{ openQuickView, formatMessage, history }} />
       default:
         return null
     }

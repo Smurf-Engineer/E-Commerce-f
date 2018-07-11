@@ -28,3 +28,24 @@ export const addTeamStoreItemMutation = graphql(
   `,
   { name: 'addItemToStore' }
 )
+
+export const getDesignQuery = gql`
+  query getDesign($designId: String!) {
+    designData: sharedDesignShortId(designId: $designId) {
+      id
+      name
+      shortId: short_id
+      product {
+        id
+        name
+      }
+      colors {
+        id
+        color
+        image
+      }
+      canvas
+      flatlock
+    }
+  }
+`

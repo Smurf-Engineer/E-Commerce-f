@@ -118,7 +118,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       myLockerList={true}
                     />
                     <EditButtonContainer>
-                      <EditButton>{formatMessage(messages.edit)}</EditButton>
+                      <EditButton
+                        onClick={this.gotToEditDesign(shortId as string)}
+                      >
+                        {formatMessage(messages.edit)}
+                      </EditButton>
                     </EditButtonContainer>
                   </ButtonsContainer>
                 }
@@ -243,6 +247,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   gotoDesignCenter = (id: string) => {
     const { history } = this.props
     history.push(`/design-center?id=${id}`)
+  }
+
+  gotToEditDesign = (designId: string) => () => {
+    const { history } = this.props
+    history.push(`/design-center?designId=${designId}`)
   }
 
   handlePressQuickView = (id: number) => {

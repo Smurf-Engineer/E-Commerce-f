@@ -45,15 +45,24 @@ import {
   StyleModalType,
   ThemeModalType,
   ArtFormat,
-  SaveDesignType
+  SaveDesignType,
+  DesignType
 } from '../../types/common'
-import { getProductQuery, addTeamStoreItemMutation } from './data'
+import {
+  getProductQuery,
+  addTeamStoreItemMutation,
+  getDesignQuery
+} from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 
-interface Data extends QueryProps {
+interface DataProduct extends QueryProps {
   product?: Product
+}
+
+interface DataDesign extends QueryProps {
+  designData?: DesignType
 }
 
 interface Change {
@@ -62,7 +71,8 @@ interface Change {
 }
 
 interface Props extends RouteComponentProps<any> {
-  data: Data
+  dataProduct?: DataProduct
+  dataDesign?: DataDesign
   intl: InjectedIntl
   currentTab: number
   colorBlock: number
@@ -188,10 +198,11 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   handleOpenQuickView = () => {
     const {
+      dataDesign,
       location: { search }
     } = this.props
     const queryParams = queryString.parse(search)
-    const productId = queryParams.id || ''
+    let productId = get(dataDesign, 'designData.product.id', queryParams.id)
     const { openQuickViewAction: openQuickView } = this.props
     openQuickView(productId)
   }
@@ -337,7 +348,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setItemToAddAction,
       teamStoreId,
       location: { search },
-      data,
+      dataDesign,
+      dataProduct,
       canvas,
       setCanvasElement,
       setSelectedElement,
@@ -364,14 +376,26 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCanvasJsonAction
     } = this.props
 
-    if (!search) {
+    const queryParams = queryString.parse(search)
+    if (!queryParams.id && !queryParams.designId) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
     const { formatMessage } = intl
-    const queryParams = queryString.parse(search)
-    const productId = queryParams.id || ''
-    const productName = data && data.product ? data.product.name : ''
+    let productId = get(dataDesign, 'designData.product.id', queryParams.id)
+    let productName =
+      get(dataProduct, 'product.name') ||
+      get(dataDesign, 'designData.product.name', '')
+
+    // let objectCanvas = canvas
+    const canvasJson = get(dataDesign, 'designData.canvas')
+
+    let designObject = design
+    if (canvasJson) {
+      designObject = { ...designObject, canvasJson }
+    }
+
+    console.log(get(dataDesign, 'designData.canvas'))
 
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
@@ -451,9 +475,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 designName,
                 formatMessage,
                 customize3dMounted,
-                setCustomize3dMountedAction,
-                design
+                setCustomize3dMountedAction
               }}
+              design={designObject}
               currentStyle={style}
               onUpdateText={setTextAction}
               undoEnabled={undoChanges.length > 0}
@@ -586,7 +610,7 @@ const DesignCenterEnhance = compose(
     mapStateToProps,
     { ...designCenterActions, openQuickViewAction }
   ),
-  graphql<Data>(getProductQuery, {
+  graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
@@ -594,7 +618,19 @@ const DesignCenterEnhance = compose(
         skip: !queryParams.id,
         variables: { id: queryParams.id }
       }
-    }
+    },
+    name: 'dataProduct'
+  }),
+  graphql<DataDesign>(getDesignQuery, {
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        skip: !queryParams.designId,
+        variables: { designId: queryParams.designId }
+      }
+    },
+    name: 'dataDesign'
   })
 )(DesignCenter)
 

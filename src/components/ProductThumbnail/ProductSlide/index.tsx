@@ -62,7 +62,6 @@ const ProductSlide = ({
   urlProduct,
   myLockerList
 }: Props) => {
-  console.log(myLockerList, 'myLockerList')
   if (image) {
     return (
       <ImageContainer

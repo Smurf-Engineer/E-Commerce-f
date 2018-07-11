@@ -110,7 +110,6 @@ class ProductThumbnail extends React.Component<Props, {}> {
       customizable,
       myLockerList
     } = this.props
-    console.log(myLockerList, 'myLockerListProdThu')
     const { isHovered, currentImage } = this.state
     const price =
       priceRange &&
