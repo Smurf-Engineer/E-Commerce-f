@@ -147,24 +147,18 @@ export const setDesignNameAction = (param: string): AnyAction => {
 // TODO: Temp any
 export const setStyleAction = (
   style: any,
-  id: number,
-  index: any,
+  index: number,
   colors: string[]
 ): AnyAction => ({
   type: SET_STYLE_SELECTED_ACTION,
   style,
-  id,
   index,
   colors
 })
 
-export const setStyleComplexity = (
-  index: number,
-  colors: string[]
-): AnyAction => ({
+export const setStyleComplexity = (index: number): AnyAction => ({
   type: SET_STYLE_COMPLEXITY_ACTION,
-  index,
-  colors
+  index
 })
 
 export const openShareModalAction = (open: boolean): AnyAction => ({
