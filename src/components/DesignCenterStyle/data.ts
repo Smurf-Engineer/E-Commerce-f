@@ -6,7 +6,7 @@ import gql from 'graphql-tag'
 
 export const stylesQuery = gql`
   query GetStyles {
-    styles(limit: 12, offset: 3) {
+    styles {
       fullCount
       styles {
         id
