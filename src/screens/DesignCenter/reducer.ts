@@ -48,6 +48,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,
+  tabChanged: false,
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
@@ -114,12 +115,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           currentTab: action.index,
           swipingView: true,
-          customize3dMounted: true
+          customize3dMounted: true,
+          tabChanged: true
         })
       }
       return state.merge({
         currentTab: action.index,
-        swipingView: true
+        swipingView: true,
+        tabChanged: true
       })
     }
     case SET_COLOR_BLOCK_ACTION:

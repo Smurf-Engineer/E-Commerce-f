@@ -12,6 +12,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
+import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
@@ -31,7 +32,8 @@ import {
   BottomSheetWrapper,
   ModalMessage,
   StyledGhostButton,
-  StyledButton
+  StyledButton,
+  LoadingContainer
 } from './styledComponents'
 import {
   Palette,
@@ -113,6 +115,7 @@ interface Props extends RouteComponentProps<any> {
   customize3dMounted: boolean
   svgOutputUrl: string
   currentStyle: number
+  tabChanged: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -305,6 +308,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       history,
       text,
       currentTab,
+      tabChanged,
       setColorBlockAction,
       setHoverColorBlockAction,
       setColorAction,
@@ -389,7 +393,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataProduct, 'product.name') ||
       get(dataDesign, 'designData.product.name', '')
 
-    // let objectCanvas = canvas
     const canvasJson = get(dataDesign, 'designData.canvas')
 
     let designObject = design
@@ -397,7 +400,14 @@ export class DesignCenter extends React.Component<Props, {}> {
       designObject = { ...designObject, canvasJson }
     }
 
-    console.log(get(dataDesign, 'designData.canvas'))
+    const tabSelected = dataDesign && !tabChanged ? 2 : currentTab
+    const loadingData = dataDesign && dataDesign.loading
+
+    const loadingView = loadingData && (
+      <LoadingContainer>
+        <Spin />
+      </LoadingContainer>
+    )
 
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
@@ -406,11 +416,13 @@ export class DesignCenter extends React.Component<Props, {}> {
           <Tabs
             currentTheme={themeId}
             onSelectTab={this.handleOnSelectTab}
-            {...{ currentTab, designHasChanges, currentStyle }}
+            // TODO: Uncomment
+            currentTab={tabSelected}
+            {...{ designHasChanges, currentStyle }}
           />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
-            index={currentTab}
+            index={tabSelected}
           >
             <div key="theme">
               <Info
@@ -418,7 +430,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 0 && (
+              {tabSelected === 0 && (
                 <ThemeTab
                   currentTheme={themeId}
                   onSelectTheme={setThemeAction}
@@ -438,7 +450,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 1 && (
+              {tabSelected === 1 && (
                 <StyleTab
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
@@ -458,7 +470,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 colorBlockHovered,
                 colors,
                 loadingModel,
-                currentTab,
                 swipingView,
                 styleColors,
                 paletteName,
@@ -476,8 +487,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 designName,
                 formatMessage,
                 customize3dMounted,
-                setCustomize3dMountedAction
+                setCustomize3dMountedAction,
+                loadingData
               }}
+              currentTab={tabSelected}
               design={designObject}
               currentStyle={style}
               onUpdateText={setTextAction}
@@ -508,7 +521,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 history,
                 colors,
                 loadingModel,
-                currentTab,
                 swipingView,
                 openShareModal,
                 openShareModalAction,
@@ -522,6 +534,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 formatMessage,
                 svgOutputUrl
               }}
+              currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
@@ -541,7 +554,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />
-          {currentTab === 2 ? (
+          {tabSelected === 2 && !loadingData ? (
             <BottomSheetWrapper>
               <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
                 <StyledTitle onClick={this.toggleBottomSheet}>
@@ -555,7 +568,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 />
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
-          ) : null}
+          ) : (
+            loadingView
+          )}
         </Container>
         <Modal
           visible={openOutWithoutSaveModal}
