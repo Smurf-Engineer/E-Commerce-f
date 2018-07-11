@@ -226,13 +226,13 @@ class Render3D extends PureComponent {
       try {
         const loadedTextures = {}
         loadedTextures.flatlock = this.textureLoader.load(
-          'https://storage.googleapis.com/jakroo-storage/models/Tour2/Fflatlock.png'
+          './models/images/flatlock.png'
         )
         loadedTextures.bumpMap = this.textureLoader.load(
           'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2-BumpMap.jpg'
         )
         loadedTextures.branding = this.textureLoader.load(
-          modelTextures.branding
+          'https://storage.googleapis.com/jakroo-storage/models/Tour2/D1/branding.png'
         )
         loadedTextures.branding.minFilter = THREE.LinearFilter
         const areas = modelTextures.colors || []
@@ -271,12 +271,13 @@ class Render3D extends PureComponent {
 
             const { flatlock, areas, bumpMap, branding } = loadedTextures
             // Stitching
-            const flatlockMaterial = new THREE.MeshPhongMaterial({
-              map: flatlock,
-              specular: new THREE.Color('#000000')
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              alphaMap: flatlock,
+              color: '#FFFFFF'
             })
-            flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-            flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+            flatlockMaterial.alphaTest = 0.5
 
             // Back material
             const insideMaterial = new THREE.MeshPhongMaterial({
