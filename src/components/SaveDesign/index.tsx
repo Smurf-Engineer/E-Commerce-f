@@ -56,9 +56,7 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { onDesignName } = this.props
-    const {
-      currentTarget: { value }
-    } = evt
+    const { currentTarget: { value } } = evt
     evt.persist()
     onDesignName(value)
   }
@@ -86,7 +84,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       return
     }
 
-    const { designBase64, canvasSvg, canvasJson, styleId } = design
+    const { designBase64, canvasJson, styleId } = design
 
     try {
       const designObj = {
@@ -94,8 +92,7 @@ export class SaveDesign extends React.Component<Props, {}> {
         product_id: productId,
         image: designBase64,
         styleId,
-        canvas: canvasJson,
-        svg: canvasSvg
+        canvas: canvasJson
       }
 
       setSaveDesignLoading(true)
@@ -240,8 +237,5 @@ export class SaveDesign extends React.Component<Props, {}> {
   }
 }
 
-const SaveDesignEnhance = compose(
-  saveDesignName,
-  saveDesignChanges
-)(SaveDesign)
+const SaveDesignEnhance = compose(saveDesignName, saveDesignChanges)(SaveDesign)
 export default SaveDesignEnhance

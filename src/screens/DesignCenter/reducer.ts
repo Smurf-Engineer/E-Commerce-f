@@ -230,6 +230,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         currentTab: 2,
         swipingView: true,
         style: action.style,
+        currentStyle: action.index,
         colors: action.colors,
         designHasChanges: false,
         styleColors: action.colors,
@@ -242,11 +243,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_STYLE_COMPLEXITY_ACTION:
-      return state.merge({
-        style: action.index,
-        colors: action.colors,
-        styleColors: action.colors
-      })
+      return state.set('style', action.index)
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
     case OPEN_SAVE_DESIGN_ACTION: {

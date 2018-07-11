@@ -244,6 +244,14 @@ export interface Style {
   colors: ColorBlock[]
 }
 
+export interface DesignStyle {
+  id: number
+  name: string
+  image: string
+  branding: string
+  colors: ColorBlock[]
+}
+
 export interface StyleResult {
   fullCount: string
   styles: Style[]

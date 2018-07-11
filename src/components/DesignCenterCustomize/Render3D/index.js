@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
+import reverse from 'lodash/reverse'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
@@ -52,8 +53,6 @@ import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
-// TODO: Test data
-import dummieData from './dummieData'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
 const { Item } = Menu
@@ -68,7 +67,8 @@ class Render3D extends PureComponent {
     currentModel: 0,
     zoomValue: 0,
     progress: 0,
-    objectChilds: 0
+    objectChilds: 0,
+    canvasEl: null
   }
 
   dragComponent = null
@@ -96,7 +96,7 @@ class Render3D extends PureComponent {
     fabric.Object.prototype.customiseCornerIcons({
       settings: {
         borderColor: 'black',
-        cornerSize: 75,
+        cornerSize: 60,
         cornerPadding: 10
       },
       tl: {
@@ -130,7 +130,7 @@ class Render3D extends PureComponent {
       preserveDrawingBuffer: true
     })
 
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
 
@@ -224,14 +224,22 @@ class Render3D extends PureComponent {
   loadTextures = modelTextures =>
     new Promise((resolve, reject) => {
       try {
+        // TODO: Get flatlock, bumpmap and branding from the design.
         const loadedTextures = {}
         loadedTextures.flatlock = this.textureLoader.load(
           './models/images/flatlock.png'
         )
-        loadedTextures.bumpMap = this.textureLoader.load(modelTextures.bumpMap)
-
-        const loadedAreas = modelTextures.areas.map(areaUri => {
-          const areaTexture = this.textureLoader.load(areaUri)
+        loadedTextures.bumpMap = this.textureLoader.load(
+          'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2-BumpMap.jpg'
+        )
+        loadedTextures.branding = this.textureLoader.load(
+          'https://storage.googleapis.com/jakroo-storage/models/Tour2/D1/branding.png'
+        )
+        loadedTextures.branding.minFilter = THREE.LinearFilter
+        const areas = modelTextures.colors || []
+        const reverseOrderAreas = reverse(areas)
+        const loadedAreas = reverseOrderAreas.map(({ image }) => {
+          const areaTexture = this.textureLoader.load(image)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
         })
@@ -244,129 +252,144 @@ class Render3D extends PureComponent {
 
   render3DModel = async () => {
     /* Object and MTL load */
-    const { onLoadModel, currentStyle, colors, design } = this.props
+    const { onLoadModel, currentStyle, design, colors } = this.props
     onLoadModel(true)
 
-    /* Texture configuration */
-    const modelTextures = dummieData[currentStyle]
-    const loadedTextures = await this.loadTextures(modelTextures)
+    const loadedTextures = await this.loadTextures(currentStyle)
+    // TODO: Get the OBJ and MTL from the design
+    this.mtlLoader.load(
+      'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.mtl',
+      materials => {
+        materials.preload()
+        this.objLoader.setMaterials(materials)
+        this.objLoader.load(
+          'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.obj',
+          object => {
+            const objectChilds = object.children.length
+            this.setState({ objectChilds })
 
-    this.mtlLoader.load(modelTextures.mtl, materials => {
-      materials.preload()
-      this.objLoader.setMaterials(materials)
-      this.objLoader.load(
-        modelTextures.obj,
-        object => {
-          const objectChilds = object.children.length
-          this.setState({ objectChilds })
+            /* Object materials */
 
-          /* Object materials */
-
-          // Stitching
-          const flatlockMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.flatlock,
-            specular: new THREE.Color('#000000')
-          })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
-
-          // Back material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            side: THREE.BackSide,
-            color: '#000000'
-          })
-
-          const { children } = object
-
-          const getMeshIndex = meshName => {
-            const index = findIndex(children, mesh => mesh.name === meshName)
-            return index < 0 ? 0 : index
-          }
-
-          const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
-          const labelIndex = getMeshIndex('Red_Tag FINAL')
-          const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
-
-          // Setup the texture layers
-          const areasLayers = loadedTextures.areas.map(() =>
-            object.children[meshIndex].clone()
-          )
-          object.add(...areasLayers)
-
-          /* Jersey label */
-          object.children[labelIndex].material.color.set('#ffffff')
-          object.children[flatlockIndex].material = flatlockMaterial
-          object.children[meshIndex].material = insideMaterial
-
-          /* Canvas */
-          const canvasObj = object.children[meshIndex].clone()
-          object.add(canvasObj)
-          const canvas = document.createElement('canvas')
-          canvas.width = CANVAS_SIZE
-          canvas.height = CANVAS_SIZE
-          const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvasTexture.minFilter = THREE.LinearFilter
-
-          /* TODO: Dynamic size? */
-          this.canvasTexture = new fabric.Canvas(canvas, {
-            width: CANVAS_SIZE,
-            height: CANVAS_SIZE
-          })
-
-          this.canvasTexture.on(
-            'after:render',
-            () => (canvasTexture.needsUpdate = true)
-          )
-
-          const canvasMaterial = new THREE.MeshPhongMaterial({
-            map: canvasTexture,
-            side: THREE.FrontSide,
-            bumpMap: loadedTextures.bumpMap,
-            transparent: true
-          })
-
-          loadedTextures.areas.forEach(
-            (materialTexture, index) =>
-              (object.children[
-                objectChilds + index
-              ].material = new THREE.MeshPhongMaterial({
-                map: loadedTextures.areas[index],
-                side: THREE.FrontSide,
-                bumpMap: loadedTextures.bumpMap,
-                color: colors[index],
-                transparent: true
-              }))
-          )
-
-          object.children[20].material = canvasMaterial
-          object.children[20].name = 'Canvas_Mesh'
-
-          const largeHeight = window.matchMedia(
-            'only screen and (min-height: 800px)'
-          ).matches
-
-          /* Object Config */
-          object.position.y = largeHeight ? -50 : -30
-          object.name = 'jersey'
-          this.scene.add(object)
-
-          if (design && design.canvasJson) {
-            this.canvasTexture.loadFromJSON(design.canvasJson, () => {
-              canvasTexture.needsUpdate = true
+            const { flatlock, areas, bumpMap, branding } = loadedTextures
+            // Stitching
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              alphaMap: flatlock,
+              color: '#FFFFFF'
             })
-          }
+            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+            flatlockMaterial.alphaTest = 0.5
 
-          onLoadModel(false)
-        },
-        this.onProgress,
-        this.onError
-      )
-    })
+            // Back material
+            const insideMaterial = new THREE.MeshPhongMaterial({
+              side: THREE.BackSide,
+              color: '#000000'
+            })
+
+            const { children } = object
+
+            const getMeshIndex = meshName => {
+              const index = findIndex(children, mesh => mesh.name === meshName)
+              return index < 0 ? 0 : index
+            }
+
+            const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
+            const labelIndex = getMeshIndex('Red_Tag FINAL')
+            const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
+
+            // Setup the texture layers
+            const areasLayers = areas.map(() => children[meshIndex].clone())
+            object.add(...areasLayers)
+
+            /* Jersey label */
+            object.children[labelIndex].material.color.set('#ffffff')
+            object.children[flatlockIndex].material = flatlockMaterial
+            object.children[meshIndex].material = insideMaterial
+
+            /* Canvas */
+            const canvasObj = object.children[meshIndex].clone()
+            const brandingObj = object.children[meshIndex].clone()
+            object.add(canvasObj, brandingObj)
+            const canvas = document.createElement('canvas')
+            canvas.width = CANVAS_SIZE
+            canvas.height = CANVAS_SIZE
+            const canvasTexture = new THREE.CanvasTexture(canvas)
+            canvasTexture.minFilter = THREE.LinearFilter
+
+            /* TODO: Dynamic size? */
+            this.canvasTexture = new fabric.Canvas(canvas, {
+              width: CANVAS_SIZE,
+              height: CANVAS_SIZE
+            })
+
+            this.canvasTexture.on(
+              'after:render',
+              () => (canvasTexture.needsUpdate = true)
+            )
+
+            const canvasMaterial = new THREE.MeshPhongMaterial({
+              map: canvasTexture,
+              side: THREE.FrontSide,
+              bumpMap,
+              transparent: true
+            })
+
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              map: branding,
+              side: THREE.FrontSide,
+              bumpMap,
+              transparent: true
+            })
+
+            areas.forEach(
+              (map, index) =>
+                (object.children[
+                  objectChilds + index
+                ].material = new THREE.MeshPhongMaterial({
+                  map,
+                  side: THREE.FrontSide,
+                  color: colors[index],
+                  bumpMap,
+                  transparent: true
+                }))
+            )
+
+            const childrenLength = children.length
+            const canvasIndex = childrenLength - 2
+            const brandingIndex = childrenLength - 1
+            object.children[canvasIndex].material = canvasMaterial
+            object.children[brandingIndex].material = brandingMaterial
+            object.children[canvasIndex].name = 'Canvas_Mesh'
+            object.children[brandingIndex].name = 'Branding_Mesh'
+
+            const largeHeight = window.matchMedia(
+              'only screen and (min-height: 800px)'
+            ).matches
+
+            /* Object Config */
+            object.position.y = largeHeight ? -50 : -30
+            object.name = 'jersey'
+            this.scene.add(object)
+
+            if (design && design.canvasJson) {
+              this.canvasTexture.loadFromJSON(
+                design.canvasJson,
+                () => (canvasTexture.needsUpdate = true)
+              )
+            }
+
+            onLoadModel(false)
+          },
+          this.onProgress,
+          this.onError
+        )
+      }
+    )
   }
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round((xhr.loaded / xhr.total) * 100)
+      const progress = Math.round(xhr.loaded / xhr.total * 100)
       this.setState({ progress })
     }
   }
@@ -454,7 +477,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = (value * 1.0) / 100
+      const zoomValue = value * 1.0 / 100
       this.camera.zoom = zoomValue * 2
       this.camera.updateProjectionMatrix()
     }
@@ -514,10 +537,10 @@ class Render3D extends PureComponent {
 
           const canvasJson = JSON.stringify(this.canvasTexture)
           const saveDesign = {
+            canvasJson,
             designBase64,
             canvasSvg: this.canvasTexture.toSVG(),
-            canvasJson,
-            styleId: currentStyle + 1
+            styleId: currentStyle.id
           }
           onOpenSaveDesign(true, saveDesign)
         }, 200)
@@ -526,7 +549,7 @@ class Render3D extends PureComponent {
   }
 
   render() {
-    const { showDragmessage, currentView, zoomValue, progress } = this.state
+    const { showDragmessage, currentView, progress } = this.state
     const {
       onPressQuickView,
       undoEnabled,
@@ -534,7 +557,6 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
-      text,
       openResetDesignModal
     } = this.props
 
@@ -562,7 +584,10 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
-        <Render innerRef={container => (this.container = container)}>
+        <Render
+          id="render-3d"
+          innerRef={container => (this.container = container)}
+        >
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
         {showDragmessage && (
@@ -620,15 +645,35 @@ class Render3D extends PureComponent {
     )
   }
 
-  applyImage = base64 => {
+  applyCanvasEl = canvasEl => {
+    if (this.canvasTexture) {
+      const objects = this.canvasTexture.getObjects()
+      if (!objects.length) {
+        let element = canvasEl.type
+        if (canvasEl.type === 'path') {
+          element = 'symbol'
+        }
+        const modal = Modal.info({
+          title: 'Getting started',
+          content: `Click the position, where the ${element} should be placed`,
+          okText: 'Got it!',
+          okType: 'default'
+        })
+        setTimeout(() => modal.destroy(), 10000)
+      }
+      document.getElementById('render-3d').style.cursor = 'crosshair'
+      this.setState({ canvasEl })
+    }
+  }
+
+  applyImage = (base64, position = {}) => {
     const { onApplyCanvasEl } = this.props
     const id = shortid.generate()
     fabric.Image.fromURL(base64, oImg => {
       const imageEl = oImg.scale(1).set({
         id,
         hasRotatingPoint: false,
-        left: 700,
-        top: 409
+        ...position
       })
       this.canvasTexture.add(imageEl)
 
@@ -639,7 +684,7 @@ class Render3D extends PureComponent {
     })
   }
 
-  applyText = (text, style) => {
+  applyText = (text, style, position = {}) => {
     if (!this.canvasTexture || !text) {
       return
     }
@@ -655,11 +700,10 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id: shortid.generate(),
         hasRotatingPoint: false,
-        left: 700,
-        top: 409,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
+        ...position,
         ...style
       })
       this.canvasTexture.add(txtEl)
@@ -675,21 +719,20 @@ class Render3D extends PureComponent {
     onApplyCanvasEl(el, 'text', !!activeEl)
   }
 
-  applyClipArt = (url, style) => {
+  applyClipArt = (url, style, position = {}) => {
     const activeEl = this.canvasTexture.getActiveObject()
     if (activeEl && activeEl.type === 'path') {
       activeEl.set({ ...style })
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects, options) => {
+      fabric.loadSVGFromURL(url, (objects = [], options) => {
         const id = shortid.generate()
         const shape = fabric.util.groupSVGElements(objects, options)
         shape.set({
           id,
           hasRotatingPoint: false,
-          top: 700,
-          left: 409
+          ...position
         })
         const el = {
           id,
@@ -791,81 +834,113 @@ class Render3D extends PureComponent {
     )
 
     if (!!intersects.length && intersects[0].uv) {
+      const { canvasEl } = this.state
+      const meshName = get(intersects[0], 'object.name', '')
       const uv = intersects[0].uv
-      const activeEl = this.canvasTexture.getActiveObject()
-      if (activeEl && !this.dragComponent) {
-        const boundingBox = activeEl.getBoundingRect()
-        const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
-        if (action) {
-          switch (action) {
-            case DELETE_ACTION:
-              this.deleteElement(activeEl)
+      const validMesh =
+        meshName === 'FINAL JV2_Design_Mesh' ||
+        meshName === 'Canvas_Mesh' ||
+        meshName === 'Branding_Mesh'
+      if (!!canvasEl && validMesh) {
+        const el = Object.assign({}, canvasEl)
+        this.setState({ canvasEl: null }, () => {
+          document.getElementById('render-3d').style.cursor = 'default'
+          const left = uv.x * CANVAS_SIZE
+          const top = (1 - uv.y) * CANVAS_SIZE
+
+          switch (el.type) {
+            case 'text':
+              this.applyText(el.text, el.style, { left, top })
               break
-            case DUPLICATE_ACTION:
-              this.duplicateElement(activeEl)
+            case 'image':
+              this.applyImage(el.base64, { left, top })
               break
-            case BRING_TO_FRONT_ACTION:
-              this.setLayerElement(activeEl)
+            case 'path':
+              this.applyClipArt(el.url, el.style, { left, top })
               break
-            case SCALE_ACTION: {
-              this.controls.enabled = false
-              this.dragComponent = { action: SCALE_ACTION }
-              break
-            }
-            case ROTATE_ACTION: {
-              const sX = uv.x * CANVAS_SIZE
-              const sY = (1 - uv.y) * CANVAS_SIZE
-              const startPoint = { x: sX, y: sY }
-              const oX = activeEl.left + activeEl.width / 2
-              const oY = activeEl.top + activeEl.height / 2
-              const originPoint = { x: oX, y: oY }
-              this.controls.enabled = false
-              this.dragComponent = {
-                el: activeEl,
-                action: ROTATE_ACTION,
-                startPoint,
-                originPoint
-              }
-              break
-            }
             default:
               break
           }
-          return
-        }
-      }
-
-      let allDeactive = true
-      const { onSelectEl } = this.props
-      this.canvasTexture.forEachObject(el => {
-        const boundingBox = el.getBoundingRect()
-        const isInside = isMouseOver(boundingBox, uv)
-        if (isInside) {
-          allDeactive = false
-          onSelectEl(el.id, el.get('type'))
-          const left = uv.x * CANVAS_SIZE
-          const top = (1 - uv.y) * CANVAS_SIZE
-          const differenceX = left - boundingBox.left
-          const differenceY = top - boundingBox.top
-          const dragComponent = {
-            differenceX,
-            differenceY,
-            action: DRAG_ACTION
+        })
+      } else {
+        const activeEl = this.canvasTexture.getActiveObject()
+        if (activeEl && !this.dragComponent) {
+          const boundingBox = activeEl.getBoundingRect()
+          const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
+          if (action) {
+            switch (action) {
+              case DELETE_ACTION:
+                this.deleteElement(activeEl)
+                break
+              case DUPLICATE_ACTION:
+                this.duplicateElement(activeEl)
+                break
+              case BRING_TO_FRONT_ACTION:
+                this.setLayerElement(activeEl)
+                break
+              case SCALE_ACTION: {
+                this.controls.enabled = false
+                this.dragComponent = { action: SCALE_ACTION }
+                break
+              }
+              case ROTATE_ACTION: {
+                const sX = uv.x * CANVAS_SIZE
+                const sY = (1 - uv.y) * CANVAS_SIZE
+                const startPoint = { x: sX, y: sY }
+                const oX = activeEl.left + activeEl.width / 2
+                const oY = activeEl.top + activeEl.height / 2
+                const originPoint = { x: oX, y: oY }
+                this.controls.enabled = false
+                this.dragComponent = {
+                  el: activeEl,
+                  action: ROTATE_ACTION,
+                  startPoint,
+                  originPoint
+                }
+                break
+              }
+              default:
+                break
+            }
+            return
           }
-          this.controls.enabled = false
-          this.dragComponent = dragComponent
-          this.canvasTexture.setActiveObject(el)
-        } else {
-          el.set('active', false)
         }
-      })
 
-      if (allDeactive && activeEl) {
-        onSelectEl('')
-        this.canvasTexture.discardActiveObject()
+        let allDeactive = true
+        const { onSelectEl } = this.props
+        this.canvasTexture.forEachObject(el => {
+          const boundingBox = el.getBoundingRect()
+          const isInside = isMouseOver(boundingBox, uv)
+          if (isInside) {
+            allDeactive = false
+            onSelectEl(el.id, el.get('type'))
+            const left = uv.x * CANVAS_SIZE
+            const top = (1 - uv.y) * CANVAS_SIZE
+            const differenceX = left - boundingBox.left
+            const differenceY = top - boundingBox.top
+            const dragComponent = {
+              differenceX,
+              differenceY,
+              action: DRAG_ACTION
+            }
+            this.controls.enabled = false
+            this.dragComponent = dragComponent
+            this.canvasTexture.setActiveObject(el)
+          } else {
+            el.set('active', false)
+          }
+        })
+
+        if (allDeactive && activeEl) {
+          onSelectEl('')
+          this.canvasTexture.discardActiveObject()
+        }
+
+        this.canvasTexture.renderAll()
       }
-
-      this.canvasTexture.renderAll()
+    } else if (this.state.canvasEl) {
+      this.setState({ canvasEl: null })
+      document.getElementById('render-3d').style.cursor = 'default'
     }
   }
 
@@ -883,10 +958,13 @@ class Render3D extends PureComponent {
       this.onClickPosition,
       this.scene.children
     )
-
     if (!!intersects.length && intersects[0].uv && !!this.dragComponent) {
       const meshName = get(intersects[0], 'object.name', '')
-      if (meshName === 'FINAL JV2_Design_Mesh' || meshName === 'Canvas_Mesh') {
+      if (
+        meshName === 'FINAL JV2_Design_Mesh' ||
+        meshName === 'Canvas_Mesh' ||
+        meshName === 'Branding_Mesh'
+      ) {
         const activeEl = this.canvasTexture.getActiveObject()
         const { differenceX, differenceY, action } = this.dragComponent
         const uv = intersects[0].uv

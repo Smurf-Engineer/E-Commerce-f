@@ -102,6 +102,7 @@ interface Props extends RouteComponentProps<any> {
   routeToGoWithoutSave: string
   customize3dMounted: boolean
   svgOutputUrl: string
+  currentStyle: number
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -361,7 +362,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       customize3dMounted,
       setCustomize3dMountedAction,
       svgOutputUrl,
-      setCanvasJsonAction
+      setCanvasJsonAction,
+      currentStyle
     } = this.props
 
     if (!search) {
@@ -378,10 +380,9 @@ export class DesignCenter extends React.Component<Props, {}> {
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
           <Tabs
-            currentStyle={style}
             currentTheme={themeId}
             onSelectTab={this.handleOnSelectTab}
-            {...{ currentTab, designHasChanges }}
+            {...{ currentTab, designHasChanges, currentStyle }}
           />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
@@ -415,14 +416,14 @@ export class DesignCenter extends React.Component<Props, {}> {
               />
               {currentTab === 1 && (
                 <StyleTab
-                  currentStyle={style}
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
                   {...{
                     styleModalData,
                     openNewStyleModalAction,
                     designHasChanges,
-                    formatMessage
+                    formatMessage,
+                    currentStyle
                   }}
                 />
               )}
