@@ -35,13 +35,14 @@ interface Props {
   isStoreThumbnail?: boolean
   teamStoreShortId?: string
   customizable?: boolean
+  myLockerList?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
   state = {
-    isHovered: true,
+    isHovered: false,
     currentImage: 0
   }
 
@@ -106,8 +107,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
       image,
       hideCustomButton,
       hideQuickView,
-      customizable
+      customizable,
+      myLockerList
     } = this.props
+    console.log(myLockerList, 'myLockerListProdThu')
     const { isHovered, currentImage } = this.state
     const price =
       priceRange &&
@@ -126,7 +129,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             image,
             hideCustomButton,
             hideQuickView,
-            urlProduct
+            urlProduct,
+            myLockerList
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

@@ -33,8 +33,12 @@ export const ButtonContainer = styled.div`
     myLockerList ? 'relative' : 'absolute'};
   width: 200px;
   justify-content: center;
-  top: ${({ withoutTop }: ButtonContainerProps) =>
-    withoutTop ? '5px' : '170px'};
+  top: ${({ withoutTop, myLockerList }: ButtonContainerProps) => {
+    if (myLockerList) {
+      return '0'
+    }
+    return withoutTop ? '5px' : '170px'
+  }};
 `
 
 export const CustomizeButton = styled.div`

@@ -122,6 +122,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                     </EditButtonContainer>
                   </ButtonsContainer>
                 }
+                myLockerList={true}
                 isTopProduct={product.isTopProduct}
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}

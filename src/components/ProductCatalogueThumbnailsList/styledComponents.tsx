@@ -121,14 +121,14 @@ export const ButtonsContainer = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content: center;
-  align-items: space-between;
+  align-items: center;
 `
 
 export const EditButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
-  width: 221px;
-  justify-content: center;
+  align-items: center;
+  margin: 8px;
 `
 
 export const EditButton = styled.div`
@@ -143,4 +143,5 @@ export const EditButton = styled.div`
   align-items: center;
   border-radius: 2px;
   padding: 6px 16px;
+  width: 100px;
 `
