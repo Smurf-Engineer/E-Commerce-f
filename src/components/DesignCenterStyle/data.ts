@@ -12,6 +12,7 @@ export const stylesQuery = gql`
         id
         name
         image
+        branding
         colors: colorsBlocks {
           image
           color
