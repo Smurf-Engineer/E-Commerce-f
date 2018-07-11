@@ -32,7 +32,10 @@ import {
   Loading,
   PaginationRow,
   MenuStyle,
-  NoResultsFound
+  NoResultsFound,
+  EditButtonContainer,
+  EditButton,
+  ButtonsContainer
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 
@@ -102,16 +105,22 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   />
                 }
                 labelButton={
-                  <AddToCartButton
-                    label={formatMessage(messages.addToCart)}
-                    renderForThumbnail={true}
-                    item={{ product }}
-                    {...{ formatMessage }}
-                    withoutTop={true}
-                    designId={shortId}
-                    designName={name}
-                    designImage={image}
-                  />
+                  <ButtonsContainer>
+                    <AddToCartButton
+                      label={formatMessage(messages.customize)}
+                      renderForThumbnail={true}
+                      item={{ product }}
+                      {...{ formatMessage }}
+                      withoutTop={true}
+                      designId={shortId}
+                      designName={name}
+                      designImage={image}
+                      myLockerList={true}
+                    />
+                    <EditButtonContainer>
+                      <EditButton>{formatMessage(messages.edit)}</EditButton>
+                    </EditButtonContainer>
+                  </ButtonsContainer>
                 }
                 isTopProduct={product.isTopProduct}
                 onPressCustomize={this.handleOnPressAddToCart}

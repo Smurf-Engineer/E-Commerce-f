@@ -115,3 +115,32 @@ export const NoResultsFound = styled.div`
   height: 60vh;
   justify-content: center;
 `
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: space-between;
+`
+
+export const EditButtonContainer = styled.div`
+  user-select: none;
+  display: flex !important;
+  width: 221px;
+  justify-content: center;
+`
+
+export const EditButton = styled.div`
+  user-select: none;
+  background-color: #ffffffb3;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+  padding: 6px 16px;
+`

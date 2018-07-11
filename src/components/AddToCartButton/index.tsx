@@ -40,16 +40,17 @@ interface Props {
   withoutTop?: boolean
   itemProdPage?: boolean
   onClick: () => boolean
+  myLockerList?: boolean
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class AddToCartButton extends React.PureComponent<Props, {}> {
   render() {
-    const { label, renderForThumbnail, withoutTop } = this.props
+    const { label, renderForThumbnail, withoutTop, myLockerList } = this.props
 
     const renderView = renderForThumbnail ? (
-      <ButtonContainer withoutTop={!!withoutTop}>
+      <ButtonContainer {...{ myLockerList }} withoutTop={!!withoutTop}>
         <CustomizeButton onClick={this.addToCart}>{label}</CustomizeButton>
       </ButtonContainer>
     ) : (

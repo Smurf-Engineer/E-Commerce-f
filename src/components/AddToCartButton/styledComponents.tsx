@@ -23,12 +23,14 @@ export const StyledButton = styled(Button)`
 
 interface ButtonContainerProps {
   withoutTop?: boolean
+  myLockerList?: boolean
 }
 
 export const ButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
-  position: absolute;
+  position: ${({ myLockerList }: ButtonContainerProps) =>
+    myLockerList ? 'relative' : 'absolute'};
   width: 200px;
   justify-content: center;
   top: ${({ withoutTop }: ButtonContainerProps) =>

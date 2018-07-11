@@ -41,7 +41,7 @@ interface Props {
 
 class ProductThumbnail extends React.Component<Props, {}> {
   state = {
-    isHovered: false,
+    isHovered: true,
     currentImage: 0
   }
 
