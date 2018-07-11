@@ -722,7 +722,7 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects, options) => {
+      fabric.loadSVGFromURL(url, (objects = [], options) => {
         const id = shortid.generate()
         const shape = fabric.util.groupSVGElements(objects, options)
         shape.set({
@@ -833,11 +833,11 @@ class Render3D extends PureComponent {
       const { canvasEl } = this.state
       const meshName = get(intersects[0], 'object.name', '')
       const uv = intersects[0].uv
-      if (
-        (!!canvasEl && meshName === 'FINAL JV2_Design_Mesh') ||
+      const validMesh =
+        meshName === 'FINAL JV2_Design_Mesh' ||
         meshName === 'Canvas_Mesh' ||
         meshName === 'Branding_Mesh'
-      ) {
+      if (!!canvasEl && validMesh) {
         const el = Object.assign({}, canvasEl)
         this.setState({ canvasEl: null }, () => {
           document.getElementById('render-3d').style.cursor = 'default'
