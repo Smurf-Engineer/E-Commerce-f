@@ -394,14 +394,22 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataDesign, 'designData.product.name', '')
 
     const canvasJson = get(dataDesign, 'designData.canvas')
+    const styleId = get(dataDesign, 'designData.styleId')
+    const styleObject = get(dataDesign, 'designData.style')
 
     let designObject = design
     if (canvasJson) {
-      designObject = { ...designObject, canvasJson }
+      designObject = { ...designObject, canvasJson, styleId }
     }
 
-    const tabSelected = dataDesign && !tabChanged ? 2 : currentTab
-    const loadingData = dataDesign && dataDesign.loading
+    let tabSelected = currentTab
+    let loadingData = false
+    let styleSelected = style
+    if (dataDesign) {
+      tabSelected = !tabChanged ? 2 : currentTab
+      loadingData = !!dataDesign.loading
+      styleSelected = style === -1 ? styleObject : style
+    }
 
     const loadingView = loadingData && (
       <LoadingContainer>
@@ -492,7 +500,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               }}
               currentTab={tabSelected}
               design={designObject}
-              currentStyle={style}
+              currentStyle={styleSelected}
               onUpdateText={setTextAction}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}

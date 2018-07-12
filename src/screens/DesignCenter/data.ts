@@ -44,6 +44,18 @@ export const getDesignQuery = gql`
         color
         image
       }
+      styleId: style_id
+      style {
+        id
+        name
+        image
+        branding
+        colors: colorsBlocks {
+          image
+          color
+          colorDesc: colordesc
+        }
+      }
       canvas
       flatlock
     }

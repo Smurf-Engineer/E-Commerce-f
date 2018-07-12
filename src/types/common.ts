@@ -109,6 +109,7 @@ export type DesignType = {
   product: Product
   image: string
   createdAt: string
+  style?: Style
 }
 
 export type SaveDesignType = {

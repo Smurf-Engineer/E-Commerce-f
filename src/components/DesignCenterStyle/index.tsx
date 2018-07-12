@@ -64,7 +64,10 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   }
 
   selectStyle = (id: number, index: any) => {
-    const { onSelectStyle, data: { styles } } = this.props
+    const {
+      onSelectStyle,
+      data: { styles }
+    } = this.props
     const style = get(styles, `styles[${index}]`, {})
     const styleAreas = style.colors || []
     const colors = styleAreas.map(({ color }: any) => color)
@@ -72,7 +75,9 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   }
 
   reselectStyle = () => {
-    const { styleModalData: { indexStyle, idStyle } } = this.props
+    const {
+      styleModalData: { indexStyle, idStyle }
+    } = this.props
     this.selectStyle(idStyle, indexStyle)
   }
 
