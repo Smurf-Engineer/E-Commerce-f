@@ -22,8 +22,7 @@ export const Container = styled.div`
   align-items: flex-start;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding-top: 24px;
-    padding: 0 8px;
+    padding: 8px 0;
   }
 `
 

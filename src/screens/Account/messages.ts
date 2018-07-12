@@ -48,5 +48,9 @@ export default defineMessages({
   files: {
     id: 'screens.Account.submenu.files',
     defaultMessage: 'My Files'
+  },
+  filtersTitle: {
+    id: 'screens.Account.submenu.filtersTitle',
+    defaultMessage: 'MY ACCOUNT '
   }
 })
