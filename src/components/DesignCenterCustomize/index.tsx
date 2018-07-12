@@ -12,7 +12,8 @@ import {
   CanvasType,
   MyPaletteDesignCenterModals,
   ArtFormat,
-  SaveDesignType
+  SaveDesignType,
+  Style
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 
@@ -23,7 +24,7 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
-  currentStyle: number
+  currentStyle: Style
   loadingModel: boolean
   undoEnabled: boolean
   redoEnabled: boolean

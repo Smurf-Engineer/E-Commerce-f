@@ -242,6 +242,7 @@ export interface Style {
   id: number
   name: string
   image: string
+  branding?: string
   colors: ColorBlock[]
 }
 

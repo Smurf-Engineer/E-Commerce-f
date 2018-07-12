@@ -15,6 +15,7 @@ import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
+import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -48,7 +49,8 @@ import {
   ThemeModalType,
   ArtFormat,
   SaveDesignType,
-  DesignType
+  DesignType,
+  Style
 } from '../../types/common'
 import {
   getProductQuery,
@@ -95,8 +97,9 @@ interface Props extends RouteComponentProps<any> {
   savedDesignId: string
   saveDesignLoading: boolean
   text: string
-  style: number
+  style: Style
   themeId: number
+  styleIndex: number
   openAddToStoreModal: boolean
   addItemToStore: any
   teamStoreId: string
@@ -114,7 +117,6 @@ interface Props extends RouteComponentProps<any> {
   routeToGoWithoutSave: string
   customize3dMounted: boolean
   svgOutputUrl: string
-  currentStyle: number
   tabChanged: boolean
   // Redux Actions
   clearStoreAction: () => void
@@ -379,7 +381,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCustomize3dMountedAction,
       svgOutputUrl,
       setCanvasJsonAction,
-      currentStyle
+      styleIndex
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -404,11 +406,11 @@ export class DesignCenter extends React.Component<Props, {}> {
 
     let tabSelected = currentTab
     let loadingData = false
-    let styleSelected = style
+    let currentStyle = style
     if (dataDesign) {
       tabSelected = !tabChanged ? 2 : currentTab
       loadingData = !!dataDesign.loading
-      styleSelected = style === -1 ? styleObject : style
+      currentStyle = isEmpty(style) ? styleObject : style
     }
 
     const loadingView = loadingData && (
@@ -426,7 +428,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             onSelectTab={this.handleOnSelectTab}
             // TODO: Uncomment
             currentTab={tabSelected}
-            {...{ designHasChanges, currentStyle }}
+            {...{ designHasChanges, styleIndex }}
           />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
@@ -467,7 +469,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     openNewStyleModalAction,
                     designHasChanges,
                     formatMessage,
-                    currentStyle
+                    styleIndex
                   }}
                 />
               )}
@@ -496,11 +498,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 formatMessage,
                 customize3dMounted,
                 setCustomize3dMountedAction,
-                loadingData
+                loadingData,
+                currentStyle
               }}
               currentTab={tabSelected}
               design={designObject}
-              currentStyle={styleSelected}
               onUpdateText={setTextAction}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
