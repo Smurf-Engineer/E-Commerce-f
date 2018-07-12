@@ -426,7 +426,6 @@ export class DesignCenter extends React.Component<Props, {}> {
           <Tabs
             currentTheme={themeId}
             onSelectTab={this.handleOnSelectTab}
-            // TODO: Uncomment
             currentTab={tabSelected}
             {...{ designHasChanges, styleIndex }}
           />
