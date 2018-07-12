@@ -9,16 +9,12 @@ export default defineMessages({
     id: 'components.designCenterCustomize.Tab.color',
     defaultMessage: 'Color'
   },
-  text: {
-    id: 'components.designCenterCustomize.Tab.text',
-    defaultMessage: 'Text'
-  },
-  symbol: {
-    id: 'components.designCenterCustomize.Tab.symbol',
-    defaultMessage: 'Symbol'
-  },
   upload: {
     id: 'components.designCenterCustomize.Tab.upload',
     defaultMessage: 'Upload'
+  },
+  inspiration: {
+    id: 'components.designCenterTool.Tab.inspiration',
+    defaultMessage: 'Inspiration'
   }
 })

@@ -6,6 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
+import InpirationTab from '../InspirationColors'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import { Container } from './styledComponents'
@@ -52,7 +53,7 @@ const Tabs = ({
             }}
           />
         </TabPane>
-        <TabPane tab={<Tab label="color" icon={colorIcon} />} key="4">
+        <TabPane tab={<Tab label="color" icon={colorIcon} />} key="2">
           <ColorTab
             {...{
               onSelectColorBlock,
@@ -64,6 +65,9 @@ const Tabs = ({
               styleColors
             }}
           />
+        </TabPane>
+        <TabPane tab={<Tab label="inspiration" icon={colorIcon} />} key="3">
+          <InpirationTab />
         </TabPane>
       </AntdTabs>
     </Container>
