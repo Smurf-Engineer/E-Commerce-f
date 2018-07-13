@@ -208,7 +208,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       location: { search }
     } = this.props
     const queryParams = queryString.parse(search)
-    let productId = get(dataDesign, 'designData.product.id', queryParams.id)
+    const productId = get(dataDesign, 'designData.product.id', queryParams.id)
     const { openQuickViewAction: openQuickView } = this.props
     openQuickView(productId)
   }
@@ -390,8 +390,8 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
 
     const { formatMessage } = intl
-    let productId = get(dataDesign, 'designData.product.id', queryParams.id)
-    let productName =
+    const productId = get(dataDesign, 'designData.product.id', queryParams.id)
+    const productName =
       get(dataProduct, 'product.name') ||
       get(dataDesign, 'designData.product.name', '')
 
