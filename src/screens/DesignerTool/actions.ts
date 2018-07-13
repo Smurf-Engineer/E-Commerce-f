@@ -11,7 +11,9 @@ import {
   SET_UPLOADING_SUCCESS,
   SET_UPLOADING_DESIGN_SUCCESS,
   SET_CURRENT_TAB_ACTION,
-  SET_SWIPING_TAB_ACTION
+  SET_SWIPING_TAB_ACTION,
+  SET_SELECTED_THEME_ACTION,
+  SET_SELECTED_STYLE_ACTION
 } from './constants'
 import { AnyAction, ModelConfig } from '../../types/common'
 
@@ -63,4 +65,14 @@ export const setCurrentTabAction = (index: number): AnyAction => ({
 export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
   type: SET_SWIPING_TAB_ACTION,
   isSwiping
+})
+
+export const setSelectedThemeAction = (id: number): AnyAction => ({
+  type: SET_SELECTED_THEME_ACTION,
+  id
+})
+
+export const setSelectedStyleAction = (id: number): AnyAction => ({
+  type: SET_SELECTED_STYLE_ACTION,
+  id
 })

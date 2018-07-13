@@ -11,7 +11,7 @@ import SettingsTab from './DesignSettings/'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { Container } from './styledComponents'
-import { ModelConfig } from '../../types/common'
+import { ModelConfig, UploadFile } from '../../types/common'
 
 interface Props {
   colors: string[]
@@ -24,6 +24,8 @@ interface Props {
   modelConfig: ModelConfig
   currentTab: number
   swipingView: boolean
+  selectedTheme: number
+  selectedStyle: number
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -34,9 +36,14 @@ interface Props {
   setUploadingAction: (loading: boolean) => void
   setCurrentTabAction: (index: number) => void
   setSwipingTabAction: (swiping: boolean) => void
+  setSelectedThemeAction: (id: number) => void
+  setSelectedStyleAction: (id: number) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
+  state = {
+    themeImage: []
+  }
   render() {
     const {
       colors,
@@ -53,9 +60,13 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadingFiles,
       modelConfig,
       areas,
+      selectedTheme,
       currentTab,
-      swipingView
+      setSelectedThemeAction,
+      setSelectedStyleAction,
+      selectedStyle
     } = this.props
+    const { themeImage } = this.state
     return (
       <Container>
         <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
@@ -81,7 +92,17 @@ export class DesignerTool extends React.Component<Props, {}> {
             onUploadFiles={uploadFilesAction}
             onUploadDesign={uploadDesignAction}
           />
-          <SettingsTab />
+          <SettingsTab
+            {...{ themeImage }}
+            selectedTheme={selectedTheme}
+            selectedStyle={selectedStyle}
+            onSelectTheme={setSelectedThemeAction}
+            onSelectStyle={setSelectedStyleAction}
+            onDeleteTheme={this.handleOnDeleteTheme}
+            onDeleteStyle={this.handleOnDeleteStyle}
+            onSelectImage={this.handleOnSelectThemeImage}
+            onDeleteImage={this.handleOnDeleteThemeImage}
+          />
         </SwipeableViews>
       </Container>
     )
@@ -95,6 +116,18 @@ export class DesignerTool extends React.Component<Props, {}> {
   handleOnSelectTab = (index: number) => {
     const { setCurrentTabAction } = this.props
     setCurrentTabAction(index)
+  }
+
+  handleOnDeleteTheme = (id: number) => {}
+
+  handleOnDeleteStyle = (id: number) => {}
+
+  handleOnSelectThemeImage = (file: UploadFile) => {
+    this.setState({ themeImage: [file] })
+  }
+
+  handleOnDeleteThemeImage = () => {
+    this.setState({ themeImage: [] })
   }
 }
 

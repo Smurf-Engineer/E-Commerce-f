@@ -13,3 +13,10 @@ export const SET_UPLOADING_SUCCESS = `${namespace}/SET_UPLOADING_SUCCESS`
 export const SET_UPLOADING_DESIGN_SUCCESS = `${namespace}/SET_UPLOADING_DESIGN_SUCCESS`
 export const SET_CURRENT_TAB_ACTION = `${namespace}/SET_CURRENT_TAB_ACTION`
 export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`
+export const SET_SELECTED_THEME_ACTION = `${namespace}/SET_SELECTED_THEME_ACTION`
+export const SET_SELECTED_STYLE_ACTION = `${namespace}/SET_SELECTED_STYLE_ACTION`
+
+export enum Tabs {
+  RenderTab = 0,
+  SettingsTab = 0
+}
