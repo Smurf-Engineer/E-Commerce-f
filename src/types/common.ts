@@ -109,6 +109,7 @@ export type DesignType = {
   product: Product
   image: string
   createdAt: string
+  style?: Style
 }
 
 export type SaveDesignType = {
@@ -241,6 +242,7 @@ export interface Style {
   id: number
   name: string
   image: string
+  branding?: string
   colors: ColorBlock[]
 }
 

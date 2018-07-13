@@ -32,7 +32,10 @@ import {
   Loading,
   PaginationRow,
   MenuStyle,
-  NoResultsFound
+  NoResultsFound,
+  EditButtonContainer,
+  EditButton,
+  ButtonsContainer
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
 
@@ -102,17 +105,28 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   />
                 }
                 labelButton={
-                  <AddToCartButton
-                    label={formatMessage(messages.addToCart)}
-                    renderForThumbnail={true}
-                    item={{ product }}
-                    {...{ formatMessage }}
-                    withoutTop={true}
-                    designId={shortId}
-                    designName={name}
-                    designImage={image}
-                  />
+                  <ButtonsContainer>
+                    <AddToCartButton
+                      label={formatMessage(messages.customize)}
+                      renderForThumbnail={true}
+                      item={{ product }}
+                      {...{ formatMessage }}
+                      withoutTop={true}
+                      designId={shortId}
+                      designName={name}
+                      designImage={image}
+                      myLockerList={true}
+                    />
+                    <EditButtonContainer>
+                      <EditButton
+                        onClick={this.gotToEditDesign(shortId as string)}
+                      >
+                        {formatMessage(messages.edit)}
+                      </EditButton>
+                    </EditButtonContainer>
+                  </ButtonsContainer>
                 }
+                myLockerList={true}
                 isTopProduct={product.isTopProduct}
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}
@@ -233,6 +247,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   gotoDesignCenter = (id: string) => {
     const { history } = this.props
     history.push(`/design-center?id=${id}`)
+  }
+
+  gotToEditDesign = (designId: string) => () => {
+    const { history } = this.props
+    history.push(`/design-center?designId=${designId}`)
   }
 
   handlePressQuickView = (id: number) => {
