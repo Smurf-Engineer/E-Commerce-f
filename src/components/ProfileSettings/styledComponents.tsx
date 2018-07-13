@@ -21,8 +21,8 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
 
-  @media (min-width: 320px) and (max-width: 480px) {
-    padding: 8px 0;
+  @media (min-width: 320px) and (max-width: 768px) {
+    padding: 24px 0;
   }
 `
 
@@ -39,7 +39,7 @@ export const SectionContainer = styled.div`
   width: 50%;
   margin-bottom: 40px;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     width: 100%;
     margin-bottom: 24px;
   }
