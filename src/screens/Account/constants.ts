@@ -3,41 +3,45 @@
  */
 const namespace = 'src/Account'
 
-export const SCREEN_LOCKER = 'locker'
+export const OVERVIEW = 'overview'
+export const ORDER_HISTORY = 'orderHistory'
 export const ADDRESSES = 'addresses'
 export const CREDIT_CARDS = 'creditCards'
 export const PROFILE_SETTINGS = 'profileSettings'
-export const TEAMSTORES = 'teamStores'
+export const TEAMSTORES = 'myTeamStores'
+export const CREATIONS = 'myCreations'
+export const MY_FILES = 'myFiles'
+export const SCREEN_LOCKER = 'myLocker'
 
 // USE UNIQUE KEYS
 export const options = [
   {
-    title: 'overview',
+    title: OVERVIEW,
     options: []
   },
   {
-    title: 'orderHistory',
+    title: ORDER_HISTORY,
     options: []
   },
   {
-    title: 'addresses',
+    title: ADDRESSES,
     options: []
   },
   {
-    title: 'creditCards',
+    title: CREDIT_CARDS,
     options: []
   },
   {
-    title: 'profileSettings',
+    title: PROFILE_SETTINGS,
     options: []
   },
   {
-    title: 'teamStores',
+    title: TEAMSTORES,
     options: []
   },
   {
-    title: 'creations',
-    options: [SCREEN_LOCKER, 'files']
+    title: CREATIONS,
+    options: [SCREEN_LOCKER, MY_FILES]
   }
 ]
 
@@ -46,3 +50,4 @@ export const SET_OPEN_KEYS = `${namespace}/SET_OPEN_KEYS`
 export const SET_CURRENT_SCREEN = `${namespace}/SET_CURRENT_SCREEN`
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 export const SET_IS_MOBILE = `${namespace}/SET_IS_MOBILE`
+export const OPEN_SIDEBAR_MOBILE = `${namespace}/OPEN_SIDEBAR_MOBILE`

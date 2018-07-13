@@ -33,6 +33,7 @@ import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
 
 interface Props {
+  history: any
   client: any
   limit: number
   offset: number
@@ -156,6 +157,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
   render() {
     const {
+      history,
       loading,
       error,
       formatMessage,
@@ -185,8 +187,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <ProductList
-          {...{ formatMessage }}
-          withoutPadding={true}
+          {...{ formatMessage, history }}
+          withoutPadding={false}
           onPressPrivate={this.handleOnPressPrivate}
           onPressDelete={this.handleOnPressDelete}
           openQuickView={this.handleOnOpenQuickView}

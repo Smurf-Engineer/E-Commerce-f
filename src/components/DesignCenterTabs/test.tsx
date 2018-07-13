@@ -15,7 +15,7 @@ describe('<DesignCenterTabs />', () => {
         <DesignCenterTabs
           designHasChanges={false}
           currentTheme={0}
-          currentStyle={0}
+          styleIndex={0}
           currentTab={0}
           onSelectTab={() => {}}
         />
