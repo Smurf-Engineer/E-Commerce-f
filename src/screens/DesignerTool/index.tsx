@@ -4,7 +4,10 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import SwipeableViews from 'react-swipeable-views'
+import Tabs from './DesignCenterCustomize/DesignCenterTabs'
 import CustomizeTab from './DesignCenterCustomize'
+import SettingsTab from './DesignSettings/'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { Container } from './styledComponents'
@@ -19,6 +22,8 @@ interface Props {
   loadingModel: boolean
   uploadingFiles: boolean
   modelConfig: ModelConfig
+  currentTab: number
+  swipingView: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -27,6 +32,8 @@ interface Props {
   uploadFilesAction: (files: any) => void
   uploadDesignAction: (files: any) => void
   setUploadingAction: (loading: boolean) => void
+  setCurrentTabAction: (index: number) => void
+  setSwipingTabAction: (swiping: boolean) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -45,30 +52,49 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadDesignAction,
       uploadingFiles,
       modelConfig,
-      areas
+      areas,
+      currentTab,
+      swipingView
     } = this.props
     return (
       <Container>
-        <CustomizeTab
-          {...{
-            colors,
-            styleColors,
-            colorBlock,
-            colorBlockHovered,
-            loadingModel,
-            uploadingFiles,
-            areas
-          }}
-          files={modelConfig}
-          onLoadModel={setLoadingAction}
-          onSelectColorBlock={setColorBlockAction}
-          onHoverColorBlock={setHoverColorBlockAction}
-          onSelectColor={setColorAction}
-          onUploadFiles={uploadFilesAction}
-          onUploadDesign={uploadDesignAction}
-        />
+        <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
+        <SwipeableViews
+          onTransitionEnd={this.handleOnTransictionEnd}
+          index={currentTab}
+        >
+          <CustomizeTab
+            {...{
+              colors,
+              styleColors,
+              colorBlock,
+              colorBlockHovered,
+              loadingModel,
+              uploadingFiles,
+              areas
+            }}
+            files={modelConfig}
+            onLoadModel={setLoadingAction}
+            onSelectColorBlock={setColorBlockAction}
+            onHoverColorBlock={setHoverColorBlockAction}
+            onSelectColor={setColorAction}
+            onUploadFiles={uploadFilesAction}
+            onUploadDesign={uploadDesignAction}
+          />
+          <SettingsTab />
+        </SwipeableViews>
       </Container>
     )
+  }
+
+  handleOnTransictionEnd = () => {
+    const { setSwipingTabAction } = this.props
+    setSwipingTabAction(false)
+  }
+
+  handleOnSelectTab = (index: number) => {
+    const { setCurrentTabAction } = this.props
+    setCurrentTabAction(index)
   }
 }
 

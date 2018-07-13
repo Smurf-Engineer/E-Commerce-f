@@ -16,7 +16,7 @@ const InspirationColors = (props: Props) => {
           id={12}
           onSelectPalette={() => {}}
           name={'DAVID'}
-          colors={['#123']}
+          colors={['#123', '#321', '#456', '#654', '#987']}
         />
       </ListContainer>
     </Container>

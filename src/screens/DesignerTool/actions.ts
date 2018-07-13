@@ -9,7 +9,9 @@ import {
   COLOR_BLOCK_HOVERED_ACTION,
   SET_UPLOADING_ACTION,
   SET_UPLOADING_SUCCESS,
-  SET_UPLOADING_DESIGN_SUCCESS
+  SET_UPLOADING_DESIGN_SUCCESS,
+  SET_CURRENT_TAB_ACTION,
+  SET_SWIPING_TAB_ACTION
 } from './constants'
 import { AnyAction, ModelConfig } from '../../types/common'
 
@@ -51,4 +53,14 @@ export const setUploadingSuccess = (modelConfig: ModelConfig): AnyAction => ({
 export const setUploadingDesignSuccess = (design: string[]): AnyAction => ({
   type: SET_UPLOADING_DESIGN_SUCCESS,
   design
+})
+
+export const setCurrentTabAction = (index: number): AnyAction => ({
+  type: SET_CURRENT_TAB_ACTION,
+  index
+})
+
+export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
+  type: SET_SWIPING_TAB_ACTION,
+  isSwiping
 })

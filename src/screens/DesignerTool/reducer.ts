@@ -10,7 +10,9 @@ import {
   COLOR_BLOCK_HOVERED_ACTION,
   SET_UPLOADING_ACTION,
   SET_UPLOADING_SUCCESS,
-  SET_UPLOADING_DESIGN_SUCCESS
+  SET_UPLOADING_DESIGN_SUCCESS,
+  SET_CURRENT_TAB_ACTION,
+  SET_SWIPING_TAB_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -23,7 +25,9 @@ export const initialState = fromJS({
   loadingModel: false,
   uploadingFiles: false,
   modelConfig: null,
-  areas: []
+  areas: [],
+  swipingView: false,
+  currentTab: 0
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -57,6 +61,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
         areas: List.of(...action.design.areas),
         colors: List.of(...action.design.design.colors)
       })
+    case SET_CURRENT_TAB_ACTION:
+      return state.set('currentTab', action.index)
+    case SET_SWIPING_TAB_ACTION:
+      return state.set('swipingView', action.isSwiping)
     default:
       return state
   }
