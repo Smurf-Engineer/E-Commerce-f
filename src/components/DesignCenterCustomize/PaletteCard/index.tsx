@@ -12,9 +12,10 @@ import {
   Row,
   Delete,
   TopRow,
-  DeleteLabel,
+  deleteIcon,
   buttonStyle
 } from './styledComponents'
+import Icon from 'antd/lib/icon'
 
 interface Props {
   id: number
@@ -49,7 +50,7 @@ const PaletteCard = ({
         <TopRow>
           <Name>{name}</Name>
           <Delete onClick={handleOnClickDelete}>
-            <DeleteLabel>-</DeleteLabel>
+            <Icon style={deleteIcon} type="minus-circle-o" />
           </Delete>
         </TopRow>
         <Button

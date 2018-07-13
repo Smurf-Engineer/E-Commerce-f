@@ -5,7 +5,6 @@ import * as React from 'react'
 import { List } from 'immutable'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
-import { FormattedMessage } from 'react-intl'
 
 import PaletteCard from '../PaletteCard'
 import messages from './messages'
@@ -21,6 +20,8 @@ import {
   InputWrapper,
   ModalMessage
 } from './styledComponents'
+import ModalTitle from '../../ModalTitle'
+import ModalFooter from '../../ModalFooter'
 
 interface Props {
   palettes: Palette[]
@@ -30,7 +31,7 @@ interface Props {
   onSelectPalette: (colors: string[]) => void
   onSetPalettes: (palettes: Palette[]) => void
   onChangePaletteName: (name: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, values?: {}) => string
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
 
@@ -181,11 +182,14 @@ class MyPalette extends React.PureComponent<Props> {
         <ListContainer>{paletteList}</ListContainer>
         <Modal
           visible={openDeletePaletteModal}
-          title={formatMessage(messages.modalTitle)}
-          okText={formatMessage(messages.modalConfirmText)}
-          onOk={this.onDeletePalette}
-          cancelText={formatMessage(messages.modalCancelText)}
-          onCancel={this.onCancelDeletePalette}
+          title={<ModalTitle title={formatMessage(messages.modalTitle)} />}
+          footer={
+            <ModalFooter
+              onOk={this.onDeletePalette}
+              onCancel={this.onCancelDeletePalette}
+              {...{ formatMessage }}
+            />
+          }
           closable={false}
           maskClosable={false}
           destroyOnClose={true}
@@ -197,15 +201,19 @@ class MyPalette extends React.PureComponent<Props> {
         <Modal
           visible={openApplyPaletteModal}
           title={
-            <FormattedMessage
-              {...messages.applyPalette}
-              values={{ paletteNameToApply }}
+            <ModalTitle
+              title={formatMessage(messages.applyPalette, {
+                paletteNameToApply
+              })}
             />
           }
-          okText={formatMessage(messages.modalConfirmText)}
-          onOk={this.handleOnSelectPalette}
-          cancelText={formatMessage(messages.modalCancelText)}
-          onCancel={this.onCancelAppyPalette}
+          footer={
+            <ModalFooter
+              onOk={this.handleOnSelectPalette}
+              onCancel={this.onCancelAppyPalette}
+              {...{ formatMessage }}
+            />
+          }
           closable={false}
           maskClosable={false}
           destroyOnClose={true}

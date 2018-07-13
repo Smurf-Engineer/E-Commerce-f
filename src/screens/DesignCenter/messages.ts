@@ -36,7 +36,7 @@ export default defineMessages({
   },
   outWithoutSaveDesignModalDontSave: {
     id: 'screens.DesignCenter.outWithoutSaveDesignModalDontSave',
-    defaultMessage: `Dont't Save`
+    defaultMessage: `Don't Save`
   },
   outWithoutSaveDesignModalSave: {
     id: 'screens.DesignCenter.outWithoutSaveDesignModalSave',

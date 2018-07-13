@@ -78,13 +78,13 @@ export const StyledInput = styled(Input)`
 export const StyledButton = styled(Button)`
   height: 40px;
   border-radius: 5px;
-  background-color: #e61737;
+  background-color: #4a90e2;
+  border-color: #4a90e2;
   color: #fff;
 
   &:hover {
-    border-color: #e61737;
-    background-color: #e61737;
-    color: #fff;
+    background-color: #6ea6e7;
+    border-color: #6ea6e7;
   }
 `
 
@@ -95,6 +95,11 @@ export const StyledGhostButton = styled(Button)`
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   margin-right: 8px;
+
+  &:hover {
+    border-color: #4a90e2;
+    color: #4a90e2;
+  }
 `
 
 export const StyledCheckbox = styled(Checkbox)`

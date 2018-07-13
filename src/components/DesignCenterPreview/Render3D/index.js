@@ -79,9 +79,9 @@ class Render3D extends PureComponent {
     // TODO: Get this from data.design
     const modelTextures = {
       flatlock:
-        'https://storage.googleapis.com/jakroo-storage/models/Tour/flatlock.png',
+        'https://storage.googleapis.com/jakroo-storage/models/Tour2/Fflatlock.png',
       bumpMap:
-        'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2-BumpMap.jpg',
+        'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2-BumpMap.jpg',
       texture: svgOutputUrl || ''
     }
 
@@ -90,13 +90,13 @@ class Render3D extends PureComponent {
 
     /* Object and MTL load */
     mtlLoader.load(
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.mtl',
+      'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.mtl',
       materials => {
         materials.preload()
         const objLoader = new THREE.OBJLoader()
         objLoader.setMaterials(materials)
         objLoader.load(
-          'https://storage.googleapis.com/jakroo-storage/models/Tour/Tour_v2.obj',
+          'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.obj',
           object => {
             const objectChilds = object.children.length
             this.setState({ objectChilds })

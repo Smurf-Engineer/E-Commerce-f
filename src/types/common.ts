@@ -37,6 +37,8 @@ export interface Filter {
   name: string
 }
 
+export interface SelectedType extends Filter {}
+
 export interface FitStyle {
   id: number
   name: string
@@ -239,6 +241,14 @@ export interface Style {
   id: number
   name: string
   image: string
+  colors: ColorBlock[]
+}
+
+export interface DesignStyle {
+  id: number
+  name: string
+  image: string
+  branding: string
   colors: ColorBlock[]
 }
 

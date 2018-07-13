@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'components.addToCartButton.validationMessage',
     defaultMessage: 'Please select color, size and fit style!'
   },
+  validationMessageProdPage: {
+    id: 'components.addToCartButton.validationMessageProdPage',
+    defaultMessage: 'Please select gender, size and fit style!'
+  },
   successfulAddMessage: {
     id: 'components.addToCartButton.successfulAddMessage',
     defaultMessage: '{name} has been succesfully added to cart!'

@@ -79,6 +79,8 @@ export const ButtonsContainer = styled.div`
   width: 40%;
 `
 export const DeleteLabel = styled.span`
+  display: flex;
+  align-items: center;
   color: #e61737;
   margin-left: 10px;
 `

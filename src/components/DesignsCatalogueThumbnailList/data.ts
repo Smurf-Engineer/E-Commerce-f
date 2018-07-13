@@ -25,6 +25,10 @@ export const GetProductsQuery = gql`
         yotpoId: yotpo_id
         name
         type: name
+        description: short_description
+        shortDescription: short_description
+        collections
+        isTopProduct
         genders {
           id
           name: gender
@@ -33,10 +37,6 @@ export const GetProductsQuery = gql`
           id
           name: description
         }
-        description: short_description
-        shortDescription: short_description
-        collections
-        isTopProduct
         sizeRange: size_range {
           id
           name

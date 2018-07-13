@@ -189,15 +189,30 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   }
 
   handleOnApplyText = (text: string, style: TextFormat) => {
-    this.render3D.applyText(text, style)
+    const { selectedElement } = this.props
+    if (selectedElement) {
+      this.render3D.applyText(text, style)
+    } else {
+      this.render3D.applyCanvasEl({ text, style, type: 'text' })
+    }
   }
 
   handleOnApplyImage = (base64: string) => {
-    this.render3D.applyImage(base64)
+    const { selectedElement } = this.props
+    if (selectedElement) {
+      this.render3D.applyImage(base64)
+    } else {
+      this.render3D.applyCanvasEl({ base64, type: 'image' })
+    }
   }
 
   handleOnApplyArt = (url: string, style?: CanvasElement) => {
-    this.render3D.applyClipArt(url, style)
+    const { selectedElement } = this.props
+    if (selectedElement) {
+      this.render3D.applyClipArt(url, style)
+    } else {
+      this.render3D.applyCanvasEl({ url, style, type: 'path' })
+    }
   }
 }
 

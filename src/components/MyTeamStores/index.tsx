@@ -22,6 +22,8 @@ import { QueryProps, TeamstoreResult } from '../../types/common'
 import config from '../../config/index'
 import TeamStore from '../../components/TeamStoreItem'
 import ShareTeamStore from '../../components/ShareDesignModal'
+import ModalTitle from '../ModalTitle'
+import ModalFooter from '../ModalFooter'
 
 interface Data extends QueryProps {
   myTeamstores: TeamstoreResult
@@ -88,15 +90,22 @@ export class MyTeamStores extends React.PureComponent<Props, {}> {
         </CreateTeamStoreLegend>
         <div>{myTeamstoresList}</div>
         <Modal
-          title={formatMessage(messages.titleDeleteModal)}
           visible={openDeleteModal}
+          title={
+            <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
+          }
+          footer={
+            <ModalFooter
+              onCancel={this.closeDeleteModal}
+              confirmLoading={deleteLoading}
+              okText={formatMessage(messages.deleteModalLabel)}
+              onOk={this.handleDeleteTeamStore}
+              {...{ formatMessage }}
+            />
+          }
           maskClosable={false}
           closable={false}
           destroyOnClose={true}
-          onCancel={this.closeDeleteModal}
-          confirmLoading={deleteLoading}
-          okText={formatMessage(messages.deleteModalLabel)}
-          onOk={this.handleDeleteTeamStore}
         >
           <DeleteConfirmMessage>
             {formatMessage(messages.messageDeleteModal)}
@@ -174,7 +183,10 @@ const MyTeamStoresEnhanced = compose(
   withLoading,
   withError,
   DeleteTeamStoreMutation,
-  connect(mapstateToProps, { ...MyTeamStoresActions })
+  connect(
+    mapstateToProps,
+    { ...MyTeamStoresActions }
+  )
 )(MyTeamStores)
 
 export default MyTeamStoresEnhanced
