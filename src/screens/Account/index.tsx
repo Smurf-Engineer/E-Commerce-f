@@ -10,11 +10,13 @@ import MediaQuery from 'react-responsive'
 import Drawer from 'rc-drawer'
 import Menu from 'antd/lib/menu'
 import Icon from 'antd/lib/icon'
+import queryString from 'query-string'
 import * as accountActions from './actions'
 import messages from './messages'
 import {
   options,
   SCREEN_LOCKER,
+  MY_FILES,
   ADDRESSES,
   CREDIT_CARDS,
   TEAMSTORES,
@@ -51,7 +53,7 @@ interface Props extends RouteComponentProps<any> {
   openSidebar: boolean
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
-  setCurrentScreenAction: (screen: string) => void
+  setCurrentScreenAction: (screen: string, openCreations?: boolean) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
   setIsMobileAction: (isMobile: boolean) => void
@@ -62,6 +64,22 @@ export class Account extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
+  }
+
+  componentWillMount() {
+    const {
+      location: { search },
+      setCurrentScreenAction
+    } = this.props
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (option) {
+      if (option === SCREEN_LOCKER || option === MY_FILES) {
+        setCurrentScreenAction(option, true)
+        return
+      }
+      setCurrentScreenAction(option)
+    }
   }
 
   componentDidMount() {
@@ -110,7 +128,7 @@ export class Account extends React.Component<Props, {}> {
       case TEAMSTORES:
         return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
-        return <MyLocker {...{ openQuickView, formatMessage }} />
+        return <MyLocker {...{ openQuickView, formatMessage, history }} />
       default:
         return null
     }

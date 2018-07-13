@@ -8,21 +8,31 @@ import toUpper from 'lodash/toUpper'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import { Text, menuStyle } from './styledComponents'
+import {
+  SCREEN_LOCKER,
+  PROFILE_SETTINGS
+} from '../../screens/Account/constants'
 
 interface Props {
   title: string
   logout: () => void
-  account: () => void
+  goTo: (path: string) => void
 }
 
-const Logout = ({ title, logout, account }: Props) => {
+const Logout = ({ title, logout, goTo }: Props) => {
   const handleOnClick = ({ key }: any) => {
     switch (key) {
       case 'logout':
         logout()
         break
       case 'account':
-        account()
+        goTo('account')
+        break
+      case 'locker':
+        goTo(`/account?option=${SCREEN_LOCKER}`)
+        break
+      case 'settings':
+        goTo(`/account?option=${PROFILE_SETTINGS}`)
         break
       default:
         break

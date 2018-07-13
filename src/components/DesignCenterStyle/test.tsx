@@ -25,13 +25,13 @@ describe('<DesignCenterStyle />', () => {
       indexStyle: -1,
       idStyle: -1
     }
-    const currentStyle = 0
+    const styleIndex = 0
     const designHasChanges = false
     ReactDOM.render(
       <IntlProvider {...props}>
         <DesignCenterStyle
           {...{
-            currentStyle,
+            styleIndex,
             data,
             formatMessage,
             openNewStyleModalAction,
