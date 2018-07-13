@@ -6,7 +6,7 @@ import PaletteCard from '../../../../components/PaletteCard'
 import { Container, ListContainer } from './styledComponents'
 
 interface Props {}
-
+// TODO: WIP Component
 const InspirationColors = (props: Props) => {
   return (
     <Container>

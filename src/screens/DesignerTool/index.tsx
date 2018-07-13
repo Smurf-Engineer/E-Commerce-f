@@ -71,7 +71,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       <Container>
         <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
         <SwipeableViews
-          onTransitionEnd={this.handleOnTransictionEnd}
+          onTransitionEnd={this.handleOnTransitionEnd}
           index={currentTab}
         >
           <CustomizeTab
@@ -108,7 +108,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     )
   }
 
-  handleOnTransictionEnd = () => {
+  handleOnTransitionEnd = () => {
     const { setSwipingTabAction } = this.props
     setSwipingTabAction(false)
   }

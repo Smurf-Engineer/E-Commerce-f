@@ -11,6 +11,10 @@ import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import { Container } from './styledComponents'
 
+const UPLOAD_TAB = 'UPLOAD_TAB'
+const COLOR_TAB = 'COLOR_TAB'
+const INSPIRATION_TAB = 'INSPIRATION_TAB'
+
 const { TabPane } = AntdTabs
 
 interface Props {
@@ -42,8 +46,11 @@ const Tabs = ({
 }: Props) => {
   return (
     <Container>
-      <AntdTabs style={{ height: '100%' }} defaultActiveKey="1" size="large">
-        <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="1">
+      <AntdTabs defaultActiveKey={UPLOAD_TAB} size="large">
+        <TabPane
+          key={UPLOAD_TAB}
+          tab={<Tab label="upload" icon={uploadIcon} />}
+        >
           <UploadTab
             {...{
               onUploadFiles,
@@ -53,7 +60,7 @@ const Tabs = ({
             }}
           />
         </TabPane>
-        <TabPane tab={<Tab label="color" icon={colorIcon} />} key="2">
+        <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
           <ColorTab
             {...{
               onSelectColorBlock,
@@ -66,7 +73,10 @@ const Tabs = ({
             }}
           />
         </TabPane>
-        <TabPane tab={<Tab label="inspiration" icon={colorIcon} />} key="3">
+        <TabPane
+          key={INSPIRATION_TAB}
+          tab={<Tab label="inspiration" icon={colorIcon} />}
+        >
           <InpirationTab />
         </TabPane>
       </AntdTabs>

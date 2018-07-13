@@ -32,7 +32,7 @@ interface Props {
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
   onSelectImage?: (file: UploadFile) => void
-  onDeleteImage?: (file: UploadFile) => void
+  onDeleteImage?: () => void
 }
 
 class DesignForm extends React.PureComponent<Props, {}> {

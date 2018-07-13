@@ -13,7 +13,7 @@ interface Props {
 const steps = ['Select Files', 'Design Settings']
 
 const DesignCenterTabs = ({ currentTab, onSelectTab }: Props) => {
-  const handleOnSelectTab = (index: any) => () => onSelectTab(index)
+  const handleOnSelectTab = (index: number) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => (
     <Tab
       {...{ index }}
