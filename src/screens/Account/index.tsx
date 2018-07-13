@@ -4,9 +4,12 @@
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
-import Menu from 'antd/lib/menu'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
+import MediaQuery from 'react-responsive'
+import Drawer from 'rc-drawer'
+import Menu from 'antd/lib/menu'
+import Icon from 'antd/lib/icon'
 import queryString from 'query-string'
 import * as accountActions from './actions'
 import messages from './messages'
@@ -25,6 +28,7 @@ import MyLocker from '../../components/MyLocker'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
+import ProfileSettings from '../../components/ProfileSettings'
 import {
   Container,
   SideBar,
@@ -32,9 +36,11 @@ import {
   Title,
   ScreenTitle,
   menuStyle,
-  OptionMenu
+  OptionMenu,
+  FiltersTitle,
+  menuDeviceStyle,
+  DrawerSidebar
 } from './styledComponents'
-import ProfileSettings from '../../components/ProfileSettings'
 
 const { SubMenu } = Menu
 
@@ -43,12 +49,15 @@ interface Props extends RouteComponentProps<any> {
   openKeys: string[]
   screen: string
   isMobile: boolean
+  fakeWidth: number
+  openSidebar: boolean
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
   setCurrentScreenAction: (screen: string, openCreations?: boolean) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
   setIsMobileAction: (isMobile: boolean) => void
+  openSidebarMobile: (open: boolean) => void
 }
 
 export class Account extends React.Component<Props, {}> {
@@ -97,6 +106,11 @@ export class Account extends React.Component<Props, {}> {
     setCurrentScreenAction(key)
   }
 
+  handleOpenSidebar = () => {
+    const { openSidebar, openSidebarMobile } = this.props
+    openSidebarMobile(!openSidebar)
+  }
+
   getScreenComponent = (screen: string) => {
     const {
       isMobile,
@@ -121,7 +135,14 @@ export class Account extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, openKeys, screen } = this.props
+    const {
+      intl,
+      history,
+      openKeys,
+      screen,
+      fakeWidth,
+      openSidebar
+    } = this.props
 
     const menuOptions = options.map(
       ({ title, options: submenus }) =>
@@ -139,45 +160,113 @@ export class Account extends React.Component<Props, {}> {
             ))}
           </SubMenu>
         ) : (
-          <Menu.Item key={title}>
+          <Menu.Item className="ant-menu-item-custom" key={title}>
             <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
           </Menu.Item>
         )
     )
 
+    const sidebarFilters = (
+      <DrawerSidebar>
+        <FiltersTitle showChildren={openSidebar} color={'#e61737'}>
+          {intl.formatMessage(messages.filtersTitle)}
+          <Icon type="down" style={{ color: '#e61737' }} />
+        </FiltersTitle>
+        <Menu
+          {...{ openKeys }}
+          mode="inline"
+          onSelect={this.handleOnSelectItem}
+          onOpenChange={this.handleOnSelectedKeys}
+          style={menuDeviceStyle}
+        >
+          {menuOptions}
+        </Menu>
+      </DrawerSidebar>
+    )
+
     const currentScreen = this.getScreenComponent(screen)
 
-    return (
-      <Layout {...{ history, intl }}>
-        <Container>
-          <SideBar>
-            <Title>
-              <FormattedMessage {...messages.title} />
-            </Title>
-            <Menu
-              {...{ openKeys }}
-              mode="inline"
-              onSelect={this.handleOnSelectItem}
-              selectedKeys={[screen]}
-              onOpenChange={this.handleOnSelectedKeys}
-              style={menuStyle}
-            >
-              {menuOptions}
-            </Menu>
-          </SideBar>
-          <Content>
-            <ScreenTitle>
-              {!!messages[screen] && <FormattedMessage {...messages[screen]} />}
-            </ScreenTitle>
-            {currentScreen}
-          </Content>
-        </Container>
-      </Layout>
+    const renderView = (
+      <MediaQuery
+        maxWidth={768}
+        values={{ width: fakeWidth, deviceWidth: fakeWidth }}
+      >
+        {matches => {
+          if (matches) {
+            return (
+              <div className="drawer-container">
+                <Drawer
+                  open={openSidebar}
+                  sidebar={sidebarFilters}
+                  position={'left'}
+                  touch={true}
+                  onOpenChange={this.handleOpenSidebar}
+                >
+                  <Layout {...{ history, intl }}>
+                    <Container>
+                      <Content width={'100%'}>
+                        <FiltersTitle
+                          showChildren={true}
+                          onClick={this.handleOpenSidebar}
+                        >
+                          {intl.formatMessage(messages.filtersTitle)}
+                          <Icon type="down" />
+                        </FiltersTitle>
+                        <ScreenTitle>
+                          {!!messages[screen] && (
+                            <FormattedMessage {...messages[screen]} />
+                          )}
+                        </ScreenTitle>
+                        {currentScreen}
+                      </Content>
+                    </Container>
+                  </Layout>
+                </Drawer>
+              </div>
+            )
+          } else {
+            return (
+              <Layout {...{ history, intl }}>
+                <Container>
+                  <SideBar>
+                    <Title>
+                      <FormattedMessage {...messages.title} />
+                    </Title>
+                    <Menu
+                      {...{ openKeys }}
+                      mode="inline"
+                      onSelect={this.handleOnSelectItem}
+                      onOpenChange={this.handleOnSelectedKeys}
+                      style={menuStyle}
+                    >
+                      {menuOptions}
+                    </Menu>
+                  </SideBar>
+                  <Content>
+                    <ScreenTitle>
+                      {!!messages[screen] && (
+                        <FormattedMessage {...messages[screen]} />
+                      )}
+                    </ScreenTitle>
+                    {currentScreen}
+                  </Content>
+                </Container>
+              </Layout>
+            )
+          }
+        }}
+      </MediaQuery>
     )
+
+    return renderView
   }
 }
 
-const mapStateToProps = (state: any) => state.get('account').toJS()
+const mapStateToProps = (state: any) => {
+  const account = state.get('account').toJS()
+  const responsive = state.get('responsive').toJS()
+  return { ...account, ...responsive }
+}
 
 const AccountEnhance = compose(
   injectIntl,

@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import Tab from './Tab'
 import { Container, Divider, Row, View, Tabs } from './styledComponents'
+import { DesignTabs } from '../../screens/DesignCenter/constants'
 
 interface Props {
   currentTab: number
@@ -26,10 +27,12 @@ const DesignCenterTabs = ({
 }: Props) => {
   const handleOnSelectTab = (index: any) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => {
+    const { ThemeTab, StyleTab, CustomizeTab } = DesignTabs
     const activeOnClick =
-      (index === 1 && currentTab === 0 && currentTheme !== -1) ||
-      (index === 2 && currentTab === 1 && styleIndex !== -1) ||
-      (currentTab > index && (currentTab === 1 || currentTab === 2))
+      (index === 1 && currentTab === ThemeTab && currentTheme !== -1) ||
+      (index === 2 && currentTab === StyleTab && styleIndex !== -1) ||
+      (currentTab > index &&
+        (currentTab === StyleTab || currentTab === CustomizeTab))
     return (
       <Tab
         {...{ index, activeOnClick }}

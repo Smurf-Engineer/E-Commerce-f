@@ -188,7 +188,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       <Container>
         <ProductList
           {...{ formatMessage, history }}
-          withoutPadding={true}
+          withoutPadding={false}
           onPressPrivate={this.handleOnPressPrivate}
           onPressDelete={this.handleOnPressDelete}
           openQuickView={this.handleOnOpenQuickView}

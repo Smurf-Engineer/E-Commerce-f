@@ -6,14 +6,16 @@ import {
   SET_OPEN_KEYS,
   SET_CURRENT_SCREEN,
   CLEAR_REDUCER,
-  SET_IS_MOBILE
+  SET_IS_MOBILE,
+  OPEN_SIDEBAR_MOBILE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   openKeys: [''],
   screen: '',
-  isMobile: false
+  isMobile: false,
+  openSidebar: false
 })
 
 const accountReducer: Reducer<any> = (state = initialState, action) => {
@@ -32,6 +34,8 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_IS_MOBILE:
       return state.set('isMobile', action.isMobile)
+    case OPEN_SIDEBAR_MOBILE:
+      return state.set('openSidebar', action.open)
     case CLEAR_REDUCER:
       return state.merge({
         screen: '',

@@ -60,6 +60,7 @@ import {
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
+import { DesignTabs } from './constants'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -199,7 +200,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   handleAfterSaveDesign = (id: string, svgUrl: string) => {
     const { saveDesignIdAction } = this.props
     saveDesignIdAction(id, svgUrl)
-    this.handleOnSelectTab(3)
+    this.handleOnSelectTab(DesignTabs.PreviewTab)
   }
 
   handleOpenQuickView = () => {
@@ -247,8 +248,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCurrentTabAction,
       openOutWithoutSaveModalAction
     } = this.props
-    if (currentTab !== 2) {
-      setCurrentTabAction(2)
+    if (currentTab !== DesignTabs.CustomizeTab) {
+      setCurrentTabAction(DesignTabs.CustomizeTab)
     }
     openOutWithoutSaveModalAction(false)
   }
@@ -404,11 +405,17 @@ export class DesignCenter extends React.Component<Props, {}> {
       designObject = { ...designObject, canvasJson, styleId }
     }
 
+    const {
+      CustomizeTab: CustomizeTabIndex,
+      ThemeTab: ThemeTabIndex,
+      StyleTab: StyleTabIndex
+    } = DesignTabs
+
     let tabSelected = currentTab
     let loadingData = false
     let currentStyle = style
     if (dataDesign) {
-      tabSelected = !tabChanged ? 2 : currentTab
+      tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
       currentStyle = isEmpty(style) ? styleObject : style
     }
@@ -439,7 +446,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {tabSelected === 0 && (
+              {tabSelected === ThemeTabIndex && (
                 <ThemeTab
                   currentTheme={themeId}
                   onSelectTheme={setThemeAction}
@@ -459,7 +466,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {tabSelected === 1 && (
+              {tabSelected === StyleTabIndex && (
                 <StyleTab
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
@@ -563,7 +570,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />
-          {tabSelected === 2 && !loadingData ? (
+          {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
               <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
                 <StyledTitle onClick={this.toggleBottomSheet}>
