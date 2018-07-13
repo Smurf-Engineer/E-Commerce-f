@@ -200,7 +200,7 @@ export class DesignCenter extends React.Component<Props, {}> {
   handleAfterSaveDesign = (id: string, svgUrl: string) => {
     const { saveDesignIdAction } = this.props
     saveDesignIdAction(id, svgUrl)
-    this.handleOnSelectTab(3)
+    this.handleOnSelectTab(DesignTabs.PreviewTab)
   }
 
   handleOpenQuickView = () => {
