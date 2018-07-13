@@ -136,6 +136,10 @@ export const ButtonOptionsWrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 export const ButtonOptionStyle = styled(Button)`

@@ -42,6 +42,11 @@ export const CreateTeamStoreLegend = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   margin: 34px 0 23px;
+
+  @media (max-width: 480px) {
+    width: auto;
+    height: auto;
+  }
 `
 
 export const DeleteConfirmMessage = styled.div`
