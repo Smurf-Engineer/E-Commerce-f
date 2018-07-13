@@ -260,6 +260,9 @@
   "screen.MyTeamStores.deleteModalLabel": "Delete",
   "screen.MyTeamStores.shareTeamStoreMessage":
     "Check out this awesome teamstore!",
+  "components.TeamStoreItem.editButtonLabel": "Edit",
+  "components.TeamStoreItem.deleteButtonLabel": "Delete",
+  "components.TeamStoreItem.shareButtonLabel": "Share",
   "components.MyAddresses.titleDeleteModal": "Are you sure?",
   "components.MyAddresses.messageDeleteModal":
     "This will permanently delete this address",
