@@ -16,6 +16,7 @@ import {
   Style
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
+import { DesignTabs } from '../../screens/DesignCenter/constants'
 
 interface Props {
   colorBlock: number
@@ -123,7 +124,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       loadingData
     } = this.props
 
-    const showRender3d = currentTab === 2 && !swipingView
+    const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
     const loadingView = loadingData && (
       <LoadingContainer>
         <Spin />

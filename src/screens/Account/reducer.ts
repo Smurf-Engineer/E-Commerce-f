@@ -7,14 +7,13 @@ import {
   SET_CURRENT_SCREEN,
   CLEAR_REDUCER,
   SET_IS_MOBILE,
-  OPEN_SIDEBAR_MOBILE,
-  PROFILE_SETTINGS
+  OPEN_SIDEBAR_MOBILE
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   openKeys: [''],
-  screen: PROFILE_SETTINGS,
+  screen: '',
   isMobile: false,
   openSidebar: false
 })

@@ -31,7 +31,7 @@ export const PaginationRow = styled.div`
   text-align: right;
   padding-right: 36px;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     padding-right: 0;
     text-align: center;
   }
