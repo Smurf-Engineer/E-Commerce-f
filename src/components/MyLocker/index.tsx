@@ -6,13 +6,15 @@ import { withApollo, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
+import MediaQuery from 'react-responsive'
+import Pagination from 'antd/lib/pagination/Pagination'
+import Spin from 'antd/lib/spin'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import {
   DesignResultType,
   DesignType,
   DeleteDesignModal
 } from '../../types/common'
-import Pagination from 'antd/lib/pagination/Pagination'
 import {
   desginsQuery,
   designAsPrivateMutation,
@@ -28,7 +30,6 @@ import {
   MessageError,
   DeleteConfirmMessage
 } from './styledComponents'
-import Spin from 'antd/lib/spin'
 import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
 
@@ -184,17 +185,40 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       )
     }
 
+    const designsList = (
+      <MediaQuery maxWidth={768}>
+        {matches => {
+          if (matches) {
+            return (
+              <ProductList
+                {...{ formatMessage, history }}
+                withoutPadding={false}
+                onPressPrivate={this.handleOnPressPrivate}
+                onPressDelete={this.handleOnPressDelete}
+                openQuickView={this.handleOnOpenQuickView}
+                designs={designs}
+              />
+            )
+          } else {
+            return (
+              <ProductList
+                {...{ formatMessage, history }}
+                withoutPadding={true}
+                onPressPrivate={this.handleOnPressPrivate}
+                onPressDelete={this.handleOnPressDelete}
+                openQuickView={this.handleOnOpenQuickView}
+                designs={designs}
+              />
+            )
+          }
+        }}
+      </MediaQuery>
+    )
+
     return (
       <Container>
-        <ProductList
-          {...{ formatMessage, history }}
-          withoutPadding={false}
-          onPressPrivate={this.handleOnPressPrivate}
-          onPressDelete={this.handleOnPressDelete}
-          openQuickView={this.handleOnOpenQuickView}
-          designs={designs}
-        />
         <PaginationRow>
+          {designsList}
           <Pagination
             current={currentPage}
             pageSize={12}
