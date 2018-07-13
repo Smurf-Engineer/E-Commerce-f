@@ -46,7 +46,11 @@ const Tabs = ({
 }: Props) => {
   return (
     <Container>
-      <AntdTabs defaultActiveKey={UPLOAD_TAB} size="large">
+      <AntdTabs
+        style={{ height: '100%' }}
+        defaultActiveKey={UPLOAD_TAB}
+        size="large"
+      >
         <TabPane
           key={UPLOAD_TAB}
           tab={<Tab label="upload" icon={uploadIcon} />}
