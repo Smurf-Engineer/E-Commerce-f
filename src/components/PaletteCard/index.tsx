@@ -22,7 +22,7 @@ interface Props {
   colors: string[]
   name: string
   onSelectPalette: (id: number) => void
-  onClickDelete: (index: number) => void
+  onClickDelete?: (index: number) => void
 }
 
 const colorsBlocks = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
@@ -35,7 +35,7 @@ const PaletteCard = ({
   onClickDelete
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
-  const handleOnClickDelete = () => onClickDelete(id)
+  const handleOnClickDelete = () => (onClickDelete ? onClickDelete(id) : null)
   const colorButtons = colorsBlocks.map((label, index) => (
     <ColorButton
       key={index}
@@ -49,9 +49,11 @@ const PaletteCard = ({
       <Row>
         <TopRow>
           <Name>{name}</Name>
-          <Delete onClick={handleOnClickDelete}>
-            <Icon style={deleteIcon} type="minus-circle-o" />
-          </Delete>
+          {!!onClickDelete && (
+            <Delete onClick={handleOnClickDelete}>
+              <Icon style={deleteIcon} type="minus-circle-o" />
+            </Delete>
+          )}
         </TopRow>
         <Button
           onClick={handleOnSelectPalette}

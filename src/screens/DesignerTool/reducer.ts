@@ -10,20 +10,31 @@ import {
   COLOR_BLOCK_HOVERED_ACTION,
   SET_UPLOADING_ACTION,
   SET_UPLOADING_SUCCESS,
-  SET_UPLOADING_DESIGN_SUCCESS
+  SET_UPLOADING_DESIGN_SUCCESS,
+  SET_CURRENT_TAB_ACTION,
+  SET_SWIPING_TAB_ACTION,
+  SET_SELECTED_THEME_ACTION,
+  SET_SELECTED_STYLE_ACTION,
+  Tabs
 } from './constants'
 import { Reducer } from '../../types/common'
 
+const NONE = -1
+
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
-  colorBlock: -1,
-  colorBlockHovered: -1,
+  colorBlock: NONE,
+  colorBlockHovered: NONE,
   colors: [],
   styleColors: [],
   loadingModel: false,
   uploadingFiles: false,
   modelConfig: null,
-  areas: []
+  areas: [],
+  swipingView: false,
+  currentTab: Tabs.RenderTab,
+  selectedTheme: NONE,
+  selectedStyle: NONE
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -57,6 +68,14 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
         areas: List.of(...action.design.areas),
         colors: List.of(...action.design.design.colors)
       })
+    case SET_CURRENT_TAB_ACTION:
+      return state.set('currentTab', action.index)
+    case SET_SWIPING_TAB_ACTION:
+      return state.set('swipingView', action.isSwiping)
+    case SET_SELECTED_THEME_ACTION:
+      return state.set('selectedTheme', action.id)
+    case SET_SELECTED_STYLE_ACTION:
+      return state.set('selectedStyle', action.id)
     default:
       return state
   }
