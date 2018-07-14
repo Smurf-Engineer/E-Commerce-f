@@ -14,10 +14,12 @@ import {
   ButtonWrapper,
   Footer
 } from './styledComponents'
+import { DesignConfig } from '../../../../types/common'
 
 const { Panel } = Collapse
 
 interface Props {
+  onSelectConfig: (config: DesignConfig) => void
   onUploadFiles: (files: any) => void
   onUploadDesign: (files: any) => void
   uploadNewModel: boolean
@@ -46,8 +48,8 @@ class UploadTab extends React.PureComponent<Props, {}> {
   }
 
   beforeUpload = (file: any) => {
+    const reader = new FileReader()
     const { fileList: list } = this.state
-
     const extension = getFileExtension(file.name) || ''
 
     if (list.length === 0 && extension !== 'obj') {
@@ -60,9 +62,22 @@ class UploadTab extends React.PureComponent<Props, {}> {
       return false
     }
 
-    if (list.length === 3 && file.type !== 'application/json') {
-      message.error('Please select a valid JSON file')
-      return false
+    if (list.length === 3) {
+      if (file.type !== 'application/json') {
+        message.error('Please select a valid JSON file')
+      } else {
+        try {
+          const { onSelectConfig } = this.props
+          reader.onload = (e: Event) => {
+            const obj = JSON.parse(reader.result) || {}
+            onSelectConfig(obj)
+          }
+          reader.readAsText(file)
+        } catch (error) {
+          message.error('Please select a valid JSON file')
+          return false
+        }
+      }
     }
 
     if (list.length > 3 && file.type !== 'image/svg+xml') {
@@ -131,19 +146,20 @@ class UploadTab extends React.PureComponent<Props, {}> {
           </Panel>
         </Collapse>
         <Buttons>
-          <Upload
-            {...{ fileList }}
-            beforeUpload={
-              uploadNewModel ? this.beforeUploadDesign : this.beforeUpload
-            }
-            onRemove={this.onRemove}
-          >
-            <ButtonWrapper>
-              <Button size="large">
+          <ButtonWrapper>
+            <Upload
+              {...{ fileList }}
+              style={{ width: '100%' }}
+              beforeUpload={
+                uploadNewModel ? this.beforeUploadDesign : this.beforeUpload
+              }
+              onRemove={this.onRemove}
+            >
+              <Button size="large" type="primary">
                 <Icon type="upload" /> Select File
               </Button>
-            </ButtonWrapper>
-          </Upload>
+            </Upload>
+          </ButtonWrapper>
         </Buttons>
         <Footer>
           {uploadNewModel && (

@@ -4,21 +4,23 @@
 import * as React from 'react'
 import PaletteCard from '../../../../components/PaletteCard'
 import { Container, ListContainer } from './styledComponents'
+import { DesignObject } from '../../../../types/common'
 
-interface Props {}
-// TODO: WIP Component
-const InspirationColors = (props: Props) => {
+interface Props {
+  palettes: DesignObject[]
+}
+const InspirationColors = ({ palettes }: Props) => {
+  const list = palettes.map(({ name, colors }, index) => (
+    <PaletteCard
+      id={index}
+      key={index}
+      {...{ name, colors }}
+      onSelectPalette={() => {}}
+    />
+  ))
   return (
     <Container>
-      <ListContainer>
-        <PaletteCard
-          key={10}
-          id={12}
-          onSelectPalette={() => {}}
-          name={'DAVID'}
-          colors={['#123', '#321', '#456', '#654', '#987']}
-        />
-      </ListContainer>
+      <ListContainer>{list}</ListContainer>
     </Container>
   )
 }

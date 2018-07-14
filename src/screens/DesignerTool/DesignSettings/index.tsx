@@ -54,25 +54,25 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           <Input placeholder="Code" />
           <Button>Search</Button>
           <DesignForm
-            {...{ items, onSelectImage, themeImage, onDeleteImage }}
+            isNewItem={true}
+            withImageInput={true}
             selectedItem={selectedTheme}
             onSelectItem={onSelectTheme}
             onDeleteItem={onDeleteTheme}
             title="SELECT THEME"
             subtitle="Themes"
             buttonLabel="ADD NEW THEME"
-            isNewItem={true}
-            withImageInput={true}
+            {...{ items, onSelectImage, themeImage, onDeleteImage }}
           />
           <DesignForm
-            {...{ items }}
+            isNewItem={true}
             selectedItem={selectedStyle}
             onSelectItem={onSelectStyle}
             onDeleteItem={onDeleteStyle}
             title="SELECT STYLE"
             subtitle="Styles"
             buttonLabel="ADD NEW STYLE"
-            isNewItem={true}
+            {...{ items }}
           />
           <Button type="primary">Save</Button>
         </Form>

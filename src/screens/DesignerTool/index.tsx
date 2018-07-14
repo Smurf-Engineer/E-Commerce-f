@@ -11,9 +11,10 @@ import SettingsTab from './DesignSettings/'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { Container } from './styledComponents'
-import { ModelConfig, UploadFile } from '../../types/common'
+import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
 
 interface Props {
+  designConfig: DesignConfig
   colors: string[]
   styleColors: string[]
   areas: string[]
@@ -38,6 +39,7 @@ interface Props {
   setSwipingTabAction: (swiping: boolean) => void
   setSelectedThemeAction: (id: number) => void
   setSelectedStyleAction: (id: number) => void
+  setDesignConfigAction: (config: DesignConfig) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -64,47 +66,53 @@ export class DesignerTool extends React.Component<Props, {}> {
       currentTab,
       setSelectedThemeAction,
       setSelectedStyleAction,
-      selectedStyle
+      setDesignConfigAction,
+      selectedStyle,
+      designConfig
     } = this.props
     const { themeImage } = this.state
     return (
-      <Container>
+      <div>
         <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
-        <SwipeableViews
-          onTransitionEnd={this.handleOnTransitionEnd}
-          index={currentTab}
-        >
-          <CustomizeTab
-            {...{
-              colors,
-              styleColors,
-              colorBlock,
-              colorBlockHovered,
-              loadingModel,
-              uploadingFiles,
-              areas
-            }}
-            files={modelConfig}
-            onLoadModel={setLoadingAction}
-            onSelectColorBlock={setColorBlockAction}
-            onHoverColorBlock={setHoverColorBlockAction}
-            onSelectColor={setColorAction}
-            onUploadFiles={uploadFilesAction}
-            onUploadDesign={uploadDesignAction}
-          />
-          <SettingsTab
-            {...{ themeImage }}
-            selectedTheme={selectedTheme}
-            selectedStyle={selectedStyle}
-            onSelectTheme={setSelectedThemeAction}
-            onSelectStyle={setSelectedStyleAction}
-            onDeleteTheme={this.handleOnDeleteTheme}
-            onDeleteStyle={this.handleOnDeleteStyle}
-            onSelectImage={this.handleOnSelectThemeImage}
-            onDeleteImage={this.handleOnDeleteThemeImage}
-          />
-        </SwipeableViews>
-      </Container>
+        <Container>
+          <SwipeableViews
+            onTransitionEnd={this.handleOnTransitionEnd}
+            index={currentTab}
+          >
+            <CustomizeTab
+              {...{
+                colors,
+                styleColors,
+                colorBlock,
+                colorBlockHovered,
+                loadingModel,
+                uploadingFiles,
+                areas,
+                designConfig
+              }}
+              files={modelConfig}
+              onLoadModel={setLoadingAction}
+              onSelectColorBlock={setColorBlockAction}
+              onHoverColorBlock={setHoverColorBlockAction}
+              onSelectColor={setColorAction}
+              onUploadFiles={uploadFilesAction}
+              onUploadDesign={uploadDesignAction}
+              onSelectConfig={setDesignConfigAction}
+            />
+            <SettingsTab
+              {...{ themeImage }}
+              selectedTheme={selectedTheme}
+              selectedStyle={selectedStyle}
+              onSelectTheme={setSelectedThemeAction}
+              onSelectStyle={setSelectedStyleAction}
+              onDeleteTheme={this.handleOnDeleteTheme}
+              onDeleteStyle={this.handleOnDeleteStyle}
+              onSelectImage={this.handleOnSelectThemeImage}
+              onDeleteImage={this.handleOnDeleteThemeImage}
+            />
+          </SwipeableViews>
+        </Container>
+      </div>
     )
   }
 

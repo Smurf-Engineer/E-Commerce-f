@@ -5,9 +5,10 @@ import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import { Container } from './styledComponents'
-import { ModelConfig } from '../../../types/common'
+import { ModelConfig, DesignConfig } from '../../../types/common'
 
 interface Props {
+  designConfig: DesignConfig
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -22,6 +23,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any) => void
   onUploadDesign: (files: any) => void
+  onSelectConfig: (config: DesignConfig) => void
 }
 
 const DesignCenterCustomize = ({
@@ -38,12 +40,15 @@ const DesignCenterCustomize = ({
   uploadingFiles,
   onUploadFiles,
   onUploadDesign,
-  areas
+  onSelectConfig,
+  areas,
+  designConfig
 }: Props) => {
   return (
     <Container>
       <Tabs
         {...{
+          designConfig,
           colorBlock,
           colorBlockHovered,
           onSelectColorBlock,
@@ -53,7 +58,8 @@ const DesignCenterCustomize = ({
           styleColors,
           onUploadFiles,
           onUploadDesign,
-          uploadingFiles
+          uploadingFiles,
+          onSelectConfig
         }}
         uploadNewModel={!!files}
       />

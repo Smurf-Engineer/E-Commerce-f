@@ -13,9 +13,10 @@ import {
   SET_CURRENT_TAB_ACTION,
   SET_SWIPING_TAB_ACTION,
   SET_SELECTED_THEME_ACTION,
-  SET_SELECTED_STYLE_ACTION
+  SET_SELECTED_STYLE_ACTION,
+  SET_DESIGN_CONFIG_ACTION
 } from './constants'
-import { AnyAction, ModelConfig } from '../../types/common'
+import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -75,4 +76,9 @@ export const setSelectedThemeAction = (id: number): AnyAction => ({
 export const setSelectedStyleAction = (id: number): AnyAction => ({
   type: SET_SELECTED_STYLE_ACTION,
   id
+})
+
+export const setDesignConfigAction = (config: DesignConfig): AnyAction => ({
+  type: SET_DESIGN_CONFIG_ACTION,
+  config
 })

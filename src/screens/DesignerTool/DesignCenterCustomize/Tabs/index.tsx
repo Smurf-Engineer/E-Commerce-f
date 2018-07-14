@@ -10,6 +10,7 @@ import InpirationTab from '../InspirationColors'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import { Container } from './styledComponents'
+import { DesignConfig } from '../../../../types/common'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
@@ -18,6 +19,7 @@ const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const { TabPane } = AntdTabs
 
 interface Props {
+  designConfig: DesignConfig
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -29,9 +31,11 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any) => void
   onUploadDesign: (files: any) => void
+  onSelectConfig: (config: DesignConfig) => void
 }
 
 const Tabs = ({
+  designConfig,
   onSelectColorBlock,
   onHoverColorBlock,
   colorBlock,
@@ -42,15 +46,12 @@ const Tabs = ({
   onUploadFiles,
   uploadingFiles,
   uploadNewModel,
-  onUploadDesign
+  onUploadDesign,
+  onSelectConfig
 }: Props) => {
   return (
     <Container>
-      <AntdTabs
-        style={{ height: '100%' }}
-        defaultActiveKey={UPLOAD_TAB}
-        size="large"
-      >
+      <AntdTabs defaultActiveKey={UPLOAD_TAB} size="large">
         <TabPane
           key={UPLOAD_TAB}
           tab={<Tab label="upload" icon={uploadIcon} />}
@@ -60,7 +61,8 @@ const Tabs = ({
               onUploadFiles,
               uploadingFiles,
               uploadNewModel,
-              onUploadDesign
+              onUploadDesign,
+              onSelectConfig
             }}
           />
         </TabPane>
@@ -81,7 +83,7 @@ const Tabs = ({
           key={INSPIRATION_TAB}
           tab={<Tab label="inspiration" icon={colorIcon} />}
         >
-          <InpirationTab />
+          <InpirationTab palettes={designConfig.inspiration || []} />
         </TabPane>
       </AntdTabs>
     </Container>

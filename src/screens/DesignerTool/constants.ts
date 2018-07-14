@@ -15,6 +15,7 @@ export const SET_CURRENT_TAB_ACTION = `${namespace}/SET_CURRENT_TAB_ACTION`
 export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`
 export const SET_SELECTED_THEME_ACTION = `${namespace}/SET_SELECTED_THEME_ACTION`
 export const SET_SELECTED_STYLE_ACTION = `${namespace}/SET_SELECTED_STYLE_ACTION`
+export const SET_DESIGN_CONFIG_ACTION = `${namespace}/SET_DESIGN_CONFIG_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

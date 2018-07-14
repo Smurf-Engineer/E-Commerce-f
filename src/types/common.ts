@@ -612,3 +612,13 @@ export interface UploadFile {
   linkProps?: any
   type: string
 }
+
+export interface DesignObject {
+  code: string
+  colors: string[]
+  name: string
+}
+
+export interface DesignConfig extends DesignObject {
+  inspiration: DesignObject[]
+}
