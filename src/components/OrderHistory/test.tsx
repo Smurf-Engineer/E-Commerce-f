@@ -8,6 +8,7 @@ import OrderHistory from './index'
 describe('<OrderHistory />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<OrderHistory />, div)
+    const formatMessage = () => ''
+    ReactDOM.render(<OrderHistory {...{ formatMessage }} />, div)
   })
 })
