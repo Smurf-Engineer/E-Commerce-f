@@ -129,14 +129,19 @@ const mapStateToProps = (state: any) => state.get('menuGender').toJS()
 
 const MenuGenderEnhance = compose(
   graphql<Data>(categoriesQuery, {
-    options: ({ sportSelected, sports, genders, type }: OwnProps) => {
+    options: ({
+      sportSelected,
+      sports,
+      genders,
+      type: genderSelected
+    }: OwnProps) => {
       const sportId =
-        sports !== undefined
-          ? (sports as Filter[])[sportSelected as number].id
+        sports !== undefined && sportSelected !== undefined
+          ? sports[sportSelected].id
           : undefined
       const genderId =
-        genders !== undefined
-          ? (genders as Filter[])[type as number].id
+        genders !== undefined && genderSelected !== undefined
+          ? genders[genderSelected].id
           : undefined
       return {
         variables: {
