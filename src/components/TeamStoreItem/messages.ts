@@ -12,5 +12,13 @@ export default defineMessages({
   shareButtonLabel: {
     id: 'components.TeamStoreItem.shareButtonLabel',
     defaultMessage: 'Share'
+  },
+  editButtonLabel: {
+    id: 'components.TeamStoreItem.editButtonLabel',
+    defaultMessage: 'Edit'
+  },
+  deleteButtonLabel: {
+    id: 'components.TeamStoreItem.deleteButtonLabel',
+    defaultMessage: 'Delete'
   }
 })

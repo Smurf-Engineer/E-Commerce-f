@@ -23,3 +23,11 @@ export const StyledTitle = styled.div`
   flex: 1;
   margin-left: 15px;
 `
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+`

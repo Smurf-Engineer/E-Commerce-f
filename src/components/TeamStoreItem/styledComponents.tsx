@@ -25,7 +25,7 @@ export const TeamStoreCard = styled.div`
   width: 468px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 300px;
+    width: auto;
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -72,15 +72,33 @@ export const ShareButton = styled(Button)`
     line-height: 19px;
     text-align: center;
   }
+
+  @media (max-width: 480px) {
+    margin-left: 0;
+    width: 35%;
+  }
 `
+
+export const EditButton = ShareButton.extend``
+
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
   width: 40%;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
 `
 export const DeleteLabel = styled.span`
   display: flex;
   align-items: center;
   color: #e61737;
   margin-left: 10px;
+  @media (max-width: 480px) {
+    margin-left: 0;
+    width: 76px;
+  }
 `

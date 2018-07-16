@@ -18,6 +18,7 @@ import messages from './messages'
 import ShareDesignModal from '../ShareDesignModal'
 import quickView from '../../assets/quickview.svg'
 import AddToTeamStore from '../AddToTeamStore'
+import { DesignTabs } from '../../screens/DesignCenter/constants'
 
 interface Props {
   history: any
@@ -97,7 +98,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             </Button>
           </ButtonWrapper>
         </ButtonsContainer>
-        {currentTab === 3 && !swipingView ? (
+        {currentTab === DesignTabs.PreviewTab && !swipingView ? (
           <Render3D
             {...{
               colors,

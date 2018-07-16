@@ -109,6 +109,7 @@ export type DesignType = {
   product: Product
   image: string
   createdAt: string
+  style?: Style
 }
 
 export type SaveDesignType = {
@@ -241,6 +242,7 @@ export interface Style {
   id: number
   name: string
   image: string
+  branding?: string
   colors: ColorBlock[]
 }
 
@@ -351,6 +353,7 @@ export interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  teamStoreId?: string
 }
 
 export interface CreditCardData {
@@ -591,4 +594,22 @@ export interface DeleteDesignModal {
   designId: string
   designName: string
   modalLoading: boolean
+}
+
+export interface UploadFile {
+  uid: number
+  size: number
+  name: string
+  filename?: string
+  lastModified?: string
+  lastModifiedDate?: Date
+  url?: string
+  status?: any
+  percent?: number
+  thumbUrl?: string
+  originFileObj?: File
+  response?: any
+  error?: any
+  linkProps?: any
+  type: string
 }

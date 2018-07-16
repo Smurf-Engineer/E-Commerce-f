@@ -31,7 +31,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   styleModalData: StyleModalType
-  currentStyle: number
+  styleIndex: number
   designHasChanges: boolean
   onSelectStyle: (style: DesignStyle, index: number, colors: string[]) => void
   onSelectStyleComplexity: (index: number) => void
@@ -51,12 +51,8 @@ const marks = {
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
-    const {
-      currentStyle,
-      openNewStyleModalAction,
-      designHasChanges
-    } = this.props
-    if (currentStyle !== -1 && designHasChanges) {
+    const { styleIndex, openNewStyleModalAction, designHasChanges } = this.props
+    if (styleIndex !== -1 && designHasChanges) {
       openNewStyleModalAction(true, index, id)
       return
     }
@@ -64,7 +60,10 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   }
 
   selectStyle = (id: number, index: any) => {
-    const { onSelectStyle, data: { styles } } = this.props
+    const {
+      onSelectStyle,
+      data: { styles }
+    } = this.props
     const style = get(styles, `styles[${index}]`, {})
     const styleAreas = style.colors || []
     const colors = styleAreas.map(({ color }: any) => color)
@@ -72,7 +71,9 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   }
 
   reselectStyle = () => {
-    const { styleModalData: { indexStyle, idStyle } } = this.props
+    const {
+      styleModalData: { indexStyle, idStyle }
+    } = this.props
     this.selectStyle(idStyle, indexStyle)
   }
 

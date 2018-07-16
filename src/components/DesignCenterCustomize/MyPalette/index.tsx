@@ -6,7 +6,7 @@ import { List } from 'immutable'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 
-import PaletteCard from '../PaletteCard'
+import PaletteCard from '../../PaletteCard'
 import messages from './messages'
 
 import { Palette, MyPaletteDesignCenterModals } from '../../../types/common'
@@ -50,9 +50,7 @@ class MyPalette extends React.PureComponent<Props> {
 
   updatePaletteName = (event: React.FormEvent<HTMLInputElement>) => {
     const { onChangePaletteName } = this.props
-    const {
-      currentTarget: { value }
-    } = event
+    const { currentTarget: { value } } = event
     onChangePaletteName(value)
   }
 

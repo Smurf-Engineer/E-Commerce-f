@@ -104,13 +104,18 @@ export const Arrows = styled.div`
 
 export const Arrow = styled.img``
 
+interface ButtonContainerProps {
+  myLockerList?: boolean
+}
+
 export const ButtonContainer = styled.div`
   user-select: none;
   display: flex;
   position: absolute;
   width: 200px;
   justify-content: center;
-  top: 170px;
+  top: ${({ myLockerList }: ButtonContainerProps) =>
+    myLockerList ? '140px' : '170px'};
 `
 
 export const CustomizeButton = styled.div`

@@ -4,6 +4,7 @@
 import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
+import Spin from 'antd/lib/spin'
 import {
   Palette,
   CanvasElement,
@@ -11,9 +12,11 @@ import {
   CanvasType,
   MyPaletteDesignCenterModals,
   ArtFormat,
-  SaveDesignType
+  SaveDesignType,
+  Style
 } from '../../types/common'
-import { Container } from './styledComponents'
+import { Container, LoadingContainer } from './styledComponents'
+import { DesignTabs } from '../../screens/DesignCenter/constants'
 
 interface Props {
   colorBlock: number
@@ -22,7 +25,7 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
-  currentStyle: number
+  currentStyle: Style
   loadingModel: boolean
   undoEnabled: boolean
   redoEnabled: boolean
@@ -38,6 +41,7 @@ interface Props {
   openResetDesignModal: boolean
   customize3dMounted: boolean
   design: SaveDesignType
+  loadingData?: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -116,8 +120,16 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       openResetDesignModalAction,
       setCustomize3dMountedAction,
       onSelectArtFormat,
-      onUnmountTab
+      onUnmountTab,
+      loadingData
     } = this.props
+
+    const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
+    const loadingView = loadingData && (
+      <LoadingContainer>
+        <Spin />
+      </LoadingContainer>
+    )
 
     return (
       <Container>
@@ -152,7 +164,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           onApplyImage={this.handleOnApplyImage}
           onApplyArt={this.handleOnApplyArt}
         />
-        {currentTab === 2 && !swipingView ? (
+        {showRender3d && !loadingData ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
             {...{
@@ -183,7 +195,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onUnmountTab
             }}
           />
-        ) : null}
+        ) : (
+          loadingView
+        )}
       </Container>
     )
   }

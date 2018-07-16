@@ -6,7 +6,8 @@ import {
   SET_OPEN_KEYS,
   SET_CURRENT_SCREEN,
   CLEAR_REDUCER,
-  SET_IS_MOBILE
+  SET_IS_MOBILE,
+  OPEN_SIDEBAR_MOBILE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -20,9 +21,13 @@ export const setOpenKeysAction = (keys: string[]): AnyAction => ({
   keys
 })
 
-export const setCurrentScreenAction = (screen: string): AnyAction => ({
+export const setCurrentScreenAction = (
+  screen: string,
+  openCreations?: boolean
+): AnyAction => ({
   type: SET_CURRENT_SCREEN,
-  screen
+  screen,
+  openCreations
 })
 
 export const clearReducerAction = (): AnyAction => ({
@@ -32,4 +37,9 @@ export const clearReducerAction = (): AnyAction => ({
 export const setIsMobileAction = (isMobile: boolean): AnyAction => ({
   type: SET_IS_MOBILE,
   isMobile
+})
+
+export const openSidebarMobile = (open: boolean) => ({
+  type: OPEN_SIDEBAR_MOBILE,
+  open
 })

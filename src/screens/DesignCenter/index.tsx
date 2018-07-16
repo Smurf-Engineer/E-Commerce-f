@@ -12,8 +12,10 @@ import { RouteComponentProps } from 'react-router-dom'
 import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
+import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
+import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -31,7 +33,8 @@ import {
   BottomSheetWrapper,
   ModalMessage,
   StyledGhostButton,
-  StyledButton
+  StyledButton,
+  LoadingContainer
 } from './styledComponents'
 import {
   Palette,
@@ -45,15 +48,26 @@ import {
   StyleModalType,
   ThemeModalType,
   ArtFormat,
-  SaveDesignType
+  SaveDesignType,
+  DesignType,
+  Style
 } from '../../types/common'
-import { getProductQuery, addTeamStoreItemMutation } from './data'
+import {
+  getProductQuery,
+  addTeamStoreItemMutation,
+  getDesignQuery
+} from './data'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
+import { DesignTabs } from './constants'
 
-interface Data extends QueryProps {
+interface DataProduct extends QueryProps {
   product?: Product
+}
+
+interface DataDesign extends QueryProps {
+  designData?: DesignType
 }
 
 interface Change {
@@ -62,7 +76,8 @@ interface Change {
 }
 
 interface Props extends RouteComponentProps<any> {
-  data: Data
+  dataProduct?: DataProduct
+  dataDesign?: DataDesign
   intl: InjectedIntl
   currentTab: number
   colorBlock: number
@@ -83,8 +98,9 @@ interface Props extends RouteComponentProps<any> {
   savedDesignId: string
   saveDesignLoading: boolean
   text: string
-  style: number
+  style: Style
   themeId: number
+  styleIndex: number
   openAddToStoreModal: boolean
   addItemToStore: any
   teamStoreId: string
@@ -102,7 +118,7 @@ interface Props extends RouteComponentProps<any> {
   routeToGoWithoutSave: string
   customize3dMounted: boolean
   svgOutputUrl: string
-  currentStyle: number
+  tabChanged: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -184,15 +200,16 @@ export class DesignCenter extends React.Component<Props, {}> {
   handleAfterSaveDesign = (id: string, svgUrl: string) => {
     const { saveDesignIdAction } = this.props
     saveDesignIdAction(id, svgUrl)
-    this.handleOnSelectTab(3)
+    this.handleOnSelectTab(DesignTabs.PreviewTab)
   }
 
   handleOpenQuickView = () => {
     const {
+      dataDesign,
       location: { search }
     } = this.props
     const queryParams = queryString.parse(search)
-    const productId = queryParams.id || ''
+    const productId = get(dataDesign, 'designData.product.id', queryParams.id)
     const { openQuickViewAction: openQuickView } = this.props
     openQuickView(productId)
   }
@@ -231,8 +248,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCurrentTabAction,
       openOutWithoutSaveModalAction
     } = this.props
-    if (currentTab !== 2) {
-      setCurrentTabAction(2)
+    if (currentTab !== DesignTabs.CustomizeTab) {
+      setCurrentTabAction(DesignTabs.CustomizeTab)
     }
     openOutWithoutSaveModalAction(false)
   }
@@ -294,6 +311,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       history,
       text,
       currentTab,
+      tabChanged,
       setColorBlockAction,
       setHoverColorBlockAction,
       setColorAction,
@@ -338,7 +356,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setItemToAddAction,
       teamStoreId,
       location: { search },
-      data,
+      dataDesign,
+      dataProduct,
       canvas,
       setCanvasElement,
       setSelectedElement,
@@ -363,17 +382,49 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCustomize3dMountedAction,
       svgOutputUrl,
       setCanvasJsonAction,
-      currentStyle
+      styleIndex
     } = this.props
 
-    if (!search) {
+    const queryParams = queryString.parse(search)
+    if (!queryParams.id && !queryParams.designId) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
     const { formatMessage } = intl
-    const queryParams = queryString.parse(search)
-    const productId = queryParams.id || ''
-    const productName = data && data.product ? data.product.name : ''
+    const productId = get(dataDesign, 'designData.product.id', queryParams.id)
+    const productName =
+      get(dataProduct, 'product.name') ||
+      get(dataDesign, 'designData.product.name', '')
+
+    const canvasJson = get(dataDesign, 'designData.canvas')
+    const styleId = get(dataDesign, 'designData.styleId')
+    const styleObject = get(dataDesign, 'designData.style')
+
+    let designObject = design
+    if (canvasJson) {
+      designObject = { ...designObject, canvasJson, styleId }
+    }
+
+    const {
+      CustomizeTab: CustomizeTabIndex,
+      ThemeTab: ThemeTabIndex,
+      StyleTab: StyleTabIndex
+    } = DesignTabs
+
+    let tabSelected = currentTab
+    let loadingData = false
+    let currentStyle = style
+    if (dataDesign) {
+      tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
+      loadingData = !!dataDesign.loading
+      currentStyle = isEmpty(style) ? styleObject : style
+    }
+
+    const loadingView = loadingData && (
+      <LoadingContainer>
+        <Spin />
+      </LoadingContainer>
+    )
 
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
@@ -382,11 +433,12 @@ export class DesignCenter extends React.Component<Props, {}> {
           <Tabs
             currentTheme={themeId}
             onSelectTab={this.handleOnSelectTab}
-            {...{ currentTab, designHasChanges, currentStyle }}
+            currentTab={tabSelected}
+            {...{ designHasChanges, styleIndex }}
           />
           <SwipeableViews
             onTransitionEnd={this.handleOnTransictionEnd}
-            index={currentTab}
+            index={tabSelected}
           >
             <div key="theme">
               <Info
@@ -394,7 +446,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 0 && (
+              {tabSelected === ThemeTabIndex && (
                 <ThemeTab
                   currentTheme={themeId}
                   onSelectTheme={setThemeAction}
@@ -414,7 +466,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
-              {currentTab === 1 && (
+              {tabSelected === StyleTabIndex && (
                 <StyleTab
                   onSelectStyle={setStyleAction}
                   onSelectStyleComplexity={setStyleComplexity}
@@ -423,7 +475,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     openNewStyleModalAction,
                     designHasChanges,
                     formatMessage,
-                    currentStyle
+                    styleIndex
                   }}
                 />
               )}
@@ -434,7 +486,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 colorBlockHovered,
                 colors,
                 loadingModel,
-                currentTab,
                 swipingView,
                 styleColors,
                 paletteName,
@@ -453,9 +504,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 formatMessage,
                 customize3dMounted,
                 setCustomize3dMountedAction,
-                design
+                loadingData,
+                currentStyle
               }}
-              currentStyle={style}
+              currentTab={tabSelected}
+              design={designObject}
               onUpdateText={setTextAction}
               undoEnabled={undoChanges.length > 0}
               redoEnabled={redoChanges.length > 0}
@@ -484,7 +537,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 history,
                 colors,
                 loadingModel,
-                currentTab,
                 swipingView,
                 openShareModal,
                 openShareModalAction,
@@ -498,6 +550,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 formatMessage,
                 svgOutputUrl
               }}
+              currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}
               onLoadModel={setLoadingModel}
               onPressQuickView={this.handleOpenQuickView}
@@ -517,7 +570,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             setSaveDesignLoading={saveDesignLoadingAction}
             saveDesignLoading={saveDesignLoading}
           />
-          {currentTab === 2 ? (
+          {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
               <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
                 <StyledTitle onClick={this.toggleBottomSheet}>
@@ -531,7 +584,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 />
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
-          ) : null}
+          ) : (
+            loadingView
+          )}
         </Container>
         <Modal
           visible={openOutWithoutSaveModal}
@@ -587,7 +642,7 @@ const DesignCenterEnhance = compose(
     mapStateToProps,
     { ...designCenterActions, openQuickViewAction }
   ),
-  graphql<Data>(getProductQuery, {
+  graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
@@ -595,7 +650,19 @@ const DesignCenterEnhance = compose(
         skip: !queryParams.id,
         variables: { id: queryParams.id }
       }
-    }
+    },
+    name: 'dataProduct'
+  }),
+  graphql<DataDesign>(getDesignQuery, {
+    options: ({ location }: OwnProps) => {
+      const search = location ? location.search : ''
+      const queryParams = queryString.parse(search)
+      return {
+        skip: !queryParams.designId,
+        variables: { designId: queryParams.designId }
+      }
+    },
+    name: 'dataDesign'
   })
 )(DesignCenter)
 

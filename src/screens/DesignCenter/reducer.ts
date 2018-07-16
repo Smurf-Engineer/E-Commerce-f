@@ -48,6 +48,7 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,
+  tabChanged: false,
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
@@ -60,12 +61,13 @@ export const initialState = fromJS({
   redoChanges: [],
   swipingView: false,
   themeId: -1,
-  style: -1,
+  styleIndex: -1,
   openShareModal: false,
   openSaveDesign: false,
   checkedTerms: false,
   savedDesignId: '',
   design: {},
+  style: {},
   saveDesignLoading: false,
   text: '',
   openAddToStoreModal: false,
@@ -114,12 +116,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           currentTab: action.index,
           swipingView: true,
-          customize3dMounted: true
+          customize3dMounted: true,
+          tabChanged: true
         })
       }
       return state.merge({
         currentTab: action.index,
-        swipingView: true
+        swipingView: true,
+        tabChanged: true
       })
     }
     case SET_COLOR_BLOCK_ACTION:
@@ -230,7 +234,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         currentTab: 2,
         swipingView: true,
         style: action.style,
-        currentStyle: action.index,
+        styleIndex: action.index,
         colors: action.colors,
         designHasChanges: false,
         styleColors: action.colors,

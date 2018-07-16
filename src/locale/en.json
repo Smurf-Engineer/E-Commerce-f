@@ -178,6 +178,7 @@
   "screens.Account.menu.logout": "LOGOUT",
   "screens.Account.submenu.locker": "My Locker",
   "screens.Account.submenu.files": "My Files",
+  "screens.Account.submenu.filtersTitle": "MY ACCOUNT ",
   "components.FooterThumbnailLocker.private": "Private",
   "components.FooterThumbnailLocker.delete": "Delete",
   "screens.teamstoreProductPage.dynamicPriceDropTitle": "DYNAMIC PRICE DROP",
@@ -259,6 +260,9 @@
   "screen.MyTeamStores.deleteModalLabel": "Delete",
   "screen.MyTeamStores.shareTeamStoreMessage":
     "Check out this awesome teamstore!",
+  "components.TeamStoreItem.editButtonLabel": "Edit",
+  "components.TeamStoreItem.deleteButtonLabel": "Delete",
+  "components.TeamStoreItem.shareButtonLabel": "Share",
   "components.MyAddresses.titleDeleteModal": "Are you sure?",
   "components.MyAddresses.messageDeleteModal":
     "This will permanently delete this address",
