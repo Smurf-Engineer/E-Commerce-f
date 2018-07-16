@@ -121,20 +121,27 @@ export class MenuGender extends React.PureComponent<Props, {}> {
 type OwnProps = {
   sportSelected?: number
   sports?: Filter[]
+  genders?: Filter[]
+  type?: number
 }
 
 const mapStateToProps = (state: any) => state.get('menuGender').toJS()
 
 const MenuGenderEnhance = compose(
   graphql<Data>(categoriesQuery, {
-    options: ({ sportSelected, sports }: OwnProps) => {
+    options: ({ sportSelected, sports, genders, type }: OwnProps) => {
       const sportId =
         sports !== undefined
           ? (sports as Filter[])[sportSelected as number].id
           : undefined
+      const genderId =
+        genders !== undefined
+          ? (genders as Filter[])[type as number].id
+          : undefined
       return {
         variables: {
-          sportId: sportId !== undefined ? sportId : null
+          sportId: sportId !== undefined ? sportId : null,
+          genderId: genderId !== undefined ? genderId : null
         }
       }
     }
