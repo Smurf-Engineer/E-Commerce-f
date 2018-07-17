@@ -4,84 +4,10 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import Button from 'antd/lib/button'
-import SwipeableViews from 'react-swipeable-views'
-import Tabs from './DesignCenterCustomize/DesignCenterTabs'
 import CustomizeTab from './DesignCenterCustomize'
-import SettingsTab from './DesignSettings/'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
-import { Container, ButtonWrapper } from './styledComponents'
 import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
-
-const ContainerFaac = ({
-  currentTab,
-  colors,
-  colorBlock,
-  colorBlockHovered,
-  loadingModel,
-  uploadingFiles,
-  areas,
-  designConfig,
-  handleOnTransitionEnd,
-  modelConfig,
-  setLoadingAction,
-  setColorBlockAction,
-  setHoverColorBlockAction,
-  setColorAction,
-  uploadFilesAction,
-  uploadDesignAction,
-  setDesignConfigAction,
-  setInspirationColorAction,
-  themeImage,
-  selectedTheme,
-  selectedStyle,
-  setSelectedThemeAction,
-  setSelectedStyleAction,
-  handleOnDeleteTheme,
-  handleOnDeleteStyle,
-  handleOnSelectThemeImage,
-  handleOnDeleteThemeImage,
-  children
-}: any) => (
-  <Container>
-    <SwipeableViews index={currentTab} onTransitionEnd={handleOnTransitionEnd}>
-      <CustomizeTab
-        {...{
-          colors,
-          colorBlock,
-          colorBlockHovered,
-          loadingModel,
-          uploadingFiles,
-          areas,
-          designConfig
-        }}
-        files={modelConfig}
-        onLoadModel={setLoadingAction}
-        onSelectColorBlock={setColorBlockAction}
-        onHoverColorBlock={setHoverColorBlockAction}
-        onSelectColor={setColorAction}
-        onUploadFiles={uploadFilesAction}
-        onUploadDesign={uploadDesignAction}
-        onSelectConfig={setDesignConfigAction}
-        onSelectInspirationColor={setInspirationColorAction}
-        onSaveDesign={() => {}}
-      >
-        {children}
-      </CustomizeTab>
-      <SettingsTab
-        {...{ themeImage, selectedTheme, selectedStyle }}
-        onSaveDesign={() => {}}
-        onSelectTheme={setSelectedThemeAction}
-        onSelectStyle={setSelectedStyleAction}
-        onDeleteTheme={handleOnDeleteTheme}
-        onDeleteStyle={handleOnDeleteStyle}
-        onSelectImage={handleOnSelectThemeImage}
-        onDeleteImage={handleOnDeleteThemeImage}
-      />
-    </SwipeableViews>
-  </Container>
-)
 
 interface Props {
   designConfig: DesignConfig
@@ -132,7 +58,6 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadingFiles,
       modelConfig,
       areas,
-      currentTab,
       setSelectedThemeAction,
       setSelectedStyleAction,
       setDesignConfigAction,
@@ -143,43 +68,36 @@ export class DesignerTool extends React.Component<Props, {}> {
     } = this.props
     const { themeImage } = this.state
     return (
-      <div>
-        <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
-        <ContainerFaac
-          {...{
-            themeImage,
-            colors,
-            colorBlock,
-            colorBlockHovered,
-            setLoadingAction,
-            loadingModel,
-            setColorAction,
-            setColorBlockAction,
-            setHoverColorBlockAction,
-            uploadFilesAction,
-            uploadDesignAction,
-            uploadingFiles,
-            modelConfig,
-            areas,
-            selectedTheme,
-            currentTab,
-            setSelectedThemeAction,
-            setSelectedStyleAction,
-            setDesignConfigAction,
-            setInspirationColorAction,
-            selectedStyle,
-            designConfig
-          }}
-        >
-          {(saveDesign: any) => (
-            <ButtonWrapper>
-              <Button onClick={saveDesign} type="primary">
-                Save
-              </Button>
-            </ButtonWrapper>
-          )}
-        </ContainerFaac>
-      </div>
+      <CustomizeTab
+        {...{
+          colors,
+          colorBlock,
+          colorBlockHovered,
+          loadingModel,
+          uploadingFiles,
+          areas,
+          designConfig,
+          themeImage,
+          selectedTheme,
+          selectedStyle
+        }}
+        files={modelConfig}
+        onSaveDesign={this.handleSaveDesign}
+        onSelectTheme={setSelectedThemeAction}
+        onSelectStyle={setSelectedStyleAction}
+        onDeleteTheme={this.handleOnDeleteTheme}
+        onDeleteStyle={this.handleOnDeleteStyle}
+        onSelectImage={this.handleOnSelectThemeImage}
+        onDeleteImage={this.handleOnDeleteThemeImage}
+        onLoadModel={setLoadingAction}
+        onSelectColorBlock={setColorBlockAction}
+        onHoverColorBlock={setHoverColorBlockAction}
+        onSelectColor={setColorAction}
+        onUploadFiles={uploadFilesAction}
+        onUploadDesign={uploadDesignAction}
+        onSelectConfig={setDesignConfigAction}
+        onSelectInspirationColor={setInspirationColorAction}
+      />
     )
   }
 
@@ -205,12 +123,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
-  handleSaveDesign = () => {
-    const { setCurrentTabAction, currentTab } = this.props
-    if (currentTab === 0) {
-      setCurrentTabAction(1)
-    }
-  }
+  handleSaveDesign = () => {}
 }
 
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()

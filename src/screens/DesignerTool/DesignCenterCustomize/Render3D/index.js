@@ -1,6 +1,10 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
 import findIndex from 'lodash/findIndex'
+import Button from 'antd/lib/button'
+import message from 'antd/lib/message'
+import { modelPositions } from './config'
 import { Container, Render, Progress, Logo } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
 
@@ -318,15 +322,45 @@ class Render3D extends PureComponent {
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
           {!files && <Logo src={logo} />}
         </Render>
-        {this.props.children(this.saveDesign)}
+        {/* TODO: WIP
+        <ButtonWrapper>
+          <Button onClick={this.saveThumbnail}>Save Thumbnail</Button>
+        </ButtonWrapper>
+      */}
       </Container>
     )
   }
 
-  saveDesign = () => {
-    console.log('------------------------------------')
-    console.log('colors')
-    console.log('------------------------------------')
+  setFrontFaceModel = () => {
+    if (this.camera) {
+      const { front: { x, y, z } } = modelPositions
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
+  }
+
+  takeScreenshot = () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.5)
+        resolve(thumbnail)
+      }, 800)
+    })
+
+  saveThumbnail = async colors => {
+    this.setFrontFaceModel()
+    this.setupColors(colors)
+    const { designConfig } = this.props
+    if (isEmpty(designConfig)) {
+      message.error('Please select a JSON file')
+    } else {
+      try {
+        // TODO: Ejecute action to upload
+        const thumbnail = await this.takeScreenshot(inspirationColors.colors)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 }
 

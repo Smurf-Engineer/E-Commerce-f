@@ -5,7 +5,7 @@ import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import { Container } from './styledComponents'
-import { ModelConfig, DesignConfig } from '../../../types/common'
+import { ModelConfig, DesignConfig, UploadFile } from '../../../types/common'
 
 interface Props {
   designConfig: DesignConfig
@@ -16,6 +16,15 @@ interface Props {
   files: ModelConfig
   loadingModel: boolean
   uploadingFiles: boolean
+  themeImage?: UploadFile[]
+  selectedTheme: number
+  selectedStyle: number
+  onSelectTheme: (id: number) => void
+  onSelectStyle: (id: number) => void
+  onDeleteTheme: (id: number) => void
+  onDeleteStyle: (id: number) => void
+  onSelectImage?: (file: UploadFile) => void
+  onDeleteImage?: () => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onLoadModel: (loading: boolean) => void
@@ -28,7 +37,6 @@ interface Props {
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
-  render3D: any
   render() {
     const {
       onSelectColorBlock,
@@ -48,7 +56,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       designConfig,
       onSelectInspirationColor,
       onSaveDesign,
-      children
+      themeImage,
+      selectedTheme,
+      selectedStyle,
+      onSelectTheme,
+      onSelectStyle,
+      onDeleteTheme,
+      onDeleteStyle,
+      onSelectImage,
+      onDeleteImage
     } = this.props
     return (
       <Container>
@@ -65,23 +81,32 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUploadDesign,
             uploadingFiles,
             onSelectConfig,
-            onSelectInspirationColor
+            onSelectInspirationColor,
+            themeImage,
+            selectedTheme,
+            selectedStyle,
+            onSaveDesign,
+            onSelectTheme,
+            onSelectStyle,
+            onDeleteTheme,
+            onDeleteStyle,
+            onSelectImage,
+            onDeleteImage
           }}
           uploadNewModel={!!files}
         />
         <Render3D
           {...{
-            onSaveDesign,
-            colors,
-            colorBlockHovered,
-            onLoadModel,
-            loadingModel,
             files,
-            areas
+            areas,
+            colors,
+            onSaveDesign,
+            onLoadModel,
+            designConfig,
+            loadingModel,
+            colorBlockHovered
           }}
-        >
-          {children}
-        </Render3D>
+        />
       </Container>
     )
   }

@@ -45,8 +45,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteTheme,
       onDeleteStyle,
       onSelectImage,
-      onDeleteImage,
-      onSaveDesign
+      onDeleteImage
     } = this.props
     return (
       <Container>

@@ -6,15 +6,18 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
+import Settings from '../../DesignSettings'
 import InpirationTab from '../InspirationColors'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
+import settingsIcon from '../../../../assets/settings.svg'
 import { Container } from './styledComponents'
-import { DesignConfig } from '../../../../types/common'
+import { DesignConfig, UploadFile } from '../../../../types/common'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
+const SETTINGS_TAB = 'SETTINGS_TAB'
 
 const { TabPane } = AntdTabs
 
@@ -25,6 +28,16 @@ interface Props {
   colors: string[]
   uploadingFiles: boolean
   uploadNewModel: boolean
+  themeImage?: UploadFile[]
+  selectedTheme: number
+  selectedStyle: number
+  onSelectTheme: (id: number) => void
+  onSelectStyle: (id: number) => void
+  onDeleteTheme: (id: number) => void
+  onDeleteStyle: (id: number) => void
+  onSelectImage?: (file: UploadFile) => void
+  onDeleteImage?: () => void
+  onSaveDesign: () => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
@@ -47,7 +60,17 @@ const Tabs = ({
   uploadNewModel,
   onUploadDesign,
   onSelectConfig,
-  onSelectInspirationColor
+  onSelectInspirationColor,
+  themeImage,
+  selectedTheme,
+  selectedStyle,
+  onSaveDesign,
+  onSelectTheme,
+  onSelectStyle,
+  onDeleteTheme,
+  onDeleteStyle,
+  onSelectImage,
+  onDeleteImage
 }: Props) => {
   return (
     <Container>
@@ -85,6 +108,25 @@ const Tabs = ({
           <InpirationTab
             onSelectPalette={onSelectInspirationColor}
             palettes={designConfig.inspiration || []}
+          />
+        </TabPane>
+        <TabPane
+          key={SETTINGS_TAB}
+          tab={<Tab label="settings" icon={settingsIcon} />}
+        >
+          <Settings
+            {...{
+              themeImage,
+              selectedTheme,
+              selectedStyle,
+              onSaveDesign,
+              onSelectTheme,
+              onSelectStyle,
+              onDeleteTheme,
+              onDeleteStyle,
+              onSelectImage,
+              onDeleteImage
+            }}
           />
         </TabPane>
       </AntdTabs>

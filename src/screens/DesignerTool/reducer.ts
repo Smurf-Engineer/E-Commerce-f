@@ -80,11 +80,15 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_STYLE_ACTION:
       return state.set('selectedStyle', action.id)
     case SET_DESIGN_CONFIG_ACTION:
-      return state.set('designConfig', action.config)
+      return state.set('designConfig', fromJS(action.config))
     case SET_INSPIRATION_COLOR_ACTION: {
-      const { inspiration } = state.get('designConfig')
-      const { colors } = inspiration[action.index]
-      return state.set('colors', List.of(...colors))
+      const colors = state.getIn([
+        'designConfig',
+        'inspiration',
+        action.index,
+        'colors'
+      ])
+      return state.set('colors', colors)
     }
     default:
       return state
