@@ -130,6 +130,14 @@ const OrdersList = ({
   const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
   const fullCount = get(ordersQuery, 'fullCount', 0)
 
+  if (!orders.length) {
+    return (
+      <EmptyContainer>
+        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
+      </EmptyContainer>
+    )
+  }
+
   const orderItems = orders.map(
     ({ id, shortId, date, status }: OrderHistory, index: number) => (
       <ItemOrder
@@ -139,14 +147,6 @@ const OrdersList = ({
       />
     )
   )
-
-  if (!orderItems.length) {
-    return (
-      <EmptyContainer>
-        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
-      </EmptyContainer>
-    )
-  }
 
   return (
     <Container>
