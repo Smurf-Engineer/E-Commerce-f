@@ -16,7 +16,8 @@ import {
   SET_SWIPING_TAB_ACTION,
   SET_SELECTED_THEME_ACTION,
   SET_SELECTED_STYLE_ACTION,
-  SET_DESIGN_CONFIG_ACTION
+  SET_DESIGN_CONFIG_ACTION,
+  SET_INSPIRATION_COLOR_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -80,6 +81,11 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedStyle', action.id)
     case SET_DESIGN_CONFIG_ACTION:
       return state.set('designConfig', action.config)
+    case SET_INSPIRATION_COLOR_ACTION: {
+      const { inspiration } = state.get('designConfig')
+      const { colors } = inspiration[action.index]
+      return state.set('colors', List.of(...colors))
+    }
     default:
       return state
   }

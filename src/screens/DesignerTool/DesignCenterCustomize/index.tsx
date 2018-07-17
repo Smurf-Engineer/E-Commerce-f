@@ -12,7 +12,6 @@ interface Props {
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
-  styleColors: string[]
   areas: string[]
   files: ModelConfig
   loadingModel: boolean
@@ -24,58 +23,68 @@ interface Props {
   onUploadFiles: (files: any) => void
   onUploadDesign: (files: any) => void
   onSelectConfig: (config: DesignConfig) => void
+  onSelectInspirationColor: (index: number) => void
+  onSaveDesign: () => void
 }
 
-const DesignCenterCustomize = ({
-  onSelectColorBlock,
-  colorBlock,
-  colorBlockHovered,
-  onSelectColor,
-  colors,
-  styleColors,
-  loadingModel,
-  onLoadModel,
-  onHoverColorBlock,
-  files,
-  uploadingFiles,
-  onUploadFiles,
-  onUploadDesign,
-  onSelectConfig,
-  areas,
-  designConfig
-}: Props) => {
-  return (
-    <Container>
-      <Tabs
-        {...{
-          designConfig,
-          colorBlock,
-          colorBlockHovered,
-          onSelectColorBlock,
-          onHoverColorBlock,
-          onSelectColor,
-          colors,
-          styleColors,
-          onUploadFiles,
-          onUploadDesign,
-          uploadingFiles,
-          onSelectConfig
-        }}
-        uploadNewModel={!!files}
-      />
-      <Render3D
-        {...{
-          colors,
-          colorBlockHovered,
-          styleColors,
-          onLoadModel,
-          loadingModel,
-          files,
-          areas
-        }}
-      />
-    </Container>
-  )
+class DesignCenterCustomize extends React.PureComponent<Props> {
+  render3D: any
+  render() {
+    const {
+      onSelectColorBlock,
+      colorBlock,
+      colorBlockHovered,
+      onSelectColor,
+      colors,
+      loadingModel,
+      onLoadModel,
+      onHoverColorBlock,
+      files,
+      uploadingFiles,
+      onUploadFiles,
+      onUploadDesign,
+      onSelectConfig,
+      areas,
+      designConfig,
+      onSelectInspirationColor,
+      onSaveDesign,
+      children
+    } = this.props
+    return (
+      <Container>
+        <Tabs
+          {...{
+            designConfig,
+            colorBlock,
+            colorBlockHovered,
+            onSelectColorBlock,
+            onHoverColorBlock,
+            onSelectColor,
+            colors,
+            onUploadFiles,
+            onUploadDesign,
+            uploadingFiles,
+            onSelectConfig,
+            onSelectInspirationColor
+          }}
+          uploadNewModel={!!files}
+        />
+        <Render3D
+          {...{
+            onSaveDesign,
+            colors,
+            colorBlockHovered,
+            onLoadModel,
+            loadingModel,
+            files,
+            areas
+          }}
+        >
+          {children}
+        </Render3D>
+      </Container>
+    )
+  }
 }
 
 export default DesignCenterCustomize

@@ -31,11 +31,13 @@ interface Props {
   onDeleteStyle: (id: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
+  onSaveDesign: () => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
   render() {
     const {
+      themeImage,
       selectedTheme,
       selectedStyle,
       onSelectTheme,
@@ -44,7 +46,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteStyle,
       onSelectImage,
       onDeleteImage,
-      themeImage
+      onSaveDesign
     } = this.props
     return (
       <Container>
@@ -74,7 +76,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
             buttonLabel="ADD NEW STYLE"
             {...{ items }}
           />
-          <Button type="primary">Save</Button>
         </Form>
       </Container>
     )

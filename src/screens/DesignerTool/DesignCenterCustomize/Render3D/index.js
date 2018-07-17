@@ -1,30 +1,8 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
-import filter from 'lodash/filter'
 import findIndex from 'lodash/findIndex'
-import { FormattedMessage } from 'react-intl'
-import Dropdown from 'antd/lib/dropdown'
-import Menu from 'antd/lib/menu'
-import {
-  Container,
-  Render,
-  Progress,
-  Model,
-  Row,
-  QuickView,
-  Button,
-  DragText,
-  ModelType,
-  ModelText,
-  ViewControls,
-  ViewButton,
-  LoadingContainer,
-  ButtonWrapper,
-  Logo
-} from './styledComponents'
+import { Container, Render, Progress, Logo } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
-import { viewPositions } from './config'
-import messages from './messages'
 
 class Render3D extends PureComponent {
   state = {
@@ -194,7 +172,7 @@ class Render3D extends PureComponent {
 
   loadObject = async files => {
     /* Object and MTL load */
-    const { onLoadModel, styleColors } = this.props
+    const { onLoadModel } = this.props
 
     /* Texture configuration */
     const loadedTextures = await this.loadTextures(files)
@@ -340,8 +318,15 @@ class Render3D extends PureComponent {
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
           {!files && <Logo src={logo} />}
         </Render>
+        {this.props.children(this.saveDesign)}
       </Container>
     )
+  }
+
+  saveDesign = () => {
+    console.log('------------------------------------')
+    console.log('colors')
+    console.log('------------------------------------')
   }
 }
 

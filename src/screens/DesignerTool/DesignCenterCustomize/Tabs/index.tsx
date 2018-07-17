@@ -23,7 +23,6 @@ interface Props {
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
-  styleColors: string[]
   uploadingFiles: boolean
   uploadNewModel: boolean
   onSelectColorBlock: (index: number) => void
@@ -32,6 +31,7 @@ interface Props {
   onUploadFiles: (files: any) => void
   onUploadDesign: (files: any) => void
   onSelectConfig: (config: DesignConfig) => void
+  onSelectInspirationColor: (index: number) => void
 }
 
 const Tabs = ({
@@ -42,12 +42,12 @@ const Tabs = ({
   colorBlockHovered,
   onSelectColor,
   colors,
-  styleColors,
   onUploadFiles,
   uploadingFiles,
   uploadNewModel,
   onUploadDesign,
-  onSelectConfig
+  onSelectConfig,
+  onSelectInspirationColor
 }: Props) => {
   return (
     <Container>
@@ -74,8 +74,7 @@ const Tabs = ({
               colorBlock,
               colorBlockHovered,
               onSelectColor,
-              colors,
-              styleColors
+              colors
             }}
           />
         </TabPane>
@@ -83,7 +82,10 @@ const Tabs = ({
           key={INSPIRATION_TAB}
           tab={<Tab label="inspiration" icon={colorIcon} />}
         >
-          <InpirationTab palettes={designConfig.inspiration || []} />
+          <InpirationTab
+            onSelectPalette={onSelectInspirationColor}
+            palettes={designConfig.inspiration || []}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

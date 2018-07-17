@@ -65,6 +65,7 @@ class UploadTab extends React.PureComponent<Props, {}> {
     if (list.length === 3) {
       if (file.type !== 'application/json') {
         message.error('Please select a valid JSON file')
+        return false
       } else {
         try {
           const { onSelectConfig } = this.props
@@ -147,6 +148,17 @@ class UploadTab extends React.PureComponent<Props, {}> {
         </Collapse>
         <Buttons>
           <ButtonWrapper>
+            <Button
+              size="large"
+              type="primary"
+              onClick={this.handleUpload}
+              disabled={!(fileList.length > 4)}
+              loading={uploadingFiles}
+            >
+              {uploadNewModel ? 'Upload design' : 'Upload model'}
+            </Button>
+          </ButtonWrapper>
+          <ButtonWrapper>
             <Upload
               {...{ fileList }}
               style={{ width: '100%' }}
@@ -174,17 +186,6 @@ class UploadTab extends React.PureComponent<Props, {}> {
               </Button>
             </ButtonWrapper>
           )}
-          <ButtonWrapper>
-            <Button
-              size="large"
-              type="primary"
-              onClick={this.handleUpload}
-              disabled={!(fileList.length > 4)}
-              loading={uploadingFiles}
-            >
-              {uploadNewModel ? 'Upload design' : 'Upload model'}
-            </Button>
-          </ButtonWrapper>
         </Footer>
       </Container>
     )

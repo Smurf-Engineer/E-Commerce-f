@@ -8,14 +8,16 @@ import { DesignObject } from '../../../../types/common'
 
 interface Props {
   palettes: DesignObject[]
+  onSelectPalette: (index: number) => void
 }
-const InspirationColors = ({ palettes }: Props) => {
+const InspirationColors = ({ palettes, onSelectPalette }: Props) => {
+  const handleOnSelectPalette = (index: number) => () => onSelectPalette(index)
   const list = palettes.map(({ name, colors }, index) => (
     <PaletteCard
       id={index}
       key={index}
       {...{ name, colors }}
-      onSelectPalette={() => {}}
+      onSelectPalette={handleOnSelectPalette(index)}
     />
   ))
   return (
