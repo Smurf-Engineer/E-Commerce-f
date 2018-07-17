@@ -12,8 +12,19 @@ describe('<ItemOrder />', () => {
     const date = '02/01/18'
     const trackingNumber = 'EX1234567890'
     const status = 'Shipped'
+    const shortId = '12abcd123'
+    const onOrderClick = () => {}
     ReactDOM.render(
-      <ItemOrder {...{ orderNumber, date, trackingNumber, status }} />,
+      <ItemOrder
+        {...{
+          onOrderClick,
+          orderNumber,
+          date,
+          trackingNumber,
+          status,
+          shortId
+        }}
+      />,
       div
     )
   })

@@ -2,60 +2,70 @@
  * OrderHistory Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
-import MediaQuery from 'react-responsive'
-import messages from './messages'
-import { Container, Table, Row, Header } from './styledComponents'
-import ItemOrder from './ItemOrder'
+import { compose } from 'react-apollo'
+import { connect } from 'react-redux'
+import * as OrderHistoryActions from './actions'
+import { Container } from './styledComponents'
+import List from './OrdersList'
+import { sorts } from '../../types/common'
 
 interface Props {
+  history: any
+  currentPage: number
+  orderBy: string
+  sort: sorts
   formatMessage: (messageDescriptor: any) => string
+  setOrderByAction: (orderBy: string, sort: sorts) => void
+  setCurrentPageAction: (page: number) => void
+  resetDataAction: () => void
 }
 
 class OrderHistory extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   render() {
-    const { formatMessage } = this.props
-    const header = (
-      <MediaQuery maxWidth={768}>
-        {matches => {
-          if (matches) {
-            return (
-              <Row>
-                <Header>{formatMessage(messages.orderNo)}</Header>
-                <Header>{formatMessage(messages.date)}</Header>
-                <Header>{formatMessage(messages.tracking)}</Header>
-                <Header textAlign={'right'}>
-                  {formatMessage(messages.status)}
-                </Header>
-              </Row>
-            )
-          } else {
-            return (
-              <Row>
-                <Header>{formatMessage(messages.orderNumber)}</Header>
-                <Header>{formatMessage(messages.date)}</Header>
-                <Header>{formatMessage(messages.trackingNumber)}</Header>
-                <Header textAlign={'right'}>
-                  {formatMessage(messages.status)}
-                </Header>
-              </Row>
-            )
-          }
-        }}
-      </MediaQuery>
-    )
+    const { currentPage, orderBy, sort, formatMessage } = this.props
+
     return (
       <Container>
-        <Table>
-          {header}
-          <ItemOrder
-            orderNumber={189417}
-            date={'02/01/18'}
-            status={'Order Processed'}
-          />
-        </Table>
+        <List
+          {...{ formatMessage, currentPage, orderBy, sort }}
+          onSortClick={this.handleOnSortClick}
+          onOrderClick={this.handleOnOrderClick}
+          onChangePage={this.handleOnChangePage}
+          interactiveHeaders={true}
+        />
       </Container>
     )
   }
+
+  handleOnSortClick = (label: string, sort: sorts) => {
+    const { setOrderByAction } = this.props
+    setOrderByAction(label, sort)
+  }
+
+  handleOnOrderClick = (orderId: string) => {
+    // TODO: go to order details when will be implemented
+    const { history } = this.props
+    history.push(`/order-placed?orderId=${orderId}`)
+  }
+
+  handleOnChangePage = (page: number) => {
+    const { setCurrentPageAction } = this.props
+    setCurrentPageAction(page)
+  }
 }
 
-export default OrderHistory
+const mapStateToProps = (state: any) => state.get('orderHistory').toJS()
+
+const OrderHistoryEnhance = compose(
+  connect(
+    mapStateToProps,
+    { ...OrderHistoryActions }
+  )
+)(OrderHistory)
+
+export default OrderHistoryEnhance

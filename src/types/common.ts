@@ -365,6 +365,13 @@ export interface CreditCardData {
   defaultPayment?: boolean
 }
 
+export interface OrderHistory {
+  id: number
+  shortId: string
+  date: string
+  status: string
+}
+
 export interface OrderDataInfo {
   orderDate: string
   firstName: string
@@ -612,3 +619,5 @@ export interface UploadFile {
   linkProps?: any
   type: string
 }
+
+export type sorts = 'asc' | 'desc' | ''

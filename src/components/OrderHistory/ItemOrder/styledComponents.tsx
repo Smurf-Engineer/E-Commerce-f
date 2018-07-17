@@ -3,7 +3,9 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.tr``
+export const Container = styled.tr`
+  cursor: pointer;
+`
 
 interface CellProps {
   color?: string
@@ -22,8 +24,13 @@ export const Cell = styled.td`
   text-align: ${({ textAlign }: CellProps) =>
     textAlign ? textAlign : 'start'};
 
-  @media (min-width: 320px) and (max-width: 768px) {
+  @media (min-width: 331px) and (max-width: 768px) {
     letter-spacing: 0.09px;
     font-size: 12px;
+  }
+
+  @media (max-width: 330px) and (max-width: 768px) {
+    letter-spacing: 0.09px;
+    font-size: 11px;
   }
 `

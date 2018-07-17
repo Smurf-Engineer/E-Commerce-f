@@ -125,7 +125,7 @@ export class Account extends React.Component<Props, {}> {
     } = this.props
     switch (screen) {
       case ORDER_HISTORY:
-        return <OrderHistory {...{ formatMessage }} />
+        return <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
         return <MyAddresses {...{ formatMessage }} />
       case CREDIT_CARDS:

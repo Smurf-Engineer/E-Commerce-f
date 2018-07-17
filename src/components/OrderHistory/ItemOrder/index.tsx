@@ -10,16 +10,23 @@ interface Props {
   date: string
   trackingNumber?: string
   status: string
+  shortId: string
+  onOrderClick: (shortId: string) => void
 }
 
 const ItemOrder = ({
   orderNumber,
   date,
   trackingNumber = '-',
-  status
+  status,
+  shortId,
+  onOrderClick
 }: Props) => {
+  const handleOnClick = () => {
+    onOrderClick(shortId)
+  }
   return (
-    <Container>
+    <Container onClick={handleOnClick}>
       <Cell>{orderNumber}</Cell>
       <Cell>{date}</Cell>
       <Cell color={'#e61737'}>{trackingNumber}</Cell>
