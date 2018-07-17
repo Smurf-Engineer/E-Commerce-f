@@ -18,6 +18,7 @@ import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
+import MediaQuery from 'react-responsive'
 import {
   Container,
   Content,
@@ -243,6 +244,11 @@ class Checkout extends React.Component<Props, {}> {
         </PlaceOrderButton>
       )
 
+    const continueButton = (
+      <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
+    )
+
+    const showPaypalButton = currentStep === 2 ? orderButton : null
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -267,6 +273,7 @@ class Checkout extends React.Component<Props, {}> {
                     showAddressFormAction,
                     indexAddressSelected
                   }}
+                  buttonToRender={continueButton}
                   showContent={currentStep === 0}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
@@ -310,20 +317,21 @@ class Checkout extends React.Component<Props, {}> {
               </SwipeableViews>
             </StepsContainer>
             <SummaryContainer>
+              <MediaQuery maxWidth={480}>{showPaypalButton}</MediaQuery>
               <OrderSummary
                 subtotal={total}
                 discount={10}
                 formatMessage={intl.formatMessage}
                 {...{ total, totalWithoutDiscount }}
               />
-              {currentStep === 2 ? orderButton : null}
+              <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
           </Content>
-          {currentStep === 0 ? (
+          {/* {currentStep === 0 ? (
             <ContinueButton onClick={this.nextStep}>
               {'Continue'}
             </ContinueButton>
-          ) : null}
+          ) : null} */}
         </Container>
       </Layout>
     )
