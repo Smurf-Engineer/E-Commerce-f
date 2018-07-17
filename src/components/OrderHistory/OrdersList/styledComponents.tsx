@@ -35,7 +35,7 @@ export const Header = styled.th`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
-  justify-content: ${({ textAlign }: HeaderProps) =>
+  text-align: ${({ textAlign }: HeaderProps) =>
     textAlign ? textAlign : 'start'};
 
   @media (min-width: 320px) and (max-width: 768px) {

@@ -621,4 +621,4 @@ export interface UploadFile {
   type: string
 }
 
-export type sorts = 'asc' | 'desc' | ''
+export type sorts = 'asc' | 'desc' | 'none'

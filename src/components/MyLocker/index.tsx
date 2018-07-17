@@ -6,7 +6,6 @@ import { withApollo, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
-import MediaQuery from 'react-responsive'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
@@ -185,40 +184,22 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       )
     }
 
-    const designsList = (
-      <MediaQuery maxWidth={768}>
-        {matches => {
-          if (matches) {
-            return (
-              <ProductList
-                {...{ formatMessage, history }}
-                withoutPadding={false}
-                onPressPrivate={this.handleOnPressPrivate}
-                onPressDelete={this.handleOnPressDelete}
-                openQuickView={this.handleOnOpenQuickView}
-                designs={designs}
-              />
-            )
-          } else {
-            return (
-              <ProductList
-                {...{ formatMessage, history }}
-                withoutPadding={true}
-                onPressPrivate={this.handleOnPressPrivate}
-                onPressDelete={this.handleOnPressDelete}
-                openQuickView={this.handleOnOpenQuickView}
-                designs={designs}
-              />
-            )
-          }
-        }}
-      </MediaQuery>
-    )
+    let withoutPadding = true
+
+    if (typeof window !== 'undefined') {
+      withoutPadding = !window.matchMedia('(max-width: 768px)').matches
+    }
 
     return (
       <Container>
         <PaginationRow>
-          {designsList}
+          <ProductList
+            {...{ formatMessage, history, withoutPadding }}
+            onPressPrivate={this.handleOnPressPrivate}
+            onPressDelete={this.handleOnPressDelete}
+            openQuickView={this.handleOnOpenQuickView}
+            designs={designs}
+          />
           <Pagination
             current={currentPage}
             pageSize={12}

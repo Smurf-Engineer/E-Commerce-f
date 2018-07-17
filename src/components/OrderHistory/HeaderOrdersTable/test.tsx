@@ -12,8 +12,11 @@ describe('<HeaderOrdersTable />', () => {
     const sort = 'asc'
     const onSortClick = () => {}
     const id = ''
+    const interactiveHeaders = false
     ReactDOM.render(
-      <HeaderOrdersTable {...{ id, label, sort, onSortClick }} />,
+      <HeaderOrdersTable
+        {...{ id, label, sort, onSortClick, interactiveHeaders }}
+      />,
       div
     )
   })

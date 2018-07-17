@@ -46,59 +46,6 @@ const OrdersList = ({
   onOrderClick,
   onChangePage
 }: Props) => {
-  const orderHeader = interactiveHeaders ? (
-    <Header>
-      <HeaderTable
-        id={'id'}
-        label={formatMessage(messages.orderNumber)}
-        sort={orderBy === 'id' ? sort : ''}
-        {...{ onSortClick }}
-      />
-    </Header>
-  ) : (
-    <Header>{formatMessage(messages.orderNumber)}</Header>
-  )
-
-  const dateHeader = interactiveHeaders ? (
-    <Header>
-      <HeaderTable
-        id={'updated_at'}
-        label={formatMessage(messages.date)}
-        sort={orderBy === 'updated_at' ? sort : ''}
-        {...{ onSortClick }}
-      />
-    </Header>
-  ) : (
-    <Header>{formatMessage(messages.date)}</Header>
-  )
-
-  const trackingHeader = interactiveHeaders ? (
-    <Header>
-      <HeaderTable
-        id={''}
-        label={formatMessage(messages.trackingNumber)}
-        sort={''}
-        {...{ onSortClick }}
-      />
-    </Header>
-  ) : (
-    <Header>{formatMessage(messages.trackingNumber)}</Header>
-  )
-
-  const statusHeader = interactiveHeaders ? (
-    <Header>
-      <HeaderTable
-        id={'status'}
-        label={formatMessage(messages.status)}
-        justifyContent={'flex-end'}
-        sort={orderBy === 'status' ? sort : ''}
-        {...{ onSortClick }}
-      />
-    </Header>
-  ) : (
-    <Header textAlign={'right'}>{formatMessage(messages.status)}</Header>
-  )
-
   const header = (
     <MediaQuery maxWidth={768}>
       {matches => {
@@ -114,13 +61,33 @@ const OrdersList = ({
             </Row>
           )
         }
-
         return (
           <Row>
-            {orderHeader}
-            {dateHeader}
-            {trackingHeader}
-            {statusHeader}
+            <HeaderTable
+              id={'id'}
+              label={formatMessage(messages.orderNumber)}
+              sort={orderBy === 'id' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'updated_at'}
+              label={formatMessage(messages.date)}
+              sort={orderBy === 'updated_at' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={''}
+              label={formatMessage(messages.trackingNumber)}
+              sort={'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'status'}
+              label={formatMessage(messages.status)}
+              justifyContent={'flex-end'}
+              sort={orderBy === 'status' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
           </Row>
         )
       }}
