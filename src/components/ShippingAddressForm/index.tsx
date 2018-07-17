@@ -164,7 +164,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
             </InputTitleContainer>
             <Dropdown overlay={dropdownStates}>
               <DropDownPlaceHolder>
-                {stateProvince ? stateProvince : 'Select State/Providence'}
+                {stateProvince ? stateProvince : 'Select State/Province'}
                 <Icon type="down" />
               </DropDownPlaceHolder>
             </Dropdown>

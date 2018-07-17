@@ -353,6 +353,7 @@ export interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  teamStoreId?: string
 }
 
 export interface CreditCardData {

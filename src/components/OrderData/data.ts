@@ -62,6 +62,7 @@ export const getOrderQuery = gql`
         designImage
         unitPrice
         productTotal
+        teamStoreId
       }
     }
   }
