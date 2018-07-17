@@ -355,7 +355,7 @@ class Render3D extends PureComponent {
       message.error('Please select a JSON file')
     } else {
       try {
-        // TODO: Ejecute action to upload
+        // TODO: Call action to upload
         const thumbnail = await this.takeScreenshot(inspirationColors.colors)
       } catch (error) {
         console.error(error)

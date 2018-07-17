@@ -45,9 +45,6 @@ export const uploadFilesAction = (files: any) => {
         dispatch(setUploadingSuccess(modelConfig))
       }
     } catch (e) {
-      console.log('---------------------------')
-      console.log(e)
-      console.log('---------------------------')
       dispatch(setUploadingAction(false))
       message.error(e.message)
     }
