@@ -327,11 +327,6 @@ class Checkout extends React.Component<Props, {}> {
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
           </Content>
-          {/* {currentStep === 0 ? (
-            <ContinueButton onClick={this.nextStep}>
-              {'Continue'}
-            </ContinueButton>
-          ) : null} */}
         </Container>
       </Layout>
     )
