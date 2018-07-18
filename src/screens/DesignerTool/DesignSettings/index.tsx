@@ -6,10 +6,11 @@ import {
   Container,
   Form,
   Title,
-  Subtitle,
   Input,
-  Button
+  InputContainer,
+  ErrorLabel
 } from './styledComponents'
+import get from 'lodash/get'
 import DesignForm from '../../../components/DesignForm'
 import { UploadFile } from '../../../types/common'
 
@@ -23,8 +24,10 @@ const items = [
 
 interface Props {
   themeImage?: UploadFile[]
+  productData: any // TODO: Type
   selectedTheme: number
   selectedStyle: number
+  productCode: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -32,12 +35,18 @@ interface Props {
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onSaveDesign: () => void
+  onUpdateProductCode: (code: string) => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
+  state = {
+    code: ''
+  }
+
   render() {
     const {
       themeImage,
+      productData,
       selectedTheme,
       selectedStyle,
       onSelectTheme,
@@ -47,13 +56,27 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onSelectImage,
       onDeleteImage
     } = this.props
+    const { code } = this.state
+
+    const loading = get(productData, 'loading', false)
+    const error = get(productData, 'error', false)
+    const product = get(productData, 'product', false)
+
     return (
       <Container>
         <Form>
           <Title>SEARCH PRODUCT</Title>
-          <Subtitle>Product Code</Subtitle>
-          <Input placeholder="Code" />
-          <Button>Search</Button>
+          <InputContainer>
+            <Input
+              value={code}
+              onChange={this.handleOnUpdateProductCode}
+              placeholder="Product Code"
+              onSearch={this.handleOnSearch}
+              onPressEnter={this.handleOnSearch}
+              enterButton={true}
+            />
+            {!!error && !loading && <ErrorLabel>Product not found!</ErrorLabel>}
+          </InputContainer>
           <DesignForm
             isNewItem={true}
             withImageInput={true}
@@ -78,6 +101,19 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         </Form>
       </Container>
     )
+  }
+
+  handleOnSearch = () => {
+    const { code } = this.state
+    if (!!code) {
+      const { onUpdateProductCode } = this.props
+      onUpdateProductCode(code)
+    }
+  }
+
+  handleOnUpdateProductCode = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { currentTarget: { value } } = evt
+    this.setState({ code: value })
   }
 }
 

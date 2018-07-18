@@ -23,6 +23,7 @@ const { TabPane } = AntdTabs
 
 interface Props {
   designConfig: DesignConfig
+  productData?: any // TODO: Type
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -31,6 +32,7 @@ interface Props {
   themeImage?: UploadFile[]
   selectedTheme: number
   selectedStyle: number
+  productCode: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -45,10 +47,13 @@ interface Props {
   onUploadDesign: (files: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
+  onUpdateProductCode: (code: string) => void
 }
 
 const Tabs = ({
   designConfig,
+  productCode,
+  productData,
   onSelectColorBlock,
   onHoverColorBlock,
   colorBlock,
@@ -70,11 +75,34 @@ const Tabs = ({
   onDeleteTheme,
   onDeleteStyle,
   onSelectImage,
-  onDeleteImage
+  onDeleteImage,
+  onUpdateProductCode
 }: Props) => {
   return (
     <Container>
-      <AntdTabs defaultActiveKey={UPLOAD_TAB} size="large">
+      <AntdTabs defaultActiveKey={SETTINGS_TAB} size="large">
+        <TabPane
+          key={SETTINGS_TAB}
+          tab={<Tab label="settings" icon={settingsIcon} />}
+        >
+          <Settings
+            {...{
+              themeImage,
+              selectedTheme,
+              selectedStyle,
+              onSaveDesign,
+              onSelectTheme,
+              onSelectStyle,
+              onDeleteTheme,
+              onDeleteStyle,
+              onSelectImage,
+              onDeleteImage,
+              onUpdateProductCode,
+              productCode,
+              productData
+            }}
+          />
+        </TabPane>
         <TabPane
           key={UPLOAD_TAB}
           tab={<Tab label="upload" icon={uploadIcon} />}
@@ -108,25 +136,6 @@ const Tabs = ({
           <InpirationTab
             onSelectPalette={onSelectInspirationColor}
             palettes={designConfig.inspiration || []}
-          />
-        </TabPane>
-        <TabPane
-          key={SETTINGS_TAB}
-          tab={<Tab label="settings" icon={settingsIcon} />}
-        >
-          <Settings
-            {...{
-              themeImage,
-              selectedTheme,
-              selectedStyle,
-              onSaveDesign,
-              onSelectTheme,
-              onSelectStyle,
-              onDeleteTheme,
-              onDeleteStyle,
-              onSelectImage,
-              onDeleteImage
-            }}
           />
         </TabPane>
       </AntdTabs>
