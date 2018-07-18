@@ -622,3 +622,12 @@ export interface UploadFile {
 }
 
 export type sorts = 'asc' | 'desc' | 'none'
+export interface DesignObject {
+  code: string
+  colors: string[]
+  name: string
+}
+
+export interface DesignConfig extends DesignObject {
+  inspiration: DesignObject[]
+}

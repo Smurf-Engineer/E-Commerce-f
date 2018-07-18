@@ -10,3 +10,9 @@ export const Container = styled.div`
 export const Text = styled.div`
   color: #fff;
 `
+
+export const ButtonWrapper = styled.div`
+  position: absolute;
+  right: 48px;
+  bottom: 48px;
+`

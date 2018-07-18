@@ -5,6 +5,11 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   background-color: #fff;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
 `
 
 export const Text = styled.div`
