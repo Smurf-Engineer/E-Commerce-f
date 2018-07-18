@@ -112,6 +112,11 @@ export class Account extends React.Component<Props, {}> {
     setCurrentScreenAction(key)
   }
 
+  handleOnGoToScreen = (screen: string) => {
+    const { setCurrentScreenAction } = this.props
+    setCurrentScreenAction(screen)
+  }
+
   handleOpenSidebar = () => {
     const { openSidebar, openSidebarMobile } = this.props
     openSidebarMobile(!openSidebar)
@@ -126,7 +131,12 @@ export class Account extends React.Component<Props, {}> {
     } = this.props
     switch (screen) {
       case OVERVIEW:
-        return <Overview {...{ history, formatMessage }} />
+        return (
+          <Overview
+            {...{ history, formatMessage }}
+            goToScreen={this.handleOnGoToScreen}
+          />
+        )
       case ORDER_HISTORY:
         return <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:

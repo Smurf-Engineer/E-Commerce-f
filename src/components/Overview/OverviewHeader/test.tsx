@@ -9,7 +9,12 @@ describe('<OverviewHeader />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
     ReactDOM.render(
-      <OverviewHeader label="" width="100%" formatMessage={() => ''} />,
+      <OverviewHeader
+        label=""
+        id=""
+        onGoTo={() => {}}
+        formatMessage={() => ''}
+      />,
       div
     )
   })

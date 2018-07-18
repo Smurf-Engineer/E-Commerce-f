@@ -3,13 +3,9 @@
  */
 import styled from 'styled-components'
 
-interface ContainerProps {
-  width: string
-}
-
 export const Container = styled.div`
   margin-bottom: 12px;
-  width: ${({ width }: ContainerProps) => width};
+  width: 100%;
 `
 
 export const Content = styled.div`

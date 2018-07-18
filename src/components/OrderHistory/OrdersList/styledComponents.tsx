@@ -52,11 +52,11 @@ export const Header = styled.th`
 `
 
 export const EmptyContainer = styled.div`
-  widht: 100%;
-  height: 100%;
   display: flex;
+  height: 25vh;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
 `
 
 export const EmptyMessage = styled.div`

@@ -14,16 +14,20 @@ import {
 
 interface Props {
   label: string
-  width: string
+  id: string
   formatMessage: (messageDescriptor: any) => string
+  onGoTo: (screen: string) => void
 }
 
-const OverviewHeader = ({ label, width, formatMessage }: Props) => {
+const OverviewHeader = ({ label, formatMessage, id, onGoTo }: Props) => {
+  const handleOnGoTo = () => {
+    onGoTo(id)
+  }
   return (
-    <Container {...{ width }}>
+    <Container>
       <Content>
         <Label>{label}</Label>
-        <ViewContainer>
+        <ViewContainer onClick={handleOnGoTo}>
           <span>{formatMessage(messages.view)}</span>
           <Icon type="right" />
         </ViewContainer>

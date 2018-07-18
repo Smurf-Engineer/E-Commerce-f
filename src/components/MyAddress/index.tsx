@@ -85,11 +85,11 @@ const MyAddress = ({
     showSecondaryButtons && footerMessageText ? (
       <ItalicText>{formatMessage(footerMessageText)}</ItalicText>
     ) : null
+  const streetAndNumber = apartment ? `${apartment} ${street}` : street
   return (
     <Container {...{ showSecondaryButtons, isSelected }}>
       <Text>{name}</Text>
-      <Text>{street}</Text>
-      {apartment && <Text>{apartment}</Text>}
+      <Text>{streetAndNumber}</Text>
       <Text>{city}</Text>
       <Text>{zipCode}</Text>
       <Text>{country}</Text>

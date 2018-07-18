@@ -10,12 +10,12 @@ export const Container = styled.div`
 `
 
 export const Text = styled.div`
-  width: 128px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
+  margin: 6px 0;
 `
 
 export const ItalicText = styled.div`

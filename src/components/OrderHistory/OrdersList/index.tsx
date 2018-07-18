@@ -6,7 +6,14 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { Container, Header, Row, Table, EmptyMessage } from './styledComponents'
+import {
+  Container,
+  Header,
+  Row,
+  Table,
+  EmptyMessage,
+  EmptyContainer
+} from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import { OrderHistory, sorts, QueryProps } from '../../../types/common'
@@ -14,7 +21,6 @@ import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getOrdersQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
-import { EmptyContainer } from '../../../screens/ShoppingCartPage/styledComponents'
 
 interface Data extends QueryProps {
   ordersQuery: {
@@ -50,6 +56,17 @@ const OrdersList = ({
   withPagination = true,
   withoutPadding = false
 }: Props) => {
+  const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
+  const fullCount = get(ordersQuery, 'fullCount', 0)
+
+  if (!orders.length) {
+    return (
+      <EmptyContainer>
+        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
+      </EmptyContainer>
+    )
+  }
+
   const header = (
     <MediaQuery maxWidth={768}>
       {matches => {
@@ -98,24 +115,9 @@ const OrdersList = ({
     </MediaQuery>
   )
 
-  const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
-  const fullCount = get(ordersQuery, 'fullCount', 0)
-
-  if (!orders.length) {
-    return (
-      <EmptyContainer>
-        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
-      </EmptyContainer>
-    )
-  }
-
   const orderItems = orders.map(
-    ({ id, shortId, date, status }: OrderHistory, index: number) => (
-      <ItemOrder
-        key={index}
-        orderNumber={id}
-        {...{ shortId, date, status, onOrderClick }}
-      />
+    ({ shortId, date, status }: OrderHistory, index: number) => (
+      <ItemOrder key={index} {...{ shortId, date, status, onOrderClick }} />
     )
   )
 
