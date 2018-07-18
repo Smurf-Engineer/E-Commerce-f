@@ -20,8 +20,8 @@ interface Props {
 
 const OverviewHeader = ({ label, width, formatMessage }: Props) => {
   return (
-    <Container>
-      <Content {...{ width }}>
+    <Container {...{ width }}>
+      <Content>
         <Label>{label}</Label>
         <ViewContainer>
           <span>{formatMessage(messages.view)}</span>

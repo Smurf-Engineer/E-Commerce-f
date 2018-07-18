@@ -15,7 +15,7 @@ interface CellProps {
 export const Cell = styled.td`
   border-bottom: 1px solid #d7d7d7;
   text-align: left;
-  padding: 8px;
+  padding: 8px 0;
   color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
   font-family: 'Avenir Next';
   font-size: 14px;

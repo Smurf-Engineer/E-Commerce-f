@@ -34,17 +34,17 @@ class Overview extends React.Component<Props, {}> {
         />
         <BottomContainer>
           <OverviewHeader
-            width="100%"
+            width="32%"
             label={formatMessage(messages.profile)}
             {...{ formatMessage }}
           />
           <OverviewHeader
-            width="100%"
+            width="32%"
             label={formatMessage(messages.addresses)}
             {...{ formatMessage }}
           />
           <OverviewHeader
-            width="100%"
+            width="32%"
             label={formatMessage(messages.payment)}
             {...{ formatMessage }}
           />

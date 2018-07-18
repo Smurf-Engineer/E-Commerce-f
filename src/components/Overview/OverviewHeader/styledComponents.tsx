@@ -3,18 +3,18 @@
  */
 import styled from 'styled-components'
 
-interface ContentProps {
+interface ContainerProps {
   width: string
 }
 
 export const Container = styled.div`
   margin-bottom: 12px;
+  width: ${({ width }: ContainerProps) => width};
 `
 
 export const Content = styled.div`
   display: flex;
   justify-content: space-between;
-  width: ${({ width }: ContentProps) => width};
 `
 
 export const Label = styled.div`
@@ -37,7 +37,7 @@ export const ViewContainer = styled.div`
   line-height: 22px;
   text-align: right;
   cursor: pointer;
-  :hover: {
+  :hover {
     color: #e61737;
   }
 `
@@ -46,5 +46,5 @@ export const Divider = styled.div`
   width: 100%;
   height: 1px;
   background-color: #dcdcdc;
-  margin-top: 8px;
+  margin-top: 12px;
 `
