@@ -16,6 +16,7 @@ export const Type = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 220px;
+  text-align: start;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -33,6 +34,7 @@ export const Description = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   width: 220px;
+  text-align: start;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -53,6 +55,7 @@ export const Label = styled.div`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
+  text-align: start;
 `
 
 export const Price = styled.div`

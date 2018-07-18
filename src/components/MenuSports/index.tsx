@@ -106,7 +106,8 @@ type OwnProps = {
 const MenuGenderEnhance = compose(
   graphql<Data>(categoriesQuery, {
     options: ({ type, sports }: OwnProps) => {
-      const sportId = (sports as Filter[])[type as number].id
+      const sportId =
+        sports !== undefined && type !== undefined ? sports[type].id : undefined
       return {
         variables: {
           sportId: sportId !== undefined ? sportId : null

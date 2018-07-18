@@ -353,6 +353,7 @@ export interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  teamStoreId?: string
 }
 
 export interface CreditCardData {
@@ -363,6 +364,13 @@ export interface CreditCardData {
   expMonth: number
   expYear: number
   defaultPayment?: boolean
+}
+
+export interface OrderHistory {
+  id: number
+  shortId: string
+  date: string
+  status: string
 }
 
 export interface OrderDataInfo {
@@ -613,6 +621,7 @@ export interface UploadFile {
   type: string
 }
 
+export type sorts = 'asc' | 'desc' | 'none'
 export interface DesignObject {
   code: string
   colors: string[]

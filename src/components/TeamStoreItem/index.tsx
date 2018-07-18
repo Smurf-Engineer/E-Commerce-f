@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import MediaQuery from 'react-responsive'
 import {
   Container,
   TeamStoreCard,
@@ -11,6 +12,7 @@ import {
   StyledImg,
   CardTitle,
   ShareButton,
+  EditButton,
   ButtonsContainer,
   DeleteLabel
 } from './styledComponents'
@@ -59,6 +61,27 @@ const TeamStoreItem = ({
       onDeleteClick()
     }
   }
+
+  const buttons = (
+    <ButtonsContainer>
+      {withEditButton && (
+        <EditButton onClick={handleClickEdit}>
+          {formatMessage(messages.editButtonLabel)}
+        </EditButton>
+      )}
+      {withShareButton && (
+        <ShareButton onClick={handleClickShare}>
+          {formatMessage(messages.shareButtonLabel)}
+        </ShareButton>
+      )}
+      {withDeleteButton && (
+        <DeleteLabel onClick={handleClickDelete}>
+          {formatMessage(messages.deleteButtonLabel)}
+        </DeleteLabel>
+      )}
+    </ButtonsContainer>
+  )
+
   return (
     <Container>
       <TeamStoreCard>
@@ -68,25 +91,14 @@ const TeamStoreItem = ({
               {name}
             </CardTitle>
           )}
-          <ButtonsContainer>
-            {withEditButton && (
-              <ShareButton onClick={handleClickEdit}>{'Edit'}</ShareButton>
-            )}
-            {withShareButton && (
-              <ShareButton onClick={handleClickShare}>
-                {formatMessage(messages.shareButtonLabel)}
-              </ShareButton>
-            )}
-            {withDeleteButton && (
-              <DeleteLabel onClick={handleClickDelete}>{'Delete'}</DeleteLabel>
-            )}
-          </ButtonsContainer>
+          <MediaQuery minWidth={481}>{buttons}</MediaQuery>
         </TeamCardHeader>
 
         <CardContent>
           {image && <StyledImg src={image} onClick={onItemClick} />}
         </CardContent>
       </TeamStoreCard>
+      <MediaQuery maxWidth={480}>{buttons}</MediaQuery>
     </Container>
   )
 }

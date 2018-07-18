@@ -15,7 +15,7 @@ export const DetailsContent = styled.div`
 `
 
 export const TestimonialsContent = styled.div`
-  max-width: 98%; !important;
+  max-width: 98% !important;
   padding-left: 30px;
   font-family: 'Avenir Next' !important;
 `
