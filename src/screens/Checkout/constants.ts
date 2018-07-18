@@ -27,3 +27,9 @@ export const SET_LOADING_PLACE_ORDER = `${namespace}/SET_LOADING_PLACE_ORDER`
 export const SET_PAYMENT_METHOD = `${namespace}/SET_PAYMENT_METHOD`
 // Country
 export const SAVE_COUNTRY = `${namespace}/SAVE_COUNTRY`
+
+export enum CheckoutTabs {
+  ShippingTab = 0,
+  PaymentTab = 1,
+  RevieTab = 2
+}

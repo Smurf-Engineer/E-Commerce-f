@@ -834,5 +834,24 @@
   "components.DesignsCatalogueThumbnailList.lowestPriceLabel": "Lowest Price",
   "components.DesignsCatalogueThumbnailList.hightestPriceLabel":
     "Hightest Price",
-  "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART"
+  "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART",
+  "components.ShippingAddressForm.tittle": "ShippingAddressForm",
+  "components.ShippingAddressForm.requiredLabel": "This field is required",
+  "components.ShippingAddressForm.firstNameLabel": "First name",
+  "components.ShippingAddressForm.lastNameLabel": "Last Name",
+  "components.ShippingAddressForm.addressNameLabel": "Address",
+  "components.ShippingAddressForm.shipTopPoApoLabel":
+    "We do not ship to APO and PO Boxes",
+  "components.ShippingAddressForm.streetAddressLabel": "Street address",
+  "components.ShippingAddressForm.apartmentSuiteLabel":
+    "Apartment, suite, floor, etc.",
+  "components.ShippingAddressForm.countryLabel": "Country",
+  "components.ShippingAddressForm.selectCountryLabel": "Select Country",
+  "components.ShippingAddressForm.stateProvinceLabel": "State/Province",
+  "components.ShippingAddressForm.selectStateProvinceLabel":
+    "Select State/Province",
+  "components.ShippingAddressForm.cityLabel": "City",
+  "components.ShippingAddressForm.selectCityLabel": "Select City",
+  "components.ShippingAddressForm.zipCodeLabel": "ZIP / Postal Code",
+  "components.ShippingAddressForm.phoneLabel": "Phone"
 }

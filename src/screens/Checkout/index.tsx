@@ -18,6 +18,7 @@ import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
+import { CheckoutTabs } from './constants'
 import MediaQuery from 'react-responsive'
 import {
   Container,
@@ -198,6 +199,7 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const { state: stateLocation } = location
+    const { ShippingTab, RevieTab, PaymentTab } = CheckoutTabs
 
     if (!stateLocation || !stateLocation.cart) {
       return <Redirect to="/us?lang=en&currency=usd" />
@@ -248,7 +250,7 @@ class Checkout extends React.Component<Props, {}> {
       <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
     )
 
-    const showPaypalButton = currentStep === 2 ? orderButton : null
+    const showPaypalButton = currentStep === RevieTab ? orderButton : null
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -274,7 +276,7 @@ class Checkout extends React.Component<Props, {}> {
                     indexAddressSelected
                   }}
                   buttonToRender={continueButton}
-                  showContent={currentStep === 0}
+                  showContent={currentStep === ShippingTab}
                   setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                 />
@@ -296,7 +298,7 @@ class Checkout extends React.Component<Props, {}> {
                     setPaymentMethodAction,
                     saveCountryAction
                   }}
-                  showContent={currentStep === 1}
+                  showContent={currentStep === PaymentTab}
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
                   nextStep={this.nextStep}
@@ -310,7 +312,7 @@ class Checkout extends React.Component<Props, {}> {
                     paymentMethod
                   }}
                   cart={shoppingCart}
-                  showContent={currentStep === 2}
+                  showContent={currentStep === RevieTab}
                   formatMessage={intl.formatMessage}
                   goToStep={this.handleOnGoToStep}
                 />
