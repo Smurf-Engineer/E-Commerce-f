@@ -30,6 +30,8 @@ interface Props {
   currentPage: number
   orderBy: string
   sort: sorts
+  withPagination?: boolean
+  withoutPadding?: boolean
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
@@ -44,7 +46,9 @@ const OrdersList = ({
   data: { ordersQuery },
   onSortClick,
   onOrderClick,
-  onChangePage
+  onChangePage,
+  withPagination = true,
+  withoutPadding = false
 }: Props) => {
   const header = (
     <MediaQuery maxWidth={768}>
@@ -116,17 +120,19 @@ const OrdersList = ({
   )
 
   return (
-    <Container>
+    <Container {...{ withoutPadding }}>
       <Table>
         <thead>{header}</thead>
         <tbody>{orderItems}</tbody>
       </Table>
-      <Pagination
-        current={currentPage}
-        pageSize={limit}
-        total={Number(fullCount)}
-        onChange={onChangePage}
-      />
+      {withPagination ? (
+        <Pagination
+          current={currentPage}
+          pageSize={12}
+          total={Number(fullCount)}
+          onChange={onChangePage}
+        />
+      ) : null}
     </Container>
   )
 }
@@ -135,13 +141,13 @@ interface OwnProps {
   currentPage?: number
   orderBy?: string
   sort?: string
+  customLimit?: number
 }
-
-const limit = 12
 
 const OrdersListEnhance = compose(
   graphql(getOrdersQuery, {
-    options: ({ currentPage, orderBy, sort }: OwnProps) => {
+    options: ({ currentPage, orderBy, sort, customLimit }: OwnProps) => {
+      const limit = customLimit !== undefined ? customLimit : 12
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {

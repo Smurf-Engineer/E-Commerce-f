@@ -21,10 +21,12 @@ import {
   CREDIT_CARDS,
   TEAMSTORES,
   PROFILE_SETTINGS,
-  ORDER_HISTORY
+  ORDER_HISTORY,
+  OVERVIEW
 } from './constants'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
+import Overview from '../../components/Overview'
 import OrderHistory from '../../components/OrderHistory'
 import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
@@ -83,8 +85,7 @@ export class Account extends React.Component<Props, {}> {
       setCurrentScreenAction(option)
       return
     }
-    // TODO: change to overview when component will be created
-    setCurrentScreenAction(ORDER_HISTORY)
+    setCurrentScreenAction(OVERVIEW)
   }
 
   componentDidMount() {
@@ -124,6 +125,8 @@ export class Account extends React.Component<Props, {}> {
       openQuickViewAction: openQuickView
     } = this.props
     switch (screen) {
+      case OVERVIEW:
+        return <Overview {...{ history, formatMessage }} />
       case ORDER_HISTORY:
         return <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
