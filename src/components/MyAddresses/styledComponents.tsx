@@ -36,7 +36,6 @@ export const StyledEmptyButton = styled(Button)`
   border-color: #e61737;
   border-width: 2px;
   background-color: #fff;
-  margin-top: 16px;
   margin-bottom: 24px;
   font-size: 18px;
 `

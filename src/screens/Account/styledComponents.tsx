@@ -69,7 +69,8 @@ export const ScreenTitle = styled.div`
   font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
-  line-height: 25px;
+  line-height: 27px;
+  margin-bottom: 64px;
 `
 
 export const menuStyle = { width: '100%', marginLeft: -24, paddingTop: 52 }

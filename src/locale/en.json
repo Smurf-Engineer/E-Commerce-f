@@ -834,5 +834,14 @@
   "components.DesignsCatalogueThumbnailList.lowestPriceLabel": "Lowest Price",
   "components.DesignsCatalogueThumbnailList.hightestPriceLabel":
     "Hightest Price",
-  "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART"
+  "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART",
+
+  "components.OrdersList.title": "Recent Orders",
+  "components.OrdersList.orderNumber": "Order Number",
+  "components.OrdersList.orderNo": "Order No.",
+  "components.OrdersList.date": "Date",
+  "components.OrdersList.trackingNumber": "Tracking Number",
+  "components.OrdersList.tracking": "Tracking",
+  "components.OrdersList.status": "Status",
+  "components.OrdersList.emptyMessage": "You don't have orders to show"
 }
