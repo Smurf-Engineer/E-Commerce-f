@@ -6,6 +6,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   background-color: #fff;
+  height: 100vh;
 `
 
 export const Text = styled.div`

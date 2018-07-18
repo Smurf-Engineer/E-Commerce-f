@@ -4,16 +4,13 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import SwipeableViews from 'react-swipeable-views'
-import Tabs from './DesignCenterCustomize/DesignCenterTabs'
 import CustomizeTab from './DesignCenterCustomize'
-import SettingsTab from './DesignSettings/'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
-import { Container } from './styledComponents'
-import { ModelConfig, UploadFile } from '../../types/common'
+import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
 
 interface Props {
+  designConfig: DesignConfig
   colors: string[]
   styleColors: string[]
   areas: string[]
@@ -38,6 +35,8 @@ interface Props {
   setSwipingTabAction: (swiping: boolean) => void
   setSelectedThemeAction: (id: number) => void
   setSelectedStyleAction: (id: number) => void
+  setDesignConfigAction: (config: DesignConfig) => void
+  setInspirationColorAction: (index: number) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -47,7 +46,6 @@ export class DesignerTool extends React.Component<Props, {}> {
   render() {
     const {
       colors,
-      styleColors,
       colorBlock,
       colorBlockHovered,
       setLoadingAction,
@@ -60,51 +58,46 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadingFiles,
       modelConfig,
       areas,
-      selectedTheme,
-      currentTab,
       setSelectedThemeAction,
       setSelectedStyleAction,
+      setDesignConfigAction,
+      setInspirationColorAction,
+      designConfig,
+      selectedTheme,
       selectedStyle
     } = this.props
     const { themeImage } = this.state
     return (
-      <Container>
-        <Tabs {...{ currentTab }} onSelectTab={this.handleOnSelectTab} />
-        <SwipeableViews
-          onTransitionEnd={this.handleOnTransitionEnd}
-          index={currentTab}
-        >
-          <CustomizeTab
-            {...{
-              colors,
-              styleColors,
-              colorBlock,
-              colorBlockHovered,
-              loadingModel,
-              uploadingFiles,
-              areas
-            }}
-            files={modelConfig}
-            onLoadModel={setLoadingAction}
-            onSelectColorBlock={setColorBlockAction}
-            onHoverColorBlock={setHoverColorBlockAction}
-            onSelectColor={setColorAction}
-            onUploadFiles={uploadFilesAction}
-            onUploadDesign={uploadDesignAction}
-          />
-          <SettingsTab
-            {...{ themeImage }}
-            selectedTheme={selectedTheme}
-            selectedStyle={selectedStyle}
-            onSelectTheme={setSelectedThemeAction}
-            onSelectStyle={setSelectedStyleAction}
-            onDeleteTheme={this.handleOnDeleteTheme}
-            onDeleteStyle={this.handleOnDeleteStyle}
-            onSelectImage={this.handleOnSelectThemeImage}
-            onDeleteImage={this.handleOnDeleteThemeImage}
-          />
-        </SwipeableViews>
-      </Container>
+      <CustomizeTab
+        {...{
+          colors,
+          colorBlock,
+          colorBlockHovered,
+          loadingModel,
+          uploadingFiles,
+          areas,
+          designConfig,
+          themeImage,
+          selectedTheme,
+          selectedStyle
+        }}
+        files={modelConfig}
+        onSaveDesign={this.handleSaveDesign}
+        onSelectTheme={setSelectedThemeAction}
+        onSelectStyle={setSelectedStyleAction}
+        onDeleteTheme={this.handleOnDeleteTheme}
+        onDeleteStyle={this.handleOnDeleteStyle}
+        onSelectImage={this.handleOnSelectThemeImage}
+        onDeleteImage={this.handleOnDeleteThemeImage}
+        onLoadModel={setLoadingAction}
+        onSelectColorBlock={setColorBlockAction}
+        onHoverColorBlock={setHoverColorBlockAction}
+        onSelectColor={setColorAction}
+        onUploadFiles={uploadFilesAction}
+        onUploadDesign={uploadDesignAction}
+        onSelectConfig={setDesignConfigAction}
+        onSelectInspirationColor={setInspirationColorAction}
+      />
     )
   }
 
@@ -129,6 +122,8 @@ export class DesignerTool extends React.Component<Props, {}> {
   handleOnDeleteThemeImage = () => {
     this.setState({ themeImage: [] })
   }
+
+  handleSaveDesign = () => {}
 }
 
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()

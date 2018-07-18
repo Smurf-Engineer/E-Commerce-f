@@ -14,6 +14,7 @@ describe('<UploadTab />', () => {
         onUploadDesign={() => {}}
         uploadingFiles={false}
         uploadNewModel={false}
+        onSelectConfig={() => {}}
       />,
       div
     )

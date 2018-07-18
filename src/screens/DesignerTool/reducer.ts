@@ -3,6 +3,7 @@
  */
 import { fromJS, List } from 'immutable'
 import {
+  Tabs,
   DEFAULT_ACTION,
   SET_LOADING_MODEL,
   SET_COLOR_ACTION,
@@ -15,7 +16,8 @@ import {
   SET_SWIPING_TAB_ACTION,
   SET_SELECTED_THEME_ACTION,
   SET_SELECTED_STYLE_ACTION,
-  Tabs
+  SET_DESIGN_CONFIG_ACTION,
+  SET_INSPIRATION_COLOR_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -34,7 +36,8 @@ export const initialState = fromJS({
   swipingView: false,
   currentTab: Tabs.RenderTab,
   selectedTheme: NONE,
-  selectedStyle: NONE
+  selectedStyle: NONE,
+  designConfig: {}
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -76,6 +79,17 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedTheme', action.id)
     case SET_SELECTED_STYLE_ACTION:
       return state.set('selectedStyle', action.id)
+    case SET_DESIGN_CONFIG_ACTION:
+      return state.set('designConfig', fromJS(action.config))
+    case SET_INSPIRATION_COLOR_ACTION: {
+      const colors = state.getIn([
+        'designConfig',
+        'inspiration',
+        action.index,
+        'colors'
+      ])
+      return state.set('colors', colors)
+    }
     default:
       return state
   }
