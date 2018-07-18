@@ -84,6 +84,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       data
     } = this.props
 
+    console.log('---------------------------')
+    console.log(this.props.data)
+    console.log('---------------------------')
+
     return (
       <Container>
         <Tabs
@@ -141,7 +145,8 @@ const EnhanceDesignCenterCustomize = compose(
   graphql<Data>(getProductFromCode, {
     options: ({ productCode }: OwnProps) => ({
       skip: !productCode,
-      variables: { code: productCode }
+      variables: { code: productCode },
+      fetchPolicy: 'network-only'
     })
   })
 )(DesignCenterCustomize)

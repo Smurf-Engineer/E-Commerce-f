@@ -7,6 +7,7 @@ import gql from 'graphql-tag'
 export const getProductFromCode = gql`
   query GetProductFromCode($code: String!) {
     product: productFromCode(code: $code) {
+      id
       obj
       mtl
       themes {

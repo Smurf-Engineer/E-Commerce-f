@@ -85,5 +85,3 @@ const DesignCenterInspirationEnhance = compose(
 )(DesignCenterInspiration)
 
 export default DesignCenterInspirationEnhance
-
-// export default DesignCenterInspiration

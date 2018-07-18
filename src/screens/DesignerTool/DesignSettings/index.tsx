@@ -60,7 +60,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
 
     const loading = get(productData, 'loading', false)
     const error = get(productData, 'error', false)
-    const product = get(productData, 'product', false)
 
     return (
       <Container>
