@@ -7,7 +7,6 @@ export const Container = styled.div``
 
 export const ListContainer = styled.div`
   overflow: auto;
-  height: 392px;
 `
 
 export const Text = styled.div`

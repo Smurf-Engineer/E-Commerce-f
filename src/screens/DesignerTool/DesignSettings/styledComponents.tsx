@@ -14,7 +14,9 @@ export const Button = styled(AntdButton)`
 `
 
 export const Container = styled.div`
-  padding: 47px 35%;
+  padding: 16px;
+  height: 100vh;
+  overflow: auto;
 `
 
 export const Form = styled.div`

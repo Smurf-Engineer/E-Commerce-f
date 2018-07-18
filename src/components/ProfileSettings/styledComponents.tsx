@@ -16,7 +16,6 @@ interface RowProps {
 
 export const Container = styled.div`
   width: 100%;
-  padding-top: 54px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;

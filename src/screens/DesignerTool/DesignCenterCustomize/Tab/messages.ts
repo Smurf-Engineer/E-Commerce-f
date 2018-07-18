@@ -16,5 +16,13 @@ export default defineMessages({
   inspiration: {
     id: 'components.designCenterTool.Tab.inspiration',
     defaultMessage: 'Inspiration'
+  },
+  thumbnail: {
+    id: 'components.designCenterTool.Tab.thumbnail',
+    defaultMessage: 'Thumbnail'
+  },
+  settings: {
+    id: 'components.designCenterTool.Tab.settings',
+    defaultMessage: 'Settings'
   }
 })

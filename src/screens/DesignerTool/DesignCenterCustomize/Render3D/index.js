@@ -1,30 +1,12 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
-import filter from 'lodash/filter'
+import isEmpty from 'lodash/isEmpty'
 import findIndex from 'lodash/findIndex'
-import { FormattedMessage } from 'react-intl'
-import Dropdown from 'antd/lib/dropdown'
-import Menu from 'antd/lib/menu'
-import {
-  Container,
-  Render,
-  Progress,
-  Model,
-  Row,
-  QuickView,
-  Button,
-  DragText,
-  ModelType,
-  ModelText,
-  ViewControls,
-  ViewButton,
-  LoadingContainer,
-  ButtonWrapper,
-  Logo
-} from './styledComponents'
+import Button from 'antd/lib/button'
+import message from 'antd/lib/message'
+import { modelPositions } from './config'
+import { Container, Render, Progress, Logo } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
-import { viewPositions } from './config'
-import messages from './messages'
 
 class Render3D extends PureComponent {
   state = {
@@ -194,7 +176,7 @@ class Render3D extends PureComponent {
 
   loadObject = async files => {
     /* Object and MTL load */
-    const { onLoadModel, styleColors } = this.props
+    const { onLoadModel } = this.props
 
     /* Texture configuration */
     const loadedTextures = await this.loadTextures(files)
@@ -340,8 +322,45 @@ class Render3D extends PureComponent {
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
           {!files && <Logo src={logo} />}
         </Render>
+        {/* TODO: WIP
+        <ButtonWrapper>
+          <Button onClick={this.saveThumbnail}>Save Thumbnail</Button>
+        </ButtonWrapper>
+      */}
       </Container>
     )
+  }
+
+  setFrontFaceModel = () => {
+    if (this.camera) {
+      const { front: { x, y, z } } = modelPositions
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
+  }
+
+  takeScreenshot = () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.5)
+        resolve(thumbnail)
+      }, 800)
+    })
+
+  saveThumbnail = async colors => {
+    this.setFrontFaceModel()
+    this.setupColors(colors)
+    const { designConfig } = this.props
+    if (isEmpty(designConfig)) {
+      message.error('Please select a JSON file')
+    } else {
+      try {
+        // TODO: Call action to upload
+        const thumbnail = await this.takeScreenshot(inspirationColors.colors)
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 }
 
