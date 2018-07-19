@@ -19,6 +19,7 @@ describe('<ShippingAddressForm />', () => {
     const phone = ''
     const hasError = false
     const action = (id: string, value: string) => {}
+    const format = (message: any) => 'string'
     ReactDOM.render(
       <ShippingAddressForm
         {...{
@@ -33,6 +34,7 @@ describe('<ShippingAddressForm />', () => {
           phone,
           hasError
         }}
+        formatMessage={format}
         selectDropdownAction={action}
         inputChangeAction={action}
       />,
