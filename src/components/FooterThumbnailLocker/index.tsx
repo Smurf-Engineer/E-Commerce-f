@@ -27,6 +27,11 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
 }
 
+let showCartButton = false
+if (typeof window !== 'undefined') {
+  showCartButton = window.matchMedia('(max-width: 768px)').matches
+}
+
 const FooterThumbnailLocker = ({
   id,
   name,
@@ -45,10 +50,6 @@ const FooterThumbnailLocker = ({
     onPressPrivate(id, checked)
   }
   const handleOnPressDelete = () => onPressDelete(id, name)
-  let showCartButton = false
-  if (typeof window !== 'undefined') {
-    showCartButton = window.matchMedia('(max-width: 768px)').matches
-  }
   return (
     <Footer>
       <Type>{name}</Type>
