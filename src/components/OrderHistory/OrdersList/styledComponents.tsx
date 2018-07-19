@@ -3,16 +3,22 @@
  */
 import styled from 'styled-components'
 
+interface ContainerProps {
+  withoutPadding?: boolean
+}
+
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding-right: 32px;
+  padding-right: ${({ withoutPadding }: ContainerProps) =>
+    withoutPadding ? '0' : '32px'};
   @media (min-width: 320px) and (max-width: 768px) {
     padding-right: 0;
     align-items: center;
   }
 `
+
 export const Table = styled.table`
   border-collapse: collapse;
   width: 100%;
@@ -28,7 +34,7 @@ interface HeaderProps {
 export const Header = styled.th`
   border-bottom: 1px solid #818181;
   text-align: left;
-  padding: 0 8px 8px 8px;
+  padding: 8px 0;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 14px;
@@ -46,11 +52,11 @@ export const Header = styled.th`
 `
 
 export const EmptyContainer = styled.div`
-  widht: 100%;
-  height: 100%;
   display: flex;
+  height: 25vh;
   justify-content: center;
   align-items: center;
+  background-color: #fff;
 `
 
 export const EmptyMessage = styled.div`
