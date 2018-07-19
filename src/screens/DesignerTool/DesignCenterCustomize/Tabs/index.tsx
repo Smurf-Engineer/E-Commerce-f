@@ -6,51 +6,75 @@ import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
+import Settings from '../../DesignSettings'
 import InpirationTab from '../InspirationColors'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
+import settingsIcon from '../../../../assets/settings.svg'
 import { Container } from './styledComponents'
+import { DesignConfig, UploadFile } from '../../../../types/common'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
+const SETTINGS_TAB = 'SETTINGS_TAB'
 
 const { TabPane } = AntdTabs
 
 interface Props {
+  designConfig: DesignConfig
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
-  styleColors: string[]
   uploadingFiles: boolean
   uploadNewModel: boolean
+  themeImage?: UploadFile[]
+  selectedTheme: number
+  selectedStyle: number
+  onSelectTheme: (id: number) => void
+  onSelectStyle: (id: number) => void
+  onDeleteTheme: (id: number) => void
+  onDeleteStyle: (id: number) => void
+  onSelectImage?: (file: UploadFile) => void
+  onDeleteImage?: () => void
+  onSaveDesign: () => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any) => void
   onUploadDesign: (files: any) => void
+  onSelectConfig: (config: DesignConfig) => void
+  onSelectInspirationColor: (index: number) => void
 }
 
 const Tabs = ({
+  designConfig,
   onSelectColorBlock,
   onHoverColorBlock,
   colorBlock,
   colorBlockHovered,
   onSelectColor,
   colors,
-  styleColors,
   onUploadFiles,
   uploadingFiles,
   uploadNewModel,
-  onUploadDesign
+  onUploadDesign,
+  onSelectConfig,
+  onSelectInspirationColor,
+  themeImage,
+  selectedTheme,
+  selectedStyle,
+  onSaveDesign,
+  onSelectTheme,
+  onSelectStyle,
+  onDeleteTheme,
+  onDeleteStyle,
+  onSelectImage,
+  onDeleteImage
 }: Props) => {
   return (
     <Container>
-      <AntdTabs
-        style={{ height: '100%' }}
-        defaultActiveKey={UPLOAD_TAB}
-        size="large"
-      >
+      <AntdTabs defaultActiveKey={UPLOAD_TAB} size="large">
         <TabPane
           key={UPLOAD_TAB}
           tab={<Tab label="upload" icon={uploadIcon} />}
@@ -60,7 +84,8 @@ const Tabs = ({
               onUploadFiles,
               uploadingFiles,
               uploadNewModel,
-              onUploadDesign
+              onUploadDesign,
+              onSelectConfig
             }}
           />
         </TabPane>
@@ -72,8 +97,7 @@ const Tabs = ({
               colorBlock,
               colorBlockHovered,
               onSelectColor,
-              colors,
-              styleColors
+              colors
             }}
           />
         </TabPane>
@@ -81,7 +105,29 @@ const Tabs = ({
           key={INSPIRATION_TAB}
           tab={<Tab label="inspiration" icon={colorIcon} />}
         >
-          <InpirationTab />
+          <InpirationTab
+            onSelectPalette={onSelectInspirationColor}
+            palettes={designConfig.inspiration || []}
+          />
+        </TabPane>
+        <TabPane
+          key={SETTINGS_TAB}
+          tab={<Tab label="settings" icon={settingsIcon} />}
+        >
+          <Settings
+            {...{
+              themeImage,
+              selectedTheme,
+              selectedStyle,
+              onSaveDesign,
+              onSelectTheme,
+              onSelectStyle,
+              onDeleteTheme,
+              onDeleteStyle,
+              onSelectImage,
+              onDeleteImage
+            }}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

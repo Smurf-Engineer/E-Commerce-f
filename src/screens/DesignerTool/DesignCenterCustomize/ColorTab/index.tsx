@@ -16,7 +16,6 @@ interface Props {
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
-  styleColors: string[]
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
@@ -32,8 +31,7 @@ class ColorTab extends React.PureComponent<Props> {
       colorBlock,
       colorBlockHovered,
       onSelectColor,
-      colors,
-      styleColors
+      colors
     } = this.props
     const colorButtons = colorsBlocks.map((label, index) => {
       return (
@@ -46,7 +44,7 @@ class ColorTab extends React.PureComponent<Props> {
             onSelectColorBlock,
             onHoverColorBlock
           }}
-          currentColor={colors[index] || styleColors[index]}
+          currentColor={colors[index]}
           selected={colorBlock === index}
         />
       )
