@@ -27,7 +27,7 @@ export default defineMessages({
     defaultMessage: 'This will permanently delete this Teamstore.'
   },
   shareModalTitle: {
-    id: 'screen.MyTeamStores.shareModalTitle',
+    id: 'screen.MyTeamStores.shareTeamStoreMessage',
     defaultMessage: 'SHARE YOUR TEAMSTORE!'
   },
   errorMessage: {

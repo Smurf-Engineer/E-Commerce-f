@@ -10,10 +10,18 @@ const primaryColor = '#4a90e2'
 export const Container = styled.div`
   padding: 40px 32px;
   background-color: #fff;
+
+  @media (max-width: 480px) {
+    padding: 20px 10px 40px 10px;
+  }
 `
 export const Content = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `
 export const CheckoutTitle = styled.div`
   height: 27px;
@@ -38,11 +46,21 @@ export const SummaryTitle = styled.div`
 
 export const StepsContainer = styled.div`
   width: 70%;
+
+  @media (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 export const SummaryContainer = styled.div`
   width: 25%;
   padding-left: 20px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    padding: 0;
+    margin-top: 20px;
+  }
 `
 export const StepWrapper = styled.div`
   .ant-steps-item-process .ant-steps-item-icon {
@@ -68,6 +86,18 @@ export const StepWrapper = styled.div`
     > .ant-steps-item-title:after {
     background-color: ${primaryColor};
   }
+
+  @media (max-width: 480px) {
+    .ant-steps-horizontal.ant-steps-label-horizontal {
+      display: flex;
+    }
+    .ant-steps-horizontal.ant-steps-label-horizontal .ant-steps-item-title {
+      font-size: 12px;
+    }
+    .ant-steps-horizontal.ant-steps-label-horizontal .ant-steps-item-icon {
+      margin-right: 5px;
+    }
+  }
 `
 
 export const ContinueButton = styled(Button)`
@@ -81,6 +111,10 @@ export const ContinueButton = styled(Button)`
     border-color: ${primaryColor};
     background-color: ${primaryColor};
     color: #fff;
+  }
+
+  @media (max-width: 480px) {
+    width: 100%;
   }
 `
 

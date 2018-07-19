@@ -140,7 +140,8 @@ class MyAddresses extends React.PureComponent<Props, {}> {
               phone,
               hasError,
               selectDropdownAction,
-              inputChangeAction
+              inputChangeAction,
+              formatMessage
             }}
           />
           <div>
