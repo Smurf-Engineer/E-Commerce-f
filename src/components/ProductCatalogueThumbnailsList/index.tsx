@@ -107,7 +107,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 labelButton={
                   <ButtonsContainer>
                     <AddToCartButton
-                      label={formatMessage(messages.customize)}
+                      label={formatMessage(messages.addToCart)}
                       renderForThumbnail={true}
                       item={{ product }}
                       {...{ formatMessage }}
