@@ -130,7 +130,7 @@ const OrdersList = ({
       {withPagination ? (
         <Pagination
           current={currentPage}
-          pageSize={12}
+          pageSize={ORDERS_LIMIT}
           total={Number(fullCount)}
           onChange={onChangePage}
         />
@@ -146,10 +146,12 @@ interface OwnProps {
   customLimit?: number
 }
 
+const ORDERS_LIMIT = 12
+
 const OrdersListEnhance = compose(
   graphql(getOrdersQuery, {
     options: ({ currentPage, orderBy, sort, customLimit }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : 12
+      const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {
