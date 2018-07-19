@@ -5,6 +5,7 @@ import * as React from 'react'
 import Dropdown from 'antd/lib/dropdown'
 import Icon from 'antd/lib/icon'
 import Menu from 'antd/lib/menu'
+import messages from './messages'
 import {
   ShippingFormContainer,
   Row,
@@ -14,7 +15,8 @@ import {
   Label,
   InputTitleContainer,
   DropDownPlaceHolder,
-  ErrorMsg
+  ErrorMsg,
+  ShipTopPoAPO
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
 
@@ -29,7 +31,7 @@ interface Props {
   zipCode: string
   phone: string
   hasError: boolean
-  formatMessage?: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
 }
@@ -46,7 +48,8 @@ class ShippingAddressForm extends React.Component<Props, {}> {
       city,
       zipCode,
       phone,
-      hasError
+      hasError,
+      formatMessage
     } = this.props
     const dropdownCountries = (
       <Menu onClick={this.selectedDropDown}>
@@ -92,7 +95,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
         <Row>
           <Column inputhWidth={'49%'}>
             <InputTitleContainer>
-              <Label>{'First Name'}</Label>
+              <Label>{formatMessage(messages.firstNameLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <StyledInput
@@ -102,11 +105,13 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               maxLength="50"
             />
             {!firstName &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
           <Column inputhWidth={'49%'}>
             <InputTitleContainer>
-              <Label>{'Last Name'}</Label>
+              <Label>{formatMessage(messages.lastNameLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <StyledInput
@@ -116,27 +121,33 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               maxLength="50"
             />
             {!lastName &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
         </Row>
         <Row>
           <Column inputhWidth={'100%'}>
             <InputTitleContainer>
-              <Label>{'Address'}</Label>
+              <Label>{formatMessage(messages.addressNameLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
-              <Label>{'We do not ship to APO and PO Boxes'}</Label>
+              <ShipTopPoAPO>
+                {formatMessage(messages.shipTopPoApoLabel)}
+              </ShipTopPoAPO>
             </InputTitleContainer>
             <StyledInput
               id="street"
-              placeholder={'Street address'}
+              placeholder={formatMessage(messages.streetAddressLabel)}
               value={street}
               onChange={this.handleInputChange}
             />
             {!street &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
             <StyledInput
               id="apartment"
-              placeholder={'Apartment, suite, floor, etc.'}
+              placeholder={formatMessage(messages.apartmentSuiteLabel)}
               value={apartment}
               onChange={this.handleInputChange}
             />
@@ -145,51 +156,59 @@ class ShippingAddressForm extends React.Component<Props, {}> {
         <Row>
           <Column inputhWidth={'32%'}>
             <InputTitleContainer>
-              <Label>{'Country'}</Label>
+              <Label>{formatMessage(messages.countryLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <Dropdown overlay={dropdownCountries}>
               <DropDownPlaceHolder>
-                {country ? country : 'Select Country'}
+                {country ? country : formatMessage(messages.selectCountryLabel)}
                 <Icon type="down" />
               </DropDownPlaceHolder>
             </Dropdown>
             {!country &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
           <Column inputhWidth={'32%'}>
             <InputTitleContainer>
-              <Label>{'State/Province'}</Label>
+              <Label>{formatMessage(messages.stateProvinceLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <Dropdown overlay={dropdownStates}>
               <DropDownPlaceHolder>
-                {stateProvince ? stateProvince : 'Select State/Province'}
+                {stateProvince
+                  ? stateProvince
+                  : formatMessage(messages.selectStateProvinceLabel)}
                 <Icon type="down" />
               </DropDownPlaceHolder>
             </Dropdown>
             {!stateProvince &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
           <Column inputhWidth={'32%'}>
             <InputTitleContainer>
-              <Label>{'City'}</Label>
+              <Label>{formatMessage(messages.cityLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <Dropdown overlay={dropdownCities}>
               <DropDownPlaceHolder>
-                {city ? city : 'Select City'}
+                {city ? city : formatMessage(messages.selectCityLabel)}
                 <Icon type="down" />
               </DropDownPlaceHolder>
             </Dropdown>
             {!city &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
         </Row>
         <Row>
           <Column inputhWidth={'49%'}>
             <InputTitleContainer>
-              <Label>{'ZIP / Postal Code'}</Label>
+              <Label>{formatMessage(messages.zipCodeLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <StyledInput
@@ -199,11 +218,13 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               maxLength="20"
             />
             {!zipCode &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
           <Column inputhWidth={'49%'}>
             <InputTitleContainer>
-              <Label>{'Phone'}</Label>
+              <Label>{formatMessage(messages.phoneLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <StyledInput
@@ -213,7 +234,9 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               maxLength="20"
             />
             {!phone &&
-              hasError && <ErrorMsg>{'This field is required'}</ErrorMsg>}
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
           </Column>
         </Row>
       </ShippingFormContainer>
