@@ -6,6 +6,10 @@ import styled from 'styled-components'
 export const Container = styled.div`
   margin-bottom: 12px;
   width: 100%;
+
+  @media (max-width: 768px) and (min-width: 320px) {
+    margin-top: 24px;
+  }
 `
 
 export const Content = styled.div`

@@ -5,6 +5,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   padding: 0 32px 36px 0;
+
+  @media (max-width: 768px) and (min-width: 320px) {
+    padding: 0 0 36px 0;
+  }
 `
 
 export const BottomContainer = styled.div`
@@ -12,8 +16,12 @@ export const BottomContainer = styled.div`
   justify-content: space-between;
 `
 
+interface ColumnProps {
+  width?: string
+}
+
 export const Column = styled.div`
-  width: 32%;
+  width: ${({ width }: ColumnProps) => (width ? width : '32%')};
   display: flex;
   flex-direction: column;
 `

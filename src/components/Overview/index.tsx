@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import MediaQuery from 'react-responsive'
 import { overviewQuery } from './data'
 import messages from './messages'
 import {
@@ -70,6 +71,70 @@ class Overview extends React.Component<Props, {}> {
           <EmptyMessage>{formatMessage(messages.emptyPayment)}</EmptyMessage>
         </EmptyContainer>
       )
+    const profileHeader = (
+      <OverviewHeader
+        id={PROFILE_SETTINGS}
+        label={formatMessage(messages.profile)}
+        onGoTo={goToScreen}
+        {...{ formatMessage }}
+      />
+    )
+    const addressHeader = (
+      <OverviewHeader
+        id={ADDRESSES}
+        label={formatMessage(messages.addresses)}
+        onGoTo={goToScreen}
+        {...{ formatMessage }}
+      />
+    )
+    const paymentHeader = (
+      <OverviewHeader
+        id={CREDIT_CARDS}
+        label={formatMessage(messages.payment)}
+        onGoTo={goToScreen}
+        {...{ formatMessage }}
+      />
+    )
+    const profileView = (
+      <MediaQuery maxWidth={768}>
+        {matches => {
+          if (matches) {
+            return (
+              <div>
+                <Column width="100%">
+                  {profileHeader}
+                  <ProfileData {...{ profile }} />
+                </Column>
+                <Column width="100%">
+                  {addressHeader}
+                  {contentAddress}
+                </Column>
+                <Column width="100%">
+                  {paymentHeader}
+                  {contentPayment}
+                </Column>
+              </div>
+            )
+          }
+          return (
+            <BottomContainer>
+              <Column>
+                {profileHeader}
+                <ProfileData {...{ profile }} />
+              </Column>
+              <Column>
+                {addressHeader}
+                {contentAddress}
+              </Column>
+              <Column>
+                {paymentHeader}
+                {contentPayment}
+              </Column>
+            </BottomContainer>
+          )
+        }}
+      </MediaQuery>
+    )
     return (
       <Container>
         <OverviewHeader
@@ -89,35 +154,7 @@ class Overview extends React.Component<Props, {}> {
           onOrderClick={this.handleOnOrderClick}
           {...{ formatMessage }}
         />
-        <BottomContainer>
-          <Column>
-            <OverviewHeader
-              id={PROFILE_SETTINGS}
-              label={formatMessage(messages.profile)}
-              onGoTo={goToScreen}
-              {...{ formatMessage }}
-            />
-            <ProfileData {...{ profile }} />
-          </Column>
-          <Column>
-            <OverviewHeader
-              id={ADDRESSES}
-              label={formatMessage(messages.addresses)}
-              onGoTo={goToScreen}
-              {...{ formatMessage }}
-            />
-            {contentAddress}
-          </Column>
-          <Column>
-            <OverviewHeader
-              id={CREDIT_CARDS}
-              label={formatMessage(messages.payment)}
-              onGoTo={goToScreen}
-              {...{ formatMessage }}
-            />
-            {contentPayment}
-          </Column>
-        </BottomContainer>
+        {profileView}
       </Container>
     )
   }
@@ -130,11 +167,7 @@ class Overview extends React.Component<Props, {}> {
 }
 
 const OverViewEnhance = compose(
-  graphql(overviewQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    }
-  }),
+  graphql(overviewQuery),
   withError,
   withLoading
 )(Overview)

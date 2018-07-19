@@ -5,6 +5,9 @@ import styled from 'styled-components'
 
 export const Container = styled.tr`
   cursor: pointer;
+  :hover {
+    background-color: #e6e6e5;
+  }
 `
 
 interface CellProps {

@@ -262,11 +262,7 @@ class MyCards extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
 const MyCardsEnhance = compose(
-  graphql(cardsQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    }
-  }),
+  graphql(cardsQuery),
   withLoading,
   withError,
   addCardMutation,
