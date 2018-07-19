@@ -7,10 +7,8 @@ import {
   Form,
   Title,
   Input,
-  InputContainer,
-  ErrorLabel
+  InputContainer
 } from './styledComponents'
-import get from 'lodash/get'
 import DesignForm from '../../../components/DesignForm'
 import { UploadFile } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
@@ -47,7 +45,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
   render() {
     const {
       themeImage,
-      productData,
       selectedTheme,
       selectedStyle,
       onSelectTheme,
@@ -58,9 +55,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteImage
     } = this.props
     const { code } = this.state
-
-    const loading = get(productData, 'loading', false)
-    const error = get(productData, 'error', false)
 
     return (
       <Container>
@@ -75,7 +69,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
               onPressEnter={this.handleOnSearch}
               enterButton={true}
             />
-            {!!error && !loading && <ErrorLabel>Product not found!</ErrorLabel>}
           </InputContainer>
           <DesignForm
             isNewItem={true}
