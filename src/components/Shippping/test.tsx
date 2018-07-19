@@ -35,6 +35,7 @@ describe('<Shippping />', () => {
     const showAddressFormAction = (show: boolean) => {}
     const setSelectedAddress = (address: AddressType, index: number) => {}
     const showContent = true
+    const buttonToRender: React.ReactNode = <div />
     void ReactDOM.render(
       <Shippping
         formatMessage={format}
@@ -50,7 +51,8 @@ describe('<Shippping />', () => {
           showAddressFormAction,
           setSelectedAddress,
           indexAddressSelected,
-          data
+          data,
+          buttonToRender
         }}
       />,
       div

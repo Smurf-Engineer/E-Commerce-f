@@ -120,7 +120,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 phone,
                 hasError,
                 selectDropdownAction,
-                inputChangeAction
+                inputChangeAction,
+                formatMessage
               }}
             />
           ) : (

@@ -17,7 +17,8 @@ import {
   SET_SELECTED_THEME_ACTION,
   SET_SELECTED_STYLE_ACTION,
   SET_DESIGN_CONFIG_ACTION,
-  SET_INSPIRATION_COLOR_ACTION
+  SET_INSPIRATION_COLOR_ACTION,
+  SET_PRODCUT_CODE_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -37,7 +38,8 @@ export const initialState = fromJS({
   currentTab: Tabs.RenderTab,
   selectedTheme: NONE,
   selectedStyle: NONE,
-  designConfig: {}
+  designConfig: {},
+  productCode: ''
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -90,6 +92,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       ])
       return state.set('colors', colors)
     }
+    case SET_PRODCUT_CODE_ACTION:
+      return state.set('productCode', action.code)
     default:
       return state
   }

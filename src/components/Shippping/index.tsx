@@ -31,6 +31,7 @@ interface Props {
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
   setSelectedAddress: (address: AddressType, indexAddress: number) => void
+  buttonToRender: React.ReactNode
 }
 
 export class Shippping extends React.PureComponent<Props, {}> {
@@ -55,7 +56,8 @@ export class Shippping extends React.PureComponent<Props, {}> {
       selectDropdownAction,
       inputChangeAction,
       data: { loading, userAddresses },
-      indexAddressSelected
+      indexAddressSelected,
+      buttonToRender
     } = this.props
 
     if (loading) {
@@ -118,11 +120,13 @@ export class Shippping extends React.PureComponent<Props, {}> {
               phone,
               hasError,
               selectDropdownAction,
-              inputChangeAction
+              inputChangeAction,
+              formatMessage
             }}
           />
         </AnimateHeight>
         {/* TODO: uncomment if needed {shippingMethod} */}
+        {buttonToRender}
       </Container>
     )
   }

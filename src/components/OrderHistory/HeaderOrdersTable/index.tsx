@@ -14,6 +14,12 @@ interface Props {
   onSortClick: (id: string, sort: sorts) => void
 }
 
+const colors = {
+  asc: { upColor: '#5F6062', downColor: '#fff' },
+  desc: { upColor: '#fff', downColor: '#5F6062' },
+  none: { upColor: '#bebebe', downColor: '#bebebe' }
+}
+
 const HeaderOrdersTable = ({
   id,
   label,
@@ -30,11 +36,6 @@ const HeaderOrdersTable = ({
   const handleOnClick = () => {
     const sortToApply = sort === 'asc' ? 'desc' : 'asc'
     onSortClick(id, sortToApply)
-  }
-  const colors = {
-    asc: { upColor: '#5F6062', downColor: '#fff' },
-    desc: { upColor: '#fff', downColor: '#5F6062' },
-    none: { upColor: '#bebebe', downColor: '#bebebe' }
   }
   const { upColor, downColor } = colors[sort]
   return (

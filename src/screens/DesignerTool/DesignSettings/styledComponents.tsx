@@ -5,9 +5,9 @@ import styled from 'styled-components'
 import AntdInput from 'antd/lib/input'
 import AntdButton from 'antd/lib/button'
 
-export const Input = styled(AntdInput)`
-  margin-bottom: 16px;
-`
+const { Search } = AntdInput
+
+export const Input = styled(Search)``
 
 export const Button = styled(AntdButton)`
   align-self: flex-end;
@@ -22,6 +22,39 @@ export const Container = styled.div`
 export const Form = styled.div`
   display: flex;
   flex-direction: column;
+`
+
+export const InputContainer = styled.div`
+  position: relative;
+`
+
+interface ButtonProps {
+  disabled: boolean
+}
+
+export const InputWrapper = styled.div`
+  padding: 12px 32px;
+
+  .ant-input-group-addon {
+    background-color: ${({ disabled }: ButtonProps) =>
+      disabled ? '#F5F5F5' : '#4a90e2'};
+    border: 0px;
+  }
+
+  .ant-input:hover {
+    border-color: #4a90e2;
+  }
+
+  .ant-input:focus {
+    border-color: #4a90e2;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  }
+
+  .ant-input::selection {
+    background: #4a90e2;
+  }
 `
 
 export const Title = styled.div`
@@ -41,4 +74,15 @@ export const Subtitle = styled.div`
   letter-spacing: 0.18px;
   line-height: 19px;
   padding-bottom: 16px;
+`
+
+export const ErrorLabel = styled.div`
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+  position: absolute;
+  bottom: -16px;
+  left: 8px;
 `
