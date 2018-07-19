@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import PaletteCard from '../../../../components/PaletteCard'
-import { Container, ListContainer } from './styledComponents'
+import { Container, ListContainer, EmptyLabel } from './styledComponents'
 import { DesignObject } from '../../../../types/common'
 
 interface Props {
@@ -20,10 +20,12 @@ const InspirationColors = ({ palettes, onSelectPalette }: Props) => {
       onSelectPalette={handleOnSelectPalette(index)}
     />
   ))
-  return (
+  return !!palettes.length ? (
     <Container>
       <ListContainer>{list}</ListContainer>
     </Container>
+  ) : (
+    <EmptyLabel>Select JSON FILE</EmptyLabel>
   )
 }
 

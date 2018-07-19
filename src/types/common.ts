@@ -98,6 +98,9 @@ export interface Product {
   productTotal?: number
   unitPrice?: number
   sizeRange: ItemDetailType[]
+  obj?: string
+  mtl?: string
+  themes?: Theme[]
 }
 
 export type DesignType = {
@@ -221,10 +224,18 @@ export interface RegionConfig {
   currency: number | string
 }
 
+export interface Style {
+  id: number
+  name: string
+  image: string
+  colorBlocks: ColorBlock[]
+}
+
 export interface Theme {
   id: number
   name: string
   image: string
+  styles: Style[]
 }
 
 export interface ThemeResult {
