@@ -238,13 +238,13 @@ class Checkout extends React.Component<Props, {}> {
           {...{ total }}
         />
       ) : (
-        <PlaceOrderButton
-          onClick={e => this.handleOnPlaceOrder(e, {})}
-          loading={loadingPlaceOrder}
-        >
-          {intl.formatMessage(messages.placeOrder)}
-        </PlaceOrderButton>
-      )
+          <PlaceOrderButton
+            onClick={e => this.handleOnPlaceOrder(e, {})}
+            loading={loadingPlaceOrder}
+          >
+            {intl.formatMessage(messages.placeOrder)}
+          </PlaceOrderButton>
+        )
 
     const continueButton = (
       <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
