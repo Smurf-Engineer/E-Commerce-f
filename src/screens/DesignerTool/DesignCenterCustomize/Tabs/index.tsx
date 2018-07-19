@@ -13,6 +13,7 @@ import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import { Container } from './styledComponents'
 import { DesignConfig, UploadFile } from '../../../../types/common'
+import { Data } from '../../DesignCenterCustomize'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
@@ -23,7 +24,7 @@ const { TabPane } = AntdTabs
 
 interface Props {
   designConfig: DesignConfig
-  productData?: any // TODO: Type
+  productData?: Data
   colorBlock: number
   colorBlockHovered: number
   colors: string[]

@@ -8,8 +8,12 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '../config'
 import fetch from 'node-fetch'
 
+/**
+ * https://github.com/apollographql/react-apollo/issues/1321
+ * Apollo current version doesn't use new variables after catch an error.
+ */
 const errorLink = onError(({ response, operation }) => {
-  if (operation.operationName === 'GetProductFromCode') {
+  if (operation.operationName === 'GetProductFromCode' && !!response) {
     response.errors = null
   }
 })

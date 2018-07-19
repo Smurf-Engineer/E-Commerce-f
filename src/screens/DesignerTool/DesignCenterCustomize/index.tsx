@@ -11,11 +11,12 @@ import {
   ModelConfig,
   DesignConfig,
   UploadFile,
-  QueryProps
+  QueryProps,
+  Product
 } from '../../../types/common'
 
-interface Data extends QueryProps {
-  product: any // TODO: Type
+export interface Data extends QueryProps {
+  product: Product
 }
 
 interface Props {
@@ -83,10 +84,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       productCode,
       data
     } = this.props
-
-    console.log('---------------------------')
-    console.log(this.props.data)
-    console.log('---------------------------')
 
     return (
       <Container>

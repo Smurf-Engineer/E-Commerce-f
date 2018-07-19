@@ -13,6 +13,7 @@ import {
 import get from 'lodash/get'
 import DesignForm from '../../../components/DesignForm'
 import { UploadFile } from '../../../types/common'
+import { Data } from '../DesignCenterCustomize'
 
 // TODO: Dummie data
 const items = [
@@ -24,7 +25,7 @@ const items = [
 
 interface Props {
   themeImage?: UploadFile[]
-  productData: any // TODO: Type
+  productData?: Data
   selectedTheme: number
   selectedStyle: number
   productCode: string
