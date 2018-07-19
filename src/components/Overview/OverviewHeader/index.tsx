@@ -20,9 +20,7 @@ interface Props {
 }
 
 const OverviewHeader = ({ label, formatMessage, id, onGoTo }: Props) => {
-  const handleOnGoTo = () => {
-    onGoTo(id)
-  }
+  const handleOnGoTo = () => onGoTo(id)
   return (
     <Container>
       <Content>

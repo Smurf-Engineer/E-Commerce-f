@@ -37,7 +37,7 @@ export const ViewContainer = styled.div`
   line-height: 22px;
   text-align: right;
   cursor: pointer;
-  :hover {
+  &:hover {
     color: #e61737;
   }
 `
