@@ -754,6 +754,8 @@
   "components.MyLocker.titleDeleteModal": "Are you sure?",
   "components.MyLocker.messageDeleteModal":
     "\"{designName}\" will be deleted from your locker",
+  "components.MyLocker.designOnCartError":
+    "You cannot delete designs that are on your cart",
 
   "components.UploadTab.title": "Upload Logo and Images",
   "components.UploadTab.imageExtensionError":

@@ -85,6 +85,19 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     if (designs) {
       thumbnailsList = designs.map(
         ({ name, product, image, createdAt, shortId, shared }, index) => {
+          const addToCartButton = (
+            <AddToCartButton
+              label={formatMessage(messages.addToCart)}
+              renderForThumbnail={true}
+              item={{ product }}
+              {...{ formatMessage }}
+              withoutTop={true}
+              designId={shortId}
+              designName={name}
+              designImage={image}
+              myLockerList={true}
+            />
+          )
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -96,7 +109,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       name,
                       onPressPrivate,
                       onPressDelete,
-                      formatMessage
+                      formatMessage,
+                      addToCartButton
                     }}
                     id={shortId as string}
                     isPrivate={!shared}
@@ -106,17 +120,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 }
                 labelButton={
                   <ButtonsContainer>
-                    <AddToCartButton
-                      label={formatMessage(messages.addToCart)}
-                      renderForThumbnail={true}
-                      item={{ product }}
-                      {...{ formatMessage }}
-                      withoutTop={true}
-                      designId={shortId}
-                      designName={name}
-                      designImage={image}
-                      myLockerList={true}
-                    />
+                    {addToCartButton}
                     <EditButtonContainer>
                       <EditButton
                         onClick={this.gotToEditDesign(shortId as string)}

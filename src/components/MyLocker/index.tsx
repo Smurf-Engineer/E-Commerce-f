@@ -8,19 +8,17 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import Pagination from 'antd/lib/pagination/Pagination'
 import Spin from 'antd/lib/spin'
-import ProductList from '../../components/ProductCatalogueThumbnailsList'
-import {
-  DesignResultType,
-  DesignType,
-  DeleteDesignModal
-} from '../../types/common'
+
+import * as myLockerActions from './actions'
+import messages from './messages'
 import {
   desginsQuery,
   designAsPrivateMutation,
   deleteDesignMutation
 } from './data'
-import * as myLockerActions from './actions'
-import messages from './messages'
+import ProductList from '../../components/ProductCatalogueThumbnailsList'
+import ModalFooter from '../ModalFooter'
+import ModalTitle from '../ModalTitle'
 import {
   Container,
   PaginationRow,
@@ -29,8 +27,12 @@ import {
   MessageError,
   DeleteConfirmMessage
 } from './styledComponents'
-import ModalFooter from '../ModalFooter'
-import ModalTitle from '../ModalTitle'
+import {
+  DesignResultType,
+  DesignType,
+  DeleteDesignModal
+} from '../../types/common'
+import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
 interface Props {
   history: any
@@ -71,6 +73,11 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   }
 
   handleOnPressDelete = (id: string, name: string) => {
+    if (designExistsOnCart(id)) {
+      const { formatMessage } = this.props
+      Message.error(formatMessage(messages.designOnCartError))
+      return
+    }
     const { setDeleteModalDataAction } = this.props
     const modalData: DeleteDesignModal = {
       openDeleteModal: true,

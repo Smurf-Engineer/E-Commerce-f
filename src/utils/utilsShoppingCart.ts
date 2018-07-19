@@ -115,3 +115,15 @@ const getPriceRangeToApply = (items: number) => {
     return 0
   }
 }
+
+export const designExistsOnCart = (designId: string) => {
+  const cart = localStorage.getItem('cart')
+  if (cart && cart.length) {
+    for (let cartItem of JSON.parse(cart)) {
+      if (cartItem.designId === designId) {
+        return true
+      }
+    }
+  }
+  return false
+}

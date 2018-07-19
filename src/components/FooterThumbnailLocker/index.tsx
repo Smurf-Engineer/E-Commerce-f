@@ -21,6 +21,7 @@ interface Props {
   description: string
   date: string
   isPrivate: boolean
+  addToCartButton: React.ReactNode
   onPressPrivate: (id: string, isPrivate: boolean) => void
   onPressDelete: (id: string, name: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -34,7 +35,8 @@ const FooterThumbnailLocker = ({
   onPressPrivate,
   onPressDelete,
   formatMessage,
-  isPrivate
+  isPrivate,
+  addToCartButton
 }: Props) => {
   const handleOnPressPrivate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -43,6 +45,10 @@ const FooterThumbnailLocker = ({
     onPressPrivate(id, checked)
   }
   const handleOnPressDelete = () => onPressDelete(id, name)
+  let showCartButton = false
+  if (typeof window !== 'undefined') {
+    showCartButton = window.matchMedia('(max-width: 768px)').matches
+  }
   return (
     <Footer>
       <Type>{name}</Type>
@@ -56,6 +62,7 @@ const FooterThumbnailLocker = ({
           <FormattedMessage {...messages.delete} />
         </Delete>
       </Bottom>
+      {showCartButton && addToCartButton}
     </Footer>
   )
 }
