@@ -3,20 +3,26 @@
  */
 import * as React from 'react'
 import logo from '../../assets/jakroo_logo.svg'
-import cart from '../../assets/cart.svg'
+import Cart from '../CartForHeader'
 import Menu from '../MobileMenu'
-import { Container, Logo, Icon } from './styledComponents'
+import { Container, Logo } from './styledComponents'
 
 interface Props {
   history: any
   loginButton: React.ReactNode
   regionButton: React.ReactNode
+  totalItems: number
+  designHasChanges: boolean
+  openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
 export const MenuBarMobile = ({
   history,
   loginButton,
-  regionButton
+  regionButton,
+  totalItems,
+  designHasChanges,
+  openWithoutSaveModalAction
 }: Props) => {
   const handleGoHome = () => window.location.replace('/')
 
@@ -24,7 +30,14 @@ export const MenuBarMobile = ({
     <Container>
       <Menu {...{ history, loginButton, regionButton }} />
       <Logo src={logo} onClick={handleGoHome} />
-      <Icon src={cart} />
+      <Cart
+        {...{
+          totalItems,
+          history,
+          designHasChanges,
+          openWithoutSaveModalAction
+        }}
+      />
     </Container>
   )
 }
