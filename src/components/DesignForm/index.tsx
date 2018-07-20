@@ -17,48 +17,62 @@ import {
   ImageInput,
   Types
 } from './styledComponents'
-import { UploadFile } from '../../types/common'
+import { UploadFile, DesignItem as DesignItemType } from '../../types/common'
+
+const NONE = -1
 
 interface Props {
   themeImage?: UploadFile[]
   title: string
   subtitle: string
   buttonLabel: string
-  items: string[]
+  items: DesignItemType[]
   disableList?: boolean
   selectedItem: number
-  isNewItem: boolean
+  isNewItem?: boolean
   withImageInput?: boolean
+  itemName: string
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
+  onUpdateName: (name: string) => void
 }
 
-class DesignForm extends React.PureComponent<Props, {}> {
+interface State {
+  isEditing: boolean
+}
+
+class DesignForm extends React.PureComponent<Props, State> {
+  state = {
+    isEditing: false
+  }
   render() {
     const {
       title,
+      itemName,
       subtitle,
       buttonLabel,
       items,
       selectedItem,
       onSelectItem,
       onDeleteItem,
-      isNewItem,
       withImageInput = false,
       themeImage,
       onDeleteImage
     } = this.props
+    const { isEditing } = this.state
 
-    const list = items.map((name, index) => (
+    const list = items.map(({ name }, index) => (
       <DesignItem
         id={index}
         key={index}
         selected={index === selectedItem}
-        {...{ name, onSelectItem, onDeleteItem }}
+        onSelectItem={this.handleOnSelectItem}
+        {...{ name, onDeleteItem }}
       />
     ))
+
     const imageComponent = withImageInput && (
       <ImageInput>
         <Upload
@@ -81,23 +95,56 @@ class DesignForm extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <Title>{title}</Title>
-        <Button type="ghost">
+        <Button onClick={this.toogleIsEditing} type="ghost">
           <Icon type="plus" />
           {buttonLabel}
         </Button>
-        {isNewItem && (
+        {isEditing && (
           <div>
             <Subtitle>
               New {label} <TextRed>*</TextRed>
             </Subtitle>
-            <Input placeholder={`${label} Name`} />
+            <Input
+              value={itemName}
+              onChange={this.handleOnUpdateName}
+              placeholder={`${label} Name`}
+            />
             {imageComponent}
           </div>
         )}
-        <Subtitle>{subtitle}</Subtitle>
-        <List>{list}</List>
+        {!!list.length && (
+          <div>
+            <Subtitle>{subtitle}</Subtitle>
+            <List>{list}</List>
+          </div>
+        )}
       </Container>
     )
+  }
+
+  handleOnSelectItem = (id: number) => {
+    const { onSelectItem } = this.props
+    const { isEditing } = this.state
+    if (isEditing) {
+      this.toogleIsEditing()
+    }
+    onSelectItem(id)
+  }
+
+  toogleIsEditing = () => {
+    this.setState(({ isEditing }) => {
+      if (!isEditing) {
+        const { onSelectItem } = this.props
+        onSelectItem(NONE)
+      }
+      return { isEditing: !isEditing }
+    })
+  }
+
+  handleOnUpdateName = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { onUpdateName } = this.props
+    const { currentTarget: { value } } = evt
+    onUpdateName(value)
   }
 
   beforeUpload = (file: UploadFile) => {

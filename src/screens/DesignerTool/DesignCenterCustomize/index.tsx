@@ -33,6 +33,8 @@ interface Props {
   selectedTheme: number
   selectedStyle: number
   productCode: string
+  themeName: string
+  styleName: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -49,6 +51,8 @@ interface Props {
   onSelectInspirationColor: (index: number) => void
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
+  onUpdateThemeName: (name: string) => void
+  onUpdateStyleName: (name: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -82,7 +86,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onDeleteImage,
       onUpdateProductCode,
       productCode,
-      data
+      data,
+      themeName,
+      styleName,
+      onUpdateThemeName,
+      onUpdateStyleName
     } = this.props
 
     return (
@@ -112,7 +120,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onSelectImage,
             onDeleteImage,
             onUpdateProductCode,
-            productCode
+            productCode,
+            themeName,
+            styleName,
+            onUpdateThemeName,
+            onUpdateStyleName
           }}
           productData={data}
           uploadNewModel={!!files}
@@ -142,8 +154,9 @@ const EnhanceDesignCenterCustomize = compose(
   graphql<Data>(getProductFromCode, {
     options: ({ productCode }: OwnProps) => ({
       skip: !productCode,
+      fetchPolicy: 'network-only',
       variables: { code: productCode },
-      fetchPolicy: 'network-only'
+      notifyOnNetworkStatusChange: true
     })
   })
 )(DesignCenterCustomize)

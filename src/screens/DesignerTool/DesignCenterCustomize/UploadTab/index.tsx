@@ -12,11 +12,39 @@ import {
   Text,
   Buttons,
   ButtonWrapper,
-  Footer
+  Footer,
+  ButtonUpload
 } from './styledComponents'
 import { DesignConfig } from '../../../../types/common'
 
-const { Panel } = Collapse
+const enum Extension {
+  Obj = 'obj',
+  Mtl = 'mtl',
+  Jpg = 'jpg',
+  Png = 'png',
+  Config = 'application/json',
+  Svg = 'image/svg+xml'
+}
+
+const enum File {
+  Obj = 'obj',
+  Mtl = 'mtl',
+  BumpMap = 'bumpMap',
+  Config = 'config',
+  Flatlock = 'flatlock',
+  Label = 'label',
+  Branding = 'branding'
+}
+
+const filesInfo = {
+  obj: 'OBJ File',
+  mtl: 'MTL File',
+  bumpMap: 'BumpMap',
+  config: 'Config JSON',
+  flatlock: 'Flatlock',
+  label: 'Label',
+  branding: 'Branding'
+}
 
 interface Props {
   onSelectConfig: (config: DesignConfig) => void
@@ -31,7 +59,8 @@ const getFileExtension = (filename: string) =>
 
 class UploadTab extends React.PureComponent<Props, {}> {
   state = {
-    fileList: []
+    fileList: [],
+    files: {}
   }
 
   handleUpload = () => {
@@ -47,23 +76,23 @@ class UploadTab extends React.PureComponent<Props, {}> {
     this.setState({ fileList: [] })
   }
 
-  beforeUpload = (file: any) => {
+  beforeUpload = (key: string) => (file: any) => {
     const reader = new FileReader()
-    const { fileList: list } = this.state
+    const { fileList: list, files } = this.state
     const extension = getFileExtension(file.name) || ''
 
-    if (list.length === 0 && extension !== 'obj') {
+    if (key === File.Obj && extension !== Extension.Obj) {
       message.error('Please select a valid OBJ file')
       return false
     }
 
-    if (list.length === 1 && extension !== 'mtl') {
+    if (key === File.Mtl && extension !== Extension.Mtl) {
       message.error('Please select a valid MTL file')
       return false
     }
 
-    if (list.length === 3) {
-      if (file.type !== 'application/json') {
+    if (key === File.Config) {
+      if (file.type !== Extension.Config) {
         message.error('Please select a valid JSON file')
         return false
       } else {
@@ -81,12 +110,12 @@ class UploadTab extends React.PureComponent<Props, {}> {
       }
     }
 
-    if (list.length > 3 && file.type !== 'image/svg+xml') {
+    if (file.type !== Extension.Svg) {
       message.error('Please select a valid SVG file')
       return false
     }
 
-    this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))
+    files[key] = file
     return false
   }
 
@@ -107,7 +136,7 @@ class UploadTab extends React.PureComponent<Props, {}> {
     return false
   }
 
-  onRemove = (file: any) => {
+  onRemove = (key: string) => (file: any) => {
     this.setState(({ fileList }: any) => {
       const index = fileList.indexOf(file)
       const newFileList = fileList.slice()
@@ -121,57 +150,48 @@ class UploadTab extends React.PureComponent<Props, {}> {
   handleReset = () => window.location.replace('/designer-tool')
 
   render() {
-    const { fileList } = this.state
+    const { files } = this.state
     const { uploadingFiles, uploadNewModel } = this.props
+
+    const fileNames = Object.keys(filesInfo)
+    const fileButtons = fileNames.map((file, index) => {
+      const hasFile = !!files[file]
+      return (
+        <Upload
+          key={index}
+          style={{ width: '100%' }}
+          beforeUpload={this.beforeUpload(file)}
+          onRemove={this.onRemove(file)}
+        >
+          <ButtonUpload>
+            <Icon
+              style={{
+                color: hasFile ? '#49BC19' : '#5F6062',
+                paddingRight: 16
+              }}
+              type={hasFile ? 'check-circle' : 'upload'}
+            />
+            {filesInfo[file]}
+          </ButtonUpload>
+        </Upload>
+      )
+    })
 
     return (
       <Container>
-        <Collapse>
-          <Panel header="Help" key="1">
-            {uploadNewModel ? (
-              <Text>
-                <p> 1. Config file (JSON) </p>
-                <p> 2. Branding </p>
-                <p> 3. Color Blocks </p>
-              </Text>
-            ) : (
-              <Text>
-                <p>1. OBJ file</p>
-                <p>2. MTL file</p>
-                <p>3. Bumpmap file</p>
-                <p> 4. Config file (JSON) </p>
-                <p> 5. Branding </p>
-                <p> 6. Color Blocks </p>
-              </Text>
-            )}
-          </Panel>
-        </Collapse>
         <Buttons>
           <ButtonWrapper>
             <Button
               size="large"
               type="primary"
               onClick={this.handleUpload}
-              disabled={!(fileList.length > 4)}
+              // disabled={!(fileList.length > 4)}
               loading={uploadingFiles}
             >
               {uploadNewModel ? 'Upload design' : 'Upload model'}
             </Button>
           </ButtonWrapper>
-          <ButtonWrapper>
-            <Upload
-              {...{ fileList }}
-              style={{ width: '100%' }}
-              beforeUpload={
-                uploadNewModel ? this.beforeUploadDesign : this.beforeUpload
-              }
-              onRemove={this.onRemove}
-            >
-              <Button size="large" type="primary">
-                <Icon type="upload" /> Select File
-              </Button>
-            </Upload>
-          </ButtonWrapper>
+          <ButtonWrapper>{fileButtons}</ButtonWrapper>
         </Buttons>
         <Footer>
           {uploadNewModel && (

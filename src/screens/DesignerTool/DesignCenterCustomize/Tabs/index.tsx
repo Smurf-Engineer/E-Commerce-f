@@ -34,6 +34,8 @@ interface Props {
   selectedTheme: number
   selectedStyle: number
   productCode: string
+  themeName: string
+  styleName: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -49,6 +51,8 @@ interface Props {
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
+  onUpdateThemeName: (name: string) => void
+  onUpdateStyleName: (name: string) => void
 }
 
 const Tabs = ({
@@ -77,7 +81,11 @@ const Tabs = ({
   onDeleteStyle,
   onSelectImage,
   onDeleteImage,
-  onUpdateProductCode
+  onUpdateProductCode,
+  themeName,
+  styleName,
+  onUpdateThemeName,
+  onUpdateStyleName
 }: Props) => {
   return (
     <Container>
@@ -100,7 +108,11 @@ const Tabs = ({
               onDeleteImage,
               onUpdateProductCode,
               productCode,
-              productData
+              productData,
+              themeName,
+              styleName,
+              onUpdateThemeName,
+              onUpdateStyleName
             }}
           />
         </TabPane>
