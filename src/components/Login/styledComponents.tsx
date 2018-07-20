@@ -30,6 +30,7 @@ export const StyledInput = styled(Input)`
 
 export const RememberMeRow = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
   height: 19px;
   color: #5f6062;

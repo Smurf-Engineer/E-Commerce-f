@@ -11,7 +11,7 @@ export default defineMessages({
   },
   forgotPassword: {
     id: 'components.login.forgotPassword',
-    defaultMessage: 'Forgot Password'
+    defaultMessage: 'Forgot Password?'
   },
   loginButtonLabel: {
     id: 'components.login.loginButtonLabel',
