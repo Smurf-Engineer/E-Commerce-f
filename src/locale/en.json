@@ -61,7 +61,7 @@
   "components.designCenterCustomize.ColorTab.color": "Color {name}",
   "components.login.title": "Log In",
   "components.login.rememberMe": "Remember Me",
-  "components.login.forgotPassword": "Forgot Password",
+  "components.login.forgotPassword": "Forgot Password?",
   "components.login.loginButtonLabel": "LOGIN",
   "components.login.notAMember": "Not a member?",
   "components.login.joinNow": "JOIN NOW",
