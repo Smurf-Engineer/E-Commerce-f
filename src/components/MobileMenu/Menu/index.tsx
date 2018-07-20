@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import MenuAntd from 'antd/lib/menu'
-import { Container, Bottom, menuStyle } from './styledComponents'
+import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 
@@ -134,7 +134,7 @@ class Menu extends React.PureComponent<Props, {}> {
         >
           {options}
         </MenuAntd>
-        <span onClick={this.handleOnSeeAll}>SEE ALL</span>
+        <SeeAll onClick={this.handleOnSeeAll}>SEE ALL</SeeAll>
         <Bottom>
           {loginButton}
           {regionButton}
