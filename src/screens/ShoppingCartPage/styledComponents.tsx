@@ -9,6 +9,10 @@ export const Container = styled.div`
   flex-direction: row-reverse;
   background-color: #fff;
   min-height: calc(100vh - 200px);
+
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
 `
 
 export const EmptyContainer = styled.div`
@@ -16,6 +20,13 @@ export const EmptyContainer = styled.div`
   height: 100vh;
   justify-content: center;
   background-color: #fff;
+`
+
+export const PageContent = styled.div`
+  background-color: #fff;
+  @media (max-width: 768px) {
+    padding-bottom: 40px;
+  }
 `
 
 export const EmptyItems = styled.div`
@@ -26,6 +37,10 @@ export const SideBar = styled.div`
   width: 20%;
   padding-left: 15px;
   padding-right: 20px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export const AddOneMoreMessage = styled.div`
@@ -78,6 +93,11 @@ export const OptionMenu = styled.div`
 export const Content = styled.div`
   width: 80%;
   padding-left: 36px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 0;
+  }
 `
 
 export const SummaryTitle = styled.div`
@@ -143,6 +163,13 @@ export const Title = styled.div`
   padding-left: 36px;
   padding-bottom: 36px;
   background-color: #fff;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 20px 0 41px 7px;
+  }
+  @media (min-width: 481px) and (max-width: 768px) {
+    padding-left: 15px;
+  }
 `
 
 export const ScreenTitle = styled.div`
@@ -226,7 +253,7 @@ export const CollapseWrapper = styled.div`
   }
 
   .ant-collapse-borderless .ant-collapse-item .ant-collapse-content {
-    padding: 0 0 0 0;
+    padding: 0;
   }
 `
 
