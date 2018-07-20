@@ -717,8 +717,9 @@
   "components.ProfileForm.firstName": "First Name",
   "components.ProfileForm.lastName": "Last Name",
   "components.ProfileForm.email": "E-mail",
-  "components.ProfileForm.phone": "Change Password",
+  "components.ProfileForm.phone": "Phone",
   "components.ProfileForm.save": "Save",
+  "components.ProfileForm.changePassword": "Change Password",
 
   "components.ProfileSettings.profileTitle": "Profile",
   "components.ProfileSettings.profileSuccessMessage":
