@@ -18,11 +18,22 @@ export const Row = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-bottom: 22px;
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 0;
+    flex-direction: column;
+  }
 `
 
 export const Column = styled.div`
   width: ${({ inputhWidth }: InputProps) =>
     inputhWidth ? inputhWidth : '400px'};
+
+  @media (max-width: 480px) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 `
 
 export const StyledInput = styled(Input)`
@@ -46,6 +57,12 @@ export const Label = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+`
+
+export const ShipTopPoAPO = Label.extend`
+  @media (max-width: 480px) {
+    display: none;
+  }
 `
 
 export const DropDownPlaceHolder = styled(Button)`

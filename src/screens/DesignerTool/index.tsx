@@ -23,6 +23,7 @@ interface Props {
   swipingView: boolean
   selectedTheme: number
   selectedStyle: number
+  productCode: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -37,6 +38,7 @@ interface Props {
   setSelectedStyleAction: (id: number) => void
   setDesignConfigAction: (config: DesignConfig) => void
   setInspirationColorAction: (index: number) => void
+  setProductCodeAction: (code: string) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -64,7 +66,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       setInspirationColorAction,
       designConfig,
       selectedTheme,
-      selectedStyle
+      selectedStyle,
+      setProductCodeAction,
+      productCode
     } = this.props
     const { themeImage } = this.state
     return (
@@ -79,7 +83,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           designConfig,
           themeImage,
           selectedTheme,
-          selectedStyle
+          selectedStyle,
+          productCode
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -97,6 +102,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onUploadDesign={uploadDesignAction}
         onSelectConfig={setDesignConfigAction}
         onSelectInspirationColor={setInspirationColorAction}
+        onUpdateProductCode={setProductCodeAction}
       />
     )
   }

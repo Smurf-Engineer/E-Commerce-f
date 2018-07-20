@@ -1,32 +1,38 @@
 import { ApolloClient } from 'apollo-client'
-import { split } from 'apollo-link'
-import { createUploadLink } from 'apollo-upload-client'
+import { split, ApolloLink } from 'apollo-link'
+import { createHttpLink } from 'apollo-link-http'
+import { onError } from 'apollo-link-error'
 import { WebSocketLink } from 'apollo-link-ws'
-import { setContext } from 'apollo-link-context'
 import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '../config'
 import fetch from 'node-fetch'
 
-const authLink = setContext((_, { headers }) => {
-  const user = JSON.parse(localStorage.getItem('user'))
-  const token = user ? user.token : ''
-  return {
-    headers: {
-      ...headers,
-      authorization: token ? `Bearer ${token}` : null
-    }
+/**
+ * https://github.com/apollographql/react-apollo/issues/1321
+ * Apollo current version doesn't use new variables after catch an error.
+ */
+const errorLink = onError(({ response, operation }) => {
+  if (operation.operationName === 'GetProductFromCode' && !!response) {
+    response.errors = null
   }
 })
 
+const authLink = new ApolloLink((operation, forward) => {
+  const user = JSON.parse(localStorage.getItem('user'))
+  const token = user ? user.token : ''
+  operation.setContext({
+    headers: { authorization: token ? `Bearer ${token}` : null }
+  })
+  return forward(operation)
+})
+
 const hasSubscriptionOperation = ({ query }) => {
-  return query.definitions.some(
-    (kind, operation) =>
-      kind === 'OperationDefinition' && operation === 'subscription'
-  )
+  const { kind, operation } = getMainDefinition(query)
+  return kind === 'OperationDefinition' && operation === 'subscription'
 }
 
-const uploadLink = createUploadLink({
+const httpLink = createHttpLink({
   uri: `${config.graphqlUriBase}graphql`,
   fetch
 })
@@ -40,16 +46,11 @@ const wsLink = process.browser
     })
   : null
 
+const apolloLink = ApolloLink.from([authLink, errorLink, httpLink])
+
 const link = process.browser
-  ? split(
-      ({ query }) => {
-        const { kind, operation } = getMainDefinition(query)
-        return kind === 'OperationDefinition' && operation === 'subscription'
-      },
-      wsLink,
-      authLink.concat(uploadLink)
-    )
-  : authLink.concat(uploadLink)
+  ? split(hasSubscriptionOperation, wsLink, apolloLink)
+  : apolloLink
 
 export const configureServerClient = () => {
   const client = new ApolloClient({

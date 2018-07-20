@@ -140,7 +140,8 @@ class MyAddresses extends React.PureComponent<Props, {}> {
               phone,
               hasError,
               selectDropdownAction,
-              inputChangeAction
+              inputChangeAction,
+              formatMessage
             }}
           />
           <div>
@@ -311,11 +312,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
 const mapStateToProps = (state: any) => state.get('addresses').toJS()
 
 const MyAddressesEnhance = compose(
-  graphql(addresesQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    }
-  }),
+  graphql(addresesQuery),
   withLoading,
   withError,
   addAddressMutation,

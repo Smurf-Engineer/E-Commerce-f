@@ -115,16 +115,12 @@ class OrderData extends React.Component<Props, {}> {
           <StyledImage src={iconPaypal} />
         )
 
-    let isThereTeamstoreProduct = false
+    const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
     const renderList = cart
       ? cart.map((cartItem, index) => {
         const priceRange = {
           quantity: '0',
           price: 0
-        }
-
-        if (!!cartItem.teamStoreId) {
-          isThereTeamstoreProduct = true
         }
 
         const itemImage = cartItem.designId
