@@ -7,6 +7,8 @@
   "components.menuBar.triathlon": "TRIATHLON",
   "components.menuBar.nordic": "NORDIC",
   "components.menuBar.active": "ACTIVE",
+  "components.menuBar.seeAll": "SEE ALL",
+  "components.menuBar.error": "Something went wrong",
   "components.menunBar.teamStoresTitle": "TEAM STORES",
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",

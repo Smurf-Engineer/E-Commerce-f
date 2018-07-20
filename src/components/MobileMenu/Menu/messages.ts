@@ -28,5 +28,13 @@ export default defineMessages({
   active: {
     id: 'components.menuBar.active',
     defaultMessage: 'ACTIVE'
+  },
+  seeAll: {
+    id: 'components.menuBar.seeAll',
+    defaultMessage: 'SEE ALL'
+  },
+  error: {
+    id: 'components.menuBar.error',
+    defaultMessage: 'Something went wrong'
   }
 })

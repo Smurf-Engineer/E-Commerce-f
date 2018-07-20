@@ -205,7 +205,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                   {...{
                     history,
                     designHasChanges,
-                    openWithoutSaveModalAction
+                    openWithoutSaveModalAction,
+                    formatMessage
                   }}
                   totalItems={itemsInCart}
                   loginButton={loggedUser}

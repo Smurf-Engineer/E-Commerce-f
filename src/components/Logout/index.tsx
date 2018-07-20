@@ -6,13 +6,13 @@ import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import toUpper from 'lodash/toUpper'
 import { FormattedMessage } from 'react-intl'
+import MediaQuery from 'react-responsive'
 import messages from './messages'
 import { Container, Text, menuStyle, Icon } from './styledComponents'
 import {
   SCREEN_LOCKER,
   PROFILE_SETTINGS
 } from '../../screens/Account/constants'
-import MediaQuery from 'react-responsive'
 
 interface Props {
   title: string
@@ -40,7 +40,7 @@ const Logout = ({ title, logout, goTo }: Props) => {
     }
   }
 
-  const handleOnGoToMyAccount = () => {
+  const goToMyAccount = () => {
     goTo('account')
   }
 
@@ -74,7 +74,7 @@ const Logout = ({ title, logout, goTo }: Props) => {
           return (
             <Container>
               <Icon type="user" />
-              <Text onClick={handleOnGoToMyAccount}>{toUpper(title)}</Text>
+              <Text onClick={goToMyAccount}>{toUpper(title)}</Text>
             </Container>
           )
         }

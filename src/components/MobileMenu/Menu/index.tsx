@@ -6,6 +6,7 @@ import MenuAntd from 'antd/lib/menu'
 import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
+import Spin from 'antd/lib/spin'
 
 const { SubMenu } = MenuAntd
 
@@ -27,6 +28,7 @@ interface Props {
   loginButton: React.ReactNode
   regionButton: React.ReactNode
   menuOpen: boolean
+  formatMessage: (messageDescriptor: any) => string
 }
 
 class Menu extends React.PureComponent<Props, {}> {
@@ -63,15 +65,20 @@ class Menu extends React.PureComponent<Props, {}> {
     const {
       data: { loading, error, categories, sports },
       loginButton,
-      regionButton
+      regionButton,
+      formatMessage
     } = this.props
 
     if (loading) {
-      return <div>Loading</div>
+      return (
+        <div>
+          <Spin />
+        </div>
+      )
     }
 
     if (error) {
-      return <div>Something went wrong</div>
+      return <div>{formatMessage(messages.error)}</div>
     }
 
     const optionsGender = menuOptionsGenders.map(
@@ -134,7 +141,9 @@ class Menu extends React.PureComponent<Props, {}> {
         >
           {options}
         </MenuAntd>
-        <SeeAll onClick={this.handleOnSeeAll}>SEE ALL</SeeAll>
+        <SeeAll onClick={this.handleOnSeeAll}>
+          {formatMessage(messages.seeAll)}
+        </SeeAll>
         <Bottom>
           {loginButton}
           {regionButton}
