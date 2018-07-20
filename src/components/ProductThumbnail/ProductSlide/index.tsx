@@ -98,7 +98,7 @@ const ProductSlide = ({
       <Page key={index}>
         {!!images && (
           <a href={urlProduct}>
-            <Image src={images[key]} onClick={onPressThumbnail} />{' '}
+            <Image src={images[key]} onClick={onPressThumbnail} />
           </a>
         )}
       </Page>
