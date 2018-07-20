@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
@@ -12,6 +12,10 @@ import Menu from 'antd/lib/menu'
 import Icon from 'antd/lib/icon'
 import queryString from 'query-string'
 import * as accountActions from './actions'
+import {
+  logoutAction,
+  openQuickViewAction
+} from '../../components/MainLayout/actions'
 import messages from './messages'
 import {
   options,
@@ -25,7 +29,6 @@ import {
   OVERVIEW
 } from './constants'
 import Layout from '../../components/MainLayout'
-import { openQuickViewAction } from '../../components/MainLayout/actions'
 import Overview from '../../components/Overview'
 import OrderHistory from '../../components/OrderHistory'
 import MyAddresses from '../../components/MyAddresses'
@@ -56,7 +59,9 @@ interface Props extends RouteComponentProps<any> {
   isMobile: boolean
   fakeWidth: number
   openSidebar: boolean
+  client: any
   // Redux actions
+  logoutAction: () => void
   setOpenKeysAction: (keys: string[]) => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
@@ -124,6 +129,16 @@ export class Account extends React.Component<Props, {}> {
     openSidebarMobile(!openSidebar)
   }
 
+  onLogout = () => {
+    const {
+      logoutAction: logout,
+      client: { cache }
+    } = this.props
+    cache.reset()
+    logout()
+    window.location.replace('/')
+  }
+
   getScreenComponent = (screen: string) => {
     const {
       isMobile,
@@ -189,6 +204,12 @@ export class Account extends React.Component<Props, {}> {
         )
     )
 
+    const logoutButton = (
+      <OptionMenu onClick={this.onLogout}>
+        {intl.formatMessage(messages.logout)}
+      </OptionMenu>
+    )
+
     const sidebarFilters = (
       <DrawerSidebar>
         <FiltersTitle showChildren={openSidebar} color={'#e61737'}>
@@ -206,6 +227,7 @@ export class Account extends React.Component<Props, {}> {
         >
           {menuOptions}
         </Menu>
+        {logoutButton}
       </DrawerSidebar>
     )
 
@@ -268,6 +290,7 @@ export class Account extends React.Component<Props, {}> {
                     >
                       {menuOptions}
                     </Menu>
+                    {logoutButton}
                   </SideBar>
                   <Content>
                     <ScreenTitle>
@@ -296,10 +319,11 @@ const mapStateToProps = (state: any) => {
 }
 
 const AccountEnhance = compose(
+  withApollo,
   injectIntl,
   connect(
     mapStateToProps,
-    { ...accountActions, openQuickViewAction }
+    { ...accountActions, openQuickViewAction, logoutAction }
   )
 )(Account)
 

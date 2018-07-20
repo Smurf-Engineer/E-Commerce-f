@@ -745,6 +745,7 @@
   "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",
   "screens.TemplateDownload.errorTitle": "Oops!",
   "screens.TemplateDownload.errorMessage": "Something went wrong",
+  "screens.TemplateDownload.emptyMessage": "No templates available",
 
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
 
