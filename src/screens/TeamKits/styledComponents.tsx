@@ -92,6 +92,9 @@ export const SectionText = styled.div`
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 50px 0 0;
   }
+  @media (min-width: 1024px) {
+    flex: 1;
+  }
 `
 export const ImageTitleContainer = styled.div`
   position: relative;
@@ -113,6 +116,9 @@ export const DesignImage = styled.img`
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
+  }
+  @media (min-width: 1024px) {
+    flex: 1;
   }
 `
 

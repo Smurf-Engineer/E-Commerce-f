@@ -12,6 +12,7 @@ import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
 import messages from './messages'
 import {
+  PageContent,
   Container,
   SideBar,
   Content,
@@ -283,7 +284,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
     return (
       <Layout {...{ history, intl }}>
-        <div>
+        <PageContent>
           <Title>
             {`${formatMessage(messages.title)} (${numberOfProducts})`}
           </Title>
@@ -348,7 +349,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               />
             </DeleteConfirmMessage>
           </Modal>
-        </div>
+        </PageContent>
       </Layout>
     )
   }
