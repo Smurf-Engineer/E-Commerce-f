@@ -83,7 +83,6 @@ const headerTitles: Header[] = [
   { message: 'gender' },
   { message: 'size' },
   { message: 'fit' },
-  // { message: '' },
   { message: 'quantity' },
   { message: '', width: 10 }
 ]
