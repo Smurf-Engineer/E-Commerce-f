@@ -52,12 +52,14 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   openKeys: string[]
   screen: string
+  defaultScreen: string
   isMobile: boolean
   fakeWidth: number
   openSidebar: boolean
   // Redux actions
   setOpenKeysAction: (keys: string[]) => void
-  setCurrentScreenAction: (screen: string, openCreations?: boolean) => void
+  setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
+  setCurrentScreenAction: (screen: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
   setIsMobileAction: (isMobile: boolean) => void
@@ -73,19 +75,19 @@ export class Account extends React.Component<Props, {}> {
   componentWillMount() {
     const {
       location: { search },
-      setCurrentScreenAction
+      setDefaultScreenAction
     } = this.props
     const queryParams = queryString.parse(search)
     const { option } = queryParams
     if (option) {
       if (option === SCREEN_LOCKER || option === MY_FILES) {
-        setCurrentScreenAction(option, true)
+        setDefaultScreenAction(option, true)
         return
       }
-      setCurrentScreenAction(option)
+      setDefaultScreenAction(option)
       return
     }
-    setCurrentScreenAction(OVERVIEW)
+    setDefaultScreenAction(OVERVIEW)
   }
 
   componentDidMount() {
@@ -160,6 +162,7 @@ export class Account extends React.Component<Props, {}> {
       history,
       openKeys,
       screen,
+      defaultScreen,
       fakeWidth,
       openSidebar
     } = this.props
@@ -193,11 +196,13 @@ export class Account extends React.Component<Props, {}> {
           <Icon type="down" style={{ color: '#e61737' }} />
         </FiltersTitle>
         <Menu
-          {...{ openKeys }}
+          defaultSelectedKeys={[defaultScreen]}
+          selectedKeys={[screen]}
           mode="inline"
           onSelect={this.handleOnSelectItem}
           onOpenChange={this.handleOnSelectedKeys}
           style={menuDeviceStyle}
+          {...{ openKeys }}
         >
           {menuOptions}
         </Menu>
@@ -253,11 +258,13 @@ export class Account extends React.Component<Props, {}> {
                       <FormattedMessage {...messages.title} />
                     </Title>
                     <Menu
-                      {...{ openKeys }}
+                      defaultSelectedKeys={[defaultScreen]}
+                      selectedKeys={[screen]}
                       mode="inline"
                       onSelect={this.handleOnSelectItem}
                       onOpenChange={this.handleOnSelectedKeys}
                       style={menuStyle}
+                      {...{ openKeys }}
                     >
                       {menuOptions}
                     </Menu>
