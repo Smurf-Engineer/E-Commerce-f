@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import findIndex from 'lodash/findIndex'
+import MediaQuery from 'react-responsive'
 import {
   Container,
   Image,
@@ -204,67 +205,100 @@ class CartListItem extends React.Component<Props, {}> {
       ? this.getNextPrice(productPriceRanges, quantitySum)
       : { items: 0, price: 0 }
 
+    const table = (
+      <CartListItemTable
+        {...{
+          onlyRead,
+          cartItem,
+          formatMessage,
+          handledeleteItemDetail,
+          itemIndex,
+          setLabelItemDetail,
+          setDetailQuantity,
+          setDetailFit,
+          setDetailGender,
+          setDetailSize
+        }}
+      />
+    )
+
+    const footer = (
+      <FooterItem>
+        <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
+          {formatMessage(messages.addMore)}
+        </AddMore>
+        <DeleteItem onClick={e => removeItem(e, itemIndex)}>
+          {formatMessage(messages.delete)}
+        </DeleteItem>
+      </FooterItem>
+    )
+
+    const itemDetailsHeader = (
+      <ItemDetailsHeader>
+        <NameContainer>
+          <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
+          <ItemDetailsHeaderNameDetail>
+            {description}
+          </ItemDetailsHeaderNameDetail>
+        </NameContainer>
+        <PriceContainer>
+          <ItemDetailsHeaderPrice>{`$${total || 0}`}</ItemDetailsHeaderPrice>
+          <ItemDetailsHeaderPriceDetail>
+            {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
+          </ItemDetailsHeaderPriceDetail>
+          {!onlyRead && nextPrice.items > 0 ? (
+            <ItemDetailsHeaderPriceDetail>
+              <FormattedMessage
+                {...messages.addMoreFor}
+                values={{
+                  price: nextPrice.price,
+                  products: nextPrice.items
+                }}
+              />
+            </ItemDetailsHeaderPriceDetail>
+          ) : (
+            <HeaderPriceDetailEmpty />
+          )}
+        </PriceContainer>
+      </ItemDetailsHeader>
+    )
+
+    const renderView = (
+      <MediaQuery minWidth={'481px'}>
+        {matches => {
+          if (matches) {
+            return (
+              <Container>
+                <Image src={image} />
+                <ItemDetails>
+                  {itemDetailsHeader}
+                  {table}
+                  {!onlyRead && footer}
+                </ItemDetails>
+              </Container>
+            )
+          } else {
+            return (
+              <Container>
+                <ItemDetails>
+                  <Image src={image} />
+                  <ItemDetails>{itemDetailsHeader}</ItemDetails>
+                </ItemDetails>
+                <div>
+                  {table}
+                  {!onlyRead && footer}
+                </div>
+              </Container>
+            )
+          }
+        }}
+      </MediaQuery>
+    )
     return (
-      <ItemDetails>
-        <Container>
-          <Image src={image} />
-          <ItemDetails>
-            <ItemDetailsHeader>
-              <NameContainer>
-                <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
-                <ItemDetailsHeaderNameDetail>
-                  {description}
-                </ItemDetailsHeaderNameDetail>
-              </NameContainer>
-              <PriceContainer>
-                <ItemDetailsHeaderPrice>{`$${total ||
-                  0}`}</ItemDetailsHeaderPrice>
-                <ItemDetailsHeaderPriceDetail>
-                  {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
-                </ItemDetailsHeaderPriceDetail>
-                {!onlyRead && nextPrice.items > 0 ? (
-                  <ItemDetailsHeaderPriceDetail>
-                    <FormattedMessage
-                      {...messages.addMoreFor}
-                      values={{
-                        price: nextPrice.price,
-                        products: nextPrice.items
-                      }}
-                    />
-                  </ItemDetailsHeaderPriceDetail>
-                ) : (
-                  <HeaderPriceDetailEmpty />
-                )}
-              </PriceContainer>
-            </ItemDetailsHeader>
-            <CartListItemTable
-              {...{
-                onlyRead,
-                cartItem,
-                formatMessage,
-                handledeleteItemDetail,
-                itemIndex,
-                setLabelItemDetail,
-                setDetailQuantity,
-                setDetailFit,
-                setDetailGender,
-                setDetailSize
-              }}
-            />
-            {!onlyRead ? (
-              <FooterItem>
-                <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
-                  {formatMessage(messages.addMore)}
-                </AddMore>
-                <DeleteItem onClick={e => removeItem(e, itemIndex)}>
-                  {formatMessage(messages.delete)}
-                </DeleteItem>
-              </FooterItem>
-            ) : null}
-          </ItemDetails>
-        </Container>
+      <div>
+        {renderView}
         <BottomDivider />
-      </ItemDetails>
+      </div>
     )
   }
 }

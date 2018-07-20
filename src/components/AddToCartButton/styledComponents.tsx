@@ -31,7 +31,6 @@ export const ButtonContainer = styled.div`
   display: flex !important;
   position: ${({ myLockerList }: ButtonContainerProps) =>
     myLockerList ? 'relative' : 'absolute'};
-  width: 200px;
   justify-content: center;
   top: ${({ withoutTop, myLockerList }: ButtonContainerProps) => {
     if (myLockerList) {
@@ -53,4 +52,11 @@ export const CustomizeButton = styled.div`
   align-items: center;
   border-radius: 2px;
   padding: 6px 16px;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    background-color: #fff;
+    color: #e61737;
+    border: 1px solid #e61737;
+    width: 100%;
+  }
 `

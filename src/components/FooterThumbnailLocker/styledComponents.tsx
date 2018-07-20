@@ -46,6 +46,7 @@ export const Bottom = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 8px;
 `
 
 export const Label = styled.div`
