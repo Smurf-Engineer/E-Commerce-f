@@ -24,5 +24,9 @@ export default defineMessages({
   errorMessage: {
     id: 'screens.TemplateDownload.errorMessage',
     defaultMessage: 'Something went wrong'
+  },
+  emptyMessage: {
+    id: 'screens.TemplateDownload.emptyMessage',
+    defaultMessage: 'No templates available'
   }
 })
