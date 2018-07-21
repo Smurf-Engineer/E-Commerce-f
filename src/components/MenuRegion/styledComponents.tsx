@@ -3,10 +3,6 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div`
-  background-color: #222;
-`
-
 export const Regions = styled.div`
   display: flex;
   width: 68px;
@@ -14,6 +10,10 @@ export const Regions = styled.div`
   align-items: center;
   flex-direction: row;
   cursor: pointer;
+
+  @media (max-width: 991px) {
+    height: 40px;
+  }
 `
 
 export const TopText = styled.div`

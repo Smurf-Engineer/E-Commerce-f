@@ -8,8 +8,10 @@ import { MobileMenu } from './index'
 describe('<MobileMenu />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const formatMessage = () => ''
     ReactDOM.render(
       <MobileMenu
+        {...{ formatMessage }}
         history={{}}
         data={{} as any}
         loginButton={null}

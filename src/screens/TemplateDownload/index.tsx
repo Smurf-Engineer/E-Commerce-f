@@ -12,7 +12,9 @@ import {
   TemplatesList,
   LoadingContainer,
   TitleError,
-  Message
+  Message,
+  EmptyContainer,
+  EmptyMessage
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Spin from 'antd/lib/spin'
@@ -66,11 +68,18 @@ export class TemplateDownload extends React.Component<Props, {}> {
         />
       )
     )
+    const content = templates.length ? (
+      <TemplatesList>{templatesList}</TemplatesList>
+    ) : (
+      <EmptyContainer>
+        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
+      </EmptyContainer>
+    )
     return (
       <Layout {...{ intl, history }}>
         <Container>
           <Title>{formatMessage(messages.title)}</Title>
-          <TemplatesList>{templatesList}</TemplatesList>
+          {content}
         </Container>
       </Layout>
     )

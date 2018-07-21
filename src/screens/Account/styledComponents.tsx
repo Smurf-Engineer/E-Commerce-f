@@ -23,6 +23,7 @@ export const OptionMenu = styled.div`
   font-weight: 600;
   line-height: 22px;
   padding-top: 8px;
+  cursor: pointer;
 `
 
 interface ContentProps {
