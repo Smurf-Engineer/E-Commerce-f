@@ -27,12 +27,6 @@ export const setInitialData = () => {
             continue
           }
           const indexOfSameProduct = findIndex(cartList, cartItem => {
-            console.log(cartItem.designId, 'iterate')
-            console.log(item.designId, 'item')
-            console.log(
-              cartItem.product.id === item.product.id &&
-                item.designId === cartItem.designId
-            )
             return (
               cartItem.product.id === item.product.id &&
               item.designId === cartItem.designId
