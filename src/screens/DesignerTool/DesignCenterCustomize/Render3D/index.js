@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
+import reverse from 'lodash/reverse'
 import findIndex from 'lodash/findIndex'
-import Button from 'antd/lib/button'
 import message from 'antd/lib/message'
 import { modelPositions } from './config'
 import { Container, Render, Progress, Logo } from './styledComponents'
@@ -132,8 +132,8 @@ class Render3D extends PureComponent {
           './models/images/flatlock.png'
         )
         loadedTextures.bumpMap = this.imgLoader.load(modelTextures.bumpMap)
-
-        const loadedAreas = modelTextures.areas.map(areaUri => {
+        const reversedAreas = reverse(modelTextures.areas)
+        const loadedAreas = reversedAreas.map(areaUri => {
           const areaTexture = this.imgLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
@@ -177,6 +177,10 @@ class Render3D extends PureComponent {
   loadObject = async files => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
+
+    console.log('------------------------------------')
+    console.log(files)
+    console.log('------------------------------------')
 
     /* Texture configuration */
     const loadedTextures = await this.loadTextures(files)

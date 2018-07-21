@@ -2,125 +2,104 @@
  * UploadTab Component - Created by david on 08/05/18.
  */
 import * as React from 'react'
-import Upload from 'antd/lib/upload'
 import Button from 'antd/lib/button'
+import Upload from 'antd/lib/upload'
 import Icon from 'antd/lib/icon'
-import Collapse from 'antd/lib/collapse'
 import message from 'antd/lib/message'
-import {
-  Container,
-  Text,
-  Buttons,
-  ButtonWrapper,
-  Footer,
-  ButtonUpload
-} from './styledComponents'
-import { DesignConfig } from '../../../../types/common'
+import omit from 'lodash/omit'
+import UploadButton from '../../../../components/UploadButton'
+import { Container, Buttons, ButtonWrapper, Footer } from './styledComponents'
+import { DesignConfig, UploadFile } from '../../../../types/common'
+import { File, filesInfo, TOTAL_OF_FILES, MINIMUM_OF_AREAS } from './config'
 
-const enum Extension {
-  Obj = 'obj',
-  Mtl = 'mtl',
-  Jpg = 'jpg',
-  Png = 'png',
-  Config = 'application/json',
-  Svg = 'image/svg+xml'
-}
-
-const enum File {
-  Obj = 'obj',
-  Mtl = 'mtl',
-  BumpMap = 'bumpMap',
-  Config = 'config',
-  Flatlock = 'flatlock',
-  Label = 'label',
-  Branding = 'branding'
-}
-
-const filesInfo = {
-  obj: 'OBJ File',
-  mtl: 'MTL File',
-  bumpMap: 'BumpMap',
-  config: 'Config JSON',
-  flatlock: 'Flatlock',
-  label: 'Label',
-  branding: 'Branding'
-}
+const { Dragger } = Upload
 
 interface Props {
-  onSelectConfig: (config: DesignConfig) => void
-  onUploadFiles: (files: any) => void
-  onUploadDesign: (files: any) => void
-  uploadNewModel: boolean
   uploadingFiles: boolean
+  uploadNewModel: boolean
+  onSelectConfig: (config: DesignConfig) => void
+  onUploadFiles: (files: any, areas: any) => void
+  onUploadDesign: (files: any) => void
+}
+
+type FileType = {
+  [extraProp: string]: UploadFile
+}
+
+interface State {
+  areas: UploadFile[]
+  files: FileType
 }
 
 const getFileExtension = (filename: string) =>
   filename.replace(/.*?(?:\.(\w+))?$/, '$1').toLowerCase()
 
-class UploadTab extends React.PureComponent<Props, {}> {
+class UploadTab extends React.PureComponent<Props, State> {
   state = {
-    fileList: [],
+    areas: [],
     files: {}
   }
 
   handleUpload = () => {
-    const { fileList } = this.state
+    const { files, areas } = this.state
     const { onUploadFiles, uploadNewModel, onUploadDesign } = this.props
 
     if (uploadNewModel) {
-      onUploadDesign(fileList)
+      onUploadDesign(files)
     } else {
-      onUploadFiles(fileList)
+      onUploadFiles(files, areas)
     }
 
-    this.setState({ fileList: [] })
+    this.setState({ areas: [] })
   }
 
-  beforeUpload = (key: string) => (file: any) => {
-    const reader = new FileReader()
-    const { fileList: list, files } = this.state
-    const extension = getFileExtension(file.name) || ''
+  beforeUpload = (fileName: string, file: any, extension: string) => {
+    const { type, name } = file
+    const selectedFileExtension = type || getFileExtension(name)
 
-    if (key === File.Obj && extension !== Extension.Obj) {
-      message.error('Please select a valid OBJ file')
-      return false
-    }
-
-    if (key === File.Mtl && extension !== Extension.Mtl) {
-      message.error('Please select a valid MTL file')
-      return false
-    }
-
-    if (key === File.Config) {
-      if (file.type !== Extension.Config) {
-        message.error('Please select a valid JSON file')
-        return false
-      } else {
-        try {
-          const { onSelectConfig } = this.props
-          reader.onload = (e: Event) => {
+    if (selectedFileExtension !== extension) {
+      message.error(`Please select a valid ${extension} file`)
+    } else {
+      if (fileName === File.Config) {
+        const reader = new FileReader()
+        const { onSelectConfig } = this.props
+        reader.onload = () => {
+          try {
             const obj = JSON.parse(reader.result) || {}
             onSelectConfig(obj)
+          } catch (error) {
+            message.error('Please select a valid JSON file')
+            return
           }
-          reader.readAsText(file)
-        } catch (error) {
-          message.error('Please select a valid JSON file')
-          return false
         }
       }
-    }
 
-    if (file.type !== Extension.Svg) {
-      message.error('Please select a valid SVG file')
-      return false
+      this.setState(({ files }) => {
+        const updatedFiles = Object.assign({ [fileName]: file }, files)
+        return { files: updatedFiles }
+      })
     }
+  }
 
-    files[key] = file
+  beforeUploadAreas = (file: any) => {
+    this.setState(({ areas }) => ({ areas: [...areas, file] }))
+
     return false
   }
 
+  onRemoveArea = (file: UploadFile) => {
+    this.setState(({ areas }) => {
+      const index = areas.indexOf(file)
+      const newFileList = areas.slice()
+      newFileList.splice(index, 1)
+      return {
+        areas: newFileList
+      }
+    })
+  }
+
   beforeUploadDesign = (file: any) => {
-    const { fileList: list } = this.state
+    const { areas: list } = this.state
 
     if (list.length === 0 && file.type !== 'application/json') {
       message.error('Please select a valid JSON file')
@@ -132,48 +111,38 @@ class UploadTab extends React.PureComponent<Props, {}> {
       return false
     }
 
-    this.setState(({ fileList }: any) => ({ fileList: [...fileList, file] }))
+    // this.setState(({ areas }) => ({ areas: [...areas, areas] }))
     return false
   }
 
-  onRemove = (key: string) => (file: any) => {
-    this.setState(({ fileList }: any) => {
-      const index = fileList.indexOf(file)
-      const newFileList = fileList.slice()
-      newFileList.splice(index, 1)
-      return {
-        fileList: newFileList
-      }
+  handleOnRemove = (fileName: string) => {
+    this.setState(({ files }) => {
+      const updatedFiles = omit(files, fileName)
+      return { files: updatedFiles }
     })
   }
 
   handleReset = () => window.location.replace('/designer-tool')
 
   render() {
-    const { files } = this.state
+    const { files, areas } = this.state
     const { uploadingFiles, uploadNewModel } = this.props
 
-    const fileNames = Object.keys(filesInfo)
-    const fileButtons = fileNames.map((file, index) => {
-      const hasFile = !!files[file]
+    const filesCount = Object.keys(files).length
+    const uploadDisabled =
+      filesCount < TOTAL_OF_FILES || areas.length < MINIMUM_OF_AREAS
+    const fileButtons = filesInfo.map(({ file, label, extension }, index) => {
+      const currentFile = files[file]
       return (
-        <Upload
+        <UploadButton
           key={index}
-          style={{ width: '100%' }}
-          beforeUpload={this.beforeUpload(file)}
-          onRemove={this.onRemove(file)}
-        >
-          <ButtonUpload>
-            <Icon
-              style={{
-                color: hasFile ? '#49BC19' : '#5F6062',
-                paddingRight: 16
-              }}
-              type={hasFile ? 'check-circle' : 'upload'}
-            />
-            {filesInfo[file]}
-          </ButtonUpload>
-        </Upload>
+          fileName={file}
+          {...{ extension, index }}
+          hasFile={!!currentFile}
+          onSelectFile={this.beforeUpload}
+          onRemoveFile={this.handleOnRemove}
+          label={!!currentFile ? currentFile.name : label}
+        />
       )
     })
 
@@ -185,21 +154,34 @@ class UploadTab extends React.PureComponent<Props, {}> {
               size="large"
               type="primary"
               onClick={this.handleUpload}
-              // disabled={!(fileList.length > 4)}
+              disabled={uploadDisabled}
               loading={uploadingFiles}
             >
               {uploadNewModel ? 'Upload design' : 'Upload model'}
             </Button>
           </ButtonWrapper>
           <ButtonWrapper>{fileButtons}</ButtonWrapper>
+          <Dragger
+            multiple={true}
+            beforeUpload={this.beforeUploadAreas}
+            fileList={areas}
+            onRemove={this.onRemoveArea}
+          >
+            <p className="ant-upload-drag-icon">
+              <Icon type="upload" />
+            </p>
+            <p className="ant-upload-hint">
+              You can drag or select multiples SVG files, named as colorblock_n.
+            </p>
+          </Dragger>
         </Buttons>
         <Footer>
           {uploadNewModel && (
             <ButtonWrapper>
               <Button
+                ghost={true}
                 size="large"
                 type="primary"
-                ghost={true}
                 onClick={this.handleReset}
               >
                 Upload new model

@@ -46,7 +46,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
-  onUploadFiles: (files: any) => void
+  onUploadFiles: (files: any, areas: any) => void
   onUploadDesign: (files: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void

@@ -31,7 +31,7 @@ interface Props {
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
-  uploadFilesAction: (files: any) => void
+  uploadFilesAction: (files: any, areas: any) => void
   uploadDesignAction: (files: any) => void
   setUploadingAction: (loading: boolean) => void
   setCurrentTabAction: (index: number) => void
