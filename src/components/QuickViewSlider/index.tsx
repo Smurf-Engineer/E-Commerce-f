@@ -10,7 +10,6 @@ import {
   Container,
   StyledButton,
   ButtonRow,
-  Available,
   SliderPage,
   StyledImage,
   Arrows,
@@ -38,7 +37,6 @@ class QuickViewSlider extends React.Component<Props, State> {
     const {
       gotoCustomize,
       productImages,
-      available,
       isRetail,
       hideSliderButtons
     } = this.props
@@ -75,14 +73,7 @@ class QuickViewSlider extends React.Component<Props, State> {
           <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
           <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
         </Arrows>
-        {!hideSliderButtons && (
-          <ButtonRow>
-            {renderButton}
-            {!isRetail && (
-              <Available>{`${available} Collections Available`}</Available>
-            )}
-          </ButtonRow>
-        )}
+        {!hideSliderButtons && <ButtonRow>{renderButton}</ButtonRow>}
       </Container>
     )
   }
