@@ -15,14 +15,21 @@ import {
 interface Props {
   label: string
   id: string
+  extraMargin?: string
   formatMessage: (messageDescriptor: any) => string
   onGoTo: (screen: string) => void
 }
 
-const OverviewHeader = ({ label, formatMessage, id, onGoTo }: Props) => {
+const OverviewHeader = ({
+  label,
+  formatMessage,
+  id,
+  onGoTo,
+  extraMargin
+}: Props) => {
   const handleOnGoTo = () => onGoTo(id)
   return (
-    <Container>
+    <Container {...{ extraMargin }}>
       <Content>
         <Label>{label}</Label>
         <ViewContainer onClick={handleOnGoTo}>
