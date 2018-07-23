@@ -60,9 +60,10 @@ export const EmptyContainer = styled.div`
 `
 
 export const EmptyMessage = styled.div`
-  color: #5f6062;
+  color: #bebebe;
   font-family: 'Avenir Next';
   font-size: 16px;
-  font-weight: 600;
   line-height: 22px;
+  letter-spacing: 0.11px;
+  text-align: center;
 `
