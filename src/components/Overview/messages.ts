@@ -22,7 +22,7 @@ export default defineMessages({
     defaultMessage: 'Payment Methods'
   },
   emptyAddress: {
-    id: 'components.Overview.payment',
+    id: 'components.Overview.emptyAddress',
     defaultMessage: 'No addresses added'
   },
   emptyPayment: {
