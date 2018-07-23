@@ -28,6 +28,7 @@ export const Icon = styled(icon)`
   color: #5f6062;
   margin-right: 4px;
   font-size: 15px;
+  font-weight: 600;
 `
 
 export const menuStyle = {

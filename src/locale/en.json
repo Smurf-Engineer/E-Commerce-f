@@ -873,6 +873,7 @@
   "components.Overview.title": "Recent Orders",
   "components.Overview.profile": "Profile",
   "components.Overview.addresses": "Addresses",
-  "components.Overview.payment": "No addresses added",
+  "components.Overview.payment": "Payment Methods",
+  "components.Overview.emptyAddress": "No addresses added",
   "components.Overview.emptyPayment": "No cards added"
 }
