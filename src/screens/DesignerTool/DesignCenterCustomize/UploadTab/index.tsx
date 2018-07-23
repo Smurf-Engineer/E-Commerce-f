@@ -112,7 +112,7 @@ class UploadTab extends React.PureComponent<Props, State> {
       return false
     }
 
-    // this.setState(({ areas }) => ({ areas: [...areas, areas] }))
+    this.setState(({ areas }) => ({ areas: [...areas, areas] }))
     return false
   }
 
