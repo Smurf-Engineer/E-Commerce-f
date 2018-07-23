@@ -26,7 +26,7 @@ export default defineMessages({
     defaultMessage: 'Save'
   },
   changePassword: {
-    id: 'components.ProfileForm.phone',
+    id: 'components.ProfileForm.changePassword',
     defaultMessage: 'Change Password'
   }
 })

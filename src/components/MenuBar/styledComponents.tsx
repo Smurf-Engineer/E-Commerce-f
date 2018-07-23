@@ -27,6 +27,13 @@ export const TopText = styled.div`
   color: #5f6062;
   font-size: 14px;
   cursor: pointer;
+
+  @media (max-width: 991px) {
+    height: 40px;
+    margin: 2px 0;
+    display: flex;
+    align-items: center;
+  }
 `
 
 export const BottomRow = styled.div`

@@ -21,6 +21,7 @@ interface Props {
   history: any
   loginButton: React.ReactNode
   regionButton: React.ReactNode
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export class MobileMenu extends React.PureComponent<Props, {}> {
@@ -33,14 +34,20 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
   handleVisibleChange = (visible: boolean) => this.setState({ visible })
 
   render() {
-    const { data, history, loginButton, regionButton } = this.props
+    const {
+      data,
+      history,
+      loginButton,
+      regionButton,
+      formatMessage
+    } = this.props
     const { visible } = this.state
     return (
       <Popover
         overlayStyle={overStyle}
         content={
           <Menu
-            {...{ data, history, loginButton, regionButton }}
+            {...{ data, history, loginButton, regionButton, formatMessage }}
             menuOpen={visible}
           />
         }

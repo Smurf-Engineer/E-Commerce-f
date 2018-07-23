@@ -14,9 +14,11 @@ describe('<Menu />', () => {
       categories: [],
       sports: []
     }
+    const formatMessage = () => ''
     ReactDOM.render(
       <IntlProvider {...props}>
         <Menu
+          {...{ formatMessage }}
           history={{}}
           loginButton={null}
           menuOpen={false}

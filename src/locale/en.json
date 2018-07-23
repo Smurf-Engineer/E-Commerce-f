@@ -7,6 +7,8 @@
   "components.menuBar.triathlon": "TRIATHLON",
   "components.menuBar.nordic": "NORDIC",
   "components.menuBar.active": "ACTIVE",
+  "components.menuBar.seeAll": "SEE ALL",
+  "components.menuBar.error": "Something went wrong",
   "components.menunBar.teamStoresTitle": "TEAM STORES",
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",
@@ -715,8 +717,9 @@
   "components.ProfileForm.firstName": "First Name",
   "components.ProfileForm.lastName": "Last Name",
   "components.ProfileForm.email": "E-mail",
-  "components.ProfileForm.phone": "Change Password",
+  "components.ProfileForm.phone": "Phone",
   "components.ProfileForm.save": "Save",
+  "components.ProfileForm.changePassword": "Change Password",
 
   "components.ProfileSettings.profileTitle": "Profile",
   "components.ProfileSettings.profileSuccessMessage":
@@ -745,6 +748,7 @@
   "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",
   "screens.TemplateDownload.errorTitle": "Oops!",
   "screens.TemplateDownload.errorMessage": "Something went wrong",
+  "screens.TemplateDownload.emptyMessage": "No templates available",
 
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
 

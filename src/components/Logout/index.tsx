@@ -6,8 +6,9 @@ import Dropdown from 'antd/lib/dropdown'
 import Menu from 'antd/lib/menu'
 import toUpper from 'lodash/toUpper'
 import { FormattedMessage } from 'react-intl'
+import MediaQuery from 'react-responsive'
 import messages from './messages'
-import { Text, menuStyle } from './styledComponents'
+import { Container, Text, menuStyle, Icon } from './styledComponents'
 import {
   SCREEN_LOCKER,
   PROFILE_SETTINGS
@@ -39,6 +40,10 @@ const Logout = ({ title, logout, goTo }: Props) => {
     }
   }
 
+  const goToMyAccount = () => {
+    goTo('account')
+  }
+
   const logoutMenu = (
     <Menu onClick={handleOnClick} style={menuStyle}>
       <Menu.Item key="locker">
@@ -57,9 +62,24 @@ const Logout = ({ title, logout, goTo }: Props) => {
   )
 
   return (
-    <Dropdown overlay={logoutMenu}>
-      <Text>{toUpper(title)}</Text>
-    </Dropdown>
+    <MediaQuery minWidth={992}>
+      {matches => {
+        if (matches) {
+          return (
+            <Dropdown overlay={logoutMenu}>
+              <Text>{toUpper(title)}</Text>
+            </Dropdown>
+          )
+        } else {
+          return (
+            <Container>
+              <Icon type="user" />
+              <Text onClick={goToMyAccount}>{toUpper(title)}</Text>
+            </Container>
+          )
+        }
+      }}
+    </MediaQuery>
   )
 }
 
