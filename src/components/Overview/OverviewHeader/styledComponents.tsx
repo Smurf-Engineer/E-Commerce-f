@@ -3,8 +3,13 @@
  */
 import styled from 'styled-components'
 
+export interface ContainerProps {
+  extraMargin?: string
+}
+
 export const Container = styled.div`
-  margin-bottom: 12px;
+  margin-bottom: ${({ extraMargin }: ContainerProps) =>
+    extraMargin ? extraMargin : '12px'};
   width: 100%;
 
   @media (max-width: 768px) and (min-width: 320px) {

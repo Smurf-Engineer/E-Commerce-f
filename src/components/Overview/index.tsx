@@ -141,6 +141,7 @@ class Overview extends React.Component<Props, {}> {
           id={ORDER_HISTORY}
           label={formatMessage(messages.title)}
           onGoTo={goToScreen}
+          extraMargin={'16px'}
           {...{ formatMessage }}
         />
         <OrdersList
