@@ -3,8 +3,6 @@
  */
 import message from 'antd/lib/message'
 import config from '../../config/index'
-import reverse from 'lodash/reverse'
-import drop from 'lodash/drop'
 import {
   setUploadingAction,
   setUploadingSuccess,
@@ -45,15 +43,8 @@ export const uploadFilesAction = (files: any, areas: any) => {
 
       const modelConfig = await response.json()
 
-      console.log('-----MODEL--------------')
-      console.log(modelConfig)
-      console.log('---------------------------')
-
-      // dispatch(setUploadingSuccess(modelConfig))
+      dispatch(setUploadingSuccess(modelConfig))
     } catch (e) {
-      console.log('---------------------------')
-      console.log(e)
-      console.log('---------------------------')
       dispatch(setUploadingAction(false))
       message.error(e.message)
     }
@@ -85,11 +76,6 @@ export const uploadDesignAction = (files: any) => {
         })
 
         const modelConfig = await response.json()
-
-        console.log('--------MODEL-----------')
-        console.log(modelConfig)
-        console.log('---------------------------')
-
         dispatch(setUploadingDesignSuccess(modelConfig))
       }
     } catch (e) {

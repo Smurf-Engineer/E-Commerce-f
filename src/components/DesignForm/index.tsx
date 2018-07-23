@@ -55,7 +55,6 @@ class DesignForm extends React.PureComponent<Props, State> {
       buttonLabel,
       items,
       selectedItem,
-      onSelectItem,
       onDeleteItem,
       withImageInput = false,
       themeImage,

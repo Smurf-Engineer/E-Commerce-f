@@ -72,6 +72,7 @@ class UploadTab extends React.PureComponent<Props, State> {
             return
           }
         }
+        reader.readAsText(file)
       }
 
       this.setState(({ files }) => {

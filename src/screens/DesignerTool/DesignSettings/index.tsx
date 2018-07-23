@@ -7,8 +7,7 @@ import {
   Form,
   Title,
   Input,
-  InputContainer,
-  ErrorLabel
+  InputContainer
 } from './styledComponents'
 import get from 'lodash/get'
 import DesignForm from '../../../components/DesignForm'
