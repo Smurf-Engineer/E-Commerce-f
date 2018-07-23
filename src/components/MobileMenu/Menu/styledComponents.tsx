@@ -17,8 +17,14 @@ export const LoginButton = styled.div`
   line-height: 22px;
 `
 
-export const Bottom = styled.div`
-  margin-top: 24px;
+export const Bottom = styled.div``
+
+export const SeeAll = styled.div`
+  @media (max-width: 991px) {
+    height: 40px;
+    display: flex;
+    align-items: center;
+  }
 `
 
 export const menuStyle = { width: '100%', marginLeft: -24 }

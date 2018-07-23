@@ -1,3 +1,7 @@
+/**
+ * Account-OrdersList Queries
+ */
+
 import gql from 'graphql-tag'
 
 export const getOrdersQuery = gql`

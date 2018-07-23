@@ -10,12 +10,20 @@ export const Container = styled.li`
   background-color: #fff;
   margin-bottom: 10px;
   width: 100%;
+
+  @media (max-width: 481px) {
+    flex-direction: column;
+  }
 `
 
 export const ItemDetails = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+
+  @media (max-width: 481px) {
+    flex-direction: row;
+  }
 `
 
 export const ItemDetailsHeader = styled.div`
@@ -25,6 +33,11 @@ export const ItemDetailsHeader = styled.div`
   width: 100%;
   padding-left: 16px;
   padding-right: 16px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    justify-content: space-around;
+  }
 `
 
 export const NameContainer = styled.div`
@@ -63,6 +76,10 @@ export const ItemDetailsHeaderPrice = styled.div`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: right;
+
+  @media (max-width: 481px) {
+    text-align: left;
+  }
 `
 
 export const ItemDetailsHeaderPriceDetail = styled.div`
@@ -72,6 +89,10 @@ export const ItemDetailsHeaderPriceDetail = styled.div`
   letter-spacing: 0.13px;
   line-height: 14px;
   text-align: right;
+
+  @media (max-width: 481px) {
+    text-align: left;
+  }
 `
 
 export const HeaderPriceDetailEmpty = styled.div`
@@ -87,15 +108,11 @@ export const Image = styled.img`
   width: 180.44px;
   background-color: #f1f4f5;
 
-  @media (min-width: 321px) and (max-width: 480px) {
-    height: 100%;
-    width: 100%;
-  }
-
-  @media only screen and (max-width: 320px) {
-    height: 120px;
-    width: 100%;
+  @media only screen and (max-width: 481px) {
+    height: 129px;
+    width: 46%;
     margin: 0;
+    object-fit: cover;
   }
 `
 
@@ -103,6 +120,10 @@ export const FooterItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  @media (max-width: 480px) {
+    margin-top: 12px;
+  }
 `
 
 export const AddMore = styled.div`
@@ -124,11 +145,16 @@ export const DeleteItem = styled.div`
   line-height: 16px;
   cursor: pointer;
   padding-right: 16px;
+
+  @media (max-width: 480px) {
+    margin-top: 1em;
+  }
 `
 
 export const BottomDivider = styled.div`
   box-sizing: border-box;
   height: 1px;
+  width: 100%;
   background-color: #dcdcdc;
   margin-right: 16px;
   margin-bottom: 30px;

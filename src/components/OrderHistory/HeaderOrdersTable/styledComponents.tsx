@@ -41,7 +41,7 @@ interface HeaderProps {
 export const Header = styled.th`
   border-bottom: 1px solid #818181;
   text-align: left;
-  padding: 0 8px 8px 8px;
+  padding: 8px 0;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 14px;

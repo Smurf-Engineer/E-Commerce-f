@@ -35,7 +35,6 @@ export default defineMessages({
   },
   emptyMessage: {
     id: 'components.OrdersList.emptyMessage',
-    // tslint:disable-next-line:quotemark
-    defaultMessage: "You don't have orders to show"
+    defaultMessage: 'No orders yet'
   }
 })

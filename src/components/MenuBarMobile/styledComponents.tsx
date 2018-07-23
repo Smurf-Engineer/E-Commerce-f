@@ -10,7 +10,7 @@ export const Container = styled.div`
   background-color: #fff;
   display: flex;
   justify-content: space-between;
-  padding: 0px 10px;
+  padding: 0px 16px 0 10px;
   align-items: center;
   border-bottom: 1px solid gainsboro;
 `

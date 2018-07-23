@@ -8,6 +8,7 @@ interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
   storeDesignId?: string
+  designId?: string
 }
 
 export const setInitialData = () => {
@@ -26,7 +27,10 @@ export const setInitialData = () => {
             continue
           }
           const indexOfSameProduct = findIndex(cartList, cartItem => {
-            return cartItem.product.id === item.product.id
+            return (
+              cartItem.product.id === item.product.id &&
+              item.designId === cartItem.designId
+            )
           })
           if (indexOfSameProduct !== -1) {
             const itemToUpdate = cartList[indexOfSameProduct]

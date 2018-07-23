@@ -24,5 +24,9 @@ export default defineMessages({
   messageDeleteModal: {
     id: 'components.MyLocker.messageDeleteModal',
     defaultMessage: '"{designName}" will be deleted from your locker'
+  },
+  designOnCartError: {
+    id: 'components.MyLocker.designOnCartError',
+    defaultMessage: 'You cannot delete designs that are on your cart'
   }
 })

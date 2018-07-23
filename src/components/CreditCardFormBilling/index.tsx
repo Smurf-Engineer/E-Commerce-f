@@ -225,7 +225,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     const regex = /^[0-9]+$/
     const isNumber = regex.test(value)
 
-    if (value && (id === 'zipCode' || id === 'phone') && !isNumber) {
+    if (value && id === 'phone' && !isNumber) {
       return
     }
     inputChangeAction(id, value)

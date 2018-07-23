@@ -6,7 +6,6 @@ import { Container, Cell } from './styledComponents'
 import upperFirst from 'lodash/upperFirst'
 
 interface Props {
-  orderNumber: number
   date: string
   trackingNumber?: string
   status: string
@@ -15,7 +14,6 @@ interface Props {
 }
 
 const ItemOrder = ({
-  orderNumber,
   date,
   trackingNumber = '-',
   status,
@@ -27,7 +25,7 @@ const ItemOrder = ({
   }
   return (
     <Container onClick={handleOnClick}>
-      <Cell>{orderNumber}</Cell>
+      <Cell>{shortId}</Cell>
       <Cell>{date}</Cell>
       <Cell color={'#e61737'}>{trackingNumber}</Cell>
       <Cell textAlign={'right'}>{upperFirst(status)}</Cell>

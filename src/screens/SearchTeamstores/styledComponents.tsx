@@ -75,6 +75,10 @@ export const StyledButton = styled(Button)`
 export const ResultContainer = styled.div`
   padding: 80px 30px 90px 30px;
   background-color: #fff;
+
+  @media (max-width: 480px) {
+    padding: 80px 10px 90px 10px;
+  }
 `
 
 export const TitleContainer = styled.div``

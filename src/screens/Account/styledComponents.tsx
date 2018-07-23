@@ -23,6 +23,7 @@ export const OptionMenu = styled.div`
   font-weight: 600;
   line-height: 22px;
   padding-top: 8px;
+  cursor: pointer;
 `
 
 interface ContentProps {
@@ -71,6 +72,9 @@ export const ScreenTitle = styled.div`
   font-weight: 600;
   line-height: 27px;
   margin-bottom: 64px;
+  @media (max-width: 768px) and (min-width: 320px) {
+    margin-bottom: 24px;
+  }
 `
 
 export const menuStyle = { width: '100%', marginLeft: -24, paddingTop: 52 }
