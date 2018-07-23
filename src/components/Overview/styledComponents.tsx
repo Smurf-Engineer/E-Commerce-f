@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  padding: 0 32px 36px 0;
+  padding: 0 32px 80px 0;
 
   @media (max-width: 768px) and (min-width: 320px) {
     padding: 0 0 36px 0;
@@ -14,6 +14,7 @@ export const Container = styled.div`
 export const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 16px;
 `
 
 interface ColumnProps {
