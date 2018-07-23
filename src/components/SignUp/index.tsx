@@ -29,6 +29,10 @@ import {
 } from './styledComponents'
 import messages from './messages'
 
+const CHECK_IP_ADDRESS: string =
+  'http://api.ipstack.com/check?access_key=e5dc4d0a6fc61af61307fe520cc67f66'
+const DEFAULT_COUNTRY_CODE: string = 'us'
+
 interface Props {
   closeSignUp: () => void
   signUpUser: (variables: {}) => void
@@ -63,6 +67,7 @@ class SignUp extends React.Component<Props, StateProps> {
       repeatPassword,
       newsLetter
     } = this.state
+
     return (
       <Container>
         <SocialMediaContainer>
@@ -159,6 +164,7 @@ class SignUp extends React.Component<Props, StateProps> {
     const { newsLetter } = this.state
     this.setState({ newsLetter: !newsLetter })
   }
+
   handleCreateAccount = async () => {
     const {
       name,
@@ -178,13 +184,25 @@ class SignUp extends React.Component<Props, StateProps> {
       message.error(formatMessage(messages.passwordLengthError))
       return
     }
+
+    let code: string = DEFAULT_COUNTRY_CODE
+    try {
+      const resultFetch = await fetch(CHECK_IP_ADDRESS)
+      const jsonRegion: any = await resultFetch.json()
+      code = jsonRegion.country_code
+    } catch (error) {
+      console.error(error)
+    }
+
     const user = {
       email,
       first_name: name,
       last_name: lastName,
       password,
-      newsletter_subscribed: newsLetter
+      newsletter_subscribed: newsLetter,
+      countryCode: code
     }
+
     try {
       const response = await signUpUser({ variables: { user } })
       const data = get(response, 'data.signUp', false)

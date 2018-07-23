@@ -37,7 +37,7 @@ interface Props {
   onChangeLocation: (payload: RegionConfig) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
-  currentRegion: number
+  currentRegion: string
   currentLanguage: number
   currentCurrency: number
   intl: InjectedIntl

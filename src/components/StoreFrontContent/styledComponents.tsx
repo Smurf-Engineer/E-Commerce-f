@@ -264,6 +264,7 @@ export const DatesTitle = styled.div`
 `
 
 export const ListContainer = styled.div`
+  margin-top: 65px;
   padding-right: 32px;
   padding-left: 32px;
 `
