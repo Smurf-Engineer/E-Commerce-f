@@ -868,5 +868,11 @@
   "components.OrdersList.trackingNumber": "Tracking Number",
   "components.OrdersList.tracking": "Tracking",
   "components.OrdersList.status": "Status",
-  "components.OrdersList.emptyMessage": "You don't have orders to show"
+  "components.OrdersList.emptyMessage": "No orders yet",
+
+  "components.Overview.title": "Recent Orders",
+  "components.Overview.profile": "Profile",
+  "components.Overview.addresses": "Addresses",
+  "components.Overview.payment": "No addresses added",
+  "components.Overview.emptyPayment": "No cards added"
 }
