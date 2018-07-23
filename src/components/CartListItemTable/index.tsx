@@ -186,12 +186,14 @@ class CartListItemTable extends React.Component<Props, {}> {
     })
 
     let genderSelectWidth = '100%'
+    let fitSelectWidth = '100%'
 
     if (
       typeof window !== 'undefined' &&
       window.matchMedia('(max-width: 425px').matches
     ) {
       genderSelectWidth = '100px'
+      fitSelectWidth = '71px'
     }
 
     const renderList = cartItem
@@ -219,7 +221,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   optionFilterProp="children"
                   value={size ? size.name : undefined}
                   disabled={!sizes.length}
-                  selectWidth={'100%'}
+                  selectWidth={fitSelectWidth}
                 >
                   {sizeOptions}
                 </StyledSelect>
@@ -232,6 +234,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   optionFilterProp="children"
                   disabled={!fits}
                   value={fit ? fit.name : undefined}
+                  selectWidth={fitSelectWidth}
                 >
                   {fitOptions}
                 </StyledSelect>
