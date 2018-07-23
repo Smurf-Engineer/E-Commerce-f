@@ -185,6 +185,15 @@ class CartListItemTable extends React.Component<Props, {}> {
       )
     })
 
+    let genderSelectWidth = '100%'
+
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 425px').matches
+    ) {
+      genderSelectWidth = '100px'
+    }
+
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
           const { gender, size, fit, label, quantity } = item
@@ -197,7 +206,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
                   value={gender ? gender.name : undefined}
-                  selectWidth={'6.6em'}
+                  selectWidth={genderSelectWidth}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -210,7 +219,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   optionFilterProp="children"
                   value={size ? size.name : undefined}
                   disabled={!sizes.length}
-                  selectWidth={'4.5em'}
+                  selectWidth={'100%'}
                 >
                   {sizeOptions}
                 </StyledSelect>

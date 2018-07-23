@@ -47,7 +47,7 @@ export const TeamCardHeader = styled.div`
 
 export const CardTitle = styled.div`
   height: 25px;
-  width: 139px;
+  width: 100%;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 18px;
