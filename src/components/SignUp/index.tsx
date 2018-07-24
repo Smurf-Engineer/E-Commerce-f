@@ -28,9 +28,11 @@ import {
   LogInLabel
 } from './styledComponents'
 import messages from './messages'
+import config from '../../config/index'
 
-const CHECK_IP_ADDRESS: string =
-  'http://api.ipstack.com/check?access_key=e5dc4d0a6fc61af61307fe520cc67f66'
+const CHECK_IP_ADDRESS: string = `${config.geoIpUrl}check?access_key=${
+  config.geoIpAccesKey
+}`
 const DEFAULT_COUNTRY_CODE: string = 'us'
 
 interface Props {
