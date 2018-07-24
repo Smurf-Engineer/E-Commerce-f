@@ -31,11 +31,13 @@ export const getSingleTeamStore = gql`
         expected_quantity
         design {
           id
+          code
           name
           image
           shortId: short_id
           product {
             id
+            code
             yotpoId: yotpo_id
             name
             type: name
@@ -95,10 +97,12 @@ export const getTeamStoreMutation = graphql(
           expected_quantity
           design {
             id
+            code
             name
             image
             product {
               id
+              code
               yotpoId: yotpo_id
               name
               type: name

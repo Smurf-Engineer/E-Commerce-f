@@ -25,6 +25,7 @@ interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  designCode?: string
   teamStoreId?: string
 }
 
@@ -36,6 +37,7 @@ interface Props {
   designId?: string
   designName?: string
   designImage?: string
+  designCode?: string
   teamStoreId?: string
   withoutTop?: boolean
   itemProdPage?: boolean
@@ -96,6 +98,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       teamStoreId,
       designName,
       designImage,
+      designCode,
       itemProdPage
     } = this.props
     const details = [] as CartItemDetail[]
@@ -112,6 +115,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       { designId },
       { designName },
       { designImage },
+      { designCode },
       { teamStoreId }
     )
     return itemToAdd

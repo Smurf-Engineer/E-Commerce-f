@@ -9,12 +9,14 @@ export const desginsQuery = gql`
       fullCount
       designs {
         id
+        code
         name
         image
         shortId: short_id
         createdAt: created_at
         product {
           id
+          code
           yotpoId: yotpo_id
           type: name
           description: short_description

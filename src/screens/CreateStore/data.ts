@@ -15,6 +15,7 @@ export const createStoreMutation = graphql(
           totalOrders
           design {
             id
+            code
             image
             name
             shortId: short_id
@@ -65,6 +66,7 @@ export const GetTeamStoreQuery = gql`
         totalOrders
         design {
           id
+          code
           image
           name
           shortId: short_id
