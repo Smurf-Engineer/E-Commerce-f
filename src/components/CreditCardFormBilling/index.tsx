@@ -70,7 +70,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     return (
       <Container>
         <Row>
-          <Column inputhWidth={'70%'}>
+          <Column>
             <InputTitleContainer>
               <Label>{formatMessage(messages.cardNumber)}</Label>
               <RequiredSpan>*</RequiredSpan>
@@ -82,7 +82,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           </Column>
         </Row>
         <Row>
-          <Column inputhWidth={'70%'}>
+          <Column>
             <InputTitleContainer>
               <Label>{formatMessage(messages.cardholderName)}</Label>
               <RequiredSpan>*</RequiredSpan>

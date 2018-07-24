@@ -6,10 +6,6 @@ import Input from 'antd/lib/input'
 import Checkbox from 'antd/lib/checkbox'
 import Button from 'antd/lib/button'
 
-interface InputProps {
-  inputhWidth?: string
-}
-
 export const Container = styled.div`
   width: 100%;
 `
@@ -22,8 +18,11 @@ export const Row = styled.div`
 `
 
 export const Column = styled.div`
-  width: ${({ inputhWidth }: InputProps) =>
-    inputhWidth ? inputhWidth : '400px'};
+  width: 70%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `
 
 export const ContainerInput = styled.div`
@@ -103,6 +102,10 @@ export const ContinueButton = styled(Button)`
     border-color: #4a90e2;
     background-color: #4a90e2;
     color: #fff;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
   }
 `
 export const StripeCardElement = {
