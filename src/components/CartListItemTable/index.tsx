@@ -150,9 +150,28 @@ class CartListItemTable extends React.Component<Props, {}> {
   render() {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
+
+    let genderSelectWidth = '100%'
+    let fitSelectWidth = '100%'
+
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 425px').matches
+    ) {
+      genderSelectWidth = '100px'
+      fitSelectWidth = '71px'
+    }
+
+    console.log('onlyREad', onlyRead, headers.length - 1)
+
     const header = headers.map(({ width, message }, key) => (
       <HeaderCell {...{ key, width }}>
-        <Title>{message ? formatMessage(messages[message]) : ''}</Title>
+        <Title
+          titleWidth={key === 0 && !onlyRead ? genderSelectWidth : ''}
+          align={key === headers.length - 1 && onlyRead ? 'center' : 'left'}
+        >
+          {message ? formatMessage(messages[message]) : ''}
+        </Title>
       </HeaderCell>
     ))
 
@@ -185,20 +204,9 @@ class CartListItemTable extends React.Component<Props, {}> {
       )
     })
 
-    let genderSelectWidth = '100%'
-    let fitSelectWidth = '100%'
-
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(max-width: 425px').matches
-    ) {
-      genderSelectWidth = '100px'
-      fitSelectWidth = '71px'
-    }
-
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-          const { gender, size, fit, label, quantity } = item
+          const { gender, size, fit, quantity } = item
           return !onlyRead ? (
             <Row key={index}>
               <Cell>
@@ -256,8 +264,6 @@ class CartListItemTable extends React.Component<Props, {}> {
                   max={99}
                   value={quantity || undefined}
                 />
-              </Cell>
-              <Cell width={10}>
                 <DeleteItem
                   onClick={e => this.handleRemove(e, itemIndex, index)}
                 >
@@ -270,8 +276,9 @@ class CartListItemTable extends React.Component<Props, {}> {
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
               <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
-              <InfoCell>{label || '-'}</InfoCell>
-              <InfoCell>{quantity || '-'}</InfoCell>
+              {/* TODO: Delete after confirm label won't be necessary in table
+                <InfoCell>{label || '-'}</InfoCell> */}
+              <InfoCell align={'center'}>{quantity || '-'}</InfoCell>
             </Row>
           )
         })

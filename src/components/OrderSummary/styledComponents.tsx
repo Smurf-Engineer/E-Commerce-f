@@ -9,7 +9,11 @@ interface TotalProps {
   withoutMarginBottom?: boolean
 }
 
-export const Container = styled.div``
+export const Container = styled.div`
+  @media (max-width: 480px) {
+    margin-top: 30px;
+  }
+`
 
 export const Text = styled.div`
   color: #fff;
