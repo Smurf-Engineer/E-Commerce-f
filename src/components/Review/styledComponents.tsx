@@ -31,6 +31,11 @@ export const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-right: 10%;
+
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    margin-right: 0;
+  }
 `
 
 export const CardNumber = styled.div`
@@ -39,7 +44,12 @@ export const CardNumber = styled.div`
   margin: 6px 0;
 `
 
-export const InfoContainer = styled.div``
+export const InfoContainer = styled.div`
+  @media (max-width: 768px) {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+`
 
 export const PaymentText = styled.div`
   color: #5f6062;
