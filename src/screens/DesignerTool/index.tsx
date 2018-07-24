@@ -2,9 +2,10 @@
  * DesignerTool Screen - Created by david on 08/05/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import CustomizeTab from './DesignCenterCustomize'
+import { saveDesignMutation, uploadThumbnailMutation } from './data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
@@ -43,6 +44,9 @@ interface Props {
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
   setStyleNameAction: (name: string) => void
+  setComplexityAction: (complexity: number) => void
+  // Apollo Mutations
+  uploadThumbnail: (variables: {}) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -76,7 +80,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       themeName,
       styleName,
       setThemeNameAction,
-      setStyleNameAction
+      setStyleNameAction,
+      setComplexityAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -115,6 +120,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         onUpdateProductCode={setProductCodeAction}
         onUpdateThemeName={setThemeNameAction}
         onUpdateStyleName={setStyleNameAction}
+        onSelectComplexity={setComplexityAction}
+        onSaveThumbnail={this.handleUploadThumbnail}
       />
     )
   }
@@ -141,13 +148,28 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
+  handleUploadThumbnail = async (image: string) => {
+    try {
+      // TODO: Set this on state
+      // const { uploadThumbnail } = this.props
+      // const response = await uploadThumbnail({ variables: { image } })
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   handleSaveDesign = () => {}
 }
 
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 
 const DesignerToolEnhance = compose(
-  connect(mapStateToProps, { ...designerToolActions, ...designerToolApi })
+  graphql(saveDesignMutation, { name: 'saveDesign' }),
+  graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  connect(
+    mapStateToProps,
+    { ...designerToolActions, ...designerToolApi }
+  )
 )(DesignerTool)
 
 export default DesignerToolEnhance

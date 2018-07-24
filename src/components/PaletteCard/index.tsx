@@ -4,7 +4,10 @@
 import * as React from 'react'
 import Button from 'antd/lib/button'
 import Divider from 'antd/lib/divider'
+import Icon from 'antd/lib/icon'
+import { FormattedMessage } from 'react-intl'
 import ColorButton from '../ColorButton'
+import messages from './messages'
 import {
   Container,
   ColorButtons,
@@ -15,12 +18,12 @@ import {
   deleteIcon,
   buttonStyle
 } from './styledComponents'
-import Icon from 'antd/lib/icon'
 
 interface Props {
   id: number
   colors: string[]
   name: string
+  buttonLabel?: string
   onSelectPalette: (id: number) => void
   onClickDelete?: (index: number) => void
 }
@@ -32,7 +35,8 @@ const PaletteCard = ({
   name,
   colors,
   onSelectPalette,
-  onClickDelete
+  onClickDelete,
+  buttonLabel
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
   const handleOnClickDelete = () => (onClickDelete ? onClickDelete(id) : null)
@@ -60,7 +64,7 @@ const PaletteCard = ({
           style={buttonStyle}
           type="primary"
         >
-          Apply
+          {buttonLabel || <FormattedMessage {...messages.apply} />}
         </Button>
       </Row>
       <ColorButtons>{colorButtons}</ColorButtons>
