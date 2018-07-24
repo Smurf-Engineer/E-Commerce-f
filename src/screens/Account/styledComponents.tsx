@@ -64,9 +64,13 @@ export const Title = styled.div`
   font-weight: 600;
   line-height: 27px;
 `
-
+interface ScreenTitleProps {
+  screen?: string
+}
 export const ScreenTitle = styled.div`
   color: #5f6062;
+  display: ${({ screen }: ScreenTitleProps) =>
+    screen === 'orderHistory' ? 'none' : 'block'};
   font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
