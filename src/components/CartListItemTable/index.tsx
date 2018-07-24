@@ -162,13 +162,11 @@ class CartListItemTable extends React.Component<Props, {}> {
       fitSelectWidth = '71px'
     }
 
-    console.log('onlyREad', onlyRead, headers.length - 1)
-
-    const header = headers.map(({ width, message }, key) => (
-      <HeaderCell {...{ key, width }}>
+    const header = headers.map(({ width, message }, index) => (
+      <HeaderCell key={index} {...{ width }}>
         <Title
-          titleWidth={key === 0 && !onlyRead ? genderSelectWidth : ''}
-          align={key === headers.length - 1 && onlyRead ? 'center' : 'left'}
+          titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
+          align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
         >
           {message ? formatMessage(messages[message]) : ''}
         </Title>
