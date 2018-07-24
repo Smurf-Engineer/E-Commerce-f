@@ -2,13 +2,11 @@
  * CartListItemTable Component - Created by gustavomedina on 04/05/18.
  */
 import * as React from 'react'
-import MediaQuery from 'react-responsive'
 import find from 'lodash/find'
 import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
 
-import InputNumber from 'antd/lib/input-number'
 import messages from './messages'
 import {
   Table,
@@ -20,7 +18,7 @@ import {
   HeaderCell,
   DeleteItem,
   StyledSelect,
-  StyledInput
+  StyledInputNumber
 } from './styledComponents'
 import {
   CartItemDetail,
@@ -85,7 +83,6 @@ const headerTitles: Header[] = [
   { message: 'gender' },
   { message: 'size' },
   { message: 'fit' },
-  { message: 'label' },
   { message: 'quantity' },
   { message: '', width: 10 }
 ]
@@ -153,22 +150,11 @@ class CartListItemTable extends React.Component<Props, {}> {
   render() {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
-    const header = (
-      <MediaQuery minDeviceWidth={480}>
-        {matches => {
-          if (matches) {
-            const head = headers.map(({ width, message }, key) => (
-              <HeaderCell {...{ key, width }}>
-                <Title>{message ? formatMessage(messages[message]) : ''}</Title>
-              </HeaderCell>
-            ))
-            return head
-          } else {
-            return null
-          }
-        }}
-      </MediaQuery>
-    )
+    const header = headers.map(({ width, message }, key) => (
+      <HeaderCell {...{ key, width }}>
+        <Title>{message ? formatMessage(messages[message]) : ''}</Title>
+      </HeaderCell>
+    ))
 
     const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
     const fitOptions = fitStyles.map(fs => {
@@ -199,6 +185,17 @@ class CartListItemTable extends React.Component<Props, {}> {
       )
     })
 
+    let genderSelectWidth = '100%'
+    let fitSelectWidth = '100%'
+
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(max-width: 425px').matches
+    ) {
+      genderSelectWidth = '100px'
+      fitSelectWidth = '71px'
+    }
+
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
           const { gender, size, fit, label, quantity } = item
@@ -211,6 +208,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   placeholder={formatMessage(messages.genderPlaceholder)}
                   optionFilterProp="children"
                   value={gender ? gender.name : undefined}
+                  selectWidth={genderSelectWidth}
                 >
                   {genderOptions}
                 </StyledSelect>
@@ -223,6 +221,7 @@ class CartListItemTable extends React.Component<Props, {}> {
                   optionFilterProp="children"
                   value={size ? size.name : undefined}
                   disabled={!sizes.length}
+                  selectWidth={fitSelectWidth}
                 >
                   {sizeOptions}
                 </StyledSelect>
@@ -235,10 +234,12 @@ class CartListItemTable extends React.Component<Props, {}> {
                   optionFilterProp="children"
                   disabled={!fits}
                   value={fit ? fit.name : undefined}
+                  selectWidth={fitSelectWidth}
                 >
                   {fitOptions}
                 </StyledSelect>
               </Cell>
+              {/* TODO: Delete after confirm label won't be necessary in table
               <Cell>
                 <StyledInput
                   id={`input${index}`}
@@ -246,9 +247,9 @@ class CartListItemTable extends React.Component<Props, {}> {
                   value={label || ''}
                   onChange={e => this.handleLabelChange(e, index)}
                 />
-              </Cell>
+              </Cell> */}
               <Cell>
-                <InputNumber
+                <StyledInputNumber
                   key={index}
                   onChange={e => this.handleQuantityChange(e, index)}
                   min={1}

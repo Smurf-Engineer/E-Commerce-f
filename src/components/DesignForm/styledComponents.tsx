@@ -6,7 +6,7 @@ import AntdButton from 'antd/lib/button'
 import AntdInput from 'antd/lib/input'
 
 export const Container = styled.div`
-  padding: 40px 0;
+  padding-top: 40px;
 `
 
 export const Title = styled.div`

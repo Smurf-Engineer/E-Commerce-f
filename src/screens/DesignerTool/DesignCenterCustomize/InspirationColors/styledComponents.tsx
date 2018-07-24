@@ -14,10 +14,13 @@ export const Text = styled.div`
 `
 
 export const EmptyLabel = styled.div`
+  padding-top: 16px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
   padding-bottom: 16px;
+  font-weight: 600;
+  text-align: center;
 `

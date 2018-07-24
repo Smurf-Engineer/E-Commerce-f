@@ -202,7 +202,13 @@ class MenuBar extends React.Component<Props, StateProps> {
             } else {
               return (
                 <MenuMobile
-                  {...{ history }}
+                  {...{
+                    history,
+                    designHasChanges,
+                    openWithoutSaveModalAction,
+                    formatMessage
+                  }}
+                  totalItems={itemsInCart}
                   loginButton={loggedUser}
                   regionButton={menuRegion}
                 />

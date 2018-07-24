@@ -24,12 +24,14 @@ interface Props {
   selectedTheme: number
   selectedStyle: number
   productCode: string
+  themeName: string
+  styleName: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
-  uploadFilesAction: (files: any) => void
+  uploadFilesAction: (files: any, areas: any) => void
   uploadDesignAction: (files: any) => void
   setUploadingAction: (loading: boolean) => void
   setCurrentTabAction: (index: number) => void
@@ -39,6 +41,8 @@ interface Props {
   setDesignConfigAction: (config: DesignConfig) => void
   setInspirationColorAction: (index: number) => void
   setProductCodeAction: (code: string) => void
+  setThemeNameAction: (name: string) => void
+  setStyleNameAction: (name: string) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -68,7 +72,11 @@ export class DesignerTool extends React.Component<Props, {}> {
       selectedTheme,
       selectedStyle,
       setProductCodeAction,
-      productCode
+      productCode,
+      themeName,
+      styleName,
+      setThemeNameAction,
+      setStyleNameAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -84,7 +92,9 @@ export class DesignerTool extends React.Component<Props, {}> {
           themeImage,
           selectedTheme,
           selectedStyle,
-          productCode
+          productCode,
+          themeName,
+          styleName
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -103,6 +113,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectConfig={setDesignConfigAction}
         onSelectInspirationColor={setInspirationColorAction}
         onUpdateProductCode={setProductCodeAction}
+        onUpdateThemeName={setThemeNameAction}
+        onUpdateStyleName={setStyleNameAction}
       />
     )
   }

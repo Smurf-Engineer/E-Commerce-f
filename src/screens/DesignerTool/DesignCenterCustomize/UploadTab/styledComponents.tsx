@@ -37,6 +37,16 @@ export const Text = styled.div`
   line-height: 22px;
 `
 
+export const ButtonUpload = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 8px;
+  cursor: pointer;
+`
+
 export const Top = styled.div`
   display: flex;
   justify-content: space-between;

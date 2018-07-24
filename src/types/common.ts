@@ -642,3 +642,8 @@ export interface DesignObject {
 export interface DesignConfig extends DesignObject {
   inspiration: DesignObject[]
 }
+
+export interface DesignItem {
+  id: number
+  name: string
+}

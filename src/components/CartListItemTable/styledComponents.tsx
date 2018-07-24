@@ -4,6 +4,11 @@
 import styled from 'styled-components'
 import Select from 'antd/lib/select'
 import Input from 'antd/lib/input'
+import InputNumber from 'antd/lib/input-number'
+
+type SelectType = {
+  selectWidth?: string
+}
 
 export const Container = styled.div`
   background-color: #222;
@@ -22,8 +27,9 @@ export const Table = styled.div`
   padding-left: 16px;
   padding-right: 16px;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (max-width: 480px) {
     margin-bottom: 0;
+    padding: 0;
   }
 `
 
@@ -36,6 +42,10 @@ export const Row = styled.div`
   border-bottom: 1px solid #dcdcdc;
   padding-bottom: 8px;
   padding-top: 8px;
+
+  @media (max-width: 480px) {
+    padding-left: 5px;
+  }
 `
 
 export const HeaderRow = styled.div`
@@ -44,6 +54,10 @@ export const HeaderRow = styled.div`
   justify-content: space-between;
   border-bottom: 1px solid #8c8c8c;
   padding-bottom: 4px;
+
+  @media (max-width: 480px) {
+    padding-left: 7px;
+  }
 `
 
 export const Column = styled.td`
@@ -54,9 +68,9 @@ interface CellProps {
   width?: number
 }
 export const Cell = styled.div`
- text-align: left;
- margin-right:5px;
- width ${({ width }: CellProps) => (width ? width : 100)}%;
+  text-align: left;
+  margin-right: 5px;
+  width: ${({ width }: CellProps) => (width ? width : 100)}%;
 `
 
 export const InfoCell = styled.div`
@@ -68,8 +82,8 @@ export const InfoCell = styled.div`
 `
 
 export const HeaderCell = styled.div`
- text-align: left;
- width ${({ width }: CellProps) => (width ? width : 100)}%;
+  text-align: left;
+  width: ${({ width }: CellProps) => (width ? width : 100)}%;
 `
 
 interface TitleProps {
@@ -84,6 +98,10 @@ export const Title = styled.div`
   letter-spacing: 0.1px;
   line-height: 23px;
   text-align: left;
+
+  @media (max-width: 480px) {
+    text-align: center;
+  }
 `
 
 export const Price = styled.div`
@@ -113,9 +131,14 @@ export const DeleteItem = styled.div`
 `
 
 export const StyledSelect = styled(Select)`
-  width: 100%;
+  width: ${({ selectWidth }: SelectType) =>
+    selectWidth ? selectWidth : '100%'};
 `
 
 export const StyledInput = styled(Input)`
+  width: '100%';
+`
+
+export const StyledInputNumber = styled(InputNumber)`
   width: 100%;
 `

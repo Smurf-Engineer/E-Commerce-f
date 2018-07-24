@@ -9,6 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 36px 48px 36px;
+  height: 100vh;
 `
 export const LoadingContainer = styled.div`
   display: flex;
@@ -73,4 +74,19 @@ export const Message = styled.div`
   font-size: 16px;
   line-height: 23px;
   text-align: center;
+`
+
+export const EmptyContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+`
+
+export const EmptyMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
 `

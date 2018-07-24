@@ -4,7 +4,6 @@
 
 import { defineMessages } from 'react-intl'
 
-// tslint:disable:quotemark
 export default defineMessages({
   title: {
     id: 'components.Overview.title',
@@ -23,11 +22,11 @@ export default defineMessages({
     defaultMessage: 'Payment Methods'
   },
   emptyAddress: {
-    id: 'components.Overview.payment',
-    defaultMessage: "You don't have address added"
+    id: 'components.Overview.emptyAddress',
+    defaultMessage: 'No addresses added'
   },
   emptyPayment: {
     id: 'components.Overview.emptyPayment',
-    defaultMessage: "You don't have cards added"
+    defaultMessage: 'No cards added'
   }
 })
