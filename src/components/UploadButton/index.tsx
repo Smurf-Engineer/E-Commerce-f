@@ -3,9 +3,8 @@
  */
 import * as React from 'react'
 import Upload from 'antd/lib/upload'
-import Icon from 'antd/lib/icon'
 import { UploadFile } from '../../types/common'
-import { ButtonUpload, Container } from './styledComponents'
+import { ButtonUpload, Container, Icon } from './styledComponents'
 
 interface Props {
   index: number
@@ -36,22 +35,13 @@ const UploadButton = ({
       <Upload {...{ beforeUpload }} style={{ width: '100%' }}>
         <ButtonUpload>
           <Icon
-            style={{
-              color: hasFile ? '#49BC19' : '#5F6062',
-              paddingRight: 16
-            }}
+            color={hasFile ? '#49BC19' : '#5F6062'}
             type={hasFile ? 'check-circle-o' : 'upload'}
           />
           {label}
         </ButtonUpload>
       </Upload>
-      {hasFile && (
-        <Icon
-          onClick={onRemove}
-          type="minus-circle-o"
-          style={{ color: '#5F6062', cursor: 'pointer' }}
-        />
-      )}
+      {hasFile && <Icon onClick={onRemove} type="minus-circle-o" />}
     </Container>
   )
 }

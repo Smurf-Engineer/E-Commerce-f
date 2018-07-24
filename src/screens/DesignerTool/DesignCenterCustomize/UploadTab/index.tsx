@@ -99,23 +99,6 @@ class UploadTab extends React.PureComponent<Props, State> {
     })
   }
 
-  beforeUploadDesign = (file: any) => {
-    const { areas: list } = this.state
-
-    if (list.length === 0 && file.type !== 'application/json') {
-      message.error('Please select a valid JSON file')
-      return false
-    }
-
-    if (list.length > 0 && file.type !== 'image/svg+xml') {
-      message.error('Please select a valid SVG file')
-      return false
-    }
-
-    this.setState(({ areas }) => ({ areas: [...areas, areas] }))
-    return false
-  }
-
   handleOnRemove = (fileName: string) => {
     this.setState(({ files }) => {
       const updatedFiles = omit(files, fileName)

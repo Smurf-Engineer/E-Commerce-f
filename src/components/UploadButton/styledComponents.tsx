@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 20/07/18.
  */
 import styled from 'styled-components'
+import AntdIcon from 'antd/lib/icon'
 
 export const Container = styled.div`
   display: flex;
@@ -22,4 +23,14 @@ export const ButtonUpload = styled.div`
   line-height: 22px;
   padding: 8px;
   cursor: pointer;
+`
+
+type IconProps = {
+  color?: string
+}
+
+export const Icon = styled(AntdIcon)`
+  color: ${({ color = '#5F6062' }: IconProps) => color};
+  padding-right: 16px;
+  cursor: 'pointer';
 `

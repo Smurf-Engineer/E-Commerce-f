@@ -58,7 +58,7 @@ class Render3D extends PureComponent {
     const { clientWidth, clientHeight } = this.container
 
     const renderer = new THREE.WebGLRenderer({
-      antialias: true
+      antialias: true,
       preserveDrawingBuffer: true
     })
 
