@@ -31,15 +31,16 @@ const InspirationColors = ({
   onUpdateStyleName,
   onSaveThumbnail
 }: Props) => {
-  const handleOnChangeComplexity = (value: AntdNumber) => {
-    onSelectComplexity(value as number)
-  }
   const {
     inspiration = [],
     colors: mainColors,
     name: designName,
     complexity
   } = design
+
+  const handleOnChangeComplexity = (value: AntdNumber) => {
+    onSelectComplexity(value as number)
+  }
 
   const handleOnSelectPalette = (index: number) => () => {
     const { colors = [] } = inspiration[index] || {}
@@ -99,7 +100,7 @@ const InspirationColors = ({
       <ListContainer>{list}</ListContainer>
     </Container>
   ) : (
-    <EmptyLabel>Select a JSON FILE</EmptyLabel>
+    <EmptyLabel>Select JSON FILE</EmptyLabel>
   )
 }
 
