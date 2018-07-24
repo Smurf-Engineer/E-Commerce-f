@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import isEmpty from 'lodash/isEmpty'
+import reverse from 'lodash/reverse'
 import findIndex from 'lodash/findIndex'
-import Button from 'antd/lib/button'
 import message from 'antd/lib/message'
 import { modelPositions } from './config'
 import { Container, Render, Progress, Logo } from './styledComponents'
@@ -128,12 +128,13 @@ class Render3D extends PureComponent {
     new Promise((resolve, reject) => {
       try {
         const loadedTextures = {}
-        loadedTextures.flatlock = this.imgLoader.load(
-          './models/images/flatlock.png'
-        )
-        loadedTextures.bumpMap = this.imgLoader.load(modelTextures.bumpMap)
-
-        const loadedAreas = modelTextures.areas.map(areaUri => {
+        const { bumpMap, flatlock, branding } = modelTextures
+        loadedTextures.flatlock = this.imgLoader.load(flatlock)
+        loadedTextures.bumpMap = this.imgLoader.load(bumpMap)
+        loadedTextures.branding = this.imgLoader.load(branding)
+        loadedTextures.branding.minFilter = THREE.LinearFilter
+        const { areas = [] } = modelTextures
+        const loadedAreas = areas.map(areaUri => {
           const areaTexture = this.imgLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
@@ -188,16 +189,20 @@ class Render3D extends PureComponent {
       this.objLoader.load(
         files.obj,
         object => {
-          const objectChilds = object.children.length
+          const { children } = object
+          const { flatlock, areas, bumpMap, branding } = loadedTextures
+          const objectChilds = children.length
           this.setState({ objectChilds })
 
           /* Object materials */
           // Stitching
-          const flatlockMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.flatlock
+          const flatlockMaterial = new THREE.MeshLambertMaterial({
+            alphaMap: flatlock,
+            color: '#FFFFFF'
           })
-          flatlockMaterial.map.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.map.wrapT = THREE.RepeatWrapping
+          flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+          flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+          flatlockMaterial.alphaTest = 0.5
 
           // Back material
           const insideMaterial = new THREE.MeshPhongMaterial({
@@ -205,10 +210,8 @@ class Render3D extends PureComponent {
             color: '#000000'
           })
 
-          const { children } = object
-
           const getMeshIndex = meshName => {
-            const index = findIndex(children, mesh => mesh.name === meshName)
+            const index = findIndex(children, ({ name }) => name === meshName)
             return index < 0 ? 0 : index
           }
 
@@ -217,7 +220,7 @@ class Render3D extends PureComponent {
           const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
 
           // Setup the texture layers
-          const areasLayers = loadedTextures.areas.map(() =>
+          const areasLayers = areas.map(() =>
             object.children[meshIndex].clone()
           )
           object.add(...areasLayers)
@@ -227,18 +230,34 @@ class Render3D extends PureComponent {
           object.children[flatlockIndex].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
 
-          loadedTextures.areas.forEach(
-            (materialTexture, index) =>
+          const { colors = [] } = files.design || {}
+          const reversedColors = reverse(colors)
+          const reversedAreas = reverse(areas)
+
+          reversedAreas.forEach(
+            (map, index) =>
               (object.children[
                 objectChilds + index
               ].material = new THREE.MeshPhongMaterial({
-                map: loadedTextures.areas[index],
+                map,
+                bumpMap,
                 side: THREE.FrontSide,
-                bumpMap: loadedTextures.bumpMap,
-                color: files.design.colors[index],
+                color: reversedColors[index],
                 transparent: true
               }))
           )
+
+          /* Branding  */
+          const brandingObj = object.children[meshIndex].clone()
+          object.add(brandingObj)
+          const brandingIndex = children.length - 1
+          const brandingMaterial = new THREE.MeshPhongMaterial({
+            map: branding,
+            side: THREE.FrontSide,
+            bumpMap,
+            transparent: true
+          })
+          object.children[brandingIndex].material = brandingMaterial
 
           /* Object Config */
           object.position.y = -40

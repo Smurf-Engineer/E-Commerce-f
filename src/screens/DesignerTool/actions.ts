@@ -16,7 +16,9 @@ import {
   SET_SELECTED_STYLE_ACTION,
   SET_DESIGN_CONFIG_ACTION,
   SET_INSPIRATION_COLOR_ACTION,
-  SET_PRODCUT_CODE_ACTION
+  SET_PRODCUT_CODE_ACTION,
+  SET_THEME_NAME_ACTION,
+  SET_STYLE_NAME_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -93,4 +95,14 @@ export const setInspirationColorAction = (index: number): AnyAction => ({
 export const setProductCodeAction = (code: string): AnyAction => ({
   type: SET_PRODCUT_CODE_ACTION,
   code
+})
+
+export const setThemeNameAction = (name: string): AnyAction => ({
+  type: SET_THEME_NAME_ACTION,
+  name
+})
+
+export const setStyleNameAction = (name: string): AnyAction => ({
+  type: SET_STYLE_NAME_ACTION,
+  name
 })
