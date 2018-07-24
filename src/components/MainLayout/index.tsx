@@ -66,12 +66,12 @@ class MainLayout extends React.Component<Props, {}> {
   onLogout = () => {
     const {
       logoutAction,
-      client: { cache },
+      client,
       history: {
         location: { pathname }
       }
     } = this.props
-    cache.reset()
+    client.resetStore()
     logoutAction()
     if (pathname === '/account') {
       window.location.replace('/')

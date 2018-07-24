@@ -99,40 +99,37 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       )
     }
 
-    let featuredList
+    const products = (featuredProducts && featuredProducts.products) || []
 
-    if (!loading) {
-      featuredList = featuredProducts.products.map((product, key) => {
-        return (
-          <div {...{ key }}>
-            <ProductThumbnail
-              id={product.id}
-              yotpoId={product.yotpoId}
-              type={product.type}
-              description={product.description}
-              isTopProduct={product.isTopProduct}
-              onPressCustomize={this.gotoDesignCenter}
-              onPressQuickView={openQuickView}
-              images={product.images[0]}
-              priceRange={product.priceRange}
-              customizable={product.customizable}
-              labelButton={
-                product.customizable ? (
-                  'CUSTOMIZE'
-                ) : (
-                  <AddToCartButton
-                    label={'ADD TO CART'}
-                    renderForThumbnail={true}
-                    item={{ product }}
-                    {...{ formatMessage }}
-                  />
-                )
-              }
-            />
-          </div>
-        )
-      })
-    }
+    const featuredList = products.map((product, key) => (
+      <div {...{ key }}>
+        <ProductThumbnail
+          id={product.id}
+          yotpoId={product.yotpoId}
+          type={product.type}
+          description={product.description}
+          isTopProduct={product.isTopProduct}
+          onPressCustomize={this.gotoDesignCenter}
+          onPressQuickView={openQuickView}
+          images={product.images[0]}
+          priceRange={product.priceRange}
+          customizable={product.customizable}
+          labelButton={
+            product.customizable ? (
+              formatMessage(messages.customize)
+            ) : (
+              <AddToCartButton
+                label={formatMessage(messages.addToCart)}
+                renderForThumbnail={true}
+                item={{ product }}
+                {...{ formatMessage }}
+              />
+            )
+          }
+        />
+      </div>
+    ))
+
     return (
       <Container>
         <Title>{formatMessage(messages.title)}</Title>
