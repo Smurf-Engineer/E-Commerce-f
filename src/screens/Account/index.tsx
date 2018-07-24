@@ -259,10 +259,11 @@ export class Account extends React.Component<Props, {}> {
                           {intl.formatMessage(messages.filtersTitle)}
                           <Icon type="down" />
                         </FiltersTitle>
-                        <ScreenTitle>
-                          {!!messages[screen] && (
-                            <FormattedMessage {...messages[screen]} />
-                          )}
+                        <ScreenTitle {...{ screen }}>
+                          {screen !== ORDER_HISTORY &&
+                            !!messages[screen] && (
+                              <FormattedMessage {...messages[screen]} />
+                            )}
                         </ScreenTitle>
                         {currentScreen}
                       </Content>
@@ -293,10 +294,11 @@ export class Account extends React.Component<Props, {}> {
                     {logoutButton}
                   </SideBar>
                   <Content>
-                    <ScreenTitle>
-                      {!!messages[screen] && (
-                        <FormattedMessage {...messages[screen]} />
-                      )}
+                    <ScreenTitle {...{ screen }}>
+                      {screen !== ORDER_HISTORY &&
+                        !!messages[screen] && (
+                          <FormattedMessage {...messages[screen]} />
+                        )}
                     </ScreenTitle>
                     {currentScreen}
                   </Content>
