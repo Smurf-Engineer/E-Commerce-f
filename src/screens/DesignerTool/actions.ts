@@ -18,7 +18,8 @@ import {
   SET_INSPIRATION_COLOR_ACTION,
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
-  SET_STYLE_NAME_ACTION
+  SET_STYLE_NAME_ACTION,
+  SET_COMPLEXITY_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -105,4 +106,9 @@ export const setThemeNameAction = (name: string): AnyAction => ({
 export const setStyleNameAction = (name: string): AnyAction => ({
   type: SET_STYLE_NAME_ACTION,
   name
+})
+
+export const setComplexityAction = (complexity: number): AnyAction => ({
+  type: SET_COMPLEXITY_ACTION,
+  complexity
 })

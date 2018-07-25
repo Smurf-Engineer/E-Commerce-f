@@ -53,9 +53,12 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (name: string) => void
+  onSelectComplexity: (complexity: number) => void
+  onSaveThumbnail: (image: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
+  render3D: any
   render() {
     const {
       onSelectColorBlock,
@@ -90,7 +93,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       themeName,
       styleName,
       onUpdateThemeName,
-      onUpdateStyleName
+      onUpdateStyleName,
+      onSelectComplexity,
+      onSaveThumbnail
     } = this.props
 
     return (
@@ -124,8 +129,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             themeName,
             styleName,
             onUpdateThemeName,
-            onUpdateStyleName
+            onUpdateStyleName,
+            onSelectComplexity
           }}
+          onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}
           uploadNewModel={!!files}
         />
@@ -138,11 +145,19 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onLoadModel,
             designConfig,
             loadingModel,
-            colorBlockHovered
+            colorBlockHovered,
+            onSaveThumbnail
           }}
+          ref={render3D => (this.render3D = render3D)}
         />
       </Container>
     )
+  }
+
+  handleOnSaveThumbnail = (colors: string[]) => {
+    if (this.render3D) {
+      this.render3D.saveThumbnail(colors)
+    }
   }
 }
 

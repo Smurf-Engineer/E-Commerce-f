@@ -875,5 +875,6 @@
   "components.Overview.addresses": "Addresses",
   "components.Overview.payment": "Payment Methods",
   "components.Overview.emptyAddress": "No addresses added",
-  "components.Overview.emptyPayment": "No cards added"
+  "components.Overview.emptyPayment": "No cards added",
+  "components.PaletteCard.apply": "Apply"
 }

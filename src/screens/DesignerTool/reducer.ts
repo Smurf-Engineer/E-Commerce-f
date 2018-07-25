@@ -20,7 +20,8 @@ import {
   SET_INSPIRATION_COLOR_ACTION,
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
-  SET_STYLE_NAME_ACTION
+  SET_STYLE_NAME_ACTION,
+  SET_COMPLEXITY_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -96,6 +97,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       ])
       return state.set('colors', colors)
     }
+    case SET_COMPLEXITY_ACTION:
+      return state.setIn(['designConfig', 'complexity'], action.complexity)
     case SET_PRODCUT_CODE_ACTION:
       return state.merge({
         productCode: action.code,
@@ -105,7 +108,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_THEME_NAME_ACTION:
       return state.set('themeName', action.name)
     case SET_STYLE_NAME_ACTION:
-      return state.set('styleName', action.name)
+      return state.setIn(['designConfig', 'name'], action.name)
     default:
       return state
   }

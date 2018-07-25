@@ -11,6 +11,7 @@ import InpirationTab from '../InspirationColors'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
+import designIcon from '../../../../assets/styles.svg'
 import { Container } from './styledComponents'
 import { DesignConfig, UploadFile } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
@@ -53,6 +54,8 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (name: string) => void
+  onSelectComplexity: (complexity: number) => void
+  onSaveThumbnail: (colors: string[]) => void
 }
 
 const Tabs = ({
@@ -85,14 +88,16 @@ const Tabs = ({
   themeName,
   styleName,
   onUpdateThemeName,
-  onUpdateStyleName
+  onUpdateStyleName,
+  onSelectComplexity,
+  onSaveThumbnail
 }: Props) => {
   return (
     <Container>
       <AntdTabs defaultActiveKey={SETTINGS_TAB} size="large">
         <TabPane
           key={SETTINGS_TAB}
-          tab={<Tab label="settings" icon={settingsIcon} />}
+          tab={<Tab label="product" icon={designIcon} />}
         >
           <Settings
             {...{
@@ -144,11 +149,12 @@ const Tabs = ({
         </TabPane>
         <TabPane
           key={INSPIRATION_TAB}
-          tab={<Tab label="inspiration" icon={colorIcon} />}
+          tab={<Tab label="config" icon={settingsIcon} />}
         >
           <InpirationTab
+            design={designConfig || {}}
             onSelectPalette={onSelectInspirationColor}
-            palettes={designConfig.inspiration || []}
+            {...{ onSelectComplexity, onUpdateStyleName, onSaveThumbnail }}
           />
         </TabPane>
       </AntdTabs>
