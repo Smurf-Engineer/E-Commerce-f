@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
-import isEmpty from 'lodash/isEmpty'
 import reverse from 'lodash/reverse'
 import findIndex from 'lodash/findIndex'
 import message from 'antd/lib/message'
@@ -63,7 +62,7 @@ class Render3D extends PureComponent {
     })
 
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor('#fff')
+    renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
 
     /* Camera */
@@ -273,7 +272,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round(xhr.loaded / xhr.total * 100)
+      const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }
@@ -352,7 +351,9 @@ class Render3D extends PureComponent {
 
   setFrontFaceModel = () => {
     if (this.camera) {
-      const { front: { x, y, z } } = modelPositions
+      const {
+        front: { x, y, z }
+      } = modelPositions
       this.camera.position.set(x, y, z)
       this.controls.update()
     }
@@ -361,7 +362,7 @@ class Render3D extends PureComponent {
   takeScreenshot = () =>
     new Promise(resolve => {
       setTimeout(() => {
-        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.5)
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
         resolve(thumbnail)
       }, 800)
     })
@@ -369,16 +370,12 @@ class Render3D extends PureComponent {
   saveThumbnail = async colors => {
     this.setFrontFaceModel()
     this.setupColors(colors)
-    const { designConfig } = this.props
-    if (isEmpty(designConfig)) {
-      message.error('Please select a JSON file')
-    } else {
-      try {
-        // TODO: Call action to upload
-        const thumbnail = await this.takeScreenshot(inspirationColors.colors)
-      } catch (error) {
-        console.error(error)
-      }
+    try {
+      const { onSaveThumbnail } = this.props
+      const thumbnail = await this.takeScreenshot(colors)
+      onSaveThumbnail(thumbnail)
+    } catch (error) {
+      console.error(error)
     }
   }
 }

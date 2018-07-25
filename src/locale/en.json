@@ -876,6 +876,8 @@
   "components.Overview.emptyAddress": "No addresses added",
   "components.Overview.emptyPayment": "No cards added",
 
+  "components.PaletteCard.apply": "Apply",
+
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
 

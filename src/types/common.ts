@@ -635,6 +635,7 @@ export interface UploadFile {
 export type sorts = 'asc' | 'desc' | 'none'
 export interface DesignObject {
   code: string
+  complexity: number
   colors: string[]
   name: string
 }
