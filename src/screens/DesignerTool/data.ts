@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const saveDesignMutation = gql`
-  mutation SaveStyle($style: StyleCreation!) {
-    newProductStyles(styleCreationData: $style) {
+  mutation SaveStyle($design: StyleCreation!) {
+    newProductStyles(styleCreationData: $design) {
       message
     }
   }

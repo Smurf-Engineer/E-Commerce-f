@@ -3,7 +3,9 @@
  */
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
+import message from 'antd/lib/message'
 import get from 'lodash/get'
+import every from 'lodash/every'
 import { connect } from 'react-redux'
 import CustomizeTab from './DesignCenterCustomize'
 import { saveDesignMutation, uploadThumbnailMutation } from './data'
@@ -59,6 +61,7 @@ interface Props {
   setUploadingThumbnailAction: (item: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
+  saveDesign: (variables: {}) => Promise<any>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -187,8 +190,15 @@ export class DesignerTool extends React.Component<Props, {}> {
         productCode,
         modelConfig,
         selectedTheme,
-        designConfig
+        designConfig,
+        saveDesign
       } = this.props
+
+      if (!modelConfig || !designConfig) {
+        message.error('Upload model files first')
+        return
+      }
+
       const {
         obj,
         mtl,
@@ -201,15 +211,35 @@ export class DesignerTool extends React.Component<Props, {}> {
         areasPng
       } = modelConfig
       const { name, complexity, thumbnail, colors, inspiration } = designConfig
+
+      if (!thumbnail) {
+        message.error('Save design thumbnail first')
+        return
+      }
+
+      const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
+
+      if (!hasAllInspirationThumbnail) {
+        message.error('Missing inspiration thumbnail')
+        return
+      }
+
+      if (!productCode) {
+        message.error('Please enter a product code')
+        return
+      }
+
+      if (!selectedTheme) {
+        // TODO: Validate if exist data for create a new theme, if not show error
+      }
+
       const inspirationItems = inspiration.map(item => ({
         name: item.name,
         colors: item.colors,
         image: item.thumbnail
       }))
-      // TODO: add save design mutation
-      /* tslint:disable-next-line */
-      const styleData = {
-        productId: productCode,
+      const design = {
+        productCode,
         label,
         bumpMap,
         flatLock: flatlock,
@@ -221,8 +251,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             name,
             image: thumbnail,
             complexity,
+            branding: brandingSvg,
             brandingPng,
-            brandingSvg,
             svgs: areasSvg,
             pngs: areasPng,
             colors,
@@ -230,6 +260,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           }
         ]
       }
+      await saveDesign({ variables: { design } })
+      message.success('Design saved')
     } catch (e) {
       console.error(e)
     }
