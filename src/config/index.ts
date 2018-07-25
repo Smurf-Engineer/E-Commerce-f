@@ -13,6 +13,8 @@ interface ConfigType {
   paypalClientId: string
   paypalEnv: string
   googleMapKey: string
+  geoIpUrl: string
+  geoIpAccesKey: string
 }
 
 const config: ConfigType = {
@@ -26,7 +28,9 @@ const config: ConfigType = {
   paypalClientId:
     'AbZ3seF-h636HxsdaKolVn-D24c3eSN3EQGeysVYQTf1Y7cSw2QSSevNRXwTwAUOxHohWXlK40Uzl1p-',
   paypalEnv: 'sandbox',
-  googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U'
+  googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
+  geoIpUrl: 'http://api.ipstack.com/',
+  geoIpAccesKey: 'e5dc4d0a6fc61af61307fe520cc67f66'
 }
 
 export default config

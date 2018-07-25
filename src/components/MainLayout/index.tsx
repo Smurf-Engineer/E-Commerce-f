@@ -37,7 +37,7 @@ interface Props extends RouteComponentProps<any> {
   searchParam: string
   productId: boolean
   openLogin: boolean
-  currentRegion: number
+  currentRegion: string
   currentLanguage: number
   currentCurrency: number
   yotpoId: string

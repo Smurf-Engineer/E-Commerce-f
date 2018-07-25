@@ -13,6 +13,7 @@ export const Container = styled.li`
 
   @media (max-width: 481px) {
     flex-direction: column;
+    margin-bottom: 40px;
   }
 `
 
@@ -158,4 +159,8 @@ export const BottomDivider = styled.div`
   background-color: #dcdcdc;
   margin-right: 16px;
   margin-bottom: 30px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `

@@ -45,6 +45,7 @@ export const Row = styled.div`
 
   @media (max-width: 480px) {
     padding-left: 5px;
+    height: 50px;
   }
 `
 
@@ -66,8 +67,11 @@ export const Column = styled.td`
 `
 interface CellProps {
   width?: number
+  align?: string
 }
 export const Cell = styled.div`
+  display: flex;
+  align-items: center;
   text-align: left;
   margin-right: 5px;
   width: ${({ width }: CellProps) => (width ? width : 100)}%;
@@ -75,7 +79,7 @@ export const Cell = styled.div`
 
 export const InfoCell = styled.div`
   width: 100%;
-  text-align: left;
+  text-align: ${({ align }: CellProps) => (align ? align : 'left')};
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 14px;
@@ -87,7 +91,8 @@ export const HeaderCell = styled.div`
 `
 
 interface TitleProps {
-  align?: string
+  align: string
+  titleWidth?: string
 }
 
 export const Title = styled.div`
@@ -97,11 +102,8 @@ export const Title = styled.div`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
-  text-align: left;
-
-  @media (max-width: 480px) {
-    text-align: center;
-  }
+  text-align: ${({ align }: TitleProps) => align};
+  width: ${({ titleWidth }: TitleProps) => (titleWidth ? titleWidth : 'auto')};
 `
 
 export const Price = styled.div`
@@ -128,6 +130,7 @@ export const MobileEmtpytable = styled.div`
 export const DeleteItem = styled.div`
   color: #e61737;
   cursor: pointer;
+  padding-left: 10px;
 `
 
 export const StyledSelect = styled(Select)`

@@ -7,6 +7,10 @@ import Checkbox from 'antd/lib/checkbox'
 export const Container = styled.div`
   padding-top: 30px;
   min-height: 60vh;
+
+  @media (max-width: 768px) {
+    min-height: 45vh;
+  }
 `
 
 export const Text = styled.div`
