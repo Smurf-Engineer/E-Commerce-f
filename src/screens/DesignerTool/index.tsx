@@ -151,8 +151,11 @@ export class DesignerTool extends React.Component<Props, {}> {
   handleUploadThumbnail = async (image: string) => {
     try {
       // TODO: Set this in the state
-      // const { uploadThumbnail } = this.props
-      // const response = await uploadThumbnail({ variables: { image } })
+      const { uploadThumbnail } = this.props
+      const response = await uploadThumbnail({ variables: { image } })
+      console.log('---------------------------')
+      console.log(response)
+      console.log('---------------------------')
     } catch (e) {
       console.error(e)
     }

@@ -8,6 +8,7 @@ import AntdButton from 'antd/lib/button'
 export const Container = styled.div`
   position: relative;
   width: calc(100% - 400px);
+  background-color: #fff;
 `
 
 export const Render = styled.div`

@@ -58,6 +58,7 @@ class Render3D extends PureComponent {
 
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
+      alpha: true,
       preserveDrawingBuffer: true
     })
 
