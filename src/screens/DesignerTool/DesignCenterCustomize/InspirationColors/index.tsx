@@ -16,17 +16,21 @@ import {
 } from './styledComponents'
 import { DesignConfig } from '../../../../types/common'
 
+const DESIGN_ITEM = -1
+
 type AntdNumber = number | string | undefined
 
 interface Props {
   design: DesignConfig
+  uploadingThumbnail: number
   onSelectPalette: (index: number) => void
   onSelectComplexity: (complexity: number) => void
   onUpdateStyleName: (name: string) => void
-  onSaveThumbnail: (colors: string[]) => void
+  onSaveThumbnail: (desing: number, colors: string[]) => void
 }
 const InspirationColors = ({
   design,
+  uploadingThumbnail,
   onSelectComplexity,
   onUpdateStyleName,
   onSaveThumbnail
@@ -44,10 +48,10 @@ const InspirationColors = ({
 
   const handleOnSelectPalette = (index: number) => () => {
     const { colors = [] } = inspiration[index] || {}
-    onSaveThumbnail(colors)
+    onSaveThumbnail(index, colors)
   }
 
-  const handleOnSelectColors = () => onSaveThumbnail(mainColors)
+  const handleOnSelectColors = () => onSaveThumbnail(DESIGN_ITEM, mainColors)
 
   const handleOnChangeName = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
@@ -63,8 +67,9 @@ const InspirationColors = ({
       colors={mainColors}
       id={inspirationCount}
       key={inspirationCount}
+      loading={uploadingThumbnail === DESIGN_ITEM}
+      buttonLabel="Save Thumbnail"
       onSelectPalette={handleOnSelectColors}
-      buttonLabel="THUMBNAIL"
     />
   )
   const list = inspiration.map(({ name, colors }, index) => (
@@ -72,7 +77,8 @@ const InspirationColors = ({
       id={index}
       key={index}
       {...{ name, colors }}
-      buttonLabel="THUMBNAIL"
+      loading={uploadingThumbnail === index}
+      buttonLabel="Save Thumbnail"
       onSelectPalette={handleOnSelectPalette(index)}
     />
   ))
