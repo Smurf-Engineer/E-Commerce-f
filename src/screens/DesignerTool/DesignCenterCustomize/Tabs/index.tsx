@@ -37,6 +37,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
+  uploadingThumbnail: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -55,7 +56,7 @@ interface Props {
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (name: string) => void
   onSelectComplexity: (complexity: number) => void
-  onSaveThumbnail: (colors: string[]) => void
+  onSaveThumbnail: (index: number, colors: string[]) => void
 }
 
 const Tabs = ({
@@ -90,7 +91,8 @@ const Tabs = ({
   onUpdateThemeName,
   onUpdateStyleName,
   onSelectComplexity,
-  onSaveThumbnail
+  onSaveThumbnail,
+  uploadingThumbnail
 }: Props) => {
   return (
     <Container>
@@ -154,7 +156,12 @@ const Tabs = ({
           <InpirationTab
             design={designConfig || {}}
             onSelectPalette={onSelectInspirationColor}
-            {...{ onSelectComplexity, onUpdateStyleName, onSaveThumbnail }}
+            {...{
+              onSelectComplexity,
+              onUpdateStyleName,
+              onSaveThumbnail,
+              uploadingThumbnail
+            }}
           />
         </TabPane>
       </AntdTabs>

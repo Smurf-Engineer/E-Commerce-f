@@ -33,7 +33,7 @@ export const Logo = styled.img`
 export const Button = styled(AntdButton)`
   position: absolute;
   height: 40px;
-  bottom: 10%;
+  bottom: 16px;
   width: 138px;
   left: 50%;
   transform: translate(-50%, -50%);

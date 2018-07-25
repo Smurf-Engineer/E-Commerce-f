@@ -21,11 +21,15 @@ import {
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
   SET_STYLE_NAME_ACTION,
-  SET_COMPLEXITY_ACTION
+  SET_COMPLEXITY_ACTION,
+  SET_THUMBNAIL_ACTION,
+  SET_UPLOADING_THUMBNAIL_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
 const NONE = -1
+const NO_UPLOADING = -2
+const DESIGN_THUMBNAIL = -1
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
@@ -44,7 +48,8 @@ export const initialState = fromJS({
   selectedTheme: NONE,
   selectedStyle: NONE,
   designConfig: {},
-  productCode: ''
+  productCode: '',
+  uploadingThumbnail: NO_UPLOADING
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -109,6 +114,19 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('themeName', action.name)
     case SET_STYLE_NAME_ACTION:
       return state.setIn(['designConfig', 'name'], action.name)
+    case SET_THUMBNAIL_ACTION: {
+      const { item, thumbnail } = action
+      if (item === DESIGN_THUMBNAIL) {
+        return state.setIn(['designConfig', 'thumbnail'], thumbnail)
+      }
+
+      return state.setIn(
+        ['designConfig', 'inspiration', item, 'thumbnail'],
+        thumbnail
+      )
+    }
+    case SET_UPLOADING_THUMBNAIL_ACTION:
+      return state.set('uploadingThumbnail', action.uploadingItem)
     default:
       return state
   }

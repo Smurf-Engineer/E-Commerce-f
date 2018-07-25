@@ -24,6 +24,7 @@ interface Props {
   colors: string[]
   name: string
   buttonLabel?: string
+  loading?: boolean
   onSelectPalette: (id: number) => void
   onClickDelete?: (index: number) => void
 }
@@ -36,7 +37,8 @@ const PaletteCard = ({
   colors,
   onSelectPalette,
   onClickDelete,
-  buttonLabel
+  buttonLabel,
+  loading = false
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
   const handleOnClickDelete = () => (onClickDelete ? onClickDelete(id) : null)
@@ -60,6 +62,7 @@ const PaletteCard = ({
           )}
         </TopRow>
         <Button
+          {...{ loading }}
           onClick={handleOnSelectPalette}
           style={buttonStyle}
           type="primary"

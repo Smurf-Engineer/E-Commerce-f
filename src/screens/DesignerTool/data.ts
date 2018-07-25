@@ -14,7 +14,7 @@ export const saveDesignMutation = gql`
 
 export const uploadThumbnailMutation = gql`
   mutation SaveStyleImage($image: String!) {
-    saveStyleImage(image: $image) {
+    style: saveStyleImage(image: $image) {
       image
     }
   }

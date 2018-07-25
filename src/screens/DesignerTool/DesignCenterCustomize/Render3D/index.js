@@ -2,10 +2,11 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
 import findIndex from 'lodash/findIndex'
-import message from 'antd/lib/message'
 import { modelPositions } from './config'
-import { Container, Render, Progress, Logo } from './styledComponents'
+import { Container, Render, Progress, Logo, Button } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
+
+const NONE = -2
 
 class Render3D extends PureComponent {
   state = {
@@ -128,13 +129,12 @@ class Render3D extends PureComponent {
     new Promise((resolve, reject) => {
       try {
         const loadedTextures = {}
-        const { bumpMap, flatlock, branding } = modelTextures
+        const { bumpMap, flatlock, brandingPng, areasPng = [] } = modelTextures
         loadedTextures.flatlock = this.imgLoader.load(flatlock)
         loadedTextures.bumpMap = this.imgLoader.load(bumpMap)
-        loadedTextures.branding = this.imgLoader.load(branding)
+        loadedTextures.branding = this.imgLoader.load(brandingPng)
         loadedTextures.branding.minFilter = THREE.LinearFilter
-        const { areas = [] } = modelTextures
-        const loadedAreas = areas.map(areaUri => {
+        const loadedAreas = areasPng.map(areaUri => {
           const areaTexture = this.imgLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
@@ -333,7 +333,7 @@ class Render3D extends PureComponent {
 
   render() {
     const { progress } = this.state
-    const { loadingModel, files } = this.props
+    const { loadingModel, files, onSaveDesign } = this.props
 
     return (
       <Container>
@@ -341,11 +341,9 @@ class Render3D extends PureComponent {
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
           {!files && <Logo src={logo} />}
         </Render>
-        {/* TODO: WIP
-        <ButtonWrapper>
-          <Button onClick={this.saveThumbnail}>Save Thumbnail</Button>
-        </ButtonWrapper>
-      */}
+        <Button type="primary" onClick={onSaveDesign}>
+          Save Design
+        </Button>
       </Container>
     )
   }
@@ -368,15 +366,17 @@ class Render3D extends PureComponent {
       }, 800)
     })
 
-  saveThumbnail = async colors => {
+  saveThumbnail = async (design, colors) => {
     this.setFrontFaceModel()
     this.setupColors(colors)
     try {
-      const { onSaveThumbnail } = this.props
+      const { onSaveThumbnail, onUploadingThumbnail } = this.props
+      onUploadingThumbnail(design)
       const thumbnail = await this.takeScreenshot(colors)
-      onSaveThumbnail(thumbnail)
+      onSaveThumbnail(design, thumbnail)
     } catch (error) {
       console.error(error)
+      onUploadingThumbnail(NONE)
     }
   }
 }

@@ -19,7 +19,9 @@ import {
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
   SET_STYLE_NAME_ACTION,
-  SET_COMPLEXITY_ACTION
+  SET_COMPLEXITY_ACTION,
+  SET_THUMBNAIL_ACTION,
+  SET_UPLOADING_THUMBNAIL_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -111,4 +113,20 @@ export const setStyleNameAction = (name: string): AnyAction => ({
 export const setComplexityAction = (complexity: number): AnyAction => ({
   type: SET_COMPLEXITY_ACTION,
   complexity
+})
+
+export const setThumbnailAction = (
+  item: number,
+  thumbnail: string
+): AnyAction => ({
+  type: SET_THUMBNAIL_ACTION,
+  item,
+  thumbnail
+})
+
+export const setUploadingThumbnailAction = (
+  uploadingItem: number
+): AnyAction => ({
+  type: SET_UPLOADING_THUMBNAIL_ACTION,
+  uploadingItem
 })
