@@ -103,9 +103,9 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 selectedItem={selectedStyle}
                 onSelectItem={onSelectStyle}
                 onDeleteItem={onDeleteStyle}
-                title="SELECT STYLE"
-                subtitle="Styles"
-                buttonLabel="ADD NEW STYLE"
+                title="THEME DESIGNS"
+                subtitle="Designs"
+                buttonLabel="ADD NEW DESIGN"
                 itemName={styleName}
                 onUpdateName={onUpdateStyleName}
                 items={styleItems}
@@ -126,7 +126,9 @@ class DesignSettings extends React.PureComponent<Props, {}> {
   }
 
   handleOnUpdateProductCode = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     this.setState({ code: value })
   }
 }

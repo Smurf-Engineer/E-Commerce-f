@@ -88,20 +88,20 @@ class Review extends React.PureComponent<Props, {}> {
 
     const renderList = cart
       ? cart.map((cartItem, index) => {
-        return (
-          <CartListItem
-            formatMessage={formatMessage}
-            key={index}
-            title={cartItem.product.name}
-            description={cartItem.product.shortDescription}
-            price={cartItem.product.priceRange[priceRangeToApply]}
-            image={cartItem.product.images[0].front}
-            itemIndex={index}
-            onlyRead={true}
-            {...{ cartItem }}
-          />
-        )
-      })
+          return (
+            <CartListItem
+              formatMessage={formatMessage}
+              key={index}
+              title={cartItem.product.name}
+              description={cartItem.product.shortDescription}
+              price={cartItem.product.priceRange[priceRangeToApply]}
+              image={cartItem.product.images[0].front}
+              itemIndex={index}
+              onlyRead={true}
+              {...{ cartItem }}
+            />
+          )
+        })
       : null
 
     let cardIcon = this.getCardIcon(cardData.cardBrand)
@@ -156,8 +156,8 @@ class Review extends React.PureComponent<Props, {}> {
                 </EditInfoButton>
               </div>
             ) : (
-                <img src={iconPaypal} />
-              )}
+              <img src={iconPaypal} />
+            )}
           </InfoContainer>
         </BottomContainer>
       </Container>

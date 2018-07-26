@@ -19,6 +19,7 @@ interface StateProps {
   width?: string
   searchValue: string
   searchResults: any
+  focused: boolean
 }
 class SearchBar extends React.Component<Props, StateProps> {
   raiseSearchWhenUserStopsTyping = debounce(
@@ -31,7 +32,8 @@ class SearchBar extends React.Component<Props, StateProps> {
     this.state = {
       width: onHeader ? '0px' : '',
       searchValue: '',
-      searchResults: null
+      searchResults: null,
+      focused: false
     }
   }
   render() {
@@ -41,10 +43,10 @@ class SearchBar extends React.Component<Props, StateProps> {
       searchWidth,
       placeHolderLabel
     } = this.props
-    const { width, searchValue } = this.state
+    const { width, searchValue, focused } = this.state
 
     return (
-      <Container {...{ searchWidth, onHeader }}>
+      <Container {...{ searchWidth, onHeader, focused }}>
         <SearchInput
           size="large"
           placeholder={
@@ -70,23 +72,28 @@ class SearchBar extends React.Component<Props, StateProps> {
   }
 
   clearInput = () => {
-    const { resetInput } = this.props
+    const { resetInput, onHeader } = this.props
     if (resetInput) {
       this.setState({ searchValue: '' })
+    }
+    if (onHeader) {
+      this.setState({ focused: true })
     }
   }
 
   hideInput = () => {
     const { onHeader } = this.props
     if (onHeader) {
-      this.setState({ width: '0px' })
+      this.setState({ width: '0px', focused: false })
     }
   }
 
   handleChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
 
-    this.setState({ searchValue: value.trim() }, () => {
+    this.setState({ searchValue: value }, () => {
       this.raiseSearchWhenUserStopsTyping()
     })
   }

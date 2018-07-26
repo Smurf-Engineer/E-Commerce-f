@@ -2,12 +2,30 @@
  * DesignerTool Screen - Created by david on 08/05/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
+import message from 'antd/lib/message'
+import get from 'lodash/get'
+import every from 'lodash/every'
 import { connect } from 'react-redux'
 import CustomizeTab from './DesignCenterCustomize'
+import { saveDesignMutation, uploadThumbnailMutation } from './data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
+
+const NONE = -2
+
+type Thumbnail = {
+  style: {
+    image: string
+  }
+}
+
+type Design = {
+  design: {
+    message: string
+  }
+}
 
 interface Props {
   designConfig: DesignConfig
@@ -26,6 +44,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
+  uploadingThumbnail: number
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -43,6 +62,12 @@ interface Props {
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
   setStyleNameAction: (name: string) => void
+  setComplexityAction: (complexity: number) => void
+  setThumbnailAction: (item: number, thumbnail: string) => void
+  setUploadingThumbnailAction: (item: number) => void
+  // Apollo Mutations
+  uploadThumbnail: (variables: {}) => Promise<Thumbnail>
+  saveDesign: (variables: {}) => Promise<Design>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -62,6 +87,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadFilesAction,
       uploadDesignAction,
       uploadingFiles,
+      uploadingThumbnail,
       modelConfig,
       areas,
       setSelectedThemeAction,
@@ -76,7 +102,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       themeName,
       styleName,
       setThemeNameAction,
-      setStyleNameAction
+      setStyleNameAction,
+      setComplexityAction,
+      setUploadingThumbnailAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -94,7 +122,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           selectedStyle,
           productCode,
           themeName,
-          styleName
+          styleName,
+          uploadingThumbnail
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -115,6 +144,9 @@ export class DesignerTool extends React.Component<Props, {}> {
         onUpdateProductCode={setProductCodeAction}
         onUpdateThemeName={setThemeNameAction}
         onUpdateStyleName={setStyleNameAction}
+        onSelectComplexity={setComplexityAction}
+        onSaveThumbnail={this.handleUploadThumbnail}
+        onUploadingThumbnail={setUploadingThumbnailAction}
       />
     )
   }
@@ -141,13 +173,116 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
-  handleSaveDesign = () => {}
+  handleUploadThumbnail = async (design: number, image: string) => {
+    const {
+      uploadThumbnail,
+      setThumbnailAction,
+      setUploadingThumbnailAction
+    } = this.props
+    try {
+      const response = await uploadThumbnail({ variables: { image } })
+      const thumbnailUrl = get(response, 'data.style.image', '')
+      setThumbnailAction(design, thumbnailUrl)
+      setUploadingThumbnailAction(NONE)
+    } catch (e) {
+      setUploadingThumbnailAction(NONE)
+      console.error(e)
+    }
+  }
+
+  handleSaveDesign = async () => {
+    try {
+      const {
+        productCode,
+        modelConfig,
+        selectedTheme,
+        designConfig,
+        saveDesign
+      } = this.props
+
+      if (!modelConfig || !designConfig) {
+        message.error('Upload model files first')
+        return
+      }
+
+      const {
+        obj,
+        mtl,
+        label,
+        bumpMap,
+        flatlock,
+        brandingPng,
+        brandingSvg,
+        areasSvg,
+        areasPng
+      } = modelConfig
+      const { name, complexity, thumbnail, colors, inspiration } = designConfig
+
+      if (!thumbnail) {
+        message.error('To proceed, save design thumbnail first')
+        return
+      }
+
+      const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
+
+      if (!hasAllInspirationThumbnail) {
+        message.error('Unable to find one or more Inspiration Thumbnails')
+        return
+      }
+
+      if (!productCode) {
+        message.error('Please enter a product code')
+        return
+      }
+
+      if (!selectedTheme) {
+        // TODO: Validate if exist data for create a new theme, if not show error
+      }
+
+      const inspirationItems = inspiration.map(item => ({
+        name: item.name,
+        colors: item.colors,
+        image: item.thumbnail
+      }))
+      const design = {
+        productCode,
+        label,
+        bumpMap,
+        flatLock: flatlock,
+        obj,
+        mtl,
+        theme_id: selectedTheme,
+        styles: [
+          {
+            name,
+            image: thumbnail,
+            complexity,
+            branding: brandingSvg,
+            brandingPng,
+            svgs: areasSvg,
+            pngs: areasPng,
+            colors,
+            inspiration: inspirationItems
+          }
+        ]
+      }
+      await saveDesign({ variables: { design } })
+      message.success('Your design is now saved')
+    } catch (e) {
+      console.error(e)
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 
 const DesignerToolEnhance = compose(
-  connect(mapStateToProps, { ...designerToolActions, ...designerToolApi })
+  graphql(saveDesignMutation, { name: 'saveDesign' }),
+  graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  connect(
+    mapStateToProps,
+    { ...designerToolActions, ...designerToolApi }
+  )
 )(DesignerTool)
 
 export default DesignerToolEnhance

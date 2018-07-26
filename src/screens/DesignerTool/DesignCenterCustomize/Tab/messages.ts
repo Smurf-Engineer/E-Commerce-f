@@ -13,16 +13,16 @@ export default defineMessages({
     id: 'components.designCenterCustomize.Tab.upload',
     defaultMessage: 'Upload'
   },
-  inspiration: {
-    id: 'components.designCenterTool.Tab.inspiration',
-    defaultMessage: 'Inspiration'
+  config: {
+    id: 'components.designCenterTool.Tab.config',
+    defaultMessage: 'Config'
   },
   thumbnail: {
     id: 'components.designCenterTool.Tab.thumbnail',
     defaultMessage: 'Thumbnail'
   },
-  settings: {
-    id: 'components.designCenterTool.Tab.settings',
-    defaultMessage: 'Settings'
+  product: {
+    id: 'components.designCenterTool.Tab.product',
+    defaultMessage: 'Product'
   }
 })

@@ -35,6 +35,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
+  uploadingThumbnail: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -53,9 +54,13 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (name: string) => void
+  onSelectComplexity: (complexity: number) => void
+  onSaveThumbnail: (desing: number, image: string) => void
+  onUploadingThumbnail: (item: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
+  render3D: any
   render() {
     const {
       onSelectColorBlock,
@@ -89,8 +94,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       data,
       themeName,
       styleName,
+      uploadingThumbnail,
       onUpdateThemeName,
-      onUpdateStyleName
+      onUpdateStyleName,
+      onSelectComplexity,
+      onSaveThumbnail,
+      onUploadingThumbnail
     } = this.props
 
     return (
@@ -124,8 +133,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             themeName,
             styleName,
             onUpdateThemeName,
-            onUpdateStyleName
+            onUpdateStyleName,
+            onSelectComplexity,
+            uploadingThumbnail
           }}
+          onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}
           uploadNewModel={!!files}
         />
@@ -138,11 +150,20 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onLoadModel,
             designConfig,
             loadingModel,
-            colorBlockHovered
+            colorBlockHovered,
+            onSaveThumbnail,
+            onUploadingThumbnail
           }}
+          ref={render3D => (this.render3D = render3D)}
         />
       </Container>
     )
+  }
+
+  handleOnSaveThumbnail = (index: number, colors: string[]) => {
+    if (this.render3D) {
+      this.render3D.saveThumbnail(index, colors)
+    }
   }
 }
 

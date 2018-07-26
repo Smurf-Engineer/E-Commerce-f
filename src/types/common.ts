@@ -355,7 +355,12 @@ export interface ModelConfig {
   obj: string
   mtl: string
   bumpMap: string
-  areas: string[]
+  flatlock: string
+  brandingSvg: string
+  brandingPng: string
+  label: string
+  areasSvg: string[]
+  areasPng: string[]
 }
 
 export interface CartItems {
@@ -637,6 +642,8 @@ export interface UploadFile {
 export type sorts = 'asc' | 'desc' | 'none'
 export interface DesignObject {
   code: string
+  thumbnail: string
+  complexity: number
   colors: string[]
   name: string
 }

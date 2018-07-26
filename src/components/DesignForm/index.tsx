@@ -62,13 +62,12 @@ class DesignForm extends React.PureComponent<Props, State> {
     } = this.props
     const { isEditing } = this.state
 
-    const list = items.map(({ name }, index) => (
+    const list = items.map(({ id, name }, index) => (
       <DesignItem
-        id={index}
         key={index}
-        selected={index === selectedItem}
+        selected={id === selectedItem}
         onSelectItem={this.handleOnSelectItem}
-        {...{ name, onDeleteItem }}
+        {...{ id, name, onDeleteItem }}
       />
     ))
 
@@ -89,7 +88,24 @@ class DesignForm extends React.PureComponent<Props, State> {
         <Types>302 x 302 px. Files jpg, jpeg, png.</Types>
       </ImageInput>
     )
-    const label = withImageInput ? 'Theme' : 'Style'
+    const label = withImageInput ? 'Theme' : 'Design'
+
+    const itemList = !!list.length && (
+      <div>
+        <Subtitle>{subtitle}</Subtitle>
+        <List>{list}</List>
+      </div>
+    )
+
+    // TODO: This will be temporary
+    if (!withImageInput) {
+      return (
+        <Container>
+          <Title>{title}</Title>
+          {itemList}
+        </Container>
+      )
+    }
 
     return (
       <Container>
@@ -111,12 +127,7 @@ class DesignForm extends React.PureComponent<Props, State> {
             {imageComponent}
           </div>
         )}
-        {!!list.length && (
-          <div>
-            <Subtitle>{subtitle}</Subtitle>
-            <List>{list}</List>
-          </div>
-        )}
+        {itemList}
       </Container>
     )
   }
@@ -142,7 +153,9 @@ class DesignForm extends React.PureComponent<Props, State> {
 
   handleOnUpdateName = (evt: React.FormEvent<HTMLInputElement>) => {
     const { onUpdateName } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     onUpdateName(value)
   }
 
