@@ -28,7 +28,7 @@ type Design = {
 }
 
 interface Props {
-  designConfig: DesignConfig
+  designConfig: DesignConfig[]
   colors: string[]
   styleColors: string[]
   areas: string[]
@@ -61,9 +61,9 @@ interface Props {
   setInspirationColorAction: (index: number) => void
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
-  setStyleNameAction: (name: string) => void
-  setComplexityAction: (complexity: number) => void
-  setThumbnailAction: (item: number, thumbnail: string) => void
+  setStyleNameAction: (desing: number, name: string) => void
+  setComplexityAction: (design: number, complexity: number) => void
+  setThumbnailAction: (design: number, item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (item: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
@@ -173,7 +173,11 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
-  handleUploadThumbnail = async (design: number, image: string) => {
+  handleUploadThumbnail = async (
+    design: number,
+    item: number,
+    image: string
+  ) => {
     const {
       uploadThumbnail,
       setThumbnailAction,
@@ -182,7 +186,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     try {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
-      setThumbnailAction(design, thumbnailUrl)
+      setThumbnailAction(design, item, thumbnailUrl)
       setUploadingThumbnailAction(NONE)
     } catch (e) {
       setUploadingThumbnailAction(NONE)
@@ -216,7 +220,13 @@ export class DesignerTool extends React.Component<Props, {}> {
         areasSvg,
         areasPng
       } = modelConfig
-      const { name, complexity, thumbnail, colors, inspiration } = designConfig
+      const {
+        name,
+        complexity,
+        thumbnail,
+        colors,
+        inspiration
+      } = designConfig[0]
 
       if (!thumbnail) {
         message.error('To proceed, save design thumbnail first')

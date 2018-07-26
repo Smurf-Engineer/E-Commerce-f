@@ -31,7 +31,7 @@ interface Props {
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (name: string) => void
+  onUpdateStyleName: (design: number, name: string) => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
@@ -53,8 +53,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteStyle,
       onSelectImage,
       onDeleteImage,
-      onUpdateThemeName,
-      onUpdateStyleName
+      onUpdateThemeName
     } = this.props
     const { code } = this.state
 
@@ -107,7 +106,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={styleName}
-                onUpdateName={onUpdateStyleName}
+                onUpdateName={() => {}}
                 items={styleItems}
               />
             </div>

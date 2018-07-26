@@ -366,14 +366,14 @@ class Render3D extends PureComponent {
       }, 800)
     })
 
-  saveThumbnail = async (design, colors) => {
+  saveThumbnail = async (design, item, colors) => {
     this.setFrontFaceModel()
     this.setupColors(colors)
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
       onUploadingThumbnail(design)
       const thumbnail = await this.takeScreenshot(colors)
-      onSaveThumbnail(design, thumbnail)
+      onSaveThumbnail(design, item, thumbnail)
     } catch (error) {
       console.error(error)
       onUploadingThumbnail(NONE)

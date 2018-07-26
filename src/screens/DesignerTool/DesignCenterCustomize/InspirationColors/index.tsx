@@ -16,98 +16,111 @@ import {
 } from './styledComponents'
 import { DesignConfig } from '../../../../types/common'
 
+const NONE = -2
 const DESIGN_ITEM = -1
 
 type AntdNumber = number | string | undefined
 
 interface Props {
+  index: number
   design: DesignConfig
   uploadingThumbnail: number
   onSelectPalette: (index: number) => void
-  onSelectComplexity: (complexity: number) => void
-  onUpdateStyleName: (name: string) => void
-  onSaveThumbnail: (desing: number, colors: string[]) => void
+  onSelectComplexity: (desing: number, complexity: number) => void
+  onUpdateStyleName: (desing: number, name: string) => void
+  onSaveThumbnail: (desing: number, item: number, colors: string[]) => void
 }
-const InspirationColors = ({
-  design,
-  uploadingThumbnail,
-  onSelectComplexity,
-  onUpdateStyleName,
-  onSaveThumbnail
-}: Props) => {
-  const {
-    inspiration = [],
-    colors: mainColors,
-    name: designName,
-    complexity
-  } = design
+class InspirationColors extends React.PureComponent<Props> {
+  state = {
+    uploadingThumbnail: NONE
+  }
+  render() {
+    const { design } = this.props
+    const { uploadingThumbnail } = this.state
+    const {
+      inspiration = [],
+      colors: mainColors,
+      name: designName,
+      complexity
+    } = design
 
-  const handleOnChangeComplexity = (value: AntdNumber) => {
-    onSelectComplexity(value as number)
+    const inspirationCount = inspiration.length
+    const styleColors = (
+      <PaletteCard
+        name="Design Colors"
+        colors={mainColors}
+        id={inspirationCount}
+        key={inspirationCount}
+        loading={uploadingThumbnail === DESIGN_ITEM}
+        buttonLabel="Save Thumbnail"
+        onSelectPalette={this.handleOnSelectColors}
+      />
+    )
+    const list = inspiration.map(({ name, colors }, key) => (
+      <PaletteCard
+        id={key}
+        {...{ key, name, colors }}
+        loading={uploadingThumbnail === key}
+        buttonLabel="Save Thumbnail"
+        onSelectPalette={this.handleOnSelectPalette(key)}
+      />
+    ))
+    return !!inspirationCount ? (
+      <Container>
+        <Divider>Design Info</Divider>
+        <Row>
+          <Column width="70%">
+            <Label>Name</Label>
+            <Input value={designName} onChange={this.handleOnChangeName} />
+          </Column>
+          <Column width="30%">
+            <Label>Complexity</Label>
+            <InputNumber
+              min={1}
+              max={3}
+              value={complexity || 1}
+              onChange={this.handleOnChangeComplexity}
+            />
+          </Column>
+        </Row>
+        <Divider>Colors</Divider>
+        {styleColors}
+        <Divider>Inspiration</Divider>
+        <ListContainer>{list}</ListContainer>
+      </Container>
+    ) : (
+      <EmptyLabel>Select JSON FILE</EmptyLabel>
+    )
   }
 
-  const handleOnSelectPalette = (index: number) => () => {
-    const { colors = [] } = inspiration[index] || {}
-    onSaveThumbnail(index, colors)
+  handleOnChangeComplexity = (value: AntdNumber) => {
+    const { index, onSelectComplexity } = this.props
+    onSelectComplexity(index, value as number)
   }
 
-  const handleOnSelectColors = () => onSaveThumbnail(DESIGN_ITEM, mainColors)
+  handleOnSelectPalette = (item: number) => () => {
+    const {
+      index,
+      design: { inspiration },
+      onSaveThumbnail
+    } = this.props
+    const { colors = [] } = inspiration[item] || {}
+    onSaveThumbnail(index, item, colors)
+  }
 
-  const handleOnChangeName = (evt: React.FormEvent<HTMLInputElement>) => {
+  handleOnSelectColors = () => {
+    const { index, design, onSaveThumbnail } = this.props
+    const { colors: mainColors } = design
+    onSaveThumbnail(index, DESIGN_ITEM, mainColors)
+  }
+
+  handleOnChangeName = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { index, onUpdateStyleName } = this.props
     const {
       currentTarget: { value }
     } = evt
-    onUpdateStyleName(value)
+    onUpdateStyleName(index, value)
   }
-
-  const inspirationCount = inspiration.length
-  const styleColors = (
-    <PaletteCard
-      name="Design Colors"
-      colors={mainColors}
-      id={inspirationCount}
-      key={inspirationCount}
-      loading={uploadingThumbnail === DESIGN_ITEM}
-      buttonLabel="Save Thumbnail"
-      onSelectPalette={handleOnSelectColors}
-    />
-  )
-  const list = inspiration.map(({ name, colors }, index) => (
-    <PaletteCard
-      id={index}
-      key={index}
-      {...{ name, colors }}
-      loading={uploadingThumbnail === index}
-      buttonLabel="Save Thumbnail"
-      onSelectPalette={handleOnSelectPalette(index)}
-    />
-  ))
-  return !!inspirationCount ? (
-    <Container>
-      <Divider>Design Info</Divider>
-      <Row>
-        <Column width="70%">
-          <Label>Name</Label>
-          <Input value={designName} onChange={handleOnChangeName} />
-        </Column>
-        <Column width="30%">
-          <Label>Complexity</Label>
-          <InputNumber
-            min={1}
-            max={3}
-            value={complexity || 1}
-            onChange={handleOnChangeComplexity}
-          />
-        </Column>
-      </Row>
-      <Divider>Colors</Divider>
-      {styleColors}
-      <Divider>Inspiration</Divider>
-      <ListContainer>{list}</ListContainer>
-    </Container>
-  ) : (
-    <EmptyLabel>Select JSON FILE</EmptyLabel>
-  )
 }
 
 export default InspirationColors

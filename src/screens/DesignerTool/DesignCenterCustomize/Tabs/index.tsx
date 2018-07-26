@@ -7,7 +7,7 @@ import Tab from '../Tab'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
 import Settings from '../../DesignSettings'
-import InpirationTab from '../InspirationColors'
+import InpirationTab from '../Settings'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
@@ -24,7 +24,7 @@ const SETTINGS_TAB = 'SETTINGS_TAB'
 const { TabPane } = AntdTabs
 
 interface Props {
-  designConfig: DesignConfig
+  designConfig: DesignConfig[]
   productData?: Data
   colorBlock: number
   colorBlockHovered: number
@@ -54,9 +54,9 @@ interface Props {
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (name: string) => void
-  onSelectComplexity: (complexity: number) => void
-  onSaveThumbnail: (index: number, colors: string[]) => void
+  onUpdateStyleName: (desing: number, name: string) => void
+  onSelectComplexity: (desing: number, complexity: number) => void
+  onSaveThumbnail: (desing: number, item: number, colors: string[]) => void
 }
 
 const Tabs = ({
@@ -154,7 +154,7 @@ const Tabs = ({
           tab={<Tab label="config" icon={settingsIcon} />}
         >
           <InpirationTab
-            design={designConfig || {}}
+            designs={designConfig || []}
             onSelectPalette={onSelectInspirationColor}
             {...{
               onSelectComplexity,

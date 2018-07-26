@@ -21,7 +21,7 @@ export interface Data extends QueryProps {
 
 interface Props {
   data?: Data
-  designConfig: DesignConfig
+  designConfig: DesignConfig[]
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -53,9 +53,9 @@ interface Props {
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (name: string) => void
-  onSelectComplexity: (complexity: number) => void
-  onSaveThumbnail: (desing: number, image: string) => void
+  onUpdateStyleName: (desing: number, name: string) => void
+  onSelectComplexity: (desing: number, complexity: number) => void
+  onSaveThumbnail: (desing: number, item: number, image: string) => void
   onUploadingThumbnail: (item: number) => void
 }
 
@@ -160,9 +160,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
   }
 
-  handleOnSaveThumbnail = (index: number, colors: string[]) => {
+  handleOnSaveThumbnail = (design: number, item: number, colors: string[]) => {
     if (this.render3D) {
-      this.render3D.saveThumbnail(index, colors)
+      this.render3D.saveThumbnail(design, item, colors)
     }
   }
 }
