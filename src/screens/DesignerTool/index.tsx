@@ -21,6 +21,12 @@ type Thumbnail = {
   }
 }
 
+type Design = {
+  design: {
+    message: string
+  }
+}
+
 interface Props {
   designConfig: DesignConfig
   colors: string[]
@@ -61,7 +67,7 @@ interface Props {
   setUploadingThumbnailAction: (item: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
-  saveDesign: (variables: {}) => Promise<any>
+  saveDesign: (variables: {}) => Promise<Design>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {

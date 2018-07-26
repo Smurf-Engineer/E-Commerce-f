@@ -102,10 +102,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUploadingThumbnail
     } = this.props
 
-    console.log('---------------------------')
-    console.log(data)
-    console.log('---------------------------')
-
     return (
       <Container>
         <Tabs

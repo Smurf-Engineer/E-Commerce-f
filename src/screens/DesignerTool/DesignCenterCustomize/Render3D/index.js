@@ -264,10 +264,6 @@ class Render3D extends PureComponent {
           object.name = 'jersey'
           this.scene.add(object)
           onLoadModel(false)
-
-          if (!window.scene) {
-            window.scene = this.scene
-          }
         },
         this.onProgress,
         this.onError
