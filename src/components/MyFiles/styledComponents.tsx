@@ -49,3 +49,11 @@ export const EmptyMessage = styled.div`
   line-height: 21px;
   text-align: center;
 `
+
+export const ModalMessage = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+`

@@ -17,18 +17,18 @@ export const setPalettesAction = (palettes: Palette[]): AnyAction => ({
   palettes
 })
 
-export const showDeletePaletteConfirmAction = (id: string): AnyAction => ({
+export const showDeletePaletteConfirmAction = (index: string): AnyAction => ({
   type: SHOW_DELETE_PALETTE_CONFIRM,
-  id
+  index
 })
 
 export const hideDeletePaletteConfirmAction = (): AnyAction => ({
   type: HIDE_DELETE_PALETTE_CONFIRM
 })
 
-export const showDeleteImageConfirmAction = (id: string): AnyAction => ({
+export const showDeleteImageConfirmAction = (index: string): AnyAction => ({
   type: SHOW_DELETE_IMAGE_CONFIRM,
-  id
+  index
 })
 
 export const hideDeleteImageConfirmAction = (): AnyAction => ({

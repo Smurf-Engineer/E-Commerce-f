@@ -26,5 +26,17 @@ export default defineMessages({
   emptyImages: {
     id: 'components.MyFiles.emptyImages',
     defaultMessage: 'No images, yet'
+  },
+  modalTitle: {
+    id: 'components.MyFiles.modalTitle',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  paletteMessage: {
+    id: 'components.MyFiles.paletteMessage',
+    defaultMessage: `You're about to delete this palette`
+  },
+  imageMessage: {
+    id: 'components.MyFiles.imageMessage',
+    defaultMessage: `You're about to delete this image`
   }
 })

@@ -4,6 +4,8 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import Modal from 'antd/lib/modal/Modal'
+import { List } from 'immutable'
 import * as MyFilesActions from './actions'
 import messages from './messages'
 import {
@@ -12,10 +14,13 @@ import {
   Subtitle,
   EmptyContainer,
   EmptyMessage,
-  VerticalDivider
+  VerticalDivider,
+  ModalMessage
 } from './styledComponents'
 import { Palette } from '../../types/common'
 import PalettesList from './PalettesList'
+import ModalTitle from '../ModalTitle'
+import ModalFooter from '../ModalFooter'
 
 interface Props {
   history: any
@@ -59,24 +64,39 @@ class MyFiles extends React.Component<Props, {}> {
     showDeletePaletteConfirmAction(index)
   }
 
-  onCancelDeletePalette = () => {
-    const { hideDeleteImageConfirmAction } = this.props
-    hideDeleteImageConfirmAction()
+  hideDeletePaletteModal = () => {
+    const { hideDeletePaletteConfirmAction } = this.props
+    hideDeletePaletteConfirmAction()
   }
 
   handleOnShowDeleteImageModal = (index: number) => {
-    const { showDeletePaletteConfirmAction } = this.props
-    showDeletePaletteConfirmAction(index)
+    const { showDeleteImageConfirmAction } = this.props
+    showDeleteImageConfirmAction(index)
   }
 
-  onCancelDeleteImage = () => {
+  hideDeleteImageModal = () => {
     const { hideDeleteImageConfirmAction } = this.props
     hideDeleteImageConfirmAction()
   }
 
+  onDeletePalette = () => {
+    const { setPalettesAction, indexPaletteToDelete } = this.props
+    if (typeof window !== 'undefined') {
+      const palettesJson = localStorage.getItem('palettes')
+      if (palettesJson) {
+        const myPalettes = JSON.parse(palettesJson)
+        const listOfPalettes = List.of(...myPalettes)
+        const updatedList = listOfPalettes.remove(indexPaletteToDelete)
+        const updatedPalettes = updatedList.toJS()
+        localStorage.setItem('palettes', JSON.stringify(updatedPalettes))
+        setPalettesAction(updatedPalettes)
+      }
+      this.hideDeletePaletteModal()
+    }
+  }
+
   render() {
-    const { formatMessage, palettes } = this.props
-    console.log(palettes, 'palettes')
+    const { formatMessage, palettes, showDeletePaletteConfirm } = this.props
     return (
       <Container>
         <Message>{formatMessage(messages.message)}</Message>
@@ -90,6 +110,22 @@ class MyFiles extends React.Component<Props, {}> {
         <EmptyContainer>
           <EmptyMessage>{formatMessage(messages.emptyImages)}</EmptyMessage>
         </EmptyContainer>
+        <Modal
+          visible={showDeletePaletteConfirm}
+          title={<ModalTitle title={formatMessage(messages.modalTitle)} />}
+          footer={
+            <ModalFooter
+              onOk={this.onDeletePalette}
+              onCancel={this.hideDeletePaletteModal}
+              {...{ formatMessage }}
+            />
+          }
+          closable={false}
+          maskClosable={false}
+          destroyOnClose={true}
+        >
+          <ModalMessage>{formatMessage(messages.paletteMessage)}</ModalMessage>
+        </Modal>
       </Container>
     )
   }

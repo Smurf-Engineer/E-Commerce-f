@@ -20,9 +20,8 @@ interface Props {
 
 const PalettesList = ({ palettes, formatMessage, onClickDelete }: Props) => {
   const list = palettes.map(({ name, colors }, index) => (
-    <WrapperPalette>
+    <WrapperPalette key={index}>
       <PaletteCard
-        key={index}
         id={index}
         myFilesList={true}
         {...{ name, colors, formatMessage, onClickDelete }}
