@@ -39,7 +39,10 @@ module.exports = {
       include,
       test: /\.tsx?$/,
       loader: 'ts-loader',
-      options: {}
+      options: {
+        transpileOnly: true,
+        experimentalWatchApi: true
+      }
     }
 
     const tslintLoader = {
