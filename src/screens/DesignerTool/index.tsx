@@ -259,7 +259,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           return {
             name,
             image: thumbnail,
-            complexity,
+            complexity: complexity || 1,
             branding: brandingSvg,
             brandingPng,
             svgs: areasSvg,
