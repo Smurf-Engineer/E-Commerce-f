@@ -18,6 +18,7 @@ import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
 import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
+import { REDIRECT_ROUTES } from './constants'
 
 const { Content } = Layout
 
@@ -73,7 +74,7 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
     client.resetStore()
     logoutAction()
-    if (pathname === '/account') {
+    if (REDIRECT_ROUTES.includes(pathname)) {
       window.location.replace('/')
     }
   }
