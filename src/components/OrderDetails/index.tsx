@@ -21,9 +21,13 @@ import {
   DeliveryLabel,
   DeliveryInfo,
   Info,
-  OrderSummaryContainer
+  OrderSummaryContainer,
+  Items,
+  TitleStyled,
+  CartList
 } from './styledComponents'
 import { OrderSummary } from '../OrderSummary'
+import CartListItem from '../CartListItem'
 
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
@@ -62,6 +66,40 @@ class OrderDetails extends React.Component<Props, {}> {
         totalSum = totalSum + productTotal
       })
     }
+
+    const renderItemList = cart
+      ? cart.map((cartItem, index) => {
+          const priceRange = {
+            quantity: '0',
+            price: 0
+          }
+
+          const itemImage = cartItem.designId
+            ? cartItem.designImage || ''
+            : cartItem.product.images[0].front
+          const itemTitle = cartItem.designId
+            ? cartItem.designName || ''
+            : cartItem.product.name
+          const itemDescription = cartItem.designId
+            ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
+            : cartItem.product.shortDescription
+          return (
+            <CartListItem
+              formatMessage={formatMessage}
+              key={index}
+              image={itemImage}
+              title={itemTitle}
+              description={itemDescription}
+              price={priceRange}
+              productTotal={cartItem.productTotal}
+              unitPrice={cartItem.unitPrice}
+              cartItem={cartItem}
+              itemIndex={index}
+              onlyRead={true}
+            />
+          )
+        })
+      : null
 
     return (
       <Container>
@@ -112,6 +150,10 @@ class OrderDetails extends React.Component<Props, {}> {
             />
           </OrderSummaryContainer>
         </OrderInfo>
+        <Items>
+          <TitleStyled>{formatMessage(messages.items)}</TitleStyled>
+          <CartList>{renderItemList}</CartList>
+        </Items>
       </Container>
     )
   }

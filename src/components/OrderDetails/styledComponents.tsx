@@ -96,3 +96,19 @@ export const Info = styled.div`
 export const OrderSummaryContainer = styled.div`
   width: 222px;
 `
+export const Items = styled.div`
+  margin-top: 40px;
+  padding-right: 34px;
+`
+export const TitleStyled = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 24px;
+  width: 300px;
+`
+export const CartList = styled.ul`
+  padding: 0;
+`

@@ -60,5 +60,9 @@ export default defineMessages({
   total: {
     id: 'components.OrderDetails.total',
     defaultMessage: 'Total'
+  },
+  items: {
+    id: 'components.OrderDetails.items',
+    defaultMessage: 'Items'
   }
 })

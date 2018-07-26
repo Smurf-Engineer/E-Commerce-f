@@ -26,8 +26,6 @@ export const getOrderQuery = gql`
       billing_address_state_province
       billing_address_city
       billing_address_zip_code
-      currency
-      currency_value
       shippingTax: shipping_tax
       orderDate: created_at
       netsuit: netsuit_order {
@@ -51,27 +49,28 @@ export const getOrderQuery = gql`
         product {
           id
           name
-          short_description
-          pictures {
-            id
-            front_image
+          shortDescription: short_description
+          images: pictures {
+            front: front_image
           }
         }
         itemDetails {
           label
           gender {
-            id
+            name
           }
           size {
-            id
+            name
           }
           fit {
-            id
+            name
           }
           quantity
         }
+        designId
         unitPrice
         productTotal
+        designName
         designImage
       }
       status

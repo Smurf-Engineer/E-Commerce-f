@@ -397,16 +397,12 @@ export interface NetsuiteObject {
   orderStatus: OrderStatusNetsuite
 }
 
-export interface CartOutput {
-  productTotal: number
-}
-
 export interface OrderDetailsInfo {
   shortId: string
   orderDate: string
   shippingTax: number
   netsuit: NetsuiteObject
-  cart: CartOutput[]
+  cart: CartItems[]
   status: string
 }
 
