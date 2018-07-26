@@ -37,6 +37,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
+  uploadingThumbnail: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -55,7 +56,7 @@ interface Props {
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (name: string) => void
   onSelectComplexity: (complexity: number) => void
-  onSaveThumbnail: (colors: string[]) => void
+  onSaveThumbnail: (index: number, colors: string[]) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -92,6 +93,7 @@ const Tabs = ({
   onUpdateStyleName,
   onSelectComplexity,
   onSaveThumbnail,
+  uploadingThumbnail,
   formatMessage
 }: Props) => {
   return (
@@ -160,6 +162,7 @@ const Tabs = ({
               onSelectComplexity,
               onUpdateStyleName,
               onSaveThumbnail,
+              uploadingThumbnail,
               formatMessage
             }}
           />

@@ -28,6 +28,7 @@ interface Props {
   buttonLabel?: string
   myFilesList?: boolean
   onSelectPalette?: (id: number) => void
+  loading?: boolean
   onClickDelete?: (index: number) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
 }
@@ -43,6 +44,7 @@ const PaletteCard = ({
   onSelectPalette = () => {},
   onClickDelete,
   buttonLabel,
+  loading = false,
   formatMessage
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
@@ -67,6 +69,7 @@ const PaletteCard = ({
         )}
       </TopRow>
       <Button
+        {...{ loading }}
         onClick={handleOnSelectPalette}
         style={buttonStyle}
         type="primary"

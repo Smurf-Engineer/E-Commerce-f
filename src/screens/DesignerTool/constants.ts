@@ -21,6 +21,8 @@ export const SET_PRODCUT_CODE_ACTION = `${namespace}/SET_PRODCUT_CODE_ACTION`
 export const SET_THEME_NAME_ACTION = `${namespace}/SET_THEME_NAME_ACTION`
 export const SET_STYLE_NAME_ACTION = `${namespace}/SET_STYLE_NAME_ACTION`
 export const SET_COMPLEXITY_ACTION = `${namespace}/SET_COMPLEXITY_ACTION`
+export const SET_THUMBNAIL_ACTION = `${namespace}/SET_THUMBNAIL_ACTION`
+export const SET_UPLOADING_THUMBNAIL_ACTION = `${namespace}/SET_UPLOADING_THUMBNAIL_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

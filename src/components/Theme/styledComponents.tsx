@@ -11,7 +11,9 @@ export const Container = styled.div`
 
 export const Image = styled.img`
   cursor: pointer;
-  padding: 20px 0px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
 
 export const Text = styled.div`
