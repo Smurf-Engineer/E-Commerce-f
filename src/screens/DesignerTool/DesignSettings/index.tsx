@@ -106,7 +106,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={styleName}
-                onUpdateName={() => {}}
+                onUpdateName={() => {}} // TODO: temp until we enable editing
                 items={styleItems}
               />
             </div>

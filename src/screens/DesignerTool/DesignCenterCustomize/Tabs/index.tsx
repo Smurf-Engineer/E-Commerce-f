@@ -54,9 +54,9 @@ interface Props {
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (desing: number, name: string) => void
-  onSelectComplexity: (desing: number, complexity: number) => void
-  onSaveThumbnail: (desing: number, item: number, colors: string[]) => void
+  onUpdateStyleName: (design: number, name: string) => void
+  onSelectComplexity: (design: number, complexity: number) => void
+  onSaveThumbnail: (design: number, item: number, colors: string[]) => void
 }
 
 const Tabs = ({

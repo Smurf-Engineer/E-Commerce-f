@@ -53,9 +53,9 @@ interface Props {
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (desing: number, name: string) => void
-  onSelectComplexity: (desing: number, complexity: number) => void
-  onSaveThumbnail: (desing: number, item: number, image: string) => void
+  onUpdateStyleName: (design: number, name: string) => void
+  onSelectComplexity: (design: number, complexity: number) => void
+  onSaveThumbnail: (design: number, item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
 }
 

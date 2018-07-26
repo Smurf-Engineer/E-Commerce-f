@@ -18,9 +18,9 @@ interface Props {
   uploadingThumbnail: boolean
   onSelectConfig: (config: DesignConfig) => void
   onSelectPalette: (index: number) => void
-  onSelectComplexity: (desing: number, complexity: number) => void
-  onUpdateStyleName: (desing: number, name: string) => void
-  onSaveThumbnail: (desing: number, item: number, colors: string[]) => void
+  onSelectComplexity: (design: number, complexity: number) => void
+  onUpdateStyleName: (design: number, name: string) => void
+  onSaveThumbnail: (design: number, item: number, colors: string[]) => void
 }
 
 const Settings = ({

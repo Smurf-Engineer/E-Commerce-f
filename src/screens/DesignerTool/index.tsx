@@ -73,7 +73,7 @@ interface Props {
   setInspirationColorAction: (index: number) => void
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
-  setStyleNameAction: (desing: number, name: string) => void
+  setStyleNameAction: (design: number, name: string) => void
   setComplexityAction: (design: number, complexity: number) => void
   setThumbnailAction: (design: number, item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
