@@ -389,6 +389,27 @@ export interface OrderHistory {
   status: string
 }
 
+export interface OrderStatusNetsuite {
+  deliveryDate?: string
+}
+
+export interface NetsuiteObject {
+  orderStatus: OrderStatusNetsuite
+}
+
+export interface CartOutput {
+  productTotal: number
+}
+
+export interface OrderDetailsInfo {
+  shortId: string
+  orderDate: string
+  shippingTax: number
+  netsuit: NetsuiteObject
+  cart: CartOutput[]
+  status: string
+}
+
 export interface OrderDataInfo {
   orderDate: string
   firstName: string
