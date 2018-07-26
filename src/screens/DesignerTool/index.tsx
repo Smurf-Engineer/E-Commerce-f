@@ -8,10 +8,16 @@ import get from 'lodash/get'
 import every from 'lodash/every'
 import { connect } from 'react-redux'
 import CustomizeTab from './DesignCenterCustomize'
-import { saveDesignMutation, uploadThumbnailMutation } from './data'
+import {
+  saveDesignMutation,
+  uploadThumbnailMutation,
+  createThemeMutation
+} from './data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
 import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
+
+const { uploadThemeImage } = designerToolApi
 
 const NONE = -2
 
@@ -24,6 +30,14 @@ type Thumbnail = {
 type Design = {
   design: {
     message: string
+  }
+}
+
+type Theme = {
+  theme: {
+    id: string
+    name: string
+    image: string
   }
 }
 
@@ -44,7 +58,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
-  uploadingThumbnail: number
+  uploadingThumbnail: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -64,10 +78,12 @@ interface Props {
   setStyleNameAction: (desing: number, name: string) => void
   setComplexityAction: (design: number, complexity: number) => void
   setThumbnailAction: (design: number, item: number, thumbnail: string) => void
-  setUploadingThumbnailAction: (item: number) => void
+  setUploadingThumbnailAction: (uploading: boolean) => void
+  uploadThemeImage: (file: any) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
+  createTheme: (variables: {}) => Promise<Theme>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -187,9 +203,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
       setThumbnailAction(design, item, thumbnailUrl)
-      setUploadingThumbnailAction(NONE)
+      setUploadingThumbnailAction(false)
     } catch (e) {
-      setUploadingThumbnailAction(NONE)
+      setUploadingThumbnailAction(false)
       console.error(e)
     }
   }
@@ -201,8 +217,27 @@ export class DesignerTool extends React.Component<Props, {}> {
         modelConfig,
         selectedTheme,
         designConfig,
-        saveDesign
+        saveDesign,
+        themeName
       } = this.props
+
+      const { themeImage } = this.state
+      const image = await uploadThemeImage(themeImage)
+      console.log('---------------------------')
+      console.log(image)
+      console.log('---------------------------')
+
+      // if (selectedTheme >= 0) {
+      //   const { themeImage } = this.state
+      //   if (!!themeImage && !!themeName) {
+      //     const image = await uploadThemeImage(themeImage)
+      //     console.log('---------------------------')
+      //     console.log(image)
+      //     console.log('---------------------------')
+      //   } else {
+      //     // TODO: //
+      //   }
+      // }
 
       if (!modelConfig || !designConfig) {
         message.error('Upload model files first')
@@ -220,50 +255,23 @@ export class DesignerTool extends React.Component<Props, {}> {
         areasSvg,
         areasPng
       } = modelConfig
-      const {
-        name,
-        complexity,
-        thumbnail,
-        colors,
-        inspiration
-      } = designConfig[0]
 
-      if (!thumbnail) {
-        message.error('To proceed, save design thumbnail first')
-        return
-      }
+      const designs = designConfig.map(
+        ({ name, complexity, thumbnail, colors, inspiration }) => {
+          const inspirationItems = inspiration.map(item => ({
+            name: item.name,
+            colors: item.colors,
+            image: item.thumbnail
+          }))
 
-      const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
+          const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
 
-      if (!hasAllInspirationThumbnail) {
-        message.error('Unable to find one or more Inspiration Thumbnails')
-        return
-      }
+          if (!hasAllInspirationThumbnail) {
+            message.error('Unable to find one or more Inspiration Thumbnails')
+            return
+          }
 
-      if (!productCode) {
-        message.error('Please enter a product code')
-        return
-      }
-
-      if (!selectedTheme) {
-        // TODO: Validate if exist data for create a new theme, if not show error
-      }
-
-      const inspirationItems = inspiration.map(item => ({
-        name: item.name,
-        colors: item.colors,
-        image: item.thumbnail
-      }))
-      const design = {
-        productCode,
-        label,
-        bumpMap,
-        flatLock: flatlock,
-        obj,
-        mtl,
-        theme_id: selectedTheme,
-        styles: [
-          {
+          return {
             name,
             image: thumbnail,
             complexity,
@@ -274,7 +282,29 @@ export class DesignerTool extends React.Component<Props, {}> {
             colors,
             inspiration: inspirationItems
           }
-        ]
+        }
+      )
+
+      const hasAllDesignThumbnail = every(designs, 'image')
+      if (!hasAllDesignThumbnail) {
+        message.error('To proceed, save design thumbnail first')
+        return
+      }
+
+      if (!productCode) {
+        message.error('Please enter a product code')
+        return
+      }
+
+      const design = {
+        productCode,
+        label,
+        bumpMap,
+        flatLock: flatlock,
+        obj,
+        mtl,
+        theme_id: selectedTheme,
+        styles: designs
       }
       await saveDesign({ variables: { design } })
       message.success('Your design is now saved')
@@ -289,6 +319,7 @@ const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 const DesignerToolEnhance = compose(
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  graphql(createThemeMutation, { name: 'createTheme' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi }

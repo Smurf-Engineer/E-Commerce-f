@@ -35,7 +35,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
-  uploadingThumbnail: number
+  uploadingThumbnail: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -56,7 +56,7 @@ interface Props {
   onUpdateStyleName: (desing: number, name: string) => void
   onSelectComplexity: (desing: number, complexity: number) => void
   onSaveThumbnail: (desing: number, item: number, image: string) => void
-  onUploadingThumbnail: (item: number) => void
+  onUploadingThumbnail: (uploading: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -152,7 +152,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             loadingModel,
             colorBlockHovered,
             onSaveThumbnail,
-            onUploadingThumbnail
+            onUploadingThumbnail,
+            uploadingThumbnail
           }}
           ref={render3D => (this.render3D = render3D)}
         />

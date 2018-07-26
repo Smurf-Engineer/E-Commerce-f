@@ -37,7 +37,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
-  uploadingThumbnail: number
+  uploadingThumbnail: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -160,7 +160,8 @@ const Tabs = ({
               onSelectComplexity,
               onUpdateStyleName,
               onSaveThumbnail,
-              uploadingThumbnail
+              uploadingThumbnail,
+              onSelectConfig
             }}
           />
         </TabPane>

@@ -135,7 +135,7 @@ export const setThumbnailAction = (
 })
 
 export const setUploadingThumbnailAction = (
-  uploadingItem: number
+  uploadingItem: boolean
 ): AnyAction => ({
   type: SET_UPLOADING_THUMBNAIL_ACTION,
   uploadingItem

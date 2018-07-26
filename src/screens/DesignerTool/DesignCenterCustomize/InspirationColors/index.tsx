@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import Divider from 'antd/lib/divider'
-import PaletteCard from '../../../../components/PaletteCard'
+import Palette from '../../../../components/DesignPalette'
 import {
   Container,
   ListContainer,
@@ -24,43 +24,41 @@ type AntdNumber = number | string | undefined
 interface Props {
   index: number
   design: DesignConfig
-  uploadingThumbnail: number
+  uploadingThumbnail: boolean
   onSelectPalette: (index: number) => void
   onSelectComplexity: (desing: number, complexity: number) => void
   onUpdateStyleName: (desing: number, name: string) => void
   onSaveThumbnail: (desing: number, item: number, colors: string[]) => void
 }
 class InspirationColors extends React.PureComponent<Props> {
-  state = {
-    uploadingThumbnail: NONE
-  }
   render() {
-    const { design } = this.props
-    const { uploadingThumbnail } = this.state
+    const { design, uploadingThumbnail } = this.props
     const {
       inspiration = [],
       colors: mainColors,
       name: designName,
+      thumbnail,
       complexity
     } = design
 
     const inspirationCount = inspiration.length
     const styleColors = (
-      <PaletteCard
+      <Palette
         name="Design Colors"
         colors={mainColors}
         id={inspirationCount}
         key={inspirationCount}
-        loading={uploadingThumbnail === DESIGN_ITEM}
+        image={thumbnail}
+        loading={uploadingThumbnail}
         buttonLabel="Save Thumbnail"
         onSelectPalette={this.handleOnSelectColors}
       />
     )
-    const list = inspiration.map(({ name, colors }, key) => (
-      <PaletteCard
+    const list = inspiration.map(({ name, colors, thumbnail: image }, key) => (
+      <Palette
         id={key}
-        {...{ key, name, colors }}
-        loading={uploadingThumbnail === key}
+        {...{ key, name, colors, image }}
+        loading={uploadingThumbnail}
         buttonLabel="Save Thumbnail"
         onSelectPalette={this.handleOnSelectPalette(key)}
       />

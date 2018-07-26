@@ -4,9 +4,10 @@
 
 import gql from 'graphql-tag'
 
+// TODO: Change to props
 export const stylesQuery = gql`
   query GetStyles {
-    styles {
+    styles(limit: 50, offset: 0) {
       fullCount
       styles {
         id

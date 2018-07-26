@@ -28,7 +28,6 @@ import {
 import { Reducer } from '../../types/common'
 
 const NONE = -1
-const NO_UPLOADING = -2
 const DESIGN_THUMBNAIL = -1
 
 export const initialState = fromJS({
@@ -49,7 +48,7 @@ export const initialState = fromJS({
   selectedStyle: NONE,
   designConfig: [],
   productCode: '',
-  uploadingThumbnail: NO_UPLOADING
+  uploadingThumbnail: false
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
