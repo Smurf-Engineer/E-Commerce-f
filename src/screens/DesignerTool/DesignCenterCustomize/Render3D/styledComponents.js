@@ -6,14 +6,18 @@ import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
+  display: flex;
+  height: 100vh;
+  overflow: auto;
   position: relative;
+  justify-content: center;
   width: calc(100% - 400px);
   background-color: #fff;
 `
 
 export const Render = styled.div`
-  width: 100%;
-  height: 100vh;
+  width: 800px;
+  height: 800px;
 `
 
 export const Progress = styled(AntdProgress)`

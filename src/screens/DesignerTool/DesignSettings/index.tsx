@@ -103,7 +103,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 selectedItem={selectedStyle}
                 onSelectItem={onSelectStyle}
                 onDeleteItem={onDeleteStyle}
-                title="SELECT DESIGN"
+                title="THEME DESIGNS"
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={styleName}
