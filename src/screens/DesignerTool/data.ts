@@ -19,3 +19,13 @@ export const uploadThumbnailMutation = gql`
     }
   }
 `
+
+export const createThemeMutation = gql`
+  mutation CreateTheme($theme: ThemeInput!) {
+    theme: createTheme(themeData: $theme) {
+      id
+      name
+      image
+    }
+  }
+`
