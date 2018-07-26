@@ -9,7 +9,6 @@ import {
   ColorButtons,
   Oval,
   Name,
-  Row,
   Info,
   Image,
   InfoContainer

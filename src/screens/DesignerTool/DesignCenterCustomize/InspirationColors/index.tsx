@@ -16,7 +16,6 @@ import {
 } from './styledComponents'
 import { DesignConfig } from '../../../../types/common'
 
-const NONE = -2
 const DESIGN_ITEM = -1
 
 type AntdNumber = number | string | undefined

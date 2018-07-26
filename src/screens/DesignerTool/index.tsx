@@ -19,8 +19,6 @@ import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
 
 const { uploadThemeImage } = designerToolApi
 
-const NONE = -2
-
 type Thumbnail = {
   style: {
     image: string
@@ -218,32 +216,19 @@ export class DesignerTool extends React.Component<Props, {}> {
         selectedTheme,
         designConfig,
         saveDesign,
-        themeName
+        themeName,
+        createTheme
       } = this.props
 
-      const { themeImage } = this.state
-      const image = await uploadThemeImage(themeImage)
-      console.log('---------------------------')
-      console.log(image)
-      console.log('---------------------------')
-
-      // if (selectedTheme >= 0) {
-      //   const { themeImage } = this.state
-      //   if (!!themeImage && !!themeName) {
-      //     const image = await uploadThemeImage(themeImage)
-      //     console.log('---------------------------')
-      //     console.log(image)
-      //     console.log('---------------------------')
-      //   } else {
-      //     // TODO: //
-      //   }
-      // }
+      if (!productCode) {
+        message.error('Please enter a product code')
+        return
+      }
 
       if (!modelConfig || !designConfig) {
         message.error('Upload model files first')
         return
       }
-
       const {
         obj,
         mtl,
@@ -291,8 +276,23 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
-      if (!productCode) {
-        message.error('Please enter a product code')
+      const { themeImage } = this.state
+      let themeResponse = null
+      const hasSelectedTheme = selectedTheme > 0
+      if (!hasSelectedTheme && !!themeImage.length && !!themeName) {
+        const responseImage = await uploadThemeImage(themeImage[0])
+        if (!!responseImage) {
+          const { image } = responseImage
+          const theme = {
+            image,
+            name: themeName
+          }
+          themeResponse = await createTheme({ variables: { theme } })
+        }
+      }
+
+      if (!themeResponse && !hasSelectedTheme) {
+        message.error('Select a theme or create new one')
         return
       }
 
