@@ -50,7 +50,9 @@ class MyPalette extends React.PureComponent<Props> {
 
   updatePaletteName = (event: React.FormEvent<HTMLInputElement>) => {
     const { onChangePaletteName } = this.props
-    const { currentTarget: { value } } = event
+    const {
+      currentTarget: { value }
+    } = event
     onChangePaletteName(value)
   }
 
@@ -153,7 +155,7 @@ class MyPalette extends React.PureComponent<Props> {
         key={id}
         onClickDelete={this.handleOnShowDeletePaletteModal}
         onSelectPalette={this.handleOnShowApplyPaletteModal}
-        {...{ id, name, colors }}
+        {...{ id, name, colors, formatMessage }}
       />
     ))
     const paletteNameToApply =

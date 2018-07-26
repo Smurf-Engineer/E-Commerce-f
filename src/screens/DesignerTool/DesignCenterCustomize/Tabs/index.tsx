@@ -56,6 +56,7 @@ interface Props {
   onUpdateStyleName: (name: string) => void
   onSelectComplexity: (complexity: number) => void
   onSaveThumbnail: (colors: string[]) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const Tabs = ({
@@ -90,7 +91,8 @@ const Tabs = ({
   onUpdateThemeName,
   onUpdateStyleName,
   onSelectComplexity,
-  onSaveThumbnail
+  onSaveThumbnail,
+  formatMessage
 }: Props) => {
   return (
     <Container>
@@ -154,7 +156,12 @@ const Tabs = ({
           <InpirationTab
             design={designConfig || {}}
             onSelectPalette={onSelectInspirationColor}
-            {...{ onSelectComplexity, onUpdateStyleName, onSaveThumbnail }}
+            {...{
+              onSelectComplexity,
+              onUpdateStyleName,
+              onSaveThumbnail,
+              formatMessage
+            }}
           />
         </TabPane>
       </AntdTabs>

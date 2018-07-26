@@ -16,7 +16,9 @@ import {
   Delete,
   TopRow,
   deleteIcon,
-  buttonStyle
+  buttonStyle,
+  MyFilesHeader,
+  DeleteText
 } from './styledComponents'
 
 interface Props {
@@ -24,51 +26,67 @@ interface Props {
   colors: string[]
   name: string
   buttonLabel?: string
-  onSelectPalette: (id: number) => void
+  myFilesList?: boolean
+  onSelectPalette?: (id: number) => void
   onClickDelete?: (index: number) => void
+  formatMessage: (messageDescriptor: any, values?: {}) => string
 }
 
-const colorsBlocks = ['Color 1', 'Color 2', 'Color 3', 'Color 4', 'Color 5']
+const { color1, color2, color3, color4, color5 } = messages
+const colorsBlocks = [color1, color2, color3, color4, color5]
 
 const PaletteCard = ({
   id,
   name,
   colors,
-  onSelectPalette,
+  myFilesList,
+  onSelectPalette = () => {},
   onClickDelete,
-  buttonLabel
+  buttonLabel,
+  formatMessage
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
   const handleOnClickDelete = () => (onClickDelete ? onClickDelete(id) : null)
   const colorButtons = colorsBlocks.map((label, index) => (
     <ColorButton
+      {...{ index, myFilesList }}
       key={index}
-      {...{ index, label }}
+      label={formatMessage(label)}
       onSelectColorBlock={() => {}}
       currentColor={colors[index]}
     />
   ))
+  const header = !myFilesList ? (
+    <Row>
+      <TopRow>
+        <Name>{name}</Name>
+        {!!onClickDelete && (
+          <Delete onClick={handleOnClickDelete}>
+            <Icon style={deleteIcon} type="minus-circle-o" />
+          </Delete>
+        )}
+      </TopRow>
+      <Button
+        onClick={handleOnSelectPalette}
+        style={buttonStyle}
+        type="primary"
+      >
+        {buttonLabel || <FormattedMessage {...messages.apply} />}
+      </Button>
+    </Row>
+  ) : (
+    <MyFilesHeader>
+      <Name {...{ myFilesList }}>{name}</Name>
+      <DeleteText onClick={handleOnClickDelete}>
+        {formatMessage(messages.delete)}
+      </DeleteText>
+    </MyFilesHeader>
+  )
   return (
     <Container>
-      <Row>
-        <TopRow>
-          <Name>{name}</Name>
-          {!!onClickDelete && (
-            <Delete onClick={handleOnClickDelete}>
-              <Icon style={deleteIcon} type="minus-circle-o" />
-            </Delete>
-          )}
-        </TopRow>
-        <Button
-          onClick={handleOnSelectPalette}
-          style={buttonStyle}
-          type="primary"
-        >
-          {buttonLabel || <FormattedMessage {...messages.apply} />}
-        </Button>
-      </Row>
-      <ColorButtons>{colorButtons}</ColorButtons>
-      <Divider />
+      {header}
+      <ColorButtons {...{ myFilesList }}>{colorButtons}</ColorButtons>
+      {!myFilesList && <Divider />}
     </Container>
   )
 }

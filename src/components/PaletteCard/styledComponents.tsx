@@ -9,10 +9,15 @@ export const Text = styled.div`
   color: #fff;
 `
 
+interface StyledProps {
+  myFilesList?: boolean
+}
 export const ColorButtons = styled.div`
-  padding: 14px 32px 0px 32px;
+  padding: ${({ myFilesList }: StyledProps) =>
+    !myFilesList ? '14px 32px 0px 32px' : '14px 0'};
   display: flex;
-  justify-content: space-around;
+  justify-content: ${({ myFilesList }: StyledProps) =>
+    !myFilesList ? 'space-around' : 'space-between'};
 `
 
 export const Name = styled.div`
@@ -20,6 +25,8 @@ export const Name = styled.div`
   font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
+  ${({ myFilesList }: StyledProps) =>
+    !myFilesList ? '' : 'font-weight: 600;'};
 `
 
 export const Row = styled.div`
@@ -50,3 +57,18 @@ export const buttonStyle = {
   backgroundColor: '#4185DE',
   borderColor: '#4185DE'
 }
+
+export const MyFilesHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 24px 0;
+`
+
+export const DeleteText = styled.div`
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  cursor: pointer;
+`

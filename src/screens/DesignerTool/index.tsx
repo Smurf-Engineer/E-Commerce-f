@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import CustomizeTab from './DesignCenterCustomize'
 import { saveDesignMutation, uploadThumbnailMutation } from './data'
 import * as designerToolActions from './actions'
@@ -11,6 +12,7 @@ import * as designerToolApi from './api'
 import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
 
 interface Props {
+  intl: InjectedIntl
   designConfig: DesignConfig
   colors: string[]
   styleColors: string[]
@@ -55,6 +57,7 @@ export class DesignerTool extends React.Component<Props, {}> {
   }
   render() {
     const {
+      intl: { formatMessage },
       colors,
       colorBlock,
       colorBlockHovered,
@@ -99,7 +102,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           selectedStyle,
           productCode,
           themeName,
-          styleName
+          styleName,
+          formatMessage
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -164,6 +168,7 @@ export class DesignerTool extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 
 const DesignerToolEnhance = compose(
+  injectIntl,
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   connect(

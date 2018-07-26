@@ -24,12 +24,14 @@ interface Props {
   onSelectComplexity: (complexity: number) => void
   onUpdateStyleName: (name: string) => void
   onSaveThumbnail: (colors: string[]) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 const InspirationColors = ({
   design,
   onSelectComplexity,
   onUpdateStyleName,
-  onSaveThumbnail
+  onSaveThumbnail,
+  formatMessage
 }: Props) => {
   const {
     inspiration = [],
@@ -65,6 +67,7 @@ const InspirationColors = ({
       key={inspirationCount}
       onSelectPalette={handleOnSelectColors}
       buttonLabel="THUMBNAIL"
+      {...{ formatMessage }}
     />
   )
   const list = inspiration.map(({ name, colors }, index) => (
@@ -74,6 +77,7 @@ const InspirationColors = ({
       {...{ name, colors }}
       buttonLabel="THUMBNAIL"
       onSelectPalette={handleOnSelectPalette(index)}
+      {...{ formatMessage }}
     />
   ))
   return !!inspirationCount ? (

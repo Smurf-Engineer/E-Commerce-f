@@ -55,6 +55,7 @@ interface Props {
   onUpdateStyleName: (name: string) => void
   onSelectComplexity: (complexity: number) => void
   onSaveThumbnail: (image: string) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -95,7 +96,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUpdateThemeName,
       onUpdateStyleName,
       onSelectComplexity,
-      onSaveThumbnail
+      onSaveThumbnail,
+      formatMessage
     } = this.props
 
     return (
@@ -130,7 +132,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             styleName,
             onUpdateThemeName,
             onUpdateStyleName,
-            onSelectComplexity
+            onSelectComplexity,
+            formatMessage
           }}
           onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}
