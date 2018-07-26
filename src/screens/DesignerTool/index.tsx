@@ -213,14 +213,14 @@ export class DesignerTool extends React.Component<Props, {}> {
       const { name, complexity, thumbnail, colors, inspiration } = designConfig
 
       if (!thumbnail) {
-        message.error('Save design thumbnail first')
+        message.error('To proceed, save design thumbnail first')
         return
       }
 
       const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
 
       if (!hasAllInspirationThumbnail) {
-        message.error('Missing inspiration thumbnail')
+        message.error('Unable to find one or more Inspiration Thumbnails')
         return
       }
 
@@ -261,7 +261,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         ]
       }
       await saveDesign({ variables: { design } })
-      message.success('Design saved')
+      message.success('Your design is now saved')
     } catch (e) {
       console.error(e)
     }
