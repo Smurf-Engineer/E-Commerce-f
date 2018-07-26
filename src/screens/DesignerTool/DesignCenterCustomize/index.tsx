@@ -35,6 +35,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
+  uploadingThumbnail: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -54,7 +55,8 @@ interface Props {
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (name: string) => void
   onSelectComplexity: (complexity: number) => void
-  onSaveThumbnail: (image: string) => void
+  onSaveThumbnail: (desing: number, image: string) => void
+  onUploadingThumbnail: (item: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -92,10 +94,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       data,
       themeName,
       styleName,
+      uploadingThumbnail,
       onUpdateThemeName,
       onUpdateStyleName,
       onSelectComplexity,
-      onSaveThumbnail
+      onSaveThumbnail,
+      onUploadingThumbnail
     } = this.props
 
     return (
@@ -130,7 +134,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             styleName,
             onUpdateThemeName,
             onUpdateStyleName,
-            onSelectComplexity
+            onSelectComplexity,
+            uploadingThumbnail
           }}
           onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}
@@ -146,7 +151,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             designConfig,
             loadingModel,
             colorBlockHovered,
-            onSaveThumbnail
+            onSaveThumbnail,
+            onUploadingThumbnail
           }}
           ref={render3D => (this.render3D = render3D)}
         />
@@ -154,9 +160,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
   }
 
-  handleOnSaveThumbnail = (colors: string[]) => {
+  handleOnSaveThumbnail = (index: number, colors: string[]) => {
     if (this.render3D) {
-      this.render3D.saveThumbnail(colors)
+      this.render3D.saveThumbnail(index, colors)
     }
   }
 }

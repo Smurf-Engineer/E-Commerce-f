@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const saveDesignMutation = gql`
-  mutation SaveStyle($style: StyleCreation!) {
-    newProductStyles(styleCreationData: $style) {
+  mutation SaveStyle($design: StyleCreation!) {
+    design: newProductStyles(styleCreationData: $design) {
       message
     }
   }
@@ -14,7 +14,7 @@ export const saveDesignMutation = gql`
 
 export const uploadThumbnailMutation = gql`
   mutation SaveStyleImage($image: String!) {
-    saveStyleImage(image: $image) {
+    style: saveStyleImage(image: $image) {
       image
     }
   }

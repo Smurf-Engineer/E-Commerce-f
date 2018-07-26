@@ -62,13 +62,12 @@ class DesignForm extends React.PureComponent<Props, State> {
     } = this.props
     const { isEditing } = this.state
 
-    const list = items.map(({ name }, index) => (
+    const list = items.map(({ id, name }, index) => (
       <DesignItem
-        id={index}
         key={index}
-        selected={index === selectedItem}
+        selected={id === selectedItem}
         onSelectItem={this.handleOnSelectItem}
-        {...{ name, onDeleteItem }}
+        {...{ id, name, onDeleteItem }}
       />
     ))
 

@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
-import reverse from 'lodash/reverse'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
@@ -19,13 +18,9 @@ import {
   QuickView,
   Button,
   DragText,
-  ModelType,
-  ModelText,
   ViewControls,
   ViewButton,
-  LoadingContainer,
   ButtonWrapper,
-  CanvasContainer,
   ModalMessage
 } from './styledComponents'
 import {
@@ -55,7 +50,6 @@ import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
-const { Item } = Menu
 
 const CANVAS_SIZE = 2048
 
