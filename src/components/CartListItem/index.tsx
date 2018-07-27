@@ -19,8 +19,7 @@ import {
   DeleteItem,
   BottomDivider,
   FooterItem,
-  HeaderPriceDetailEmpty,
-  ReorderButton
+  HeaderPriceDetailEmpty
 } from './styledComponents'
 import get from 'lodash/get'
 import CartListItemTable from '../../components/CartListItemTable'
@@ -33,6 +32,7 @@ import {
 import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
 import { FormattedMessage } from 'react-intl'
+import AddToCartButton from '../AddToCartButton'
 
 interface CartItems {
   product: Product
@@ -182,8 +182,7 @@ class CartListItem extends React.Component<Props, {}> {
       setDetailFit = () => {},
       setDetailGender = () => {},
       setDetailSize = () => {},
-      removeItem = () => {},
-      onClickReorder = () => {}
+      removeItem = () => {}
     } = this.props
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -280,9 +279,22 @@ class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  <ReorderButton onClick={onClickReorder} show={canReorder}>
-                    {formatMessage(cartListItemMsgs.reorder)}
-                  </ReorderButton>
+                  {canReorder ? (
+                    <AddToCartButton
+                      label={formatMessage(cartListItemMsgs.reorder)}
+                      renderForThumbnail={false}
+                      item={cartItem}
+                      {...{ formatMessage }}
+                      withoutTop={true}
+                      designId={cartItem.designId}
+                      designName={cartItem.designName}
+                      designImage={cartItem.designImage}
+                      myLockerList={false}
+                      itemProdPage={true}
+                      orderDetails={true}
+                      onClick={() => true}
+                    />
+                  ) : null}
                 </ItemDetails>
               </Container>
             )

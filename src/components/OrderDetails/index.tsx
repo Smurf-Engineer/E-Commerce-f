@@ -129,7 +129,6 @@ class OrderDetails extends React.Component<Props, {}> {
               itemIndex={index}
               onlyRead={true}
               canReorder={true}
-              onClickReorder={this.handleOnClickReorder}
             />
           )
         })

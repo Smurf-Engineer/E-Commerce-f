@@ -4,7 +4,10 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export const Text = styled.div`
   color: #fff;
@@ -60,6 +63,11 @@ export const CustomizeButton = styled.div`
     width: 100%;
   }
 `
+
+interface Prop {
+  individual?: boolean
+}
+
 export const ReorderButton = styled.button`
   align-self: flex-end;
   background-color: #4a90e2;
@@ -71,5 +79,5 @@ export const ReorderButton = styled.button`
   line-height: 22px;
   padding: 9px;
   text-align: center;
-  width: 145px;
+  width: ${(props: Prop) => (props.individual ? '93px' : '145px')};
 `

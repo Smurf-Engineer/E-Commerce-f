@@ -51,6 +51,7 @@ interface Props {
 export class AddToCartButton extends React.PureComponent<Props, {}> {
   render() {
     const {
+      item,
       label,
       renderForThumbnail,
       withoutTop,
@@ -65,7 +66,12 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     ) : (
       <Container>
         {orderDetails ? (
-          <ReorderButton onClick={this.addToCart}>{label}</ReorderButton>
+          <ReorderButton
+            individual={item ? true : false}
+            onClick={this.addToCart}
+          >
+            {label}
+          </ReorderButton>
         ) : (
           <StyledButton onClick={this.addToCart}>{label}</StyledButton>
         )}
