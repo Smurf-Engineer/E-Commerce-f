@@ -268,6 +268,23 @@ class CartListItem extends React.Component<Props, {}> {
       </ItemDetailsHeader>
     )
 
+    const renderAddToCartButton = (
+      <AddToCartButton
+        label={formatMessage(cartListItemMsgs.reorder)}
+        renderForThumbnail={false}
+        item={cartItem}
+        {...{ formatMessage }}
+        withoutTop={true}
+        designId={cartItem.designId}
+        designName={cartItem.designName}
+        designImage={cartItem.designImage}
+        myLockerList={false}
+        itemProdPage={true}
+        orderDetails={true}
+        onClick={() => true}
+      />
+    )
+
     const renderView = (
       <MediaQuery minWidth={'481px'}>
         {matches => {
@@ -279,22 +296,7 @@ class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {canReorder ? (
-                    <AddToCartButton
-                      label={formatMessage(cartListItemMsgs.reorder)}
-                      renderForThumbnail={false}
-                      item={cartItem}
-                      {...{ formatMessage }}
-                      withoutTop={true}
-                      designId={cartItem.designId}
-                      designName={cartItem.designName}
-                      designImage={cartItem.designImage}
-                      myLockerList={false}
-                      itemProdPage={true}
-                      orderDetails={true}
-                      onClick={() => true}
-                    />
-                  ) : null}
+                  {canReorder ? renderAddToCartButton : null}
                 </ItemDetails>
               </Container>
             )
@@ -308,6 +310,7 @@ class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
+                  {canReorder ? renderAddToCartButton : null}
                 </div>
               </Container>
             )

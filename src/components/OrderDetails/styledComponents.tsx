@@ -29,7 +29,9 @@ export const Div = styled.div`
   padding-right: 34px;
 
   @media (max-width: 768px) and (min-width: 320px) {
+    align-items: center;
     margin-bottom: 24px;
+    padding-right: 0px;
   }
 `
 export const ScreenTitle = styled.div`
@@ -55,8 +57,17 @@ export const OrderInfo = styled.div`
   justify-content: space-between;
   margin-top: 42px;
   padding-right: 34px;
+
+  @media (max-width: 550px) and (min-width: 320px) {
+    display: block;
+    padding-right: 0px;
+  }
 `
-export const OrderDelivery = styled.div``
+export const OrderDelivery = styled.div`
+  @media (max-width: 963px) and (min-width: 551px) {
+    width: 50%;
+  }
+`
 export const DeliveryDate = styled.div`
   color: #5f6062;
   font-family: 'Avenir Next';
@@ -64,6 +75,18 @@ export const DeliveryDate = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+
+  @media (max-width: 768px) and (min-width: 320px) {
+    display: flex;
+    justify-content: space-between;
+  }
+`
+export const DeliveryInfo = styled.div`
+  @media (max-width: 963px) and (min-width: 320px) {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
 `
 export const DeliveryLabels = styled.div`
   color: #5f6062;
@@ -79,7 +102,7 @@ export const DeliveryLabels = styled.div`
 export const DeliveryLabel = styled.div`
   margin-top: 12px;
 `
-export const DeliveryInfo = styled.div`
+export const DeliveryData = styled.div`
   color: #5f6062;
   display: inline-block;
   font-family: 'Avenir Next';
@@ -89,6 +112,11 @@ export const DeliveryInfo = styled.div`
   margin-left: 110px;
   margin-top: 10px;
   width: 220px;
+
+  @media (max-width: 963px) and (min-width: 320px) {
+    margin-left: 9%;
+    width: 100px;
+  }
 `
 export const Info = styled.div`
   height: 22px;
@@ -96,10 +124,19 @@ export const Info = styled.div`
 `
 export const OrderSummaryContainer = styled.div`
   width: 222px;
+
+  @media (max-width: 550px) and (min-width: 320px) {
+    margin-top: 50px;
+    width: 100%;
+  }
 `
 export const Items = styled.div`
   margin-top: 40px;
   padding-right: 34px;
+
+  @media (max-width: 550px) and (min-width: 320px) {
+    padding-right: 0px;
+  }
 `
 export const TitleStyled = styled.div`
   color: #5f6062;
@@ -118,6 +155,13 @@ export const ShippingBillingContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 40px 10% 126px 0;
+
+  @media (max-width: 425px) and (min-width: 320px) {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-bottom: 58px;
+    margin-right: 0px;
+  }
 `
 export const SubTitle = styled.div`
   color: #5f6062;

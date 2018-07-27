@@ -71,6 +71,7 @@ interface Prop {
 export const ReorderButton = styled.button`
   align-self: flex-end;
   background-color: #4a90e2;
+  border-radius: 2px;
   color: #ffffff;
   cursor: pointer;
   font-family: 'Avenir Next';
@@ -80,4 +81,9 @@ export const ReorderButton = styled.button`
   padding: 9px;
   text-align: center;
   width: ${(props: Prop) => (props.individual ? '93px' : '145px')};
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-top: ${(props: Prop) => (props.individual ? '5px' : '0px')};
+    width: ${(props: Prop) => (props.individual ? '139px' : '145px')};
+  }
 `

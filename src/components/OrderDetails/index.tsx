@@ -18,9 +18,10 @@ import {
   OrderInfo,
   OrderDelivery,
   DeliveryDate,
+  DeliveryInfo,
   DeliveryLabels,
   DeliveryLabel,
-  DeliveryInfo,
+  DeliveryData,
   Info,
   OrderSummaryContainer,
   Items,
@@ -179,21 +180,25 @@ class OrderDetails extends React.Component<Props, {}> {
               {`    ${orderStatus.deliveryDate ? orderStatus.deliveryDate : '-'}
               `}
             </DeliveryDate>
-            <DeliveryLabels>
-              <DeliveryLabel>
-                {formatMessage(messages.orderNumber)}
-              </DeliveryLabel>
-              <DeliveryLabel>{formatMessage(messages.orderDate)}</DeliveryLabel>
-              <DeliveryLabel>
-                {formatMessage(messages.trackingNumber)}
-              </DeliveryLabel>
-              <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
-            </DeliveryLabels>
             <DeliveryInfo>
-              <Info>{shortId}</Info>
-              <Info>{orderDate}</Info>
-              <Info>-</Info>
-              <Info>{status}</Info>
+              <DeliveryLabels>
+                <DeliveryLabel>
+                  {formatMessage(messages.orderNumber)}
+                </DeliveryLabel>
+                <DeliveryLabel>
+                  {formatMessage(messages.orderDate)}
+                </DeliveryLabel>
+                <DeliveryLabel>
+                  {formatMessage(messages.trackingNumber)}
+                </DeliveryLabel>
+                <DeliveryLabel>{formatMessage(messages.status)}</DeliveryLabel>
+              </DeliveryLabels>
+              <DeliveryData>
+                <Info>{shortId}</Info>
+                <Info>{orderDate}</Info>
+                <Info>-</Info>
+                <Info>{status}</Info>
+              </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
           <OrderSummaryContainer>
@@ -277,10 +282,6 @@ class OrderDetails extends React.Component<Props, {}> {
 
   handleOnClickReceipt = () => {
     // TODO: Implement action for Receipt button.
-  }
-
-  handleOnClickReorder = () => {
-    // TODO: Implement action for Reorder button.
   }
 }
 

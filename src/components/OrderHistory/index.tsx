@@ -36,7 +36,10 @@ class OrderHistory extends React.Component<Props, {}> {
     const { currentPage, orderBy, sort, formatMessage, orderId } = this.props
 
     return (
-      <SwipeableViews index={orderId.length > 0 ? 1 : 0}>
+      <SwipeableViews
+        onChangeIndex={this.handleOnChangeIndex}
+        index={orderId.length > 0 ? 1 : 0}
+      >
         <Container>
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
@@ -55,6 +58,12 @@ class OrderHistory extends React.Component<Props, {}> {
         />
       </SwipeableViews>
     )
+  }
+
+  handleOnChangeIndex = (index: number, indexLatest: number) => {
+    if (index === 0) {
+      this.handleOnOrderClick('')
+    }
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {
