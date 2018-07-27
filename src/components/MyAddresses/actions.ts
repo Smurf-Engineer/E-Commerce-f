@@ -14,7 +14,8 @@ import {
   SET_MODAL_LOADING,
   SET_DELETE_LOADING,
   RESET_REDUCER_DATA,
-  SET_ADDRESS_UPDATE
+  SET_ADDRESS_UPDATE,
+  SET_SKIP_VALUE
 } from './constants'
 import { AnyAction, AddressType } from '../../types/common'
 
@@ -83,4 +84,13 @@ export const resetReducerDataAction = (): AnyAction => ({
 export const setAddressToUpdateAction = (address: AddressType): AnyAction => ({
   type: SET_ADDRESS_UPDATE,
   address
+})
+
+export const setSkipValueAction = (
+  skip: number,
+  currentPage: number
+): AnyAction => ({
+  type: SET_SKIP_VALUE,
+  skip,
+  currentPage
 })

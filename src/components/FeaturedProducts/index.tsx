@@ -4,7 +4,7 @@
 import * as React from 'react'
 
 import { compose, graphql } from 'react-apollo'
-
+import get from 'lodash/get'
 import Caroussel from 'react-slick'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
@@ -21,7 +21,12 @@ import ProductThumbnail from '../ProductThumbnail'
 import AddToCartButton from '../AddToCartButton'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import { ProductType, QueryProps, DesignType } from '../../types/common'
+import {
+  ProductType,
+  QueryProps,
+  DesignType,
+  Product
+} from '../../types/common'
 
 interface Data extends QueryProps {
   featuredProducts: ProductType
@@ -99,10 +104,11 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       )
     }
 
+    const productList: Product[] = get(featuredProducts, 'products', [])
     let featuredList
 
     if (!loading) {
-      featuredList = featuredProducts.products.map((product, key) => {
+      featuredList = productList.map((product, key) => {
         return (
           <div {...{ key }}>
             <ProductThumbnail

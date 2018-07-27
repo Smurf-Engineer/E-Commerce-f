@@ -158,7 +158,7 @@ class CartListItemTable extends React.Component<Props, {}> {
       typeof window !== 'undefined' &&
       window.matchMedia('(max-width: 425px').matches
     ) {
-      genderSelectWidth = '100px'
+      genderSelectWidth = '90px'
       fitSelectWidth = '71px'
     }
 

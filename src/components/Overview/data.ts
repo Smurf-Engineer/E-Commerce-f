@@ -22,18 +22,21 @@ export const overviewQuery = gql`
         }
       }
     }
-    addresses: getUserAddresses {
-      firstName: first_name
-      lastName: last_name
-      street
-      apartment
-      country
-      stateProvince: state_province
-      city
-      zipCode: zip_code
-      phone
-      defaultBilling: default_billing
-      defaultShipping: default_shipping
+    address: getUserAddresses(limit: 1, offset: 0) {
+      fullCount
+      addresses {
+        firstName: first_name
+        lastName: last_name
+        street
+        apartment
+        country
+        stateProvince: state_province
+        city
+        zipCode: zip_code
+        phone
+        defaultBilling: default_billing
+        defaultShipping: default_shipping
+      }
     }
     payment: getUserCards {
       cards {

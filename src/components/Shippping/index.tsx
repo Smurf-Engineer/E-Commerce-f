@@ -1,29 +1,30 @@
 /**
  * Shippping Component - Created by cazarez on 07/05/18.
  */
+
+// TODO: REMOVE COMENTED CODE AFTER TEST
 import * as React from 'react'
-import { compose, graphql } from 'react-apollo'
 import AnimateHeight from 'react-animate-height'
+import Modal from 'antd/lib/modal'
+
 import messages from './messages'
-import { GetAddressListQuery } from './data'
-import { Container, Title } from './styledComponents'
+// TODO uncomment ViewAllAddresses when flow for addresses modal gets defined
+import { Container, Title /* ViewAllAddresses */ } from './styledComponents'
 
 import MyAddresses from '../MyAddressesList'
 import ShippingAddressForm from '../ShippingAddressForm'
 
-import { QueryProps, AddressType, ClickParam } from '../../types/common'
-
-interface Data extends QueryProps {
-  userAddresses: AddressType[]
-}
+import { AddressType, ClickParam } from '../../types/common'
 
 interface Props {
-  data: Data
   shippingAddress: AddressType
   hasError: boolean
   showForm: boolean
   indexAddressSelected: number
   showContent: boolean
+  skip: number
+  limit: number
+  currentPage: number
   formatMessage: (messageDescriptor: any) => string
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
@@ -31,10 +32,13 @@ interface Props {
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
   setSelectedAddress: (address: AddressType, indexAddress: number) => void
+  openAddressesModalAction: (open: boolean) => void
+  setSkipValueAction: (skip: number, currentPage: number) => void
   buttonToRender: React.ReactNode
+  openAddressesModal: boolean
 }
 
-export class Shippping extends React.PureComponent<Props, {}> {
+export class Shipping extends React.PureComponent<Props, {}> {
   render() {
     const {
       showContent,
@@ -55,20 +59,19 @@ export class Shippping extends React.PureComponent<Props, {}> {
       showForm,
       selectDropdownAction,
       inputChangeAction,
-      data: { loading, userAddresses },
+      setSelectedAddress,
       indexAddressSelected,
-      buttonToRender
+      buttonToRender,
+      openAddressesModal,
+      skip,
+      currentPage
     } = this.props
-
-    if (loading) {
-      return null
-    }
 
     if (!showContent) {
       return <div />
     }
 
-    // TODO: uncomment if needed
+    // TODO: uncomment when needed
     // const shippingMethod = (
     //   <ShippingMethodContainer>
     //     <Title>{'Shipping Method'}</Title>
@@ -90,22 +93,53 @@ export class Shippping extends React.PureComponent<Props, {}> {
     //   </ShippingMethodContainer>
     // )
 
-    return (
-      <Container>
+    // TODO: UNCOMENT WHEN FLOW FOR ADDRESSES GETS PROPERLY DEFINED
+    // let addressesToShow = undefined
+    // if (typeof window !== 'undefined') {
+    //   addressesToShow = window.matchMedia('(max-width: 768px)').matches ? 2 : 4
+    // }
+
+    const renderAddresses = (
+      adressesToShow?: number | null,
+      renderInModal?: boolean,
+      withPagination = false
+    ) => {
+      return (
         <MyAddresses
           formatMessage={formatMessage}
-          items={userAddresses}
-          selectAddressAction={this.handleOnSelectAddress}
-          {...{ showAddressFormAction, showForm, indexAddressSelected }}
+          itemsNumber={adressesToShow}
+          selectAddressAction={setSelectedAddress}
+          renderForModal={renderInModal}
+          changePage={this.handlechangePage}
+          {...{
+            withPagination,
+            showAddressFormAction,
+            showForm,
+            indexAddressSelected,
+            currentPage,
+            skip
+          }}
         />
-        <AnimateHeight
-          duration={500}
-          height={
-            (userAddresses && userAddresses.length === 0) || showForm
-              ? 'auto'
-              : 0
-          }
+      )
+    }
+
+    return (
+      <Container>
+        <Modal
+          visible={openAddressesModal}
+          closable={false}
+          onCancel={this.handleOpenModalAddresses}
+          width={1000}
         >
+          {renderAddresses(10, true, true)}
+        </Modal>
+        {/* TODO: UNCOMMENT UNTIL FLOW GETS PROPERLY DEFINED
+        <ViewAllAddresses onClick={this.handleOpenModalAddresses}>
+          {formatMessage(messages.seeAllAddressesLabel)}
+          <Icon type="right" />
+        </ViewAllAddresses> */}
+        {renderAddresses(4, false, false)}
+        <AnimateHeight duration={500} height={showForm ? 'auto' : 0}>
           <Title>{formatMessage(messages.title)}</Title>
           <ShippingAddressForm
             {...{
@@ -142,6 +176,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
     if (value && (id === 'zipCode' || id === 'phone') && !isNumber) {
       return
     }
+
     inputChangeAction(id, value)
   }
 
@@ -153,6 +188,7 @@ export class Shippping extends React.PureComponent<Props, {}> {
         props: { id }
       }
     } = param
+
     selectDropdownAction(id, key)
   }
 
@@ -174,21 +210,16 @@ export class Shippping extends React.PureComponent<Props, {}> {
     emailCheckAction(checked)
   }
 
-  handleOnSelectAddress = (index: number) => {
-    const {
-      setSelectedAddress,
-      data: { userAddresses }
-    } = this.props
-    const address = userAddresses[index]
-    setSelectedAddress(address, index)
+  handleOpenModalAddresses = () => {
+    const { openAddressesModalAction, openAddressesModal } = this.props
+
+    openAddressesModalAction(!openAddressesModal)
+  }
+
+  handlechangePage = (pageNumber: number) => {
+    const { setSkipValueAction, limit } = this.props
+    const skip = (pageNumber - 1) * limit
+    setSkipValueAction(skip, pageNumber)
   }
 }
-
-const ShippingEnhaced = compose(
-  graphql(GetAddressListQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    }
-  })
-)(Shippping)
-export default ShippingEnhaced
+export default Shipping
