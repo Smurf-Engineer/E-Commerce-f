@@ -25,7 +25,6 @@ import {
   OrderSummaryContainer,
   Items,
   TitleStyled,
-  ReorderButton,
   CartList,
   ShippingBillingContainer,
   SubTitle,
@@ -42,6 +41,7 @@ import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
+import AddToCartButton from '../AddToCartButton'
 
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
@@ -211,9 +211,17 @@ class OrderDetails extends React.Component<Props, {}> {
         <Items>
           <TitleStyled>
             {formatMessage(messages.items)}
-            <ReorderButton onClick={this.handleOnClickReorderAll}>
-              {formatMessage(messages.reorderAll)}
-            </ReorderButton>
+            <AddToCartButton
+              label={formatMessage(messages.reorderAll)}
+              renderForThumbnail={false}
+              items={cart}
+              {...{ formatMessage }}
+              withoutTop={true}
+              myLockerList={false}
+              itemProdPage={true}
+              orderDetails={true}
+              onClick={() => true}
+            />
           </TitleStyled>
           <CartList>{renderItemList}</CartList>
         </Items>
@@ -274,10 +282,6 @@ class OrderDetails extends React.Component<Props, {}> {
 
   handleOnClickReorder = () => {
     // TODO: Implement action for Reorder button.
-  }
-
-  handleOnClickReorderAll = () => {
-    // TODO: Implement action for Reorder all items button.
   }
 }
 

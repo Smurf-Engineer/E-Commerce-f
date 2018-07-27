@@ -111,19 +111,6 @@ export const TitleStyled = styled.div`
   line-height: 22px;
   margin-bottom: 24px;
 `
-export const ReorderButton = styled.button`
-  align-self: flex-end;
-  background-color: #4a90e2;
-  color: #ffffff;
-  cursor: pointer;
-  font-family: 'Avenir Next';
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  padding: 9px;
-  text-align: center;
-  width: 145px;
-`
 export const CartList = styled.ul`
   padding: 0;
 `

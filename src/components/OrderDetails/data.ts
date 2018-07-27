@@ -65,9 +65,35 @@ export const getOrderQuery = gql`
         product {
           id
           name
+          type: name
+          yotpoId: yotpo_id
           shortDescription: short_description
+          description
+          genders {
+            id
+            name: gender
+          }
+          sizeRange: size_range {
+            id
+            name
+          }
+          fitStyles {
+            id
+            name: description
+            info
+            image
+          }
+          collections
+          isTopProduct
           images: pictures {
             front: front_image
+            back: back_image
+            left: left_image
+            right: right_image
+          }
+          priceRange {
+            quantity
+            price
           }
         }
         itemDetails {
