@@ -2,16 +2,30 @@
  * ImageItem Component - Created by miguelcanobbio on 25/07/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container } from './styledComponents'
+import { Container, Image, Bottom, Name, Delete } from './styledComponents'
+import { ImageFile } from '../../../types/common'
 
-interface Props {}
+interface Props {
+  image: ImageFile
+  formatMessage: (messageDescriptor: any) => string
+  onClickDelete: (id: number) => void
+}
 
-const ImageItem = (props: Props) => {
+const ImageItem = ({
+  image: { id, fileUrl },
+  formatMessage,
+  onClickDelete
+}: Props) => {
+  const onDelete = () => onClickDelete(id)
+  const name = fileUrl.split('/').pop()
   return (
     <Container>
-      <FormattedMessage {...messages.title} />
+      <Image src={fileUrl} />
+      <Bottom>
+        <Name>{name}</Name>
+        <Delete onClick={onDelete}>{formatMessage(messages.delete)}</Delete>
+      </Bottom>
     </Container>
   )
 }

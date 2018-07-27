@@ -654,3 +654,8 @@ export interface DesignItem {
   id: number
   name: string
 }
+
+export interface ImageFile {
+  id: number
+  fileUrl: string
+}

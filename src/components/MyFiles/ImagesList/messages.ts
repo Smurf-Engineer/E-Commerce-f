@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.ImagesList.tittle',
-    defaultMessage: 'ImagesList'
+  emptyImages: {
+    id: 'components.ImagesList.emptyImages',
+    defaultMessage: 'No images, yet'
   }
 })

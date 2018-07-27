@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.ImageItem.tittle',
-    defaultMessage: 'ImageItem'
+  delete: {
+    id: 'components.ImageItem.delete',
+    defaultMessage: 'Delete'
   }
 })

@@ -12,8 +12,6 @@ import {
   Container,
   Message,
   Subtitle,
-  EmptyContainer,
-  EmptyMessage,
   VerticalDivider,
   ModalMessage
 } from './styledComponents'
@@ -21,6 +19,7 @@ import { Palette } from '../../types/common'
 import PalettesList from './PalettesList'
 import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
+import ImagesList from './ImagesList'
 
 interface Props {
   history: any
@@ -69,9 +68,10 @@ class MyFiles extends React.Component<Props, {}> {
     hideDeletePaletteConfirmAction()
   }
 
-  handleOnShowDeleteImageModal = (index: number) => {
+  handleOnShowDeleteImageModal = (id: number) => {
+    console.log(id, 'id To Delete')
     const { showDeleteImageConfirmAction } = this.props
-    showDeleteImageConfirmAction(index)
+    showDeleteImageConfirmAction(id)
   }
 
   hideDeleteImageModal = () => {
@@ -107,9 +107,10 @@ class MyFiles extends React.Component<Props, {}> {
         />
         <VerticalDivider />
         <Subtitle>{formatMessage(messages.uploadedImages)}</Subtitle>
-        <EmptyContainer>
-          <EmptyMessage>{formatMessage(messages.emptyImages)}</EmptyMessage>
-        </EmptyContainer>
+        <ImagesList
+          {...{ formatMessage }}
+          onClickDelete={this.handleOnShowDeleteImageModal}
+        />
         <Modal
           visible={showDeletePaletteConfirm}
           title={<ModalTitle title={formatMessage(messages.modalTitle)} />}

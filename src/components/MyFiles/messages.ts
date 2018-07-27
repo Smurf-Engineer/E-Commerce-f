@@ -23,10 +23,6 @@ export default defineMessages({
     id: 'components.MyFiles.uploadedImages',
     defaultMessage: 'Uploaded Images'
   },
-  emptyImages: {
-    id: 'components.MyFiles.emptyImages',
-    defaultMessage: 'No images, yet'
-  },
   modalTitle: {
     id: 'components.MyFiles.modalTitle',
     defaultMessage: 'ARE YOU SURE?'
