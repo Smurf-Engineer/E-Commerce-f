@@ -22,9 +22,13 @@ import {
   SET_LOADING_PLACE_ORDER,
   RESET_DATA,
   SET_PAYMENT_METHOD,
-  SAVE_COUNTRY
+  SAVE_COUNTRY,
+  OPEN_ADDRESSES_MODAL,
+  SET_SKIP_VALUE
 } from './constants'
 import { Reducer } from '../../types/common'
+
+const ADDRESSES_TO_SHOW = 10
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
@@ -44,6 +48,9 @@ export const initialState = fromJS({
   emailCheck: false,
   smsCheck: false,
   showForm: false,
+  skip: 0,
+  currentPage: 1,
+  limit: ADDRESSES_TO_SHOW,
   // Billing
   billingFirstName: '',
   billingLastName: '',
@@ -66,7 +73,8 @@ export const initialState = fromJS({
   // Review
   loadingPlaceOrder: false,
   paymentMethod: 'credit card',
-  countryId: null
+  countryId: null,
+  openAddressesModal: false
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -153,6 +161,11 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('showForm', false)
     }
+    case SET_SKIP_VALUE:
+      return state.merge({
+        skip: action.skip,
+        currentPage: action.currentPage
+      })
 
     case SET_LOADING_BILLING:
       return state.set('loadingBilling', action.loading)
@@ -176,6 +189,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('paymentMethod', action.method)
     case SAVE_COUNTRY:
       return state.set('countryId', action.countryId)
+    case OPEN_ADDRESSES_MODAL:
+      return state.set('openAddressesModal', action.open)
     default:
       return state
   }

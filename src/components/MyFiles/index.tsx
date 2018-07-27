@@ -69,7 +69,6 @@ class MyFiles extends React.Component<Props, {}> {
   }
 
   handleOnShowDeleteImageModal = (id: number) => {
-    console.log(id, 'id To Delete')
     const { showDeleteImageConfirmAction } = this.props
     showDeleteImageConfirmAction(id)
   }

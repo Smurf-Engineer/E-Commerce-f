@@ -5,9 +5,7 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
 
-export const Container = styled.div`
-  margin-right: 10%;
-`
+export const Container = styled.div``
 
 export const Text = styled.div`
   color: #5f6062;

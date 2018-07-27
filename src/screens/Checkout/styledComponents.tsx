@@ -3,7 +3,6 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import Steps from 'antd/lib/steps'
 
 const primaryColor = '#4a90e2'
 
@@ -136,7 +135,12 @@ interface StepProps {
   clickable: boolean
 }
 
-export const Step = styled(Steps.Step)`
+export const StepIcon = styled.div`
+  background-color: #4a90e2;
+  color: #fff;
+  width: 32px;
+  border-radius: 50%;
+  font-size: 14px;
   cursor: ${({ clickable }: StepProps) => (clickable ? 'pointer' : 'default')};
 `
 

@@ -16,3 +16,4 @@ export const SET_MODAL_LOADING = `${namespace}/SET_MODAL_LOADING`
 export const SET_DELETE_LOADING = `${namespace}/SET_DELETE_LOADING`
 export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`
 export const SET_ADDRESS_UPDATE = `${namespace}/SET_ADDRESS_UPDATE`
+export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
