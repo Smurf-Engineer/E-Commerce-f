@@ -43,6 +43,7 @@ export const Button = styled.button`
   background-color: #4a90e2;
   border-radius: 2px;
   color: #ffffff;
+  cursor: pointer;
   font-size: 16px;
   height: 40px;
   letter-spacing: 0.11px;
@@ -102,12 +103,26 @@ export const Items = styled.div`
 `
 export const TitleStyled = styled.div`
   color: #5f6062;
+  display: flex;
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
+  justify-content: space-between;
   line-height: 22px;
   margin-bottom: 24px;
-  width: 300px;
+`
+export const ReorderButton = styled.button`
+  align-self: flex-end;
+  background-color: #4a90e2;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  padding: 9px;
+  text-align: center;
+  width: 145px;
 `
 export const CartList = styled.ul`
   padding: 0;

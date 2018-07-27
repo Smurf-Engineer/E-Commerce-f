@@ -24,6 +24,7 @@ import {
   OrderSummaryContainer,
   Items,
   TitleStyled,
+  ReorderButton,
   CartList
 } from './styledComponents'
 import { OrderSummary } from '../OrderSummary'
@@ -153,7 +154,12 @@ class OrderDetails extends React.Component<Props, {}> {
           </OrderSummaryContainer>
         </OrderInfo>
         <Items>
-          <TitleStyled>{formatMessage(messages.items)}</TitleStyled>
+          <TitleStyled>
+            {formatMessage(messages.items)}
+            <ReorderButton onClick={this.handleOnClickReorderAll}>
+              {formatMessage(messages.reorderAll)}
+            </ReorderButton>
+          </TitleStyled>
           <CartList>{renderItemList}</CartList>
         </Items>
       </Container>
@@ -166,6 +172,10 @@ class OrderDetails extends React.Component<Props, {}> {
 
   handleOnClickReorder = () => {
     // TODO: Implement action for Reorder button.
+  }
+
+  handleOnClickReorderAll = () => {
+    // TODO: Implement action for Reorder all items button.
   }
 }
 

@@ -64,5 +64,9 @@ export default defineMessages({
   items: {
     id: 'components.OrderDetails.items',
     defaultMessage: 'Items'
+  },
+  reorderAll: {
+    id: 'components.OrderDetails.reorderAll',
+    defaultMessage: 'Reorder all items'
   }
 })
