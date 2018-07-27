@@ -292,7 +292,6 @@
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
   "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
-  "components.FeaturedProducts.tittle": "FEATURED PRODUCTS",
   "components.AddToTeamStore.tittle": "ADD TO TEAM STORE",
   "components.AddToTeamStore.teamstoreListTitle": "My Team Stores",
   "components.AddToTeamStore.addTeamstoreLabel": "+ ADD NEW TEAM STORE",
@@ -876,5 +875,13 @@
   "components.Overview.payment": "Payment Methods",
   "components.Overview.emptyAddress": "No addresses added",
   "components.Overview.emptyPayment": "No cards added",
-  "components.PaletteCard.apply": "Apply"
+
+  "components.PaletteCard.apply": "Apply",
+
+  "components.ProductHorizontalList.addToCart": "ADD TO CART",
+  "components.ProductHorizontalList.customize": "CUSTOMIZE",
+
+  "components.FeaturedProducts.title": "FEATURED PRODUCTS",
+  "components.FeaturedProducts.customize": "CUSTOMIZE",
+  "components.FeaturedProducts.addToCart": "ADD TO CART"
 }

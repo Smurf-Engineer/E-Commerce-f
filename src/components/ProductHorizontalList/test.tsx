@@ -13,7 +13,7 @@ describe('<ProductHorizontalList />', () => {
       products: []
     } as ProductType
     const div = document.createElement('div')
-    const category: Filter = {
+    const categoryFilter: Filter = {
       id: 1,
       name: '2js'
     }
@@ -28,7 +28,7 @@ describe('<ProductHorizontalList />', () => {
     const formatMessage = () => ''
     ReactDOM.render(
       <ProductHorizontalList
-        {...{ products, category, data, sportFilter, formatMessage }}
+        {...{ products, categoryFilter, data, sportFilter, formatMessage }}
         onPressSeeAll={() => {}}
         onPressCustomize={() => {}}
         onPressQuickView={() => {}}

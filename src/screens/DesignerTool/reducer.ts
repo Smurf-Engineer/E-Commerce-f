@@ -28,7 +28,6 @@ import {
 import { Reducer } from '../../types/common'
 
 const NONE = -1
-const NO_UPLOADING = -2
 const DESIGN_THUMBNAIL = -1
 
 export const initialState = fromJS({
@@ -47,9 +46,9 @@ export const initialState = fromJS({
   styleName: '',
   selectedTheme: NONE,
   selectedStyle: NONE,
-  designConfig: {},
+  designConfig: [],
   productCode: '',
-  uploadingThumbnail: NO_UPLOADING
+  uploadingThumbnail: false
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -91,8 +90,12 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedTheme', action.id)
     case SET_SELECTED_STYLE_ACTION:
       return state.set('selectedStyle', action.id)
-    case SET_DESIGN_CONFIG_ACTION:
-      return state.set('designConfig', fromJS(action.config))
+    case SET_DESIGN_CONFIG_ACTION: {
+      const { config } = action
+      const designConfig = state.get('designConfig')
+      const updatedDesignConfig = designConfig.push(fromJS(config))
+      return state.set('designConfig', List.of(...updatedDesignConfig))
+    }
     case SET_INSPIRATION_COLOR_ACTION: {
       const colors = state.getIn([
         'designConfig',
@@ -103,7 +106,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('colors', colors)
     }
     case SET_COMPLEXITY_ACTION:
-      return state.setIn(['designConfig', 'complexity'], action.complexity)
+      return state.setIn(
+        ['designConfig', action.design, 'complexity'],
+        action.complexity
+      )
     case SET_PRODCUT_CODE_ACTION:
       return state.merge({
         productCode: action.code,
@@ -113,15 +119,18 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_THEME_NAME_ACTION:
       return state.set('themeName', action.name)
     case SET_STYLE_NAME_ACTION:
-      return state.setIn(['designConfig', 'name'], action.name)
+      return state.setIn(['designConfig', action.design, 'name'], action.name)
     case SET_THUMBNAIL_ACTION: {
       const { item, thumbnail } = action
       if (item === DESIGN_THUMBNAIL) {
-        return state.setIn(['designConfig', 'thumbnail'], thumbnail)
+        return state.setIn(
+          ['designConfig', action.design, 'thumbnail'],
+          thumbnail
+        )
       }
 
       return state.setIn(
-        ['designConfig', 'inspiration', item, 'thumbnail'],
+        ['designConfig', action.design, 'inspiration', item, 'thumbnail'],
         thumbnail
       )
     }

@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 26/02/18.
  */
 import styled from 'styled-components'
+import AntdIcon from 'antd/lib/icon'
 import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
 
@@ -43,8 +44,18 @@ export const Button = styled(AntdButton)`
   transform: translate(-50%, -50%);
 `
 
+export const Loading = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 16px;
+`
+
 export const ButtonWrapper = styled.div`
   position: absolute;
   top: 16px;
   left: 16px;
+`
+
+export const Icon = styled(AntdIcon)`
+  font-size: 64px;
 `

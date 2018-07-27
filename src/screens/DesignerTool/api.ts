@@ -84,3 +84,24 @@ export const uploadDesignAction = (files: any) => {
     }
   }
 }
+
+export const uploadThemeImage = async (file: any) => {
+  try {
+    const user = JSON.parse(localStorage.getItem('user') || '')
+    const formData = new FormData()
+    formData.append('file', file)
+    const response = await fetch(`${config.graphqlUriBase}upload/themeImage`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${user.token}`
+      },
+      body: formData
+    })
+    const image = await response.json()
+    return image
+  } catch (e) {
+    message.error(e.message)
+    return false
+  }
+}

@@ -1,12 +1,19 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
+import Spin from 'antd/lib/spin'
 import findIndex from 'lodash/findIndex'
 import { modelPositions } from './config'
-import { Container, Render, Progress, Logo, Button } from './styledComponents'
+import {
+  Container,
+  Render,
+  Progress,
+  Logo,
+  Button,
+  Loading,
+  Icon
+} from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
-
-const NONE = -2
 
 class Render3D extends PureComponent {
   state = {
@@ -260,7 +267,7 @@ class Render3D extends PureComponent {
           object.children[brandingIndex].material = brandingMaterial
 
           /* Object Config */
-          object.position.y = -40
+          object.position.y = -35
           object.name = 'jersey'
           this.scene.add(object)
           onLoadModel(false)
@@ -333,7 +340,7 @@ class Render3D extends PureComponent {
 
   render() {
     const { progress } = this.state
-    const { loadingModel, files, onSaveDesign } = this.props
+    const { loadingModel, files, onSaveDesign, uploadingThumbnail } = this.props
 
     return (
       <Container>
@@ -344,6 +351,11 @@ class Render3D extends PureComponent {
         <Button type="primary" onClick={onSaveDesign}>
           Save Design
         </Button>
+        {uploadingThumbnail && (
+          <Loading>
+            <Spin tip="Uploading..." indicator={<Icon type="loading" />} />
+          </Loading>
+        )}
       </Container>
     )
   }
@@ -366,17 +378,17 @@ class Render3D extends PureComponent {
       }, 800)
     })
 
-  saveThumbnail = async (design, colors) => {
+  saveThumbnail = async (design, item, colors) => {
     this.setFrontFaceModel()
     this.setupColors(colors)
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
-      onUploadingThumbnail(design)
+      onUploadingThumbnail(true)
       const thumbnail = await this.takeScreenshot(colors)
-      onSaveThumbnail(design, thumbnail)
+      onSaveThumbnail(design, item, thumbnail)
     } catch (error) {
       console.error(error)
-      onUploadingThumbnail(NONE)
+      onUploadingThumbnail(false)
     }
   }
 }

@@ -105,27 +105,37 @@ export const setThemeNameAction = (name: string): AnyAction => ({
   name
 })
 
-export const setStyleNameAction = (name: string): AnyAction => ({
+export const setStyleNameAction = (
+  design: number,
+  name: string
+): AnyAction => ({
   type: SET_STYLE_NAME_ACTION,
+  design,
   name
 })
 
-export const setComplexityAction = (complexity: number): AnyAction => ({
+export const setComplexityAction = (
+  design: number,
+  complexity: number
+): AnyAction => ({
   type: SET_COMPLEXITY_ACTION,
+  design,
   complexity
 })
 
 export const setThumbnailAction = (
+  design: number,
   item: number,
   thumbnail: string
 ): AnyAction => ({
   type: SET_THUMBNAIL_ACTION,
+  design,
   item,
   thumbnail
 })
 
 export const setUploadingThumbnailAction = (
-  uploadingItem: number
+  uploadingItem: boolean
 ): AnyAction => ({
   type: SET_UPLOADING_THUMBNAIL_ACTION,
   uploadingItem

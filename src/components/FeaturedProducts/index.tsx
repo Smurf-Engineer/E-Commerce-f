@@ -104,6 +104,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       )
     }
 
+<<<<<<< HEAD
     const productList: Product[] = get(featuredProducts, 'products', [])
     let featuredList
 
@@ -139,6 +140,51 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
         )
       })
     }
+=======
+    const products = (featuredProducts && featuredProducts.products) || []
+
+    const featuredList = products.map((product, key) => {
+      const {
+        id,
+        yotpoId,
+        type,
+        description,
+        isTopProduct,
+        images,
+        priceRange,
+        customizable
+      } = product
+      return (
+        <div {...{ key }}>
+          <ProductThumbnail
+            id={id}
+            yotpoId={yotpoId}
+            type={type}
+            description={description}
+            isTopProduct={isTopProduct}
+            onPressCustomize={this.gotoDesignCenter}
+            onPressQuickView={openQuickView}
+            images={images[0]}
+            priceRange={priceRange}
+            customizable={customizable}
+            labelButton={
+              customizable ? (
+                formatMessage(messages.customize)
+              ) : (
+                <AddToCartButton
+                  label={formatMessage(messages.addToCart)}
+                  renderForThumbnail={true}
+                  item={{ product }}
+                  {...{ formatMessage }}
+                />
+              )
+            }
+          />
+        </div>
+      )
+    })
+
+>>>>>>> development
     return (
       <Container>
         <Title>{formatMessage(messages.title)}</Title>
