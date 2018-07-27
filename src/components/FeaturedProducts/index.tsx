@@ -4,7 +4,7 @@
 import * as React from 'react'
 
 import { compose, graphql } from 'react-apollo'
-import get from 'lodash/get'
+
 import Caroussel from 'react-slick'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
@@ -21,12 +21,7 @@ import ProductThumbnail from '../ProductThumbnail'
 import AddToCartButton from '../AddToCartButton'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import {
-  ProductType,
-  QueryProps,
-  DesignType,
-  Product
-} from '../../types/common'
+import { ProductType, QueryProps, DesignType } from '../../types/common'
 
 interface Data extends QueryProps {
   featuredProducts: ProductType
@@ -104,43 +99,6 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       )
     }
 
-<<<<<<< HEAD
-    const productList: Product[] = get(featuredProducts, 'products', [])
-    let featuredList
-
-    if (!loading) {
-      featuredList = productList.map((product, key) => {
-        return (
-          <div {...{ key }}>
-            <ProductThumbnail
-              id={product.id}
-              yotpoId={product.yotpoId}
-              type={product.type}
-              description={product.description}
-              isTopProduct={product.isTopProduct}
-              onPressCustomize={this.gotoDesignCenter}
-              onPressQuickView={openQuickView}
-              images={product.images[0]}
-              priceRange={product.priceRange}
-              customizable={product.customizable}
-              labelButton={
-                product.customizable ? (
-                  'CUSTOMIZE'
-                ) : (
-                  <AddToCartButton
-                    label={'ADD TO CART'}
-                    renderForThumbnail={true}
-                    item={{ product }}
-                    {...{ formatMessage }}
-                  />
-                )
-              }
-            />
-          </div>
-        )
-      })
-    }
-=======
     const products = (featuredProducts && featuredProducts.products) || []
 
     const featuredList = products.map((product, key) => {
@@ -184,7 +142,6 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       )
     })
 
->>>>>>> development
     return (
       <Container>
         <Title>{formatMessage(messages.title)}</Title>
