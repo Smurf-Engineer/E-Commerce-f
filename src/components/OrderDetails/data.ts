@@ -11,21 +11,23 @@ export const getOrderQuery = gql`
       shortId: short_id
       charge_id
       netsuit_order_id
-      payment_method
-      shipping_address_first_name
-      shipping_address_last_name
-      shipping_address_street
-      shipping_address_country
-      shipping_address_state_province
-      shipping_address_city
-      shipping_address_zip_code
-      billing_address_first_name
-      billing_address_last_name
-      billing_address_street
-      billing_address_country
-      billing_address_state_province
-      billing_address_city
-      billing_address_zip_code
+      paymentMethod: payment_method
+      shippingFirstName: shipping_address_first_name
+      shippingLastName: shipping_address_last_name
+      shippingStreet: shipping_address_street
+      shippingApartment: shipping_address_apartment
+      shippingCountry: shipping_address_country
+      shippingStateProvince: shipping_address_state_province
+      shippingCity: shipping_address_city
+      shippingZipCode: shipping_address_zip_code
+      billingFirstName: billing_address_first_name
+      billingLastName: billing_address_last_name
+      billingStreet: billing_address_street
+      billingApartment: billing_address_apartment
+      billingCountry: billing_address_country
+      billingStateProvince: billing_address_state_province
+      billingCity: billing_address_city
+      billingZipCode: billing_address_zip_code
       shippingTax: shipping_tax
       orderDate: created_at
       netsuit: netsuit_order {
@@ -43,6 +45,20 @@ export const getOrderQuery = gql`
               quantity
             }
           }
+        }
+      }
+      payment: payment_object {
+        stripeCharge {
+          cardData: source {
+            name
+            last4
+            brand
+            expMonth: exp_month
+            expYear: exp_year
+          }
+        }
+        paypalCharge {
+          id
         }
       }
       cart {

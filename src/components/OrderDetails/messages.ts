@@ -68,5 +68,17 @@ export default defineMessages({
   reorderAll: {
     id: 'components.OrderDetails.reorderAll',
     defaultMessage: 'Reorder all items'
+  },
+  shippingAddress: {
+    id: 'components.OrderDetails.shippingAddress',
+    defaultMessage: 'Shipping Address'
+  },
+  billingAddress: {
+    id: 'components.OrderDetails.billingAddress',
+    defaultMessage: 'Billing Address'
+  },
+  payment: {
+    id: 'components.OrderDetails.payment',
+    defaultMessage: 'Payment'
   }
 })

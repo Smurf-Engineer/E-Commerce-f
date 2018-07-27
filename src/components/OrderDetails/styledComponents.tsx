@@ -127,3 +127,33 @@ export const ReorderButton = styled.button`
 export const CartList = styled.ul`
   padding: 0;
 `
+export const ShippingBillingContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 10% 126px 0;
+`
+export const SubTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  margin-bottom: 24px;
+`
+export const PaymentText = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+`
+export const CardNumber = styled.div`
+  display: flex;
+  align-items: center;
+  margin: 6px 0;
+`
+export const StyledImage = styled.img`
+  margin-left: 8px;
+  width: 42px;
+  height: 25.5px;
+`
