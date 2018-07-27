@@ -16,8 +16,8 @@ export const GetAddressListQuery = gql`
         city
         zipCode: zip_code
         phone
-        defaultBilling: default_shipping
-        defaultShipping: default_billing
+        defaultBilling: default_billing
+        defaultShipping: default_shipping
       }
     }
   }

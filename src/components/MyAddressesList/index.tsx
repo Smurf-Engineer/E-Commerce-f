@@ -83,67 +83,64 @@ export class MyAddressesList extends React.Component<Props, {}> {
       return null
     }
 
-    const addresses = get(userAddresses, 'addresses', [])
+    const addresses: AddressType[] = get(userAddresses, 'addresses', [])
     const fullCount = get(userAddresses, 'fullCount', 0)
-    const showList = addresses && addresses.length
     let atLeastOneIsSelected = false
 
-    const adressesList = addresses
-      ? addresses.map((address, key) => {
-          const {
-            firstName,
-            lastName,
-            street,
-            city,
-            stateProvince,
-            zipCode,
-            country,
-            apartment,
+    const adressesList = addresses.map((address, key) => {
+      const {
+        firstName,
+        lastName,
+        street,
+        city,
+        stateProvince,
+        zipCode,
+        country,
+        apartment,
+        defaultBilling,
+        defaultShipping
+      } = address
+      const isSelected =
+        !showForm &&
+        ((defaultShipping && indexAddressSelected === -1) ||
+          indexAddressSelected === key)
+      if (!showForm && isSelected) {
+        this.handleOnSelectAddress(key)
+        atLeastOneIsSelected = true
+      }
+      if (
+        key === addresses.length - 1 &&
+        !atLeastOneIsSelected &&
+        addresses &&
+        !showForm
+      ) {
+        this.handleOnSelectAddress(0)
+      }
+      return (
+        <MyAddress
+          {...{
+            key,
+            formatMessage,
+            showAddressFormAction,
+            showConfirmDeleteAction,
             defaultBilling,
-            defaultShipping
-          } = address
-          const isSelected =
-            !showForm &&
-            ((defaultShipping && indexAddressSelected === -1) ||
-              indexAddressSelected === key)
-          if (!showForm && isSelected) {
-            this.handleOnSelectAddress(key)
-            atLeastOneIsSelected = true
-          }
-          if (
-            key === addresses.length - 1 &&
-            !atLeastOneIsSelected &&
-            addresses &&
-            !showForm
-          ) {
-            this.handleOnSelectAddress(0)
-          }
-          return (
-            <MyAddress
-              {...{
-                key,
-                formatMessage,
-                showAddressFormAction,
-                showConfirmDeleteAction,
-                defaultBilling,
-                defaultShipping,
-                isSelected
-              }}
-              showAddressFormAction={this.handleOnEditAddress}
-              showConfirmDeleteAction={this.handleOnShowDeleteAddressConfirm}
-              selectAddressAction={this.handleOnSelectAddress}
-              addressIndex={key}
-              name={`${firstName} ${lastName}`}
-              street={street}
-              city={`${city} ${stateProvince}`}
-              zipCode={zipCode}
-              country={country}
-              apartment={listForMyAccount ? apartment : undefined}
-              showSecondaryButtons={listForMyAccount}
-            />
-          )
-        })
-      : null
+            defaultShipping,
+            isSelected
+          }}
+          showAddressFormAction={this.handleOnEditAddress}
+          showConfirmDeleteAction={this.handleOnShowDeleteAddressConfirm}
+          selectAddressAction={this.handleOnSelectAddress}
+          addressIndex={key}
+          name={`${firstName} ${lastName}`}
+          street={street}
+          city={`${city} ${stateProvince}`}
+          zipCode={zipCode}
+          country={country}
+          apartment={listForMyAccount ? apartment : undefined}
+          showSecondaryButtons={listForMyAccount}
+        />
+      )
+    })
 
     const addressesList = (
       <AddressesList {...{ listForMyAccount }}>{adressesList}</AddressesList>
@@ -153,6 +150,9 @@ export class MyAddressesList extends React.Component<Props, {}> {
       <Modal
         visible={showDeleteAddressConfirm}
         title={<ModalTitle title={formatMessage(messages.titleDeleteModal)} />}
+        destroyOnClose={true}
+        closable={false}
+        afterClose={this.handleOnHideDeleteAddressConfirm}
         footer={
           <ModalFooter
             okText={formatMessage(messages.deleteAddress)}
@@ -171,19 +171,17 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
     const renderView = !!addresses.length ? (
       <Container {...{ listForMyAccount }}>
-        {showList ? (
-          <Content>
-            {!listForMyAccount ? (
-              <Title>{formatMessage(messages.title)}</Title>
-            ) : null}
-            {!renderForModal && !listForMyAccount ? (
-              <AddAddressBtn onClick={this.showAddressForm}>
-                {formatMessage(messages.addAddressLabel)}
-              </AddAddressBtn>
-            ) : null}
-            {addressesList}
-          </Content>
-        ) : null}
+        <Content>
+          {!listForMyAccount ? (
+            <Title>{formatMessage(messages.title)}</Title>
+          ) : null}
+          {!renderForModal && !listForMyAccount ? (
+            <AddAddressBtn onClick={this.showAddressForm}>
+              {formatMessage(messages.addAddressLabel)}
+            </AddAddressBtn>
+          ) : null}
+          {addressesList}
+        </Content>
         {withPagination ? (
           <PaginationRow {...{ paginationAlignment }}>
             <Pagination
