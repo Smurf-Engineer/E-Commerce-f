@@ -96,6 +96,8 @@ class OrderDetails extends React.Component<Props, {}> {
               cartItem={cartItem}
               itemIndex={index}
               onlyRead={true}
+              canReorder={true}
+              onClickReorder={this.handleOnClickReorder}
             />
           )
         })
@@ -160,6 +162,10 @@ class OrderDetails extends React.Component<Props, {}> {
 
   handleOnClickReceipt = () => {
     // TODO: Implement action for Receipt button.
+  }
+
+  handleOnClickReorder = () => {
+    // TODO: Implement action for Reorder button.
   }
 }
 

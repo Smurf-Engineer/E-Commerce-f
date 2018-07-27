@@ -19,7 +19,8 @@ import {
   DeleteItem,
   BottomDivider,
   FooterItem,
-  HeaderPriceDetailEmpty
+  HeaderPriceDetailEmpty,
+  ReorderButton
 } from './styledComponents'
 import get from 'lodash/get'
 import CartListItemTable from '../../components/CartListItemTable'
@@ -30,6 +31,7 @@ import {
   ItemDetailType
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
+import cartListItemMsgs from './messages'
 import { FormattedMessage } from 'react-intl'
 
 interface CartItems {
@@ -80,6 +82,7 @@ interface Props {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  onClickReorder?: () => void
 
   title: string
   description: string
@@ -90,6 +93,7 @@ interface Props {
   cartItem: CartItems
   itemIndex: number
   onlyRead?: boolean
+  canReorder?: boolean
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -168,6 +172,7 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
+      canReorder,
       productTotal,
       unitPrice,
       handleAddItemDetail = () => {},
@@ -177,7 +182,8 @@ class CartListItem extends React.Component<Props, {}> {
       setDetailFit = () => {},
       setDetailGender = () => {},
       setDetailSize = () => {},
-      removeItem = () => {}
+      removeItem = () => {},
+      onClickReorder = () => {}
     } = this.props
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
@@ -274,6 +280,9 @@ class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
+                  <ReorderButton onClick={onClickReorder} show={canReorder}>
+                    {formatMessage(cartListItemMsgs.reorder)}
+                  </ReorderButton>
                 </ItemDetails>
               </Container>
             )

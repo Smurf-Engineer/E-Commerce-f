@@ -424,6 +424,7 @@ export interface OrderDataInfo {
   billingZipCode: string
   billingCountry: string
   billingApartment: string
+  shippingTax: number
   payment: {
     stripeCharge: {
       cardData: CreditCardData
