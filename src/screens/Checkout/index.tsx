@@ -31,8 +31,6 @@ import {
   PlaceOrderButton,
   paypalButtonStyle,
   StepIcon
-  // Step
-  // SummaryTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
