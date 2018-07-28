@@ -5,9 +5,7 @@ import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
 import AntdInput from 'antd/lib/input'
 
-export const Container = styled.div`
-  padding-top: 40px;
-`
+export const Container = styled.div``
 
 export const Title = styled.div`
   color: #5f6062;
@@ -34,7 +32,7 @@ export const Button = styled(AntdButton)`
 
 export const List = styled.div`
   border: 1px solid #f1f4f5;
-  padding: 16px 30px 16px 19px;
+  padding: 0px 30px 16px 19px;
 `
 
 export const Row = styled.div`

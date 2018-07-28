@@ -4,14 +4,18 @@
 import * as React from 'react'
 import {
   Container,
+  Row,
   Form,
   Title,
   Input,
   InputContainer
 } from './styledComponents'
 import get from 'lodash/get'
+import every from 'lodash/every'
+import findIndex from 'lodash/findIndex'
+import Button from 'antd/lib/button'
 import DesignForm from '../../../components/DesignForm'
-import { UploadFile, DesignItem } from '../../../types/common'
+import { UploadFile, DesignItem, ModelConfig } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
 
 interface Props {
@@ -32,6 +36,7 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (design: number, name: string) => void
+  onLoadDesign: (config: ModelConfig) => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
@@ -60,11 +65,14 @@ class DesignSettings extends React.PureComponent<Props, {}> {
     const product = get(productData, 'product', false)
     let themeItems: DesignItem[] = []
     let styleItems: DesignItem[] = []
+    let productHasAllFiles = false
 
     if (!!product) {
       const { themes = [] } = product
-      const currentTheme = themes[selectedTheme] || {}
+      const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
+      const currentTheme = themes[themeIndex] || {}
       const themeStyles = currentTheme.styles || []
+      productHasAllFiles = every(product)
       themeItems = themes.map(({ id, name }) => ({ id, name }))
       styleItems = themeStyles.map(({ id, name }) => ({ id, name }))
     }
@@ -72,7 +80,16 @@ class DesignSettings extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <Form>
-          <Title>SEARCH PRODUCT</Title>
+          <Row>
+            <Title>SEARCH PRODUCT</Title>
+            {productHasAllFiles &&
+              !!selectedTheme &&
+              !!selectedStyle && (
+                <Button onClick={this.handleOnLoadDesign} type="primary">
+                  LOAD DESIGN
+                </Button>
+              )}
+          </Row>
           <InputContainer>
             <Input
               value={code}
@@ -114,6 +131,71 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         </Form>
       </Container>
     )
+  }
+
+  handleOnLoadDesign = () => {
+    const {
+      productData,
+      selectedTheme,
+      selectedStyle,
+      onLoadDesign
+    } = this.props
+    if (productData && productData.product) {
+      const product = get(productData, 'product')
+      const {
+        obj = '',
+        mtl = '',
+        label = '',
+        flatlock = '',
+        bumpMap = '',
+        themes = []
+      } = product
+      const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
+      const currentTheme = themes[themeIndex] || {}
+      const styleIndex = findIndex(
+        currentTheme.styles,
+        ({ id }) => id === selectedStyle
+      )
+      const currentStyle = currentTheme.styles[styleIndex]
+      const {
+        name,
+        branding = '',
+        brandingPng,
+        colors,
+        colorblock1,
+        colorblock2,
+        colorblock3,
+        colorblock4,
+        colorblock5
+      } = currentStyle
+      const areaColors: string[] = []
+      const areasPng: string[] = []
+      const areasSvg = [
+        colorblock1,
+        colorblock2,
+        colorblock3,
+        colorblock4,
+        colorblock5
+      ]
+      colors.forEach(({ color, image }) => {
+        areaColors.push(color)
+        areasPng.push(image)
+      })
+      const design = { name, colors: areaColors }
+      const modelConfig: ModelConfig = {
+        obj,
+        mtl,
+        label,
+        flatlock,
+        bumpMap,
+        brandingSvg: branding,
+        brandingPng,
+        areasSvg,
+        areasPng,
+        design
+      }
+      onLoadDesign(modelConfig)
+    }
   }
 
   handleOnSearch = () => {

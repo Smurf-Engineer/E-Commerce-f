@@ -24,3 +24,5 @@ export const modelPositions = {
     z: -10.96374119486817
   }
 }
+
+export const MESH_NAME = 'JV2_3D_MODEL'
