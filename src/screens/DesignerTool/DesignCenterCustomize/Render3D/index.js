@@ -129,6 +129,13 @@ class Render3D extends PureComponent {
     new Promise((resolve, reject) => {
       try {
         const loadedTextures = {}
+        // TODO: TEST
+        loadedTextures.zipper = this.imgLoader.load(
+          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/zipper_black.jpg'
+        )
+        loadedTextures.binding = this.imgLoader.load(
+          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/EPIC_Jv2-BumpMap.jpg'
+        )
         const { bumpMap, flatlock, brandingPng, areasPng = [] } = modelTextures
         loadedTextures.flatlock = this.imgLoader.load(flatlock)
         loadedTextures.bumpMap = this.imgLoader.load(bumpMap)
@@ -195,6 +202,10 @@ class Render3D extends PureComponent {
           const objectChilds = children.length
           this.setState({ objectChilds })
 
+          console.log('------------------------------------')
+          console.log(object)
+          console.log('------------------------------------')
+
           /* Object materials */
           // Stitching
           const flatlockMaterial = new THREE.MeshLambertMaterial({
@@ -204,7 +215,14 @@ class Render3D extends PureComponent {
           flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
           flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
           flatlockMaterial.alphaTest = 0.5
-
+          // TODO: TEST
+          const zipperMaterial = new THREE.MeshLambertMaterial({
+            map: loadedTextures.zipper
+          })
+          const bindingMaterial = new THREE.MeshLambertMaterial({
+            map: loadedTextures.binding
+          })
+          // END TEST
           // Back material
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
@@ -216,8 +234,16 @@ class Render3D extends PureComponent {
             return index < 0 ? 0 : index
           }
 
-          const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
-          const labelIndex = getMeshIndex('Red_Tag FINAL')
+          // const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
+          const meshIndex = getMeshIndex('FINAL1 polySurface1')
+          // TODO: TEST
+          const zipperIndex = getMeshIndex('FINAL1 OBJ1')
+          const bindingIndex = getMeshIndex('FINAL1 OBJ1')
+          // TODO: END TEST
+          // const labelIndex = getMeshIndex('Red_Tag FINAL')
+          const labelIndex = getMeshIndex(
+            'FINAL1 RED_J_TAG:RED_J_TAG:J_Red_Tag:pCube1'
+          )
           const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
 
           // Setup the texture layers
@@ -230,6 +256,10 @@ class Render3D extends PureComponent {
           object.children[labelIndex].material.color.set('#ffffff')
           object.children[flatlockIndex].material = flatlockMaterial
           object.children[meshIndex].material = insideMaterial
+          // TODO: Start test
+          object.children[zipperIndex].material = zipperMaterial
+          object.children[bindingIndex].material = bindingMaterial
+          // TODO: End test
 
           const { colors = [] } = files.design || {}
           const reversedAreas = reverse(areas)
@@ -264,6 +294,10 @@ class Render3D extends PureComponent {
           object.name = MESH_NAME
           this.scene.add(object)
           onLoadModel(false)
+
+          if (window !== undefined && !window.scene) {
+            window.scene = this.scene
+          }
         },
         this.onProgress,
         this.onError
