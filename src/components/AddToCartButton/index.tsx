@@ -66,10 +66,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     ) : (
       <Container>
         {orderDetails ? (
-          <ReorderButton
-            individual={item ? true : false}
-            onClick={this.addToCart}
-          >
+          <ReorderButton individual={!!item} onClick={this.addToCart}>
             {label}
           </ReorderButton>
         ) : (
@@ -117,9 +114,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
         return
       } else {
         if (itemProdPage) {
-          console.log(`Por aquí si`)
-          if (!item && items && items.length > 0) {
-            console.log(`Y acá también :o`)
+          if (!item && items && !!items.length) {
             items.map(i =>
               this.saveInLocalStorage(
                 this.getItemWithDetails(
@@ -154,10 +149,10 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
 
   getItemWithDetails = (
     item: CartItems,
-    designId: string = '',
-    teamStoreId: string = '',
-    designName: string = '',
-    designImage: string = '',
+    designId = '',
+    teamStoreId = '',
+    designName = '',
+    designImage = '',
     itemProdPage: boolean
   ) => {
     const details = [] as CartItemDetail[]

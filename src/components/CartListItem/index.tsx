@@ -296,7 +296,7 @@ class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
-                  {canReorder ? renderAddToCartButton : null}
+                  {canReorder && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -310,7 +310,7 @@ class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
-                  {canReorder ? renderAddToCartButton : null}
+                  {canReorder && renderAddToCartButton}
                 </div>
               </Container>
             )
