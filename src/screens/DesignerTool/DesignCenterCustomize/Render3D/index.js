@@ -3,7 +3,7 @@ import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
 import Spin from 'antd/lib/spin'
 import findIndex from 'lodash/findIndex'
-import { modelPositions } from './config'
+import { modelPositions, MESH_NAME } from './config'
 import {
   Container,
   Render,
@@ -119,16 +119,9 @@ class Render3D extends PureComponent {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
 
-    // TODO: Need tests
     if (this.scene) {
-      const object = this.scene.getObjectByName('jersey')
-      if (object) {
-        object.children.forEach(mesh => {
-          mesh.material.dispose()
-          object.dispose()
-          this.scene.dispose()
-        })
-      }
+      this.clearScene()
+      this.scene.dispose()
     }
   }
 
@@ -168,7 +161,7 @@ class Render3D extends PureComponent {
     })
     if (loadedTextures.length) {
       const { objectChilds } = this.state
-      const object = this.scene.getObjectByName('jersey')
+      const object = this.scene.getObjectByName(MESH_NAME)
       if (object) {
         loadedTextures.forEach((texture, index) => {
           if (object.children[objectChilds + index]) {
@@ -185,6 +178,7 @@ class Render3D extends PureComponent {
   loadObject = async files => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
+    this.clearScene()
 
     /* Texture configuration */
     const loadedTextures = await this.loadTextures(files)
@@ -267,7 +261,7 @@ class Render3D extends PureComponent {
 
           /* Object Config */
           object.position.y = -35
-          object.name = 'jersey'
+          object.name = MESH_NAME
           this.scene.add(object)
           onLoadModel(false)
         },
@@ -314,7 +308,7 @@ class Render3D extends PureComponent {
 
   setupColors = colors => {
     const { objectChilds } = this.state
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     if (object) {
       colors.forEach((color, index) => {
         if (object.children[objectChilds + index]) {
@@ -325,7 +319,7 @@ class Render3D extends PureComponent {
   }
 
   setupHoverColor = colorBlockHovered => {
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     const { objectChilds } = this.state
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {
@@ -389,6 +383,22 @@ class Render3D extends PureComponent {
     } catch (error) {
       console.error(error)
       onUploadingThumbnail(false)
+    }
+  }
+
+  clearScene = () => {
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      object.children.forEach(({ material }) => {
+        if (material) {
+          const { map, bumpMap, alphaMap } = material
+          if (map) map.dispose()
+          if (bumpMap) bumpMap.dispose()
+          if (alphaMap) alphaMap.dispose()
+          material.dispose()
+        }
+      })
+      this.scene.remove(object)
     }
   }
 }

@@ -36,3 +36,5 @@ export const BRING_TO_FRONT_ACTION = 'BRING_TO_FRONT_ACTION'
 export const ROTATE_ACTION = 'ROTATE_ACTION'
 export const SCALE_ACTION = 'SCALE_ACTION'
 export const DRAG_ACTION = 'DRAG_ACTION'
+
+export const MESH_NAME = 'JV2_3D_MODEL'
