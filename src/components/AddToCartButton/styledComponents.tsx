@@ -80,10 +80,10 @@ export const ReorderButton = styled.button`
   line-height: 22px;
   padding: 9px;
   text-align: center;
-  width: ${(props: Prop) => (props.individual ? '93px' : '145px')};
+  width: ${({ individual }: Prop) => (individual ? '93px' : '145px')};
 
   @media (min-width: 320px) and (max-width: 480px) {
-    margin-top: ${(props: Prop) => (props.individual ? '5px' : '0px')};
-    width: ${(props: Prop) => (props.individual ? '139px' : '145px')};
+    margin-top: ${({ individual }: Prop) => (individual ? '5px' : '0px')};
+    width: ${({ individual }: Prop) => (individual ? '139px' : '145px')};
   }
 `
