@@ -15,10 +15,9 @@ import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   palettes: [],
-  indexImageToDelete: -1,
+  idImageToDelete: -1,
   indexPaletteToDelete: -1,
-  showDeletePaletteConfirm: false,
-  showDeleteImageConfirm: false,
+  showDeleteModal: false,
   deleteLoading: false
 })
 
@@ -28,23 +27,24 @@ const myFilesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('palettes', action.palettes)
     case SHOW_DELETE_PALETTE_CONFIRM:
       return state.merge({
-        showDeletePaletteConfirm: true,
+        showDeleteModal: true,
         indexPaletteToDelete: action.index
       })
     case HIDE_DELETE_PALETTE_CONFIRM:
       return state.merge({
-        showDeletePaletteConfirm: false,
+        showDeleteModal: false,
         indexPaletteToDelete: -1
       })
     case SHOW_DELETE_IMAGE_CONFIRM:
       return state.merge({
-        showDeleteImageConfirm: true,
-        indexImageToDelete: action.index
+        showDeleteModal: true,
+        idImageToDelete: action.id
       })
     case HIDE_DELETE_IMAGE_CONFIRM:
       return state.merge({
-        showDeleteImageConfirm: false,
-        indexImageToDelete: -1
+        showDeleteModal: false,
+        idImageToDelete: -1,
+        deleteLoading: false
       })
     case SET_DELETE_LOADING:
       return state.set('deleteLoading', action.loading)

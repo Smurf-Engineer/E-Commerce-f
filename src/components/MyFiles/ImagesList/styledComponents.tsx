@@ -34,3 +34,11 @@ export const EmptyMessage = styled.div`
   letter-spacing: 0.11px;
   text-align: center;
 `
+
+export const LoadingContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
+`

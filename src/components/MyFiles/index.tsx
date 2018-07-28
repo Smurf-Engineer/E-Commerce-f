@@ -2,10 +2,12 @@
  * MyFiles Component - Created by miguelcanobbio on 25/07/18.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import Modal from 'antd/lib/modal/Modal'
+import AntdMessage from 'antd/lib/message'
 import { List } from 'immutable'
+import { deleteImageMutation, imagesQuery } from './data'
 import * as MyFilesActions from './actions'
 import messages from './messages'
 import {
@@ -15,25 +17,31 @@ import {
   VerticalDivider,
   ModalMessage
 } from './styledComponents'
-import { Palette } from '../../types/common'
+import { Palette, ImageFile, QueryProps } from '../../types/common'
 import PalettesList from './PalettesList'
 import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
 import ImagesList from './ImagesList'
 
+interface Data extends QueryProps {
+  images: ImageFile[]
+}
+
 interface Props {
+  data: Data
   history: any
   palettes: Palette[]
-  indexImageToDelete: number
+  idImageToDelete: number
   indexPaletteToDelete: number
-  showDeletePaletteConfirm: boolean
-  showDeleteImageConfirm: boolean
+  showDeleteModal: boolean
   deleteLoading: boolean
   formatMessage: (messageDescriptor: any) => string
+  // Apollo mutations
+  deleteImage: (variables: {}) => void
   // Redux Actions
   showDeletePaletteConfirmAction: (index: number) => void
   hideDeletePaletteConfirmAction: () => void
-  showDeleteImageConfirmAction: (index: number) => void
+  showDeleteImageConfirmAction: (id: number) => void
   hideDeleteImageConfirmAction: () => void
   setDeleteLoadingAction: (loading: boolean) => void
   resetReducerDataAction: () => void
@@ -63,7 +71,7 @@ class MyFiles extends React.Component<Props, {}> {
     showDeletePaletteConfirmAction(index)
   }
 
-  hideDeletePaletteModal = () => {
+  hidePaletteModal = () => {
     const { hideDeletePaletteConfirmAction } = this.props
     hideDeletePaletteConfirmAction()
   }
@@ -73,7 +81,7 @@ class MyFiles extends React.Component<Props, {}> {
     showDeleteImageConfirmAction(id)
   }
 
-  hideDeleteImageModal = () => {
+  hideImageModal = () => {
     const { hideDeleteImageConfirmAction } = this.props
     hideDeleteImageConfirmAction()
   }
@@ -90,12 +98,40 @@ class MyFiles extends React.Component<Props, {}> {
         localStorage.setItem('palettes', JSON.stringify(updatedPalettes))
         setPalettesAction(updatedPalettes)
       }
-      this.hideDeletePaletteModal()
+      this.hidePaletteModal()
+    }
+  }
+
+  onDeleteImage = async () => {
+    const {
+      setDeleteLoadingAction,
+      idImageToDelete,
+      deleteImage,
+      data: { refetch }
+    } = this.props
+    try {
+      setDeleteLoadingAction(true)
+      await deleteImage({
+        variables: { fileId: idImageToDelete }
+      })
+      this.hideImageModal()
+      refetch()
+    } catch (e) {
+      setDeleteLoadingAction(false)
+      const errorMessage = e.graphQLErrors.map((x: any) => x.message)
+      AntdMessage.error(errorMessage, 5)
     }
   }
 
   render() {
-    const { formatMessage, palettes, showDeletePaletteConfirm } = this.props
+    const {
+      formatMessage,
+      palettes,
+      showDeleteModal,
+      deleteLoading,
+      indexPaletteToDelete,
+      data: { loading, images }
+    } = this.props
     return (
       <Container>
         <Message>{formatMessage(messages.message)}</Message>
@@ -108,15 +144,26 @@ class MyFiles extends React.Component<Props, {}> {
         <Subtitle>{formatMessage(messages.uploadedImages)}</Subtitle>
         <ImagesList
           {...{ formatMessage }}
+          images={images || []}
+          loading={!!loading}
           onClickDelete={this.handleOnShowDeleteImageModal}
         />
         <Modal
-          visible={showDeletePaletteConfirm}
+          visible={showDeleteModal}
           title={<ModalTitle title={formatMessage(messages.modalTitle)} />}
           footer={
             <ModalFooter
-              onOk={this.onDeletePalette}
-              onCancel={this.hideDeletePaletteModal}
+              onOk={
+                indexPaletteToDelete !== -1
+                  ? this.onDeletePalette
+                  : this.onDeleteImage
+              }
+              onCancel={
+                indexPaletteToDelete !== -1
+                  ? this.hidePaletteModal
+                  : this.hideImageModal
+              }
+              confirmLoading={deleteLoading}
               {...{ formatMessage }}
             />
           }
@@ -124,7 +171,13 @@ class MyFiles extends React.Component<Props, {}> {
           maskClosable={false}
           destroyOnClose={true}
         >
-          <ModalMessage>{formatMessage(messages.paletteMessage)}</ModalMessage>
+          <ModalMessage>
+            {formatMessage(
+              indexPaletteToDelete !== -1
+                ? messages.paletteMessage
+                : messages.imageMessage
+            )}
+          </ModalMessage>
         </Modal>
       </Container>
     )
@@ -134,10 +187,12 @@ class MyFiles extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('myFiles').toJS()
 
 const MyFilesEnhance = compose(
+  graphql(imagesQuery),
   connect(
     mapStateToProps,
     { ...MyFilesActions }
-  )
+  ),
+  deleteImageMutation
 )(MyFiles)
 
 export default MyFilesEnhance

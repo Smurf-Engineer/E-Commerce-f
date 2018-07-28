@@ -26,9 +26,9 @@ export const hideDeletePaletteConfirmAction = (): AnyAction => ({
   type: HIDE_DELETE_PALETTE_CONFIRM
 })
 
-export const showDeleteImageConfirmAction = (index: string): AnyAction => ({
+export const showDeleteImageConfirmAction = (id: string): AnyAction => ({
   type: SHOW_DELETE_IMAGE_CONFIRM,
-  index
+  id
 })
 
 export const hideDeleteImageConfirmAction = (): AnyAction => ({
