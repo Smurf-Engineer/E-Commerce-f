@@ -2,9 +2,8 @@
  * ShippingAddressForm Component - Created by miguelcanobbio on 15/05/18.
  */
 import * as React from 'react'
-import Dropdown from 'antd/lib/dropdown'
-import Icon from 'antd/lib/icon'
-import Menu from 'antd/lib/menu'
+import Select from 'antd/lib/select'
+import { withApollo, graphql, compose } from 'react-apollo'
 import messages from './messages'
 import {
   ShippingFormContainer,
@@ -14,13 +13,30 @@ import {
   RequiredSpan,
   Label,
   InputTitleContainer,
-  DropDownPlaceHolder,
   ErrorMsg,
   ShipTopPoAPO
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
+import { countriesQuery, regionsQuery, citiesQuery } from './data'
+import { QueryProps, Country, CountryRegion, City } from '../../types/common'
+
+const Option = Select.Option
+
+interface Data extends QueryProps {
+  countries: Country[]
+}
+
+interface StateProps {
+  regions: [CountryRegion] | null
+  cities: [City] | null
+  selectedCountry: string | undefined
+  selectedRegion: string | undefined
+  selectedCity: string | undefined
+}
 
 interface Props {
+  data: Data
+  client: any
   firstName: string
   lastName: string
   street: string
@@ -36,60 +52,107 @@ interface Props {
   inputChangeAction: (id: string, value: string) => void
 }
 
-class ShippingAddressForm extends React.Component<Props, {}> {
+export class ShippingAddressForm extends React.Component<Props, StateProps> {
+  state: StateProps = {
+    regions: null,
+    cities: null,
+    selectedCountry: undefined,
+    selectedRegion: undefined,
+    selectedCity: undefined
+  }
+
   render() {
     const {
+      data,
       firstName,
       lastName,
       street,
       apartment,
       country,
       stateProvince,
-      city,
+      city: citi,
       zipCode,
       phone,
       hasError,
       formatMessage
     } = this.props
-    const dropdownCountries = (
-      <Menu onClick={this.selectedDropDown}>
-        <Menu.Item id="country" class="country" key="usa">
-          {'USA'}
-        </Menu.Item>
-        <Menu.Item id="country" key="canada">
-          {'CANADA'}
-        </Menu.Item>
-        <Menu.Item id="country" key="france">
-          {'FRANCE'}
-        </Menu.Item>
-      </Menu>
+
+    const { regions, cities } = this.state
+    const { countries } = data
+
+    let dropdownCountries: any = []
+    let dropdownRegions: any = []
+    let dropdownCities: any = []
+
+    if (countries && countries.length) {
+      dropdownCountries = countries.map(({ name, code }, index) => (
+        <Option value={code} key={index}>
+          {name}
+        </Option>
+      ))
+    }
+
+    if (regions && regions.length) {
+      dropdownRegions = regions.map(({ region }, index) => (
+        <Option value={region} key={index}>
+          {region}
+        </Option>
+      ))
+    }
+
+    if (cities && cities.length) {
+      dropdownCities = cities.map(({ city }, index) => (
+        <Option value={city} key={index}>
+          {city}
+        </Option>
+      ))
+    }
+
+    const countriesDrop = (
+      <Select
+        placeholder={`Select Country`}
+        style={{ width: '100%' }}
+        onChange={this.handleCountryChange}
+        showSearch={true}
+        optionFilterProp="children"
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
+        {dropdownCountries}
+      </Select>
     )
-    const dropdownStates = (
-      <Menu onClick={this.selectedDropDown}>
-        <Menu.Item id="stateProvince" key="california">
-          {'California'}
-        </Menu.Item>
-        <Menu.Item id="stateProvince" key="quebec">
-          {'Quebec'}
-        </Menu.Item>
-        <Menu.Item id="stateProvince" key="arizona">
-          {'Arizona'}
-        </Menu.Item>
-      </Menu>
+
+    const regionsDrop = (
+      <Select
+        placeholder={`Select State/Province`}
+        style={{ width: '100%' }}
+        onChange={this.handleRegionChange}
+        showSearch={true}
+        optionFilterProp="children"
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
+        {dropdownRegions}
+      </Select>
     )
-    const dropdownCities = (
-      <Menu id="cities" onClick={this.selectedDropDown}>
-        <Menu.Item id="city" key="los angeles">
-          {'Los Angeles'}
-        </Menu.Item>
-        <Menu.Item id="city" key="san francisco">
-          {'San Francisco'}
-        </Menu.Item>
-        <Menu.Item id="city" key="detroit">
-          {'Detroit'}
-        </Menu.Item>
-      </Menu>
+
+    const citiesDrop = (
+      <Select
+        placeholder={`Select City`}
+        style={{ width: '100%' }}
+        onChange={this.handleCityChange}
+        showSearch={true}
+        optionFilterProp="children"
+        filterOption={(input: any, option: any) =>
+          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
+      >
+        {dropdownCities}
+      </Select>
     )
+
     return (
       <ShippingFormContainer>
         <Row>
@@ -159,12 +222,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               <Label>{formatMessage(messages.countryLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <Dropdown overlay={dropdownCountries}>
-              <DropDownPlaceHolder>
-                {country ? country : formatMessage(messages.selectCountryLabel)}
-                <Icon type="down" />
-              </DropDownPlaceHolder>
-            </Dropdown>
+            {countriesDrop}
             {!country &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -175,14 +233,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               <Label>{formatMessage(messages.stateProvinceLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <Dropdown overlay={dropdownStates}>
-              <DropDownPlaceHolder>
-                {stateProvince
-                  ? stateProvince
-                  : formatMessage(messages.selectStateProvinceLabel)}
-                <Icon type="down" />
-              </DropDownPlaceHolder>
-            </Dropdown>
+            {regionsDrop}
             {!stateProvince &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -193,13 +244,8 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               <Label>{formatMessage(messages.cityLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <Dropdown overlay={dropdownCities}>
-              <DropDownPlaceHolder>
-                {city ? city : formatMessage(messages.selectCityLabel)}
-                <Icon type="down" />
-              </DropDownPlaceHolder>
-            </Dropdown>
-            {!city &&
+            {citiesDrop}
+            {!citi &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
               )}
@@ -243,6 +289,60 @@ class ShippingAddressForm extends React.Component<Props, {}> {
     )
   }
 
+  handleCountryChange = async (value: any) => {
+    const {
+      client: { query }
+    } = this.props
+
+    try {
+      const { data } = await query({
+        query: regionsQuery,
+        variables: { country: value },
+        fetchPolicy: 'network-only'
+      })
+
+      this.setState({
+        regions: data.states,
+        selectedCountry: value,
+        selectedRegion: undefined,
+        selectedCity: undefined,
+        cities: null
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  handleRegionChange = async (value: any) => {
+    const {
+      client: { query }
+    } = this.props
+
+    const { selectedCountry } = this.state
+
+    try {
+      const { data } = await query({
+        query: citiesQuery,
+        variables: { country: selectedCountry, region: value },
+        fetchPolicy: 'network-only'
+      })
+
+      this.setState({
+        selectedRegion: value,
+        selectedCity: undefined,
+        cities: data.getCities
+      })
+    } catch (e) {
+      throw e
+    }
+  }
+
+  handleCityChange = async (value: any) => {
+    this.setState({
+      selectedCity: value
+    })
+  }
+
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { inputChangeAction } = this.props
     const {
@@ -252,7 +352,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
     const regex = /^[0-9]+$/
     const isNumber = regex.test(value)
 
-    if (value && (id === 'phone') && !isNumber) {
+    if (value && id === 'phone' && !isNumber) {
       return
     }
     inputChangeAction(id, value)
@@ -270,4 +370,13 @@ class ShippingAddressForm extends React.Component<Props, {}> {
   }
 }
 
-export default ShippingAddressForm
+const ShippingAddressFormEnhance = compose(
+  withApollo,
+  graphql(countriesQuery, {
+    options: {
+      fetchPolicy: 'network-only'
+    }
+  })
+)(ShippingAddressForm)
+
+export default ShippingAddressFormEnhance

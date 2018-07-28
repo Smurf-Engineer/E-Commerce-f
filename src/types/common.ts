@@ -656,3 +656,16 @@ export interface DesignItem {
   id: number
   name: string
 }
+
+export interface Country {
+  name: string
+  code: string
+}
+
+export interface CountryRegion {
+  region: string
+}
+
+export interface City {
+  city: string
+}

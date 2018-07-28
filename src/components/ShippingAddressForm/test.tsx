@@ -3,11 +3,12 @@
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import ShippingAddressForm from './index'
+import { ShippingAddressForm } from './index'
 
 describe('<ShippingAddressForm />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const client = {}
     const firstName = ''
     const lastName = ''
     const street = ''
@@ -20,6 +21,13 @@ describe('<ShippingAddressForm />', () => {
     const hasError = false
     const action = (id: string, value: string) => {}
     const format = (message: any) => 'string'
+    const data: any = {
+      myTeamstores: {
+        fullCount: 0,
+        teamStores: []
+      },
+      fetchMore: () => {}
+    }
     ReactDOM.render(
       <ShippingAddressForm
         {...{
@@ -32,7 +40,9 @@ describe('<ShippingAddressForm />', () => {
           city,
           zipCode,
           phone,
-          hasError
+          hasError,
+          client,
+          data
         }}
         formatMessage={format}
         selectDropdownAction={action}
