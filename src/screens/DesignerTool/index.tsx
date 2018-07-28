@@ -243,7 +243,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             styles,
             ({ id: styleId }) => styleId !== id
           )
-          set(data, `product.themes[themeIndex].styles`, updatedStyles)
+          set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
+          data.product.themes[themeIndex].styles = updatedStyles
           store.writeQuery({
             query: getProductFromCode,
             data,
