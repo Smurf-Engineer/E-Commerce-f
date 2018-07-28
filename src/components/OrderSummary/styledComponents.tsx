@@ -66,7 +66,7 @@ interface DisplayProps {
 }
 
 export const OrderItem = styled.div`
-  display: ${(props: DisplayProps) => (props.hide ? 'none' : 'flex')};
+  display: ${({ hide }: DisplayProps) => (hide ? 'none' : 'flex')};
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 10px;

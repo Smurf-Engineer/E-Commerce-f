@@ -38,7 +38,7 @@ class OrderHistory extends React.Component<Props, {}> {
     return (
       <SwipeableViews
         onChangeIndex={this.handleOnChangeIndex}
-        index={orderId.length > 0 ? 1 : 0}
+        index={!!orderId.length ? 1 : 0}
       >
         <Container>
           <ScreenTitle>

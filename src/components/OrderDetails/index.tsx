@@ -86,7 +86,9 @@ class OrderDetails extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       shippingTax,
-      netsuit: { orderStatus },
+      netsuit: {
+        orderStatus: { deliveryDate }
+      },
       payment: { stripeCharge },
       cart,
       status
@@ -177,8 +179,7 @@ class OrderDetails extends React.Component<Props, {}> {
           <OrderDelivery>
             <DeliveryDate>
               <span>{formatMessage(messages.deliveryDate)}</span>
-              {`    ${orderStatus.deliveryDate ? orderStatus.deliveryDate : '-'}
-              `}
+              {` ${deliveryDate || '-'}`}
             </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
@@ -292,7 +293,7 @@ interface OwnProps {
 const OrderDetailsEnhance = compose(
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
-      skip: !orderId || orderId === '',
+      skip: !orderId,
       variables: { orderId }
     })
   })
