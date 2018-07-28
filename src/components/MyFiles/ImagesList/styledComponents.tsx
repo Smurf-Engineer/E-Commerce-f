@@ -29,9 +29,9 @@ export const EmptyContainer = styled.div`
 export const EmptyMessage = styled.div`
   color: #bebebe;
   font-family: 'Avenir Next';
-  font-size: 16px;
-  line-height: 22px;
-  letter-spacing: 0.11px;
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 21px;
   text-align: center;
 `
 
