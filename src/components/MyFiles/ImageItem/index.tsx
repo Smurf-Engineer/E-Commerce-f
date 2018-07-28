@@ -18,12 +18,13 @@ const ImageItem = ({
   onClickDelete
 }: Props) => {
   const onDelete = () => onClickDelete(id)
-  const name = fileUrl.split('/').pop()
+  const completeName = fileUrl.split('/').pop()
+  const name = completeName && completeName.split('-').pop()
   return (
     <Container>
       <Image src={fileUrl} />
       <Bottom>
-        <Name>{name}</Name>
+        <Name>{name || completeName}</Name>
         <Delete onClick={onDelete}>{formatMessage(messages.delete)}</Delete>
       </Bottom>
     </Container>
