@@ -30,7 +30,8 @@ import {
   BRING_TO_FRONT_ACTION,
   ROTATE_ACTION,
   SCALE_ACTION,
-  DRAG_ACTION
+  DRAG_ACTION,
+  MESH_NAME
 } from './config'
 import ModalFooter from '../../ModalFooter'
 import ModalTitle from '../../ModalTitle'
@@ -198,6 +199,7 @@ class Render3D extends PureComponent {
     if (this.renderer) {
       this.stop()
       this.container.removeChild(this.renderer.domElement)
+      this.clearScene()
     }
     if (this.canvasTexture) {
       this.canvasTexture.dispose()
@@ -244,6 +246,22 @@ class Render3D extends PureComponent {
         reject(e)
       }
     })
+
+  clearScene = () => {
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      object.children.forEach(({ material }) => {
+        if (!!material) {
+          const { map, bumpMap, alphaMap } = material
+          if (map) map.dispose()
+          if (bumpMap) bumpMap.dispose()
+          if (alphaMap) alphaMap.dispose()
+          material.dispose()
+        }
+      })
+      this.scene.remove(object)
+    }
+  }
 
   render3DModel = async () => {
     /* Object and MTL load */
@@ -363,7 +381,7 @@ class Render3D extends PureComponent {
 
             /* Object Config */
             object.position.y = largeHeight ? -50 : -30
-            object.name = 'jersey'
+            object.name = MESH_NAME
             this.scene.add(object)
 
             if (design && design.canvasJson) {
@@ -428,7 +446,7 @@ class Render3D extends PureComponent {
       return
     }
     const { objectChilds } = this.state
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     if (object) {
       colors.forEach((color, index) => {
         if (object.children[objectChilds + index]) {
@@ -442,7 +460,7 @@ class Render3D extends PureComponent {
     if (!this.scene) {
       return
     }
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     const { objectChilds } = this.state
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {

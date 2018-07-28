@@ -2,6 +2,7 @@
  * DesignerTool Reducer - Created by david on 08/05/18.
  */
 import { fromJS, List } from 'immutable'
+import reverse from 'lodash/reverse'
 import {
   Tabs,
   DEFAULT_ACTION,
@@ -28,6 +29,7 @@ import {
 import { Reducer } from '../../types/common'
 
 const NONE = -1
+const NONE_ID = 0
 const DESIGN_THUMBNAIL = -1
 
 export const initialState = fromJS({
@@ -44,8 +46,8 @@ export const initialState = fromJS({
   currentTab: Tabs.RenderTab,
   themeName: '',
   styleName: '',
-  selectedTheme: NONE,
-  selectedStyle: NONE,
+  selectedTheme: NONE_ID,
+  selectedStyle: NONE_ID,
   designConfig: [],
   productCode: '',
   uploadingThumbnail: false
@@ -70,12 +72,15 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_UPLOADING_ACTION:
       return state.set('uploadingFiles', action.isLoading)
-    case SET_UPLOADING_SUCCESS:
+    case SET_UPLOADING_SUCCESS: {
+      const { modelConfig } = action
+      const colors = reverse(modelConfig.design.colors)
       return state.merge({
         uploadingFiles: false,
         modelConfig: action.modelConfig,
-        colors: List.of(...action.modelConfig.design.colors)
+        colors: List.of(...colors)
       })
+    }
     case SET_UPLOADING_DESIGN_SUCCESS:
       return state.merge({
         uploadingFiles: false,
@@ -113,8 +118,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_PRODCUT_CODE_ACTION:
       return state.merge({
         productCode: action.code,
-        selectedTheme: NONE,
-        selectedStyle: NONE
+        selectedTheme: NONE_ID,
+        selectedStyle: NONE_ID
       })
     case SET_THEME_NAME_ACTION:
       return state.set('themeName', action.name)
