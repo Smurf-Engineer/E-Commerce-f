@@ -13,7 +13,7 @@ import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
 import { Container } from './styledComponents'
-import { DesignConfig, UploadFile } from '../../../../types/common'
+import { DesignConfig, UploadFile, ModelConfig } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
@@ -57,6 +57,7 @@ interface Props {
   onUpdateStyleName: (design: number, name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
+  onLoadDesign: (config: ModelConfig) => void
 }
 
 const Tabs = ({
@@ -92,7 +93,8 @@ const Tabs = ({
   onUpdateStyleName,
   onSelectComplexity,
   onSaveThumbnail,
-  uploadingThumbnail
+  uploadingThumbnail,
+  onLoadDesign
 }: Props) => {
   return (
     <Container>
@@ -119,7 +121,8 @@ const Tabs = ({
               themeName,
               styleName,
               onUpdateThemeName,
-              onUpdateStyleName
+              onUpdateStyleName,
+              onLoadDesign
             }}
           />
         </TabPane>

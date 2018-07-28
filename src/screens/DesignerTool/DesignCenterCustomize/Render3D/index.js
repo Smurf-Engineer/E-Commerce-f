@@ -238,7 +238,6 @@ class Render3D extends PureComponent {
           object.children[meshIndex].material = insideMaterial
 
           const { colors = [] } = files.design || {}
-          const reversedColors = reverse(colors)
           const reversedAreas = reverse(areas)
 
           reversedAreas.forEach(
@@ -249,7 +248,7 @@ class Render3D extends PureComponent {
                 map,
                 bumpMap,
                 side: THREE.FrontSide,
-                color: reversedColors[index],
+                color: colors[index],
                 transparent: true
               }))
           )
@@ -380,11 +379,12 @@ class Render3D extends PureComponent {
 
   saveThumbnail = async (design, item, colors) => {
     this.setFrontFaceModel()
-    this.setupColors(colors)
+    const reverseColors = reverse(colors)
+    this.setupColors(reverseColors)
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
       onUploadingThumbnail(true)
-      const thumbnail = await this.takeScreenshot(colors)
+      const thumbnail = await this.takeScreenshot()
       onSaveThumbnail(design, item, thumbnail)
     } catch (error) {
       console.error(error)
