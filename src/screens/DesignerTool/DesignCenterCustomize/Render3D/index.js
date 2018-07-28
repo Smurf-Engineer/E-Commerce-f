@@ -390,7 +390,7 @@ class Render3D extends PureComponent {
     const object = this.scene.getObjectByName(MESH_NAME)
     if (!!object) {
       object.children.forEach(({ material }) => {
-        if (material) {
+        if (!!material) {
           const { map, bumpMap, alphaMap } = material
           if (map) map.dispose()
           if (bumpMap) bumpMap.dispose()
