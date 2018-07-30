@@ -112,42 +112,42 @@ class OrderData extends React.Component<Props, {}> {
           <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
         </div>
       ) : (
-          <StyledImage src={iconPaypal} />
-        )
+        <StyledImage src={iconPaypal} />
+      )
 
     const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
     const renderList = cart
       ? cart.map((cartItem, index) => {
-        const priceRange = {
-          quantity: '0',
-          price: 0
-        }
+          const priceRange = {
+            quantity: '0',
+            price: 0
+          }
 
-        const itemImage = cartItem.designId
-          ? cartItem.designImage || ''
-          : cartItem.product.images[0].front
-        const itemTitle = cartItem.designId
-          ? cartItem.designName || ''
-          : cartItem.product.name
-        const itemDescription = cartItem.designId
-          ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
-          : cartItem.product.shortDescription
-        return (
-          <CartListItem
-            formatMessage={formatMessage}
-            key={index}
-            image={itemImage}
-            title={itemTitle}
-            description={itemDescription}
-            price={priceRange}
-            productTotal={cartItem.productTotal}
-            unitPrice={cartItem.unitPrice}
-            cartItem={cartItem}
-            itemIndex={index}
-            onlyRead={true}
-          />
-        )
-      })
+          const itemImage = cartItem.designId
+            ? cartItem.designImage || ''
+            : cartItem.product.images[0].front
+          const itemTitle = cartItem.designId
+            ? cartItem.designName || ''
+            : cartItem.product.name
+          const itemDescription = cartItem.designId
+            ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
+            : cartItem.product.shortDescription
+          return (
+            <CartListItem
+              formatMessage={formatMessage}
+              key={index}
+              image={itemImage}
+              title={itemTitle}
+              description={itemDescription}
+              price={priceRange}
+              productTotal={cartItem.productTotal}
+              unitPrice={cartItem.unitPrice}
+              cartItem={cartItem}
+              itemIndex={index}
+              onlyRead={true}
+            />
+          )
+        })
       : null
     let totalSum = 0
     if (cart) {
