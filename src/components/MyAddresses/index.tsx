@@ -2,32 +2,22 @@
  * MyAddresses Component - Created by miguelcanobbio on 14/05/18.
  */
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
+import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Modal from 'antd/lib/modal'
 import * as MyAddressesActions from './actions'
-import withError from '../../components/WithError'
-import withLoading from '../../components/WithLoading'
 import MyAddressesList from '../../components/MyAddressesList'
 import ShippingAddressForm from '../../components/ShippingAddressForm'
 import {
   Container,
-  Message,
   StyledEmptyButton,
   Title,
-  StyledCheckbox,
-  DeleteConfirmMessage
+  StyledCheckbox
 } from './styledComponents'
 import { QueryProps, AddressType } from '../../types/common'
 import messages from './messages'
-import {
-  addresesQuery,
-  addAddressMutation,
-  updateAddressMutation,
-  deleteAddressMutation
-} from './data'
-import ModalFooter from '../ModalFooter'
-import ModalTitle from '../ModalTitle'
+import { addAddressMutation, updateAddressMutation } from './data'
+import { GetAddressListQuery } from '../MyAddressesList/data'
 
 interface Data extends QueryProps {
   addresses: AddressType[]
@@ -53,6 +43,9 @@ interface Props {
   addressIdToMutate: number
   modalLoading: boolean
   deleteLoading: boolean
+  currentPage: number
+  limit: number
+  skip: number
   formatMessage: (messageDescriptor: any) => string
   // reducer actions
   selectDropdownAction: (id: string, value: string) => void
@@ -71,17 +64,16 @@ interface Props {
   addNewAddress: (variables: {}) => void
   updateAddress: (variables: {}) => void
   deleteAddress: (variables: {}) => void
+  setSkipValueAction: (skip: number, limit: number) => void
 }
 
 class MyAddresses extends React.PureComponent<Props, {}> {
   render() {
     const {
-      data: { addresses },
       formatMessage,
       showAddressModal,
       showDeleteAddressConfirm,
       modalLoading,
-      deleteLoading,
       firstName,
       lastName,
       street,
@@ -96,19 +88,41 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       inputChangeAction,
       defaultShipping,
       defaultBilling,
-      selectAddressAction
+      selectAddressAction,
+      resetReducerDataAction,
+      addressIdToMutate,
+      deleteAddress,
+      hideDeleteAddressConfirmAction,
+      showDeleteAddressConfirmAction,
+      setAddressToUpdateAction,
+      currentPage,
+      skip,
+      limit
     } = this.props
-    const content = addresses.length ? (
+
+    const content = (
       <MyAddressesList
-        {...{ formatMessage, selectAddressAction }}
-        items={addresses}
-        showAddressFormAction={this.handleOnEditAddress}
-        showConfirmDeleteAction={this.handleOnShowDeleteAddressConfirm}
+        {...{
+          formatMessage,
+          selectAddressAction,
+          resetReducerDataAction,
+          addressIdToMutate,
+          deleteAddress,
+          showDeleteAddressConfirm,
+          hideDeleteAddressConfirmAction,
+          showDeleteAddressConfirmAction,
+          setAddressToUpdateAction,
+          currentPage,
+          skip
+        }}
+        itemsNumber={limit}
+        withPagination={true}
+        paginationAlignment={'start'}
+        changePage={this.handlechangePage}
         listForMyAccount={true}
       />
-    ) : (
-      <Message>{formatMessage(messages.emptyMessage)}</Message>
     )
+
     return (
       <Container>
         <StyledEmptyButton type="danger" onClick={this.handleOnShowModal}>
@@ -161,25 +175,6 @@ class MyAddresses extends React.PureComponent<Props, {}> {
             </StyledCheckbox>
           </div>
         </Modal>
-        <Modal
-          visible={showDeleteAddressConfirm}
-          title={
-            <ModalTitle title={formatMessage(messages.titleDeleteModal)} />
-          }
-          footer={
-            <ModalFooter
-              okText={formatMessage(messages.deleteAddress)}
-              onOk={this.handleOnDeleteAddress}
-              onCancel={this.handleOnHideDeleteAddressConfirm}
-              confirmLoading={deleteLoading}
-              {...{ formatMessage }}
-            />
-          }
-        >
-          <DeleteConfirmMessage>
-            {formatMessage(messages.messageDeleteModal)}
-          </DeleteConfirmMessage>
-        </Modal>
       </Container>
     )
   }
@@ -214,44 +209,14 @@ class MyAddresses extends React.PureComponent<Props, {}> {
     resetReducerDataAction()
   }
 
-  handleOnShowDeleteAddressConfirm = (index: number) => {
-    const {
-      showDeleteAddressConfirmAction,
-      data: { addresses }
-    } = this.props
-    const addressId = addresses[index].id
-    showDeleteAddressConfirmAction(addressId as number)
+  handlechangePage = (pageNumber: number) => {
+    const { setSkipValueAction, limit } = this.props
+    const skip = (pageNumber - 1) * limit
+
+    setSkipValueAction(skip, pageNumber)
   }
 
-  handleOnHideDeleteAddressConfirm = () => {
-    const { hideDeleteAddressConfirmAction } = this.props
-    hideDeleteAddressConfirmAction()
-  }
-
-  handleOnDeleteAddress = async () => {
-    const {
-      data: { refetch },
-      addressIdToMutate,
-      deleteAddress,
-      setDeleteLoadingAction,
-      resetReducerDataAction
-    } = this.props
-    setDeleteLoadingAction(true)
-    await deleteAddress({ variables: { addressId: addressIdToMutate } })
-    await refetch()
-    resetReducerDataAction()
-  }
-
-  handleOnEditAddress = (show: boolean, index?: number) => {
-    const addressIndex = index as number
-    const {
-      data: { addresses },
-      setAddressToUpdateAction
-    } = this.props
-    setAddressToUpdateAction(addresses[addressIndex])
-  }
-
-  handleOnSaveAddress = async () => {
+  handleOnSaveAddress = () => {
     const {
       addressIdToMutate,
       firstName,
@@ -265,9 +230,6 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       phone,
       defaultBilling,
       defaultShipping,
-      addNewAddress,
-      updateAddress,
-      data: { refetch },
       setModalLoadingAction,
       resetReducerDataAction,
       validFormAction
@@ -301,23 +263,50 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       defaultShipping
     }
     setModalLoadingAction(true)
-    isUpdatingAddress
-      ? await updateAddress({ variables: { address } })
-      : await addNewAddress({ variables: { address } })
+    this.updateAddAddress(isUpdatingAddress, address)
     resetReducerDataAction()
-    refetch()
+  }
+
+  updateAddAddress = async (
+    isUpdatingAddress: boolean,
+    address: AddressType
+  ) => {
+    const { updateAddress, addNewAddress } = this.props
+    if (isUpdatingAddress) {
+      await updateAddress({
+        variables: { address },
+        refetchQueries: [
+          {
+            query: GetAddressListQuery,
+            variables: { limit: 10 },
+            options: {
+              fetchPolicy: 'network-only'
+            }
+          }
+        ]
+      })
+    } else {
+      await addNewAddress({
+        variables: { address },
+        refetchQueries: [
+          {
+            query: GetAddressListQuery,
+            variables: { limit: 10 },
+            options: {
+              fetchPolicy: 'network-only'
+            }
+          }
+        ]
+      })
+    }
   }
 }
 
 const mapStateToProps = (state: any) => state.get('addresses').toJS()
 
 const MyAddressesEnhance = compose(
-  graphql(addresesQuery),
-  withLoading,
-  withError,
   addAddressMutation,
   updateAddressMutation,
-  deleteAddressMutation,
   connect(
     mapStateToProps,
     { ...MyAddressesActions }

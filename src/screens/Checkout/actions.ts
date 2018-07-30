@@ -21,7 +21,9 @@ import {
   SET_LOADING_PLACE_ORDER,
   RESET_DATA,
   SET_PAYMENT_METHOD,
-  SAVE_COUNTRY
+  SAVE_COUNTRY,
+  OPEN_ADDRESSES_MODAL,
+  SET_SKIP_VALUE
 } from './constants'
 import { AnyAction, AddressType, StripeCardData } from '../../types/common'
 
@@ -128,4 +130,18 @@ export const setPaymentMethodAction = (method: string): AnyAction => ({
 export const saveCountryAction = (countryId: number | null): AnyAction => ({
   type: SAVE_COUNTRY,
   countryId
+})
+
+export const openAddressesModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_ADDRESSES_MODAL,
+  open
+})
+
+export const setSkipValueAction = (
+  skip: number,
+  currentPage: number
+): AnyAction => ({
+  type: SET_SKIP_VALUE,
+  skip,
+  currentPage
 })

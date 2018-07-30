@@ -30,8 +30,7 @@ import {
   StepWrapper,
   PlaceOrderButton,
   paypalButtonStyle,
-  Step
-  // SummaryTitle
+  StepIcon
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -89,6 +88,10 @@ interface Props extends RouteComponentProps<any> {
   loadingBilling: boolean
   loadingPlaceOrder: boolean
   paymentMethod: string
+  openAddressesModal: boolean
+  limit: number
+  currentPage: number
+  skip: number
   setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -110,6 +113,8 @@ interface Props extends RouteComponentProps<any> {
   getTotalItemsIncart: () => void
   setPaymentMethodAction: (method: string) => void
   saveCountryAction: (countryId: number | null) => void
+  openAddressesModalAction: (open: boolean) => void
+  setSkipValueAction: (limit: number, pageNumber: number) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -167,7 +172,13 @@ class Checkout extends React.Component<Props, {}> {
       setStripeCardDataAction,
       setPaymentMethodAction,
       paymentMethod,
-      saveCountryAction
+      saveCountryAction,
+      openAddressesModalAction,
+      openAddressesModal,
+      skip,
+      limit,
+      currentPage,
+      setSkipValueAction
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -208,13 +219,14 @@ class Checkout extends React.Component<Props, {}> {
     const shoppingCart = stateLocation.cart as CartItems[]
     const shoppingCartData = getShoppingCartData(shoppingCart)
     const { total, totalWithoutDiscount } = shoppingCartData
-
-    const steps = stepperTitles.map((step, key) => (
+    const { Step } = Steps
+    const steps = stepperTitles.map((step, index) => (
       <Step
-        clickable={currentStep > key}
-        onClick={this.handleOnStepClick(key)}
+        key={index}
         title={step}
-        {...{ key }}
+        icon={<StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>}
+        clickable={currentStep > index}
+        onClick={this.handleOnStepClick(index)}
       />
     ))
 
@@ -238,13 +250,13 @@ class Checkout extends React.Component<Props, {}> {
           {...{ total }}
         />
       ) : (
-          <PlaceOrderButton
-            onClick={e => this.handleOnPlaceOrder(e, {})}
-            loading={loadingPlaceOrder}
-          >
-            {intl.formatMessage(messages.placeOrder)}
-          </PlaceOrderButton>
-        )
+        <PlaceOrderButton
+          onClick={e => this.handleOnPlaceOrder(e, {})}
+          loading={loadingPlaceOrder}
+        >
+          {intl.formatMessage(messages.placeOrder)}
+        </PlaceOrderButton>
+      )
 
     const continueButton = (
       <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
@@ -273,7 +285,13 @@ class Checkout extends React.Component<Props, {}> {
                     selectDropdownAction,
                     showForm,
                     showAddressFormAction,
-                    indexAddressSelected
+                    indexAddressSelected,
+                    openAddressesModalAction,
+                    openAddressesModal,
+                    skip,
+                    limit,
+                    currentPage,
+                    setSkipValueAction
                   }}
                   buttonToRender={continueButton}
                   showContent={currentStep === ShippingTab}

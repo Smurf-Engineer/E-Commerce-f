@@ -35,7 +35,9 @@ import {
 
 interface Data extends QueryProps {
   profile: IProfileSettings
-  addresses: AddressType[]
+  address: {
+    addresses: AddressType[]
+  }
   payment: {
     cards: CreditCardData[]
   }
@@ -52,9 +54,10 @@ class Overview extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
-      data: { profile, addresses, payment },
+      data: { profile, address, payment },
       goToScreen
     } = this.props
+    const { addresses } = address
     const contentAddress = addresses.length ? (
       <AddressData address={addresses[0]} {...{ formatMessage }} />
     ) : (

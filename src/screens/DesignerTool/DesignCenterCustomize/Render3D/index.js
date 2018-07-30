@@ -1,12 +1,19 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
+import Spin from 'antd/lib/spin'
 import findIndex from 'lodash/findIndex'
-import { modelPositions } from './config'
-import { Container, Render, Progress, Logo, Button } from './styledComponents'
+import { modelPositions, MESH_NAME } from './config'
+import {
+  Container,
+  Render,
+  Progress,
+  Logo,
+  Button,
+  Loading,
+  Icon
+} from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
-
-const NONE = -2
 
 class Render3D extends PureComponent {
   state = {
@@ -112,16 +119,9 @@ class Render3D extends PureComponent {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
 
-    // TODO: Need tests
     if (this.scene) {
-      const object = this.scene.getObjectByName('jersey')
-      if (object) {
-        object.children.forEach(mesh => {
-          mesh.material.dispose()
-          object.dispose()
-          this.scene.dispose()
-        })
-      }
+      this.clearScene()
+      this.scene.dispose()
     }
   }
 
@@ -161,7 +161,7 @@ class Render3D extends PureComponent {
     })
     if (loadedTextures.length) {
       const { objectChilds } = this.state
-      const object = this.scene.getObjectByName('jersey')
+      const object = this.scene.getObjectByName(MESH_NAME)
       if (object) {
         loadedTextures.forEach((texture, index) => {
           if (object.children[objectChilds + index]) {
@@ -178,6 +178,7 @@ class Render3D extends PureComponent {
   loadObject = async files => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
+    this.clearScene()
 
     /* Texture configuration */
     const loadedTextures = await this.loadTextures(files)
@@ -231,7 +232,6 @@ class Render3D extends PureComponent {
           object.children[meshIndex].material = insideMaterial
 
           const { colors = [] } = files.design || {}
-          const reversedColors = reverse(colors)
           const reversedAreas = reverse(areas)
 
           reversedAreas.forEach(
@@ -242,7 +242,7 @@ class Render3D extends PureComponent {
                 map,
                 bumpMap,
                 side: THREE.FrontSide,
-                color: reversedColors[index],
+                color: colors[index],
                 transparent: true
               }))
           )
@@ -260,8 +260,8 @@ class Render3D extends PureComponent {
           object.children[brandingIndex].material = brandingMaterial
 
           /* Object Config */
-          object.position.y = -40
-          object.name = 'jersey'
+          object.position.y = -35
+          object.name = MESH_NAME
           this.scene.add(object)
           onLoadModel(false)
         },
@@ -308,7 +308,7 @@ class Render3D extends PureComponent {
 
   setupColors = colors => {
     const { objectChilds } = this.state
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     if (object) {
       colors.forEach((color, index) => {
         if (object.children[objectChilds + index]) {
@@ -319,7 +319,7 @@ class Render3D extends PureComponent {
   }
 
   setupHoverColor = colorBlockHovered => {
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     const { objectChilds } = this.state
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {
@@ -333,7 +333,7 @@ class Render3D extends PureComponent {
 
   render() {
     const { progress } = this.state
-    const { loadingModel, files, onSaveDesign } = this.props
+    const { loadingModel, files, onSaveDesign, uploadingThumbnail } = this.props
 
     return (
       <Container>
@@ -344,6 +344,11 @@ class Render3D extends PureComponent {
         <Button type="primary" onClick={onSaveDesign}>
           Save Design
         </Button>
+        {uploadingThumbnail && (
+          <Loading>
+            <Spin tip="Uploading..." indicator={<Icon type="loading" />} />
+          </Loading>
+        )}
       </Container>
     )
   }
@@ -366,17 +371,34 @@ class Render3D extends PureComponent {
       }, 800)
     })
 
-  saveThumbnail = async (design, colors) => {
+  saveThumbnail = async (design, item, colors) => {
     this.setFrontFaceModel()
-    this.setupColors(colors)
+    const reverseColors = reverse(colors)
+    this.setupColors(reverseColors)
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
-      onUploadingThumbnail(design)
-      const thumbnail = await this.takeScreenshot(colors)
-      onSaveThumbnail(design, thumbnail)
+      onUploadingThumbnail(true)
+      const thumbnail = await this.takeScreenshot()
+      onSaveThumbnail(design, item, thumbnail)
     } catch (error) {
       console.error(error)
-      onUploadingThumbnail(NONE)
+      onUploadingThumbnail(false)
+    }
+  }
+
+  clearScene = () => {
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      object.children.forEach(({ material }) => {
+        if (!!material) {
+          const { map, bumpMap, alphaMap } = material
+          if (map) map.dispose()
+          if (bumpMap) bumpMap.dispose()
+          if (alphaMap) alphaMap.dispose()
+          material.dispose()
+        }
+      })
+      this.scene.remove(object)
     }
   }
 }

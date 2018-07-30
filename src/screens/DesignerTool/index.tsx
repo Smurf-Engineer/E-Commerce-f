@@ -5,15 +5,30 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
+import set from 'lodash/set'
+import remove from 'lodash/remove'
+import findIndex from 'lodash/findIndex'
 import every from 'lodash/every'
 import { connect } from 'react-redux'
 import CustomizeTab from './DesignCenterCustomize'
-import { saveDesignMutation, uploadThumbnailMutation } from './data'
+import {
+  saveDesignMutation,
+  uploadThumbnailMutation,
+  createThemeMutation,
+  deleteThemeMutation,
+  deleteStyleMutation
+} from './data'
+import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
-import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
+import {
+  ModelConfig,
+  UploadFile,
+  DesignConfig,
+  MessagePayload
+} from '../../types/common'
 
-const NONE = -2
+const { uploadThemeImage } = designerToolApi
 
 type Thumbnail = {
   style: {
@@ -27,8 +42,20 @@ type Design = {
   }
 }
 
+type Theme = {
+  id: string
+  name: string
+  image: string
+}
+
+type DataTheme = {
+  data: {
+    theme: Theme
+  }
+}
+
 interface Props {
-  designConfig: DesignConfig
+  designConfig: DesignConfig[]
   colors: string[]
   styleColors: string[]
   areas: string[]
@@ -44,7 +71,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
-  uploadingThumbnail: number
+  uploadingThumbnail: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -61,13 +88,18 @@ interface Props {
   setInspirationColorAction: (index: number) => void
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
-  setStyleNameAction: (name: string) => void
-  setComplexityAction: (complexity: number) => void
-  setThumbnailAction: (item: number, thumbnail: string) => void
-  setUploadingThumbnailAction: (item: number) => void
+  setStyleNameAction: (design: number, name: string) => void
+  setComplexityAction: (design: number, complexity: number) => void
+  setThumbnailAction: (design: number, item: number, thumbnail: string) => void
+  setUploadingThumbnailAction: (uploading: boolean) => void
+  setUploadingSuccess: (config: ModelConfig) => void
+  uploadThemeImage: (file: any) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
+  createTheme: (variables: {}) => Promise<DataTheme>
+  deleteTheme: (variables: {}) => Promise<MessagePayload>
+  deleteStyle: (variables: {}) => Promise<MessagePayload>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -104,7 +136,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       setThemeNameAction,
       setStyleNameAction,
       setComplexityAction,
-      setUploadingThumbnailAction
+      setUploadingThumbnailAction,
+      setUploadingSuccess
     } = this.props
     const { themeImage } = this.state
     return (
@@ -147,6 +180,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectComplexity={setComplexityAction}
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
+        onLoadDesign={setUploadingSuccess}
       />
     )
   }
@@ -161,9 +195,67 @@ export class DesignerTool extends React.Component<Props, {}> {
     setCurrentTabAction(index)
   }
 
-  handleOnDeleteTheme = (id: number) => {}
+  handleOnDeleteTheme = async (id: number) => {
+    try {
+      const { deleteTheme, productCode } = this.props
+      await deleteTheme({
+        variables: { id },
+        update: (store: any) => {
+          const data = store.readQuery({
+            query: getProductFromCode,
+            variables: { code: productCode }
+          })
+          const themes = get(data, 'product.themes', [])
+          const updatedThemes = remove(
+            themes,
+            ({ id: themeId }) => themeId !== id
+          )
+          set(data, 'product.themes', updatedThemes)
+          store.writeQuery({
+            query: getProductFromCode,
+            data,
+            variables: { code: productCode }
+          })
+        }
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
-  handleOnDeleteStyle = (id: number) => {}
+  handleOnDeleteStyle = async (id: number) => {
+    try {
+      const { deleteStyle, productCode, selectedTheme } = this.props
+      await deleteStyle({
+        variables: { id },
+        update: (store: any) => {
+          const data = store.readQuery({
+            query: getProductFromCode,
+            variables: { code: productCode }
+          })
+          const themes = get(data, 'product.themes', [])
+          const themeIndex = findIndex(
+            themes,
+            ({ id: themeId }) => themeId === selectedTheme
+          )
+          const { styles } = themes[themeIndex]
+          const updatedStyles = remove(
+            styles,
+            ({ id: styleId }) => styleId !== id
+          )
+          set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
+          data.product.themes[themeIndex].styles = updatedStyles
+          store.writeQuery({
+            query: getProductFromCode,
+            data,
+            variables: { code: productCode }
+          })
+        }
+      })
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   handleOnSelectThemeImage = (file: UploadFile) => {
     this.setState({ themeImage: [file] })
@@ -173,7 +265,11 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
-  handleUploadThumbnail = async (design: number, image: string) => {
+  handleUploadThumbnail = async (
+    design: number,
+    item: number,
+    image: string
+  ) => {
     const {
       uploadThumbnail,
       setThumbnailAction,
@@ -182,10 +278,10 @@ export class DesignerTool extends React.Component<Props, {}> {
     try {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
-      setThumbnailAction(design, thumbnailUrl)
-      setUploadingThumbnailAction(NONE)
+      setThumbnailAction(design, item, thumbnailUrl)
+      setUploadingThumbnailAction(false)
     } catch (e) {
-      setUploadingThumbnailAction(NONE)
+      setUploadingThumbnailAction(false)
       console.error(e)
     }
   }
@@ -197,14 +293,20 @@ export class DesignerTool extends React.Component<Props, {}> {
         modelConfig,
         selectedTheme,
         designConfig,
-        saveDesign
+        saveDesign,
+        themeName,
+        createTheme
       } = this.props
+
+      if (!productCode) {
+        message.error('Please enter a product code')
+        return
+      }
 
       if (!modelConfig || !designConfig) {
         message.error('Upload model files first')
         return
       }
-
       const {
         obj,
         mtl,
@@ -216,47 +318,26 @@ export class DesignerTool extends React.Component<Props, {}> {
         areasSvg,
         areasPng
       } = modelConfig
-      const { name, complexity, thumbnail, colors, inspiration } = designConfig
 
-      if (!thumbnail) {
-        message.error('To proceed, save design thumbnail first')
-        return
-      }
+      const designs = designConfig.map(
+        ({ name, complexity, thumbnail, colors, inspiration }) => {
+          const inspirationItems = inspiration.map(item => ({
+            name: item.name,
+            colors: item.colors,
+            image: item.thumbnail
+          }))
 
-      const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
+          const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
 
-      if (!hasAllInspirationThumbnail) {
-        message.error('Unable to find one or more Inspiration Thumbnails')
-        return
-      }
+          if (!hasAllInspirationThumbnail) {
+            message.error('Unable to find one or more Inspiration Thumbnails')
+            return
+          }
 
-      if (!productCode) {
-        message.error('Please enter a product code')
-        return
-      }
-
-      if (!selectedTheme) {
-        // TODO: Validate if exist data for create a new theme, if not show error
-      }
-
-      const inspirationItems = inspiration.map(item => ({
-        name: item.name,
-        colors: item.colors,
-        image: item.thumbnail
-      }))
-      const design = {
-        productCode,
-        label,
-        bumpMap,
-        flatLock: flatlock,
-        obj,
-        mtl,
-        theme_id: selectedTheme,
-        styles: [
-          {
+          return {
             name,
             image: thumbnail,
-            complexity,
+            complexity: complexity || 1,
             branding: brandingSvg,
             brandingPng,
             svgs: areasSvg,
@@ -264,7 +345,46 @@ export class DesignerTool extends React.Component<Props, {}> {
             colors,
             inspiration: inspirationItems
           }
-        ]
+        }
+      )
+
+      const hasAllDesignThumbnail = every(designs, 'image')
+      if (!hasAllDesignThumbnail) {
+        message.error('To proceed, save design thumbnail first')
+        return
+      }
+
+      const { themeImage } = this.state
+      let themeResponse = null
+      const hasSelectedTheme = selectedTheme > 0
+      if (!hasSelectedTheme && !!themeImage.length && !!themeName) {
+        const responseImage = await uploadThemeImage(themeImage[0])
+        if (!!responseImage) {
+          const { image } = responseImage
+          const theme = {
+            image,
+            name: themeName
+          }
+          themeResponse = await createTheme({ variables: { theme } })
+        }
+      }
+
+      if (!themeResponse && !hasSelectedTheme) {
+        message.error('Select a theme or create new one')
+        return
+      }
+
+      const themeId = get(themeResponse, 'data.theme.id', selectedTheme)
+
+      const design = {
+        productCode,
+        label,
+        bumpMap,
+        flatLock: flatlock,
+        obj,
+        mtl,
+        theme_id: themeId,
+        styles: designs
       }
       await saveDesign({ variables: { design } })
       message.success('Your design is now saved')
@@ -279,6 +399,9 @@ const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 const DesignerToolEnhance = compose(
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  graphql(createThemeMutation, { name: 'createTheme' }),
+  graphql(deleteThemeMutation, { name: 'deleteTheme' }),
+  graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi }

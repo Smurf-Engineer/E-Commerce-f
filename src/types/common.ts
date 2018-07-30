@@ -101,6 +101,9 @@ export interface Product {
   obj?: string
   mtl?: string
   themes?: Theme[]
+  label: string
+  flatlock: string
+  bumpMap: string
 }
 
 export type DesignType = {
@@ -253,7 +256,13 @@ export interface Style {
   id: number
   name: string
   image: string
-  branding?: string
+  branding: string
+  brandingPng: string
+  colorblock1: string
+  colorblock2: string
+  colorblock3: string
+  colorblock4: string
+  colorblock5: string
   colors: ColorBlock[]
 }
 
@@ -357,6 +366,10 @@ export interface ModelConfig {
   brandingSvg: string
   brandingPng: string
   label: string
+  design: {
+    name: string
+    colors: string[]
+  }
   areasSvg: string[]
   areasPng: string[]
 }
@@ -695,4 +708,10 @@ export interface DesignConfig extends DesignObject {
 export interface DesignItem {
   id: number
   name: string
+}
+
+export type MessagePayload = {
+  data: {
+    message: string
+  }
 }

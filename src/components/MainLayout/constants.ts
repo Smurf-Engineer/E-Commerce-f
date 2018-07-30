@@ -10,3 +10,8 @@ export const LOGOUT = `${namespace}/LOGOUT`
 export const SAVE_USER_TO_LOCAL = `${namespace}/SAVE_USER_TO_LOCAL`
 
 export const GET_TOTAL_CART_ITEMS = `${namespace}/GET_TOTAL_CART_ITEMS`
+
+const ACCOUNT = '/account'
+const CHECKOUT = '/checkout'
+
+export const REDIRECT_ROUTES = [ACCOUNT, CHECKOUT]

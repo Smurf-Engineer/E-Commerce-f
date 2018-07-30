@@ -21,7 +21,7 @@ export interface Data extends QueryProps {
 
 interface Props {
   data?: Data
-  designConfig: DesignConfig
+  designConfig: DesignConfig[]
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
@@ -35,7 +35,7 @@ interface Props {
   productCode: string
   themeName: string
   styleName: string
-  uploadingThumbnail: number
+  uploadingThumbnail: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -53,10 +53,11 @@ interface Props {
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (name: string) => void
-  onSelectComplexity: (complexity: number) => void
-  onSaveThumbnail: (desing: number, image: string) => void
-  onUploadingThumbnail: (item: number) => void
+  onUpdateStyleName: (design: number, name: string) => void
+  onSelectComplexity: (design: number, complexity: number) => void
+  onSaveThumbnail: (design: number, item: number, image: string) => void
+  onUploadingThumbnail: (uploading: boolean) => void
+  onLoadDesign: (config: ModelConfig) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -99,7 +100,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUpdateStyleName,
       onSelectComplexity,
       onSaveThumbnail,
-      onUploadingThumbnail
+      onUploadingThumbnail,
+      onLoadDesign
     } = this.props
 
     return (
@@ -135,7 +137,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUpdateThemeName,
             onUpdateStyleName,
             onSelectComplexity,
-            uploadingThumbnail
+            uploadingThumbnail,
+            onLoadDesign
           }}
           onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}
@@ -152,7 +155,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             loadingModel,
             colorBlockHovered,
             onSaveThumbnail,
-            onUploadingThumbnail
+            onUploadingThumbnail,
+            uploadingThumbnail
           }}
           ref={render3D => (this.render3D = render3D)}
         />
@@ -160,9 +164,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
   }
 
-  handleOnSaveThumbnail = (index: number, colors: string[]) => {
+  handleOnSaveThumbnail = (design: number, item: number, colors: string[]) => {
     if (this.render3D) {
-      this.render3D.saveThumbnail(index, colors)
+      this.render3D.saveThumbnail(design, item, colors)
     }
   }
 }
