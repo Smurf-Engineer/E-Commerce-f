@@ -188,7 +188,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case SET_PAYMENT_METHOD:
       return state.set('paymentMethod', action.method)
     case SAVE_COUNTRY:
-      return state.set('countryId', action.countryId)
+      return state.set('billingCountry', action.countryCode)
     case OPEN_ADDRESSES_MODAL:
       return state.set('openAddressesModal', action.open)
     default:

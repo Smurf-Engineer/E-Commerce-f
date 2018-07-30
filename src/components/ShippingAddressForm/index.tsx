@@ -2,8 +2,6 @@
  * ShippingAddressForm Component - Created by miguelcanobbio on 15/05/18.
  */
 import * as React from 'react'
-import Select from 'antd/lib/select'
-import { withApollo, graphql, compose } from 'react-apollo'
 import messages from './messages'
 import {
   ShippingFormContainer,
@@ -17,26 +15,21 @@ import {
   ShipTopPoAPO
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
-import { countriesQuery, regionsQuery, citiesQuery } from './data'
-import { QueryProps, Country, CountryRegion, City } from '../../types/common'
+import CountrySelect from '../CountrySelect'
+import RegionSelect from '../RegionSelect'
+import CitySelect from '../CitySelect'
 
-const Option = Select.Option
-
-interface Data extends QueryProps {
-  countries: Country[]
-}
+const COUNTRY_VALUE_ID = 'country'
+const STATE_VALUE_ID = 'stateProvince'
+const CITY_VALUE_ID = 'city'
 
 interface StateProps {
-  regions: [CountryRegion] | null
-  cities: [City] | null
   selectedCountry: string | undefined
   selectedRegion: string | undefined
   selectedCity: string | undefined
 }
 
 interface Props {
-  data: Data
-  client: any
   firstName: string
   lastName: string
   street: string
@@ -52,106 +45,29 @@ interface Props {
   inputChangeAction: (id: string, value: string) => void
 }
 
-export class ShippingAddressForm extends React.Component<Props, StateProps> {
+class ShippingAddressForm extends React.Component<Props, StateProps> {
   state: StateProps = {
-    regions: null,
-    cities: null,
-    selectedCountry: undefined,
-    selectedRegion: undefined,
-    selectedCity: undefined
+    selectedCountry: '',
+    selectedRegion: '',
+    selectedCity: ''
   }
 
   render() {
     const {
-      data,
       firstName,
       lastName,
       street,
       apartment,
       country,
       stateProvince,
-      city: citi,
+      city,
       zipCode,
       phone,
       hasError,
       formatMessage
     } = this.props
 
-    const { regions, cities } = this.state
-    const { countries } = data
-
-    let dropdownCountries: any = []
-    let dropdownRegions: any = []
-    let dropdownCities: any = []
-
-    if (countries && countries.length) {
-      dropdownCountries = countries.map(({ name, code }, index) => (
-        <Option value={code} key={index}>
-          {name}
-        </Option>
-      ))
-    }
-
-    if (regions && regions.length) {
-      dropdownRegions = regions.map(({ region }, index) => (
-        <Option value={region} key={index}>
-          {region}
-        </Option>
-      ))
-    }
-
-    if (cities && cities.length) {
-      dropdownCities = cities.map(({ city }, index) => (
-        <Option value={city} key={index}>
-          {city}
-        </Option>
-      ))
-    }
-
-    const countriesDrop = (
-      <Select
-        placeholder={`Select Country`}
-        style={{ width: '100%' }}
-        onChange={this.handleCountryChange}
-        showSearch={true}
-        optionFilterProp="children"
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {dropdownCountries}
-      </Select>
-    )
-
-    const regionsDrop = (
-      <Select
-        placeholder={`Select State/Province`}
-        style={{ width: '100%' }}
-        onChange={this.handleRegionChange}
-        showSearch={true}
-        optionFilterProp="children"
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {dropdownRegions}
-      </Select>
-    )
-
-    const citiesDrop = (
-      <Select
-        placeholder={`Select City`}
-        style={{ width: '100%' }}
-        onChange={this.handleCityChange}
-        showSearch={true}
-        optionFilterProp="children"
-        filterOption={(input: any, option: any) =>
-          option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-        }
-      >
-        {dropdownCities}
-      </Select>
-    )
+    const { selectedCountry, selectedRegion, selectedCity } = this.state
 
     return (
       <ShippingFormContainer>
@@ -222,7 +138,10 @@ export class ShippingAddressForm extends React.Component<Props, StateProps> {
               <Label>{formatMessage(messages.countryLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            {countriesDrop}
+            <CountrySelect
+              {...{ selectedCountry, formatMessage }}
+              handleCountryChange={this.handleCountryChange}
+            />
             {!country &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -233,7 +152,12 @@ export class ShippingAddressForm extends React.Component<Props, StateProps> {
               <Label>{formatMessage(messages.stateProvinceLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            {regionsDrop}
+            <RegionSelect
+              {...{ formatMessage }}
+              country={selectedCountry}
+              region={selectedRegion}
+              handleRegionChange={this.handleRegionChange}
+            />
             {!stateProvince &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -244,8 +168,14 @@ export class ShippingAddressForm extends React.Component<Props, StateProps> {
               <Label>{formatMessage(messages.cityLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            {citiesDrop}
-            {!citi &&
+            <CitySelect
+              {...{ selectedCity, formatMessage }}
+              disabled={!selectedRegion || selectedRegion === ''}
+              country={selectedCountry}
+              region={selectedRegion}
+              handleCityChange={this.handleCityChange}
+            />
+            {!city &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
               )}
@@ -289,58 +219,31 @@ export class ShippingAddressForm extends React.Component<Props, StateProps> {
     )
   }
 
-  handleCountryChange = async (value: any) => {
-    const {
-      client: { query }
-    } = this.props
-
-    try {
-      const { data } = await query({
-        query: regionsQuery,
-        variables: { country: value },
-        fetchPolicy: 'network-only'
-      })
-
-      this.setState({
-        regions: data.states,
-        selectedCountry: value,
-        selectedRegion: undefined,
-        selectedCity: undefined,
-        cities: null
-      })
-    } catch (e) {
-      throw e
-    }
+  handleCountryChange = (value: any) => {
+    const { inputChangeAction } = this.props
+    this.setState({
+      selectedCountry: value,
+      selectedRegion: '',
+      selectedCity: ''
+    })
+    inputChangeAction(COUNTRY_VALUE_ID, value)
   }
 
-  handleRegionChange = async (value: any) => {
-    const {
-      client: { query }
-    } = this.props
-
-    const { selectedCountry } = this.state
-
-    try {
-      const { data } = await query({
-        query: citiesQuery,
-        variables: { country: selectedCountry, region: value },
-        fetchPolicy: 'network-only'
-      })
-
-      this.setState({
-        selectedRegion: value,
-        selectedCity: undefined,
-        cities: data.getCities
-      })
-    } catch (e) {
-      throw e
-    }
+  handleRegionChange = (value: any) => {
+    const { inputChangeAction } = this.props
+    this.setState({
+      selectedRegion: value,
+      selectedCity: ''
+    })
+    inputChangeAction(STATE_VALUE_ID, value)
   }
 
   handleCityChange = async (value: any) => {
+    const { inputChangeAction } = this.props
     this.setState({
       selectedCity: value
     })
+    inputChangeAction(CITY_VALUE_ID, value)
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -370,13 +273,4 @@ export class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 }
 
-const ShippingAddressFormEnhance = compose(
-  withApollo,
-  graphql(countriesQuery, {
-    options: {
-      fetchPolicy: 'network-only'
-    }
-  })
-)(ShippingAddressForm)
-
-export default ShippingAddressFormEnhance
+export default ShippingAddressForm

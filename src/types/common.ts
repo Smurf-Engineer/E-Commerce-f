@@ -194,6 +194,7 @@ export interface CountrySubsidiary {
   id: number
   country: string
   subsidiary: number
+  countryCode: string
 }
 
 export interface Region {
