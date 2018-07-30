@@ -233,7 +233,7 @@ export class Account extends React.Component<Props, {}> {
 
     const currentScreen = this.getScreenComponent(screen)
 
-    const noOrderHistoryFlag = screen !== ORDER_HISTORY
+    const noOrderScreenFlag = screen !== ORDER_HISTORY && screen !== OVERVIEW
 
     const renderView = (
       <MediaQuery
@@ -261,7 +261,7 @@ export class Account extends React.Component<Props, {}> {
                           {intl.formatMessage(messages.filtersTitle)}
                           <Icon type="down" />
                         </FiltersTitle>
-                        <ScreenTitle show={noOrderHistoryFlag}>
+                        <ScreenTitle show={noOrderScreenFlag}>
                           {!!messages[screen] && (
                             <FormattedMessage {...messages[screen]} />
                           )}
@@ -295,11 +295,10 @@ export class Account extends React.Component<Props, {}> {
                     {logoutButton}
                   </SideBar>
                   <Content>
-                    <ScreenTitle {...{ screen }}>
-                      {screen !== ORDER_HISTORY &&
-                        !!messages[screen] && (
-                          <FormattedMessage {...messages[screen]} />
-                        )}
+                    <ScreenTitle show={noOrderScreenFlag}>
+                      {!!messages[screen] && (
+                        <FormattedMessage {...messages[screen]} />
+                      )}
                     </ScreenTitle>
                     {currentScreen}
                   </Content>

@@ -869,7 +869,8 @@
   "components.OrdersList.status": "Status",
   "components.OrdersList.emptyMessage": "No orders yet",
 
-  "components.Overview.title": "Recent Orders",
+  "components.Overview.title": "OVERVIEW",
+  "components.Overview.headerTitle": "Recent Orders",
   "components.Overview.profile": "Profile",
   "components.Overview.addresses": "Addresses",
   "components.Overview.payment": "Payment Methods",
