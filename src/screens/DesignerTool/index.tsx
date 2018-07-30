@@ -201,7 +201,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     confirm({
       title: 'Are you sure?',
       content:
-        'If you remove this theme, all designs linked to it will delete too.',
+        'If you remove this theme, all designs linked to it will be delete too.',
       onOk: async () => {
         try {
           const { deleteTheme, productCode } = this.props
