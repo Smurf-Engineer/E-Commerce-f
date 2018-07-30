@@ -15,9 +15,12 @@ import {
   SET_MODAL_LOADING,
   SET_DELETE_LOADING,
   SET_ADDRESS_UPDATE,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  SET_SKIP_VALUE
 } from './constants'
 import { Reducer } from '../../types/common'
+
+const ADDRESSES_TO_SHOW = 10
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
@@ -37,7 +40,10 @@ export const initialState = fromJS({
   deleteLoading: false,
   defaultBilling: false,
   defaultShipping: false,
-  hasError: false
+  hasError: false,
+  currentPage: 1,
+  skip: 0,
+  limit: ADDRESSES_TO_SHOW
 })
 
 const adressesReducer: Reducer<any> = (state = initialState, action) => {
@@ -74,6 +80,11 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
         ...action.address,
         addressIdToMutate: action.address.id,
         showAddressModal: true
+      })
+    case SET_SKIP_VALUE:
+      return state.merge({
+        skip: action.skip,
+        currentPage: action.currentPage
       })
     default:
       return state

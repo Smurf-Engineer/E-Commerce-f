@@ -55,6 +55,9 @@ export class MenuGender extends React.PureComponent<Props, {}> {
     onPressSeeAll(type)
   }
 
+  getFilter = (array: any[], index: number) =>
+    array && array.length && array[index]
+
   render() {
     const {
       type,
@@ -87,6 +90,10 @@ export class MenuGender extends React.PureComponent<Props, {}> {
       </Categories>
     )
 
+    const categoryFilter = this.getFilter(categories, categorySelected)
+    const sportFilter = this.getFilter(sports, sportSelected)
+    const genderFilter = this.getFilter(genders, type)
+
     return (
       <Container>
         <Filters>
@@ -106,10 +113,14 @@ export class MenuGender extends React.PureComponent<Props, {}> {
         <Divider type="vertical" />
         {loading ? null : (
           <ProductList
-            {...{ onPressCustomize, onPressQuickView, formatMessage }}
-            genderFilter={genders[type]}
-            sportFilter={sports[sportSelected]}
-            category={categories.length && categories[categorySelected]}
+            {...{
+              onPressCustomize,
+              onPressQuickView,
+              genderFilter,
+              sportFilter,
+              categoryFilter,
+              formatMessage
+            }}
             onPressSeeAll={this.handleOnPressSeeAll}
           />
         )}

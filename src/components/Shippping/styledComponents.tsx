@@ -51,3 +51,13 @@ export const StyledCheckbox = styled(Checkbox)`
   line-height: 22px;
   margin: 5px 0;
 `
+
+export const ViewAllAddresses = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  text-align: right;
+  cursor: pointer;
+`
