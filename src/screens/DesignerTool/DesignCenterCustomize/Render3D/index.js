@@ -256,9 +256,7 @@ class Render3D extends PureComponent {
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
           object.children[labelIndex].material.color.set('#ffffff')
-          if (flatlockIndex >= 0) {
-            object.children[flatlockIndex].material = flatlockMaterial
-          }
+          object.children[flatlockIndex].material = flatlockMaterial
           // TODO: WIP
           // object.children[zipperIndex].material = zipperMaterial
           // object.children[bindingIndex].material = bindingMaterial
