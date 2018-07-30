@@ -14,6 +14,7 @@ import {
   ViewContainer,
   Div,
   ScreenTitle,
+  ButtonWrapper,
   Button,
   OrderInfo,
   OrderDelivery,
@@ -36,13 +37,14 @@ import {
 import { OrderSummary } from '../OrderSummary'
 import CartListItem from '../CartListItem'
 import MyAddress from '../MyAddress'
+import AddToCartButton from '../AddToCartButton'
+
 import iconVisa from '../../assets/card-visa.svg'
 import iconMasterCard from '../../assets/card-master.svg'
 import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
-import AddToCartButton from '../AddToCartButton'
 
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
@@ -55,11 +57,15 @@ interface Props {
   onReturn: (id: string) => void
 }
 
-class OrderDetails extends React.Component<Props, {}> {
+export class OrderDetails extends React.Component<Props, {}> {
   render() {
-    const { data, formatMessage, onReturn } = this.props
+    const { data, orderId, formatMessage, onReturn } = this.props
 
     const handleOnReturn = () => onReturn('')
+
+    if (!orderId) {
+      return null
+    }
 
     if (!data || !data.orderQuery) {
       return <Container />
@@ -95,15 +101,12 @@ class OrderDetails extends React.Component<Props, {}> {
     } = data.orderQuery
 
     let totalSum = 0
-    if (cart) {
-      cart.map(cartItem => {
-        const productTotal = cartItem.productTotal as number
-        totalSum = totalSum + productTotal
-      })
-    }
 
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
+          const productTotal = cartItem.productTotal as number
+          totalSum = totalSum + productTotal
+
           const priceRange = {
             quantity: '0',
             price: 0
@@ -171,9 +174,11 @@ class OrderDetails extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          <Button onClick={this.handleOnClickReceipt}>
-            {formatMessage(messages.receipt)}
-          </Button>
+          <ButtonWrapper>
+            <Button type="primary" onClick={this.handleOnClickReceipt}>
+              {formatMessage(messages.receipt)}
+            </Button>
+          </ButtonWrapper>
         </Div>
         <OrderInfo>
           <OrderDelivery>

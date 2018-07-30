@@ -876,5 +876,28 @@
   "components.Overview.payment": "Payment Methods",
   "components.Overview.emptyAddress": "No addresses added",
   "components.Overview.emptyPayment": "No cards added",
-  "components.PaletteCard.apply": "Apply"
+  "components.PaletteCard.apply": "Apply",
+
+  "components.OrderDetails.title": "Order Details",
+  "components.OrderDetails.back": "Back to Order History",
+  "components.OrderDetails.receipt": "Receipt",
+  "components.OrderDetails.deliveryDate": "Estimated delivery date",
+  "components.OrderDetails.orderNumber": "Order Number",
+  "components.OrderDetails.orderDate": "Order Date",
+  "components.OrderDetails.trackingNumber": "Tracking Number",
+  "components.OrderDetails.orderSummary": "Order Summary",
+  "components.OrderDetails.subtotal": "Subtotal",
+  "components.OrderDetails.taxes": "Taxes",
+  "components.OrderDetails.shipping": "Shipping",
+  "components.OrderDetails.discount": "Discount",
+  "components.OrderDetails.total": "Total",
+  "components.OrderDetails.items": "Items",
+  "components.OrderDetails.reorderAll": "Reorder all items",
+  "components.OrderDetails.shippingAddress": "Shipping Address",
+  "components.OrderDetails.billingAddress": "Billing Address",
+  "components.OrderDetails.payment": "Payment",
+
+  "components.OrderHistory.title": "ORDER HISTORY",
+
+  "components.CartListItem.reorder": "Reorder"
 }

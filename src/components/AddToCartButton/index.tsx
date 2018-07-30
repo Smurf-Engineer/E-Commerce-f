@@ -13,6 +13,7 @@ import {
   StyledButton,
   ButtonContainer,
   CustomizeButton,
+  ButtonWrapper,
   ReorderButton
 } from './styledComponents'
 import messages from './messages'
@@ -66,9 +67,11 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     ) : (
       <Container>
         {orderDetails ? (
-          <ReorderButton individual={!!item} onClick={this.addToCart}>
-            {label}
-          </ReorderButton>
+          <ButtonWrapper individual={!!item}>
+            <ReorderButton type="primary" onClick={this.addToCart}>
+              {label}
+            </ReorderButton>
+          </ButtonWrapper>
         ) : (
           <StyledButton onClick={this.addToCart}>{label}</StyledButton>
         )}

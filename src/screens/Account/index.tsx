@@ -233,6 +233,8 @@ export class Account extends React.Component<Props, {}> {
 
     const currentScreen = this.getScreenComponent(screen)
 
+    const noOrderHistoryFlag = screen !== ORDER_HISTORY
+
     const renderView = (
       <MediaQuery
         maxWidth={768}
@@ -259,11 +261,10 @@ export class Account extends React.Component<Props, {}> {
                           {intl.formatMessage(messages.filtersTitle)}
                           <Icon type="down" />
                         </FiltersTitle>
-                        <ScreenTitle {...{ screen }}>
-                          {screen !== ORDER_HISTORY &&
-                            !!messages[screen] && (
-                              <FormattedMessage {...messages[screen]} />
-                            )}
+                        <ScreenTitle show={noOrderHistoryFlag}>
+                          {!!messages[screen] && (
+                            <FormattedMessage {...messages[screen]} />
+                          )}
                         </ScreenTitle>
                         {currentScreen}
                       </Content>

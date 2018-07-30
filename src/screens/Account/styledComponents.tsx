@@ -65,17 +65,17 @@ export const Title = styled.div`
   line-height: 27px;
 `
 interface ScreenTitleProps {
-  screen?: string
+  show?: boolean
 }
 export const ScreenTitle = styled.div`
   color: #5f6062;
-  display: ${({ screen }: ScreenTitleProps) =>
-    screen === 'orderHistory' ? 'none' : 'block'};
+  display: ${({ show }: ScreenTitleProps) => (show ? 'block' : 'none')};
   font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 27px;
   margin-bottom: 64px;
+
   @media (max-width: 768px) and (min-width: 320px) {
     margin-bottom: 24px;
   }

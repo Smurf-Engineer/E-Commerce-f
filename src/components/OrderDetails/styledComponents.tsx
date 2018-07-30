@@ -2,6 +2,7 @@
  * Styled Components - Created by jorge on 23/07/18.
  */
 import styled from 'styled-components'
+import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div``
 
@@ -41,16 +42,23 @@ export const ScreenTitle = styled.div`
   letter-spacing: 0.23px;
   line-height: 25px;
 `
-export const Button = styled.button`
-  background-color: #4a90e2;
-  border-radius: 2px;
-  color: #ffffff;
-  cursor: pointer;
+export const ButtonWrapper = styled.span`
   font-size: 16px;
-  height: 40px;
   letter-spacing: 0.11px;
   line-height: 22px;
-  padding: 9px 22.8px;
+
+  .ant-btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  .ant-btn-primary:hover {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+`
+export const Button = styled(AntdButton)`
+  height: 40px;
+  width: 93px;
 `
 export const OrderInfo = styled.div`
   display: flex;
