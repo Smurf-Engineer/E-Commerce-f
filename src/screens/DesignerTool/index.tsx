@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
@@ -29,6 +30,7 @@ import {
   MessagePayload
 } from '../../types/common'
 
+const { confirm } = Modal
 const { uploadThemeImage } = designerToolApi
 
 type Thumbnail = {
@@ -199,66 +201,79 @@ export class DesignerTool extends React.Component<Props, {}> {
     setCurrentTabAction(index)
   }
 
-  handleOnDeleteTheme = async (id: number) => {
-    try {
-      const { deleteTheme, productCode } = this.props
-      await deleteTheme({
-        variables: { id },
-        update: (store: any) => {
-          const data = store.readQuery({
-            query: getProductFromCode,
-            variables: { code: productCode }
+  handleOnDeleteTheme = (id: number) => {
+    confirm({
+      title: 'Are you sure?',
+      content:
+        'If you remove this theme, all designs linked to it will be delete too.',
+      onOk: async () => {
+        try {
+          const { deleteTheme, productCode } = this.props
+          await deleteTheme({
+            variables: { id },
+            update: (store: any) => {
+              const data = store.readQuery({
+                query: getProductFromCode,
+                variables: { code: productCode }
+              })
+              const themes = get(data, 'product.themes', [])
+              const updatedThemes = remove(
+                themes,
+                ({ id: themeId }) => themeId !== id
+              )
+              set(data, 'product.themes', updatedThemes)
+              store.writeQuery({
+                query: getProductFromCode,
+                data,
+                variables: { code: productCode }
+              })
+            }
           })
-          const themes = get(data, 'product.themes', [])
-          const updatedThemes = remove(
-            themes,
-            ({ id: themeId }) => themeId !== id
-          )
-          set(data, 'product.themes', updatedThemes)
-          store.writeQuery({
-            query: getProductFromCode,
-            data,
-            variables: { code: productCode }
-          })
+        } catch (e) {
+          console.error(e)
         }
-      })
-    } catch (e) {
-      console.error(e)
-    }
+      }
+    })
   }
 
   handleOnDeleteStyle = async (id: number) => {
-    try {
-      const { deleteStyle, productCode, selectedTheme } = this.props
-      await deleteStyle({
-        variables: { id },
-        update: (store: any) => {
-          const data = store.readQuery({
-            query: getProductFromCode,
-            variables: { code: productCode }
+    confirm({
+      title: 'Are you sure?',
+      content: 'Design will be deleted.',
+      onOk: async () => {
+        try {
+          const { deleteStyle, productCode, selectedTheme } = this.props
+          await deleteStyle({
+            variables: { id },
+            update: (store: any) => {
+              const data = store.readQuery({
+                query: getProductFromCode,
+                variables: { code: productCode }
+              })
+              const themes = get(data, 'product.themes', [])
+              const themeIndex = findIndex(
+                themes,
+                ({ id: themeId }) => themeId === selectedTheme
+              )
+              const { styles } = themes[themeIndex]
+              const updatedStyles = remove(
+                styles,
+                ({ id: styleId }) => styleId !== id
+              )
+              set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
+              data.product.themes[themeIndex].styles = updatedStyles
+              store.writeQuery({
+                query: getProductFromCode,
+                data,
+                variables: { code: productCode }
+              })
+            }
           })
-          const themes = get(data, 'product.themes', [])
-          const themeIndex = findIndex(
-            themes,
-            ({ id: themeId }) => themeId === selectedTheme
-          )
-          const { styles } = themes[themeIndex]
-          const updatedStyles = remove(
-            styles,
-            ({ id: styleId }) => styleId !== id
-          )
-          set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
-          data.product.themes[themeIndex].styles = updatedStyles
-          store.writeQuery({
-            query: getProductFromCode,
-            data,
-            variables: { code: productCode }
-          })
+        } catch (e) {
+          console.error(e)
         }
-      })
-    } catch (e) {
-      console.error(e)
-    }
+      }
+    })
   }
 
   handleOnSelectThemeImage = (file: UploadFile) => {

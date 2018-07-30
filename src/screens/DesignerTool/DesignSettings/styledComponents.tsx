@@ -26,6 +26,7 @@ export const Form = styled.div`
 
 export const InputContainer = styled.div`
   position: relative;
+  padding-bottom: 16px;
 `
 
 interface ButtonProps {
