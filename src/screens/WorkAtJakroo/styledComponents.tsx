@@ -55,13 +55,13 @@ export const HeaderDialog = styled.div`
   display: flex;
   flex-direction: column;
   font-family: 'Avenir Next';
-  font-size: 18px;
+  font-size: 16px;
   height: 200px;
   justify-content: center;
-  letter-spacing: 0.2px;
-  line-height: 25px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
   margin: 0px;
-  padding: 22px;
+  padding: 22px 40px;
   position: absolute;
   right: 0px;
   text-align: left;
@@ -69,5 +69,26 @@ export const HeaderDialog = styled.div`
 
   @media (min-width: 320px) and (max-width: 767px) {
     width: 100%;
+  }
+`
+export const ContentSection = styled.div`
+  padding: 115px 40px 300px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 20px 8px 0px;
+  }
+`
+export const SectionTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 24px;
+  font-weight: bold;
+  letter-spacing: 0.3px;
+  line-height: 33px;
+  margin-bottom: 60px;
+  text-align: center;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 19px;
   }
 `

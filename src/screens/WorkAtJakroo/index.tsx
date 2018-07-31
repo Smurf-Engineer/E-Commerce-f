@@ -12,17 +12,69 @@ import {
   StyledImg,
   HeaderTextContainer,
   Title,
-  HeaderDialog
+  HeaderDialog,
+  ContentSection,
+  SectionTitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
+import JobOpenings from '../../components/JobOpenings'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
 }
 
+const jobOpenings = [
+  {
+    id: 'jrAccountManager',
+    header: 'jrAccountManagerHeader',
+    content: 'jrAccountManagerContent'
+  },
+  {
+    id: 'accountManagerInsideSales',
+    header: 'accountManagerInsideSalesHeader',
+    content: 'accountManagerInsideSalesContent'
+  },
+  {
+    id: 'srAccountManager',
+    header: 'srAccountManagerHeader',
+    content: 'srAccountManagerContent'
+  },
+  {
+    id: 'outsideSalesPacificNW',
+    header: 'outsideSalesPacificNWHeader',
+    content: 'outsideSalesPacificNWContent'
+  },
+  {
+    id: 'outsideSalesMountain',
+    header: 'outsideSalesMountainHeader',
+    content: 'outsideSalesMountainContent'
+  },
+  {
+    id: 'outsideSalesSoCAL',
+    header: 'outsideSalesSoCALHeader',
+    content: 'outsideSalesSoCALContent'
+  },
+  {
+    id: 'outsideSalesEast',
+    header: 'outsideSalesEastHeader',
+    content: 'outsideSalesEastContent'
+  },
+  {
+    id: 'ptShipperReceiver',
+    header: 'ptShipperReceiverHeader',
+    content: 'ptShipperReceiverContent'
+  },
+  {
+    id: 'graphicDesigner',
+    header: 'graphicDesignerHeader',
+    content: 'graphicDesignerContent'
+  }
+]
+
 export class WorkAtJakroo extends React.Component<Props, {}> {
   render() {
     const { intl, history } = this.props
+    const { formatMessage } = intl
     const headerImg =
       'https://storage.googleapis.com/jakroo-storage/screens/workat/workatjakroo-header.jpg'
 
@@ -40,6 +92,12 @@ export class WorkAtJakroo extends React.Component<Props, {}> {
               <FormattedMessage {...messages.headerDialog} />
             </HeaderDialog>
           </ImageTitleContainer>
+          <ContentSection>
+            <SectionTitle>
+              <FormattedMessage {...messages.currentJobsTitle} />
+            </SectionTitle>
+            <JobOpenings {...{ jobOpenings, formatMessage }} />
+          </ContentSection>
         </Container>
       </Layout>
     )
