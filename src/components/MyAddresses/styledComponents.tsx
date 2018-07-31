@@ -31,14 +31,14 @@ export const Message = styled.div`
 `
 
 export const StyledEmptyButton = styled(Button)`
-  border-radius: 0px;
-  width: 25%;
-  height: 50px;
-  border-color: #e61737;
-  border-width: 2px;
   background-color: #fff;
-  margin-bottom: 24px;
+  border-color: #e61737;
+  border-radius: 0px;
+  border-width: 2px;
+  font-family: 'Avenir Next';
   font-size: 18px;
+  height: 50px;
+  margin-bottom: 24px;
 `
 
 export const StyledCheckbox = styled(Checkbox)`

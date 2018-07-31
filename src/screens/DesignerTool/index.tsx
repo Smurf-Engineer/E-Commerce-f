@@ -4,19 +4,33 @@
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
+import set from 'lodash/set'
+import remove from 'lodash/remove'
+import findIndex from 'lodash/findIndex'
 import every from 'lodash/every'
 import { connect } from 'react-redux'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import CustomizeTab from './DesignCenterCustomize'
 import {
   saveDesignMutation,
   uploadThumbnailMutation,
-  createThemeMutation
+  createThemeMutation,
+  deleteThemeMutation,
+  deleteStyleMutation
 } from './data'
+import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
-import { ModelConfig, UploadFile, DesignConfig } from '../../types/common'
+import {
+  ModelConfig,
+  UploadFile,
+  DesignConfig,
+  MessagePayload
+} from '../../types/common'
 
+const { confirm } = Modal
 const { uploadThemeImage } = designerToolApi
 
 type Thumbnail = {
@@ -32,14 +46,19 @@ type Design = {
 }
 
 type Theme = {
-  theme: {
-    id: string
-    name: string
-    image: string
+  id: string
+  name: string
+  image: string
+}
+
+type DataTheme = {
+  data: {
+    theme: Theme
   }
 }
 
 interface Props {
+  intl: InjectedIntl
   designConfig: DesignConfig[]
   colors: string[]
   styleColors: string[]
@@ -77,11 +96,14 @@ interface Props {
   setComplexityAction: (design: number, complexity: number) => void
   setThumbnailAction: (design: number, item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
+  setUploadingSuccess: (config: ModelConfig) => void
   uploadThemeImage: (file: any) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
-  createTheme: (variables: {}) => Promise<Theme>
+  createTheme: (variables: {}) => Promise<DataTheme>
+  deleteTheme: (variables: {}) => Promise<MessagePayload>
+  deleteStyle: (variables: {}) => Promise<MessagePayload>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -90,6 +112,7 @@ export class DesignerTool extends React.Component<Props, {}> {
   }
   render() {
     const {
+      intl: { formatMessage },
       colors,
       colorBlock,
       colorBlockHovered,
@@ -118,7 +141,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       setThemeNameAction,
       setStyleNameAction,
       setComplexityAction,
-      setUploadingThumbnailAction
+      setUploadingThumbnailAction,
+      setUploadingSuccess
     } = this.props
     const { themeImage } = this.state
     return (
@@ -137,7 +161,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           productCode,
           themeName,
           styleName,
-          uploadingThumbnail
+          uploadingThumbnail,
+          formatMessage
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -161,6 +186,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectComplexity={setComplexityAction}
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
+        onLoadDesign={setUploadingSuccess}
       />
     )
   }
@@ -175,9 +201,80 @@ export class DesignerTool extends React.Component<Props, {}> {
     setCurrentTabAction(index)
   }
 
-  handleOnDeleteTheme = (id: number) => {}
+  handleOnDeleteTheme = (id: number) => {
+    confirm({
+      title: 'Are you sure?',
+      content:
+        'If you remove this theme, all designs linked to it will be delete too.',
+      onOk: async () => {
+        try {
+          const { deleteTheme, productCode } = this.props
+          await deleteTheme({
+            variables: { id },
+            update: (store: any) => {
+              const data = store.readQuery({
+                query: getProductFromCode,
+                variables: { code: productCode }
+              })
+              const themes = get(data, 'product.themes', [])
+              const updatedThemes = remove(
+                themes,
+                ({ id: themeId }) => themeId !== id
+              )
+              set(data, 'product.themes', updatedThemes)
+              store.writeQuery({
+                query: getProductFromCode,
+                data,
+                variables: { code: productCode }
+              })
+            }
+          })
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    })
+  }
 
-  handleOnDeleteStyle = (id: number) => {}
+  handleOnDeleteStyle = async (id: number) => {
+    confirm({
+      title: 'Are you sure?',
+      content: 'Design will be deleted.',
+      onOk: async () => {
+        try {
+          const { deleteStyle, productCode, selectedTheme } = this.props
+          await deleteStyle({
+            variables: { id },
+            update: (store: any) => {
+              const data = store.readQuery({
+                query: getProductFromCode,
+                variables: { code: productCode }
+              })
+              const themes = get(data, 'product.themes', [])
+              const themeIndex = findIndex(
+                themes,
+                ({ id: themeId }) => themeId === selectedTheme
+              )
+              const { styles } = themes[themeIndex]
+              const updatedStyles = remove(
+                styles,
+                ({ id: styleId }) => styleId !== id
+              )
+              set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
+              data.product.themes[themeIndex].styles = updatedStyles
+              store.writeQuery({
+                query: getProductFromCode,
+                data,
+                variables: { code: productCode }
+              })
+            }
+          })
+        } catch (e) {
+          console.error(e)
+        }
+      }
+    })
+  }
 
   handleOnSelectThemeImage = (file: UploadFile) => {
     this.setState({ themeImage: [file] })
@@ -296,6 +393,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
+      const themeId = get(themeResponse, 'data.theme.id', selectedTheme)
+
       const design = {
         productCode,
         label,
@@ -303,7 +402,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         flatLock: flatlock,
         obj,
         mtl,
-        theme_id: selectedTheme,
+        theme_id: themeId,
         styles: designs
       }
       await saveDesign({ variables: { design } })
@@ -317,9 +416,12 @@ export class DesignerTool extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 
 const DesignerToolEnhance = compose(
+  injectIntl,
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(createThemeMutation, { name: 'createTheme' }),
+  graphql(deleteThemeMutation, { name: 'deleteTheme' }),
+  graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi }

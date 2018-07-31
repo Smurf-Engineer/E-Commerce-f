@@ -101,7 +101,7 @@ class DesignForm extends React.PureComponent<Props, State> {
     if (!withImageInput) {
       return (
         <Container>
-          <Title>{title}</Title>
+          {!!list.length && <Title>{title}</Title>}
           {itemList}
         </Container>
       )

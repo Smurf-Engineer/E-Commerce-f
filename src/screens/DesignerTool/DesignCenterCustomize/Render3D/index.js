@@ -3,7 +3,14 @@ import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
 import Spin from 'antd/lib/spin'
 import findIndex from 'lodash/findIndex'
-import { modelPositions } from './config'
+import {
+  modelPositions,
+  MESH_NAME,
+  MESH,
+  FLATLOCK,
+  RED_TAG,
+  BIB_BRACE
+} from './config'
 import {
   Container,
   Render,
@@ -119,16 +126,9 @@ class Render3D extends PureComponent {
     this.stop()
     this.container.removeChild(this.renderer.domElement)
 
-    // TODO: Need tests
     if (this.scene) {
-      const object = this.scene.getObjectByName('jersey')
-      if (object) {
-        object.children.forEach(mesh => {
-          mesh.material.dispose()
-          object.dispose()
-          this.scene.dispose()
-        })
-      }
+      this.clearScene()
+      this.scene.dispose()
     }
   }
 
@@ -136,6 +136,14 @@ class Render3D extends PureComponent {
     new Promise((resolve, reject) => {
       try {
         const loadedTextures = {}
+        // TODO: WIP
+        loadedTextures.zipper = this.imgLoader.load(
+          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/zipper_white.jpg'
+        )
+        loadedTextures.binding = this.imgLoader.load(
+          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/binding_white.jpg'
+        )
+        // TODO: WIP
         const { bumpMap, flatlock, brandingPng, areasPng = [] } = modelTextures
         loadedTextures.flatlock = this.imgLoader.load(flatlock)
         loadedTextures.bumpMap = this.imgLoader.load(bumpMap)
@@ -168,7 +176,7 @@ class Render3D extends PureComponent {
     })
     if (loadedTextures.length) {
       const { objectChilds } = this.state
-      const object = this.scene.getObjectByName('jersey')
+      const object = this.scene.getObjectByName(MESH_NAME)
       if (object) {
         loadedTextures.forEach((texture, index) => {
           if (object.children[objectChilds + index]) {
@@ -185,6 +193,7 @@ class Render3D extends PureComponent {
   loadObject = async files => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
+    this.clearScene()
 
     /* Texture configuration */
     const loadedTextures = await this.loadTextures(files)
@@ -210,7 +219,14 @@ class Render3D extends PureComponent {
           flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
           flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
           flatlockMaterial.alphaTest = 0.5
-
+          // TODO: TEST
+          const zipperMaterial = new THREE.MeshLambertMaterial({
+            map: loadedTextures.zipper
+          })
+          const bindingMaterial = new THREE.MeshPhongMaterial({
+            map: loadedTextures.binding
+          })
+          // END TEST
           // Back material
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
@@ -222,9 +238,14 @@ class Render3D extends PureComponent {
             return index < 0 ? 0 : index
           }
 
-          const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
-          const labelIndex = getMeshIndex('Red_Tag FINAL')
-          const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
+          const meshIndex = getMeshIndex(MESH)
+          const labelIndex = getMeshIndex(RED_TAG)
+          const flatlockIndex = getMeshIndex(FLATLOCK)
+
+          // TODO: WIP
+          //  const zipperIndex = getMeshIndex('FINAL JV2_Zipper')
+          // const bindingIndex = getMeshIndex('JV2_Binding FINAL')
+          // TODO: WIP
 
           // Setup the texture layers
           const areasLayers = areas.map(() =>
@@ -232,13 +253,16 @@ class Render3D extends PureComponent {
           )
           object.add(...areasLayers)
 
-          /* Jersey label */
+          /* Model materials */
+          object.children[meshIndex].material = insideMaterial
           object.children[labelIndex].material.color.set('#ffffff')
           object.children[flatlockIndex].material = flatlockMaterial
-          object.children[meshIndex].material = insideMaterial
+          // TODO: WIP
+          // object.children[zipperIndex].material = zipperMaterial
+          // object.children[bindingIndex].material = bindingMaterial
+          // TODO: WIP
 
           const { colors = [] } = files.design || {}
-          const reversedColors = reverse(colors)
           const reversedAreas = reverse(areas)
 
           reversedAreas.forEach(
@@ -249,7 +273,7 @@ class Render3D extends PureComponent {
                 map,
                 bumpMap,
                 side: THREE.FrontSide,
-                color: reversedColors[index],
+                color: colors[index],
                 transparent: true
               }))
           )
@@ -268,7 +292,7 @@ class Render3D extends PureComponent {
 
           /* Object Config */
           object.position.y = -35
-          object.name = 'jersey'
+          object.name = MESH_NAME
           this.scene.add(object)
           onLoadModel(false)
         },
@@ -315,7 +339,7 @@ class Render3D extends PureComponent {
 
   setupColors = colors => {
     const { objectChilds } = this.state
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     if (object) {
       colors.forEach((color, index) => {
         if (object.children[objectChilds + index]) {
@@ -326,7 +350,7 @@ class Render3D extends PureComponent {
   }
 
   setupHoverColor = colorBlockHovered => {
-    const object = this.scene.getObjectByName('jersey')
+    const object = this.scene.getObjectByName(MESH_NAME)
     const { objectChilds } = this.state
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {
@@ -380,15 +404,32 @@ class Render3D extends PureComponent {
 
   saveThumbnail = async (design, item, colors) => {
     this.setFrontFaceModel()
-    this.setupColors(colors)
+    const reverseColors = reverse(colors)
+    this.setupColors(reverseColors)
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
       onUploadingThumbnail(true)
-      const thumbnail = await this.takeScreenshot(colors)
+      const thumbnail = await this.takeScreenshot()
       onSaveThumbnail(design, item, thumbnail)
     } catch (error) {
       console.error(error)
       onUploadingThumbnail(false)
+    }
+  }
+
+  clearScene = () => {
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      object.children.forEach(({ material }) => {
+        if (!!material) {
+          const { map, bumpMap, alphaMap } = material
+          if (map) map.dispose()
+          if (bumpMap) bumpMap.dispose()
+          if (alphaMap) alphaMap.dispose()
+          material.dispose()
+        }
+      })
+      this.scene.remove(object)
     }
   }
 }
