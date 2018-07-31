@@ -6,8 +6,6 @@ export const citiesQuery = gql`
       city
       region
       country
-      latitude
-      longitude
     }
   }
 `

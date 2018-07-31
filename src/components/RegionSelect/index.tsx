@@ -20,6 +20,7 @@ interface Props {
   data: Data
   country?: string
   region: string
+  disabled: boolean
   handleRegionChange: (value: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -30,8 +31,11 @@ export class RegionSelect extends React.Component<Props, {}> {
     handleRegionChange(value)
   }
 
+  handleFilter = (input: string, { props }: any) =>
+    props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+
   render() {
-    const { data, country, region, formatMessage } = this.props
+    const { data, region, formatMessage, disabled } = this.props
     let dropdownOptions: any = []
     if (data && data.regions && data.regions.length) {
       dropdownOptions = data.regions.map(({ region: regionItem }, index) => (
@@ -44,17 +48,14 @@ export class RegionSelect extends React.Component<Props, {}> {
     return (
       <Container>
         <StyledSelect
-          disabled={!country || country === ''}
+          {...{ disabled }}
           notFoundContent={data && data.loading ? <Spin size="small" /> : null}
-          value={!region || region === '' ? undefined : region}
+          value={!region ? undefined : region}
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
           showSearch={true}
           optionFilterProp="children"
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-            0
-          }
+          filterOption={this.handleFilter}
         >
           {dropdownOptions}
         </StyledSelect>

@@ -29,6 +29,9 @@ export class CountrySelect extends React.Component<Props, {}> {
     handleCountryChange(value)
   }
 
+  handleFilter = (input: string, { props }: any) =>
+    props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+
   render() {
     const { data, selectedCountry, formatMessage } = this.props
     let dropdownOptions: any = []
@@ -43,19 +46,12 @@ export class CountrySelect extends React.Component<Props, {}> {
       <Container>
         <StyledSelect
           notFoundContent={data && data.loading ? <Spin size="small" /> : null}
-          value={
-            !selectedCountry || selectedCountry === ''
-              ? undefined
-              : selectedCountry
-          }
+          value={!selectedCountry ? undefined : selectedCountry}
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
           showSearch={true}
           optionFilterProp="children"
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-            0
-          }
+          filterOption={this.handleFilter}
         >
           {dropdownOptions}
         </StyledSelect>

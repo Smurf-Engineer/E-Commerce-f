@@ -32,6 +32,9 @@ export class CitySelect extends React.Component<Props, {}> {
     handleCityChange(value)
   }
 
+  handleFilter = (input: string, { props }: any) =>
+    props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+
   render() {
     const { data, disabled, selectedCity, formatMessage } = this.props
     let dropdownOptions: any = []
@@ -48,18 +51,13 @@ export class CitySelect extends React.Component<Props, {}> {
         <StyledSelect
           {...{ disabled }}
           notFoundContent={data && data.loading ? <Spin size="small" /> : null}
-          value={
-            !selectedCity || selectedCity === '' ? undefined : selectedCity
-          }
+          value={!selectedCity ? undefined : selectedCity}
           defaultActiveFirstOption={false}
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
           showSearch={true}
           optionFilterProp="children"
-          filterOption={(input: any, option: any) =>
-            option.props.children.toLowerCase().indexOf(input.toLowerCase()) >=
-            0
-          }
+          filterOption={this.handleFilter}
         >
           {dropdownOptions}
         </StyledSelect>

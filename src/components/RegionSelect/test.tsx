@@ -15,13 +15,15 @@ describe('<RegionSelect />', () => {
     const region = ''
     const handleRegionChange = (value: any) => {}
     const formatMessage = (message: any) => 'string'
+    const disabled = false
     ReactDOM.render(
       <RegionSelect
         {...{
           data,
           region,
           handleRegionChange,
-          formatMessage
+          formatMessage,
+          disabled
         }}
       />,
       div
