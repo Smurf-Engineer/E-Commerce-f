@@ -38,6 +38,7 @@ interface Props {
   themeName: string
   styleName: string
   uploadingThumbnail: boolean
+  extraFiles: string[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -58,6 +59,8 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
   onLoadDesign: (config: ModelConfig) => void
+  onAddExtraFile: (file: string) => void
+  onRemoveExtraFile: (index: number) => void
 }
 
 const Tabs = ({
@@ -94,7 +97,10 @@ const Tabs = ({
   onSelectComplexity,
   onSaveThumbnail,
   uploadingThumbnail,
-  onLoadDesign
+  onLoadDesign,
+  onAddExtraFile,
+  onRemoveExtraFile,
+  extraFiles
 }: Props) => {
   return (
     <Container>
@@ -136,7 +142,10 @@ const Tabs = ({
               uploadingFiles,
               uploadNewModel,
               onUploadDesign,
-              onSelectConfig
+              onSelectConfig,
+              onAddExtraFile,
+              onRemoveExtraFile,
+              extraFiles
             }}
           />
         </TabPane>

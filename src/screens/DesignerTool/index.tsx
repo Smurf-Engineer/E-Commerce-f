@@ -61,6 +61,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   areas: string[]
+  extraFiles: string[]
   colorBlock: number
   colorBlockHovered: number
   loadingModel: boolean
@@ -96,6 +97,8 @@ interface Props {
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
   uploadThemeImage: (file: any) => void
+  addExtraFileAction: (file: string) => void
+  removeExtraFileAction: (index: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -135,11 +138,14 @@ export class DesignerTool extends React.Component<Props, {}> {
       productCode,
       themeName,
       styleName,
+      extraFiles,
       setThemeNameAction,
       setStyleNameAction,
       setComplexityAction,
       setUploadingThumbnailAction,
-      setUploadingSuccess
+      setUploadingSuccess,
+      addExtraFileAction,
+      removeExtraFileAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -158,7 +164,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           productCode,
           themeName,
           styleName,
-          uploadingThumbnail
+          uploadingThumbnail,
+          extraFiles
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -183,6 +190,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
         onLoadDesign={setUploadingSuccess}
+        onAddExtraFile={addExtraFileAction}
+        onRemoveExtraFile={removeExtraFileAction}
       />
     )
   }

@@ -673,3 +673,10 @@ export type MessagePayload = {
     message: string
   }
 }
+
+export interface ClickParam {
+  key: string
+  keyPath: Array<string>
+  item: any
+  domEvent: any
+}

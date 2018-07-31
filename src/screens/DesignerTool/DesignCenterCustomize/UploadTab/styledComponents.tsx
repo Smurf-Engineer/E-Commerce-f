@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 08/05/18.
  */
 import styled from 'styled-components'
+import AntdDropdown from 'antd/lib/dropdown'
 
 export const Container = styled.div``
 
@@ -61,4 +62,30 @@ export const Preview = styled.div`
   align-items: center;
   padding: 16px;
   background-color: #eff2f4;
+`
+
+export const Label = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 8px;
+  padding-bottom: 18px;
+  cursor: pointer;
+`
+
+export const FileContainer = styled.div`
+  padding: 8px;
+  border: solid;
+  border-width: 1px;
+  border-color: #fafafa;
+  margin-bottom: 16px;
+`
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `
