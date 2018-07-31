@@ -2,7 +2,7 @@
  * File configuration
  */
 
-export const TOTAL_OF_FILES = 7
+export const TOTAL_OF_FILES = 5
 export const MINIMUM_OF_AREAS = 4
 
 export const enum Extension {

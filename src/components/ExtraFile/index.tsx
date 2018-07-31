@@ -14,6 +14,8 @@ interface Props {
   extension: string
   hasBlackFile: boolean
   hasWhiteFile: boolean
+  labelWhite: string
+  labelBlack: string
   onRemove: () => void
   onRemoveWhiteFile: (fileName: string) => void
   onRemoveBlackFile: (fileName: string) => void
@@ -32,10 +34,12 @@ interface Props {
 const ExtraFile = ({
   file,
   index,
-  extension,
-  hasWhiteFile,
-  hasBlackFile,
   onRemove,
+  extension,
+  labelWhite,
+  labelBlack,
+  hasBlackFile,
+  hasWhiteFile,
   onSelectWhiteFile,
   onSelectBlackFile,
   onRemoveWhiteFile,
@@ -48,7 +52,7 @@ const ExtraFile = ({
         <Icon onClick={onRemove} type="minus-circle-o" />
       </Row>
       <UploadButton
-        label="White"
+        label={labelWhite}
         hasFile={hasWhiteFile}
         {...{ extension, index }}
         fileName={file}
@@ -56,7 +60,7 @@ const ExtraFile = ({
         onRemoveFile={onRemoveWhiteFile}
       />
       <UploadButton
-        label="Black"
+        label={labelBlack}
         hasFile={hasBlackFile}
         {...{ extension, index }}
         fileName={file}

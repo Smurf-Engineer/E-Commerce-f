@@ -2,7 +2,6 @@
  * Styled Components - Created by david on 08/05/18.
  */
 import styled from 'styled-components'
-import AntdDropdown from 'antd/lib/dropdown'
 
 export const Container = styled.div``
 

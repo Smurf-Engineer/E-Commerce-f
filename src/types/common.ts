@@ -362,9 +362,9 @@ export interface ModelConfig {
   obj: string
   mtl: string
   bumpMap: string
-  flatlock: string
-  brandingSvg: string
-  brandingPng: string
+  flatlock?: string
+  brandingSvg?: string
+  brandingPng?: string
   label: string
   design: {
     name: string
@@ -372,6 +372,12 @@ export interface ModelConfig {
   }
   areasSvg: string[]
   areasPng: string[]
+  bibBraceBlack?: string
+  bibBraceWhite?: string
+  bindingWhite?: string
+  bindingBlack?: string
+  zipperWhite?: string
+  zipperBlack?: string
 }
 
 export interface CartItems {

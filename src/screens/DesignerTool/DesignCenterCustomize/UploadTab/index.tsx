@@ -38,7 +38,7 @@ interface Props {
   uploadNewModel: boolean
   extraFiles: string[]
   onSelectConfig: (config: DesignConfig) => void
-  onUploadFiles: (files: any, areas: any) => void
+  onUploadFiles: (files: any, areas: any, extra: any) => void
   onUploadDesign: (files: any) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
@@ -67,7 +67,7 @@ type ExtraFiles = {
 interface State {
   areas: UploadFile[]
   files: FileType
-  extraFiles: ExtraFiles
+  extra: ExtraFiles
 }
 
 const getFileExtension = (filename: string) =>
@@ -77,17 +77,17 @@ class UploadTab extends React.PureComponent<Props, State> {
   state = {
     areas: [],
     files: {},
-    extraFiles: {}
+    extra: {}
   }
 
   handleUpload = () => {
-    const { files, areas } = this.state
+    const { files, areas, extra } = this.state
     const { onUploadFiles, uploadNewModel, onUploadDesign } = this.props
 
     if (uploadNewModel) {
       onUploadDesign(files)
     } else {
-      onUploadFiles(files, areas)
+      onUploadFiles(files, areas, extra)
     }
 
     this.setState({ areas: [] })
@@ -149,7 +149,7 @@ class UploadTab extends React.PureComponent<Props, State> {
   handleReset = () => window.location.replace('/designer-tool')
 
   render() {
-    const { files, areas } = this.state
+    const { files, areas, extra } = this.state
     const { uploadingFiles, uploadNewModel, extraFiles } = this.props
 
     const filesCount = Object.keys(files).length
@@ -177,40 +177,43 @@ class UploadTab extends React.PureComponent<Props, State> {
     })
     const menuFile = <Menu onClick={this.handleOnAddExtraFile}>{options}</Menu>
 
-    const optionals = extraFiles.map((extra, index) => {
-      const fileInfo = optionalFiles[extra]
-      return extra === File.Flatlock ? (
+    const optionals = extraFiles.map((extraFile, index) => {
+      const { label, file, extension } = optionalFiles[extraFile]
+      const currentFile = extra[extraFile]
+      const hasFile = !!currentFile
+      return extraFile === File.Flatlock ? (
         <FileContainer key={index}>
           <Row>
-            <Label>{fileInfo.label}</Label>
+            <Label>{label}</Label>
             <Icon
               onClick={this.handleOnRemoveExtraFile(index)}
               type="minus-circle-o"
             />
           </Row>
           <UploadButton
-            fileName={fileInfo.file}
-            {...{ index }}
-            extension={fileInfo.extension}
-            hasFile={false}
+            {...{ index, hasFile }}
+            label={hasFile ? currentFile.name : label}
+            fileName={file}
+            extension={extension}
             onSelectFile={this.handleOnSelectExtraFile()}
-            onRemoveFile={this.handleOnRemove}
-            label={fileInfo.label}
+            onRemoveFile={this.handleOnRemoveExtra()}
           />
         </FileContainer>
       ) : (
         <ExtraFile
           key={index}
-          file={fileInfo.file}
-          extension={fileInfo.extension}
-          hasWhiteFile={false}
-          hasBlackFile={false}
+          file={file}
+          {...{ index }}
+          extension={extension}
+          hasWhiteFile={!!currentFile.white}
+          hasBlackFile={!!currentFile.black}
           onSelectWhiteFile={this.handleOnSelectExtraFile('white')}
           onSelectBlackFile={this.handleOnSelectExtraFile('black')}
-          onRemoveWhiteFile={() => {}}
-          onRemoveBlackFile={() => {}}
+          onRemoveWhiteFile={this.handleOnRemoveExtra('white')}
+          onRemoveBlackFile={this.handleOnRemoveExtra('black')}
           onRemove={this.handleOnRemoveExtraFile(index)}
-          {...{ index }}
+          labelBlack={!!currentFile.black ? currentFile.black.name : 'Black'}
+          labelWhite={!!currentFile.white ? currentFile.white.name : 'White'}
         />
       )
     })
@@ -278,15 +281,15 @@ class UploadTab extends React.PureComponent<Props, State> {
     if (selectedFileExtension !== extension) {
       message.error(`Please select a valid ${extension} file`)
     } else {
-      this.setState(({ extraFiles }) => {
+      this.setState(({ extra }) => {
+        let updatedFiles = {}
         if (fileName === File.Flatlock) {
-          const updatedFiles = Object.assign({ flatlock: file }, extraFiles)
-          return { extraFiles: updatedFiles }
+          updatedFiles = Object.assign({ flatlock: file }, extra)
         } else {
-          const updatedFiles = Object.assign({}, extraFiles)
+          updatedFiles = Object.assign({}, extra)
           updatedFiles[fileName][color] = file
-          return { extraFiles: updatedFiles }
         }
+        return { extra: updatedFiles }
       })
     }
   }
@@ -299,9 +302,9 @@ class UploadTab extends React.PureComponent<Props, State> {
       message.info('Already added, please select the files')
     } else {
       if (key !== File.Flatlock) {
-        this.setState(({ extraFiles: files }) => {
-          const updatedFiles = Object.assign({ [key]: {} }, files)
-          return { extraFiles: updatedFiles }
+        this.setState(({ extra }) => {
+          const updatedFiles = Object.assign({ [key]: {} }, extra)
+          return { extra: updatedFiles }
         })
       }
       onAddExtraFile(key)
@@ -311,6 +314,18 @@ class UploadTab extends React.PureComponent<Props, State> {
   handleOnRemoveExtraFile = (index: number) => () => {
     const { onRemoveExtraFile } = this.props
     onRemoveExtraFile(index)
+  }
+
+  handleOnRemoveExtra = (color = '') => (fileName: string) => {
+    this.setState(({ extra }) => {
+      let updatedFiles = {}
+      if (fileName === File.Flatlock) {
+        updatedFiles = omit(extra, fileName)
+      } else {
+        updatedFiles = omit(extra, `${fileName}.${color}`)
+      }
+      return { extra: updatedFiles }
+    })
   }
 }
 

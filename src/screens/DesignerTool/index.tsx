@@ -80,7 +80,7 @@ interface Props {
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
-  uploadFilesAction: (files: any, areas: any) => void
+  uploadFilesAction: (files: any, areas: any, extra: any) => void
   uploadDesignAction: (files: any) => void
   setUploadingAction: (loading: boolean) => void
   setCurrentTabAction: (index: number) => void
@@ -340,7 +340,13 @@ export class DesignerTool extends React.Component<Props, {}> {
         brandingPng,
         brandingSvg,
         areasSvg,
-        areasPng
+        areasPng,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack
       } = modelConfig
 
       const designs = designConfig.map(
@@ -407,6 +413,12 @@ export class DesignerTool extends React.Component<Props, {}> {
         flatLock: flatlock,
         obj,
         mtl,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack,
         theme_id: themeId,
         styles: designs
       }
