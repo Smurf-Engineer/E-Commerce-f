@@ -154,7 +154,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             </InputTitleContainer>
             <RegionSelect
               {...{ formatMessage }}
-              disabled={!country || country === ''}
+              disabled={!country}
               country={selectedCountry}
               region={selectedRegion}
               handleRegionChange={this.handleRegionChange}
@@ -171,7 +171,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             </InputTitleContainer>
             <CitySelect
               {...{ selectedCity, formatMessage }}
-              disabled={!selectedRegion || selectedRegion === ''}
+              disabled={!selectedRegion}
               country={selectedCountry}
               region={selectedRegion}
               handleCityChange={this.handleCityChange}
