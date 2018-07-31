@@ -4,13 +4,70 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  background-color: #222;
-  display: flex;
-  height: 100vh;
-  align-items: center;
-  justify-content: center;
+  background-color: #fff;
+  width: 100%;
 `
+export const ImageTitleContainer = styled.div`
+  position: relative;
+  width: 100%;
+`
+export const StyledImg = styled.img`
+  width: 100%;
+`
+export const HeaderTextContainer = styled.div`
+  align-items: flex-end;
+  bottom: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0px;
+  position: absolute;
+  right: 39px;
+  text-align: right;
+  width: 50%;
 
-export const Text = styled.div`
-  color: #fff;
+  @media (min-width: 320px) and (max-width: 815px) {
+    right: 5px;
+    width: 100%;
+  }
+`
+export const Title = styled.div`
+  align-self: flex-end;
+  color: #ffffff;
+  font-family: 'Avenir Next';
+  font-size: 48px;
+  font-weight: bold;
+  letter-spacing: 0.61px;
+  line-height: 66px;
+  text-align: right;
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    font-size: 24px;
+    letter-spacing: 0.3px;
+    line-height: 33px;
+  }
+`
+export const HeaderDialog = styled.div`
+  align-items: flex-start;
+  background-color: #ffffff;
+  bottom: -96px;
+  color: #5f6062;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  height: 200px;
+  justify-content: center;
+  letter-spacing: 0.2px;
+  line-height: 25px;
+  margin: 0px;
+  padding: 22px;
+  position: absolute;
+  right: 0px;
+  text-align: left;
+  width: 81%;
+
+  @media (min-width: 320px) and (max-width: 767px) {
+    width: 100%;
+  }
 `
