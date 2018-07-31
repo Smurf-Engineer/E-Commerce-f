@@ -132,6 +132,9 @@ class MyFiles extends React.Component<Props, {}> {
       indexPaletteToDelete,
       data: { loading, images }
     } = this.props
+    console.log('---------------------------')
+    console.log(palettes)
+    console.log('---------------------------')
     return (
       <Container>
         <Message>{formatMessage(messages.message)}</Message>

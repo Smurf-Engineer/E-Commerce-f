@@ -4,7 +4,7 @@
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
-import ColorTab from '../ColorTab'
+import ColorsTab from '../ColorsTab'
 import TextTab from '../TextTab'
 import SymbolTab from '../SymbolTab'
 import UploadTab from '../UploadTab'
@@ -86,7 +86,8 @@ const Tabs = ({
     <Container>
       <AntdTabs defaultActiveKey="1">
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
-          <ColorTab
+          <ColorsTab {...{ colors, formatMessage }} />
+          {/* <BaseColors
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
@@ -104,7 +105,7 @@ const Tabs = ({
               openPaletteModalAction,
               myPaletteModals
             }}
-          />
+          /> */}
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
           <TextTab
