@@ -710,6 +710,11 @@ export interface DesignItem {
   name: string
 }
 
+export interface ImageFile {
+  id: number
+  fileUrl: string
+}
+
 export type MessagePayload = {
   data: {
     message: string

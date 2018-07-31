@@ -33,6 +33,7 @@ import shoppingCartPage from '../screens/ShoppingCartPage/reducer'
 import myTeamStores from '../components/MyTeamStores/reducer'
 import warrantyProgram from '../screens/WarrantyProgram/reducer'
 import myLocker from '../components/MyLocker/reducer'
+import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import overview from '../components/Overview/reducer'
 import { Reducer } from '../types/common'
@@ -72,6 +73,7 @@ export interface ReducersObject {
   cards: any
   profileSettings: any
   myLocker: any
+  myFiles: any
   orderHistory: any
   overview: any
 }
@@ -160,6 +162,7 @@ const rootReducer = combineReducers({
   cards,
   profileSettings,
   myLocker,
+  myFiles,
   orderHistory,
   overview,
   responsive: responsiveReducer,

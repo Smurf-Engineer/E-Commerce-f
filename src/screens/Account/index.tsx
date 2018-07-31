@@ -48,6 +48,7 @@ import {
   menuDeviceStyle,
   DrawerSidebar
 } from './styledComponents'
+import MyFiles from '../../components/MyFiles'
 
 const { SubMenu } = Menu
 
@@ -166,6 +167,8 @@ export class Account extends React.Component<Props, {}> {
         return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return <MyLocker {...{ openQuickView, formatMessage, history }} />
+      case MY_FILES:
+        return <MyFiles {...{ history, formatMessage }} />
       default:
         return null
     }

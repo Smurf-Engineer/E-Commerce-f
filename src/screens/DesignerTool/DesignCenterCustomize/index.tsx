@@ -57,6 +57,7 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
+  formatMessage: (messageDescriptor: any) => string
   onLoadDesign: (config: ModelConfig) => void
 }
 
@@ -101,7 +102,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectComplexity,
       onSaveThumbnail,
       onUploadingThumbnail,
-      onLoadDesign
+      onLoadDesign,
+      formatMessage
     } = this.props
 
     return (
@@ -138,7 +140,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUpdateStyleName,
             onSelectComplexity,
             uploadingThumbnail,
-            onLoadDesign
+            onLoadDesign,
+            formatMessage
           }}
           onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}

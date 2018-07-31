@@ -58,6 +58,7 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
   onLoadDesign: (config: ModelConfig) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const Tabs = ({
@@ -94,7 +95,8 @@ const Tabs = ({
   onSelectComplexity,
   onSaveThumbnail,
   uploadingThumbnail,
-  onLoadDesign
+  onLoadDesign,
+  formatMessage
 }: Props) => {
   return (
     <Container>
@@ -164,6 +166,7 @@ const Tabs = ({
               onUpdateStyleName,
               onSaveThumbnail,
               uploadingThumbnail,
+              formatMessage,
               onSelectConfig
             }}
           />
