@@ -189,16 +189,15 @@ class Overview extends React.Component<Props, {}> {
     setOrderIdAction(orderId)
   }
 
-  handleOnChangeIndex = (index: number, indexLatest: number) => {
+  handleOnChangeIndex = (index: number) => {
     if (index === 0) {
       this.handleOnOrderClick('')
     }
   }
 }
 
-const mapStateToProps = (state: any) => {
-  return state.get('overview').toJS()
-}
+const mapStateToProps = (state: any) => state.get('overview').toJS()
+
 const OverViewEnhance = compose(
   connect(
     mapStateToProps,

@@ -119,31 +119,33 @@ class OrderData extends React.Component<Props, {}> {
     const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
     const renderList = cart
       ? cart.map((cartItem, index) => {
+          const {
+            designId,
+            designImage,
+            designName,
+            product: { images, name, shortDescription },
+            productTotal,
+            unitPrice
+          } = cartItem
+
           const priceRange = {
             quantity: '0',
             price: 0
           }
 
-          const itemImage = cartItem.designId
-            ? cartItem.designImage || ''
-            : cartItem.product.images[0].front
-          const itemTitle = cartItem.designId
-            ? cartItem.designName || ''
-            : cartItem.product.name
-          const itemDescription = cartItem.designId
-            ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
-            : cartItem.product.shortDescription
+          const itemImage = designId ? designImage || '' : images[0].front
+          const itemTitle = designId ? designName || '' : name
+          const itemDescription = designId
+            ? `${name} ${shortDescription}`
+            : shortDescription
           return (
             <CartListItem
-              formatMessage={formatMessage}
+              {...{ formatMessage, productTotal, unitPrice, cartItem }}
               key={index}
               image={itemImage}
               title={itemTitle}
               description={itemDescription}
               price={priceRange}
-              productTotal={cartItem.productTotal}
-              unitPrice={cartItem.unitPrice}
-              cartItem={cartItem}
               itemIndex={index}
               onlyRead={true}
               canReorder={false}

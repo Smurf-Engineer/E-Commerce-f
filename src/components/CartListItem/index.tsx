@@ -185,6 +185,8 @@ class CartListItem extends React.Component<Props, {}> {
       removeItem = () => {}
     } = this.props
 
+    const { designId, designName, designImage } = cartItem
+
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
     })
@@ -273,11 +275,8 @@ class CartListItem extends React.Component<Props, {}> {
         label={formatMessage(cartListItemMsgs.reorder)}
         renderForThumbnail={false}
         item={cartItem}
-        {...{ formatMessage }}
+        {...{ formatMessage, designId, designName, designImage }}
         withoutTop={true}
-        designId={cartItem.designId}
-        designName={cartItem.designName}
-        designImage={cartItem.designImage}
         myLockerList={false}
         itemProdPage={true}
         orderDetails={true}
