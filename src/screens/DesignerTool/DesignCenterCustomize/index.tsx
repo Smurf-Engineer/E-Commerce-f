@@ -65,7 +65,7 @@ interface Props {
   onLoadDesign: (config: ModelConfig) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
-  onToogleColor: (color: string) => void
+  onToggleColor: (color: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -114,7 +114,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onRemoveExtraFile,
       extraFiles,
       formatMessage,
-      onToogleColor,
+      onToggleColor,
       bibBrace,
       zipper,
       binding
@@ -161,7 +161,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onRemoveExtraFile,
             extraFiles,
             formatMessage,
-            onToogleColor,
+            onToggleColor,
             bibBrace,
             zipper,
             binding

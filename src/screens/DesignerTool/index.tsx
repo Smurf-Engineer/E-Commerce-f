@@ -104,7 +104,7 @@ interface Props {
   uploadThemeImage: (file: any) => void
   addExtraFileAction: (file: string) => void
   removeExtraFileAction: (index: number) => void
-  toogleExtraColorAction: (color: string) => void
+  toggleExtraColorAction: (color: string) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -156,7 +156,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       setUploadingSuccess,
       addExtraFileAction,
       removeExtraFileAction,
-      toogleExtraColorAction
+      toggleExtraColorAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -207,7 +207,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onLoadDesign={setUploadingSuccess}
         onAddExtraFile={addExtraFileAction}
         onRemoveExtraFile={removeExtraFileAction}
-        onToogleColor={toogleExtraColorAction}
+        onToggleColor={toggleExtraColorAction}
       />
     )
   }

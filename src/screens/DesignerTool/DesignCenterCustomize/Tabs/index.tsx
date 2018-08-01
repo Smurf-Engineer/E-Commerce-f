@@ -65,7 +65,7 @@ interface Props {
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
-  onToogleColor: (color: string) => void
+  onToggleColor: (color: string) => void
 }
 
 const Tabs = ({
@@ -107,7 +107,7 @@ const Tabs = ({
   onRemoveExtraFile,
   extraFiles,
   formatMessage,
-  onToogleColor,
+  onToggleColor,
   bibBrace,
   zipper,
   binding
@@ -169,7 +169,7 @@ const Tabs = ({
               colorBlockHovered,
               onSelectColor,
               colors,
-              onToogleColor,
+              onToggleColor,
               bibBrace,
               zipper,
               binding

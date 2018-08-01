@@ -25,7 +25,7 @@ export const SET_THUMBNAIL_ACTION = `${namespace}/SET_THUMBNAIL_ACTION`
 export const SET_UPLOADING_THUMBNAIL_ACTION = `${namespace}/SET_UPLOADING_THUMBNAIL_ACTION`
 export const ADD_EXTRA_FILE_ACTION = `${namespace}/ADD_EXTRA_FILE_ACTION`
 export const REMOVE_EXTRA_FILE_ACTION = `${namespace}/REMOVE_EXTRA_FILE_ACTION`
-export const TOOGLE_EXTRA_COLOR_ACTION = `${namespace}/TOOGLE_EXTRA_COLOR_ACTION`
+export const TOGGLE_EXTRA_COLOR_ACTION = `${namespace}/TOGGLE_EXTRA_COLOR_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

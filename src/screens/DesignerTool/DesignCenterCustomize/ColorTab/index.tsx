@@ -21,7 +21,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
-  onToogleColor: (color: string) => void
+  onToggleColor: (color: string) => void
 }
 
 const colorsBlocks = ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5']
@@ -68,7 +68,7 @@ class ColorTab extends React.PureComponent<Props> {
       <ColorButton
         key={index}
         {...{ index, label }}
-        onSelectColorBlock={this.handleOnToogleColor(key)}
+        onSelectColorBlock={this.handleOnToggleColor(key)}
         currentColor={this.props[key] ? '#FFFFFF' : '#000000'}
         selected={false}
       />
@@ -88,9 +88,9 @@ class ColorTab extends React.PureComponent<Props> {
     )
   }
 
-  handleOnToogleColor = (color: string) => () => {
-    const { onToogleColor } = this.props
-    onToogleColor(color)
+  handleOnToggleColor = (color: string) => () => {
+    const { onToggleColor } = this.props
+    onToggleColor(color)
   }
 }
 

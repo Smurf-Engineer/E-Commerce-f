@@ -27,7 +27,7 @@ import {
   SET_UPLOADING_THUMBNAIL_ACTION,
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
-  TOOGLE_EXTRA_COLOR_ACTION
+  TOGGLE_EXTRA_COLOR_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -175,7 +175,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       const updatedList = extraFiles.remove(index)
       return state.set('extraFiles', List.of(...updatedList))
     }
-    case TOOGLE_EXTRA_COLOR_ACTION: {
+    case TOGGLE_EXTRA_COLOR_ACTION: {
       const { color } = action
       const currentValue = state.get(color)
       return state.set(color, !currentValue)
