@@ -10,6 +10,7 @@ import Dropdown from 'antd/lib/dropdown'
 import message from 'antd/lib/message'
 import find from 'lodash/find'
 import omit from 'lodash/omit'
+import upperFirst from 'lodash/upperFirst'
 import UploadButton from '../../../../components/UploadButton'
 import ExtraFile from '../../../../components/ExtraFile'
 import {
@@ -318,7 +319,7 @@ class UploadTab extends React.PureComponent<Props, State> {
     const { key } = e
     const hasFile = find(extraFiles, item => item === key)
     if (!!hasFile) {
-      message.info('Already added, please select the files')
+      message.info(`You can only select one “${upperFirst(key)}” per 3D model.`)
     } else {
       if (key !== File.Flatlock) {
         this.setState(({ extra }) => {
