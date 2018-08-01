@@ -11,6 +11,7 @@ describe('<QuickView />', () => {
     const data = {
       product: {
         id: 0,
+        code: '0',
         images: [
           {
             front: '',

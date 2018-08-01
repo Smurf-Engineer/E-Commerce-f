@@ -81,6 +81,7 @@ type ExtraFile = {
 
 export interface Product {
   id: number
+  code: string
   shortId?: string
   images: ImageType[]
   type: string
@@ -116,6 +117,7 @@ export interface Product {
 
 export type DesignType = {
   id: number
+  code: string
   name: string
   shared: boolean
   shortId?: string
@@ -203,6 +205,7 @@ export interface CountrySubsidiary {
   id: number
   country: string
   subsidiary: number
+  countryCode: string
 }
 
 export interface Region {
@@ -724,6 +727,18 @@ export interface DesignItem {
   name: string
 }
 
+export interface Country {
+  name: string
+  code: string
+}
+
+export interface CountryRegion {
+  region: string
+}
+
+export interface City {
+  city: string
+}
 export interface ImageFile {
   id: number
   fileUrl: string

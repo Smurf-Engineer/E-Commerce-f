@@ -14,6 +14,7 @@ export const GetDesignQuery = gql`
       }
       product {
         id
+        code
         yotpoId: yotpo_id
         name
         type: name
@@ -70,6 +71,7 @@ export const GetProductsByIdQuery = gql`
   query GetProductByID($id: Int!) {
     product(id: $id) {
       id
+      code
       yotpoId: yotpo_id
       name
       type: short_description
@@ -124,10 +126,12 @@ export const getTeamStoresRelated = gql`
   query GetDesigns {
     designs: myDesigns {
       id
+      code
       name
       shortId: short_id
       product {
         id
+        code
         yotpoId: yotpo_id
         name
         type: name
@@ -163,11 +167,13 @@ export const GetTeamStoreItems = gql`
         expectedQty: expected_quantity
         design {
           id
+          code
           shortId: short_id
           image
           name
           product {
             id
+            code
             name
             type: short_description
             yotpoId: yotpo_id

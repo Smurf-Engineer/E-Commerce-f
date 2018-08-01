@@ -9,6 +9,7 @@ interface CartItems {
   itemDetails: CartItemDetail[]
   storeDesignId?: string
   designId?: string
+  designCode?: string
 }
 
 export const setInitialData = () => {

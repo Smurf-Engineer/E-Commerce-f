@@ -89,7 +89,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       total = designs.length.toString()
       thumbnailsList = designs.map(
         (
-          { design: { id, shortId, name, product, image }, totalOrders },
+          { design: { id, shortId, name, product, image, code }, totalOrders },
           index
         ) => {
           const targetPriceValue: any = targetRange
@@ -131,6 +131,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                     designId={shortId}
                     designName={name}
                     designImage={image}
+                    designCode={code}
                     teamStoreId={teamStoreShortId}
                   />
                 }
