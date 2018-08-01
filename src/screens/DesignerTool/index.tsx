@@ -11,6 +11,7 @@ import remove from 'lodash/remove'
 import findIndex from 'lodash/findIndex'
 import every from 'lodash/every'
 import { connect } from 'react-redux'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import CustomizeTab from './DesignCenterCustomize'
 import {
   saveDesignMutation,
@@ -57,6 +58,7 @@ type DataTheme = {
 }
 
 interface Props {
+  intl: InjectedIntl
   designConfig: DesignConfig[]
   colors: string[]
   styleColors: string[]
@@ -113,6 +115,7 @@ export class DesignerTool extends React.Component<Props, {}> {
   }
   render() {
     const {
+      intl: { formatMessage },
       colors,
       colorBlock,
       colorBlockHovered,
@@ -165,7 +168,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           themeName,
           styleName,
           uploadingThumbnail,
-          extraFiles
+          extraFiles,
+          formatMessage
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -433,6 +437,7 @@ export class DesignerTool extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('designerTool').toJS()
 
 const DesignerToolEnhance = compose(
+  injectIntl,
   graphql(saveDesignMutation, { name: 'saveDesign' }),
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   graphql(createThemeMutation, { name: 'createTheme' }),

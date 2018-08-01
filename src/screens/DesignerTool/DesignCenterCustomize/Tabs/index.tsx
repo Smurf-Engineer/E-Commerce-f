@@ -61,6 +61,7 @@ interface Props {
   onLoadDesign: (config: ModelConfig) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const Tabs = ({
@@ -98,9 +99,13 @@ const Tabs = ({
   onSaveThumbnail,
   uploadingThumbnail,
   onLoadDesign,
+<<<<<<< HEAD
   onAddExtraFile,
   onRemoveExtraFile,
   extraFiles
+=======
+  formatMessage
+>>>>>>> 9812250308e7c6ffb350308da817a8170dc2c3b2
 }: Props) => {
   return (
     <Container>
@@ -173,6 +178,7 @@ const Tabs = ({
               onUpdateStyleName,
               onSaveThumbnail,
               uploadingThumbnail,
+              formatMessage,
               onSelectConfig
             }}
           />
