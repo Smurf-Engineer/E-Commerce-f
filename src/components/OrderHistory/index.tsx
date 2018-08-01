@@ -60,7 +60,7 @@ class OrderHistory extends React.Component<Props, {}> {
     )
   }
 
-  handleOnChangeIndex = (index: number, indexLatest: number) => {
+  handleOnChangeIndex = (index: number) => {
     if (index === 0) {
       this.handleOnOrderClick('')
     }
