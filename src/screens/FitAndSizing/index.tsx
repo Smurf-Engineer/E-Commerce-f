@@ -10,8 +10,9 @@ import {
 } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
+import { connect } from 'react-redux'
 import zenscroll from 'zenscroll'
-import Divider from 'antd/lib/divider'
+import * as fitAndSizeActions from './actions'
 import messages from './messages'
 import {
   Container,
@@ -19,14 +20,20 @@ import {
   Title,
   AnchorsRow,
   AnchorButton,
+  Divider,
   ContentSection,
   SectionTitle,
-  SectionDescription
+  SectionDescription,
+  SizingOptionsRow,
+  RadioGroup,
+  RadioButton
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
+  msrmntSystemSelected: string
+  setMsrmntSystemAction: (system: string) => void
 }
 
 const sectionTitles = ['Body Size Chart', 'Fit Styles']
@@ -36,7 +43,9 @@ export class FitAndSizing extends React.Component<Props, {}> {
   private fitStyles: any
 
   render() {
-    const { intl, history } = this.props
+    const { intl, history, msrmntSystemSelected } = this.props
+
+    const { formatMessage } = intl
 
     const buttons = sectionTitles.map((title, key) => (
       <AnchorButton
@@ -70,6 +79,19 @@ export class FitAndSizing extends React.Component<Props, {}> {
             <SectionTitle>
               <FormattedMessage {...messages.sizingChart} />
             </SectionTitle>
+            <SizingOptionsRow>
+              <RadioGroup
+                value={msrmntSystemSelected || 'in'}
+                onChange={this.handleOnMsrmntSystemChange}
+              >
+                <RadioButton value="in">
+                  {formatMessage(messages.in)}
+                </RadioButton>
+                <RadioButton value="cm">
+                  {formatMessage(messages.cm)}
+                </RadioButton>
+              </RadioGroup>
+            </SizingOptionsRow>
           </ContentSection>
           <Divider />
           <ContentSection>
@@ -84,10 +106,10 @@ export class FitAndSizing extends React.Component<Props, {}> {
     )
   }
 
-  handleOnButtonClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleOnButtonClick = (event: React.MouseEvent<HTMLDivElement>) => {
     const {
       currentTarget: { id }
-    } = evt
+    } = event
 
     switch (id) {
       case '0':
@@ -100,8 +122,26 @@ export class FitAndSizing extends React.Component<Props, {}> {
         break
     }
   }
+
+  handleOnMsrmntSystemChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const {
+      target: { value: units }
+    } = event
+
+    const { setMsrmntSystemAction } = this.props
+
+    setMsrmntSystemAction(units)
+  }
 }
 
-const FitAndSizingEnhance = compose(injectIntl)(FitAndSizing)
+const mapStateToProps = (state: any) => state.get('fitAndSizing').toJS()
+
+const FitAndSizingEnhance = compose(
+  injectIntl,
+  connect(
+    mapStateToProps,
+    { ...fitAndSizeActions }
+  )
+)(FitAndSizing)
 
 export default FitAndSizingEnhance

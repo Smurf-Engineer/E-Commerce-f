@@ -22,6 +22,14 @@ export default defineMessages({
     id: 'screens.FitAndSizing.sizingChart',
     defaultMessage: 'SIZING CHART'
   },
+  in: {
+    id: 'screens.FitAndSizing.in',
+    defaultMessage: 'IN'
+  },
+  cm: {
+    id: 'screens.FitAndSizing.cm',
+    defaultMessage: 'CM'
+  },
   fitStylesTitle: {
     id: 'screens.FitAndSizing.fitStylesTitle',
     defaultMessage: 'FIT STYLES'
