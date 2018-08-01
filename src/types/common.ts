@@ -74,6 +74,11 @@ export type HomePageBatch = {
   result: string
 }
 
+type ExtraFile = {
+  white: string
+  black: string
+}
+
 export interface Product {
   id: number
   shortId?: string
@@ -104,6 +109,9 @@ export interface Product {
   label: string
   flatlock: string
   bumpMap: string
+  binding?: ExtraFile
+  zipper?: ExtraFile
+  bibBrace?: ExtraFile
 }
 
 export type DesignType = {

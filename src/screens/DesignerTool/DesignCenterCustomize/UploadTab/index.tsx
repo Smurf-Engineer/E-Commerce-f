@@ -14,6 +14,7 @@ import UploadButton from '../../../../components/UploadButton'
 import ExtraFile from '../../../../components/ExtraFile'
 import {
   Container,
+  DesignContainer,
   Buttons,
   ButtonWrapper,
   Footer,
@@ -23,11 +24,15 @@ import {
 } from './styledComponents'
 import { DesignConfig, UploadFile, ClickParam } from '../../../../types/common'
 import {
+  ExtraFiles,
   File,
+  Extension,
   filesInfo,
   optionalFiles,
   TOTAL_OF_FILES,
-  MINIMUM_OF_AREAS
+  MINIMUM_OF_AREAS,
+  WHITE,
+  BLACK
 } from './config'
 
 const { Dragger } = Upload
@@ -46,22 +51,6 @@ interface Props {
 
 type FileType = {
   [extraProp: string]: UploadFile
-}
-
-type ExtraFiles = {
-  flatlock?: UploadFile
-  binding?: {
-    white: UploadFile
-    black: UploadFile
-  }
-  zipper?: {
-    white: UploadFile
-    black: UploadFile
-  }
-  bibBrace?: {
-    white: UploadFile
-    black: UploadFile
-  }
 }
 
 interface State {
@@ -152,6 +141,61 @@ class UploadTab extends React.PureComponent<Props, State> {
     const { files, areas, extra } = this.state
     const { uploadingFiles, uploadNewModel, extraFiles } = this.props
 
+    const dragger = (
+      <Dragger
+        multiple={true}
+        beforeUpload={this.beforeUploadAreas}
+        fileList={areas}
+        onRemove={this.onRemoveArea}
+      >
+        <p className="ant-upload-hint">
+          You can drag or select multiples SVG files, named as colorblock_n.
+        </p>
+        <p>
+          <Icon type="upload" />
+        </p>
+      </Dragger>
+    )
+
+    if (uploadNewModel) {
+      // TODO: WIP Next PR.
+      return (
+        <DesignContainer>
+          <ButtonWrapper>
+            <Button
+              size="large"
+              type="primary"
+              onClick={() => {}}
+              disabled={false}
+              loading={false}
+            >
+              {'Upload Design'}
+            </Button>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <Button
+              ghost={true}
+              size="large"
+              type="primary"
+              onClick={this.handleReset}
+            >
+              Upload new model
+            </Button>
+          </ButtonWrapper>
+          <UploadButton
+            fileName={'file'}
+            extension={Extension.Config}
+            index={0}
+            hasFile={false}
+            onSelectFile={() => {}}
+            onRemoveFile={() => {}}
+            label={'Config'}
+          />
+          {dragger}
+        </DesignContainer>
+      )
+    }
+
     const filesCount = Object.keys(files).length
     const uploadDisabled =
       filesCount < TOTAL_OF_FILES || areas.length < MINIMUM_OF_AREAS
@@ -207,13 +251,13 @@ class UploadTab extends React.PureComponent<Props, State> {
           extension={extension}
           hasWhiteFile={!!currentFile.white}
           hasBlackFile={!!currentFile.black}
-          onSelectWhiteFile={this.handleOnSelectExtraFile('white')}
-          onSelectBlackFile={this.handleOnSelectExtraFile('black')}
-          onRemoveWhiteFile={this.handleOnRemoveExtra('white')}
-          onRemoveBlackFile={this.handleOnRemoveExtra('black')}
           onRemove={this.handleOnRemoveExtraFile(index)}
-          labelBlack={!!currentFile.black ? currentFile.black.name : 'Black'}
-          labelWhite={!!currentFile.white ? currentFile.white.name : 'White'}
+          onSelectWhiteFile={this.handleOnSelectExtraFile(WHITE)}
+          onSelectBlackFile={this.handleOnSelectExtraFile(BLACK)}
+          onRemoveWhiteFile={this.handleOnRemoveExtra(WHITE)}
+          onRemoveBlackFile={this.handleOnRemoveExtra(BLACK)}
+          labelWhite={!!currentFile.white ? currentFile.white.name : WHITE}
+          labelBlack={!!currentFile.black ? currentFile.black.name : BLACK}
         />
       )
     })
@@ -229,7 +273,7 @@ class UploadTab extends React.PureComponent<Props, State> {
               disabled={uploadDisabled}
               loading={uploadingFiles}
             >
-              {uploadNewModel ? 'Upload design' : 'Upload model'}
+              {'Upload Model'}
             </Button>
           </ButtonWrapper>
           <ButtonWrapper>{fileButtons}</ButtonWrapper>
@@ -239,34 +283,9 @@ class UploadTab extends React.PureComponent<Props, State> {
             </Label>
           </Dropdown>
           {optionals}
-          <Dragger
-            multiple={true}
-            beforeUpload={this.beforeUploadAreas}
-            fileList={areas}
-            onRemove={this.onRemoveArea}
-          >
-            <p className="ant-upload-hint">
-              You can drag or select multiples SVG files, named as colorblock_n.
-            </p>
-            <p>
-              <Icon type="upload" />
-            </p>
-          </Dragger>
+          {dragger}
         </Buttons>
-        <Footer>
-          {uploadNewModel && (
-            <ButtonWrapper>
-              <Button
-                ghost={true}
-                size="large"
-                type="primary"
-                onClick={this.handleReset}
-              >
-                Upload new model
-              </Button>
-            </ButtonWrapper>
-          )}
-        </Footer>
+        <Footer />
       </Container>
     )
   }

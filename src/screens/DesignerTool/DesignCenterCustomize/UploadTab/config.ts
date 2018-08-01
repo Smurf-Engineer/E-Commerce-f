@@ -1,6 +1,7 @@
 /**
  * File configuration
  */
+import { UploadFile } from '../../../../types/common'
 
 export const TOTAL_OF_FILES = 5
 export const MINIMUM_OF_AREAS = 4
@@ -80,5 +81,24 @@ export const optionalFiles = {
     file: File.BibBrace,
     label: 'Bib Brace',
     extension: Extension.Jpg
+  }
+}
+
+export const WHITE = 'white'
+export const BLACK = 'black'
+
+export type ExtraFiles = {
+  flatlock?: UploadFile
+  binding?: {
+    white: UploadFile
+    black: UploadFile
+  }
+  zipper?: {
+    white: UploadFile
+    black: UploadFile
+  }
+  bibBrace?: {
+    white: UploadFile
+    black: UploadFile
   }
 }

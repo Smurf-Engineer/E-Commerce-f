@@ -75,7 +75,7 @@ const Tabs = ({
   colors,
   onUploadFiles,
   uploadingFiles,
-  uploadNewModel,
+  // uploadNewModel,  TODO: WIP
   onUploadDesign,
   onSelectConfig,
   onSelectInspirationColor,
@@ -140,13 +140,13 @@ const Tabs = ({
             {...{
               onUploadFiles,
               uploadingFiles,
-              uploadNewModel,
               onUploadDesign,
               onSelectConfig,
               onAddExtraFile,
               onRemoveExtraFile,
               extraFiles
             }}
+            uploadNewModel={false} // TODO: WIP
           />
         </TabPane>
         <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>

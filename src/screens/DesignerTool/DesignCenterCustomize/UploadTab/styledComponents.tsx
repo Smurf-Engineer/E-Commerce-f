@@ -88,3 +88,6 @@ export const Row = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+export const DesignContainer = styled.div`
+  padding: 16px;
+`
