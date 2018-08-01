@@ -38,7 +38,7 @@ export class CitySelect extends React.Component<Props, {}> {
   render() {
     const { data, disabled, selectedCity, formatMessage } = this.props
     let dropdownOptions: any = []
-    if (data && data.cities && data.cities.length) {
+    if (!!data && data.cities && data.cities.length) {
       dropdownOptions = data.cities.map(({ city }, index) => (
         <Option value={city} key={index}>
           {city}

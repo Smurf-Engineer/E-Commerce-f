@@ -46,7 +46,7 @@ interface Props {
 }
 
 class ShippingAddressForm extends React.Component<Props, StateProps> {
-  state: StateProps = {
+  state = {
     selectedCountry: '',
     selectedRegion: '',
     selectedCity: ''

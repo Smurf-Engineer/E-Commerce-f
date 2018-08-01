@@ -45,7 +45,9 @@ export class CountrySelect extends React.Component<Props, {}> {
     return (
       <Container>
         <StyledSelect
-          notFoundContent={data && data.loading ? <Spin size="small" /> : null}
+          notFoundContent={
+            !!data && data.loading ? <Spin size="small" /> : null
+          }
           value={!selectedCountry ? undefined : selectedCountry}
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}

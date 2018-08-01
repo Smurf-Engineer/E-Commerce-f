@@ -49,7 +49,9 @@ export class RegionSelect extends React.Component<Props, {}> {
       <Container>
         <StyledSelect
           {...{ disabled }}
-          notFoundContent={data && data.loading ? <Spin size="small" /> : null}
+          notFoundContent={
+            !!data && data.loading ? <Spin size="small" /> : null
+          }
           value={!region ? undefined : region}
           placeholder={formatMessage(messages.select)}
           onChange={this.handleSelectChange}
