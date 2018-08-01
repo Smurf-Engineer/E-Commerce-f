@@ -26,8 +26,10 @@ export const HeaderTextContainer = styled.div`
   text-align: right;
   width: 50%;
 
-  @media (min-width: 320px) and (max-width: 815px) {
-    right: 5px;
+  @media (min-width: 320px) and (max-width: 767px) {
+    margin-top: -40px;
+    margin-left: -10px;
+    position: initial;
     width: 100%;
   }
 `
@@ -68,6 +70,9 @@ export const HeaderDialog = styled.div`
   width: 81%;
 
   @media (min-width: 320px) and (max-width: 767px) {
+    height: initial;
+    padding: 40px 10px;
+    position: initial;
     width: 100%;
   }
 `
@@ -75,7 +80,7 @@ export const ContentSection = styled.div`
   padding: 115px 40px 300px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding: 20px 8px 0px;
+    padding: 0px 8px 74px;
   }
 `
 export const SectionTitle = styled.div`
@@ -89,6 +94,6 @@ export const SectionTitle = styled.div`
   text-align: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    font-size: 19px;
+    font-size: 22px;
   }
 `
