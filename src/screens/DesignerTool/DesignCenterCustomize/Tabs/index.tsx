@@ -5,7 +5,7 @@ import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
 import UploadTab from '../UploadTab'
-import BaseColors from '../BaseColors'
+import ColorTab from '../ColorTab'
 import Settings from '../../DesignSettings'
 import InpirationTab from '../Settings'
 import colorIcon from '../../../../assets/color_white.svg'
@@ -143,7 +143,7 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
-          <BaseColors
+          <ColorTab
             {...{
               onSelectColorBlock,
               onHoverColorBlock,

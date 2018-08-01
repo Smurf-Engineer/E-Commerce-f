@@ -86,8 +86,7 @@ const Tabs = ({
     <Container>
       <AntdTabs defaultActiveKey="1">
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
-          <ColorsTab {...{ colors, formatMessage }} />
-          {/* <BaseColors
+          <ColorsTab
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
@@ -105,7 +104,7 @@ const Tabs = ({
               openPaletteModalAction,
               myPaletteModals
             }}
-          /> */}
+          />
         </TabPane>
         <TabPane tab={<Tab label="text" icon={textIcon} />} key="2">
           <TextTab
