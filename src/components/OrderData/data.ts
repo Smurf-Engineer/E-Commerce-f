@@ -22,6 +22,7 @@ export const getOrderQuery = gql`
       billingStateProvince: billing_address_state_province
       billingZipCode: billing_address_zip_code
       billingCountry: billing_address_country
+      shippingTax: shipping_tax
       payment: payment_object {
         paypalCharge {
           id

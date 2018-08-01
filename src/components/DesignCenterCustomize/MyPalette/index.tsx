@@ -153,7 +153,7 @@ class MyPalette extends React.PureComponent<Props> {
         key={id}
         onClickDelete={this.handleOnShowDeletePaletteModal}
         onSelectPalette={this.handleOnShowApplyPaletteModal}
-        {...{ id, name, colors }}
+        {...{ id, name, colors, formatMessage }}
       />
     ))
     const paletteNameToApply =
