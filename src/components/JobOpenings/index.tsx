@@ -40,10 +40,7 @@ class JobOpenings extends React.Component<Props, State> {
         toggleView={this.handleToggleRow(key)}
       >
         <Text>
-          <FormattedHTMLMessage
-            id="content"
-            defaultMessage={formatMessage(messages[content])}
-          />
+          <FormattedHTMLMessage {...messages[content]} />
         </Text>
       </DivInfo>
     ))
