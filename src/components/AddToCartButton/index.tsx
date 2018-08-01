@@ -12,7 +12,9 @@ import {
   Container,
   StyledButton,
   ButtonContainer,
-  CustomizeButton
+  CustomizeButton,
+  ButtonWrapper,
+  ReorderButton
 } from './styledComponents'
 import messages from './messages'
 import { getTotalItemsIncart } from '../MainLayout/actions'
@@ -33,7 +35,8 @@ interface Props {
   intl: InjectedIntl
   label: string
   renderForThumbnail?: boolean
-  item: CartItems
+  item?: CartItems
+  items?: CartItems[]
   designId?: string
   designName?: string
   designImage?: string
@@ -43,13 +46,21 @@ interface Props {
   itemProdPage?: boolean
   onClick: () => boolean
   myLockerList?: boolean
+  orderDetails?: boolean
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class AddToCartButton extends React.PureComponent<Props, {}> {
   render() {
-    const { label, renderForThumbnail, withoutTop, myLockerList } = this.props
+    const {
+      item,
+      label,
+      renderForThumbnail,
+      withoutTop,
+      myLockerList,
+      orderDetails
+    } = this.props
 
     const renderView = renderForThumbnail ? (
       <ButtonContainer {...{ myLockerList }} withoutTop={!!withoutTop}>
@@ -57,7 +68,15 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       </ButtonContainer>
     ) : (
       <Container>
-        <StyledButton onClick={this.addToCart}>{label}</StyledButton>
+        {orderDetails ? (
+          <ButtonWrapper individual={!!item}>
+            <ReorderButton type="primary" onClick={this.addToCart}>
+              {label}
+            </ReorderButton>
+          </ButtonWrapper>
+        ) : (
+          <StyledButton onClick={this.addToCart}>{label}</StyledButton>
+        )}
       </Container>
     )
 
@@ -65,9 +84,29 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
   }
 
   addToCart = () => {
-    const { onClick, renderForThumbnail, intl, item, itemProdPage } = this.props
-    if (renderForThumbnail) {
-      const itemToAdd = this.getItemWithDetails()
+    const {
+      onClick,
+      renderForThumbnail,
+      intl,
+      item,
+      designId,
+      teamStoreId,
+      designName,
+      designImage,
+      designCode,
+      items,
+      itemProdPage = false
+    } = this.props
+    if (renderForThumbnail && item) {
+      const itemToAdd = this.getItemWithDetails(
+        item,
+        designId,
+        teamStoreId,
+        designName,
+        designImage,
+        designCode,
+        itemProdPage
+      )
       this.saveInLocalStorage(itemToAdd)
     } else {
       const candAddToStore = onClick()
@@ -82,25 +121,50 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
         return
       } else {
         if (itemProdPage) {
-          const itemToAdd = this.getItemWithDetails()
-          this.saveInLocalStorage(itemToAdd)
+          if (!item && items && !!items.length) {
+            items.map(i =>
+              this.saveInLocalStorage(
+                this.getItemWithDetails(
+                  i,
+                  i.designId,
+                  i.teamStoreId,
+                  i.designName,
+                  i.designImage,
+                  i.designCode,
+                  itemProdPage
+                )
+              )
+            )
+          } else if (item) {
+            const itemToAdd = this.getItemWithDetails(
+              item,
+              designId,
+              teamStoreId,
+              designName,
+              designImage,
+              designCode,
+              itemProdPage
+            )
+            this.saveInLocalStorage(itemToAdd)
+          }
           return
         }
-        this.saveInLocalStorage(item)
+        if (item) {
+          this.saveInLocalStorage(item)
+        }
       }
     }
   }
 
-  getItemWithDetails = () => {
-    const {
-      item,
-      designId,
-      teamStoreId,
-      designName,
-      designImage,
-      designCode,
-      itemProdPage
-    } = this.props
+  getItemWithDetails = (
+    item: CartItems,
+    designId = '',
+    teamStoreId = '',
+    designName = '',
+    designImage = '',
+    designCode = '',
+    itemProdPage: boolean
+  ) => {
     const details = [] as CartItemDetail[]
     const detail = {
       quantity: 1
@@ -121,10 +185,9 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
     return itemToAdd
   }
 
-  saveInLocalStorage = (obj?: CartItems) => {
+  saveInLocalStorage = (item: CartItems) => {
     const {
       intl,
-      item,
       renderForThumbnail,
       getTotalItemsIncart: countCartItems
     } = this.props
@@ -137,11 +200,11 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       const cartList = JSON.parse(localStorage.getItem('cart') as any)
 
       if (cartList) {
-        cartList.push(obj || item)
+        cartList.push(item)
         localStorage.setItem('cart', JSON.stringify(cartList))
       } else {
         const myItems = []
-        myItems.push(obj || item)
+        myItems.push(item)
         localStorage.setItem('cart', JSON.stringify(myItems))
       }
       countCartItems()

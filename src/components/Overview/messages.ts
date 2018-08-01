@@ -7,6 +7,10 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.Overview.title',
+    defaultMessage: 'OVERVIEW'
+  },
+  headerTitle: {
+    id: 'components.Overview.headerTitle',
     defaultMessage: 'Recent Orders'
   },
   profile: {

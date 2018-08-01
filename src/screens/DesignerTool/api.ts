@@ -9,17 +9,11 @@ import {
   setUploadingDesignSuccess
 } from './actions'
 
-const modelFiles = [
-  'obj',
-  'mtl',
-  'bumpMap',
-  'flatlock',
-  'label',
-  'config',
-  'branding'
-]
+const modelFiles = ['obj', 'mtl', 'bumpMap', 'label', 'config', 'branding']
 
-export const uploadFilesAction = (files: any, areas: any) => {
+const FLATLOCK = 'flatlock'
+
+export const uploadFilesAction = (files: any, areas: any, extras: any) => {
   return async (dispatch: any) => {
     try {
       dispatch(setUploadingAction(true))
@@ -31,6 +25,18 @@ export const uploadFilesAction = (files: any, areas: any) => {
       areas.forEach((file: any, index: number) =>
         formData.append(`colorBlock${index + 1}`, file)
       )
+
+      const extraFiles = Object.keys(extras)
+      if (extraFiles.length) {
+        extraFiles.forEach(name => {
+          if (name === FLATLOCK) {
+            formData.append(name, extras[name])
+          } else {
+            formData.append(`${name}White`, extras[name].white)
+            formData.append(`${name}Black`, extras[name].black)
+          }
+        })
+      }
 
       const response = await fetch(`${config.graphqlUriBase}upload/model`, {
         method: 'POST',
