@@ -4,7 +4,10 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export const Text = styled.div`
   color: #fff;
@@ -59,4 +62,34 @@ export const CustomizeButton = styled.div`
     border: 1px solid #e61737;
     width: 100%;
   }
+`
+
+interface Prop {
+  individual?: boolean
+}
+
+export const ButtonWrapper = styled.span`
+  align-self: flex-end;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  width: ${({ individual }: Prop) => (individual ? '93px' : '145px')};
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-top: ${({ individual }: Prop) => (individual ? '5px' : '0px')};
+    width: ${({ individual }: Prop) => (individual ? '139px' : '145px')};
+  }
+
+  .ant-btn-primary {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  .ant-btn-primary:hover {
+    background-color: #4a90e2;
+    border-color: #4a90e2;
+  }
+`
+export const ReorderButton = styled(Button)`
+  width: 100%;
 `

@@ -49,7 +49,7 @@ export const CardNumber = styled.div`
 export const ShippingBillingContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin 24px 10% 24px 0;
+  margin: 24px 10% 24px 0;
 `
 
 export const PaymentText = styled.div`

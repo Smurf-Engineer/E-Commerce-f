@@ -402,6 +402,47 @@ export interface OrderHistory {
   status: string
 }
 
+export interface OrderStatusNetsuite {
+  deliveryDate?: string
+}
+
+export interface NetsuiteObject {
+  orderStatus: OrderStatusNetsuite
+}
+
+export interface PaymentCharges {
+  stripeCharge: {
+    cardData: CreditCardData
+  }
+}
+
+export interface OrderDetailsInfo {
+  shortId: string
+  orderDate: string
+  paymentMethod: string
+  shippingFirstName: string
+  shippingLastName: string
+  shippingStreet: string
+  shippingApartment: string
+  shippingCountry: string
+  shippingStateProvince: string
+  shippingCity: string
+  shippingZipCode: string
+  billingFirstName: string
+  billingLastName: string
+  billingStreet: string
+  billingApartment: string
+  billingCountry: string
+  billingStateProvince: string
+  billingCity: string
+  billingZipCode: string
+  shippingTax: number
+  netsuit: NetsuiteObject
+  payment: PaymentCharges
+  cart: CartItems[]
+  status: string
+}
+
 export interface OrderDataInfo {
   orderDate: string
   firstName: string
@@ -420,6 +461,7 @@ export interface OrderDataInfo {
   billingZipCode: string
   billingCountry: string
   billingApartment: string
+  shippingTax: number
   payment: {
     stripeCharge: {
       cardData: CreditCardData

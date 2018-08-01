@@ -30,7 +30,9 @@ import {
   ItemDetailType
 } from '../../types/common'
 import messages from '../ProductInfo/messages'
+import cartListItemMsgs from './messages'
 import { FormattedMessage } from 'react-intl'
+import AddToCartButton from '../AddToCartButton'
 
 interface CartItems {
   product: Product
@@ -80,6 +82,7 @@ interface Props {
     detailIndex: number,
     size: ItemDetailType
   ) => void
+  onClickReorder?: () => void
 
   title: string
   description: string
@@ -90,6 +93,7 @@ interface Props {
   cartItem: CartItems
   itemIndex: number
   onlyRead?: boolean
+  canReorder?: boolean
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -168,6 +172,7 @@ class CartListItem extends React.Component<Props, {}> {
       cartItem,
       itemIndex,
       onlyRead,
+      canReorder,
       productTotal,
       unitPrice,
       handleAddItemDetail = () => {},
@@ -179,6 +184,8 @@ class CartListItem extends React.Component<Props, {}> {
       setDetailSize = () => {},
       removeItem = () => {}
     } = this.props
+
+    const { designId, designName, designImage } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
@@ -263,6 +270,20 @@ class CartListItem extends React.Component<Props, {}> {
       </ItemDetailsHeader>
     )
 
+    const renderAddToCartButton = (
+      <AddToCartButton
+        label={formatMessage(cartListItemMsgs.reorder)}
+        renderForThumbnail={false}
+        item={cartItem}
+        {...{ formatMessage, designId, designName, designImage }}
+        withoutTop={true}
+        myLockerList={false}
+        itemProdPage={true}
+        orderDetails={true}
+        onClick={() => true}
+      />
+    )
+
     const renderView = (
       <MediaQuery minWidth={'481px'}>
         {matches => {
@@ -274,6 +295,7 @@ class CartListItem extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {table}
                   {!onlyRead && footer}
+                  {canReorder && renderAddToCartButton}
                 </ItemDetails>
               </Container>
             )
@@ -287,6 +309,7 @@ class CartListItem extends React.Component<Props, {}> {
                 <div>
                   {table}
                   {!onlyRead && footer}
+                  {canReorder && renderAddToCartButton}
                 </div>
               </Container>
             )
