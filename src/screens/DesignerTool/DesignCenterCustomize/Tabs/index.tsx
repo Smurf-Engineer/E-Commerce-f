@@ -39,6 +39,9 @@ interface Props {
   styleName: string
   uploadingThumbnail: boolean
   extraFiles: string[]
+  bibBrace: boolean
+  zipper: boolean
+  binding: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -50,7 +53,7 @@ interface Props {
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any, areas: any, extra: any) => void
-  onUploadDesign: (files: any) => void
+  onUploadDesign: (areas: any, config: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
@@ -62,6 +65,7 @@ interface Props {
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
+  onToogleColor: (color: string) => void
 }
 
 const Tabs = ({
@@ -76,7 +80,7 @@ const Tabs = ({
   colors,
   onUploadFiles,
   uploadingFiles,
-  // uploadNewModel,  TODO: WIP
+  uploadNewModel,
   onUploadDesign,
   onSelectConfig,
   onSelectInspirationColor,
@@ -102,7 +106,11 @@ const Tabs = ({
   onAddExtraFile,
   onRemoveExtraFile,
   extraFiles,
-  formatMessage
+  formatMessage,
+  onToogleColor,
+  bibBrace,
+  zipper,
+  binding
 }: Props) => {
   return (
     <Container>
@@ -130,7 +138,8 @@ const Tabs = ({
               styleName,
               onUpdateThemeName,
               onUpdateStyleName,
-              onLoadDesign
+              onLoadDesign,
+              formatMessage
             }}
           />
         </TabPane>
@@ -146,9 +155,9 @@ const Tabs = ({
               onSelectConfig,
               onAddExtraFile,
               onRemoveExtraFile,
-              extraFiles
+              extraFiles,
+              uploadNewModel
             }}
-            uploadNewModel={false} // TODO: WIP
           />
         </TabPane>
         <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
@@ -159,7 +168,11 @@ const Tabs = ({
               colorBlock,
               colorBlockHovered,
               onSelectColor,
-              colors
+              colors,
+              onToogleColor,
+              bibBrace,
+              zipper,
+              binding
             }}
           />
         </TabPane>

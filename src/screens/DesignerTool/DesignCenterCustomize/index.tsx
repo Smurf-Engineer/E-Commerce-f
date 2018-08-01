@@ -37,6 +37,9 @@ interface Props {
   styleName: string
   uploadingThumbnail: boolean
   extraFiles: string[]
+  bibBrace: boolean
+  zipper: boolean
+  binding: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -48,7 +51,7 @@ interface Props {
   onLoadModel: (loading: boolean) => void
   onHoverColorBlock: (index: number) => void
   onUploadFiles: (files: any, areas: any, extra: any) => void
-  onUploadDesign: (files: any) => void
+  onUploadDesign: (areas: any, config: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
   onSaveDesign: () => void
@@ -62,6 +65,7 @@ interface Props {
   onLoadDesign: (config: ModelConfig) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
+  onToogleColor: (color: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -109,8 +113,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onAddExtraFile,
       onRemoveExtraFile,
       extraFiles,
-      formatMessage
+      formatMessage,
+      onToogleColor,
+      bibBrace,
+      zipper,
+      binding
     } = this.props
+    const uploadNewModel =
+      !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
 
     return (
       <Container>
@@ -150,11 +160,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onAddExtraFile,
             onRemoveExtraFile,
             extraFiles,
-            formatMessage
+            formatMessage,
+            onToogleColor,
+            bibBrace,
+            zipper,
+            binding
           }}
-          onSaveThumbnail={this.handleOnSaveThumbnail}
           productData={data}
-          uploadNewModel={!!files}
+          uploadNewModel={uploadNewModel}
+          onSaveThumbnail={this.handleOnSaveThumbnail}
         />
         <Render3D
           {...{
@@ -168,7 +182,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             colorBlockHovered,
             onSaveThumbnail,
             onUploadingThumbnail,
-            uploadingThumbnail
+            uploadingThumbnail,
+            bibBrace,
+            zipper,
+            binding
           }}
           ref={render3D => (this.render3D = render3D)}
         />

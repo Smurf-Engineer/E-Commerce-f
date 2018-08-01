@@ -23,7 +23,8 @@ import {
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
   ADD_EXTRA_FILE_ACTION,
-  REMOVE_EXTRA_FILE_ACTION
+  REMOVE_EXTRA_FILE_ACTION,
+  TOOGLE_EXTRA_COLOR_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -151,4 +152,9 @@ export const addExtraFileAction = (file: string) => ({
 export const removeExtraFileAction = (index: number) => ({
   type: REMOVE_EXTRA_FILE_ACTION,
   index
+})
+
+export const toogleExtraColorAction = (color: string) => ({
+  type: TOOGLE_EXTRA_COLOR_ACTION,
+  color
 })
