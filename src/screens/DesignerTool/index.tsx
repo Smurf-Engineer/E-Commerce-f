@@ -63,6 +63,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   areas: string[]
+  extraFiles: string[]
   colorBlock: number
   colorBlockHovered: number
   loadingModel: boolean
@@ -81,7 +82,7 @@ interface Props {
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
-  uploadFilesAction: (files: any, areas: any) => void
+  uploadFilesAction: (files: any, areas: any, extra: any) => void
   uploadDesignAction: (files: any) => void
   setUploadingAction: (loading: boolean) => void
   setCurrentTabAction: (index: number) => void
@@ -98,6 +99,8 @@ interface Props {
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
   uploadThemeImage: (file: any) => void
+  addExtraFileAction: (file: string) => void
+  removeExtraFileAction: (index: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -138,11 +141,14 @@ export class DesignerTool extends React.Component<Props, {}> {
       productCode,
       themeName,
       styleName,
+      extraFiles,
       setThemeNameAction,
       setStyleNameAction,
       setComplexityAction,
       setUploadingThumbnailAction,
-      setUploadingSuccess
+      setUploadingSuccess,
+      addExtraFileAction,
+      removeExtraFileAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -162,6 +168,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           themeName,
           styleName,
           uploadingThumbnail,
+          extraFiles,
           formatMessage
         }}
         files={modelConfig}
@@ -187,6 +194,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
         onLoadDesign={setUploadingSuccess}
+        onAddExtraFile={addExtraFileAction}
+        onRemoveExtraFile={removeExtraFileAction}
       />
     )
   }
@@ -335,7 +344,13 @@ export class DesignerTool extends React.Component<Props, {}> {
         brandingPng,
         brandingSvg,
         areasSvg,
-        areasPng
+        areasPng,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack
       } = modelConfig
 
       const designs = designConfig.map(
@@ -402,6 +417,12 @@ export class DesignerTool extends React.Component<Props, {}> {
         flatLock: flatlock,
         obj,
         mtl,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack,
         theme_id: themeId,
         styles: designs
       }

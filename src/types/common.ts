@@ -74,6 +74,11 @@ export type HomePageBatch = {
   result: string
 }
 
+type ExtraFile = {
+  white: string
+  black: string
+}
+
 export interface Product {
   id: number
   shortId?: string
@@ -104,6 +109,9 @@ export interface Product {
   label: string
   flatlock: string
   bumpMap: string
+  binding?: ExtraFile
+  zipper?: ExtraFile
+  bibBrace?: ExtraFile
 }
 
 export type DesignType = {
@@ -362,9 +370,9 @@ export interface ModelConfig {
   obj: string
   mtl: string
   bumpMap: string
-  flatlock: string
-  brandingSvg: string
-  brandingPng: string
+  flatlock?: string
+  brandingSvg?: string
+  brandingPng?: string
   label: string
   design: {
     name: string
@@ -372,6 +380,12 @@ export interface ModelConfig {
   }
   areasSvg: string[]
   areasPng: string[]
+  bibBraceBlack?: string
+  bibBraceWhite?: string
+  bindingWhite?: string
+  bindingBlack?: string
+  zipperWhite?: string
+  zipperBlack?: string
 }
 
 export interface CartItems {
@@ -719,4 +733,11 @@ export type MessagePayload = {
   data: {
     message: string
   }
+}
+
+export interface ClickParam {
+  key: string
+  keyPath: Array<string>
+  item: any
+  domEvent: any
 }

@@ -62,3 +62,32 @@ export const Preview = styled.div`
   padding: 16px;
   background-color: #eff2f4;
 `
+
+export const Label = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 22px;
+  padding: 8px;
+  padding-bottom: 18px;
+  cursor: pointer;
+`
+
+export const FileContainer = styled.div`
+  padding: 8px;
+  border: solid;
+  border-width: 1px;
+  border-color: #fafafa;
+  margin-bottom: 16px;
+`
+
+export const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`
+export const DesignContainer = styled.div`
+  padding: 16px;
+`

@@ -36,6 +36,7 @@ interface Props {
   themeName: string
   styleName: string
   uploadingThumbnail: boolean
+  extraFiles: string[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -46,7 +47,7 @@ interface Props {
   onSelectColor: (color: string) => void
   onLoadModel: (loading: boolean) => void
   onHoverColorBlock: (index: number) => void
-  onUploadFiles: (files: any, areas: any) => void
+  onUploadFiles: (files: any, areas: any, extra: any) => void
   onUploadDesign: (files: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
@@ -59,6 +60,8 @@ interface Props {
   onUploadingThumbnail: (uploading: boolean) => void
   formatMessage: (messageDescriptor: any) => string
   onLoadDesign: (config: ModelConfig) => void
+  onAddExtraFile: (file: string) => void
+  onRemoveExtraFile: (index: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -103,6 +106,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSaveThumbnail,
       onUploadingThumbnail,
       onLoadDesign,
+      onAddExtraFile,
+      onRemoveExtraFile,
+      extraFiles,
       formatMessage
     } = this.props
 
@@ -141,6 +147,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onSelectComplexity,
             uploadingThumbnail,
             onLoadDesign,
+            onAddExtraFile,
+            onRemoveExtraFile,
+            extraFiles,
             formatMessage
           }}
           onSaveThumbnail={this.handleOnSaveThumbnail}

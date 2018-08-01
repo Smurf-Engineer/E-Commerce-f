@@ -9,7 +9,9 @@ import {
   MESH,
   FLATLOCK,
   RED_TAG,
-  BIB_BRACE
+  BIB_BRACE,
+  ZIPPER,
+  BINDING
 } from './config'
 import {
   Container,
@@ -135,20 +137,37 @@ class Render3D extends PureComponent {
   loadTextures = modelTextures =>
     new Promise((resolve, reject) => {
       try {
+        const {
+          bumpMap,
+          flatlock,
+          brandingPng,
+          areasPng = [],
+          zipperWhite,
+          bibBraceWhite,
+          bindingWhite
+        } = modelTextures
         const loadedTextures = {}
-        // TODO: WIP
-        loadedTextures.zipper = this.imgLoader.load(
-          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/zipper_white.jpg'
-        )
-        loadedTextures.binding = this.imgLoader.load(
-          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/binding_white.jpg'
-        )
-        // TODO: WIP
-        const { bumpMap, flatlock, brandingPng, areasPng = [] } = modelTextures
-        loadedTextures.flatlock = this.imgLoader.load(flatlock)
+        if (!!zipperWhite) {
+          loadedTextures.zipper = this.imgLoader.load(zipperWhite)
+          loadedTextures.zipper.minFilter = THREE.LinearFilter
+        }
+        if (!!bibBraceWhite) {
+          loadedTextures.bibBrace = this.imgLoader.load(bibBraceWhite)
+          loadedTextures.bibBrace.minFilter = THREE.LinearFilter
+        }
+        if (!!bindingWhite) {
+          loadedTextures.binding = this.imgLoader.load(bindingWhite)
+          loadedTextures.binding.minFilter = THREE.LinearFilter
+        }
+        if (!!flatlock) {
+          loadedTextures.flatlock = this.imgLoader.load(flatlock)
+          loadedTextures.flatlock.minFilter = THREE.LinearFilter
+        }
+        if (!!brandingPng) {
+          loadedTextures.branding = this.imgLoader.load(brandingPng)
+          loadedTextures.branding.minFilter = THREE.LinearFilter
+        }
         loadedTextures.bumpMap = this.imgLoader.load(bumpMap)
-        loadedTextures.branding = this.imgLoader.load(brandingPng)
-        loadedTextures.branding.minFilter = THREE.LinearFilter
         const loadedAreas = areasPng.map(areaUri => {
           const areaTexture = this.imgLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
@@ -206,32 +225,17 @@ class Render3D extends PureComponent {
         files.obj,
         object => {
           const { children } = object
-          const { flatlock, areas, bumpMap, branding } = loadedTextures
+          const {
+            flatlock,
+            areas,
+            bumpMap,
+            branding,
+            bibBrace,
+            zipper,
+            binding
+          } = loadedTextures
           const objectChilds = children.length
           this.setState({ objectChilds })
-
-          /* Object materials */
-          // Stitching
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            alphaMap: flatlock,
-            color: '#FFFFFF'
-          })
-          flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
-          flatlockMaterial.alphaTest = 0.5
-          // TODO: TEST
-          const zipperMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.zipper
-          })
-          const bindingMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.binding
-          })
-          // END TEST
-          // Back material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            side: THREE.BackSide,
-            color: '#000000'
-          })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, ({ name }) => name === meshName)
@@ -240,13 +244,48 @@ class Render3D extends PureComponent {
 
           const meshIndex = getMeshIndex(MESH)
           const labelIndex = getMeshIndex(RED_TAG)
-          const flatlockIndex = getMeshIndex(FLATLOCK)
 
-          // TODO: WIP
-          //  const zipperIndex = getMeshIndex('FINAL JV2_Zipper')
-          // const bindingIndex = getMeshIndex('JV2_Binding FINAL')
-          // TODO: WIP
+          /* Object materials */
+          // Stitching
+          if (!!flatlock) {
+            const flatlockIndex = getMeshIndex(FLATLOCK)
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              alphaMap: flatlock,
+              color: '#FFFFFF'
+            })
+            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+            flatlockMaterial.alphaTest = 0.5
+            object.children[flatlockIndex].material = flatlockMaterial
+          }
 
+          if (!!bibBrace) {
+            const bibBraceIndex = getMeshIndex(BIB_BRACE)
+            const bibBraceMaterial = new THREE.MeshPhongMaterial({
+              map: bibBrace
+            })
+            object.children[bibBraceIndex].material = bibBraceMaterial
+          }
+
+          if (!!zipper) {
+            const zipperIndex = getMeshIndex(ZIPPER)
+            const zipperMaterial = new THREE.MeshPhongMaterial({ map: zipper })
+            object.children[zipperIndex].material = zipperMaterial
+          }
+
+          if (!!binding) {
+            const bindingIndex = getMeshIndex(BINDING)
+            const bindingMaterial = new THREE.MeshPhongMaterial({
+              map: binding
+            })
+            object.children[bindingIndex].material = bindingMaterial
+          }
+
+          // Back material
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.BackSide,
+            color: '#000000'
+          })
           // Setup the texture layers
           const areasLayers = areas.map(() =>
             object.children[meshIndex].clone()
@@ -256,11 +295,6 @@ class Render3D extends PureComponent {
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
           object.children[labelIndex].material.color.set('#ffffff')
-          object.children[flatlockIndex].material = flatlockMaterial
-          // TODO: WIP
-          // object.children[zipperIndex].material = zipperMaterial
-          // object.children[bindingIndex].material = bindingMaterial
-          // TODO: WIP
 
           const { colors = [] } = files.design || {}
           const reversedAreas = reverse(areas)
@@ -279,19 +313,21 @@ class Render3D extends PureComponent {
           )
 
           /* Branding  */
-          const brandingObj = object.children[meshIndex].clone()
-          object.add(brandingObj)
-          const brandingIndex = children.length - 1
-          const brandingMaterial = new THREE.MeshPhongMaterial({
-            map: branding,
-            side: THREE.FrontSide,
-            bumpMap,
-            transparent: true
-          })
-          object.children[brandingIndex].material = brandingMaterial
+          if (!!branding) {
+            const brandingObj = object.children[meshIndex].clone()
+            object.add(brandingObj)
+            const brandingIndex = children.length - 1
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              map: branding,
+              side: THREE.FrontSide,
+              bumpMap,
+              transparent: true
+            })
+            object.children[brandingIndex].material = brandingMaterial
+          }
 
           /* Object Config */
-          object.position.y = -35
+          object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
           onLoadModel(false)

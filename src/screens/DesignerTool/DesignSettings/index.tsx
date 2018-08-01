@@ -11,12 +11,20 @@ import {
   InputContainer
 } from './styledComponents'
 import get from 'lodash/get'
-import every from 'lodash/every'
 import findIndex from 'lodash/findIndex'
 import Button from 'antd/lib/button'
 import DesignForm from '../../../components/DesignForm'
 import { UploadFile, DesignItem, ModelConfig } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
+
+const extraFiles = ['bibBrace', 'binding', 'zipper']
+const areas = [
+  'colorblock1',
+  'colorblock2',
+  'colorblock3',
+  'colorblock4',
+  'colorblock5'
+]
 
 interface Props {
   themeImage?: UploadFile[]
@@ -72,7 +80,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
       const currentTheme = themes[themeIndex] || {}
       const themeStyles = currentTheme.styles || []
-      productHasAllFiles = every(product)
+      const { obj, mtl, label, bumpMap } = product
+      productHasAllFiles = !!obj && !!mtl && !!label && !!bumpMap
       themeItems = themes.map(({ id, name }) => ({ id, name }))
       styleItems = themeStyles.map(({ id, name }) => ({ id, name }))
     }
@@ -157,26 +166,11 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         ({ id }) => id === selectedStyle
       )
       const currentStyle = currentTheme.styles[styleIndex]
-      const {
-        name,
-        branding = '',
-        brandingPng,
-        colors,
-        colorblock1,
-        colorblock2,
-        colorblock3,
-        colorblock4,
-        colorblock5
-      } = currentStyle
+      const { name, branding = '', brandingPng, colors } = currentStyle
       const areaColors: string[] = []
       const areasPng: string[] = []
-      const areasSvg = [
-        colorblock1,
-        colorblock2,
-        colorblock3,
-        colorblock4,
-        colorblock5
-      ]
+      const areasSvg: string[] = []
+      areas.forEach(area => areasSvg.push(currentStyle[area]))
       colors.forEach(({ color, image }) => {
         areaColors.push(color)
         areasPng.push(image)
@@ -194,6 +188,13 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         areasPng,
         design
       }
+      extraFiles.forEach(key => {
+        const file = product[key]
+        if (file) {
+          modelConfig[`${key}White`] = file.white
+          modelConfig[`${key}Black`] = file.black
+        }
+      })
       onLoadDesign(modelConfig)
     }
   }

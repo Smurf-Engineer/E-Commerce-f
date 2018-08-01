@@ -38,6 +38,7 @@ interface Props {
   themeName: string
   styleName: string
   uploadingThumbnail: boolean
+  extraFiles: string[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -48,7 +49,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
-  onUploadFiles: (files: any, areas: any) => void
+  onUploadFiles: (files: any, areas: any, extra: any) => void
   onUploadDesign: (files: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
@@ -58,6 +59,8 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
   onLoadDesign: (config: ModelConfig) => void
+  onAddExtraFile: (file: string) => void
+  onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -73,7 +76,7 @@ const Tabs = ({
   colors,
   onUploadFiles,
   uploadingFiles,
-  uploadNewModel,
+  // uploadNewModel,  TODO: WIP
   onUploadDesign,
   onSelectConfig,
   onSelectInspirationColor,
@@ -96,6 +99,9 @@ const Tabs = ({
   onSaveThumbnail,
   uploadingThumbnail,
   onLoadDesign,
+  onAddExtraFile,
+  onRemoveExtraFile,
+  extraFiles,
   formatMessage
 }: Props) => {
   return (
@@ -136,10 +142,13 @@ const Tabs = ({
             {...{
               onUploadFiles,
               uploadingFiles,
-              uploadNewModel,
               onUploadDesign,
-              onSelectConfig
+              onSelectConfig,
+              onAddExtraFile,
+              onRemoveExtraFile,
+              extraFiles
             }}
+            uploadNewModel={false} // TODO: WIP
           />
         </TabPane>
         <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
