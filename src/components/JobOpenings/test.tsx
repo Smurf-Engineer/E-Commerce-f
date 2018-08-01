@@ -4,6 +4,7 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import JobOpenings from './index'
+import { IntlProvider } from 'react-intl'
 
 describe('<JobOpenings />', () => {
   test('renders without exploding', () => {
@@ -16,6 +17,11 @@ describe('<JobOpenings />', () => {
       }
     ]
     const formatMessage = () => ''
-    ReactDOM.render(<JobOpenings {...{ jobOpenings, formatMessage }} />, div)
+    ReactDOM.render(
+      <IntlProvider>
+        <JobOpenings {...{ jobOpenings, formatMessage }} />
+      </IntlProvider>,
+      div
+    )
   })
 })

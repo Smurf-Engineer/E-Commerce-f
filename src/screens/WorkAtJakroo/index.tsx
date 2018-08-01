@@ -23,6 +23,9 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
 }
 
+const headerImg =
+  'https://storage.googleapis.com/jakroo-storage/screens/workat/workatjakroo-header.jpg'
+
 const jobOpenings = [
   {
     id: 'jrAccountManager',
@@ -75,8 +78,6 @@ export class WorkAtJakroo extends React.Component<Props, {}> {
   render() {
     const { intl, history } = this.props
     const { formatMessage } = intl
-    const headerImg =
-      'https://storage.googleapis.com/jakroo-storage/screens/workat/workatjakroo-header.jpg'
 
     return (
       <Layout {...{ intl, history }}>

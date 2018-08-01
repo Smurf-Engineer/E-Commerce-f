@@ -2,6 +2,7 @@
  * JobOpenings Component - Created by jorge on 31/07/18.
  */
 import * as React from 'react'
+import { FormattedHTMLMessage } from 'react-intl'
 import messages from '../../screens/WorkAtJakroo/messages'
 import { Container, Text } from './styledComponents'
 import DivInfo from '../../components/ProductInfo'
@@ -16,12 +17,12 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
 }
 
-interface StateProps {
+interface State {
   currentIndex: number
 }
 
-class JobOpenings extends React.Component<Props, {}> {
-  state: StateProps = {
+class JobOpenings extends React.Component<Props, State> {
+  state = {
     currentIndex: -1
   }
 
@@ -38,11 +39,12 @@ class JobOpenings extends React.Component<Props, {}> {
         showContent={currentIndex === key}
         toggleView={this.handleToggleRow(key)}
       >
-        <Text
-          dangerouslySetInnerHTML={{
-            __html: formatMessage(messages[content])
-          }}
-        />
+        <Text>
+          <FormattedHTMLMessage
+            id="content"
+            defaultMessage={formatMessage(messages[content])}
+          />
+        </Text>
       </DivInfo>
     ))
 
