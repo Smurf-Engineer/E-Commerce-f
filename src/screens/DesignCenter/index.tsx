@@ -396,6 +396,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataProduct, 'product.name') ||
       get(dataDesign, 'designData.product.name', '')
 
+    console.log('---------------------------')
+    console.log(dataProduct)
+    console.log('---------------------------')
+
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
     const styleObject = get(dataDesign, 'designData.style')
