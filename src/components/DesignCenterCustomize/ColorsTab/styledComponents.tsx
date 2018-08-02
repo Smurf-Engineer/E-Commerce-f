@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by miguelcanobbio on 31/07/18.
+ * Styled Components - Created by david on 26/02/18.
  */
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
@@ -25,7 +25,7 @@ export const Row = styled.div`
   cursor: pointer;
 `
 interface PageProps {
-  isFirstPage: boolean
+  isFirstTab: boolean
 }
 
 export const TextColors = styled.div`
@@ -34,7 +34,7 @@ export const TextColors = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
-  margin-left: ${({ isFirstPage }: PageProps) => (isFirstPage ? '0' : '6px')};
+  margin-left: ${({ isFirstTab }: PageProps) => (isFirstTab ? '0' : '6px')};
 `
 
 export const Text = styled.div`

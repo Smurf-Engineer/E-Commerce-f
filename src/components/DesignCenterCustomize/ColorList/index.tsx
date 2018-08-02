@@ -10,7 +10,7 @@ import { StitchingColor } from '../../../types/common'
 
 interface Props {
   onSelectColor?: (color: string) => void
-  onSelectStitchingColor: (color: StitchingColor) => void
+  onSelectStitchingColor?: (color: StitchingColor) => void
   height?: number
   stitching?: boolean
   stitchingColor?: StitchingColor

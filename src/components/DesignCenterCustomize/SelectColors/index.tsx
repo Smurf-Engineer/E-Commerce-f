@@ -68,14 +68,12 @@ class SelectColors extends React.PureComponent<Props, {}> {
           <ColorButtons>{colorButtons}</ColorButtons>
         </BaseColors>
         <Divider />
-        {/* Stitching */}
         {stitchingColor && (
           <AccessoryColor
             name={formatMessage(messages.stitching)}
             {...{ goToStitching, stitchingColor }}
           />
         )}
-        {/* Binding */}
         {bindingColor && (
           <AccessoryColor
             id="bindingColor"
@@ -84,7 +82,6 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
-        {/* Zipper */}
         {zipperColor && (
           <AccessoryColor
             id="zipperColor"
@@ -93,7 +90,6 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
-        {/* Bid brace color */}
         {bidColor && (
           <AccessoryColor
             id="bidColor"

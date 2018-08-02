@@ -66,10 +66,7 @@ class MyPalette extends React.PureComponent<Props> {
       formatMessage,
       showContent = true
     } = this.props
-    if (!showContent) {
-      return
-    }
-    if (!paletteName) {
+    if (!paletteName || !showContent) {
       return
     }
     const palettesTest: Palette = {
