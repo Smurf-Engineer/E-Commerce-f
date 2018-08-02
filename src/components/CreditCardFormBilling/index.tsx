@@ -186,7 +186,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
-
+    console.log(selectedCardId)
     if ((!cardHolderName && !selectedCardId) || error) {
       invalidBillingFormAction(true)
     }
@@ -200,9 +200,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       address_country: 'US' // TODO: add correct country code
     }
     setLoadingBillingAction(true)
-    const stripeResponse = await stripe.createToken(stripeTokenData)
 
-    if (!selectedCardId && stripeResponse.error) {
+    const stripeResponse = !selectedCardId
+      ? await stripe.createToken(stripeTokenData)
+      : {}
+
+    if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else {
       if (!selectedCardId) {
