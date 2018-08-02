@@ -146,9 +146,9 @@ export default defineMessages({
     id: 'screens.FitAndSizing.length',
     defaultMessage: 'Length'
   },
-  tight: {
-    id: 'screens.FitAndSizing.tight',
-    defaultMessage: 'Tight'
+  thigh: {
+    id: 'screens.FitAndSizing.thigh',
+    defaultMessage: 'Thigh'
   },
   calf: {
     id: 'screens.FitAndSizing.calf',

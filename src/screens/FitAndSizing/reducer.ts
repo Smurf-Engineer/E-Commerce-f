@@ -6,7 +6,7 @@ import { SET_MSRMNT_SYSTEM } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
-  msrmntSystemSelected: null
+  msrmntSystemSelected: 'in'
 })
 
 const fitAndSizingReducer: Reducer<any> = (state = initialState, action) => {

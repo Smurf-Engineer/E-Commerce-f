@@ -18,22 +18,27 @@ import {
   TableTitle
 } from './styledComponents'
 
+interface Measure {
+  in: string[]
+  cm: string[]
+}
+
 interface Table {
   title: string
   headers: string[]
   size: string[]
-  waist?: string[]
-  chest?: string[]
-  inseam?: string[]
-  hips?: string[]
-  height?: string[]
-  bicep?: string[]
-  length?: string[]
-  tight?: string[]
-  calf?: string[]
-  mens?: string[]
-  womens?: string[]
-  circumference?: string[]
+  waist?: Measure
+  chest?: Measure
+  inseam?: Measure
+  hips?: Measure
+  height?: Measure
+  bicep?: Measure
+  length?: Measure
+  thigh?: Measure
+  calf?: Measure
+  mens?: Measure
+  womens?: Measure
+  circumference?: Measure
 }
 
 interface Chart {
@@ -44,6 +49,7 @@ interface Chart {
 interface Props {
   boxHeaders: string[]
   chart: Chart
+  units: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -97,14 +103,21 @@ class SizingChart extends React.Component<Props, {}> {
     headers: string[],
     sizes: string[]
   ): JSX.Element[] => {
-    return sizes.map((s, index) => (
-      <Row key={index}>
-        {headers && headers.map(h => this.getCell(table, h, index))}
+    return sizes.map((s, row) => (
+      <Row key={row}>
+        {headers && headers.map((h, i) => this.getCell(table, h, row, i))}
       </Row>
     ))
   }
 
-  getCell = (table: Table, header: string, index: number): JSX.Element => {
+  getCell = (
+    table: Table,
+    header: string,
+    row: number,
+    index: number
+  ): JSX.Element => {
+    const { units } = this.props
+
     const {
       size,
       waist,
@@ -114,7 +127,7 @@ class SizingChart extends React.Component<Props, {}> {
       height,
       bicep,
       length,
-      tight,
+      thigh,
       calf,
       mens,
       womens,
@@ -124,32 +137,36 @@ class SizingChart extends React.Component<Props, {}> {
     switch (header) {
       case 'size':
         return (
-          <Cell>{size && <FormattedMessage {...messages[size[index]]} />}</Cell>
+          <Cell key={index}>
+            {size && <FormattedMessage {...messages[size[row]]} />}
+          </Cell>
         )
       case 'waist':
-        return <Cell>{waist && waist[index]}</Cell>
+        return <Cell key={index}>{waist && waist[units][row]}</Cell>
       case 'chest':
-        return <Cell>{chest && chest[index]}</Cell>
+        return <Cell key={index}>{chest && chest[units][row]}</Cell>
       case 'inseam':
-        return <Cell>{inseam && inseam[index]}</Cell>
+        return <Cell key={index}>{inseam && inseam[units][row]}</Cell>
       case 'hips':
-        return <Cell>{hips && hips[index]}</Cell>
+        return <Cell key={index}>{hips && hips[units][row]}</Cell>
       case 'height':
-        return <Cell>{height && height[index]}</Cell>
+        return <Cell key={index}>{height && height[units][row]}</Cell>
       case 'bicep':
-        return <Cell>{bicep && bicep[index]}</Cell>
+        return <Cell key={index}>{bicep && bicep[units][row]}</Cell>
       case 'length':
-        return <Cell>{length && length[index]}</Cell>
-      case 'tight':
-        return <Cell>{tight && tight[index]}</Cell>
+        return <Cell key={index}>{length && length[units][row]}</Cell>
+      case 'thigh':
+        return <Cell key={index}>{thigh && thigh[units][row]}</Cell>
       case 'calf':
-        return <Cell>{calf && calf[index]}</Cell>
+        return <Cell key={index}>{calf && calf[units][row]}</Cell>
       case 'mens':
-        return <Cell>{mens && mens[index]}</Cell>
+        return <Cell key={index}>{mens && mens[units][row]}</Cell>
       case 'womens':
-        return <Cell>{womens && womens[index]}</Cell>
+        return <Cell key={index}>{womens && womens[units][row]}</Cell>
       case 'circumference':
-        return <Cell>{circumference && circumference[index]}</Cell>
+        return (
+          <Cell key={index}>{circumference && circumference[units][row]}</Cell>
+        )
       default:
         return <div />
     }

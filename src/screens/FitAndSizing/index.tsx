@@ -73,7 +73,11 @@ export class FitAndSizing extends React.Component<Props, {}> {
     ))
 
     const sizingChartList = charts.map((chart, index) => (
-      <SizingChart key={index} {...{ boxHeaders, chart, formatMessage }} />
+      <SizingChart
+        key={index}
+        units={msrmntSystemSelected}
+        {...{ boxHeaders, chart, formatMessage }}
+      />
     ))
 
     return (
