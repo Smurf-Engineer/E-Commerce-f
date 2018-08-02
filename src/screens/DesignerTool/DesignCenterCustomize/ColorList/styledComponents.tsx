@@ -3,13 +3,8 @@
  */
 import styled from 'styled-components'
 
-interface ContainerProps {
-  height?: string
-}
-
 export const Container = styled.div`
   overflow: auto;
-  height: ${({ height }: ContainerProps) => (height ? height : '450px')};
   padding: 0px 32px;
 `
 
