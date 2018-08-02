@@ -27,7 +27,8 @@ import {
   SET_UPLOADING_THUMBNAIL_ACTION,
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
-  TOGGLE_EXTRA_COLOR_ACTION
+  TOGGLE_EXTRA_COLOR_ACTION,
+  SAVE_DESIGN_SUCCESS_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -180,6 +181,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       const currentValue = state.get(color)
       return state.set(color, !currentValue)
     }
+    case SAVE_DESIGN_SUCCESS_ACTION:
+      return state.set('designConfig', state.get('designConfig').clear())
     default:
       return state
   }

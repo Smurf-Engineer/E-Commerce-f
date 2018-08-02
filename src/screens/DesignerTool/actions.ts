@@ -24,7 +24,8 @@ import {
   SET_UPLOADING_THUMBNAIL_ACTION,
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
-  TOGGLE_EXTRA_COLOR_ACTION
+  TOGGLE_EXTRA_COLOR_ACTION,
+  SAVE_DESIGN_SUCCESS_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -157,4 +158,8 @@ export const removeExtraFileAction = (index: number) => ({
 export const toggleExtraColorAction = (color: string) => ({
   type: TOGGLE_EXTRA_COLOR_ACTION,
   color
+})
+
+export const saveDesignSuccessAction = () => ({
+  type: SAVE_DESIGN_SUCCESS_ACTION
 })
