@@ -2,6 +2,7 @@
  * AccessoryColor Component - Created by miguelcanobbio on 01/08/18.
  */
 import * as React from 'react'
+import get from 'lodash/get'
 import {
   Container,
   Divider,
@@ -27,21 +28,23 @@ interface Props {
 const AccessoryColor = ({
   id = '',
   name,
-  stitchingColor,
+  stitchingColor = {},
   goToStitching,
   colorSelected = 'white',
   onAccessoryColorSelected = () => {}
 }: Props) => {
   const onSelectBlack = () => onAccessoryColorSelected('black', id)
   const onSelectWhite = () => onAccessoryColorSelected('white', id)
+  const stitchingName = get(stitchingColor, 'name', '')
+  const stitchingValue = get(stitchingColor, 'value', '')
   return (
     <div>
       <Container>
         <Name>{name}</Name>
         {stitchingColor ? (
           <Stitching onClick={goToStitching}>
-            <ColorLabel>{stitchingColor.name}</ColorLabel>
-            <Oval color={stitchingColor.value} />
+            <ColorLabel>{stitchingName}</ColorLabel>
+            <Oval color={stitchingValue} />
             <Arrow type="right" />
           </Stitching>
         ) : (
