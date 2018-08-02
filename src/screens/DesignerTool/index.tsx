@@ -251,7 +251,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             }
           })
         } catch (e) {
-          console.error(e)
+          message.error(e.message)
         }
       }
     })
@@ -291,7 +291,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             }
           })
         } catch (e) {
-          console.error(e)
+          message.error(e.message)
         }
       }
     })
@@ -322,7 +322,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       setUploadingThumbnailAction(false)
     } catch (e) {
       setUploadingThumbnailAction(false)
-      console.error(e)
+      message.error(e.message)
     }
   }
 
@@ -443,7 +443,12 @@ export class DesignerTool extends React.Component<Props, {}> {
         theme_id: themeId,
         styles: designs
       }
-      await saveDesign({ variables: { design } })
+      await saveDesign({
+        variables: { design },
+        refetchQueries: [
+          { query: getProductFromCode, variables: { code: productCode } }
+        ]
+      })
       message.success('Your design is now saved')
     } catch (e) {
       message.error(e.message)
