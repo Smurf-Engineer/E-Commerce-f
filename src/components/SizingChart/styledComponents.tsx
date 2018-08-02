@@ -43,7 +43,7 @@ export const Table = styled.div`
   margin-bottom: 60px;
   margin-top: 60px;
   table-layout: fixed;
-  width: 100%;
+  width: 38.75%;
 
   @media (max-width: 480px) {
     margin-bottom: 0;
@@ -93,4 +93,30 @@ export const Cell = styled.div`
   letter-spacing: 0.1px;
   line-height: 35px;
   width: 100%;
+`
+
+interface TableProps {
+  multiple?: boolean
+}
+
+export const TableList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: ${({ multiple }: TableProps) =>
+    multiple ? 'space-between' : 'center'};
+  padding: 0px 30px;
+  width: 100%;
+
+  @media (min-width: 320px) and (max-width: 846px) {
+    padding: 0px;
+  }
+`
+export const TableTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  margin-bottom: 20px;
 `

@@ -118,6 +118,66 @@ export default defineMessages({
     id: 'screens.FitAndSizing.age14',
     defaultMessage: 'Age 14'
   },
+  armWarmer: {
+    id: 'screens.FitAndSizing.armWarmer',
+    defaultMessage: 'ARM WARMER'
+  },
+  kneeWarmer: {
+    id: 'screens.FitAndSizing.kneeWarmer',
+    defaultMessage: 'KNEE WARMER'
+  },
+  shoeCover: {
+    id: 'screens.FitAndSizing.shoeCover',
+    defaultMessage: 'SHOE COVER'
+  },
+  legWarmer: {
+    id: 'screens.FitAndSizing.legWarmer',
+    defaultMessage: 'LEG WARMER'
+  },
+  cyclingCap: {
+    id: 'screens.FitAndSizing.cyclingCap',
+    defaultMessage: 'CYCLING CAP'
+  },
+  bicep: {
+    id: 'screens.FitAndSizing.bicep',
+    defaultMessage: 'Bicep'
+  },
+  length: {
+    id: 'screens.FitAndSizing.length',
+    defaultMessage: 'Length'
+  },
+  tight: {
+    id: 'screens.FitAndSizing.tight',
+    defaultMessage: 'Tight'
+  },
+  calf: {
+    id: 'screens.FitAndSizing.calf',
+    defaultMessage: 'Calf'
+  },
+  mens: {
+    id: 'screens.FitAndSizing.mens',
+    defaultMessage: `Men's`
+  },
+  womens: {
+    id: 'screens.FitAndSizing.womens',
+    defaultMessage: `Women's`
+  },
+  circumference: {
+    id: 'screens.FitAndSizing.circumference',
+    defaultMessage: 'Circumference'
+  },
+  xxs_xs: {
+    id: 'screens.FitAndSizing.xxs_xs',
+    defaultMessage: '2XS - XS'
+  },
+  s_m: {
+    id: 'screens.FitAndSizing.s_m',
+    defaultMessage: 'S - M'
+  },
+  l_xl: {
+    id: 'screens.FitAndSizing.',
+    defaultMessage: 'L - XL'
+  },
   fitStylesTitle: {
     id: 'screens.FitAndSizing.fitStylesTitle',
     defaultMessage: 'FIT STYLES'
