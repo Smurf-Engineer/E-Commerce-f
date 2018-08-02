@@ -44,7 +44,8 @@ import {
   SET_DESIGN_HAS_CHANGES,
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
-  SET_CANVAS_JSON_ACTION
+  SET_CANVAS_JSON_ACTION,
+  SET_ACCESSORY_COLOR_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -52,7 +53,8 @@ import {
   TeamStoreItemtype,
   CanvasElement,
   SaveDesignType,
-  StitchingColor
+  StitchingColor,
+  AccesoryColor
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -315,4 +317,10 @@ export const setCanvasJsonAction = (canvas: string) => ({
 export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   type: SET_STITCHING_COLOR_ACTION,
   stitchingColor
+})
+
+export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
+  type: SET_ACCESSORY_COLOR_ACTION,
+  color,
+  id
 })

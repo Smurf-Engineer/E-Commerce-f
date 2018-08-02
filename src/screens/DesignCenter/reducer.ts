@@ -43,7 +43,8 @@ import {
   OPEN_NEW_STYLE_MODAL,
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_CUSTOMIZE_3D_MOUNTED,
-  SET_CANVAS_JSON_ACTION
+  SET_CANVAS_JSON_ACTION,
+  SET_ACCESSORY_COLOR_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -54,6 +55,9 @@ export const initialState = fromJS({
   colorBlockHovered: -1,
   colors: [],
   stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
+  bindingColor: 'white',
+  zipperColor: 'white',
+  bidColor: 'white',
   styleColors: [],
   palettes: [],
   paletteName: '',
@@ -176,6 +180,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_STITCHING_COLOR_ACTION:
       return state.set('stitchingColor', action.stitchingColor)
+    case SET_ACCESSORY_COLOR_ACTION:
+      return state.set(action.id, action.color)
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')

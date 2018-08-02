@@ -61,6 +61,7 @@ export const Oval = styled.div`
       color && color.toLowerCase() !== '#ffffff' ? color : '#bebebe'};
   background-color: ${({ color }: OvalProps) => color || '#fff'};
   align-self: center;
+  cursor: pointer;
 `
 
 interface OvalSelected {

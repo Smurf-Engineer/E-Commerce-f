@@ -18,7 +18,8 @@ import SelectColors from '../SelectColors'
 import {
   Palette,
   MyPaletteDesignCenterModals,
-  StitchingColor
+  StitchingColor,
+  AccesoryColor
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
@@ -33,7 +34,10 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
-  stitchingColor: StitchingColor
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   styleColors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
   onSelectColorBlock: (index: number) => void
@@ -45,6 +49,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
 const SELECT_COLORS_INDEX = 0
@@ -85,7 +90,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
       openPaletteModalAction,
       myPaletteModals,
       styleColors,
-      stitchingColor
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bidColor,
+      onAccessoryColorSelected
     } = this.props
     const { index } = this.state
 
@@ -123,7 +132,15 @@ class ColorsTab extends React.PureComponent<Props, State> {
             showContent={index === SELECT_COLORS_INDEX}
             goToBaseColors={this.goToBaseColors}
             goToStitching={this.goToStitching}
-            {...{ colors, stitchingColor, formatMessage }}
+            {...{
+              colors,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bidColor,
+              onAccessoryColorSelected,
+              formatMessage
+            }}
           />
           <BaseColors
             showContent={index === BASE_COLORS_INDEX}

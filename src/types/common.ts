@@ -683,3 +683,5 @@ export type StitchingColor = {
   name: string
   value: string
 }
+
+export type AccesoryColor = 'black' | 'white'

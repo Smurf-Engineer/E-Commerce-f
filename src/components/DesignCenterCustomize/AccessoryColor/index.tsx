@@ -13,21 +13,27 @@ import {
   Colors,
   OvalSelected
 } from './styledComponents'
-import { StitchingColor } from '../../../types/common'
+import { StitchingColor, AccesoryColor } from '../../../types/common'
 
 interface Props {
   name: string
+  id?: string
   stitchingColor?: StitchingColor
   goToStitching?: () => void
-  colorSelected?: 'black' | 'white'
+  colorSelected?: AccesoryColor
+  onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
 const AccessoryColor = ({
+  id = '',
   name,
   stitchingColor,
   goToStitching,
-  colorSelected = 'white'
+  colorSelected = 'white',
+  onAccessoryColorSelected = () => {}
 }: Props) => {
+  const onSelectBlack = () => onAccessoryColorSelected('black', id)
+  const onSelectWhite = () => onAccessoryColorSelected('white', id)
   return (
     <div>
       <Container>
@@ -40,10 +46,14 @@ const AccessoryColor = ({
           </Stitching>
         ) : (
           <Colors>
-            <OvalSelected selected={colorSelected === 'black'}>
+            <OvalSelected
+              onClick={onSelectBlack}
+              selected={colorSelected === 'black'}
+            >
               <Oval color={'#000'} />
             </OvalSelected>
             <OvalSelected
+              onClick={onSelectWhite}
               selected={colorSelected === 'white'}
               marginLeft={'8px'}
             >

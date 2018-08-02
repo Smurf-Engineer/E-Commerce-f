@@ -51,7 +51,8 @@ import {
   SaveDesignType,
   DesignType,
   Style,
-  StitchingColor
+  StitchingColor,
+  AccesoryColor
 } from '../../types/common'
 import {
   getProductQuery,
@@ -120,7 +121,10 @@ interface Props extends RouteComponentProps<any> {
   customize3dMounted: boolean
   svgOutputUrl: string
   tabChanged: boolean
-  stitchingColor: StitchingColor
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -172,6 +176,7 @@ interface Props extends RouteComponentProps<any> {
   setCustomize3dMountedAction: (mounted: boolean) => void
   setCanvasJsonAction: (canvas: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
+  setAccessoryColorAction: (color: AccesoryColor, id: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -387,8 +392,17 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCanvasJsonAction,
       styleIndex,
       stitchingColor,
-      setStitchingColorAction
+      bindingColor,
+      zipperColor,
+      bidColor,
+      setStitchingColorAction,
+      setAccessoryColorAction
     } = this.props
+
+    console.log(stitchingColor, 'stitching')
+    console.log(bindingColor, 'bindingColor')
+    console.log(zipperColor, 'zipperColor')
+    console.log(bidColor, 'bidColor')
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -512,8 +526,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 loadingData,
                 currentStyle,
                 stitchingColor,
-                setStitchingColorAction
+                setStitchingColorAction,
+                bindingColor,
+                zipperColor,
+                bidColor
               }}
+              onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}
               design={designObject}
               onUpdateText={setTextAction}

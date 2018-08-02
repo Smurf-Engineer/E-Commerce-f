@@ -14,15 +14,19 @@ import {
 } from './styledComponents'
 import ColorButton from '../../ColorButton'
 import AccessoryColor from '../AccessoryColor'
-import { StitchingColor } from '../../../types/common'
+import { StitchingColor, AccesoryColor } from '../../../types/common'
 
 interface Props {
   colors: string[]
-  stitchingColor: StitchingColor
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   goToBaseColors: () => void
   goToStitching: () => void
-  formatMessage: (messageDescriptor: any) => string
   showContent: boolean
+  formatMessage: (messageDescriptor: any) => string
+  onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
 const { area1, area2, area3, area4, area5 } = messages
@@ -36,7 +40,11 @@ class SelectColors extends React.PureComponent<Props, {}> {
       formatMessage,
       colors,
       showContent,
-      stitchingColor
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bidColor,
+      onAccessoryColorSelected = () => {}
     } = this.props
     if (!showContent) {
       return null
@@ -61,16 +69,39 @@ class SelectColors extends React.PureComponent<Props, {}> {
         </BaseColors>
         <Divider />
         {/* Stitching */}
-        <AccessoryColor
-          name={formatMessage(messages.stitching)}
-          {...{ goToStitching, stitchingColor }}
-        />
+        {stitchingColor && (
+          <AccessoryColor
+            name={formatMessage(messages.stitching)}
+            {...{ goToStitching, stitchingColor }}
+          />
+        )}
         {/* Binding */}
-        <AccessoryColor name={formatMessage(messages.binding)} />
+        {bindingColor && (
+          <AccessoryColor
+            id="bindingColor"
+            colorSelected={bindingColor}
+            name={formatMessage(messages.binding)}
+            {...{ onAccessoryColorSelected }}
+          />
+        )}
         {/* Zipper */}
-        <AccessoryColor name={formatMessage(messages.zipper)} />
+        {zipperColor && (
+          <AccessoryColor
+            id="zipperColor"
+            colorSelected={zipperColor}
+            name={formatMessage(messages.zipper)}
+            {...{ onAccessoryColorSelected }}
+          />
+        )}
         {/* Bid brace color */}
-        <AccessoryColor name={formatMessage(messages.bidColor)} />
+        {bidColor && (
+          <AccessoryColor
+            id="bidColor"
+            colorSelected={bidColor}
+            name={formatMessage(messages.bidColor)}
+            {...{ onAccessoryColorSelected }}
+          />
+        )}
       </Container>
     )
   }

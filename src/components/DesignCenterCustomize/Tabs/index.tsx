@@ -18,7 +18,8 @@ import {
   CanvasType,
   MyPaletteDesignCenterModals,
   ArtFormat,
-  StitchingColor
+  StitchingColor,
+  AccesoryColor
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -31,7 +32,10 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
-  stitchingColor: StitchingColor
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   text: string
   productName: string
   canvas: CanvasType
@@ -54,6 +58,7 @@ interface Props {
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
+  onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
 const Tabs = ({
@@ -85,7 +90,11 @@ const Tabs = ({
   myPaletteModals,
   onSelectArtFormat,
   onSelectStitchingColor,
-  stitchingColor
+  stitchingColor,
+  bindingColor,
+  zipperColor,
+  bidColor,
+  onAccessoryColorSelected
 }: Props) => {
   return (
     <Container>
@@ -109,7 +118,11 @@ const Tabs = ({
               openPaletteModalAction,
               myPaletteModals,
               stitchingColor,
-              onSelectStitchingColor
+              bindingColor,
+              zipperColor,
+              bidColor,
+              onSelectStitchingColor,
+              onAccessoryColorSelected
             }}
           />
         </TabPane>
