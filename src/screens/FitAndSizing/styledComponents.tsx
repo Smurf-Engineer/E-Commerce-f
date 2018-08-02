@@ -119,3 +119,7 @@ export const RadioButton = styled(radioButton)`
   text-align: center;
   width: 55px;
 `
+export const SizingCharts = styled.div`
+  margin: 0 auto;
+  width: 38.75%;
+`

@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import zenscroll from 'zenscroll'
 import * as fitAndSizeActions from './actions'
 import messages from './messages'
+import { boxHeaders, charts } from './staticData'
 import {
   Container,
   TitleSectionRow,
@@ -26,9 +27,11 @@ import {
   SectionDescription,
   SizingOptionsRow,
   RadioGroup,
-  RadioButton
+  RadioButton,
+  SizingCharts
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
+import SizingChart from '../../components/SizingChart'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -55,6 +58,10 @@ export class FitAndSizing extends React.Component<Props, {}> {
       >
         {title}
       </AnchorButton>
+    ))
+
+    const sizingChartList = charts.map((chart, index) => (
+      <SizingChart key={index} {...{ boxHeaders, chart, formatMessage }} />
     ))
 
     return (
@@ -92,6 +99,7 @@ export class FitAndSizing extends React.Component<Props, {}> {
                 </RadioButton>
               </RadioGroup>
             </SizingOptionsRow>
+            <SizingCharts>{sizingChartList}</SizingCharts>
           </ContentSection>
           <Divider />
           <ContentSection>
