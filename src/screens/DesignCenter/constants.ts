@@ -58,3 +58,6 @@ export enum DesignTabs {
   CustomizeTab = 2,
   PreviewTab = 3
 }
+
+export const BLACK = 'black'
+export const WHITE = 'white'

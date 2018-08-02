@@ -15,6 +15,7 @@ import {
   OvalSelected
 } from './styledComponents'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { BLACK, WHITE } from '../../../screens/DesignCenter/constants'
 
 interface Props {
   name: string
@@ -28,13 +29,13 @@ interface Props {
 const AccessoryColor = ({
   id = '',
   name,
-  stitchingColor = {},
+  stitchingColor,
   goToStitching,
-  colorSelected = 'white',
+  colorSelected = WHITE,
   onAccessoryColorSelected = () => {}
 }: Props) => {
-  const onSelectBlack = () => onAccessoryColorSelected('black', id)
-  const onSelectWhite = () => onAccessoryColorSelected('white', id)
+  const onSelectBlack = () => onAccessoryColorSelected(BLACK, id)
+  const onSelectWhite = () => onAccessoryColorSelected(WHITE, id)
   const stitchingName = get(stitchingColor, 'name', '')
   const stitchingValue = get(stitchingColor, 'value', '')
   return (
@@ -51,13 +52,13 @@ const AccessoryColor = ({
           <Colors>
             <OvalSelected
               onClick={onSelectBlack}
-              selected={colorSelected === 'black'}
+              selected={colorSelected === BLACK}
             >
               <Oval color={'#000'} />
             </OvalSelected>
             <OvalSelected
               onClick={onSelectWhite}
-              selected={colorSelected === 'white'}
+              selected={colorSelected === WHITE}
               marginLeft={'8px'}
             >
               <Oval />

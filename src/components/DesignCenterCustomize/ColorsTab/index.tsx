@@ -153,7 +153,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
               colorBlockHovered,
               onSelectColor,
               colors,
-              styleColors
+              styleColors,
+              formatMessage
             }}
           />
           <MyPalette

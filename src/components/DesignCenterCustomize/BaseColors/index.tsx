@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Divider from 'antd/lib/divider'
+import messages from './messages'
 import ColorButton from '../../ColorButton'
 import ColorList from '../ColorList'
 import { Container, ColorButtons } from './styledComponents'
@@ -11,13 +12,14 @@ interface Props {
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
-  onSelectColorBlock: (index: number) => void
-  onSelectColor: (color: string) => void
-  onHoverColorBlock: (index: number) => void
   showContent: boolean
+  onSelectColor: (color: string) => void
+  onSelectColorBlock: (index: number) => void
+  onHoverColorBlock: (index: number) => void
+  formatMessage: (messageDescriptor: any) => string
 }
-
-const colorsBlocks = ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5']
+const { area1, area2, area3, area4, area5 } = messages
+const colorsBlocks = [area1, area2, area3, area4, area5]
 
 class ColorTab extends React.PureComponent<Props, {}> {
   render() {
@@ -28,7 +30,8 @@ class ColorTab extends React.PureComponent<Props, {}> {
       colorBlockHovered,
       onSelectColor,
       colors,
-      showContent
+      showContent,
+      formatMessage
     } = this.props
     if (!showContent) {
       return null
@@ -37,9 +40,9 @@ class ColorTab extends React.PureComponent<Props, {}> {
       return (
         <ColorButton
           key={index}
+          label={formatMessage(label)}
           {...{
             index,
-            label,
             colorBlockHovered,
             onSelectColorBlock,
             onHoverColorBlock

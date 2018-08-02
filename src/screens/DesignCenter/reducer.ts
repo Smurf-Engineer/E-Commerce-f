@@ -44,7 +44,8 @@ import {
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
-  SET_ACCESSORY_COLOR_ACTION
+  SET_ACCESSORY_COLOR_ACTION,
+  WHITE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -55,9 +56,9 @@ export const initialState = fromJS({
   colorBlockHovered: -1,
   colors: [],
   stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
-  bindingColor: 'white',
-  zipperColor: 'white',
-  bidColor: 'white',
+  bindingColor: WHITE,
+  zipperColor: WHITE,
+  bidColor: WHITE,
   styleColors: [],
   palettes: [],
   paletteName: '',

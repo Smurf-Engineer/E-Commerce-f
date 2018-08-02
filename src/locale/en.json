@@ -942,5 +942,11 @@
   "components.designCenterCustomize.SelectColors.stitching": "Stitching",
   "components.designCenterCustomize.SelectColors.binding": "Binding",
   "components.designCenterCustomize.SelectColors.zipper": "Zipper",
-  "components.designCenterCustomize.SelectColors.bidColor": "Bid brace color"
+  "components.designCenterCustomize.SelectColors.bidColor": "Bid brace color",
+
+  "components.designCenterCustomize.ColorTab.area1": "Area 1",
+  "components.designCenterCustomize.ColorTab.area2": "Area 2",
+  "components.designCenterCustomize.ColorTab.area3": "Area 3",
+  "components.designCenterCustomize.ColorTab.area4": "Area 4",
+  "components.designCenterCustomize.ColorTab.area5": "Area 5"
 }
