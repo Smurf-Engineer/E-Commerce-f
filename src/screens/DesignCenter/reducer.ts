@@ -179,6 +179,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const oldState = state.get(undoStep.type)
       const redoStep = { type: undoStep.type, state: oldState }
 
+      // console.log('---------------------------')
+      // console.log(undoStep)
+      // console.log('---------------------------')
+
       return state.merge({
         undoChanges: undoChanges.shift(),
         redoChanges: redoChanges.unshift(redoStep),
@@ -285,18 +289,52 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_CANVAS_ELEMENT_ACTION: {
       const { el, typeEl } = action
+      // console.log('----------element-----------')
+      // console.log(el)
+      // console.log('----------Type-----------')
+      // console.log(typeEl)
+      // console.log('---------------------------')
+
       const canvas = state.get('canvas')
+
+      // console.log('----------canvas-----------')
+      // console.log(canvas.toJS())
+      // console.log('---------------------------')
+
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+
+      const lastStep = { type: typeEl, state: canvas }
+
       const selectedElement = state.get('selectedElement')
       const canvasEl = typeEl === 'path' ? fromJS(el) : el
       const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
+
+      // console.log('----------updatedCanvas-----------')
+      // console.log(updatedCanvas.toJS())
+      // console.log('---------------------------')
       if (selectedElement) {
-        return state.set('canvas', updatedCanvas)
+        return state.merge({
+          canvas: updatedCanvas,
+          undoChanges: undoChanges.unshift(lastStep),
+          redoChanges: redoChanges.clear()
+        })
       }
 
       return state.merge({
         selectedElement: el.id,
         canvas: updatedCanvas,
-        designHasChanges: true
+        designHasChanges: true,
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
+    case REMOVE_CANVAS_ELEMENT_ACTION: {
+      const canvas = state.get('canvas')
+      const updatedCanvas = canvas.deleteIn([action.typeEl, action.id])
+      return state.merge({
+        canvas: updatedCanvas,
+        selectedElement: ''
       })
     }
     case SET_SELECTED_ELEMENT_ACTION: {
@@ -316,14 +354,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
 
       return state.set('selectedElement', id)
-    }
-    case REMOVE_CANVAS_ELEMENT_ACTION: {
-      const canvas = state.get('canvas')
-      const updatedCanvas = canvas.deleteIn([action.typeEl, action.id])
-      return state.merge({
-        canvas: updatedCanvas,
-        selectedElement: ''
-      })
     }
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)

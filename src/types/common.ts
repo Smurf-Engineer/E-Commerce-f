@@ -756,3 +756,8 @@ export interface ClickParam {
   item: any
   domEvent: any
 }
+
+export interface Change {
+  type: string
+  state: any
+}

@@ -50,7 +50,8 @@ import {
   ArtFormat,
   SaveDesignType,
   DesignType,
-  Style
+  Style,
+  Change
 } from '../../types/common'
 import {
   getProductQuery,
@@ -68,11 +69,6 @@ interface DataProduct extends QueryProps {
 
 interface DataDesign extends QueryProps {
   designData?: DesignType
-}
-
-interface Change {
-  type: string
-  state: any
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -505,7 +501,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 customize3dMounted,
                 setCustomize3dMountedAction,
                 loadingData,
-                currentStyle
+                currentStyle,
+                undoChanges,
+                redoChanges
               }}
               currentTab={tabSelected}
               design={designObject}

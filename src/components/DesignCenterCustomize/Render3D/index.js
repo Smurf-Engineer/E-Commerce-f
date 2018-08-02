@@ -513,9 +513,25 @@ class Render3D extends PureComponent {
     }
   }
 
-  handleOnClickUndo = () => this.props.onUndoAction()
+  handleOnClickUndo = () => {
+    const { onUndoAction, undoChanges, redoChanges } = this.props
+    console.log('-----------undo-------------------')
+    console.log(undoChanges)
+    console.log(undoChanges[0].state.toJS())
+    console.log('-----------redo-------------------')
+    console.log(redoChanges)
+    console.log('------------------------------------')
+    onUndoAction()
+  }
 
-  handleOnClickRedo = () => this.props.onRedoAction()
+  handleOnClickRedo = () => {
+    const { onRedoAction, undoChanges, redoChanges } = this.props
+    console.log('------------------------------------')
+    console.log(undoChanges)
+    console.log(redoChanges)
+    console.log('------------------------------------')
+    onRedoAction()
+  }
 
   handleOnOpenResetModal = () => {
     const { openResetDesignModalAction } = this.props
@@ -847,6 +863,7 @@ class Render3D extends PureComponent {
     )
 
     if (!!intersects.length && intersects[0].uv) {
+      // You click inside the 3d model
       const { canvasEl } = this.state
       const meshName = get(intersects[0], 'object.name', '')
       const uv = intersects[0].uv
@@ -860,7 +877,6 @@ class Render3D extends PureComponent {
           document.getElementById('render-3d').style.cursor = 'default'
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
-
           switch (el.type) {
             case 'text':
               this.applyText(el.text, el.style, { left, top })

@@ -13,7 +13,8 @@ import {
   MyPaletteDesignCenterModals,
   ArtFormat,
   SaveDesignType,
-  Style
+  Style,
+  Change
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import { DesignTabs } from '../../screens/DesignCenter/constants'
@@ -42,6 +43,8 @@ interface Props {
   customize3dMounted: boolean
   design: SaveDesignType
   loadingData?: boolean
+  undoChanges: Change[]
+  redoChanges: Change[]
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -121,7 +124,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       setCustomize3dMountedAction,
       onSelectArtFormat,
       onUnmountTab,
-      loadingData
+      loadingData,
+      undoChanges,
+      redoChanges
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -192,7 +197,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               openResetDesignModal,
               openResetDesignModalAction,
               setCustomize3dMountedAction,
-              onUnmountTab
+              onUnmountTab,
+              undoChanges,
+              redoChanges
             }}
           />
         ) : (
