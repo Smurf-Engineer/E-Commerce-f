@@ -6,24 +6,37 @@ import Tooltip from 'antd/lib/tooltip/'
 import { Container, Color, Row, Col } from './styledComponents'
 import colors from './colors'
 import stitchingColors from './stitchingColors'
+import { StitchingColor } from '../../../types/common'
 
 interface Props {
-  onSelectColor: (color: string) => void
+  onSelectColor?: (color: string) => void
+  onSelectStitchingColor: (color: StitchingColor) => void
   height?: number
   stitching?: boolean
+  stitchingColor?: StitchingColor
 }
 
 const ColorList = ({
-  onSelectColor,
+  onSelectColor = () => {},
+  onSelectStitchingColor = () => {},
   height = 40,
-  stitching = false
+  stitching = false,
+  stitchingColor = { value: '', name: '' }
 }: Props) => {
   const setColor = (color: string) => () => onSelectColor(color)
+  const setStitchingColor = (color: StitchingColor) => () =>
+    onSelectStitchingColor(color)
   const arrayColors = !stitching ? colors : stitchingColors
   const colorsList = arrayColors.map(({ value, name }, index) => (
     <Tooltip key={index} title={name}>
       <Col>
-        <Color color={value} onClick={setColor(value)} />
+        <Color
+          selected={value === stitchingColor.value}
+          color={value}
+          onClick={
+            stitching ? setStitchingColor({ name, value }) : setColor(value)
+          }
+        />
       </Col>
     </Tooltip>
   ))

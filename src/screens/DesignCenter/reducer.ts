@@ -8,6 +8,7 @@ import {
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
+  SET_STITCHING_COLOR_ACTION,
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
   SET_PALETTES_ACTION,
@@ -52,6 +53,7 @@ export const initialState = fromJS({
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
+  stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
   styleColors: [],
   palettes: [],
   paletteName: '',
@@ -172,6 +174,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         designHasChanges: true
       })
     }
+    case SET_STITCHING_COLOR_ACTION:
+      return state.set('stitchingColor', action.stitchingColor)
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')

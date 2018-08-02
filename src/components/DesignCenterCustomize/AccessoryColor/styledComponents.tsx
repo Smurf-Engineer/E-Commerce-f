@@ -50,7 +50,6 @@ export const Colors = styled.div`
 
 interface OvalProps {
   color?: string
-  marginLeft?: string
 }
 
 export const Oval = styled.div`
@@ -62,12 +61,11 @@ export const Oval = styled.div`
       color && color.toLowerCase() !== '#ffffff' ? color : '#bebebe'};
   background-color: ${({ color }: OvalProps) => color || '#fff'};
   align-self: center;
-  margin-left: ${({ marginLeft }: OvalProps) =>
-    marginLeft ? marginLeft : '0'};
 `
 
 interface OvalSelected {
   selected: boolean
+  marginLeft?: string
 }
 
 export const OvalSelected = styled.div`
@@ -80,6 +78,8 @@ export const OvalSelected = styled.div`
   border-radius: 50%;
   border: 1px solid
     ${({ selected }: OvalSelected) => (selected ? '#E61737' : '#fff')};
+  margin-left: ${({ marginLeft }: OvalSelected) =>
+    marginLeft ? marginLeft : '0'};
   align-self: center;
 `
 

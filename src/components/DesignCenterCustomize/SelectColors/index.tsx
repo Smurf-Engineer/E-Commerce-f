@@ -14,9 +14,11 @@ import {
 } from './styledComponents'
 import ColorButton from '../../ColorButton'
 import AccessoryColor from '../AccessoryColor'
+import { StitchingColor } from '../../../types/common'
 
 interface Props {
   colors: string[]
+  stitchingColor: StitchingColor
   goToBaseColors: () => void
   goToStitching: () => void
   formatMessage: (messageDescriptor: any) => string
@@ -33,7 +35,8 @@ class SelectColors extends React.PureComponent<Props, {}> {
       goToStitching,
       formatMessage,
       colors,
-      showContent
+      showContent,
+      stitchingColor
     } = this.props
     if (!showContent) {
       return null
@@ -60,9 +63,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
         {/* Stitching */}
         <AccessoryColor
           name={formatMessage(messages.stitching)}
-          colorName={'FSC-01'}
-          stitching={true}
-          {...{ goToStitching }}
+          {...{ goToStitching, stitchingColor }}
         />
         {/* Binding */}
         <AccessoryColor name={formatMessage(messages.binding)} />

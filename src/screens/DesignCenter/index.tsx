@@ -50,7 +50,8 @@ import {
   ArtFormat,
   SaveDesignType,
   DesignType,
-  Style
+  Style,
+  StitchingColor
 } from '../../types/common'
 import {
   getProductQuery,
@@ -119,6 +120,7 @@ interface Props extends RouteComponentProps<any> {
   customize3dMounted: boolean
   svgOutputUrl: string
   tabChanged: boolean
+  stitchingColor: StitchingColor
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -169,6 +171,7 @@ interface Props extends RouteComponentProps<any> {
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
   setCanvasJsonAction: (canvas: string) => void
+  setStitchingColorAction: (stitchingColor: StitchingColor) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -382,7 +385,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCustomize3dMountedAction,
       svgOutputUrl,
       setCanvasJsonAction,
-      styleIndex
+      styleIndex,
+      stitchingColor,
+      setStitchingColorAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -505,7 +510,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 customize3dMounted,
                 setCustomize3dMountedAction,
                 loadingData,
-                currentStyle
+                currentStyle,
+                stitchingColor,
+                setStitchingColorAction
               }}
               currentTab={tabSelected}
               design={designObject}

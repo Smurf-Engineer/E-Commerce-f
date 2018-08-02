@@ -8,6 +8,7 @@ import {
   EDIT_DESIGN_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
+  SET_STITCHING_COLOR_ACTION,
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
   SET_PALETTES_ACTION,
@@ -50,7 +51,8 @@ import {
   Palette,
   TeamStoreItemtype,
   CanvasElement,
-  SaveDesignType
+  SaveDesignType,
+  StitchingColor
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -308,4 +310,9 @@ export const setCustomize3dMountedAction = (mounted: boolean) => ({
 export const setCanvasJsonAction = (canvas: string) => ({
   type: SET_CANVAS_JSON_ACTION,
   canvas
+})
+
+export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
+  type: SET_STITCHING_COLOR_ACTION,
+  stitchingColor
 })

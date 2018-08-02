@@ -13,7 +13,8 @@ import {
   MyPaletteDesignCenterModals,
   ArtFormat,
   SaveDesignType,
-  Style
+  Style,
+  StitchingColor
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import { DesignTabs } from '../../screens/DesignCenter/constants'
@@ -24,6 +25,7 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  stitchingColor: StitchingColor
   styleColors: string[]
   currentStyle: Style
   loadingModel: boolean
@@ -44,6 +46,7 @@ interface Props {
   loadingData?: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
+  setStitchingColorAction: (color: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
@@ -80,6 +83,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorBlock,
       colorBlockHovered,
       onSelectColor,
+      setStitchingColorAction,
       onSelectPalette,
       onChangePaletteName,
       paletteName,
@@ -87,6 +91,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSetPalettes,
       currentTab,
       colors,
+      stitchingColor,
       styleColors,
       currentStyle,
       loadingModel,
@@ -142,6 +147,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onHoverColorBlock,
             onSelectColor,
             colors,
+            stitchingColor,
             styleColors,
             onSelectPalette,
             onChangePaletteName,
@@ -160,6 +166,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             openPaletteModalAction,
             myPaletteModals
           }}
+          onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
           onApplyImage={this.handleOnApplyImage}
           onApplyArt={this.handleOnApplyArt}

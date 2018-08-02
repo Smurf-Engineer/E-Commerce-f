@@ -678,3 +678,8 @@ export type MessagePayload = {
     message: string
   }
 }
+
+export type StitchingColor = {
+  name: string
+  value: string
+}

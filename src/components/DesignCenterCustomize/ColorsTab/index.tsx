@@ -15,7 +15,11 @@ import {
 import SwipeableViews from 'react-swipeable-views'
 import BaseColors from '../BaseColors'
 import SelectColors from '../SelectColors'
-import { Palette, MyPaletteDesignCenterModals } from '../../../types/common'
+import {
+  Palette,
+  MyPaletteDesignCenterModals,
+  StitchingColor
+} from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
 
@@ -29,10 +33,12 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  stitchingColor: StitchingColor
   styleColors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
+  onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
@@ -70,6 +76,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       colorBlock,
       colorBlockHovered,
       onSelectColor,
+      onSelectStitchingColor,
       onChangePaletteName,
       paletteName,
       palettes,
@@ -77,7 +84,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onSelectPalette,
       openPaletteModalAction,
       myPaletteModals,
-      styleColors
+      styleColors,
+      stitchingColor
     } = this.props
     const { index } = this.state
 
@@ -113,9 +121,9 @@ class ColorsTab extends React.PureComponent<Props, State> {
         <SwipeableViews {...{ index }}>
           <SelectColors
             showContent={index === SELECT_COLORS_INDEX}
-            {...{ colors, formatMessage }}
             goToBaseColors={this.goToBaseColors}
             goToStitching={this.goToStitching}
+            {...{ colors, stitchingColor, formatMessage }}
           />
           <BaseColors
             showContent={index === BASE_COLORS_INDEX}
@@ -145,7 +153,10 @@ class ColorsTab extends React.PureComponent<Props, State> {
           />
           {index === STITCHING_COLORS_INDEX ? (
             <StitchingList>
-              <ColorList {...{ onSelectColor }} stitching={true} />
+              <ColorList
+                {...{ onSelectStitchingColor, stitchingColor }}
+                stitching={true}
+              />
             </StitchingList>
           ) : (
             <div />
