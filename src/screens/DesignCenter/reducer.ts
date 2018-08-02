@@ -227,7 +227,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           themeId: action.id
         },
         designHasChanges: false,
-        customize3dMounted: false
+        customize3dMounted: false,
+        product: action.product
       })
     case SET_STYLE_SELECTED_ACTION: {
       return state.merge({

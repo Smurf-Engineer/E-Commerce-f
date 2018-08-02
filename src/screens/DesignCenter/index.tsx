@@ -119,6 +119,7 @@ interface Props extends RouteComponentProps<any> {
   customize3dMounted: boolean
   svgOutputUrl: string
   tabChanged: boolean
+  product: Product
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -136,7 +137,7 @@ interface Props extends RouteComponentProps<any> {
   designResetAction: () => void
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
-  setThemeAction: (id: number) => void
+  setThemeAction: (id: number, product: Product) => void
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
@@ -382,7 +383,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCustomize3dMountedAction,
       svgOutputUrl,
       setCanvasJsonAction,
-      styleIndex
+      styleIndex,
+      product
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -396,10 +398,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataProduct, 'product.name') ||
       get(dataDesign, 'designData.product.name', '')
 
-    console.log('---------------------------')
-    console.log(dataProduct)
-    console.log('---------------------------')
-
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
     const styleObject = get(dataDesign, 'designData.style')
@@ -407,6 +405,15 @@ export class DesignCenter extends React.Component<Props, {}> {
     let designObject = design
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId }
+    }
+
+    if (
+      !!dataProduct &&
+      !!dataProduct.product &&
+      !dataProduct.product.obj &&
+      !dataProduct.product.mtl
+    ) {
+      return <Redirect to="/us?lang=en&currency=usd" />
     }
 
     const {
@@ -453,7 +460,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               {tabSelected === ThemeTabIndex && (
                 <ThemeTab
                   currentTheme={themeId}
-                  onSelectTheme={setThemeAction}
+                  onSelectTheme={this.handleOnSelectTheme}
                   {...{
                     loadingModel,
                     themeModalData,
@@ -509,7 +516,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 customize3dMounted,
                 setCustomize3dMountedAction,
                 loadingData,
-                currentStyle
+                currentStyle,
+                product
               }}
               currentTab={tabSelected}
               design={designObject}
@@ -630,6 +638,15 @@ export class DesignCenter extends React.Component<Props, {}> {
         </Modal>
       </Layout>
     )
+  }
+
+  handleOnSelectTheme = (id: number) => {
+    const { setThemeAction, dataProduct } = this.props
+    if (dataProduct && dataProduct.product) {
+      setThemeAction(id, dataProduct.product)
+    } else {
+      // TODO: Show error
+    }
   }
 }
 

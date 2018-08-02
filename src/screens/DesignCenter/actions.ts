@@ -50,7 +50,8 @@ import {
   Palette,
   TeamStoreItemtype,
   CanvasElement,
-  SaveDesignType
+  SaveDesignType,
+  Product
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -123,9 +124,10 @@ export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
   isSwiping
 })
 
-export const setThemeAction = (id: number): AnyAction => ({
+export const setThemeAction = (id: number, product: Product): AnyAction => ({
   type: SET_THEME_SELECTED_ACTION,
-  id
+  id,
+  product
 })
 
 export const openSaveDesignAction = (

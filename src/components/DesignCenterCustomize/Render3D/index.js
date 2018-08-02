@@ -217,17 +217,16 @@ class Render3D extends PureComponent {
     return this.raycaster.intersectObjects(objects, true)
   }
 
-  loadTextures = modelTextures =>
+  loadTextures = (modelTextures, product) =>
     new Promise((resolve, reject) => {
       try {
         // TODO: Get flatlock, bumpmap and branding from the design.
         const loadedTextures = {}
-        loadedTextures.flatlock = this.textureLoader.load(
-          './models/images/flatlock.png'
-        )
-        loadedTextures.bumpMap = this.textureLoader.load(
-          'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2-BumpMap.jpg'
-        )
+        const { flatlock, bumpMap } = product
+        if (flatlock) {
+          loadedTextures.flatlock = this.textureLoader.load(flatlock)
+        }
+        loadedTextures.bumpMap = this.textureLoader.load(bumpMap)
         loadedTextures.branding = this.textureLoader.load(
           'https://storage.googleapis.com/jakroo-storage/models/Tour2/D1/branding.png'
         )
@@ -265,26 +264,36 @@ class Render3D extends PureComponent {
 
   render3DModel = async () => {
     /* Object and MTL load */
-    const { onLoadModel, currentStyle, design, colors } = this.props
+    const { onLoadModel, currentStyle, design, colors, product } = this.props
     onLoadModel(true)
 
-    const loadedTextures = await this.loadTextures(currentStyle)
+    const loadedTextures = await this.loadTextures(currentStyle, product)
     // TODO: Get the OBJ and MTL from the design
-    this.mtlLoader.load(
-      'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.mtl',
-      materials => {
-        materials.preload()
-        this.objLoader.setMaterials(materials)
-        this.objLoader.load(
-          'https://storage.googleapis.com/jakroo-storage/models/Tour2/TOUR_Jv2.obj',
-          object => {
-            const objectChilds = object.children.length
-            this.setState({ objectChilds })
+    this.mtlLoader.load(product.mtl, materials => {
+      materials.preload()
+      this.objLoader.setMaterials(materials)
+      this.objLoader.load(
+        product.obj,
+        object => {
+          const objectChilds = object.children.length
+          this.setState({ objectChilds })
 
-            /* Object materials */
+          /* Object materials */
 
-            const { flatlock, areas, bumpMap, branding } = loadedTextures
-            // Stitching
+          const { children } = object
+
+          const getMeshIndex = meshName => {
+            const index = findIndex(children, mesh => mesh.name === meshName)
+            return index < 0 ? 0 : index
+          }
+
+          const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
+          const labelIndex = getMeshIndex('Red_Tag FINAL')
+          const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
+
+          const { flatlock, areas, bumpMap, branding } = loadedTextures
+          // Stitching
+          if (flatlock) {
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
               color: '#FFFFFF'
@@ -292,112 +301,101 @@ class Render3D extends PureComponent {
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
             flatlockMaterial.alphaTest = 0.5
-
-            // Back material
-            const insideMaterial = new THREE.MeshPhongMaterial({
-              side: THREE.BackSide,
-              color: '#000000'
-            })
-
-            const { children } = object
-
-            const getMeshIndex = meshName => {
-              const index = findIndex(children, mesh => mesh.name === meshName)
-              return index < 0 ? 0 : index
-            }
-
-            const meshIndex = getMeshIndex('FINAL JV2_Design_Mesh')
-            const labelIndex = getMeshIndex('Red_Tag FINAL')
-            const flatlockIndex = getMeshIndex('FINAL JV2_Flatlock')
-
-            // Setup the texture layers
-            const areasLayers = areas.map(() => children[meshIndex].clone())
-            object.add(...areasLayers)
-
-            /* Jersey label */
-            object.children[labelIndex].material.color.set('#ffffff')
             object.children[flatlockIndex].material = flatlockMaterial
-            object.children[meshIndex].material = insideMaterial
+          }
 
-            /* Canvas */
-            const canvasObj = object.children[meshIndex].clone()
-            const brandingObj = object.children[meshIndex].clone()
-            object.add(canvasObj, brandingObj)
-            const canvas = document.createElement('canvas')
-            canvas.width = CANVAS_SIZE
-            canvas.height = CANVAS_SIZE
-            const canvasTexture = new THREE.CanvasTexture(canvas)
-            canvasTexture.minFilter = THREE.LinearFilter
+          // Back material
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.BackSide,
+            color: '#000000'
+          })
 
-            /* TODO: Dynamic size? */
-            this.canvasTexture = new fabric.Canvas(canvas, {
-              width: CANVAS_SIZE,
-              height: CANVAS_SIZE
-            })
+          // Setup the texture layers
+          const areasLayers = areas.map(() => children[meshIndex].clone())
+          object.add(...areasLayers)
 
-            this.canvasTexture.on(
-              'after:render',
+          /* Jersey label */
+          object.children[labelIndex].material.color.set('#ffffff')
+          object.children[meshIndex].material = insideMaterial
+
+          /* Canvas */
+          const canvasObj = object.children[meshIndex].clone()
+          const brandingObj = object.children[meshIndex].clone()
+          object.add(canvasObj, brandingObj)
+          const canvas = document.createElement('canvas')
+          canvas.width = CANVAS_SIZE
+          canvas.height = CANVAS_SIZE
+          const canvasTexture = new THREE.CanvasTexture(canvas)
+          canvasTexture.minFilter = THREE.LinearFilter
+
+          /* TODO: Dynamic size? */
+          this.canvasTexture = new fabric.Canvas(canvas, {
+            width: CANVAS_SIZE,
+            height: CANVAS_SIZE
+          })
+
+          this.canvasTexture.on(
+            'after:render',
+            () => (canvasTexture.needsUpdate = true)
+          )
+
+          const canvasMaterial = new THREE.MeshPhongMaterial({
+            map: canvasTexture,
+            side: THREE.FrontSide,
+            bumpMap,
+            transparent: true
+          })
+
+          const brandingMaterial = new THREE.MeshPhongMaterial({
+            map: branding,
+            side: THREE.FrontSide,
+            bumpMap,
+            transparent: true
+          })
+
+          areas.forEach(
+            (map, index) =>
+              (object.children[
+                objectChilds + index
+              ].material = new THREE.MeshPhongMaterial({
+                map,
+                side: THREE.FrontSide,
+                color: colors[index],
+                bumpMap,
+                transparent: true
+              }))
+          )
+
+          const childrenLength = children.length
+          const canvasIndex = childrenLength - 2
+          const brandingIndex = childrenLength - 1
+          object.children[canvasIndex].material = canvasMaterial
+          object.children[brandingIndex].material = brandingMaterial
+          object.children[canvasIndex].name = 'Canvas_Mesh'
+          object.children[brandingIndex].name = 'Branding_Mesh'
+
+          const largeHeight = window.matchMedia(
+            'only screen and (min-height: 800px)'
+          ).matches
+
+          /* Object Config */
+          object.position.y = 0
+          object.name = MESH_NAME
+          this.scene.add(object)
+
+          if (design && design.canvasJson) {
+            this.canvasTexture.loadFromJSON(
+              design.canvasJson,
               () => (canvasTexture.needsUpdate = true)
             )
+          }
 
-            const canvasMaterial = new THREE.MeshPhongMaterial({
-              map: canvasTexture,
-              side: THREE.FrontSide,
-              bumpMap,
-              transparent: true
-            })
-
-            const brandingMaterial = new THREE.MeshPhongMaterial({
-              map: branding,
-              side: THREE.FrontSide,
-              bumpMap,
-              transparent: true
-            })
-
-            areas.forEach(
-              (map, index) =>
-                (object.children[
-                  objectChilds + index
-                ].material = new THREE.MeshPhongMaterial({
-                  map,
-                  side: THREE.FrontSide,
-                  color: colors[index],
-                  bumpMap,
-                  transparent: true
-                }))
-            )
-
-            const childrenLength = children.length
-            const canvasIndex = childrenLength - 2
-            const brandingIndex = childrenLength - 1
-            object.children[canvasIndex].material = canvasMaterial
-            object.children[brandingIndex].material = brandingMaterial
-            object.children[canvasIndex].name = 'Canvas_Mesh'
-            object.children[brandingIndex].name = 'Branding_Mesh'
-
-            const largeHeight = window.matchMedia(
-              'only screen and (min-height: 800px)'
-            ).matches
-
-            /* Object Config */
-            object.position.y = largeHeight ? -50 : -30
-            object.name = MESH_NAME
-            this.scene.add(object)
-
-            if (design && design.canvasJson) {
-              this.canvasTexture.loadFromJSON(
-                design.canvasJson,
-                () => (canvasTexture.needsUpdate = true)
-              )
-            }
-
-            onLoadModel(false)
-          },
-          this.onProgress,
-          this.onError
-        )
-      }
-    )
+          onLoadModel(false)
+        },
+        this.onProgress,
+        this.onError
+      )
+    })
   }
 
   onProgress = xhr => {
