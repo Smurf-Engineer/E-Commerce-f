@@ -159,7 +159,7 @@ export class Account extends React.Component<Props, {}> {
       case ADDRESSES:
         return <MyAddresses {...{ formatMessage }} />
       case CREDIT_CARDS:
-        return <MyCards {...{ formatMessage }} />
+        return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, formatMessage }} />
       case TEAMSTORES:

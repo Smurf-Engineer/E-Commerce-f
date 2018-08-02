@@ -883,5 +883,6 @@
 
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
-  "components.FeaturedProducts.addToCart": "ADD TO CART"
+  "components.FeaturedProducts.addToCart": "ADD TO CART",
+  "screens.Checkout.continueButtonLabel": "Continue"
 }
