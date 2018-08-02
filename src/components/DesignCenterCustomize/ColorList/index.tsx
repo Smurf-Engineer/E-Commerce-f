@@ -5,15 +5,22 @@ import * as React from 'react'
 import Tooltip from 'antd/lib/tooltip/'
 import { Container, Color, Row, Col } from './styledComponents'
 import colors from './colors'
+import stitchingColors from './stitchingColors'
 
 interface Props {
   onSelectColor: (color: string) => void
   height?: number
+  stitching?: boolean
 }
 
-const ColorList = ({ onSelectColor, height = 40 }: Props) => {
+const ColorList = ({
+  onSelectColor,
+  height = 40,
+  stitching = false
+}: Props) => {
   const setColor = (color: string) => () => onSelectColor(color)
-  const colorsList = colors.map(({ value, name }, index) => (
+  const arrayColors = !stitching ? colors : stitchingColors
+  const colorsList = arrayColors.map(({ value, name }, index) => (
     <Tooltip key={index} title={name}>
       <Col>
         <Color color={value} onClick={setColor(value)} />

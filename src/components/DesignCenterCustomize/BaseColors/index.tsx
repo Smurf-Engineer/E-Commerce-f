@@ -14,6 +14,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
+  showContent: boolean
 }
 
 const colorsBlocks = ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5']
@@ -26,8 +27,12 @@ class ColorTab extends React.PureComponent<Props, {}> {
       colorBlock,
       colorBlockHovered,
       onSelectColor,
-      colors
+      colors,
+      showContent
     } = this.props
+    if (!showContent) {
+      return null
+    }
     const colorButtons = colorsBlocks.map((label, index) => {
       return (
         <ColorButton

@@ -5,22 +5,19 @@ import * as React from 'react'
 import messages from './messages'
 import {
   Container,
-  BaseColorsContainer,
-  ColorButtons,
-  ColorLabel,
-  BaseTitle,
   Arrow,
   Top,
   TextColors,
   Row,
   Text,
-  Title
+  StitchingList
 } from './styledComponents'
-import ColorButton from '../../../screens/DesignerTool/DesignCenterCustomize/ColorButton'
 import SwipeableViews from 'react-swipeable-views'
 import BaseColors from '../BaseColors'
+import SelectColors from '../SelectColors'
 import { Palette, MyPaletteDesignCenterModals } from '../../../types/common'
 import MyPalette from '../MyPalette'
+import ColorList from '../ColorList'
 
 interface State {
   index: number
@@ -43,12 +40,11 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
 }
-const { area1, area2, area3, area4, area5 } = messages
-const colorsBlocks = [area1, area2, area3, area4, area5]
 
 const SELECT_COLORS_INDEX = 0
 const BASE_COLORS_INDEX = 1
 const PALETTES_COLORS_INDEX = 2
+const STITCHING_COLORS_INDEX = 3
 
 class ColorsTab extends React.PureComponent<Props, State> {
   state = {
@@ -57,9 +53,13 @@ class ColorsTab extends React.PureComponent<Props, State> {
 
   handleOnBack = () => this.setState(({ index }) => ({ index: index - 1 }))
 
+  handleOnResetIndex = () => this.setState({ index: SELECT_COLORS_INDEX })
+
   goToBaseColors = () => this.setState({ index: BASE_COLORS_INDEX })
 
   goToPalettes = () => this.setState({ index: PALETTES_COLORS_INDEX })
+
+  goToStitching = () => this.setState({ index: STITCHING_COLORS_INDEX })
 
   render() {
     const {
@@ -80,19 +80,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
       styleColors
     } = this.props
     const { index } = this.state
-    const colorButtons = colorsBlocks.map((label, i) => (
-      <ColorButton
-        key={i}
-        index={i}
-        label={formatMessage(label)}
-        onSelectColorBlock={() => {}}
-        currentColor={colors[i]}
-      />
-    ))
 
     const baseColorsTab = index === BASE_COLORS_INDEX
     const palettesTab = index === PALETTES_COLORS_INDEX
     const isFirstPage = index === SELECT_COLORS_INDEX
+    const isStitching = index === STITCHING_COLORS_INDEX
 
     let topMessage = messages.selectColors
 
@@ -103,12 +95,14 @@ class ColorsTab extends React.PureComponent<Props, State> {
     return (
       <Container>
         <Top>
-          <Title onClick={this.handleOnBack}>
+          <Row
+            onClick={!isStitching ? this.handleOnBack : this.handleOnResetIndex}
+          >
             {!isFirstPage && <Arrow type={'left'} />}
             <TextColors {...{ isFirstPage }}>
               {formatMessage(topMessage)}
             </TextColors>
-          </Title>
+          </Row>
           {baseColorsTab ? (
             <Row onClick={this.goToPalettes}>
               <Text>{formatMessage(messages.myPalettes)}</Text>
@@ -117,14 +111,14 @@ class ColorsTab extends React.PureComponent<Props, State> {
           ) : null}
         </Top>
         <SwipeableViews {...{ index }}>
-          <BaseColorsContainer onClick={this.goToBaseColors}>
-            <BaseTitle>
-              <ColorLabel>{formatMessage(messages.baseColors)}</ColorLabel>
-              <Arrow type="right" />
-            </BaseTitle>
-            <ColorButtons>{colorButtons}</ColorButtons>
-          </BaseColorsContainer>
+          <SelectColors
+            showContent={index === SELECT_COLORS_INDEX}
+            {...{ colors, formatMessage }}
+            goToBaseColors={this.goToBaseColors}
+            goToStitching={this.goToStitching}
+          />
           <BaseColors
+            showContent={index === BASE_COLORS_INDEX}
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
@@ -136,6 +130,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             }}
           />
           <MyPalette
+            showContent={index === PALETTES_COLORS_INDEX}
             {...{
               onSelectPalette,
               onChangePaletteName,
@@ -148,6 +143,13 @@ class ColorsTab extends React.PureComponent<Props, State> {
               myPaletteModals
             }}
           />
+          {index === STITCHING_COLORS_INDEX ? (
+            <StitchingList>
+              <ColorList {...{ onSelectColor }} stitching={true} />
+            </StitchingList>
+          ) : (
+            <div />
+          )}
         </SwipeableViews>
       </Container>
     )
