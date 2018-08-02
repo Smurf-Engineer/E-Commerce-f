@@ -181,5 +181,31 @@ export default defineMessages({
   fitStylesTitle: {
     id: 'screens.FitAndSizing.fitStylesTitle',
     defaultMessage: 'FIT STYLES'
+  },
+  slimFit: {
+    id: 'screens.FitAndSizing.slimFit',
+    defaultMessage: 'SLIM FIT'
+  },
+  standardFit: {
+    id: 'screens.FitAndSizing.standardFit',
+    defaultMessage: 'STANDARD FIT'
+  },
+  relaxedFit: {
+    id: 'screens.FitAndSizing.relaxedFit',
+    defaultMessage: 'RELAXED FIT'
+  },
+  slimFitDescription: {
+    id: 'screens.FitAndSizing.slimFitDescription',
+    defaultMessage: `Slim Fit style provides form fitting performance through a streamlined 'next-to-body' design.`
+  },
+  standardFitDescription: {
+    id: 'screens.FitAndSizing.standardFitDescription',
+    defaultMessage:
+      'Standard Fit style provides regular fitting, by balancing aerodynamic performance with comfort functionality.'
+  },
+  relaxedFitDescription: {
+    id: 'screens.FitAndSizing.relaxedFit',
+    defaultMessage:
+      'Relaxed Fit style provides looser fitting in the shoulders, torso, neck and arms.'
   }
 })

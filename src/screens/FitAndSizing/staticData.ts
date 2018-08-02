@@ -5,6 +5,7 @@ export const charts = [
     title: 'men',
     tables: [
       {
+        title: '',
         headers: ['size', 'waist', 'chest', 'inseam'],
         size: ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
         waist: [
@@ -33,6 +34,7 @@ export const charts = [
     title: 'women',
     tables: [
       {
+        title: '',
         headers: ['size', 'waist', 'chest', 'hips', 'inseam'],
         size: ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
         waist: [

@@ -28,7 +28,12 @@ import {
   SizingOptionsRow,
   RadioGroup,
   RadioButton,
-  SizingCharts
+  SizingCharts,
+  FitStylesContainer,
+  FitStyle,
+  FitStyleTitle,
+  FitStyleImage,
+  FitStyleDescription
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import SizingChart from '../../components/SizingChart'
@@ -40,6 +45,13 @@ interface Props extends RouteComponentProps<any> {
 }
 
 const sectionTitles = ['Body Size Chart', 'Fit Styles']
+
+const slimFit =
+  'https://storage.googleapis.com/jakroo-storage/screens/fit/slim.png'
+const standardFit =
+  'https://storage.googleapis.com/jakroo-storage/screens/fit/standard.png'
+const relaxedFit =
+  'https://storage.googleapis.com/jakroo-storage/screens/fit/relaxed.png'
 
 export class FitAndSizing extends React.Component<Props, {}> {
   private bodySize: any
@@ -108,6 +120,35 @@ export class FitAndSizing extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.fitStylesTitle} />
               </div>
             </SectionTitle>
+            <FitStylesContainer>
+              <FitStyle>
+                <FitStyleTitle>
+                  <FormattedMessage {...messages.slimFit} />
+                </FitStyleTitle>
+                <FitStyleImage src={slimFit} />
+                <FitStyleDescription>
+                  <FormattedMessage {...messages.slimFitDescription} />
+                </FitStyleDescription>
+              </FitStyle>
+              <FitStyle>
+                <FitStyleTitle>
+                  <FormattedMessage {...messages.standardFit} />
+                </FitStyleTitle>
+                <FitStyleImage src={standardFit} />
+                <FitStyleDescription>
+                  <FormattedMessage {...messages.standardFitDescription} />
+                </FitStyleDescription>
+              </FitStyle>
+              <FitStyle>
+                <FitStyleTitle>
+                  <FormattedMessage {...messages.relaxedFit} />
+                </FitStyleTitle>
+                <FitStyleImage src={relaxedFit} />
+                <FitStyleDescription>
+                  <FormattedMessage {...messages.relaxedFitDescription} />
+                </FitStyleDescription>
+              </FitStyle>
+            </FitStylesContainer>
           </ContentSection>
         </Container>
       </Layout>

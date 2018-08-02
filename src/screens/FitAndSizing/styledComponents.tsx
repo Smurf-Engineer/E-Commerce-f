@@ -8,6 +8,7 @@ import radioButton from 'antd/lib/radio/radioButton'
 
 export const Container = styled.div`
   background-color: #fff;
+  padding-bottom: 450px;
 `
 export const TitleSectionRow = styled.div`
   padding: 28px 32px 64px;
@@ -120,3 +121,33 @@ export const RadioButton = styled(radioButton)`
   width: 55px;
 `
 export const SizingCharts = styled.div``
+export const FitStylesContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+`
+export const FitStyle = styled.div`
+  width: 32%;
+`
+export const FitStyleTitle = styled.div`
+  color: #5f6062;
+  display: flex;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  justify-content: center;
+  letter-spacing: 0.18px;
+  line-height: 22px;
+  margin-bottom: 25px;
+`
+export const FitStyleImage = styled.img`
+  width: 100%;
+`
+export const FitStyleDescription = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  margin-top: 20px;
+`
