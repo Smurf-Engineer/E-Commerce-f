@@ -26,6 +26,7 @@ export const Form = styled.div`
 
 export const InputContainer = styled.div`
   position: relative;
+  padding-bottom: 16px;
 `
 
 interface ButtonProps {
@@ -64,7 +65,6 @@ export const Title = styled.div`
   font-weight: 600;
   letter-spacing: 0.18px;
   line-height: 22px;
-  padding-bottom: 20px;
 `
 
 export const Subtitle = styled.div`
@@ -85,4 +85,12 @@ export const ErrorLabel = styled.div`
   position: absolute;
   bottom: -16px;
   left: 8px;
+`
+
+export const Row = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding-bottom: 20px;
 `

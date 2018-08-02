@@ -3,11 +3,16 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import { connect } from 'react-redux'
+import { FormattedMessage } from 'react-intl'
 import MediaQuery from 'react-responsive'
+import SwipeableViews from 'react-swipeable-views'
+import * as OverviewActions from './actions'
 import { overviewQuery } from './data'
 import messages from './messages'
 import {
   Container,
+  ScreenTitle,
   BottomContainer,
   Column,
   EmptyContainer,
@@ -15,6 +20,7 @@ import {
 } from './styledComponents'
 import OverviewHeader from './OverviewHeader'
 import OrdersList from '../OrderHistory/OrdersList'
+import OrderDetails from '../OrderDetails'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
 import PaymentData from '../PaymentData'
@@ -46,14 +52,17 @@ interface Data extends QueryProps {
 interface Props {
   history: any
   data: Data
+  orderId: string
   formatMessage: (messageDescriptor: any) => string
   goToScreen: (screen: string) => void
+  setOrderIdAction: (orderId: string) => void
 }
 
 class Overview extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
+      orderId,
       data: { profile, address, payment },
       goToScreen
     } = this.props
@@ -139,38 +148,61 @@ class Overview extends React.Component<Props, {}> {
       </MediaQuery>
     )
     return (
-      <Container>
-        <OverviewHeader
-          id={ORDER_HISTORY}
-          label={formatMessage(messages.title)}
-          onGoTo={goToScreen}
-          extraMargin={'16px'}
-          {...{ formatMessage }}
+      <SwipeableViews
+        onChangeIndex={this.handleOnChangeIndex}
+        index={!!orderId.length ? 1 : 0}
+      >
+        <Container>
+          <ScreenTitle>
+            <FormattedMessage {...messages.title} />
+          </ScreenTitle>
+          <OverviewHeader
+            id={ORDER_HISTORY}
+            label={formatMessage(messages.headerTitle)}
+            onGoTo={goToScreen}
+            extraMargin={'16px'}
+            {...{ formatMessage }}
+          />
+          <OrdersList
+            customLimit={5}
+            currentPage={1}
+            orderBy="id"
+            sort="desc"
+            interactiveHeaders={false}
+            withPagination={false}
+            withoutPadding={true}
+            onOrderClick={this.handleOnOrderClick}
+            {...{ formatMessage }}
+          />
+          {profileView}
+        </Container>
+        <OrderDetails
+          onReturn={this.handleOnOrderClick}
+          {...{ orderId, formatMessage }}
         />
-        <OrdersList
-          customLimit={5}
-          currentPage={1}
-          orderBy="id"
-          sort="desc"
-          interactiveHeaders={false}
-          withPagination={false}
-          withoutPadding={true}
-          onOrderClick={this.handleOnOrderClick}
-          {...{ formatMessage }}
-        />
-        {profileView}
-      </Container>
+      </SwipeableViews>
     )
   }
 
   handleOnOrderClick = (orderId: string) => {
-    // TODO: go to order details when will be implemented
-    const { history } = this.props
-    history.push(`/order-placed?orderId=${orderId}`)
+    const { setOrderIdAction } = this.props
+    setOrderIdAction(orderId)
+  }
+
+  handleOnChangeIndex = (index: number) => {
+    if (index === 0) {
+      this.handleOnOrderClick('')
+    }
   }
 }
 
+const mapStateToProps = (state: any) => state.get('overview').toJS()
+
 const OverViewEnhance = compose(
+  connect(
+    mapStateToProps,
+    { ...OverviewActions }
+  ),
   graphql(overviewQuery),
   withError,
   withLoading

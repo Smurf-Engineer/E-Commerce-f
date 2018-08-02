@@ -39,9 +39,9 @@ interface Props {
   invalidBillingFormAction: (hasError: boolean) => void
   nextStep: () => void
   setPaymentMethodAction: (method: string) => void
-  saveCountryAction: (countryId: number | null) => void
   showCardFormAction: (open: boolean) => void
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  saveCountryAction: (countryCode: string | null) => void
 }
 
 interface MyWindow extends Window {
@@ -75,12 +75,12 @@ class Payment extends React.PureComponent<Props, {}> {
     })
   }
 
-  handleConfirmSave = (countryId: number | null) => {
+  handleConfirmSave = (countryCode: string | null) => {
     const { nextStep, saveCountryAction } = this.props
     this.setState({
       openConfirm: false
     })
-    saveCountryAction(countryId)
+    saveCountryAction(countryCode)
     nextStep()
   }
 

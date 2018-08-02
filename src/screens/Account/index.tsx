@@ -48,6 +48,7 @@ import {
   menuDeviceStyle,
   DrawerSidebar
 } from './styledComponents'
+import MyFiles from '../../components/MyFiles'
 
 const { SubMenu } = Menu
 
@@ -166,6 +167,8 @@ export class Account extends React.Component<Props, {}> {
         return <MyTeamStores {...{ history, formatMessage }} />
       case SCREEN_LOCKER:
         return <MyLocker {...{ openQuickView, formatMessage, history }} />
+      case MY_FILES:
+        return <MyFiles {...{ history, formatMessage }} />
       default:
         return null
     }
@@ -233,6 +236,8 @@ export class Account extends React.Component<Props, {}> {
 
     const currentScreen = this.getScreenComponent(screen)
 
+    const noOrderScreenFlag = screen !== ORDER_HISTORY && screen !== OVERVIEW
+
     const renderView = (
       <MediaQuery
         maxWidth={768}
@@ -259,7 +264,7 @@ export class Account extends React.Component<Props, {}> {
                           {intl.formatMessage(messages.filtersTitle)}
                           <Icon type="down" />
                         </FiltersTitle>
-                        <ScreenTitle>
+                        <ScreenTitle show={noOrderScreenFlag}>
                           {!!messages[screen] && (
                             <FormattedMessage {...messages[screen]} />
                           )}
@@ -293,7 +298,7 @@ export class Account extends React.Component<Props, {}> {
                     {logoutButton}
                   </SideBar>
                   <Content>
-                    <ScreenTitle>
+                    <ScreenTitle show={noOrderScreenFlag}>
                       {!!messages[screen] && (
                         <FormattedMessage {...messages[screen]} />
                       )}

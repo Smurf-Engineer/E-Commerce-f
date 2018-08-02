@@ -28,10 +28,11 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onUpdateStyleName: (design: number, name: string) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 class InspirationColors extends React.PureComponent<Props> {
   render() {
-    const { design, uploadingThumbnail } = this.props
+    const { design, uploadingThumbnail, formatMessage } = this.props
     const {
       inspiration = [],
       colors: mainColors,
@@ -51,12 +52,13 @@ class InspirationColors extends React.PureComponent<Props> {
         loading={uploadingThumbnail}
         buttonLabel="Save Thumbnail"
         onSelectPalette={this.handleOnSelectColors}
+        {...{ formatMessage }}
       />
     )
     const list = inspiration.map(({ name, colors, thumbnail: image }, key) => (
       <Palette
         id={key}
-        {...{ key, name, colors, image }}
+        {...{ key, name, colors, image, formatMessage }}
         loading={uploadingThumbnail}
         buttonLabel="Save Thumbnail"
         onSelectPalette={this.handleOnSelectPalette(key)}

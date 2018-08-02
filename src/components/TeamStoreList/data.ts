@@ -25,6 +25,7 @@ export const SearchStoresQuery = gql`
         items {
           design {
             id
+            code
             name
             product {
               id

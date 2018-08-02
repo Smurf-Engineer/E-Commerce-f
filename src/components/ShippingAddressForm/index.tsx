@@ -2,9 +2,6 @@
  * ShippingAddressForm Component - Created by miguelcanobbio on 15/05/18.
  */
 import * as React from 'react'
-import Dropdown from 'antd/lib/dropdown'
-import Icon from 'antd/lib/icon'
-import Menu from 'antd/lib/menu'
 import messages from './messages'
 import {
   ShippingFormContainer,
@@ -14,11 +11,23 @@ import {
   RequiredSpan,
   Label,
   InputTitleContainer,
-  DropDownPlaceHolder,
   ErrorMsg,
   ShipTopPoAPO
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
+import CountrySelect from '../CountrySelect'
+import RegionSelect from '../RegionSelect'
+import CitySelect from '../CitySelect'
+
+const COUNTRY_VALUE_ID = 'country'
+const STATE_VALUE_ID = 'stateProvince'
+const CITY_VALUE_ID = 'city'
+
+interface StateProps {
+  selectedCountry: string | undefined
+  selectedRegion: string | undefined
+  selectedCity: string | undefined
+}
 
 interface Props {
   firstName: string
@@ -36,7 +45,13 @@ interface Props {
   inputChangeAction: (id: string, value: string) => void
 }
 
-class ShippingAddressForm extends React.Component<Props, {}> {
+class ShippingAddressForm extends React.Component<Props, StateProps> {
+  state = {
+    selectedCountry: '',
+    selectedRegion: '',
+    selectedCity: ''
+  }
+
   render() {
     const {
       firstName,
@@ -51,45 +66,9 @@ class ShippingAddressForm extends React.Component<Props, {}> {
       hasError,
       formatMessage
     } = this.props
-    const dropdownCountries = (
-      <Menu onClick={this.selectedDropDown}>
-        <Menu.Item id="country" class="country" key="usa">
-          {'USA'}
-        </Menu.Item>
-        <Menu.Item id="country" key="canada">
-          {'CANADA'}
-        </Menu.Item>
-        <Menu.Item id="country" key="france">
-          {'FRANCE'}
-        </Menu.Item>
-      </Menu>
-    )
-    const dropdownStates = (
-      <Menu onClick={this.selectedDropDown}>
-        <Menu.Item id="stateProvince" key="california">
-          {'California'}
-        </Menu.Item>
-        <Menu.Item id="stateProvince" key="quebec">
-          {'Quebec'}
-        </Menu.Item>
-        <Menu.Item id="stateProvince" key="arizona">
-          {'Arizona'}
-        </Menu.Item>
-      </Menu>
-    )
-    const dropdownCities = (
-      <Menu id="cities" onClick={this.selectedDropDown}>
-        <Menu.Item id="city" key="los angeles">
-          {'Los Angeles'}
-        </Menu.Item>
-        <Menu.Item id="city" key="san francisco">
-          {'San Francisco'}
-        </Menu.Item>
-        <Menu.Item id="city" key="detroit">
-          {'Detroit'}
-        </Menu.Item>
-      </Menu>
-    )
+
+    const { selectedCountry, selectedRegion, selectedCity } = this.state
+
     return (
       <ShippingFormContainer>
         <Row>
@@ -159,12 +138,10 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               <Label>{formatMessage(messages.countryLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <Dropdown overlay={dropdownCountries}>
-              <DropDownPlaceHolder>
-                {country ? country : formatMessage(messages.selectCountryLabel)}
-                <Icon type="down" />
-              </DropDownPlaceHolder>
-            </Dropdown>
+            <CountrySelect
+              {...{ selectedCountry, formatMessage }}
+              handleCountryChange={this.handleCountryChange}
+            />
             {!country &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -175,14 +152,13 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               <Label>{formatMessage(messages.stateProvinceLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <Dropdown overlay={dropdownStates}>
-              <DropDownPlaceHolder>
-                {stateProvince
-                  ? stateProvince
-                  : formatMessage(messages.selectStateProvinceLabel)}
-                <Icon type="down" />
-              </DropDownPlaceHolder>
-            </Dropdown>
+            <RegionSelect
+              {...{ formatMessage }}
+              disabled={!country}
+              country={selectedCountry}
+              region={selectedRegion}
+              handleRegionChange={this.handleRegionChange}
+            />
             {!stateProvince &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -193,12 +169,13 @@ class ShippingAddressForm extends React.Component<Props, {}> {
               <Label>{formatMessage(messages.cityLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <Dropdown overlay={dropdownCities}>
-              <DropDownPlaceHolder>
-                {city ? city : formatMessage(messages.selectCityLabel)}
-                <Icon type="down" />
-              </DropDownPlaceHolder>
-            </Dropdown>
+            <CitySelect
+              {...{ selectedCity, formatMessage }}
+              disabled={!selectedRegion}
+              country={selectedCountry}
+              region={selectedRegion}
+              handleCityChange={this.handleCityChange}
+            />
             {!city &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
@@ -243,6 +220,33 @@ class ShippingAddressForm extends React.Component<Props, {}> {
     )
   }
 
+  handleCountryChange = (value: any) => {
+    const { inputChangeAction } = this.props
+    this.setState({
+      selectedCountry: value,
+      selectedRegion: '',
+      selectedCity: ''
+    })
+    inputChangeAction(COUNTRY_VALUE_ID, value)
+  }
+
+  handleRegionChange = (value: any) => {
+    const { inputChangeAction } = this.props
+    this.setState({
+      selectedRegion: value,
+      selectedCity: ''
+    })
+    inputChangeAction(STATE_VALUE_ID, value)
+  }
+
+  handleCityChange = async (value: any) => {
+    const { inputChangeAction } = this.props
+    this.setState({
+      selectedCity: value
+    })
+    inputChangeAction(CITY_VALUE_ID, value)
+  }
+
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { inputChangeAction } = this.props
     const {
@@ -252,7 +256,7 @@ class ShippingAddressForm extends React.Component<Props, {}> {
     const regex = /^[0-9]+$/
     const isNumber = regex.test(value)
 
-    if (value && (id === 'phone') && !isNumber) {
+    if (value && id === 'phone' && !isNumber) {
       return
     }
     inputChangeAction(id, value)

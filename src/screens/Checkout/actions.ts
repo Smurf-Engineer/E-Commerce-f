@@ -127,9 +127,9 @@ export const setPaymentMethodAction = (method: string): AnyAction => ({
   method
 })
 
-export const saveCountryAction = (countryId: number | null): AnyAction => ({
+export const saveCountryAction = (countryCode: string | null): AnyAction => ({
   type: SAVE_COUNTRY,
-  countryId
+  countryCode
 })
 
 export const openAddressesModalAction = (open: boolean): AnyAction => ({

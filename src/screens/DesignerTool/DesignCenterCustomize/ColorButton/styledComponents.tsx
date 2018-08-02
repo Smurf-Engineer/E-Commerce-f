@@ -14,6 +14,7 @@ interface OvalSelected {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
   cursor: pointer;
 `
 
@@ -22,7 +23,7 @@ export const Text = styled.div`
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
-  margin-top: 12px;
+  margin-top: 4px;
 `
 
 export const Oval = styled.div`

@@ -13,7 +13,7 @@ import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
 import { Container } from './styledComponents'
-import { DesignConfig, UploadFile } from '../../../../types/common'
+import { DesignConfig, UploadFile, ModelConfig } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
@@ -38,6 +38,10 @@ interface Props {
   themeName: string
   styleName: string
   uploadingThumbnail: boolean
+  extraFiles: string[]
+  bibBrace: boolean
+  zipper: boolean
+  binding: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -48,8 +52,8 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
-  onUploadFiles: (files: any, areas: any) => void
-  onUploadDesign: (files: any) => void
+  onUploadFiles: (files: any, areas: any, extra: any) => void
+  onUploadDesign: (areas: any, config: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
@@ -57,6 +61,11 @@ interface Props {
   onUpdateStyleName: (design: number, name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
+  onLoadDesign: (config: ModelConfig) => void
+  onAddExtraFile: (file: string) => void
+  onRemoveExtraFile: (index: number) => void
+  formatMessage: (messageDescriptor: any) => string
+  onToggleColor: (color: string) => void
 }
 
 const Tabs = ({
@@ -92,7 +101,16 @@ const Tabs = ({
   onUpdateStyleName,
   onSelectComplexity,
   onSaveThumbnail,
-  uploadingThumbnail
+  uploadingThumbnail,
+  onLoadDesign,
+  onAddExtraFile,
+  onRemoveExtraFile,
+  extraFiles,
+  formatMessage,
+  onToggleColor,
+  bibBrace,
+  zipper,
+  binding
 }: Props) => {
   return (
     <Container>
@@ -119,7 +137,9 @@ const Tabs = ({
               themeName,
               styleName,
               onUpdateThemeName,
-              onUpdateStyleName
+              onUpdateStyleName,
+              onLoadDesign,
+              formatMessage
             }}
           />
         </TabPane>
@@ -131,9 +151,12 @@ const Tabs = ({
             {...{
               onUploadFiles,
               uploadingFiles,
-              uploadNewModel,
               onUploadDesign,
-              onSelectConfig
+              onSelectConfig,
+              onAddExtraFile,
+              onRemoveExtraFile,
+              extraFiles,
+              uploadNewModel
             }}
           />
         </TabPane>
@@ -145,7 +168,11 @@ const Tabs = ({
               colorBlock,
               colorBlockHovered,
               onSelectColor,
-              colors
+              colors,
+              onToggleColor,
+              bibBrace,
+              zipper,
+              binding
             }}
           />
         </TabPane>
@@ -161,6 +188,7 @@ const Tabs = ({
               onUpdateStyleName,
               onSaveThumbnail,
               uploadingThumbnail,
+              formatMessage,
               onSelectConfig
             }}
           />

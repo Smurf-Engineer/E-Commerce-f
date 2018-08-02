@@ -10,7 +10,18 @@ export const Container = styled.div`
     padding: 0 0 36px 0;
   }
 `
+export const ScreenTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  margin-bottom: 64px;
 
+  @media (max-width: 768px) and (min-width: 320px) {
+    margin-bottom: 24px;
+  }
+`
 export const BottomContainer = styled.div`
   display: flex;
   justify-content: space-between;

@@ -21,7 +21,10 @@ import {
   SET_STYLE_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
-  SET_UPLOADING_THUMBNAIL_ACTION
+  SET_UPLOADING_THUMBNAIL_ACTION,
+  ADD_EXTRA_FILE_ACTION,
+  REMOVE_EXTRA_FILE_ACTION,
+  TOGGLE_EXTRA_COLOR_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -139,4 +142,19 @@ export const setUploadingThumbnailAction = (
 ): AnyAction => ({
   type: SET_UPLOADING_THUMBNAIL_ACTION,
   uploadingItem
+})
+
+export const addExtraFileAction = (file: string) => ({
+  type: ADD_EXTRA_FILE_ACTION,
+  file
+})
+
+export const removeExtraFileAction = (index: number) => ({
+  type: REMOVE_EXTRA_FILE_ACTION,
+  index
+})
+
+export const toggleExtraColorAction = (color: string) => ({
+  type: TOGGLE_EXTRA_COLOR_ACTION,
+  color
 })

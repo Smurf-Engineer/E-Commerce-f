@@ -869,14 +869,36 @@
   "components.OrdersList.status": "Status",
   "components.OrdersList.emptyMessage": "No orders yet",
 
-  "components.Overview.title": "Recent Orders",
+  "components.Overview.title": "OVERVIEW",
+  "components.Overview.headerTitle": "Recent Orders",
   "components.Overview.profile": "Profile",
   "components.Overview.addresses": "Addresses",
   "components.Overview.payment": "Payment Methods",
   "components.Overview.emptyAddress": "No addresses added",
   "components.Overview.emptyPayment": "No cards added",
 
-  "components.PaletteCard.apply": "Apply",
+  "components.OrderDetails.title": "Order Details",
+  "components.OrderDetails.back": "Back to Order History",
+  "components.OrderDetails.receipt": "Receipt",
+  "components.OrderDetails.deliveryDate": "Estimated delivery date",
+  "components.OrderDetails.orderNumber": "Order Number",
+  "components.OrderDetails.orderDate": "Order Date",
+  "components.OrderDetails.trackingNumber": "Tracking Number",
+  "components.OrderDetails.orderSummary": "Order Summary",
+  "components.OrderDetails.subtotal": "Subtotal",
+  "components.OrderDetails.taxes": "Taxes",
+  "components.OrderDetails.shipping": "Shipping",
+  "components.OrderDetails.discount": "Discount",
+  "components.OrderDetails.total": "Total",
+  "components.OrderDetails.items": "Items",
+  "components.OrderDetails.reorderAll": "Reorder all items",
+  "components.OrderDetails.shippingAddress": "Shipping Address",
+  "components.OrderDetails.billingAddress": "Billing Address",
+  "components.OrderDetails.payment": "Payment",
+
+  "components.OrderHistory.title": "ORDER HISTORY",
+
+  "components.CartListItem.reorder": "Reorder",
 
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
@@ -884,5 +906,30 @@
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
   "components.FeaturedProducts.addToCart": "ADD TO CART",
+  "components.CitySelect.select": "Select city",
+  "components.RegionSelect.select": "Select state/province",
+  "components.CountrySelect.select": "Select country",
+
+  "components.ImageItem.delete": "Delete",
+
+  "components.ImagesList.emptyImages": "No images, yet",
+  "components.MyFiles.emptyPalettes": "No palettes, yet",
+
+  "components.MyFiles.message":
+    "These are the assets that you have used in your designs. You will be able to use it and edit them in our design app.",
+  "components.MyFiles.myPalettes": "My Palettes",
+  "components.MyFiles.uploadedImages": "Uploaded Images",
+  "components.MyFiles.modalTitle": "ARE YOU SURE?",
+  "components.MyFiles.paletteMessage": "You're about to delete this palette",
+  "components.MyFiles.imageMessage": "You're about to delete this image",
+
+  "components.PaletteCard.apply": "Apply",
+  "components.PaletteCard.color1": "Color 1",
+  "components.PaletteCard.color2": "Color 2",
+  "components.PaletteCard.color3": "Color 3",
+  "components.PaletteCard.color4": "Color 4",
+  "components.PaletteCard.color5": "Color 5",
+  "components.PaletteCard.delete": "Delete",
+
   "screens.Checkout.continueButtonLabel": "Continue"
 }

@@ -31,6 +31,5 @@ type IconProps = {
 
 export const Icon = styled(AntdIcon)`
   color: ${({ color = '#5F6062' }: IconProps) => color};
-  padding-right: 16px;
   cursor: 'pointer';
 `

@@ -2,6 +2,7 @@
  * DesignerTool Reducer - Created by david on 08/05/18.
  */
 import { fromJS, List } from 'immutable'
+import reverse from 'lodash/reverse'
 import {
   Tabs,
   DEFAULT_ACTION,
@@ -23,11 +24,15 @@ import {
   SET_STYLE_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
-  SET_UPLOADING_THUMBNAIL_ACTION
+  SET_UPLOADING_THUMBNAIL_ACTION,
+  ADD_EXTRA_FILE_ACTION,
+  REMOVE_EXTRA_FILE_ACTION,
+  TOGGLE_EXTRA_COLOR_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
 const NONE = -1
+const NONE_ID = 0
 const DESIGN_THUMBNAIL = -1
 
 export const initialState = fromJS({
@@ -44,11 +49,15 @@ export const initialState = fromJS({
   currentTab: Tabs.RenderTab,
   themeName: '',
   styleName: '',
-  selectedTheme: NONE,
-  selectedStyle: NONE,
+  selectedTheme: NONE_ID,
+  selectedStyle: NONE_ID,
   designConfig: [],
   productCode: '',
-  uploadingThumbnail: false
+  uploadingThumbnail: false,
+  extraFiles: [],
+  bibBrace: true,
+  zipper: true,
+  binding: true
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -70,18 +79,36 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_UPLOADING_ACTION:
       return state.set('uploadingFiles', action.isLoading)
-    case SET_UPLOADING_SUCCESS:
+    case SET_UPLOADING_SUCCESS: {
+      const { modelConfig } = action
+      const colors = reverse(modelConfig.design.colors)
       return state.merge({
         uploadingFiles: false,
         modelConfig: action.modelConfig,
-        colors: List.of(...action.modelConfig.design.colors)
+        colors: List.of(...colors)
       })
-    case SET_UPLOADING_DESIGN_SUCCESS:
+    }
+    case SET_UPLOADING_DESIGN_SUCCESS: {
+      const { design: config } = action
+      const {
+        areasPng,
+        areasSvg,
+        design: { colors }
+      } = config
+      const reverseColors = reverse(colors)
+      const modelConfig = state.get('modelConfig')
+      const updatedModelConfig = modelConfig.merge({
+        areasPng: List.of(...areasPng),
+        areasSvg: List.of(...areasSvg),
+        colors: List.of(...colors)
+      })
       return state.merge({
+        modelConfig: updatedModelConfig,
         uploadingFiles: false,
-        areas: List.of(...action.design.areas),
-        colors: List.of(...action.design.design.colors)
+        areas: List.of(...areasPng),
+        colors: List.of(...reverseColors)
       })
+    }
     case SET_CURRENT_TAB_ACTION:
       return state.set('currentTab', action.index)
     case SET_SWIPING_TAB_ACTION:
@@ -113,8 +140,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_PRODCUT_CODE_ACTION:
       return state.merge({
         productCode: action.code,
-        selectedTheme: NONE,
-        selectedStyle: NONE
+        selectedTheme: NONE_ID,
+        selectedStyle: NONE_ID
       })
     case SET_THEME_NAME_ACTION:
       return state.set('themeName', action.name)
@@ -136,6 +163,23 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploadingItem)
+    case ADD_EXTRA_FILE_ACTION: {
+      const { file } = action
+      const extraFiles = state.get('extraFiles')
+      const updatedList = extraFiles.push(file)
+      return state.set('extraFiles', List.of(...updatedList))
+    }
+    case REMOVE_EXTRA_FILE_ACTION: {
+      const { index } = action
+      const extraFiles = state.get('extraFiles')
+      const updatedList = extraFiles.remove(index)
+      return state.set('extraFiles', List.of(...updatedList))
+    }
+    case TOGGLE_EXTRA_COLOR_ACTION: {
+      const { color } = action
+      const currentValue = state.get(color)
+      return state.set(color, !currentValue)
+    }
     default:
       return state
   }

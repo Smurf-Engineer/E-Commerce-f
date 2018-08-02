@@ -11,6 +11,21 @@ export const getProductFromCode = gql`
       name
       obj
       mtl
+      label
+      bumpMap: bump_map
+      flatlock
+      binding {
+        white
+        black
+      }
+      zipper {
+        white
+        black
+      }
+      bibBrace {
+        white
+        black
+      }
       themes {
         id
         name
@@ -19,7 +34,14 @@ export const getProductFromCode = gql`
           id
           name
           image
-          colorsBlocks {
+          branding
+          brandingPng: branding_png
+          colorblock1
+          colorblock2
+          colorblock3
+          colorblock4
+          colorblock5
+          colors: colorsBlocks {
             id
             color
             image

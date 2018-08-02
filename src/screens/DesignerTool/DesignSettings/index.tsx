@@ -4,15 +4,27 @@
 import * as React from 'react'
 import {
   Container,
+  Row,
   Form,
   Title,
   Input,
   InputContainer
 } from './styledComponents'
 import get from 'lodash/get'
+import findIndex from 'lodash/findIndex'
+import Button from 'antd/lib/button'
 import DesignForm from '../../../components/DesignForm'
-import { UploadFile, DesignItem } from '../../../types/common'
+import { UploadFile, DesignItem, ModelConfig } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
+
+const extraFiles = ['bibBrace', 'binding', 'zipper']
+const areas = [
+  'colorblock1',
+  'colorblock2',
+  'colorblock3',
+  'colorblock4',
+  'colorblock5'
+]
 
 interface Props {
   themeImage?: UploadFile[]
@@ -32,6 +44,8 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (design: number, name: string) => void
+  onLoadDesign: (config: ModelConfig) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
@@ -60,11 +74,15 @@ class DesignSettings extends React.PureComponent<Props, {}> {
     const product = get(productData, 'product', false)
     let themeItems: DesignItem[] = []
     let styleItems: DesignItem[] = []
+    let productHasAllFiles = false
 
     if (!!product) {
       const { themes = [] } = product
-      const currentTheme = themes[selectedTheme] || {}
+      const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
+      const currentTheme = themes[themeIndex] || {}
       const themeStyles = currentTheme.styles || []
+      const { obj, mtl, label, bumpMap } = product
+      productHasAllFiles = !!obj && !!mtl && !!label && !!bumpMap
       themeItems = themes.map(({ id, name }) => ({ id, name }))
       styleItems = themeStyles.map(({ id, name }) => ({ id, name }))
     }
@@ -72,7 +90,16 @@ class DesignSettings extends React.PureComponent<Props, {}> {
     return (
       <Container>
         <Form>
-          <Title>SEARCH PRODUCT</Title>
+          <Row>
+            <Title>SEARCH PRODUCT</Title>
+            {productHasAllFiles &&
+              !!selectedTheme &&
+              !!selectedStyle && (
+                <Button onClick={this.handleOnLoadDesign} type="primary">
+                  LOAD DESIGN
+                </Button>
+              )}
+          </Row>
           <InputContainer>
             <Input
               value={code}
@@ -114,6 +141,63 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         </Form>
       </Container>
     )
+  }
+
+  handleOnLoadDesign = () => {
+    const {
+      productData,
+      selectedTheme,
+      selectedStyle,
+      onLoadDesign
+    } = this.props
+    if (productData && productData.product) {
+      const product = get(productData, 'product')
+      const {
+        obj = '',
+        mtl = '',
+        label = '',
+        flatlock = '',
+        bumpMap = '',
+        themes = []
+      } = product
+      const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
+      const currentTheme = themes[themeIndex] || {}
+      const styleIndex = findIndex(
+        currentTheme.styles,
+        ({ id }) => id === selectedStyle
+      )
+      const currentStyle = currentTheme.styles[styleIndex]
+      const { name, branding = '', brandingPng, colors } = currentStyle
+      const areaColors: string[] = []
+      const areasPng: string[] = []
+      const areasSvg: string[] = []
+      areas.forEach(area => areasSvg.push(currentStyle[area]))
+      colors.forEach(({ color, image }) => {
+        areaColors.push(color)
+        areasPng.push(image)
+      })
+      const design = { name, colors: areaColors }
+      const modelConfig: ModelConfig = {
+        obj,
+        mtl,
+        label,
+        flatlock,
+        bumpMap,
+        brandingSvg: branding,
+        brandingPng,
+        areasSvg,
+        areasPng,
+        design
+      }
+      extraFiles.forEach(key => {
+        const file = product[key]
+        if (file) {
+          modelConfig[`${key}White`] = file.white
+          modelConfig[`${key}Black`] = file.black
+        }
+      })
+      onLoadDesign(modelConfig)
+    }
   }
 
   handleOnSearch = () => {
