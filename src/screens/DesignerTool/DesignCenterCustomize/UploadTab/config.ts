@@ -1,8 +1,9 @@
 /**
  * File configuration
  */
+import { UploadFile } from '../../../../types/common'
 
-export const TOTAL_OF_FILES = 7
+export const TOTAL_OF_FILES = 5
 export const MINIMUM_OF_AREAS = 4
 
 export const enum Extension {
@@ -21,7 +22,10 @@ export const enum File {
   Config = 'config',
   Flatlock = 'flatlock',
   Label = 'label',
-  Branding = 'branding'
+  Branding = 'branding',
+  Binding = 'binding',
+  BibBrace = 'bibBrace',
+  Zipper = 'zipper'
 }
 
 export const filesInfo = [
@@ -41,11 +45,6 @@ export const filesInfo = [
     extension: Extension.Jpg
   },
   {
-    file: File.Flatlock,
-    label: 'Flatlock',
-    extension: Extension.Png
-  },
-  {
     file: File.Label,
     label: 'Label',
     extension: Extension.Jpg
@@ -57,7 +56,49 @@ export const filesInfo = [
   },
   {
     file: File.Branding,
-    label: 'Branding',
+    label: 'Extra area (Branding, Predyed, etc...)',
     extension: Extension.Svg
   }
 ]
+
+export const optionalFiles = {
+  flatlock: {
+    file: File.Flatlock,
+    label: 'Flatlock',
+    extension: Extension.Png
+  },
+  binding: {
+    file: File.Binding,
+    label: 'Binding',
+    extension: Extension.Jpg
+  },
+  zipper: {
+    file: File.Zipper,
+    label: 'Zipper',
+    extension: Extension.Jpg
+  },
+  bibBrace: {
+    file: File.BibBrace,
+    label: 'Bib Brace',
+    extension: Extension.Jpg
+  }
+}
+
+export const WHITE = 'white'
+export const BLACK = 'black'
+
+export type ExtraFiles = {
+  flatlock?: UploadFile
+  binding?: {
+    white: UploadFile
+    black: UploadFile
+  }
+  zipper?: {
+    white: UploadFile
+    black: UploadFile
+  }
+  bibBrace?: {
+    white: UploadFile
+    black: UploadFile
+  }
+}

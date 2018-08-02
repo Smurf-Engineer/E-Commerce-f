@@ -6,6 +6,7 @@ export const subsidiaryQuery = gql`
       id
       country
       subsidiary
+      countryCode: country_code
     }
   }
 `

@@ -37,11 +37,13 @@ export const getSingleTeamStore = gql`
         visible
         design {
           id
+          code
           name
           image
           shortId: short_id
           product {
             id
+            code
             yotpoId: yotpo_id
             name
             type: name

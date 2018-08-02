@@ -9,6 +9,7 @@ export const desginsQuery = gql`
       fullCount
       designs {
         id
+        code
         name
         image
         shared
@@ -16,6 +17,7 @@ export const desginsQuery = gql`
         createdAt: created_at
         product {
           id
+          code
           yotpoId: yotpo_id
           name
           type: name

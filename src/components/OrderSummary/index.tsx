@@ -30,9 +30,10 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  data: Data
+  data?: Data
   total: number
   subtotal: number
+  shipping?: number
   totalWithoutDiscount?: number
   discount?: number
   onlyRead?: boolean
@@ -46,6 +47,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     const {
       total,
       subtotal,
+      shipping,
       formatMessage,
       discount,
       totalWithoutDiscount,
@@ -86,13 +88,13 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-          <OrderItem>
+          <OrderItem hide={true}>
             <FormattedMessage {...messages.taxes} />
             <div>{`USD$0`}</div>
           </OrderItem>
           <OrderItem>
             <FormattedMessage {...messages.shipping} />
-            <div>{`USD$0`}</div>
+            <div>{`USD$${shipping}`}</div>
           </OrderItem>
           {!onlyRead ? renderDiscount : null}
         </CalculationsWrapper>

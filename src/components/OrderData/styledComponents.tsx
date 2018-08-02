@@ -9,6 +9,10 @@ export const Container = styled.div``
 export const Content = styled.div`
   display: flex;
   justify-content: space-between;
+
+  @media (min-width: 320px) and (max-width: 700px) {
+    flex-wrap: wrap;
+  }
 `
 
 export const Title = styled.div`
@@ -24,11 +28,20 @@ export const Title = styled.div`
 
 export const InfoContainer = styled.div`
   width: 70%;
+
+  @media (min-width: 320px) and (max-width: 700px) {
+    width: 100%;
+  }
 `
 
 export const SummaryContainer = styled.div`
   width: 25%;
   padding-left: 20px;
+
+  @media (min-width: 320px) and (max-width: 700px) {
+    padding-left: 0px;
+    width: 100%;
+  }
 `
 
 export const SubTitle = styled.div`
@@ -49,7 +62,12 @@ export const CardNumber = styled.div`
 export const ShippingBillingContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin 24px 10% 24px 0;
+  margin: 24px 10% 24px 0;
+
+  @media (min-width: 320px) and (max-width: 700px) {
+    flex-wrap: wrap;
+    margin-right: 0px;
+  }
 `
 
 export const PaymentText = styled.div`
@@ -70,6 +88,10 @@ export const OrderNumberContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+
+  @media (min-width: 320px) and (max-width: 700px) {
+    justify-content: space-between;
+  }
 `
 
 export const TitleStyled = styled.div`
@@ -80,6 +102,10 @@ export const TitleStyled = styled.div`
   font-weight: 600;
   line-height: 22px;
   margin-bottom: 24px;
+
+  @media (min-width: 320px) and (max-width: 700px) {
+    margin-bottom: 18px;
+  }
 `
 
 export const StyledText = styled.div`

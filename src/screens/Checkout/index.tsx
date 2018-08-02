@@ -112,7 +112,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerShoppingCartAction: () => void
   getTotalItemsIncart: () => void
   setPaymentMethodAction: (method: string) => void
-  saveCountryAction: (countryId: number | null) => void
+  saveCountryAction: (countryCode: string | null) => void
   openAddressesModalAction: (open: boolean) => void
   setSkipValueAction: (limit: number, pageNumber: number) => void
 }
@@ -240,7 +240,7 @@ class Checkout extends React.Component<Props, {}> {
         <PaypalExpressBtn
           env={config.paypalEnv}
           client={paypalClient}
-          currency={'USD'}
+          currency={'USD'} // TODO: set currency
           shipping={1}
           onSuccess={this.onPaypalSuccess}
           onCancel={this.onPaypalCancel}
@@ -551,7 +551,8 @@ class Checkout extends React.Component<Props, {}> {
       cart: shoppingCart,
       shippingAddress,
       billingAddress,
-      paypalData: paypalObj || null
+      paypalData: paypalObj || null,
+      countrySubsidiary: billingCountry
     }
     try {
       setLoadingPlaceOrderAction(true)

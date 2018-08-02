@@ -74,8 +74,14 @@ export type HomePageBatch = {
   result: string
 }
 
+type ExtraFile = {
+  white: string
+  black: string
+}
+
 export interface Product {
   id: number
+  code: string
   shortId?: string
   images: ImageType[]
   type: string
@@ -104,10 +110,14 @@ export interface Product {
   label: string
   flatlock: string
   bumpMap: string
+  binding?: ExtraFile
+  zipper?: ExtraFile
+  bibBrace?: ExtraFile
 }
 
 export type DesignType = {
   id: number
+  code: string
   name: string
   shared: boolean
   shortId?: string
@@ -195,6 +205,7 @@ export interface CountrySubsidiary {
   id: number
   country: string
   subsidiary: number
+  countryCode: string
 }
 
 export interface Region {
@@ -362,9 +373,9 @@ export interface ModelConfig {
   obj: string
   mtl: string
   bumpMap: string
-  flatlock: string
-  brandingSvg: string
-  brandingPng: string
+  flatlock?: string
+  brandingSvg?: string
+  brandingPng?: string
   label: string
   design: {
     name: string
@@ -372,6 +383,12 @@ export interface ModelConfig {
   }
   areasSvg: string[]
   areasPng: string[]
+  bibBraceBlack?: string
+  bibBraceWhite?: string
+  bindingWhite?: string
+  bindingBlack?: string
+  zipperWhite?: string
+  zipperBlack?: string
 }
 
 export interface CartItems {
@@ -402,6 +419,47 @@ export interface OrderHistory {
   status: string
 }
 
+export interface OrderStatusNetsuite {
+  deliveryDate?: string
+}
+
+export interface NetsuiteObject {
+  orderStatus: OrderStatusNetsuite
+}
+
+export interface PaymentCharges {
+  stripeCharge: {
+    cardData: CreditCardData
+  }
+}
+
+export interface OrderDetailsInfo {
+  shortId: string
+  orderDate: string
+  paymentMethod: string
+  shippingFirstName: string
+  shippingLastName: string
+  shippingStreet: string
+  shippingApartment: string
+  shippingCountry: string
+  shippingStateProvince: string
+  shippingCity: string
+  shippingZipCode: string
+  billingFirstName: string
+  billingLastName: string
+  billingStreet: string
+  billingApartment: string
+  billingCountry: string
+  billingStateProvince: string
+  billingCity: string
+  billingZipCode: string
+  shippingTax: number
+  netsuit: NetsuiteObject
+  payment: PaymentCharges
+  cart: CartItems[]
+  status: string
+}
+
 export interface OrderDataInfo {
   orderDate: string
   firstName: string
@@ -420,6 +478,7 @@ export interface OrderDataInfo {
   billingZipCode: string
   billingCountry: string
   billingApartment: string
+  shippingTax: number
   payment: {
     stripeCharge: {
       cardData: CreditCardData
@@ -668,6 +727,18 @@ export interface DesignItem {
   name: string
 }
 
+export interface Country {
+  name: string
+  code: string
+}
+
+export interface CountryRegion {
+  region: string
+}
+
+export interface City {
+  city: string
+}
 export interface ImageFile {
   id: number
   fileUrl: string
@@ -685,3 +756,10 @@ export type StitchingColor = {
 }
 
 export type AccesoryColor = 'black' | 'white'
+
+export interface ClickParam {
+  key: string
+  keyPath: Array<string>
+  item: any
+  domEvent: any
+}

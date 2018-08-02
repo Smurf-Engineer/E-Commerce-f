@@ -24,7 +24,9 @@ import {
   SET_STYLE_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
-  SET_UPLOADING_THUMBNAIL_ACTION
+  SET_UPLOADING_THUMBNAIL_ACTION,
+  ADD_EXTRA_FILE_ACTION,
+  REMOVE_EXTRA_FILE_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -50,7 +52,8 @@ export const initialState = fromJS({
   selectedStyle: NONE_ID,
   designConfig: [],
   productCode: '',
-  uploadingThumbnail: false
+  uploadingThumbnail: false,
+  extraFiles: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -141,6 +144,18 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploadingItem)
+    case ADD_EXTRA_FILE_ACTION: {
+      const { file } = action
+      const extraFiles = state.get('extraFiles')
+      const updatedList = extraFiles.push(file)
+      return state.set('extraFiles', List.of(...updatedList))
+    }
+    case REMOVE_EXTRA_FILE_ACTION: {
+      const { index } = action
+      const extraFiles = state.get('extraFiles')
+      const updatedList = extraFiles.remove(index)
+      return state.set('extraFiles', List.of(...updatedList))
+    }
     default:
       return state
   }

@@ -26,40 +26,42 @@ interface Props {
   requestClose: () => void
   formatMessage: (messageDescriptor: any) => string
   open: boolean
-  onSave: (countryId: number | null) => void
+  onSave: (countryCode: string | null) => void
 }
 
 export class ConfirmCountryDialog extends React.Component<Props, {}> {
   state = {
-    countryId: null
+    countryCode: null
   }
 
   handleChange = (value: any) => {
     this.setState({
-      countryId: value
+      countryCode: value
     })
   }
 
   handleSave = () => {
     const { onSave } = this.props
-    const { countryId } = this.state
-    onSave(countryId)
+    const { countryCode } = this.state
+    onSave(countryCode)
   }
 
   render() {
     const { open, requestClose, formatMessage, data } = this.props
     const { countriesSubsidiaries, error, loading } = data
-    const { countryId } = this.state
+    const { countryCode } = this.state
 
     const countries = !error && !loading ? countriesSubsidiaries : []
 
-    const countryItems = countries.map(({ id, country }, index) => {
-      return (
-        <Option key={index} value={id}>
-          {country}
-        </Option>
-      )
-    })
+    const countryItems = countries.map(
+      ({ countryCode: code, country }, index) => {
+        return (
+          <Option key={index} value={code}>
+            {country}
+          </Option>
+        )
+      }
+    )
 
     return (
       <Modal {...{ open, requestClose }} width={'30%'} withLogo={false}>
@@ -74,7 +76,7 @@ export class ConfirmCountryDialog extends React.Component<Props, {}> {
           </StyledSelect>
           <ButtonWrapper>
             <Button
-              disabled={!countryId}
+              disabled={!countryCode}
               type="primary"
               onClick={this.handleSave}
             >

@@ -82,6 +82,7 @@ class OrderData extends React.Component<Props, {}> {
           billingZipCode,
           billingCountry,
           billingApartment,
+          shippingTax,
           payment: { stripeCharge },
           cart,
           paymentMethod
@@ -112,42 +113,45 @@ class OrderData extends React.Component<Props, {}> {
           <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
         </div>
       ) : (
-          <StyledImage src={iconPaypal} />
-        )
+        <StyledImage src={iconPaypal} />
+      )
 
     const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
     const renderList = cart
       ? cart.map((cartItem, index) => {
-        const priceRange = {
-          quantity: '0',
-          price: 0
-        }
+          const {
+            designId,
+            designImage,
+            designName,
+            product: { images, name, shortDescription },
+            productTotal,
+            unitPrice
+          } = cartItem
 
-        const itemImage = cartItem.designId
-          ? cartItem.designImage || ''
-          : cartItem.product.images[0].front
-        const itemTitle = cartItem.designId
-          ? cartItem.designName || ''
-          : cartItem.product.name
-        const itemDescription = cartItem.designId
-          ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
-          : cartItem.product.shortDescription
-        return (
-          <CartListItem
-            formatMessage={formatMessage}
-            key={index}
-            image={itemImage}
-            title={itemTitle}
-            description={itemDescription}
-            price={priceRange}
-            productTotal={cartItem.productTotal}
-            unitPrice={cartItem.unitPrice}
-            cartItem={cartItem}
-            itemIndex={index}
-            onlyRead={true}
-          />
-        )
-      })
+          const priceRange = {
+            quantity: '0',
+            price: 0
+          }
+
+          const itemImage = designId ? designImage || '' : images[0].front
+          const itemTitle = designId ? designName || '' : name
+          const itemDescription = designId
+            ? `${name} ${shortDescription}`
+            : shortDescription
+          return (
+            <CartListItem
+              {...{ formatMessage, productTotal, unitPrice, cartItem }}
+              key={index}
+              image={itemImage}
+              title={itemTitle}
+              description={itemDescription}
+              price={priceRange}
+              itemIndex={index}
+              onlyRead={true}
+              canReorder={false}
+            />
+          )
+        })
       : null
     let totalSum = 0
     if (cart) {
@@ -240,8 +244,9 @@ class OrderData extends React.Component<Props, {}> {
           <SummaryContainer>
             {/* TODO: add discount*/}
             <OrderSummary
-              total={totalSum}
+              total={totalSum + shippingTax}
               subtotal={totalSum}
+              shipping={shippingTax}
               discount={0}
               onlyRead={true}
               {...{ formatMessage }}

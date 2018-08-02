@@ -11,6 +11,7 @@ export const styleQuery = gql`
       name
       product {
         name
+        code
         id
       }
       svg: output_svg
