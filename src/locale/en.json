@@ -349,6 +349,7 @@
   "components.MyCard.asDefault": "Default payment method",
   "components.MyCard.delete": "Delete",
   "components.MyCard.defaultPayment": "Default payment method",
+  "components.MyCard.useThisCardLabel": "Use this card",
   "components.MyCards.tittle": "MyCards",
   "components.MyCards.addCard": "+ ADD CREDIT CARD",
   "components.MyCards.deleteCard": "Delete",
