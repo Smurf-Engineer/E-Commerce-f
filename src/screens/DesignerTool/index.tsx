@@ -105,6 +105,7 @@ interface Props {
   addExtraFileAction: (file: string) => void
   removeExtraFileAction: (index: number) => void
   toggleExtraColorAction: (color: string) => void
+  saveDesignSuccessAction: () => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -251,7 +252,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             }
           })
         } catch (e) {
-          console.error(e)
+          message.error(e.message)
         }
       }
     })
@@ -291,7 +292,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             }
           })
         } catch (e) {
-          console.error(e)
+          message.error(e.message)
         }
       }
     })
@@ -322,7 +323,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       setUploadingThumbnailAction(false)
     } catch (e) {
       setUploadingThumbnailAction(false)
-      console.error(e)
+      message.error(e.message)
     }
   }
 
@@ -335,7 +336,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         designConfig,
         saveDesign,
         themeName,
-        createTheme
+        createTheme,
+        saveDesignSuccessAction
       } = this.props
 
       if (!productCode) {
@@ -443,7 +445,13 @@ export class DesignerTool extends React.Component<Props, {}> {
         theme_id: themeId,
         styles: designs
       }
-      await saveDesign({ variables: { design } })
+      await saveDesign({
+        variables: { design },
+        refetchQueries: [
+          { query: getProductFromCode, variables: { code: productCode } }
+        ]
+      })
+      saveDesignSuccessAction()
       message.success('Your design is now saved')
     } catch (e) {
       message.error(e.message)
