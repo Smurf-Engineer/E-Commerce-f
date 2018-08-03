@@ -20,14 +20,16 @@ interface Props {
 }
 
 const PaymentData = ({ card }: Props) => {
+  const { expMonth, name, last4, expYear, brand } = card
+  const month = expMonth > 9 ? expMonth : `0${expMonth}`
   return (
     <Container>
-      <PaymentText>{card.name}</PaymentText>
+      <PaymentText>{name}</PaymentText>
       <CardNumber>
-        <PaymentText>{`X-${card.last4}`}</PaymentText>
-        <StyledImage src={getCardIcon(card.brand)} />
+        <PaymentText>{`X-${last4}`}</PaymentText>
+        <StyledImage src={getCardIcon(brand)} />
       </CardNumber>
-      <PaymentText>{`EXP ${card.expMonth}/${card.expYear}`}</PaymentText>
+      <PaymentText>{`EXP ${month}/${expYear}`}</PaymentText>
     </Container>
   )
 }

@@ -39,3 +39,7 @@ export const MethodButton = styled(Button)`
   border: 0.5px solid
     ${({ selected }: ButtonProps) => (selected ? 'red' : '#4a90e2')};
 `
+
+export const MyCardsRow = styled.div`
+  margin-bottom: 20px;
+`
