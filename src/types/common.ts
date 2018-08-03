@@ -642,13 +642,11 @@ export interface NetsuiteTax {
 }
 
 export interface NetsuiteShipping {
-  restrictions: NetsuiteShippingRestrictions
-  weightTable: NetsuiteShippingWeighTable[]
-  internalId: string
+  internal_id: string
   subsidiary: string
   name: string
-  flatRate: string
-  rateType: string
+  flat_rate: string
+  rate_type: string
 }
 
 export interface NetsuiteShippingRestrictions {

@@ -26,7 +26,7 @@ import Collapse from 'antd/lib/collapse'
 
 interface Data extends QueryProps {
   taxes: NetsuiteTax[]
-  shipping: NetsuiteShipping[]
+  shipping: NetsuiteShipping
 }
 
 interface Props {
@@ -37,6 +37,7 @@ interface Props {
   totalWithoutDiscount?: number
   discount?: number
   onlyRead?: boolean
+  country?: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -45,9 +46,9 @@ const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
   render() {
     const {
+      data,
       total,
       subtotal,
-      shipping,
       formatMessage,
       discount,
       totalWithoutDiscount,
@@ -77,6 +78,9 @@ export class OrderSummary extends React.Component<Props, {}> {
       </ZipCodeInputWrapper>
     )
     const youSaved = Number(totalWithoutDiscount) - total
+
+    const shippingTotal = !!data && data.shipping && data.shipping.flat_rate
+
     return (
       <Container>
         <SummaryTitle>
@@ -92,9 +96,9 @@ export class OrderSummary extends React.Component<Props, {}> {
             <FormattedMessage {...messages.taxes} />
             <div>{`USD$0`}</div>
           </OrderItem>
-          <OrderItem>
+          <OrderItem hide={!shippingTotal}>
             <FormattedMessage {...messages.shipping} />
-            <div>{`USD$${shipping}`}</div>
+            <div>{`USD$${shippingTotal}`}</div>
           </OrderItem>
           {!onlyRead ? renderDiscount : null}
         </CalculationsWrapper>
@@ -142,11 +146,17 @@ export class OrderSummary extends React.Component<Props, {}> {
   }
 }
 
+interface OwnProps {
+  country?: string
+}
+
 const OrderSummaryEnhance = compose(
   graphql(getTaxQuery, {
-    options: {
+    options: ({ country }: OwnProps) => ({
+      skip: !country,
+      variables: { country },
       fetchPolicy: 'network-only'
-    }
+    })
   })
 )(OrderSummary)
 
