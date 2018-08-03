@@ -763,3 +763,31 @@ export interface ClickParam {
   item: any
   domEvent: any
 }
+
+export interface Measure {
+  in: string[]
+  cm: string[]
+}
+
+export interface SizesTable {
+  title: string
+  headers: string[]
+  size: string[]
+  waist?: Measure
+  chest?: Measure
+  inseam?: Measure
+  hips?: Measure
+  height?: Measure
+  bicep?: Measure
+  length?: Measure
+  thigh?: Measure
+  calf?: Measure
+  mens?: Measure
+  womens?: Measure
+  circumference?: Measure
+}
+
+export interface Chart {
+  title: string
+  tables: SizesTable[]
+}
