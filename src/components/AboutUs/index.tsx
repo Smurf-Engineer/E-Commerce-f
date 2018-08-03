@@ -24,9 +24,7 @@ const AboutUs = ({ formatMessage }: Props) => {
         </Span>
      </Text>*/}
       <Text>
-        <Span link="https://www.jakroo.com/us/job-opportunities.html">
-          {formatMessage(messages.jobs)}
-        </Span>
+        <Span link="/work-at-jakroo">{formatMessage(messages.jobs)}</Span>
       </Text>
       <Text>
         <Span link="https://www.jakroo.com/us/investor-relations.html">

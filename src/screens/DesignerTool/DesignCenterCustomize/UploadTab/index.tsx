@@ -73,16 +73,16 @@ class UploadTab extends React.PureComponent<Props, State> {
   }
 
   handleUpload = () => {
-    const { files, areas, extra, config } = this.state
     const { onUploadFiles, uploadNewModel, onUploadDesign } = this.props
 
-    if (uploadNewModel) {
-      onUploadDesign(areas, config)
-    } else {
-      onUploadFiles(files, areas, extra)
-    }
-
-    this.setState({ areas: [] })
+    this.setState(({ files, areas, extra, config }) => {
+      if (uploadNewModel) {
+        onUploadDesign(areas, config)
+      } else {
+        onUploadFiles(files, areas, extra)
+      }
+      return { areas: [], config: null }
+    })
   }
 
   beforeUpload = (fileName: string, file: any, extension: string) => {

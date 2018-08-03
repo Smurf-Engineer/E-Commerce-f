@@ -22,6 +22,8 @@ export const SET_STRIPE_ERROR = `${namespace}/SET_STRIPE_ERROR`
 export const SET_LOADING_BILLING = `${namespace}/SET_LOADING_BILLING`
 export const SET_STRIPE_TOKEN = `${namespace}/SET_STRIPE_TOKEN`
 export const SET_STRIPE_CARD_DATA = `${namespace}/SET_STRIPE_CARD_DATA`
+export const SHOW_CARD_FORM = `${namespace}/SHOW_CARD_FORM`
+export const SET_SELECTED_CARD_TO_PAY = `${namespace}/SET_SELECTED_CARD_TO_PAY`
 // Review
 export const SET_LOADING_PLACE_ORDER = `${namespace}/SET_LOADING_PLACE_ORDER`
 export const SET_PAYMENT_METHOD = `${namespace}/SET_PAYMENT_METHOD`

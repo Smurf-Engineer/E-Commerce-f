@@ -3,16 +3,21 @@
  */
 import * as React from 'react'
 import { Container, CardsList } from './styledComponents'
-import { CreditCardData } from '../../types/common'
+import { CreditCardData, StripeCardData } from '../../types/common'
 import MyCard from '../MyCard'
 
 interface Props {
   items: CreditCardData[]
   idDefaultCard: string
+  paymentsRender: boolean
+  listForMyAccount: boolean
+  selectedCard: CreditCardData
   formatMessage: (messageDescriptor: any) => string
   showCardFormAction?: (show: boolean) => void
   showConfirmDelete?: (index: number) => void
   selectCardAsDefault?: (index: number) => void
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
+  selectCardToPayAction: (card: CreditCardData, selectedCardId?: string) => void
 }
 
 class MyCardsList extends React.Component<Props, {}> {
@@ -23,7 +28,12 @@ class MyCardsList extends React.Component<Props, {}> {
       showCardFormAction,
       showConfirmDelete,
       selectCardAsDefault,
-      idDefaultCard
+      idDefaultCard,
+      paymentsRender = false,
+      listForMyAccount,
+      setStripeCardDataAction,
+      selectCardToPayAction,
+      selectedCard
     } = this.props
     const cardsList = items.map((cardItem, key) => {
       const {
@@ -41,6 +51,7 @@ class MyCardsList extends React.Component<Props, {}> {
           markedAsDefault={String(id) === idDefaultCard}
           showCardForm={showCardFormAction}
           {...{
+            id,
             key,
             last4,
             name,
@@ -50,7 +61,12 @@ class MyCardsList extends React.Component<Props, {}> {
             defaultPayment,
             formatMessage,
             showConfirmDelete,
-            selectCardAsDefault
+            selectCardAsDefault,
+            paymentsRender,
+            listForMyAccount,
+            setStripeCardDataAction,
+            selectCardToPayAction,
+            selectedCard
           }}
         />
       )

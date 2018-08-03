@@ -23,9 +23,11 @@ import {
   SET_PAYMENT_METHOD,
   SAVE_COUNTRY,
   OPEN_ADDRESSES_MODAL,
-  SET_SKIP_VALUE
+  SET_SKIP_VALUE,
+  SHOW_CARD_FORM,
+  SET_SELECTED_CARD_TO_PAY
 } from './constants'
-import { AnyAction, AddressType, StripeCardData } from '../../types/common'
+import { AnyAction, AddressType, CreditCardData } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -106,11 +108,9 @@ export const setStripeTokenAction = (token: string): AnyAction => ({
   token
 })
 
-export const setStripeCardDataAction = (
-  stripeCardData: StripeCardData
-): AnyAction => ({
+export const setStripeCardDataAction = (card: CreditCardData): AnyAction => ({
   type: SET_STRIPE_CARD_DATA,
-  stripeCardData
+  card
 })
 
 export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({
@@ -136,6 +136,26 @@ export const openAddressesModalAction = (open: boolean): AnyAction => ({
   type: OPEN_ADDRESSES_MODAL,
   open
 })
+
+export const showCardFormAction = (
+  open: boolean,
+  card?: string
+): AnyAction => ({
+  type: SHOW_CARD_FORM,
+  open,
+  card
+})
+
+export const selectCardToPayAction = (
+  card: CreditCardData,
+  cardId?: string
+) => {
+  return {
+    type: SET_SELECTED_CARD_TO_PAY,
+    card,
+    cardId
+  }
+}
 
 export const setSkipValueAction = (
   skip: number,

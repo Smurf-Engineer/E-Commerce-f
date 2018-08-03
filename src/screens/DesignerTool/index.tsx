@@ -105,6 +105,7 @@ interface Props {
   addExtraFileAction: (file: string) => void
   removeExtraFileAction: (index: number) => void
   toggleExtraColorAction: (color: string) => void
+  saveDesignSuccessAction: () => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -335,7 +336,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         designConfig,
         saveDesign,
         themeName,
-        createTheme
+        createTheme,
+        saveDesignSuccessAction
       } = this.props
 
       if (!productCode) {
@@ -449,6 +451,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           { query: getProductFromCode, variables: { code: productCode } }
         ]
       })
+      saveDesignSuccessAction()
       message.success('Your design is now saved')
     } catch (e) {
       message.error(e.message)

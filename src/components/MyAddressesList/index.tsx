@@ -37,6 +37,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
+  items: AddressType[]
   listForMyAccount?: boolean
   showForm?: boolean
   indexAddressSelected?: number
@@ -65,7 +66,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
     const {
       showForm,
       formatMessage,
-      listForMyAccount,
+      listForMyAccount = false,
       showAddressFormAction,
       showConfirmDeleteAction,
       indexAddressSelected,
@@ -76,15 +77,15 @@ export class MyAddressesList extends React.Component<Props, {}> {
       paginationAlignment,
       currentPage,
       changePage,
-      data: { loading, userAddresses }
+      data
     } = this.props
 
-    if (loading) {
+    if (!data || get(data, 'loading', false)) {
       return null
     }
 
-    const addresses: AddressType[] = get(userAddresses, 'addresses', [])
-    const fullCount = get(userAddresses, 'fullCount', 0)
+    const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
+    const fullCount = get(data, 'userAddresses.fullCount', 0)
     let atLeastOneIsSelected = false
 
     const adressesList = addresses.map((address, key) => {
@@ -170,6 +171,14 @@ export class MyAddressesList extends React.Component<Props, {}> {
     )
 
     const renderView = !!addresses.length ? (
+      addressesList
+    ) : (
+      <Container>
+        <Message>{formatMessage(messages.emptyMessage)}</Message>
+      </Container>
+    )
+
+    return (
       <Container {...{ listForMyAccount }}>
         <Content>
           {!listForMyAccount ? (
@@ -180,8 +189,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
               {formatMessage(messages.addAddressLabel)}
             </AddAddressBtn>
           ) : null}
-          {addressesList}
         </Content>
+        {renderView}
         {withPagination ? (
           <PaginationRow {...{ paginationAlignment }}>
             <Pagination
@@ -193,13 +202,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
         ) : null}
         {deleteAddressModal}
       </Container>
-    ) : (
-      <Container>
-        <Message>{formatMessage(messages.emptyMessage)}</Message>
-      </Container>
     )
-
-    return renderView
   }
 
   showAddressForm = () => {
@@ -264,11 +267,12 @@ type OwnProps = {
   renderForModal?: boolean
   withoutDataFetch?: boolean
   skip?: number
+  listForMyAccount?: boolean
 }
 
 const MyadressesListEnhanced = compose(
   graphql(GetAddressListQuery, {
-    options: ({ itemsNumber, skip }: OwnProps) => {
+    options: ({ itemsNumber, skip, listForMyAccount }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: {
