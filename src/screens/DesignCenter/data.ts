@@ -26,28 +26,6 @@ export const getProductQuery = gql`
         white
         black
       }
-      themes {
-        id
-        name
-        image
-        styles {
-          id
-          name
-          image
-          branding
-          brandingPng: branding_png
-          colorblock1
-          colorblock2
-          colorblock3
-          colorblock4
-          colorblock5
-          colors: colorsBlocks {
-            id
-            color
-            image
-          }
-        }
-      }
     }
   }
 `

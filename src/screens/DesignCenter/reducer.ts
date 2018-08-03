@@ -68,6 +68,7 @@ export const initialState = fromJS({
   savedDesignId: '',
   design: {},
   style: {},
+  complexity: 0,
   saveDesignLoading: false,
   text: '',
   openAddToStoreModal: false,
@@ -248,7 +249,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_STYLE_COMPLEXITY_ACTION:
-      return state.set('style', action.index)
+      return state.set('complexity', action.index)
     case OPEN_SHARE_MODAL:
       return state.set('openShareModal', action.open)
     case OPEN_SAVE_DESIGN_ACTION: {

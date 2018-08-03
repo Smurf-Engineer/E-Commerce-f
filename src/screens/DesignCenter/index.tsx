@@ -120,6 +120,7 @@ interface Props extends RouteComponentProps<any> {
   svgOutputUrl: string
   tabChanged: boolean
   product: Product
+  complexity: number
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -340,7 +341,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       designClearAction,
       undoChanges,
       redoChanges,
-      setThemeAction,
       setStyleAction,
       openShareModal,
       openShareModalAction,
@@ -384,7 +384,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       svgOutputUrl,
       setCanvasJsonAction,
       styleIndex,
-      product
+      product,
+      complexity
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -466,7 +467,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                     themeModalData,
                     openNewThemeModalAction,
                     designHasChanges,
-                    formatMessage
+                    formatMessage,
+                    productId
                   }}
                 />
               )}
@@ -486,8 +488,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                     openNewStyleModalAction,
                     designHasChanges,
                     formatMessage,
-                    styleIndex
+                    styleIndex,
+                    productId,
+                    themeId
                   }}
+                  complexity={complexity + 1}
                 />
               )}
             </div>

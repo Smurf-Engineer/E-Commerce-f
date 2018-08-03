@@ -5,14 +5,14 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
-import get from 'lodash/get'
+
 import reverse from 'lodash/reverse'
 import withLoading from '../WithLoadingData'
-import { QueryProps, StyleModalType } from '../../types/common'
+import { QueryProps, StyleModalType, Style } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
 import StyleItem from '../Theme'
-import { StyleResult, DesignStyle } from '../../types/common'
+import { DesignStyle } from '../../types/common'
 import {
   Container,
   Title,
@@ -25,7 +25,7 @@ import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
 
 interface Data extends QueryProps {
-  styles?: StyleResult
+  styles: Style[]
 }
 
 interface Props {
@@ -33,6 +33,9 @@ interface Props {
   styleModalData: StyleModalType
   styleIndex: number
   designHasChanges: boolean
+  productId: number
+  themeId: number
+  complexity: number
   onSelectStyle: (style: DesignStyle, index: number, colors: string[]) => void
   onSelectStyleComplexity: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -64,7 +67,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       onSelectStyle,
       data: { styles }
     } = this.props
-    const style = get(styles, `styles[${index}]`, {})
+    const style = styles[index] || {}
     const styleAreas = style.colors || []
     const colors = styleAreas.map(({ color }: any) => color)
     onSelectStyle(style, index, reverse(colors))
@@ -90,15 +93,16 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 
   render() {
     const {
-      data: { styles, error },
+      data: { styles = [], error },
       formatMessage,
+      complexity,
       styleModalData: { openNewStyleModal }
     } = this.props
     if (error) {
       return <div>Error</div>
     }
-    const stylesItems = styles ? styles.styles || [] : []
-    const list = stylesItems.map(({ id, image, name }, index) => (
+
+    const list = styles.map(({ id, image, name }, index) => (
       <StyleItem
         key={index}
         {...{ index, id, name, image }}
@@ -115,6 +119,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
           onChange={this.handleOnSelectComplexity}
           marks={marks}
           defaultValue={1}
+          value={complexity}
           min={1}
           max={3}
         />
@@ -147,7 +152,11 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 }
 
 const DesignCenterStyleWithData = compose(
-  graphql<Data>(stylesQuery),
+  graphql<Data, Props>(stylesQuery, {
+    options: ({ productId, themeId, complexity }) => ({
+      variables: { productId, themeId, complexity }
+    })
+  }),
   withLoading
 )(DesignCenterStyle)
 
