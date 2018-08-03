@@ -576,7 +576,7 @@ class Checkout extends React.Component<Props, {}> {
     const orderObj = {
       paymentMethod,
       cardId,
-      stripeToken,
+      token: stripeToken,
       cart: shoppingCart,
       shippingAddress,
       billingAddress,
