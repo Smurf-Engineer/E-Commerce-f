@@ -74,7 +74,7 @@ class Render3D extends PureComponent {
     currentModel: 0,
     zoomValue: 0,
     progress: 0,
-    objectChilds: 0,
+    objectChildCount: 0,
     canvasEl: null
   }
 
@@ -309,11 +309,10 @@ class Render3D extends PureComponent {
       this.objLoader.load(
         product.obj,
         object => {
-          const objectChilds = object.children.length
-          this.setState({ objectChilds })
-
           /* Object materials */
           const { children } = object
+          const objectChildCount = children.length
+          this.setState({ objectChildCount })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
@@ -334,7 +333,7 @@ class Render3D extends PureComponent {
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
             flatlockMaterial.alphaTest = 0.5
-            object.children[flatlockIndex].material = flatlockMaterial
+            children[flatlockIndex].material = flatlockMaterial
           }
 
           /* Zipper */
@@ -344,7 +343,7 @@ class Render3D extends PureComponent {
               map: this.zipper.white,
               transparent: true
             })
-            object.children[zipperIndex].material = zipperMaterial
+            children[zipperIndex].material = zipperMaterial
             this.setState({ zipperIndex })
           }
           /* Binding */
@@ -354,7 +353,7 @@ class Render3D extends PureComponent {
               map: this.binding.white,
               transparent: true
             })
-            object.children[bindingIndex].material = bindingMaterial
+            children[bindingIndex].material = bindingMaterial
             this.setState({ bindingIndex })
           }
           /* Bib Brace */
@@ -364,7 +363,7 @@ class Render3D extends PureComponent {
               map: this.bibBrace.white,
               transparent: true
             })
-            object.children[bibBraceIndex].material = bibBraceMaterial
+            children[bibBraceIndex].material = bibBraceMaterial
             this.setState({ bibBraceIndex })
           }
 
@@ -379,13 +378,13 @@ class Render3D extends PureComponent {
           object.add(...areasLayers)
 
           /* Jersey label */
-          object.children[labelIndex].material.color.set('#ffffff')
-          object.children[meshIndex].material = insideMaterial
+          children[labelIndex].material.color.set('#ffffff')
+          children[meshIndex].material = insideMaterial
 
           areas.forEach(
             (map, index) =>
-              (object.children[
-                objectChilds + index
+              (children[
+                objectChildCount + index
               ].material = new THREE.MeshPhongMaterial({
                 map,
                 side: THREE.FrontSide,
@@ -416,17 +415,17 @@ class Render3D extends PureComponent {
             bumpMap,
             transparent: true
           })
-          const canvasObj = object.children[meshIndex].clone()
+          const canvasObj = children[meshIndex].clone()
           object.add(canvasObj)
 
           const childrenLength = children.length
           const canvasIndex = childrenLength - 1
-          object.children[canvasIndex].material = canvasMaterial
-          object.children[canvasIndex].name = CANVAS_MESH
+          children[canvasIndex].material = canvasMaterial
+          children[canvasIndex].name = CANVAS_MESH
 
           /* Branding  */
           if (!!branding) {
-            const brandingObj = object.children[meshIndex].clone()
+            const brandingObj = children[meshIndex].clone()
             object.add(brandingObj)
             const brandingIndex = children.length - 1
             const brandingMaterial = new THREE.MeshPhongMaterial({
@@ -435,8 +434,8 @@ class Render3D extends PureComponent {
               bumpMap,
               transparent: true
             })
-            object.children[brandingIndex].material = brandingMaterial
-            object.children[brandingIndex].name = BRANDING_MESH
+            children[brandingIndex].material = brandingMaterial
+            children[brandingIndex].name = BRANDING_MESH
           }
 
           /* Object Config */
@@ -504,12 +503,12 @@ class Render3D extends PureComponent {
     if (!this.scene) {
       return
     }
-    const { objectChilds } = this.state
+    const { objectChildCount } = this.state
     const object = this.scene.getObjectByName(MESH_NAME)
     if (object) {
       colors.forEach((color, index) => {
-        if (object.children[objectChilds + index]) {
-          object.children[objectChilds + index].material.color.set(color)
+        if (object.children[objectChildCount + index]) {
+          object.children[objectChildCount + index].material.color.set(color)
         }
       })
     }
@@ -520,10 +519,10 @@ class Render3D extends PureComponent {
       return
     }
     const object = this.scene.getObjectByName(MESH_NAME)
-    const { objectChilds } = this.state
+    const { objectChildCount } = this.state
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {
-      object.children[objectChilds + colorBlockHovered].material.color.set(
+      object.children[objectChildCount + colorBlockHovered].material.color.set(
         '#f2f2f2'
       )
     } else {
@@ -1033,12 +1032,12 @@ class Render3D extends PureComponent {
     )
     if (!!intersects.length && intersects[0].uv && !!this.dragComponent) {
       const meshName = get(intersects[0], 'object.name', '')
-      if (
+      const validMesh =
         meshName === MESH ||
         meshName === CANVAS_MESH ||
         meshName === BRANDING_MESH ||
         meshName === BIB_BRACE
-      ) {
+      if (validMesh) {
         const activeEl = this.canvasTexture.getActiveObject()
         const { differenceX, differenceY, action } = this.dragComponent
         const uv = intersects[0].uv

@@ -221,16 +221,16 @@ class Render3D extends PureComponent {
   onError = xhr => console.error('Error: ' + xhr)
 
   start = () => {
-    if (!this.framId) {
-      this.framId = requestAnimationFrame(this.animate)
+    if (!this.frameId) {
+      this.frameId = requestAnimationFrame(this.animate)
     }
   }
 
-  stop = () => cancelAnimationFrame(this.framId)
+  stop = () => cancelAnimationFrame(this.frameId)
 
   animate = () => {
     this.rendeScene()
-    this.framId = window.requestAnimationFrame(this.animate)
+    this.frameId = window.requestAnimationFrame(this.animate)
   }
 
   rendeScene = () => {
