@@ -29,10 +29,13 @@ import {
   TitleStyled,
   CartList,
   ShippingBillingContainer,
+  ShippingBillingCard,
   SubTitle,
   PaymentText,
   CardNumber,
-  StyledImage
+  StyledImage,
+  Annotation,
+  Date
 } from './styledComponents'
 import { OrderSummary } from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -190,7 +193,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <OrderDelivery>
             <DeliveryDate>
               <span>{formatMessage(messages.deliveryDate)}</span>
-              {` ${deliveryDate || '-'}`}
+              <Date>{` ${deliveryDate || '-'}`}</Date>
             </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
@@ -242,7 +245,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <CartList>{renderItemList}</CartList>
         </Items>
         <ShippingBillingContainer>
-          <div>
+          <ShippingBillingCard>
             <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
             <MyAddress
               hideBottomButtons={true}
@@ -254,8 +257,8 @@ export class OrderDetails extends React.Component<Props, {}> {
               apartment={shippingApartment}
               {...{ formatMessage }}
             />
-          </div>
-          <div>
+          </ShippingBillingCard>
+          <ShippingBillingCard>
             <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
             <MyAddress
               hideBottomButtons={true}
@@ -267,12 +270,13 @@ export class OrderDetails extends React.Component<Props, {}> {
               apartment={billingApartment}
               {...{ formatMessage }}
             />
-          </div>
-          <div>
+          </ShippingBillingCard>
+          <ShippingBillingCard>
             <SubTitle>{formatMessage(messages.payment)}</SubTitle>
             {paymentMethodInfo}
-          </div>
+          </ShippingBillingCard>
         </ShippingBillingContainer>
+        <Annotation>{formatMessage(messages.annotation)}</Annotation>
       </Container>
     )
   }

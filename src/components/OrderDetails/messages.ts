@@ -84,5 +84,10 @@ export default defineMessages({
   payment: {
     id: 'components.OrderDetails.payment',
     defaultMessage: 'Payment'
+  },
+  annotation: {
+    id: 'components.OrderDetails.annotation',
+    defaultMessage:
+      '* For any cancelations or refunds inquiry, please contact Customer Service.'
   }
 })

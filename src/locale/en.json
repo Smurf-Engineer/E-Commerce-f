@@ -896,6 +896,8 @@
   "components.OrderDetails.shippingAddress": "Shipping Address",
   "components.OrderDetails.billingAddress": "Billing Address",
   "components.OrderDetails.payment": "Payment",
+  "components.OrderDetails.annotation":
+    "* For any cancelations or refunds inquiry, please contact Customer Service.",
 
   "components.OrderHistory.title": "ORDER HISTORY",
 
