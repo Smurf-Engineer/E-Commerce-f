@@ -571,12 +571,13 @@ class Checkout extends React.Component<Props, {}> {
         unset(itemDetail, 'gender.__typename')
         unset(itemDetail, 'fit.__typename')
         unset(itemDetail, 'size.__typename')
+        unset(itemDetail, '__typename')
       })
     })
     const orderObj = {
       paymentMethod,
       cardId,
-      token: stripeToken,
+      tokenId: stripeToken,
       cart: shoppingCart,
       shippingAddress,
       billingAddress,
