@@ -36,9 +36,11 @@ import myLocker from '../components/MyLocker/reducer'
 import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import overview from '../components/Overview/reducer'
+import customProductDetail from '../screens/CustomProductDetail/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
+  customProductDetail: any
   warrantyProgram: any
   orderPlaced: any
   myTeamStores: any
@@ -132,6 +134,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  customProductDetail,
   warrantyProgram,
   orderPlaced,
   myTeamStores,

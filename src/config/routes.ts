@@ -1,4 +1,5 @@
 /* Routes */
+import CustomProductDetail from '../screens/CustomProductDetail'
 import WorkAtJakroo from '../screens/WorkAtJakroo'
 import AboutUsPage from '../screens/AboutUsPage'
 import TemplateDownload from '../screens/TemplateDownload'
@@ -30,6 +31,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/custom-product',
+    name: 'customProductDetail',
+    component: CustomProductDetail
+  },
   {
     path: '/work-at-jakroo',
     name: 'workAtJakroo',
