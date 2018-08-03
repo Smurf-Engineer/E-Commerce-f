@@ -35,7 +35,7 @@ interface Props {
   sameBillingAndShipping: boolean
   showCardForm: boolean
   selectedCard: CreditCardData
-  setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   invalidBillingFormAction: (hasError: boolean) => void
@@ -186,7 +186,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
-    console.log(selectedCardId)
+
     if ((!cardHolderName && !selectedCardId) || error) {
       invalidBillingFormAction(true)
     }
@@ -211,6 +211,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       if (!selectedCardId) {
         const {
           token: {
+            id: tokenId,
             card: { id, name, brand, last4, exp_month, exp_year }
           }
         } = stripeResponse
@@ -224,7 +225,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           brand
         }
 
-        setStripeCardDataAction(cardData)
+        setStripeCardDataAction(cardData, tokenId)
       }
       nextStep()
     }
