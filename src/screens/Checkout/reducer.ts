@@ -2,6 +2,7 @@
  * Checkout Reducer - Created by cazarez on 05/05/18.
  */
 import { fromJS } from 'immutable'
+import get from 'lodash/get'
 import {
   DEFAULT_ACTION,
   STEP_ADVANCE,
@@ -24,7 +25,9 @@ import {
   SET_PAYMENT_METHOD,
   SAVE_COUNTRY,
   OPEN_ADDRESSES_MODAL,
-  SET_SKIP_VALUE
+  SET_SKIP_VALUE,
+  SHOW_CARD_FORM,
+  SET_SELECTED_CARD_TO_PAY
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -70,6 +73,8 @@ export const initialState = fromJS({
   stripeError: '',
   loadingBilling: false,
   stripeToken: '',
+  showCardForm: false,
+  selectedCard: {},
   // Review
   loadingPlaceOrder: false,
   paymentMethod: 'credit card',
@@ -82,7 +87,10 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
     case DEFAULT_ACTION:
       return state.set('someKey', action.someValue)
     case STEP_ADVANCE:
-      return state.set('currentStep', action.step)
+      return state.merge({
+        currentStep: action.step,
+        loadingBilling: false
+      })
     case VALID_FORM:
       return state.set('hasError', action.hasError)
     case SET_STRIPE_ERROR:
@@ -161,6 +169,29 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('showForm', false)
     }
+    case SHOW_CARD_FORM: {
+      if (!action.open) {
+        const name = get(action, 'card.name', '')
+        return state.merge({
+          showCardForm: false,
+          selectedCard: action.card,
+          cardHolderName: name,
+          stripeToken: ''
+        })
+      }
+      return state.merge({
+        showCardForm: action.open,
+        selectedCard: '',
+        cardHolderName: ''
+      })
+    }
+    case SET_SELECTED_CARD_TO_PAY:
+      return state.merge({
+        ...action.card,
+        selectedCard: action.card,
+        cardHolderName: action.card.name,
+        showCardForm: false
+      })
     case SET_SKIP_VALUE:
       return state.merge({
         skip: action.skip,
@@ -177,7 +208,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_STRIPE_CARD_DATA:
       return state.merge({
-        ...action.stripeCardData,
+        stripeToken: action.stripeToken,
+        selectedCard: action.card,
         loadingBilling: false,
         stripeError: false
       })

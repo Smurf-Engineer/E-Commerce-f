@@ -50,7 +50,9 @@ import {
   ArtFormat,
   SaveDesignType,
   DesignType,
-  Style
+  Style,
+  StitchingColor,
+  AccesoryColor
 } from '../../types/common'
 import {
   getProductQuery,
@@ -121,6 +123,10 @@ interface Props extends RouteComponentProps<any> {
   tabChanged: boolean
   product: Product
   complexity: number
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -171,6 +177,8 @@ interface Props extends RouteComponentProps<any> {
   openOutWithoutSaveModalAction: (open: boolean, route?: string) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
   setCanvasJsonAction: (canvas: string) => void
+  setStitchingColorAction: (stitchingColor: StitchingColor) => void
+  setAccessoryColorAction: (color: AccesoryColor, id: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -385,7 +393,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCanvasJsonAction,
       styleIndex,
       product,
-      complexity
+      complexity,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bidColor,
+      setStitchingColorAction,
+      setAccessoryColorAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -522,8 +536,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setCustomize3dMountedAction,
                 loadingData,
                 currentStyle,
-                product
+                product,
+                stitchingColor,
+                setStitchingColorAction,
+                bindingColor,
+                zipperColor,
+                bidColor
               }}
+              onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}
               design={designObject}
               onUpdateText={setTextAction}

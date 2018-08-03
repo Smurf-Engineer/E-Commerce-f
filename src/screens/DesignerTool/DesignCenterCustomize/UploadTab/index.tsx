@@ -45,7 +45,7 @@ interface Props {
   extraFiles: string[]
   onSelectConfig: (config: DesignConfig) => void
   onUploadFiles: (files: any, areas: any, extra: any) => void
-  onUploadDesign: (files: any) => void
+  onUploadDesign: (areas: any, config: any) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
 }
@@ -58,6 +58,7 @@ interface State {
   areas: UploadFile[]
   files: FileType
   extra: ExtraFiles
+  config?: UploadFile | null
 }
 
 const getFileExtension = (filename: string) =>
@@ -67,20 +68,21 @@ class UploadTab extends React.PureComponent<Props, State> {
   state = {
     areas: [],
     files: {},
-    extra: {}
+    extra: {},
+    config: null
   }
 
   handleUpload = () => {
-    const { files, areas, extra } = this.state
     const { onUploadFiles, uploadNewModel, onUploadDesign } = this.props
 
-    if (uploadNewModel) {
-      onUploadDesign(files)
-    } else {
-      onUploadFiles(files, areas, extra)
-    }
-
-    this.setState({ areas: [] })
+    this.setState(({ files, areas, extra, config }) => {
+      if (uploadNewModel) {
+        onUploadDesign(areas, config)
+      } else {
+        onUploadFiles(files, areas, extra)
+      }
+      return { areas: [], config: null }
+    })
   }
 
   beforeUpload = (fileName: string, file: any, extension: string) => {
@@ -139,7 +141,7 @@ class UploadTab extends React.PureComponent<Props, State> {
   handleReset = () => window.location.replace('/designer-tool')
 
   render() {
-    const { files, areas, extra } = this.state
+    const { files, areas, extra, config } = this.state
     const { uploadingFiles, uploadNewModel, extraFiles } = this.props
 
     const dragger = (
@@ -159,16 +161,16 @@ class UploadTab extends React.PureComponent<Props, State> {
     )
 
     if (uploadNewModel) {
-      // TODO: WIP Next PR.
+      const uploadEnabled = !!config && areas.length
       return (
         <DesignContainer>
           <ButtonWrapper>
             <Button
               size="large"
               type="primary"
-              onClick={() => {}}
-              disabled={false}
-              loading={false}
+              onClick={this.handleUpload}
+              disabled={!uploadEnabled}
+              loading={uploadingFiles}
             >
               {'Upload Design'}
             </Button>
@@ -184,12 +186,11 @@ class UploadTab extends React.PureComponent<Props, State> {
             </Button>
           </ButtonWrapper>
           <UploadButton
-            fileName={'file'}
+            hasFile={!!config}
+            fileName={File.Config}
             extension={Extension.Config}
-            index={0}
-            hasFile={false}
-            onSelectFile={() => {}}
-            onRemoveFile={() => {}}
+            onSelectFile={this.handleOnAddDesignConfig}
+            onRemoveFile={this.handleOnRemoveDesignConfig}
             label={'Config'}
           />
           {dragger}
@@ -347,6 +348,38 @@ class UploadTab extends React.PureComponent<Props, State> {
       return { extra: updatedFiles }
     })
   }
+
+  handleOnAddDesignConfig = (
+    fileName: string,
+    file: any,
+    extension: string
+  ) => {
+    const { type, name } = file
+    const selectedFileExtension = type || getFileExtension(name)
+
+    if (selectedFileExtension !== extension) {
+      message.error(`Please select a valid ${extension} file`)
+    } else {
+      if (fileName === File.Config) {
+        const reader = new FileReader()
+        const { onSelectConfig } = this.props
+        reader.onload = () => {
+          try {
+            const obj = JSON.parse(reader.result) || {}
+            onSelectConfig(obj)
+          } catch (error) {
+            message.error('Please select a valid JSON file')
+            return
+          }
+        }
+        reader.readAsText(file)
+        this.setState({ config: file })
+      }
+    }
+  }
+
+  handleOnRemoveDesignConfig = (fileName: string) =>
+    this.setState({ config: null })
 }
 
 export default UploadTab

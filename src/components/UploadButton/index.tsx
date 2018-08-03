@@ -7,7 +7,7 @@ import { UploadFile } from '../../types/common'
 import { ButtonUpload, Container, Icon } from './styledComponents'
 
 interface Props {
-  index: number
+  index?: number
   hasFile: boolean
   fileName: string
   label: string
@@ -22,8 +22,7 @@ const UploadButton = ({
   onSelectFile,
   onRemoveFile,
   label,
-  extension,
-  index
+  extension
 }: Props) => {
   const beforeUpload = (file: UploadFile) => {
     onSelectFile(fileName, file, extension)

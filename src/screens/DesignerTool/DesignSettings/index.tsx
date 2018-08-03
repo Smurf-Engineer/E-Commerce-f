@@ -45,6 +45,7 @@ interface Props {
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (design: number, name: string) => void
   onLoadDesign: (config: ModelConfig) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {

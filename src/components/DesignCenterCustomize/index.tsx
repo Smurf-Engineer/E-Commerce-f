@@ -14,7 +14,9 @@ import {
   ArtFormat,
   SaveDesignType,
   Style,
-  Product
+  Product,
+  StitchingColor,
+  AccesoryColor
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import { DesignTabs } from '../../screens/DesignCenter/constants'
@@ -25,6 +27,10 @@ interface Props {
   paletteName: string
   palettes: Palette[]
   colors: string[]
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   styleColors: string[]
   currentStyle: Style
   loadingModel: boolean
@@ -46,6 +52,7 @@ interface Props {
   product?: Product
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
+  setStitchingColorAction: (color: StitchingColor) => void
   onSelectPalette: (colors: string[]) => void
   onChangePaletteName: (name: string) => void
   onSetPalettes: (palettes: Palette[]) => void
@@ -72,6 +79,7 @@ interface Props {
   openResetDesignModalAction: (open: boolean) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
+  onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -82,6 +90,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorBlock,
       colorBlockHovered,
       onSelectColor,
+      setStitchingColorAction,
       onSelectPalette,
       onChangePaletteName,
       paletteName,
@@ -124,7 +133,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectArtFormat,
       onUnmountTab,
       loadingData,
-      product
+      product,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bidColor,
+      onAccessoryColorSelected
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -161,8 +175,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onSelectTextFormat,
             onSelectArtFormat,
             openPaletteModalAction,
-            myPaletteModals
+            myPaletteModals,
+            stitchingColor,
+            bindingColor,
+            zipperColor,
+            bidColor,
+            onAccessoryColorSelected
           }}
+          onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
           onApplyImage={this.handleOnApplyImage}
           onApplyArt={this.handleOnApplyArt}

@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
 import { StripeProvider, Elements } from 'react-stripe-elements'
@@ -51,6 +52,10 @@ interface Props {
   deleteLoading: boolean
   defaultPayment: boolean
   hasError: boolean
+  paymentsRender: boolean
+  showCardForm: boolean
+  listForMyAccount: boolean
+  selectedCard: CreditCardData
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
@@ -67,6 +72,8 @@ interface Props {
   resetReducerDataAction: () => void
   setStripeCardDataAction: (stripeCardData: StripeCardData) => void
   setStripeErrorAction: (error: string) => void
+  showCardFormAction: (open: boolean, card?: object | string) => void
+  selectCardToPayAction: (card: CreditCardData, selectedCardId?: string) => void
   // mutations apollo
   addNewCard: (variables: {}) => void
   updateCard: (variables: {}) => void
@@ -84,6 +91,13 @@ class MyCards extends React.Component<Props, {}> {
     stripe: null
   }
   componentDidMount() {
+    const {
+      showCardForm,
+      showCardFormAction = () => {},
+      data: {
+        userCards: { cards, default: idDefaultCard }
+      }
+    } = this.props
     // In addition to loading asynchronously, this code is safe to server-side render.
     const stripeJs = document.createElement('script')
     stripeJs.src = 'https://js.stripe.com/v3/'
@@ -95,6 +109,12 @@ class MyCards extends React.Component<Props, {}> {
     }
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
+
+    if (!!cards.length || !showCardForm) {
+      const defaultCard = find(cards, { id: idDefaultCard })
+
+      showCardFormAction(false, defaultCard)
+    }
   }
   render() {
     const {
@@ -116,9 +136,16 @@ class MyCards extends React.Component<Props, {}> {
       setModalLoadingAction,
       setDefaultPaymentCheckedAction,
       validFormAction,
-      loading
+      loading,
+      paymentsRender = true,
+      listForMyAccount,
+      setStripeCardDataAction,
+      selectCardToPayAction,
+      selectedCard
     } = this.props
+
     const { stripe } = this.state
+
     if (loading) {
       return (
         <LoadingContainer>
@@ -126,14 +153,23 @@ class MyCards extends React.Component<Props, {}> {
         </LoadingContainer>
       )
     }
+
     return (
       <Container>
-        <StyledEmptyButton type="danger" onClick={this.handleOnAddNewAddress}>
+        <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
           {formatMessage(messages.addCard)}
         </StyledEmptyButton>
         <MyCardsList
           items={cards}
-          {...{ formatMessage, idDefaultCard }}
+          {...{
+            formatMessage,
+            idDefaultCard,
+            paymentsRender,
+            listForMyAccount,
+            setStripeCardDataAction,
+            selectCardToPayAction,
+            selectedCard
+          }}
           showConfirmDelete={this.handleOnShowDeleteCardConfirm}
           selectCardAsDefault={this.handleOnSelectCardAsDefault}
         />
@@ -185,9 +221,23 @@ class MyCards extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleOnAddNewAddress = () => {
-    const { showCardModalAction } = this.props
-    showCardModalAction(true)
+  handleOnAddNewCard = () => {
+    const {
+      listForMyAccount,
+      showCardModalAction,
+      showCardFormAction,
+      showCardForm,
+      data: {
+        userCards: { cards, default: idDefaultCard }
+      }
+    } = this.props
+    const defaultCard = find(cards, { id: idDefaultCard })
+
+    if (listForMyAccount) {
+      showCardModalAction(true)
+    } else {
+      showCardFormAction(!showCardForm, defaultCard)
+    }
   }
 
   handleOnShowDeleteCardConfirm = (index: number) => {
@@ -238,6 +288,7 @@ class MyCards extends React.Component<Props, {}> {
     })
     resetReducerDataAction()
   }
+
   handleOnSelectCardAsDefault = async (index: number) => {
     const {
       updateCard,

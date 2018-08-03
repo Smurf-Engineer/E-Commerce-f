@@ -8,9 +8,6 @@ import {
   Title,
   BottomContainer,
   InfoContainer,
-  PaymentText,
-  CardNumber,
-  StyledImage,
   EditInfoButton,
   CartList,
   CartContent
@@ -19,9 +16,11 @@ import {
   AddressType,
   StripeCardData,
   CartItemDetail,
-  Product
+  Product,
+  CreditCardData
 } from '../../types/common'
 import MyAddress from '../MyAddress'
+import PaymentData from '../PaymentData'
 import CartListItem from '../../components/CartListItem'
 import iconVisa from '../../assets/card-visa.svg'
 import iconMasterCard from '../../assets/card-master.svg'
@@ -44,6 +43,7 @@ interface Props {
   cardData: StripeCardData
   cardHolderName: string
   paymentMethod: string
+  selectedCard: CreditCardData
   formatMessage: (messageDescriptor: any) => string
   goToStep: (step: number) => void
 }
@@ -73,10 +73,9 @@ class Review extends React.PureComponent<Props, {}> {
         country: billingCountry,
         apartment: billingApartment
       },
-      cardData,
-      cardHolderName,
       cart,
-      paymentMethod
+      paymentMethod,
+      selectedCard
     } = this.props
 
     if (!showContent) {
@@ -103,8 +102,6 @@ class Review extends React.PureComponent<Props, {}> {
           )
         })
       : null
-
-    let cardIcon = this.getCardIcon(cardData.cardBrand)
 
     return (
       <Container>
@@ -145,12 +142,7 @@ class Review extends React.PureComponent<Props, {}> {
             <Title>{formatMessage(messages.payment)}</Title>
             {paymentMethod === 'credit card' ? (
               <div>
-                <PaymentText>{cardHolderName}</PaymentText>
-                <CardNumber>
-                  <PaymentText>{`X-${cardData.cardNumber}`}</PaymentText>
-                  <StyledImage src={cardIcon} />
-                </CardNumber>
-                <PaymentText>{`EXP ${cardData.cardExpDate}`}</PaymentText>
+                <PaymentData card={selectedCard} />
                 <EditInfoButton onClick={this.handleOnGoToStepTwo}>
                   {formatMessage(messages.edit)}
                 </EditInfoButton>
