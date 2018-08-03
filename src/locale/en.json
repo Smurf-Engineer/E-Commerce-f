@@ -878,7 +878,8 @@
   "components.Overview.emptyPayment": "No cards added",
 
   "components.OrderDetails.title": "Order Details",
-  "components.OrderDetails.back": "Back to Order History",
+  "components.OrderDetails.backToHistory": "Back to Order History",
+  "components.OrderDetails.backToOverview": "Back to Overview",
   "components.OrderDetails.receipt": "Receipt",
   "components.OrderDetails.deliveryDate": "Estimated delivery date",
   "components.OrderDetails.orderNumber": "Order Number",

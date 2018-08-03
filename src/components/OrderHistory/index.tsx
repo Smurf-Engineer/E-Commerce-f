@@ -54,6 +54,7 @@ class OrderHistory extends React.Component<Props, {}> {
         </Container>
         <OrderDetails
           onReturn={this.handleOnOrderClick}
+          from={'OrderHistory'}
           {...{ orderId, formatMessage }}
         />
       </SwipeableViews>

@@ -53,15 +53,19 @@ interface Data extends QueryProps {
 interface Props {
   orderId: string
   data?: Data
+  from: string
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
 }
 
 export class OrderDetails extends React.Component<Props, {}> {
   render() {
-    const { data, orderId, formatMessage, onReturn } = this.props
+    const { data, orderId, from, formatMessage, onReturn } = this.props
 
     const handleOnReturn = () => onReturn('')
+
+    const getBackMessage =
+      from === 'OrderHistory' ? messages.backToHistory : messages.backToOverview
 
     if (!orderId) {
       return null
@@ -170,7 +174,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       <Container>
         <ViewContainer onClick={handleOnReturn}>
           <Icon type="left" />
-          <span>{formatMessage(messages.back)}</span>
+          <span>{formatMessage(getBackMessage)}</span>
         </ViewContainer>
         <Div>
           <ScreenTitle>
