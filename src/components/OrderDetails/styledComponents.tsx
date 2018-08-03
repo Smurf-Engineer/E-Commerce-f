@@ -83,6 +83,7 @@ export const DeliveryDate = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  margin-bottom: 25px;
 
   @media (max-width: 768px) and (min-width: 320px) {
     display: flex;
@@ -104,11 +105,10 @@ export const DeliveryLabels = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  margin-top: 10px;
   width: 137px;
 `
 export const DeliveryLabel = styled.div`
-  margin-top: 12px;
+  margin-bottom: 12px;
 `
 export const DeliveryData = styled.div`
   color: #5f6062;
@@ -118,7 +118,6 @@ export const DeliveryData = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-left: 110px;
-  margin-top: 10px;
   width: 220px;
 
   @media (max-width: 963px) and (min-width: 320px) {
@@ -126,9 +125,15 @@ export const DeliveryData = styled.div`
     width: 100px;
   }
 `
+
+interface InfoProps {
+  tracking?: boolean
+}
+
 export const Info = styled.div`
+  color: ${({ tracking }: InfoProps) => (tracking ? '#e61737' : '#5f6062')};
   height: 22px;
-  margin-top: 12px;
+  margin-bottom: 12px;
 `
 export const OrderSummaryContainer = styled.div`
   width: 222px;
@@ -139,7 +144,7 @@ export const OrderSummaryContainer = styled.div`
   }
 `
 export const Items = styled.div`
-  margin-top: 40px;
+  margin-top: 100px;
   padding-right: 34px;
 
   @media (max-width: 550px) and (min-width: 320px) {
