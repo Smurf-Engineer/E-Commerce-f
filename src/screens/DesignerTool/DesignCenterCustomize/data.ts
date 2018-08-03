@@ -14,6 +14,18 @@ export const getProductFromCode = gql`
       label
       bumpMap: bump_map
       flatlock
+      binding {
+        white
+        black
+      }
+      zipper {
+        white
+        black
+      }
+      bibBrace {
+        white
+        black
+      }
       themes {
         id
         name

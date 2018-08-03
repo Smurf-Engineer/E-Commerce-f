@@ -8,6 +8,7 @@ import {
   EDIT_DESIGN_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
+  SET_STITCHING_COLOR_ACTION,
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
   SET_PALETTES_ACTION,
@@ -43,14 +44,17 @@ import {
   SET_DESIGN_HAS_CHANGES,
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
-  SET_CANVAS_JSON_ACTION
+  SET_CANVAS_JSON_ACTION,
+  SET_ACCESSORY_COLOR_ACTION
 } from './constants'
 import {
   AnyAction,
   Palette,
   TeamStoreItemtype,
   CanvasElement,
-  SaveDesignType
+  SaveDesignType,
+  StitchingColor,
+  AccesoryColor
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -308,4 +312,15 @@ export const setCustomize3dMountedAction = (mounted: boolean) => ({
 export const setCanvasJsonAction = (canvas: string) => ({
   type: SET_CANVAS_JSON_ACTION,
   canvas
+})
+
+export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
+  type: SET_STITCHING_COLOR_ACTION,
+  stitchingColor
+})
+
+export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
+  type: SET_ACCESSORY_COLOR_ACTION,
+  color,
+  id
 })

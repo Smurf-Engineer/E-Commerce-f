@@ -4,6 +4,7 @@ export const GetProductsByIdQuery = gql`
   query GetProductByID($id: Int!) {
     product(id: $id) {
       id
+      code
       yotpoId: yotpo_id
       name
       type: short_description

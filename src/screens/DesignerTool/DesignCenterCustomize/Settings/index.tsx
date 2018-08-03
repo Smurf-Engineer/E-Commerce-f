@@ -21,6 +21,7 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onUpdateStyleName: (design: number, name: string) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 const Settings = ({
@@ -30,7 +31,8 @@ const Settings = ({
   onUpdateStyleName,
   onSaveThumbnail,
   uploadingThumbnail,
-  onSelectConfig
+  onSelectConfig,
+  formatMessage
 }: Props) => {
   const beforeUpload = (file: any) => {
     const { type } = file
@@ -61,7 +63,8 @@ const Settings = ({
         onSelectComplexity,
         onUpdateStyleName,
         onSaveThumbnail,
-        uploadingThumbnail
+        uploadingThumbnail,
+        formatMessage
       }}
     />
   ))

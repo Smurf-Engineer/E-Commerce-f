@@ -63,6 +63,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   areas: string[]
+  extraFiles: string[]
   colorBlock: number
   colorBlockHovered: number
   loadingModel: boolean
@@ -76,13 +77,16 @@ interface Props {
   themeName: string
   styleName: string
   uploadingThumbnail: boolean
+  bibBrace: boolean
+  zipper: boolean
+  binding: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
   setColorBlockAction: (index: number) => void
   setHoverColorBlockAction: (index: number) => void
-  uploadFilesAction: (files: any, areas: any) => void
-  uploadDesignAction: (files: any) => void
+  uploadFilesAction: (files: any, areas: any, extra: any) => void
+  uploadDesignAction: (areas: any, config: any) => void
   setUploadingAction: (loading: boolean) => void
   setCurrentTabAction: (index: number) => void
   setSwipingTabAction: (swiping: boolean) => void
@@ -98,6 +102,10 @@ interface Props {
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
   uploadThemeImage: (file: any) => void
+  addExtraFileAction: (file: string) => void
+  removeExtraFileAction: (index: number) => void
+  toggleExtraColorAction: (color: string) => void
+  saveDesignSuccessAction: () => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -138,11 +146,18 @@ export class DesignerTool extends React.Component<Props, {}> {
       productCode,
       themeName,
       styleName,
+      extraFiles,
+      bibBrace,
+      zipper,
+      binding,
       setThemeNameAction,
       setStyleNameAction,
       setComplexityAction,
       setUploadingThumbnailAction,
-      setUploadingSuccess
+      setUploadingSuccess,
+      addExtraFileAction,
+      removeExtraFileAction,
+      toggleExtraColorAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -162,7 +177,11 @@ export class DesignerTool extends React.Component<Props, {}> {
           themeName,
           styleName,
           uploadingThumbnail,
-          formatMessage
+          extraFiles,
+          formatMessage,
+          bibBrace,
+          zipper,
+          binding
         }}
         files={modelConfig}
         onSaveDesign={this.handleSaveDesign}
@@ -187,6 +206,9 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
         onLoadDesign={setUploadingSuccess}
+        onAddExtraFile={addExtraFileAction}
+        onRemoveExtraFile={removeExtraFileAction}
+        onToggleColor={toggleExtraColorAction}
       />
     )
   }
@@ -230,7 +252,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             }
           })
         } catch (e) {
-          console.error(e)
+          message.error(e.message)
         }
       }
     })
@@ -270,7 +292,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             }
           })
         } catch (e) {
-          console.error(e)
+          message.error(e.message)
         }
       }
     })
@@ -301,7 +323,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       setUploadingThumbnailAction(false)
     } catch (e) {
       setUploadingThumbnailAction(false)
-      console.error(e)
+      message.error(e.message)
     }
   }
 
@@ -314,7 +336,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         designConfig,
         saveDesign,
         themeName,
-        createTheme
+        createTheme,
+        saveDesignSuccessAction
       } = this.props
 
       if (!productCode) {
@@ -322,7 +345,12 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
-      if (!modelConfig || !designConfig) {
+      if (!designConfig.length) {
+        message.error('Missing config file')
+        return
+      }
+
+      if (!modelConfig) {
         message.error('Upload model files first')
         return
       }
@@ -335,7 +363,13 @@ export class DesignerTool extends React.Component<Props, {}> {
         brandingPng,
         brandingSvg,
         areasSvg,
-        areasPng
+        areasPng,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack
       } = modelConfig
 
       const designs = designConfig.map(
@@ -402,13 +436,25 @@ export class DesignerTool extends React.Component<Props, {}> {
         flatLock: flatlock,
         obj,
         mtl,
+        bibBraceWhite,
+        bibBraceBlack,
+        zipperWhite,
+        zipperBlack,
+        bindingWhite,
+        bindingBlack,
         theme_id: themeId,
         styles: designs
       }
-      await saveDesign({ variables: { design } })
+      await saveDesign({
+        variables: { design },
+        refetchQueries: [
+          { query: getProductFromCode, variables: { code: productCode } }
+        ]
+      })
+      saveDesignSuccessAction()
       message.success('Your design is now saved')
     } catch (e) {
-      console.error(e)
+      message.error(e.message)
     }
   }
 }
