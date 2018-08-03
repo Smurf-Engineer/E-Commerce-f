@@ -769,7 +769,7 @@ export interface Measure {
   cm: string[]
 }
 
-export interface SizesTable {
+export interface SizesTableType {
   title: string
   headers: string[]
   size: string[]
@@ -789,5 +789,5 @@ export interface SizesTable {
 
 export interface Chart {
   title: string
-  tables: SizesTable[]
+  tables: SizesTableType[]
 }

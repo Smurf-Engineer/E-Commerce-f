@@ -8,16 +8,10 @@ import {
   Container,
   BoxHeaderRow,
   BoxHeader,
-  Table,
-  HeaderRow,
-  HeaderCell,
-  Title,
-  Row,
-  Cell,
-  TableList,
-  TableTitle
+  TableList
 } from './styledComponents'
-import { Chart, SizesTable } from '../../types/common'
+import SizesTable from '../SizesTable'
+import { Chart } from '../../types/common'
 
 interface Props {
   boxHeaders: string[]
@@ -34,7 +28,7 @@ class SizingChart extends React.Component<Props, {}> {
       chart: { title, tables }
     } = this.props
 
-    const boxHeaderList = boxHeaders.map((boxHeader, index) => {
+    const renderBoxHeaderList = boxHeaders.map((boxHeader, index) => {
       const checked = title === boxHeader
 
       return (
@@ -44,49 +38,13 @@ class SizingChart extends React.Component<Props, {}> {
       )
     })
 
-    const renderHeader = (headers: string[]) =>
-      headers.map((item, index) => (
-        <HeaderCell key={index}>
-          <Title>
-            <FormattedMessage {...messages[item]} />
-          </Title>
-        </HeaderCell>
-      ))
-
-    const renderContent = (
-      table: SizesTable,
-      headers: string[],
-      sizes: string[]
-    ) =>
-      sizes.map((s, row) => (
-        <Row key={row}>
-          {headers.map((header, index) => {
-            if (!index) {
-              return (
-                <Cell key={index}>
-                  <FormattedMessage {...messages[s]} />
-                </Cell>
-              )
-            } else {
-              const element = table[header]
-
-              return element && <Cell key={index}>{element[units][row]}</Cell>
-            }
-          })}
-        </Row>
-      ))
-
-    const renderTableList = tables.map(({ title: t, headers, size }, index) => (
-      <Table key={index}>
-        <TableTitle>{t && <FormattedMessage {...messages[t]} />}</TableTitle>
-        <HeaderRow>{renderHeader(headers)}</HeaderRow>
-        {renderContent(tables[index], headers, size)}
-      </Table>
+    const renderTableList = tables.map((table, index) => (
+      <SizesTable key={index} {...{ units, table }} />
     ))
 
     return (
       <Container>
-        <BoxHeaderRow>{boxHeaderList}</BoxHeaderRow>
+        <BoxHeaderRow>{renderBoxHeaderList}</BoxHeaderRow>
         <TableList multiple={tables.length > 1}>{renderTableList}</TableList>
       </Container>
     )
