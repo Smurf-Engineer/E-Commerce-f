@@ -8,6 +8,7 @@ import {
   SET_CURRENT_TAB_ACTION,
   SET_COLOR_BLOCK_ACTION,
   SET_COLOR_ACTION,
+  SET_STITCHING_COLOR_ACTION,
   SET_PALETTE_ACTION,
   SET_PALETTE_NAME_ACTION,
   SET_PALETTES_ACTION,
@@ -42,7 +43,9 @@ import {
   OPEN_NEW_STYLE_MODAL,
   OPEN_OUT_WITHOUT_SAVE_MODAL,
   SET_CUSTOMIZE_3D_MOUNTED,
-  SET_CANVAS_JSON_ACTION
+  SET_CANVAS_JSON_ACTION,
+  SET_ACCESSORY_COLOR_ACTION,
+  WHITE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -52,6 +55,10 @@ export const initialState = fromJS({
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
+  stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
+  bindingColor: WHITE,
+  zipperColor: WHITE,
+  bidColor: WHITE,
   styleColors: [],
   palettes: [],
   paletteName: '',
@@ -172,6 +179,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         designHasChanges: true
       })
     }
+    case SET_STITCHING_COLOR_ACTION:
+      return state.set('stitchingColor', action.stitchingColor)
+    case SET_ACCESSORY_COLOR_ACTION:
+      return state.set(action.id, action.color)
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')

@@ -28,6 +28,7 @@ interface Props {
   paletteName: string
   colors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
+  showContent?: boolean
   onSelectPalette: (colors: string[]) => void
   onSetPalettes: (palettes: Palette[]) => void
   onChangePaletteName: (name: string) => void
@@ -50,7 +51,9 @@ class MyPalette extends React.PureComponent<Props> {
 
   updatePaletteName = (event: React.FormEvent<HTMLInputElement>) => {
     const { onChangePaletteName } = this.props
-    const { currentTarget: { value } } = event
+    const {
+      currentTarget: { value }
+    } = event
     onChangePaletteName(value)
   }
 
@@ -60,9 +63,10 @@ class MyPalette extends React.PureComponent<Props> {
       paletteName,
       onChangePaletteName,
       colors,
-      formatMessage
+      formatMessage,
+      showContent = true
     } = this.props
-    if (!paletteName) {
+    if (!paletteName || !showContent) {
       return
     }
     const palettesTest: Palette = {

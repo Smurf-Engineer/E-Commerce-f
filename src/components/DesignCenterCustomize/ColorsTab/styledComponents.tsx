@@ -2,12 +2,14 @@
  * Styled Components - Created by david on 26/02/18.
  */
 import styled from 'styled-components'
-
-interface PageProps {
-  isFirstPage: boolean
-}
+import Icon from 'antd/lib/icon'
 
 export const Container = styled.div``
+
+export const Arrow = styled(Icon)`
+  color: #5f6062;
+  font-size: 16px;
+`
 
 export const Top = styled.div`
   display: flex;
@@ -18,11 +20,13 @@ export const Top = styled.div`
 
 export const Row = styled.div`
   display: flex;
-  flex-direction: ${({ isFirstPage }: PageProps) =>
-    isFirstPage ? 'row' : 'row-reverse'};
+  flex-direction: row;
   align-items: center;
   cursor: pointer;
 `
+interface PageProps {
+  isFirstTab: boolean
+}
 
 export const TextColors = styled.div`
   color: #5f6062;
@@ -30,6 +34,7 @@ export const TextColors = styled.div`
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
+  margin-left: ${({ isFirstTab }: PageProps) => (isFirstTab ? '0' : '6px')};
 `
 
 export const Text = styled.div`
@@ -40,10 +45,6 @@ export const Text = styled.div`
   margin: 0px 8px;
 `
 
-export const ArrowIcon = styled.img``
-
-export const ColorButtons = styled.div`
-  display: flex;
-  justify-content: space-around;
-  padding: 14px 32px 0px 32px;
+export const StitchingList = styled.div`
+  padding-top: 12px;
 `

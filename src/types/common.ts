@@ -750,6 +750,13 @@ export type MessagePayload = {
   }
 }
 
+export type StitchingColor = {
+  name: string
+  value: string
+}
+
+export type AccesoryColor = 'black' | 'white'
+
 export interface ClickParam {
   key: string
   keyPath: Array<string>

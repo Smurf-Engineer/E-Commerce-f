@@ -49,9 +49,15 @@ export const OPEN_NEW_THEME_MODAL = `${namespace}/OPEN_NEW_THEME_MODAL`
 export const OPEN_NEW_STYLE_MODAL = `${namespace}/OPEN_NEW_STYLE_MODAL`
 export const SET_DESIGN_HAS_CHANGES = `${namespace}/SET_DESIGN_HAS_CHANGES`
 
+export const SET_STITCHING_COLOR_ACTION = `${namespace}/SET_STITCHING_COLOR_ACTION`
+export const SET_ACCESSORY_COLOR_ACTION = `${namespace}/SET_ACCESSORY_COLOR_ACTION`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,
   CustomizeTab = 2,
   PreviewTab = 3
 }
+
+export const BLACK = 'black'
+export const WHITE = 'white'
