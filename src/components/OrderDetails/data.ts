@@ -91,10 +91,6 @@ export const getOrderQuery = gql`
             left: left_image
             right: right_image
           }
-          priceRange {
-            quantity
-            price
-          }
         }
         itemDetails {
           label
