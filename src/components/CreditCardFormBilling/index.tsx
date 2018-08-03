@@ -186,7 +186,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         !city ||
         !zipCode ||
         !phone)
-    console.log(selectedCardId)
     if ((!cardHolderName && !selectedCardId) || error) {
       invalidBillingFormAction(true)
     }

@@ -585,7 +585,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 teamStoreId,
                 editDesignAction,
                 formatMessage,
-                svgOutputUrl
+                svgOutputUrl,
+                product
               }}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}
