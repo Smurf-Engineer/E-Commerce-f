@@ -61,8 +61,12 @@ export const CodeDivider = styled.div`
   margin-bottom: 0;
 `
 
+interface DisplayProps {
+  hide?: boolean
+}
+
 export const OrderItem = styled.div`
-  display: flex;
+  display: ${({ hide }: DisplayProps) => (hide ? 'none' : 'flex')};
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 10px;
@@ -155,12 +159,7 @@ export const CollapseWrapper = styled.div`
     padding: 0 0 0 0;
   }
 `
-
-interface DisplayProps {
-  show?: boolean
-}
-
 export const CalculationsWrapper = styled.div`
-  display: ${(props: DisplayProps) => (props.show ? 'flex' : 'none')};
+  display: 'flex';
   flex-direction: column;
 `

@@ -10,11 +10,13 @@ import {
   Container,
   Title,
   ContainerMethods,
-  MethodButton
+  MethodButton,
+  MyCardsRow
 } from './styledComponents'
 import CreditCardForm from '../CreditCardFormBilling'
-import { AddressType, StripeCardData } from '../../types/common'
+import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
+import MyCards from '../MyCards'
 
 interface Props {
   billingAddress: AddressType
@@ -24,8 +26,10 @@ interface Props {
   stripeError: string
   loadingBilling: boolean
   showContent: boolean
+  showCardForm: boolean
+  selectedCard: CreditCardData
   formatMessage: (messageDescriptor: any) => string
-  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
+  setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
   selectDropdownAction: (id: string, value: string) => void
@@ -35,7 +39,9 @@ interface Props {
   invalidBillingFormAction: (hasError: boolean) => void
   nextStep: () => void
   setPaymentMethodAction: (method: string) => void
-  saveCountryAction: (countryId: number | null) => void
+  showCardFormAction: (open: boolean) => void
+  selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  saveCountryAction: (countryCode: string | null) => void
 }
 
 interface MyWindow extends Window {
@@ -69,12 +75,12 @@ class Payment extends React.PureComponent<Props, {}> {
     })
   }
 
-  handleConfirmSave = (countryId: number | null) => {
+  handleConfirmSave = (countryCode: string | null) => {
     const { nextStep, saveCountryAction } = this.props
     this.setState({
       openConfirm: false
     })
-    saveCountryAction(countryId)
+    saveCountryAction(countryCode)
     nextStep()
   }
 
@@ -107,7 +113,11 @@ class Payment extends React.PureComponent<Props, {}> {
       invalidBillingFormAction,
       setStripeCardDataAction,
       nextStep,
-      showContent
+      showContent,
+      showCardForm,
+      showCardFormAction,
+      selectCardToPayAction,
+      selectedCard
     } = this.props
     const { stripe, openConfirm } = this.state
 
@@ -132,6 +142,17 @@ class Payment extends React.PureComponent<Props, {}> {
           {/* TODO: uncomment MethodButtons when paypal, alipay and bank transfer are able */}
         </ContainerMethods>
         <Title>{formatMessage(messages.methodCreditCard)}</Title>
+        <MyCardsRow>
+          <MyCards
+            {...{
+              formatMessage,
+              showCardFormAction,
+              showCardForm,
+              selectCardToPayAction,
+              selectedCard
+            }}
+          />
+        </MyCardsRow>
         <StripeProvider {...{ stripe }}>
           <Elements>
             <CreditCardForm
@@ -150,7 +171,9 @@ class Payment extends React.PureComponent<Props, {}> {
                 sameBillingAndAddressUncheckedAction,
                 invalidBillingFormAction,
                 setStripeCardDataAction,
-                nextStep
+                nextStep,
+                showCardForm,
+                selectedCard
               }}
               selectDropdownAction={this.handleOnDropdownAction}
               inputChangeAction={this.handleOnChangeInput}

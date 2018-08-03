@@ -43,6 +43,7 @@ describe('<CartListItemTable />', () => {
     const item = {
       product: {
         id: 0,
+        code: '0',
         images: [
           {
             front: '',

@@ -58,11 +58,10 @@ class InspirationColors extends React.PureComponent<Props> {
     const list = inspiration.map(({ name, colors, thumbnail: image }, key) => (
       <Palette
         id={key}
-        {...{ key, name, colors, image }}
+        {...{ key, name, colors, image, formatMessage }}
         loading={uploadingThumbnail}
         buttonLabel="Save Thumbnail"
         onSelectPalette={this.handleOnSelectPalette(key)}
-        {...{ formatMessage }}
       />
     ))
     return !!inspirationCount ? (

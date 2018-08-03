@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   selectColor: {
     id: 'components.designCenterCustomize.ColorTab.selectColor',
-    defaultMessage: 'Select Colors'
+    defaultMessage: 'Colors'
   },
   myPalette: {
     id: 'components.designCenterCustomize.ColorTab.myPalette',

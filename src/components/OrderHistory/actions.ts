@@ -2,7 +2,12 @@
  * OrderHistory  Actions - Created by miguelcanobbio on 06/16/18.
  */
 
-import { SET_ORDER_BY, SET_CURRENT_PAGE, RESET_DATA } from './constants'
+import {
+  SET_ORDER_BY,
+  SET_CURRENT_PAGE,
+  RESET_DATA,
+  SET_ORDER_ID
+} from './constants'
 import { AnyAction, sorts } from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
@@ -18,4 +23,9 @@ export const setCurrentPageAction = (page: number): AnyAction => ({
 
 export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
+})
+
+export const setOrderIdAction = (orderId: string): AnyAction => ({
+  type: SET_ORDER_ID,
+  orderId
 })

@@ -37,6 +37,7 @@ export const getDesignQuery = gql`
       shortId: short_id
       product {
         id
+        code
         name
       }
       colors {

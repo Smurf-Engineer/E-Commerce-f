@@ -45,5 +45,5 @@ export const ArrowIcon = styled.img``
 export const ColorButtons = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 14px 32px 0px 32px;
+  padding: 4px;
 `

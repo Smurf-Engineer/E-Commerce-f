@@ -16,7 +16,7 @@ export const modelPositions = {
   front: {
     x: 1.4624917941275544,
     y: 2.3799584848944044,
-    z: 249.98439334358835
+    z: 125
   },
   left: {
     x: 249.7141197905644,
@@ -30,4 +30,9 @@ export const FLATLOCK = 'FINAL JV2_Flatlock'
 export const MESH = 'FINAL JV2_Design_Mesh'
 export const RED_TAG = 'FINAL Red_Tag'
 export const ZIPPER = 'FINAL JV2_Zipper'
+export const BINDING = 'JV2_Binding FINAL'
 export const BIB_BRACE = 'FINAL JV2_Bib_Brace'
+
+export const BIB_BRACE_NAME = 'bibBrace'
+export const ZIPPER_NAME = 'zipper'
+export const BINDING_NAME = 'binding'

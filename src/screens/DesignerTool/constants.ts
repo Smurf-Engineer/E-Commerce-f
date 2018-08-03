@@ -23,6 +23,10 @@ export const SET_STYLE_NAME_ACTION = `${namespace}/SET_STYLE_NAME_ACTION`
 export const SET_COMPLEXITY_ACTION = `${namespace}/SET_COMPLEXITY_ACTION`
 export const SET_THUMBNAIL_ACTION = `${namespace}/SET_THUMBNAIL_ACTION`
 export const SET_UPLOADING_THUMBNAIL_ACTION = `${namespace}/SET_UPLOADING_THUMBNAIL_ACTION`
+export const ADD_EXTRA_FILE_ACTION = `${namespace}/ADD_EXTRA_FILE_ACTION`
+export const REMOVE_EXTRA_FILE_ACTION = `${namespace}/REMOVE_EXTRA_FILE_ACTION`
+export const TOGGLE_EXTRA_COLOR_ACTION = `${namespace}/TOGGLE_EXTRA_COLOR_ACTION`
+export const SAVE_DESIGN_SUCCESS_ACTION = `${namespace}/SAVE_DESIGN_SUCCESS_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

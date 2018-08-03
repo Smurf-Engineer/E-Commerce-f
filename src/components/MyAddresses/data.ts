@@ -28,6 +28,17 @@ export const addAddressMutation = graphql(
     mutation createAddress($address: UserAddressInput!) {
       createUserAddress(address: $address) {
         id
+        firstName: first_name
+        lastName: last_name
+        street
+        apartment
+        country
+        stateProvince: state_province
+        city
+        zipCode: zip_code
+        phone
+        defaultBilling: default_billing
+        defaultShipping: default_shipping
       }
     }
   `,

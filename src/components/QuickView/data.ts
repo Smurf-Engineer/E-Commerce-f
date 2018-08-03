@@ -8,6 +8,7 @@ export const QuickViewQuery = gql`
   query GetProductById($id: Int!) {
     product(id: $id) {
       id
+      code
       yotpoId: yotpo_id
       name
       description

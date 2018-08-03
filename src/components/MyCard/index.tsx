@@ -3,23 +3,18 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import get from 'lodash/get'
 import {
   Container,
-  PaymentText,
-  CardNumber,
-  StyledImage,
   SecondaryButtons,
   StyledButton,
   StyledCheckbox
 } from './styledComponents'
-
-import iconVisa from '../../assets/card-visa.svg'
-import iconMasterCard from '../../assets/card-master.svg'
-import iconAE from '../../assets/card-AE.svg'
-import iconDiscover from '../../assets/card-discover.svg'
-import iconCreditCard from '../../assets/card-default.svg'
+import PaymentData from '../PaymentData'
+import { StripeCardData, CreditCardData } from '../../types/common'
 
 interface Props {
+  id?: string
   last4: string
   brand: string
   name: string
@@ -27,13 +22,19 @@ interface Props {
   expYear: number
   markedAsDefault?: boolean
   cardIndex: number
+  paymentsRender: boolean
+  listForMyAccount: boolean
+  selectedCard: CreditCardData
   showCardForm?: (show: boolean) => void
   showConfirmDelete?: (index: number) => void
   selectCardAsDefault?: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
+  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
+  selectCardToPayAction: (card: CreditCardData, selectedCardId?: string) => void
 }
 
 const MyCard = ({
+  id,
   last4,
   brand,
   expMonth,
@@ -41,18 +42,40 @@ const MyCard = ({
   name,
   markedAsDefault,
   cardIndex,
-  showCardForm = () => {},
+  paymentsRender,
+  formatMessage,
+  listForMyAccount = false,
+  selectedCard,
   showConfirmDelete = () => {},
   selectCardAsDefault = () => {},
-  formatMessage
+  selectCardToPayAction = () => {}
 }: Props) => {
+  const selectedCardId = get(selectedCard, 'id', '')
+
   const handleOnSelectAsDefault = () => {
     selectCardAsDefault(cardIndex as number)
   }
+
   const handleOnDelete = () => {
     showConfirmDelete(cardIndex as number)
   }
-  const buttons = (
+
+  const handleSelectCard = () => {
+    const cardData: CreditCardData = {
+      id,
+      last4,
+      expMonth,
+      expYear,
+      brand,
+      name
+    }
+
+    if (selectedCardId !== id) {
+      selectCardToPayAction(cardData)
+    }
+  }
+
+  const buttons = listForMyAccount ? (
     <SecondaryButtons>
       <StyledCheckbox
         checked={markedAsDefault}
@@ -60,40 +83,39 @@ const MyCard = ({
       >
         {formatMessage(messages.asDefault)}
       </StyledCheckbox>
-      <StyledButton onClick={handleOnDelete}>
-        {formatMessage(messages.delete)}
-      </StyledButton>
+      {paymentsRender && (
+        <StyledButton onClick={handleOnDelete}>
+          {formatMessage(messages.delete)}
+        </StyledButton>
+      )}
+    </SecondaryButtons>
+  ) : (
+    <SecondaryButtons>
+      <StyledCheckbox
+        checked={selectedCardId === id}
+        onChange={handleSelectCard}
+      >
+        {formatMessage(messages.useThisCardLabel)}
+      </StyledCheckbox>
     </SecondaryButtons>
   )
-  const cardIcon = getCardIcon(brand)
-  const year = String(expYear).substring(2, 4)
-  const month = expMonth > 9 ? expMonth : `0${expMonth}`
+
+  const card: CreditCardData = {
+    id,
+    name,
+    brand,
+    last4,
+    expMonth,
+    expYear,
+    defaultPayment: markedAsDefault
+  }
+
   return (
     <Container>
-      <PaymentText>{name}</PaymentText>
-      <CardNumber>
-        <PaymentText>{`X-${last4}`}</PaymentText>
-        <StyledImage src={cardIcon} />
-      </CardNumber>
-      <PaymentText>{`EXP ${month}/${year}`}</PaymentText>
+      <PaymentData {...{ card }} />
       {buttons}
     </Container>
   )
-}
-
-const getCardIcon = (brand: string) => {
-  switch (brand) {
-    case 'Visa':
-      return iconVisa
-    case 'MasterCard':
-      return iconMasterCard
-    case 'American Express':
-      return iconAE
-    case 'Discover':
-      return iconDiscover
-    default:
-      return iconCreditCard
-  }
 }
 
 export default MyCard
