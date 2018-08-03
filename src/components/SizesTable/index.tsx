@@ -20,10 +20,14 @@ interface Props {
   table: SizesTableType
 }
 
+const staticSizes = ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl']
+
 class SizesTable extends React.Component<Props, {}> {
   render() {
     const { units, table } = this.props
     const { title, headers, size } = table
+
+    const sizes = size || staticSizes
 
     const renderHeader = headers.map((header, key) => (
       <HeaderCell {...{ key }}>
@@ -33,20 +37,15 @@ class SizesTable extends React.Component<Props, {}> {
       </HeaderCell>
     ))
 
-    const renderContent = size.map((s, row) => (
+    const renderContent = sizes.map((s, row) => (
       <Row key={row}>
+        <Cell>
+          <FormattedMessage {...messages[s]} />
+        </Cell>
         {headers.map((header, key) => {
-          if (!key) {
-            return (
-              <Cell {...{ key }}>
-                <FormattedMessage {...messages[s]} />
-              </Cell>
-            )
-          } else {
-            const element = table[header]
+          const element = table[header]
 
-            return element && <Cell {...{ key }}>{element[units][row]}</Cell>
-          }
+          return element && <Cell {...{ key }}>{element[units][row]}</Cell>
         })}
       </Row>
     ))
@@ -56,7 +55,14 @@ class SizesTable extends React.Component<Props, {}> {
         <TableTitle>
           {title && <FormattedMessage {...messages[title]} />}
         </TableTitle>
-        <HeaderRow>{renderHeader}</HeaderRow>
+        <HeaderRow>
+          <HeaderCell>
+            <Title>
+              <FormattedMessage {...messages.size} />
+            </Title>
+          </HeaderCell>
+          {renderHeader}
+        </HeaderRow>
         {renderContent}
       </Container>
     )

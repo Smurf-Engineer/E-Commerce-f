@@ -770,9 +770,9 @@ export interface Measure {
 }
 
 export interface SizesTableType {
-  title: string
+  title?: string
   headers: string[]
-  size: string[]
+  size?: string[]
   waist?: Measure
   chest?: Measure
   inseam?: Measure

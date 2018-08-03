@@ -5,9 +5,7 @@ export const charts = [
     title: 'men',
     tables: [
       {
-        title: '',
-        headers: ['size', 'waist', 'chest', 'inseam'],
-        size: ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
+        headers: ['waist', 'chest', 'inseam'],
         waist: {
           in: [
             '23 - 25.5',
@@ -59,9 +57,7 @@ export const charts = [
     title: 'women',
     tables: [
       {
-        title: '',
-        headers: ['size', 'waist', 'chest', 'hips', 'inseam'],
-        size: ['xxs', 'xs', 's', 'm', 'l', 'xl', 'xxl'],
+        headers: ['waist', 'chest', 'hips', 'inseam'],
         waist: {
           in: [
             '21 - 23',
@@ -133,8 +129,7 @@ export const charts = [
     title: 'youth',
     tables: [
       {
-        title: '',
-        headers: ['size', 'waist', 'chest', 'height'],
+        headers: ['waist', 'chest', 'height'],
         size: ['age6', 'age8', 'age10', 'age12', 'age14'],
         waist: {
           in: ['22 - 23', '23 - 25', '24 - 25', '25 - 26', '27 - 29'],
@@ -162,7 +157,7 @@ export const charts = [
     tables: [
       {
         title: 'armWarmer',
-        headers: ['size', 'bicep', 'length'],
+        headers: ['bicep', 'length'],
         size: ['s', 'm', 'l', 'xl'],
         bicep: {
           in: ['9 - 10', '11 - 12', '13 - 14', '15 - 16'],
@@ -175,7 +170,7 @@ export const charts = [
       },
       {
         title: 'kneeWarmer',
-        headers: ['size', 'thigh', 'calf', 'length'],
+        headers: ['thigh', 'calf', 'length'],
         size: ['s', 'm', 'l', 'xl'],
         thigh: {
           in: ['17 - 20', '18.5 - 22', '20 - 24', '22 - 26'],
@@ -192,7 +187,7 @@ export const charts = [
       },
       {
         title: 'shoeCover',
-        headers: ['size', 'mens', 'womens'],
+        headers: ['mens', 'womens'],
         size: ['xxs_xs', 's_m', 'l_xl', 'xxl'],
         mens: {
           in: ['5 - 6.5', '7 - 8.5', '9 - 11.5', '12 - 14'],
@@ -205,7 +200,7 @@ export const charts = [
       },
       {
         title: 'legWarmer',
-        headers: ['size', 'thigh', 'calf', 'length'],
+        headers: ['thigh', 'calf', 'length'],
         size: ['s', 'm', 'l', 'xl'],
         thigh: {
           in: ['17 - 20', '18.5 - 22', '20 - 24', '22 - 26'],
@@ -222,7 +217,7 @@ export const charts = [
       },
       {
         title: 'cyclingCap',
-        headers: ['size', 'circumference'],
+        headers: ['circumference'],
         size: ['s_m', 'l_xl'],
         circumference: {
           in: ['21', '22.4'],
