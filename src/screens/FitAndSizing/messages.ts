@@ -204,7 +204,7 @@ export default defineMessages({
       'Standard Fit style provides regular fitting, by balancing aerodynamic performance with comfort functionality.'
   },
   relaxedFitDescription: {
-    id: 'screens.FitAndSizing.relaxedFit',
+    id: 'screens.FitAndSizing.relaxedFitDescription',
     defaultMessage:
       'Relaxed Fit style provides looser fitting in the shoulders, torso, neck and arms.'
   }
