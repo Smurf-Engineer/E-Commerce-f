@@ -25,6 +25,7 @@ import {
 import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
   Container,
+  ButtonWrapper,
   StyledEmptyButton,
   DeleteConfirmMessage,
   LoadingContainer
@@ -156,9 +157,11 @@ class MyCards extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
-          {formatMessage(messages.addCard)}
-        </StyledEmptyButton>
+        <ButtonWrapper {...{ listForMyAccount }}>
+          <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
+            {formatMessage(messages.addCard)}
+          </StyledEmptyButton>
+        </ButtonWrapper>
         <MyCardsList
           items={cards}
           {...{
