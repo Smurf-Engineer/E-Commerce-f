@@ -51,6 +51,7 @@ export const AddressesList = styled.div`
       ? 'repeat(4, minmax(170px, max-content))'
       : 'repeat(auto-fit, minmax(150px, min-content))'};
   grid-gap: 60px;
+  margin-bottom: 30px;
 
   @media (max-width: 700px) {
     grid-template-columns: repeat(2, minmax(140px, min-content));

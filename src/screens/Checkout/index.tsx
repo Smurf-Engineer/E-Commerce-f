@@ -2,7 +2,7 @@
  * Checkout Screen - Created by cazarez on 05/05/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
@@ -41,7 +41,8 @@ import {
   AddressType,
   CartItemDetail,
   Product,
-  StripeCardData
+  StripeCardData,
+  CreditCardData
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -84,6 +85,8 @@ interface Props extends RouteComponentProps<any> {
   cardNumber: string
   cardExpDate: string
   cardBrand: string
+  cardExpMonth: string
+  cardExpYear: string
   stripeToken: string
   loadingBilling: boolean
   loadingPlaceOrder: boolean
@@ -92,7 +95,9 @@ interface Props extends RouteComponentProps<any> {
   limit: number
   currentPage: number
   skip: number
-  setStripeCardDataAction: (stripeCardData: StripeCardData) => void
+  showCardForm: boolean
+  selectedCard: CreditCardData
+  setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
@@ -115,6 +120,8 @@ interface Props extends RouteComponentProps<any> {
   saveCountryAction: (countryCode: string | null) => void
   openAddressesModalAction: (open: boolean) => void
   setSkipValueAction: (limit: number, pageNumber: number) => void
+  showCardFormAction: (open: boolean) => void
+  selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -178,7 +185,11 @@ class Checkout extends React.Component<Props, {}> {
       skip,
       limit,
       currentPage,
-      setSkipValueAction
+      setSkipValueAction,
+      showCardForm,
+      showCardFormAction,
+      selectCardToPayAction,
+      selectedCard
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -251,7 +262,7 @@ class Checkout extends React.Component<Props, {}> {
         />
       ) : (
         <PlaceOrderButton
-          onClick={e => this.handleOnPlaceOrder(e, {})}
+          onClick={this.handleOnPlaceOrder}
           loading={loadingPlaceOrder}
         >
           {intl.formatMessage(messages.placeOrder)}
@@ -259,7 +270,9 @@ class Checkout extends React.Component<Props, {}> {
       )
 
     const continueButton = (
-      <ContinueButton onClick={this.nextStep}>{'Continue'}</ContinueButton>
+      <ContinueButton onClick={this.nextStep}>
+        <FormattedMessage {...messages.continueButtonLabel} />
+      </ContinueButton>
     )
 
     const showPaypalButton = currentStep === RevieTab ? orderButton : null
@@ -314,7 +327,11 @@ class Checkout extends React.Component<Props, {}> {
                     setLoadingBillingAction,
                     setStripeCardDataAction,
                     setPaymentMethodAction,
-                    saveCountryAction
+                    saveCountryAction,
+                    showCardForm,
+                    showCardFormAction,
+                    selectCardToPayAction,
+                    selectedCard
                   }}
                   showContent={currentStep === PaymentTab}
                   formatMessage={intl.formatMessage}
@@ -327,7 +344,8 @@ class Checkout extends React.Component<Props, {}> {
                     billingAddress,
                     cardData,
                     cardHolderName,
-                    paymentMethod
+                    paymentMethod,
+                    selectedCard
                   }}
                   cart={shoppingCart}
                   showContent={currentStep === RevieTab}
@@ -450,7 +468,7 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (event?: any, paypalObj?: object) => {
+  handleOnPlaceOrder = async (event: any, paypalObj?: object) => {
     const {
       location,
       placeOrder,
@@ -472,12 +490,12 @@ class Checkout extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       billingPhone,
-      stripeToken,
       indexAddressSelected,
       sameBillingAndShipping,
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
-      paymentMethod
+      paymentMethod,
+      selectedCard: { id: cardId }
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -536,6 +554,15 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.customizable')
       unset(cartItem, 'product.description')
       unset(cartItem, 'product.sizeRange')
+      unset(cartItem, 'product.details')
+      unset(cartItem, 'product.sport_id')
+      unset(cartItem, 'product.materials')
+      unset(cartItem, 'product.yotpoAverageScore')
+      unset(cartItem, 'product.intendedUse')
+      unset(cartItem, 'product.retail_version')
+      unset(cartItem, 'product.category_id')
+      unset(cartItem, 'product.temperatures')
+      unset(cartItem, 'product.sports')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
       })
@@ -547,13 +574,14 @@ class Checkout extends React.Component<Props, {}> {
     })
     const orderObj = {
       paymentMethod,
-      token: stripeToken,
+      cardId,
       cart: shoppingCart,
       shippingAddress,
       billingAddress,
       paypalData: paypalObj || null,
       countrySubsidiary: billingCountry
     }
+
     try {
       setLoadingPlaceOrderAction(true)
       const response = await placeOrder({

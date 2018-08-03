@@ -12,5 +12,9 @@ export default defineMessages({
   placeOrder: {
     id: 'screens.Checkout.placeOrder',
     defaultMessage: 'Place Order'
+  },
+  continueButtonLabel: {
+    id: 'screens.Checkout.continueButtonLabel',
+    defaultMessage: 'Continue'
   }
 })
