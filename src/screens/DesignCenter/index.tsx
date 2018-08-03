@@ -670,8 +670,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { setThemeAction, dataProduct } = this.props
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
-    } else {
-      // TODO: Show error
     }
   }
 }
