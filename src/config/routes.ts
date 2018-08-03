@@ -1,5 +1,6 @@
 /* Routes */
 import FitAndSizing from '../screens/FitAndSizing'
+import WorkAtJakroo from '../screens/WorkAtJakroo'
 import AboutUsPage from '../screens/AboutUsPage'
 import TemplateDownload from '../screens/TemplateDownload'
 import JerseyComparison from '../screens/JerseyComparison'
@@ -34,6 +35,11 @@ const routes = [
     path: '/fit-and-sizing',
     name: 'fitAndSizing',
     component: FitAndSizing
+  },
+  {
+    path: '/work-at-jakroo',
+    name: 'workAtJakroo',
+    component: WorkAtJakroo
   },
   {
     path: '/about-us-page',

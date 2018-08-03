@@ -84,7 +84,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       thumbnailsList = designs.map(
-        ({ name, product, image, createdAt, shortId, shared }, index) => {
+        ({ name, product, image, createdAt, shortId, shared, code }, index) => {
           const addToCartButton = (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
@@ -95,6 +95,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
               designId={shortId}
               designName={name}
               designImage={image}
+              designCode={code}
               myLockerList={true}
             />
           )

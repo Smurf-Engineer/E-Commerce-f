@@ -7,7 +7,7 @@ import { UploadFile } from '../../types/common'
 import { ButtonUpload, Container, Icon } from './styledComponents'
 
 interface Props {
-  index: number
+  index?: number
   hasFile: boolean
   fileName: string
   label: string
@@ -22,8 +22,7 @@ const UploadButton = ({
   onSelectFile,
   onRemoveFile,
   label,
-  extension,
-  index
+  extension
 }: Props) => {
   const beforeUpload = (file: UploadFile) => {
     onSelectFile(fileName, file, extension)
@@ -35,6 +34,7 @@ const UploadButton = ({
       <Upload {...{ beforeUpload }} style={{ width: '100%' }}>
         <ButtonUpload>
           <Icon
+            style={{ paddingRight: 16 }}
             color={hasFile ? '#49BC19' : '#5F6062'}
             type={hasFile ? 'check-circle-o' : 'upload'}
           />

@@ -20,5 +20,9 @@ export default defineMessages({
   defaultPayment: {
     id: 'components.MyCard.defaultPayment',
     defaultMessage: 'Default payment method'
+  },
+  useThisCardLabel: {
+    id: 'components.MyCard.useThisCardLabel',
+    defaultMessage: 'Use this card'
   }
 })

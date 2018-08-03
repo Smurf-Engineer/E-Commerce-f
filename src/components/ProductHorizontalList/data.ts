@@ -22,6 +22,7 @@ export const productsQuery = gql`
       fullCount
       products {
         id
+        code
         yotpoId: yotpo_id
         name
         type: name

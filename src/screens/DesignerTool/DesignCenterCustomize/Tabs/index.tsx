@@ -38,6 +38,10 @@ interface Props {
   themeName: string
   styleName: string
   uploadingThumbnail: boolean
+  extraFiles: string[]
+  bibBrace: boolean
+  zipper: boolean
+  binding: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -48,8 +52,8 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
-  onUploadFiles: (files: any, areas: any) => void
-  onUploadDesign: (files: any) => void
+  onUploadFiles: (files: any, areas: any, extra: any) => void
+  onUploadDesign: (areas: any, config: any) => void
   onSelectConfig: (config: DesignConfig) => void
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
@@ -58,7 +62,10 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
   onLoadDesign: (config: ModelConfig) => void
+  onAddExtraFile: (file: string) => void
+  onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
+  onToggleColor: (color: string) => void
 }
 
 const Tabs = ({
@@ -96,7 +103,14 @@ const Tabs = ({
   onSaveThumbnail,
   uploadingThumbnail,
   onLoadDesign,
-  formatMessage
+  onAddExtraFile,
+  onRemoveExtraFile,
+  extraFiles,
+  formatMessage,
+  onToggleColor,
+  bibBrace,
+  zipper,
+  binding
 }: Props) => {
   return (
     <Container>
@@ -124,7 +138,8 @@ const Tabs = ({
               styleName,
               onUpdateThemeName,
               onUpdateStyleName,
-              onLoadDesign
+              onLoadDesign,
+              formatMessage
             }}
           />
         </TabPane>
@@ -136,9 +151,12 @@ const Tabs = ({
             {...{
               onUploadFiles,
               uploadingFiles,
-              uploadNewModel,
               onUploadDesign,
-              onSelectConfig
+              onSelectConfig,
+              onAddExtraFile,
+              onRemoveExtraFile,
+              extraFiles,
+              uploadNewModel
             }}
           />
         </TabPane>
@@ -150,7 +168,11 @@ const Tabs = ({
               colorBlock,
               colorBlockHovered,
               onSelectColor,
-              colors
+              colors,
+              onToggleColor,
+              bibBrace,
+              zipper,
+              binding
             }}
           />
         </TabPane>

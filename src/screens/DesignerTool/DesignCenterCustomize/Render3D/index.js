@@ -9,7 +9,12 @@ import {
   MESH,
   FLATLOCK,
   RED_TAG,
-  BIB_BRACE
+  BIB_BRACE,
+  ZIPPER,
+  BINDING,
+  BIB_BRACE_NAME,
+  BINDING_NAME,
+  ZIPPER_NAME
 } from './config'
 import {
   Container,
@@ -22,10 +27,15 @@ import {
 } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
 
+const NONE = -1
+
 class Render3D extends PureComponent {
   state = {
     progress: 0,
-    objectChilds: 0
+    objectChilds: 0,
+    bibBraceIndex: NONE,
+    zipperIndex: NONE,
+    bindingIndex: NONE
   }
 
   componentWillReceiveProps(nextProps) {
@@ -33,14 +43,35 @@ class Render3D extends PureComponent {
       colors,
       colorBlockHovered: oldColorBlockHovered,
       files: oldFiles,
-      areas
+      areas,
+      bibBrace: oldBibBrace,
+      zipper: oldZipper,
+      binding: oldBinding
     } = this.props
     const {
       colors: nextColors,
       areas: nextAreas,
       colorBlockHovered,
-      files
+      files,
+      bibBrace,
+      zipper,
+      binding
     } = nextProps
+
+    if (oldBibBrace !== bibBrace && !!this.bibBrace) {
+      this.changeExtraColor(BIB_BRACE_NAME, bibBrace)
+      return
+    }
+
+    if (oldZipper !== zipper && !!this.zipper) {
+      this.changeExtraColor(ZIPPER_NAME, zipper)
+      return
+    }
+
+    if (oldBinding !== binding && !!this.binding) {
+      this.changeExtraColor(BINDING_NAME, binding)
+      return
+    }
 
     const areasHasChange = isEqual(areas, nextAreas)
     if (!areasHasChange) {
@@ -135,20 +166,49 @@ class Render3D extends PureComponent {
   loadTextures = modelTextures =>
     new Promise((resolve, reject) => {
       try {
+        const {
+          bumpMap,
+          flatlock,
+          brandingPng,
+          areasPng = [],
+          zipperWhite,
+          zipperBlack,
+          bibBraceWhite,
+          bibBraceBlack,
+          bindingWhite,
+          bindingBlack
+        } = modelTextures
         const loadedTextures = {}
-        // TODO: WIP
-        loadedTextures.zipper = this.imgLoader.load(
-          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/zipper_white.jpg'
-        )
-        loadedTextures.binding = this.imgLoader.load(
-          'https://storage.googleapis.com/jakroo-designs/TEST_DESIGN/EPIC/3D%20MODEL/images/binding_white.jpg'
-        )
-        // TODO: WIP
-        const { bumpMap, flatlock, brandingPng, areasPng = [] } = modelTextures
-        loadedTextures.flatlock = this.imgLoader.load(flatlock)
+        if (!!zipperWhite && !!zipperBlack) {
+          this.zipper = {}
+          this.zipper.white = this.imgLoader.load(zipperWhite)
+          this.zipper.black = this.imgLoader.load(zipperBlack)
+          this.zipper.white.minFilter = THREE.LinearFilter
+          this.zipper.black.minFilter = THREE.LinearFilter
+        }
+        if (!!bibBraceWhite && !!bibBraceBlack) {
+          this.bibBrace = {}
+          this.bibBrace.white = this.imgLoader.load(bibBraceWhite)
+          this.bibBrace.black = this.imgLoader.load(bibBraceBlack)
+          this.bibBrace.white.minFilter = THREE.LinearFilter
+          this.bibBrace.black.minFilter = THREE.LinearFilter
+        }
+        if (!!bindingWhite && !!bindingBlack) {
+          this.binding = {}
+          this.binding.white = this.imgLoader.load(bindingWhite)
+          this.binding.black = this.imgLoader.load(bindingBlack)
+          this.binding.white.minFilter = THREE.LinearFilter
+          this.binding.black.minFilter = THREE.LinearFilter
+        }
+        if (!!flatlock) {
+          loadedTextures.flatlock = this.imgLoader.load(flatlock)
+          loadedTextures.flatlock.minFilter = THREE.LinearFilter
+        }
+        if (!!brandingPng) {
+          loadedTextures.branding = this.imgLoader.load(brandingPng)
+          loadedTextures.branding.minFilter = THREE.LinearFilter
+        }
         loadedTextures.bumpMap = this.imgLoader.load(bumpMap)
-        loadedTextures.branding = this.imgLoader.load(brandingPng)
-        loadedTextures.branding.minFilter = THREE.LinearFilter
         const loadedAreas = areasPng.map(areaUri => {
           const areaTexture = this.imgLoader.load(areaUri)
           areaTexture.minFilter = THREE.LinearFilter
@@ -163,6 +223,7 @@ class Render3D extends PureComponent {
 
   loadDesign = async (textureUrls, colors) => {
     const loadedTextures = await new Promise((resolve, reject) => {
+      this.clearTextures()
       try {
         const loadedAreas = textureUrls.map(areaUrl => {
           const areaTexture = this.imgLoader.load(areaUrl)
@@ -175,10 +236,11 @@ class Render3D extends PureComponent {
       }
     })
     if (loadedTextures.length) {
+      const reverseTextures = reverse(loadedTextures)
       const { objectChilds } = this.state
       const object = this.scene.getObjectByName(MESH_NAME)
       if (object) {
-        loadedTextures.forEach((texture, index) => {
+        reverseTextures.forEach((texture, index) => {
           if (object.children[objectChilds + index]) {
             object.children[objectChilds + index].material.color.set(
               colors[index]
@@ -210,29 +272,6 @@ class Render3D extends PureComponent {
           const objectChilds = children.length
           this.setState({ objectChilds })
 
-          /* Object materials */
-          // Stitching
-          const flatlockMaterial = new THREE.MeshLambertMaterial({
-            alphaMap: flatlock,
-            color: '#FFFFFF'
-          })
-          flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
-          flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
-          flatlockMaterial.alphaTest = 0.5
-          // TODO: TEST
-          const zipperMaterial = new THREE.MeshLambertMaterial({
-            map: loadedTextures.zipper
-          })
-          const bindingMaterial = new THREE.MeshPhongMaterial({
-            map: loadedTextures.binding
-          })
-          // END TEST
-          // Back material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            side: THREE.BackSide,
-            color: '#000000'
-          })
-
           const getMeshIndex = meshName => {
             const index = findIndex(children, ({ name }) => name === meshName)
             return index < 0 ? 0 : index
@@ -240,13 +279,53 @@ class Render3D extends PureComponent {
 
           const meshIndex = getMeshIndex(MESH)
           const labelIndex = getMeshIndex(RED_TAG)
-          const flatlockIndex = getMeshIndex(FLATLOCK)
 
-          // TODO: WIP
-          //  const zipperIndex = getMeshIndex('FINAL JV2_Zipper')
-          // const bindingIndex = getMeshIndex('JV2_Binding FINAL')
-          // TODO: WIP
+          /* Object materials */
+          // Stitching
+          if (!!flatlock) {
+            const flatlockIndex = getMeshIndex(FLATLOCK)
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              alphaMap: flatlock,
+              color: '#FFFFFF'
+            })
+            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+            flatlockMaterial.alphaTest = 0.5
+            object.children[flatlockIndex].material = flatlockMaterial
+          }
 
+          if (!!this.bibBrace) {
+            const bibBraceIndex = getMeshIndex(BIB_BRACE)
+            const bibBraceMaterial = new THREE.MeshPhongMaterial({
+              map: this.bibBrace.white
+            })
+            object.children[bibBraceIndex].material = bibBraceMaterial
+            this.setState({ bibBraceIndex })
+          }
+
+          if (!!this.zipper) {
+            const zipperIndex = getMeshIndex(ZIPPER)
+            const zipperMaterial = new THREE.MeshPhongMaterial({
+              map: this.zipper.white
+            })
+            object.children[zipperIndex].material = zipperMaterial
+            this.setState({ zipperIndex })
+          }
+
+          if (!!this.binding) {
+            const bindingIndex = getMeshIndex(BINDING)
+            const bindingMaterial = new THREE.MeshPhongMaterial({
+              map: this.binding.white
+            })
+            object.children[bindingIndex].material = bindingMaterial
+            this.setState({ bindingIndex })
+          }
+
+          // Back material
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.BackSide,
+            color: '#000000'
+          })
           // Setup the texture layers
           const areasLayers = areas.map(() =>
             object.children[meshIndex].clone()
@@ -256,11 +335,6 @@ class Render3D extends PureComponent {
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
           object.children[labelIndex].material.color.set('#ffffff')
-          object.children[flatlockIndex].material = flatlockMaterial
-          // TODO: WIP
-          // object.children[zipperIndex].material = zipperMaterial
-          // object.children[bindingIndex].material = bindingMaterial
-          // TODO: WIP
 
           const { colors = [] } = files.design || {}
           const reversedAreas = reverse(areas)
@@ -279,19 +353,21 @@ class Render3D extends PureComponent {
           )
 
           /* Branding  */
-          const brandingObj = object.children[meshIndex].clone()
-          object.add(brandingObj)
-          const brandingIndex = children.length - 1
-          const brandingMaterial = new THREE.MeshPhongMaterial({
-            map: branding,
-            side: THREE.FrontSide,
-            bumpMap,
-            transparent: true
-          })
-          object.children[brandingIndex].material = brandingMaterial
+          if (!!branding) {
+            const brandingObj = object.children[meshIndex].clone()
+            object.add(brandingObj)
+            const brandingIndex = children.length - 1
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              map: branding,
+              side: THREE.FrontSide,
+              bumpMap,
+              transparent: true
+            })
+            object.children[brandingIndex].material = brandingMaterial
+          }
 
           /* Object Config */
-          object.position.y = -35
+          object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
           onLoadModel(false)
@@ -300,6 +376,31 @@ class Render3D extends PureComponent {
         this.onError
       )
     })
+  }
+
+  changeExtraColor = (texture, isWhite) => {
+    const { bibBraceIndex, zipperIndex, bindingIndex } = this.state
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (this[texture]) {
+      const map = isWhite ? this[texture].white : this[texture].black
+      switch (texture) {
+        case ZIPPER_NAME:
+          if (object.children[zipperIndex]) {
+            object.children[zipperIndex].material.map = map
+          }
+          break
+        case BIB_BRACE_NAME:
+          if (object.children[bibBraceIndex]) {
+            object.children[bibBraceIndex].material.map = map
+          }
+        case BINDING_NAME:
+          if (object.children[bindingIndex]) {
+            object.children[bindingIndex].material.map = map
+          }
+        default:
+          break
+      }
+    }
   }
 
   onProgress = xhr => {
@@ -426,10 +527,37 @@ class Render3D extends PureComponent {
           if (map) map.dispose()
           if (bumpMap) bumpMap.dispose()
           if (alphaMap) alphaMap.dispose()
+          if (this.zipper) {
+            this.zipper.white.dispose()
+            this.zipper.black.dispose()
+            delete this.zipper
+          }
+          if (this.binding) {
+            this.binding.white.dispose()
+            this.binding.black.dispose()
+            delete this.binding
+          }
+          if (this.bibBrace) {
+            this.bibBrace.white.dispose()
+            this.bibBrace.black.dispose()
+            delete this.bibBrace
+          }
           material.dispose()
         }
       })
       this.scene.remove(object)
+    }
+  }
+
+  clearTextures = () => {
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      object.children.forEach(({ material }) => {
+        if (!!material) {
+          const { map } = material
+          if (map) map.dispose()
+        }
+      })
     }
   }
 }
