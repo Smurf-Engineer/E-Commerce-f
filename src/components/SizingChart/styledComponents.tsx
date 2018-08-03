@@ -12,7 +12,7 @@ export const BoxHeaderRow = styled.div`
   margin-top: 54px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    flex-direction: column;
+    margin-top: 35px;
   }
 `
 
@@ -35,7 +35,8 @@ export const BoxHeader = styled.div`
   width: 82px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding: 14px 0px;
+    font-size: 12px;
+    margin: 0px 2px;
   }
 `
 export const Table = styled.div`
@@ -45,9 +46,15 @@ export const Table = styled.div`
   table-layout: fixed;
   width: 38.75%;
 
-  @media (max-width: 480px) {
+  @media (max-width: 665px) {
     margin-bottom: 0;
+    margin-top: 25px;
     padding: 0;
+    width: 100%;
+  }
+
+  @media (min-width: 666px) and (max-width: 768px) {
+    width: 49%;
   }
 `
 export const HeaderRow = styled.div`

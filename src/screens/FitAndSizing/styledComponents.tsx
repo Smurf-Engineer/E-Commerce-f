@@ -9,6 +9,10 @@ import radioButton from 'antd/lib/radio/radioButton'
 export const Container = styled.div`
   background-color: #fff;
   padding-bottom: 450px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding-bottom: 60px;
+  }
 `
 export const TitleSectionRow = styled.div`
   padding: 28px 32px 64px;
@@ -29,6 +33,7 @@ export const Title = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 23px;
+    margin-bottom: -25px;
   }
 `
 export const AnchorsRow = styled.div`
@@ -57,6 +62,7 @@ export const AnchorButton = styled.div`
   }
 
   @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 25px;
     padding: 14px 0px;
   }
 `
@@ -79,7 +85,10 @@ export const SectionTitle = styled.div`
   text-align: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    font-size: 19px;
+    font-size: 20px;
+    font-weight: bold;
+    letter-spacing: 0.25px;
+    line-height: 27px;
   }
 `
 export const SectionDescription = styled.div`
@@ -89,6 +98,10 @@ export const SectionDescription = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-bottom: 60px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 35px;
+  }
 `
 export const SizingOptionsRow = styled.div`
   display: flex;
@@ -125,9 +138,19 @@ export const FitStylesContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-top: 40px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
 `
 export const FitStyle = styled.div`
   width: 32%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-bottom: 50px;
+    width: 100%;
+  }
 `
 export const FitStyleTitle = styled.div`
   color: #5f6062;
@@ -150,4 +173,8 @@ export const FitStyleDescription = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-top: 20px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin-top: 15px;
+  }
 `
