@@ -495,6 +495,7 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
+      stripeToken,
       selectedCard: { id: cardId }
     } = this.props
 
@@ -575,6 +576,7 @@ class Checkout extends React.Component<Props, {}> {
     const orderObj = {
       paymentMethod,
       cardId,
+      token: stripeToken,
       cart: shoppingCart,
       shippingAddress,
       billingAddress,
