@@ -7,7 +7,25 @@ import gql from 'graphql-tag'
 export const getProductQuery = gql`
   query GetProduct($id: Int!) {
     product(id: $id) {
+      id
       name
+      obj
+      mtl
+      label
+      bumpMap: bump_map
+      flatlock
+      binding {
+        white
+        black
+      }
+      zipper {
+        white
+        black
+      }
+      bibBrace {
+        white
+        black
+      }
     }
   }
 `

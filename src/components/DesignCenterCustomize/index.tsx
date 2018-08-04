@@ -14,6 +14,7 @@ import {
   ArtFormat,
   SaveDesignType,
   Style,
+  Product,
   StitchingColor,
   AccesoryColor
 } from '../../types/common'
@@ -48,6 +49,7 @@ interface Props {
   customize3dMounted: boolean
   design: SaveDesignType
   loadingData?: boolean
+  product?: Product
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -131,6 +133,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectArtFormat,
       onUnmountTab,
       loadingData,
+      product,
       stitchingColor,
       bindingColor,
       zipperColor,
@@ -212,7 +215,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               openResetDesignModal,
               openResetDesignModalAction,
               setCustomize3dMountedAction,
-              onUnmountTab
+              onUnmountTab,
+              product
             }}
           />
         ) : (
