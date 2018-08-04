@@ -59,6 +59,7 @@ export const initialState = fromJS({
   loadingModel: false,
   undoChanges: [],
   redoChanges: [],
+  actualChange: {},
   swipingView: false,
   themeId: -1,
   styleIndex: -1,
@@ -144,11 +145,13 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const lastStep = { type: 'colors', state: colors }
+      const actualStep = { type: 'colors', state: List.of(...updatedColors) }
 
       return state.merge({
         colors: List.of(...updatedColors),
         undoChanges: undoChanges.unshift(lastStep),
         redoChanges: redoChanges.clear(),
+        actualChange: actualStep,
         designHasChanges: true
       })
     }
@@ -176,31 +179,58 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const undoStep = undoChanges.first()
-      const oldState = state.get(undoStep.type)
-      const redoStep = { type: undoStep.type, state: oldState }
 
-      // console.log('---------------------------')
-      // console.log(undoStep)
-      // console.log('---------------------------')
+      const { type } = undoStep
+      switch (type) {
+        case 'add':
+          const canvas = state.get('canvas')
+          const updatedCanvas = canvas.deleteIn(['path', undoStep.state])
 
-      return state.merge({
-        undoChanges: undoChanges.shift(),
-        redoChanges: redoChanges.unshift(redoStep),
-        [undoStep.type]: undoStep.state
-      })
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            canvas: updatedCanvas,
+            actualChange: undoStep,
+            selectedElement: ''
+          })
+        default:
+          // colors
+          const oldState = state.get(undoStep.type)
+          const redoStep = { type: undoStep.type, state: oldState }
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(redoStep),
+            colors: undoStep.state,
+            actualChange: undoStep,
+            selectedElement: ''
+          })
+      }
     }
     case DESIGN_REDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const redoStep = redoChanges.first()
-      const currentState = state.get(redoStep.type)
-      const undoStep = { type: redoStep.type, state: currentState }
+      const { type } = redoStep
+      switch (type) {
+        case 'add':
+          const canvas = state.get('canvas')
+          const updatedCanvas = canvas.setIn(['path', redoStep.state], canvas)
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            canvas: updatedCanvas,
+            actualChange: redoStep
+          })
+        default:
+          const currentState = state.get(redoStep.type)
+          const undoStep = { type: redoStep.type, state: currentState }
 
-      return state.merge({
-        undoChanges: undoChanges.unshift(undoStep),
-        redoChanges: redoChanges.shift(),
-        [redoStep.type]: redoStep.state
-      })
+          return state.merge({
+            undoChanges: undoChanges.unshift(undoStep),
+            redoChanges: redoChanges.shift(),
+            colors: redoStep.state
+          })
+      }
     }
     case SET_PALETTE_NAME_ACTION:
       return state.set('paletteName', action.name)
@@ -288,7 +318,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         itemToAdd: action.teamStoreItem
       })
     case SET_CANVAS_ELEMENT_ACTION: {
-      const { el, typeEl } = action
+      const { el, typeEl, canvasObj } = action
       // console.log('----------element-----------')
       // console.log(el)
       // console.log('----------Type-----------')
@@ -304,7 +334,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
 
-      const lastStep = { type: typeEl, state: canvas }
+      const lastStep = {
+        type: 'add',
+        state: { id: el.id, type: typeEl, ...canvasObj }
+      }
 
       const selectedElement = state.get('selectedElement')
       const canvasEl = typeEl === 'path' ? fromJS(el) : el
@@ -326,7 +359,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         canvas: updatedCanvas,
         designHasChanges: true,
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        actualChange: { type: 'add', state: el.id }
       })
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {

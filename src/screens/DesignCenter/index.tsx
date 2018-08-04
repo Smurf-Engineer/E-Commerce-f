@@ -51,7 +51,8 @@ import {
   SaveDesignType,
   DesignType,
   Style,
-  Change
+  Change,
+  ConfigCanvasObj
 } from '../../types/common'
 import {
   getProductQuery,
@@ -86,6 +87,7 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   undoChanges: Change[]
   redoChanges: Change[]
+  actualChange: Change
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
@@ -147,7 +149,8 @@ interface Props extends RouteComponentProps<any> {
   setCanvasElement: (
     text: CanvasElement,
     typeEl: string,
-    update?: boolean
+    update?: boolean,
+    canvasObj?: ConfigCanvasObj
   ) => void
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
@@ -335,6 +338,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       designClearAction,
       undoChanges,
       redoChanges,
+      actualChange,
       setThemeAction,
       setStyleAction,
       openShareModal,
@@ -380,6 +384,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCanvasJsonAction,
       styleIndex
     } = this.props
+
+    console.log('-----undoChanges-----')
+    console.log(undoChanges)
+    console.log('-----redoChanges-----')
+    console.log(redoChanges)
+    console.log('---------------------')
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -503,7 +513,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 loadingData,
                 currentStyle,
                 undoChanges,
-                redoChanges
+                redoChanges,
+                actualChange
               }}
               currentTab={tabSelected}
               design={designObject}

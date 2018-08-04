@@ -45,6 +45,7 @@ interface Props {
   loadingData?: boolean
   undoChanges: Change[]
   redoChanges: Change[]
+  actualChange: Change
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -126,7 +127,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUnmountTab,
       loadingData,
       undoChanges,
-      redoChanges
+      redoChanges,
+      actualChange
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -199,7 +201,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               setCustomize3dMountedAction,
               onUnmountTab,
               undoChanges,
-              redoChanges
+              redoChanges,
+              actualChange
             }}
           />
         ) : (

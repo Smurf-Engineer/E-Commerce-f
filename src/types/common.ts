@@ -758,6 +758,21 @@ export interface ClickParam {
 }
 
 export interface Change {
-  type: string
+  type: ChangeType
   state: any
+}
+
+export type ChangeType =
+  | 'colors'
+  | 'add'
+  | 'delete'
+  | 'move'
+  | 'rotate'
+  | 'resize'
+  | 'duplicate'
+
+export type ConfigCanvasObj = {
+  src: string
+  style: any
+  position: any
 }

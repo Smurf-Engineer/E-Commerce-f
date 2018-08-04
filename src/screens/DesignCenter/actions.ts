@@ -50,7 +50,8 @@ import {
   Palette,
   TeamStoreItemtype,
   CanvasElement,
-  SaveDesignType
+  SaveDesignType,
+  ConfigCanvasObj
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -208,12 +209,14 @@ export const setItemToAddAction = (
 export const setCanvasElement = (
   el: CanvasElement,
   typeEl: string,
-  update = false
+  update = false,
+  canvasObj: ConfigCanvasObj
 ): AnyAction => ({
   type: SET_CANVAS_ELEMENT_ACTION,
   el,
   typeEl,
-  update
+  update,
+  canvasObj
 })
 
 export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({

@@ -5,8 +5,8 @@ import filter from 'lodash/filter'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
-import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import {
@@ -289,7 +289,7 @@ class Render3D extends PureComponent {
               alphaMap: flatlock,
               color: '#FFFFFF'
             })
-            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapS = THREE.featWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
             flatlockMaterial.alphaTest = 0.5
 
@@ -514,22 +514,38 @@ class Render3D extends PureComponent {
   }
 
   handleOnClickUndo = () => {
-    const { onUndoAction, undoChanges, redoChanges } = this.props
-    console.log('-----------undo-------------------')
-    console.log(undoChanges)
-    console.log(undoChanges[0].state.toJS())
-    console.log('-----------redo-------------------')
-    console.log(redoChanges)
-    console.log('------------------------------------')
+    const { onUndoAction, undoChanges } = this.props
+    const changeToApply = undoChanges[0]
+    if (changeToApply.type !== 'colors') {
+      switch (changeToApply.type) {
+        case 'add':
+          const objects = this.canvasTexture.getObjects()
+          const object = find(objects, { id: changeToApply.state.id })
+          this.canvasTexture.remove(object)
+          break
+        default:
+          break
+      }
+    }
     onUndoAction()
   }
 
   handleOnClickRedo = () => {
-    const { onRedoAction, undoChanges, redoChanges } = this.props
-    console.log('------------------------------------')
-    console.log(undoChanges)
-    console.log(redoChanges)
-    console.log('------------------------------------')
+    const { onRedoAction, redoChanges } = this.props
+    const changeToApply = redoChanges[0]
+    const {
+      state: { id, type, style, src, position }
+    } = changeToApply
+    switch (type) {
+      case 'path':
+        this.applyClipArt(src, style, position, id)
+        break
+      case 'text':
+        this.applyText(src, style, position, id)
+      case 'image':
+        this.applyImage(src, position, id)
+        break
+    }
     onRedoAction()
   }
 
@@ -695,9 +711,9 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (base64, position = {}) => {
+  applyImage = (base64, position = {}, idElement) => {
     const { onApplyCanvasEl } = this.props
-    const id = shortid.generate()
+    const id = idElement || shortid.generate()
     fabric.Image.fromURL(base64, oImg => {
       const imageEl = oImg.scale(1).set({
         id,
@@ -707,13 +723,19 @@ class Render3D extends PureComponent {
       this.canvasTexture.add(imageEl)
 
       const el = { id }
-      onApplyCanvasEl(el, 'image')
-      this.canvasTexture.setActiveObject(imageEl)
+      if (!idElement) {
+        onApplyCanvasEl(el, 'image', undefined, {
+          src: base64,
+          style: undefined,
+          position
+        })
+        this.canvasTexture.setActiveObject(imageEl)
+      }
       this.canvasTexture.renderAll()
     })
   }
 
-  applyText = (text, style, position = {}) => {
+  applyText = (text, style, position = {}, idElement) => {
     if (!this.canvasTexture || !text) {
       return
     }
@@ -722,12 +744,13 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
-    if (activeEl && activeEl.type === 'text') {
+    if (activeEl && activeEl.type === 'text' && !idElement) {
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
+      const id = idElement || shortid.generate()
       txtEl = new fabric.Text(text, {
-        id: shortid.generate(),
+        id,
         hasRotatingPoint: false,
         fontSize: 80,
         snapAngle: 1,
@@ -736,7 +759,7 @@ class Render3D extends PureComponent {
         ...style
       })
       this.canvasTexture.add(txtEl)
-      this.canvasTexture.setActiveObject(txtEl)
+      !idElement && this.canvasTexture.setActiveObject(txtEl)
       this.canvasTexture.renderAll()
     }
 
@@ -745,18 +768,19 @@ class Render3D extends PureComponent {
       text,
       textFormat: style
     }
-    onApplyCanvasEl(el, 'text', !!activeEl)
+    !idElement &&
+      onApplyCanvasEl(el, 'text', !!activeEl, { src: text, style, position })
   }
 
-  applyClipArt = (url, style, position = {}) => {
+  applyClipArt = (url, style, position = {}, idElement) => {
     const activeEl = this.canvasTexture.getActiveObject()
-    if (activeEl && activeEl.type === 'path') {
+    if (activeEl && activeEl.type === 'path' && !idElement) {
       activeEl.set({ ...style })
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
       fabric.loadSVGFromURL(url, (objects = [], options) => {
-        const id = shortid.generate()
+        const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects, options)
         shape.set({
           id,
@@ -769,9 +793,10 @@ class Render3D extends PureComponent {
           stroke: '#000000',
           strokeWidth: 0
         }
-        onApplyCanvasEl(el, 'path')
+        !idElement &&
+          onApplyCanvasEl(el, 'path', false, { src: url, style, position })
         this.canvasTexture.add(shape)
-        this.canvasTexture.setActiveObject(shape)
+        !idElement && this.canvasTexture.setActiveObject(shape)
         this.canvasTexture.renderAll()
       })
     }
