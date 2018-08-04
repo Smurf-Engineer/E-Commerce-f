@@ -385,6 +385,7 @@ export interface ModelConfig {
   brandingSvg?: string
   brandingPng?: string
   label: string
+  size: number
   design: {
     name: string
     colors: string[]

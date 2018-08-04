@@ -1,7 +1,7 @@
 /**
  * ThreeJs config
  */
-
+export const CANVAS_SIZE = 1024
 export const viewPositions = {
   0: {
     // Back

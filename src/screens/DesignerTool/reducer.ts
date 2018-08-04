@@ -94,14 +94,16 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       const {
         areasPng,
         areasSvg,
-        design: { colors }
+        design: { colors },
+        size
       } = config
       const reverseColors = reverse(colors)
       const modelConfig = state.get('modelConfig')
       const updatedModelConfig = modelConfig.merge({
         areasPng: List.of(...areasPng),
         areasSvg: List.of(...areasSvg),
-        colors: List.of(...colors)
+        colors: List.of(...colors),
+        size
       })
       return state.merge({
         modelConfig: updatedModelConfig,
