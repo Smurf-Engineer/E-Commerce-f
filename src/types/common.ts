@@ -728,6 +728,7 @@ export interface DesignItem {
 export interface Country {
   name: string
   code: string
+  geonameId: string
 }
 
 export interface CountryRegion {

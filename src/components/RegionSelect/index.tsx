@@ -75,7 +75,8 @@ const RegionSelectEnhance = compose(
   graphql(regionsQuery, {
     options: ({ country }: OwnProps) => ({
       skip: country === '',
-      variables: { country }
+      variables: { country },
+      fetchPolicy: 'network-only'
     })
   })
 )(RegionSelect)
