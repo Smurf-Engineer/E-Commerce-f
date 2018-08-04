@@ -2,13 +2,14 @@
  * Designs Screen - Created by david on 27/03/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import withLoading from '../../components/WithLoadingData/'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
+import messages from './messages'
 import ThreeD from '../../components/Render3D'
 import * as designsActions from './actions'
 import { styleQuery } from './data'
@@ -60,9 +61,11 @@ export class Designs extends React.Component<Props, {}> {
     if (error) {
       return (
         <ContainerError>
-          <Title>Oops!</Title>
+          <Title>
+            <FormattedMessage {...messages.errorTitle} />
+          </Title>
           <Message>
-            Seems like the design was deleted or is not available
+            <FormattedMessage {...messages.errorMessage} />
           </Message>
         </ContainerError>
       )

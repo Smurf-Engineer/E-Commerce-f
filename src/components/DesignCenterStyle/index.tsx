@@ -116,8 +116,8 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
           <FormattedMessage {...messages.title} />
         </Title>
         <Slider
+          {...{ marks }}
           onChange={this.handleOnSelectComplexity}
-          marks={marks}
           defaultValue={1}
           value={complexity}
           min={1}

@@ -101,7 +101,7 @@ class Render3D extends PureComponent {
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
             flatlockMaterial.alphaTest = 0.5
-            object.children[flatlockIndex].material = flatlockMaterial
+            children[flatlockIndex].material = flatlockMaterial
           }
 
           /* Zipper */
@@ -110,7 +110,7 @@ class Render3D extends PureComponent {
             const zipperMaterial = new THREE.MeshPhongMaterial({
               map: zipper
             })
-            object.children[zipperIndex].material = zipperMaterial
+            children[zipperIndex].material = zipperMaterial
           }
           /* Binding */
           if (!!binding) {
@@ -118,7 +118,7 @@ class Render3D extends PureComponent {
             const bindingMaterial = new THREE.MeshPhongMaterial({
               map: binding
             })
-            object.children[bindingIndex].material = bindingMaterial
+            children[bindingIndex].material = bindingMaterial
           }
           /* Bib Brace */
           if (!!bibBrace) {
@@ -126,7 +126,7 @@ class Render3D extends PureComponent {
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
               map: bibBrace
             })
-            object.children[bibBraceIndex].material = bibBraceMaterial
+            children[bibBraceIndex].material = bibBraceMaterial
           }
 
           // Inside material
@@ -142,12 +142,12 @@ class Render3D extends PureComponent {
           })
 
           // /* Assign materials */
-          const cloneObject = object.children[meshIndex].clone()
+          const cloneObject = children[meshIndex].clone()
           object.add(cloneObject)
 
-          object.children[labelIndex].material.color.set('#ffffff')
-          object.children[meshIndex].material = insideMaterial
-          object.children[objectChilds].material = frontMaterial
+          children[labelIndex].material.color.set('#ffffff')
+          children[meshIndex].material = insideMaterial
+          children[objectChilds].material = frontMaterial
 
           /* Object Conig */
           object.position.y = 0
