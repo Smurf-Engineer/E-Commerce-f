@@ -6,8 +6,7 @@ import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import messages from './messages'
 import withLoading from '../WithLoadingData'
-import { QueryProps, ThemeModalType } from '../../types/common'
-import { ThemeResult } from '../../types/common'
+import { QueryProps, ThemeModalType, Theme } from '../../types/common'
 import { themesQuery } from './data'
 import ThemeItem from '../Theme'
 import { Container, Row, ModalMessage } from './styledComponents'
@@ -15,7 +14,7 @@ import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
 
 interface Data extends QueryProps {
-  themes?: ThemeResult
+  themes: Theme[]
 }
 
 interface Props {
@@ -24,6 +23,7 @@ interface Props {
   data: Data
   loadingModel: boolean
   designHasChanges: boolean
+  productId: number
   onSelectTheme: (id: number) => void
   formatMessage: (messageDescriptor: any) => string
   openNewThemeModalAction: (open: boolean, themeId?: number) => void
@@ -36,7 +36,8 @@ export const DesignCenterGrid = ({
   currentTheme,
   themeModalData: { openNewThemeModal, themeId },
   openNewThemeModalAction,
-  designHasChanges
+  designHasChanges,
+  productId
 }: Props) => {
   if (data.error) {
     // TODO: Handle error.
@@ -59,7 +60,7 @@ export const DesignCenterGrid = ({
     openNewThemeModalAction(false)
   }
 
-  const themes = data.themes ? data.themes.themes || [] : []
+  const { themes = [] } = data
   const list = themes.map(({ id, image, name }, index) => (
     <ThemeItem
       key={index}
@@ -93,7 +94,11 @@ export const DesignCenterGrid = ({
 }
 
 const DesignCenterGridWithData = compose(
-  graphql<Data>(themesQuery),
+  graphql<Data, Props>(themesQuery, {
+    options: ({ productId }) => ({
+      variables: { id: productId }
+    })
+  }),
   withLoading
 )(DesignCenterGrid)
 

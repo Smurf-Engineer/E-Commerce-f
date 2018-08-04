@@ -26,13 +26,6 @@ export const modelPositions = {
 }
 
 export const MESH_NAME = 'JV2_3D_MODEL'
-export const FLATLOCK = 'FINAL JV2_Flatlock'
-export const MESH = 'FINAL JV2_Design_Mesh'
-export const RED_TAG = 'FINAL Red_Tag'
-export const ZIPPER = 'FINAL JV2_Zipper'
-export const BINDING = 'JV2_Binding FINAL'
-export const BIB_BRACE = 'FINAL JV2_Bib_Brace'
-
 export const BIB_BRACE_NAME = 'bibBrace'
 export const ZIPPER_NAME = 'zipper'
 export const BINDING_NAME = 'binding'

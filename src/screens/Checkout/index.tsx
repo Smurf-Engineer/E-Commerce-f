@@ -496,6 +496,7 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
+      stripeToken,
       selectedCard: { id: cardId }
     } = this.props
 
@@ -571,11 +572,13 @@ class Checkout extends React.Component<Props, {}> {
         unset(itemDetail, 'gender.__typename')
         unset(itemDetail, 'fit.__typename')
         unset(itemDetail, 'size.__typename')
+        unset(itemDetail, '__typename')
       })
     })
     const orderObj = {
       paymentMethod,
       cardId,
+      tokenId: stripeToken,
       cart: shoppingCart,
       shippingAddress,
       billingAddress,

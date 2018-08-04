@@ -108,9 +108,13 @@ export const setStripeTokenAction = (token: string): AnyAction => ({
   token
 })
 
-export const setStripeCardDataAction = (card: CreditCardData): AnyAction => ({
+export const setStripeCardDataAction = (
+  card: CreditCardData,
+  stripeToken: string
+): AnyAction => ({
   type: SET_STRIPE_CARD_DATA,
-  card
+  card,
+  stripeToken
 })
 
 export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({

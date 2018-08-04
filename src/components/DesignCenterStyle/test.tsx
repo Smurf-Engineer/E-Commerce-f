@@ -13,10 +13,7 @@ describe('<DesignCenterStyle />', () => {
     const testFunc = () => {}
     const data = {
       fetchMore: () => {},
-      styles: {
-        fullCount: '0',
-        styles: []
-      }
+      styles: []
     }
     const formatMessage = (messageDescriptor: any) => ''
     const openNewStyleModalAction = (open: boolean) => {}
@@ -38,6 +35,9 @@ describe('<DesignCenterStyle />', () => {
             styleModalData,
             designHasChanges
           }}
+          productId={1}
+          themeId={1}
+          complexity={1}
           onSelectStyle={testFunc}
           onSelectStyleComplexity={() => {}}
         />

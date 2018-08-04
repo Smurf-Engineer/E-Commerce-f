@@ -4,6 +4,10 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
+type StyledProps = {
+  listForMyAccount: boolean
+}
+
 export const Container = styled.div`
   width: 100%;
 `
@@ -21,9 +25,22 @@ export const MyCardsList = styled.div`
   justify-content: flex-start;
 `
 
+export const ButtonWrapper = styled.div`
+  .ant-btn {
+    background-color: #fff;
+    border-color: ${({ listForMyAccount }: StyledProps) =>
+      listForMyAccount ? '#e61737' : '#4A90E2'};
+    color: ${({ listForMyAccount }) =>
+      listForMyAccount ? '#e61737' : '#4A90E2'};
+  }
+  .ant-btn:hover {
+    background-color: ${({ listForMyAccount }) =>
+      listForMyAccount ? '#e61737' : '#4A90E2'};
+    color: #fff;
+  }
+`
+
 export const StyledEmptyButton = styled(Button)`
-  background-color: #fff;
-  border-color: #e61737;
   border-radius: 0px;
   border-width: 2px;
   font-family: 'Avenir Next';

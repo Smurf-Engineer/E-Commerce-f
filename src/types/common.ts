@@ -13,6 +13,14 @@ export interface QueryProps {
   subscribeToMore?: (options: any) => () => void
 }
 
+export interface DesignSaved {
+  id: number
+  name: string
+  svg: string
+  product: Product
+  style: Style
+}
+
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
@@ -748,6 +756,13 @@ export type MessagePayload = {
     message: string
   }
 }
+
+export type StitchingColor = {
+  name: string
+  value: string
+}
+
+export type AccesoryColor = 'black' | 'white'
 
 export interface ClickParam {
   key: string

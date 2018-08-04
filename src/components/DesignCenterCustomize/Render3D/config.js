@@ -19,13 +19,36 @@ export const viewPositions = {
     // Front
     x: 1.4624917941275544,
     y: 2.3799584848944044,
-    z: 249.98439334358835
+    z: 200
   },
   3: {
     // Left
     x: 249.7141197905644,
     y: 4.759701275836918,
     z: -10.96374119486817
+  }
+}
+
+export const fabricJsConfig = {
+  settings: {
+    borderColor: 'black',
+    cornerSize: 60,
+    cornerPadding: 10
+  },
+  tl: {
+    icon: 'delete.svg'
+  },
+  tr: {
+    icon: 'duplicate.svg'
+  },
+  bl: {
+    icon: 'rotate.svg'
+  },
+  br: {
+    icon: 'expand.svg'
+  },
+  mb: {
+    icon: 'layer.svg'
   }
 }
 
@@ -38,3 +61,5 @@ export const SCALE_ACTION = 'SCALE_ACTION'
 export const DRAG_ACTION = 'DRAG_ACTION'
 
 export const MESH_NAME = 'JV2_3D_MODEL'
+export const CANVAS_MESH = 'Canvas_Mesh'
+export const BRANDING_MESH = 'Branding_Mesh'

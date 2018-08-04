@@ -11,10 +11,15 @@ import {
   ButtonWrapper,
   Row,
   Model,
-  QuickView
+  QuickView,
+  BottomButtons,
+  ButtonWrapperRight,
+  ButtonRight,
+  Render
 } from './styledComponents'
-import Render3D from './Render3D'
+import Render3D from '../../components/Render3D'
 import messages from './messages'
+import { Product } from '../../types/common'
 import ShareDesignModal from '../ShareDesignModal'
 import quickView from '../../assets/quickview.svg'
 import AddToTeamStore from '../AddToTeamStore'
@@ -29,6 +34,7 @@ interface Props {
   openShareModal: boolean
   savedDesignId: string
   productName: string
+  product: Product
   openAddToStoreModal: boolean
   teamStoreId: string
   svgOutputUrl: string
@@ -62,12 +68,9 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
   render() {
     const {
       history,
-      colors,
       currentTab,
       swipingView,
-      loadingModel,
       onPressQuickView,
-      onLoadModel,
       openShareModal,
       formatMessage,
       savedDesignId,
@@ -78,6 +81,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       teamStoreId,
       addItemToStore,
       onAddToCart,
+      product,
       svgOutputUrl
     } = this.props
     return (
@@ -98,18 +102,29 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             </Button>
           </ButtonWrapper>
         </ButtonsContainer>
-        {currentTab === DesignTabs.PreviewTab && !swipingView ? (
-          <Render3D
-            {...{
-              colors,
-              onLoadModel,
-              loadingModel,
-              openAddToTeamStoreModalAction,
-              onAddToCart,
-              svgOutputUrl
-            }}
-          />
-        ) : null}
+        {currentTab === DesignTabs.PreviewTab &&
+          !swipingView && (
+            <Render>
+              <Render3D svg={svgOutputUrl} {...{ product }} />
+              <BottomButtons>
+                {/* TODO: Hide TeamStore Flow<ButtonWrapper>
+                <Button onClick={this.openAddToStoreModal}>
+                  <FormattedMessage {...messages.addToTeam} />
+                </Button>
+              </ButtonWrapper>*/}
+                <ButtonWrapper>
+                  <Button type="primary" onClick={onAddToCart}>
+                    <FormattedMessage {...messages.addToCart} />
+                  </Button>
+                </ButtonWrapper>
+              </BottomButtons>
+              <ButtonWrapperRight>
+                <ButtonRight type="primary">
+                  <FormattedMessage {...messages.keepShoping} />
+                </ButtonRight>
+              </ButtonWrapperRight>
+            </Render>
+          )}
         <ShareDesignModal
           open={openShareModal}
           requestClose={this.handleRequestCloseShare}
@@ -134,6 +149,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         </Modal>
       </Container>
     )
+  }
+
+  openAddToStoreModal = () => {
+    const { openAddToTeamStoreModalAction } = this.props
+    openAddToTeamStoreModalAction(true)
   }
 }
 
