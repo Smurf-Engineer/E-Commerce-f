@@ -35,7 +35,8 @@ import {
   DRAG_ACTION,
   MESH_NAME,
   CANVAS_MESH,
-  BRANDING_MESH
+  BRANDING_MESH,
+  CANVAS_SIZE
 } from './config'
 import {
   MESH,
@@ -63,8 +64,6 @@ import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
-
-const CANVAS_SIZE = 2048
 
 /* eslint-disable */
 class Render3D extends PureComponent {

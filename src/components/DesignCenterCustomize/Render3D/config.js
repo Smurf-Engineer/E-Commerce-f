@@ -1,7 +1,7 @@
 /**
  * ThreeJs config
  */
-
+export const CANVAS_SIZE = 1024
 export const viewPositions = {
   0: {
     // Back
@@ -32,7 +32,7 @@ export const viewPositions = {
 export const fabricJsConfig = {
   settings: {
     borderColor: 'black',
-    cornerSize: 60,
+    cornerSize: 30,
     cornerPadding: 10
   },
   tl: {
