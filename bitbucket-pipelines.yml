@@ -12,12 +12,12 @@ definitions:
       memory: 2048
 
 pipelines:
-  default:
-  - step:
-      script:
-      - npm install --production
-      - npm run lint
-      - npm run test
+  # default:
+  # - step:
+  #     script:
+  #     - npm install --production
+  #     - npm run lint
+  #     - npm run test
   branches:
     development:
     - step:
