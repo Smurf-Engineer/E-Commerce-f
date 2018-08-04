@@ -111,8 +111,8 @@ class Render3D extends PureComponent {
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
-      precision
-      // preserveDrawingBuffer: true
+      precision,
+      preserveDrawingBuffer: true
     })
 
     renderer.setPixelRatio(devicePixelRatio)
