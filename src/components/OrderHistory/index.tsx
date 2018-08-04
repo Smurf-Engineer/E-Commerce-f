@@ -12,6 +12,7 @@ import messages from './messages'
 import { sorts } from '../../types/common'
 import OrderDetails from '../OrderDetails'
 import SwipeableViews from 'react-swipeable-views'
+import { ORDER_HISTORY } from '../../screens/Account/constants'
 
 interface Props {
   history: any
@@ -54,7 +55,7 @@ class OrderHistory extends React.Component<Props, {}> {
         </Container>
         <OrderDetails
           onReturn={this.handleOnOrderClick}
-          from={'OrderHistory'}
+          from={ORDER_HISTORY}
           {...{ orderId, formatMessage }}
         />
       </SwipeableViews>

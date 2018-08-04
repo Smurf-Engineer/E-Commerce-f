@@ -48,6 +48,7 @@ import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
+import { ORDER_HISTORY } from '../../screens/Account/constants'
 
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
@@ -68,7 +69,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const handleOnReturn = () => onReturn('')
 
     const getBackMessage =
-      from === 'OrderHistory' ? messages.backToHistory : messages.backToOverview
+      from === ORDER_HISTORY ? messages.backToHistory : messages.backToOverview
 
     if (!orderId) {
       return null
