@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
+import get from 'lodash/get'
 import { QueryProps, NetsuiteTax, NetsuiteShipping } from '../../types/common'
 import { getTaxQuery } from './data'
 import messages from './messages'
@@ -79,7 +80,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     )
     const youSaved = Number(totalWithoutDiscount) - total
 
-    const shippingTotal = !!data && data.shipping && data.shipping.flat_rate
+    const shippingTotal = get(data, 'shipping.flat_rate', 0)
 
     return (
       <Container>

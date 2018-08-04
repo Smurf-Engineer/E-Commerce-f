@@ -12,7 +12,7 @@ export const getTaxQuery = gql`
       ratePST
     }
 
-    shipping: getShippingByCountry(country: $country) {
+    shipping: getShippingByCountry(country: $country, weight: 0) {
       internal_id
       subsidiary
       name

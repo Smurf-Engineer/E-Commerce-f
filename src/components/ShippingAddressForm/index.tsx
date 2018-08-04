@@ -12,12 +12,12 @@ import {
   Label,
   InputTitleContainer,
   ErrorMsg,
-  ShipTopPoAPO
+  ShipTopPoAPO,
+  StyledCityInput
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
 import CountrySelect from '../CountrySelect'
 import RegionSelect from '../RegionSelect'
-import CitySelect from '../CitySelect'
 
 const COUNTRY_VALUE_ID = 'country'
 const STATE_VALUE_ID = 'stateProvince'
@@ -69,12 +69,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       formatMessage
     } = this.props
 
-    const {
-      selectedCountry,
-      selectedRegion,
-      selectedCity,
-      selectedCountryId
-    } = this.state
+    const { selectedCountry, selectedRegion, selectedCountryId } = this.state
 
     return (
       <ShippingFormContainer>
@@ -147,7 +142,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             </InputTitleContainer>
             <CountrySelect
               {...{ formatMessage }}
-              selectedCountry={`${selectedCountry}-${selectedCountryId}`}
+              selectedCountry={
+                selectedCountry
+                  ? `${selectedCountry}-${selectedCountryId}`
+                  : undefined
+              }
               handleCountryChange={this.handleCountryChange}
             />
             {!country &&
@@ -177,12 +176,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               <Label>{formatMessage(messages.cityLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <CitySelect
-              {...{ selectedCity, formatMessage }}
-              disabled={!selectedRegion}
-              country={selectedCountry}
-              region={selectedRegion}
-              handleCityChange={this.handleCityChange}
+            <StyledCityInput
+              id="city"
+              value={city}
+              onChange={this.handleInputChange}
+              maxLength="100"
             />
             {!city &&
               hasError && (
