@@ -359,6 +359,7 @@ class Checkout extends React.Component<Props, {}> {
               <OrderSummary
                 subtotal={total}
                 discount={10}
+                country={billingCountry}
                 formatMessage={intl.formatMessage}
                 {...{ total, totalWithoutDiscount }}
               />
