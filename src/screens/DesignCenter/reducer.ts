@@ -45,7 +45,9 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
-  WHITE
+  WHITE,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -112,7 +114,9 @@ export const initialState = fromJS({
   openOutWithoutSaveModal: false,
   routeToGoWithoutSave: '',
   customize3dMounted: false,
-  svgOutputUrl: ''
+  svgOutputUrl: '',
+  uploadingFile: false,
+  images: []
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -398,6 +402,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('customize3dMounted', action.mounted)
     case SET_CANVAS_JSON_ACTION:
       return state.setIn(['design', 'canvasJson'], action.canvas)
+    case UPLOAD_FILE_ACTION_SUCCESS: {
+      const images = state.get('images')
+      const updatedImages = images.push(action.url)
+      return state.merge({
+        uploadingFile: false,
+        images: updatedImages
+      })
+    }
+    case SET_UPLOADING_FILE_ACTION:
+      return state.set('uploadingFile', action.isUploading)
     default:
       return state
   }

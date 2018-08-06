@@ -45,7 +45,9 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
-  SET_ACCESSORY_COLOR_ACTION
+  SET_ACCESSORY_COLOR_ACTION,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -321,8 +323,12 @@ export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   stitchingColor
 })
 
-export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
-  type: SET_ACCESSORY_COLOR_ACTION,
-  color,
-  id
+export const uploadFileSuccessAction = (url: string) => ({
+  type: UPLOAD_FILE_ACTION_SUCCESS,
+  url
+})
+
+export const setUploadingAction = (isUploading: boolean) => ({
+  type: SET_UPLOADING_FILE_ACTION,
+  isUploading
 })

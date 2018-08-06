@@ -20,7 +20,8 @@ import {
   ArtFormat,
   StitchingColor,
   AccesoryColor,
-  Product
+  Product,
+  ImageFile
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -45,6 +46,8 @@ interface Props {
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
+  images: ImageFile[]
+  onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -97,7 +100,9 @@ const Tabs = ({
   zipperColor,
   bibColor,
   onAccessoryColorSelected,
-  product
+  product,
+  onUploadFile,
+  images
 }: Props) => {
   return (
     <Container>
@@ -156,7 +161,9 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
-          <UploadTab {...{ formatMessage, onApplyImage }} />
+          <UploadTab
+            {...{ formatMessage, onApplyImage, onUploadFile, images }}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

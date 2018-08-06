@@ -16,7 +16,8 @@ import {
   Style,
   Product,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  ImageFile
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import { DesignTabs } from '../../screens/DesignCenter/constants'
@@ -50,6 +51,8 @@ interface Props {
   design: SaveDesignType
   loadingData?: boolean
   product?: Product
+  images: ImageFile[]
+  onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -138,7 +141,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       bindingColor,
       zipperColor,
       bibColor,
-      onAccessoryColorSelected
+      onAccessoryColorSelected,
+      onUploadFile,
+      images
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -181,7 +186,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             zipperColor,
             bibColor,
             onAccessoryColorSelected,
-            product
+            product,
+            onUploadFile,
+            images
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}

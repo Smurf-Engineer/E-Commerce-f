@@ -10,6 +10,7 @@ import last from 'lodash/last'
 import Dragger from '../../TeamDragger'
 import ImageList from '../ImageList'
 import messages from './messages'
+import { ImageFile } from '../../../types/common'
 import {
   Container,
   Header,
@@ -34,22 +35,19 @@ const validFileExtensions = [
 ]
 
 interface Props {
+  images: ImageFile[]
   onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
+  onUploadFile: (file: any) => void
 }
 
 interface State {
   file: any
-  images: string[]
 }
 
 class UploadTab extends React.PureComponent<Props, State> {
-  state = {
-    file: null,
-    images: [] as string[]
-  }
   render() {
-    const { images } = this.state
+    const { images } = this.props
     const dragger = <Dragger onSelectImage={this.beforeUpload} />
     return (
       <Container>
@@ -68,9 +66,9 @@ class UploadTab extends React.PureComponent<Props, State> {
     )
   }
 
-  handleOnAddImage = (base64: string) => {
+  handleOnAddImage = (url: string) => {
     const { onApplyImage } = this.props
-    onApplyImage(base64)
+    onApplyImage(url)
   }
 
   getFileExtension = (fileName: string) => {
@@ -101,18 +99,17 @@ class UploadTab extends React.PureComponent<Props, State> {
         Message.error(formatMessage(messages.imageExtensionError))
         return false
       }
+
+      const { onUploadFile } = this.props
+      onUploadFile(file)
     }
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      this.setState(({ images }: any) => ({
-        images: [...images, reader.result]
-      }))
-    }
-
-    if (file) {
-      reader.readAsDataURL(file)
-    }
+    // const reader = new FileReader()
+    // reader.onloadend = () => {
+    //   this.setState(({ images }: any) => ({
+    //     images: [...images, reader.result]
+    //   }))
+    // }
 
     return false
   }

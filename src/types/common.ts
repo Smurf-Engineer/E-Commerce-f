@@ -750,6 +750,11 @@ export interface City {
 export interface ImageFile {
   id: number
   fileUrl: string
+  size: {
+    width: number
+    height: number
+  }
+  type: string
 }
 
 export type MessagePayload = {
