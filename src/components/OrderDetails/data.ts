@@ -69,6 +69,7 @@ export const getOrderQuery = gql`
           yotpoId: yotpo_id
           shortDescription: short_description
           description
+          weight
           genders {
             id
             name: gender

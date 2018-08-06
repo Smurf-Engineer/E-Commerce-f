@@ -12,6 +12,7 @@ export const searchResultsQuery = gql`
       shortDescription: short_description
       collections
       isTopProduct
+      weight
       customizable: design_center
       retailMen: men_retail
       retailWomen: women_retail
