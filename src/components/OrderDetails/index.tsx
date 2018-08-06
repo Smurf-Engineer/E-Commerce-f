@@ -100,13 +100,14 @@ export class OrderDetails extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       shippingTax,
-      netsuit: {
-        orderStatus: { deliveryDate }
-      },
+      netsuit,
       payment: { stripeCharge },
       cart,
       status
     } = data.orderQuery
+
+    const deliveryDate =
+      netsuit && netsuit.orderStatus && netsuit.orderStatus.deliveryDate
 
     let totalSum = 0
 

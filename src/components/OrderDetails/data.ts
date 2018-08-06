@@ -33,7 +33,7 @@ export const getOrderQuery = gql`
       netsuit: netsuit_order {
         orderStatus {
           internalId
-          orderDate
+          deliveryDate: orderDate
           orderStatus
           fulfillments {
             date
