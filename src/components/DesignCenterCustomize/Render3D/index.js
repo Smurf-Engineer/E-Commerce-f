@@ -118,8 +118,6 @@ class Render3D extends PureComponent {
 
     const flatlockIsEqual = isEqual(oldStitchingColor, stitchingColor)
     if (!flatlockIsEqual) {
-      console.log('ENTRA')
-
       const { value } = stitchingColor
       this.changeStitchingColor(value)
       return
