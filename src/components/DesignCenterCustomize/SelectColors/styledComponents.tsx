@@ -39,6 +39,6 @@ export const ColorButtons = styled.div`
 
 export const Divider = styled.div`
   margin: 0 32px 4px 32px;
-  height: 2px;
+  height: 1px;
   background-color: #dcdcdc;
 `

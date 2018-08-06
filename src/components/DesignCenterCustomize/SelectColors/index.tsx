@@ -22,6 +22,10 @@ interface Props {
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bidColor?: AccesoryColor
+  hasStitching: boolean
+  hasZipper: boolean
+  hasBinding: boolean
+  hasBibBrace: boolean
   goToBaseColors: () => void
   goToStitching: () => void
   showContent: boolean
@@ -44,7 +48,11 @@ class SelectColors extends React.PureComponent<Props, {}> {
       bindingColor,
       zipperColor,
       bidColor,
-      onAccessoryColorSelected = () => {}
+      onAccessoryColorSelected = () => {},
+      hasStitching,
+      hasZipper,
+      hasBinding,
+      hasBibBrace
     } = this.props
     if (!showContent) {
       return null
@@ -68,13 +76,13 @@ class SelectColors extends React.PureComponent<Props, {}> {
           <ColorButtons>{colorButtons}</ColorButtons>
         </BaseColors>
         <Divider />
-        {stitchingColor && (
+        {hasStitching && (
           <AccessoryColor
             name={formatMessage(messages.stitching)}
             {...{ goToStitching, stitchingColor }}
           />
         )}
-        {bindingColor && (
+        {hasBinding && (
           <AccessoryColor
             id="bindingColor"
             colorSelected={bindingColor}
@@ -82,7 +90,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
-        {zipperColor && (
+        {hasZipper && (
           <AccessoryColor
             id="zipperColor"
             colorSelected={zipperColor}
@@ -90,7 +98,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
-        {bidColor && (
+        {hasBibBrace && (
           <AccessoryColor
             id="bidColor"
             colorSelected={bidColor}

@@ -63,3 +63,7 @@ export const DRAG_ACTION = 'DRAG_ACTION'
 export const MESH_NAME = 'JV2_3D_MODEL'
 export const CANVAS_MESH = 'Canvas_Mesh'
 export const BRANDING_MESH = 'Branding_Mesh'
+
+export const BIB_BRACE_NAME = 'bibBrace'
+export const ZIPPER_NAME = 'zipper'
+export const BINDING_NAME = 'binding'

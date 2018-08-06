@@ -19,7 +19,8 @@ import {
   MyPaletteDesignCenterModals,
   ArtFormat,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  Product
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -43,6 +44,7 @@ interface Props {
   textFormat: TextFormat
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
+  product?: Product
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -94,7 +96,8 @@ const Tabs = ({
   bindingColor,
   zipperColor,
   bidColor,
-  onAccessoryColorSelected
+  onAccessoryColorSelected,
+  product
 }: Props) => {
   return (
     <Container>
@@ -122,7 +125,8 @@ const Tabs = ({
               zipperColor,
               bidColor,
               onSelectStitchingColor,
-              onAccessoryColorSelected
+              onAccessoryColorSelected,
+              product
             }}
           />
         </TabPane>

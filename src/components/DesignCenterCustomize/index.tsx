@@ -180,7 +180,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             bindingColor,
             zipperColor,
             bidColor,
-            onAccessoryColorSelected
+            onAccessoryColorSelected,
+            product
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
@@ -216,7 +217,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               openResetDesignModalAction,
               setCustomize3dMountedAction,
               onUnmountTab,
-              product
+              product,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bidColor
             }}
           />
         ) : (

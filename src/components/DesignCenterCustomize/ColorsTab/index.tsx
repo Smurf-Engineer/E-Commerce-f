@@ -19,7 +19,8 @@ import {
   Palette,
   MyPaletteDesignCenterModals,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  Product
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
@@ -40,6 +41,7 @@ interface Props {
   bidColor?: AccesoryColor
   styleColors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
+  product?: Product
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -94,9 +96,15 @@ class ColorsTab extends React.PureComponent<Props, State> {
       bindingColor,
       zipperColor,
       bidColor,
-      onAccessoryColorSelected
+      onAccessoryColorSelected,
+      product
     } = this.props
     const { index } = this.state
+
+    const hasStitching = !!product && !!product.flatlock
+    const hasZipper = !!product && !!product.binding
+    const hasBinding = !!product && !!product.zipper
+    const hasBibBrace = !!product && !!product.bibBrace
 
     const isFirstTab = index === SELECT_COLORS_INDEX
     const baseColorsTab = index === BASE_COLORS_INDEX
@@ -141,7 +149,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
               zipperColor,
               bidColor,
               onAccessoryColorSelected,
-              formatMessage
+              formatMessage,
+              hasStitching,
+              hasZipper,
+              hasBinding,
+              hasBibBrace
             }}
           />
           <BaseColors
