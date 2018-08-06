@@ -497,7 +497,7 @@ class Checkout extends React.Component<Props, {}> {
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
       stripeToken,
-      selectedCard: { id: cardId }
+      selectedCard
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -534,6 +534,8 @@ class Checkout extends React.Component<Props, {}> {
       state: { cart }
     } = location
     const shoppingCart = cloneDeep(cart) as CartItems[]
+
+    const cardId = selectedCard && selectedCard.id
 
     /*
     * TODO: Find a better solution to unset these properties
