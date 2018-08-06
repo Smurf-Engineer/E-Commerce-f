@@ -52,7 +52,6 @@ interface Props {
   loadingData?: boolean
   undoChanges: Change[]
   redoChanges: Change[]
-  actualChange: Change
   product?: Product
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -139,7 +138,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       loadingData,
       undoChanges,
       redoChanges,
-      actualChange,
       product,
       stitchingColor,
       bindingColor,
@@ -225,7 +223,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onUnmountTab,
               undoChanges,
               redoChanges,
-              actualChange,
               product
             }}
           />

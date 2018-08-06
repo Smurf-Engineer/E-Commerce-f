@@ -89,7 +89,6 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   undoChanges: Change[]
   redoChanges: Change[]
-  actualChange: Change
   swipingView: boolean
   openShareModal: boolean
   openSaveDesign: boolean
@@ -348,7 +347,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       designClearAction,
       undoChanges,
       redoChanges,
-      actualChange,
       setStyleAction,
       openShareModal,
       openShareModalAction,
@@ -401,12 +399,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       setStitchingColorAction,
       setAccessoryColorAction
     } = this.props
-
-    console.log('-----undoChanges-----')
-    console.log(undoChanges)
-    console.log('-----redoChanges-----')
-    console.log(redoChanges)
-    console.log('---------------------')
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -544,7 +536,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 currentStyle,
                 undoChanges,
                 redoChanges,
-                actualChange,
                 product,
                 stitchingColor,
                 setStitchingColorAction,

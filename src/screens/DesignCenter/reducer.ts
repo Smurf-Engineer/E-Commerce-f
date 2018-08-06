@@ -66,7 +66,6 @@ export const initialState = fromJS({
   loadingModel: false,
   undoChanges: [],
   redoChanges: [],
-  actualChange: {},
   swipingView: false,
   themeId: -1,
   styleIndex: -1,
@@ -153,13 +152,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const lastStep = { type: 'colors', state: colors }
-      const actualStep = { type: 'colors', state: List.of(...updatedColors) }
 
       return state.merge({
         colors: List.of(...updatedColors),
         undoChanges: undoChanges.unshift(lastStep),
         redoChanges: redoChanges.clear(),
-        actualChange: actualStep,
         designHasChanges: true
       })
     }
@@ -202,7 +199,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
             canvas: updatedCanvas,
-            actualChange: undoStep,
             selectedElement: ''
           })
         default:
@@ -213,7 +209,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(redoStep),
             colors: undoStep.state,
-            actualChange: undoStep,
             selectedElement: ''
           })
       }
@@ -230,8 +225,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
-            canvas: updatedCanvas,
-            actualChange: redoStep
+            canvas: updatedCanvas
           })
         default:
           const currentState = state.get(redoStep.type)
@@ -332,18 +326,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_CANVAS_ELEMENT_ACTION: {
       const { el, typeEl, canvasObj } = action
-      // console.log('----------element-----------')
-      // console.log(el)
-      // console.log('----------Type-----------')
-      // console.log(typeEl)
-      // console.log('---------------------------')
-
       const canvas = state.get('canvas')
-
-      // console.log('----------canvas-----------')
-      // console.log(canvas.toJS())
-      // console.log('---------------------------')
-
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
 
@@ -356,9 +339,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const canvasEl = typeEl === 'path' ? fromJS(el) : el
       const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
 
-      // console.log('----------updatedCanvas-----------')
-      // console.log(updatedCanvas.toJS())
-      // console.log('---------------------------')
       if (selectedElement) {
         return state.merge({
           canvas: updatedCanvas,
@@ -372,8 +352,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         canvas: updatedCanvas,
         designHasChanges: true,
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear(),
-        actualChange: { type: 'add', state: el.id }
+        redoChanges: redoChanges.clear()
       })
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {

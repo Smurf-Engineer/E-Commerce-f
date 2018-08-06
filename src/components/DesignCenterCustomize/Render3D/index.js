@@ -600,6 +600,7 @@ class Render3D extends PureComponent {
         break
       case 'text':
         this.applyText(src, style, position, id)
+        break
       case 'image':
         this.applyImage(src, position, id)
         break
@@ -817,7 +818,9 @@ class Render3D extends PureComponent {
         ...style
       })
       this.canvasTexture.add(txtEl)
-      !idElement && this.canvasTexture.setActiveObject(txtEl)
+      if (!idElement) {
+        this.canvasTexture.setActiveObject(txtEl)
+      }
       this.canvasTexture.renderAll()
     }
 
@@ -826,8 +829,9 @@ class Render3D extends PureComponent {
       text,
       textFormat: style
     }
-    !idElement &&
+    if (!idElement) {
       onApplyCanvasEl(el, 'text', !!activeEl, { src: text, style, position })
+    }
   }
 
   applyClipArt = (url, style, position = {}, idElement) => {
@@ -851,10 +855,11 @@ class Render3D extends PureComponent {
           stroke: '#000000',
           strokeWidth: 0
         }
-        !idElement &&
-          onApplyCanvasEl(el, 'path', false, { src: url, style, position })
         this.canvasTexture.add(shape)
-        !idElement && this.canvasTexture.setActiveObject(shape)
+        if (!idElement) {
+          onApplyCanvasEl(el, 'path', false, { src: url, style, position })
+          this.canvasTexture.setActiveObject(shape)
+        }
         this.canvasTexture.renderAll()
       })
     }
