@@ -4,7 +4,7 @@
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
 import Tab from '../Tab'
-import ColorTab from '../ColorTab'
+import ColorsTab from '../ColorsTab'
 import TextTab from '../TextTab'
 import SymbolTab from '../SymbolTab'
 import UploadTab from '../UploadTab'
@@ -17,7 +17,9 @@ import {
   TextFormat,
   CanvasType,
   MyPaletteDesignCenterModals,
-  ArtFormat
+  ArtFormat,
+  StitchingColor,
+  AccesoryColor
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -30,6 +32,10 @@ interface Props {
   palettes: Palette[]
   colors: string[]
   styleColors: string[]
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bidColor?: AccesoryColor
   text: string
   productName: string
   canvas: CanvasType
@@ -51,6 +57,8 @@ interface Props {
   onSelectTextFormat: (key: string, value: string | number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
+  onSelectStitchingColor: (stitchingColor: StitchingColor) => void
+  onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 
 const Tabs = ({
@@ -80,13 +88,19 @@ const Tabs = ({
   onSelectTextFormat,
   openPaletteModalAction,
   myPaletteModals,
-  onSelectArtFormat
+  onSelectArtFormat,
+  onSelectStitchingColor,
+  stitchingColor,
+  bindingColor,
+  zipperColor,
+  bidColor,
+  onAccessoryColorSelected
 }: Props) => {
   return (
     <Container>
       <AntdTabs defaultActiveKey="1">
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
-          <ColorTab
+          <ColorsTab
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
@@ -102,7 +116,13 @@ const Tabs = ({
               onSetPalettes,
               formatMessage,
               openPaletteModalAction,
-              myPaletteModals
+              myPaletteModals,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bidColor,
+              onSelectStitchingColor,
+              onAccessoryColorSelected
             }}
           />
         </TabPane>

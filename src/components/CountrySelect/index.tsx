@@ -19,14 +19,17 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   selectedCountry: string
-  handleCountryChange: (value: any) => void
+  handleCountryChange: (value: any, countryId: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class CountrySelect extends React.Component<Props, {}> {
   handleSelectChange = async (value: any) => {
     const { handleCountryChange } = this.props
-    handleCountryChange(value)
+    handleCountryChange(
+      value.substr(0, value.indexOf('-')),
+      value.substr(value.indexOf('-') + 1, value.length)
+    )
   }
 
   handleFilter = (input: string, { props }: any) =>
@@ -36,11 +39,13 @@ export class CountrySelect extends React.Component<Props, {}> {
     const { data, selectedCountry, formatMessage } = this.props
     let dropdownOptions: any = []
     if (data && data.countries && data.countries.length) {
-      dropdownOptions = data.countries.map(({ name, code }, index) => (
-        <Option value={code} key={index}>
-          {name}
-        </Option>
-      ))
+      dropdownOptions = data.countries.map(
+        ({ name, code, geonameId }, index) => (
+          <Option value={`${code}-${geonameId}`} key={index}>
+            {name}
+          </Option>
+        )
+      )
     }
     return (
       <Container>

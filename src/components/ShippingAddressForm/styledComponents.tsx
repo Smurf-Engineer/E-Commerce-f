@@ -43,6 +43,14 @@ export const StyledInput = styled(Input)`
   border-radius: 0;
   margin-top: 5px;
 `
+
+export const StyledCityInput = styled(Input)`
+  height: 32px;
+  width: 100%;
+  border: 1px solid #bebebe;
+  border-radius: 0;
+  margin-top: 5px;
+`
 export const RequiredSpan = styled.span`
   color: #e61737;
   margin: 0 5px;

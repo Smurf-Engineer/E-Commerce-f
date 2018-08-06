@@ -25,13 +25,15 @@ export const Dot = styled.div`
 
 interface ColorProps {
   color: string
+  selected?: boolean
 }
 
 export const Color = styled.div`
   cursor: pointer;
   height: 32.28px;
   width: 32.28px;
-  border: 1px solid #bebebe;
+  border: 1px solid
+    ${({ selected }: ColorProps) => (selected ? '#E61737' : '#bebebe')};
   background-color: ${({ color }: ColorProps) => color};
 `
 
