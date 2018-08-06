@@ -277,7 +277,7 @@ const MyadressesListEnhanced = compose(
         fetchPolicy: 'network-only',
         variables: {
           limit: itemsNumber,
-          skip: skip
+          offset: skip
         }
       }
     }
