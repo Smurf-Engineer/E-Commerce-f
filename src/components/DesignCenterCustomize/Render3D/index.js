@@ -47,6 +47,7 @@ import {
   BINDING,
   BIB_BRACE
 } from '../../../constants'
+import { Changes } from '../../../screens/DesignCenter/constants'
 import ModalFooter from '../../ModalFooter'
 import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
@@ -330,7 +331,7 @@ class Render3D extends PureComponent {
               alphaMap: flatlock,
               color: '#FFFFFF'
             })
-            flatlockMaterial.alphaMap.wrapS = THREE.featWrapping
+            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
             flatlockMaterial.alphaTest = 0.5
             children[flatlockIndex].material = flatlockMaterial
@@ -574,9 +575,9 @@ class Render3D extends PureComponent {
   handleOnClickUndo = () => {
     const { onUndoAction, undoChanges } = this.props
     const changeToApply = undoChanges[0]
-    if (changeToApply.type !== 'colors') {
+    if (changeToApply.type !== Changes.Colors) {
       switch (changeToApply.type) {
-        case 'add':
+        case Changes.Add:
           const objects = this.canvasTexture.getObjects()
           const object = find(objects, { id: changeToApply.state.id })
           this.canvasTexture.remove(object)
@@ -951,7 +952,6 @@ class Render3D extends PureComponent {
     )
 
     if (!!intersects.length && intersects[0].uv) {
-      // You click inside the 3d model
       const { canvasEl } = this.state
       const meshName = get(intersects[0], 'object.name', '')
       const uv = intersects[0].uv

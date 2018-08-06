@@ -45,7 +45,8 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
-  WHITE
+  WHITE,
+  Changes
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -151,7 +152,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const updatedColors = colors.updateIn([colorBlock], () => color)
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
-      const lastStep = { type: 'colors', state: colors }
+      const lastStep = { type: Changes.Colors, state: colors }
 
       return state.merge({
         colors: List.of(...updatedColors),
@@ -171,7 +172,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state
       }
 
-      const lastStep = { type: 'colors', state: prevColors }
+      const lastStep = { type: Changes.Colors, state: prevColors }
 
       return state.merge({
         colors: List.of(...colors),
@@ -191,7 +192,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       const { type } = undoStep
       switch (type) {
-        case 'add':
+        case Changes.Add:
           const canvas = state.get('canvas')
           const updatedCanvas = canvas.deleteIn(['path', undoStep.state])
 
@@ -219,7 +220,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoStep = redoChanges.first()
       const { type } = redoStep
       switch (type) {
-        case 'add':
+        case Changes.Add:
           const canvas = state.get('canvas')
           const updatedCanvas = canvas.setIn(['path', redoStep.state], canvas)
           return state.merge({
