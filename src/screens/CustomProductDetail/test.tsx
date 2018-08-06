@@ -1,24 +1,10 @@
 /**
  * CustomProductDetail Test - Created by jorge on 03/08/18.
  */
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import customProductDetailReducer, { initialState } from './reducer'
 import { defaultAction } from './actions'
-import { CustomProductDetail } from './index'
-import { IntlProvider } from 'react-intl'
 
 describe(' CustomProductDetail Screen', () => {
-  it('renders without exploding', () => {
-    const div = document.createElement('div')
-    // tslint:disable-next-line:no-empty
-    ReactDOM.render(
-      <IntlProvider>
-        <CustomProductDetail />
-      </IntlProvider>,
-      div
-    )
-  })
   // Test redux actions
   it('Return the default state for unknow action', () => {
     let state = customProductDetailReducer(initialState, { type: 'unknow' })
