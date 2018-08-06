@@ -68,7 +68,7 @@ interface Props {
   setSkipValueAction: (skip: number, limit: number) => void
 }
 
-class MyAddresses extends React.Component<Props, {}> {
+class MyAddresses extends React.PureComponent<Props, {}> {
   render() {
     const {
       formatMessage,
