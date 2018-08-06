@@ -83,6 +83,7 @@ export const DeliveryDate = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  margin-bottom: 25px;
 
   @media (max-width: 768px) and (min-width: 320px) {
     display: flex;
@@ -104,11 +105,10 @@ export const DeliveryLabels = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  margin-top: 10px;
   width: 137px;
 `
 export const DeliveryLabel = styled.div`
-  margin-top: 12px;
+  margin-bottom: 12px;
 `
 export const DeliveryData = styled.div`
   color: #5f6062;
@@ -117,8 +117,7 @@ export const DeliveryData = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
-  margin-left: 110px;
-  margin-top: 10px;
+  margin-left: 60px;
   width: 220px;
 
   @media (max-width: 963px) and (min-width: 320px) {
@@ -126,9 +125,15 @@ export const DeliveryData = styled.div`
     width: 100px;
   }
 `
+
+interface InfoProps {
+  tracking?: boolean
+}
+
 export const Info = styled.div`
+  color: ${({ tracking }: InfoProps) => (tracking ? '#e61737' : '#5f6062')};
   height: 22px;
-  margin-top: 12px;
+  margin-bottom: 12px;
 `
 export const OrderSummaryContainer = styled.div`
   width: 222px;
@@ -139,7 +144,7 @@ export const OrderSummaryContainer = styled.div`
   }
 `
 export const Items = styled.div`
-  margin-top: 40px;
+  margin-top: 100px;
   padding-right: 34px;
 
   @media (max-width: 550px) and (min-width: 320px) {
@@ -162,13 +167,16 @@ export const CartList = styled.ul`
 export const ShippingBillingContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  margin: 40px 10% 126px 0;
+  margin: 40px 10% 0px 0;
 
   @media (max-width: 425px) and (min-width: 320px) {
     flex-wrap: wrap;
-    justify-content: flex-start;
-    margin-bottom: 58px;
     margin-right: 0px;
+  }
+`
+export const ShippingBillingCard = styled.div`
+  @media (max-width: 425px) and (min-width: 320px) {
+    margin-right: 5px;
   }
 `
 export const SubTitle = styled.div`
@@ -195,4 +203,14 @@ export const StyledImage = styled.img`
   margin-left: 8px;
   width: 42px;
   height: 25.5px;
+`
+export const Annotation = styled.div`
+  margin: 80px 0px 66px;
+
+  @media (max-width: 425px) and (min-width: 320px) {
+    margin-bottom: 58px;
+  }
+`
+export const Date = styled.span`
+  margin-left: 5px;
 `
