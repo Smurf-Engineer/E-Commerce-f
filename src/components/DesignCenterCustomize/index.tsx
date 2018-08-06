@@ -17,7 +17,8 @@ import {
   Change,
   Product,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  ConfigCanvasObj
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import { DesignTabs } from '../../screens/DesignCenter/constants'
@@ -74,7 +75,7 @@ interface Props {
     typeEl: string,
     update?: boolean
   ) => void
-  onRemoveEl: (id: string, typeEl: string) => void
+  onRemoveEl: (id: string, typeEl: string, canvasObj: ConfigCanvasObj) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
   onSelectArtFormat: (key: string, value: string | number) => void

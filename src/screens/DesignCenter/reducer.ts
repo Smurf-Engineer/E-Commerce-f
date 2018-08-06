@@ -190,16 +190,30 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoChanges = state.get('redoChanges')
       const undoStep = undoChanges.first()
 
-      const { type } = undoStep
+      const {
+        type,
+        state: { type: canvasType }
+      } = undoStep
+      // tslint:disable-next-line:switch-default
       switch (type) {
         case Changes.Add:
           const canvas = state.get('canvas')
-          const updatedCanvas = canvas.deleteIn(['path', undoStep.state])
+          const updatedCanvas = canvas.deleteIn([canvasType, undoStep.state])
 
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
             canvas: updatedCanvas,
+            selectedElement: ''
+          })
+        case Changes.Delete:
+          const canvass = state.get('canvas')
+          const updatedCanvass = canvass.setIn([canvasType, undoStep.state])
+
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            canvas: updatedCanvass,
             selectedElement: ''
           })
         default:
@@ -218,17 +232,31 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const redoStep = redoChanges.first()
-      const { type } = redoStep
+      const {
+        type,
+        state: { type: canvasType }
+      } = redoStep
       switch (type) {
         case Changes.Add:
           const canvas = state.get('canvas')
-          const updatedCanvas = canvas.setIn(['path', redoStep.state], canvas)
+          const updatedCanvas = canvas.setIn(
+            [canvasType, redoStep.state],
+            canvas
+          )
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
             canvas: updatedCanvas
           })
-        default:
+        case Changes.Delete:
+          const canvass = state.get('canvas')
+          const updatedCanvass = canvass.deleteIn([canvasType, redoStep.state])
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            canvas: updatedCanvass
+          })
+        case Changes.Colors:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
 
@@ -237,6 +265,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             colors: redoStep.state
           })
+        default:
+          return state
       }
     }
     case SET_PALETTE_NAME_ACTION:
@@ -332,7 +362,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoChanges = state.get('redoChanges')
 
       const lastStep = {
-        type: 'add',
+        type: Changes.Add,
         state: { id: el.id, type: typeEl, ...canvasObj }
       }
 
@@ -357,11 +387,22 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {
+      const { id, typeEl, canvasObj } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
       const canvas = state.get('canvas')
       const updatedCanvas = canvas.deleteIn([action.typeEl, action.id])
+
+      const lastStep = {
+        type: Changes.Delete,
+        state: { id, type: typeEl, ...canvasObj }
+      }
+
       return state.merge({
         canvas: updatedCanvas,
-        selectedElement: ''
+        selectedElement: '',
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
       })
     }
     case SET_SELECTED_ELEMENT_ACTION: {

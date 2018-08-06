@@ -160,7 +160,11 @@ interface Props extends RouteComponentProps<any> {
     canvasObj?: ConfigCanvasObj
   ) => void
   setSelectedElement: (id: string, typeEl: string) => void
-  removeCanvasElement: (id: string, typeEl: string) => void
+  removeCanvasElement: (
+    id: string,
+    typeEl: string,
+    canvasObj: ConfigCanvasObj
+  ) => void
   setTextFormatAction: (key: string, value: string | number) => void
   setArtFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
@@ -399,6 +403,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       setStitchingColorAction,
       setAccessoryColorAction
     } = this.props
+
+    console.log('-------------undo----------')
+    console.log(undoChanges)
+    console.log('-------------redo----------')
+    console.log(redoChanges)
+    console.log('---------------------------')
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
