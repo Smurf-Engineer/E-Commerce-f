@@ -463,7 +463,7 @@ export interface OrderDetailsInfo {
   billingCity: string
   billingZipCode: string
   shippingTax: number
-  netsuit: NetsuiteObject
+  netsuit?: NetsuiteObject
   payment: PaymentCharges
   cart: CartItems[]
   status: string

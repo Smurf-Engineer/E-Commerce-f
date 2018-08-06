@@ -29,10 +29,13 @@ import {
   TitleStyled,
   CartList,
   ShippingBillingContainer,
+  ShippingBillingCard,
   SubTitle,
   PaymentText,
   CardNumber,
-  StyledImage
+  StyledImage,
+  Annotation,
+  Date
 } from './styledComponents'
 import { OrderSummary } from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -45,6 +48,7 @@ import iconAE from '../../assets/card-AE.svg'
 import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
+import { ORDER_HISTORY } from '../../screens/Account/constants'
 
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
@@ -53,15 +57,19 @@ interface Data extends QueryProps {
 interface Props {
   orderId: string
   data?: Data
+  from: string
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
 }
 
 export class OrderDetails extends React.Component<Props, {}> {
   render() {
-    const { data, orderId, formatMessage, onReturn } = this.props
+    const { data, orderId, from, formatMessage, onReturn } = this.props
 
     const handleOnReturn = () => onReturn('')
+
+    const getBackMessage =
+      from === ORDER_HISTORY ? messages.backToHistory : messages.backToOverview
 
     if (!orderId) {
       return null
@@ -92,13 +100,14 @@ export class OrderDetails extends React.Component<Props, {}> {
       billingCity,
       billingZipCode,
       shippingTax,
-      netsuit: {
-        orderStatus: { deliveryDate }
-      },
+      netsuit,
       payment: { stripeCharge },
       cart,
       status
     } = data.orderQuery
+
+    const deliveryDate =
+      netsuit && netsuit.orderStatus && netsuit.orderStatus.deliveryDate
 
     let totalSum = 0
 
@@ -170,7 +179,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       <Container>
         <ViewContainer onClick={handleOnReturn}>
           <Icon type="left" />
-          <span>{formatMessage(messages.back)}</span>
+          <span>{formatMessage(getBackMessage)}</span>
         </ViewContainer>
         <Div>
           <ScreenTitle>
@@ -186,7 +195,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <OrderDelivery>
             <DeliveryDate>
               <span>{formatMessage(messages.deliveryDate)}</span>
-              {` ${deliveryDate || '-'}`}
+              <Date>{` ${deliveryDate || '-'}`}</Date>
             </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
@@ -204,7 +213,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               <DeliveryData>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                <Info>-</Info>
+                <Info tracking={true}>-</Info>
                 <Info>{status}</Info>
               </DeliveryData>
             </DeliveryInfo>
@@ -238,7 +247,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <CartList>{renderItemList}</CartList>
         </Items>
         <ShippingBillingContainer>
-          <div>
+          <ShippingBillingCard>
             <SubTitle>{formatMessage(messages.shippingAddress)}</SubTitle>
             <MyAddress
               hideBottomButtons={true}
@@ -250,8 +259,8 @@ export class OrderDetails extends React.Component<Props, {}> {
               apartment={shippingApartment}
               {...{ formatMessage }}
             />
-          </div>
-          <div>
+          </ShippingBillingCard>
+          <ShippingBillingCard>
             <SubTitle>{formatMessage(messages.billingAddress)}</SubTitle>
             <MyAddress
               hideBottomButtons={true}
@@ -263,12 +272,13 @@ export class OrderDetails extends React.Component<Props, {}> {
               apartment={billingApartment}
               {...{ formatMessage }}
             />
-          </div>
-          <div>
+          </ShippingBillingCard>
+          <ShippingBillingCard>
             <SubTitle>{formatMessage(messages.payment)}</SubTitle>
             {paymentMethodInfo}
-          </div>
+          </ShippingBillingCard>
         </ShippingBillingContainer>
+        <Annotation>{formatMessage(messages.annotation)}</Annotation>
       </Container>
     )
   }
