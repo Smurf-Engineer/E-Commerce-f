@@ -23,8 +23,8 @@ export const Content = styled.div`
   }
 `
 export const ImagePreview = styled.div`
-  width: 50%;
   padding: 0 50px;
+  width: 50%;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -71,11 +71,11 @@ export const Subtitle = styled.div`
   }
 `
 export const EditDesignButton = styled(Button)`
-  height: 40px;
-  width: 120.79px;
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
+  height: 40px;
+  width: 120.79px;
 `
 export const PricesRow = styled.div`
   display: flex;
@@ -103,11 +103,64 @@ export const Description = styled.div`
   line-height: 23px;
 `
 export const AvailableLabel = styled.div`
-  margin-top: 15px;
-  height: 22px;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 16px;
   font-style: italic;
+  height: 22px;
   line-height: 22px;
+  margin-top: 15px;
+`
+export const BuyNowOptions = styled.div`
+  margin-bottom: 40px;
+  margin-top: 15px;
+`
+export const SectionRow = styled.div`
+  margin-bottom: 20px;
+`
+export const SectionTitleContainer = styled.div`
+  display: flex;
+`
+export const SectionTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  font-weight: 600;
+  height: 25px;
+  line-height: 25px;
+  margin-bottom: 15px;
+`
+export const SectionButtonsContainer = styled.div`
+  display: flex;
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    flex-wrap: wrap;
+  }
+`
+
+interface ButtonProps {
+  selected: boolean
+}
+
+export const SectionButton = styled.div`
+  align-content: center;
+  background-color: #ffffff;
+  border: ${({ selected }: ButtonProps) =>
+    selected ? '2px solid #e61737' : '0.5px solid #dcdcdc'};
+  border-radius: 2px;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  display: flex;
+  height: 50px;
+  margin-right: 14px;
+  padding: 14px;
+  justify-content: center;
+  width: 139px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    margin-bottom: 15px;
+  }
 `

@@ -25,14 +25,26 @@ import {
   PricesRow,
   AvailablePrices,
   Description,
-  AvailableLabel
+  AvailableLabel,
+  BuyNowOptions,
+  SectionRow,
+  SectionTitleContainer,
+  SectionTitle,
+  SectionButtonsContainer,
+  SectionButton
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
-import { QueryProps, DesignType } from '../../types/common'
+import {
+  QueryProps,
+  DesignType,
+  Filter,
+  SelectedType
+} from '../../types/common'
 import ThreeDRender from '../TeamstoreProductPage/Product3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
+import YotpoReviews from '../../components/YotpoReviews'
 
 interface Data extends QueryProps {
   design: DesignType
@@ -41,7 +53,9 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
+  selectedGender: SelectedType
   setLoadingModel: (loading: boolean) => void
+  setSelectedGenderAction: (selected: SelectedType) => void
   addItemToCartAction: (item: any) => void
 }
 
@@ -52,7 +66,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       setLoadingModel,
-      data: { design }
+      data: { design },
+      selectedGender
     } = this.props
 
     const { formatMessage } = intl
@@ -68,10 +83,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const images = get(product, 'images', [])
     const genderId = get(product, 'genderId', 0)
-    const genders = get(product, 'genders', [])
+    const genders = get(product, 'genders', [] as Filter[])
     const type = get(product, 'type', '')
     const yotpoAverageScore = get(product, 'yotpoAverageScore')
     const description = get(product, 'description')
+    const yotpoId = get(product, 'yotpoId', '')
 
     const genderIndex = findIndex(images, { genderId })
 
@@ -92,6 +108,38 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       femaleGender && maleGender
         ? formatMessage(messages.unisexGenderLabel)
         : formatMessage(messages.oneGenderLabel)
+
+    const availableGenders = genders.map(
+      ({ id, name: genderName }: SelectedType, index: number) => (
+        <div key={index}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedGender.id}
+            onClick={this.handleSelectedGender({ id, name: genderName })}
+          >
+            {genderName}
+          </SectionButton>
+        </div>
+      )
+    )
+
+    const gendersSection = (
+      <SectionRow>
+        <SectionTitleContainer>
+          <SectionTitle>{formatMessage(messages.gender)}</SectionTitle>
+        </SectionTitleContainer>
+        <SectionButtonsContainer>{availableGenders}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
+    const collectionSelection = (
+      <BuyNowOptions>
+        {gendersSection}
+        {/* {sizeSection}
+        {fitSection}
+        {addToCartRow} */}
+      </BuyNowOptions>
+    )
 
     return (
       <Layout {...{ history, intl }}>
@@ -126,12 +174,19 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 />
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
+                {collectionSelection}
               </ProductData>
             </Content>
           )}
+          <YotpoReviews {...{ yotpoId }} />
         </Container>
       </Layout>
     )
+  }
+
+  handleSelectedGender = (gender: SelectedType) => () => {
+    const { setSelectedGenderAction } = this.props
+    setSelectedGenderAction(gender)
   }
 
   gotToEditDesign = (designId: string) => () => {
