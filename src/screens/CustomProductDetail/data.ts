@@ -7,7 +7,7 @@ export const GetDesignByIdQuery = gql`
       name
       shortId: short_id
       product {
-        id
+        productId: id
         code
         yotpoId: yotpo_id
         name
@@ -29,6 +29,10 @@ export const GetDesignByIdQuery = gql`
         genders {
           id
           name: gender
+        }
+        sizeRange: size_range {
+          id
+          name
         }
         fitStyles {
           id

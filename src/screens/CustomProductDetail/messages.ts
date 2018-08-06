@@ -24,5 +24,13 @@ export default defineMessages({
   gender: {
     id: 'screens.CustomProductDetail.gender',
     defaultMessage: 'Gender'
+  },
+  size: {
+    id: 'screens.CustomProductDetail.size',
+    defaultMessage: 'Size'
+  },
+  fit: {
+    id: 'screens.CustomProductDetail.fit',
+    defaultMessage: 'Fit'
   }
 })

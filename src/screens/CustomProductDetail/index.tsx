@@ -31,7 +31,9 @@ import {
   SectionTitleContainer,
   SectionTitle,
   SectionButtonsContainer,
-  SectionButton
+  SectionButton,
+  SizeRowTitleRow,
+  QuestionSpan
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
@@ -39,11 +41,14 @@ import {
   QueryProps,
   DesignType,
   Filter,
-  SelectedType
+  SelectedType,
+  ItemDetailType,
+  FitStyle
 } from '../../types/common'
 import ThreeDRender from '../TeamstoreProductPage/Product3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
+import FitInfo from '../../components/FitInfo'
 import YotpoReviews from '../../components/YotpoReviews'
 
 interface Data extends QueryProps {
@@ -54,8 +59,14 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
   selectedGender: SelectedType
+  selectedSize: SelectedType
+  selectedFit: SelectedType
+  openFitInfo: boolean
   setLoadingModel: (loading: boolean) => void
+  openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
+  setSelectedSizeAction: (selected: SelectedType) => void
+  setSelectedFitAction: (selected: SelectedType) => void
   addItemToCartAction: (item: any) => void
 }
 
@@ -67,7 +78,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       location: { search },
       setLoadingModel,
       data: { design },
-      selectedGender
+      selectedGender,
+      selectedSize,
+      selectedFit,
+      openFitInfo
     } = this.props
 
     const { formatMessage } = intl
@@ -81,6 +95,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const svgUrl = get(design, 'svg', '')
     const product = get(design, 'product', null)
 
+    const productId = get(product, 'productId')
     const images = get(product, 'images', [])
     const genderId = get(product, 'genderId', 0)
     const genders = get(product, 'genders', [] as Filter[])
@@ -88,6 +103,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const yotpoAverageScore = get(product, 'yotpoAverageScore')
     const description = get(product, 'description')
     const yotpoId = get(product, 'yotpoId', '')
+    const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
+    const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
 
     const genderIndex = findIndex(images, { genderId })
 
@@ -110,17 +127,54 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         : formatMessage(messages.oneGenderLabel)
 
     const availableGenders = genders.map(
-      ({ id, name: genderName }: SelectedType, index: number) => (
-        <div key={index}>
+      ({ id, name: genderName }: SelectedType, key: number) => (
+        <div {...{ key }}>
           <SectionButton
             id={String(id)}
             selected={id === selectedGender.id}
+            large={true}
             onClick={this.handleSelectedGender({ id, name: genderName })}
           >
             {genderName}
           </SectionButton>
         </div>
       )
+    )
+
+    const availableSizes =
+      sizeRange &&
+      sizeRange.map(({ id, name: sizeName }: SelectedType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedSize.id}
+            onClick={this.handleSelectedSize({ id, name: sizeName })}
+          >
+            {sizeName}
+          </SectionButton>
+        </div>
+      ))
+
+    const availableFits = (fitStyles &&
+      fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
+        <div key={index}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedFit.id}
+            large={true}
+            onClick={this.handleSelectedFit({ id, name: fitName })}
+          >
+            {fitName}
+          </SectionButton>
+        </div>
+      ))) || (
+      <SectionButton
+        id={'1'}
+        selected={1 === selectedFit.id}
+        onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
+      >
+        {'Standard'}
+      </SectionButton>
     )
 
     const gendersSection = (
@@ -132,12 +186,34 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
+    const sizeSection = (
+      <SectionRow>
+        <SizeRowTitleRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.size)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+        </SizeRowTitleRow>
+        <SectionButtonsContainer>{availableSizes}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
+    const fitSection = (
+      <SectionRow>
+        <SectionTitleContainer>
+          <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
+          <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+        </SectionTitleContainer>
+        <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
-        {/* {sizeSection}
+        {sizeSection}
         {fitSection}
-        {addToCartRow} */}
+        {/* {addToCartRow} */}
       </BuyNowOptions>
     )
 
@@ -176,12 +252,27 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 <AvailableLabel>{genderMessage}</AvailableLabel>
                 {collectionSelection}
               </ProductData>
+              <FitInfo
+                open={openFitInfo}
+                requestClose={this.closeFitInfoModal}
+                {...{ productId, history }}
+              />
             </Content>
           )}
           <YotpoReviews {...{ yotpoId }} />
         </Container>
       </Layout>
     )
+  }
+
+  handleSelectedFit = (fitStyle: SelectedType) => () => {
+    const { setSelectedFitAction } = this.props
+    setSelectedFitAction(fitStyle)
+  }
+
+  handleSelectedSize = (size: SelectedType) => () => {
+    const { setSelectedSizeAction } = this.props
+    setSelectedSizeAction(size)
   }
 
   handleSelectedGender = (gender: SelectedType) => () => {
@@ -192,6 +283,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   gotToEditDesign = (designId: string) => () => {
     const { history } = this.props
     history.push(`/design-center?designId=${designId}`)
+  }
+
+  handleOpenFitInfo = () => {
+    const { openFitInfoAction } = this.props
+    openFitInfoAction(true)
+  }
+
+  closeFitInfoModal = () => {
+    const { openFitInfoAction } = this.props
+    openFitInfoAction(false)
   }
 }
 

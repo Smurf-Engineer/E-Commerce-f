@@ -140,6 +140,7 @@ export const SectionButtonsContainer = styled.div`
 
 interface ButtonProps {
   selected: boolean
+  large?: boolean
 }
 
 export const SectionButton = styled.div`
@@ -154,7 +155,7 @@ export const SectionButton = styled.div`
   margin-right: 14px;
   padding: 14px;
   justify-content: center;
-  width: 139px;
+  width: ${({ large }: ButtonProps) => (large ? '139px;' : '55px;')};
 
   &:hover {
     cursor: pointer;
@@ -162,5 +163,22 @@ export const SectionButton = styled.div`
 
   @media (min-width: 320px) and (max-width: 768px) {
     margin-bottom: 15px;
+  }
+`
+export const SizeRowTitleRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+export const QuestionSpan = styled.span`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  height: 23px;
+  line-height: 23px;
+  margin-left: 5px;
+  width: 8.06px;
+
+  &:hover {
+    cursor: pointer;
   }
 `
