@@ -123,7 +123,7 @@ interface Props extends RouteComponentProps<any> {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -399,7 +399,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
+      bibColor,
       setStitchingColorAction,
       setAccessoryColorAction
     } = this.props
@@ -551,7 +551,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setStitchingColorAction,
                 bindingColor,
                 zipperColor,
-                bidColor
+                bibColor
               }}
               onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}

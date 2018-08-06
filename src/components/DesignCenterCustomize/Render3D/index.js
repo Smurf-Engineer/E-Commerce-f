@@ -37,7 +37,10 @@ import {
   MESH_NAME,
   CANVAS_MESH,
   BRANDING_MESH,
-  CANVAS_SIZE
+  CANVAS_SIZE,
+  BIB_BRACE_NAME,
+  ZIPPER_NAME,
+  BINDING_NAME
 } from './config'
 import {
   MESH,
@@ -82,8 +85,45 @@ class Render3D extends PureComponent {
   dragComponent = null
 
   componentWillReceiveProps(nextProps) {
-    const { colors, colorBlockHovered: oldColorBlockHovered } = this.props
-    const { colors: nextColors, styleColors, colorBlockHovered } = nextProps
+    const {
+      colors,
+      colorBlockHovered: oldColorBlockHovered,
+      stitchingColor: oldStitchingColor,
+      bindingColor: oldBindingColor,
+      zipperColor: oldZipperColor,
+      bibColor: oldBibColor
+    } = this.props
+    const {
+      colors: nextColors,
+      styleColors,
+      colorBlockHovered,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
+    } = nextProps
+
+    if (oldBibColor !== bibColor && !!this.bibBrace) {
+      this.changeExtraColor(BIB_BRACE_NAME, bibColor)
+      return
+    }
+
+    if (oldZipperColor !== zipperColor && !!this.zipper) {
+      this.changeExtraColor(ZIPPER_NAME, zipperColor)
+      return
+    }
+
+    if (oldBindingColor !== bindingColor && !!this.binding) {
+      this.changeExtraColor(BINDING_NAME, bindingColor)
+      return
+    }
+
+    const flatlockIsEqual = isEqual(oldStitchingColor, stitchingColor)
+    if (!flatlockIsEqual) {
+      const { value } = stitchingColor
+      this.changeStitchingColor(value)
+      return
+    }
 
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
@@ -335,6 +375,7 @@ class Render3D extends PureComponent {
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
             flatlockMaterial.alphaTest = 0.5
             children[flatlockIndex].material = flatlockMaterial
+            this.setState({ flatlockIndex })
           }
 
           /* Zipper */
@@ -361,8 +402,7 @@ class Render3D extends PureComponent {
           if (!!this.bibBrace) {
             const bibBraceIndex = getMeshIndex(BIB_BRACE)
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
-              map: this.bibBrace.white,
-              transparent: true
+              map: this.bibBrace.white
             })
             children[bibBraceIndex].material = bibBraceMaterial
             this.setState({ bibBraceIndex })
@@ -497,6 +537,48 @@ class Render3D extends PureComponent {
     if (this.camera) {
       this.camera.position.set(x, y, z)
       this.controls.update()
+    }
+  }
+
+  changeStitchingColor = color => {
+    const { flatlockIndex } = this.state
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      if (!!object.children[flatlockIndex]) {
+        object.children[flatlockIndex].material.color.set(color)
+      }
+    } else {
+      console.error('3D model is not loaded')
+    }
+  }
+
+  changeExtraColor = (texture, color) => {
+    const { bibBraceIndex, zipperIndex, bindingIndex } = this.state
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      const loadedTexture = this[texture]
+      if (loadedTexture && loadedTexture[color]) {
+        const map = loadedTexture[color]
+        switch (texture) {
+          case ZIPPER_NAME:
+            if (object.children[zipperIndex]) {
+              object.children[zipperIndex].material.map = map
+            }
+            break
+          case BIB_BRACE_NAME:
+            if (object.children[bibBraceIndex]) {
+              object.children[bibBraceIndex].material.map = map
+            }
+          case BINDING_NAME:
+            if (object.children[bindingIndex]) {
+              object.children[bindingIndex].material.map = map
+            }
+          default:
+            break
+        }
+      }
+    } else {
+      console.error('Model is not loaded')
     }
   }
 
