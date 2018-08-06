@@ -89,7 +89,7 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bidColor: oldBidColor
+      bibColor: oldBibColor
     } = this.props
     const {
       colors: nextColors,
@@ -98,11 +98,11 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor
+      bibColor
     } = nextProps
 
-    if (oldBidColor !== bidColor && !!this.bibBrace) {
-      this.changeExtraColor(BIB_BRACE_NAME, bidColor)
+    if (oldBibColor !== bibColor && !!this.bibBrace) {
+      this.changeExtraColor(BIB_BRACE_NAME, bibColor)
       return
     }
 

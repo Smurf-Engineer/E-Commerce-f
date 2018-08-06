@@ -38,7 +38,7 @@ interface Props {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   styleColors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
@@ -95,7 +95,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
+      bibColor,
       onAccessoryColorSelected,
       product
     } = this.props
@@ -147,7 +147,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
               stitchingColor,
               bindingColor,
               zipperColor,
-              bidColor,
+              bibColor,
               onAccessoryColorSelected,
               formatMessage,
               hasStitching,

@@ -36,7 +36,7 @@ interface Props {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   text: string
   productName: string
   canvas: CanvasType
@@ -95,7 +95,7 @@ const Tabs = ({
   stitchingColor,
   bindingColor,
   zipperColor,
-  bidColor,
+  bibColor,
   onAccessoryColorSelected,
   product
 }: Props) => {
@@ -123,7 +123,7 @@ const Tabs = ({
               stitchingColor,
               bindingColor,
               zipperColor,
-              bidColor,
+              bibColor,
               onSelectStitchingColor,
               onAccessoryColorSelected,
               product

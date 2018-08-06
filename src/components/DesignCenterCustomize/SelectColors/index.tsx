@@ -21,7 +21,7 @@ interface Props {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   hasStitching: boolean
   hasZipper: boolean
   hasBinding: boolean
@@ -47,7 +47,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
+      bibColor,
       onAccessoryColorSelected = () => {},
       hasStitching,
       hasZipper,
@@ -100,9 +100,9 @@ class SelectColors extends React.PureComponent<Props, {}> {
         )}
         {hasBibBrace && (
           <AccessoryColor
-            id="bidColor"
-            colorSelected={bidColor}
-            name={formatMessage(messages.bidColor)}
+            id="bibColor"
+            colorSelected={bibColor}
+            name={formatMessage(messages.bibColor)}
             {...{ onAccessoryColorSelected }}
           />
         )}

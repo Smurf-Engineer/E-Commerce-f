@@ -30,7 +30,7 @@ interface Props {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   styleColors: string[]
   currentStyle: Style
   loadingModel: boolean
@@ -137,7 +137,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
+      bibColor,
       onAccessoryColorSelected
     } = this.props
 
@@ -179,7 +179,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             stitchingColor,
             bindingColor,
             zipperColor,
-            bidColor,
+            bibColor,
             onAccessoryColorSelected,
             product
           }}
@@ -221,7 +221,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               stitchingColor,
               bindingColor,
               zipperColor,
-              bidColor
+              bibColor
             }}
           />
         ) : (
