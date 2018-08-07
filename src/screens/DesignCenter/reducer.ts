@@ -211,11 +211,19 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           const {
             state: { src, style }
           } = undoStep
-          const updatedCanvas = canvas.setIn([canvasType, id], {
-            id,
-            text: src,
-            textFormat: style
-          })
+          const canvasObject: any = { id }
+          // tslint:disable-next-line:switch-default
+          switch (canvasType) {
+            case 'text':
+              canvasObject.text = src
+              canvasObject.textFormat = style
+              break
+            case 'path':
+              break
+            case 'image':
+              break
+          }
+          const updatedCanvas = canvas.setIn([canvasType, id], canvasObject)
 
           return state.merge({
             undoChanges: undoChanges.shift(),
