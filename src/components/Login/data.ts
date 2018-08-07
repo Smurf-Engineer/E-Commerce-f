@@ -7,8 +7,10 @@ export const mailLogin = graphql(
       login(email: $email, password: $password) {
         user {
           id
+          shortId: short_id
           name: first_name
           lastName: last_name
+          email
         }
         token
       }
