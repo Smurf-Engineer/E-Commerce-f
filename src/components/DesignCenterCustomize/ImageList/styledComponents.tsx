@@ -47,7 +47,6 @@ export const Info = styled.div`
 export const Name = styled.div`
   color: #5f6062;
   font-family: 'Avenir Next';
-  width: 60%;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
