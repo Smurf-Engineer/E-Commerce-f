@@ -10,9 +10,26 @@ export const styleQuery = gql`
       id
       name
       product {
-        name
-        code
         id
+        code
+        name
+        obj
+        mtl
+        label
+        bumpMap: bump_map
+        flatlock
+        binding {
+          white
+          black
+        }
+        zipper {
+          white
+          black
+        }
+        bibBrace {
+          white
+          black
+        }
       }
       svg: output_svg
     }

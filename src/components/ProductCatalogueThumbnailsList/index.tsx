@@ -125,7 +125,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                     {addToCartButton}
                     <EditButtonContainer>
                       <EditButton
-                        onClick={this.gotToEditDesign(shortId as string)}
+                      /* onClick={this.gotToEditDesign(shortId as string) */ // TODO: Need work from another branch
                       >
                         {formatMessage(messages.edit)}
                       </EditButton>

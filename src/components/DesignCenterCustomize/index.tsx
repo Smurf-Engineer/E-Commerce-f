@@ -14,6 +14,7 @@ import {
   ArtFormat,
   SaveDesignType,
   Style,
+  Product,
   StitchingColor,
   AccesoryColor
 } from '../../types/common'
@@ -29,7 +30,7 @@ interface Props {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   styleColors: string[]
   currentStyle: Style
   loadingModel: boolean
@@ -48,6 +49,7 @@ interface Props {
   customize3dMounted: boolean
   design: SaveDesignType
   loadingData?: boolean
+  product?: Product
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -131,10 +133,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectArtFormat,
       onUnmountTab,
       loadingData,
+      product,
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
+      bibColor,
       onAccessoryColorSelected
     } = this.props
 
@@ -176,8 +179,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             stitchingColor,
             bindingColor,
             zipperColor,
-            bidColor,
-            onAccessoryColorSelected
+            bibColor,
+            onAccessoryColorSelected,
+            product
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
@@ -212,7 +216,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               openResetDesignModal,
               openResetDesignModalAction,
               setCustomize3dMountedAction,
-              onUnmountTab
+              onUnmountTab,
+              product,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bibColor
             }}
           />
         ) : (

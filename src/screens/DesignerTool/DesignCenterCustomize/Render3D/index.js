@@ -6,16 +6,18 @@ import findIndex from 'lodash/findIndex'
 import {
   modelPositions,
   MESH_NAME,
-  MESH,
-  FLATLOCK,
-  RED_TAG,
-  BIB_BRACE,
-  ZIPPER,
-  BINDING,
   BIB_BRACE_NAME,
   BINDING_NAME,
   ZIPPER_NAME
 } from './config'
+import {
+  MESH,
+  RED_TAG,
+  FLATLOCK,
+  ZIPPER,
+  BINDING,
+  BIB_BRACE
+} from '../../../../constants'
 import {
   Container,
   Render,
@@ -527,24 +529,24 @@ class Render3D extends PureComponent {
           if (map) map.dispose()
           if (bumpMap) bumpMap.dispose()
           if (alphaMap) alphaMap.dispose()
-          if (this.zipper) {
-            this.zipper.white.dispose()
-            this.zipper.black.dispose()
-            delete this.zipper
-          }
-          if (this.binding) {
-            this.binding.white.dispose()
-            this.binding.black.dispose()
-            delete this.binding
-          }
-          if (this.bibBrace) {
-            this.bibBrace.white.dispose()
-            this.bibBrace.black.dispose()
-            delete this.bibBrace
-          }
           material.dispose()
         }
       })
+      if (this.zipper) {
+        this.zipper.white.dispose()
+        this.zipper.black.dispose()
+        delete this.zipper
+      }
+      if (this.binding) {
+        this.binding.white.dispose()
+        this.binding.black.dispose()
+        delete this.binding
+      }
+      if (this.bibBrace) {
+        this.bibBrace.white.dispose()
+        this.bibBrace.black.dispose()
+        delete this.bibBrace
+      }
       this.scene.remove(object)
     }
   }
