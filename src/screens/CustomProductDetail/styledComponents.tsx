@@ -11,7 +11,7 @@ export const Content = styled.div`
   display: flex;
   padding: 0px 32px 50px 32px;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 572px) {
     display: block;
     padding: 0px 12px 50px 12px;
   }
@@ -19,19 +19,19 @@ export const Content = styled.div`
   @media (min-width: 768px) and (max-width: 1024px) {
   }
 
-  @media (min-width: 481px) and (max-width: 767px) {
+  @media (min-width: 573px) and (max-width: 767px) {
   }
 `
 export const ImagePreview = styled.div`
   padding: 0 50px;
   width: 50%;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 572px) {
     width: 100%;
     padding: 0;
   }
 
-  @media (min-width: 481px) and (max-width: 768px) {
+  @media (min-width: 573px) and (max-width: 984px) {
     padding: 0 20px 0 0;
     width: 100%;
   }
@@ -40,7 +40,7 @@ export const ProductData = styled.div`
   padding-top: 31px;
   width: 50%;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 572px) {
     width: 100%;
   }
 `
@@ -134,6 +134,11 @@ export const SectionButtonsContainer = styled.div`
   display: flex;
 
   @media (min-width: 320px) and (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media (min-width: 769px) and (max-width: 1023px) {
     flex-wrap: wrap;
   }
 `
