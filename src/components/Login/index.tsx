@@ -104,11 +104,11 @@ export class Login extends React.Component<Props, StateProps> {
         </NotAMemberLabel>
       </div>
     ) : (
-      <SignUp
-        closeSignUp={this.showLogin}
-        {...{ requestClose, formatMessage }}
-      />
-    )
+        <SignUp
+          closeSignUp={this.showLogin}
+          {...{ requestClose, formatMessage }}
+        />
+      )
     return (
       <JakrooModal
         open={open}
@@ -160,9 +160,11 @@ export class Login extends React.Component<Props, StateProps> {
 
       if (data) {
         const userData = {
+          id: get(data, 'user.shortId', ''),
           token: get(data, 'token', ''),
           name: get(data, 'user.name', ''),
-          lastName: get(data, 'user.lastName')
+          lastName: get(data, 'user.lastName'),
+          email: get(data, 'user.email')
         }
         message.success(
           formatMessage(messages.welcomeMessage, {
