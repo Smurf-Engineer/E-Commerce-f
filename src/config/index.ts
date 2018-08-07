@@ -31,7 +31,6 @@ const config: ConfigType = {
   paypalEnv: 'sandbox',
   googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
   geoIpUrl: 'http://api.ipstack.com/',
-  geoIpAccesKey: 'e5dc4d0a6fc61af61307fe520cc67f66'
   geoIpAccesKey: 'e5dc4d0a6fc61af61307fe520cc67f66',
   intercomKey: 'rryek0sa'
 }
