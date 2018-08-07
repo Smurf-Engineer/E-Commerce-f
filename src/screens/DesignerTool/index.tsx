@@ -369,7 +369,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         zipperWhite,
         zipperBlack,
         bindingWhite,
-        bindingBlack
+        bindingBlack,
+        size
       } = modelConfig
 
       const designs = designConfig.map(
@@ -396,7 +397,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             svgs: areasSvg,
             pngs: areasPng,
             colors,
-            inspiration: inspirationItems
+            inspiration: inspirationItems,
+            size
           }
         }
       )

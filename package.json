@@ -110,8 +110,7 @@
   },
   "devDependencies": {},
   "pre-commit": [
-    "lint",
-    "test"
+    "lint"
   ],
   "jest": {
     "transform": {

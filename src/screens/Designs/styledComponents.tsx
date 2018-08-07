@@ -5,8 +5,9 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   background-color: #fff;
-  padding-top: 18px;
   padding-left: 26px;
+  display: flex;
+  flex-direction: row;
 `
 
 export const ContainerError = styled.div`
@@ -45,7 +46,8 @@ export const Model = styled.div`
 
 export const Row = styled.div`
   display: flex;
-  align-items center;
+  margin-top: 16px;
+  height: 20px;
 `
 
 export const QuickView = styled.img`
