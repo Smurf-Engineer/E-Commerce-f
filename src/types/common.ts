@@ -771,3 +771,23 @@ export interface ClickParam {
   item: any
   domEvent: any
 }
+
+export interface Change {
+  type: ChangeType
+  state: any
+}
+
+export type ChangeType =
+  | 'colors'
+  | 'add'
+  | 'delete'
+  | 'move'
+  | 'rotate'
+  | 'resize'
+  | 'duplicate'
+
+export type ConfigCanvasObj = {
+  src: string
+  style: any
+  position: any
+}
