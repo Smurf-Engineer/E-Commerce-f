@@ -32,5 +32,9 @@ export default defineMessages({
   fit: {
     id: 'screens.CustomProductDetail.fit',
     defaultMessage: 'Fit'
+  },
+  addToCartButton: {
+    id: 'screens.teamstoreProductPage.addToCartButton',
+    defaultMessage: 'ADD TO CART'
   }
 })

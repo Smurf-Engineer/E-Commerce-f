@@ -33,7 +33,8 @@ import {
   SectionButtonsContainer,
   SectionButton,
   SizeRowTitleRow,
-  QuestionSpan
+  QuestionSpan,
+  ButtonsRow
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
@@ -43,12 +44,14 @@ import {
   Filter,
   SelectedType,
   ItemDetailType,
-  FitStyle
+  FitStyle,
+  CartItemDetail
 } from '../../types/common'
 import ThreeDRender from '../TeamstoreProductPage/Product3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
+import AddtoCartButton from '../../components/AddToCartButton'
 import YotpoReviews from '../../components/YotpoReviews'
 
 interface Data extends QueryProps {
@@ -89,7 +92,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
 
     const designId = queryParams.id
-    const name = get(design, 'name', '')
+    const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const colors = get(design, 'colors')
     const svgUrl = get(design, 'svg', '')
@@ -105,6 +108,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const yotpoId = get(product, 'yotpoId', '')
     const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
     const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
+
+    const rating = get(yotpoAverageScore, 'averageScore', 0)
+    const totalReviews = get(yotpoAverageScore, 'total', 0)
 
     const genderIndex = findIndex(images, { genderId })
 
@@ -208,12 +214,45 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
+    const details = [] as CartItemDetail[]
+
+    if (product) {
+      const detail: CartItemDetail = {
+        fit: selectedFit,
+        size: selectedSize,
+        gender: selectedGender,
+        quantity: 1
+      }
+      details.push(detail)
+    }
+
+    const itemToAdd = Object.assign(
+      {},
+      { product },
+      {
+        itemDetails: details
+      }
+    )
+
+    const addToCartRow = (
+      <ButtonsRow>
+        <AddtoCartButton
+          onClick={this.validateAddtoCart}
+          label={formatMessage(messages.addToCartButton)}
+          item={itemToAdd}
+          itemProdPage={true}
+          withoutTop={true}
+          {...{ designId, designName, designImage }}
+        />
+      </ButtonsRow>
+    )
+
     const collectionSelection = (
       <BuyNowOptions>
         {gendersSection}
         {sizeSection}
         {fitSection}
-        {/* {addToCartRow} */}
+        {addToCartRow}
       </BuyNowOptions>
     )
 
@@ -234,7 +273,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
-                    <Title>{name}</Title>
+                    <Title>{designName}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                   </TitleSubtitleContainer>
                   <EditDesignButton onClick={this.gotToEditDesign(designId)}>
@@ -245,8 +284,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 <Ratings
                   stars={5}
                   starDimension={'15px'}
-                  rating={get(yotpoAverageScore, 'averageScore', 0)}
-                  totalReviews={get(yotpoAverageScore, 'total', 0)}
+                  {...{ rating, totalReviews }}
                 />
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
@@ -293,6 +331,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   closeFitInfoModal = () => {
     const { openFitInfoAction } = this.props
     openFitInfoAction(false)
+  }
+
+  validateAddtoCart = () => {
+    const { selectedSize, selectedFit, selectedGender } = this.props
+    return selectedSize.id && selectedFit.id && selectedGender.id
   }
 }
 

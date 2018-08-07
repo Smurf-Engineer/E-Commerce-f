@@ -182,3 +182,15 @@ export const QuestionSpan = styled.span`
     cursor: pointer;
   }
 `
+export const ButtonsRow = styled.div`
+  display: flex;
+  margin: 30px 0 25px;
+
+  .ant-btn {
+    color: #e61737;
+    font-family: 'Avenir Next';
+    font-size: 16px;
+    line-height: 22px;
+    text-align: center;
+  }
+`

@@ -8,19 +8,11 @@ export const GetDesignByIdQuery = gql`
       shortId: short_id
       product {
         productId: id
-        code
         yotpoId: yotpo_id
         name
         type: short_description
         shortDescription: short_description
-        category_id
-        sport_id
-        sports {
-          id
-          name
-        }
         genderId: gender_id
-        retail_version
         customizable: design_center
         description
         details
@@ -60,8 +52,6 @@ export const GetDesignByIdQuery = gql`
           total: total_reviews
           averageScore: average_score
         }
-        retailMen: men_retail
-        retailWomen: women_retail
       }
       colors {
         id
