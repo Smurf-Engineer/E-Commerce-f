@@ -14,11 +14,11 @@ export default defineMessages({
     defaultMessage: 'CUSTOMIZE'
   },
   buyNowLabel: {
-    id: 'screens.ProductsDetail.buyNowLabel',
+    id: 'screens.ProductDetail.buyNowLabel',
     defaultMessage: 'BUY NOW'
   },
   intendedUseLabel: {
-    id: 'screens.ProductsDetail.intendedUseLabel',
+    id: 'screens.ProductDetail.intendedUseLabel',
     defaultMessage: 'INTENDED USE'
   },
   detailsLabel: {
@@ -30,11 +30,11 @@ export default defineMessages({
     defaultMessage: 'Specs'
   },
   temperaturesLabel: {
-    id: 'screens.ProducstDetail.temperaturesLabel',
+    id: 'screens.ProductDetail.temperaturesLabel',
     defaultMessage: 'TEMPERATURE RANGE'
   },
   materialsLabel: {
-    id: 'screens.ProductsDetail.materialsLabel',
+    id: 'screens.ProductDetail.materialsLabel',
     defaultMessage: 'MATERIALS'
   },
   compareLabe: {
@@ -54,7 +54,7 @@ export default defineMessages({
     defaultMessage: 'Size'
   },
   fitLabel: {
-    id: 'screens.PRoductDetail.fitLabel',
+    id: 'screens.ProductDetail.fitLabel',
     defaultMessage: 'Fit'
   },
   getFittedLabel: {
@@ -66,16 +66,20 @@ export default defineMessages({
     defaultMessage: 'Add to Cart'
   },
   jakrooWidgetTitle: {
-    id: 'screens.YotpoReviews.jakrooWidgetTitle',
+    id: 'screens.ProductDetail.jakrooWidgetTitle',
     defaultMessage: 'Inspiration from our community. #Jakroo'
   },
   downloadLabel: {
     id: 'screens.ProductDetail.downloadLabel',
     defaultMessage: 'Download Template'
   },
-  oneGenderLabel: {
-    id: 'screens.ProductDetail.oneGenderLabel',
-    defaultMessage: 'Available for Men/Women'
+  femaleGenderLabel: {
+    id: 'screens.ProductDetail.femaleGenderLabel',
+    defaultMessage: 'Available for Women'
+  },
+  maleGenderLabel: {
+    id: 'screens.ProductDetail.maleGenderLabel',
+    defaultMessage: 'Available for Men'
   },
   unisexGenderLabel: {
     id: 'screens.ProductDetail.unisexGenderLabel',

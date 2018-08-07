@@ -59,7 +59,8 @@ import {
   QueryProps,
   ImageType,
   CartItemDetail,
-  SelectedType
+  SelectedType,
+  Filter
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
@@ -130,19 +131,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', [])
+    const genders = get(product, 'genders', [] as Filter[])
 
     const isRetail =
       get(product, 'retailMen', false) || get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
 
-    const maleGender = get(genders, '0.name', '')
-    const femaleGender = get(genders, '1.name', '')
-    const genderMessage =
-      femaleGender && maleGender
-        ? formatMessage(messages.unisexGenderLabel)
-        : formatMessage(messages.oneGenderLabel)
+    const maleGender = genders.find(x => x.name === 'Men')
+    const femaleGender = genders.find(x => x.name === 'Women')
+
+    const genderMessage = femaleGender
+      ? (maleGender && formatMessage(messages.unisexGenderLabel)) ||
+        formatMessage(messages.femaleGenderLabel)
+      : formatMessage(messages.maleGenderLabel)
+
     let renderPrices
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
     const sizeRange = get(product, 'sizeRange', []) as SelectedType[]
