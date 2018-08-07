@@ -786,6 +786,8 @@ export type ChangeType =
   | 'resize'
   | 'duplicate'
 
+export type CanvasObjects = 'path' | 'text' | 'image'
+
 export type ConfigCanvasObj = {
   src: string
   style: any

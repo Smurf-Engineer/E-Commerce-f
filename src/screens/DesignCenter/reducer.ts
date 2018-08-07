@@ -46,7 +46,8 @@ import {
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
   WHITE,
-  Changes
+  Changes,
+  CanvasElements
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -213,11 +214,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           } = undoStep
           const canvasObject: any = { id }
           switch (canvasType) {
-            case 'text':
+            case CanvasElements.Text:
               canvasObject.text = src
               canvasObject.textFormat = style
               break
-            case 'path':
+            case CanvasElements.Path:
               canvasObject.fill = style.fill || '#000000'
               canvasObject.stroke = style.stroke || '#000000'
               canvasObject.strokeWidth = style.strokeWidth || 0
@@ -266,11 +267,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           } = redoStep
           const canvasObject: any = { id }
           switch (canvasType) {
-            case 'text':
+            case CanvasElements.Text:
               canvasObject.text = src
               canvasObject.textFormat = style
               break
-            case 'path':
+            case CanvasElements.Path:
               canvasObject.fill = style.fill || '#000000'
               canvasObject.stroke = style.stroke || '#000000'
               canvasObject.strokeWidth = style.strokeWidth || 0
@@ -409,7 +410,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
 
       const selectedElement = state.get('selectedElement')
-      const canvasEl = typeEl === 'path' ? fromJS(el) : el
+      const canvasEl = typeEl === CanvasElements.Path ? fromJS(el) : el
       const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
 
       if (selectedElement) {
@@ -450,7 +451,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_ELEMENT_ACTION: {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
-      if (canvasElement && typeEl === 'text') {
+      if (canvasElement && typeEl === CanvasElements.Text) {
         if (canvasElement.id) {
           // canvasElement is an object
           return state.merge({

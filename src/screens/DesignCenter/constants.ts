@@ -71,3 +71,9 @@ export enum Changes {
   Resize = 'resize',
   Duplicate = 'duplicate'
 }
+
+export enum CanvasElements {
+  Text = 'text',
+  Path = 'path',
+  Image = 'image'
+}

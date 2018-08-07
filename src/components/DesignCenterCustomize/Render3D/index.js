@@ -50,7 +50,10 @@ import {
   BINDING,
   BIB_BRACE
 } from '../../../constants'
-import { Changes } from '../../../screens/DesignCenter/constants'
+import {
+  Changes,
+  CanvasElements
+} from '../../../screens/DesignCenter/constants'
 import ModalFooter from '../../ModalFooter'
 import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
@@ -840,7 +843,7 @@ class Render3D extends PureComponent {
       const objects = this.canvasTexture.getObjects()
       if (!objects.length) {
         let element = canvasEl.type
-        if (canvasEl.type === 'path') {
+        if (canvasEl.type === CanvasElements.Path) {
           element = 'symbol'
         }
         const modal = Modal.info({
@@ -861,13 +864,13 @@ class Render3D extends PureComponent {
       state: { id, type, style, src, position }
     } = canvasEl
     switch (type) {
-      case 'path':
+      case CanvasElements.Path:
         this.applyClipArt(src, style, position, id)
         break
-      case 'text':
+      case CanvasElements.Text:
         this.applyText(src, style, position, id)
         break
-      case 'image':
+      case CanvasElements.Image:
         this.applyImage(src, position, id)
         break
     }
@@ -886,7 +889,7 @@ class Render3D extends PureComponent {
 
       const el = { id }
       if (!idElement) {
-        onApplyCanvasEl(el, 'image', undefined, {
+        onApplyCanvasEl(el, CanvasElements.Image, undefined, {
           src: base64,
           style: undefined,
           position
@@ -906,7 +909,7 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
-    if (activeEl && activeEl.type === 'text' && !idElement) {
+    if (activeEl && activeEl.type === CanvasElements.Text && !idElement) {
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
@@ -935,13 +938,17 @@ class Render3D extends PureComponent {
       textFormat: style
     }
     if (!idElement) {
-      onApplyCanvasEl(el, 'text', !!activeEl, { src: text, style, position })
+      onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
+        src: text,
+        style,
+        position
+      })
     }
   }
 
   applyClipArt = (url, style = {}, position = {}, idElement) => {
     const activeEl = this.canvasTexture.getActiveObject()
-    if (activeEl && activeEl.type === 'path' && !idElement) {
+    if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
       activeEl.set({ ...style })
       this.canvasTexture.renderAll()
     } else {
@@ -964,7 +971,11 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
-          onApplyCanvasEl(el, 'path', false, { src: url, style, position })
+          onApplyCanvasEl(el, CanvasElements.Path, false, {
+            src: url,
+            style,
+            position
+          })
           this.canvasTexture.setActiveObject(shape)
         }
         this.canvasTexture.renderAll()
@@ -980,7 +991,7 @@ class Render3D extends PureComponent {
       position: { left, top, scaleX, scaleY }
     }
     switch (type) {
-      case 'text':
+      case CanvasElements.Text:
         {
           const { text, fill, fontFamily, stroke, strokeWidth } = el
           canvasObject.src = text
@@ -992,7 +1003,7 @@ class Render3D extends PureComponent {
           }
         }
         break
-      case 'path':
+      case CanvasElements.Path:
         {
           const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = el
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
@@ -1004,7 +1015,7 @@ class Render3D extends PureComponent {
           }
         }
         break
-      case 'image':
+      case CanvasElements.Image:
         {
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
           canvasObject.src = object.state.src
@@ -1034,7 +1045,7 @@ class Render3D extends PureComponent {
     const id = shortid.generate()
     let canvasEl = {}
     switch (elementType) {
-      case 'text':
+      case CanvasElements.Text:
         {
           const text = el.get('text')
           const textFormat = {
@@ -1046,11 +1057,11 @@ class Render3D extends PureComponent {
           canvasEl = { id, text, textFormat }
         }
         break
-      case 'image': {
+      case CanvasElements.Image: {
         canvasEl = { id }
         break
       }
-      case 'path': {
+      case CanvasElements.Path: {
         canvasEl = {
           id,
           fill: el.fill,
@@ -1121,13 +1132,13 @@ class Render3D extends PureComponent {
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
           switch (el.type) {
-            case 'text':
+            case CanvasElements.Text:
               this.applyText(el.text, el.style, { left, top })
               break
-            case 'image':
+            case CanvasElements.Image:
               this.applyImage(el.base64, { left, top })
               break
-            case 'path':
+            case CanvasElements.Path:
               this.applyClipArt(el.url, el.style, { left, top })
               break
             default:
