@@ -59,7 +59,7 @@ export const initialState = fromJS({
   stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
   bindingColor: WHITE,
   zipperColor: WHITE,
-  bidColor: WHITE,
+  bibColor: WHITE,
   styleColors: [],
   palettes: [],
   paletteName: '',

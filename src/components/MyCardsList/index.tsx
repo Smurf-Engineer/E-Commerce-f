@@ -35,42 +35,44 @@ class MyCardsList extends React.Component<Props, {}> {
       selectCardToPayAction,
       selectedCard
     } = this.props
-    const cardsList = items.map((cardItem, key) => {
-      const {
-        last4,
-        name,
-        brand,
-        expMonth,
-        expYear,
-        defaultPayment,
-        id
-      } = cardItem
-      return (
-        <MyCard
-          cardIndex={key}
-          markedAsDefault={String(id) === idDefaultCard}
-          showCardForm={showCardFormAction}
-          {...{
-            id,
-            key,
+    const cardsList = items
+      ? items.map((cardItem, key) => {
+          const {
             last4,
             name,
             brand,
             expMonth,
             expYear,
             defaultPayment,
-            formatMessage,
-            showConfirmDelete,
-            selectCardAsDefault,
-            paymentsRender,
-            listForMyAccount,
-            setStripeCardDataAction,
-            selectCardToPayAction,
-            selectedCard
-          }}
-        />
-      )
-    })
+            id
+          } = cardItem
+          return (
+            <MyCard
+              cardIndex={key}
+              markedAsDefault={String(id) === idDefaultCard}
+              showCardForm={showCardFormAction}
+              {...{
+                id,
+                key,
+                last4,
+                name,
+                brand,
+                expMonth,
+                expYear,
+                defaultPayment,
+                formatMessage,
+                showConfirmDelete,
+                selectCardAsDefault,
+                paymentsRender,
+                listForMyAccount,
+                setStripeCardDataAction,
+                selectCardToPayAction,
+                selectedCard
+              }}
+            />
+          )
+        })
+      : null
     return (
       <Container>
         <CardsList>{cardsList}</CardsList>
