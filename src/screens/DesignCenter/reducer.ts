@@ -450,20 +450,17 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_ELEMENT_ACTION: {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
-      console.log('------canvasElement-------')
-
-      console.log(canvasElement)
-      console.log('--------------------------')
       if (canvasElement && typeEl === 'text') {
         if (canvasElement.id) {
+          // canvasElement is an object
           return state.merge({
             selectedElement: id,
             textFormat: canvasElement.textFormat,
             text: canvasElement.text
           })
         }
+        // canvasElement is a Map
         const canvasObject = canvasElement.toJS()
-        console.log(canvasObject, 'converted')
         return state.merge({
           selectedElement: id,
           textFormat: canvasObject.textFormat,

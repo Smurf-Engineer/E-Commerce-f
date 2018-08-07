@@ -404,12 +404,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       setAccessoryColorAction
     } = this.props
 
-    console.log('-------------undo----------')
-    console.log(undoChanges)
-    console.log('-------------redo----------')
-    console.log(redoChanges)
-    console.log('---------------------------')
-
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
       return <Redirect to="/us?lang=en&currency=usd" />
