@@ -818,19 +818,27 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (url, position = {}) => {
-    const { onApplyCanvasEl } = this.props
+  // TODO: Set position on this function call
+  applyImage = (base64, position = {}) => {
+    const {
+      onApplyCanvasEl,
+      currentStyle: { size }
+    } = this.props
+    let scaleFactor = 1
+    if (!!size) {
+      scaleFactor = CANVAS_SIZE / size
+    }
+    console.log('------------------------------------')
+    console.log(base64)
+    console.log('------------------------------------')
+    return
     const id = shortid.generate()
-    fabric.util.loadImage(url, img => {
-      const imageEl = new fabric.Image(img, {
+    fabric.Image.fromURL(base64, oImg => {
+      const imageEl = oImg.scale(scaleFactor).set({
         id,
         hasRotatingPoint: false,
         ...position
       })
-      console.log('------------------------------------')
-      console.log(imageEl)
-      console.log('------------------------------------')
-      // imageEl.scale(1).set()
       this.canvasTexture.add(imageEl)
       const el = { id }
       onApplyCanvasEl(el, 'image')

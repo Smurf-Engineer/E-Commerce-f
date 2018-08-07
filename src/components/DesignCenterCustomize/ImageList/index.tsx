@@ -3,7 +3,16 @@
  */
 import * as React from 'react'
 import { ImageFile } from '../../../types/common'
-import { Container, Row, Col, Image } from './styledComponents'
+import {
+  Container,
+  Row,
+  Image,
+  Info,
+  Name,
+  Size,
+  Delete,
+  Footer
+} from './styledComponents'
 
 interface Props {
   images: ImageFile[]
@@ -18,16 +27,26 @@ class ImageList extends React.PureComponent<Props, {}> {
 
   render() {
     const { images } = this.props
-    const imageList = images.map(({ fileUrl }, index) => (
-      <Col key={index}>
-        <Image src={fileUrl} onClick={this.handleOnClickImage(fileUrl)} />
-      </Col>
-    ))
-    return (
-      <Container>
-        <Row>{imageList}</Row>
-      </Container>
-    )
+    const imageList = images.map(({ fileUrl }, index) => {
+      const completeName = fileUrl.split('/').pop()
+      const name = completeName && completeName.split('-').pop()
+      return (
+        <Row key={index}>
+          <Image src={fileUrl} onClick={this.handleOnClickImage(fileUrl)} />
+          <Info>
+            <Name>{completeName || name}</Name>
+            <Footer>
+              <div>
+                <Size>Max</Size>
+                <Size>10 in x 10 in</Size>
+              </div>
+              <Delete>Delete</Delete>
+            </Footer>
+          </Info>
+        </Row>
+      )
+    })
+    return <Container>{imageList}</Container>
   }
 }
 

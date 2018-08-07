@@ -7,17 +7,24 @@ import Message from 'antd/lib/message'
 import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
 import last from 'lodash/last'
+import withLoading from '../../WithLoading'
+import { compose, graphql } from 'react-apollo'
+import { userfilesQuery } from './data'
 import Dragger from '../../TeamDragger'
 import ImageList from '../ImageList'
 import messages from './messages'
-import { ImageFile } from '../../../types/common'
+import { ImageFile, QueryProps } from '../../../types/common'
 import {
   Container,
   Header,
   Title,
-  DraggerContainer,
-  DraggerBottom
+  DraggerBottom,
+  Recommendation
 } from './styledComponents'
+
+interface Data extends QueryProps {
+  images: ImageFile[]
+}
 
 const validFileExtensions = [
   '.eps',
@@ -36,6 +43,7 @@ const validFileExtensions = [
 
 interface Props {
   images: ImageFile[]
+  data: Data
   onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -47,7 +55,11 @@ interface State {
 
 class UploadTab extends React.PureComponent<Props, State> {
   render() {
-    const { images } = this.props
+    const {
+      images: imagesRedux,
+      data: { images: imagesData }
+    } = this.props
+    const images = [...imagesRedux, ...imagesData]
     const dragger = <Dragger onSelectImage={this.beforeUpload} />
     return (
       <Container>
@@ -57,11 +69,13 @@ class UploadTab extends React.PureComponent<Props, State> {
           </Title>
         </Header>
         <ImageList onClickImage={this.handleOnAddImage} {...{ images }} />
-        {!!images.length ? (
-          <DraggerBottom>{dragger}</DraggerBottom>
-        ) : (
-          <DraggerContainer>{dragger}</DraggerContainer>
-        )}
+        <DraggerBottom>{dragger}</DraggerBottom>
+        <Recommendation color="#E61737">
+          <FormattedMessage {...messages.recommendationTitle} />
+        </Recommendation>
+        <Recommendation>
+          <FormattedMessage {...messages.recommendationMessage} />
+        </Recommendation>
       </Container>
     )
   }
@@ -103,23 +117,17 @@ class UploadTab extends React.PureComponent<Props, State> {
       const { onUploadFile } = this.props
       onUploadFile(file)
     }
-
-    // const reader = new FileReader()
-    // reader.onloadend = () => {
-    //   this.setState(({ images }: any) => ({
-    //     images: [...images, reader.result]
-    //   }))
-    // }
-
     return false
   }
 
   clearState = () => {
-    this.setState({
-      file: null,
-      images: []
-    })
+    this.setState({ file: null })
   }
 }
 
-export default UploadTab
+const UploadTabEnhance = compose(
+  graphql<Data>(userfilesQuery),
+  withLoading
+)(UploadTab)
+
+export default UploadTabEnhance
