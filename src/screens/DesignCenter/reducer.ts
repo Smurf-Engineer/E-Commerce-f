@@ -192,13 +192,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       const {
         type,
-        state: { type: canvasType }
+        state: { type: canvasType, id }
       } = undoStep
-      // tslint:disable-next-line:switch-default
       switch (type) {
-        case Changes.Add:
+        case Changes.Add: {
           const canvas = state.get('canvas')
-          const updatedCanvas = canvas.deleteIn([canvasType, undoStep.state])
+          const updatedCanvas = canvas.deleteIn([canvasType, id])
 
           return state.merge({
             undoChanges: undoChanges.shift(),
@@ -206,16 +205,27 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             canvas: updatedCanvas,
             selectedElement: ''
           })
-        case Changes.Delete:
-          const canvass = state.get('canvas')
-          const updatedCanvass = canvass.setIn([canvasType, undoStep.state])
+        }
+        case Changes.Delete: {
+          const canvas = state.get('canvas')
+          const {
+            state: { src, style }
+          } = undoStep
+          const updatedCanvas = canvas.setIn([canvasType, id], {
+            id,
+            text: src,
+            textFormat: style
+          })
 
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
-            canvas: updatedCanvass,
+            canvas: updatedCanvas,
             selectedElement: ''
           })
+        }
+
+        case Changes.Colors:
         default:
           // colors
           const oldState = state.get(undoStep.type)
@@ -234,15 +244,19 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoStep = redoChanges.first()
       const {
         type,
-        state: { type: canvasType }
+        state: { type: canvasType, id }
       } = redoStep
       switch (type) {
         case Changes.Add:
           const canvas = state.get('canvas')
-          const updatedCanvas = canvas.setIn(
-            [canvasType, redoStep.state],
-            canvas
-          )
+          const {
+            state: { src, style }
+          } = redoStep
+          const updatedCanvas = canvas.setIn([canvasType, id], {
+            id,
+            text: src,
+            textFormat: style
+          })
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
@@ -250,7 +264,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         case Changes.Delete:
           const canvass = state.get('canvas')
-          const updatedCanvass = canvass.deleteIn([canvasType, redoStep.state])
+          const updatedCanvass = canvass.deleteIn([canvasType, id])
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),

@@ -147,6 +147,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onAccessoryColorSelected
     } = this.props
 
+    console.log('---------canvas------------')
+    console.log(canvas)
+    console.log('---------------------------')
+
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
     const loadingView = loadingData && (
       <LoadingContainer>
