@@ -6,7 +6,9 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_SIZE,
   SET_SELECTED_FIT,
-  OPEN_FITINFO
+  OPEN_FITINFO,
+  SET_SHOW_DETAILS,
+  SET_SHOW_SPECS
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -33,4 +35,14 @@ export const setSelectedFitAction = (selected: SelectedType) => ({
 export const openFitInfoAction = (open: boolean) => ({
   type: OPEN_FITINFO,
   open
+})
+
+export const setShowDetailsAction = (show: boolean) => ({
+  type: SET_SHOW_DETAILS,
+  show
+})
+
+export const setShowSpecsAction = (show: boolean) => ({
+  type: SET_SHOW_SPECS,
+  show
 })

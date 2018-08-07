@@ -34,7 +34,27 @@ export default defineMessages({
     defaultMessage: 'Fit'
   },
   addToCartButton: {
-    id: 'screens.teamstoreProductPage.addToCartButton',
+    id: 'screens.CustomProductDetail.addToCartButton',
     defaultMessage: 'ADD TO CART'
+  },
+  description: {
+    id: 'screens.CustomProductDetail.description',
+    defaultMessage: 'Description'
+  },
+  specs: {
+    id: 'screens.CustomProductDetail.specs',
+    defaultMessage: 'Specs'
+  },
+  intendedUse: {
+    id: 'screens.CustomProductDetail.intendedUse',
+    defaultMessage: 'INTENDED USE'
+  },
+  temperatures: {
+    id: 'screens.CustomProductDetail.temperatures',
+    defaultMessage: 'TEMPERATURE RANGE'
+  },
+  materials: {
+    id: 'screens.CustomProductDetail.materials',
+    defaultMessage: 'MATERIALS'
   }
 })

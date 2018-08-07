@@ -34,7 +34,9 @@ import {
   SectionButton,
   SizeRowTitleRow,
   QuestionSpan,
-  ButtonsRow
+  ButtonsRow,
+  DetailsList,
+  DetailsListItem
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
@@ -52,6 +54,7 @@ import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
+import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
 
 interface Data extends QueryProps {
@@ -65,12 +68,16 @@ interface Props extends RouteComponentProps<any> {
   selectedSize: SelectedType
   selectedFit: SelectedType
   openFitInfo: boolean
+  showDetails: boolean
+  showSpecs: boolean
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
   addItemToCartAction: (item: any) => void
+  setShowDetailsAction: (show: boolean) => void
+  setShowSpecsAction: (show: boolean) => void
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
@@ -84,7 +91,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedGender,
       selectedSize,
       selectedFit,
-      openFitInfo
+      openFitInfo,
+      showDetails,
+      showSpecs
     } = this.props
 
     const { formatMessage } = intl
@@ -108,6 +117,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const yotpoId = get(product, 'yotpoId', '')
     const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
     const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
+    const details = get(product, 'details', '')
+    const intendedUse = get(product, 'intendedUse', '')
+    const temperatures = get(product, 'temperatures', '')
+    const materials = get(product, 'materials', '')
 
     const rating = get(yotpoAverageScore, 'averageScore', 0)
     const totalReviews = get(yotpoAverageScore, 'total', 0)
@@ -214,7 +227,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
-    const details = [] as CartItemDetail[]
+    const itemDetails = [] as CartItemDetail[]
 
     if (product) {
       const detail: CartItemDetail = {
@@ -223,16 +236,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         gender: selectedGender,
         quantity: 1
       }
-      details.push(detail)
+      itemDetails.push(detail)
     }
 
-    const itemToAdd = Object.assign(
-      {},
-      { product },
-      {
-        itemDetails: details
-      }
-    )
+    const itemToAdd = Object.assign({}, { product }, { itemDetails })
 
     const addToCartRow = (
       <ButtonsRow>
@@ -254,6 +261,43 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
+    )
+
+    const productDetails = (details && details.split(',')) || ['']
+
+    const detailsItems = productDetails.map((detail, key) => (
+      <DetailsListItem {...{ key }}>{detail}</DetailsListItem>
+    ))
+
+    const productInfo = (
+      <div>
+        <ProductInfo
+          id="Details"
+          title={formatMessage(messages.description)}
+          showContent={showDetails}
+          toggleView={this.toggleProductInfo}
+        >
+          <DetailsList>{detailsItems}</DetailsList>
+        </ProductInfo>
+        <ProductInfo
+          id="Specs"
+          title={formatMessage(messages.specs)}
+          showContent={showSpecs}
+          toggleView={this.toggleProductInfo}
+        >
+          <p>
+            {intendedUse &&
+              `${formatMessage(messages.intendedUse)}: ${intendedUse}`}
+          </p>
+          <p>
+            {temperatures &&
+              `${formatMessage(messages.temperatures)}: ${temperatures}`}
+          </p>
+          <p>
+            {materials && `${formatMessage(messages.materials)}: ${materials}`}
+          </p>
+        </ProductInfo>
+      </div>
     )
 
     return (
@@ -289,6 +333,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 <Description>{description}</Description>
                 <AvailableLabel>{genderMessage}</AvailableLabel>
                 {collectionSelection}
+                {productInfo}
               </ProductData>
               <FitInfo
                 open={openFitInfo}
@@ -336,6 +381,19 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   validateAddtoCart = () => {
     const { selectedSize, selectedFit, selectedGender } = this.props
     return selectedSize.id && selectedFit.id && selectedGender.id
+  }
+
+  toggleProductInfo = (id: string) => {
+    const {
+      showDetails,
+      showSpecs,
+      setShowDetailsAction,
+      setShowSpecsAction
+    } = this.props
+
+    id === 'Details'
+      ? setShowDetailsAction(!showDetails)
+      : setShowSpecsAction(!showSpecs)
   }
 }
 

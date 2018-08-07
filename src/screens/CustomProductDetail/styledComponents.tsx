@@ -194,3 +194,10 @@ export const ButtonsRow = styled.div`
     text-align: center;
   }
 `
+export const DetailsList = styled.ul`
+  padding: 10px 0px 0px 20px;
+`
+
+export const DetailsListItem = styled.li`
+  margin-bottom: 15px;
+`
