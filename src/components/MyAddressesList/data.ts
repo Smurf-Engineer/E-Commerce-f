@@ -2,8 +2,8 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
 export const GetAddressListQuery = gql`
-  query GetUserAddresses($limit: Int, $skip: Int) {
-    userAddresses: getUserAddresses(limit: $limit, offset: $skip) {
+  query GetUserAddresses($limit: Int, $offset: Int) {
+    userAddresses: getUserAddresses(limit: $limit, offset: $offset) {
       fullCount
       addresses {
         id

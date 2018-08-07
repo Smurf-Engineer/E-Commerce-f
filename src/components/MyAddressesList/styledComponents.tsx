@@ -48,7 +48,7 @@ export const AddressesList = styled.div`
   display: grid;
   grid-template-columns: ${({ listForMyAccount }: StyledProps) =>
     listForMyAccount
-      ? 'repeat(4, minmax(170px, max-content))'
+      ? 'repeat(4, minmax(170px, min-content))'
       : 'repeat(auto-fit, minmax(150px, min-content))'};
   grid-gap: 60px;
   margin-bottom: 30px;

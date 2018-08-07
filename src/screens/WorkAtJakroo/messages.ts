@@ -29,21 +29,21 @@ export default defineMessages({
     
     <p><strong>Job Responsibilities:</strong></p>
     
-    <p>• Follow up on all assigned leads to drive sales opportunities in a timely manner<br />
-    • Maintain complete and accurate records of all project activity throughout the design & sales cycle in the Netsuite CRM platform.<br />
-    • Process customer orders and payments as required.<br />
-    • Provide administrative support to the Department Manager.<br />
-    • Implement best of breed customer service protocols ensuring optimal customer experience.</p>
+    <p>- Follow up on all assigned leads to drive sales opportunities in a timely manner<br />
+    - Maintain complete and accurate records of all project activity throughout the design & sales cycle in the Netsuite CRM platform.<br />
+    - Process customer orders and payments as required.<br />
+    - Provide administrative support to the Department Manager.<br />
+    - Implement best of breed customer service protocols ensuring optimal customer experience.</p>
     
     <p><strong>Key Skills & Requirements:</strong></p>
     
-    <p>• You are exceptional at creating superior customer experiences. You love working with people and solving problems.<br />
-    • Detail oriented, responsible, able to multi-task with good time management skills.<br />
-    • Positive and energetic phone skills, excellent listening skills, strong writing skills.<br />
-    • Strong computer skills and familiar with Microsoft office.<br />
-    • Familiarity with Adobe Illustrator & Photoshop desired but not mandatory.<br />
-    • Familiarity with Netsuite CRM or similar Customer Management software platforms desired.<br />
-    • Familiarity with the endurance sports market desired but not mandatory</p>
+    <p>- You are exceptional at creating superior customer experiences. You love working with people and solving problems.<br />
+    - Detail oriented, responsible, able to multi-task with good time management skills.<br />
+    - Positive and energetic phone skills, excellent listening skills, strong writing skills.<br />
+    - Strong computer skills and familiar with Microsoft office.<br />
+    - Familiarity with Adobe Illustrator & Photoshop desired but not mandatory.<br />
+    - Familiarity with Netsuite CRM or similar Customer Management software platforms desired.<br />
+    - Familiarity with the endurance sports market desired but not mandatory</p>
     
     <p><strong>Location:</strong> Corporate Headquarters in Pleasanton, California.</p>
     
@@ -64,22 +64,22 @@ export default defineMessages({
     
     <p><strong>Job Responsibilities:</strong></p>
     
-    <p>• Follow up on all assigned leads to drive sales opportunities in a timely manner.<br />
-    • Maintain complete and accurate records of all project activity throughout the design & sales cycle in the Netsuite CRM platform.<br />
-    • Process customer orders and payments as required.<br />
-    • Provide administrative support to the Department Manager.<br />
-    • Implement best of breed customer service protocols ensuring optimal customer experience.<br />
-    • Provide feedback to Marketing and Operations on quality of inquiries/leads as well as provide input for future campaigns and promotions.</p>
+    <p>- Follow up on all assigned leads to drive sales opportunities in a timely manner.<br />
+    - Maintain complete and accurate records of all project activity throughout the design & sales cycle in the Netsuite CRM platform.<br />
+    - Process customer orders and payments as required.<br />
+    - Provide administrative support to the Department Manager.<br />
+    - Implement best of breed customer service protocols ensuring optimal customer experience.<br />
+    - Provide feedback to Marketing and Operations on quality of inquiries/leads as well as provide input for future campaigns and promotions.</p>
     
     <p><strong>Key Skills & Requirements:</strong></p>
     
-    <p>• You are exceptional at creating superior customer experiences. You love working with people and solving problems.<br />
-    • Detail oriented, responsible, able to multi-task with good time management skills.<br />
-    • Positive and energetic phone skills, excellent listening skills, strong writing skills.<br />
-    • Strong computer skills and familiar with Microsoft office.<br />
-    • Familiarity with Adobe Illustrator & Photoshop desired but not mandatory.<br />
-    • Familiarity with Netsuite CRM or similar Customer Management software platforms desired.<br />
-    • Familiarity with the endurance sports market desired but not mandatory</p>
+    <p>- You are exceptional at creating superior customer experiences. You love working with people and solving problems.<br />
+    - Detail oriented, responsible, able to multi-task with good time management skills.<br />
+    - Positive and energetic phone skills, excellent listening skills, strong writing skills.<br />
+    - Strong computer skills and familiar with Microsoft office.<br />
+    - Familiarity with Adobe Illustrator & Photoshop desired but not mandatory.<br />
+    - Familiarity with Netsuite CRM or similar Customer Management software platforms desired.<br />
+    - Familiarity with the endurance sports market desired but not mandatory</p>
     
     <p><strong>Location:</strong> Corporate Headquarters in Pleasanton, California.</p>
     
@@ -100,25 +100,25 @@ export default defineMessages({
     
     <p><strong>Job Responsibilities:</strong></p>
     
-    <p>• Follow up on all assigned leads to drive sales opportunities in a timely manner.<br />
-    • Manage key customer accounts or function within the department.<br />
-    • Process customer orders and payments as required.<br />
-    • Maintain complete and accurate records of all project activity throughout the design & sales cycle in the Netsuite CRM platform.<br />
-    • Perform market analysis, create reports and present to Management.<br />
-    • Become a domain expert within the assigned channel or function.<br />
-    • Implement best of breed customer service protocols ensuring optimal customer experience.<br />
-    • Provide feedback to Marketing and Operations on quality of inquiries/leads as well as provide input for future campaigns and promotions.</p>
+    <p>- Follow up on all assigned leads to drive sales opportunities in a timely manner.<br />
+    - Manage key customer accounts or function within the department.<br />
+    - Process customer orders and payments as required.<br />
+    - Maintain complete and accurate records of all project activity throughout the design & sales cycle in the Netsuite CRM platform.<br />
+    - Perform market analysis, create reports and present to Management.<br />
+    - Become a domain expert within the assigned channel or function.<br />
+    - Implement best of breed customer service protocols ensuring optimal customer experience.<br />
+    - Provide feedback to Marketing and Operations on quality of inquiries/leads as well as provide input for future campaigns and promotions.</p>
     
     <p><strong>Key Skills & Requirements:</strong></p>
     
-    <p>• You are exceptional at creating superior customer experiences. You love working with people and solving problems.<br />
-    • Detail oriented, responsible, able to multi-task with good time management skills.<br />
-    • Positive and energetic phone skills, excellent listening skills, strong writing skills.<br />
-    • Provide leadership and mentoring to junior level account managers.<br />
-    • Strong computer skills and familiar with Microsoft office.<br />
-    • Familiarity with Adobe Illustrator & Photoshop desired but not mandatory.<br />
-    • Familiarity with Netsuite CRM or similar Customer Management software platforms desired.<br />
-    • Familiarity and participation within the endurance sports market highly desired.</p>
+    <p>- You are exceptional at creating superior customer experiences. You love working with people and solving problems.<br />
+    - Detail oriented, responsible, able to multi-task with good time management skills.<br />
+    - Positive and energetic phone skills, excellent listening skills, strong writing skills.<br />
+    - Provide leadership and mentoring to junior level account managers.<br />
+    - Strong computer skills and familiar with Microsoft office.<br />
+    - Familiarity with Adobe Illustrator & Photoshop desired but not mandatory.<br />
+    - Familiarity with Netsuite CRM or similar Customer Management software platforms desired.<br />
+    - Familiarity and participation within the endurance sports market highly desired.</p>
     
     <p><strong>Location:</strong> Corporate Headquarters in Pleasanton, California.</p>
     
@@ -154,16 +154,16 @@ export default defineMessages({
     
     <p><strong>Compensation:</strong></p>
     
-    <p>• Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
-    • Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
-    • Reasonable sales material to be provided at no charge.</p>
+    <p>- Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
+    - Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
+    - Reasonable sales material to be provided at no charge.</p>
     
     <p><strong>Requirements:</strong></p>
     
-    <p>• Experience in Cycling/Outdoor industry preferred.<br />
-    • Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
-    • Professional approach with ability to cold call.<br />
-    • Computer, Internet, phone, valid driver’s license, car.</p>
+    <p>- Experience in Cycling/Outdoor industry preferred.<br />
+    - Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
+    - Professional approach with ability to cold call.<br />
+    - Computer, Internet, phone, valid driver’s license, car.</p>
     
     <p>To apply, please send your cover letter and resume to:  <a href="mailto:jobs@jakroousa.com">Talent Acquisition</a></p>`
   },
@@ -193,16 +193,16 @@ export default defineMessages({
     
     <p><strong>Compensation:</strong></p>
     
-    <p>• Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
-    • Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
-    • Reasonable sales material to be provided at no charge.</p>
+    <p>- Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
+    - Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
+    - Reasonable sales material to be provided at no charge.</p>
     
     <p><strong>Requirements:</strong></p>
     
-    <p>• Experience in Cycling/Outdoor industry preferred.<br />
-    • Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
-    • Professional approach with ability to cold call.<br />
-    • Computer, Internet, phone, valid driver’s license, car.</p>
+    <p>- Experience in Cycling/Outdoor industry preferred.<br />
+    - Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
+    - Professional approach with ability to cold call.<br />
+    - Computer, Internet, phone, valid driver’s license, car.</p>
     
     <p>To apply, please send your cover letter and resume to:  <a href="mailto:jobs@jakroousa.com">Talent Acquisition</a></p>`
   },
@@ -232,16 +232,16 @@ export default defineMessages({
     
     <p><strong>Compensation:</strong></p>
     
-    <p>• Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
-    • Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
-    • Reasonable sales material to be provided at no charge.</p>
+    <p>- Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
+    - Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
+    - Reasonable sales material to be provided at no charge.</p>
     
     <p><strong>Requirements:</strong></p>
     
-    <p>• Experience in Cycling/Outdoor industry preferred.<br />
-    • Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
-    • Professional approach with ability to cold call.<br />
-    • Computer, Internet, phone, valid driver’s license, car.</p>
+    <p>- Experience in Cycling/Outdoor industry preferred.<br />
+    - Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
+    - Professional approach with ability to cold call.<br />
+    - Computer, Internet, phone, valid driver’s license, car.</p>
     
     <p>To apply, please send your cover letter and resume to:  <a href="mailto:jobs@jakroousa.com">Talent Acquisition</a></p>`
   },
@@ -271,16 +271,16 @@ export default defineMessages({
     
     <p><strong>Compensation:</strong></p>
     
-    <p>• Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
-    • Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
-    • Reasonable sales material to be provided at no charge.</p>
+    <p>- Compensation is 100% commission with no cap on earnings. Bonus payout upon achievement of targets.<br />
+    - Sales samples are provided at NO CHARGE but remain the property of the company and must be returned.<br />
+    - Reasonable sales material to be provided at no charge.</p>
     
     <p><strong>Requirements:</strong></p>
     
-    <p>• Experience in Cycling/Outdoor industry preferred.<br />
-    • Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
-    • Professional approach with ability to cold call.<br />
-    • Computer, Internet, phone, valid driver’s license, car.</p>
+    <p>- Experience in Cycling/Outdoor industry preferred.<br />
+    - Self-motivated with excellent verbal and written communication skills, relationship building and organizational skills.<br />
+    - Professional approach with ability to cold call.<br />
+    - Computer, Internet, phone, valid driver’s license, car.</p>
     
     <p>To apply, please send your cover letter and resume to:  <a href="mailto:jobs@jakroousa.com">Talent Acquisition</a></p>`
   },
@@ -299,28 +299,28 @@ export default defineMessages({
     
     <p>Shipping/Receiving</p>
     
-    <p>• Receive inbound shipment of new samples from our factory and organize for distribution.<br />
-    • Prepare shipping documents using FedEx, USPS, and UPS online shipping tools.<br />
-    • Prepare and manage inbound/outbound log of all samples in the CRM inventory management system.<br />
-    • Prepare and package samples for shipment (typically shipment weighs 2-10lbs).<br />
-    • Receive inbound return shipments from customers and replenish items to warehouse.<br />
-    • Follow up with customers on the timely return of samples to our office.</p>
+    <p>- Receive inbound shipment of new samples from our factory and organize for distribution.<br />
+    - Prepare shipping documents using FedEx, USPS, and UPS online shipping tools.<br />
+    - Prepare and manage inbound/outbound log of all samples in the CRM inventory management system.<br />
+    - Prepare and package samples for shipment (typically shipment weighs 2-10lbs).<br />
+    - Receive inbound return shipments from customers and replenish items to warehouse.<br />
+    - Follow up with customers on the timely return of samples to our office.</p>
     
     <p>Warehouse Management</p>
     
-    <p>• Maintain a clean and organized sample warehouse. (Approx. 800 sqft).<br />
-    • Check samples for damage/dirt and remove from general sample inventory.<br />
-    • Ensure sufficient supply levels of shipment materials (boxes, tape, paperwork, etc.).</p>
+    <p>- Maintain a clean and organized sample warehouse. (Approx. 800 sqft).<br />
+    - Check samples for damage/dirt and remove from general sample inventory.<br />
+    - Ensure sufficient supply levels of shipment materials (boxes, tape, paperwork, etc.).</p>
     
     <p><strong>Skills and Requirements:</strong></p>
     
-    <p>• Detail oriented, responsible, able to multi-task with good time management skills.<br />
-    • Familiar with CRM or inventory management systems.<br />
-    • Excellent communication skills.<br />
-    • Strong computer skills and familiar with Microsoft office.<br />
-    • RELIABLE and able to work 4-5 hours per day, 5 days per week.<br />
-    • Hold a VALID Driver’s License.<br />
-    • Must be able to lift 25+lbs.</p>
+    <p>- Detail oriented, responsible, able to multi-task with good time management skills.<br />
+    - Familiar with CRM or inventory management systems.<br />
+    - Excellent communication skills.<br />
+    - Strong computer skills and familiar with Microsoft office.<br />
+    - RELIABLE and able to work 4-5 hours per day, 5 days per week.<br />
+    - Hold a VALID Driver’s License.<br />
+    - Must be able to lift 25+lbs.</p>
     
     <p><strong>Location:</strong> Pleasanton, CA</p>
     
@@ -341,27 +341,27 @@ export default defineMessages({
     
     <p><strong>Job Description:</strong></p>
     
-    <p>• Translate client notes into one-of-a-kind sports apparel designs using Adobe Illustrator.<br />
-    • Re-work and manipulate existing vector art to create eye catching designs.<br />
-    • Vetting and proofing design's before sending to printing department.<br />
-    • Review completed design concepts by other designers before sending to client.</p>
+    <p>- Translate client notes into one-of-a-kind sports apparel designs using Adobe Illustrator.<br />
+    - Re-work and manipulate existing vector art to create eye catching designs.<br />
+    - Vetting and proofing design's before sending to printing department.<br />
+    - Review completed design concepts by other designers before sending to client.</p>
     
     <p><strong>Key Requirements:</strong></p>
     
-    <p>• Graphic design professional best practices: Quick keys, layering, grouping, bleeds, embedding, expanding graphics, etc.<br />
-    • Excellent time management.<br />
-    • Attention to detail and accuracy mandatory.<br />
-    • Adobe Illustrator & Photoshop.<br />
-    • Work in fast pace environment with tight deadlines.<br />
-    • Superior communication and interpersonal skills.<br />
-    • Working knowledge of Pantone color matching system.<br />
-    • Quick to learn.<br />
-    • Mac OSX.<br />
-    • Go get 'em attitude.</p>
+    <p>- Graphic design professional best practices: Quick keys, layering, grouping, bleeds, embedding, expanding graphics, etc.<br />
+    - Excellent time management.<br />
+    - Attention to detail and accuracy mandatory.<br />
+    - Adobe Illustrator & Photoshop.<br />
+    - Work in fast pace environment with tight deadlines.<br />
+    - Superior communication and interpersonal skills.<br />
+    - Working knowledge of Pantone color matching system.<br />
+    - Quick to learn.<br />
+    - Mac OSX.<br />
+    - Go get 'em attitude.</p>
     
     <p><strong>Additional Skills (preferred, but not required):</strong></p>
     
-    <p>• Experience working within 3D design software tools such as Lotta, V-Stitcher, Optitex.</p>
+    <p>- Experience working within 3D design software tools such as Lotta, V-Stitcher, Optitex.</p>
     
     <p><strong>****IMPORTANT****</strong><br />
     In order to ensure that your resume lands in the correct hands, be sure to include the title position <strong>"Jakroo Graphic Design Position"</strong> into the subject line of your email or in the body of your resume/cover letter.</p>
