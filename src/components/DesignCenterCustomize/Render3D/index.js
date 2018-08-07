@@ -1185,7 +1185,6 @@ class Render3D extends PureComponent {
           const isInside = isMouseOver(boundingBox, uv)
           if (isInside) {
             allDeactive = false
-            console.log(el, 'element')
             onSelectEl(el.id, el.get('type'))
             const left = uv.x * CANVAS_SIZE
             const top = (1 - uv.y) * CANVAS_SIZE

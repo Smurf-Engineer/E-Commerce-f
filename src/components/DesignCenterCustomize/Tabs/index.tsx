@@ -99,10 +99,6 @@ const Tabs = ({
   onAccessoryColorSelected,
   product
 }: Props) => {
-  console.log('---------------------------')
-  console.log(canvas)
-  console.log(selectedElement)
-  console.log('---------------------------')
   return (
     <Container>
       <AntdTabs defaultActiveKey="1">

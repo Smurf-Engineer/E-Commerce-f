@@ -212,18 +212,24 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             state: { src, style }
           } = undoStep
           const canvasObject: any = { id }
-          // tslint:disable-next-line:switch-default
           switch (canvasType) {
             case 'text':
               canvasObject.text = src
               canvasObject.textFormat = style
               break
             case 'path':
+              canvasObject.fill = style.fill || '#000000'
+              canvasObject.stroke = style.stroke || '#000000'
+              canvasObject.strokeWidth = style.strokeWidth || 0
               break
-            case 'image':
+            default:
+              // image only needs the id
               break
           }
-          const updatedCanvas = canvas.setIn([canvasType, id], canvasObject)
+          const updatedCanvas = canvas.setIn(
+            [canvasType, id],
+            fromJS(canvasObject)
+          )
 
           return state.merge({
             undoChanges: undoChanges.shift(),
@@ -232,10 +238,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             selectedElement: ''
           })
         }
-
         case Changes.Colors:
         default:
-          // colors
           const oldState = state.get(undoStep.type)
           const redoStep = { type: undoStep.type, state: oldState }
           return state.merge({
@@ -260,15 +264,31 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           const {
             state: { src, style }
           } = redoStep
-          const updatedCanvas = canvas.setIn([canvasType, id], {
-            id,
-            text: src,
-            textFormat: style
-          })
+          const canvasObject: any = { id }
+          switch (canvasType) {
+            case 'text':
+              canvasObject.text = src
+              canvasObject.textFormat = style
+              break
+            case 'path':
+              canvasObject.fill = style.fill || '#000000'
+              canvasObject.stroke = style.stroke || '#000000'
+              canvasObject.strokeWidth = style.strokeWidth || 0
+              break
+            default:
+              // image only needs the id
+              break
+          }
+          const updatedCanvas = canvas.setIn(
+            [canvasType, id],
+            fromJS(canvasObject)
+          )
+
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
-            canvas: updatedCanvas
+            canvas: updatedCanvas,
+            selectedElement: ''
           })
         case Changes.Delete:
           const canvass = state.get('canvas')
@@ -430,14 +450,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_ELEMENT_ACTION: {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
-      const selectedElement = state.get('selectedElement')
-      if (typeEl === 'text' && canvasElement) {
+      console.log('------canvasElement-------')
+
+      console.log(canvasElement)
+      console.log('--------------------------')
+      if (canvasElement && typeEl === 'text') {
+        if (canvasElement.id) {
+          return state.merge({
+            selectedElement: id,
+            textFormat: canvasElement.textFormat,
+            text: canvasElement.text
+          })
+        }
+        const canvasObject = canvasElement.toJS()
+        console.log(canvasObject, 'converted')
         return state.merge({
           selectedElement: id,
-          textFormat: canvasElement.textFormat,
-          text: canvasElement.text
+          textFormat: canvasObject.textFormat,
+          text: canvasObject.text
         })
       }
+
+      const selectedElement = state.get('selectedElement')
 
       if (!id && selectedElement) {
         return state.merge({ text: '', selectedElement: id })
