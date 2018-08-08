@@ -77,6 +77,7 @@
     "react-dom": "^16.2.0",
     "react-facebook-login": "^4.0.0",
     "react-google-login": "^3.0.4",
+    "react-intercom": "^1.0.14",
     "react-intl": "^2.4.0",
     "react-paypal-express-checkout-authorize": "^1.0.4",
     "react-rangeslider": "^2.2.0",

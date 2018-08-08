@@ -1,14 +1,13 @@
 /**
  * ClipArt Queries
  */
-import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-export const clipArtsQuery = graphql(gql`
-  query GetClipArts {
-    clipArts: getCliparts {
+export const clipArtsQuery = gql`
+  query GetClipArts($query: String) {
+    clipArts: getCliparts(query: $query) {
       id
       url
     }
   }
-`)
+`

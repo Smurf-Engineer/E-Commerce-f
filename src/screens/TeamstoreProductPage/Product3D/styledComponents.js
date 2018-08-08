@@ -26,7 +26,7 @@ export const Model = styled.div`
 
 export const Row = styled.div`
   display: flex;
-  align-items center;
+  align-items: center;
   position: absolute;
   top: 18px;
   left: 26px;

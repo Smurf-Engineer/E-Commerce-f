@@ -109,6 +109,7 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  genderId: number
   productTotal?: number
   unitPrice?: number
   sizeRange: ItemDetailType[]
@@ -121,6 +122,7 @@ export interface Product {
   binding?: ExtraFile
   zipper?: ExtraFile
   bibBrace?: ExtraFile
+  weight: number
 }
 
 export type DesignType = {
@@ -304,9 +306,11 @@ export interface Palette {
 }
 
 export interface UserType {
+  id: string
   name: string
   lastName: string
   token: string
+  email: string
 }
 
 export interface AntColumns {
@@ -750,6 +754,11 @@ export interface City {
 export interface ImageFile {
   id: number
   fileUrl: string
+  size: {
+    width: number
+    height: number
+  }
+  type: string
 }
 
 export type MessagePayload = {
@@ -770,4 +779,54 @@ export interface ClickParam {
   keyPath: Array<string>
   item: any
   domEvent: any
+}
+
+export interface Measure {
+  in: string[]
+  cm: string[]
+}
+
+export interface SizesTableType {
+  title?: string
+  headers: string[]
+  size?: string[]
+  waist?: Measure
+  chest?: Measure
+  inseam?: Measure
+  hips?: Measure
+  height?: Measure
+  bicep?: Measure
+  length?: Measure
+  thigh?: Measure
+  calf?: Measure
+  mens?: Measure
+  womens?: Measure
+  circumference?: Measure
+}
+
+export interface Chart {
+  title: string
+  tables: SizesTableType[]
+}
+
+export interface Change {
+  type: ChangeType
+  state: any
+}
+
+export type ChangeType =
+  | 'colors'
+  | 'add'
+  | 'delete'
+  | 'move'
+  | 'rotate'
+  | 'resize'
+  | 'duplicate'
+
+export type CanvasObjects = 'path' | 'text' | 'image'
+
+export type ConfigCanvasObj = {
+  src: string
+  style: any
+  position: any
 }

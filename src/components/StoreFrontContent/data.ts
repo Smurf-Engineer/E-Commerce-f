@@ -51,6 +51,7 @@ export const getSingleTeamStore = gql`
             shortDescription: short_description
             collections
             isTopProduct
+            weight
             genders {
               id
               name: gender

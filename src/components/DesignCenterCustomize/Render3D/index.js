@@ -8,6 +8,7 @@ import { FormattedMessage } from 'react-intl'
 // import Dropdown from 'antd/lib/dropdown'
 // import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import {
@@ -49,6 +50,10 @@ import {
   BINDING,
   BIB_BRACE
 } from '../../../constants'
+import {
+  Changes,
+  CanvasElements
+} from '../../../screens/DesignCenter/constants'
 import ModalFooter from '../../ModalFooter'
 import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
@@ -652,9 +657,45 @@ class Render3D extends PureComponent {
     }
   }
 
-  handleOnClickUndo = () => this.props.onUndoAction()
+  handleOnClickUndo = () => {
+    const { onUndoAction, undoChanges } = this.props
+    const changeToApply = undoChanges[0]
+    const {
+      type,
+      state: { id }
+    } = changeToApply
+    switch (type) {
+      case Changes.Add:
+        this.deleteElementById(id)
+        break
+      case Changes.Delete:
+        this.reAddCanvasElement(changeToApply)
+        break
+      default:
+        break
+    }
+    onUndoAction()
+  }
 
-  handleOnClickRedo = () => this.props.onRedoAction()
+  handleOnClickRedo = () => {
+    const { onRedoAction, redoChanges } = this.props
+    const changeToApply = redoChanges[0]
+    const {
+      type,
+      state: { id }
+    } = changeToApply
+    switch (type) {
+      case Changes.Add:
+        this.reAddCanvasElement(changeToApply)
+        break
+      case Changes.Delete:
+        this.deleteElementById(id)
+        break
+      default:
+        break
+    }
+    onRedoAction()
+  }
 
   handleOnOpenResetModal = () => {
     const { openResetDesignModalAction } = this.props
@@ -802,7 +843,7 @@ class Render3D extends PureComponent {
       const objects = this.canvasTexture.getObjects()
       if (!objects.length) {
         let element = canvasEl.type
-        if (canvasEl.type === 'path') {
+        if (canvasEl.type === CanvasElements.Path) {
           element = 'symbol'
         }
         const modal = Modal.info({
@@ -818,25 +859,60 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (base64, position = {}) => {
-    const { onApplyCanvasEl } = this.props
-    const id = shortid.generate()
-    fabric.Image.fromURL(base64, oImg => {
-      const imageEl = oImg.scale(1).set({
-        id,
-        hasRotatingPoint: false,
-        ...position
-      })
-      this.canvasTexture.add(imageEl)
-
-      const el = { id }
-      onApplyCanvasEl(el, 'image')
-      this.canvasTexture.setActiveObject(imageEl)
-      this.canvasTexture.renderAll()
-    })
+  reAddCanvasElement = canvasEl => {
+    const {
+      state: { id, type, style, src, position }
+    } = canvasEl
+    switch (type) {
+      case CanvasElements.Path:
+        this.applyClipArt(src, style, position, id)
+        break
+      case CanvasElements.Text:
+        this.applyText(src, style, position, id)
+        break
+      case CanvasElements.Image:
+        this.applyImage(src, position, id)
+        break
+    }
   }
 
-  applyText = (text, style, position = {}) => {
+  applyImage = (url, position = {}, idElement) => {
+    const {
+      onApplyCanvasEl,
+      currentStyle: { size }
+    } = this.props
+    let scaleFactor = 1
+    if (!!size) {
+      scaleFactor = CANVAS_SIZE / size
+    }
+    const id = idElement || shortid.generate()
+    fabric.util.loadImage(
+      url,
+      img => {
+        const imageEl = new fabric.Image(img, {
+          id,
+          hasRotatingPoint: false,
+          ...position
+        })
+        imageEl.scale(scaleFactor)
+        this.canvasTexture.add(imageEl)
+        const el = { id }
+        if (!idElement) {
+          onApplyCanvasEl(el, 'image', undefined, {
+            src: url,
+            style: undefined,
+            position
+          })
+          this.canvasTexture.setActiveObject(imageEl)
+        }
+        this.canvasTexture.renderAll()
+      },
+      undefined,
+      'Anonymous'
+    )
+  }
+
+  applyText = (text, style, position = {}, idElement) => {
     if (!this.canvasTexture || !text) {
       return
     }
@@ -845,21 +921,26 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
-    if (activeEl && activeEl.type === 'text') {
+    if (activeEl && activeEl.type === CanvasElements.Text && !idElement) {
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
+      const id = idElement || shortid.generate()
       txtEl = new fabric.Text(text, {
-        id: shortid.generate(),
+        id,
         hasRotatingPoint: false,
         fontSize: 80,
         snapAngle: 1,
         snapThreshold: 45,
+        scaleX: 1.0,
+        scaleY: 1.0,
         ...position,
         ...style
       })
       this.canvasTexture.add(txtEl)
-      this.canvasTexture.setActiveObject(txtEl)
+      if (!idElement) {
+        this.canvasTexture.setActiveObject(txtEl)
+      }
       this.canvasTexture.renderAll()
     }
 
@@ -868,42 +949,104 @@ class Render3D extends PureComponent {
       text,
       textFormat: style
     }
-    onApplyCanvasEl(el, 'text', !!activeEl)
+    if (!idElement) {
+      onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
+        src: text,
+        style,
+        position
+      })
+    }
   }
 
-  applyClipArt = (url, style, position = {}) => {
+  applyClipArt = (url, style = {}, position = {}, idElement) => {
     const activeEl = this.canvasTexture.getActiveObject()
-    if (activeEl && activeEl.type === 'path') {
+    if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
       activeEl.set({ ...style })
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
       fabric.loadSVGFromURL(url, (objects = [], options) => {
-        const id = shortid.generate()
+        const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects, options)
         shape.set({
           id,
           hasRotatingPoint: false,
-          ...position
+          ...position,
+          ...style
         })
         const el = {
           id,
           fill: '#000000',
           stroke: '#000000',
-          strokeWidth: 0
+          strokeWidth: 0,
+          ...style
         }
-        onApplyCanvasEl(el, 'path')
         this.canvasTexture.add(shape)
-        this.canvasTexture.setActiveObject(shape)
+        if (!idElement) {
+          onApplyCanvasEl(el, CanvasElements.Path, false, {
+            src: url,
+            style,
+            position
+          })
+          this.canvasTexture.setActiveObject(shape)
+        }
         this.canvasTexture.renderAll()
       })
     }
   }
 
   deleteElement = el => {
+    const { undoChanges } = this.props
+    const type = el.get('type')
+    const { id, left, top, scaleX, scaleY } = el
+    const canvasObject = {
+      position: { left, top, scaleX, scaleY }
+    }
+    switch (type) {
+      case CanvasElements.Text:
+        {
+          const { text, fill, fontFamily, stroke, strokeWidth } = el
+          canvasObject.src = text
+          canvasObject.style = {
+            fill,
+            fontFamily,
+            stroke,
+            strokeWidth
+          }
+        }
+        break
+      case CanvasElements.Path:
+        {
+          const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = el
+          const object = find(undoChanges, { type: Changes.Add, state: { id } })
+          canvasObject.src = object.state.src
+          canvasObject.style = {
+            fill,
+            stroke,
+            strokeWidth
+          }
+        }
+        break
+      case CanvasElements.Image:
+        {
+          const object = find(undoChanges, { type: Changes.Add, state: { id } })
+          canvasObject.src = object.state.src
+        }
+        break
+    }
     const { onRemoveEl } = this.props
-    onRemoveEl(el.id, el.get('type'))
+    onRemoveEl(id, type, canvasObject)
     this.canvasTexture.remove(el)
+  }
+
+  getElementById = id => {
+    const objects = this.canvasTexture.getObjects()
+    return find(objects, { id })
+  }
+
+  deleteElementById = id => {
+    const object = this.getElementById(id)
+    this.canvasTexture.remove(object)
   }
 
   duplicateElement = el => {
@@ -914,7 +1057,7 @@ class Render3D extends PureComponent {
     const id = shortid.generate()
     let canvasEl = {}
     switch (elementType) {
-      case 'text':
+      case CanvasElements.Text:
         {
           const text = el.get('text')
           const textFormat = {
@@ -926,11 +1069,11 @@ class Render3D extends PureComponent {
           canvasEl = { id, text, textFormat }
         }
         break
-      case 'image': {
+      case CanvasElements.Image: {
         canvasEl = { id }
         break
       }
-      case 'path': {
+      case CanvasElements.Path: {
         canvasEl = {
           id,
           fill: el.fill,
@@ -1000,15 +1143,14 @@ class Render3D extends PureComponent {
           document.getElementById('render-3d').style.cursor = 'default'
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
-
           switch (el.type) {
-            case 'text':
+            case CanvasElements.Text:
               this.applyText(el.text, el.style, { left, top })
               break
-            case 'image':
+            case CanvasElements.Image:
               this.applyImage(el.base64, { left, top })
               break
-            case 'path':
+            case CanvasElements.Path:
               this.applyClipArt(el.url, el.style, { left, top })
               break
             default:

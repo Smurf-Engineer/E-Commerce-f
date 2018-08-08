@@ -45,7 +45,10 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
-  SET_ACCESSORY_COLOR_ACTION
+  SET_ACCESSORY_COLOR_ACTION,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import {
   AnyAction,
@@ -53,6 +56,7 @@ import {
   TeamStoreItemtype,
   CanvasElement,
   SaveDesignType,
+  ConfigCanvasObj,
   Product,
   StitchingColor,
   AccesoryColor
@@ -214,12 +218,14 @@ export const setItemToAddAction = (
 export const setCanvasElement = (
   el: CanvasElement,
   typeEl: string,
-  update = false
+  update = false,
+  canvasObj: ConfigCanvasObj
 ): AnyAction => ({
   type: SET_CANVAS_ELEMENT_ACTION,
   el,
   typeEl,
-  update
+  update,
+  canvasObj
 })
 
 export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({
@@ -228,10 +234,15 @@ export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({
   typeEl
 })
 
-export const removeCanvasElement = (id: string, typeEl: string): AnyAction => ({
+export const removeCanvasElement = (
+  id: string,
+  typeEl: string,
+  canvasObj: ConfigCanvasObj
+): AnyAction => ({
   type: REMOVE_CANVAS_ELEMENT_ACTION,
   id,
-  typeEl
+  typeEl,
+  canvasObj
 })
 
 export const setTextFormatAction = (
@@ -321,8 +332,23 @@ export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   stitchingColor
 })
 
+export const uploadFileSuccessAction = (url: string) => ({
+  type: UPLOAD_FILE_ACTION_SUCCESS,
+  url
+})
+
+export const setUploadingAction = (isUploading: boolean) => ({
+  type: SET_UPLOADING_FILE_ACTION,
+  isUploading
+})
+
 export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
   id
+})
+
+export const setSearchClipParamAction = (param: string) => ({
+  type: SET_SEARCH_CLIPARTPARAM,
+  param
 })

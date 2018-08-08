@@ -14,12 +14,18 @@ import {
   ArtFormat,
   SaveDesignType,
   Style,
+  Change,
   Product,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  ConfigCanvasObj,
+  ImageFile
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
-import { DesignTabs } from '../../screens/DesignCenter/constants'
+import {
+  DesignTabs,
+  CanvasElements
+} from '../../screens/DesignCenter/constants'
 
 interface Props {
   colorBlock: number
@@ -49,7 +55,13 @@ interface Props {
   customize3dMounted: boolean
   design: SaveDesignType
   loadingData?: boolean
+  undoChanges: Change[]
+  redoChanges: Change[]
   product?: Product
+  images: ImageFile[]
+  uploadingFile: boolean
+  onUploadFile: (file: any) => void
+  searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -71,7 +83,7 @@ interface Props {
     typeEl: string,
     update?: boolean
   ) => void
-  onRemoveEl: (id: string, typeEl: string) => void
+  onRemoveEl: (id: string, typeEl: string, canvasObj: ConfigCanvasObj) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
@@ -80,6 +92,7 @@ interface Props {
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -133,12 +146,19 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectArtFormat,
       onUnmountTab,
       loadingData,
+      undoChanges,
+      redoChanges,
       product,
       stitchingColor,
       bindingColor,
       zipperColor,
       bibColor,
-      onAccessoryColorSelected
+      onAccessoryColorSelected,
+      onUploadFile,
+      images,
+      uploadingFile,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -181,7 +201,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             zipperColor,
             bibColor,
             onAccessoryColorSelected,
-            product
+            product,
+            onUploadFile,
+            images,
+            uploadingFile,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
@@ -217,6 +242,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               openResetDesignModalAction,
               setCustomize3dMountedAction,
               onUnmountTab,
+              undoChanges,
+              redoChanges,
               product,
               stitchingColor,
               bindingColor,
@@ -236,7 +263,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (selectedElement) {
       this.render3D.applyText(text, style)
     } else {
-      this.render3D.applyCanvasEl({ text, style, type: 'text' })
+      this.render3D.applyCanvasEl({ text, style, type: CanvasElements.Text })
     }
   }
 
@@ -245,7 +272,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (selectedElement) {
       this.render3D.applyImage(base64)
     } else {
-      this.render3D.applyCanvasEl({ base64, type: 'image' })
+      this.render3D.applyCanvasEl({ base64, type: CanvasElements.Image })
     }
   }
 
@@ -254,7 +281,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (selectedElement) {
       this.render3D.applyClipArt(url, style)
     } else {
-      this.render3D.applyCanvasEl({ url, style, type: 'path' })
+      this.render3D.applyCanvasEl({ url, style, type: CanvasElements.Path })
     }
   }
 }
