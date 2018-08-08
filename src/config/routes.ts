@@ -16,10 +16,11 @@ import OrderPlaced from '../screens/OrderPlaced'
 import Checkout from '../screens/Checkout'
 import DesignerTool from '../screens/DesignerTool'
 import ShoppingCartPage from '../screens/ShoppingCartPage'
-import StoreFront from '../screens/StoreFront'
-import CreateStore from '../screens/CreateStore'
-import SearchTeamstores from '../screens/SearchTeamstores'
-import TeamstoreProductPage from '../screens/TeamstoreProductPage'
+// TODO: hide teamstores for phase I
+// import StoreFront from '../screens/StoreFront'
+// import CreateStore from '../screens/CreateStore'
+// import SearchTeamstores from '../screens/SearchTeamstores'
+// import TeamstoreProductPage from '../screens/TeamstoreProductPage'
 import Account from '../screens/Account'
 import SubscriptionTest from '../screens/SubscriptionTest'
 import FitWidget from '../screens/FitWidget'
@@ -117,26 +118,27 @@ const routes = [
     name: 'shoppingCartPage',
     component: ShoppingCartPage
   },
-  {
-    path: '/store-front',
-    name: 'storeFront',
-    component: StoreFront
-  },
-  {
-    path: '/create-store',
-    name: 'createStore',
-    component: CreateStore
-  },
-  {
-    path: '/search-teamstores',
-    name: 'searchTeamstores',
-    component: SearchTeamstores
-  },
-  {
-    path: '/teamstore-product-page',
-    name: 'teamstoreProductPage',
-    component: TeamstoreProductPage
-  },
+  // TODO: hide teamstores for phase I
+  // {
+  //   path: '/store-front',
+  //   name: 'storeFront',
+  //   component: StoreFront
+  // },
+  // {
+  //   path: '/create-store',
+  //   name: 'createStore',
+  //   component: CreateStore
+  // },
+  // {
+  //   path: '/search-teamstores',
+  //   name: 'searchTeamstores',
+  //   component: SearchTeamstores
+  // },
+  // {
+  //   path: '/teamstore-product-page',
+  //   name: 'teamstoreProductPage',
+  //   component: TeamstoreProductPage
+  // },
   {
     path: '/account',
     name: 'account',
