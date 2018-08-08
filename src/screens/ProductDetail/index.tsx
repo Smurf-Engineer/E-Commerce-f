@@ -127,6 +127,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const { showDetails, showSpecs } = this.state
     const productId = get(product, 'id')
     const name = get(product, 'name', '')
+    const code = get(product, 'code', '')
     const type = get(product, 'type', '')
     const description = get(product, 'description', '')
     const intendedUse = get(product, 'intendedUse', '')
@@ -343,6 +344,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   <TitleSubtitleContainer>
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+                    {isRetail &&
+                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>}
                   </TitleSubtitleContainer>
                   <CompareButton
                     show={validateShowCompare}
