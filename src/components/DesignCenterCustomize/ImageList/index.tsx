@@ -27,10 +27,9 @@ class ImageList extends React.PureComponent<Props, {}> {
 
   render() {
     const { images } = this.props
+    // TODO: WIP
     const imageList = images.map(({ fileUrl, size }, index) => {
       const completeName = fileUrl.split('/').pop()
-      const name = completeName && completeName.split('-').pop()
-      // TODO: WIP
       let width = 0
       let height = 0
       if (size) {
@@ -41,7 +40,7 @@ class ImageList extends React.PureComponent<Props, {}> {
         <Row key={index}>
           <Image src={fileUrl} onClick={this.handleOnClickImage(fileUrl)} />
           <Info>
-            <Name>{completeName || name}</Name>
+            <Name>{completeName}</Name>
             <Footer>
               <div>
                 <Size>Max</Size>
