@@ -69,6 +69,10 @@ export const Arrows = styled.div`
   width: 85%;
   padding: 0;
   align-self: center;
+
+  @media (min-width: 320px) and (max-width: 425px) {
+    display: none;
+  }
 `
 export const ArrowRight = styled.img`
   height: 22.09px;
