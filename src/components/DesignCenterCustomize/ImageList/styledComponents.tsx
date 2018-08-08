@@ -71,6 +71,7 @@ export const Delete = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+  cursor: pointer;
 `
 
 export const Footer = styled.div`

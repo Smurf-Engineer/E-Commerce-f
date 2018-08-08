@@ -27,9 +27,16 @@ class ImageList extends React.PureComponent<Props, {}> {
 
   render() {
     const { images } = this.props
-    const imageList = images.map(({ fileUrl }, index) => {
+    const imageList = images.map(({ fileUrl, size }, index) => {
       const completeName = fileUrl.split('/').pop()
       const name = completeName && completeName.split('-').pop()
+      // TODO: WIP
+      let width = 0
+      let height = 0
+      if (size) {
+        width = Math.round(0.02645833 * size.width)
+        height = Math.round(0.02645833 * size.height)
+      }
       return (
         <Row key={index}>
           <Image src={fileUrl} onClick={this.handleOnClickImage(fileUrl)} />
@@ -38,7 +45,7 @@ class ImageList extends React.PureComponent<Props, {}> {
             <Footer>
               <div>
                 <Size>Max</Size>
-                <Size>10 in x 10 in</Size>
+                <Size>{`${width} cm x ${height} cm`}</Size>
               </div>
               <Delete>Delete</Delete>
             </Footer>

@@ -47,6 +47,7 @@ interface Props {
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
   images: ImageFile[]
+  uploadingFile: boolean
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -102,7 +103,8 @@ const Tabs = ({
   onAccessoryColorSelected,
   product,
   onUploadFile,
-  images
+  images,
+  uploadingFile
 }: Props) => {
   return (
     <Container>
@@ -162,7 +164,13 @@ const Tabs = ({
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
           <UploadTab
-            {...{ formatMessage, onApplyImage, onUploadFile, images }}
+            {...{
+              formatMessage,
+              onApplyImage,
+              onUploadFile,
+              images,
+              uploadingFile
+            }}
           />
         </TabPane>
       </AntdTabs>

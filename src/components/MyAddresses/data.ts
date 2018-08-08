@@ -26,7 +26,7 @@ export const addresesQuery = gql`
 export const addAddressMutation = graphql(
   gql`
     mutation createAddress($address: UserAddressInput!) {
-      createUserAddress(address: $address) {
+      userAddress: createUserAddress(address: $address) {
         id
         firstName: first_name
         lastName: last_name

@@ -45,7 +45,6 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
-  SET_ACCESSORY_COLOR_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION
 } from './constants'
@@ -55,9 +54,9 @@ import {
   TeamStoreItemtype,
   CanvasElement,
   SaveDesignType,
+  ConfigCanvasObj,
   Product,
-  StitchingColor,
-  AccesoryColor
+  StitchingColor
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -216,12 +215,14 @@ export const setItemToAddAction = (
 export const setCanvasElement = (
   el: CanvasElement,
   typeEl: string,
-  update = false
+  update = false,
+  canvasObj: ConfigCanvasObj
 ): AnyAction => ({
   type: SET_CANVAS_ELEMENT_ACTION,
   el,
   typeEl,
-  update
+  update,
+  canvasObj
 })
 
 export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({

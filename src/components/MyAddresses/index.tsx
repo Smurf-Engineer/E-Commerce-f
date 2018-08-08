@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import * as MyAddressesActions from './actions'
 import MyAddressesList from '../../components/MyAddressesList'
@@ -288,15 +289,20 @@ class MyAddresses extends React.PureComponent<Props, {}> {
     } else {
       await addNewAddress({
         variables: { address },
-        refetchQueries: [
-          {
+        update: (store: any, dataAddresses: AddressType) => {
+          const data = store.readQuery({
             query: GetAddressListQuery,
-            variables: { limit: 10 },
-            options: {
-              fetchPolicy: 'network-only'
-            }
-          }
-        ]
+            variables: { limit: 10, offset: 0 }
+          })
+          const addressesList = get(data, 'userAddresses.addresses')
+          const newAddres = get(dataAddresses, 'data.userAddress')
+          addressesList.push(newAddres)
+          store.writeQuery({
+            query: GetAddressListQuery,
+            variables: { limit: 10, offset: 0 },
+            data
+          })
+        }
       })
     }
   }

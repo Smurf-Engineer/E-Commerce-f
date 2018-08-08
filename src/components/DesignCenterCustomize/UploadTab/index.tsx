@@ -10,7 +10,7 @@ import last from 'lodash/last'
 import withLoading from '../../WithLoading'
 import { compose, graphql } from 'react-apollo'
 import { userfilesQuery } from './data'
-import Dragger from '../../TeamDragger'
+import Dragger from '../../DraggerWithLoading'
 import ImageList from '../ImageList'
 import messages from './messages'
 import { ImageFile, QueryProps } from '../../../types/common'
@@ -42,8 +42,9 @@ const validFileExtensions = [
 ]
 
 interface Props {
-  images: ImageFile[]
   data: Data
+  images: ImageFile[]
+  uploadingFile: boolean
   onApplyImage: (base64: string) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -57,10 +58,13 @@ class UploadTab extends React.PureComponent<Props, State> {
   render() {
     const {
       images: imagesRedux,
-      data: { images: imagesData }
+      data: { images: imagesData },
+      uploadingFile
     } = this.props
     const images = [...imagesRedux, ...imagesData]
-    const dragger = <Dragger onSelectImage={this.beforeUpload} />
+    const dragger = (
+      <Dragger loading={uploadingFile} onSelectImage={this.beforeUpload} />
+    )
     return (
       <Container>
         <Header>

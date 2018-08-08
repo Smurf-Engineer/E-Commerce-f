@@ -52,6 +52,8 @@ import {
   SaveDesignType,
   DesignType,
   Style,
+  Change,
+  ConfigCanvasObj,
   StitchingColor,
   AccesoryColor,
   ImageFile
@@ -72,11 +74,6 @@ interface DataProduct extends QueryProps {
 
 interface DataDesign extends QueryProps {
   designData?: DesignType
-}
-
-interface Change {
-  type: string
-  state: any
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -130,6 +127,7 @@ interface Props extends RouteComponentProps<any> {
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
   images: ImageFile[]
+  uploadingFile: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -162,7 +160,8 @@ interface Props extends RouteComponentProps<any> {
   setCanvasElement: (
     text: CanvasElement,
     typeEl: string,
-    update?: boolean
+    update?: boolean,
+    canvasObj?: ConfigCanvasObj
   ) => void
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
@@ -407,7 +406,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setStitchingColorAction,
       setAccessoryColorAction,
       uploadFileAction,
-      images
+      images,
+      uploadingFile
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -544,13 +544,16 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setCustomize3dMountedAction,
                 loadingData,
                 currentStyle,
+                undoChanges,
+                redoChanges,
                 product,
                 stitchingColor,
                 setStitchingColorAction,
                 bindingColor,
                 zipperColor,
                 bibColor,
-                images
+                images,
+                uploadingFile
               }}
               onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
