@@ -45,7 +45,8 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
-  WHITE
+  WHITE,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -112,7 +113,8 @@ export const initialState = fromJS({
   openOutWithoutSaveModal: false,
   routeToGoWithoutSave: '',
   customize3dMounted: false,
-  svgOutputUrl: ''
+  svgOutputUrl: '',
+  searchClipParam: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -325,10 +327,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
 
       if (!id && selectedElement) {
-        return state.merge({ text: '', selectedElement: id })
+        return state.merge({
+          text: '',
+          selectedElement: id,
+          searchClipParam: ''
+        })
       }
 
-      return state.set('selectedElement', id)
+      return state.merge({ selectedElement: id, searchClipParam: '' })
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {
       const canvas = state.get('canvas')
@@ -398,6 +404,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('customize3dMounted', action.mounted)
     case SET_CANVAS_JSON_ACTION:
       return state.setIn(['design', 'canvasJson'], action.canvas)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     default:
       return state
   }

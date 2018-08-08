@@ -52,6 +52,8 @@ export const SET_DESIGN_HAS_CHANGES = `${namespace}/SET_DESIGN_HAS_CHANGES`
 export const SET_STITCHING_COLOR_ACTION = `${namespace}/SET_STITCHING_COLOR_ACTION`
 export const SET_ACCESSORY_COLOR_ACTION = `${namespace}/SET_ACCESSORY_COLOR_ACTION`
 
+export const SET_SEARCH_CLIPARTPARAM = `${namespace}/SET_SEARCH_CLIPARTPARAM`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,

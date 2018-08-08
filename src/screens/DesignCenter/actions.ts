@@ -45,7 +45,8 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
-  SET_ACCESSORY_COLOR_ACTION
+  SET_ACCESSORY_COLOR_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import {
   AnyAction,
@@ -325,4 +326,9 @@ export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
   id
+})
+
+export const setSearchClipParamAction = (param: string) => ({
+  type: SET_SEARCH_CLIPARTPARAM,
+  param
 })
