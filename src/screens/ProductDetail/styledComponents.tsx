@@ -256,14 +256,19 @@ export const AddToCartButton = styled(Button)`
     border-color: #4a90e2;
   }
 `
-export const JakrooWidgetsTitle = styled.div`
-  height: 25px;
+export const ReviewsHeader = styled.div`
+  align-items: center;
+  background-color: #f7f7f7;
   color: #5f6062;
+  display: flex;
   font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
+  height: 38px;
+  letter-spacing: 0.23px;
   line-height: 25px;
-  margin-left: 34px;
+  margin-bottom: 15px;
+  padding-left: 34px;
 `
 
 export const YotpoImageSlider = styled.div``

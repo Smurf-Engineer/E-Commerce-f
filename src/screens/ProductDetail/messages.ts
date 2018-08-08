@@ -65,9 +65,9 @@ export default defineMessages({
     id: 'screens.ProductDetail.addToCartButtonLabel',
     defaultMessage: 'Add to Cart'
   },
-  jakrooWidgetTitle: {
-    id: 'screens.ProductDetail.jakrooWidgetTitle',
-    defaultMessage: 'Inspiration from our community. #Jakroo'
+  reviews: {
+    id: 'screens.ProductDetail.reviews',
+    defaultMessage: 'Reviews'
   },
   downloadLabel: {
     id: 'screens.ProductDetail.downloadLabel',

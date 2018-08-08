@@ -1083,8 +1083,7 @@
   "screens.ProductDetail.fitLabel": "Fit",
   "screens.ProductDetail.getFittedLabel": "Get fitted",
   "screens.ProductDetail.addToCartButtonLabel": "Add to Cart",
-  "screens.ProductDetail.jakrooWidgetTitle":
-    "Inspiration from our community. #Jakroo",
+  "screens.ProductDetail.reviews": "Reviews",
   "screens.ProductDetail.downloadLabel": "Download Template",
   "screens.ProductDetail.femaleGenderLabel": "Available for Women",
   "screens.ProductDetail.maleGenderLabel": "Available for Men",

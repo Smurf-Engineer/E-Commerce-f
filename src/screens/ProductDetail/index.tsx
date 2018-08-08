@@ -36,7 +36,7 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
-  JakrooWidgetsTitle,
+  ReviewsHeader,
   Downloadtemplate,
   DownloadTemplateContainer,
   AvailableLabel,
@@ -382,9 +382,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          <JakrooWidgetsTitle>
-            <FormattedMessage {...messages.jakrooWidgetTitle} />
-          </JakrooWidgetsTitle>
+          <ReviewsHeader>
+            <FormattedMessage {...messages.reviews} />
+          </ReviewsHeader>
           <YotpoReviews {...{ yotpoId }} />
         </Container>
       </Layout>
