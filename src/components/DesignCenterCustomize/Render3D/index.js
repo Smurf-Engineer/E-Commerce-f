@@ -40,7 +40,8 @@ import {
   CANVAS_SIZE,
   BIB_BRACE_NAME,
   ZIPPER_NAME,
-  BINDING_NAME
+  BINDING_NAME,
+  CHANGE_ACTIONS
 } from './config'
 import {
   MESH,
@@ -83,8 +84,8 @@ class Render3D extends PureComponent {
     progress: 0,
     objectChildCount: 0,
     canvasEl: null,
-    oldScaleX: null,
-    oldScaleY: null
+    oldScale: { oldScaleX: null, oldScaleY: null },
+    oldPosition: { oldLeft: null, oldTop: null }
   }
 
   dragComponent = null
@@ -676,6 +677,8 @@ class Render3D extends PureComponent {
       case Changes.Resize:
         this.resizeCanvasElement(changeToApply)
         break
+      case Changes.Drag:
+        this.dragCanvasElement(changeToApply)
       default:
         break
     }
@@ -698,6 +701,8 @@ class Render3D extends PureComponent {
       case Changes.Resize:
         this.resizeCanvasElement(changeToApply, true)
         break
+      case Changes.Drag:
+        this.dragCanvasElement(changeToApply, true)
         break
       default:
         break
@@ -721,6 +726,28 @@ class Render3D extends PureComponent {
         .set({
           scaleX: scaleX > 0 ? scaleX : 0,
           scaleY: scaleY > 0 ? scaleY : 0
+        })
+        .setCoords()
+      this.canvasTexture.renderAll()
+    }
+  }
+
+  dragCanvasElement = (canvasElement, newPosition = false) => {
+    const {
+      state: { id, oldLeft, oldTop, left: newLeft, top: newTop }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let left = oldLeft
+      let top = oldTop
+      if (newPosition) {
+        left = newLeft
+        top = newTop
+      }
+      element
+        .set({
+          left,
+          top
         })
         .setCoords()
       this.canvasTexture.renderAll()
@@ -1137,19 +1164,42 @@ class Render3D extends PureComponent {
 
     const action = this.dragComponent && this.dragComponent.action
 
-    if (action === SCALE_ACTION) {
+    if (CHANGE_ACTIONS.includes(action)) {
       const activeEl = this.canvasTexture.getActiveObject()
-      const { scaleX, scaleY, id } = activeEl
-      const { oldScaleX = 1, oldScaleY = 1 } = this.state
-      if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
-        const { onCanvasElementResized } = this.props
-        onCanvasElementResized({
-          id,
-          oldScaleX,
-          oldScaleY,
-          scaleX,
-          scaleY
-        })
+      const { id } = activeEl
+      switch (action) {
+        case SCALE_ACTION:
+          const { scaleX, scaleY } = activeEl
+          const {
+            oldScale: { oldScaleX = 1, oldScaleY = 1 }
+          } = this.state
+          if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
+            const { onCanvasElementResized } = this.props
+            onCanvasElementResized({
+              id,
+              oldScaleX,
+              oldScaleY,
+              scaleX,
+              scaleY
+            })
+          }
+          break
+        case DRAG_ACTION:
+          const { left, top } = activeEl
+          const {
+            oldPosition: { oldLeft, oldTop }
+          } = this.state
+          if (left !== oldLeft || top !== oldTop) {
+            const { onCanvasElementDragged } = this.props
+            onCanvasElementDragged({
+              id,
+              oldLeft,
+              oldTop,
+              left,
+              top
+            })
+          }
+          break
       }
     }
 
@@ -1222,8 +1272,10 @@ class Render3D extends PureComponent {
                 this.setLayerElement(activeEl)
                 break
               case SCALE_ACTION: {
-                const { scaleX, scaleY } = activeEl
-                this.setState({ oldScaleX: scaleX, oldScaleY: scaleY })
+                const { scaleX: oldScaleX, scaleY: oldScaleY } = activeEl
+                this.setState({
+                  oldScale: { oldScaleX, oldScaleY }
+                })
                 this.controls.enabled = false
                 this.dragComponent = { action: SCALE_ACTION }
                 break
@@ -1268,6 +1320,10 @@ class Render3D extends PureComponent {
               differenceY,
               action: DRAG_ACTION
             }
+            const { left: oldLeft, top: oldTop } = el
+            this.setState({
+              oldPosition: { oldLeft, oldTop }
+            })
             this.controls.enabled = false
             this.dragComponent = dragComponent
             this.canvasTexture.setActiveObject(el)

@@ -49,6 +49,7 @@ import {
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
+  CANVAS_ELEMENT_DRAGGED_ACTION,
   WHITE,
   Changes,
   CanvasElements
@@ -224,6 +225,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Resize:
+        case Changes.Drag:
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
@@ -267,6 +269,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             canvas: updatedCanvass
           })
         case Changes.Resize:
+        case Changes.Drag:
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
@@ -518,6 +521,17 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const lastStep = { type: Changes.Resize, state: { ...element } }
+
+      return state.merge({
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
+    case CANVAS_ELEMENT_DRAGGED_ACTION: {
+      const { element } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = { type: Changes.Drag, state: { ...element } }
 
       return state.merge({
         undoChanges: undoChanges.unshift(lastStep),

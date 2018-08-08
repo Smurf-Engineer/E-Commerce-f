@@ -20,7 +20,8 @@ import {
   AccesoryColor,
   ConfigCanvasObj,
   ImageFile,
-  CanvasResized
+  CanvasResized,
+  CanvasDragged
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -95,6 +96,7 @@ interface Props {
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResized: (element: CanvasResized) => void
+  onCanvasElementDragged: (element: CanvasDragged) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -161,7 +163,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       uploadingFile,
       searchClipParam,
       setSearchClipParamAction,
-      onCanvasElementResized
+      onCanvasElementResized,
+      onCanvasElementDragged
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -252,7 +255,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               bindingColor,
               zipperColor,
               bibColor,
-              onCanvasElementResized
+              onCanvasElementResized,
+              onCanvasElementDragged
             }}
           />
         ) : (

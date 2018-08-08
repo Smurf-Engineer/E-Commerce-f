@@ -838,3 +838,11 @@ export type CanvasResized = {
   scaleX: number
   scaleY: number
 }
+
+export type CanvasDragged = {
+  id: string
+  oldLeft: number
+  oldRight: number
+  left: number
+  top: number
+}

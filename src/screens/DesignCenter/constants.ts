@@ -72,7 +72,7 @@ export enum Changes {
   Colors = 'colors',
   Add = 'add',
   Delete = 'delete',
-  Move = 'move',
+  Drag = 'drag',
   Rotate = 'rotate',
   Resize = 'resize',
   Duplicate = 'duplicate'
