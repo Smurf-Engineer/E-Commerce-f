@@ -41,8 +41,8 @@ export default defineMessages({
     id: 'components.designCenterCustomize.SelectColors.zipper',
     defaultMessage: 'Zipper'
   },
-  bidColor: {
-    id: 'components.designCenterCustomize.SelectColors.bidColor',
-    defaultMessage: 'Bid brace color'
+  bibColor: {
+    id: 'components.designCenterCustomize.SelectColors.bibColor',
+    defaultMessage: 'Bib brace color'
   }
 })

@@ -45,7 +45,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -305,9 +305,11 @@ export interface Palette {
 }
 
 export interface UserType {
+  id: string
   name: string
   lastName: string
   token: string
+  email: string
 }
 
 export interface AntColumns {
@@ -464,7 +466,7 @@ export interface OrderDetailsInfo {
   billingCity: string
   billingZipCode: string
   shippingTax: number
-  netsuit: NetsuiteObject
+  netsuit?: NetsuiteObject
   payment: PaymentCharges
   cart: CartItems[]
   status: string
@@ -772,4 +774,24 @@ export interface ClickParam {
   keyPath: Array<string>
   item: any
   domEvent: any
+}
+
+export interface Change {
+  type: ChangeType
+  state: any
+}
+
+export type ChangeType =
+  | 'colors'
+  | 'add'
+  | 'delete'
+  | 'move'
+  | 'rotate'
+  | 'resize'
+  | 'duplicate'
+
+export type ConfigCanvasObj = {
+  src: string
+  style: any
+  position: any
 }

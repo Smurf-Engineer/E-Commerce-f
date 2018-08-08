@@ -33,7 +33,7 @@ export const getOrderQuery = gql`
       netsuit: netsuit_order {
         orderStatus {
           internalId
-          orderDate
+          deliveryDate: orderDate
           orderStatus
           fulfillments {
             date
@@ -91,10 +91,6 @@ export const getOrderQuery = gql`
             back: back_image
             left: left_image
             right: right_image
-          }
-          priceRange {
-            quantity
-            price
           }
         }
         itemDetails {

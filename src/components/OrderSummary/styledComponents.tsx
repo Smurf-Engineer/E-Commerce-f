@@ -40,9 +40,10 @@ export const SummaryTitle = styled.div`
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
+  height: 25px;
   letter-spacing: 0.11px;
   line-height: 22px;
-  margin-bottom: 20px;
+  margin-bottom: 25px;
 `
 
 export const Divider = styled.div`

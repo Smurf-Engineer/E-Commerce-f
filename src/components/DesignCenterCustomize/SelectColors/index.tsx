@@ -21,7 +21,11 @@ interface Props {
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
+  hasStitching: boolean
+  hasZipper: boolean
+  hasBinding: boolean
+  hasBibBrace: boolean
   goToBaseColors: () => void
   goToStitching: () => void
   showContent: boolean
@@ -43,8 +47,12 @@ class SelectColors extends React.PureComponent<Props, {}> {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
-      onAccessoryColorSelected = () => {}
+      bibColor,
+      onAccessoryColorSelected = () => {},
+      hasStitching,
+      hasZipper,
+      hasBinding,
+      hasBibBrace
     } = this.props
     if (!showContent) {
       return null
@@ -68,13 +76,13 @@ class SelectColors extends React.PureComponent<Props, {}> {
           <ColorButtons>{colorButtons}</ColorButtons>
         </BaseColors>
         <Divider />
-        {stitchingColor && (
+        {hasStitching && (
           <AccessoryColor
             name={formatMessage(messages.stitching)}
             {...{ goToStitching, stitchingColor }}
           />
         )}
-        {bindingColor && (
+        {hasBinding && (
           <AccessoryColor
             id="bindingColor"
             colorSelected={bindingColor}
@@ -82,7 +90,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
-        {zipperColor && (
+        {hasZipper && (
           <AccessoryColor
             id="zipperColor"
             colorSelected={zipperColor}
@@ -90,11 +98,11 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
-        {bidColor && (
+        {hasBibBrace && (
           <AccessoryColor
-            id="bidColor"
-            colorSelected={bidColor}
-            name={formatMessage(messages.bidColor)}
+            id="bibColor"
+            colorSelected={bibColor}
+            name={formatMessage(messages.bibColor)}
             {...{ onAccessoryColorSelected }}
           />
         )}

@@ -111,7 +111,7 @@ class MyCards extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
 
-    if (!!cards.length || !showCardForm) {
+    if ((cards && !!cards.length) || !showCardForm) {
       const defaultCard = find(cards, { id: idDefaultCard })
 
       showCardFormAction(false, defaultCard)
