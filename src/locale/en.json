@@ -1060,6 +1060,7 @@
   "screens.CustomProductDetail.intendedUse": "INTENDED USE",
   "screens.CustomProductDetail.temperatures": "TEMPERATURE RANGE",
   "screens.CustomProductDetail.materials": "MATERIALS",
+  "screens.CustomProductDetail.standard": "Standard",
 
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage":

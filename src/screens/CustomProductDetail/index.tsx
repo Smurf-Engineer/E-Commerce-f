@@ -192,7 +192,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         selected={1 === selectedFit.id}
         onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
       >
-        {'Standard'}
+        {formatMessage(messages.standard)}
       </SectionButton>
     )
 

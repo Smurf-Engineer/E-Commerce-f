@@ -56,5 +56,9 @@ export default defineMessages({
   materials: {
     id: 'screens.CustomProductDetail.materials',
     defaultMessage: 'MATERIALS'
+  },
+  standard: {
+    id: 'screens.CustomProductDetail.standard',
+    defaultMessage: 'Standard'
   }
 })
