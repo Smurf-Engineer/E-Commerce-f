@@ -1183,13 +1183,8 @@ class Render3D extends PureComponent {
             case CanvasElements.Text:
               this.applyText(el.text, el.style, { left, top })
               break
-<<<<<<< HEAD
-            case 'image':
-              this.applyImage(el.file, { left, top })
-=======
             case CanvasElements.Image:
-              this.applyImage(el.base64, { left, top })
->>>>>>> d54eaf4226f23fd07782a7812114075a01061e02
+              this.applyImage(el.file, { left, top })
               break
             case CanvasElements.Path:
               this.applyClipArt(el.url, el.style, { left, top })
@@ -1409,7 +1404,7 @@ class Render3D extends PureComponent {
     if (!!this.canvasTexture) {
       const activeEl = this.canvasTexture.getActiveObject()
       // TODO: change string to enum
-      if (!!activeEl && activeEl.type === 'image') {
+      if (!!activeEl && activeEl.type === CanvasElements.Image) {
         console.log('------------------------------------')
         console.log(activeEl)
         console.log('------------------------------------')
