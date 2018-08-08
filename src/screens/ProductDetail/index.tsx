@@ -94,7 +94,7 @@ interface Props extends RouteComponentProps<any> {
   itemToAddCart: any
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
-  setSelectedGenderAction: (id: number) => void
+  setSelectedGenderAction: (selected: SelectedType) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
@@ -118,7 +118,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       history,
       // showBuyNowSection,
       selectedSize,
-      // selectedGender,
+      selectedGender,
       selectedFit,
       openFitInfo,
       setLoadingModel,
@@ -231,6 +231,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       )
     }
 
+    const availableGenders = genders.map(
+      ({ id, name: genderName }: SelectedType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedGender.id}
+            large={true}
+            onClick={this.handleSelectedGender({ id, name: genderName })}
+          >
+            {genderName}
+          </SectionButton>
+        </div>
+      )
+    )
+
     const availableSizes = sizeRange.map(
       ({ id, name: sizeName }: SelectedType, index: number) => (
         <div key={index}>
@@ -255,6 +270,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <SectionButton
                   id={id.toString()}
                   selected={id === selectedFit.id}
+                  large={true}
                   onClick={this.handleSelectedFit({ id, name: fitName })}
                 >
                   {fitName}
@@ -272,6 +288,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           </SectionButton>
         )
     }
+
+    const gendersSection = (
+      <SectionRow>
+        <SectionTitleContainer>
+          <SectionTitle>{formatMessage(messages.genderLabel)}</SectionTitle>
+        </SectionTitleContainer>
+        <SectionButtonsContainer>{availableGenders}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
     const colorsSection = (
       <SectionRow>
         <SectionTitle>{formatMessage(messages.ColorsLabel)}</SectionTitle>
@@ -311,6 +337,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const collectionSelection = (
       <BuyNowOptions>
+        {gendersSection}
         {colorsSection}
         {sizeSection}
         {fitSection}
@@ -352,6 +379,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
+                    {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {isRetail &&
@@ -406,12 +434,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     showBuyNowOptionsAction(!showBuyNowSection)
   }
 
-  handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedGender = (gender: SelectedType) => () => {
     const { setSelectedGenderAction } = this.props
-    const {
-      currentTarget: { id }
-    } = evt
-    setSelectedGenderAction(parseInt(id, 10))
+    setSelectedGenderAction(gender)
   }
 
   handleSelectedSize = (size: SelectedType) => () => {

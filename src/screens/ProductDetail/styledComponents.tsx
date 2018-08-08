@@ -6,10 +6,6 @@ import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
 
-interface ButtonProps {
-  selected: boolean
-}
-
 export const Container = styled.div`
   background-color: #fff;
 `
@@ -182,15 +178,25 @@ export const SectionTitle = styled.div`
 export const SectionTitleContainer = styled.div`
   display: flex;
 `
+
+interface ButtonProps {
+  selected: boolean
+  large?: boolean
+}
+
 export const SectionButton = styled.div`
-  height: 50px;
-  padding: 14px;
-  margin-right: 14px;
-  border: 0.5px solid
-    ${({ selected }: ButtonProps) => (selected ? 'red' : '#dcdcdc')};
-  border-radius: 2px;
+  align-content: center;
   background-color: #ffffff;
+  border: ${({ selected }: ButtonProps) =>
+    selected ? '2px solid #e61737' : '0.5px solid #dcdcdc'};
+  border-radius: 2px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  display: flex;
+  height: 50px;
+  margin-right: 14px;
+  padding: 14px;
+  justify-content: center;
+  width: ${({ large }: ButtonProps) => (large ? '139px;' : '55px;')};
 
   &:hover {
     cursor: pointer;
@@ -207,6 +213,11 @@ export const SectionRow = styled.div`
 export const SectionButtonsContainer = styled.div`
   display: flex;
   @media (min-width: 320px) and (max-width: 768px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  @media (min-width: 769px) and (max-width: 1023px) {
     flex-wrap: wrap;
   }
 `
