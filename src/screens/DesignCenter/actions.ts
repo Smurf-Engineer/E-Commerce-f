@@ -45,6 +45,7 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
+  SET_ACCESSORY_COLOR_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION
 } from './constants'
@@ -56,7 +57,8 @@ import {
   SaveDesignType,
   ConfigCanvasObj,
   Product,
-  StitchingColor
+  StitchingColor,
+  AccesoryColor
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -332,4 +334,10 @@ export const uploadFileSuccessAction = (url: string) => ({
 export const setUploadingAction = (isUploading: boolean) => ({
   type: SET_UPLOADING_FILE_ACTION,
   isUploading
+})
+
+export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
+  type: SET_ACCESSORY_COLOR_ACTION,
+  color,
+  id
 })
