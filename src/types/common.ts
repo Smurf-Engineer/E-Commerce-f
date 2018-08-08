@@ -45,7 +45,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -121,6 +121,7 @@ export interface Product {
   binding?: ExtraFile
   zipper?: ExtraFile
   bibBrace?: ExtraFile
+  weight: number
 }
 
 export type DesignType = {
@@ -752,6 +753,11 @@ export interface City {
 export interface ImageFile {
   id: number
   fileUrl: string
+  size: {
+    width: number
+    height: number
+  }
+  type: string
 }
 
 export type MessagePayload = {
@@ -772,6 +778,34 @@ export interface ClickParam {
   keyPath: Array<string>
   item: any
   domEvent: any
+}
+
+export interface Measure {
+  in: string[]
+  cm: string[]
+}
+
+export interface SizesTableType {
+  title?: string
+  headers: string[]
+  size?: string[]
+  waist?: Measure
+  chest?: Measure
+  inseam?: Measure
+  hips?: Measure
+  height?: Measure
+  bicep?: Measure
+  length?: Measure
+  thigh?: Measure
+  calf?: Measure
+  mens?: Measure
+  womens?: Measure
+  circumference?: Measure
+}
+
+export interface Chart {
+  title: string
+  tables: SizesTableType[]
 }
 
 export interface Change {

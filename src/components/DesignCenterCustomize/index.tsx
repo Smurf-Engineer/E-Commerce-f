@@ -19,6 +19,7 @@ import {
   StitchingColor,
   AccesoryColor,
   ConfigCanvasObj,
+  ImageFile,
   CanvasResized
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
@@ -58,6 +59,10 @@ interface Props {
   undoChanges: Change[]
   redoChanges: Change[]
   product?: Product
+  images: ImageFile[]
+  uploadingFile: boolean
+  onUploadFile: (file: any) => void
+  searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -88,6 +93,7 @@ interface Props {
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResized: (element: CanvasResized) => void
 }
 
@@ -150,6 +156,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       zipperColor,
       bibColor,
       onAccessoryColorSelected,
+      onUploadFile,
+      images,
+      uploadingFile,
+      searchClipParam,
+      setSearchClipParamAction,
       onCanvasElementResized
     } = this.props
 
@@ -193,7 +204,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             zipperColor,
             bibColor,
             onAccessoryColorSelected,
-            product
+            product,
+            onUploadFile,
+            images,
+            uploadingFile,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}

@@ -46,11 +46,14 @@ import {
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
   CANVAS_ELEMENT_RESIZED_ACTION,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION,
+  SET_SEARCH_CLIPARTPARAM,
   WHITE,
   Changes,
   CanvasElements
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, Change } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -115,7 +118,10 @@ export const initialState = fromJS({
   openOutWithoutSaveModal: false,
   routeToGoWithoutSave: '',
   customize3dMounted: false,
-  svgOutputUrl: ''
+  svgOutputUrl: '',
+  uploadingFile: false,
+  images: [],
+  searchClipParam: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -209,30 +215,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Delete: {
-          const canvas = state.get('canvas')
-          const {
-            state: { src, style }
-          } = undoStep
-          const canvasObject: any = { id }
-          switch (canvasType) {
-            case CanvasElements.Text:
-              canvasObject.text = src
-              canvasObject.textFormat = style
-              break
-            case CanvasElements.Path:
-              canvasObject.fill = style.fill || '#000000'
-              canvasObject.stroke = style.stroke || '#000000'
-              canvasObject.strokeWidth = style.strokeWidth || 0
-              break
-            default:
-              // image only needs the id
-              break
-          }
-          const updatedCanvas = canvas.setIn(
-            [canvasType, id],
-            fromJS(canvasObject)
-          )
-
+          const updatedCanvas = addCanvasElement(state, undoStep)
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
@@ -268,30 +251,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       } = redoStep
       switch (type) {
         case Changes.Add:
-          const canvas = state.get('canvas')
-          const {
-            state: { src, style }
-          } = redoStep
-          const canvasObject: any = { id }
-          switch (canvasType) {
-            case CanvasElements.Text:
-              canvasObject.text = src
-              canvasObject.textFormat = style
-              break
-            case CanvasElements.Path:
-              canvasObject.fill = style.fill || '#000000'
-              canvasObject.stroke = style.stroke || '#000000'
-              canvasObject.strokeWidth = style.strokeWidth || 0
-              break
-            default:
-              // image only needs the id
-              break
-          }
-          const updatedCanvas = canvas.setIn(
-            [canvasType, id],
-            fromJS(canvasObject)
-          )
-
+          const updatedCanvas = addCanvasElement(state, redoStep)
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
@@ -484,10 +444,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const selectedElement = state.get('selectedElement')
 
       if (!id && selectedElement) {
-        return state.merge({ text: '', selectedElement: id })
+        return state.merge({
+          text: '',
+          selectedElement: id,
+          searchClipParam: ''
+        })
       }
 
-      return state.set('selectedElement', id)
+      return state.merge({ selectedElement: id, searchClipParam: '' })
     }
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)
@@ -560,10 +524,46 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         redoChanges: redoChanges.clear()
       })
     }
-
+    case UPLOAD_FILE_ACTION_SUCCESS: {
+      const images = state.get('images')
+      const updatedImages = images.push(action.url)
+      return state.merge({
+        uploadingFile: false,
+        images: updatedImages
+      })
+    }
+    case SET_UPLOADING_FILE_ACTION:
+      return state.set('uploadingFile', action.isUploading)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     default:
       return state
   }
 }
 
 export default designCenterReducer
+
+const addCanvasElement = (state: any, canvasToAdd: Change) => {
+  const canvas = state.get('canvas')
+  const {
+    state: { src, style, type: canvasType, id }
+  } = canvasToAdd
+  const canvasObject: any = { id }
+  switch (canvasType) {
+    case CanvasElements.Text:
+      canvasObject.text = src
+      canvasObject.textFormat = style
+      break
+    case CanvasElements.Path:
+      canvasObject.fill = style.fill || '#000000'
+      canvasObject.stroke = style.stroke || '#000000'
+      canvasObject.strokeWidth = style.strokeWidth || 0
+      break
+    case CanvasElements.Image:
+    default:
+      // image only needs the id
+      break
+  }
+  const updatedCanvas = canvas.setIn([canvasType, id], fromJS(canvasObject))
+  return updatedCanvas
+}

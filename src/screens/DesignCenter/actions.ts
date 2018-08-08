@@ -46,7 +46,10 @@ import {
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
-  CANVAS_ELEMENT_RESIZED_ACTION
+  CANVAS_ELEMENT_RESIZED_ACTION,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import {
   AnyAction,
@@ -331,6 +334,16 @@ export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   stitchingColor
 })
 
+export const uploadFileSuccessAction = (url: string) => ({
+  type: UPLOAD_FILE_ACTION_SUCCESS,
+  url
+})
+
+export const setUploadingAction = (isUploading: boolean) => ({
+  type: SET_UPLOADING_FILE_ACTION,
+  isUploading
+})
+
 export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
@@ -342,4 +355,9 @@ export const onCanvasElementResizedAction = (
 ): AnyAction => ({
   type: CANVAS_ELEMENT_RESIZED_ACTION,
   element
+})
+
+export const setSearchClipParamAction = (param: string) => ({
+  type: SET_SEARCH_CLIPARTPARAM,
+  param
 })

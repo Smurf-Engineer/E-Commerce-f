@@ -24,6 +24,7 @@ export const desginsQuery = gql`
           description: short_description
           collections
           isTopProduct
+          weight
           priceRange {
             quantity
             price

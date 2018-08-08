@@ -57,6 +57,7 @@
   "components.designCenterCustomize.Tab.text": "Text",
   "components.designCenterCustomize.Tab.symbol": "Symbol",
   "components.designCenterCustomize.Tab.upload": "Upload",
+
   "components.designCenterCustomize.ColorTab.selectColor": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalette": "My Palette",
   "components.designCenterCustomize.ColorTab.color": "Color {name}",
@@ -812,6 +813,8 @@
   "components.SymbolTab.fill": "Fill",
   "components.SymbolTab.outline": "Outline",
   "components.SymbolTab.searchInputPlaceholder": "Search Symbol Library",
+  "components.SymbolTab.notFoundSymbol":
+    "Your search did not match with any symbol",
   "components.Tabs.title": "Add Text",
   "components.TextTab.title": "Add Text",
   "components.TextTab.font": "Font",
@@ -934,6 +937,61 @@
   "components.PaletteCard.color5": "Color 5",
   "components.PaletteCard.delete": "Delete",
 
+  "screens.FitAndSizing.tittle": "FIT & SIZING",
+  "screens.FitAndSizing.bodySizeTitle": "BODY SIZE CHART",
+  "screens.FitAndSizing.bodySizeDescription":
+    "JAKROO size charts reflect the ranges of measurements that would be considered typical within the size of the item. For questions, sizing consultations, or fit sample orders – please email us at: <a href=\"mailto:customdesign@jakroousa.com\">customdesign@jakroousa.com</a>",
+  "screens.FitAndSizing.sizingChart": "SIZING CHART",
+  "screens.FitAndSizing.in": "IN",
+  "screens.FitAndSizing.cm": "CM",
+  "screens.FitAndSizing.men": "Men",
+  "screens.FitAndSizing.women": "Women",
+  "screens.FitAndSizing.youth": "Youth",
+  "screens.FitAndSizing.accessories": "Accessories",
+  "screens.FitAndSizing.size": "Size",
+  "screens.FitAndSizing.waist": "Waist",
+  "screens.FitAndSizing.chest": "Chest",
+  "screens.FitAndSizing.inseam": "Inseam",
+  "screens.FitAndSizing.hips": "Hips",
+  "screens.FitAndSizing.height": "Height",
+  "screens.FitAndSizing.xxs": "2XS",
+  "screens.FitAndSizing.xs": "XS",
+  "screens.FitAndSizing.s": "S",
+  "screens.FitAndSizing.m": "M",
+  "screens.FitAndSizing.l": "L",
+  "screens.FitAndSizing.xl": "XL",
+  "screens.FitAndSizing.xxl": "2XL",
+  "screens.FitAndSizing.age6": "Age 6",
+  "screens.FitAndSizing.age8": "Age 8",
+  "screens.FitAndSizing.age10": "Age 10",
+  "screens.FitAndSizing.age12": "Age 12",
+  "screens.FitAndSizing.age14": "Age 14",
+  "screens.FitAndSizing.armWarmer": "ARM WARMER",
+  "screens.FitAndSizing.kneeWarmer": "KNEE WARMER",
+  "screens.FitAndSizing.shoeCover": "SHOE COVER",
+  "screens.FitAndSizing.legWarmer": "LEG WARMER",
+  "screens.FitAndSizing.cyclingCap": "CYCLING CAP",
+  "screens.FitAndSizing.bicep": "Bicep",
+  "screens.FitAndSizing.length": "Length",
+  "screens.FitAndSizing.thigh": "Thigh",
+  "screens.FitAndSizing.calf": "Calf",
+  "screens.FitAndSizing.mens": "Men's",
+  "screens.FitAndSizing.womens": "Women's",
+  "screens.FitAndSizing.circumference": "Circumference",
+  "screens.FitAndSizing.xxs_xs": "2XS - XS",
+  "screens.FitAndSizing.s_m": "S - M",
+  "screens.FitAndSizing.": "L - XL",
+  "screens.FitAndSizing.fitStylesTitle": "FIT STYLES",
+  "screens.FitAndSizing.slimFit": "SLIM FIT",
+  "screens.FitAndSizing.standardFit": "STANDARD FIT",
+  "screens.FitAndSizing.relaxedFit": "RELAXED FIT",
+  "screens.FitAndSizing.slimFitDescription":
+    "Slim Fit style provides form fitting performance through a streamlined 'next-to-body' design.",
+  "screens.FitAndSizing.standardFitDescription":
+    "Standard Fit style provides regular fitting, by balancing aerodynamic performance with comfort functionality.",
+  "screens.FitAndSizing.relaxedFitDescription":
+    "Relaxed Fit style provides looser fitting in the shoulders, torso, neck and arms.",
+
   "components.designCenterCustomize.SelectColors.selectColors": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalettes": "My Palettes",
 
@@ -993,5 +1051,11 @@
   "screens.Checkout.continueButtonLabel": "Continue",
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage":
-    "Seems like the design was deleted or is not available"
+    "Seems like the design was deleted or is not available",
+  "components.TeamDragger.tittle": "Click or drag files to this area",
+  "components.TeamDragger.files": "Files in .eps .ai .svg .tiff .pdf .jpg",
+  "components.TeamDragger.size": "20 MB max",
+  "components.UploadTab.recommendationTitle": "Jakroo Recommends",
+  "components.UploadTab.recommendationMessage":
+    "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images."
 }

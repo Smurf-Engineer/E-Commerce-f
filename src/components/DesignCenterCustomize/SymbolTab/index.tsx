@@ -2,10 +2,12 @@
  * SymbolTab Component - Created by david on 28/06/18.
  */
 import * as React from 'react'
+import { graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
 import { compose } from 'react-apollo'
-import withLoading from '../../WithLoading'
+import { Spin } from 'antd'
 import WithError from '../../WithError'
 import OptionText from '../../OptionText'
 import TextEditor from '../TextEditor'
@@ -25,7 +27,9 @@ import {
   RowList,
   Col,
   List,
-  Icon
+  Icon,
+  Loading,
+  NotFound
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -34,26 +38,49 @@ interface Data extends QueryProps {
 
 interface Props {
   data: Data
-  formatMessage: (messageDescriptor: any) => string
   selectedElement: CanvasElement
+  formatMessage: (messageDescriptor: any) => string
   onApplyArt: (url: string, style?: CanvasElement) => void
   onSelectArtFormat: (key: string, value: string | number) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 class SymbolTab extends React.PureComponent<Props, {}> {
+  searchrAfterTyping = debounce(
+    param => this.props.setSearchClipParamAction(param),
+    300
+  )
   state = {
     option: 0,
     page: 0
   }
+
   render() {
     const { page, option } = this.state
-    const { data: { clipArts }, selectedElement, formatMessage } = this.props
+    const {
+      data: { loading, clipArts },
+      selectedElement,
+      formatMessage
+    } = this.props
 
-    const artList = clipArts.map(({ id, url }) => (
-      <Col key={id}>
-        <Icon src={url} onClick={this.handleOnApplyArt(url)} />
-      </Col>
-    ))
+    const artList =
+      clipArts && !!clipArts.length ? (
+        clipArts.map(({ id, url }) => (
+          <Col key={id}>
+            <Icon src={url} onClick={this.handleOnApplyArt(url)} />
+          </Col>
+        ))
+      ) : (
+        <NotFound>{formatMessage(messages.notFoundSymbol)}</NotFound>
+      )
+
+    const symbolsList = !loading ? (
+      <RowList>{artList}</RowList>
+    ) : (
+      <Loading>
+        <Spin />
+      </Loading>
+    )
 
     return (
       <Container>
@@ -93,20 +120,24 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           <div>
             <InputWrapper>
               <Input
-                // TODO: Commented until implement search function.
-                // value={text}
-                // onChange={this.handleOnUpdateText}
+                onChange={this.handleOnUpdateText}
                 placeholder={formatMessage(messages.searchInputPlaceholder)}
                 addonAfter={<Button onClick={() => {}}>Search</Button>}
               />
             </InputWrapper>
-            <List height={50}>
-              <RowList>{artList}</RowList>
-            </List>
+            <List height={50}>{symbolsList}</List>
           </div>
         )}
       </Container>
     )
+  }
+
+  handleOnUpdateText = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+
+    this.searchrAfterTyping(value)
   }
 
   changePage = (page: number, option: number) => () =>
@@ -138,9 +169,16 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     onApplyArt(url)
   }
 }
-
-const SymbolTabEnhance = compose(clipArtsQuery, WithError, withLoading)(
-  SymbolTab
-)
+type OwnProps = {
+  searchClipParam?: string
+}
+const SymbolTabEnhance = compose(
+  graphql(clipArtsQuery, {
+    options: ({ searchClipParam }: OwnProps) => ({
+      variables: { query: searchClipParam }
+    })
+  }),
+  WithError
+)(SymbolTab)
 
 export default SymbolTabEnhance

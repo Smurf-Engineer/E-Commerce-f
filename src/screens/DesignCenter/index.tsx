@@ -19,6 +19,7 @@ import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
+import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
@@ -55,6 +56,7 @@ import {
   ConfigCanvasObj,
   StitchingColor,
   AccesoryColor,
+  ImageFile,
   CanvasResized
 } from '../../types/common'
 import {
@@ -125,6 +127,9 @@ interface Props extends RouteComponentProps<any> {
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
+  images: ImageFile[]
+  uploadingFile: boolean
+  searchClipParam: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -182,6 +187,10 @@ interface Props extends RouteComponentProps<any> {
   setCanvasJsonAction: (canvas: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setAccessoryColorAction: (color: AccesoryColor, id: string) => void
+  uploadFileAction: (file: any) => void
+  uploadFileSuccessAction: (url: string) => void
+  uploadFileSuccessFailure: () => void
+  setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResizedAction: (element: CanvasResized) => void
 }
 
@@ -404,14 +413,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       bibColor,
       setStitchingColorAction,
       setAccessoryColorAction,
+      uploadFileAction,
+      images,
+      uploadingFile,
+      searchClipParam,
+      setSearchClipParamAction,
       onCanvasElementResizedAction
     } = this.props
-
-    console.log('----------undo-------------')
-    console.log(undoChanges)
-    console.log('----------redo-------------')
-    console.log(redoChanges)
-    console.log('---------------------------')
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -554,8 +562,13 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setStitchingColorAction,
                 bindingColor,
                 zipperColor,
-                bibColor
+                bibColor,
+                images,
+                uploadingFile,
+                searchClipParam,
+                setSearchClipParamAction
               }}
+              onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}
               design={designObject}
@@ -699,7 +712,7 @@ const DesignCenterEnhance = compose(
   addTeamStoreItemMutation,
   connect(
     mapStateToProps,
-    { ...designCenterActions, openQuickViewAction }
+    { ...designCenterActions, ...designCenterApiActions, openQuickViewAction }
   ),
   graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {

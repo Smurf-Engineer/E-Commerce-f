@@ -1,7 +1,7 @@
 import gql from 'graphql-tag'
 
 export const getTaxQuery = gql`
-  query getTaxes($country: String!) {
+  query getTaxes($country: String!, $weight: Float!) {
     taxes: getNetsuiteTaxes {
       internalId
       rate
@@ -12,12 +12,10 @@ export const getTaxQuery = gql`
       ratePST
     }
 
-    shipping: getShippingByCountry(country: $country, weight: 0) {
-      internal_id
-      subsidiary
-      name
-      flat_rate
-      rate_type
+    shipping: getShippingByCountry(country: $country, weight: $weight) {
+      id
+      total
+      internalId
     }
   }
 `
