@@ -18,10 +18,14 @@ import {
   Product,
   StitchingColor,
   AccesoryColor,
+  ConfigCanvasObj,
   ImageFile
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
-import { DesignTabs } from '../../screens/DesignCenter/constants'
+import {
+  DesignTabs,
+  CanvasElements
+} from '../../screens/DesignCenter/constants'
 
 interface Props {
   colorBlock: number
@@ -79,7 +83,7 @@ interface Props {
     typeEl: string,
     update?: boolean
   ) => void
-  onRemoveEl: (id: string, typeEl: string) => void
+  onRemoveEl: (id: string, typeEl: string, canvasObj: ConfigCanvasObj) => void
   onSelectEl: (id: string, typeEl: string) => void
   onSelectTextFormat: (key: string, value: string | number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
@@ -261,7 +265,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (selectedElement) {
       this.render3D.applyText(text, style)
     } else {
-      this.render3D.applyCanvasEl({ text, style, type: 'text' })
+      this.render3D.applyCanvasEl({ text, style, type: CanvasElements.Text })
     }
   }
 
@@ -270,7 +274,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (selectedElement) {
       this.render3D.applyImage(file)
     } else {
-      this.render3D.applyCanvasEl({ file, type: 'image' })
+      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
     }
   }
 
@@ -279,7 +283,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (selectedElement) {
       this.render3D.applyClipArt(url, style)
     } else {
-      this.render3D.applyCanvasEl({ url, style, type: 'path' })
+      this.render3D.applyCanvasEl({ url, style, type: CanvasElements.Path })
     }
   }
 }

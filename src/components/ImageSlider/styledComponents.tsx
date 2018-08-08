@@ -28,8 +28,11 @@ export const ImageThumbnails = styled.div`
 
 export const ThumbnailContainer = styled.div`
   margin-right: 25px;
+  max-width: 63.13px;
+  max-height: 72.41px;
 `
 export const ThumbnailImg = styled.img`
+  height: 100%;
   width: 100%;
   background-color: #f1f4f5;
   margin-right: 25px;

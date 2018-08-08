@@ -45,13 +45,14 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
-  WHITE,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
-  Changes
+  WHITE,
+  Changes,
+  CanvasElements
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, Change } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -196,11 +197,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoChanges = state.get('redoChanges')
       const undoStep = undoChanges.first()
 
-      const { type } = undoStep
+      const {
+        type,
+        state: { type: canvasType, id }
+      } = undoStep
       switch (type) {
-        case Changes.Add:
+        case Changes.Add: {
           const canvas = state.get('canvas')
-          const updatedCanvas = canvas.deleteIn(['path', undoStep.state])
+          const updatedCanvas = canvas.deleteIn([canvasType, id])
 
           return state.merge({
             undoChanges: undoChanges.shift(),
@@ -208,8 +212,18 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             canvas: updatedCanvas,
             selectedElement: ''
           })
+        }
+        case Changes.Delete: {
+          const updatedCanvas = addCanvasElement(state, undoStep)
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            canvas: updatedCanvas,
+            selectedElement: ''
+          })
+        }
+        case Changes.Colors:
         default:
-          // colors
           const oldState = state.get(undoStep.type)
           const redoStep = { type: undoStep.type, state: oldState }
           return state.merge({
@@ -224,17 +238,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const redoStep = redoChanges.first()
-      const { type } = redoStep
+      const {
+        type,
+        state: { type: canvasType, id }
+      } = redoStep
       switch (type) {
         case Changes.Add:
-          const canvas = state.get('canvas')
-          const updatedCanvas = canvas.setIn(['path', redoStep.state], canvas)
+          const updatedCanvas = addCanvasElement(state, redoStep)
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
-            canvas: updatedCanvas
+            canvas: updatedCanvas,
+            selectedElement: ''
           })
-        default:
+        case Changes.Delete:
+          const canvass = state.get('canvas')
+          const updatedCanvass = canvass.deleteIn([canvasType, id])
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            canvas: updatedCanvass
+          })
+        case Changes.Colors:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
 
@@ -243,6 +268,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             colors: redoStep.state
           })
+        default:
+          return state
       }
     }
     case SET_PALETTE_NAME_ACTION:
@@ -338,12 +365,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoChanges = state.get('redoChanges')
 
       const lastStep = {
-        type: 'add',
+        type: Changes.Add,
         state: { id: el.id, type: typeEl, ...canvasObj }
       }
 
       const selectedElement = state.get('selectedElement')
-      const canvasEl = typeEl === 'path' ? fromJS(el) : el
+      const canvasEl = typeEl === CanvasElements.Path ? fromJS(el) : el
       const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
 
       if (selectedElement) {
@@ -363,24 +390,46 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {
+      const { id, typeEl, canvasObj } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
       const canvas = state.get('canvas')
       const updatedCanvas = canvas.deleteIn([action.typeEl, action.id])
+
+      const lastStep = {
+        type: Changes.Delete,
+        state: { id, type: typeEl, ...canvasObj }
+      }
+
       return state.merge({
         canvas: updatedCanvas,
-        selectedElement: ''
+        selectedElement: '',
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
       })
     }
     case SET_SELECTED_ELEMENT_ACTION: {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
-      const selectedElement = state.get('selectedElement')
-      if (typeEl === 'text' && canvasElement) {
+      if (canvasElement && typeEl === CanvasElements.Text) {
+        if (canvasElement.id) {
+          // canvasElement is an object
+          return state.merge({
+            selectedElement: id,
+            textFormat: canvasElement.textFormat,
+            text: canvasElement.text
+          })
+        }
+        // canvasElement is a Map
+        const canvasObject = canvasElement.toJS()
         return state.merge({
           selectedElement: id,
-          textFormat: canvasElement.textFormat,
-          text: canvasElement.text
+          textFormat: canvasObject.textFormat,
+          text: canvasObject.text
         })
       }
+
+      const selectedElement = state.get('selectedElement')
 
       if (!id && selectedElement) {
         return state.merge({
@@ -470,3 +519,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 }
 
 export default designCenterReducer
+
+const addCanvasElement = (state: any, canvasToAdd: Change) => {
+  const canvas = state.get('canvas')
+  const {
+    state: { src, style, type: canvasType, id }
+  } = canvasToAdd
+  const canvasObject: any = { id }
+  switch (canvasType) {
+    case CanvasElements.Text:
+      canvasObject.text = src
+      canvasObject.textFormat = style
+      break
+    case CanvasElements.Path:
+      canvasObject.fill = style.fill || '#000000'
+      canvasObject.stroke = style.stroke || '#000000'
+      canvasObject.strokeWidth = style.strokeWidth || 0
+      break
+    case CanvasElements.Image:
+    default:
+      // image only needs the id
+      break
+  }
+  const updatedCanvas = canvas.setIn([canvasType, id], fromJS(canvasObject))
+  return updatedCanvas
+}

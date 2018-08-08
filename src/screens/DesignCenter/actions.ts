@@ -234,10 +234,15 @@ export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({
   typeEl
 })
 
-export const removeCanvasElement = (id: string, typeEl: string): AnyAction => ({
+export const removeCanvasElement = (
+  id: string,
+  typeEl: string,
+  canvasObj: ConfigCanvasObj
+): AnyAction => ({
   type: REMOVE_CANVAS_ELEMENT_ACTION,
   id,
-  typeEl
+  typeEl,
+  canvasObj
 })
 
 export const setTextFormatAction = (

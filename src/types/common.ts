@@ -109,6 +109,7 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  genderId: number
   productTotal?: number
   unitPrice?: number
   sizeRange: ItemDetailType[]
@@ -821,6 +822,8 @@ export type ChangeType =
   | 'rotate'
   | 'resize'
   | 'duplicate'
+
+export type CanvasObjects = 'path' | 'text' | 'image'
 
 export type ConfigCanvasObj = {
   src: string
