@@ -87,7 +87,9 @@ class Render3D extends PureComponent {
     progress: 0,
     objectChildCount: 0,
     canvasEl: null,
-    scaleFactor: 1
+    scaleFactor: 1,
+    oldScaleX: null,
+    oldScaleY: null
   }
 
   dragComponent = null
@@ -679,6 +681,9 @@ class Render3D extends PureComponent {
       case Changes.Delete:
         this.reAddCanvasElement(changeToApply)
         break
+      case Changes.Resize:
+        this.resizeCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -698,11 +703,36 @@ class Render3D extends PureComponent {
         break
       case Changes.Delete:
         this.deleteElementById(id)
+      case Changes.Resize:
+        this.resizeCanvasElement(changeToApply, true)
+        break
         break
       default:
         break
     }
     onRedoAction()
+  }
+
+  resizeCanvasElement = (canvasElement, newScale = false) => {
+    const {
+      state: { id, oldScaleX, oldScaleY, scaleX: newScaleX, scaleY: newScaleY }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let scaleX = oldScaleX
+      let scaleY = oldScaleY
+      if (newScale) {
+        scaleX = newScaleX
+        scaleY = newScaleY
+      }
+      element
+        .set({
+          scaleX: scaleX > 0 ? scaleX : 0,
+          scaleY: scaleY > 0 ? scaleY : 0
+        })
+        .setCoords()
+      this.canvasTexture.renderAll()
+    }
   }
 
   handleOnOpenResetModal = () => {
@@ -1137,6 +1167,24 @@ class Render3D extends PureComponent {
   onMouseUp = evt => {
     evt.preventDefault()
 
+    const action = this.dragComponent && this.dragComponent.action
+
+    if (action === SCALE_ACTION) {
+      const activeEl = this.canvasTexture.getActiveObject()
+      const { scaleX, scaleY, id } = activeEl
+      const { oldScaleX = 1, oldScaleY = 1 } = this.state
+      if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
+        const { onCanvasElementResized } = this.props
+        onCanvasElementResized({
+          id,
+          oldScaleX,
+          oldScaleY,
+          scaleX,
+          scaleY
+        })
+      }
+    }
+
     if (this.dragComponent && this.dragComponent.oldAngle) {
       this.dragComponent.el.oldAngle = this.dragComponent.oldAngle
     }
@@ -1210,6 +1258,8 @@ class Render3D extends PureComponent {
                 this.setLayerElement(activeEl)
                 break
               case SCALE_ACTION: {
+                const { scaleX, scaleY } = activeEl
+                this.setState({ oldScaleX: scaleX, oldScaleY: scaleY })
                 this.controls.enabled = false
                 this.dragComponent = { action: SCALE_ACTION }
                 break

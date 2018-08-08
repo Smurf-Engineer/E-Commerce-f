@@ -830,3 +830,11 @@ export type ConfigCanvasObj = {
   style: any
   position: any
 }
+
+export type CanvasResized = {
+  id: string
+  oldScaleX: number
+  oldScaleY: number
+  scaleX: number
+  scaleY: number
+}
