@@ -22,10 +22,6 @@ export const GetDesignByIdQuery = gql`
           id
           name: gender
         }
-        sizeRange: size_range {
-          id
-          name
-        }
         fitStyles {
           id
           name: description
@@ -64,20 +60,6 @@ export const GetDesignByIdQuery = gql`
       svg: output_svg
       code
       createdAt: created_at
-      style {
-        id
-        name
-        image
-        colorblock1
-        colorblock2
-        colorblock3
-        colorblock4
-        colorblock5
-        branding
-        brandingPng: branding_png
-        complexity
-        size
-      }
     }
   }
 `
