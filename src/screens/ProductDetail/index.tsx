@@ -39,6 +39,7 @@ import {
   ReviewsHeader,
   Downloadtemplate,
   DownloadTemplateContainer,
+  DownloadAnchor,
   AvailableLabel,
   DownloadImg,
   DetailsList,
@@ -139,6 +140,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       get(product, 'retailMen', false) || get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
+    const template = get(product, 'template', '')
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
@@ -334,16 +336,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   onLoadModel={setLoadingModel}
                   {...{ images, moreImages }}
                 />
-                <Desktop>
-                  <DownloadTemplateContainer>
-                    <a href="https://www.jakroo.com/download/Tour_Template.pdf">
-                      <DownloadImg src={DownloadIcon} />
-                    </a>
-                    <Downloadtemplate>
-                      {formatMessage(messages.downloadLabel)}
-                    </Downloadtemplate>
-                  </DownloadTemplateContainer>
-                </Desktop>
+                {template && (
+                  <Desktop>
+                    <DownloadTemplateContainer>
+                      <DownloadAnchor href={template}>
+                        <DownloadImg src={DownloadIcon} />
+                        <Downloadtemplate>
+                          {formatMessage(messages.downloadLabel)}
+                        </Downloadtemplate>
+                      </DownloadAnchor>
+                    </DownloadTemplateContainer>
+                  </Desktop>
+                )}
               </ImagePreview>
               <ProductData>
                 <TitleRow>
@@ -382,6 +386,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
+          {/* TODO: Related products section */}
           <ReviewsHeader>
             <FormattedMessage {...messages.reviews} />
           </ReviewsHeader>

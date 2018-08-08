@@ -288,7 +288,9 @@ export const DownloadTemplateContainer = styled.div`
   margin-top: 16px;
   padding-right: 20px;
 `
-
+export const DownloadAnchor = styled.a`
+  display: flex;
+`
 export const AvailableLabel = styled.div`
   margin-top: 15px;
   height: 22px;
