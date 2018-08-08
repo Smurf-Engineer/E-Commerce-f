@@ -764,7 +764,10 @@ class Render3D extends PureComponent {
     openResetDesignModalAction(false)
   }
 
-  onReset = () => this.props.onResetAction()
+  onReset = () => {
+    this.canvasTexture.clear()
+    this.props.onResetAction()
+  }
 
   handleOnClickClear = () => this.props.onClearAction()
 
@@ -807,7 +810,8 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
-      openResetDesignModal
+      openResetDesignModal,
+      designHasChanges
     } = this.props
 
     {
@@ -861,6 +865,7 @@ class Render3D extends PureComponent {
         </ButtonWrapper>
         <OptionsController
           {...{ undoEnabled, redoEnabled, formatMessage }}
+          resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnOpenResetModal}

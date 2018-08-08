@@ -191,9 +191,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_STITCHING_COLOR_ACTION:
-      return state.set('stitchingColor', action.stitchingColor)
-    case SET_ACCESSORY_COLOR_ACTION:
-      return state.set(action.id, action.color)
+      return state.merge({
+        stitchingColor: action.stitchingColor,
+        designHasChanges: true
+      })
+    case SET_ACCESSORY_COLOR_ACTION: {
+      const { id, color } = action
+      return state.merge({ [id]: color, designHasChanges: true })
+    }
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
@@ -296,7 +301,19 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case DESIGN_RESET_ACTION:
       return state.merge({
         colors: state.get('styleColors'),
-        openResetDesignModal: false
+        stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
+        bindingColor: WHITE,
+        zipperColor: WHITE,
+        bibColor: WHITE,
+        canvas: {
+          text: {},
+          image: {},
+          path: {}
+        },
+        undoChanges: [],
+        redoChanges: [],
+        openResetDesignModal: false,
+        designHasChanges: false
       })
     case EDIT_DESIGN_ACTION:
       return state.merge({

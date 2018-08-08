@@ -62,8 +62,10 @@ interface Props {
   product?: Product
   images: ImageFile[]
   uploadingFile: boolean
-  onUploadFile: (file: any) => void
   searchClipParam: string
+  designHasChanges: boolean
+  // Redux actions
+  onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -164,7 +166,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       searchClipParam,
       setSearchClipParamAction,
       onCanvasElementResized,
-      onCanvasElementDragged
+      onCanvasElementDragged,
+      designHasChanges
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -256,7 +259,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               zipperColor,
               bibColor,
               onCanvasElementResized,
-              onCanvasElementDragged
+              onCanvasElementDragged,
+              designHasChanges
             }}
           />
         ) : (

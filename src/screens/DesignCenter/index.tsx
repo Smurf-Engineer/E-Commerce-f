@@ -569,7 +569,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 images,
                 uploadingFile,
                 searchClipParam,
-                setSearchClipParamAction
+                setSearchClipParamAction,
+                designHasChanges
               }}
               onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
