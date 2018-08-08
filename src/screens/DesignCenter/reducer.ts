@@ -45,6 +45,7 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
+  CANVAS_ELEMENT_RESIZED_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
@@ -222,6 +223,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             selectedElement: ''
           })
         }
+        case Changes.Resize:
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            selectedElement: ''
+          })
         case Changes.Colors:
         default:
           const oldState = state.get(undoStep.type)
@@ -259,7 +266,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             canvas: updatedCanvass
           })
+        case Changes.Resize:
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            selectedElement: ''
+          })
         case Changes.Colors:
+        default:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
 
@@ -268,8 +282,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             colors: redoStep.state
           })
-        default:
-          return state
       }
     }
     case SET_PALETTE_NAME_ACTION:
@@ -501,6 +513,17 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('customize3dMounted', action.mounted)
     case SET_CANVAS_JSON_ACTION:
       return state.setIn(['design', 'canvasJson'], action.canvas)
+    case CANVAS_ELEMENT_RESIZED_ACTION: {
+      const { element } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = { type: Changes.Resize, state: { ...element } }
+
+      return state.merge({
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
     case UPLOAD_FILE_ACTION_SUCCESS: {
       const images = state.get('images')
       const updatedImages = images.push(action.url)
