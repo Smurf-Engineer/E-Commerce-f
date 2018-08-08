@@ -49,7 +49,7 @@ import {
   Changes,
   CanvasElements
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, Change } from '../../types/common'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -208,30 +208,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Delete: {
-          const canvas = state.get('canvas')
-          const {
-            state: { src, style }
-          } = undoStep
-          const canvasObject: any = { id }
-          switch (canvasType) {
-            case CanvasElements.Text:
-              canvasObject.text = src
-              canvasObject.textFormat = style
-              break
-            case CanvasElements.Path:
-              canvasObject.fill = style.fill || '#000000'
-              canvasObject.stroke = style.stroke || '#000000'
-              canvasObject.strokeWidth = style.strokeWidth || 0
-              break
-            default:
-              // image only needs the id
-              break
-          }
-          const updatedCanvas = canvas.setIn(
-            [canvasType, id],
-            fromJS(canvasObject)
-          )
-
+          const updatedCanvas = addCanvasElement(state, undoStep)
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
@@ -261,30 +238,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       } = redoStep
       switch (type) {
         case Changes.Add:
-          const canvas = state.get('canvas')
-          const {
-            state: { src, style }
-          } = redoStep
-          const canvasObject: any = { id }
-          switch (canvasType) {
-            case CanvasElements.Text:
-              canvasObject.text = src
-              canvasObject.textFormat = style
-              break
-            case CanvasElements.Path:
-              canvasObject.fill = style.fill || '#000000'
-              canvasObject.stroke = style.stroke || '#000000'
-              canvasObject.strokeWidth = style.strokeWidth || 0
-              break
-            default:
-              // image only needs the id
-              break
-          }
-          const updatedCanvas = canvas.setIn(
-            [canvasType, id],
-            fromJS(canvasObject)
-          )
-
+          const updatedCanvas = addCanvasElement(state, redoStep)
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
@@ -543,3 +497,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 }
 
 export default designCenterReducer
+
+const addCanvasElement = (state: any, canvasToAdd: Change) => {
+  const canvas = state.get('canvas')
+  const {
+    state: { src, style, type: canvasType, id }
+  } = canvasToAdd
+  const canvasObject: any = { id }
+  switch (canvasType) {
+    case CanvasElements.Text:
+      canvasObject.text = src
+      canvasObject.textFormat = style
+      break
+    case CanvasElements.Path:
+      canvasObject.fill = style.fill || '#000000'
+      canvasObject.stroke = style.stroke || '#000000'
+      canvasObject.strokeWidth = style.strokeWidth || 0
+      break
+    case CanvasElements.Image:
+    default:
+      // image only needs the id
+      break
+  }
+  const updatedCanvas = canvas.setIn([canvasType, id], fromJS(canvasObject))
+  return updatedCanvas
+}
