@@ -67,6 +67,7 @@ import ChessColors from '../../assets/chess-colors.svg'
 import RedColor from '../../assets/colorred.svg'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
+const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -341,7 +342,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                   </TitleSubtitleContainer>
-                  <CompareButton onClick={this.gotoCompare}>
+                  <CompareButton
+                    show={this.validateShowCompare(name)}
+                    onClick={this.gotoCompare}
+                  >
                     {formatMessage(messages.compareLabe)}
                   </CompareButton>
                 </TitleRow>
@@ -476,6 +480,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   closeFitInfoModal = () => {
     const { openFitInfoAction } = this.props
     openFitInfoAction(false)
+  }
+
+  validateShowCompare = (name: string): boolean => {
+    return !!COMPARABLE_PRODUCTS.find(product => product === name)
   }
 }
 
