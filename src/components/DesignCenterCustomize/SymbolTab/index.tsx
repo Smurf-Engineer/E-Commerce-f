@@ -71,7 +71,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           </Col>
         ))
       ) : (
-        <NotFound>{formatMessage(messages.notFountSymbol)}</NotFound>
+        <NotFound>{formatMessage(messages.notFoundSymbol)}</NotFound>
       )
 
     const symbolsList = !loading ? (
