@@ -58,7 +58,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
-  onApplyImage: (base64: string) => void
+  onApplyImage: (file: ImageFile) => void
   onApplyArt: (url: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void

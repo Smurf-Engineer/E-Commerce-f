@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { ImageFile } from '../../../types/common'
+import { DPI } from '../../../constants'
 import {
   Container,
   Row,
@@ -14,31 +15,31 @@ import {
   Footer
 } from './styledComponents'
 
+const getSizeInCentimeters = (pixels: number): number => {
+  return Math.round((pixels * 2.54) / DPI)
+}
+
 interface Props {
   images: ImageFile[]
-  onClickImage: (base64: string) => void
+  onClickImage: (file: ImageFile) => void
+  onClickDelete: (id: number) => void
 }
 
 class ImageList extends React.PureComponent<Props, {}> {
-  handleOnClickImage = (uri: string) => () => {
-    const { onClickImage } = this.props
-    onClickImage(uri)
-  }
-
   render() {
     const { images } = this.props
-    // TODO: WIP
-    const imageList = images.map(({ fileUrl, size }, index) => {
+    const imageList = images.map((file, index) => {
+      const { id, fileUrl, size } = file
       const completeName = fileUrl.split('/').pop()
       let width = 0
       let height = 0
-      if (size) {
-        width = Math.round(0.02645833 * size.width)
-        height = Math.round(0.02645833 * size.height)
+      if (!!size) {
+        width = getSizeInCentimeters(size.width)
+        height = getSizeInCentimeters(size.height)
       }
       return (
         <Row key={index}>
-          <Image src={fileUrl} onClick={this.handleOnClickImage(fileUrl)} />
+          <Image src={fileUrl} onClick={this.handleOnClickImage(file)} />
           <Info>
             <Name>{completeName}</Name>
             <Footer>
@@ -46,13 +47,23 @@ class ImageList extends React.PureComponent<Props, {}> {
                 <Size>Max</Size>
                 <Size>{`${width} cm x ${height} cm`}</Size>
               </div>
-              <Delete>Delete</Delete>
+              <Delete onClick={this.handleOnClickDelete(id)}>Delete</Delete>
             </Footer>
           </Info>
         </Row>
       )
     })
     return <Container>{imageList}</Container>
+  }
+
+  handleOnClickImage = (file: ImageFile) => () => {
+    const { onClickImage } = this.props
+    onClickImage(file)
+  }
+
+  handleOnClickDelete = (id: number) => () => {
+    const { onClickDelete } = this.props
+    onClickDelete(id)
   }
 }
 

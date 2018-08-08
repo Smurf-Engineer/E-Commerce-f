@@ -23,7 +23,10 @@ import {
   ViewControls,
   ViewButton,
   ButtonWrapper,
-  ModalMessage
+  ModalMessage,
+  Size,
+  SizeBox,
+  SizeLabel
 } from './styledComponents'
 import {
   viewPositions,
@@ -48,7 +51,8 @@ import {
   FLATLOCK,
   ZIPPER,
   BINDING,
-  BIB_BRACE
+  BIB_BRACE,
+  DPI
 } from '../../../constants'
 import { Changes } from '../../../screens/DesignCenter/constants'
 import ModalFooter from '../../ModalFooter'
@@ -79,7 +83,8 @@ class Render3D extends PureComponent {
     zoomValue: 0,
     progress: 0,
     objectChildCount: 0,
-    canvasEl: null
+    canvasEl: null,
+    scaleFactor: 1
   }
 
   dragComponent = null
@@ -353,7 +358,11 @@ class Render3D extends PureComponent {
           /* Object materials */
           const { children } = object
           const objectChildCount = children.length
-          this.setState({ objectChildCount })
+          let scaleFactor = 1
+          if (!!currentStyle.size) {
+            scaleFactor = CANVAS_SIZE / currentStyle.size
+          }
+          this.setState({ scaleFactor, objectChildCount })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
@@ -436,7 +445,6 @@ class Render3D extends PureComponent {
           )
 
           /* Canvas */
-          /* TODO: Dynamic size? */
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
@@ -744,7 +752,9 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
-      openResetDesignModal
+      openResetDesignModal,
+      canvas,
+      selectedElement
     } = this.props
 
     {
@@ -765,12 +775,30 @@ class Render3D extends PureComponent {
     )*/
     }
 
+    const selectedImageElement = canvas.image[selectedElement]
+
+    let widthInCm = 0
+    let heightInCm = 0
+    if (!!selectedImageElement && selectedImageElement.imageSize) {
+      const { width, height } = selectedImageElement.imageSize
+      widthInCm = this.getSizeInCentimeters(width)
+      heightInCm = this.getSizeInCentimeters(height)
+    }
+
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
+        {!!selectedImageElement && (
+          <SizeBox>
+            <SizeLabel>
+              <FormattedMessage {...messages.sizeMessage} />
+            </SizeLabel>
+            <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
+          </SizeBox>
+        )}
         <Render
           id="render-3d"
           innerRef={container => (this.container = container)}
@@ -853,18 +881,19 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (url, position = {}, idElement) => {
-    const {
-      onApplyCanvasEl,
-      currentStyle: { size }
-    } = this.props
-    let scaleFactor = 1
-    if (!!size) {
-      scaleFactor = CANVAS_SIZE / size
-    }
+  applyImage = (file = {}, position = {}, idElement) => {
+    const { onApplyCanvasEl } = this.props
+    const { scaleFactor } = this.state
+    const { fileUrl, size: imageSize } = file
+    console.log('-------SACLE FACTOR-------------')
+    console.log(scaleFactor)
+    console.log('------------------------------------')
+    console.log('---------IMAGE SIZE--------------')
+    console.log(imageSize)
+    console.log('------------------------------------')
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
-      url,
+      fileUrl,
       img => {
         const imageEl = new fabric.Image(img, {
           id,
@@ -873,14 +902,17 @@ class Render3D extends PureComponent {
         })
         imageEl.scale(scaleFactor)
         this.canvasTexture.add(imageEl)
-        const el = { id }
+        const el = { id, imageSize }
         if (!idElement) {
           onApplyCanvasEl(el, 'image', undefined, {
-            src: url,
+            src: file,
             style: undefined,
             position
           })
           this.canvasTexture.setActiveObject(imageEl)
+          console.log('------------------------------------')
+          console.log(imageEl)
+          console.log('------------------------------------')
         }
         this.canvasTexture.renderAll()
       },
@@ -1026,6 +1058,10 @@ class Render3D extends PureComponent {
       this.dragComponent.el.oldAngle = this.dragComponent.oldAngle
     }
 
+    if (this.dragComponent && this.dragComponent.action === SCALE_ACTION) {
+      this.updateImageSize()
+    }
+
     this.dragComponent = null
     this.controls.enabled = true
   }
@@ -1065,7 +1101,7 @@ class Render3D extends PureComponent {
               this.applyText(el.text, el.style, { left, top })
               break
             case 'image':
-              this.applyImage(el.base64, { left, top })
+              this.applyImage(el.file, { left, top })
               break
             case 'path':
               this.applyClipArt(el.url, el.style, { left, top })
@@ -1279,6 +1315,22 @@ class Render3D extends PureComponent {
       okText: formatMessage(messages.modalWarningButtonText),
       maskClosable: true
     })
+  }
+
+  updateImageSize = () => {
+    if (!!this.canvasTexture) {
+      const activeEl = this.canvasTexture.getActiveObject()
+      // TODO: change string to enum
+      if (!!activeEl && activeEl.type === 'image') {
+        console.log('------------------------------------')
+        console.log(activeEl)
+        console.log('------------------------------------')
+      }
+    }
+  }
+
+  getSizeInCentimeters = pixels => {
+    return Math.round((pixels * 2.54) / DPI)
   }
 }
 
