@@ -20,7 +20,8 @@ import {
   ArtFormat,
   StitchingColor,
   AccesoryColor,
-  Product
+  Product,
+  ImageFile
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -45,6 +46,9 @@ interface Props {
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
+  images: ImageFile[]
+  uploadingFile: boolean
+  onUploadFile: (file: any) => void
   searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -100,6 +104,9 @@ const Tabs = ({
   bibColor,
   onAccessoryColorSelected,
   product,
+  onUploadFile,
+  images,
+  uploadingFile,
   searchClipParam,
   setSearchClipParamAction
 }: Props) => {
@@ -162,7 +169,15 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
-          <UploadTab {...{ formatMessage, onApplyImage }} />
+          <UploadTab
+            {...{
+              formatMessage,
+              onApplyImage,
+              onUploadFile,
+              images,
+              uploadingFile
+            }}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

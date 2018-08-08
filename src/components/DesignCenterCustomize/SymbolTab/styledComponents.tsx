@@ -72,7 +72,7 @@ export const List = styled.div`
   padding: 0px 32px 32px 32px;
 
   @media (min-height: 800px) {
-    height: 50vh;
+    height: 55vh;
   }
 `
 

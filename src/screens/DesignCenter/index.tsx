@@ -19,6 +19,7 @@ import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
+import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
 import Tabs from '../../components/DesignCenterTabs'
 import Info from '../../components/DesignCenterInfo'
@@ -54,7 +55,8 @@ import {
   Change,
   ConfigCanvasObj,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  ImageFile
 } from '../../types/common'
 import {
   getProductQuery,
@@ -124,6 +126,8 @@ interface Props extends RouteComponentProps<any> {
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
+  images: ImageFile[]
+  uploadingFile: boolean
   searchClipParam: string
   // Redux Actions
   clearStoreAction: () => void
@@ -178,6 +182,9 @@ interface Props extends RouteComponentProps<any> {
   setCanvasJsonAction: (canvas: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setAccessoryColorAction: (color: AccesoryColor, id: string) => void
+  uploadFileAction: (file: any) => void
+  uploadFileSuccessAction: (url: string) => void
+  uploadFileSuccessFailure: () => void
   setSearchClipParamAction: (searchParam: string) => void
 }
 
@@ -400,6 +407,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       bibColor,
       setStitchingColorAction,
       setAccessoryColorAction,
+      uploadFileAction,
+      images,
+      uploadingFile,
       searchClipParam,
       setSearchClipParamAction
     } = this.props
@@ -546,9 +556,12 @@ export class DesignCenter extends React.Component<Props, {}> {
                 bindingColor,
                 zipperColor,
                 bibColor,
+                images,
+                uploadingFile,
                 searchClipParam,
                 setSearchClipParamAction
               }}
+              onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}
               design={designObject}
@@ -691,7 +704,7 @@ const DesignCenterEnhance = compose(
   addTeamStoreItemMutation,
   connect(
     mapStateToProps,
-    { ...designCenterActions, openQuickViewAction }
+    { ...designCenterActions, ...designCenterApiActions, openQuickViewAction }
   ),
   graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
