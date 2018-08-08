@@ -57,6 +57,7 @@
   "components.designCenterCustomize.Tab.text": "Text",
   "components.designCenterCustomize.Tab.symbol": "Symbol",
   "components.designCenterCustomize.Tab.upload": "Upload",
+
   "components.designCenterCustomize.ColorTab.selectColor": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalette": "My Palette",
   "components.designCenterCustomize.ColorTab.color": "Color {name}",
@@ -812,6 +813,8 @@
   "components.SymbolTab.fill": "Fill",
   "components.SymbolTab.outline": "Outline",
   "components.SymbolTab.searchInputPlaceholder": "Search Symbol Library",
+  "components.SymbolTab.notFoundSymbol":
+    "Your search did not match with any symbol",
   "components.Tabs.title": "Add Text",
   "components.TextTab.title": "Add Text",
   "components.TextTab.font": "Font",
@@ -1064,5 +1067,11 @@
 
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage":
-    "Seems like the design was deleted or is not available"
+    "Seems like the design was deleted or is not available",
+  "components.TeamDragger.tittle": "Click or drag files to this area",
+  "components.TeamDragger.files": "Files in .eps .ai .svg .tiff .pdf .jpg",
+  "components.TeamDragger.size": "20 MB max",
+  "components.UploadTab.recommendationTitle": "Jakroo Recommends",
+  "components.UploadTab.recommendationMessage":
+    "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images."
 }

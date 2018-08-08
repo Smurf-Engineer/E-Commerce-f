@@ -3,7 +3,14 @@
  */
 import styled from 'styled-components'
 
-export const Container = styled.div``
+export const Container = styled.div`
+  overflow: auto;
+  height: 60vh;
+
+  @media (min-height: 800px) {
+    height: 85vh;
+  }
+`
 
 export const DraggerContainer = styled.div`
   padding: 8px;
@@ -12,6 +19,10 @@ export const DraggerContainer = styled.div`
 
 export const DraggerBottom = styled.div`
   padding: 8px;
+  .ant-upload.ant-upload-drag {
+    background: #ffffff;
+    padding: 8px 0;
+  }
 `
 
 export const Text = styled.div`
@@ -29,4 +40,17 @@ export const Title = styled.div`
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
+`
+
+type Props = {
+  color?: string
+}
+
+export const Recommendation = styled.div`
+  color: ${({ color = '#5f6062' }: Props) => color};
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  letter-spacing: 0.1px;
+  line-height: 23px;
+  padding: 8px 34px;
 `
