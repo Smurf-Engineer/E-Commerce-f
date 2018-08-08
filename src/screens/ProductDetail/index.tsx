@@ -316,7 +316,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </BuyNowOptions>
     )
 
-    const validateShowCompare = !!COMPARABLE_PRODUCTS.find(p => p === name)
+    const renderCompareButton = (
+      <CompareButton onClick={this.gotoCompare}>
+        {formatMessage(messages.compareLabe)}
+      </CompareButton>
+    )
+
+    const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
       <Layout {...{ history, intl }}>
@@ -347,12 +353,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {isRetail &&
                       code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  <CompareButton
-                    show={validateShowCompare}
-                    onClick={this.gotoCompare}
-                  >
-                    {formatMessage(messages.compareLabe)}
-                  </CompareButton>
+                  {validateShowCompare && renderCompareButton}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings

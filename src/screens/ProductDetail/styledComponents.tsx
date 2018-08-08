@@ -153,14 +153,10 @@ export const TitleRow = styled.div`
   display: flex;
   justify-content: space-between;
 `
-interface CompareButtonProps {
-  show: boolean
-}
 export const CompareButton = styled(Button)`
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
-  display: ${({ show }: CompareButtonProps) => (show ? 'initial' : 'none')};
   font-family: 'Avenir Next';
   height: 40px;
   width: 120.79px;
