@@ -14,6 +14,7 @@ import {
   ArtFormat,
   SaveDesignType,
   Style,
+  Change,
   Product,
   StitchingColor,
   AccesoryColor
@@ -49,6 +50,8 @@ interface Props {
   customize3dMounted: boolean
   design: SaveDesignType
   loadingData?: boolean
+  undoChanges: Change[]
+  redoChanges: Change[]
   product?: Product
   searchClipParam: string
   onSelectColorBlock: (index: number) => void
@@ -135,6 +138,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectArtFormat,
       onUnmountTab,
       loadingData,
+      undoChanges,
+      redoChanges,
       product,
       stitchingColor,
       bindingColor,
@@ -223,6 +228,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               openResetDesignModalAction,
               setCustomize3dMountedAction,
               onUnmountTab,
+              undoChanges,
+              redoChanges,
               product,
               stitchingColor,
               bindingColor,

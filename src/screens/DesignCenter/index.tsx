@@ -51,6 +51,8 @@ import {
   SaveDesignType,
   DesignType,
   Style,
+  Change,
+  ConfigCanvasObj,
   StitchingColor,
   AccesoryColor
 } from '../../types/common'
@@ -70,11 +72,6 @@ interface DataProduct extends QueryProps {
 
 interface DataDesign extends QueryProps {
   designData?: DesignType
-}
-
-interface Change {
-  type: string
-  state: any
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -160,7 +157,8 @@ interface Props extends RouteComponentProps<any> {
   setCanvasElement: (
     text: CanvasElement,
     typeEl: string,
-    update?: boolean
+    update?: boolean,
+    canvasObj?: ConfigCanvasObj
   ) => void
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
@@ -540,6 +538,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setCustomize3dMountedAction,
                 loadingData,
                 currentStyle,
+                undoChanges,
+                redoChanges,
                 product,
                 stitchingColor,
                 setStitchingColorAction,

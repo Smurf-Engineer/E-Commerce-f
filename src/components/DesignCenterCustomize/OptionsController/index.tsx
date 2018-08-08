@@ -51,13 +51,13 @@ const OptionsController = ({
     <OptionsContainer>
       <Options>
         <Tooltip placement="right" title={formatMessage(messages.undo)}>
-          <OptionButton onClick={handleUndoClick}>
+          <OptionButton disabled={!undoEnabled} onClick={handleUndoClick}>
             <img src={undoIcon} />
           </OptionButton>
         </Tooltip>
         <Divider />
         <Tooltip placement="right" title={formatMessage(messages.redo)}>
-          <OptionButton onClick={handleRedoClick}>
+          <OptionButton disabled={!redoEnabled} onClick={handleRedoClick}>
             <img src={redoIcon} />
           </OptionButton>
         </Tooltip>

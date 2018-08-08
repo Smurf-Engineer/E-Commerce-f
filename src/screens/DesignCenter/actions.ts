@@ -54,6 +54,7 @@ import {
   TeamStoreItemtype,
   CanvasElement,
   SaveDesignType,
+  ConfigCanvasObj,
   Product,
   StitchingColor,
   AccesoryColor
@@ -215,12 +216,14 @@ export const setItemToAddAction = (
 export const setCanvasElement = (
   el: CanvasElement,
   typeEl: string,
-  update = false
+  update = false,
+  canvasObj: ConfigCanvasObj
 ): AnyAction => ({
   type: SET_CANVAS_ELEMENT_ACTION,
   el,
   typeEl,
-  update
+  update,
+  canvasObj
 })
 
 export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({
