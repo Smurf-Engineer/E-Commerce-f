@@ -4,7 +4,10 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  background-color: #222;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const Text = styled.div`

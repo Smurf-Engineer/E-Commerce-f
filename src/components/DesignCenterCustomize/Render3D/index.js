@@ -876,28 +876,40 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (base64, position = {}, idElement) => {
-    const { onApplyCanvasEl } = this.props
+  applyImage = (url, position = {}, idElement) => {
+    const {
+      onApplyCanvasEl,
+      currentStyle: { size }
+    } = this.props
+    let scaleFactor = 1
+    if (!!size) {
+      scaleFactor = CANVAS_SIZE / size
+    }
     const id = idElement || shortid.generate()
-    fabric.Image.fromURL(base64, oImg => {
-      const imageEl = oImg.scale(1).set({
-        id,
-        hasRotatingPoint: false,
-        ...position
-      })
-      this.canvasTexture.add(imageEl)
-
-      const el = { id }
-      if (!idElement) {
-        onApplyCanvasEl(el, CanvasElements.Image, undefined, {
-          src: base64,
-          style: undefined,
-          position
+    fabric.util.loadImage(
+      url,
+      img => {
+        const imageEl = new fabric.Image(img, {
+          id,
+          hasRotatingPoint: false,
+          ...position
         })
-        this.canvasTexture.setActiveObject(imageEl)
-      }
-      this.canvasTexture.renderAll()
-    })
+        imageEl.scale(scaleFactor)
+        this.canvasTexture.add(imageEl)
+        const el = { id }
+        if (!idElement) {
+          onApplyCanvasEl(el, 'image', undefined, {
+            src: url,
+            style: undefined,
+            position
+          })
+          this.canvasTexture.setActiveObject(imageEl)
+        }
+        this.canvasTexture.renderAll()
+      },
+      undefined,
+      'Anonymous'
+    )
   }
 
   applyText = (text, style, position = {}, idElement) => {

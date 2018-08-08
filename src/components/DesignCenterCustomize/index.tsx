@@ -18,7 +18,8 @@ import {
   Product,
   StitchingColor,
   AccesoryColor,
-  ConfigCanvasObj
+  ConfigCanvasObj,
+  ImageFile
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -57,6 +58,9 @@ interface Props {
   undoChanges: Change[]
   redoChanges: Change[]
   product?: Product
+  images: ImageFile[]
+  uploadingFile: boolean
+  onUploadFile: (file: any) => void
   searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -150,6 +154,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       zipperColor,
       bibColor,
       onAccessoryColorSelected,
+      onUploadFile,
+      images,
+      uploadingFile,
       searchClipParam,
       setSearchClipParamAction
     } = this.props
@@ -195,6 +202,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             bibColor,
             onAccessoryColorSelected,
             product,
+            onUploadFile,
+            images,
+            uploadingFile,
             searchClipParam,
             setSearchClipParamAction
           }}

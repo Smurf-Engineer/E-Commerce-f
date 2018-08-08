@@ -46,6 +46,8 @@ import {
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import {
@@ -328,6 +330,16 @@ export const setCanvasJsonAction = (canvas: string) => ({
 export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   type: SET_STITCHING_COLOR_ACTION,
   stitchingColor
+})
+
+export const uploadFileSuccessAction = (url: string) => ({
+  type: UPLOAD_FILE_ACTION_SUCCESS,
+  url
+})
+
+export const setUploadingAction = (isUploading: boolean) => ({
+  type: SET_UPLOADING_FILE_ACTION,
+  isUploading
 })
 
 export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
