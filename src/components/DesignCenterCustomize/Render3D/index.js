@@ -811,14 +811,13 @@ class Render3D extends PureComponent {
     )*/
     }
 
-    const selectedImageElement = canvas.image[selectedElement]
-
     let widthInCm = 0
     let heightInCm = 0
-    if (!!selectedImageElement && selectedImageElement.imageSize) {
-      const { width, height } = selectedImageElement.imageSize
-      widthInCm = this.getSizeInCentimeters(width)
-      heightInCm = this.getSizeInCentimeters(height)
+    const selectedImageElement = canvas.image[selectedElement]
+    if (!!selectedImageElement && !!selectedImageElement.imageSize) {
+      const { width, height } = this.getSizeInCentimeters(selectedImageElement)
+      widthInCm = width
+      heightInCm = height
     }
 
     return (
@@ -938,12 +937,6 @@ class Render3D extends PureComponent {
     const { onApplyCanvasEl } = this.props
     const { scaleFactor } = this.state
     const { fileUrl, size: imageSize } = file
-    console.log('-------SACLE FACTOR-------------')
-    console.log(scaleFactor)
-    console.log('------------------------------------')
-    console.log('---------IMAGE SIZE--------------')
-    console.log(imageSize)
-    console.log('------------------------------------')
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
       fileUrl,
@@ -955,7 +948,7 @@ class Render3D extends PureComponent {
         })
         imageEl.scale(scaleFactor)
         this.canvasTexture.add(imageEl)
-        const el = { id, imageSize }
+        const el = { id, imageSize, scaleX: scaleFactor, scaleY: scaleFactor }
         if (!idElement) {
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -963,9 +956,6 @@ class Render3D extends PureComponent {
             position
           })
           this.canvasTexture.setActiveObject(imageEl)
-          console.log('------------------------------------')
-          console.log(imageEl)
-          console.log('------------------------------------')
         }
         this.canvasTexture.renderAll()
       },
@@ -1132,7 +1122,12 @@ class Render3D extends PureComponent {
         }
         break
       case CanvasElements.Image: {
-        canvasEl = { id }
+        canvasEl = {
+          id,
+          imageSize: { width: el.width, height: el.height },
+          scaleX: el.scaleX,
+          scaleY: el.scaleY
+        }
         break
       }
       case CanvasElements.Path: {
@@ -1171,12 +1166,13 @@ class Render3D extends PureComponent {
 
     if (action === SCALE_ACTION) {
       const activeEl = this.canvasTexture.getActiveObject()
-      const { scaleX, scaleY, id } = activeEl
+      const { scaleX, scaleY, id, type } = activeEl
       const { oldScaleX = 1, oldScaleY = 1 } = this.state
       if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
         const { onCanvasElementResized } = this.props
         onCanvasElementResized({
           id,
+          elementType: type,
           oldScaleX,
           oldScaleY,
           scaleX,
@@ -1187,10 +1183,6 @@ class Render3D extends PureComponent {
 
     if (this.dragComponent && this.dragComponent.oldAngle) {
       this.dragComponent.el.oldAngle = this.dragComponent.oldAngle
-    }
-
-    if (this.dragComponent && this.dragComponent.action === SCALE_ACTION) {
-      this.updateImageSize()
     }
 
     this.dragComponent = null
@@ -1450,20 +1442,20 @@ class Render3D extends PureComponent {
     })
   }
 
-  updateImageSize = () => {
-    if (!!this.canvasTexture) {
-      const activeEl = this.canvasTexture.getActiveObject()
-      // TODO: change string to enum
-      if (!!activeEl && activeEl.type === CanvasElements.Image) {
-        console.log('------------------------------------')
-        console.log(activeEl)
-        console.log('------------------------------------')
-      }
-    }
-  }
-
-  getSizeInCentimeters = pixels => {
-    return Math.round((pixels * 2.54) / DPI)
+  getSizeInCentimeters = ({ imageSize, scaleX, scaleY }) => {
+    const { scaleFactor } = this.state
+    const size = {}
+    const { width, height } = imageSize
+    const scaleXTemp = scaleX / scaleFactor
+    const scaleYTemp = scaleY / scaleFactor
+    const scaledWidth = width * scaleXTemp
+    const scaledHeight = height * scaleYTemp
+    console.log('------------------------------------')
+    console.log(scaledWidth, scaledHeight)
+    console.log('------------------------------------')
+    ;(size.width = Math.round((scaledWidth * 2.54) / DPI)),
+      (size.height = Math.round((scaledHeight * 2.54) / DPI))
+    return size
   }
 }
 
