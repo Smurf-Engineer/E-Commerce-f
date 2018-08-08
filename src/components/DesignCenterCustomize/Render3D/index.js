@@ -1450,11 +1450,8 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactor
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    console.log('------------------------------------')
-    console.log(scaledWidth, scaledHeight)
-    console.log('------------------------------------')
-    ;(size.width = Math.round((scaledWidth * 2.54) / DPI)),
-      (size.height = Math.round((scaledHeight * 2.54) / DPI))
+    size.width = Math.round((scaledWidth * 2.54) / DPI)
+    size.height = Math.round((scaledHeight * 2.54) / DPI)
     return size
   }
 }
