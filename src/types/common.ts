@@ -121,6 +121,7 @@ export interface Product {
   binding?: ExtraFile
   zipper?: ExtraFile
   bibBrace?: ExtraFile
+  weight: number
 }
 
 export type DesignType = {
