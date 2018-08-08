@@ -26,6 +26,7 @@ interface Props {
   onLoadModel?: (loading: boolean) => void
   threeDmodel?: React.ReactNode
   customProduct?: boolean
+  customImage?: string
 }
 
 interface StateProps {
@@ -64,7 +65,13 @@ class ImageSlider extends React.Component<Props, StateProps> {
   }
 
   render() {
-    const { images, threeDmodel, customProduct, moreImages } = this.props
+    const {
+      images,
+      threeDmodel,
+      customProduct,
+      customImage,
+      moreImages
+    } = this.props
     const { index } = this.state
 
     // TODO: Change this code when client provides the images
@@ -85,7 +92,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
     }
 
     const ThumbnailsArrayWith3D = [
-      images.front,
+      customImage,
       images.front,
       images.right,
       images.back,
