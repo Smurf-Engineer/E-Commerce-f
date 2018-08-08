@@ -24,5 +24,9 @@ export default defineMessages({
   searchInputPlaceholder: {
     id: 'components.SymbolTab.searchInputPlaceholder',
     defaultMessage: 'Search Symbol Library'
+  },
+  notFoundSymbol: {
+    id: 'components.SymbolTab.notFoundSymbol',
+    defaultMessage: 'Your search did not match with any symbol'
   }
 })

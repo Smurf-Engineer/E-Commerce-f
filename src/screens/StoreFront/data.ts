@@ -44,6 +44,7 @@ export const getSingleTeamStore = gql`
             description: short_description
             collections
             isTopProduct
+            weight
             priceRange {
               quantity
               price
@@ -109,6 +110,7 @@ export const getTeamStoreMutation = graphql(
               description: short_description
               collections
               isTopProduct
+              weight
               priceRange {
                 quantity
                 price

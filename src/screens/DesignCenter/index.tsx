@@ -124,6 +124,7 @@ interface Props extends RouteComponentProps<any> {
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
+  searchClipParam: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -181,6 +182,7 @@ interface Props extends RouteComponentProps<any> {
   setCanvasJsonAction: (canvas: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setAccessoryColorAction: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -401,7 +403,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       zipperColor,
       bibColor,
       setStitchingColorAction,
-      setAccessoryColorAction
+      setAccessoryColorAction,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -545,7 +549,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setStitchingColorAction,
                 bindingColor,
                 zipperColor,
-                bibColor
+                bibColor,
+                searchClipParam,
+                setSearchClipParamAction
               }}
               onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}

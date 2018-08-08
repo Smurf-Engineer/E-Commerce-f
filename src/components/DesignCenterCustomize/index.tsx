@@ -57,6 +57,7 @@ interface Props {
   undoChanges: Change[]
   redoChanges: Change[]
   product?: Product
+  searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -87,6 +88,7 @@ interface Props {
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -147,7 +149,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       bindingColor,
       zipperColor,
       bibColor,
-      onAccessoryColorSelected
+      onAccessoryColorSelected,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -190,7 +194,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             zipperColor,
             bibColor,
             onAccessoryColorSelected,
-            product
+            product,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}

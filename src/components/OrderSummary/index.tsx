@@ -39,6 +39,7 @@ interface Props {
   discount?: number
   onlyRead?: boolean
   country?: string
+  weight?: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -80,7 +81,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     )
     const youSaved = Number(totalWithoutDiscount) - total
 
-    const shippingTotal = get(data, 'shipping.flat_rate', 0)
+    const shippingTotal = get(data, 'shipping.total', 0)
 
     return (
       <Container>
@@ -149,13 +150,14 @@ export class OrderSummary extends React.Component<Props, {}> {
 
 interface OwnProps {
   country?: string
+  weight?: string
 }
 
 const OrderSummaryEnhance = compose(
   graphql(getTaxQuery, {
-    options: ({ country }: OwnProps) => ({
-      skip: !country,
-      variables: { country },
+    options: ({ country, weight }: OwnProps) => ({
+      skip: !country || !weight,
+      variables: { country, weight },
       fetchPolicy: 'network-only'
     })
   })
