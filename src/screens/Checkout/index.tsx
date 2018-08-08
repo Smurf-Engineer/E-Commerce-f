@@ -52,6 +52,12 @@ interface CartItems {
   itemDetails: CartItemDetail[]
 }
 
+interface AddressObj {
+  country: string
+  state: string
+  zipCode: string
+}
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   firstName: string
@@ -220,6 +226,14 @@ class Checkout extends React.Component<Props, {}> {
       cardBrand
     }
 
+    const taxAddress: AddressObj | '' = shippingAddress.country &&
+      shippingAddress.stateProvince &&
+      shippingAddress.zipCode && {
+        country: shippingAddress.country,
+        state: shippingAddress.stateProvince,
+        zipCode: shippingAddress.zipCode
+      }
+
     const { state: stateLocation } = location
     const { ShippingTab, RevieTab, PaymentTab } = CheckoutTabs
 
@@ -359,6 +373,7 @@ class Checkout extends React.Component<Props, {}> {
                 subtotal={total}
                 discount={10}
                 country={billingCountry}
+                shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
                 {...{ total, totalWithoutDiscount }}
@@ -567,6 +582,7 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.category_id')
       unset(cartItem, 'product.temperatures')
       unset(cartItem, 'product.sports')
+      unset(cartItem, 'product.weight')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
       })
@@ -585,7 +601,12 @@ class Checkout extends React.Component<Props, {}> {
       shippingAddress,
       billingAddress,
       paypalData: paypalObj || null,
-      countrySubsidiary: billingCountry
+      countrySubsidiary: billingCountry,
+      taxId: '-996',
+      taxAmount: '8.75%',
+      shippingId: '294593',
+      shippingCarrier: 'nonups',
+      shippingAmount: '12.34'
     }
 
     try {

@@ -655,6 +655,7 @@ export interface NetsuiteShipping {
   internal_id: string
   subsidiary: string
   name: string
+  carrier: string
   flat_rate: string
   rate_type: string
 }
