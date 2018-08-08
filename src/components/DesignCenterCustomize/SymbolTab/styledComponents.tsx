@@ -98,3 +98,19 @@ export const Icon = styled.img`
   width: 48px;
   height: 48px;
 `
+
+export const NotFound = styled.div`
+  width: 100%;
+  margin-top: 40px;
+  font-family: 'Avenir Next';
+  text-align: center;
+`
+
+export const Loading = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+`
