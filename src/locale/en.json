@@ -813,7 +813,7 @@
   "components.SymbolTab.fill": "Fill",
   "components.SymbolTab.outline": "Outline",
   "components.SymbolTab.searchInputPlaceholder": "Search Symbol Library",
-  "components.SymbolTab.notFountSymbol":
+  "components.SymbolTab.notFoundSymbol":
     "Your search did not match with any symbol",
   "components.Tabs.title": "Add Text",
   "components.TextTab.title": "Add Text",
