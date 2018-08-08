@@ -45,7 +45,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -304,9 +304,11 @@ export interface Palette {
 }
 
 export interface UserType {
+  id: string
   name: string
   lastName: string
   token: string
+  email: string
 }
 
 export interface AntColumns {
