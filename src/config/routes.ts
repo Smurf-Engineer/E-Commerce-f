@@ -1,4 +1,5 @@
 /* Routes */
+import CustomProductDetail from '../screens/CustomProductDetail'
 import FitAndSizing from '../screens/FitAndSizing'
 import WorkAtJakroo from '../screens/WorkAtJakroo'
 import AboutUsPage from '../screens/AboutUsPage'
@@ -31,6 +32,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/custom-product',
+    name: 'customProductDetail',
+    component: CustomProductDetail
+  },
   {
     path: '/fit-and-sizing',
     name: 'fitAndSizing',

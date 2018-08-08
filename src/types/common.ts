@@ -109,6 +109,7 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  genderId: number
   productTotal?: number
   unitPrice?: number
   sizeRange: ItemDetailType[]

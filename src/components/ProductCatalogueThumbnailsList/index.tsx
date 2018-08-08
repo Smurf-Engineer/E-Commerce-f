@@ -104,6 +104,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
               <ProductThumbnail
                 id={product.id}
                 yotpoId={product.yotpoId}
+                designId={shortId}
                 footer={
                   <FooterThumbnailLocker
                     {...{

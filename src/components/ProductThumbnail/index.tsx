@@ -31,6 +31,7 @@ interface Props {
   hideCustomButton?: boolean
   hideQuickView?: boolean
   yotpoId: string
+  designId?: string
   history: any
   isStoreThumbnail?: boolean
   teamStoreShortId?: string
@@ -81,9 +82,19 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   getUrlProduct = () => {
-    const { id, yotpoId, teamStoreShortId, gender } = this.props
+    const {
+      id,
+      yotpoId,
+      teamStoreShortId,
+      gender,
+      myLockerList,
+      designId
+    } = this.props
     if (teamStoreShortId) {
       return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
+    }
+    if (myLockerList) {
+      return `/custom-product?${designId && `id=${designId}`}`
     }
     return `/product?id=${id}&yotpoId=${yotpoId}${
       gender ? `&gender=${gender}` : ''
