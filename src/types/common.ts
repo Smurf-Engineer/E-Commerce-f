@@ -13,6 +13,14 @@ export interface QueryProps {
   subscribeToMore?: (options: any) => () => void
 }
 
+export interface DesignSaved {
+  id: number
+  name: string
+  svg: string
+  product: Product
+  style: Style
+}
+
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
@@ -113,6 +121,7 @@ export interface Product {
   binding?: ExtraFile
   zipper?: ExtraFile
   bibBrace?: ExtraFile
+  weight: number
 }
 
 export type DesignType = {
@@ -296,9 +305,11 @@ export interface Palette {
 }
 
 export interface UserType {
+  id: string
   name: string
   lastName: string
   token: string
+  email: string
 }
 
 export interface AntColumns {
@@ -377,6 +388,7 @@ export interface ModelConfig {
   brandingSvg?: string
   brandingPng?: string
   label: string
+  size: number
   design: {
     name: string
     colors: string[]
@@ -454,7 +466,7 @@ export interface OrderDetailsInfo {
   billingCity: string
   billingZipCode: string
   shippingTax: number
-  netsuit: NetsuiteObject
+  netsuit?: NetsuiteObject
   payment: PaymentCharges
   cart: CartItems[]
   status: string
@@ -642,13 +654,11 @@ export interface NetsuiteTax {
 }
 
 export interface NetsuiteShipping {
-  restrictions: NetsuiteShippingRestrictions
-  weightTable: NetsuiteShippingWeighTable[]
-  internalId: string
+  internal_id: string
   subsidiary: string
   name: string
-  flatRate: string
-  rateType: string
+  flat_rate: string
+  rate_type: string
 }
 
 export interface NetsuiteShippingRestrictions {
@@ -730,6 +740,7 @@ export interface DesignItem {
 export interface Country {
   name: string
   code: string
+  geonameId: string
 }
 
 export interface CountryRegion {
@@ -790,4 +801,24 @@ export interface SizesTableType {
 export interface Chart {
   title: string
   tables: SizesTableType[]
+}
+
+export interface Change {
+  type: ChangeType
+  state: any
+}
+
+export type ChangeType =
+  | 'colors'
+  | 'add'
+  | 'delete'
+  | 'move'
+  | 'rotate'
+  | 'resize'
+  | 'duplicate'
+
+export type ConfigCanvasObj = {
+  src: string
+  style: any
+  position: any
 }

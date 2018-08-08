@@ -25,6 +25,7 @@ import {
 import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
   Container,
+  ButtonWrapper,
   StyledEmptyButton,
   DeleteConfirmMessage,
   LoadingContainer
@@ -110,7 +111,7 @@ class MyCards extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
 
-    if (!!cards.length || !showCardForm) {
+    if ((cards && !!cards.length) || !showCardForm) {
       const defaultCard = find(cards, { id: idDefaultCard })
 
       showCardFormAction(false, defaultCard)
@@ -156,9 +157,11 @@ class MyCards extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
-          {formatMessage(messages.addCard)}
-        </StyledEmptyButton>
+        <ButtonWrapper {...{ listForMyAccount }}>
+          <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
+            {formatMessage(messages.addCard)}
+          </StyledEmptyButton>
+        </ButtonWrapper>
         <MyCardsList
           items={cards}
           {...{

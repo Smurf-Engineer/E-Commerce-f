@@ -28,6 +28,7 @@ export const GetDesignQuery = gql`
         temperatures: temperature_range
         collections
         isTopProduct
+        weight
         intendedUse: intended_use
         images: pictures {
           front: front_image
@@ -102,6 +103,7 @@ export const GetProductsByIdQuery = gql`
       }
       collections
       isTopProduct
+      weight
       intendedUse: intended_use
       images: pictures {
         front: front_image
@@ -142,6 +144,7 @@ export const getTeamStoresRelated = gql`
           name: description
         }
         isTopProduct
+        weight
         priceRange {
           quantity
           price

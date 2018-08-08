@@ -12,12 +12,12 @@ import {
   Label,
   InputTitleContainer,
   ErrorMsg,
-  ShipTopPoAPO
+  ShipTopPoAPO,
+  StyledCityInput
 } from './styledComponents'
 import { ClickParam } from '../../types/common'
 import CountrySelect from '../CountrySelect'
 import RegionSelect from '../RegionSelect'
-import CitySelect from '../CitySelect'
 
 const COUNTRY_VALUE_ID = 'country'
 const STATE_VALUE_ID = 'stateProvince'
@@ -25,6 +25,7 @@ const CITY_VALUE_ID = 'city'
 
 interface StateProps {
   selectedCountry: string | undefined
+  selectedCountryId: string | undefined
   selectedRegion: string | undefined
   selectedCity: string | undefined
 }
@@ -48,6 +49,7 @@ interface Props {
 class ShippingAddressForm extends React.Component<Props, StateProps> {
   state = {
     selectedCountry: '',
+    selectedCountryId: '',
     selectedRegion: '',
     selectedCity: ''
   }
@@ -67,7 +69,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       formatMessage
     } = this.props
 
-    const { selectedCountry, selectedRegion, selectedCity } = this.state
+    const { selectedCountry, selectedRegion, selectedCountryId } = this.state
 
     return (
       <ShippingFormContainer>
@@ -139,7 +141,12 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <CountrySelect
-              {...{ selectedCountry, formatMessage }}
+              {...{ formatMessage }}
+              selectedCountry={
+                selectedCountry
+                  ? `${selectedCountry}-${selectedCountryId}`
+                  : undefined
+              }
               handleCountryChange={this.handleCountryChange}
             />
             {!country &&
@@ -155,7 +162,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
             <RegionSelect
               {...{ formatMessage }}
               disabled={!country}
-              country={selectedCountry}
+              country={selectedCountryId}
               region={selectedRegion}
               handleRegionChange={this.handleRegionChange}
             />
@@ -169,12 +176,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               <Label>{formatMessage(messages.cityLabel)}</Label>
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
-            <CitySelect
-              {...{ selectedCity, formatMessage }}
-              disabled={!selectedRegion}
-              country={selectedCountry}
-              region={selectedRegion}
-              handleCityChange={this.handleCityChange}
+            <StyledCityInput
+              id="city"
+              value={city}
+              onChange={this.handleInputChange}
+              maxLength="100"
             />
             {!city &&
               hasError && (
@@ -220,10 +226,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     )
   }
 
-  handleCountryChange = (value: any) => {
+  handleCountryChange = (value: any, countryId: string) => {
     const { inputChangeAction } = this.props
     this.setState({
       selectedCountry: value,
+      selectedCountryId: countryId,
       selectedRegion: '',
       selectedCity: ''
     })

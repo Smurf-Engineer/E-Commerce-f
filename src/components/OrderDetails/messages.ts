@@ -9,9 +9,13 @@ export default defineMessages({
     id: 'components.OrderDetails.title',
     defaultMessage: 'Order Details'
   },
-  back: {
-    id: 'components.OrderDetails.back',
+  backToHistory: {
+    id: 'components.OrderDetails.backToHistory',
     defaultMessage: 'Back to Order History'
+  },
+  backToOverview: {
+    id: 'components.OrderDetails.backToOverview',
+    defaultMessage: 'Back to Overview'
   },
   receipt: {
     id: 'components.OrderDetails.receipt',
@@ -80,5 +84,10 @@ export default defineMessages({
   payment: {
     id: 'components.OrderDetails.payment',
     defaultMessage: 'Payment'
+  },
+  annotation: {
+    id: 'components.OrderDetails.annotation',
+    defaultMessage:
+      '* For any cancelations or refunds inquiry, please contact Customer Service.'
   }
 })

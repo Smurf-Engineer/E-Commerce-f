@@ -19,6 +19,8 @@ import QuickView from '../../components/QuickView'
 import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES } from './constants'
+import Intercom from 'react-intercom'
+import config from '../../config/index'
 
 const { Content } = Layout
 
@@ -59,6 +61,8 @@ class MainLayout extends React.Component<Props, {}> {
     hideFooter: false
   }
 
+  state = {}
+
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
     setSearchParam(value)
@@ -87,7 +91,18 @@ class MainLayout extends React.Component<Props, {}> {
       }
     } = this.props
     const { login } = queryString.parse(search)
-    const userLogged = !!localStorage.getItem('user')
+
+    const appUser = JSON.parse(localStorage.getItem('user')) || {}
+
+    const userLogged = !!appUser
+
+    // Intercom data
+    const user = {
+      user_id: appUser.id,
+      email: appUser.email,
+      name: `${appUser.name} ${appUser.lastName}`
+    }
+    this.setState({ user })
 
     if (
       (pathname === '/faq' || pathname === '/shopping-cart') &&
@@ -195,6 +210,9 @@ class MainLayout extends React.Component<Props, {}> {
           hideSliderButtons={hideQuickViewSliderButtons}
           {...{ productId, history, yotpoId }}
         />
+        <div className="app">
+          <Intercom appID={config.intercomKey} {...this.props.user} />
+        </div>
       </Layout>
     )
   }

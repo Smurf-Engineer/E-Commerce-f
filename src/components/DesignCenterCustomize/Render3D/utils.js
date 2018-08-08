@@ -7,10 +7,9 @@ import {
   DUPLICATE_ACTION,
   BRING_TO_FRONT_ACTION,
   SCALE_ACTION,
-  ROTATE_ACTION
+  ROTATE_ACTION,
+  CANVAS_SIZE
 } from './config'
-
-const CANVAS_SIZE = 2048
 
 const calculateTriangleArea = (A, B, C) =>
   C.x * B.y - B.x * C.y - (C.x * A.y - A.x * C.y) + (B.x * A.y - A.x * B.y)

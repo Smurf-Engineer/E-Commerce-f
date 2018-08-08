@@ -51,6 +51,8 @@ import {
   SaveDesignType,
   DesignType,
   Style,
+  Change,
+  ConfigCanvasObj,
   StitchingColor,
   AccesoryColor
 } from '../../types/common'
@@ -70,11 +72,6 @@ interface DataProduct extends QueryProps {
 
 interface DataDesign extends QueryProps {
   designData?: DesignType
-}
-
-interface Change {
-  type: string
-  state: any
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -121,10 +118,12 @@ interface Props extends RouteComponentProps<any> {
   customize3dMounted: boolean
   svgOutputUrl: string
   tabChanged: boolean
+  product: Product
+  complexity: number
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
-  bidColor?: AccesoryColor
+  bibColor?: AccesoryColor
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -142,7 +141,7 @@ interface Props extends RouteComponentProps<any> {
   designResetAction: () => void
   designClearAction: () => void
   setSwipingTabAction: (swiping: boolean) => void
-  setThemeAction: (id: number) => void
+  setThemeAction: (id: number, product: Product) => void
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
@@ -157,7 +156,8 @@ interface Props extends RouteComponentProps<any> {
   setCanvasElement: (
     text: CanvasElement,
     typeEl: string,
-    update?: boolean
+    update?: boolean,
+    canvasObj?: ConfigCanvasObj
   ) => void
   setSelectedElement: (id: string, typeEl: string) => void
   removeCanvasElement: (id: string, typeEl: string) => void
@@ -347,7 +347,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       designClearAction,
       undoChanges,
       redoChanges,
-      setThemeAction,
       setStyleAction,
       openShareModal,
       openShareModalAction,
@@ -391,10 +390,12 @@ export class DesignCenter extends React.Component<Props, {}> {
       svgOutputUrl,
       setCanvasJsonAction,
       styleIndex,
+      product,
+      complexity,
       stitchingColor,
       bindingColor,
       zipperColor,
-      bidColor,
+      bibColor,
       setStitchingColorAction,
       setAccessoryColorAction
     } = this.props
@@ -417,6 +418,15 @@ export class DesignCenter extends React.Component<Props, {}> {
     let designObject = design
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId }
+    }
+
+    if (
+      !!dataProduct &&
+      !!dataProduct.product &&
+      !dataProduct.product.obj &&
+      !dataProduct.product.mtl
+    ) {
+      return <Redirect to="/us?lang=en&currency=usd" />
     }
 
     const {
@@ -463,13 +473,14 @@ export class DesignCenter extends React.Component<Props, {}> {
               {tabSelected === ThemeTabIndex && (
                 <ThemeTab
                   currentTheme={themeId}
-                  onSelectTheme={setThemeAction}
+                  onSelectTheme={this.handleOnSelectTheme}
                   {...{
                     loadingModel,
                     themeModalData,
                     openNewThemeModalAction,
                     designHasChanges,
-                    formatMessage
+                    formatMessage,
+                    productId
                   }}
                 />
               )}
@@ -489,8 +500,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                     openNewStyleModalAction,
                     designHasChanges,
                     formatMessage,
-                    styleIndex
+                    styleIndex,
+                    productId,
+                    themeId
                   }}
+                  complexity={complexity + 1}
                 />
               )}
             </div>
@@ -520,11 +534,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                 setCustomize3dMountedAction,
                 loadingData,
                 currentStyle,
+                undoChanges,
+                redoChanges,
+                product,
                 stitchingColor,
                 setStitchingColorAction,
                 bindingColor,
                 zipperColor,
-                bidColor
+                bibColor
               }}
               onAccessoryColorSelected={setAccessoryColorAction}
               currentTab={tabSelected}
@@ -568,7 +585,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 teamStoreId,
                 editDesignAction,
                 formatMessage,
-                svgOutputUrl
+                svgOutputUrl,
+                product
               }}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}
@@ -646,6 +664,13 @@ export class DesignCenter extends React.Component<Props, {}> {
         </Modal>
       </Layout>
     )
+  }
+
+  handleOnSelectTheme = (id: number) => {
+    const { setThemeAction, dataProduct } = this.props
+    if (dataProduct && dataProduct.product) {
+      setThemeAction(id, dataProduct.product)
+    }
   }
 }
 

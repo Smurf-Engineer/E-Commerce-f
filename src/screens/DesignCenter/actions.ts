@@ -53,6 +53,8 @@ import {
   TeamStoreItemtype,
   CanvasElement,
   SaveDesignType,
+  ConfigCanvasObj,
+  Product,
   StitchingColor,
   AccesoryColor
 } from '../../types/common'
@@ -127,9 +129,10 @@ export const setSwipingTabAction = (isSwiping: boolean): AnyAction => ({
   isSwiping
 })
 
-export const setThemeAction = (id: number): AnyAction => ({
+export const setThemeAction = (id: number, product: Product): AnyAction => ({
   type: SET_THEME_SELECTED_ACTION,
-  id
+  id,
+  product
 })
 
 export const openSaveDesignAction = (
@@ -212,12 +215,14 @@ export const setItemToAddAction = (
 export const setCanvasElement = (
   el: CanvasElement,
   typeEl: string,
-  update = false
+  update = false,
+  canvasObj: ConfigCanvasObj
 ): AnyAction => ({
   type: SET_CANVAS_ELEMENT_ACTION,
   el,
   typeEl,
-  update
+  update,
+  canvasObj
 })
 
 export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({

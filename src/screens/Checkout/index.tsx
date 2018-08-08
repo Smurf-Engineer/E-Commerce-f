@@ -229,14 +229,13 @@ class Checkout extends React.Component<Props, {}> {
 
     const shoppingCart = stateLocation.cart as CartItems[]
     const shoppingCartData = getShoppingCartData(shoppingCart)
-    const { total, totalWithoutDiscount } = shoppingCartData
+    const { total, totalWithoutDiscount, weightSum } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
         key={index}
         title={step}
         icon={<StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>}
-        clickable={currentStep > index}
         onClick={this.handleOnStepClick(index)}
       />
     ))
@@ -359,6 +358,8 @@ class Checkout extends React.Component<Props, {}> {
               <OrderSummary
                 subtotal={total}
                 discount={10}
+                country={billingCountry}
+                weight={weightSum}
                 formatMessage={intl.formatMessage}
                 {...{ total, totalWithoutDiscount }}
               />
@@ -495,7 +496,8 @@ class Checkout extends React.Component<Props, {}> {
       setLoadingPlaceOrderAction,
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
-      selectedCard: { id: cardId }
+      stripeToken,
+      selectedCard
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -532,6 +534,8 @@ class Checkout extends React.Component<Props, {}> {
       state: { cart }
     } = location
     const shoppingCart = cloneDeep(cart) as CartItems[]
+
+    const cardId = selectedCard && selectedCard.id
 
     /*
     * TODO: Find a better solution to unset these properties
@@ -570,11 +574,13 @@ class Checkout extends React.Component<Props, {}> {
         unset(itemDetail, 'gender.__typename')
         unset(itemDetail, 'fit.__typename')
         unset(itemDetail, 'size.__typename')
+        unset(itemDetail, '__typename')
       })
     })
     const orderObj = {
       paymentMethod,
       cardId,
+      tokenId: stripeToken,
       cart: shoppingCart,
       shippingAddress,
       billingAddress,

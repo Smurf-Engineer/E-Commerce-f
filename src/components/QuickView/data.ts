@@ -15,6 +15,7 @@ export const QuickViewQuery = gql`
       shortDescription: short_description
       collections
       details
+      weight
       genders {
         id
         name: gender
