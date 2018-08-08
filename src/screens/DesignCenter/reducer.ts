@@ -48,6 +48,7 @@ import {
   WHITE,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
+  SET_SEARCH_CLIPARTPARAM,
   Changes
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -117,7 +118,8 @@ export const initialState = fromJS({
   customize3dMounted: false,
   svgOutputUrl: '',
   uploadingFile: false,
-  images: []
+  images: [],
+  searchClipParam: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -381,10 +383,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
 
       if (!id && selectedElement) {
-        return state.merge({ text: '', selectedElement: id })
+        return state.merge({
+          text: '',
+          selectedElement: id,
+          searchClipParam: ''
+        })
       }
 
-      return state.set('selectedElement', id)
+      return state.merge({ selectedElement: id, searchClipParam: '' })
     }
     case SET_TEXT_FORMAT_ACTION:
       return state.setIn(['textFormat', action.key], action.value)
@@ -456,6 +462,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     default:
       return state
   }

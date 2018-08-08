@@ -54,6 +54,7 @@ export const SET_ACCESSORY_COLOR_ACTION = `${namespace}/SET_ACCESSORY_COLOR_ACTI
 
 export const SET_UPLOADING_FILE_ACTION = `${namespace}/SET_UPLOADING_FILE_ACTION`
 export const UPLOAD_FILE_ACTION_SUCCESS = `${namespace}/UPLOAD_FILE_ACTION_SUCCESS`
+export const SET_SEARCH_CLIPARTPARAM = `${namespace}/SET_SEARCH_CLIPARTPARAM`
 
 export enum DesignTabs {
   ThemeTab = 0,

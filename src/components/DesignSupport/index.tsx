@@ -25,7 +25,7 @@ const DesignSupport = ({ formatMessage }: Props) => {
         </UnderlinedLink>
       </Text>
       <Text>
-        <UnderlinedLink link="https://www.jakroo.com/us/fit-sizing.html">
+        <UnderlinedLink link="/fit-and-sizing">
           {formatMessage(messages.fit)}
         </UnderlinedLink>
       </Text>

@@ -128,6 +128,7 @@ interface Props extends RouteComponentProps<any> {
   bibColor?: AccesoryColor
   images: ImageFile[]
   uploadingFile: boolean
+  searchClipParam: string
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -184,6 +185,7 @@ interface Props extends RouteComponentProps<any> {
   uploadFileAction: (file: any) => void
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -407,7 +409,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       setAccessoryColorAction,
       uploadFileAction,
       images,
-      uploadingFile
+      uploadingFile,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -553,7 +557,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                 zipperColor,
                 bibColor,
                 images,
-                uploadingFile
+                uploadingFile,
+                searchClipParam,
+                setSearchClipParamAction
               }}
               onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}

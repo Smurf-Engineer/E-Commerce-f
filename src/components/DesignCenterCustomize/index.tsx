@@ -57,6 +57,7 @@ interface Props {
   images: ImageFile[]
   uploadingFile: boolean
   onUploadFile: (file: any) => void
+  searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -87,6 +88,7 @@ interface Props {
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -150,7 +152,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onAccessoryColorSelected,
       onUploadFile,
       images,
-      uploadingFile
+      uploadingFile,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -196,7 +200,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             product,
             onUploadFile,
             images,
-            uploadingFile
+            uploadingFile,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}

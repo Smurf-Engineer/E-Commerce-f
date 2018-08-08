@@ -1,4 +1,5 @@
 /* Routes */
+import FitAndSizing from '../screens/FitAndSizing'
 import WorkAtJakroo from '../screens/WorkAtJakroo'
 import AboutUsPage from '../screens/AboutUsPage'
 import TemplateDownload from '../screens/TemplateDownload'
@@ -30,6 +31,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/fit-and-sizing',
+    name: 'fitAndSizing',
+    component: FitAndSizing
+  },
   {
     path: '/work-at-jakroo',
     name: 'workAtJakroo',

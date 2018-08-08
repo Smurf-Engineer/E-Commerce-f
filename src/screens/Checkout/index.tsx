@@ -229,14 +229,13 @@ class Checkout extends React.Component<Props, {}> {
 
     const shoppingCart = stateLocation.cart as CartItems[]
     const shoppingCartData = getShoppingCartData(shoppingCart)
-    const { total, totalWithoutDiscount } = shoppingCartData
+    const { total, totalWithoutDiscount, weightSum } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
         key={index}
         title={step}
         icon={<StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>}
-        clickable={currentStep > index}
         onClick={this.handleOnStepClick(index)}
       />
     ))
@@ -360,6 +359,7 @@ class Checkout extends React.Component<Props, {}> {
                 subtotal={total}
                 discount={10}
                 country={billingCountry}
+                weight={weightSum}
                 formatMessage={intl.formatMessage}
                 {...{ total, totalWithoutDiscount }}
               />

@@ -3,6 +3,7 @@ import get from 'lodash/get'
 
 export const getShoppingCartData = (shoppingCart: CartItems[]) => {
   let totalSum = 0
+  let weightSum = 0
   let totalWithoutDiscount = 0
   let priceRangeToApply = 0
   let show25PercentMessage = false
@@ -16,6 +17,8 @@ export const getShoppingCartData = (shoppingCart: CartItems[]) => {
         return itemDetail.quantity
       })
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
+
+      weightSum += get(cartItem, 'product.weight', 0) * quantitySum
 
       // increase number of products in cart
       numberOfProducts = numberOfProducts + quantitySum
@@ -72,6 +75,7 @@ export const getShoppingCartData = (shoppingCart: CartItems[]) => {
   }
   return {
     total: totalSum,
+    weightSum,
     totalWithoutDiscount,
     priceRangeToApply,
     nameOfFirstProduct,

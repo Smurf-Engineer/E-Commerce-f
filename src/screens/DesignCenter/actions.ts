@@ -47,7 +47,8 @@ import {
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
-  SET_UPLOADING_FILE_ACTION
+  SET_UPLOADING_FILE_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import {
   AnyAction,
@@ -340,4 +341,9 @@ export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
   id
+})
+
+export const setSearchClipParamAction = (param: string) => ({
+  type: SET_SEARCH_CLIPARTPARAM,
+  param
 })

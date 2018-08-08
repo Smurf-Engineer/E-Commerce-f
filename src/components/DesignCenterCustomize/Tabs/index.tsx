@@ -49,6 +49,7 @@ interface Props {
   images: ImageFile[]
   uploadingFile: boolean
   onUploadFile: (file: any) => void
+  searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -65,6 +66,7 @@ interface Props {
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 const Tabs = ({
@@ -104,7 +106,9 @@ const Tabs = ({
   product,
   onUploadFile,
   images,
-  uploadingFile
+  uploadingFile,
+  searchClipParam,
+  setSearchClipParamAction
 }: Props) => {
   return (
     <Container>
@@ -157,7 +161,9 @@ const Tabs = ({
             {...{
               onApplyArt,
               formatMessage,
-              onSelectArtFormat
+              onSelectArtFormat,
+              searchClipParam,
+              setSearchClipParamAction
             }}
             selectedElement={canvas.path[selectedElement]}
           />

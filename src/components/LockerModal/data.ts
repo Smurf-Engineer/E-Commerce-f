@@ -19,6 +19,7 @@ export const desginsQuery = gql`
           code
           yotpoId: yotpo_id
           type: name
+          weight
           description: short_description
           priceRange {
             quantity
