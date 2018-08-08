@@ -1145,7 +1145,6 @@ class Render3D extends PureComponent {
         const { onCanvasElementResized } = this.props
         onCanvasElementResized({
           id,
-          type: 'text',
           oldScaleX,
           oldScaleY,
           scaleX,
