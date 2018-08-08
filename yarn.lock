@@ -6904,6 +6904,12 @@ promise@^8.0.1:
   dependencies:
     asap "~2.0.3"
 
+prop-types@15.5.8:
+  version "15.5.8"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.5.8.tgz#6b7b2e141083be38c8595aa51fc55775c7199394"
+  dependencies:
+    fbjs "^0.8.9"
+
 prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
@@ -7587,6 +7593,12 @@ react-google-login@^3.0.4:
   dependencies:
     "@types/react" "*"
     prop-types "^15.6.0"
+
+react-intercom@^1.0.14:
+  version "1.0.14"
+  resolved "https://registry.yarnpkg.com/react-intercom/-/react-intercom-1.0.14.tgz#d6e8f88a6d9826b4aa7a40bf6db2feb9b6f1eefd"
+  dependencies:
+    prop-types "15.5.8"
 
 react-intl@^2.4.0:
   version "2.4.0"

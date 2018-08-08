@@ -30,6 +30,7 @@ export const GetProductsQuery = gql`
         shortDescription: short_description
         collections
         isTopProduct
+        weight
         genders {
           id
           name: gender

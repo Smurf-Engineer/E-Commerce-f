@@ -61,3 +61,13 @@ export enum DesignTabs {
 
 export const BLACK = 'black'
 export const WHITE = 'white'
+
+export enum Changes {
+  Colors = 'colors',
+  Add = 'add',
+  Delete = 'delete',
+  Move = 'move',
+  Rotate = 'rotate',
+  Resize = 'resize',
+  Duplicate = 'duplicate'
+}

@@ -37,6 +37,7 @@ import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
+import fitAndSizing from '../screens/FitAndSizing/reducer'
 import { Reducer } from '../types/common'
 
 export interface ReducersObject {
@@ -78,6 +79,7 @@ export interface ReducersObject {
   myFiles: any
   orderHistory: any
   overview: any
+  fitAndSizing: any
 }
 
 const appInitialState = fromJS({
@@ -168,6 +170,7 @@ const rootReducer = combineReducers({
   myFiles,
   orderHistory,
   overview,
+  fitAndSizing,
   responsive: responsiveReducer,
   app: appReducer
 })

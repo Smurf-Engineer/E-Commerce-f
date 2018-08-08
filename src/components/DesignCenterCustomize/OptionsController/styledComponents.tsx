@@ -17,6 +17,7 @@ export const Options = styled.div`
 
 interface OptionsProps {
   withMargin?: boolean
+  disabled?: boolean
 }
 
 export const OptionButton = styled.div`
@@ -26,7 +27,10 @@ export const OptionButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  cursor: ${({ disabled }: OptionsProps) =>
+    disabled ? 'not-allowed' : 'pointer'};
+  background-color: ${({ disabled }: OptionsProps) =>
+    disabled ? '#f5f5f5' : '#fff'};
   margin: ${({ withMargin }: OptionsProps) =>
     withMargin ? '16px 0px' : '0px'};
 `
