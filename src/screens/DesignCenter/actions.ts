@@ -45,7 +45,8 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
-  SET_ACCESSORY_COLOR_ACTION
+  SET_ACCESSORY_COLOR_ACTION,
+  CANVAS_ELEMENT_RESIZED_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -56,7 +57,8 @@ import {
   ConfigCanvasObj,
   Product,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  CanvasResized
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -333,4 +335,11 @@ export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
   id
+})
+
+export const onCanvasElementResizedAction = (
+  element: CanvasResized
+): AnyAction => ({
+  type: CANVAS_ELEMENT_RESIZED_ACTION,
+  element
 })

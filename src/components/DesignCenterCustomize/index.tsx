@@ -18,7 +18,8 @@ import {
   Product,
   StitchingColor,
   AccesoryColor,
-  ConfigCanvasObj
+  ConfigCanvasObj,
+  CanvasResized
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -87,6 +88,7 @@ interface Props {
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  onCanvasElementResized: (element: CanvasResized) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -147,7 +149,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       bindingColor,
       zipperColor,
       bibColor,
-      onAccessoryColorSelected
+      onAccessoryColorSelected,
+      onCanvasElementResized
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -232,7 +235,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               stitchingColor,
               bindingColor,
               zipperColor,
-              bibColor
+              bibColor,
+              onCanvasElementResized
             }}
           />
         ) : (

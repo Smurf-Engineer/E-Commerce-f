@@ -54,7 +54,8 @@ import {
   Change,
   ConfigCanvasObj,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  CanvasResized
 } from '../../types/common'
 import {
   getProductQuery,
@@ -181,6 +182,7 @@ interface Props extends RouteComponentProps<any> {
   setCanvasJsonAction: (canvas: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
   setAccessoryColorAction: (color: AccesoryColor, id: string) => void
+  onCanvasElementResizedAction: (element: CanvasResized) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -401,8 +403,15 @@ export class DesignCenter extends React.Component<Props, {}> {
       zipperColor,
       bibColor,
       setStitchingColorAction,
-      setAccessoryColorAction
+      setAccessoryColorAction,
+      onCanvasElementResizedAction
     } = this.props
+
+    console.log('----------undo-------------')
+    console.log(undoChanges)
+    console.log('----------redo-------------')
+    console.log(redoChanges)
+    console.log('---------------------------')
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -572,6 +581,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onSelectTextFormat={setTextFormatAction}
               onSelectArtFormat={setArtFormatAction}
               onUnmountTab={setCanvasJsonAction}
+              onCanvasElementResized={onCanvasElementResizedAction}
             />
             <PreviewTab
               {...{

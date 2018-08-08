@@ -52,6 +52,9 @@ export const SET_DESIGN_HAS_CHANGES = `${namespace}/SET_DESIGN_HAS_CHANGES`
 export const SET_STITCHING_COLOR_ACTION = `${namespace}/SET_STITCHING_COLOR_ACTION`
 export const SET_ACCESSORY_COLOR_ACTION = `${namespace}/SET_ACCESSORY_COLOR_ACTION`
 
+export const CANVAS_ELEMENT_RESIZED_ACTION = `${namespace}/CANVAS_ELEMENT_RESIZED_ACTION`
+export const CANVAS_ELEMENT_DRAGGED_ACTION = `${namespace}/CANVAS_ELEMENT_DRAGGED_ACTION`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,
