@@ -315,6 +315,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </BuyNowOptions>
     )
 
+    const validateShowCompare = !!COMPARABLE_PRODUCTS.find(p => p === name)
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -343,7 +345,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                   </TitleSubtitleContainer>
                   <CompareButton
-                    show={this.validateShowCompare(name)}
+                    show={validateShowCompare}
                     onClick={this.gotoCompare}
                   >
                     {formatMessage(messages.compareLabe)}
@@ -480,10 +482,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   closeFitInfoModal = () => {
     const { openFitInfoAction } = this.props
     openFitInfoAction(false)
-  }
-
-  validateShowCompare = (name: string): boolean => {
-    return !!COMPARABLE_PRODUCTS.find(product => product === name)
   }
 }
 
