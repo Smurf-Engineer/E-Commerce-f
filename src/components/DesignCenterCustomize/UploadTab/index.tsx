@@ -8,6 +8,7 @@ import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
 import last from 'lodash/last'
 import withLoading from '../../WithLoading'
+import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
 import { userfilesQuery } from './data'
 import Dragger from '../../DraggerWithLoading'
@@ -131,6 +132,7 @@ class UploadTab extends React.PureComponent<Props, State> {
 
 const UploadTabEnhance = compose(
   graphql<Data>(userfilesQuery),
+  withError,
   withLoading
 )(UploadTab)
 
