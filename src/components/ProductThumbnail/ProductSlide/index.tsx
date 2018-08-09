@@ -89,11 +89,13 @@ const ProductSlide = ({
             <Image src={image} onClick={onPressThumbnail} />
           </a>
         </Page>
-        {isHovered && (
-          <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
-            {labelButton}
-          </ButtonContainer>
-        )}
+        <AboveTablet>
+          {isHovered && (
+            <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
+              {labelButton}
+            </ButtonContainer>
+          )}
+        </AboveTablet>
       </ImageContainer>
     )
   }
@@ -133,13 +135,15 @@ const ProductSlide = ({
         )}
       </ImageTop>
       <SwipeableViews index={currentImage}>{imagePages}</SwipeableViews>
-      {isHovered && (
-        <Arrows>
-          <Arrow src={backIcon} onClick={onPressBack} />
-          <Arrow src={nextIcon} onClick={onPressNext} />
-        </Arrows>
-      )}
-      {isHovered && buttonToRender}
+      <AboveTablet>
+        {isHovered && (
+          <Arrows>
+            <Arrow src={backIcon} onClick={onPressBack} />
+            <Arrow src={nextIcon} onClick={onPressNext} />
+          </Arrows>
+        )}
+        {isHovered && buttonToRender}
+      </AboveTablet>
     </ImageContainer>
   )
 }
