@@ -75,7 +75,9 @@ export enum Changes {
   Drag = 'drag',
   Rotate = 'rotate',
   Resize = 'resize',
-  Duplicate = 'duplicate'
+  Duplicate = 'duplicate',
+  AccessoryColors = 'accessoryColor',
+  CanvasStyle = 'canvasStyle'
 }
 
 export enum CanvasElements {

@@ -190,14 +190,30 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         designHasChanges: true
       })
     }
-    case SET_STITCHING_COLOR_ACTION:
+    case SET_STITCHING_COLOR_ACTION: {
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const stitchingColor = state.get('stitchingColor')
       return state.merge({
         stitchingColor: action.stitchingColor,
         designHasChanges: true
       })
+    }
+
     case SET_ACCESSORY_COLOR_ACTION: {
       const { id, color } = action
-      return state.merge({ [id]: color, designHasChanges: true })
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = {
+        type: Changes.AccessoryColors,
+        state: { id, color }
+      }
+      return state.merge({
+        [id]: color,
+        designHasChanges: true,
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
     }
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
