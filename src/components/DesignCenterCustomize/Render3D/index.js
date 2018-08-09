@@ -1373,7 +1373,7 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
-            // FIXME: Does not change var already
+            // TODO: Change to DPI warning not to scale.
             // const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
             // const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
             // const scaleFactorTemp =
