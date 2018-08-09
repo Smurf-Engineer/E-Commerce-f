@@ -62,6 +62,8 @@ export const ROTATE_ACTION = 'ROTATE_ACTION'
 export const SCALE_ACTION = 'SCALE_ACTION'
 export const DRAG_ACTION = 'DRAG_ACTION'
 
+export const CHANGE_ACTIONS = [SCALE_ACTION, DRAG_ACTION]
+
 export const MESH_NAME = 'JV2_3D_MODEL'
 export const CANVAS_MESH = 'Canvas_Mesh'
 export const BRANDING_MESH = 'Branding_Mesh'

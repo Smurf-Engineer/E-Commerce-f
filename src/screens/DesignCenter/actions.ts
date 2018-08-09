@@ -46,10 +46,11 @@ import {
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
-  CANVAS_ELEMENT_RESIZED_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
-  SET_SEARCH_CLIPARTPARAM
+  SET_SEARCH_CLIPARTPARAM,
+  CANVAS_ELEMENT_RESIZED_ACTION,
+  CANVAS_ELEMENT_DRAGGED_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -61,7 +62,8 @@ import {
   Product,
   StitchingColor,
   AccesoryColor,
-  CanvasResized
+  CanvasResized,
+  CanvasDragged
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -354,6 +356,13 @@ export const onCanvasElementResizedAction = (
   element: CanvasResized
 ): AnyAction => ({
   type: CANVAS_ELEMENT_RESIZED_ACTION,
+  element
+})
+
+export const onCanvasElementDraggedAction = (
+  element: CanvasDragged
+): AnyAction => ({
+  type: CANVAS_ELEMENT_DRAGGED_ACTION,
   element
 })
 
