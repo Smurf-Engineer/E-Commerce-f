@@ -252,6 +252,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               bindingColor,
               zipperColor,
               bibColor,
+              canvas,
+              selectedElement,
               onCanvasElementResized
             }}
           />
@@ -271,12 +273,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     }
   }
 
-  handleOnApplyImage = (base64: string) => {
+  handleOnApplyImage = (file: ImageFile) => {
     const { selectedElement } = this.props
     if (selectedElement) {
-      this.render3D.applyImage(base64)
+      this.render3D.applyImage(file)
     } else {
-      this.render3D.applyCanvasEl({ base64, type: CanvasElements.Image })
+      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
     }
   }
 

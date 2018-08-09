@@ -3,14 +3,16 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import message from 'antd/lib/message'
 import Message from 'antd/lib/message'
+import remove from 'lodash/remove'
 import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
 import last from 'lodash/last'
 import withLoading from '../../WithLoading'
 import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
-import { userfilesQuery } from './data'
+import { userfilesQuery, deleteFileMutation } from './data'
 import Dragger from '../../DraggerWithLoading'
 import ImageList from '../ImageList'
 import messages from './messages'
@@ -46,9 +48,10 @@ interface Props {
   data: Data
   images: ImageFile[]
   uploadingFile: boolean
-  onApplyImage: (base64: string) => void
+  onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
+  deleteFile: (variables: {}) => Promise<any>
 }
 
 interface State {
@@ -56,13 +59,21 @@ interface State {
 }
 
 class UploadTab extends React.PureComponent<Props, State> {
+  componentWillReceiveProps(nextProps: Props) {
+    const {
+      uploadingFile: oldUploadingFile,
+      data: { refetch }
+    } = this.props
+    const { uploadingFile } = nextProps
+    if (uploadingFile !== oldUploadingFile && !uploadingFile) {
+      refetch()
+    }
+  }
   render() {
     const {
-      images: imagesRedux,
       data: { images: imagesData },
       uploadingFile
     } = this.props
-    const images = [...imagesRedux, ...imagesData]
     const dragger = (
       <Dragger loading={uploadingFile} onSelectImage={this.beforeUpload} />
     )
@@ -73,7 +84,11 @@ class UploadTab extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.title} />
           </Title>
         </Header>
-        <ImageList onClickImage={this.handleOnAddImage} {...{ images }} />
+        <ImageList
+          onClickImage={this.handleOnAddImage}
+          images={imagesData}
+          onClickDelete={this.handleOnDelete}
+        />
         <DraggerBottom>{dragger}</DraggerBottom>
         <Recommendation color="#E61737">
           <FormattedMessage {...messages.recommendationTitle} />
@@ -85,9 +100,9 @@ class UploadTab extends React.PureComponent<Props, State> {
     )
   }
 
-  handleOnAddImage = (url: string) => {
+  handleOnAddImage = (file: ImageFile) => {
     const { onApplyImage } = this.props
-    onApplyImage(url)
+    onApplyImage(file)
   }
 
   getFileExtension = (fileName: string) => {
@@ -125,6 +140,26 @@ class UploadTab extends React.PureComponent<Props, State> {
     return false
   }
 
+  handleOnDelete = async (fileId: number) => {
+    try {
+      const { deleteFile } = this.props
+      await deleteFile({
+        variables: { fileId },
+        update: (store: any) => {
+          const data = store.readQuery({ query: userfilesQuery })
+          const updatedImages = remove(
+            data.images,
+            (image: ImageFile) => image.id !== fileId
+          )
+          data.images = updatedImages
+          store.writeQuery({ query: userfilesQuery, data })
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+
   clearState = () => {
     this.setState({ file: null })
   }
@@ -132,6 +167,7 @@ class UploadTab extends React.PureComponent<Props, State> {
 
 const UploadTabEnhance = compose(
   graphql<Data>(userfilesQuery),
+  deleteFileMutation,
   withError,
   withLoading
 )(UploadTab)

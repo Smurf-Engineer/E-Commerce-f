@@ -23,7 +23,10 @@ import {
   ViewControls,
   ViewButton,
   ButtonWrapper,
-  ModalMessage
+  ModalMessage,
+  Size,
+  SizeBox,
+  SizeLabel
 } from './styledComponents'
 import {
   viewPositions,
@@ -48,7 +51,9 @@ import {
   FLATLOCK,
   ZIPPER,
   BINDING,
-  BIB_BRACE
+  BIB_BRACE,
+  DPI,
+  CM_PER_INCH
 } from '../../../constants'
 import {
   Changes,
@@ -83,6 +88,7 @@ class Render3D extends PureComponent {
     progress: 0,
     objectChildCount: 0,
     canvasEl: null,
+    scaleFactor: 1,
     oldScaleX: null,
     oldScaleY: null
   }
@@ -358,7 +364,11 @@ class Render3D extends PureComponent {
           /* Object materials */
           const { children } = object
           const objectChildCount = children.length
-          this.setState({ objectChildCount })
+          let scaleFactor = 1
+          if (!!currentStyle.size) {
+            scaleFactor = CANVAS_SIZE / currentStyle.size
+          }
+          this.setState({ scaleFactor, objectChildCount })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
@@ -441,7 +451,6 @@ class Render3D extends PureComponent {
           )
 
           /* Canvas */
-          /* TODO: Dynamic size? */
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
@@ -780,7 +789,9 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
-      openResetDesignModal
+      openResetDesignModal,
+      canvas,
+      selectedElement
     } = this.props
 
     {
@@ -801,12 +812,29 @@ class Render3D extends PureComponent {
     )*/
     }
 
+    let widthInCm = 0
+    let heightInCm = 0
+    const selectedImageElement = canvas.image[selectedElement]
+    if (!!selectedImageElement && !!selectedImageElement.imageSize) {
+      const { width, height } = this.getSizeInCentimeters(selectedImageElement)
+      widthInCm = width
+      heightInCm = height
+    }
+
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
+        {!!selectedImageElement && (
+          <SizeBox>
+            <SizeLabel>
+              <FormattedMessage {...messages.sizeMessage} />
+            </SizeLabel>
+            <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
+          </SizeBox>
+        )}
         <Render
           id="render-3d"
           innerRef={container => (this.container = container)}
@@ -906,18 +934,13 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (url, position = {}, idElement) => {
-    const {
-      onApplyCanvasEl,
-      currentStyle: { size }
-    } = this.props
-    let scaleFactor = 1
-    if (!!size) {
-      scaleFactor = CANVAS_SIZE / size
-    }
+  applyImage = (file = {}, position = {}, idElement) => {
+    const { onApplyCanvasEl } = this.props
+    const { scaleFactor } = this.state
+    const { fileUrl, size: imageSize } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
-      url,
+      fileUrl,
       img => {
         const imageEl = new fabric.Image(img, {
           id,
@@ -926,10 +949,10 @@ class Render3D extends PureComponent {
         })
         imageEl.scale(scaleFactor)
         this.canvasTexture.add(imageEl)
-        const el = { id }
+        const el = { id, imageSize, scaleX: scaleFactor, scaleY: scaleFactor }
         if (!idElement) {
           onApplyCanvasEl(el, 'image', undefined, {
-            src: url,
+            src: file,
             style: undefined,
             position
           })
@@ -1100,7 +1123,12 @@ class Render3D extends PureComponent {
         }
         break
       case CanvasElements.Image: {
-        canvasEl = { id }
+        canvasEl = {
+          id,
+          imageSize: { width: el.width, height: el.height },
+          scaleX: el.scaleX,
+          scaleY: el.scaleY
+        }
         break
       }
       case CanvasElements.Path: {
@@ -1139,12 +1167,13 @@ class Render3D extends PureComponent {
 
     if (action === SCALE_ACTION) {
       const activeEl = this.canvasTexture.getActiveObject()
-      const { scaleX, scaleY, id } = activeEl
+      const { scaleX, scaleY, id, type } = activeEl
       const { oldScaleX = 1, oldScaleY = 1 } = this.state
       if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
         const { onCanvasElementResized } = this.props
         onCanvasElementResized({
           id,
+          elementType: type,
           oldScaleX,
           oldScaleY,
           scaleX,
@@ -1196,7 +1225,7 @@ class Render3D extends PureComponent {
               this.applyText(el.text, el.style, { left, top })
               break
             case CanvasElements.Image:
-              this.applyImage(el.base64, { left, top })
+              this.applyImage(el.file, { left, top })
               break
             case CanvasElements.Path:
               this.applyClipArt(el.url, el.style, { left, top })
@@ -1412,6 +1441,19 @@ class Render3D extends PureComponent {
       okText: formatMessage(messages.modalWarningButtonText),
       maskClosable: true
     })
+  }
+
+  getSizeInCentimeters = ({ imageSize, scaleX, scaleY }) => {
+    const { scaleFactor } = this.state
+    const size = {}
+    const { width, height } = imageSize
+    const scaleXTemp = scaleX / scaleFactor
+    const scaleYTemp = scaleY / scaleFactor
+    const scaledWidth = width * scaleXTemp
+    const scaledHeight = height * scaleYTemp
+    size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
+    size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
+    return size
   }
 }
 
