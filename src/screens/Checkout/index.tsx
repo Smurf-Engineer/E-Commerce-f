@@ -568,10 +568,6 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: shippingAddress.zipCode
     }
 
-    console.log('---------------------------')
-    console.log(billingCountry, weightSum, taxAddress)
-    console.log('---------------------------')
-
     const data = client.readQuery({
       query: getTaxQuery,
       variables: {
@@ -586,10 +582,6 @@ class Checkout extends React.Component<Props, {}> {
     const shippingId = get(data, 'shipping.internalId', null)
     const shippingCarrier = get(data, 'shipping.carrier', null)
     const shippingAmount = get(data, 'shipping.total', null)
-
-    console.log('-------------data--------------')
-    console.log(data)
-    console.log('---------------------------')
 
     /*
     * TODO: Find a better solution to unset these properties
