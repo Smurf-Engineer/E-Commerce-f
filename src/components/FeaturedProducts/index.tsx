@@ -115,16 +115,19 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       return (
         <div {...{ key }}>
           <ProductThumbnail
-            id={id}
-            yotpoId={yotpoId}
-            type={type}
-            description={description}
-            isTopProduct={isTopProduct}
-            onPressCustomize={this.gotoDesignCenter}
-            onPressQuickView={openQuickView}
             images={images[0]}
-            priceRange={priceRange}
-            customizable={customizable}
+            onPressQuickView={openQuickView}
+            onPressCustomize={this.gotoDesignCenter}
+            customizableLabel={formatMessage(messages.customizable)}
+            {...{
+              id,
+              yotpoId,
+              type,
+              description,
+              isTopProduct,
+              priceRange,
+              customizable
+            }}
             labelButton={
               customizable ? (
                 formatMessage(messages.customize)
