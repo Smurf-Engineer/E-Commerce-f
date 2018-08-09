@@ -56,7 +56,8 @@ import {
   ConfigCanvasObj,
   StitchingColor,
   AccesoryColor,
-  ImageFile
+  ImageFile,
+  DesignSaved
 } from '../../types/common'
 import {
   getProductQuery,
@@ -129,6 +130,7 @@ interface Props extends RouteComponentProps<any> {
   images: ImageFile[]
   uploadingFile: boolean
   searchClipParam: string
+  savedDesign: SaveDesignType
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -150,7 +152,7 @@ interface Props extends RouteComponentProps<any> {
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
-  saveDesignIdAction: (id: string, svgUrl: string) => void
+  saveDesignIdAction: (id: string, svgUrl: string, design: DesignSaved) => void
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
@@ -218,9 +220,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     clearStoreAction()
   }
 
-  handleAfterSaveDesign = (id: string, svgUrl: string) => {
+  handleAfterSaveDesign = (id: string, svgUrl: string, design: DesignSaved) => {
     const { saveDesignIdAction } = this.props
-    saveDesignIdAction(id, svgUrl)
+    saveDesignIdAction(id, svgUrl, design)
     this.handleOnSelectTab(DesignTabs.PreviewTab)
   }
 
@@ -415,7 +417,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       images,
       uploadingFile,
       searchClipParam,
-      setSearchClipParamAction
+      setSearchClipParamAction,
+      savedDesign
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -609,7 +612,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 editDesignAction,
                 formatMessage,
                 svgOutputUrl,
-                product
+                product,
+                savedDesign
               }}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}

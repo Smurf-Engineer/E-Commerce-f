@@ -59,7 +59,8 @@ import {
   ConfigCanvasObj,
   Product,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  DesignSaved
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -181,10 +182,15 @@ export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const saveDesignIdAction = (id: string, svgUrl: string): AnyAction => ({
+export const saveDesignIdAction = (
+  id: string,
+  svgUrl: string,
+  design: DesignSaved
+): AnyAction => ({
   type: SAVE_DESIGN_ID,
   id,
-  svgUrl
+  svgUrl,
+  design
 })
 
 export const setCheckedTermsAction = (checked: boolean): AnyAction => ({
