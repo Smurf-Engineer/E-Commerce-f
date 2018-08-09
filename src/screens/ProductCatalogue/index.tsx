@@ -64,6 +64,7 @@ interface Props extends RouteComponentProps<any> {
   currentPage: number
   fakeWidth: number
   openSidebar: boolean
+  currentCurrency: string
   setFilterAction: (filter: {}) => void
   openQuickViewAction: (index: number) => void
   setSelectedFilters: (filter: object) => void
@@ -116,6 +117,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       fakeWidth,
       openSidebar,
       openQuickViewAction: openQuickView,
+      currentCurrency,
       data: { loading, filters: filtersGraph }
     } = this.props
 
@@ -235,7 +237,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             openQuickView,
                             history,
                             sortByLabel,
-                            currentPage
+                            currentPage,
+                            currentCurrency
                           }}
                         />
                       </ResultsColumn>
@@ -271,7 +274,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         openQuickView,
                         history,
                         sortByLabel,
-                        currentPage
+                        currentPage,
+                        currentCurrency
                       }}
                     />
                   </ResultsColumn>
@@ -341,7 +345,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 const mapStateToProps = (state: any) => {
   const productCatalogue = state.get('productCatalog').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...productCatalogue, ...responsive }
+  const langProps = state.get('languageProvider').toJS()
+  return { ...productCatalogue, ...responsive, ...langProps }
 }
 
 const ProductCatalogEnhance = compose(

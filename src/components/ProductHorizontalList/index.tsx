@@ -25,6 +25,7 @@ interface Props {
   onPressQuickView: (id: number) => void
   width?: string
   categoryFilter: Filter
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -34,7 +35,8 @@ export const ProductHorizontalList = ({
   onPressQuickView,
   width = '60%',
   genderFilter,
-  formatMessage
+  formatMessage,
+  currentCurrency
 }: Props) => {
   if (data.loading) {
     return (
@@ -83,7 +85,8 @@ export const ProductHorizontalList = ({
           priceRange,
           isTopProduct,
           collections,
-          yotpoId
+          yotpoId,
+          currentCurrency
         }}
         images={productImages}
         gender={genderId}

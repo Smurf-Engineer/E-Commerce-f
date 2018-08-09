@@ -29,6 +29,8 @@ export const QuickViewQuery = gql`
       priceRange {
         quantity
         price
+        abbreviation
+        shortName: short_name
       }
       yotpoAverageScore {
         total: total_reviews

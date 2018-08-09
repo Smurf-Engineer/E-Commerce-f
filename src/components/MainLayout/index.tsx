@@ -42,7 +42,7 @@ interface Props extends RouteComponentProps<any> {
   openLogin: boolean
   currentRegion: string
   currentLanguage: number
-  currentCurrency: number
+  currentCurrency: string
   yotpoId: string
   hideBottomHeader: boolean
   hideFooter: boolean
@@ -186,7 +186,7 @@ class MainLayout extends React.Component<Props, {}> {
           />
         </Header>
         <SearchResults
-          {...{ history }}
+          {...{ history, SearchResults }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}

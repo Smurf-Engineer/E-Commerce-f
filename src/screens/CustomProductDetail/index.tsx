@@ -9,6 +9,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import filter from 'lodash/filter'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
 import { GetDesignByIdQuery } from './data'
@@ -70,6 +71,7 @@ interface Props extends RouteComponentProps<any> {
   openFitInfo: boolean
   showDetails: boolean
   showSpecs: boolean
+  currentCurrency: string
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -93,7 +95,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       selectedFit,
       openFitInfo,
       showDetails,
-      showSpecs
+      showSpecs,
+      currentCurrency
     } = this.props
 
     const { formatMessage } = intl
@@ -129,9 +132,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const thumbnails = images && (images[genderIndex] || images[0])
 
-    const renderPrices =
+    const currencyPrices =
       product &&
-      product.priceRange.map(({ price, quantity }, index: number) => (
+      filter(product.priceRange, {
+        abbreviation: currentCurrency
+      })
+
+    const renderPrices =
+      currencyPrices &&
+      currencyPrices.map(({ price, quantity }, index: number) => (
         <AvailablePrices key={index}>
           <PriceQuantity {...{ index, price, quantity }} />
         </AvailablePrices>
@@ -397,7 +406,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('customProductDetail').toJS()
+const mapStateToProps = (state: any) => {
+  const productDetail = state.get('customProductDetail').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return { ...productDetail, ...langProps }
+}
 
 type OwnProps = {
   location?: any

@@ -107,6 +107,7 @@ interface Props extends RouteComponentProps<any> {
   skip: number
   showCardForm: boolean
   selectedCard: CreditCardData
+  currentCurrency: string
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -199,7 +200,8 @@ class Checkout extends React.Component<Props, {}> {
       showCardForm,
       showCardFormAction,
       selectCardToPayAction,
-      selectedCard
+      selectedCard,
+      currentCurrency
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -370,6 +372,7 @@ class Checkout extends React.Component<Props, {}> {
                     paymentMethod,
                     selectedCard
                   }}
+                  currency={currentCurrency}
                   cart={shoppingCart}
                   showContent={currentStep === RevieTab}
                   formatMessage={intl.formatMessage}
@@ -667,7 +670,16 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('checkout').toJS()
+// const mapStateToProps = (state: any) => state.get('checkout').toJS()
+
+const mapStateToProps = (state: any) => {
+  const checkoutProps = state.get('checkout').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return {
+    ...checkoutProps,
+    ...langProps
+  }
+}
 
 const CheckoutEnhance = compose(
   injectIntl,

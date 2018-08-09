@@ -10,6 +10,7 @@ import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import filter from 'lodash/filter'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -89,6 +90,7 @@ interface Props extends RouteComponentProps<any> {
   selectedFit: SelectedType
   loadingModel: boolean
   itemToAddCart: any
+  currentCurrency: string
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (id: number) => void
@@ -119,6 +121,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedFit,
       openFitInfo,
       setLoadingModel,
+      currentCurrency,
       data: { product }
     } = this.props
     const { formatMessage } = intl
@@ -167,7 +170,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         : imagesArray.filter(post => post.genderId !== images.genderId)
 
     if (product) {
-      renderPrices = product.priceRange.map((item: any, index: number) => (
+      const currencyPrices = filter(product.priceRange, {
+        abbreviation: currentCurrency
+      })
+
+      renderPrices = currencyPrices.map((item: any, index: number) => (
         <AvailablePrices key={index}>
           <PriceQuantity
             price={item.price}
@@ -480,7 +487,8 @@ const mapStateToProps = (state: any) => {
   const productDetail = state.get('productDetail').toJS()
   const menu = state.get('menu').toJS()
   const menuSports = state.get('menuSports').toJS()
-  return { ...productDetail, ...menu, ...menuSports }
+  const langProps = state.get('languageProvider').toJS()
+  return { ...productDetail, ...menu, ...menuSports, ...langProps }
 }
 
 type OwnProps = {

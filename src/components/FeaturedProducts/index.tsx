@@ -29,6 +29,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   history: any
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   openQuickView: (id: number) => void
 }
@@ -84,6 +85,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
     const {
       openQuickView,
       formatMessage,
+      currentCurrency,
       data: { loading, featuredProducts, error }
     } = this.props
 
@@ -115,6 +117,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       return (
         <div {...{ key }}>
           <ProductThumbnail
+            {...{ currentCurrency }}
             id={id}
             yotpoId={yotpoId}
             type={type}

@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose } from 'react-apollo'
+import filter from 'lodash/filter'
 import {
   Container,
   Footer,
@@ -37,6 +38,7 @@ interface Props {
   teamStoreShortId?: string
   customizable?: boolean
   myLockerList?: boolean
+  currentCurrency: string
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -119,12 +121,22 @@ class ProductThumbnail extends React.Component<Props, {}> {
       hideCustomButton,
       hideQuickView,
       customizable,
-      myLockerList
+      myLockerList,
+      currentCurrency
     } = this.props
     const { isHovered, currentImage } = this.state
-    const price =
+
+    const currencyPrices =
       priceRange &&
-      `$${priceRange[0].price} - $${priceRange[priceRange.length - 1].price}`
+      filter(priceRange, {
+        abbreviation: currentCurrency
+      })
+
+    const price =
+      currencyPrices &&
+      `$${currencyPrices[0].price} - $${
+        currencyPrices[currencyPrices.length - 1].price
+      }`
 
     let urlProduct = this.getUrlProduct()
     return (
@@ -140,7 +152,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             hideCustomButton,
             hideQuickView,
             urlProduct,
-            myLockerList
+            myLockerList,
+            currentCurrency
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

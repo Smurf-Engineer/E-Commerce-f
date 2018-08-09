@@ -58,6 +58,7 @@ interface Props {
   onPressPrivate?: (id: string, isPrivate: boolean) => void
   onPressDelete?: (id: string, name: string) => void
   withoutPadding?: boolean
+  currentCurrency: string
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -73,7 +74,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       designs,
       onPressPrivate = () => {},
       onPressDelete = () => {},
-      withoutPadding
+      withoutPadding,
+      currentCurrency
     } = this.props
 
     let thumbnailsList
@@ -102,6 +104,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
+                {...{ currentCurrency }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
@@ -168,6 +171,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
+                {...{ currentCurrency }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 type={product.type}

@@ -51,6 +51,8 @@ export const GetProductsQuery = gql`
         priceRange {
           quantity
           price
+          abbreviation
+          shortName: short_name
         }
         images: pictures {
           front: front_image
