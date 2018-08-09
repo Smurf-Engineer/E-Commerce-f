@@ -979,9 +979,19 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        imageEl.scale(scaleFactor)
+        let el = {
+          id,
+          imageSize
+        }
+        if (position.scaleX) {
+          el.scaleX = position.scaleX
+          el.scaleY = position.scaleY
+        } else {
+          imageEl.scale(scaleFactor)
+          el.scaleX = scaleFactor
+          el.scaleY = scaleFactor
+        }
         this.canvasTexture.add(imageEl)
-        const el = { id, imageSize, scaleX: scaleFactor, scaleY: scaleFactor }
         if (!idElement) {
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -1135,8 +1145,13 @@ class Render3D extends PureComponent {
   }
 
   duplicateElement = el => {
-    const { onApplyCanvasEl } = this.props
+    const { onApplyCanvasEl, undoChanges } = this.props
     const boundingBox = el.getBoundingRect()
+
+    const objectToClone = find(undoChanges, {
+      type: Changes.Add,
+      state: { id: el.id }
+    })
 
     const elementType = el.get('type')
     const id = shortid.generate()
@@ -1185,7 +1200,23 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
-    onApplyCanvasEl(canvasEl, elementType)
+    const {
+      state: {
+        src,
+        style,
+        position: { left, top }
+      }
+    } = objectToClone
+    onApplyCanvasEl(canvasEl, elementType, false, {
+      src,
+      style,
+      position: {
+        left: left + 30,
+        top: top + 30,
+        scaleX: el.scaleX,
+        scaleY: el.scaleY
+      }
+    })
   }
 
   setLayerElement = el => {
