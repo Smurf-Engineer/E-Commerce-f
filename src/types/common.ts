@@ -830,3 +830,20 @@ export type ConfigCanvasObj = {
   style: any
   position: any
 }
+
+export type CanvasResized = {
+  id: string
+  elementType: CanvasObjects
+  oldScaleX: number
+  oldScaleY: number
+  scaleX: number
+  scaleY: number
+}
+
+export type CanvasDragged = {
+  id: string
+  oldLeft: number
+  oldTop: number
+  left: number
+  top: number
+}

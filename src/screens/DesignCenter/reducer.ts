@@ -45,9 +45,11 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
+  CANVAS_ELEMENT_RESIZED_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
+  CANVAS_ELEMENT_DRAGGED_ACTION,
   WHITE,
   Changes,
   CanvasElements
@@ -189,9 +191,14 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_STITCHING_COLOR_ACTION:
-      return state.set('stitchingColor', action.stitchingColor)
-    case SET_ACCESSORY_COLOR_ACTION:
-      return state.set(action.id, action.color)
+      return state.merge({
+        stitchingColor: action.stitchingColor,
+        designHasChanges: true
+      })
+    case SET_ACCESSORY_COLOR_ACTION: {
+      const { id, color } = action
+      return state.merge({ [id]: color, designHasChanges: true })
+    }
     case DESIGN_UNDO_ACTION: {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
@@ -222,6 +229,13 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             selectedElement: ''
           })
         }
+        case Changes.Resize:
+        case Changes.Drag:
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            selectedElement: ''
+          })
         case Changes.Colors:
         default:
           const oldState = state.get(undoStep.type)
@@ -259,7 +273,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             canvas: updatedCanvass
           })
+        case Changes.Resize:
+        case Changes.Drag:
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            selectedElement: ''
+          })
         case Changes.Colors:
+        default:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
 
@@ -268,8 +290,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             colors: redoStep.state
           })
-        default:
-          return state
       }
     }
     case SET_PALETTE_NAME_ACTION:
@@ -281,7 +301,19 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case DESIGN_RESET_ACTION:
       return state.merge({
         colors: state.get('styleColors'),
-        openResetDesignModal: false
+        stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
+        bindingColor: WHITE,
+        zipperColor: WHITE,
+        bibColor: WHITE,
+        canvas: {
+          text: {},
+          image: {},
+          path: {}
+        },
+        undoChanges: [],
+        redoChanges: [],
+        openResetDesignModal: false,
+        designHasChanges: false
       })
     case EDIT_DESIGN_ACTION:
       return state.merge({
@@ -501,6 +533,47 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('customize3dMounted', action.mounted)
     case SET_CANVAS_JSON_ACTION:
       return state.setIn(['design', 'canvasJson'], action.canvas)
+    case CANVAS_ELEMENT_RESIZED_ACTION: {
+      const { element } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = { type: Changes.Resize, state: { ...element } }
+
+      if (element.elementType === CanvasElements.Image) {
+        const { id, scaleY, scaleX } = element
+        const canvas = state.get('canvas')
+        const updatedCanvas = canvas.updateIn(
+          [CanvasElements.Image, id],
+          (image: any) => {
+            const updatedImage = Object.assign({ scaleX, scaleY }, image)
+            updatedImage.scaleX = scaleX
+            updatedImage.scaleY = scaleY
+            return updatedImage
+          }
+        )
+        return state.merge({
+          canvas: updatedCanvas,
+          undoChanges: undoChanges.unshift(lastStep),
+          redoChanges: redoChanges.clear()
+        })
+      }
+
+      return state.merge({
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
+    case CANVAS_ELEMENT_DRAGGED_ACTION: {
+      const { element } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = { type: Changes.Drag, state: { ...element } }
+
+      return state.merge({
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
     case UPLOAD_FILE_ACTION_SUCCESS: {
       const images = state.get('images')
       const updatedImages = images.push(action.url)
