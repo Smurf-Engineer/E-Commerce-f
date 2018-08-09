@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import { ImageFile } from '../../../types/common'
-import { DPI } from '../../../constants'
+import { DPI, CM_PER_INCH } from '../../../constants'
 import {
   Container,
   Row,
@@ -16,7 +16,7 @@ import {
 } from './styledComponents'
 
 const getSizeInCentimeters = (pixels: number): number => {
-  return Math.round((pixels * 2.54) / DPI)
+  return Math.round((pixels * CM_PER_INCH) / DPI)
 }
 
 interface Props {

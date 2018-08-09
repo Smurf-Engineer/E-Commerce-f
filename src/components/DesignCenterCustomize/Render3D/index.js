@@ -52,7 +52,8 @@ import {
   ZIPPER,
   BINDING,
   BIB_BRACE,
-  DPI
+  DPI,
+  CM_PER_INCH
 } from '../../../constants'
 import {
   Changes,
@@ -1450,8 +1451,8 @@ class Render3D extends PureComponent {
     const scaleYTemp = scaleY / scaleFactor
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
-    size.width = Math.round((scaledWidth * 2.54) / DPI)
-    size.height = Math.round((scaledHeight * 2.54) / DPI)
+    size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
+    size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
     return size
   }
 }

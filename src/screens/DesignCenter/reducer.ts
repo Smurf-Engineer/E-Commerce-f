@@ -522,12 +522,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       if (element.elementType === CanvasElements.Image) {
         const { id, scaleY, scaleX } = element
         const canvas = state.get('canvas')
-        const updatedCanvas = canvas.updateIn(['image', id], (image: any) => {
-          const updatedImage = Object.assign({ scaleX, scaleY }, image)
-          updatedImage.scaleX = scaleX
-          updatedImage.scaleY = scaleY
-          return updatedImage
-        })
+        const updatedCanvas = canvas.updateIn(
+          [CanvasElements.Image, id],
+          (image: any) => {
+            const updatedImage = Object.assign({ scaleX, scaleY }, image)
+            updatedImage.scaleX = scaleX
+            updatedImage.scaleY = scaleY
+            return updatedImage
+          }
+        )
         return state.merge({
           canvas: updatedCanvas,
           undoChanges: undoChanges.unshift(lastStep),
