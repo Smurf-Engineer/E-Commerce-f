@@ -11,6 +11,7 @@ import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
+import notification from 'antd/lib/notification'
 import {
   Container,
   Render,
@@ -23,7 +24,10 @@ import {
   ViewControls,
   ViewButton,
   ButtonWrapper,
-  ModalMessage
+  ModalMessage,
+  Size,
+  SizeBox,
+  SizeLabel
 } from './styledComponents'
 import {
   viewPositions,
@@ -40,7 +44,9 @@ import {
   CANVAS_SIZE,
   BIB_BRACE_NAME,
   ZIPPER_NAME,
-  BINDING_NAME
+  BINDING_NAME,
+  WARNING_FACTOR,
+  NUMBER_OF_DECIMALS
 } from './config'
 import {
   MESH,
@@ -48,7 +54,9 @@ import {
   FLATLOCK,
   ZIPPER,
   BINDING,
-  BIB_BRACE
+  BIB_BRACE,
+  DPI,
+  CM_PER_INCH
 } from '../../../constants'
 import {
   Changes,
@@ -82,7 +90,10 @@ class Render3D extends PureComponent {
     zoomValue: 0,
     progress: 0,
     objectChildCount: 0,
-    canvasEl: null
+    canvasEl: null,
+    scaleFactor: 1,
+    oldScaleX: null,
+    oldScaleY: null
   }
 
   dragComponent = null
@@ -315,10 +326,10 @@ class Render3D extends PureComponent {
       object.children.forEach(({ material }) => {
         if (!!material) {
           const { map, bumpMap, alphaMap } = material
-          if (map) map.dispose()
-          if (bumpMap) bumpMap.dispose()
-          if (alphaMap) alphaMap.dispose()
-          material.dispose()
+          if (map && map.dispose) map.dispose()
+          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+          if (material.dipose) material.dispose()
         }
       })
       if (this.zipper) {
@@ -356,7 +367,11 @@ class Render3D extends PureComponent {
           /* Object materials */
           const { children } = object
           const objectChildCount = children.length
-          this.setState({ objectChildCount })
+          let scaleFactor = 1
+          if (!!currentStyle.size) {
+            scaleFactor = CANVAS_SIZE / currentStyle.size
+          }
+          this.setState({ scaleFactor, objectChildCount })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
@@ -439,7 +454,6 @@ class Render3D extends PureComponent {
           )
 
           /* Canvas */
-          /* TODO: Dynamic size? */
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
@@ -671,6 +685,9 @@ class Render3D extends PureComponent {
       case Changes.Delete:
         this.reAddCanvasElement(changeToApply)
         break
+      case Changes.Resize:
+        this.resizeCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -690,11 +707,36 @@ class Render3D extends PureComponent {
         break
       case Changes.Delete:
         this.deleteElementById(id)
+      case Changes.Resize:
+        this.resizeCanvasElement(changeToApply, true)
+        break
         break
       default:
         break
     }
     onRedoAction()
+  }
+
+  resizeCanvasElement = (canvasElement, newScale = false) => {
+    const {
+      state: { id, oldScaleX, oldScaleY, scaleX: newScaleX, scaleY: newScaleY }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let scaleX = oldScaleX
+      let scaleY = oldScaleY
+      if (newScale) {
+        scaleX = newScaleX
+        scaleY = newScaleY
+      }
+      element
+        .set({
+          scaleX: scaleX > 0 ? scaleX : 0,
+          scaleY: scaleY > 0 ? scaleY : 0
+        })
+        .setCoords()
+      this.canvasTexture.renderAll()
+    }
   }
 
   handleOnOpenResetModal = () => {
@@ -750,7 +792,9 @@ class Render3D extends PureComponent {
       loadingModel,
       formatMessage,
       productName,
-      openResetDesignModal
+      openResetDesignModal,
+      canvas,
+      selectedElement
     } = this.props
 
     {
@@ -771,12 +815,29 @@ class Render3D extends PureComponent {
     )*/
     }
 
+    let widthInCm = 0
+    let heightInCm = 0
+    const selectedImageElement = canvas.image[selectedElement]
+    if (!!selectedImageElement && !!selectedImageElement.imageSize) {
+      const { width, height } = this.getSizeInCentimeters(selectedImageElement)
+      widthInCm = width
+      heightInCm = height
+    }
+
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
+        {!!selectedImageElement && (
+          <SizeBox>
+            <SizeLabel>
+              <FormattedMessage {...messages.sizeMessage} />
+            </SizeLabel>
+            <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
+          </SizeBox>
+        )}
         <Render
           id="render-3d"
           innerRef={container => (this.container = container)}
@@ -876,18 +937,13 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyImage = (url, position = {}, idElement) => {
-    const {
-      onApplyCanvasEl,
-      currentStyle: { size }
-    } = this.props
-    let scaleFactor = 1
-    if (!!size) {
-      scaleFactor = CANVAS_SIZE / size
-    }
+  applyImage = (file = {}, position = {}, idElement) => {
+    const { onApplyCanvasEl } = this.props
+    const { scaleFactor } = this.state
+    const { fileUrl, size: imageSize } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
-      url,
+      fileUrl,
       img => {
         const imageEl = new fabric.Image(img, {
           id,
@@ -896,10 +952,10 @@ class Render3D extends PureComponent {
         })
         imageEl.scale(scaleFactor)
         this.canvasTexture.add(imageEl)
-        const el = { id }
+        const el = { id, imageSize, scaleX: scaleFactor, scaleY: scaleFactor }
         if (!idElement) {
           onApplyCanvasEl(el, 'image', undefined, {
-            src: url,
+            src: file,
             style: undefined,
             position
           })
@@ -1070,7 +1126,12 @@ class Render3D extends PureComponent {
         }
         break
       case CanvasElements.Image: {
-        canvasEl = { id }
+        canvasEl = {
+          id,
+          imageSize: { width: el.width, height: el.height },
+          scaleX: el.scaleX,
+          scaleY: el.scaleY
+        }
         break
       }
       case CanvasElements.Path: {
@@ -1104,6 +1165,25 @@ class Render3D extends PureComponent {
 
   onMouseUp = evt => {
     evt.preventDefault()
+
+    const action = this.dragComponent && this.dragComponent.action
+
+    if (action === SCALE_ACTION) {
+      const activeEl = this.canvasTexture.getActiveObject()
+      const { scaleX, scaleY, id, type } = activeEl
+      const { oldScaleX = 1, oldScaleY = 1 } = this.state
+      if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
+        const { onCanvasElementResized } = this.props
+        onCanvasElementResized({
+          id,
+          elementType: type,
+          oldScaleX,
+          oldScaleY,
+          scaleX,
+          scaleY
+        })
+      }
+    }
 
     if (this.dragComponent && this.dragComponent.oldAngle) {
       this.dragComponent.el.oldAngle = this.dragComponent.oldAngle
@@ -1148,7 +1228,7 @@ class Render3D extends PureComponent {
               this.applyText(el.text, el.style, { left, top })
               break
             case CanvasElements.Image:
-              this.applyImage(el.base64, { left, top })
+              this.applyImage(el.file, { left, top })
               break
             case CanvasElements.Path:
               this.applyClipArt(el.url, el.style, { left, top })
@@ -1174,8 +1254,14 @@ class Render3D extends PureComponent {
                 this.setLayerElement(activeEl)
                 break
               case SCALE_ACTION: {
+                const { scaleX, scaleY } = activeEl
+                this.setState({ oldScaleX: scaleX, oldScaleY: scaleY })
                 this.controls.enabled = false
-                this.dragComponent = { action: SCALE_ACTION }
+                this.dragComponent = {
+                  action: SCALE_ACTION,
+                  alreadyNotified: false,
+                  isImage: activeEl.get('type') === CanvasElements.Image
+                }
                 break
               }
               case ROTATE_ACTION: {
@@ -1273,6 +1359,7 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
+            const { scaleFactor } = this.state
             const cursorLeft = uv.x * CANVAS_SIZE
             const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
@@ -1286,6 +1373,24 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
+            // TODO: Change to DPI warning not to scale.
+            // const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
+            // const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
+            // const scaleFactorTemp =
+            //   scaleFactor.toFixed(NUMBER_OF_DECIMALS) + WARNING_FACTOR
+            // if (
+            //   (scaleXTemp > scaleFactorTemp || scaleYTemp > scaleFactorTemp) &&
+            //   !this.dragComponent.alreadyNotified &&
+            //   this.dragComponent.isImage
+            // ) {
+            //   this.showResolutionWarningModal()
+            // } else if (
+            //   scaleXTemp <= scaleFactorTemp &&
+            //   scaleYTemp <= scaleFactorTemp &&
+            //   this.dragComponent.alreadyNotified
+            // ) {
+            //   this.dragComponent.alreadyNotified = false
+            // }
             break
           }
           case ROTATE_ACTION: {
@@ -1356,12 +1461,23 @@ class Render3D extends PureComponent {
 
   showResolutionWarningModal = () => {
     const { formatMessage } = this.props
-    Modal.warning({
-      title: formatMessage(messages.modalWarningTitle),
-      content: formatMessage(messages.modalResolutionMessage),
-      okText: formatMessage(messages.modalWarningButtonText),
-      maskClosable: true
+    notification.warning({
+      message: formatMessage(messages.modalWarningTitle),
+      description: formatMessage(messages.modalResolutionMessage)
     })
+  }
+
+  getSizeInCentimeters = ({ imageSize, scaleX, scaleY }) => {
+    const { scaleFactor } = this.state
+    const size = {}
+    const { width, height } = imageSize
+    const scaleXTemp = scaleX / scaleFactor
+    const scaleYTemp = scaleY / scaleFactor
+    const scaledWidth = width * scaleXTemp
+    const scaledHeight = height * scaleYTemp
+    size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)
+    size.height = Math.round((scaledHeight * CM_PER_INCH) / DPI)
+    return size
   }
 }
 

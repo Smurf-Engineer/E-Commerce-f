@@ -46,6 +46,7 @@ import {
   SET_ART_FORMAT_ACTION,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
+  CANVAS_ELEMENT_RESIZED_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM
@@ -59,7 +60,8 @@ import {
   ConfigCanvasObj,
   Product,
   StitchingColor,
-  AccesoryColor
+  AccesoryColor,
+  CanvasResized
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -346,6 +348,13 @@ export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
   id
+})
+
+export const onCanvasElementResizedAction = (
+  element: CanvasResized
+): AnyAction => ({
+  type: CANVAS_ELEMENT_RESIZED_ACTION,
+  element
 })
 
 export const setSearchClipParamAction = (param: string) => ({
