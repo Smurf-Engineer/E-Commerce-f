@@ -44,7 +44,9 @@ import {
   CANVAS_SIZE,
   BIB_BRACE_NAME,
   ZIPPER_NAME,
-  BINDING_NAME
+  BINDING_NAME,
+  WARNING_FACTOR,
+  NUMBER_OF_DECIMALS
 } from './config'
 import {
   MESH,
@@ -324,10 +326,10 @@ class Render3D extends PureComponent {
       object.children.forEach(({ material }) => {
         if (!!material) {
           const { map, bumpMap, alphaMap } = material
-          if (map) map.dispose()
-          if (bumpMap) bumpMap.dispose()
-          if (alphaMap) alphaMap.dispose()
-          material.dispose()
+          if (map && map.dispose) map.dispose()
+          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+          if (material.dipose) material.dispose()
         }
       })
       if (this.zipper) {
@@ -1257,7 +1259,8 @@ class Render3D extends PureComponent {
                 this.controls.enabled = false
                 this.dragComponent = {
                   action: SCALE_ACTION,
-                  alreadyNotified: false
+                  alreadyNotified: false,
+                  isImage: activeEl.get('type') === CanvasElements.Image
                 }
                 break
               }
@@ -1370,12 +1373,22 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
+            const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
+            const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
+            const scaleFactorTemp =
+              scaleFactor.toFixed(NUMBER_OF_DECIMALS) + WARNING_FACTOR
             if (
-              scaleX > scaleFactor ||
-              (scaleY > scaleFactor && !this.dragComponent.alreadyNotified)
+              (scaleXTemp > scaleFactorTemp || scaleYTemp > scaleFactorTemp) &&
+              !this.dragComponent.alreadyNotified &&
+              this.dragComponent.isImage
             ) {
-              this.dragComponent.alreadyNotified = true
               this.showResolutionWarningModal()
+            } else if (
+              scaleXTemp <= scaleFactorTemp &&
+              scaleYTemp <= scaleFactorTemp &&
+              this.dragComponent.alreadyNotified
+            ) {
+              this.dragComponent.alreadyNotified = false
             }
             break
           }
