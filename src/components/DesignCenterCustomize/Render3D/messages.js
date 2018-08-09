@@ -55,5 +55,9 @@ export default defineMessages({
     id: 'components.Render3D.modalResolutionMessage',
     defaultMessage:
       'The resolution of your graphic in its current size is too poor'
+  },
+  sizeMessage: {
+    id: 'components.Render3D.sizeMessage',
+    defaultMessage: 'Aprox image size'
   }
 })
