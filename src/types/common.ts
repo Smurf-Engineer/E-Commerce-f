@@ -845,7 +845,7 @@ export type CanvasResized = {
 export type CanvasDragged = {
   id: string
   oldLeft: number
-  oldRight: number
+  oldTop: number
   left: number
   top: number
 }
