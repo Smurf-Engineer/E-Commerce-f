@@ -11,6 +11,7 @@ import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
+import notification from 'antd/lib/notification'
 import {
   Container,
   Render,
@@ -44,7 +45,9 @@ import {
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
-  CHANGE_ACTIONS
+  CHANGE_ACTIONS,
+  WARNING_FACTOR,
+  NUMBER_OF_DECIMALS
 } from './config'
 import {
   MESH,
@@ -324,10 +327,10 @@ class Render3D extends PureComponent {
       object.children.forEach(({ material }) => {
         if (!!material) {
           const { map, bumpMap, alphaMap } = material
-          if (map) map.dispose()
-          if (bumpMap) bumpMap.dispose()
-          if (alphaMap) alphaMap.dispose()
-          material.dispose()
+          if (map && map.dispose) map.dispose()
+          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+          if (material.dipose) material.dispose()
         }
       })
       if (this.zipper) {
@@ -1342,7 +1345,11 @@ class Render3D extends PureComponent {
                   oldScale: { oldScaleX, oldScaleY }
                 })
                 this.controls.enabled = false
-                this.dragComponent = { action: SCALE_ACTION }
+                this.dragComponent = {
+                  action: SCALE_ACTION,
+                  alreadyNotified: false,
+                  isImage: activeEl.get('type') === CanvasElements.Image
+                }
                 break
               }
               case ROTATE_ACTION: {
@@ -1444,6 +1451,7 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
+            const { scaleFactor } = this.state
             const cursorLeft = uv.x * CANVAS_SIZE
             const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
@@ -1457,6 +1465,24 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
+            // TODO: Change to DPI warning not to scale.
+            // const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
+            // const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
+            // const scaleFactorTemp =
+            //   scaleFactor.toFixed(NUMBER_OF_DECIMALS) + WARNING_FACTOR
+            // if (
+            //   (scaleXTemp > scaleFactorTemp || scaleYTemp > scaleFactorTemp) &&
+            //   !this.dragComponent.alreadyNotified &&
+            //   this.dragComponent.isImage
+            // ) {
+            //   this.showResolutionWarningModal()
+            // } else if (
+            //   scaleXTemp <= scaleFactorTemp &&
+            //   scaleYTemp <= scaleFactorTemp &&
+            //   this.dragComponent.alreadyNotified
+            // ) {
+            //   this.dragComponent.alreadyNotified = false
+            // }
             break
           }
           case ROTATE_ACTION: {
@@ -1527,11 +1553,9 @@ class Render3D extends PureComponent {
 
   showResolutionWarningModal = () => {
     const { formatMessage } = this.props
-    Modal.warning({
-      title: formatMessage(messages.modalWarningTitle),
-      content: formatMessage(messages.modalResolutionMessage),
-      okText: formatMessage(messages.modalWarningButtonText),
-      maskClosable: true
+    notification.warning({
+      message: formatMessage(messages.modalWarningTitle),
+      description: formatMessage(messages.modalResolutionMessage)
     })
   }
 
