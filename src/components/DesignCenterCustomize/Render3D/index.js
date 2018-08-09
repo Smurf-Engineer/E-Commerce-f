@@ -1373,23 +1373,24 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
-            const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
-            const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
-            const scaleFactorTemp =
-              scaleFactor.toFixed(NUMBER_OF_DECIMALS) + WARNING_FACTOR
-            if (
-              (scaleXTemp > scaleFactorTemp || scaleYTemp > scaleFactorTemp) &&
-              !this.dragComponent.alreadyNotified &&
-              this.dragComponent.isImage
-            ) {
-              this.showResolutionWarningModal()
-            } else if (
-              scaleXTemp <= scaleFactorTemp &&
-              scaleYTemp <= scaleFactorTemp &&
-              this.dragComponent.alreadyNotified
-            ) {
-              this.dragComponent.alreadyNotified = false
-            }
+            // FIXME: Does not change var already
+            // const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
+            // const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
+            // const scaleFactorTemp =
+            //   scaleFactor.toFixed(NUMBER_OF_DECIMALS) + WARNING_FACTOR
+            // if (
+            //   (scaleXTemp > scaleFactorTemp || scaleYTemp > scaleFactorTemp) &&
+            //   !this.dragComponent.alreadyNotified &&
+            //   this.dragComponent.isImage
+            // ) {
+            //   this.showResolutionWarningModal()
+            // } else if (
+            //   scaleXTemp <= scaleFactorTemp &&
+            //   scaleYTemp <= scaleFactorTemp &&
+            //   this.dragComponent.alreadyNotified
+            // ) {
+            //   this.dragComponent.alreadyNotified = false
+            // }
             break
           }
           case ROTATE_ACTION: {
