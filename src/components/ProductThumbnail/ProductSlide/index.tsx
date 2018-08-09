@@ -2,6 +2,7 @@
  * ProductSlide Component - Created by david on 12/02/18.
  */
 import * as React from 'react'
+import Responsive from 'react-responsive'
 import SwipeableViews from 'react-swipeable-views'
 import {
   ImageContainer,
@@ -20,6 +21,8 @@ import backIcon from '../../../assets/leftarrow.svg'
 import nextIcon from '../../../assets/rightarrow.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
 import { ImageType } from '../../../types/common'
+
+const AboveTablet = (props: any) => <Responsive {...props} minWidth={768} />
 
 interface Props {
   onMouseEnter: () => void
@@ -68,11 +71,13 @@ const ProductSlide = ({
         {...{ onMouseEnter, onMouseLeave, isTopProduct, hideCustomButton }}
       >
         <ImageTop>
-          {!hideQuickView && (
-            <QuickView onClick={onPressQuickView}>
-              <img src={quickViewIcon} />
-            </QuickView>
-          )}
+          <AboveTablet>
+            {!hideQuickView && (
+              <QuickView onClick={onPressQuickView}>
+                <img src={quickViewIcon} />
+              </QuickView>
+            )}
+          </AboveTablet>
           {isTopProduct && (
             <TopContainer>
               <TopText>TOP</TopText>
