@@ -11,6 +11,7 @@ import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
+import notification from 'antd/lib/notification'
 import {
   Container,
   Render,
@@ -1254,7 +1255,10 @@ class Render3D extends PureComponent {
                 const { scaleX, scaleY } = activeEl
                 this.setState({ oldScaleX: scaleX, oldScaleY: scaleY })
                 this.controls.enabled = false
-                this.dragComponent = { action: SCALE_ACTION }
+                this.dragComponent = {
+                  action: SCALE_ACTION,
+                  alreadyNotified: false
+                }
                 break
               }
               case ROTATE_ACTION: {
@@ -1352,6 +1356,7 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
+            const { scaleFactor } = this.state
             const cursorLeft = uv.x * CANVAS_SIZE
             const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
@@ -1365,6 +1370,13 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
+            if (
+              scaleX > scaleFactor ||
+              (scaleY > scaleFactor && !this.dragComponent.alreadyNotified)
+            ) {
+              this.dragComponent.alreadyNotified = true
+              this.showResolutionWarningModal()
+            }
             break
           }
           case ROTATE_ACTION: {
@@ -1435,11 +1447,9 @@ class Render3D extends PureComponent {
 
   showResolutionWarningModal = () => {
     const { formatMessage } = this.props
-    Modal.warning({
-      title: formatMessage(messages.modalWarningTitle),
-      content: formatMessage(messages.modalResolutionMessage),
-      okText: formatMessage(messages.modalWarningButtonText),
-      maskClosable: true
+    notification.warning({
+      message: formatMessage(messages.modalWarningTitle),
+      description: formatMessage(messages.modalResolutionMessage)
     })
   }
 
