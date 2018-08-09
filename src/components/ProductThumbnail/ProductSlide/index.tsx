@@ -121,9 +121,11 @@ const ProductSlide = ({
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>
-        <QuickView onClick={onPressQuickView}>
-          <img src={quickViewIcon} />
-        </QuickView>
+        <AboveTablet>
+          <QuickView onClick={onPressQuickView}>
+            <img src={quickViewIcon} />
+          </QuickView>
+        </AboveTablet>
         {isTopProduct && (
           <TopContainer>
             <TopText>TOP</TopText>
