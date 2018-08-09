@@ -145,10 +145,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
 
-    const genderMessage = femaleGender
-      ? (maleGender && formatMessage(messages.unisexGenderLabel)) ||
-        formatMessage(messages.femaleGenderLabel)
-      : formatMessage(messages.maleGenderLabel)
+    let genderMessage = messages.maleGenderLabel
+
+    if (femaleGender) {
+      genderMessage = maleGender
+        ? messages.unisexGenderLabel
+        : messages.femaleGenderLabel
+    }
 
     let renderPrices
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
@@ -395,7 +398,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   totalReviews={get(reviewsScore, 'total', 0)}
                 />
                 <Description>{description}</Description>
-                <AvailableLabel>{genderMessage}</AvailableLabel>
+                <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButton onClick={this.gotoCustomize}>
