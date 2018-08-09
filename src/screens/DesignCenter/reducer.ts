@@ -50,9 +50,11 @@ import {
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
   CANVAS_ELEMENT_DRAGGED_ACTION,
-  WHITE,
   Changes,
-  CanvasElements
+  CanvasElements,
+  WHITE,
+  BLACK,
+  AccessoryColors
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 
@@ -191,22 +193,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_STITCHING_COLOR_ACTION: {
+      const oldColor = state.get('stitchingColor').toJS()
+      const newColor = action.stitchingColor
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
-      const stitchingColor = state.get('stitchingColor')
+      const lastStep = {
+        type: Changes.AccessoryColors,
+        state: { id: AccessoryColors.Stitching, oldColor, newColor }
+      }
       return state.merge({
-        stitchingColor: action.stitchingColor,
-        designHasChanges: true
+        stitchingColor: newColor,
+        designHasChanges: true,
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
       })
     }
-
     case SET_ACCESSORY_COLOR_ACTION: {
       const { id, color } = action
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const lastStep = {
         type: Changes.AccessoryColors,
-        state: { id, color }
+        state: { id, newColor: color }
       }
       return state.merge({
         [id]: color,
@@ -252,6 +260,24 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.unshift(undoStep),
             selectedElement: ''
           })
+        case Changes.AccessoryColors: {
+          const {
+            state: { id: accessory, newColor: color, oldColor }
+          } = undoStep
+          if (accessory !== AccessoryColors.Stitching) {
+            const newColor = color === WHITE ? BLACK : WHITE
+            return state.merge({
+              undoChanges: undoChanges.shift(),
+              redoChanges: redoChanges.unshift(undoStep),
+              [accessory]: newColor
+            })
+          }
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            stitchingColor: oldColor
+          })
+        }
         case Changes.Colors:
         default:
           const oldState = state.get(undoStep.type)
@@ -296,11 +322,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             selectedElement: ''
           })
+        case Changes.AccessoryColors: {
+          const {
+            state: { id: accessory, newColor: color }
+          } = redoStep
+          if (accessory !== AccessoryColors.Stitching) {
+            const newColor = color === WHITE ? WHITE : BLACK
+            return state.merge({
+              undoChanges: undoChanges.unshift(redoStep),
+              redoChanges: redoChanges.shift(),
+              [accessory]: newColor
+            })
+          }
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            stitchingColor: color
+          })
+        }
         case Changes.Colors:
         default:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
-
           return state.merge({
             undoChanges: undoChanges.unshift(undoStep),
             redoChanges: redoChanges.shift(),

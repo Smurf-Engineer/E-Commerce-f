@@ -85,3 +85,10 @@ export enum CanvasElements {
   Path = 'path',
   Image = 'image'
 }
+
+export enum AccessoryColors {
+  Binding = 'bindingColor',
+  Zipper = 'zipperColor',
+  Bib = 'bibColor',
+  Stitching = 'stitchingColor'
+}

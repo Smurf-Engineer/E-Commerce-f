@@ -24,8 +24,10 @@ const ColorList = ({
   stitchingColor = { value: '', name: '' }
 }: Props) => {
   const setColor = (color: string) => () => onSelectColor(color)
-  const setStitchingColor = (color: StitchingColor) => () =>
-    onSelectStitchingColor(color)
+  const setStitchingColor = (color: StitchingColor) => () => {
+    // tslint:disable-next-line:curly
+    if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
+  }
   const arrayColors = !stitching ? colors : stitchingColors
   const colorsList = arrayColors.map(({ value, name }, index) => (
     <Tooltip key={index} title={name}>
