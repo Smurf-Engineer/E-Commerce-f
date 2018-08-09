@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
-import { ImageType } from '../../types/common'
+import { ImageType, CartItemDetail, Product } from '../../types/common'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
 import {
@@ -16,13 +16,17 @@ import {
   ArrowRight,
   ArrowLeft
 } from './styledComponents'
+import AddToCartButton from '../../components/AddToCartButton'
+import messages from './messages'
 
 interface Props {
   productImages: ImageType[]
   available: number
   isRetail: boolean
   hideSliderButtons?: boolean
+  product?: Product
   gotoCustomize?: () => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 interface State {
@@ -38,18 +42,40 @@ class QuickViewSlider extends React.Component<Props, State> {
       gotoCustomize,
       productImages,
       isRetail,
-      hideSliderButtons
+      hideSliderButtons,
+      product,
+      formatMessage
     } = this.props
     const { index } = this.state
 
     // TODO: filter by gender
-    const images = productImages[0]
+    const { front, right, left, back } = productImages[0]
 
     const customizeButton = (
-      <StyledButton onClick={gotoCustomize}>{'CUSTOMIZE'}</StyledButton>
+      <StyledButton onClick={gotoCustomize}>
+        {formatMessage(messages.customize)}
+      </StyledButton>
     )
-    const addToCartButton = (
-      <StyledButton onClick={gotoCustomize}>{'ADD TO CART'}</StyledButton>
+
+    const itemDetails = [] as CartItemDetail[]
+
+    if (product) {
+      const detail: CartItemDetail = { quantity: 1 }
+
+      itemDetails.push(detail)
+    }
+
+    const item = Object.assign({}, { product }, { itemDetails })
+
+    const onClick = () => true
+
+    const addToCartButton = product && (
+      <AddToCartButton
+        centered={true}
+        label={formatMessage(messages.addToCart)}
+        item={item}
+        {...{ onClick, formatMessage }}
+      />
     )
 
     const renderButton = isRetail ? addToCartButton : customizeButton
@@ -57,16 +83,16 @@ class QuickViewSlider extends React.Component<Props, State> {
       <Container>
         <SwipeableViews enableMouseEvents={true} {...{ index }}>
           <SliderPage>
-            <StyledImage src={images.front} />
+            <StyledImage src={front} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={images.right} />
+            <StyledImage src={right} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={images.left} />
+            <StyledImage src={left} />
           </SliderPage>
           <SliderPage>
-            <StyledImage src={images.back} />
+            <StyledImage src={back} />
           </SliderPage>
         </SwipeableViews>
         <Arrows>

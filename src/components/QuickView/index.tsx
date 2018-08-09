@@ -61,6 +61,7 @@ interface Props {
   yotpoId: string
   history: any
   hideSliderButtons?: boolean
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export class QuickView extends React.Component<Props, State> {
@@ -71,7 +72,14 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const { open, handleClose, data, hideSliderButtons } = this.props
+    const {
+      open,
+      handleClose,
+      data,
+      hideSliderButtons,
+      formatMessage
+    } = this.props
+
     const { showDescription, showDetail, showSpecs } = this.state
 
     let product = {} as ProductPageTypes
@@ -109,7 +117,7 @@ export class QuickView extends React.Component<Props, State> {
         available={5}
         gotoCustomize={this.gotoCustomize}
         isRetail={(product.retailMen && product.retailWomen) || false}
-        {...{ hideSliderButtons }}
+        {...{ hideSliderButtons, product, formatMessage }}
       />
     )
 
