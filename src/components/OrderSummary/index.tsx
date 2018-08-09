@@ -3,10 +3,10 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { compose, withApollo } from 'react-apollo'
-// import get from 'lodash/get'
-// import { QueryProps, NetsuiteTax, NetsuiteShipping } from '../../types/common'
-// import { getTaxQuery } from './data'
+import { compose, graphql } from 'react-apollo'
+import get from 'lodash/get'
+import { QueryProps, NetsuiteTax, NetsuiteShipping } from '../../types/common'
+import { getTaxQuery } from './data'
 import messages from './messages'
 import {
   Container,
@@ -25,10 +25,10 @@ import {
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 
-// interface Data extends QueryProps {
-//   taxes: NetsuiteTax[]
-//   shipping: NetsuiteShipping
-// }
+interface Data extends QueryProps {
+  taxes: NetsuiteTax[]
+  shipping: NetsuiteShipping
+}
 
 interface AddressObj {
   country: string
@@ -37,7 +37,7 @@ interface AddressObj {
 }
 
 interface Props {
-  // data?: Data
+  data?: Data
   taxes: any
   client: any
   total: number
@@ -55,38 +55,9 @@ interface Props {
 const ShareLinkInput = Input.Search
 const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
-  // fetchTaxes = async () => {
-  //   const {
-  //     client: { query },
-  //     country,
-  //     weight,
-  //     shipAddress
-  //   } = this.props
-
-  //   if (country && weight && shipAddress) {
-  //     try {
-  //       const data = await query({
-  //         query: getTaxQuery,
-  //         variables: { country, weight, shipAddress },
-  //         fetchPolicy: 'network-only'
-  //       })
-  //     } catch (e) {
-  //       throw e
-  //     }
-  //   }
-  // }
-
-  // async componentDidMount() {
-  //   try {
-  //     await this.fetchTaxes()
-  //   } catch (e) {
-  //     console.error(e)
-  //   }
-  // }
-
   render() {
     const {
-      // data,
+      data,
       total,
       subtotal,
       formatMessage,
@@ -120,8 +91,8 @@ export class OrderSummary extends React.Component<Props, {}> {
     )
     const youSaved = Number(totalWithoutDiscount) - total
 
-    const shippingTotal = 0 // get(data, 'shipping.total', 0)
-    const taxesTotal = 0 // get(data, 'taxes.total', 0)
+    const shippingTotal = get(data, 'shipping.total', 0)
+    const taxesTotal = get(data, 'taxes.total', 0)
 
     return (
       <Container>
@@ -188,23 +159,20 @@ export class OrderSummary extends React.Component<Props, {}> {
   }
 }
 
-// interface OwnProps {
-//   country?: string
-//   weight?: string
-//   shipAddress?: AddressObj
-// }
+interface OwnProps {
+  country?: string
+  weight?: string
+  shipAddress?: AddressObj
+}
 
 const OrderSummaryEnhance = compose(
-  withApollo
-  // graphql(getTaxQuery, {
-  //   options: ({ country, weight, shipAddress }: OwnProps) => ({
-  //     skip: !country || !weight || !shipAddress,
-  //     variables: { country, weight, shipAddress },
-  //     fetchPolicy: 'network-only'
-  //   })
-  // })
+  graphql(getTaxQuery, {
+    options: ({ country, weight, shipAddress }: OwnProps) => ({
+      skip: !country || !weight || !shipAddress,
+      variables: { country, weight, shipAddress },
+      fetchPolicy: 'network-only'
+    })
+  })
 )(OrderSummary)
 
 export default OrderSummaryEnhance
-
-// export default OrderSummary

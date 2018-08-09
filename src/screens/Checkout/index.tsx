@@ -3,9 +3,10 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
+import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
 import Message from 'antd/lib/message'
 import SwipeableViews from 'react-swipeable-views'
@@ -37,6 +38,7 @@ import Shipping from '../../components/Shippping'
 import Payment from '../../components/Payment'
 import Review from '../../components/Review'
 import OrderSummary from '../../components/OrderSummary'
+import { getTaxQuery } from '../../components/OrderSummary/data'
 import {
   AddressType,
   CartItemDetail,
@@ -59,6 +61,7 @@ interface AddressObj {
 }
 
 interface Props extends RouteComponentProps<any> {
+  client: any
   intl: InjectedIntl
   firstName: string
   lastName: string
@@ -405,11 +408,13 @@ class Checkout extends React.Component<Props, {}> {
       default:
         break
     }
+    zenscroll.toY(0)
   }
 
   handleOnGoToStep = (step: number) => {
     const { stepAdvanceAction } = this.props
     stepAdvanceAction(step - 1)
+    zenscroll.toY(0)
   }
 
   verifyStepTwo = () => {
@@ -512,7 +517,8 @@ class Checkout extends React.Component<Props, {}> {
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
       stripeToken,
-      selectedCard
+      selectedCard,
+      client
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -551,6 +557,39 @@ class Checkout extends React.Component<Props, {}> {
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
     const cardId = selectedCard && selectedCard.id
+
+    // get taxes and shipping from query
+    const shoppingCartData = getShoppingCartData(shoppingCart)
+    const { weightSum } = shoppingCartData
+
+    const taxAddress: AddressObj | '' = {
+      country: shippingAddress.country,
+      state: shippingAddress.stateProvince,
+      zipCode: shippingAddress.zipCode
+    }
+
+    console.log('---------------------------')
+    console.log(billingCountry, weightSum, taxAddress)
+    console.log('---------------------------')
+
+    const data = client.readQuery({
+      query: getTaxQuery,
+      variables: {
+        country: billingCountry,
+        weight: weightSum,
+        shipAddress: taxAddress
+      }
+    })
+
+    const taxId = get(data, 'taxes.internalId', null)
+    const taxAmount = get(data, 'taxes.total', null)
+    const shippingId = get(data, 'shipping.internalId', null)
+    const shippingCarrier = get(data, 'shipping.carrier', null)
+    const shippingAmount = get(data, 'shipping.total', null)
+
+    console.log('-------------data--------------')
+    console.log(data)
+    console.log('---------------------------')
 
     /*
     * TODO: Find a better solution to unset these properties
@@ -602,11 +641,11 @@ class Checkout extends React.Component<Props, {}> {
       billingAddress,
       paypalData: paypalObj || null,
       countrySubsidiary: billingCountry,
-      taxId: '-996',
-      taxAmount: '8.75%',
-      shippingId: '294593',
-      shippingCarrier: 'nonups',
-      shippingAmount: '12.34'
+      taxId,
+      taxAmount,
+      shippingId,
+      shippingCarrier,
+      shippingAmount
     }
 
     try {
@@ -635,6 +674,7 @@ const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
   PlaceOrderMutation,
+  withApollo,
   connect(
     mapStateToProps,
     {

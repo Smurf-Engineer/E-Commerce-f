@@ -15,9 +15,8 @@ import {
 import {
   AddressType,
   StripeCardData,
-  CartItemDetail,
-  Product,
-  CreditCardData
+  CreditCardData,
+  CartItems
 } from '../../types/common'
 import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
@@ -29,11 +28,6 @@ import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
-
-interface CartItems {
-  product: Product
-  itemDetails: CartItemDetail[]
-}
 
 interface Props {
   showContent: boolean
@@ -87,14 +81,26 @@ class Review extends React.PureComponent<Props, {}> {
 
     const renderList = cart
       ? cart.map((cartItem, index) => {
+          const {
+            designId,
+            designImage,
+            designName,
+            product: { images, name, shortDescription, priceRange }
+          } = cartItem
+
+          const itemImage = designId ? designImage || '' : images[0].front
+          const itemTitle = designId ? designName || '' : name
+          const itemDescription = designId
+            ? `${name} ${shortDescription}`
+            : shortDescription
           return (
             <CartListItem
               formatMessage={formatMessage}
               key={index}
-              title={cartItem.product.name}
-              description={cartItem.product.shortDescription}
-              price={cartItem.product.priceRange[priceRangeToApply]}
-              image={cartItem.product.images[0].front}
+              title={itemTitle}
+              image={itemImage}
+              description={itemDescription}
+              price={priceRange[priceRangeToApply]}
               itemIndex={index}
               onlyRead={true}
               {...{ cartItem }}
