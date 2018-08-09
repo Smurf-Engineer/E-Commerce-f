@@ -29,16 +29,33 @@ interface ButtonProps {
 export const MethodButton = styled(Button)`
   height: 40px;
   width: 138.23px;
-  color: #4a90e2;
-  border: 2px solid #4a90e2;
+  color: ${({ selected }: ButtonProps) => (selected ? '#4a90e2' : '#dcdcdc')};
+  border: 2px solid #dcdcdc;
   border-radius: 2px;
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   margin-left: 5px;
   font-family: 'Avenir Next';
 
+  &:hover {
+    color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  &::selection {
+    color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  &::after {
+    color: #4a90e2;
+    border-color: #4a90e2;
+  }
+  &:focus {
+    color: #4a90e2;
+    border-color: #4a90e2;
+  }
+
   border: 0.5px solid
-    ${({ selected }: ButtonProps) => (selected ? 'red' : '#4a90e2')};
+    ${({ selected }: ButtonProps) => (selected ? '#4a90e2' : '#DCDCDC')};
 `
 
 export const MyCardsRow = styled.div`
