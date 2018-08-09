@@ -11,7 +11,7 @@ export const Text = styled.div`
   color: #fff;
 `
 
-export const DragMessage = styled.p`
+export const DragMessage = styled.div`
   color: #5f6062;
   padding: 4px 0px;
   font-family: 'Avenir Next';
@@ -19,7 +19,7 @@ export const DragMessage = styled.p`
   line-height: 22px;
 `
 
-export const DragTypes = styled.p`
+export const DragTypes = styled.div`
   color: #bebebe;
   font-family: 'Avenir Next';
   font-size: 13px;

@@ -18,6 +18,7 @@ export const stylesQuery = gql`
       id
       name
       image
+      size
       brandingPng: branding_png
       colors: colorsBlocks {
         id

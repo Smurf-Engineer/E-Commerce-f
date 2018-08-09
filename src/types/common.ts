@@ -45,7 +45,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -109,6 +109,7 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  genderId: number
   productTotal?: number
   unitPrice?: number
   sizeRange: ItemDetailType[]
@@ -754,6 +755,11 @@ export interface City {
 export interface ImageFile {
   id: number
   fileUrl: string
+  size: {
+    width: number
+    height: number
+  }
+  type: string
 }
 
 export type MessagePayload = {
@@ -776,6 +782,34 @@ export interface ClickParam {
   domEvent: any
 }
 
+export interface Measure {
+  in: string[]
+  cm: string[]
+}
+
+export interface SizesTableType {
+  title?: string
+  headers: string[]
+  size?: string[]
+  waist?: Measure
+  chest?: Measure
+  inseam?: Measure
+  hips?: Measure
+  height?: Measure
+  bicep?: Measure
+  length?: Measure
+  thigh?: Measure
+  calf?: Measure
+  mens?: Measure
+  womens?: Measure
+  circumference?: Measure
+}
+
+export interface Chart {
+  title: string
+  tables: SizesTableType[]
+}
+
 export interface Change {
   type: ChangeType
   state: any
@@ -790,8 +824,18 @@ export type ChangeType =
   | 'resize'
   | 'duplicate'
 
+export type CanvasObjects = 'path' | 'text' | 'image'
+
 export type ConfigCanvasObj = {
   src: string
   style: any
   position: any
+}
+
+export type CanvasResized = {
+  id: string
+  oldScaleX: number
+  oldScaleY: number
+  scaleX: number
+  scaleY: number
 }
