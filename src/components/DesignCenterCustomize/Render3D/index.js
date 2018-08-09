@@ -724,8 +724,8 @@ class Render3D extends PureComponent {
       }
       element
         .set({
-          scaleX: scaleX > 0 ? scaleX : 0,
-          scaleY: scaleY > 0 ? scaleY : 0
+          scaleX: Math.max(0, scaleX),
+          scaleY: Math.max(0, scaleY)
         })
         .setCoords()
       this.canvasTexture.renderAll()
@@ -1392,8 +1392,8 @@ class Render3D extends PureComponent {
             const scaleY = height / activeEl.height
             activeEl
               .set({
-                scaleX: scaleX > 0 ? scaleX : 0,
-                scaleY: scaleY > 0 ? scaleY : 0
+                scaleX: Math.max(0, scaleX),
+                scaleY: Math.max(0, scaleY)
               })
               .setCoords()
             this.canvasTexture.renderAll()
