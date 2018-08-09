@@ -31,7 +31,8 @@ import {
   StepWrapper,
   PlaceOrderButton,
   paypalButtonStyle,
-  StepIcon
+  StepIcon,
+  CheckIcon
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -252,7 +253,13 @@ class Checkout extends React.Component<Props, {}> {
       <Step
         key={index}
         title={step}
-        icon={<StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>}
+        icon={
+          currentStep > index ? (
+            <CheckIcon type="check-circle-o" clickable={currentStep > index} />
+          ) : currentStep === index ? (
+            <StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>
+          ) : null
+        }
         onClick={this.handleOnStepClick(index)}
       />
     ))
