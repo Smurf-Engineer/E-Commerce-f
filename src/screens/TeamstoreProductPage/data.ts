@@ -56,6 +56,8 @@ export const GetDesignQuery = gql`
         priceRange {
           price
           quantity
+          abbreviation
+          shortName: short_name
         }
         yotpoAverageScore {
           total: total_reviews
@@ -114,6 +116,8 @@ export const GetProductsByIdQuery = gql`
       priceRange {
         price
         quantity
+        abbreviation
+        shortName: short_name
       }
       yotpoAverageScore {
         total: total_reviews
@@ -148,6 +152,8 @@ export const getTeamStoresRelated = gql`
         priceRange {
           quantity
           price
+          abbreviation
+          shortName: short_name
         }
         images: pictures {
           front: front_image

@@ -63,6 +63,8 @@ export const getSingleTeamStore = gql`
             priceRange {
               quantity
               price
+              abbreviation
+              shortName: short_name
             }
             sizeRange: size_range {
               id

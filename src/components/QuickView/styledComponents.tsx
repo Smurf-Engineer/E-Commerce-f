@@ -8,6 +8,14 @@ import arrowRightIcon from '../../assets/arrow.svg'
 
 export const Container = styled.div`
   background-color: #222;
+
+  .cont {
+    width: auto;
+
+    @media (min-width: 800px) {
+      width: 800px;
+    }
+  }
 `
 
 export const Title = styled.div`
@@ -44,7 +52,7 @@ export const PriceQuantityRow = styled(Row)`
   margin-bottom: 20px;
 `
 export const AvailablePrices = styled.div`
-  margin-right: 10px;
+  width: 25%;
 `
 
 export const ProductInfContainer = styled.div`

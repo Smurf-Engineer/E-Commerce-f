@@ -47,6 +47,8 @@ export const GetProductsByIdQuery = gql`
       priceRange {
         price
         quantity
+        abbreviation
+        shortName: short_name
       }
       yotpoAverageScore {
         total: total_reviews
@@ -54,6 +56,7 @@ export const GetProductsByIdQuery = gql`
       }
       retailMen: men_retail
       retailWomen: women_retail
+      template
     }
   }
 `

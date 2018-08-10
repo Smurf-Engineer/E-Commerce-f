@@ -42,7 +42,7 @@ interface Props extends RouteComponentProps<any> {
   openLogin: boolean
   currentRegion: string
   currentLanguage: number
-  currentCurrency: number
+  currentCurrency: string
   yotpoId: string
   hideBottomHeader: boolean
   hideFooter: boolean
@@ -140,6 +140,8 @@ class MainLayout extends React.Component<Props, {}> {
       openWithoutSaveModalAction
     } = this.props
 
+    const { formatMessage } = intl
+
     let numberOfProducts = 0
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
@@ -173,7 +175,6 @@ class MainLayout extends React.Component<Props, {}> {
               searchParam,
               currentRegion,
               currentLanguage,
-              currentCurrency,
               openLogin,
               openLoginAction,
               saveUserToLocal,
@@ -181,12 +182,13 @@ class MainLayout extends React.Component<Props, {}> {
               designHasChanges,
               openWithoutSaveModalAction
             }}
+            currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.onLogout}
             hideBottom={hideBottomHeader}
           />
         </Header>
         <SearchResults
-          {...{ history }}
+          {...{ history, SearchResults }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}
@@ -196,11 +198,7 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks
-              formatMessage={intl.formatMessage}
-              fakeWidth={fakeWidth}
-              {...{ history }}
-            />
+            <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
             <SocialMedia />
           </Footer>
         )}
@@ -208,7 +206,7 @@ class MainLayout extends React.Component<Props, {}> {
           open={!!productId}
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
-          {...{ productId, history, yotpoId }}
+          {...{ productId, history, yotpoId, formatMessage }}
         />
         <div className="app">
           <Intercom appID={config.intercomKey} {...this.props.user} />

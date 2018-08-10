@@ -4,11 +4,21 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { QuickView } from './index'
+import { Product, QueryProps } from '../../types/common'
+
+interface ProductPageTypes extends Product {
+  temperature: string
+  materials: string
+}
+
+interface Data extends QueryProps {
+  product: ProductPageTypes
+}
 
 describe('<QuickView />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    const data = {
+    const data: Data = {
       product: {
         id: 0,
         code: '0',
@@ -22,7 +32,9 @@ describe('<QuickView />', () => {
           }
         ],
         type: '',
+        genderId: 0,
         description: '',
+        label: '',
         priceRange: [],
         collections: 0,
         isTopProduct: false,
@@ -60,7 +72,10 @@ describe('<QuickView />', () => {
         ],
         bodyChartId: 0,
         retailMen: false,
-        retailWomen: false
+        retailWomen: false,
+        flatlock: '',
+        bumpMap: '',
+        weight: 0
       },
       fetchMore: () => {}
     }
@@ -72,6 +87,7 @@ describe('<QuickView />', () => {
         productId={0}
         history={{}}
         yotpoId=""
+        formatMessage={() => ''}
       />,
       div
     )
