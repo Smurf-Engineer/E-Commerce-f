@@ -47,7 +47,9 @@ export const setInitialData = () => {
           dispatch(setItemsAction(cartList))
         }
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
@@ -56,7 +58,9 @@ export const saveToStorage = (cart: CartItems[]) => {
     try {
       localStorage.setItem('cart', JSON.stringify(cart))
       dispatch(resetReducerData())
-    } catch (error) {}
+    } catch (error) {
+      console.error(error)
+    }
   }
 }
 
