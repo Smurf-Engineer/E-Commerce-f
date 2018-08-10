@@ -57,7 +57,8 @@ import {
   StitchingColor,
   AccesoryColor,
   ImageFile,
-  CanvasResized
+  CanvasResized,
+  CanvasDragged
 } from '../../types/common'
 import {
   getProductQuery,
@@ -192,6 +193,7 @@ interface Props extends RouteComponentProps<any> {
   uploadFileSuccessFailure: () => void
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResizedAction: (element: CanvasResized) => void
+  onCanvasElementDraggedAction: (element: CanvasDragged) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -418,7 +420,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       uploadingFile,
       searchClipParam,
       setSearchClipParamAction,
-      onCanvasElementResizedAction
+      onCanvasElementResizedAction,
+      onCanvasElementDraggedAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -566,7 +569,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 images,
                 uploadingFile,
                 searchClipParam,
-                setSearchClipParamAction
+                setSearchClipParamAction,
+                designHasChanges
               }}
               onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
@@ -595,6 +599,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onSelectArtFormat={setArtFormatAction}
               onUnmountTab={setCanvasJsonAction}
               onCanvasElementResized={onCanvasElementResizedAction}
+              onCanvasElementDragged={onCanvasElementDraggedAction}
             />
             <PreviewTab
               {...{

@@ -834,6 +834,7 @@ export type ConfigCanvasObj = {
 
 export type CanvasResized = {
   id: string
+  elementType: CanvasObjects
   oldScaleX: number
   oldScaleY: number
   scaleX: number
@@ -847,3 +848,11 @@ export interface AddressObj {
 }
 
 export type TaxAddressObj = AddressObj | ''
+
+export type CanvasDragged = {
+  id: string
+  oldLeft: number
+  oldTop: number
+  left: number
+  top: number
+}

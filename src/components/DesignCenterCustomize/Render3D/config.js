@@ -2,6 +2,8 @@
  * ThreeJs config
  */
 export const CANVAS_SIZE = 1024
+export const WARNING_FACTOR = 0.2
+export const NUMBER_OF_DECIMALS = 3
 export const viewPositions = {
   0: {
     // Back
@@ -59,6 +61,8 @@ export const BRING_TO_FRONT_ACTION = 'BRING_TO_FRONT_ACTION'
 export const ROTATE_ACTION = 'ROTATE_ACTION'
 export const SCALE_ACTION = 'SCALE_ACTION'
 export const DRAG_ACTION = 'DRAG_ACTION'
+
+export const CHANGE_ACTIONS = [SCALE_ACTION, DRAG_ACTION]
 
 export const MESH_NAME = 'JV2_3D_MODEL'
 export const CANVAS_MESH = 'Canvas_Mesh'
