@@ -159,8 +159,4 @@ export const BottomDivider = styled.div`
   background-color: #dcdcdc;
   margin-right: 16px;
   margin-bottom: 30px;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 `
