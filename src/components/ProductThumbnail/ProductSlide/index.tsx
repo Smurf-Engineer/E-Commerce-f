@@ -63,7 +63,7 @@ const ProductSlide = ({
   onPressThumbnail,
   hideCustomButton,
   hideQuickView,
-  // urlProduct,
+  // urlProduct, TODO: WIP new way to right click
   myLockerList
 }: Props) => {
   if (image) {
@@ -86,9 +86,9 @@ const ProductSlide = ({
           )}
         </ImageTop>
         <Page>
-          {/* <a href={urlProduct}> */}
+          {/* <a href={urlProduct}> TODO: WIP new way to right click */}
           <Image src={image} onClick={onPressThumbnail} />
-          {/* </a> */}
+          {/* </a> TODO: WIP new way to right click */}
         </Page>
         <AboveTablet>
           {isHovered && (
@@ -105,9 +105,9 @@ const ProductSlide = ({
     return (
       <Page key={index}>
         {!!images && (
-          // <a href={urlProduct}>
+          // <a href={urlProduct}> TODO: WIP new way to right click
           <Image src={images[key]} onClick={onPressThumbnail} />
-          // </a>
+          // </a> TODO: WIP new way to right click
         )}
       </Page>
     )

@@ -130,14 +130,6 @@ class ProductThumbnail extends React.Component<Props, {}> {
     } = this.props
     const { isHovered, currentImage } = this.state
 
-    console.log('-------------currentCurrency--------------')
-    console.log(currentCurrency)
-    console.log('---------------------------')
-
-    console.log('------------priceRange---------------')
-    console.log(priceRange)
-    console.log('---------------------------')
-
     const currencyPrices =
       priceRange &&
       filter(priceRange, {

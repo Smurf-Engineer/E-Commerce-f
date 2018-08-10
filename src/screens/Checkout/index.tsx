@@ -669,8 +669,6 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-// const mapStateToProps = (state: any) => state.get('checkout').toJS()
-
 const mapStateToProps = (state: any) => {
   const checkoutProps = state.get('checkout').toJS()
   const langProps = state.get('languageProvider').toJS()
