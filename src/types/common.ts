@@ -824,6 +824,8 @@ export type ChangeType =
   | 'rotate'
   | 'resize'
   | 'duplicate'
+  | 'accessoryColor'
+  | 'canvasStyle'
 
 export type CanvasObjects = 'path' | 'text' | 'image'
 
@@ -841,6 +843,14 @@ export type CanvasResized = {
   scaleX: number
   scaleY: number
 }
+
+export interface AddressObj {
+  country: string
+  state: string
+  zipCode: string
+}
+
+export type TaxAddressObj = AddressObj | ''
 
 export type CanvasDragged = {
   id: string

@@ -86,10 +86,12 @@ export const ProductHorizontalList = ({
           isTopProduct,
           collections,
           yotpoId,
-          currentCurrency
+          currentCurrency,
+          customizable
         }}
         images={productImages}
         gender={genderId}
+        customizableLabel={formatMessage(messages.customizable)}
         labelButton={
           customizable ? (
             formatMessage(messages.customize)

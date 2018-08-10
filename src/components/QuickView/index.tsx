@@ -61,6 +61,7 @@ interface Props {
   yotpoId: string
   history: any
   hideSliderButtons?: boolean
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export class QuickView extends React.Component<Props, State> {
@@ -71,7 +72,14 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   render() {
-    const { open, handleClose, data, hideSliderButtons } = this.props
+    const {
+      open,
+      handleClose,
+      data,
+      hideSliderButtons,
+      formatMessage
+    } = this.props
+
     const { showDescription, showDetail, showSpecs } = this.state
 
     let product = {} as ProductPageTypes
@@ -89,15 +97,14 @@ export class QuickView extends React.Component<Props, State> {
     const renderPrices = loading ? (
       <div />
     ) : (
-      product.priceRange.map((item: any, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity
-            price={item.price}
-            quantity={item.quantity}
-            {...{ index }}
-          />
-        </AvailablePrices>
-      ))
+      product.priceRange.map(
+        ({ price, quantity }: any, index: number) =>
+          index < 4 && (
+            <AvailablePrices key={index}>
+              <PriceQuantity {...{ index, price, quantity }} />
+            </AvailablePrices>
+          )
+      )
     )
     const imageSlider = loading ? (
       <Loading>
@@ -110,7 +117,7 @@ export class QuickView extends React.Component<Props, State> {
         available={5}
         gotoCustomize={this.gotoCustomize}
         isRetail={(product.retailMen && product.retailWomen) || false}
-        {...{ hideSliderButtons }}
+        {...{ hideSliderButtons, product, formatMessage }}
       />
     )
 
@@ -127,9 +134,10 @@ export class QuickView extends React.Component<Props, State> {
           visible={open}
           footer={null}
           closable={false}
-          width={800}
+          width={'auto'}
           destroyOnClose={true}
           afterClose={this.resetState}
+          style={{ maxWidth: 800 }}
         >
           <CloseIcon src={closeIcon} onClick={handleClose} />
           <StyledRow>
@@ -217,7 +225,9 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   toggleDescriptionDetails = (evt: React.MouseEvent<HTMLImageElement>) => {
-    const { currentTarget: { id } } = evt
+    const {
+      currentTarget: { id }
+    } = evt
     this.setState({
       showDescription: id === 'Description' ? true : false,
       showDetail: id === 'Details' ? true : false,

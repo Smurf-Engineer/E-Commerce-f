@@ -12,10 +12,12 @@ import {
   Description,
   InfoContainer,
   Label,
-  Price
+  Price,
+  ImgIcon
 } from './styledComponents'
 import ImageSlide from './ProductSlide'
 import { ImageType, PriceRange } from '../../types/common'
+import colorWheelIcon from '../../assets/Colorwheel.svg'
 
 interface Props {
   id: number
@@ -37,6 +39,7 @@ interface Props {
   isStoreThumbnail?: boolean
   teamStoreShortId?: string
   customizable?: boolean
+  customizableLabel?: string
   myLockerList?: boolean
   currentCurrency: string
   onPressCustomize: (id: number) => void
@@ -121,8 +124,9 @@ class ProductThumbnail extends React.Component<Props, {}> {
       hideCustomButton,
       hideQuickView,
       customizable,
-      myLockerList,
-      currentCurrency
+      currentCurrency,
+      customizableLabel,
+      myLockerList
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -179,7 +183,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
             <Type>{type}</Type>
             <Description>{description}</Description>
             <InfoContainer>
-              <Label>{customizable ? 'Customize' : ''}</Label>
+              {customizable && (
+                <Label>
+                  <ImgIcon src={colorWheelIcon} />
+                  {customizableLabel}
+                </Label>
+              )}
               <Price>{price}</Price>
             </InfoContainer>
           </Footer>

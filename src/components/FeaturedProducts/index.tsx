@@ -126,8 +126,16 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
             onPressCustomize={this.gotoDesignCenter}
             onPressQuickView={openQuickView}
             images={images[0]}
-            priceRange={priceRange}
-            customizable={customizable}
+            customizableLabel={formatMessage(messages.customizable)}
+            {...{
+              id,
+              yotpoId,
+              type,
+              description,
+              isTopProduct,
+              priceRange,
+              customizable
+            }}
             labelButton={
               customizable ? (
                 formatMessage(messages.customize)

@@ -16,5 +16,9 @@ export default defineMessages({
   addToCart: {
     id: 'components.FeaturedProducts.addToCart',
     defaultMessage: 'ADD TO CART'
+  },
+  customizable: {
+    id: 'components.FeaturedProducts.customizable',
+    defaultMessage: 'Customizable'
   }
 })
