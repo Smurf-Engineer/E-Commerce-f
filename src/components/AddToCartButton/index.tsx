@@ -47,6 +47,7 @@ interface Props {
   onClick: () => boolean
   myLockerList?: boolean
   orderDetails?: boolean
+  centered?: boolean
   getTotalItemsIncart: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -59,7 +60,8 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       renderForThumbnail,
       withoutTop,
       myLockerList,
-      orderDetails
+      orderDetails,
+      centered
     } = this.props
 
     const renderView = renderForThumbnail ? (
@@ -75,7 +77,9 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             </ReorderButton>
           </ButtonWrapper>
         ) : (
-          <StyledButton onClick={this.addToCart}>{label}</StyledButton>
+          <StyledButton centered={Number(centered)} onClick={this.addToCart}>
+            {label}
+          </StyledButton>
         )}
       </Container>
     )

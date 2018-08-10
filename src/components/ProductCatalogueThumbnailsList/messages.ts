@@ -40,5 +40,9 @@ export default defineMessages({
   edit: {
     id: 'components.ProductCatalogueThumbnailsList.edit',
     defaultMessage: 'EDIT'
+  },
+  customizable: {
+    id: 'components.ProductCatalogueThumbnailsList.customizable',
+    defaultMessage: 'Customizable'
   }
 })

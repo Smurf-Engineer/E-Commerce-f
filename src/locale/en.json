@@ -140,6 +140,8 @@
   "components.ProductCatalogueThumbnailsList.addToCart": "ADD TO CART",
   "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
   "components.ProductCatalogueThumbnailsList.edit": "EDIT",
+  "components.ProductCatalogueThumbnailsList.customizable": "Customizable",
+
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
@@ -908,10 +910,13 @@
 
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
+  "components.ProductHorizontalList.customizable": "Customizable",
 
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
   "components.FeaturedProducts.addToCart": "ADD TO CART",
+  "components.FeaturedProducts.customizable": "Customizable",
+
   "components.CitySelect.select": "Select city",
   "components.RegionSelect.select": "Select state/province",
   "components.CountrySelect.select": "Select country",
@@ -1095,5 +1100,9 @@
   "components.UploadTab.recommendationTitle": "Jakroo Recommends",
   "components.UploadTab.recommendationMessage":
     "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.",
+
+  "components.QuickViewSlider.addToCart": "ADD TO CART",
+  "components.QuickViewSlider.customize": "CUSTOMIZE",
+
   "components.Render3D.sizeMessage": "Aprox image size"
 }
