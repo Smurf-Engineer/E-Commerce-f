@@ -57,7 +57,10 @@ import {
   BINDING,
   BIB_BRACE,
   DPI,
-  CM_PER_INCH
+  CM_PER_INCH,
+  PROPEL_PALMS,
+  GRIP_TAPE,
+  SOLAR_BIB_BRACE
 } from '../../../constants'
 import {
   Changes,
@@ -381,7 +384,6 @@ class Render3D extends PureComponent {
           }
 
           const meshIndex = getMeshIndex(MESH)
-          const labelIndex = getMeshIndex(RED_TAG)
 
           const { flatlock, areas, bumpMap, branding, colors } = loadedTextures
           /* Stitching */
@@ -438,9 +440,39 @@ class Render3D extends PureComponent {
           const areasLayers = areas.map(() => children[meshIndex].clone())
           object.add(...areasLayers)
 
-          /* Jersey label */
-          children[labelIndex].material.color.set('#ffffff')
           children[meshIndex].material = insideMaterial
+          /* Extra files loaded by MTL file */
+          const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
+          if (labelIndex >= 0) {
+            object.children[labelIndex].material.color.set('#ffffff')
+          }
+          const propelPalmsIndex = findIndex(
+            children,
+            ({ name }) => name === PROPEL_PALMS
+          )
+          if (propelPalmsIndex >= 0) {
+            object.children[propelPalmsIndex].material.color.set('#ffffff')
+          }
+          const gripTapeIndex = findIndex(
+            children,
+            ({ name }) => name === GRIP_TAPE
+          )
+          if (gripTapeIndex >= 0) {
+            object.children[gripTapeIndex].material.color.set('#ffffff')
+          }
+          // TODO: WIP
+          // const solarBibBraceIndex = findIndex(
+          //   children,
+          //   ({ name }) => name === SOLAR_BIB_BRACE
+          // )
+          // if (
+          //   solarBibBraceIndex >= 0 &&
+          //   !!object.children[solarBibBraceIndex].material.length
+          // ) {
+          //   object.children[solarBibBraceIndex].material.forEach(material =>
+          //     material.color.set('#ffffff')
+          //   )
+          // }
 
           areas.forEach(
             (map, index) =>

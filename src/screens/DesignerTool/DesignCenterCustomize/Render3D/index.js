@@ -16,7 +16,10 @@ import {
   FLATLOCK,
   ZIPPER,
   BINDING,
-  BIB_BRACE
+  BIB_BRACE,
+  PROPEL_PALMS,
+  GRIP_TAPE,
+  SOLAR_BIB_BRACE
 } from '../../../../constants'
 import {
   Container,
@@ -274,13 +277,16 @@ class Render3D extends PureComponent {
           const objectChilds = children.length
           this.setState({ objectChilds })
 
+          console.log('------------------------------------')
+          console.log(children)
+          console.log('------------------------------------')
+
           const getMeshIndex = meshName => {
             const index = findIndex(children, ({ name }) => name === meshName)
             return index < 0 ? 0 : index
           }
 
           const meshIndex = getMeshIndex(MESH)
-          const labelIndex = getMeshIndex(RED_TAG)
 
           /* Object materials */
           // Stitching
@@ -334,9 +340,41 @@ class Render3D extends PureComponent {
           )
           object.add(...areasLayers)
 
+          /* Extra files loaded by MTL file */
+          const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
+          if (labelIndex >= 0) {
+            object.children[labelIndex].material.color.set('#ffffff')
+          }
+          const propelPalmsIndex = findIndex(
+            children,
+            ({ name }) => name === PROPEL_PALMS
+          )
+          if (propelPalmsIndex >= 0) {
+            object.children[propelPalmsIndex].material.color.set('#ffffff')
+          }
+          const gripTapeIndex = findIndex(
+            children,
+            ({ name }) => name === GRIP_TAPE
+          )
+          if (gripTapeIndex >= 0) {
+            object.children[gripTapeIndex].material.color.set('#ffffff')
+          }
+          // TODO: WIP
+          // const solarBibBraceIndex = findIndex(
+          //   children,
+          //   ({ name }) => name === SOLAR_BIB_BRACE
+          // )
+          // if (
+          //   solarBibBraceIndex >= 0 &&
+          //   !!object.children[solarBibBraceIndex].material.length
+          // ) {
+          //   object.children[solarBibBraceIndex].material.forEach(material =>
+          //     material.color.set('#ffffff')
+          //   )
+          // }
+
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
-          object.children[labelIndex].material.color.set('#ffffff')
 
           const { colors = [] } = files.design || {}
           const reversedAreas = reverse(areas)
