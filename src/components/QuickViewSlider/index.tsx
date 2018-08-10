@@ -73,8 +73,7 @@ class QuickViewSlider extends React.Component<Props, State> {
       <AddToCartButton
         centered={true}
         label={formatMessage(messages.addToCart)}
-        item={item}
-        {...{ onClick, formatMessage }}
+        {...{ item, onClick, formatMessage }}
       />
     )
 
