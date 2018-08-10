@@ -9,7 +9,7 @@ export const Container = styled.div`
 `
 export const Content = styled.div`
   display: flex;
-  padding: 0px 32px 50px 32px;
+  padding: 0px 32px 250px 32px;
 
   @media (min-width: 320px) and (max-width: 572px) {
     display: block;

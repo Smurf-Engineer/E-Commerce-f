@@ -10,6 +10,7 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
+import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
 import { GetDesignByIdQuery } from './data'
@@ -189,18 +190,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       ))
 
     const availableFits = (fitStyles &&
-      fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
-        <div key={index}>
-          <SectionButton
-            id={String(id)}
-            selected={id === selectedFit.id}
-            large={true}
-            onClick={this.handleSelectedFit({ id, name: fitName })}
-          >
-            {fitName}
-          </SectionButton>
-        </div>
-      ))) || (
+      fitStyles.map(
+        ({ id, name: fitName }: SelectedType, index: number) =>
+          id && (
+            <div key={index}>
+              <SectionButton
+                id={String(id)}
+                selected={id === selectedFit.id}
+                large={true}
+                onClick={this.handleSelectedFit({ id, name: fitName })}
+              >
+                {fitName}
+              </SectionButton>
+            </div>
+          )
+      )) || (
       <SectionButton
         id={'1'}
         selected={1 === selectedFit.id}
@@ -231,15 +235,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
-    const fitSection = (
-      <SectionRow>
-        <SectionTitleContainer>
-          <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
-          <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
-        </SectionTitleContainer>
-        <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
-      </SectionRow>
-    )
+    const fitSection = !isEmpty(fitStyles) &&
+      fitStyles[0].id && (
+        <SectionRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+          <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
+        </SectionRow>
+      )
 
     const itemDetails = [] as CartItemDetail[]
 
