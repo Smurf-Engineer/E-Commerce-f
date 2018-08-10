@@ -188,15 +188,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 
-      renderPrices = currencyPrices.map((item: any, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity
-            price={item.price}
-            quantity={item.quantity}
-            {...{ index }}
-          />
-        </AvailablePrices>
-      ))
+      renderPrices = currencyPrices.map(
+        ({ price, quantity }: any, index: number) => {
+          const render = (
+            <AvailablePrices key={index}>
+              <PriceQuantity {...{ index, price, quantity }} />
+            </AvailablePrices>
+          )
+
+          return !isRetail && index >= 4 ? null : render
+        }
+      )
     }
 
     let productInfo
