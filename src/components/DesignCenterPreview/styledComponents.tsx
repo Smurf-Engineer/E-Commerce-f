@@ -44,7 +44,6 @@ export const ButtonWrapperRight = styled.div`
 
 export const ButtonWrapper = styled.div`
   margin-bottom: 16px;
-  /* width: 74%; */
   .ant-btn-primary  {
     background-color: #4a90e2;
     border-color: #4a90e2;
