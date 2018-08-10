@@ -17,7 +17,7 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   openFitInfo: false,
   showBuyNowSection: false,
-  selectedGender: '',
+  selectedGender: {},
   selectedSize: {},
   selectedFit: {},
   categoryName: '',

@@ -28,7 +28,7 @@ export const showBuyNowOptionsAction = (show: boolean): AnyAction => ({
   show
 })
 
-export const setSelectedGenderAction = (selected: string) => ({
+export const setSelectedGenderAction = (selected: SelectedType) => ({
   type: SET_SELECTED_GENDER,
   selected
 })

@@ -56,6 +56,7 @@ export const GetProductsByIdQuery = gql`
       }
       retailMen: men_retail
       retailWomen: women_retail
+      template
     }
   }
 `
