@@ -839,3 +839,11 @@ export type CanvasResized = {
   scaleX: number
   scaleY: number
 }
+
+export interface AddressObj {
+  country: string
+  state: string
+  zipCode: string
+}
+
+export type TaxAddressObj = AddressObj | ''

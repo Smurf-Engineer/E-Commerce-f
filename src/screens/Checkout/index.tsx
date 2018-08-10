@@ -45,7 +45,8 @@ import {
   CartItemDetail,
   Product,
   StripeCardData,
-  CreditCardData
+  CreditCardData,
+  TaxAddressObj
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -53,12 +54,6 @@ import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 interface CartItems {
   product: Product
   itemDetails: CartItemDetail[]
-}
-
-interface AddressObj {
-  country: string
-  state: string
-  zipCode: string
 }
 
 interface Props extends RouteComponentProps<any> {
@@ -230,7 +225,7 @@ class Checkout extends React.Component<Props, {}> {
       cardBrand
     }
 
-    const taxAddress: AddressObj | '' = shippingAddress.country &&
+    const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
         country: shippingAddress.country,
@@ -569,7 +564,7 @@ class Checkout extends React.Component<Props, {}> {
     const shoppingCartData = getShoppingCartData(shoppingCart)
     const { weightSum } = shoppingCartData
 
-    const taxAddress: AddressObj | '' = {
+    const taxAddress: TaxAddressObj = {
       country: shippingAddress.country,
       state: shippingAddress.stateProvince,
       zipCode: shippingAddress.zipCode

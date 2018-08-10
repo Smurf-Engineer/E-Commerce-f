@@ -5,7 +5,13 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
-import { QueryProps, NetsuiteTax, NetsuiteShipping } from '../../types/common'
+import {
+  QueryProps,
+  NetsuiteTax,
+  NetsuiteShipping,
+  TaxAddressObj,
+  AddressObj
+} from '../../types/common'
 import { getTaxQuery } from './data'
 import messages from './messages'
 import {
@@ -30,12 +36,6 @@ interface Data extends QueryProps {
   shipping: NetsuiteShipping
 }
 
-interface AddressObj {
-  country: string
-  state: string
-  zipCode: string
-}
-
 interface Props {
   data?: Data
   taxes: any
@@ -48,7 +48,7 @@ interface Props {
   onlyRead?: boolean
   country?: string
   weight?: string
-  shipAddress?: AddressObj | ''
+  shipAddress?: TaxAddressObj
   formatMessage: (messageDescriptor: any) => string
 }
 
