@@ -72,7 +72,7 @@ export const List = styled.div`
   padding: 0px 32px 32px 32px;
 
   @media (min-height: 800px) {
-    height: 50vh;
+    height: 55vh;
   }
 `
 
@@ -97,4 +97,20 @@ export const Icon = styled.img`
   cursor: pointer;
   width: 48px;
   height: 48px;
+`
+
+export const NotFound = styled.div`
+  width: 100%;
+  margin-top: 40px;
+  font-family: 'Avenir Next';
+  text-align: center;
+`
+
+export const Loading = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 `

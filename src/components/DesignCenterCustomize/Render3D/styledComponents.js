@@ -1,9 +1,15 @@
 /**
  * Styled Components - Created by david on 26/02/18.
  */
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
+
+export const fadeIn = keyframes`
+  to {
+    opacity: 1;
+  }
+`
 
 export const Container = styled.div`
   position: relative;
@@ -130,4 +136,33 @@ export const ModalMessage = styled.div`
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
+`
+export const SizeBox = styled.div`
+  opacity: 0;
+  animation: ${fadeIn} 0.5s cubic-bezier(0.67, 0.35, 0.565, 1) both;
+  position: absolute;
+  padding: 8px;
+  top: 52px;
+  left: 26px;
+  border: 0.5px solid #dcdcdc;
+  border-radius: 2px;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+`
+
+export const SizeLabel = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  letter-spacing: 0.15px;
+  line-height: 16px;
+`
+
+export const Size = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.15px;
+  line-height: 16px;
 `

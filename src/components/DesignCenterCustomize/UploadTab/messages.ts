@@ -17,5 +17,15 @@ export default defineMessages({
     id: 'components.UploadTab.imageExtensionError',
     defaultMessage:
       'Oh no! Your file has to be in eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd'
+  },
+  recommendationTitle: {
+    id: 'components.UploadTab.recommendationTitle',
+    defaultMessage: 'Jakroo Recommends'
+  },
+  recommendationMessage: {
+    id: 'components.UploadTab.recommendationMessage',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.'
   }
 })

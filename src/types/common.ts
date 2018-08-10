@@ -109,6 +109,7 @@ export interface Product {
   retailMen: boolean
   retailWomen: boolean
   shortDescription: string
+  genderId: number
   productTotal?: number
   unitPrice?: number
   sizeRange: ItemDetailType[]
@@ -753,6 +754,11 @@ export interface City {
 export interface ImageFile {
   id: number
   fileUrl: string
+  size: {
+    width: number
+    height: number
+  }
+  type: string
 }
 
 export type MessagePayload = {
@@ -817,8 +823,27 @@ export type ChangeType =
   | 'resize'
   | 'duplicate'
 
+export type CanvasObjects = 'path' | 'text' | 'image'
+
 export type ConfigCanvasObj = {
   src: string
   style: any
   position: any
+}
+
+export type CanvasResized = {
+  id: string
+  elementType: CanvasObjects
+  oldScaleX: number
+  oldScaleY: number
+  scaleX: number
+  scaleY: number
+}
+
+export type CanvasDragged = {
+  id: string
+  oldLeft: number
+  oldTop: number
+  left: number
+  top: number
 }

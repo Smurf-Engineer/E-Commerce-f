@@ -20,7 +20,8 @@ import {
   ArtFormat,
   StitchingColor,
   AccesoryColor,
-  Product
+  Product,
+  ImageFile
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -45,6 +46,10 @@ interface Props {
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
+  images: ImageFile[]
+  uploadingFile: boolean
+  onUploadFile: (file: any) => void
+  searchClipParam: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -53,7 +58,7 @@ interface Props {
   onHoverColorBlock: (index: number) => void
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
-  onApplyImage: (base64: string) => void
+  onApplyImage: (file: ImageFile) => void
   onApplyArt: (url: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
@@ -61,6 +66,7 @@ interface Props {
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  setSearchClipParamAction: (searchParam: string) => void
 }
 
 const Tabs = ({
@@ -97,7 +103,12 @@ const Tabs = ({
   zipperColor,
   bibColor,
   onAccessoryColorSelected,
-  product
+  product,
+  onUploadFile,
+  images,
+  uploadingFile,
+  searchClipParam,
+  setSearchClipParamAction
 }: Props) => {
   return (
     <Container>
@@ -150,13 +161,23 @@ const Tabs = ({
             {...{
               onApplyArt,
               formatMessage,
-              onSelectArtFormat
+              onSelectArtFormat,
+              searchClipParam,
+              setSearchClipParamAction
             }}
             selectedElement={canvas.path[selectedElement]}
           />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
-          <UploadTab {...{ formatMessage, onApplyImage }} />
+          <UploadTab
+            {...{
+              formatMessage,
+              onApplyImage,
+              onUploadFile,
+              images,
+              uploadingFile
+            }}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

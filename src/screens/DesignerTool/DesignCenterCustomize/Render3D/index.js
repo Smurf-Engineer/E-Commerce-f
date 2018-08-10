@@ -526,10 +526,10 @@ class Render3D extends PureComponent {
       object.children.forEach(({ material }) => {
         if (!!material) {
           const { map, bumpMap, alphaMap } = material
-          if (map) map.dispose()
-          if (bumpMap) bumpMap.dispose()
-          if (alphaMap) alphaMap.dispose()
-          material.dispose()
+          if (map && map.dispose) map.dispose()
+          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+          if (material.dipose) material.dispose()
         }
       })
       if (this.zipper) {
@@ -557,7 +557,7 @@ class Render3D extends PureComponent {
       object.children.forEach(({ material }) => {
         if (!!material) {
           const { map } = material
-          if (map) map.dispose()
+          if (map && map.dispose) map.dispose()
         }
       })
     }

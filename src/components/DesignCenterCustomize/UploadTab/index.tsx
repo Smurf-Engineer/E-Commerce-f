@@ -3,20 +3,31 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import message from 'antd/lib/message'
 import Message from 'antd/lib/message'
+import remove from 'lodash/remove'
 import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
 import last from 'lodash/last'
-import Dragger from '../../TeamDragger'
+import withLoading from '../../WithLoading'
+import withError from '../../WithError'
+import { compose, graphql } from 'react-apollo'
+import { userfilesQuery, deleteFileMutation } from './data'
+import Dragger from '../../DraggerWithLoading'
 import ImageList from '../ImageList'
 import messages from './messages'
+import { ImageFile, QueryProps } from '../../../types/common'
 import {
   Container,
   Header,
   Title,
-  DraggerContainer,
-  DraggerBottom
+  DraggerBottom,
+  Recommendation
 } from './styledComponents'
+
+interface Data extends QueryProps {
+  images: ImageFile[]
+}
 
 const validFileExtensions = [
   '.eps',
@@ -34,23 +45,38 @@ const validFileExtensions = [
 ]
 
 interface Props {
-  onApplyImage: (base64: string) => void
+  data: Data
+  images: ImageFile[]
+  uploadingFile: boolean
+  onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
+  onUploadFile: (file: any) => void
+  deleteFile: (variables: {}) => Promise<any>
 }
 
 interface State {
   file: any
-  images: string[]
 }
 
 class UploadTab extends React.PureComponent<Props, State> {
-  state = {
-    file: null,
-    images: [] as string[]
+  componentWillReceiveProps(nextProps: Props) {
+    const {
+      uploadingFile: oldUploadingFile,
+      data: { refetch }
+    } = this.props
+    const { uploadingFile } = nextProps
+    if (uploadingFile !== oldUploadingFile && !uploadingFile) {
+      refetch()
+    }
   }
   render() {
-    const { images } = this.state
-    const dragger = <Dragger onSelectImage={this.beforeUpload} />
+    const {
+      data: { images: imagesData },
+      uploadingFile
+    } = this.props
+    const dragger = (
+      <Dragger loading={uploadingFile} onSelectImage={this.beforeUpload} />
+    )
     return (
       <Container>
         <Header>
@@ -58,19 +84,25 @@ class UploadTab extends React.PureComponent<Props, State> {
             <FormattedMessage {...messages.title} />
           </Title>
         </Header>
-        <ImageList onClickImage={this.handleOnAddImage} {...{ images }} />
-        {!!images.length ? (
-          <DraggerBottom>{dragger}</DraggerBottom>
-        ) : (
-          <DraggerContainer>{dragger}</DraggerContainer>
-        )}
+        <ImageList
+          onClickImage={this.handleOnAddImage}
+          images={imagesData}
+          onClickDelete={this.handleOnDelete}
+        />
+        <DraggerBottom>{dragger}</DraggerBottom>
+        <Recommendation color="#E61737">
+          <FormattedMessage {...messages.recommendationTitle} />
+        </Recommendation>
+        <Recommendation>
+          <FormattedMessage {...messages.recommendationMessage} />
+        </Recommendation>
       </Container>
     )
   }
 
-  handleOnAddImage = (base64: string) => {
+  handleOnAddImage = (file: ImageFile) => {
     const { onApplyImage } = this.props
-    onApplyImage(base64)
+    onApplyImage(file)
   }
 
   getFileExtension = (fileName: string) => {
@@ -101,28 +133,43 @@ class UploadTab extends React.PureComponent<Props, State> {
         Message.error(formatMessage(messages.imageExtensionError))
         return false
       }
-    }
 
-    const reader = new FileReader()
-    reader.onloadend = () => {
-      this.setState(({ images }: any) => ({
-        images: [...images, reader.result]
-      }))
+      const { onUploadFile } = this.props
+      onUploadFile(file)
     }
-
-    if (file) {
-      reader.readAsDataURL(file)
-    }
-
     return false
   }
 
+  handleOnDelete = async (fileId: number) => {
+    try {
+      const { deleteFile } = this.props
+      await deleteFile({
+        variables: { fileId },
+        update: (store: any) => {
+          const data = store.readQuery({ query: userfilesQuery })
+          const updatedImages = remove(
+            data.images,
+            (image: ImageFile) => image.id !== fileId
+          )
+          data.images = updatedImages
+          store.writeQuery({ query: userfilesQuery, data })
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+
   clearState = () => {
-    this.setState({
-      file: null,
-      images: []
-    })
+    this.setState({ file: null })
   }
 }
 
-export default UploadTab
+const UploadTabEnhance = compose(
+  graphql<Data>(userfilesQuery),
+  deleteFileMutation,
+  withError,
+  withLoading
+)(UploadTab)
+
+export default UploadTabEnhance
