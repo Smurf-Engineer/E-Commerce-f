@@ -142,11 +142,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
-      currencyPrices.map(({ price, quantity }, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity {...{ index, price, quantity }} />
-        </AvailablePrices>
-      ))
+      currencyPrices.map(
+        ({ price, quantity }, index: number) =>
+          index < 4 && (
+            <AvailablePrices key={index}>
+              <PriceQuantity {...{ index, price, quantity }} />
+            </AvailablePrices>
+          )
+      )
 
     const maleGender = get(genders, '0.name', '')
     const femaleGender = get(genders, '1.name', '')
