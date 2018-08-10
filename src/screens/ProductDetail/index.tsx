@@ -430,7 +430,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           )}
           {product && (
             <RelatedProductsContainer>
-              <RelatedProducts {...{ products, history, formatMessage }} />
+              <RelatedProducts
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ products, history, formatMessage }}
+              />
             </RelatedProductsContainer>
           )}
           <ReviewsHeader>

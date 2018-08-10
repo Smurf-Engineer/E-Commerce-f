@@ -19,13 +19,14 @@ import { Product } from '../../types/common'
 interface Props {
   history: any
   dispatch: any
+  currentCurrency: string
   products: Product[]
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class RelatedProducts extends React.Component<Props, {}> {
   render() {
-    const { products, formatMessage } = this.props
+    const { products, currentCurrency, formatMessage } = this.props
 
     const renderProductList = products.map((product, key) => {
       const {
@@ -54,11 +55,14 @@ export class RelatedProducts extends React.Component<Props, {}> {
             isTopProduct,
             collections,
             yotpoId,
-            gender
+            gender,
+            customizable,
+            currentCurrency
           }}
           images={productImages}
           onPressQuickView={this.handleOnQuickView}
           onPressCustomize={this.handleOnCustomize}
+          customizableLabel={formatMessage(messages.customizableLabel)}
           labelButton={
             customizable ? (
               formatMessage(messages.customize)

@@ -1105,6 +1105,7 @@
   "components.RelatedProducts.tittle": "Related Products",
   "components.RelatedProducts.addToCart": "ADD TO CART",
   "components.RelatedProducts.customize": "CUSTOMIZE",
+  "components.RelatedProducts.customizableLabel": "Customizable",
 
   "components.QuickViewSlider.addToCart": "ADD TO CART",
   "components.QuickViewSlider.customize": "CUSTOMIZE"

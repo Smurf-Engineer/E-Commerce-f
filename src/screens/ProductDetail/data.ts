@@ -59,8 +59,9 @@ export const GetProductsByIdQuery = gql`
       template
       relatedProducts: related {
         id
-        name
-        type: short_description
+        type: name
+        description: short_description
+        shortDescription: short_description
         images: pictures {
           front: front_image
           back: back_image
@@ -71,12 +72,13 @@ export const GetProductsByIdQuery = gql`
         isTopProduct
         customizable: design_center
         genderId: gender_id
-        description
         collections
         yotpoId: yotpo_id
         priceRange {
           price
           quantity
+          abbreviation
+          shortName: short_name
         }
       }
     }
