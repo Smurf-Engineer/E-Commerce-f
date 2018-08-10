@@ -117,17 +117,12 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       return (
         <div {...{ key }}>
           <ProductThumbnail
-            {...{ currentCurrency }}
-            id={id}
-            yotpoId={yotpoId}
-            type={type}
-            description={description}
-            isTopProduct={isTopProduct}
             onPressCustomize={this.gotoDesignCenter}
             onPressQuickView={openQuickView}
             images={images[0]}
             customizableLabel={formatMessage(messages.customizable)}
             {...{
+              currentCurrency,
               id,
               yotpoId,
               type,

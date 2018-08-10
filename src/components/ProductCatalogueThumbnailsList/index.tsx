@@ -183,17 +183,12 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                {...{ currentCurrency }}
-                id={product.id}
-                yotpoId={product.yotpoId}
-                type={product.type}
-                description={product.description}
-                isTopProduct={product.isTopProduct}
                 onPressCustomize={this.gotoDesignCenter}
                 onPressQuickView={this.handlePressQuickView}
                 images={productImages}
                 customizableLabel={formatMessage(messages.customizable)}
                 {...{
+                  currentCurrency,
                   id,
                   yotpoId,
                   type,
