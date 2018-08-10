@@ -124,6 +124,7 @@ export interface Product {
   zipper?: ExtraFile
   bibBrace?: ExtraFile
   weight: number
+  relatedProducts: Product[]
 }
 
 export type DesignType = {

@@ -36,6 +36,7 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
+  RelatedProductsContainer,
   ReviewsHeader,
   Downloadtemplate,
   DownloadTemplateContainer,
@@ -55,6 +56,7 @@ import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import AddtoCartButton from '../../components/AddToCartButton'
+import RelatedProducts from '../../components/RelatedProducts'
 import {
   Product,
   QueryProps,
@@ -141,6 +143,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
     const template = get(product, 'template', '')
+    const products = get(product, 'relatedProducts', [] as Product[])
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
@@ -417,7 +420,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          {/* TODO: Related products section */}
+          {product && (
+            <RelatedProductsContainer>
+              <RelatedProducts {...{ products, history, formatMessage }} />
+            </RelatedProductsContainer>
+          )}
           <ReviewsHeader>
             <FormattedMessage {...messages.reviews} />
           </ReviewsHeader>

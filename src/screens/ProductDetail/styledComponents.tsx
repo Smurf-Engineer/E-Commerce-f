@@ -267,6 +267,14 @@ export const AddToCartButton = styled(Button)`
     border-color: #4a90e2;
   }
 `
+export const RelatedProductsContainer = styled.div`
+  margin-bottom: 80px;
+  padding: 0px 32px;
+
+  @media (min-width: 1440px) {
+    padding: 0px 10%;
+  }
+`
 export const ReviewsHeader = styled.div`
   align-items: center;
   background-color: #f7f7f7;
@@ -279,7 +287,7 @@ export const ReviewsHeader = styled.div`
   letter-spacing: 0.23px;
   line-height: 25px;
   margin-bottom: 15px;
-  padding-left: 34px;
+  padding-left: 32px;
 `
 
 export const YotpoImageSlider = styled.div``
