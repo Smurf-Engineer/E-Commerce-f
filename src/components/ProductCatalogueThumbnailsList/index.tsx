@@ -58,6 +58,7 @@ interface Props {
   onPressPrivate?: (id: string, isPrivate: boolean) => void
   onPressDelete?: (id: string, name: string) => void
   withoutPadding?: boolean
+  currentCurrency: string
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -73,7 +74,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       designs,
       onPressPrivate = () => {},
       onPressDelete = () => {},
-      withoutPadding
+      withoutPadding,
+      currentCurrency
     } = this.props
 
     let thumbnailsList
@@ -102,6 +104,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
+                {...{ currentCurrency }}
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
@@ -163,23 +166,40 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       total = fullCount
       if (catalogue) {
         thumbnailsList = catalogue.map((product, index) => {
+          const {
+            images,
+            id,
+            yotpoId,
+            type,
+            description,
+            isTopProduct,
+            collections,
+            priceRange,
+            customizable
+          } = product
+
           // TODO: filter by gender
-          const productImages = product.images ? product.images[0] : {}
+          const productImages = images ? images[0] : {}
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                id={product.id}
-                yotpoId={product.yotpoId}
-                type={product.type}
-                description={product.description}
-                isTopProduct={product.isTopProduct}
                 onPressCustomize={this.gotoDesignCenter}
                 onPressQuickView={this.handlePressQuickView}
-                collections={product.collections}
                 images={productImages}
-                priceRange={product.priceRange}
+                customizableLabel={formatMessage(messages.customizable)}
+                {...{
+                  currentCurrency,
+                  id,
+                  yotpoId,
+                  type,
+                  description,
+                  isTopProduct,
+                  collections,
+                  priceRange,
+                  customizable
+                }}
                 labelButton={
-                  product.customizable ? (
+                  customizable ? (
                     formatMessage(messages.customize)
                   ) : (
                     <AddToCartButton

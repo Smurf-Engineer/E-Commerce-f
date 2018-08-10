@@ -16,6 +16,7 @@ interface ConfigType {
   geoIpUrl: string
   geoIpAccesKey: string
   intercomKey: string
+  defaultCurrency: string
 }
 
 const config: ConfigType = {
@@ -32,7 +33,8 @@ const config: ConfigType = {
   googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
   geoIpUrl: 'http://api.ipstack.com/',
   geoIpAccesKey: 'e5dc4d0a6fc61af61307fe520cc67f66',
-  intercomKey: 'rryek0sa'
+  intercomKey: 'rryek0sa',
+  defaultCurrency: 'usd'
 }
 
 export default config

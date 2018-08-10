@@ -29,6 +29,7 @@ import {
 import { QueryProps, ClickParam } from '../../types/common'
 import { GetFiltersQuery } from './data'
 import Icon from 'antd/lib/icon'
+import config from '../../config/index'
 
 interface FilterOptions {
   name: string
@@ -64,6 +65,7 @@ interface Props extends RouteComponentProps<any> {
   currentPage: number
   fakeWidth: number
   openSidebar: boolean
+  currentCurrency: string
   setFilterAction: (filter: {}) => void
   openQuickViewAction: (index: number) => void
   setSelectedFilters: (filter: object) => void
@@ -116,6 +118,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       fakeWidth,
       openSidebar,
       openQuickViewAction: openQuickView,
+      currentCurrency,
       data: { loading, filters: filtersGraph }
     } = this.props
 
@@ -228,6 +231,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           fitFilters={fitSizeIndexes}
                           handleChangePage={this.handlechangePage}
                           handleOrderBy={this.handleOrderBy}
+                          currentCurrency={
+                            currentCurrency || config.defaultCurrency
+                          }
                           {...{
                             skip,
                             orderBy,
@@ -264,6 +270,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       fitFilters={fitSizeIndexes}
                       handleChangePage={this.handlechangePage}
                       handleOrderBy={this.handleOrderBy}
+                      currentCurrency={
+                        currentCurrency || config.defaultCurrency
+                      }
                       {...{
                         skip,
                         orderBy,
@@ -341,7 +350,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 const mapStateToProps = (state: any) => {
   const productCatalogue = state.get('productCatalog').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...productCatalogue, ...responsive }
+  const langProps = state.get('languageProvider').toJS()
+  return { ...productCatalogue, ...responsive, ...langProps }
 }
 
 const ProductCatalogEnhance = compose(

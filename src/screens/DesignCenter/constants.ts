@@ -75,11 +75,20 @@ export enum Changes {
   Drag = 'drag',
   Rotate = 'rotate',
   Resize = 'resize',
-  Duplicate = 'duplicate'
+  Duplicate = 'duplicate',
+  AccessoryColors = 'accessoryColor',
+  CanvasStyle = 'canvasStyle'
 }
 
 export enum CanvasElements {
   Text = 'text',
   Path = 'path',
   Image = 'image'
+}
+
+export enum AccessoryColors {
+  Binding = 'bindingColor',
+  Zipper = 'zipperColor',
+  Bib = 'bibColor',
+  Stitching = 'stitchingColor'
 }

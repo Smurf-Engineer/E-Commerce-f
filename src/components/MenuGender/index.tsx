@@ -36,6 +36,7 @@ interface Props {
   genders?: Filter[]
   sports?: Filter[]
   visible: boolean
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -69,6 +70,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
       genders = [],
       sports = [],
       formatMessage,
+      currentCurrency,
       data: { categories, loading }
     } = this.props
 
@@ -119,7 +121,8 @@ export class MenuGender extends React.PureComponent<Props, {}> {
               genderFilter,
               sportFilter,
               categoryFilter,
-              formatMessage
+              formatMessage,
+              currentCurrency
             }}
             onPressSeeAll={this.handleOnPressSeeAll}
           />

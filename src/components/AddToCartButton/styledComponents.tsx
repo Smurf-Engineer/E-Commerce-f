@@ -17,11 +17,16 @@ export const Text = styled.div`
   color: #fff;
 `
 
+interface ButtonProps {
+  centered?: number
+}
+
 export const StyledButton = styled(Button)`
   height: 50px;
   width: 221px;
   border: 2px solid #e61737;
   border-radius: 2px;
+  ${({ centered }: ButtonProps) => (centered ? 'margin: 0 auto' : '')};
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;

@@ -35,6 +35,16 @@ export const StyledCheckbox = styled(Checkbox)`
   letter-spacing: 0.2px;
   line-height: 22px;
   margin: 5px 0;
+
+  .ant-checkbox-wrapper:hover,
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus + .ant-checkbox-inner {
+    border-color: #4a90e2;
+  }
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-indeterminate .ant-checkbox-inner {
+    background-color: #4a90e2;
+  }
 `
 
 export const StyledButton = styled(Button)`

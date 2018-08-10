@@ -140,6 +140,8 @@
   "components.ProductCatalogueThumbnailsList.addToCart": "ADD TO CART",
   "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
   "components.ProductCatalogueThumbnailsList.edit": "EDIT",
+  "components.ProductCatalogueThumbnailsList.customizable": "Customizable",
+
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
@@ -908,10 +910,13 @@
 
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
+  "components.ProductHorizontalList.customizable": "Customizable",
 
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
   "components.FeaturedProducts.addToCart": "ADD TO CART",
+  "components.FeaturedProducts.customizable": "Customizable",
+
   "components.CitySelect.select": "Select city",
   "components.RegionSelect.select": "Select state/province",
   "components.CountrySelect.select": "Select country",
@@ -1099,5 +1104,8 @@
 
   "components.RelatedProducts.tittle": "Related Products",
   "components.RelatedProducts.addToCart": "ADD TO CART",
-  "components.RelatedProducts.customize": "CUSTOMIZE"
+  "components.RelatedProducts.customize": "CUSTOMIZE",
+
+  "components.QuickViewSlider.addToCart": "ADD TO CART",
+  "components.QuickViewSlider.customize": "CUSTOMIZE"
 }

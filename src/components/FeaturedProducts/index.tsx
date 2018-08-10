@@ -29,6 +29,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   history: any
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   openQuickView: (id: number) => void
 }
@@ -84,6 +85,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
     const {
       openQuickView,
       formatMessage,
+      currentCurrency,
       data: { loading, featuredProducts, error }
     } = this.props
 
@@ -115,16 +117,20 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       return (
         <div {...{ key }}>
           <ProductThumbnail
-            id={id}
-            yotpoId={yotpoId}
-            type={type}
-            description={description}
-            isTopProduct={isTopProduct}
             onPressCustomize={this.gotoDesignCenter}
             onPressQuickView={openQuickView}
             images={images[0]}
-            priceRange={priceRange}
-            customizable={customizable}
+            customizableLabel={formatMessage(messages.customizable)}
+            {...{
+              currentCurrency,
+              id,
+              yotpoId,
+              type,
+              description,
+              isTopProduct,
+              priceRange,
+              customizable
+            }}
             labelButton={
               customizable ? (
                 formatMessage(messages.customize)
