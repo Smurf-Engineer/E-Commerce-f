@@ -19,7 +19,7 @@ import {
   StyledSaveAs,
   CheckWrapper
 } from './styledComponents'
-import { SaveDesignType } from '../../types/common'
+import { SaveDesignType, Product, DesignSaved } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 
 interface Data {
@@ -27,6 +27,7 @@ interface Data {
   shortId: string
   name: string
   svg: string
+  product: Product
 }
 
 interface Props {
@@ -43,7 +44,11 @@ interface Props {
   formatMessage: (messageDescriptor: any, values?: {}) => string
   saveDesignNameMutation: (variables: {}) => void
   saveDesignChangesMutation: (variables: {}) => void
-  afterSaveDesign: (id: string, svg: string) => void | undefined
+  afterSaveDesign: (
+    id: string,
+    svg: string,
+    design: DesignSaved
+  ) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   setSaveDesignLoading: (loading: boolean) => void
 }
@@ -56,7 +61,9 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { onDesignName } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     onDesignName(value)
   }
@@ -105,7 +112,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       if (data) {
         const { shortId, svg } = data
         message.success(formatMessage(messages.saveSuccess, { designName }))
-        afterSaveDesign(shortId, svg)
+        afterSaveDesign(shortId, svg, data)
         requestClose()
       }
     } catch (error) {
@@ -237,5 +244,8 @@ export class SaveDesign extends React.Component<Props, {}> {
   }
 }
 
-const SaveDesignEnhance = compose(saveDesignName, saveDesignChanges)(SaveDesign)
+const SaveDesignEnhance = compose(
+  saveDesignName,
+  saveDesignChanges
+)(SaveDesign)
 export default SaveDesignEnhance

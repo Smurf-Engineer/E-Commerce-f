@@ -19,10 +19,11 @@ import {
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import messages from './messages'
-import { Product } from '../../types/common'
+import { Product, SaveDesignType } from '../../types/common'
 import ShareDesignModal from '../ShareDesignModal'
 import quickView from '../../assets/quickview.svg'
 import AddToTeamStore from '../AddToTeamStore'
+import AddToCartButton from '../AddToCartButton'
 import { DesignTabs } from '../../screens/DesignCenter/constants'
 
 interface Props {
@@ -38,6 +39,7 @@ interface Props {
   openAddToStoreModal: boolean
   teamStoreId: string
   svgOutputUrl: string
+  savedDesign: SaveDesignType
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
@@ -65,6 +67,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
     openShareModalAction(false)
   }
 
+  handleAddToCart = () => true
+
   render() {
     const {
       history,
@@ -80,10 +84,15 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       setItemToAddAction,
       teamStoreId,
       addItemToStore,
-      onAddToCart,
       product,
-      svgOutputUrl
+      svgOutputUrl,
+      savedDesign
     } = this.props
+
+    const itemToAdd = Object.assign(savedDesign, {
+      itemDetails: [{ quantity: 1 }]
+    })
+
     return (
       <Container>
         <ButtonsContainer>
@@ -113,9 +122,12 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                 </Button>
               </ButtonWrapper>*/}
                 <ButtonWrapper>
-                  <Button type="primary" onClick={onAddToCart}>
-                    <FormattedMessage {...messages.addToCart} />
-                  </Button>
+                  <AddToCartButton
+                    orderDetails={true}
+                    label={formatMessage(messages.addToCart)}
+                    onClick={this.handleAddToCart}
+                    item={itemToAdd}
+                  />
                 </ButtonWrapper>
               </BottomButtons>
               <ButtonWrapperRight>
