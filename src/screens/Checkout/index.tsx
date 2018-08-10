@@ -528,7 +528,8 @@ class Checkout extends React.Component<Props, {}> {
       paymentMethod,
       stripeToken,
       selectedCard,
-      client
+      client,
+      currentCurrency
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -626,6 +627,8 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.weight')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
+        unset(priceRange, 'shortName')
+        unset(priceRange, 'abbreviation')
       })
       forEach(cartItem.itemDetails, itemDetail => {
         unset(itemDetail, 'gender.__typename')
@@ -647,7 +650,8 @@ class Checkout extends React.Component<Props, {}> {
       taxAmount,
       shippingId,
       shippingCarrier,
-      shippingAmount
+      shippingAmount,
+      currency: currentCurrency
     }
 
     try {
