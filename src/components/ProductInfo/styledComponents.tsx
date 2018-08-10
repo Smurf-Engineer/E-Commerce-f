@@ -28,12 +28,16 @@ export const ProductInfoTitle = styled.div`
   display: flex;
   justify-content: space-between;
 
-  width: auto;
+  width: 100%;
   color: #5f6062;
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const UpDownArrow = styled.img`
