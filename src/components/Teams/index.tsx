@@ -18,9 +18,10 @@ const Teams = ({ formatMessage, history }: Props) => {
   return (
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
+      {/* TODO: hide teamstores for phase I
       <Text onClick={goTo('search-teamstores')}>
         <Span>{formatMessage(messages.stores)}</Span>
-      </Text>
+      </Text> */}
       <Text onClick={goTo('team-kits')}>
         <Span>{formatMessage(messages.kits)}</Span>
       </Text>

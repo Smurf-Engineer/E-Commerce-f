@@ -48,7 +48,9 @@ import {
   SET_ACCESSORY_COLOR_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
-  SET_SEARCH_CLIPARTPARAM
+  SET_SEARCH_CLIPARTPARAM,
+  CANVAS_ELEMENT_RESIZED_ACTION,
+  CANVAS_ELEMENT_DRAGGED_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -60,7 +62,9 @@ import {
   Product,
   StitchingColor,
   AccesoryColor,
-  DesignSaved
+  DesignSaved,
+  CanvasResized,
+  CanvasDragged
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -352,6 +356,20 @@ export const setAccessoryColorAction = (color: AccesoryColor, id: string) => ({
   type: SET_ACCESSORY_COLOR_ACTION,
   color,
   id
+})
+
+export const onCanvasElementResizedAction = (
+  element: CanvasResized
+): AnyAction => ({
+  type: CANVAS_ELEMENT_RESIZED_ACTION,
+  element
+})
+
+export const onCanvasElementDraggedAction = (
+  element: CanvasDragged
+): AnyAction => ({
+  type: CANVAS_ELEMENT_DRAGGED_ACTION,
+  element
 })
 
 export const setSearchClipParamAction = (param: string) => ({
