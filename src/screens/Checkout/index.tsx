@@ -372,7 +372,7 @@ class Checkout extends React.Component<Props, {}> {
                     paymentMethod,
                     selectedCard
                   }}
-                  currency={currentCurrency}
+                  currency={currentCurrency || config.defaultCurrency}
                   cart={shoppingCart}
                   showContent={currentStep === RevieTab}
                   formatMessage={intl.formatMessage}

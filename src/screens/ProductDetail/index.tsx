@@ -67,6 +67,7 @@ import {
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
 import RedColor from '../../assets/colorred.svg'
+import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -181,7 +182,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     if (product) {
       const currencyPrices = filter(product.priceRange, {
-        abbreviation: currentCurrency
+        abbreviation: currentCurrency || config.defaultCurrency
       })
 
       renderPrices = currencyPrices.map((item: any, index: number) => (

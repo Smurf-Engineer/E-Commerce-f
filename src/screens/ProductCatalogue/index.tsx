@@ -29,6 +29,7 @@ import {
 import { QueryProps, ClickParam } from '../../types/common'
 import { GetFiltersQuery } from './data'
 import Icon from 'antd/lib/icon'
+import config from '../../config/index'
 
 interface FilterOptions {
   name: string
@@ -230,6 +231,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                           fitFilters={fitSizeIndexes}
                           handleChangePage={this.handlechangePage}
                           handleOrderBy={this.handleOrderBy}
+                          currentCurrency={
+                            currentCurrency || config.defaultCurrency
+                          }
                           {...{
                             skip,
                             orderBy,
@@ -237,8 +241,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             openQuickView,
                             history,
                             sortByLabel,
-                            currentPage,
-                            currentCurrency
+                            currentPage
                           }}
                         />
                       </ResultsColumn>
@@ -267,6 +270,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                       fitFilters={fitSizeIndexes}
                       handleChangePage={this.handlechangePage}
                       handleOrderBy={this.handleOrderBy}
+                      currentCurrency={
+                        currentCurrency || config.defaultCurrency
+                      }
                       {...{
                         skip,
                         orderBy,
@@ -274,8 +280,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         openQuickView,
                         history,
                         sortByLabel,
-                        currentPage,
-                        currentCurrency
+                        currentPage
                       }}
                     />
                   </ResultsColumn>

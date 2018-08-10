@@ -173,7 +173,6 @@ class MainLayout extends React.Component<Props, {}> {
               searchParam,
               currentRegion,
               currentLanguage,
-              currentCurrency,
               openLogin,
               openLoginAction,
               saveUserToLocal,
@@ -181,6 +180,7 @@ class MainLayout extends React.Component<Props, {}> {
               designHasChanges,
               openWithoutSaveModalAction
             }}
+            currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.onLogout}
             hideBottom={hideBottomHeader}
           />

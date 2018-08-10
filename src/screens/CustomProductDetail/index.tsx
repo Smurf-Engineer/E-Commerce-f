@@ -57,6 +57,7 @@ import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
 import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
+import config from '../../config/index'
 
 interface Data extends QueryProps {
   design: DesignType
@@ -135,11 +136,12 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const currencyPrices =
       product &&
       filter(product.priceRange, {
-        abbreviation: currentCurrency
+        abbreviation: currentCurrency || config.defaultCurrency
       })
 
     const renderPrices =
       currencyPrices &&
+      currencyPrices.length &&
       currencyPrices.map(({ price, quantity }, index: number) => (
         <AvailablePrices key={index}>
           <PriceQuantity {...{ index, price, quantity }} />

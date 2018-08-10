@@ -126,6 +126,14 @@ class ProductThumbnail extends React.Component<Props, {}> {
     } = this.props
     const { isHovered, currentImage } = this.state
 
+    console.log('-------------currentCurrency--------------')
+    console.log(currentCurrency)
+    console.log('---------------------------')
+
+    console.log('------------priceRange---------------')
+    console.log(priceRange)
+    console.log('---------------------------')
+
     const currencyPrices =
       priceRange &&
       filter(priceRange, {
@@ -134,6 +142,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
 
     const price =
       currencyPrices &&
+      currencyPrices.length &&
       `$${currencyPrices[0].price} - $${
         currencyPrices[currencyPrices.length - 1].price
       }`
