@@ -62,6 +62,7 @@ import {
   Product,
   StitchingColor,
   AccesoryColor,
+  DesignSaved,
   CanvasResized,
   CanvasDragged
 } from '../../types/common'
@@ -185,10 +186,15 @@ export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
-export const saveDesignIdAction = (id: string, svgUrl: string): AnyAction => ({
+export const saveDesignIdAction = (
+  id: string,
+  svgUrl: string,
+  design: DesignSaved
+): AnyAction => ({
   type: SAVE_DESIGN_ID,
   id,
-  svgUrl
+  svgUrl,
+  design
 })
 
 export const setCheckedTermsAction = (checked: boolean): AnyAction => ({

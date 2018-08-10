@@ -64,28 +64,30 @@ export const getOrderQuery = gql`
       cart {
         product {
           id
+          code
+          yotpoId: yotpo_id
           name
           type: name
-          yotpoId: yotpo_id
           shortDescription: short_description
-          description
+          collections
+          isTopProduct
           weight
+          priceRange {
+            quantity
+            price
+          }
           genders {
             id
             name: gender
+          }
+          fitStyles {
+            id
+            name: description
           }
           sizeRange: size_range {
             id
             name
           }
-          fitStyles {
-            id
-            name: description
-            info
-            image
-          }
-          collections
-          isTopProduct
           images: pictures {
             front: front_image
             back: back_image

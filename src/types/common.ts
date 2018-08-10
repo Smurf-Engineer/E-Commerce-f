@@ -18,7 +18,8 @@ export interface DesignSaved {
   name: string
   svg: string
   product: Product
-  style: Style
+  style?: Style
+  shortId?: string
 }
 
 export interface SelectedItem {

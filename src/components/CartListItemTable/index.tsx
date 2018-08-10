@@ -74,6 +74,11 @@ interface Props {
   itemIndex: number
 }
 
+interface State {
+  genderSelectWidth: string
+  fitSelectWidth: string
+}
+
 interface Header {
   message: string
   width?: number
@@ -87,7 +92,35 @@ const headerTitles: Header[] = [
   { message: '', width: 10 }
 ]
 
-class CartListItemTable extends React.Component<Props, {}> {
+class CartListItemTable extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props)
+    let genderSelectWidth = '100%'
+    let fitSelectWidth = '100%'
+
+    if (typeof window !== 'undefined') {
+      if (window.matchMedia('(max-width: 320px)').matches) {
+        genderSelectWidth = '90px'
+        fitSelectWidth = '71px'
+      } else if (
+        window.matchMedia('(max-width: 375px) and (min-width: 321px)').matches
+      ) {
+        genderSelectWidth = '90px'
+        fitSelectWidth = '88px'
+      } else if (
+        window.matchMedia('(max-width: 425px) and (min-width: 376px)').matches
+      ) {
+        genderSelectWidth = '100px'
+        fitSelectWidth = '100px'
+      }
+    }
+
+    this.state = {
+      genderSelectWidth,
+      fitSelectWidth
+    }
+  }
+
   handleLabelChange = (
     evt: React.FormEvent<HTMLInputElement>,
     detail: number
@@ -149,18 +182,8 @@ class CartListItemTable extends React.Component<Props, {}> {
 
   render() {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
+    const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
-
-    let genderSelectWidth = '100%'
-    let fitSelectWidth = '100%'
-
-    if (
-      typeof window !== 'undefined' &&
-      window.matchMedia('(max-width: 425px').matches
-    ) {
-      genderSelectWidth = '90px'
-      fitSelectWidth = '71px'
-    }
 
     const header = headers.map(({ width, message }, index) => (
       <HeaderCell key={index} {...{ width }}>
