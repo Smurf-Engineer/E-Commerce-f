@@ -37,6 +37,9 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import SizingChart from '../../components/SizingChart'
+import slimFit from '../../assets/slim_fit.svg'
+import standardFit from '../../assets/standard_fit.svg'
+import relaxedFit from '../../assets/relaxed_fit.svg'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -45,13 +48,6 @@ interface Props extends RouteComponentProps<any> {
 }
 
 const sectionTitles = ['Body Size Chart', 'Fit Styles']
-
-const slimFit =
-  'https://storage.googleapis.com/jakroo-storage/screens/fit/slim.png'
-const standardFit =
-  'https://storage.googleapis.com/jakroo-storage/screens/fit/standard.png'
-const relaxedFit =
-  'https://storage.googleapis.com/jakroo-storage/screens/fit/relaxed.png'
 
 export class FitAndSizing extends React.Component<Props, {}> {
   private bodySize: any
