@@ -27,6 +27,8 @@ export const createStoreMutation = graphql(
               priceRange {
                 quantity
                 price
+                abbreviation
+                shortName: short_name
               }
             }
           }
@@ -79,6 +81,8 @@ export const GetTeamStoreQuery = gql`
             priceRange {
               quantity
               price
+              abbreviation
+              shortName: short_name
             }
           }
         }
