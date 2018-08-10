@@ -10,4 +10,10 @@ export const Container = styled.div`
 export const CardsList = styled.div`
   display: flex;
   justify-content: flex-start;
+
+  @media (max-width: 425px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, min-content));
+    grid-gap: 20px;
+  }
 `

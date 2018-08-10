@@ -140,6 +140,8 @@ class MainLayout extends React.Component<Props, {}> {
       openWithoutSaveModalAction
     } = this.props
 
+    const { formatMessage } = intl
+
     let numberOfProducts = 0
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
@@ -196,11 +198,7 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks
-              formatMessage={intl.formatMessage}
-              fakeWidth={fakeWidth}
-              {...{ history }}
-            />
+            <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
             <SocialMedia />
           </Footer>
         )}
@@ -208,7 +206,7 @@ class MainLayout extends React.Component<Props, {}> {
           open={!!productId}
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
-          {...{ productId, history, yotpoId }}
+          {...{ productId, history, yotpoId, formatMessage }}
         />
         <div className="app">
           <Intercom appID={config.intercomKey} {...this.props.user} />

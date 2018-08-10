@@ -24,8 +24,9 @@ export const HeadRow = styled.div`
   justify-content: space-between;
   margin-bottom: 15px;
   padding: ${({ withoutPadding }: HeadRowProps) =>
-      withoutPadding ? '0' : '0 2% 0 5%;'}
-    @media (min-width: 320px) and (max-width: 480px) {
+    withoutPadding ? '0' : '0 2% 0 5%;'};
+
+  @media (min-width: 320px) and (max-width: 480px) {
     padding: 0;
   }
 `

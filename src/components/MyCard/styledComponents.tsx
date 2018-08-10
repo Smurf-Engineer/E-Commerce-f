@@ -7,6 +7,10 @@ import Checkbox from 'antd/lib/checkbox'
 
 export const Container = styled.div`
   margin-right: 10%;
+
+  @media (max-width: 700px) {
+    margin-right: 0;
+  }
 `
 
 export const PaymentText = styled.div`

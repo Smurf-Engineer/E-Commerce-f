@@ -10,6 +10,39 @@ export const saveDesignName = graphql(
         shortId: short_id
         image
         svg: output_svg
+        product {
+          id
+          code
+          yotpoId: yotpo_id
+          name
+          type: name
+          description: short_description
+          collections
+          isTopProduct
+          weight
+          priceRange {
+            quantity
+            price
+          }
+          genders {
+            id
+            name: gender
+          }
+          fitStyles {
+            id
+            name: description
+          }
+          sizeRange: size_range {
+            id
+            name
+          }
+          images: pictures {
+            front: front_image
+            back: back_image
+            left: left_image
+            right: right_image
+          }
+        }
       }
     }
   `,

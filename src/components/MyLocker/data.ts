@@ -22,6 +22,7 @@ export const desginsQuery = gql`
           name
           type: name
           description: short_description
+          shortDescription: short_description
           collections
           isTopProduct
           weight

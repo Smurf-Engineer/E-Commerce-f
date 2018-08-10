@@ -18,7 +18,8 @@ export interface DesignSaved {
   name: string
   svg: string
   product: Product
-  style: Style
+  style?: Style
+  shortId?: string
 }
 
 export interface SelectedItem {
@@ -658,6 +659,7 @@ export interface NetsuiteShipping {
   internal_id: string
   subsidiary: string
   name: string
+  carrier: string
   flat_rate: string
   rate_type: string
 }
@@ -841,6 +843,14 @@ export type CanvasResized = {
   scaleX: number
   scaleY: number
 }
+
+export interface AddressObj {
+  country: string
+  state: string
+  zipCode: string
+}
+
+export type TaxAddressObj = AddressObj | ''
 
 export type CanvasDragged = {
   id: string

@@ -1,21 +1,21 @@
 import gql from 'graphql-tag'
 
 export const getTaxQuery = gql`
-  query getTaxes($country: String!, $weight: Float!) {
-    taxes: getNetsuiteTaxes {
+  query getTaxes(
+    $country: String!
+    $weight: Float!
+    $shipAddress: NetsuiteTaxAddress!
+  ) {
+    taxes: getTaxesByAddress(shipAddress: $shipAddress) {
+      total
       internalId
-      rate
-      countryCode
-      state
-      zip
-      rateGST
-      ratePST
     }
 
     shipping: getShippingByCountry(country: $country, weight: $weight) {
       id
       total
       internalId
+      carrier
     }
   }
 `

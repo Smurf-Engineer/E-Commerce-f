@@ -18,26 +18,21 @@ export const Text = styled.div`
 `
 
 export const ImageThumbnails = styled.div`
-  display: flex;
-  flex-direction: row;
-  overflow: auto;
+  display: inline-block;
+  overflow-x: auto;
   white-space: nowrap;
-  justify-content: center;
-  text-align: center;
 `
 
 export const ThumbnailContainer = styled.div`
-  margin-right: 25px;
-  max-width: 63.13px;
-  max-height: 72.41px;
+  display: inline-block;
+  width: 25%;
 `
 export const ThumbnailImg = styled.img`
-  height: 100%;
-  width: 100%;
   background-color: #f1f4f5;
-  margin-right: 25px;
   border: 1px solid
     ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
+  width: 100%;
+
   &:hover {
     cursor: pointer;
   }
@@ -47,32 +42,18 @@ export const SelectedImage = styled.div`
 `
 
 export const SwipeContainer = styled.div`
-  width: 80%;
   display: flex;
-  position: relative;
   justify-content: center;
+  position: relative;
+  width: 100%;
 
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) {
-    width: 100%;
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
+  @media (min-width: 320px) and (max-width: 1024px) {
     width: 100%;
   }
 `
 
 export const SwipeImg = styled.img`
-  @media (min-width: 320px) and (max-width: 767px) {
-    width: 100%;
-  }
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 100%;
-  }
+  width: 100%;
 `
 export const ThreeDThumbnailContair = styled.div`
   text-align: center;
@@ -80,16 +61,21 @@ export const ThreeDThumbnailContair = styled.div`
 `
 
 export const Arrows = styled.div`
+  align-self: center;
   display: flex;
   justify-content: space-between;
+  padding: 0;
   position: absolute;
   width: 85%;
-  padding: 0;
-  align-self: center;
+
+  @media (min-width: 320px) and (max-width: 425px) {
+    display: none;
+  }
 `
 export const ArrowRight = styled.img`
   height: 22.09px;
   width: 10px;
+
   &:hover {
     cursor: pointer;
   }
@@ -97,6 +83,7 @@ export const ArrowRight = styled.img`
 export const ArrowLeft = styled.img`
   height: 22.09px;
   width: 10px;
+
   &:hover {
     cursor: pointer;
   }

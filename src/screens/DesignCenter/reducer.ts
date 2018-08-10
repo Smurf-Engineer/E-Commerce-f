@@ -124,7 +124,8 @@ export const initialState = fromJS({
   svgOutputUrl: '',
   uploadingFile: false,
   images: [],
-  searchClipParam: ''
+  searchClipParam: '',
+  savedDesign: {}
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -432,7 +433,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         savedDesignId: action.id,
         designHasChanges: false,
-        svgOutputUrl: action.svgUrl
+        svgOutputUrl: action.svgUrl,
+        savedDesign: action.design
       })
     case SET_CHECKED_TERMS:
       return state.set('checkedTerms', action.checked)
