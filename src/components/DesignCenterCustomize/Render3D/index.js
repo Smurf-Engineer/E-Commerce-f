@@ -81,6 +81,7 @@ import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
+const EXTRA_POSITION = 30
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -1197,8 +1198,8 @@ class Render3D extends PureComponent {
       clone.set({
         id,
         hasRotatingPoint: false,
-        left: boundingBox.left + 30,
-        top: boundingBox.top + 30,
+        left: boundingBox.left + EXTRA_POSITION,
+        top: boundingBox.top + EXTRA_POSITION,
         stroke: el.stroke
       })
       this.canvasTexture.add(clone)
@@ -1214,8 +1215,8 @@ class Render3D extends PureComponent {
       src,
       style,
       position: {
-        left: left + 30,
-        top: top + 30,
+        left: left + EXTRA_POSITION,
+        top: top + EXTRA_POSITION,
         scaleX: el.scaleX,
         scaleY: el.scaleY
       }
