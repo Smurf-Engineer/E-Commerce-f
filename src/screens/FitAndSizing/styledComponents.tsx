@@ -42,6 +42,7 @@ export const AnchorsRow = styled.div`
   margin-top: 54px;
 
   @media (min-width: 320px) and (max-width: 480px) {
+    align-items: center;
     flex-direction: column;
   }
 `
@@ -56,6 +57,7 @@ export const AnchorButton = styled.div`
   margin: 0px 12.5px 10px;
   padding: 14px 52px;
   text-align: center;
+  width: 240px;
 
   &:hover {
     cursor: pointer;
@@ -98,6 +100,7 @@ export const SectionDescription = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-bottom: 60px;
+  text-align: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin-bottom: 35px;
