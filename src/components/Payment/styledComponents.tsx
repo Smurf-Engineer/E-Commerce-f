@@ -37,18 +37,9 @@ export const MethodButton = styled(Button)`
   margin-left: 5px;
   font-family: 'Avenir Next';
 
-  &:hover {
-    color: #4a90e2;
-    border-color: #4a90e2;
-  }
-  &::selection {
-    color: #4a90e2;
-    border-color: #4a90e2;
-  }
-  &::after {
-    color: #4a90e2;
-    border-color: #4a90e2;
-  }
+  &:hover,
+  &::selection,
+  &::after,
   &:focus {
     color: #4a90e2;
     border-color: #4a90e2;
