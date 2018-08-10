@@ -824,6 +824,8 @@ export type ChangeType =
   | 'rotate'
   | 'resize'
   | 'duplicate'
+  | 'accessoryColor'
+  | 'canvasStyle'
 
 export type CanvasObjects = 'path' | 'text' | 'image'
 

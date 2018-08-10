@@ -34,8 +34,14 @@ const AccessoryColor = ({
   colorSelected = WHITE,
   onAccessoryColorSelected = () => {}
 }: Props) => {
-  const onSelectBlack = () => onAccessoryColorSelected(BLACK, id)
-  const onSelectWhite = () => onAccessoryColorSelected(WHITE, id)
+  // tslint:disable:curly
+  const onSelectBlack = () => {
+    if (colorSelected !== BLACK) onAccessoryColorSelected(BLACK, id)
+  }
+  const onSelectWhite = () => {
+    if (colorSelected !== WHITE) onAccessoryColorSelected(WHITE, id)
+  }
+  // tslint:enable:curly
   const stitchingName = get(stitchingColor, 'name', '')
   const stitchingValue = get(stitchingColor, 'value', '')
   return (
