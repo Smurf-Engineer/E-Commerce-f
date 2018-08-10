@@ -32,11 +32,12 @@ export const BoxHeader = styled.div`
   margin: 0px 12.5px 10px;
   padding: 14px 0px;
   text-align: center;
-  width: 82px;
+  width: 100px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 12px;
     margin: 0px 2px;
+    width: 82px;
   }
 `
 
@@ -49,7 +50,7 @@ export const TableList = styled.div`
   flex-wrap: wrap;
   justify-content: ${({ multiple }: TableProps) =>
     multiple ? 'space-between' : 'center'};
-  padding: 0px 30px;
+  padding: 0px ${({ multiple }: TableProps) => (multiple ? '10%' : '30px')};
   width: 100%;
 
   @media (min-width: 320px) and (max-width: 846px) {
