@@ -7,6 +7,10 @@ interface ThumbnailProps {
   selected: boolean
 }
 
+interface ContainerProps {
+  design: boolean
+}
+
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -26,11 +30,24 @@ export const ImageThumbnails = styled.div`
 export const ThumbnailContainer = styled.div`
   display: inline-block;
   width: 25%;
+  ${({ design }: ContainerProps) => (design ? 'height: 100%' : '')};
 `
 export const ThumbnailImg = styled.img`
   background-color: #f1f4f5;
   border: 1px solid
     ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
+  width: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+export const ThumbnailImg3d = styled.img`
+  background-color: #f1f4f5;
+  border: 1px solid
+    ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
+  height: 100%;
+  object-fit: cover;
   width: 100%;
 
   &:hover {
