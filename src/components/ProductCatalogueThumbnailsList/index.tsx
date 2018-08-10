@@ -180,18 +180,20 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
-                id={id}
-                yotpoId={yotpoId}
-                type={type}
-                description={description}
-                isTopProduct={isTopProduct}
                 onPressCustomize={this.gotoDesignCenter}
                 onPressQuickView={this.handlePressQuickView}
-                collections={collections}
                 images={productImages}
-                priceRange={priceRange}
-                {...{ customizable }}
                 customizableLabel={formatMessage(messages.customizable)}
+                {...{
+                  id,
+                  yotpoId,
+                  type,
+                  description,
+                  isTopProduct,
+                  collections,
+                  priceRange,
+                  customizable
+                }}
                 labelButton={
                   customizable ? (
                     formatMessage(messages.customize)

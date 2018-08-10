@@ -161,15 +161,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
             <Type>{type}</Type>
             <Description>{description}</Description>
             <InfoContainer>
-              {customizable ? (
+              {customizable && (
                 <Label>
                   <ImgIcon src={colorWheelIcon} />
                   {customizableLabel}
                 </Label>
-              ) : (
-                ''
               )}
-
               <Price>{price}</Price>
             </InfoContainer>
           </Footer>
