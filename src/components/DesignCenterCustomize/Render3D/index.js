@@ -691,6 +691,8 @@ class Render3D extends PureComponent {
         break
       case Changes.Drag:
         this.dragCanvasElement(changeToApply)
+      case Changes.CanvasStyle:
+        this.styleCanvasElement(changeToApply)
       default:
         break
     }
@@ -716,10 +718,29 @@ class Render3D extends PureComponent {
       case Changes.Drag:
         this.dragCanvasElement(changeToApply, true)
         break
+      case Changes.CanvasStyle:
+        this.styleCanvasElement(changeToApply, true)
       default:
         break
     }
     onRedoAction()
+  }
+
+  styleCanvasElement = (canvasElement, newStyle = false) => {
+    const {
+      state: { id, newFormat, oldFormat }
+    } = canvasElement
+
+    const element = this.getElementById(id)
+
+    if (element) {
+      if (newStyle) {
+        element.set({ ...newFormat })
+      } else {
+        element.set({ ...oldFormat })
+      }
+      this.canvasTexture.renderAll()
+    }
   }
 
   resizeCanvasElement = (canvasElement, newScale = false) => {
@@ -1016,18 +1037,18 @@ class Render3D extends PureComponent {
     }
 
     const activeEl = this.canvasTexture.getActiveObject()
-    const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
     if (activeEl && activeEl.type === CanvasElements.Text && !idElement) {
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
+      const { onApplyCanvasEl } = this.props
       const id = idElement || shortid.generate()
       txtEl = new fabric.Text(text, {
         id,
         hasRotatingPoint: false,
-        fontSize: 80,
+        fontSize: 50,
         snapAngle: 1,
         snapThreshold: 45,
         scaleX: 1.0,
@@ -1040,19 +1061,19 @@ class Render3D extends PureComponent {
         this.canvasTexture.setActiveObject(txtEl)
       }
       this.canvasTexture.renderAll()
-    }
 
-    const el = {
-      id: activeEl ? activeEl.id : txtEl.id,
-      text,
-      textFormat: style
-    }
-    if (!idElement) {
-      onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
-        src: text,
-        style,
-        position
-      })
+      if (!idElement) {
+        const el = {
+          id: activeEl ? activeEl.id : txtEl.id,
+          text,
+          textFormat: style
+        }
+        onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
+          src: text,
+          style,
+          position
+        })
+      }
     }
   }
 

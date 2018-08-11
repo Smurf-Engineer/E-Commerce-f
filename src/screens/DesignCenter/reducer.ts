@@ -254,6 +254,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             selectedElement: ''
           })
         }
+        case Changes.CanvasStyle: {
+          // FIXME:
+          const updatedCanvas = changeStyleCanvasElement(state, undoStep)
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            canvas: updatedCanvas,
+            selectedElement: ''
+          })
+        }
         case Changes.Resize:
         case Changes.Drag:
           return state.merge({
@@ -300,7 +310,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         state: { type: canvasType, id }
       } = redoStep
       switch (type) {
-        case Changes.Add:
+        case Changes.Add: {
           const updatedCanvas = addCanvasElement(state, redoStep)
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
@@ -308,14 +318,26 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             canvas: updatedCanvas,
             selectedElement: ''
           })
-        case Changes.Delete:
+        }
+        case Changes.Delete: {
           const canvass = state.get('canvas')
-          const updatedCanvass = canvass.deleteIn([canvasType, id])
+          const updatedCanvas = canvass.deleteIn([canvasType, id])
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
-            canvas: updatedCanvass
+            canvas: updatedCanvas
           })
+        }
+        case Changes.CanvasStyle: {
+          // FIXME:
+          const updatedCanvas = changeStyleCanvasElement(state, redoStep, true)
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            canvas: updatedCanvas,
+            selectedElement: ''
+          })
+        }
         case Changes.Resize:
         case Changes.Drag:
           return state.merge({
@@ -463,8 +485,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
 
       const selectedElement = state.get('selectedElement')
-      const canvasEl = typeEl === CanvasElements.Path ? fromJS(el) : el
-      const updatedCanvas = canvas.setIn([typeEl, el.id], canvasEl)
+      const updatedCanvas = canvas.setIn([typeEl, el.id], el)
 
       if (selectedElement) {
         return state.merge({
@@ -505,20 +526,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
       if (canvasElement && typeEl === CanvasElements.Text) {
-        if (canvasElement.id) {
-          // canvasElement is an object
-          return state.merge({
-            selectedElement: id,
-            textFormat: canvasElement.textFormat,
-            text: canvasElement.text
-          })
-        }
-        // canvasElement is a Map
-        const canvasObject = canvasElement.toJS()
         return state.merge({
           selectedElement: id,
-          textFormat: canvasObject.textFormat,
-          text: canvasObject.text
+          textFormat: canvasElement.textFormat,
+          text: canvasElement.text
         })
       }
 
@@ -534,12 +545,73 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.merge({ selectedElement: id, searchClipParam: '' })
     }
-    case SET_TEXT_FORMAT_ACTION:
-      return state.setIn(['textFormat', action.key], action.value)
-    case SET_ART_FORMAT_ACTION: {
+    case SET_TEXT_FORMAT_ACTION: {
       const { key, value } = action
       const selectedElement = state.get('selectedElement')
-      return state.setIn(['canvas', 'path', selectedElement, key], value)
+      if (selectedElement) {
+        const canvas = state.get('canvas')
+        const element = canvas.getIn(['text', selectedElement])
+        if (element) {
+          const undoChanges = state.get('undoChanges')
+          const redoChanges = state.get('redoChanges')
+          const newFormat = {
+            ...element.textFormat,
+            [key]: value
+          }
+          const lastStep = {
+            type: Changes.CanvasStyle,
+            state: {
+              id: selectedElement,
+              type: CanvasElements.Text,
+              newFormat,
+              oldFormat: element.textFormat
+            }
+          }
+
+          const updatedCanvas = canvas.setIn(['text', selectedElement], {
+            ...element,
+            textFormat: newFormat
+          })
+
+          return state.merge({
+            canvas: updatedCanvas,
+            textFormat: newFormat,
+            undoChanges: undoChanges.unshift(lastStep),
+            redoChanges: redoChanges.clear()
+          })
+        }
+        return state
+      }
+      return state.setIn(['textFormat', key], value)
+    }
+    case SET_ART_FORMAT_ACTION: {
+      const { key, value } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const canvas = state.get('canvas')
+      const selectedElement = state.get('selectedElement')
+      const element = canvas.getIn(['path', selectedElement])
+
+      const lastStep = {
+        type: Changes.CanvasStyle,
+        state: {
+          id: selectedElement,
+          type: CanvasElements.Path,
+          newFormat: { ...element, [key]: value },
+          oldFormat: { ...element }
+        }
+      }
+
+      const updatedCanvas = canvas.setIn(['path', selectedElement], {
+        ...element,
+        [key]: value
+      })
+
+      return state.merge({
+        canvas: updatedCanvas,
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
     }
     case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
       const { key, open, value } = action
@@ -675,6 +747,30 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
       // image only needs the id
       break
   }
-  const updatedCanvas = canvas.setIn([canvasType, id], fromJS(canvasObject))
+  const updatedCanvas = canvas.setIn([canvasType, id], canvasObject)
   return updatedCanvas
+}
+
+const changeStyleCanvasElement = (
+  state: any,
+  styleCanvas: Change,
+  newStyle = false
+) => {
+  const canvas = state.get('canvas')
+  console.log(styleCanvas, 'canvas')
+  const {
+    state: { type: canvasType, id, newFormat, oldFormat }
+  } = styleCanvas
+  let format = newStyle ? newFormat : oldFormat
+  switch (canvasType) {
+    case CanvasElements.Path:
+      return canvas.setIn([canvasType, id], { ...format })
+    case CanvasElements.Text:
+      return canvas.setIn([canvasType, id], {
+        ...format,
+        textFormat: newFormat
+      })
+    default:
+      return state
+  }
 }
