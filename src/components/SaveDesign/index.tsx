@@ -19,8 +19,26 @@ import {
   StyledSaveAs,
   CheckWrapper
 } from './styledComponents'
-import { SaveDesignType, Product, DesignSaved } from '../../types/common'
+import {
+  SaveDesignType,
+  Product,
+  DesignSaved,
+  StitchingColor
+} from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
+
+type DesignInput = {
+  name?: string
+  product_id?: string
+  image?: string
+  styleId?: number
+  canvas?: string
+  flatlock?: string
+  flatlock_code?: string
+  zipper_color?: string
+  binding_color?: string
+  bib_brace_color?: string
+}
 
 interface Data {
   id: number
@@ -39,6 +57,14 @@ interface Props {
   checkedTerms: boolean
   design: SaveDesignType
   saveDesignLoading: boolean
+  stitchingColor: StitchingColor
+  hasFlatlock: boolean
+  hasZipper: boolean
+  hasBinding: boolean
+  hasBibBrace: boolean
+  bindingColor: string
+  zipperColor: string
+  bibColor: string
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
@@ -78,7 +104,15 @@ export class SaveDesign extends React.Component<Props, {}> {
       saveDesignNameMutation,
       requestClose,
       afterSaveDesign,
-      setSaveDesignLoading
+      setSaveDesignLoading,
+      hasFlatlock,
+      hasZipper,
+      hasBibBrace,
+      hasBinding,
+      stitchingColor,
+      zipperColor,
+      bindingColor,
+      bibColor
     } = this.props
 
     if (!designName) {
@@ -94,12 +128,27 @@ export class SaveDesign extends React.Component<Props, {}> {
     const { designBase64, canvasJson, styleId } = design
 
     try {
-      const designObj = {
+      const designObj: DesignInput = {
         name: designName,
         product_id: productId,
         image: designBase64,
         styleId,
         canvas: canvasJson
+      }
+
+      /* Accessory colors  */
+      if (hasFlatlock) {
+        designObj.flatlock_code = stitchingColor.name
+        designObj.flatlock = stitchingColor.value
+      }
+      if (hasZipper) {
+        designObj.zipper_color = zipperColor
+      }
+      if (hasBinding) {
+        designObj.binding_color = bindingColor
+      }
+      if (hasBibBrace) {
+        designObj.bib_brace_color = bibColor
       }
 
       setSaveDesignLoading(true)
@@ -127,21 +176,45 @@ export class SaveDesign extends React.Component<Props, {}> {
   handleSaveChanges = async (evt: React.MouseEvent<EventTarget>) => {
     const {
       colors,
+      productId,
       savedDesignId,
       formatMessage,
       saveDesignChangesMutation,
       requestClose,
       design,
-      setSaveDesignLoading
+      setSaveDesignLoading,
+      hasFlatlock,
+      hasZipper,
+      hasBibBrace,
+      hasBinding,
+      stitchingColor,
+      zipperColor,
+      bindingColor,
+      bibColor
     } = this.props
 
-    const designObj = {
+    const designObj: DesignInput = {
       name: '',
-      product_id: 0,
+      product_id: productId,
       image: design.designBase64
     }
 
     try {
+      /* Accessory colors  */
+      if (hasFlatlock) {
+        designObj.flatlock_code = stitchingColor.name
+        designObj.flatlock = stitchingColor.value
+      }
+      if (hasZipper) {
+        designObj.zipper_color = zipperColor
+      }
+      if (hasBinding) {
+        designObj.binding_color = bindingColor
+      }
+      if (hasBibBrace) {
+        designObj.bib_brace_color = bibColor
+      }
+
       setSaveDesignLoading(true)
       const response = await saveDesignChangesMutation({
         variables: { designId: savedDesignId, designObj, colors }
