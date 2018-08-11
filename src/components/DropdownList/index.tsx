@@ -46,6 +46,7 @@ interface Props {
   sportOptions: Option[]
   genderOptions: Option[]
   menuGender: any
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -119,7 +120,8 @@ export class DropdownList extends React.PureComponent<Props> {
       genderOptions,
       sportOptions,
       formatMessage,
-      genderSportSelected
+      genderSportSelected,
+      currentCurrency
     } = this.props
     const { genders, sports } = data
 
@@ -136,7 +138,7 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuGender
-              {...{ genders, sports, visible, formatMessage }}
+              {...{ genders, sports, visible, formatMessage, currentCurrency }}
               type={index}
               onPressSeeAll={this.handleOnSeeAllFilters}
               onPressQuickView={this.handleOnQuickView}
@@ -165,7 +167,7 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuSports
-              {...{ sports, visible, formatMessage }}
+              {...{ sports, visible, formatMessage, currentCurrency }}
               type={index}
               name={label}
               onPressSeeAll={this.handleOnSeeAll}

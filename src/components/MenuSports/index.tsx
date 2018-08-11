@@ -32,6 +32,7 @@ interface Props {
   categorySelected: number
   sports: Filter[]
   visible: boolean
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -58,6 +59,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       categorySelected,
       sports,
       formatMessage,
+      currentCurrency,
       data: { categories, loading }
     } = this.props
 
@@ -96,7 +98,8 @@ export class MenuSports extends React.PureComponent<Props, {}> {
             categoryFilter,
             onPressCustomize,
             onPressQuickView,
-            formatMessage
+            formatMessage,
+            currentCurrency
           }}
           width={'80%'}
           onPressSeeAll={this.handleOnPressSeeAll}

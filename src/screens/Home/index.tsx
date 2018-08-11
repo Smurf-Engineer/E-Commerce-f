@@ -34,6 +34,7 @@ import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
+import config from '../../config/index'
 
 interface Props extends RouteComponentProps<any> {
   someKey?: string
@@ -47,6 +48,7 @@ interface Props extends RouteComponentProps<any> {
   dispatch: any
   intl: InjectedIntl
   fakeWidth: number
+  currentCurrency: string
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -110,7 +112,8 @@ export class Home extends React.Component<Props, {}> {
       showSearchResults,
       searchString,
       intl,
-      fakeWidth
+      fakeWidth,
+      currentCurrency
     } = this.props
     const searchResults = searchString ? (
       <SearchResults
@@ -119,7 +122,7 @@ export class Home extends React.Component<Props, {}> {
         closeResults={this.closeResults}
         openResults={this.openResults}
         quickViewAction={this.handleOnQuickView}
-        {...{ history }}
+        {...{ history, SearchResults }}
       />
     ) : null
     return (
@@ -156,6 +159,7 @@ export class Home extends React.Component<Props, {}> {
           <FeaturedProducts
             formatMessage={intl.formatMessage}
             openQuickView={this.handleOnQuickView}
+            currentCurrency={currentCurrency || config.defaultCurrency}
             {...{ history }}
           />
           <FeaturedContent {...{ history }} />
@@ -184,7 +188,8 @@ export class Home extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const home = state.get('home').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...home, ...responsive }
+  const langProps = state.get('languageProvider').toJS()
+  return { ...home, ...responsive, ...langProps }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })

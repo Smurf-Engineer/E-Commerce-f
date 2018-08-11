@@ -2,6 +2,7 @@
  * Review Component - Created by miguelcanobbio on 18/05/18.
  */
 import * as React from 'react'
+import filter from 'lodash/filter'
 import messages from './messages'
 import {
   Container,
@@ -38,6 +39,7 @@ interface Props {
   cardHolderName: string
   paymentMethod: string
   selectedCard: CreditCardData
+  currency: string
   formatMessage: (messageDescriptor: any) => string
   goToStep: (step: number) => void
 }
@@ -69,7 +71,8 @@ class Review extends React.PureComponent<Props, {}> {
       },
       cart,
       paymentMethod,
-      selectedCard
+      selectedCard,
+      currency
     } = this.props
 
     if (!showContent) {
@@ -88,6 +91,8 @@ class Review extends React.PureComponent<Props, {}> {
             product: { images, name, shortDescription, priceRange }
           } = cartItem
 
+          const currencyPrices = filter(priceRange, { abbreviation: currency })
+
           const itemImage = designId ? designImage || '' : images[0].front
           const itemTitle = designId ? designName || '' : name
           const itemDescription = designId
@@ -100,7 +105,7 @@ class Review extends React.PureComponent<Props, {}> {
               title={itemTitle}
               image={itemImage}
               description={itemDescription}
-              price={priceRange[priceRangeToApply]}
+              price={currencyPrices[priceRangeToApply]}
               itemIndex={index}
               onlyRead={true}
               {...{ cartItem }}

@@ -102,6 +102,7 @@ interface Props extends RouteComponentProps<any> {
   skip: number
   showCardForm: boolean
   selectedCard: CreditCardData
+  currentCurrency: string
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -194,7 +195,8 @@ class Checkout extends React.Component<Props, {}> {
       showCardForm,
       showCardFormAction,
       selectCardToPayAction,
-      selectedCard
+      selectedCard,
+      currentCurrency
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -365,6 +367,7 @@ class Checkout extends React.Component<Props, {}> {
                     paymentMethod,
                     selectedCard
                   }}
+                  currency={currentCurrency || config.defaultCurrency}
                   cart={shoppingCart}
                   showContent={currentStep === RevieTab}
                   formatMessage={intl.formatMessage}
@@ -520,7 +523,8 @@ class Checkout extends React.Component<Props, {}> {
       paymentMethod,
       stripeToken,
       selectedCard,
-      client
+      client,
+      currentCurrency
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -618,6 +622,8 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.weight')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
+        unset(priceRange, 'shortName')
+        unset(priceRange, 'abbreviation')
       })
       forEach(cartItem.itemDetails, itemDetail => {
         unset(itemDetail, 'gender.__typename')
@@ -639,7 +645,8 @@ class Checkout extends React.Component<Props, {}> {
       taxAmount,
       shippingId,
       shippingCarrier,
-      shippingAmount
+      shippingAmount,
+      currency: currentCurrency
     }
 
     try {
@@ -662,7 +669,14 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('checkout').toJS()
+const mapStateToProps = (state: any) => {
+  const checkoutProps = state.get('checkout').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return {
+    ...checkoutProps,
+    ...langProps
+  }
+}
 
 const CheckoutEnhance = compose(
   injectIntl,
