@@ -206,3 +206,33 @@ export const DetailsList = styled.ul`
 export const DetailsListItem = styled.li`
   margin-bottom: 15px;
 `
+export const PrivateContainer = styled.div`
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+`
+export const PrivateTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  height: 22px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  margin-bottom: 10px;
+  margin-top: -25px;
+  text-align: center;
+  width: 100%;
+`
+export const PrivateSubtitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  height: 23px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  text-align: center;
+  width: 100%;
+`

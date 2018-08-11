@@ -38,7 +38,10 @@ import {
   QuestionSpan,
   ButtonsRow,
   DetailsList,
-  DetailsListItem
+  DetailsListItem,
+  PrivateContainer,
+  PrivateTitle,
+  PrivateSubtitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
@@ -104,6 +107,23 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
+
+    const shared = get(design, 'shared', false)
+
+    if (design && !shared) {
+      return (
+        <Layout {...{ history, intl }}>
+          <PrivateContainer>
+            <div>
+              <PrivateTitle>{formatMessage(messages.oops)}</PrivateTitle>
+              <PrivateSubtitle>
+                {formatMessage(messages.seemsPrivate)}
+              </PrivateSubtitle>
+            </div>
+          </PrivateContainer>
+        </Layout>
+      )
+    }
 
     const designId = queryParams.id
     const designName = get(design, 'name', '')

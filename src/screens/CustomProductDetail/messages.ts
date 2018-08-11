@@ -60,5 +60,13 @@ export default defineMessages({
   standard: {
     id: 'screens.CustomProductDetail.standard',
     defaultMessage: 'Standard'
+  },
+  oops: {
+    id: 'screens.CustomProductDetail.oops',
+    defaultMessage: 'Oops!'
+  },
+  seemsPrivate: {
+    id: 'screens.CustomProductDetail.seemsPrivate',
+    defaultMessage: 'Seems like this design is private or not available'
   }
 })
