@@ -758,7 +758,7 @@ const changeStyleCanvasElement = (
   const {
     state: { type: canvasType, id, newFormat, oldFormat }
   } = styleCanvas
-  let format = newStyle ? newFormat : oldFormat
+  const format = newStyle ? newFormat : oldFormat
   switch (canvasType) {
     case CanvasElements.Path:
       return canvas.setIn([canvasType, id], { ...format })
