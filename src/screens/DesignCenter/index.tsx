@@ -198,6 +198,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementResizedAction: (element: CanvasResized) => void
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
+  onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -427,7 +428,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       savedDesign,
       onCanvasElementResizedAction,
       onCanvasElementDraggedAction,
-      onCanvasElementRotatedAction
+      onCanvasElementRotatedAction,
+      onCanvasElementTextChangedAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -607,6 +609,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onCanvasElementResized={onCanvasElementResizedAction}
               onCanvasElementDragged={onCanvasElementDraggedAction}
               onCanvasElementRotated={onCanvasElementRotatedAction}
+              onCanvasElementTextChanged={onCanvasElementTextChangedAction}
             />
             <PreviewTab
               {...{

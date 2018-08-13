@@ -51,7 +51,8 @@ import {
   SET_SEARCH_CLIPARTPARAM,
   CANVAS_ELEMENT_RESIZED_ACTION,
   CANVAS_ELEMENT_DRAGGED_ACTION,
-  CANVAS_ELEMENT_ROTATED_ACTION
+  CANVAS_ELEMENT_ROTATED_ACTION,
+  CANVAS_ELEMENT_TEXT_CHANGED
 } from './constants'
 import {
   AnyAction,
@@ -384,4 +385,13 @@ export const onCanvasElementRotatedAction = (
 ): AnyAction => ({
   type: CANVAS_ELEMENT_ROTATED_ACTION,
   element
+})
+
+export const onCanvasElementTextChangedAction = (
+  oldText: string,
+  newText: string
+): AnyAction => ({
+  type: CANVAS_ELEMENT_TEXT_CHANGED,
+  oldText,
+  newText
 })

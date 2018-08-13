@@ -101,6 +101,7 @@ interface Props {
   onCanvasElementResized: (element: CanvasResized) => void
   onCanvasElementDragged: (element: CanvasDragged) => void
   onCanvasElementRotated: (element: CanvasRotated) => void
+  onCanvasElementTextChanged: (oldText: string, newText: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -170,6 +171,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCanvasElementResized,
       onCanvasElementDragged,
       onCanvasElementRotated,
+      onCanvasElementTextChanged,
       designHasChanges
     } = this.props
 
@@ -264,6 +266,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onCanvasElementResized,
               onCanvasElementDragged,
               onCanvasElementRotated,
+              onCanvasElementTextChanged,
               designHasChanges,
               canvas,
               selectedElement

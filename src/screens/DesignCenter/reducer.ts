@@ -51,6 +51,7 @@ import {
   SET_SEARCH_CLIPARTPARAM,
   CANVAS_ELEMENT_DRAGGED_ACTION,
   CANVAS_ELEMENT_ROTATED_ACTION,
+  CANVAS_ELEMENT_TEXT_CHANGED,
   Changes,
   CanvasElements,
   WHITE,
@@ -290,6 +291,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             stitchingColor: oldColor
           })
         }
+        case Changes.ChangeText: {
+          const updatedCanvas = changeTextCanvasElement(state, undoStep)
+          return state.merge({
+            undoChanges: undoChanges.shift(),
+            redoChanges: redoChanges.unshift(undoStep),
+            canvas: updatedCanvas,
+            selectedElement: ''
+          })
+        }
         case Changes.Colors:
         default:
           const oldState = state.get(undoStep.type)
@@ -362,6 +372,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             undoChanges: undoChanges.unshift(redoStep),
             redoChanges: redoChanges.shift(),
             stitchingColor: color
+          })
+        }
+        case Changes.ChangeText: {
+          const updatedCanvas = changeTextCanvasElement(state, redoStep, true)
+          return state.merge({
+            undoChanges: undoChanges.unshift(redoStep),
+            redoChanges: redoChanges.shift(),
+            canvas: updatedCanvas,
+            selectedElement: ''
           })
         }
         case Changes.Colors:
@@ -727,6 +746,37 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         images: updatedImages
       })
     }
+    case CANVAS_ELEMENT_TEXT_CHANGED: {
+      const { newText, oldText } = action
+      const selectedElement = state.get('selectedElement')
+      if (selectedElement) {
+        const canvas = state.get('canvas')
+        const element = canvas.getIn(['text', selectedElement])
+        if (element) {
+          const undoChanges = state.get('undoChanges')
+          const redoChanges = state.get('redoChanges')
+          const lastStep = {
+            type: Changes.ChangeText,
+            state: {
+              id: selectedElement,
+              oldText,
+              newText
+            }
+          }
+          const updatedCanvas = canvas.setIn(['text', selectedElement], {
+            ...element,
+            text: newText
+          })
+
+          return state.merge({
+            canvas: updatedCanvas,
+            undoChanges: undoChanges.unshift(lastStep),
+            redoChanges: redoChanges.clear()
+          })
+        }
+      }
+      return state
+    }
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)
     case SET_SEARCH_CLIPARTPARAM:
@@ -772,7 +822,7 @@ const changeStyleCanvasElement = (
   const {
     state: { type: canvasType, id, newFormat, oldFormat }
   } = styleCanvas
-  let format = newStyle ? newFormat : oldFormat
+  const format = newStyle ? newFormat : oldFormat
   switch (canvasType) {
     case CanvasElements.Path:
       return canvas.setIn([canvasType, id], { ...format })
@@ -785,4 +835,18 @@ const changeStyleCanvasElement = (
     default:
       return state
   }
+}
+
+const changeTextCanvasElement = (
+  state: any,
+  textChange: Change,
+  newTextToApply = false
+) => {
+  const canvas = state.get('canvas')
+  const {
+    state: { id, oldText, newText }
+  } = textChange
+  const text = newTextToApply ? newText : oldText
+  const canvasElement = canvas.getIn([CanvasElements.Text, id])
+  return canvas.setIn([CanvasElements.Text, id], { ...canvasElement, text })
 }

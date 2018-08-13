@@ -734,6 +734,9 @@ class Render3D extends PureComponent {
       case Changes.Rotate:
         this.rotateCanvasElement(changeToApply)
         break
+      case Changes.ChangeText:
+        this.changeTextCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -765,10 +768,25 @@ class Render3D extends PureComponent {
       case Changes.Rotate:
         this.rotateCanvasElement(changeToApply, true)
         break
+      case Changes.ChangeText:
+        this.changeTextCanvasElement(changeToApply, true)
+        break
       default:
         break
     }
     onRedoAction()
+  }
+
+  changeTextCanvasElement = (canvasElement, applyNewText = false) => {
+    const {
+      state: { id, oldText, newText }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let text = applyNewText ? newText : oldText
+      element.set({ text })
+      this.canvasTexture.renderAll()
+    }
   }
 
   rotateCanvasElement = (canvasElement, applyNewRotation = false) => {
@@ -777,10 +795,7 @@ class Render3D extends PureComponent {
     } = canvasElement
     const element = this.getElementById(id)
     if (element) {
-      let transformMatrix = oldRotation
-      if (applyNewRotation) {
-        transformMatrix = newRotation
-      }
+      let transformMatrix = applyNewRotation ? newRotation : oldRotation
       element
         .set({
           transformMatrix
@@ -834,7 +849,6 @@ class Render3D extends PureComponent {
     } = canvasElement
     const element = this.getElementById(id)
     if (element) {
-      console.log(element, 'element')
       let left = oldLeft
       let top = oldTop
       if (newPosition) {
@@ -1106,6 +1120,10 @@ class Render3D extends PureComponent {
 
     let txtEl = {}
     if (activeEl && activeEl.type === CanvasElements.Text && !idElement) {
+      const { text: oldText } = activeEl
+      if (text !== oldText) {
+        this.props.onCanvasElementTextChanged(oldText, text)
+      }
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
