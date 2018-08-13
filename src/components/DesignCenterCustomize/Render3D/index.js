@@ -1066,7 +1066,6 @@ class Render3D extends PureComponent {
   }
 
   applyImage = (file = {}, position = {}, idElement) => {
-    const { onApplyCanvasEl } = this.props
     const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl, size: imageSize } = file
     const id = idElement || shortid.generate()
@@ -1094,6 +1093,7 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
+          const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
             style: undefined,
@@ -1160,6 +1160,7 @@ class Render3D extends PureComponent {
 
   applyClipArt = (url, style = {}, position = {}, idElement) => {
     const activeEl = this.canvasTexture.getActiveObject()
+    const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
       activeEl.set({ ...style })
       this.canvasTexture.renderAll()
@@ -1180,6 +1181,14 @@ class Render3D extends PureComponent {
           stroke: '#000000',
           strokeWidth: 0,
           ...style
+        }
+        if (position.scaleX) {
+          el.scaleX = position.scaleX
+          el.scaleY = position.scaleY
+        } else {
+          shape.set({ scaleX: scaleFactorX, scaleY: scaleFactorY }).setCoords()
+          el.scaleX = scaleFactorX
+          el.scaleY = scaleFactorY
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
