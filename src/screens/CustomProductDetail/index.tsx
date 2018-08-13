@@ -99,7 +99,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       setLoadingModel,
-      data: { design },
+      data: { design, error },
       designsData: { myDesigns },
       selectedGender,
       selectedSize,
@@ -121,7 +121,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const ownedDesign = designs && designs.find(d => d.shortId === shortId)
 
-    if (design && designs && !shared && !ownedDesign) {
+    if (error || (!shared && !ownedDesign)) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -479,7 +479,8 @@ const CustomProductDetailEnhance = compose(
       return {
         variables: {
           designId: queryParams ? queryParams.id : null
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     }
   }),
