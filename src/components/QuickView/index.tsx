@@ -4,11 +4,11 @@
 import * as React from 'react'
 
 import { compose, graphql } from 'react-apollo'
-import AnimateHeight from 'react-animate-height'
 import QuickViewSlider from '../QuickViewSlider'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../Ratings'
 import get from 'lodash/get'
+import messages from './messages'
 import {
   AvailablePrices,
   Container,
@@ -17,34 +17,29 @@ import {
   StyledRow,
   PriceQuantityRow,
   FullDetails,
-  ProductInfContainer,
-  ProductInfoTitle,
-  DescriptionContent,
-  DetailsContent,
-  UpDownArrow,
+  DetailsList,
+  DetailsListItem,
   ArrowRight,
-  StyledDivider,
   Loading
 } from './styledComponents'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
-
 import Spin from 'antd/lib/spin'
 
 import closeIcon from '../../assets/cancel-button.svg'
-import downArrowIcon from '../../assets/downarrow.svg'
-import upArrowIcon from '../../assets/uparrow.svg'
-import { QueryProps, Product, ImageType } from '../../types/common'
+import ProductInfo from '../../components/ProductInfo'
+import { QueryProps, Product } from '../../types/common'
 import { QuickViewQuery } from './data'
 
 interface State {
   showDescription: boolean
-  showDetail: boolean
+  showDetails: boolean
   showSpecs: boolean
 }
 
 interface ProductPageTypes extends Product {
-  temperature: string
+  intendedUse: string
+  temperatures: string
   materials: string
 }
 
@@ -67,7 +62,7 @@ interface Props {
 export class QuickView extends React.Component<Props, State> {
   state = {
     showDescription: true,
-    showDetail: false,
+    showDetails: false,
     showSpecs: false
   }
 
@@ -80,32 +75,40 @@ export class QuickView extends React.Component<Props, State> {
       formatMessage
     } = this.props
 
-    const { showDescription, showDetail, showSpecs } = this.state
+    const { showDescription, showDetails, showSpecs } = this.state
 
-    let product = {} as ProductPageTypes
-    let loading = true
-
-    if (data) {
-      product = data.product
-      loading = data.loading || false
-    }
+    const product = get(data, 'product')
+    const loading = get(data, 'loading')
 
     if (!product) {
       return null
     }
 
-    const renderPrices = loading ? (
-      <div />
-    ) : (
-      product.priceRange.map(
-        ({ price, quantity }: any, index: number) =>
+    const {
+      name,
+      priceRange,
+      images,
+      retailMen,
+      retailWomen,
+      description,
+      details,
+      intendedUse,
+      temperatures,
+      materials,
+      yotpoAverageScore
+    } = product
+
+    const renderPrices =
+      !loading &&
+      priceRange.map(
+        ({ price, quantity }, index: number) =>
           index < 4 && (
             <AvailablePrices key={index}>
               <PriceQuantity {...{ index, price, quantity }} />
             </AvailablePrices>
           )
       )
-    )
+
     const imageSlider = loading ? (
       <Loading>
         <Spin />
@@ -113,20 +116,59 @@ export class QuickView extends React.Component<Props, State> {
     ) : (
       <QuickViewSlider
         // TODO: filter by gender
-        productImages={product ? product.images : ([] as ImageType[])}
+        productImages={images}
         available={5}
         gotoCustomize={this.gotoCustomize}
-        isRetail={(product.retailMen && product.retailWomen) || false}
+        isRetail={(retailMen && retailWomen) || false}
         {...{ hideSliderButtons, product, formatMessage }}
       />
     )
 
-    const title = loading || !product ? '' : product.name
-    const description = loading || !product ? '' : product.description
-    const details = loading || !product ? '' : product.details
-    const temperature = loading || !product ? '' : product.temperature
-    const materials = loading || !product ? '' : product.materials
-    const reviewsScore = loading || !product ? '' : product.yotpoAverageScore
+    const productDetails = details ? details.split(',') : ['']
+
+    const detailsList = productDetails.map((detail, key) => (
+      <DetailsListItem {...{ key }}>{detail}</DetailsListItem>
+    ))
+
+    const productInfo = (
+      <div>
+        <ProductInfo
+          id="Description"
+          title={formatMessage(messages.descriptionLabel)}
+          showContent={showDescription}
+          toggleView={this.toggleProductInfo}
+        >
+          <div>{description}</div>
+        </ProductInfo>
+        <ProductInfo
+          id="Details"
+          title={formatMessage(messages.detailsLabel)}
+          showContent={showDetails}
+          toggleView={this.toggleProductInfo}
+        >
+          <DetailsList>{detailsList}</DetailsList>
+        </ProductInfo>
+        <ProductInfo
+          id="Specs"
+          title={formatMessage(messages.specsLabel)}
+          showContent={showSpecs}
+          toggleView={this.toggleProductInfo}
+        >
+          <p>
+            {intendedUse &&
+              `${formatMessage(messages.intendedUseLabel)}: ${intendedUse}`}
+          </p>
+          <p>
+            {temperatures &&
+              `${formatMessage(messages.temperaturesLabel)}: ${temperatures}`}
+          </p>
+          <p>
+            {materials &&
+              `${formatMessage(messages.materialsLabel)}: ${materials}`}
+          </p>
+        </ProductInfo>
+      </div>
+    )
 
     return (
       <Container>
@@ -145,93 +187,41 @@ export class QuickView extends React.Component<Props, State> {
               {imageSlider}
               {!hideSliderButtons && (
                 <FullDetails>
-                  <div onClick={this.gotoProductPage}>Full Details</div>
+                  <div onClick={this.gotoProductPage}>
+                    {formatMessage(messages.fullDetails)}
+                  </div>
                   <ArrowRight />
                 </FullDetails>
               )}
             </Col>
             <Col span={12}>
-              <Title>{title}</Title>
+              <Title>{name}</Title>
               <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
               <Ratings
                 stars={5}
                 starDimension={'15px'}
-                rating={get(reviewsScore, 'averageScore', 0)}
-                totalReviews={get(reviewsScore, 'total', 0)}
+                rating={get(yotpoAverageScore, 'averageScore', 0)}
+                totalReviews={get(yotpoAverageScore, 'total', 0)}
               />
-              {/*TODO: Change to ProductInfo Component */}
-              <ProductInfContainer>
-                <ProductInfoTitle>
-                  <div>Description</div>
-                  <UpDownArrow
-                    src={showDescription ? upArrowIcon : downArrowIcon}
-                    onClick={this.toggleDescriptionDetails}
-                    id="Description"
-                  />
-                </ProductInfoTitle>
-                <StyledDivider />
-                <AnimateHeight
-                  duration={500}
-                  height={showDescription ? 'auto' : 0}
-                >
-                  <DescriptionContent>{description}</DescriptionContent>
-                </AnimateHeight>
-              </ProductInfContainer>
-              <ProductInfContainer>
-                <ProductInfoTitle>
-                  <div>Details</div>
-                  <UpDownArrow
-                    src={showDetail ? upArrowIcon : downArrowIcon}
-                    onClick={this.toggleDescriptionDetails}
-                    id="Details"
-                  />
-                </ProductInfoTitle>
-                <StyledDivider />
-                <AnimateHeight duration={500} height={showDetail ? 'auto' : 0}>
-                  <DetailsContent
-                    dangerouslySetInnerHTML={{ __html: details }}
-                  />
-                </AnimateHeight>
-              </ProductInfContainer>
-              <ProductInfContainer>
-                <ProductInfoTitle>
-                  <div>Specs</div>
-                  <UpDownArrow
-                    src={showSpecs ? upArrowIcon : downArrowIcon}
-                    onClick={this.toggleDescriptionDetails}
-                    id="Specs"
-                  />
-                </ProductInfoTitle>
-                <StyledDivider />
-                <AnimateHeight duration={500} height={showSpecs ? 'auto' : 0}>
-                  <DescriptionContent>
-                    <p>{`TEMPERATURE RANGE: ${temperature}`}</p>
-                    <p>{`MATERIALS: ${materials}`}</p>
-                  </DescriptionContent>
-                </AnimateHeight>
-              </ProductInfContainer>
+              {productInfo}
             </Col>
           </StyledRow>
         </Modal>
       </Container>
     )
   }
-  resetState = () => {
-    this.setState({
-      showDescription: true,
-      showDetail: false,
-      showSpecs: false
-    })
+
+  toggleProductInfo = (id: string) => {
+    this.resetState(true)
+    const stateValue = this.state[`show${id}`]
+    this.setState({ [`show${id}`]: !stateValue } as any)
   }
 
-  toggleDescriptionDetails = (evt: React.MouseEvent<HTMLImageElement>) => {
-    const {
-      currentTarget: { id }
-    } = evt
+  resetState = (all = false) => {
     this.setState({
-      showDescription: id === 'Description' ? true : false,
-      showDetail: id === 'Details' ? true : false,
-      showSpecs: id === 'Specs' ? true : false
+      showDescription: !all,
+      showDetails: false,
+      showSpecs: false
     })
   }
 
