@@ -398,7 +398,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             pngs: areasPng,
             colors,
             inspiration: inspirationItems,
-            size
+            width: size.width,
+            height: size.height
           }
         }
       )

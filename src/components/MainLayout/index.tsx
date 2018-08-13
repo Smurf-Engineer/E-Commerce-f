@@ -42,7 +42,7 @@ interface Props extends RouteComponentProps<any> {
   openLogin: boolean
   currentRegion: string
   currentLanguage: number
-  currentCurrency: number
+  currentCurrency: string
   yotpoId: string
   hideBottomHeader: boolean
   hideFooter: boolean
@@ -175,7 +175,6 @@ class MainLayout extends React.Component<Props, {}> {
               searchParam,
               currentRegion,
               currentLanguage,
-              currentCurrency,
               openLogin,
               openLoginAction,
               saveUserToLocal,
@@ -183,12 +182,13 @@ class MainLayout extends React.Component<Props, {}> {
               designHasChanges,
               openWithoutSaveModalAction
             }}
+            currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.onLogout}
             hideBottom={hideBottomHeader}
           />
         </Header>
         <SearchResults
-          {...{ history }}
+          {...{ history, SearchResults }}
           showResults={showSearchResults}
           searchParam={searchParam}
           closeResults={this.closeResults}

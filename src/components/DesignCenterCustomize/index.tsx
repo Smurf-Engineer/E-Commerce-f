@@ -20,7 +20,8 @@ import {
   AccesoryColor,
   ConfigCanvasObj,
   ImageFile,
-  CanvasResized
+  CanvasResized,
+  CanvasDragged
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -61,8 +62,10 @@ interface Props {
   product?: Product
   images: ImageFile[]
   uploadingFile: boolean
-  onUploadFile: (file: any) => void
   searchClipParam: string
+  designHasChanges: boolean
+  // Redux actions
+  onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   setStitchingColorAction: (color: StitchingColor) => void
@@ -95,6 +98,7 @@ interface Props {
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResized: (element: CanvasResized) => void
+  onCanvasElementDragged: (element: CanvasDragged) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -161,7 +165,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       uploadingFile,
       searchClipParam,
       setSearchClipParamAction,
-      onCanvasElementResized
+      onCanvasElementResized,
+      onCanvasElementDragged,
+      designHasChanges
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -252,9 +258,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               bindingColor,
               zipperColor,
               bibColor,
+              onCanvasElementResized,
+              onCanvasElementDragged,
+              designHasChanges,
               canvas,
-              selectedElement,
-              onCanvasElementResized
+              selectedElement
             }}
           />
         ) : (

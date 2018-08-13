@@ -37,6 +37,7 @@ interface Props {
   hideQuickView?: boolean
   urlProduct: string
   myLockerList?: boolean
+  currentCurrency: string
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -62,7 +63,7 @@ const ProductSlide = ({
   onPressThumbnail,
   hideCustomButton,
   hideQuickView,
-  urlProduct,
+  // urlProduct, TODO: WIP new way to right click
   myLockerList
 }: Props) => {
   if (image) {
@@ -85,9 +86,9 @@ const ProductSlide = ({
           )}
         </ImageTop>
         <Page>
-          <a href={urlProduct}>
-            <Image src={image} onClick={onPressThumbnail} />
-          </a>
+          {/* <a href={urlProduct}> TODO: WIP new way to right click */}
+          <Image src={image} onClick={onPressThumbnail} />
+          {/* </a> TODO: WIP new way to right click */}
         </Page>
         <AboveTablet>
           {isHovered && (
@@ -104,9 +105,9 @@ const ProductSlide = ({
     return (
       <Page key={index}>
         {!!images && (
-          <a href={urlProduct}>
-            <Image src={images[key]} onClick={onPressThumbnail} />
-          </a>
+          // <a href={urlProduct}> TODO: WIP new way to right click
+          <Image src={images[key]} onClick={onPressThumbnail} />
+          // </a> TODO: WIP new way to right click
         )}
       </Page>
     )

@@ -39,7 +39,7 @@ interface Props {
   logoutAction: () => void
   currentRegion: string
   currentLanguage: number
-  currentCurrency: number
+  currentCurrency: string
   intl: InjectedIntl
   hideBottom?: boolean
   fakeWidth: number
@@ -160,7 +160,7 @@ class MenuBar extends React.Component<Props, StateProps> {
     ) : (
       <BottomRow>
         <LogoIcon src={logo} onClick={this.handleOnGoHome} />
-        <DropdownList {...{ history, formatMessage }} />
+        <DropdownList {...{ history, formatMessage, currentCurrency }} />
         <SearchBar search={searchFunc} onHeader={true} {...{ formatMessage }} />
       </BottomRow>
     )

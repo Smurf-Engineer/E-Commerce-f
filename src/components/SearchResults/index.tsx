@@ -29,6 +29,7 @@ interface Props {
   openResults: () => void
   quickViewAction: () => void
   history: any
+  currentCurrency: string
 }
 
 export class SearchResults extends React.Component<Props, {}> {
@@ -44,8 +45,8 @@ export class SearchResults extends React.Component<Props, {}> {
       searchParam,
       showResults,
       closeResults,
-
       quickViewAction,
+      currentCurrency,
       data: { productSearch, loading }
     } = this.props
 
@@ -68,6 +69,7 @@ export class SearchResults extends React.Component<Props, {}> {
         const productImages = product.images ? product.images[0] : {}
         return (
           <ProductThumbnail
+            {...{ currentCurrency }}
             key={key}
             onPressCustomize={this.gotoCustomize}
             id={id}

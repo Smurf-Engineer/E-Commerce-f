@@ -19,6 +19,7 @@ import {
 interface Props {
   undoEnabled: boolean
   redoEnabled: boolean
+  resetEnabled: boolean
   onClickUndo: () => void
   onClickRedo: () => void
   onClickReset: () => void
@@ -29,6 +30,7 @@ interface Props {
 const OptionsController = ({
   undoEnabled,
   redoEnabled,
+  resetEnabled,
   onClickUndo,
   onClickRedo,
   onClickReset,
@@ -64,7 +66,11 @@ const OptionsController = ({
       </Options>
       <Options>
         <Tooltip placement="right" title={formatMessage(messages.reset)}>
-          <OptionButton onClick={onClickReset} withMargin={true}>
+          <OptionButton
+            disabled={!resetEnabled}
+            onClick={onClickReset}
+            withMargin={true}
+          >
             <img src={resetIcon} />
           </OptionButton>
         </Tooltip>

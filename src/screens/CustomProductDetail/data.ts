@@ -43,6 +43,8 @@ export const GetDesignByIdQuery = gql`
         priceRange {
           price
           quantity
+          abbreviation
+          shortName: short_name
         }
         yotpoAverageScore {
           total: total_reviews

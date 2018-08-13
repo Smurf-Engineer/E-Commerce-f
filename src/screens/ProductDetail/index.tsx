@@ -10,6 +10,7 @@ import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import filter from 'lodash/filter'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -36,9 +37,10 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
-  JakrooWidgetsTitle,
+  ReviewsHeader,
   Downloadtemplate,
   DownloadTemplateContainer,
+  DownloadAnchor,
   AvailableLabel,
   DownloadImg,
   DetailsList,
@@ -59,13 +61,16 @@ import {
   QueryProps,
   ImageType,
   CartItemDetail,
-  SelectedType
+  SelectedType,
+  Filter
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
 import RedColor from '../../assets/colorred.svg'
+import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
+const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -89,9 +94,10 @@ interface Props extends RouteComponentProps<any> {
   selectedFit: SelectedType
   loadingModel: boolean
   itemToAddCart: any
+  currentCurrency: string
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
-  setSelectedGenderAction: (id: number) => void
+  setSelectedGenderAction: (selected: SelectedType) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
@@ -115,34 +121,42 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       history,
       // showBuyNowSection,
       selectedSize,
-      // selectedGender,
+      selectedGender,
       selectedFit,
       openFitInfo,
       setLoadingModel,
+      currentCurrency,
       data: { product }
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
     const productId = get(product, 'id')
     const name = get(product, 'name', '')
+    const code = get(product, 'code', '')
     const type = get(product, 'type', '')
     const description = get(product, 'description', '')
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', [])
+    const genders = get(product, 'genders', [] as Filter[])
 
     const isRetail =
       get(product, 'retailMen', false) || get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
+    const template = get(product, 'template', '')
 
-    const maleGender = get(genders, '0.name', '')
-    const femaleGender = get(genders, '1.name', '')
-    const genderMessage =
-      femaleGender && maleGender
-        ? formatMessage(messages.unisexGenderLabel)
-        : formatMessage(messages.oneGenderLabel)
+    const maleGender = genders.find(x => x.name === 'Men')
+    const femaleGender = genders.find(x => x.name === 'Women')
+
+    let genderMessage = messages.maleGenderLabel
+
+    if (femaleGender) {
+      genderMessage = maleGender
+        ? messages.unisexGenderLabel
+        : messages.femaleGenderLabel
+    }
+
     let renderPrices
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
     const sizeRange = get(product, 'sizeRange', []) as SelectedType[]
@@ -167,7 +181,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         : imagesArray.filter(post => post.genderId !== images.genderId)
 
     if (product) {
-      renderPrices = product.priceRange.map((item: any, index: number) => (
+      const currencyPrices = filter(product.priceRange, {
+        abbreviation: currentCurrency || config.defaultCurrency
+      })
+
+      renderPrices = currencyPrices.map((item: any, index: number) => (
         <AvailablePrices key={index}>
           <PriceQuantity
             price={item.price}
@@ -224,6 +242,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       )
     }
 
+    const availableGenders = genders.map(
+      ({ id, name: genderName }: SelectedType, key: number) => (
+        <div {...{ key }}>
+          <SectionButton
+            id={String(id)}
+            selected={id === selectedGender.id}
+            large={true}
+            onClick={this.handleSelectedGender({ id, name: genderName })}
+          >
+            {genderName}
+          </SectionButton>
+        </div>
+      )
+    )
+
     const availableSizes = sizeRange.map(
       ({ id, name: sizeName }: SelectedType, index: number) => (
         <div key={index}>
@@ -248,6 +281,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <SectionButton
                   id={id.toString()}
                   selected={id === selectedFit.id}
+                  large={true}
                   onClick={this.handleSelectedFit({ id, name: fitName })}
                 >
                   {fitName}
@@ -265,6 +299,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           </SectionButton>
         )
     }
+
+    const gendersSection = (
+      <SectionRow>
+        <SectionTitleContainer>
+          <SectionTitle>{formatMessage(messages.genderLabel)}</SectionTitle>
+        </SectionTitleContainer>
+        <SectionButtonsContainer>{availableGenders}</SectionButtonsContainer>
+      </SectionRow>
+    )
+
     const colorsSection = (
       <SectionRow>
         <SectionTitle>{formatMessage(messages.ColorsLabel)}</SectionTitle>
@@ -304,12 +348,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const collectionSelection = (
       <BuyNowOptions>
+        {gendersSection}
         {colorsSection}
         {sizeSection}
         {fitSection}
         {addToCartRow}
       </BuyNowOptions>
     )
+
+    const renderCompareButton = (
+      <CompareButton onClick={this.gotoCompare}>
+        {formatMessage(messages.compareLabe)}
+      </CompareButton>
+    )
+
+    const validateShowCompare = COMPARABLE_PRODUCTS.includes(name)
 
     return (
       <Layout {...{ history, intl }}>
@@ -321,26 +374,29 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   onLoadModel={setLoadingModel}
                   {...{ images, moreImages }}
                 />
-                <Desktop>
-                  <DownloadTemplateContainer>
-                    <a href="https://www.jakroo.com/download/Tour_Template.pdf">
-                      <DownloadImg src={DownloadIcon} />
-                    </a>
-                    <Downloadtemplate>
-                      {formatMessage(messages.downloadLabel)}
-                    </Downloadtemplate>
-                  </DownloadTemplateContainer>
-                </Desktop>
+                {template && (
+                  <Desktop>
+                    <DownloadTemplateContainer>
+                      <DownloadAnchor href={template}>
+                        <DownloadImg src={DownloadIcon} />
+                        <Downloadtemplate>
+                          {formatMessage(messages.downloadLabel)}
+                        </Downloadtemplate>
+                      </DownloadAnchor>
+                    </DownloadTemplateContainer>
+                  </Desktop>
+                )}
               </ImagePreview>
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
+                    {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+                    {isRetail &&
+                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  <CompareButton onClick={this.gotoCompare}>
-                    {formatMessage(messages.compareLabe)}
-                  </CompareButton>
+                  {validateShowCompare && renderCompareButton}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings
@@ -350,7 +406,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   totalReviews={get(reviewsScore, 'total', 0)}
                 />
                 <Description>{description}</Description>
-                <AvailableLabel>{genderMessage}</AvailableLabel>
+                <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButton onClick={this.gotoCustomize}>
@@ -369,9 +425,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          <JakrooWidgetsTitle>
-            <FormattedMessage {...messages.jakrooWidgetTitle} />
-          </JakrooWidgetsTitle>
+          {/* TODO: Related products section */}
+          <ReviewsHeader>
+            <FormattedMessage {...messages.reviews} />
+          </ReviewsHeader>
           <YotpoReviews {...{ yotpoId }} />
         </Container>
       </Layout>
@@ -388,12 +445,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     showBuyNowOptionsAction(!showBuyNowSection)
   }
 
-  handleSelectedGender = (evt: React.MouseEvent<HTMLDivElement>) => {
+  handleSelectedGender = (gender: SelectedType) => () => {
     const { setSelectedGenderAction } = this.props
-    const {
-      currentTarget: { id }
-    } = evt
-    setSelectedGenderAction(parseInt(id, 10))
+    setSelectedGenderAction(gender)
   }
 
   handleSelectedSize = (size: SelectedType) => () => {
@@ -480,7 +534,8 @@ const mapStateToProps = (state: any) => {
   const productDetail = state.get('productDetail').toJS()
   const menu = state.get('menu').toJS()
   const menuSports = state.get('menuSports').toJS()
-  return { ...productDetail, ...menu, ...menuSports }
+  const langProps = state.get('languageProvider').toJS()
+  return { ...productDetail, ...menu, ...menuSports, ...langProps }
 }
 
 type OwnProps = {

@@ -2,6 +2,7 @@
  * Review Component - Created by miguelcanobbio on 18/05/18.
  */
 import * as React from 'react'
+import filter from 'lodash/filter'
 import messages from './messages'
 import {
   Container,
@@ -15,9 +16,8 @@ import {
 import {
   AddressType,
   StripeCardData,
-  CartItemDetail,
-  Product,
-  CreditCardData
+  CreditCardData,
+  CartItems
 } from '../../types/common'
 import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
@@ -30,11 +30,6 @@ import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
-interface CartItems {
-  product: Product
-  itemDetails: CartItemDetail[]
-}
-
 interface Props {
   showContent: boolean
   cart: CartItems[]
@@ -44,6 +39,7 @@ interface Props {
   cardHolderName: string
   paymentMethod: string
   selectedCard: CreditCardData
+  currency: string
   formatMessage: (messageDescriptor: any) => string
   goToStep: (step: number) => void
 }
@@ -75,7 +71,8 @@ class Review extends React.PureComponent<Props, {}> {
       },
       cart,
       paymentMethod,
-      selectedCard
+      selectedCard,
+      currency
     } = this.props
 
     if (!showContent) {
@@ -87,14 +84,28 @@ class Review extends React.PureComponent<Props, {}> {
 
     const renderList = cart
       ? cart.map((cartItem, index) => {
+          const {
+            designId,
+            designImage,
+            designName,
+            product: { images, name, shortDescription, priceRange }
+          } = cartItem
+
+          const currencyPrices = filter(priceRange, { abbreviation: currency })
+
+          const itemImage = designId ? designImage || '' : images[0].front
+          const itemTitle = designId ? designName || '' : name
+          const itemDescription = designId
+            ? `${name} ${shortDescription}`
+            : shortDescription
           return (
             <CartListItem
               formatMessage={formatMessage}
               key={index}
-              title={cartItem.product.name}
-              description={cartItem.product.shortDescription}
-              price={cartItem.product.priceRange[priceRangeToApply]}
-              image={cartItem.product.images[0].front}
+              title={itemTitle}
+              image={itemImage}
+              description={itemDescription}
+              price={currencyPrices[priceRangeToApply]}
               itemIndex={index}
               onlyRead={true}
               {...{ cartItem }}

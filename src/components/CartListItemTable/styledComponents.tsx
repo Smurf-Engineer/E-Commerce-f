@@ -36,7 +36,10 @@ export const Table = styled.div`
 export const Body = styled.tbody``
 
 export const Row = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 3px;
+
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #dcdcdc;
@@ -44,20 +47,22 @@ export const Row = styled.div`
   padding-top: 8px;
 
   @media (max-width: 480px) {
-    padding-left: 5px;
+    padding: 0 5px;
     height: 50px;
   }
 `
 
 export const HeaderRow = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 0 5px;
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #8c8c8c;
   padding-bottom: 4px;
 
   @media (max-width: 480px) {
-    padding-left: 7px;
+    padding: 0 7px;
   }
 `
 
@@ -73,7 +78,6 @@ export const Cell = styled.div`
   display: flex;
   align-items: center;
   text-align: left;
-  margin-right: 5px;
   width: ${({ width }: CellProps) => (width ? width : 100)}%;
 `
 
