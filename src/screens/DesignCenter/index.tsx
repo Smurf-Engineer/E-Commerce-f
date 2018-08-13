@@ -134,6 +134,7 @@ interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
   searchClipParam: string
   savedDesign: SaveDesignType
+  user: object
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -429,7 +430,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementResizedAction,
       onCanvasElementDraggedAction,
       onCanvasElementRotatedAction,
-      onCanvasElementTextChangedAction
+      onCanvasElementTextChangedAction,
+      user
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -482,6 +484,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       </LoadingContainer>
     )
 
+    const isUserAuthenticated = !!user
+
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
@@ -499,6 +503,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="theme">
               <Info
                 label="theme"
+                message="themeMessage"
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -520,6 +525,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="style">
               <Info
                 label="style"
+                message="styleMessage"
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -578,7 +584,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 uploadingFile,
                 searchClipParam,
                 setSearchClipParamAction,
-                designHasChanges
+                designHasChanges,
+                isUserAuthenticated
               }}
               onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
@@ -735,7 +742,11 @@ interface OwnProps {
   location?: any
 }
 
-const mapStateToProps = (state: any) => state.get('designCenter').toJS()
+const mapStateToProps = (state: any) => {
+  const designCenter = state.get('designCenter').toJS()
+  const app = state.get('app').toJS()
+  return { ...designCenter, ...app }
+}
 
 const DesignCenterEnhance = compose(
   injectIntl,

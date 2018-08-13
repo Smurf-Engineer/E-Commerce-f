@@ -27,5 +27,9 @@ export default defineMessages({
     defaultMessage:
       // tslint:disable-next-line:max-line-length
       'For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.'
+  },
+  loginMessage: {
+    id: 'components.UploadTab.loginMessage',
+    defaultMessage: 'Log in to upload an image'
   }
 })

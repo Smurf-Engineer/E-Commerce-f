@@ -65,6 +65,7 @@ interface Props {
   uploadingFile: boolean
   searchClipParam: string
   designHasChanges: boolean
+  isUserAuthenticated: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -172,7 +173,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCanvasElementDragged,
       onCanvasElementRotated,
       onCanvasElementTextChanged,
-      designHasChanges
+      designHasChanges,
+      isUserAuthenticated
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -220,7 +222,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             images,
             uploadingFile,
             searchClipParam,
-            setSearchClipParamAction
+            setSearchClipParamAction,
+            isUserAuthenticated
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}

@@ -39,6 +39,7 @@ import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import { Reducer } from '../types/common'
+import { SET_USER_ACTION } from './constants'
 
 export interface ReducersObject {
   customProductDetail: any
@@ -83,13 +84,13 @@ export interface ReducersObject {
 }
 
 const appInitialState = fromJS({
-  user: {}
+  user: null
 })
 
 const appReducer: Reducer<any> = (state = appInitialState, action) => {
   switch (action.type) {
-    case 'Some type action':
-      return state
+    case SET_USER_ACTION:
+      return state.set('user', action.user)
     default:
       return state
   }
