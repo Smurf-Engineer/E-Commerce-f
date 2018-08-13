@@ -5,6 +5,7 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
+import isEmpty from 'lodash/isEmpty'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
@@ -20,6 +21,7 @@ import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES } from './constants'
 import Intercom from 'react-intercom'
+import * as mainLayoutActions from './api'
 import config from '../../config/index'
 
 const { Content } = Layout
@@ -29,6 +31,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   history: any
   client: any
+  user: object
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
@@ -53,6 +56,9 @@ interface Props extends RouteComponentProps<any> {
   shoppingCart: any
   designCenter: any
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
+  restoreUserSession: () => void
+  deleteUserSession: () => void
+  saveUserSession: (user: object) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -63,23 +69,11 @@ class MainLayout extends React.Component<Props, {}> {
 
   state = {}
 
-  onSearch = (value: string) => {
-    const { setSearchParam } = this.props
-    setSearchParam(value)
-  }
-
-  onLogout = () => {
-    const {
-      logoutAction,
-      client,
-      history: {
-        location: { pathname }
-      }
-    } = this.props
-    client.resetStore()
-    logoutAction()
-    if (REDIRECT_ROUTES.includes(pathname)) {
-      window.location.replace('/')
+  componentWillMount() {
+    const { user } = this.props
+    if (typeof window !== 'undefined' && isEmpty(user)) {
+      const { restoreUserSession } = this.props
+      restoreUserSession()
     }
   }
 
@@ -88,28 +82,37 @@ class MainLayout extends React.Component<Props, {}> {
       openLoginAction,
       history: {
         location: { search, pathname }
-      }
+      },
+      user: appUser
     } = this.props
     const { login } = queryString.parse(search)
-
-    const appUser = JSON.parse(localStorage.getItem('user')) || {}
-
     const userLogged = !!appUser
-
-    // Intercom data
-    const user = {
-      user_id: appUser.id,
-      email: appUser.email,
-      name: `${appUser.name} ${appUser.lastName}`
-    }
-    this.setState({ user })
-
     if (
       (pathname === '/faq' || pathname === '/shopping-cart') &&
       login === 'open' &&
       !userLogged
     ) {
       openLoginAction(true)
+    }
+  }
+
+  onSearch = (value: string) => {
+    const { setSearchParam } = this.props
+    setSearchParam(value)
+  }
+
+  onLogout = () => {
+    const {
+      deleteUserSession,
+      client,
+      history: {
+        location: { pathname }
+      }
+    } = this.props
+    client.resetStore()
+    deleteUserSession()
+    if (REDIRECT_ROUTES.includes(pathname)) {
+      window.location.replace('/')
     }
   }
 
@@ -128,7 +131,6 @@ class MainLayout extends React.Component<Props, {}> {
       currentLanguage,
       currentCurrency,
       intl,
-      saveUserToLocal,
       hideBottomHeader,
       hideFooter,
       fakeWidth,
@@ -177,11 +179,11 @@ class MainLayout extends React.Component<Props, {}> {
               currentLanguage,
               openLogin,
               openLoginAction,
-              saveUserToLocal,
               teamStoresHeader,
               designHasChanges,
               openWithoutSaveModalAction
             }}
+            saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.onLogout}
             hideBottom={hideBottomHeader}
@@ -214,6 +216,12 @@ class MainLayout extends React.Component<Props, {}> {
       </Layout>
     )
   }
+
+  handleOnLogin = (user: object) => {
+    const { saveUserSession } = this.props
+    saveUserSession(user)
+  }
+
   closeResults = () => {
     const { showSearchResultsAction } = this.props
     showSearchResultsAction(false)
@@ -239,10 +247,12 @@ const mapStateToProps = (state: any) => {
   const responsive = state.get('responsive').toJS()
   const shoppingCart = state.get('shoppingCartPage').toJS()
   const designCenter = state.get('designCenter').toJS()
+  const app = state.get('app').toJS()
   return {
     ...layoutProps,
     ...langProps,
     ...responsive,
+    ...app,
     shoppingCart: { ...shoppingCart },
     designCenter: { ...designCenter }
   }
@@ -255,6 +265,7 @@ const LayoutEnhance = compose(
     {
       ...LayoutActions,
       ...LocaleActions,
+      ...mainLayoutActions,
       openWithoutSaveModalAction: openOutWithoutSaveModalAction
     }
   )

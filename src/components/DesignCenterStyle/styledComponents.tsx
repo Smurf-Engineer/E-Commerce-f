@@ -4,6 +4,12 @@
 import styled, { keyframes } from 'styled-components'
 import AntdSlider from 'antd/lib/slider'
 
+export const fadeIn = keyframes`
+  to {
+    opacity: 1;
+  }
+`
+
 export const Container = styled.div`
   display: flex;
   flex: 1;
@@ -23,13 +29,6 @@ export const Slider = styled(AntdSlider)`
   margin-top: 14px;
   width: 25%;
 `
-
-export const fadeIn = keyframes`
-  to {
-    opacity: 1;
-  }
-`
-
 export const List = styled.div`
   opacity: 0;
   animation: ${fadeIn} 0.5s cubic-bezier(0.67, 0.35, 0.565, 1) both;
@@ -61,6 +60,8 @@ export const Empty = styled.div`
   display: flex;
   flex: 1;
   height: 60vh;
+  opacity: 0;
+  animation: ${fadeIn} 0.5s cubic-bezier(0.67, 0.35, 0.565, 1) both;
   justify-content: center;
   align-items: center;
   flex-direction: column;

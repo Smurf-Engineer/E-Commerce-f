@@ -18,10 +18,16 @@ import quickView from '../../assets/quickview.svg'
 interface Props {
   label: string
   model: string
+  message?: string
   onPressQuickView: () => void
 }
 
-const DesignCenterInfo = ({ label, model, onPressQuickView }: Props) => {
+const DesignCenterInfo = ({
+  label,
+  model,
+  onPressQuickView,
+  message
+}: Props) => {
   return (
     <Container>
       <Row>
@@ -32,10 +38,11 @@ const DesignCenterInfo = ({ label, model, onPressQuickView }: Props) => {
         <Title>
           <FormattedMessage {...messages[label]} />
         </Title>
-        <Message>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor.
-        </Message>
+        {!!message && (
+          <Message>
+            <FormattedMessage {...messages[message]} />
+          </Message>
+        )}
       </CenterDiv>
     </Container>
   )

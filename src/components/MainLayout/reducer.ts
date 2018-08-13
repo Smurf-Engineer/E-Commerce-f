@@ -17,7 +17,6 @@ export const initialState = fromJS({
   yotpoId: '',
   hideQuickViewSliderButtons: false,
   openLogin: false,
-  user: {},
   itemsInCart: 0
 })
 
@@ -36,9 +35,6 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_LOGIN_MODAL:
       return state.set('openLogin', action.open)
     case SAVE_USER_TO_LOCAL: {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(action.user))
-      }
       return state.set('user', action.user)
     }
     case LOGOUT: {
@@ -61,7 +57,6 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
       }
       return state.set('itemsInCart', 0)
     }
-
     default:
       return state
   }
