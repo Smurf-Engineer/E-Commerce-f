@@ -757,7 +757,6 @@ const changeStyleCanvasElement = (
   newStyle = false
 ) => {
   const canvas = state.get('canvas')
-  console.log(styleCanvas, 'canvas')
   const {
     state: { type: canvasType, id, newFormat, oldFormat }
   } = styleCanvas
@@ -766,8 +765,9 @@ const changeStyleCanvasElement = (
     case CanvasElements.Path:
       return canvas.setIn([canvasType, id], { ...format })
     case CanvasElements.Text:
+      const canvasElement = canvas.getIn([canvasType, id])
       return canvas.setIn([canvasType, id], {
-        ...format,
+        ...canvasElement,
         textFormat: newFormat
       })
     default:

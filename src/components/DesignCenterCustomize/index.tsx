@@ -174,8 +174,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     // console.log(undoChanges)
     // console.log('-------------redo----------')
     // console.log(redoChanges)
-    // console.log('------------canvas---------')
-    // console.log(canvas)
+    console.log('------------canvas---------')
+    console.log(canvas)
     // console.log('---------------------------')
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
