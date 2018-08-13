@@ -22,7 +22,7 @@ export default defineMessages({
     id: 'components.DesignCenterInfo.styleMessage',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'Select a base design to start as a canvas of your new gear. You can select a complexity that satifies your taste.'
+      'Select a base design to start as a canvas of your new gear. You can select a complexity that satisfies your taste.'
   },
   customize: {
     id: 'components.DesignCenterInfo.customize',
