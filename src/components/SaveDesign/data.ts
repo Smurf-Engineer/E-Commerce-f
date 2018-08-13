@@ -23,6 +23,8 @@ export const saveDesignName = graphql(
           priceRange {
             quantity
             price
+            abbreviation
+            shortName: short_name
           }
           genders {
             id
