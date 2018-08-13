@@ -50,6 +50,7 @@ import {
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
   CANVAS_ELEMENT_DRAGGED_ACTION,
+  CANVAS_ELEMENT_ROTATED_ACTION,
   Changes,
   CanvasElements,
   WHITE,
@@ -263,6 +264,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             selectedElement: ''
           })
         }
+        case Changes.Rotate:
         case Changes.Resize:
         case Changes.Drag:
           return state.merge({
@@ -336,6 +338,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             selectedElement: ''
           })
         }
+        case Changes.Rotate:
         case Changes.Resize:
         case Changes.Drag:
           return state.merge({
@@ -699,6 +702,17 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const lastStep = { type: Changes.Drag, state: { ...element } }
+
+      return state.merge({
+        undoChanges: undoChanges.unshift(lastStep),
+        redoChanges: redoChanges.clear()
+      })
+    }
+    case CANVAS_ELEMENT_ROTATED_ACTION: {
+      const { element } = action
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const lastStep = { type: Changes.Rotate, state: { ...element } }
 
       return state.merge({
         undoChanges: undoChanges.unshift(lastStep),

@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl'
 // import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -98,6 +99,7 @@ class Render3D extends PureComponent {
     canvasEl: null,
     oldScale: { oldScaleX: null, oldScaleY: null },
     oldPosition: { oldLeft: null, oldTop: null },
+    oldRotation: null,
     scaleFactor: 1,
     scaleFactorX: 1,
     scaleFactorY: 1
@@ -725,8 +727,13 @@ class Render3D extends PureComponent {
         break
       case Changes.Drag:
         this.dragCanvasElement(changeToApply)
+        break
       case Changes.CanvasStyle:
         this.styleCanvasElement(changeToApply)
+        break
+      case Changes.Rotate:
+        this.rotateCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -754,10 +761,33 @@ class Render3D extends PureComponent {
         break
       case Changes.CanvasStyle:
         this.styleCanvasElement(changeToApply, true)
+        break
+      case Changes.Rotate:
+        this.rotateCanvasElement(changeToApply, true)
+        break
       default:
         break
     }
     onRedoAction()
+  }
+
+  rotateCanvasElement = (canvasElement, applyNewRotation = false) => {
+    const {
+      state: { id, oldRotation, newRotation }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let transformMatrix = oldRotation
+      if (applyNewRotation) {
+        transformMatrix = newRotation
+      }
+      element
+        .set({
+          transformMatrix
+        })
+        .setCoords()
+      this.canvasTexture.renderAll()
+    }
   }
 
   styleCanvasElement = (canvasElement, newStyle = false) => {
@@ -766,13 +796,12 @@ class Render3D extends PureComponent {
     } = canvasElement
 
     const element = this.getElementById(id)
-
+    let format = oldFormat
     if (element) {
       if (newStyle) {
-        element.set({ ...newFormat })
-      } else {
-        element.set({ ...oldFormat })
+        format = newFormat
       }
+      element.set({ ...format })
       this.canvasTexture.renderAll()
     }
   }
@@ -805,6 +834,7 @@ class Render3D extends PureComponent {
     } = canvasElement
     const element = this.getElementById(id)
     if (element) {
+      console.log(element, 'element')
       let left = oldLeft
       let top = oldTop
       if (newPosition) {
@@ -1153,9 +1183,9 @@ class Render3D extends PureComponent {
   deleteElement = el => {
     const { undoChanges } = this.props
     const type = el.get('type')
-    const { id, left, top, scaleX, scaleY } = el
+    const { id, left, top, scaleX, scaleY, transformMatrix } = el
     const canvasObject = {
-      position: { left, top, scaleX, scaleY }
+      position: { left, top, scaleX, scaleY, transformMatrix }
     }
     switch (type) {
       case CanvasElements.Text:
@@ -1216,6 +1246,7 @@ class Render3D extends PureComponent {
     const elementType = el.get('type')
     const id = shortid.generate()
     let canvasEl = {}
+    let canvasStyle = {}
     switch (elementType) {
       case CanvasElements.Text:
         {
@@ -1239,11 +1270,14 @@ class Render3D extends PureComponent {
         break
       }
       case CanvasElements.Path: {
+        canvasStyle = {
+          fill: el.fill || '#000000',
+          stroke: el.stroke || '#000000',
+          strokeWidth: el.strokeWidth || 0
+        }
         canvasEl = {
           id,
-          fill: el.fill,
-          stroke: el.stroke,
-          strokeWidth: el.strokeWidth
+          ...canvasStyle
         }
       }
       default:
@@ -1263,10 +1297,11 @@ class Render3D extends PureComponent {
     const {
       state: {
         src,
-        style,
+        style: styleSaved,
         position: { left, top }
       }
     } = objectToClone
+    const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
     onApplyCanvasEl(canvasEl, elementType, false, {
       src,
       style,
@@ -1274,7 +1309,8 @@ class Render3D extends PureComponent {
         left: left + EXTRA_POSITION,
         top: top + EXTRA_POSITION,
         scaleX: el.scaleX,
-        scaleY: el.scaleY
+        scaleY: el.scaleY,
+        transformMatrix: el.transformMatrix
       }
     })
   }
@@ -1322,6 +1358,18 @@ class Render3D extends PureComponent {
               oldTop,
               left,
               top
+            })
+          }
+          break
+        case ROTATE_ACTION:
+          const { transformMatrix } = activeEl
+          const { oldRotation } = this.state
+          if (oldRotation !== transformMatrix) {
+            const { onCanvasElementRotated } = this.props
+            onCanvasElementRotated({
+              id,
+              oldRotation,
+              newRotation: transformMatrix
             })
           }
           break
@@ -1410,6 +1458,7 @@ class Render3D extends PureComponent {
                 break
               }
               case ROTATE_ACTION: {
+                this.setState({ oldRotation: activeEl.transformMatrix })
                 const sX = uv.x * CANVAS_SIZE
                 const sY = (1 - uv.y) * CANVAS_SIZE
                 const startPoint = { x: sX, y: sY }

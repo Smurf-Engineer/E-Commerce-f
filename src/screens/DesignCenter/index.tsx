@@ -59,7 +59,8 @@ import {
   ImageFile,
   DesignSaved,
   CanvasResized,
-  CanvasDragged
+  CanvasDragged,
+  CanvasRotated
 } from '../../types/common'
 import {
   getProductQuery,
@@ -196,6 +197,7 @@ interface Props extends RouteComponentProps<any> {
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResizedAction: (element: CanvasResized) => void
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
+  onCanvasElementRotatedAction: (element: CanvasRotated) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -424,7 +426,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setSearchClipParamAction,
       savedDesign,
       onCanvasElementResizedAction,
-      onCanvasElementDraggedAction
+      onCanvasElementDraggedAction,
+      onCanvasElementRotatedAction
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -603,6 +606,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onUnmountTab={setCanvasJsonAction}
               onCanvasElementResized={onCanvasElementResizedAction}
               onCanvasElementDragged={onCanvasElementDraggedAction}
+              onCanvasElementRotated={onCanvasElementRotatedAction}
             />
             <PreviewTab
               {...{
