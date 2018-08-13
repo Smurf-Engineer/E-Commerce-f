@@ -811,11 +811,8 @@ class Render3D extends PureComponent {
     } = canvasElement
 
     const element = this.getElementById(id)
-    let format = oldFormat
+    let format = newStyle ? newFormat : format
     if (element) {
-      if (newStyle) {
-        format = newFormat
-      }
       element.set({ ...format })
       this.canvasTexture.renderAll()
     }
