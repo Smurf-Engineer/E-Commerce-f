@@ -255,7 +255,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.CanvasStyle: {
-          // FIXME:
           const updatedCanvas = changeStyleCanvasElement(state, undoStep)
           return state.merge({
             undoChanges: undoChanges.shift(),
@@ -329,7 +328,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.CanvasStyle: {
-          // FIXME:
           const updatedCanvas = changeStyleCanvasElement(state, redoStep, true)
           return state.merge({
             undoChanges: undoChanges.unshift(redoStep),
