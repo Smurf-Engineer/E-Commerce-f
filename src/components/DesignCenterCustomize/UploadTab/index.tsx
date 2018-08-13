@@ -9,7 +9,7 @@ import remove from 'lodash/remove'
 import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
 import last from 'lodash/last'
-import withLoading from '../../WithLoading'
+import Spin from 'antd/lib/spin'
 import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
 import { userfilesQuery, deleteFileMutation } from './data'
@@ -22,7 +22,9 @@ import {
   Header,
   Title,
   DraggerBottom,
-  Recommendation
+  Recommendation,
+  EmptyContainer,
+  LoginMessage
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -48,6 +50,7 @@ interface Props {
   data: Data
   images: ImageFile[]
   uploadingFile: boolean
+  isUserAuthenticated: boolean
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -60,20 +63,40 @@ interface State {
 
 class UploadTab extends React.PureComponent<Props, State> {
   componentWillReceiveProps(nextProps: Props) {
-    const {
-      uploadingFile: oldUploadingFile,
-      data: { refetch }
-    } = this.props
+    const { uploadingFile: oldUploadingFile, data } = this.props
     const { uploadingFile } = nextProps
-    if (uploadingFile !== oldUploadingFile && !uploadingFile) {
-      refetch()
+    if (!!data && uploadingFile !== oldUploadingFile && !uploadingFile) {
+      data.refetch()
     }
   }
   render() {
-    const {
-      data: { images: imagesData },
-      uploadingFile
-    } = this.props
+    const { data, uploadingFile, isUserAuthenticated } = this.props
+
+    if (!isUserAuthenticated) {
+      return (
+        <Container>
+          <Header>
+            <Title>
+              <FormattedMessage {...messages.title} />
+            </Title>
+          </Header>
+          <LoginMessage>
+            <FormattedMessage {...messages.loginMessage} />
+          </LoginMessage>
+        </Container>
+      )
+    }
+
+    if (!!data && data.networkStatus === 1) {
+      return (
+        <EmptyContainer>
+          <Spin />
+        </EmptyContainer>
+      )
+    }
+
+    const { images: imagesData } = data
+
     const dragger = (
       <Dragger loading={uploadingFile} onSelectImage={this.beforeUpload} />
     )
@@ -166,10 +189,14 @@ class UploadTab extends React.PureComponent<Props, State> {
 }
 
 const UploadTabEnhance = compose(
-  graphql<Data>(userfilesQuery),
+  graphql<Data, Props>(userfilesQuery, {
+    options: ({ isUserAuthenticated }) => ({
+      skip: !isUserAuthenticated,
+      notifyOnNetworkStatusChange: true
+    })
+  }),
   deleteFileMutation,
-  withError,
-  withLoading
+  withError
 )(UploadTab)
 
 export default UploadTabEnhance
