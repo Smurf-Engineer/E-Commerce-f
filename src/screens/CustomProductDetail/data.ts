@@ -7,6 +7,7 @@ export const GetDesignByIdQuery = gql`
       name
       shortId: short_id
       product {
+        id
         productId: id
         yotpoId: yotpo_id
         name

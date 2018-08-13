@@ -61,6 +61,7 @@ import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
 import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
+import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 
 interface MyDesignsData extends QueryProps {
@@ -465,7 +466,8 @@ const CustomProductDetailEnhance = compose(
         variables: {
           limit: 12,
           offset: 0
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     },
     name: 'designsData'
@@ -484,6 +486,7 @@ const CustomProductDetailEnhance = compose(
       }
     }
   }),
+  withLoading,
   connect(
     mapStateToProps,
     { ...customProductDetailActions }
