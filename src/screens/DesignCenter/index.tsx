@@ -632,7 +632,21 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
           </SwipeableViews>
           <SaveDesign
-            {...{ productId, formatMessage, design, colors, designName }}
+            {...{
+              productId,
+              formatMessage,
+              design,
+              colors,
+              designName,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bibColor
+            }}
+            hasFlatlock={!!product && !!product.flatlock}
+            hasZipper={!!product && !!product.zipper}
+            hasBinding={!!product && !!product.binding}
+            hasBibBrace={!!product && !!product.bibBrace}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             onDesignName={setDesignNameAction}
