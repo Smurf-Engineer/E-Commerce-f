@@ -116,7 +116,12 @@ export class Account extends React.Component<Props, {}> {
   }
 
   handleOnSelectItem = ({ key }: any) => {
-    const { setCurrentScreenAction } = this.props
+    const { history, setCurrentScreenAction } = this.props
+
+    if (key === SCREEN_LOCKER) {
+      history.replace(`/account?option=${SCREEN_LOCKER}`)
+    }
+
     setCurrentScreenAction(key)
   }
 
