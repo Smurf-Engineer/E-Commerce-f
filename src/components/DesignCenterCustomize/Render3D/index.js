@@ -98,7 +98,9 @@ class Render3D extends PureComponent {
     canvasEl: null,
     oldScale: { oldScaleX: null, oldScaleY: null },
     oldPosition: { oldLeft: null, oldTop: null },
-    scaleFactor: 1
+    scaleFactor: 1,
+    scaleFactorX: 1,
+    scaleFactorY: 1
   }
 
   dragComponent = null
@@ -372,11 +374,10 @@ class Render3D extends PureComponent {
           /* Object materials */
           const { children } = object
           const objectChildCount = children.length
-          let scaleFactor = 1
-          if (!!currentStyle.size) {
-            scaleFactor = CANVAS_SIZE / currentStyle.size
-          }
-          this.setState({ scaleFactor, objectChildCount })
+          const { width, height } = currentStyle
+          const scaleFactorX = CANVAS_SIZE / width
+          const scaleFactorY = CANVAS_SIZE / height
+          this.setState({ scaleFactorX, scaleFactorY, objectChildCount })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
@@ -1004,7 +1005,7 @@ class Render3D extends PureComponent {
 
   applyImage = (file = {}, position = {}, idElement) => {
     const { onApplyCanvasEl } = this.props
-    const { scaleFactor } = this.state
+    const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl, size: imageSize } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
@@ -1023,9 +1024,11 @@ class Render3D extends PureComponent {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
         } else {
-          imageEl.scale(scaleFactor)
-          el.scaleX = scaleFactor
-          el.scaleY = scaleFactor
+          imageEl
+            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY })
+            .setCoords()
+          el.scaleX = scaleFactorX
+          el.scaleY = scaleFactorY
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
@@ -1484,7 +1487,6 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
-            const { scaleFactor } = this.state
             const cursorLeft = uv.x * CANVAS_SIZE
             const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
@@ -1593,11 +1595,11 @@ class Render3D extends PureComponent {
   }
 
   getSizeInCentimeters = ({ imageSize, scaleX, scaleY }) => {
-    const { scaleFactor } = this.state
+    const { scaleFactorX, scaleFactorY } = this.state
     const size = {}
     const { width, height } = imageSize
-    const scaleXTemp = scaleX / scaleFactor
-    const scaleYTemp = scaleY / scaleFactor
+    const scaleXTemp = scaleX / scaleFactorX
+    const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
     size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)

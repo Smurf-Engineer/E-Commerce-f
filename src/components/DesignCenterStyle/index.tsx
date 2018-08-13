@@ -5,9 +5,9 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
-
 import reverse from 'lodash/reverse'
 import withLoading from '../WithLoadingData'
+import withError from '../WithError'
 import { QueryProps, StyleModalType, Style } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
@@ -19,7 +19,10 @@ import {
   Slider,
   Row,
   List,
-  ModalMessage
+  ModalMessage,
+  Empty,
+  EmptyTitle,
+  EmptyMessage
 } from './styledComponents'
 import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
@@ -93,13 +96,40 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 
   render() {
     const {
-      data: { styles = [], error },
+      data: { styles = [] },
       formatMessage,
       complexity,
       styleModalData: { openNewStyleModal }
     } = this.props
-    if (error) {
-      return <div>Error</div>
+
+    const slider = (
+      <Slider
+        {...{ marks }}
+        onChange={this.handleOnSelectComplexity}
+        defaultValue={1}
+        value={complexity}
+        min={1}
+        max={3}
+      />
+    )
+
+    if (!styles.length) {
+      return (
+        <Container>
+          <Title>
+            <FormattedMessage {...messages.title} />
+          </Title>
+          {slider}
+          <Empty>
+            <EmptyTitle>
+              <FormattedMessage {...messages.emptyTitle} />
+            </EmptyTitle>
+            <EmptyMessage>
+              <FormattedMessage {...messages.emptyMessage} />
+            </EmptyMessage>
+          </Empty>
+        </Container>
+      )
     }
 
     const list = styles.map(({ id, image, name }, index) => (
@@ -115,14 +145,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
         <Title>
           <FormattedMessage {...messages.title} />
         </Title>
-        <Slider
-          {...{ marks }}
-          onChange={this.handleOnSelectComplexity}
-          defaultValue={1}
-          value={complexity}
-          min={1}
-          max={3}
-        />
+        {slider}
         <List>
           <Row>{list}</Row>
         </List>
@@ -157,6 +180,7 @@ const DesignCenterStyleWithData = compose(
       variables: { productId, themeId, complexity }
     })
   }),
+  withError,
   withLoading
 )(DesignCenterStyle)
 

@@ -287,6 +287,10 @@ export interface Style {
   colorblock4: string
   colorblock5: string
   colors: ColorBlock[]
+  size: {
+    width: number
+    height: number
+  }
 }
 
 export interface DesignStyle {
@@ -391,7 +395,10 @@ export interface ModelConfig {
   brandingSvg?: string
   brandingPng?: string
   label: string
-  size: number
+  size: {
+    width: number
+    height: number
+  }
   design: {
     name: string
     colors: string[]

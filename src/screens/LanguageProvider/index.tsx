@@ -11,6 +11,8 @@ interface Props {
   locale: string
   currentLanguage: string
   messages: any
+  // Actions
+  restoreUserSession: () => void
 }
 
 export class LanguageProvider extends React.Component<Props, {}> {
@@ -32,7 +34,10 @@ export class LanguageProvider extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('languageProvider').toJS()
 
 const LanguageProviderEnhance = compose(
-  connect(mapStateToProps, { ...languageProviderActions })
+  connect(
+    mapStateToProps,
+    { ...languageProviderActions }
+  )
 )(LanguageProvider)
 
 export default LanguageProviderEnhance
