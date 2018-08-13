@@ -11,6 +11,7 @@ import {
   ThumbnailImg,
   SelectedImage,
   Arrows,
+  ArrowContainer,
   ArrowLeft,
   ArrowRight,
   SwipeImg
@@ -27,6 +28,7 @@ interface Props {
   threeDmodel?: React.ReactNode
   customProduct?: boolean
   customImage?: string
+  squareArrows?: boolean
 }
 
 interface StateProps {
@@ -70,7 +72,8 @@ class ImageSlider extends React.Component<Props, StateProps> {
       threeDmodel,
       customProduct,
       customImage,
-      moreImages
+      moreImages,
+      squareArrows
     } = this.props
     const { index } = this.state
 
@@ -146,8 +149,18 @@ class ImageSlider extends React.Component<Props, StateProps> {
         <SwipeContainer>
           {index === 0 && customProduct ? threeDmodel : swipeViews}
           <Arrows>
-            <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
-            <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
+            <ArrowContainer
+              squareArrows={!!squareArrows}
+              onClick={this.handlePreviousPage}
+            >
+              <ArrowLeft src={PreviousArrow} />
+            </ArrowContainer>
+            <ArrowContainer
+              squareArrows={!!squareArrows}
+              onClick={this.handleNextPage}
+            >
+              <ArrowRight src={NextArrow} />
+            </ArrowContainer>
           </Arrows>
         </SwipeContainer>
         <ImageThumbnails>

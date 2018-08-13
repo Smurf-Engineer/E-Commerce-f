@@ -377,6 +377,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               <ImagePreview>
                 <ImagesSlider
                   onLoadModel={setLoadingModel}
+                  squareArrows={true}
                   {...{ images, moreImages }}
                 />
                 {template && (

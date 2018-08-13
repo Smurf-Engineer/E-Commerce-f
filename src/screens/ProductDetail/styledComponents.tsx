@@ -28,7 +28,7 @@ export const Content = styled.div`
 
 export const ImagePreview = styled.div`
   width: 50%;
-  padding: 0 50px;
+  padding: 70px 50px 0px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -42,7 +42,7 @@ export const ImagePreview = styled.div`
 `
 
 export const ProductData = styled.div`
-  padding-top: 31px;
+  padding-top: 70px;
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 480px) {
