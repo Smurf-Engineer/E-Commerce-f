@@ -5,7 +5,6 @@ import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
-import isEmpty from 'lodash/isEmpty'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
 import queryString from 'query-string'
@@ -71,7 +70,7 @@ class MainLayout extends React.Component<Props, {}> {
 
   componentWillMount() {
     const { user } = this.props
-    if (typeof window !== 'undefined' && isEmpty(user)) {
+    if (typeof window !== 'undefined' && !user) {
       const { restoreUserSession } = this.props
       restoreUserSession()
     }
