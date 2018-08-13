@@ -21,6 +21,8 @@ export const getSingleTeamStore = gql`
       priceRanges {
         id
         name: quantity_description
+        abbreviation
+        shortName: short_name
       }
       cutoff_date {
         day
