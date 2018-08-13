@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery } from './data'
+import { GetDesignByIdQuery, desginsQuery } from './data'
 import {
   Container,
   Content,
@@ -63,6 +63,10 @@ import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
 import config from '../../config/index'
 
+interface MyDesignsData extends QueryProps {
+  myDesigns: { designs: DesignType[] }
+}
+
 interface Data extends QueryProps {
   design: DesignType
 }
@@ -70,6 +74,7 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
+  designsData: MyDesignsData
   selectedGender: SelectedType
   selectedSize: SelectedType
   selectedFit: SelectedType
@@ -95,6 +100,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       location: { search },
       setLoadingModel,
       data: { design },
+      designsData: { myDesigns },
       selectedGender,
       selectedSize,
       selectedFit,
@@ -109,8 +115,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
 
     const shared = get(design, 'shared', false)
+    const shortId = get(design, 'shortId', '')
 
-    if (design && !shared) {
+    const designs = get(myDesigns, 'designs', [] as DesignType[])
+
+    const ownedDesign = designs && designs.find(d => d.shortId === shortId)
+
+    if (design && designs && !shared && !ownedDesign) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -448,6 +459,17 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
+  graphql<any>(desginsQuery, {
+    options: () => {
+      return {
+        variables: {
+          limit: 12,
+          offset: 0
+        }
+      }
+    },
+    name: 'designsData'
+  }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {

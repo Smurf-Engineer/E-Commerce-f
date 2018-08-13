@@ -65,3 +65,13 @@ export const GetDesignByIdQuery = gql`
     }
   }
 `
+export const desginsQuery = gql`
+  query GetDesigns($limit: Int, $offset: Int) {
+    myDesigns: myDesigns(limit: $limit, offset: $offset) {
+      designs {
+        id
+        shortId: short_id
+      }
+    }
+  }
+`
