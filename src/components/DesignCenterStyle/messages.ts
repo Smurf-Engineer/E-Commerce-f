@@ -25,5 +25,13 @@ export default defineMessages({
   modalNewStyleCancel: {
     id: 'components.DesignCenterStyle.modalNewStyleCancel',
     defaultMessage: 'Cancel'
+  },
+  emptyTitle: {
+    id: 'components.DesignCenterStyle.emptyTitle',
+    defaultMessage: 'Oops!'
+  },
+  emptyMessage: {
+    id: 'components.DesignCenterStyle.emptyMessage',
+    defaultMessage: 'Seems there is no designs of this complexity, yet.'
   }
 })
