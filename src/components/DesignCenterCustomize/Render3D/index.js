@@ -1097,6 +1097,9 @@ class Render3D extends PureComponent {
             position
           })
           this.canvasTexture.setActiveObject(imageEl)
+        } else {
+          const { onReApplyImageEl } = this.props
+          onReApplyImageEl(el)
         }
         this.canvasTexture.renderAll()
       },

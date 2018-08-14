@@ -52,7 +52,8 @@ import {
   CANVAS_ELEMENT_RESIZED_ACTION,
   CANVAS_ELEMENT_DRAGGED_ACTION,
   CANVAS_ELEMENT_ROTATED_ACTION,
-  CANVAS_ELEMENT_TEXT_CHANGED
+  CANVAS_ELEMENT_TEXT_CHANGED,
+  REAPPLY_CANVAS_IMAGE_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -394,4 +395,9 @@ export const onCanvasElementTextChangedAction = (
   type: CANVAS_ELEMENT_TEXT_CHANGED,
   oldText,
   newText
+})
+
+export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
+  type: REAPPLY_CANVAS_IMAGE_ACTION,
+  el
 })

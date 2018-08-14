@@ -205,6 +205,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   formatMessage: (messageDescriptor: any) => string
+  onReApplyImageElementAction: (el: CanvasElement) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -451,7 +452,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementRotatedAction,
       onCanvasElementTextChangedAction,
       user,
-      responsive
+      responsive,
+      onReApplyImageElementAction
     } = this.props
 
     if (!!responsive && responsive.phone) {
@@ -647,6 +649,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onCanvasElementDragged={onCanvasElementDraggedAction}
               onCanvasElementRotated={onCanvasElementRotatedAction}
               onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+              onReApplyImageEl={onReApplyImageElementAction}
             />
             <PreviewTab
               {...{
