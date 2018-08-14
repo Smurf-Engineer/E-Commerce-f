@@ -11,7 +11,11 @@ import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
-import { RegionConfig, CartItems } from '../../types/common'
+import {
+  RegionConfig,
+  CartItems,
+  UserType
+} from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -31,7 +35,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   history: any
   client: any
-  user: any
+  user: UserType
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
@@ -113,6 +117,7 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
     client.resetStore()
     deleteUserSession()
+    // https://developers.intercom.com/installing-intercom/docs/intercom-javascript#section-intercomshutdown
     IntercomAPI('shutdown')
     if (REDIRECT_ROUTES.includes(pathname)) {
       window.location.replace('/')

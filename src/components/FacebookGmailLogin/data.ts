@@ -7,8 +7,10 @@ export const facebooklLogin = graphql(
       facebookSignIn(token: $token) {
         user {
           id
+          shortId: short_id
           name: first_name
           lastName: last_name
+          email
         }
         token
       }
@@ -25,8 +27,10 @@ export const googleLogin = graphql(
       googleSignIn(token: $token) {
         user {
           id
+          shortId: short_id
           name: first_name
           lastName: last_name
+          email
         }
         token
       }
