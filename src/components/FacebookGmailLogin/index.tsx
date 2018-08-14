@@ -15,6 +15,12 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
+import config from '../../config/index'
+
+const CHECK_IP_ADDRESS: string = `${config.geoIpUrl}check?access_key=${
+  config.geoIpAccesKey
+}`
+const DEFAULT_COUNTRY_CODE: string = 'us'
 interface Props {
   formatMessage: (messageDescriptor: any, values?: object) => string
   loginWithFacebook: (variables: {}) => void
@@ -51,12 +57,27 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   }
   componentClicked = (evt: any) => {}
 
+  geoLocate = async () => {
+    let code: string = DEFAULT_COUNTRY_CODE
+    try {
+      const resultFetch = await fetch(CHECK_IP_ADDRESS)
+      const jsonRegion: any = await resultFetch.json()
+      code = jsonRegion.country_code
+    } catch (error) {
+      console.error(error)
+    }
+    return code
+  }
+
   responseFacebook = async (facebookResp: {}) => {
     const { loginWithFacebook, requestClose, handleLogin } = this.props
     const token = get(facebookResp, 'accessToken')
 
     try {
-      const response = await loginWithFacebook({ variables: { token } })
+      const countryCode = await this.geoLocate()
+      const response = await loginWithFacebook({
+        variables: { token, countryCode }
+      })
       const data = get(response, 'data.facebookSignIn', false)
 
       if (data) {
@@ -75,7 +96,10 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     const token = get(resp, 'tokenId', false)
 
     try {
-      const response = await loginWithGoogle({ variables: { token } })
+      const countryCode = await this.geoLocate()
+      const response = await loginWithGoogle({
+        variables: { token, countryCode }
+      })
       const data = get(response, 'data.googleSignIn', false)
 
       if (data) {
@@ -91,9 +115,11 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
   createUserObject = (data: {}) => {
     const userData = {
+      id: get(data, 'user.shortId', ''),
       token: get(data, 'token', ''),
       name: get(data, 'user.name', ''),
-      lastName: get(data, 'user.lastName')
+      lastName: get(data, 'user.lastName'),
+      email: get(data, 'user.email')
     }
 
     return userData
@@ -113,7 +139,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   }
 }
 
-const FacebookGmailLoginEnhance = compose(facebooklLogin, googleLogin)(
-  FacebookGmailLogin
-)
+const FacebookGmailLoginEnhance = compose(
+  facebooklLogin,
+  googleLogin
+)(FacebookGmailLogin)
 export default FacebookGmailLoginEnhance
