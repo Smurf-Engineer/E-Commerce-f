@@ -11,7 +11,7 @@ export default defineMessages({
   },
   style: {
     id: 'components.DesignCenterTabs.style',
-    defaultMessage: 'Style'
+    defaultMessage: 'Design'
   },
   customize: {
     id: 'components.DesignCenterTabs.customize',

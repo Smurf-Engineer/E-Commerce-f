@@ -167,7 +167,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         ({ id }) => id === selectedStyle
       )
       const currentStyle = currentTheme.styles[styleIndex]
-      const { name, branding = '', brandingPng, colors } = currentStyle
+      const { name, branding = '', brandingPng, colors, size } = currentStyle
       const areaColors: string[] = []
       const areasPng: string[] = []
       const areasSvg: string[] = []
@@ -187,7 +187,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         brandingPng,
         areasSvg,
         areasPng,
-        design
+        design,
+        size
       }
       extraFiles.forEach(key => {
         const file = product[key]

@@ -9,6 +9,7 @@ import { FormattedMessage } from 'react-intl'
 // import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -98,7 +99,10 @@ class Render3D extends PureComponent {
     canvasEl: null,
     oldScale: { oldScaleX: null, oldScaleY: null },
     oldPosition: { oldLeft: null, oldTop: null },
-    scaleFactor: 1
+    oldRotation: null,
+    scaleFactor: 1,
+    scaleFactorX: 1,
+    scaleFactorY: 1
   }
 
   dragComponent = null
@@ -372,11 +376,10 @@ class Render3D extends PureComponent {
           /* Object materials */
           const { children } = object
           const objectChildCount = children.length
-          let scaleFactor = 1
-          if (!!currentStyle.size) {
-            scaleFactor = CANVAS_SIZE / currentStyle.size
-          }
-          this.setState({ scaleFactor, objectChildCount })
+          const { width, height } = currentStyle
+          const scaleFactorX = CANVAS_SIZE / width
+          const scaleFactorY = CANVAS_SIZE / height
+          this.setState({ scaleFactorX, scaleFactorY, objectChildCount })
 
           const getMeshIndex = meshName => {
             const index = findIndex(children, mesh => mesh.name === meshName)
@@ -724,6 +727,16 @@ class Render3D extends PureComponent {
         break
       case Changes.Drag:
         this.dragCanvasElement(changeToApply)
+        break
+      case Changes.CanvasStyle:
+        this.styleCanvasElement(changeToApply)
+        break
+      case Changes.Rotate:
+        this.rotateCanvasElement(changeToApply)
+        break
+      case Changes.ChangeText:
+        this.changeTextCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -749,10 +762,60 @@ class Render3D extends PureComponent {
       case Changes.Drag:
         this.dragCanvasElement(changeToApply, true)
         break
+      case Changes.CanvasStyle:
+        this.styleCanvasElement(changeToApply, true)
+        break
+      case Changes.Rotate:
+        this.rotateCanvasElement(changeToApply, true)
+        break
+      case Changes.ChangeText:
+        this.changeTextCanvasElement(changeToApply, true)
+        break
       default:
         break
     }
     onRedoAction()
+  }
+
+  changeTextCanvasElement = (canvasElement, applyNewText = false) => {
+    const {
+      state: { id, oldText, newText }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let text = applyNewText ? newText : oldText
+      element.set({ text })
+      this.canvasTexture.renderAll()
+    }
+  }
+
+  rotateCanvasElement = (canvasElement, applyNewRotation = false) => {
+    const {
+      state: { id, oldRotation, newRotation }
+    } = canvasElement
+    const element = this.getElementById(id)
+    if (element) {
+      let transformMatrix = applyNewRotation ? newRotation : oldRotation
+      element
+        .set({
+          transformMatrix
+        })
+        .setCoords()
+      this.canvasTexture.renderAll()
+    }
+  }
+
+  styleCanvasElement = (canvasElement, newStyle = false) => {
+    const {
+      state: { id, newFormat, oldFormat }
+    } = canvasElement
+
+    const element = this.getElementById(id)
+    let format = newStyle ? newFormat : oldFormat
+    if (element) {
+      element.set({ ...format })
+      this.canvasTexture.renderAll()
+    }
   }
 
   resizeCanvasElement = (canvasElement, newScale = false) => {
@@ -828,10 +891,7 @@ class Render3D extends PureComponent {
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
-          const designBase64 = this.renderer.domElement.toDataURL(
-            'image/webp',
-            0.5
-          )
+          const designBase64 = this.renderer.domElement.toDataURL('image/png')
 
           const canvasJson = JSON.stringify(this.canvasTexture)
           const saveDesign = {
@@ -1003,8 +1063,7 @@ class Render3D extends PureComponent {
   }
 
   applyImage = (file = {}, position = {}, idElement) => {
-    const { onApplyCanvasEl } = this.props
-    const { scaleFactor } = this.state
+    const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl, size: imageSize } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
@@ -1023,18 +1082,24 @@ class Render3D extends PureComponent {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
         } else {
-          imageEl.scale(scaleFactor)
-          el.scaleX = scaleFactor
-          el.scaleY = scaleFactor
+          imageEl
+            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY })
+            .setCoords()
+          el.scaleX = scaleFactorX
+          el.scaleY = scaleFactorY
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
+          const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
             style: undefined,
             position
           })
           this.canvasTexture.setActiveObject(imageEl)
+        } else {
+          const { onReApplyImageEl } = this.props
+          onReApplyImageEl(el)
         }
         this.canvasTexture.renderAll()
       },
@@ -1049,18 +1114,22 @@ class Render3D extends PureComponent {
     }
 
     const activeEl = this.canvasTexture.getActiveObject()
-    const { onApplyCanvasEl } = this.props
 
     let txtEl = {}
     if (activeEl && activeEl.type === CanvasElements.Text && !idElement) {
+      const { text: oldText } = activeEl
+      if (text !== oldText) {
+        this.props.onCanvasElementTextChanged(oldText, text)
+      }
       activeEl.set({ text, ...style })
       this.canvasTexture.renderAll()
     } else {
+      const { onApplyCanvasEl } = this.props
       const id = idElement || shortid.generate()
       txtEl = new fabric.Text(text, {
         id,
         hasRotatingPoint: false,
-        fontSize: 80,
+        fontSize: 50,
         snapAngle: 1,
         snapThreshold: 45,
         scaleX: 1.0,
@@ -1073,24 +1142,25 @@ class Render3D extends PureComponent {
         this.canvasTexture.setActiveObject(txtEl)
       }
       this.canvasTexture.renderAll()
-    }
 
-    const el = {
-      id: activeEl ? activeEl.id : txtEl.id,
-      text,
-      textFormat: style
-    }
-    if (!idElement) {
-      onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
-        src: text,
-        style,
-        position
-      })
+      if (!idElement) {
+        const el = {
+          id: activeEl ? activeEl.id : txtEl.id,
+          text,
+          textFormat: style
+        }
+        onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
+          src: text,
+          style,
+          position
+        })
+      }
     }
   }
 
   applyClipArt = (url, style = {}, position = {}, idElement) => {
     const activeEl = this.canvasTexture.getActiveObject()
+    const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
       activeEl.set({ ...style })
       this.canvasTexture.renderAll()
@@ -1112,6 +1182,14 @@ class Render3D extends PureComponent {
           strokeWidth: 0,
           ...style
         }
+        if (position.scaleX) {
+          el.scaleX = position.scaleX
+          el.scaleY = position.scaleY
+        } else {
+          shape.set({ scaleX: scaleFactorX, scaleY: scaleFactorY }).setCoords()
+          el.scaleX = scaleFactorX
+          el.scaleY = scaleFactorY
+        }
         this.canvasTexture.add(shape)
         if (!idElement) {
           onApplyCanvasEl(el, CanvasElements.Path, false, {
@@ -1129,9 +1207,9 @@ class Render3D extends PureComponent {
   deleteElement = el => {
     const { undoChanges } = this.props
     const type = el.get('type')
-    const { id, left, top, scaleX, scaleY } = el
+    const { id, left, top, scaleX, scaleY, transformMatrix } = el
     const canvasObject = {
-      position: { left, top, scaleX, scaleY }
+      position: { left, top, scaleX, scaleY, transformMatrix }
     }
     switch (type) {
       case CanvasElements.Text:
@@ -1192,6 +1270,7 @@ class Render3D extends PureComponent {
     const elementType = el.get('type')
     const id = shortid.generate()
     let canvasEl = {}
+    let canvasStyle = {}
     switch (elementType) {
       case CanvasElements.Text:
         {
@@ -1215,11 +1294,14 @@ class Render3D extends PureComponent {
         break
       }
       case CanvasElements.Path: {
+        canvasStyle = {
+          fill: el.fill || '#000000',
+          stroke: el.stroke || '#000000',
+          strokeWidth: el.strokeWidth || 0
+        }
         canvasEl = {
           id,
-          fill: el.fill,
-          stroke: el.stroke,
-          strokeWidth: el.strokeWidth
+          ...canvasStyle
         }
       }
       default:
@@ -1239,10 +1321,11 @@ class Render3D extends PureComponent {
     const {
       state: {
         src,
-        style,
+        style: styleSaved,
         position: { left, top }
       }
     } = objectToClone
+    const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
     onApplyCanvasEl(canvasEl, elementType, false, {
       src,
       style,
@@ -1250,7 +1333,8 @@ class Render3D extends PureComponent {
         left: left + EXTRA_POSITION,
         top: top + EXTRA_POSITION,
         scaleX: el.scaleX,
-        scaleY: el.scaleY
+        scaleY: el.scaleY,
+        transformMatrix: el.transformMatrix
       }
     })
   }
@@ -1298,6 +1382,18 @@ class Render3D extends PureComponent {
               oldTop,
               left,
               top
+            })
+          }
+          break
+        case ROTATE_ACTION:
+          const { transformMatrix } = activeEl
+          const { oldRotation } = this.state
+          if (oldRotation !== transformMatrix) {
+            const { onCanvasElementRotated } = this.props
+            onCanvasElementRotated({
+              id,
+              oldRotation,
+              newRotation: transformMatrix
             })
           }
           break
@@ -1386,6 +1482,7 @@ class Render3D extends PureComponent {
                 break
               }
               case ROTATE_ACTION: {
+                this.setState({ oldRotation: activeEl.transformMatrix })
                 const sX = uv.x * CANVAS_SIZE
                 const sY = (1 - uv.y) * CANVAS_SIZE
                 const startPoint = { x: sX, y: sY }
@@ -1484,7 +1581,6 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
-            const { scaleFactor } = this.state
             const cursorLeft = uv.x * CANVAS_SIZE
             const cursorTop = (1 - uv.y) * CANVAS_SIZE
             const width = cursorLeft - activeEl.left
@@ -1593,11 +1689,11 @@ class Render3D extends PureComponent {
   }
 
   getSizeInCentimeters = ({ imageSize, scaleX, scaleY }) => {
-    const { scaleFactor } = this.state
+    const { scaleFactorX, scaleFactorY } = this.state
     const size = {}
     const { width, height } = imageSize
-    const scaleXTemp = scaleX / scaleFactor
-    const scaleYTemp = scaleY / scaleFactor
+    const scaleXTemp = scaleX / scaleFactorX
+    const scaleYTemp = scaleY / scaleFactorY
     const scaledWidth = width * scaleXTemp
     const scaledHeight = height * scaleYTemp
     size.width = Math.round((scaledWidth * CM_PER_INCH) / DPI)

@@ -21,7 +21,8 @@ import {
   ConfigCanvasObj,
   ImageFile,
   CanvasResized,
-  CanvasDragged
+  CanvasDragged,
+  CanvasRotated
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -64,6 +65,7 @@ interface Props {
   uploadingFile: boolean
   searchClipParam: string
   designHasChanges: boolean
+  isUserAuthenticated: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -99,6 +101,9 @@ interface Props {
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResized: (element: CanvasResized) => void
   onCanvasElementDragged: (element: CanvasDragged) => void
+  onCanvasElementRotated: (element: CanvasRotated) => void
+  onCanvasElementTextChanged: (oldText: string, newText: string) => void
+  onReApplyImageEl: (el: CanvasElement) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -167,7 +172,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       setSearchClipParamAction,
       onCanvasElementResized,
       onCanvasElementDragged,
-      designHasChanges
+      onCanvasElementRotated,
+      onCanvasElementTextChanged,
+      onReApplyImageEl,
+      designHasChanges,
+      isUserAuthenticated
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -215,7 +224,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             images,
             uploadingFile,
             searchClipParam,
-            setSearchClipParamAction
+            setSearchClipParamAction,
+            isUserAuthenticated
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
@@ -260,6 +270,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               bibColor,
               onCanvasElementResized,
               onCanvasElementDragged,
+              onCanvasElementRotated,
+              onCanvasElementTextChanged,
+              onReApplyImageEl,
               designHasChanges,
               canvas,
               selectedElement

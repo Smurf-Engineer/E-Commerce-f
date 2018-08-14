@@ -75,6 +75,8 @@ export const getOrderQuery = gql`
           priceRange {
             quantity
             price
+            abbreviation
+            shortName: short_name
           }
           genders {
             id

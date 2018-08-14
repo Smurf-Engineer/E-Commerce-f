@@ -24,6 +24,13 @@ export const DraggerBottom = styled.div`
     padding: 8px 0;
   }
 `
+export const LoginMessage = styled.div`
+  margin-top: 16px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
+`
 
 export const Text = styled.div`
   color: #fff;
@@ -53,4 +60,12 @@ export const Recommendation = styled.div`
   letter-spacing: 0.1px;
   line-height: 23px;
   padding: 8px 34px;
+`
+
+export const EmptyContainer = styled.div`
+  display: flex;
+  flex: 1;
+  height: 60vh;
+  justify-content: center;
+  align-items: center;
 `

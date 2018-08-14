@@ -37,6 +37,7 @@ import {
   SizeRowTitleRow,
   GetFittedLabel,
   QuestionSpan,
+  RelatedProductsContainer,
   ReviewsHeader,
   Downloadtemplate,
   DownloadTemplateContainer,
@@ -56,6 +57,7 @@ import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
 import YotpoReviews from '../../components/YotpoReviews'
 import AddtoCartButton from '../../components/AddToCartButton'
+import RelatedProducts from '../../components/RelatedProducts'
 import {
   Product,
   QueryProps,
@@ -145,6 +147,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
     const template = get(product, 'template', '')
+    const products = get(product, 'relatedProducts', [] as Product[])
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
@@ -185,15 +188,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 
-      renderPrices = currencyPrices.map((item: any, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity
-            price={item.price}
-            quantity={item.quantity}
-            {...{ index }}
-          />
-        </AvailablePrices>
-      ))
+      renderPrices = currencyPrices.map(
+        ({ price, quantity }: any, index: number) => {
+          const render = (
+            <AvailablePrices key={index}>
+              <PriceQuantity {...{ index, price, quantity }} />
+            </AvailablePrices>
+          )
+
+          return !isRetail && index >= 4 ? null : render
+        }
+      )
     }
 
     let productInfo
@@ -372,6 +377,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               <ImagePreview>
                 <ImagesSlider
                   onLoadModel={setLoadingModel}
+                  squareArrows={true}
                   {...{ images, moreImages }}
                 />
                 {template && (
@@ -425,7 +431,14 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          {/* TODO: Related products section */}
+          {product && (
+            <RelatedProductsContainer>
+              <RelatedProducts
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ products, history, formatMessage }}
+              />
+            </RelatedProductsContainer>
+          )}
           <ReviewsHeader>
             <FormattedMessage {...messages.reviews} />
           </ReviewsHeader>

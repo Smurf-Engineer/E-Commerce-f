@@ -50,7 +50,10 @@ import {
   SET_UPLOADING_FILE_ACTION,
   SET_SEARCH_CLIPARTPARAM,
   CANVAS_ELEMENT_RESIZED_ACTION,
-  CANVAS_ELEMENT_DRAGGED_ACTION
+  CANVAS_ELEMENT_DRAGGED_ACTION,
+  CANVAS_ELEMENT_ROTATED_ACTION,
+  CANVAS_ELEMENT_TEXT_CHANGED,
+  REAPPLY_CANVAS_IMAGE_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -64,7 +67,8 @@ import {
   AccesoryColor,
   DesignSaved,
   CanvasResized,
-  CanvasDragged
+  CanvasDragged,
+  CanvasRotated
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -375,4 +379,25 @@ export const onCanvasElementDraggedAction = (
 export const setSearchClipParamAction = (param: string) => ({
   type: SET_SEARCH_CLIPARTPARAM,
   param
+})
+
+export const onCanvasElementRotatedAction = (
+  element: CanvasRotated
+): AnyAction => ({
+  type: CANVAS_ELEMENT_ROTATED_ACTION,
+  element
+})
+
+export const onCanvasElementTextChangedAction = (
+  oldText: string,
+  newText: string
+): AnyAction => ({
+  type: CANVAS_ELEMENT_TEXT_CHANGED,
+  oldText,
+  newText
+})
+
+export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
+  type: REAPPLY_CANVAS_IMAGE_ACTION,
+  el
 })

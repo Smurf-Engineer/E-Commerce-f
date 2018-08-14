@@ -124,6 +124,7 @@ export interface Product {
   zipper?: ExtraFile
   bibBrace?: ExtraFile
   weight: number
+  relatedProducts: Product[]
 }
 
 export type DesignType = {
@@ -286,6 +287,10 @@ export interface Style {
   colorblock4: string
   colorblock5: string
   colors: ColorBlock[]
+  size: {
+    width: number
+    height: number
+  }
 }
 
 export interface DesignStyle {
@@ -390,7 +395,10 @@ export interface ModelConfig {
   brandingSvg?: string
   brandingPng?: string
   label: string
-  size: number
+  size: {
+    width: number
+    height: number
+  }
   design: {
     name: string
     colors: string[]
@@ -858,4 +866,18 @@ export type CanvasDragged = {
   oldTop: number
   left: number
   top: number
+}
+
+export type CanvasRotated = {
+  id: string
+  oldRotation?: number[]
+  newRotation: number[]
+}
+
+export type Responsive = {
+  desktop: boolean
+  fakeWidth: number
+  mobile: boolean
+  phone: boolean
+  tablet: boolean
 }

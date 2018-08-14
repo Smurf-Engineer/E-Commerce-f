@@ -59,7 +59,9 @@ import {
   ImageFile,
   DesignSaved,
   CanvasResized,
-  CanvasDragged
+  CanvasDragged,
+  CanvasRotated,
+  Responsive
 } from '../../types/common'
 import {
   getProductQuery,
@@ -70,6 +72,8 @@ import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
+
+const { info } = Modal
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -133,6 +137,8 @@ interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
   searchClipParam: string
   savedDesign: SaveDesignType
+  user: object
+  responsive: Responsive
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -196,6 +202,10 @@ interface Props extends RouteComponentProps<any> {
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResizedAction: (element: CanvasResized) => void
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
+  onCanvasElementRotatedAction: (element: CanvasRotated) => void
+  onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
+  formatMessage: (messageDescriptor: any) => string
+  onReApplyImageElementAction: (el: CanvasElement) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -203,25 +213,39 @@ export class DesignCenter extends React.Component<Props, {}> {
     open: false
   }
 
-  openBottomSheet = (open: boolean) => this.setState({ open })
-
-  toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
-    this.openBottomSheet(!this.state.open)
+  componentWillUnmount() {
+    const { clearStoreAction } = this.props
+    clearStoreAction()
   }
 
   componentDidMount() {
-    const { designHasChanges } = this.props
+    const {
+      designHasChanges,
+      responsive,
+      intl: { formatMessage },
+      history
+    } = this.props
     window.onbeforeunload = () => {
       if (designHasChanges) {
         return 'Changes you made may not be saved.'
       }
       return null
     }
+    if (!!responsive && responsive.phone) {
+      info({
+        title: formatMessage(messages.unsupportedDeviceTitle),
+        maskClosable: false,
+        onOk: () => history.goBack(),
+        content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
+        okText: formatMessage(messages.unsupportedDeviceButton)
+      })
+    }
   }
 
-  componentWillUnmount() {
-    const { clearStoreAction } = this.props
-    clearStoreAction()
+  openBottomSheet = (open: boolean) => this.setState({ open })
+
+  toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
+    this.openBottomSheet(!this.state.open)
   }
 
   handleAfterSaveDesign = (id: string, svgUrl: string, design: DesignSaved) => {
@@ -424,8 +448,23 @@ export class DesignCenter extends React.Component<Props, {}> {
       setSearchClipParamAction,
       savedDesign,
       onCanvasElementResizedAction,
-      onCanvasElementDraggedAction
+      onCanvasElementDraggedAction,
+      onCanvasElementRotatedAction,
+      onCanvasElementTextChangedAction,
+      user,
+      responsive,
+      onReApplyImageElementAction
     } = this.props
+
+    if (!!responsive && responsive.phone) {
+      return (
+        <Layout
+          {...{ history, intl }}
+          hideBottomHeader={true}
+          hideFooter={true}
+        />
+      )
+    }
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -477,6 +516,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       </LoadingContainer>
     )
 
+    const isUserAuthenticated = !!user
+
     return (
       <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
         <Container>
@@ -494,6 +535,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="theme">
               <Info
                 label="theme"
+                message="themeMessage"
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -515,6 +557,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="style">
               <Info
                 label="style"
+                message="styleMessage"
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -573,7 +616,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                 uploadingFile,
                 searchClipParam,
                 setSearchClipParamAction,
-                designHasChanges
+                designHasChanges,
+                isUserAuthenticated
               }}
               onUploadFile={uploadFileAction}
               onAccessoryColorSelected={setAccessoryColorAction}
@@ -603,6 +647,9 @@ export class DesignCenter extends React.Component<Props, {}> {
               onUnmountTab={setCanvasJsonAction}
               onCanvasElementResized={onCanvasElementResizedAction}
               onCanvasElementDragged={onCanvasElementDraggedAction}
+              onCanvasElementRotated={onCanvasElementRotatedAction}
+              onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+              onReApplyImageEl={onReApplyImageElementAction}
             />
             <PreviewTab
               {...{
@@ -632,7 +679,21 @@ export class DesignCenter extends React.Component<Props, {}> {
             />
           </SwipeableViews>
           <SaveDesign
-            {...{ productId, formatMessage, design, colors, designName }}
+            {...{
+              productId,
+              formatMessage,
+              design,
+              colors,
+              designName,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bibColor
+            }}
+            hasFlatlock={!!product && !!product.flatlock}
+            hasZipper={!!product && !!product.zipper}
+            hasBinding={!!product && !!product.binding}
+            hasBibBrace={!!product && !!product.bibBrace}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             onDesignName={setDesignNameAction}
@@ -714,7 +775,12 @@ interface OwnProps {
   location?: any
 }
 
-const mapStateToProps = (state: any) => state.get('designCenter').toJS()
+const mapStateToProps = (state: any) => {
+  const designCenter = state.get('designCenter').toJS()
+  const app = state.get('app').toJS()
+  const responsive = state.get('responsive').toJS()
+  return { ...designCenter, ...app, responsive }
+}
 
 const DesignCenterEnhance = compose(
   injectIntl,
