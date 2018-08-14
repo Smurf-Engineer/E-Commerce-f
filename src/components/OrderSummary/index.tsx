@@ -40,6 +40,7 @@ interface Props {
   onlyRead?: boolean
   country?: string
   weight?: string
+  proDesignReview?: number
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -54,7 +55,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       formatMessage,
       discount,
       totalWithoutDiscount,
-      onlyRead
+      onlyRead,
+      proDesignReview
     } = this.props
     const renderDiscount = discount ? (
       <OrderItem>
@@ -102,6 +104,14 @@ export class OrderSummary extends React.Component<Props, {}> {
             <FormattedMessage {...messages.shipping} />
             <div>{`USD$${shippingTotal}`}</div>
           </OrderItem>
+
+          {!!proDesignReview && (
+            <OrderItem>
+              <FormattedMessage {...messages.proDesigner} />
+              <div>{`$${proDesignReview}`}</div>
+            </OrderItem>
+          )}
+
           {!onlyRead ? renderDiscount : null}
         </CalculationsWrapper>
         <CodeDivider />

@@ -1074,5 +1074,37 @@
   "components.UploadTab.recommendationTitle": "Jakroo Recommends",
   "components.UploadTab.recommendationMessage":
     "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.",
-  "components.Render3D.sizeMessage": "Aprox image size"
+  "components.Render3D.sizeMessage": "Aprox image size",
+
+  "screens.ShoppingCartPage.tittle": "My cart",
+  "screens.ShoppingCartPage.browse": "BROWSE",
+  "screens.ShoppingCartPage.emptyTitle":
+    "You don’t have anything in your cart yet!",
+  "screens.ShoppingCartPage.emptyMessage":
+    "Browse through our selections and see what you like.",
+  "screens.ShoppingCartPage.summaryTitle": "Order Summary",
+  "screens.ShoppingCartPage.checkout": "Checkout",
+  "screens.ShoppingCartPage.subtotal": "Subtotal",
+  "screens.ShoppingCartPage.taxes": "Taxes",
+  "screens.ShoppingCartPage.shipping": "Shipping",
+  "screens.ShoppingCartPage.total": "Total",
+  "screens.ShoppingCartPage.estimate": "Estimate",
+  "screens.ShoppingCartPage.discountCode": "Have a discount code?",
+  "screens.ShoppingCartPage.apply": "Apply",
+  "screens.ShoppingCartPage.zipCodePlaceholder": "Zip/Postal Code",
+  "screens.ShoppingCartPage.promoCodePlaceholder": "Promo Code",
+  "screens.ShoppingCartPage.giftPlaceholder": "Gift Certificate",
+  "screens.ShoppingCartPage.addOneMoreMessage":
+    "*Add 1 more item to your cart to save 25% on your entire order",
+  "screens.ShoppingCartPage.titleDeleteModal": "Are you sure?",
+  "screens.ShoppingCartPage.messageDeleteItem":
+    "\"{nameOfFirstProduct}\" will be deleted from your cart",
+  "screens.ShoppingCartPage.delete": "Delete",
+  "screens.ShoppingCartPage.reviewDesignModalText":
+    "\n <p>Before continuing to checkout, please understand that YOU are the designer and that no one at \n Jakroo will be reviewing, clean up or checking your design for errors before sending to print.\n    Please ensure that all your graphics are clear, aligned and centered.</p>\n    <p class=\"additional-charge-note\">\n      For an additional charge of $15,\n      your order can be review by a Pro Designer at Jakroo.\n    </p>\n    <p>Services inclued:<br />\n  <ul>\n <li>- Color consistency throughout design and ordered products </li>\n <li>- Center alignment and adjustment to graphics/text </li >\n <li>-Any other unforseen potential issues </li>\n </ul>\n Your design on screen is how it will print- what you see is what you get </p>",
+  "screens.ShoppingCartPage.proDesignerReviewLabel": "PRO DESIGNER REVIEW",
+  "screens.ShoppingCartPage.optionalLabel": "Optional",
+  "screens.ShoppingCartPage.pleaseReadLabel": "PLEASE READ",
+  "screens.ShoppingCartPage.reviewMyOrderLabel": "REVIEW MY ORDER",
+  "screens.ShoppingCartPage.dontReview": "Continue without review"
 }

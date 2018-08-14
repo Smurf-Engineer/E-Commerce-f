@@ -125,6 +125,7 @@ interface Props extends RouteComponentProps<any> {
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
+const DESIGNREVIEWFEE = 15
 class Checkout extends React.Component<Props, {}> {
   componentWillUnmount() {
     const { resetReducerAction } = this.props
@@ -245,6 +246,10 @@ class Checkout extends React.Component<Props, {}> {
       production: ''
     }
 
+    const {
+      state: { proDesign }
+    } = location
+
     const orderButton =
       paymentMethod === 'paypal' ? (
         <PaypalExpressBtn
@@ -361,7 +366,9 @@ class Checkout extends React.Component<Props, {}> {
                 country={billingCountry}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
-                {...{ total, totalWithoutDiscount }}
+                total={!proDesign ? total : total + DESIGNREVIEWFEE}
+                proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
+                {...{ totalWithoutDiscount }}
               />
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
@@ -531,7 +538,7 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const {
-      state: { cart }
+      state: { cart, proDesign }
     } = location
     const shoppingCart = cloneDeep(cart) as CartItems[]
 
@@ -578,6 +585,7 @@ class Checkout extends React.Component<Props, {}> {
       })
     })
     const orderObj = {
+      proDesign,
       paymentMethod,
       cardId,
       tokenId: stripeToken,
