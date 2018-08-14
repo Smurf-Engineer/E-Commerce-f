@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by cazarez on 14/03/18.
  */
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 interface ThumbnailProps {
   selected: boolean
@@ -66,25 +66,41 @@ export const Arrows = styled.div`
   justify-content: space-between;
   padding: 0;
   position: absolute;
-  width: 85%;
+  width: 98%;
 
   @media (min-width: 320px) and (max-width: 425px) {
     display: none;
   }
 `
-export const ArrowRight = styled.img`
-  height: 22.09px;
-  width: 10px;
+
+interface ArrowsProps {
+  squareArrows: boolean
+}
+
+export const ArrowContainer = styled.div`
+  ${({ squareArrows }: ArrowsProps) =>
+    squareArrows
+      ? css`
+          align-items: center;
+          background-color: #dcdcdc;
+          border: 0.2px solid rgba(220, 220, 220, 0.34);
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
+          display: flex;
+          height: 43px;
+          justify-content: center;
+          width: 37.39px;
+        `
+      : ''};
 
   &:hover {
     cursor: pointer;
   }
 `
+export const ArrowRight = styled.img`
+  height: 22.09px;
+  width: 10px;
+`
 export const ArrowLeft = styled.img`
   height: 22.09px;
   width: 10px;
-
-  &:hover {
-    cursor: pointer;
-  }
 `

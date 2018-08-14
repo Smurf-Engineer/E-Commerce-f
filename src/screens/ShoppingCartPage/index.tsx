@@ -7,6 +7,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
+import find from 'lodash/find'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -26,13 +27,21 @@ import {
   EmptyDescription,
   StyledEmptyButton,
   AddOneMoreMessage,
-  DeleteConfirmMessage
+  DeleteConfirmMessage,
+  ProReviewTitle,
+  OptionalLabel,
+  PleaseReadLabel,
+  ProDesignReviewContent,
+  ModalButtonsWrapper,
+  ReviewButton,
+  ContinueButton
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 
 import Ordersummary from '../../components/OrderSummary'
 import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
+import CustomModal from '../../components/Common/JakrooModal'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import ModalTitle from '../../components/ModalTitle'
 import ModalFooter from '../../components/ModalFooter'
@@ -51,6 +60,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   cart: CartItems[]
   showDeleteLastItemModal: boolean
+  showReviewDesignModal: boolean
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -87,6 +97,7 @@ interface Props extends RouteComponentProps<any> {
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
+  showReviewDesignModalAction: (open: boolean) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -95,13 +106,30 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  handleCheckout = () => {
+  handleCheckout = (proDesign = false) => () => {
     const { history, cart } = this.props
     const userLogged = !!localStorage.getItem('user')
     if (!userLogged) {
       window.location.replace('/shopping-cart?login=open')
     } else {
-      history.push('/checkout', { cart })
+      history.push('/checkout', { cart, proDesign })
+    }
+  }
+
+  onCheckoutClick = () => {
+    const {
+      showReviewDesignModalAction,
+      showReviewDesignModal,
+      cart
+    } = this.props
+    const isCustom = find(cart, 'designId')
+
+    if (!!isCustom) {
+      if (showReviewDesignModal) {
+        showReviewDesignModalAction(false)
+        return
+      }
+      showReviewDesignModalAction(true)
     }
   }
 
@@ -112,6 +140,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
   componentWillUnmount() {
     const { cart, saveToStorage } = this.props
+
     saveToStorage(cart)
   }
 
@@ -223,8 +252,14 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, history, cart, showDeleteLastItemModal } = this.props
-    const formatMessage = intl.formatMessage
+    const {
+      intl,
+      history,
+      cart,
+      showDeleteLastItemModal,
+      showReviewDesignModal
+    } = this.props
+    const { formatMessage } = intl
 
     const shoppingCartData = getShoppingCartData(cart)
     const {
@@ -282,6 +317,38 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       </AddOneMoreMessage>
     ) : null
 
+    const designReviewModal = (
+      <CustomModal
+        open={showReviewDesignModal}
+        withLogo={false}
+        width={'684px'}
+        requestClose={this.onCheckoutClick}
+      >
+        <ProReviewTitle>
+          {formatMessage(messages.proDesignerReviewLabel)}
+          <OptionalLabel>{` (${formatMessage(
+            messages.optionalLabel
+          )})`}</OptionalLabel>
+        </ProReviewTitle>
+        <PleaseReadLabel>
+          {formatMessage(messages.pleaseReadLabel)}
+        </PleaseReadLabel>
+        <ProDesignReviewContent
+          dangerouslySetInnerHTML={{
+            __html: formatMessage(messages.reviewDesignModalText)
+          }}
+        />
+        <ModalButtonsWrapper>
+          <ReviewButton type="primary" onClick={this.handleCheckout(true)}>
+            {formatMessage(messages.reviewMyOrderLabel)}
+          </ReviewButton>
+          <ContinueButton key="review" onClick={this.handleCheckout()}>
+            {formatMessage(messages.dontReview)}
+          </ContinueButton>
+        </ModalButtonsWrapper>
+      </CustomModal>
+    )
+
     return (
       <Layout {...{ history, intl }}>
         <PageContent>
@@ -316,7 +383,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   <CheckoutButton
                     disabled={!activeCheckout}
                     type="primary"
-                    onClick={this.handleCheckout}
+                    onClick={this.onCheckoutClick}
                   >
                     <FormattedMessage {...messages.checkout} />
                   </CheckoutButton>
@@ -352,6 +419,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
             </DeleteConfirmMessage>
           </Modal>
         </PageContent>
+        {designReviewModal}
       </Layout>
     )
   }
