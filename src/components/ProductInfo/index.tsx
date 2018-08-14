@@ -33,7 +33,7 @@ const ProductInfo = ({
   toggleView,
   children
 }: Props) => {
-  const onToggleView = (evt: React.MouseEvent<HTMLImageElement>) => {
+  const onToggleView = (evt: React.MouseEvent<HTMLDivElement>) => {
     const {
       currentTarget: { id: targetId }
     } = evt
@@ -41,13 +41,9 @@ const ProductInfo = ({
   }
   return (
     <Container>
-      <ProductInfoTitle>
+      <ProductInfoTitle {...{ id }} onClick={onToggleView}>
         <Title {...{ titleWidth, titleColor }}>{title}</Title>
-        <UpDownArrow
-          src={showContent ? upArrowIcon : downArrowIcon}
-          onClick={onToggleView}
-          id={id}
-        />
+        <UpDownArrow src={showContent ? upArrowIcon : downArrowIcon} />
       </ProductInfoTitle>
       <StyledDivider />
       <AnimateHeight duration={500} height={showContent ? 'auto' : 0}>

@@ -5,7 +5,13 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
-import { QueryProps, NetsuiteTax, NetsuiteShipping } from '../../types/common'
+import {
+  QueryProps,
+  NetsuiteTax,
+  NetsuiteShipping,
+  TaxAddressObj,
+  AddressObj
+} from '../../types/common'
 import { getTaxQuery } from './data'
 import messages from './messages'
 import {
@@ -32,6 +38,8 @@ interface Data extends QueryProps {
 
 interface Props {
   data?: Data
+  taxes: any
+  client: any
   total: number
   subtotal: number
   shipping?: number
@@ -40,6 +48,7 @@ interface Props {
   onlyRead?: boolean
   country?: string
   weight?: string
+  shipAddress?: TaxAddressObj
   proDesignReview?: number
   formatMessage: (messageDescriptor: any) => string
 }
@@ -58,6 +67,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       onlyRead,
       proDesignReview
     } = this.props
+
     const renderDiscount = discount ? (
       <OrderItem>
         {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
@@ -84,6 +94,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     const youSaved = Number(totalWithoutDiscount) - total
 
     const shippingTotal = get(data, 'shipping.total', 0)
+    const taxesTotal = get(data, 'taxes.total', 0)
 
     return (
       <Container>
@@ -96,9 +107,9 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-          <OrderItem hide={true}>
+          <OrderItem hide={!taxesTotal}>
             <FormattedMessage {...messages.taxes} />
-            <div>{`USD$0`}</div>
+            <div>{`USD$${taxesTotal}`}</div>
           </OrderItem>
           <OrderItem hide={!shippingTotal}>
             <FormattedMessage {...messages.shipping} />
@@ -161,13 +172,14 @@ export class OrderSummary extends React.Component<Props, {}> {
 interface OwnProps {
   country?: string
   weight?: string
+  shipAddress?: AddressObj
 }
 
 const OrderSummaryEnhance = compose(
   graphql(getTaxQuery, {
-    options: ({ country, weight }: OwnProps) => ({
-      skip: !country || !weight,
-      variables: { country, weight },
+    options: ({ country, weight, shipAddress }: OwnProps) => ({
+      skip: !country || !weight || !shipAddress,
+      variables: { country, weight, shipAddress },
       fetchPolicy: 'network-only'
     })
   })

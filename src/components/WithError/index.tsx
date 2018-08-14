@@ -13,7 +13,7 @@ const Error = () => (
 )
 
 const displayErrorState = branch(
-  ({ data: { error } }: any) => !!error,
+  ({ data }: any) => !!data && !!data.error,
   renderComponent(Error)
 )
 

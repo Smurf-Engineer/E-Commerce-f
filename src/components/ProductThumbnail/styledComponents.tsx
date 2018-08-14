@@ -95,20 +95,26 @@ export const Description = styled.div`
 `
 
 export const InfoContainer = styled.div`
-  user-select: none;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-`
-
-export const Label = styled.div`
   user-select: none;
+
+  @media (min-width: 320px) and (max-width: 425px) {
+    flex-wrap: wrap;
+  }
+`
+export const Label = styled.div`
   color: #5f6062;
+  display: flex;
   font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
+  user-select: none;
 `
-
+export const ImgIcon = styled.img`
+  margin-right: 5px;
+`
 export const Price = styled.div`
   user-select: none;
   color: #5f6062;

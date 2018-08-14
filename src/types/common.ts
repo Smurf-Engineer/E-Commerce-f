@@ -286,6 +286,10 @@ export interface Style {
   colorblock4: string
   colorblock5: string
   colors: ColorBlock[]
+  size: {
+    width: number
+    height: number
+  }
 }
 
 export interface DesignStyle {
@@ -390,7 +394,10 @@ export interface ModelConfig {
   brandingSvg?: string
   brandingPng?: string
   label: string
-  size: number
+  size: {
+    width: number
+    height: number
+  }
   design: {
     name: string
     colors: string[]
@@ -659,6 +666,7 @@ export interface NetsuiteShipping {
   internal_id: string
   subsidiary: string
   name: string
+  carrier: string
   flat_rate: string
   rate_type: string
 }
@@ -823,6 +831,8 @@ export type ChangeType =
   | 'rotate'
   | 'resize'
   | 'duplicate'
+  | 'accessoryColor'
+  | 'canvasStyle'
 
 export type CanvasObjects = 'path' | 'text' | 'image'
 
@@ -840,6 +850,14 @@ export type CanvasResized = {
   scaleX: number
   scaleY: number
 }
+
+export interface AddressObj {
+  country: string
+  state: string
+  zipCode: string
+}
+
+export type TaxAddressObj = AddressObj | ''
 
 export type CanvasDragged = {
   id: string

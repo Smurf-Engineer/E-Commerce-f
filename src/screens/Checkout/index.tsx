@@ -3,9 +3,10 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps, Redirect } from 'react-router-dom'
+import zenscroll from 'zenscroll'
 import Steps from 'antd/lib/steps'
 import Message from 'antd/lib/message'
 import SwipeableViews from 'react-swipeable-views'
@@ -30,19 +31,22 @@ import {
   StepWrapper,
   PlaceOrderButton,
   paypalButtonStyle,
-  StepIcon
+  StepIcon,
+  CheckIcon
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
 import Payment from '../../components/Payment'
 import Review from '../../components/Review'
 import OrderSummary from '../../components/OrderSummary'
+import { getTaxQuery } from '../../components/OrderSummary/data'
 import {
   AddressType,
   CartItemDetail,
   Product,
   StripeCardData,
-  CreditCardData
+  CreditCardData,
+  TaxAddressObj
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -53,6 +57,7 @@ interface CartItems {
 }
 
 interface Props extends RouteComponentProps<any> {
+  client: any
   intl: InjectedIntl
   firstName: string
   lastName: string
@@ -97,6 +102,7 @@ interface Props extends RouteComponentProps<any> {
   skip: number
   showCardForm: boolean
   selectedCard: CreditCardData
+  currentCurrency: string
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -190,7 +196,8 @@ class Checkout extends React.Component<Props, {}> {
       showCardForm,
       showCardFormAction,
       selectCardToPayAction,
-      selectedCard
+      selectedCard,
+      currentCurrency
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -221,6 +228,14 @@ class Checkout extends React.Component<Props, {}> {
       cardBrand
     }
 
+    const taxAddress: TaxAddressObj = shippingAddress.country &&
+      shippingAddress.stateProvince &&
+      shippingAddress.zipCode && {
+        country: shippingAddress.country,
+        state: shippingAddress.stateProvince,
+        zipCode: shippingAddress.zipCode
+      }
+
     const { state: stateLocation } = location
     const { ShippingTab, RevieTab, PaymentTab } = CheckoutTabs
 
@@ -236,7 +251,13 @@ class Checkout extends React.Component<Props, {}> {
       <Step
         key={index}
         title={step}
-        icon={<StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>}
+        icon={
+          currentStep > index ? (
+            <CheckIcon type="check-circle-o" clickable={currentStep > index} />
+          ) : currentStep === index ? (
+            <StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>
+          ) : null
+        }
         onClick={this.handleOnStepClick(index)}
       />
     ))
@@ -351,6 +372,7 @@ class Checkout extends React.Component<Props, {}> {
                     paymentMethod,
                     selectedCard
                   }}
+                  currency={currentCurrency || config.defaultCurrency}
                   cart={shoppingCart}
                   showContent={currentStep === RevieTab}
                   formatMessage={intl.formatMessage}
@@ -364,6 +386,7 @@ class Checkout extends React.Component<Props, {}> {
                 subtotal={total}
                 discount={10}
                 country={billingCountry}
+                shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
                 total={!proDesign ? total : total + DESIGNREVIEWFEE}
@@ -397,11 +420,13 @@ class Checkout extends React.Component<Props, {}> {
       default:
         break
     }
+    zenscroll.toY(0)
   }
 
   handleOnGoToStep = (step: number) => {
     const { stepAdvanceAction } = this.props
     stepAdvanceAction(step - 1)
+    zenscroll.toY(0)
   }
 
   verifyStepTwo = () => {
@@ -504,7 +529,9 @@ class Checkout extends React.Component<Props, {}> {
       getTotalItemsIncart: getTotalItemsIncartAction,
       paymentMethod,
       stripeToken,
-      selectedCard
+      selectedCard,
+      client,
+      currentCurrency
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -544,6 +571,31 @@ class Checkout extends React.Component<Props, {}> {
 
     const cardId = selectedCard && selectedCard.id
 
+    // get taxes and shipping from query
+    const shoppingCartData = getShoppingCartData(shoppingCart)
+    const { weightSum } = shoppingCartData
+
+    const taxAddress: TaxAddressObj = {
+      country: shippingAddress.country,
+      state: shippingAddress.stateProvince,
+      zipCode: shippingAddress.zipCode
+    }
+
+    const data = client.readQuery({
+      query: getTaxQuery,
+      variables: {
+        country: billingCountry,
+        weight: weightSum,
+        shipAddress: taxAddress
+      }
+    })
+
+    const taxId = get(data, 'taxes.internalId', null)
+    const taxAmount = get(data, 'taxes.total', null)
+    const shippingId = get(data, 'shipping.internalId', null)
+    const shippingCarrier = get(data, 'shipping.carrier', null)
+    const shippingAmount = get(data, 'shipping.total', null)
+
     /*
     * TODO: Find a better solution to unset these properties
     * from cart Object.
@@ -574,8 +626,11 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.category_id')
       unset(cartItem, 'product.temperatures')
       unset(cartItem, 'product.sports')
+      unset(cartItem, 'product.weight')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
+        unset(priceRange, 'shortName')
+        unset(priceRange, 'abbreviation')
       })
       forEach(cartItem.itemDetails, itemDetail => {
         unset(itemDetail, 'gender.__typename')
@@ -593,7 +648,13 @@ class Checkout extends React.Component<Props, {}> {
       shippingAddress,
       billingAddress,
       paypalData: paypalObj || null,
-      countrySubsidiary: billingCountry
+      countrySubsidiary: billingCountry,
+      taxId,
+      taxAmount,
+      shippingId,
+      shippingCarrier,
+      shippingAmount,
+      currency: currentCurrency
     }
 
     try {
@@ -616,12 +677,20 @@ class Checkout extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('checkout').toJS()
+const mapStateToProps = (state: any) => {
+  const checkoutProps = state.get('checkout').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return {
+    ...checkoutProps,
+    ...langProps
+  }
+}
 
 const CheckoutEnhance = compose(
   injectIntl,
   AddAddressMutation,
   PlaceOrderMutation,
+  withApollo,
   connect(
     mapStateToProps,
     {

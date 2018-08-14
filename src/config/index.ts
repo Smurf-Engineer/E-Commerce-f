@@ -16,6 +16,7 @@ interface ConfigType {
   geoIpUrl: string
   geoIpAccesKey: string
   intercomKey: string
+  defaultCurrency: string
 }
 
 const config: ConfigType = {
@@ -27,12 +28,13 @@ const config: ConfigType = {
   storageUrl: 'https://storage.googleapis.com/jakroo-storage',
   pkStripe: 'pk_test_USJaHD7YvJFcFsgwOixnJDrq',
   paypalClientId:
-    'AbZ3seF-h636HxsdaKolVn-D24c3eSN3EQGeysVYQTf1Y7cSw2QSSevNRXwTwAUOxHohWXlK40Uzl1p-',
+    'AWuWtjrHnZd_nLLXI-x40UtoX7cNxqYNjh9CrfDeNO6y4Ik2xADqapxfzXzHCPeIgrFSP-45-2gYkiO-',
   paypalEnv: 'sandbox',
   googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
   geoIpUrl: 'http://api.ipstack.com/',
   geoIpAccesKey: 'e5dc4d0a6fc61af61307fe520cc67f66',
-  intercomKey: 'rryek0sa'
+  intercomKey: 'rryek0sa',
+  defaultCurrency: 'usd'
 }
 
 export default config

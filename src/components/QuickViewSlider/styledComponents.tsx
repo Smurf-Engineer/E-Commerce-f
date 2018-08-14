@@ -32,9 +32,7 @@ export const Available = styled.div`
   margin-top: 10px;
 `
 
-export const SliderPage = styled.div`
-  width: 380px;
-`
+export const SliderPage = styled.div``
 export const StyledImage = styled.img`
   width: 95%;
 `

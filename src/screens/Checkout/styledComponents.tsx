@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Icon from 'antd/lib/icon'
 
 const primaryColor = '#4a90e2'
 
@@ -141,6 +142,12 @@ export const StepIcon = styled.div`
   width: 32px;
   border-radius: 50%;
   font-size: 14px;
+  cursor: ${({ clickable }: StepProps) => (clickable ? 'pointer' : 'default')};
+`
+
+export const CheckIcon = styled(Icon)`
+  color: #4a90e2;
+  width: 32px;
   cursor: ${({ clickable }: StepProps) => (clickable ? 'pointer' : 'default')};
 `
 

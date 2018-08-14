@@ -50,6 +50,7 @@ interface Props {
   uploadingFile: boolean
   onUploadFile: (file: any) => void
   searchClipParam: string
+  isUserAuthenticated: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -108,7 +109,8 @@ const Tabs = ({
   images,
   uploadingFile,
   searchClipParam,
-  setSearchClipParamAction
+  setSearchClipParamAction,
+  isUserAuthenticated
 }: Props) => {
   return (
     <Container>
@@ -175,7 +177,8 @@ const Tabs = ({
               onApplyImage,
               onUploadFile,
               images,
-              uploadingFile
+              uploadingFile,
+              isUserAuthenticated
             }}
           />
         </TabPane>

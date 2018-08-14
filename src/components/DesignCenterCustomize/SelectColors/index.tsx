@@ -15,6 +15,7 @@ import {
 import ColorButton from '../../ColorButton'
 import AccessoryColor from '../AccessoryColor'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 
 interface Props {
   colors: string[]
@@ -84,7 +85,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
         )}
         {hasBinding && (
           <AccessoryColor
-            id="bindingColor"
+            id={AccessoryColors.Binding}
             colorSelected={bindingColor}
             name={formatMessage(messages.binding)}
             {...{ onAccessoryColorSelected }}
@@ -92,7 +93,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
         )}
         {hasZipper && (
           <AccessoryColor
-            id="zipperColor"
+            id={AccessoryColors.Zipper}
             colorSelected={zipperColor}
             name={formatMessage(messages.zipper)}
             {...{ onAccessoryColorSelected }}
@@ -100,7 +101,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
         )}
         {hasBibBrace && (
           <AccessoryColor
-            id="bibColor"
+            id={AccessoryColors.Bib}
             colorSelected={bibColor}
             name={formatMessage(messages.bibColor)}
             {...{ onAccessoryColorSelected }}
