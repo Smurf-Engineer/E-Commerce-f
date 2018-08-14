@@ -312,7 +312,7 @@ class Checkout extends React.Component<Props, {}> {
               <StepWrapper>
                 <Steps current={currentStep}>{steps}</Steps>
               </StepWrapper>
-              <SwipeableViews index={currentStep}>
+              <SwipeableViews index={currentStep} disabled={true}>
                 <Shipping
                   {...{
                     hasError,
