@@ -52,6 +52,7 @@ import {
   CANVAS_ELEMENT_DRAGGED_ACTION,
   CANVAS_ELEMENT_ROTATED_ACTION,
   CANVAS_ELEMENT_TEXT_CHANGED,
+  REAPPLY_CANVAS_IMAGE_ACTION,
   Changes,
   CanvasElements,
   WHITE,
@@ -523,6 +524,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         redoChanges: redoChanges.clear()
       })
     }
+    case REAPPLY_CANVAS_IMAGE_ACTION: {
+      const { el } = action
+      return state.setIn(['canvas', CanvasElements.Image, el.id], el)
+    }
     case REMOVE_CANVAS_ELEMENT_ACTION: {
       const { id, typeEl, canvasObj } = action
       const undoChanges = state.get('undoChanges')
@@ -806,8 +811,7 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
       break
     case CanvasElements.Image:
     default:
-      // image only needs the id
-      break
+      return canvas
   }
   const updatedCanvas = canvas.setIn([canvasType, id], canvasObject)
   return updatedCanvas
