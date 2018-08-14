@@ -32,7 +32,7 @@ export const Page = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
-    height: 100%;
+    height: 180px;
   }
 `
 
@@ -48,7 +48,7 @@ export const Image = styled.img`
   }
 
   @media only screen and (max-width: 320px) {
-    height: 120px;
+    height: 115px;
     width: 100%;
     margin: 0;
   }
