@@ -5,11 +5,11 @@
 const links = [
   {
     label: 'faq',
-    url: 'https://www.jakroo.com/us/faq.html'
+    url: '/faq'
   },
   {
     label: 'terms',
-    url: 'https://www.jakroo.com/us/terms-and-conditions.html'
+    url: 'terms-of-use'
   },
   {
     label: 'pricing',
@@ -17,11 +17,11 @@ const links = [
   },
   {
     label: 'warranty',
-    url: 'https://www.jakroo.com/us/warranty.html'
+    url: 'warranty-program'
   },
   {
     label: 'design',
-    url: 'https://www.jakroo.com/us/art-specs.html'
+    url: 'artwork-specs'
   }
 ]
 
