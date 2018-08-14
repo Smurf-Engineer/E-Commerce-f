@@ -873,3 +873,11 @@ export type CanvasRotated = {
   oldRotation?: number[]
   newRotation: number[]
 }
+
+export type Responsive = {
+  desktop: boolean
+  fakeWidth: number
+  mobile: boolean
+  phone: boolean
+  tablet: boolean
+}

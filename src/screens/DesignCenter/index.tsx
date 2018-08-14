@@ -60,7 +60,8 @@ import {
   DesignSaved,
   CanvasResized,
   CanvasDragged,
-  CanvasRotated
+  CanvasRotated,
+  Responsive
 } from '../../types/common'
 import {
   getProductQuery,
@@ -71,6 +72,8 @@ import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
+
+const { info } = Modal
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -135,6 +138,7 @@ interface Props extends RouteComponentProps<any> {
   searchClipParam: string
   savedDesign: SaveDesignType
   user: object
+  responsive: Responsive
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -200,6 +204,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
+  formatMessage: (messageDescriptor: any) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
 }
 
@@ -208,25 +213,39 @@ export class DesignCenter extends React.Component<Props, {}> {
     open: false
   }
 
-  openBottomSheet = (open: boolean) => this.setState({ open })
-
-  toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
-    this.openBottomSheet(!this.state.open)
+  componentWillUnmount() {
+    const { clearStoreAction } = this.props
+    clearStoreAction()
   }
 
   componentDidMount() {
-    const { designHasChanges } = this.props
+    const {
+      designHasChanges,
+      responsive,
+      intl: { formatMessage },
+      history
+    } = this.props
     window.onbeforeunload = () => {
       if (designHasChanges) {
         return 'Changes you made may not be saved.'
       }
       return null
     }
+    if (!!responsive && responsive.phone) {
+      info({
+        title: formatMessage(messages.unsupportedDeviceTitle),
+        maskClosable: false,
+        onOk: () => history.goBack(),
+        content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
+        okText: formatMessage(messages.unsupportedDeviceButton)
+      })
+    }
   }
 
-  componentWillUnmount() {
-    const { clearStoreAction } = this.props
-    clearStoreAction()
+  openBottomSheet = (open: boolean) => this.setState({ open })
+
+  toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
+    this.openBottomSheet(!this.state.open)
   }
 
   handleAfterSaveDesign = (id: string, svgUrl: string, design: DesignSaved) => {
@@ -432,9 +451,20 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementDraggedAction,
       onCanvasElementRotatedAction,
       onCanvasElementTextChangedAction,
-      onReApplyImageElementAction,
-      user
+      user,
+      responsive,
+      onReApplyImageElementAction
     } = this.props
+
+    if (!!responsive && responsive.phone) {
+      return (
+        <Layout
+          {...{ history, intl }}
+          hideBottomHeader={true}
+          hideFooter={true}
+        />
+      )
+    }
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -748,7 +778,8 @@ interface OwnProps {
 const mapStateToProps = (state: any) => {
   const designCenter = state.get('designCenter').toJS()
   const app = state.get('app').toJS()
-  return { ...designCenter, ...app }
+  const responsive = state.get('responsive').toJS()
+  return { ...designCenter, ...app, responsive }
 }
 
 const DesignCenterEnhance = compose(
