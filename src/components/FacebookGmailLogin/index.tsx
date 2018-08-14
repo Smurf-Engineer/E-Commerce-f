@@ -74,7 +74,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     const token = get(facebookResp, 'accessToken')
 
     try {
-      const countryCode = this.geoLocate()
+      const countryCode = await this.geoLocate()
       const response = await loginWithFacebook({
         variables: { token, countryCode }
       })
@@ -96,7 +96,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     const token = get(resp, 'tokenId', false)
 
     try {
-      const countryCode = this.geoLocate()
+      const countryCode = await this.geoLocate()
       const response = await loginWithGoogle({
         variables: { token, countryCode }
       })
