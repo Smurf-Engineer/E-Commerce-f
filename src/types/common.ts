@@ -872,3 +872,9 @@ export type CanvasRotated = {
   oldRotation?: number[]
   newRotation: number[]
 }
+
+export interface Inspiration {
+  name: string
+  image: string
+  colors: string[]
+}

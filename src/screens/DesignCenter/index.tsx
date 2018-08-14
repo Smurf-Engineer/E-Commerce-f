@@ -205,13 +205,12 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
-    open: false
+    openBottomSheet: false
   }
 
-  openBottomSheet = (open: boolean) => this.setState({ open })
-
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
-    this.openBottomSheet(!this.state.open)
+    const open = !this.state.openBottomSheet
+    this.setState({ openBottomSheet: open })
   }
 
   componentDidMount() {
@@ -435,6 +434,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       onReApplyImageElementAction,
       user
     } = this.props
+
+    const { openBottomSheet } = this.state
 
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
@@ -677,12 +678,16 @@ export class DesignCenter extends React.Component<Props, {}> {
           />
           {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
-              <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
-                <StyledTitle onClick={this.toggleBottomSheet}>
+              <SwipeableBottomSheet overflowHeight={64} open={openBottomSheet}>
+                <StyledTitle
+                  open={openBottomSheet}
+                  onClick={this.toggleBottomSheet}
+                >
                   <FormattedMessage {...messages.inspirationTtitle} />
                 </StyledTitle>
                 <DesignCenterInspiration
-                  {...{ productId }}
+                  styleId={style.id}
+                  {...{ setPaletteAction, formatMessage }}
                   onPressSeeAll={() => {}}
                   onPressCustomize={() => {}}
                   onPressQuickView={() => {}}
