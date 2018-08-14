@@ -109,6 +109,8 @@ export class QuickView extends React.Component<Props, State> {
           )
       )
 
+    const productImages = images || []
+
     const imageSlider = loading ? (
       <Loading>
         <Spin />
@@ -116,11 +118,10 @@ export class QuickView extends React.Component<Props, State> {
     ) : (
       <QuickViewSlider
         // TODO: filter by gender
-        productImages={images}
         available={5}
         gotoCustomize={this.gotoCustomize}
         isRetail={(retailMen && retailWomen) || false}
-        {...{ hideSliderButtons, product, formatMessage }}
+        {...{ hideSliderButtons, product, productImages, formatMessage }}
       />
     )
 
