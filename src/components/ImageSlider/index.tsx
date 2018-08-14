@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
+import get from 'lodash/get'
 import {
   Container,
   SwipeContainer,
@@ -44,12 +45,12 @@ class ImageSlider extends React.Component<Props, StateProps> {
   componentDidMount() {
     const { images, moreImages } = this.props
 
-    const ThumbnailsArray = [
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const front = get(images, 'front', '')
+    const right = get(images, 'right', '')
+    const back = get(images, 'back', '')
+    const left = get(images, 'left', '')
+
+    const ThumbnailsArray = [front, right, back, left]
 
     if (moreImages) {
       for (const img of moreImages) {
@@ -77,13 +78,13 @@ class ImageSlider extends React.Component<Props, StateProps> {
     } = this.props
     const { index } = this.state
 
+    const front = get(images, 'front', '')
+    const right = get(images, 'right', '')
+    const back = get(images, 'back', '')
+    const left = get(images, 'left', '')
+
     // TODO: Change this code when client provides the images
-    const ThumbnailsArray = [
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const ThumbnailsArray = [front, right, back, left]
 
     if (moreImages) {
       for (const img of moreImages) {
@@ -94,13 +95,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
       }
     }
 
-    const ThumbnailsArrayWith3D = [
-      customImage,
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const ThumbnailsArrayWith3D = [customImage, front, right, back, left]
     // ########
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
