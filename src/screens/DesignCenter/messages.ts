@@ -41,5 +41,19 @@ export default defineMessages({
   outWithoutSaveDesignModalSave: {
     id: 'screens.DesignCenter.outWithoutSaveDesignModalSave',
     defaultMessage: 'Save'
+  },
+  unsupportedDeviceTitle: {
+    id: 'screens.DesignCenter.unsupportedDeviceTitle',
+    defaultMessage: 'UNSUPPORTED DEVICE'
+  },
+  unsupportedDeviceContent: {
+    id: 'screens.DesignCenter.unsupportedDeviceContent',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'To start customizing this product, you have to be on a device with a larger screen such as tablet or a desktop computer.'
+  },
+  unsupportedDeviceButton: {
+    id: 'screens.DesignCenter.unsupportedDeviceButton',
+    defaultMessage: 'Got it!'
   }
 })
