@@ -200,6 +200,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
+  onReApplyImageElementAction: (el: CanvasElement) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -431,6 +432,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementDraggedAction,
       onCanvasElementRotatedAction,
       onCanvasElementTextChangedAction,
+      onReApplyImageElementAction,
       user
     } = this.props
 
@@ -617,6 +619,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               onCanvasElementDragged={onCanvasElementDraggedAction}
               onCanvasElementRotated={onCanvasElementRotatedAction}
               onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+              onReApplyImageEl={onReApplyImageElementAction}
             />
             <PreviewTab
               {...{
