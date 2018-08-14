@@ -64,5 +64,9 @@ export default defineMessages({
   youSaved: {
     id: 'screens.ShoppingCartPage.youSaved',
     defaultMessage: 'You Saved'
+  },
+  proDesigner: {
+    id: 'screens.ShoppingCartPage.proDesigner',
+    defaultMessage: 'Pro Designer Review'
   }
 })

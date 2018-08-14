@@ -149,6 +149,7 @@ class Overview extends React.Component<Props, {}> {
     )
     return (
       <SwipeableViews
+        disabled={true}
         onChangeIndex={this.handleOnChangeIndex}
         index={!!orderId.length ? 1 : 0}
       >
