@@ -19,6 +19,30 @@ export const GetDesignByIdQuery = gql`
         details
         materials: materials_info
         temperatures: temperature_range
+        relatedProducts: related {
+          id
+          type: name
+          description: short_description
+          shortDescription: short_description
+          images: pictures {
+            front: front_image
+            back: back_image
+            left: left_image
+            right: right_image
+            genderId: gender_id
+          }
+          isTopProduct
+          customizable: design_center
+          genderId: gender_id
+          collections
+          yotpoId: yotpo_id
+          priceRange {
+            price
+            quantity
+            abbreviation
+            shortName: short_name
+          }
+        }
         genders {
           id
           name: gender

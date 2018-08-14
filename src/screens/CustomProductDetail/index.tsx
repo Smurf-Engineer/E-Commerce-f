@@ -36,6 +36,7 @@ import {
   SectionButton,
   SizeRowTitleRow,
   QuestionSpan,
+  RelatedProductsContainer,
   ButtonsRow,
   DetailsList,
   DetailsListItem,
@@ -52,13 +53,15 @@ import {
   SelectedType,
   ItemDetailType,
   FitStyle,
-  CartItemDetail
+  CartItemDetail,
+  Product
 } from '../../types/common'
 import ThreeDRender from '../TeamstoreProductPage/Product3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
+import RelatedProducts from '../../components/RelatedProducts'
 import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
 import withLoading from '../../components/WithLoading'
@@ -155,6 +158,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
     const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
     const details = get(product, 'details', '')
+    const products = get(product, 'relatedProducts', [] as Product[])
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
@@ -392,6 +396,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 {...{ productId, history }}
               />
             </Content>
+          )}
+          {product && (
+            <RelatedProductsContainer>
+              <RelatedProducts
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ products, history, formatMessage }}
+              />
+            </RelatedProductsContainer>
           )}
           <YotpoReviews {...{ yotpoId }} />
         </Container>

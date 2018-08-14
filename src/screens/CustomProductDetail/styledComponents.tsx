@@ -187,6 +187,14 @@ export const QuestionSpan = styled.span`
     cursor: pointer;
   }
 `
+export const RelatedProductsContainer = styled.div`
+  margin-bottom: 80px;
+  padding: 0px 32px;
+
+  @media (min-width: 1440px) {
+    padding: 0px 10%;
+  }
+`
 export const ButtonsRow = styled.div`
   display: flex;
   margin: 30px 0 25px;
