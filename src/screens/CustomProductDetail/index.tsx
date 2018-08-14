@@ -2,7 +2,7 @@
  * CustomProductDetail Screen - Created by jorge on 03/08/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, FormattedMessage, InjectedIntl } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
@@ -37,6 +37,7 @@ import {
   SizeRowTitleRow,
   QuestionSpan,
   RelatedProductsContainer,
+  ReviewsHeader,
   ButtonsRow,
   DetailsList,
   DetailsListItem,
@@ -405,6 +406,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               />
             </RelatedProductsContainer>
           )}
+          <ReviewsHeader>
+            <FormattedMessage {...messages.reviews} />
+          </ReviewsHeader>
           <YotpoReviews {...{ yotpoId }} />
         </Container>
       </Layout>

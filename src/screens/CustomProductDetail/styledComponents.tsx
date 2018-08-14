@@ -195,6 +195,20 @@ export const RelatedProductsContainer = styled.div`
     padding: 0px 10%;
   }
 `
+export const ReviewsHeader = styled.div`
+  align-items: center;
+  background-color: #f7f7f7;
+  color: #5f6062;
+  display: flex;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  font-weight: 600;
+  height: 38px;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  padding-left: 32px;
+`
 export const ButtonsRow = styled.div`
   display: flex;
   margin: 30px 0 25px;

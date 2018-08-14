@@ -68,5 +68,9 @@ export default defineMessages({
   seemsPrivate: {
     id: 'screens.CustomProductDetail.seemsPrivate',
     defaultMessage: 'Seems like this design is private or not available'
+  },
+  reviews: {
+    id: 'screens.CustomProductDetail.reviews',
+    defaultMessage: 'Reviews'
   }
 })
