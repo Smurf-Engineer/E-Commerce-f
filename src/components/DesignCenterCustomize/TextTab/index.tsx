@@ -75,7 +75,7 @@ export class TextTab extends React.PureComponent<Props, State> {
                 placeholder={formatMessage(messages.enterTextPlaceholder)}
                 addonAfter={
                   <Button disabled={!text} onClick={this.handleOnApplyText}>
-                    Apply
+                    {formatMessage(messages.applyButton)}
                   </Button>
                 }
               />
