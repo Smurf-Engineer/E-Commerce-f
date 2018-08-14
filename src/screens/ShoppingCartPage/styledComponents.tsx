@@ -324,11 +324,15 @@ export const ProDesignReviewContent = styled.div`
 
 export const ModalButtonsWrapper = styled.div`
   display: grid;
-  /* grid-template-columns: [first-line] 1fr [second-line] 1fr [third-line] 1fr [fourth-line]; */
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr;
-  grid-gap: 0 25px;
+  grid-gap: 25px;
   grid-template-areas: '. review continue';
+
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'review' 'continue';
+  }
 `
 
 export const ContinueButton = styled(Button)`
@@ -339,8 +343,10 @@ export const ContinueButton = styled(Button)`
   height: 50px;
   width: 220px;
   font-size: 16px;
-  /* grid-column-start: third-line;
-  grid-column-end: fourth-line; */
+
+  @media (max-width: 550px) {
+    width: 100%;
+  }
 `
 
 export const ReviewButton = styled(Button)`
@@ -349,7 +355,9 @@ export const ReviewButton = styled(Button)`
   height: 50px;
   width: 220px;
   font-size: 16px;
-  /* grid-column-start: second-line;
-  grid-column-end: third-line; */
   font-weight: 100;
+
+  @media (max-width: 550px) {
+    width: 100%;
+  }
 `
