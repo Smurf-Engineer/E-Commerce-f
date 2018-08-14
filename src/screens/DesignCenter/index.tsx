@@ -59,7 +59,8 @@ import {
   ImageFile,
   DesignSaved,
   CanvasResized,
-  CanvasDragged
+  CanvasDragged,
+  CanvasRotated
 } from '../../types/common'
 import {
   getProductQuery,
@@ -133,6 +134,7 @@ interface Props extends RouteComponentProps<any> {
   uploadingFile: boolean
   searchClipParam: string
   savedDesign: SaveDesignType
+  user: object
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -196,6 +198,8 @@ interface Props extends RouteComponentProps<any> {
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResizedAction: (element: CanvasResized) => void
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
+  onCanvasElementRotatedAction: (element: CanvasRotated) => void
+  onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -425,6 +429,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       savedDesign,
       onCanvasElementResizedAction,
       onCanvasElementDraggedAction,
+      onCanvasElementRotatedAction,
+      onCanvasElementTextChangedAction,
       user
     } = this.props
 
@@ -609,6 +615,8 @@ export class DesignCenter extends React.Component<Props, {}> {
               onUnmountTab={setCanvasJsonAction}
               onCanvasElementResized={onCanvasElementResizedAction}
               onCanvasElementDragged={onCanvasElementDraggedAction}
+              onCanvasElementRotated={onCanvasElementRotatedAction}
+              onCanvasElementTextChanged={onCanvasElementTextChangedAction}
             />
             <PreviewTab
               {...{
