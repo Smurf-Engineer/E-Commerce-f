@@ -94,10 +94,15 @@ export const Description = styled.div`
   }
 `
 
+interface InfoProps {
+  customizable: boolean
+}
+
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: ${({ customizable }: InfoProps) =>
+    customizable ? 'space-between' : 'flex-end'};
   user-select: none;
 
   @media (min-width: 320px) and (max-width: 425px) {
@@ -113,7 +118,9 @@ export const Label = styled.div`
   user-select: none;
 `
 export const ImgIcon = styled.img`
+  height: 15px;
   margin-right: 5px;
+  width: 15px;
 `
 export const Price = styled.div`
   user-select: none;

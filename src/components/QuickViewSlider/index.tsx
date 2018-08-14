@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
+import get from 'lodash/get'
 import { ImageType, CartItemDetail, Product } from '../../types/common'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
@@ -49,7 +50,11 @@ class QuickViewSlider extends React.Component<Props, State> {
     const { index } = this.state
 
     // TODO: filter by gender
-    const { front, right, left, back } = productImages[0]
+    const front = get(productImages[0], 'front', '')
+    const right = get(productImages[0], 'right', '')
+    const back = get(productImages[0], 'back', '')
+    const left = get(productImages[0], 'left', '')
+    // const { front, right, left, back } = productImages[0] || (new ImageType)
 
     const customizeButton = (
       <StyledButton onClick={gotoCustomize}>
