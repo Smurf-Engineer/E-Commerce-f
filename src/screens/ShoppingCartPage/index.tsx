@@ -106,7 +106,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     history.push('/product-catalogue')
   }
 
-  handleCheckout = (proDesign: boolean = false) => () => {
+  handleCheckout = (proDesign = false) => () => {
     const { history, cart } = this.props
     const userLogged = !!localStorage.getItem('user')
     if (!userLogged) {

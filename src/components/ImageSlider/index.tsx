@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
+import get from 'lodash/get'
 import {
   Container,
   SwipeContainer,
@@ -11,6 +12,7 @@ import {
   ThumbnailImg,
   SelectedImage,
   Arrows,
+  ArrowContainer,
   ArrowLeft,
   ArrowRight,
   SwipeImg
@@ -27,6 +29,7 @@ interface Props {
   threeDmodel?: React.ReactNode
   customProduct?: boolean
   customImage?: string
+  squareArrows?: boolean
 }
 
 interface StateProps {
@@ -42,12 +45,12 @@ class ImageSlider extends React.Component<Props, StateProps> {
   componentDidMount() {
     const { images, moreImages } = this.props
 
-    const ThumbnailsArray = [
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const front = get(images, 'front', '')
+    const right = get(images, 'right', '')
+    const back = get(images, 'back', '')
+    const left = get(images, 'left', '')
+
+    const ThumbnailsArray = [front, right, back, left]
 
     if (moreImages) {
       for (const img of moreImages) {
@@ -70,17 +73,18 @@ class ImageSlider extends React.Component<Props, StateProps> {
       threeDmodel,
       customProduct,
       customImage,
-      moreImages
+      moreImages,
+      squareArrows
     } = this.props
     const { index } = this.state
 
+    const front = get(images, 'front', '')
+    const right = get(images, 'right', '')
+    const back = get(images, 'back', '')
+    const left = get(images, 'left', '')
+
     // TODO: Change this code when client provides the images
-    const ThumbnailsArray = [
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const ThumbnailsArray = [front, right, back, left]
 
     if (moreImages) {
       for (const img of moreImages) {
@@ -91,13 +95,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
       }
     }
 
-    const ThumbnailsArrayWith3D = [
-      customImage,
-      images.front,
-      images.right,
-      images.back,
-      images.left
-    ]
+    const ThumbnailsArrayWith3D = [customImage, front, right, back, left]
     // ########
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
@@ -146,8 +144,18 @@ class ImageSlider extends React.Component<Props, StateProps> {
         <SwipeContainer>
           {index === 0 && customProduct ? threeDmodel : swipeViews}
           <Arrows>
-            <ArrowLeft src={PreviousArrow} onClick={this.handlePreviousPage} />
-            <ArrowRight src={NextArrow} onClick={this.handleNextPage} />
+            <ArrowContainer
+              squareArrows={!!squareArrows}
+              onClick={this.handlePreviousPage}
+            >
+              <ArrowLeft src={PreviousArrow} />
+            </ArrowContainer>
+            <ArrowContainer
+              squareArrows={!!squareArrows}
+              onClick={this.handleNextPage}
+            >
+              <ArrowRight src={NextArrow} />
+            </ArrowContainer>
           </Arrows>
         </SwipeContainer>
         <ImageThumbnails>
