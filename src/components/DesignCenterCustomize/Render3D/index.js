@@ -829,10 +829,7 @@ class Render3D extends PureComponent {
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
-          const designBase64 = this.renderer.domElement.toDataURL(
-            'image/webp',
-            0.5
-          )
+          const designBase64 = this.renderer.domElement.toDataURL('image/png')
 
           const canvasJson = JSON.stringify(this.canvasTexture)
           const saveDesign = {
