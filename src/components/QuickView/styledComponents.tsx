@@ -110,6 +110,13 @@ export const FullDetails = styled.div`
     cursor: pointer;
   }
 `
+export const DetailsList = styled.ul`
+  padding: 10px 0px 0px 20px;
+`
+
+export const DetailsListItem = styled.li`
+  margin-bottom: 15px;
+`
 export const StyledDivider = styled(Divider)`
   margin: 10px 0;
   border-bottom: 1px solid #bebebe;

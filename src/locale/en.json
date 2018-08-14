@@ -1109,6 +1109,13 @@
   "components.UploadTab.recommendationMessage":
     "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.",
   "components.Render3D.sizeMessage": "Aprox image size",
+  "components.QuickView.intendedUseLabel": "INTENDED USE",
+  "components.QuickView.descriptionLabel": "Description",
+  "components.QuickView.detailsLabel": "Details",
+  "components.QuickView.specsLabel": "Specs",
+  "components.QuickView.temperaturesLabel": "TEMPERATURE RANGE",
+  "components.QuickView.materialsLabel": "MATERIALS",
+  "components.QuickView.fullDetails": "Full Details",
   "components.QuickViewSlider.addToCart": "ADD TO CART",
   "components.QuickViewSlider.customize": "CUSTOMIZE",
   "screens.ShoppingCartPage.tittle": "My cart",
