@@ -867,3 +867,9 @@ export type CanvasDragged = {
   left: number
   top: number
 }
+
+export type CanvasRotated = {
+  id: string
+  oldRotation?: number[]
+  newRotation: number[]
+}

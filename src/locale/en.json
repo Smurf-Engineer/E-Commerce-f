@@ -1114,6 +1114,14 @@
   "components.RelatedProducts.customize": "CUSTOMIZE",
   "components.RelatedProducts.customizableLabel": "Customizable",
 
+  "components.QuickView.intendedUseLabel": "INTENDED USE",
+  "components.QuickView.descriptionLabel": "Description",
+  "components.QuickView.detailsLabel": "Details",
+  "components.QuickView.specsLabel": "Specs",
+  "components.QuickView.temperaturesLabel": "TEMPERATURE RANGE",
+  "components.QuickView.materialsLabel": "MATERIALS",
+  "components.QuickView.fullDetails": "Full Details",
+
   "components.QuickViewSlider.addToCart": "ADD TO CART",
   "components.QuickViewSlider.customize": "CUSTOMIZE"
 }
