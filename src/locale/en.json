@@ -240,6 +240,7 @@
   "components.TeamStoreItem.shareButtonLabel": "Share",
   "components.MyAddresses.titleDeleteModal": "Are you sure?",
   "components.MyAddresses.messageDeleteModal": "This will permanently delete this address",
+  "components.MyAddresses.empty": "There are no addresses on your account",
   "screen.Teamstores.shareModalTitle": "SHARE YOUR TEAMSTORE!",
   "screen.Teamstores.errorMessage": "Something wrong happened. Please try again!",
   "components.OrderData.shippingAddress": "Shipping Address",
@@ -608,8 +609,11 @@
 
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
 
+  "components.MyCardsList.emptyMessage": "There are no saved credit cards",
   "components.MyLocker.titleError": "Oops!",
+  "components.MyLocker.message": "These are the designs that you have created and saved.",
   "components.MyLocker.messageError": "Something went wrong",
+  "components.MyLocker.messageEmpty": "Your Locker is empty. Go to the design app and start an awesome design!",
   "components.MyLocker.deleteDesign": "Delete",
   "components.MyLocker.titleDeleteModal": "Are you sure?",
   "components.MyLocker.messageDeleteModal": "\"{designName}\" will be deleted from your locker",
