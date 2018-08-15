@@ -125,6 +125,7 @@ export interface Product {
   bibBrace?: ExtraFile
   weight: number
   relatedProducts: Product[]
+  isCustom?: boolean
 }
 
 export type DesignType = {

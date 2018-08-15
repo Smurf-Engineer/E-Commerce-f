@@ -675,6 +675,7 @@
   "components.TextTab.selectOutline": "Select Outline",
   "components.TextTab.addEffect": "Add an Effect",
   "components.TextTab.enterTextPlaceholder": "Enter Text",
+  "components.TextTab.applyButton": "Apply",
   "components.seAllButton.seeAll": "See All",
   "components.seAllButton.seeAllFilters": "See All Filters",
 

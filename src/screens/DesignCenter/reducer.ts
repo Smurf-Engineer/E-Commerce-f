@@ -57,7 +57,8 @@ import {
   CanvasElements,
   WHITE,
   BLACK,
-  AccessoryColors
+  AccessoryColors,
+  ElementsToApplyScale
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 
@@ -697,16 +698,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const redoChanges = state.get('redoChanges')
       const lastStep = { type: Changes.Resize, state: { ...element } }
 
-      if (element.elementType === CanvasElements.Image) {
+      if (ElementsToApplyScale.includes(element.elementType)) {
         const { id, scaleY, scaleX } = element
         const canvas = state.get('canvas')
         const updatedCanvas = canvas.updateIn(
-          [CanvasElements.Image, id],
-          (image: any) => {
-            const updatedImage = Object.assign({ scaleX, scaleY }, image)
-            updatedImage.scaleX = scaleX
-            updatedImage.scaleY = scaleY
-            return updatedImage
+          [element.elementType, id],
+          (canvasEl: any) => {
+            const updatedCanvasEl = Object.assign({ scaleX, scaleY }, canvasEl)
+            updatedCanvasEl.scaleX = scaleX
+            updatedCanvasEl.scaleY = scaleY
+            return updatedCanvasEl
           }
         )
         return state.merge({
