@@ -13,6 +13,7 @@ export const getProductQuery = gql`
       mtl
       label
       bumpMap: bump_map
+      isCustom: design_center
       flatlock
       binding {
         white

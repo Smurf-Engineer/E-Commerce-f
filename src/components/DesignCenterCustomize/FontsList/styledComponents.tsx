@@ -16,7 +16,7 @@ interface TextProps {
 export const Text = styled.div`
   color: #5f6062;
   font-family: ${({ font }: TextProps) => font};
-  font-size: 16px;
+  font-size: 30px;
   letter-spacing: 0.11px;
   line-height: 23px;
 `
@@ -25,6 +25,7 @@ export const Font = styled.div`
   color: #5f6062;
   font-family: Avenir Next;
   font-size: 16px;
+  padding-top: 4px;
   letter-spacing: 0.11px;
   line-height: 23px;
 `
