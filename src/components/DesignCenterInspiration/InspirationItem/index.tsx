@@ -8,13 +8,18 @@ import { Inspiration } from '../../../types/common'
 interface Props {
   inspiration: Inspiration
   setColors: (colors: string[]) => void
+  hideBottomSheet: () => void
 }
 
 const InspirationItem = ({
   inspiration: { name, image, colors },
-  setColors
+  setColors,
+  hideBottomSheet
 }: Props) => {
-  const onInspirationClicked = () => setColors([...colors].reverse())
+  const onInspirationClicked = () => {
+    hideBottomSheet()
+    setColors([...colors].reverse())
+  }
   return (
     <Container onClick={onInspirationClicked}>
       <Image src={image} />

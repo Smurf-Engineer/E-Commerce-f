@@ -725,6 +725,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <DesignCenterInspiration
                   styleId={style.id}
                   {...{ setPaletteAction, formatMessage }}
+                  hideBottomSheet={this.toggleBottomSheet}
                   onPressSeeAll={() => {}}
                   onPressCustomize={() => {}}
                   onPressQuickView={() => {}}

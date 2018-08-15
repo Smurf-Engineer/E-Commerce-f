@@ -21,15 +21,17 @@ interface Props {
   category: Filter
   styleId?: number
   setPaletteAction: (colors: string[]) => void
+  hideBottomSheet: () => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 export const DesignCenterInspiration = ({
   data,
   setPaletteAction,
+  hideBottomSheet,
   formatMessage
 }: Props) => {
-  const inspirations = data.inspirations || []
+  const { inspirations = [] } = data
 
   if (!inspirations.length) {
     return (
@@ -43,7 +45,7 @@ export const DesignCenterInspiration = ({
     return (
       <InspirationItem
         key={index}
-        {...{ inspiration }}
+        {...{ inspiration, hideBottomSheet }}
         setColors={setPaletteAction}
       />
     )
