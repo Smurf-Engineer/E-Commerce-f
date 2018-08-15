@@ -144,6 +144,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designId = queryParams.id
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
+    const designCode = get(design, 'code', '')
     const svgUrl = get(design, 'svg', '')
     const product = get(design, 'product', null)
 
@@ -374,6 +375,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <TitleSubtitleContainer>
                     <Title>{designName}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+                    {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
                   <EditDesignButton onClick={this.gotToEditDesign(designId)}>
                     {formatMessage(messages.editDesign)}
