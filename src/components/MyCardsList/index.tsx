@@ -5,6 +5,8 @@ import * as React from 'react'
 import { Container, CardsList } from './styledComponents'
 import { CreditCardData, StripeCardData } from '../../types/common'
 import MyCard from '../MyCard'
+import EmptyContainer from '../EmptyContainer'
+import messages from './messages'
 
 interface Props {
   items: CreditCardData[]
@@ -35,7 +37,7 @@ class MyCardsList extends React.Component<Props, {}> {
       selectCardToPayAction,
       selectedCard
     } = this.props
-    const cardsList = items
+    const cardsList = !!items.length
       ? items.map((cardItem, key) => {
           const {
             last4,
@@ -72,7 +74,7 @@ class MyCardsList extends React.Component<Props, {}> {
             />
           )
         })
-      : null
+      : <EmptyContainer message={formatMessage(messages.emptyMessage)} />
     return (
       <Container>
         <CardsList>{cardsList}</CardsList>

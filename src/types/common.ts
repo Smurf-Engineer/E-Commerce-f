@@ -890,3 +890,9 @@ export type Responsive = {
   phone: boolean
   tablet: boolean
 }
+
+export interface Inspiration {
+  name: string
+  image: string
+  colors: string[]
+}

@@ -20,12 +20,13 @@ import {
   AddAddressBtn,
   AddressesList,
   PaginationRow,
-  Message,
   DeleteConfirmMessage
 } from './styledComponents'
 import MyAddress from '../MyAddress'
 import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
+import EmptyContainer from '../EmptyContainer'
+
 import { QueryProps, AddressType } from '../../types/common'
 
 interface Data extends QueryProps {
@@ -173,10 +174,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
     const renderView = !!addresses.length ? (
       addressesList
     ) : (
-      <Container>
-        <Message>{formatMessage(messages.emptyMessage)}</Message>
-      </Container>
-    )
+        <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+      )
 
     return (
       <Container {...{ listForMyAccount }}>

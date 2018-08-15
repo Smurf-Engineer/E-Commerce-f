@@ -98,3 +98,5 @@ export enum AccessoryColors {
   Bib = 'bibColor',
   Stitching = 'stitchingColor'
 }
+
+export const ElementsToApplyScale = [CanvasElements.Image, CanvasElements.Path]
