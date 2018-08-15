@@ -115,9 +115,11 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
 
   createUserObject = (data: {}) => {
     const userData = {
+      id: get(data, 'user.shortId', ''),
       token: get(data, 'token', ''),
       name: get(data, 'user.name', ''),
-      lastName: get(data, 'user.lastName')
+      lastName: get(data, 'user.lastName'),
+      email: get(data, 'user.email')
     }
 
     return userData
