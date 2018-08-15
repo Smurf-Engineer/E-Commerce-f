@@ -102,7 +102,7 @@ declare module 'rc-drawer' {
   export default Drawer
 }
 
-declare module 'react-swipeable-bottom-sheet' {
+declare module 'react-swipeable-clickeable-bottom-sheet' {
   interface Props {
     defaultOpen?: boolean
     fullScreen?: boolean
@@ -115,6 +115,7 @@ declare module 'react-swipeable-bottom-sheet' {
     topShadow?: boolean
     open?: boolean
     onChange?: () => void
+    overlayClicked?: (evt: any) => void
   }
 
   class SwipeableBottomSheet extends React.Component<Props, any> {}

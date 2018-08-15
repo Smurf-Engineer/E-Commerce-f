@@ -965,5 +965,6 @@
   "screens.ShoppingCartPage.optionalLabel": "Optional",
   "screens.ShoppingCartPage.pleaseReadLabel": "PLEASE READ",
   "screens.ShoppingCartPage.reviewMyOrderLabel": "REVIEW MY ORDER",
-  "screens.ShoppingCartPage.dontReview": "Continue without review"
+  "screens.ShoppingCartPage.dontReview": "Continue without review",
+  "components.DesignCenterInspiration.emptyMessage": "Seems like there are no inspiration color variations, yet."
 }

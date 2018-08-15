@@ -89,7 +89,7 @@
     "react-slick": "^0.18.1",
     "react-star-ratings": "^2.2.0",
     "react-stripe-elements": "^1.6.0",
-    "react-swipeable-bottom-sheet": "^1.1.1",
+    "react-swipeable-clickeable-bottom-sheet": "^1.1.1",
     "react-swipeable-views": "^0.12.12",
     "react-twitter-widgets": "^1.7.1",
     "recompose": "^0.26.0",
