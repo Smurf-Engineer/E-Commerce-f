@@ -26,6 +26,7 @@ import {
   LoadingContainer,
   TitleError,
   MessageError,
+  MessageText,
   DeleteConfirmMessage
 } from './styledComponents'
 import {
@@ -175,37 +176,32 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       deleteModal: { modalLoading, openDeleteModal, designName }
     } = this.props
 
+    let alternativeContent = null
     if (loading) {
-      return (
-        <LoadingContainer>
+      alternativeContent =
+        (<LoadingContainer>
           <Spin />
-        </LoadingContainer>
-      )
-    }
-
-    if (error) {
-      return (
-        <LoadingContainer>
+        </LoadingContainer>)
+    } else if (error) {
+      alternativeContent =
+        (<LoadingContainer>
           <TitleError>{formatMessage(messages.titleError)}</TitleError>
           <MessageError>{formatMessage(messages.messageError)}</MessageError>
-        </LoadingContainer>
-      )
-    }
-
-    if (!designs.length) {
-      return (
-        <EmptyContainer message={formatMessage(messages.messageEmpty)} />
-      )
+        </LoadingContainer>)
+    } else if (!designs.length) {
+      alternativeContent =
+        (<EmptyContainer message={formatMessage(messages.messageEmpty)} />)
     }
 
     let withoutPadding = true
-
     if (typeof window !== 'undefined') {
       withoutPadding = !window.matchMedia('(max-width: 768px)').matches
     }
 
     return (
       <Container>
+        <MessageText>{formatMessage(messages.message)}</MessageText>
+        {alternativeContent}
         <PaginationRow>
           <ProductList
             {...{ formatMessage, history, withoutPadding }}

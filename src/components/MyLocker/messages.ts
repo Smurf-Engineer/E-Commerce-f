@@ -5,6 +5,10 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
+  message: {
+    id: 'components.MyLocker.message',
+    defaultMessage: 'These are the designs that you have created and saved.'
+  },
   titleError: {
     id: 'components.MyLocker.titleError',
     defaultMessage: 'Oops!'
