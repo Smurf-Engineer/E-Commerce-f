@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.MyLocker.messageError',
     defaultMessage: 'Something went wrong'
   },
+  messageEmpty: {
+    id: 'components.MyLocker.messageEmpty',
+    defaultMessage: 'Your Locker is empty. Go to the design app and start an awesome design!'
+  },
   deleteDesign: {
     id: 'components.MyLocker.deleteDesign',
     defaultMessage: 'Delete'

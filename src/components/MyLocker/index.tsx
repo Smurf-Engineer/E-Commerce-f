@@ -25,7 +25,9 @@ import {
   LoadingContainer,
   TitleError,
   MessageError,
-  DeleteConfirmMessage
+  DeleteConfirmMessage,
+  EmptyContainer,
+  EmptyMessage
 } from './styledComponents'
 import {
   DesignResultType,
@@ -188,6 +190,14 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           <TitleError>{formatMessage(messages.titleError)}</TitleError>
           <MessageError>{formatMessage(messages.messageError)}</MessageError>
         </LoadingContainer>
+      )
+    }
+
+    if (!designs.length) {
+      return (
+        <EmptyContainer>
+          <EmptyMessage>{formatMessage(messages.messageEmpty)}</EmptyMessage>
+        </EmptyContainer>
       )
     }
 
