@@ -9,7 +9,7 @@ import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
-import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
+import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
@@ -210,7 +210,7 @@ interface Props extends RouteComponentProps<any> {
 
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
-    open: false
+    openBottomSheet: false
   }
 
   componentWillUnmount() {
@@ -242,10 +242,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
   }
 
-  openBottomSheet = (open: boolean) => this.setState({ open })
-
   toggleBottomSheet = (evt: React.MouseEvent<EventTarget>) => {
-    this.openBottomSheet(!this.state.open)
+    const open = !this.state.openBottomSheet
+    this.setState({ openBottomSheet: open })
   }
 
   handleAfterSaveDesign = (id: string, svgUrl: string, design: DesignSaved) => {
@@ -455,6 +454,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       responsive,
       onReApplyImageElementAction
     } = this.props
+
+    const { openBottomSheet } = this.state
 
     if (!!responsive && responsive.phone) {
       return (
@@ -713,12 +714,18 @@ export class DesignCenter extends React.Component<Props, {}> {
           />
           {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
-              <SwipeableBottomSheet overflowHeight={64} open={this.state.open}>
+              <SwipeableBottomSheet
+                overflowHeight={64}
+                open={openBottomSheet}
+                overlayClicked={this.toggleBottomSheet}
+              >
                 <StyledTitle onClick={this.toggleBottomSheet}>
                   <FormattedMessage {...messages.inspirationTtitle} />
                 </StyledTitle>
                 <DesignCenterInspiration
-                  {...{ productId }}
+                  styleId={style.id}
+                  {...{ setPaletteAction, formatMessage }}
+                  hideBottomSheet={this.toggleBottomSheet}
                   onPressSeeAll={() => {}}
                   onPressCustomize={() => {}}
                   onPressQuickView={() => {}}

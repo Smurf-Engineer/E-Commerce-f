@@ -102,7 +102,7 @@ declare module 'rc-drawer' {
   export default Drawer
 }
 
-declare module 'react-swipeable-bottom-sheet' {
+declare module 'react-swipeable-clickeable-bottom-sheet' {
   interface Props {
     defaultOpen?: boolean
     fullScreen?: boolean
@@ -115,6 +115,7 @@ declare module 'react-swipeable-bottom-sheet' {
     topShadow?: boolean
     open?: boolean
     onChange?: () => void
+    overlayClicked?: (evt: any) => void
   }
 
   class SwipeableBottomSheet extends React.Component<Props, any> {}
@@ -137,4 +138,18 @@ declare module 'react-paypal-express-checkout-authorize' {
 
   class PaypalExpressBtn extends React.Component<Props, any> {}
   export default PaypalExpressBtn
+}
+
+declare module 'react-intercom' {
+  interface Props {
+    appID: string
+    user_id?: string
+    email?: string
+    name?: string
+  }
+
+  class Intercom extends React.Component<Props, any> {}
+  export function IntercomAPI(method: string): void
+
+  export default Intercom
 }

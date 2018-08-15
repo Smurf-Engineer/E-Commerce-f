@@ -6,11 +6,10 @@ import messages from './messages'
 import {
   Container,
   WrapperPalette,
-  EmptyContainer,
-  EmptyMessage
 } from './styledComponents'
 import PaletteCard from '../../PaletteCard'
 import { Palette } from '../../../types/common'
+import EmptyContainer from '../../EmptyContainer'
 
 interface Props {
   palettes: Palette[]
@@ -30,9 +29,7 @@ const PalettesList = ({ palettes, formatMessage, onClickDelete }: Props) => {
   ))
   if (!palettes.length) {
     return (
-      <EmptyContainer>
-        <EmptyMessage>{formatMessage(messages.emptyPalettes)}</EmptyMessage>
-      </EmptyContainer>
+      <EmptyContainer message={formatMessage(messages.emptyPalettes)} />
     )
   }
   return <Container>{list}</Container>

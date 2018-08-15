@@ -18,23 +18,6 @@ export const Container = styled.div`
   }
 `
 
-export const EmptyContainer = styled.div`
-  display: flex;
-  height: 25vh;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-`
-
-export const EmptyMessage = styled.div`
-  color: #bebebe;
-  font-family: 'Avenir Next';
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  line-height: 21px;
-  text-align: center;
-`
-
 export const LoadingContainer = styled.div`
   display: flex;
   flex: 1;
