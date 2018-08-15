@@ -5,22 +5,24 @@ import styled from 'styled-components'
 import icon from 'antd/lib/icon'
 
 export const Container = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
+  font-family: 'Avenir Next';
 `
 
 export const Text = styled.div`
   color: #5f6062;
-  font-size: 14px;
   cursor: pointer;
+  font-family: 'Avenir Next';
+  font-size: 14px;
 
   @media (max-width: 991px) {
+    align-items: center;
     color: #5f6062;
+    display: flex;
     font-weight: 600;
     height: 40px;
     margin: 2px 0;
-    display: flex;
-    align-items: center;
   }
 `
 
@@ -32,6 +34,7 @@ export const Icon = styled(icon)`
 `
 
 export const menuStyle = {
-  marginTop: 15,
-  borderRadius: 0
+  borderRadius: 0,
+  fontFamily: 'Avenir Next',
+  marginTop: 15
 }

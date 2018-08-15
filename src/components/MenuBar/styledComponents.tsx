@@ -25,14 +25,15 @@ export const TopRow = styled.div`
 
 export const TopText = styled.div`
   color: #5f6062;
-  font-size: 14px;
   cursor: pointer;
+  font-family: 'Avenir Next';
+  font-size: 14px;
 
   @media (max-width: 991px) {
+    align-items: center;
+    display: flex;
     height: 40px;
     margin: 2px 0;
-    display: flex;
-    align-items: center;
   }
 `
 

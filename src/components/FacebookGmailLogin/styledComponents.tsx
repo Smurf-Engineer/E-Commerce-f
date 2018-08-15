@@ -14,12 +14,13 @@ export const Text = styled.div`
 
 export const FacebookButtonWrapper = styled.div`
   .kep-login-facebook {
-    width: 100%;
     background-color: #395ca9;
     color: #fff;
+    font-family: 'Avenir Next';
+    font-size: inherit;
     padding: 15px 0;
     text-transform: uppercase;
-    font-size: inherit;
+    width: 100%;
   }
 `
 

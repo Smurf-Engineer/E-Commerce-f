@@ -24,8 +24,9 @@ export const LoginLabel = styled.div`
 `
 export const FormContainer = styled.div``
 export const StyledInput = styled(Input)`
-  margin-bottom: 20px;
   border-radius: 0px;
+  font-family: 'Avenir Next';
+  margin-bottom: 20px;
 `
 
 export const RememberMeRow = styled.div`
@@ -49,12 +50,13 @@ export const JoinNowLabel = styled.span`
   }
 `
 export const StyledLoginButton = styled(Button)`
-  border-radius: 0px;
-  width: 100%;
-  height: 50px;
-  border-color: #e61737;
   background-color: #fff;
+  border-color: #e61737;
+  border-radius: 0px;
+  font-family: 'Avenir Next';
+  height: 50px;
   margin-bottom: 10px;
+  width: 100%;
 `
 
 export const NotAMemberLabel = styled.div`
