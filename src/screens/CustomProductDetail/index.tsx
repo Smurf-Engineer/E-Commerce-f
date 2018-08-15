@@ -57,7 +57,7 @@ import {
   CartItemDetail,
   Product
 } from '../../types/common'
-import ThreeDRender from '../TeamstoreProductPage/Product3D'
+import Render3D from '../../components/Render3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
@@ -144,7 +144,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designId = queryParams.id
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
-    const colors = get(design, 'colors')
     const svgUrl = get(design, 'svg', '')
     const product = get(design, 'product', null)
 
@@ -364,7 +363,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <ImagePreview>
                 <ImagesSlider
                   onLoadModel={setLoadingModel}
-                  threeDmodel={<ThreeDRender {...{ colors, svgUrl }} />}
+                  threeDmodel={<Render3D svg={svgUrl} {...{ product }} />}
                   customProduct={true}
                   customImage={designImage}
                   images={thumbnails}

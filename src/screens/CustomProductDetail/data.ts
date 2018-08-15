@@ -75,6 +75,23 @@ export const GetDesignByIdQuery = gql`
           total: total_reviews
           averageScore: average_score
         }
+        obj
+        mtl
+        label
+        bumpMap: bump_map
+        flatlock
+        binding {
+          white
+          black
+        }
+        zipper {
+          white
+          black
+        }
+        bibBrace {
+          white
+          black
+        }
       }
       colors {
         id

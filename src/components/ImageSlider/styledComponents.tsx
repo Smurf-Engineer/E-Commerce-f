@@ -64,12 +64,16 @@ export const SwipeContainer = styled.div`
   position: relative;
   width: 100%;
 
+  div div:first-child {
+    height: 536px;
+    width: 100%;
+  }
+
   @media (min-width: 320px) and (max-width: 1024px) {
     width: 100%;
     height: 536px;
   }
 `
-
 export const SwipeImg = styled.img`
   width: 100%;
 `
@@ -78,13 +82,14 @@ export const ThreeDThumbnailContair = styled.div`
   width: 660px;
 `
 
-export const Arrows = styled.div`
+export const Arrows = styled.section`
   align-self: center;
   display: flex;
   justify-content: space-between;
   padding: 0;
   position: absolute;
   width: 98%;
+  height: 44px;
 
   @media (min-width: 320px) and (max-width: 425px) {
     display: none;
