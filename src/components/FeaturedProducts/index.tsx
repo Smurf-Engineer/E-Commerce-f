@@ -121,6 +121,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
             onPressQuickView={openQuickView}
             images={images[0]}
             customizableLabel={formatMessage(messages.customizable)}
+            disableSlider={true}
             {...{
               currentCurrency,
               id,

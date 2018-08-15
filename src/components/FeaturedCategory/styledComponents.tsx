@@ -8,9 +8,12 @@ export const Container = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 425px) {
     flex-direction: column;
-    padding: ;
+    /* -webkit-min-height: 850px; */
+  }
+  @media (min-width: 320px) and (max-width: 425px) and (-moz-images-in-menus: 0) {
+    min-height: 850px;
   }
 `
 
@@ -26,15 +29,19 @@ export const Text = styled.div`
   text-align: center;
 `
 export const StyledImg = styled.img`
-  height: 319px;
-  object-fit: contain;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
 
   &:hover {
     cursor: pointer;
   }
+`
 
-  @media (min-width: 320px) and (max-width: 480px) {
-    height: 100%;
+export const Category = styled.div`
+  width: 30%;
+
+  @media (min-width: 320px) and (max-width: 425px) {
     width: 100%;
     margin-top: 15px;
   }
