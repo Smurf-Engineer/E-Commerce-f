@@ -16,6 +16,13 @@
   dependencies:
     "@babel/types" "7.0.0-beta.38"
 
+"@babel/runtime@7.0.0-beta.42":
+  version "7.0.0-beta.42"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.42.tgz#352e40c92e0460d3e82f49bd7e79f6cda76f919f"
+  dependencies:
+    core-js "^2.5.3"
+    regenerator-runtime "^0.11.1"
+
 "@babel/runtime@^7.0.0-beta.35":
   version "7.0.0-beta.43"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.43.tgz#9c9936b8e5bf8635083fb7264420a6ffd68ecac9"
@@ -2069,9 +2076,13 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@2.x, classnames@^2.1.2, classnames@^2.2.0, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5, classnames@~2.2.0:
+classnames@2.x, classnames@^2.2.0, classnames@^2.2.1, classnames@^2.2.3, classnames@^2.2.4, classnames@^2.2.5, classnames@~2.2.0:
   version "2.2.5"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.5.tgz#fb3801d453467649ef3603c7d61a02bd129bde6d"
+
+classnames@^2.1.2:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
 cli-cursor@^2.1.0:
   version "2.1.0"
@@ -7583,6 +7594,14 @@ react-event-listener@^0.5.1:
     prop-types "^15.6.0"
     warning "^3.0.0"
 
+react-event-listener@^0.6.0:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.6.2.tgz#df405e9578be052b77a76e4c3914686637caecff"
+  dependencies:
+    "@babel/runtime" "7.0.0-beta.42"
+    prop-types "^15.6.0"
+    warning "^4.0.1"
+
 react-facebook-login@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.0.0.tgz#f2384dd36d197a9ce6decc2f3189bc9e4ccac57d"
@@ -7720,9 +7739,9 @@ react-stripe-elements@^1.6.0:
   dependencies:
     prop-types "^15.5.10"
 
-react-swipeable-bottom-sheet@^1.1.1:
+react-swipeable-clickeable-bottom-sheet@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/react-swipeable-bottom-sheet/-/react-swipeable-bottom-sheet-1.1.1.tgz#6448ee3c8cfa12277a743c1ab48182280dc9e7da"
+  resolved "https://registry.yarnpkg.com/react-swipeable-clickeable-bottom-sheet/-/react-swipeable-clickeable-bottom-sheet-1.1.1.tgz#098c2a3862b85179fb419ac4182bc4900d92f163"
   dependencies:
     classnames "^2.1.2"
     react-swipeable-views "^0.12.8"
@@ -7733,6 +7752,13 @@ react-swipeable-views-core@^0.12.11:
   dependencies:
     babel-runtime "^6.23.0"
     warning "^3.0.0"
+
+react-swipeable-views-core@^0.12.16:
+  version "0.12.16"
+  resolved "https://registry.yarnpkg.com/react-swipeable-views-core/-/react-swipeable-views-core-0.12.16.tgz#f7ded6feb154ade2ad5529f11db0c5caab613061"
+  dependencies:
+    "@babel/runtime" "7.0.0-beta.42"
+    warning "^4.0.1"
 
 react-swipeable-views-utils@^0.12.11:
   version "0.12.11"
@@ -7745,16 +7771,16 @@ react-swipeable-views-utils@^0.12.11:
     react-event-listener "^0.5.1"
     react-swipeable-views-core "^0.12.11"
 
-react-swipeable-views-utils@^0.12.13:
-  version "0.12.13"
-  resolved "https://registry.yarnpkg.com/react-swipeable-views-utils/-/react-swipeable-views-utils-0.12.13.tgz#fe102524180bf568f746e844c8d74b9cd3e7e0b8"
+react-swipeable-views-utils@^0.12.16:
+  version "0.12.16"
+  resolved "https://registry.yarnpkg.com/react-swipeable-views-utils/-/react-swipeable-views-utils-0.12.16.tgz#f64f0ab0efaa8717ccd1471c8b7293728833c0b2"
   dependencies:
-    babel-runtime "^6.23.0"
+    "@babel/runtime" "7.0.0-beta.42"
     fbjs "^0.8.4"
     keycode "^2.1.7"
     prop-types "^15.6.0"
-    react-event-listener "^0.5.1"
-    react-swipeable-views-core "^0.12.11"
+    react-event-listener "^0.6.0"
+    react-swipeable-views-core "^0.12.16"
 
 react-swipeable-views@^0.12.12:
   version "0.12.12"
@@ -7768,15 +7794,15 @@ react-swipeable-views@^0.12.12:
     warning "^3.0.0"
 
 react-swipeable-views@^0.12.8:
-  version "0.12.13"
-  resolved "https://registry.yarnpkg.com/react-swipeable-views/-/react-swipeable-views-0.12.13.tgz#247442dbe14922efe5ad6fe0297599c817600bf9"
+  version "0.12.16"
+  resolved "https://registry.yarnpkg.com/react-swipeable-views/-/react-swipeable-views-0.12.16.tgz#b1be94acbfd60bb3df55571dfc452b231e80db3b"
   dependencies:
-    babel-runtime "^6.23.0"
+    "@babel/runtime" "7.0.0-beta.42"
     dom-helpers "^3.2.1"
     prop-types "^15.5.4"
-    react-swipeable-views-core "^0.12.11"
-    react-swipeable-views-utils "^0.12.13"
-    warning "^3.0.0"
+    react-swipeable-views-core "^0.12.16"
+    react-swipeable-views-utils "^0.12.16"
+    warning "^4.0.1"
 
 react-twitter-widgets@^1.7.1:
   version "1.7.1"
@@ -9415,6 +9441,12 @@ warning@2.x:
 warning@^3.0.0, warning@~3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
+  dependencies:
+    loose-envify "^1.0.0"
+
+warning@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.1.tgz#66ce376b7fbfe8a887c22bdf0e7349d73d397745"
   dependencies:
     loose-envify "^1.0.0"
 

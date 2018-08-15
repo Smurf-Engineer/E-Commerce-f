@@ -9,7 +9,7 @@ import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
-import SwipeableBottomSheet from 'react-swipeable-bottom-sheet'
+import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
@@ -708,7 +708,11 @@ export class DesignCenter extends React.Component<Props, {}> {
           />
           {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
-              <SwipeableBottomSheet overflowHeight={64} open={openBottomSheet}>
+              <SwipeableBottomSheet
+                overflowHeight={64}
+                open={openBottomSheet}
+                overlayClicked={this.toggleBottomSheet}
+              >
                 <StyledTitle onClick={this.toggleBottomSheet}>
                   <FormattedMessage {...messages.inspirationTtitle} />
                 </StyledTitle>
