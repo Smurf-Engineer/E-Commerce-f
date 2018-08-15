@@ -109,6 +109,9 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         requestClose()
       }
     } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
       console.error(error)
     }
   }
