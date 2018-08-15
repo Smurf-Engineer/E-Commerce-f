@@ -57,6 +57,9 @@ export const UPLOAD_FILE_ACTION_SUCCESS = `${namespace}/UPLOAD_FILE_ACTION_SUCCE
 export const SET_SEARCH_CLIPARTPARAM = `${namespace}/SET_SEARCH_CLIPARTPARAM`
 export const CANVAS_ELEMENT_RESIZED_ACTION = `${namespace}/CANVAS_ELEMENT_RESIZED_ACTION`
 export const CANVAS_ELEMENT_DRAGGED_ACTION = `${namespace}/CANVAS_ELEMENT_DRAGGED_ACTION`
+export const CANVAS_ELEMENT_ROTATED_ACTION = `${namespace}/CANVAS_ELEMENT_ROTATED_ACTION`
+export const CANVAS_ELEMENT_TEXT_CHANGED = `${namespace}/CANVAS_ELEMENT_TEXT_CHANGED`
+export const REAPPLY_CANVAS_IMAGE_ACTION = `${namespace}/REAPPLY_CANVAS_IMAGE_ACTION`
 
 export enum DesignTabs {
   ThemeTab = 0,
@@ -77,7 +80,8 @@ export enum Changes {
   Resize = 'resize',
   Duplicate = 'duplicate',
   AccessoryColors = 'accessoryColor',
-  CanvasStyle = 'canvasStyle'
+  CanvasStyle = 'canvasStyle',
+  ChangeText = 'changeText'
 }
 
 export enum CanvasElements {
@@ -92,3 +96,5 @@ export enum AccessoryColors {
   Bib = 'bibColor',
   Stitching = 'stitchingColor'
 }
+
+export const ElementsToApplyScale = [CanvasElements.Image, CanvasElements.Path]

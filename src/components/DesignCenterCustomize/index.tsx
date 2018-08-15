@@ -21,7 +21,8 @@ import {
   ConfigCanvasObj,
   ImageFile,
   CanvasResized,
-  CanvasDragged
+  CanvasDragged,
+  CanvasRotated
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -100,6 +101,9 @@ interface Props {
   setSearchClipParamAction: (searchParam: string) => void
   onCanvasElementResized: (element: CanvasResized) => void
   onCanvasElementDragged: (element: CanvasDragged) => void
+  onCanvasElementRotated: (element: CanvasRotated) => void
+  onCanvasElementTextChanged: (oldText: string, newText: string) => void
+  onReApplyImageEl: (el: CanvasElement) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -168,6 +172,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       setSearchClipParamAction,
       onCanvasElementResized,
       onCanvasElementDragged,
+      onCanvasElementRotated,
+      onCanvasElementTextChanged,
+      onReApplyImageEl,
       designHasChanges,
       isUserAuthenticated
     } = this.props
@@ -263,6 +270,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               bibColor,
               onCanvasElementResized,
               onCanvasElementDragged,
+              onCanvasElementRotated,
+              onCanvasElementTextChanged,
+              onReApplyImageEl,
               designHasChanges,
               canvas,
               selectedElement

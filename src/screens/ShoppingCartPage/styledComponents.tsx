@@ -272,3 +272,92 @@ export const DeleteConfirmMessage = styled.div`
   letter-spacing: 0.2px;
   line-height: 22px;
 `
+
+export const OptionalLabel = styled.span`
+  color: #5f6062;
+  font-family: inherit;
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 0.25px;
+  line-height: 22px;
+  font-weight: normal;
+`
+
+export const ProReviewTitle = styled.div`
+  margin-top: 25px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 27px;
+`
+
+export const PleaseReadLabel = styled.div`
+  margin: 16px 0 0;
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+`
+
+export const ProDesignReviewContent = styled.div`
+  margin: 40px 0 55px;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+
+  .additional-charge-note {
+    color: #e61737;
+    font-style: italic;
+  }
+
+  ul,
+  ul > li {
+    list-style: none;
+    padding-left: 0;
+  }
+`
+
+export const ModalButtonsWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 25px;
+  grid-template-areas: '. review continue';
+
+  @media (max-width: 550px) {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'review' 'continue';
+  }
+`
+
+export const ContinueButton = styled(Button)`
+  font-family: Avenir Next;
+  grid-area: continue;
+  border-color: #e61737;
+  color: #e61737;
+  height: 50px;
+  width: 220px;
+  font-size: 16px;
+
+  @media (max-width: 550px) {
+    width: 100%;
+  }
+`
+
+export const ReviewButton = styled(Button)`
+  font-family: Avenir Next;
+  grid-area: review;
+  height: 50px;
+  width: 220px;
+  font-size: 16px;
+  font-weight: 100;
+
+  @media (max-width: 550px) {
+    width: 100%;
+  }
+`

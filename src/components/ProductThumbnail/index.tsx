@@ -174,7 +174,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
           <Footer>
             <Type>{type}</Type>
             <Description>{description}</Description>
-            <InfoContainer>
+            <InfoContainer customizable={!!customizable}>
               {customizable && (
                 <Label>
                   <ImgIcon src={colorWheelIcon} />
