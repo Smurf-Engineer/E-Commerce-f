@@ -10,12 +10,11 @@ import {
   Container,
   Header,
   Row,
-  Table,
-  EmptyMessage,
-  EmptyContainer
+  Table
 } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
+import EmptyContainer from '../../EmptyContainer'
 import { OrderHistory, sorts, QueryProps } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
@@ -61,9 +60,7 @@ const OrdersList = ({
 
   if (!orders.length) {
     return (
-      <EmptyContainer>
-        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
-      </EmptyContainer>
+      <EmptyContainer message={formatMessage(messages.emptyMessage)} />
     )
   }
 
