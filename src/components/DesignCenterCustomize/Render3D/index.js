@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
 import filter from 'lodash/filter'
+import unset from 'lodash/unset'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
@@ -310,7 +311,17 @@ class Render3D extends PureComponent {
           loadedTextures.branding.minFilter = THREE.LinearFilter
         }
         loadedTextures.bumpMap = this.textureLoader.load(bumpMap)
-        const reversedAreas = reverse(colors)
+        loadedTextures.bumpMap.minFilter = THREE.LinearFilter
+        /**
+         * I had to implement this because when we load one design
+         * the colors had a propert from apollo, that causes fail on
+         * the lodash reverse function.
+         */
+        const sanitizedColors = colors.map(({ color, image }) => ({
+          color,
+          image
+        }))
+        const reversedAreas = reverse(sanitizedColors)
         const images = []
         loadedTextures.colors = []
         reversedAreas.forEach(({ color, image }) => {
@@ -362,11 +373,21 @@ class Render3D extends PureComponent {
 
   render3DModel = async () => {
     /* Object and MTL load */
-    const { onLoadModel, currentStyle, design, product } = this.props
+    const {
+      onLoadModel,
+      currentStyle,
+      design,
+      product,
+      isEditing,
+      onSetEditConfig
+    } = this.props
     onLoadModel(true)
 
     const loadedTextures = await this.loadTextures(currentStyle, product)
-    // TODO: Get the OBJ and MTL from the design
+    if (isEditing) {
+      onSetEditConfig(loadedTextures.colors, {})
+    }
+
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)
@@ -463,19 +484,6 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set('#ffffff')
           }
-          // TODO: WIP
-          // const solarBibBraceIndex = findIndex(
-          //   children,
-          //   ({ name }) => name === SOLAR_BIB_BRACE
-          // )
-          // if (
-          //   solarBibBraceIndex >= 0 &&
-          //   !!object.children[solarBibBraceIndex].material.length
-          // ) {
-          //   object.children[solarBibBraceIndex].material.forEach(material =>
-          //     material.color.set('#ffffff')
-          //   )
-          // }
 
           areas.forEach(
             (map, index) =>

@@ -61,6 +61,8 @@ export const CANVAS_ELEMENT_ROTATED_ACTION = `${namespace}/CANVAS_ELEMENT_ROTATE
 export const CANVAS_ELEMENT_TEXT_CHANGED = `${namespace}/CANVAS_ELEMENT_TEXT_CHANGED`
 export const REAPPLY_CANVAS_IMAGE_ACTION = `${namespace}/REAPPLY_CANVAS_IMAGE_ACTION`
 
+export const SET_EDIT_DESIGN_CONFIG_ACTION = `${namespace}/SET_EDIT_DESIGN_CONFIG_ACTION`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,

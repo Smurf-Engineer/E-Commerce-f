@@ -15,7 +15,6 @@ import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
-import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -61,7 +60,8 @@ import {
   CanvasResized,
   CanvasDragged,
   CanvasRotated,
-  Responsive
+  Responsive,
+  AccessoriesColor
 } from '../../types/common'
 import {
   getProductQuery,
@@ -206,6 +206,10 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   formatMessage: (messageDescriptor: any) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
+  setEditConfigAction: (
+    colors: string[],
+    accessoriesColor: AccessoriesColor
+  ) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -453,7 +457,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementTextChangedAction,
       user,
       responsive,
-      onReApplyImageElementAction
+      onReApplyImageElementAction,
+      setEditConfigAction
     } = this.props
 
     if (!!responsive && responsive.phone) {
@@ -479,25 +484,27 @@ export class DesignCenter extends React.Component<Props, {}> {
 
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
-    const styleObject = get(dataDesign, 'designData.style')
 
     let designObject = design
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId }
     }
 
-    if (
-      (!!dataProduct &&
-        !!dataProduct.product &&
-        (!dataProduct.product.isCustom ||
-          !dataProduct.product.obj ||
-          !dataProduct.product.mtl)) ||
-      (!!dataDesign &&
-        !!dataDesign.designData &&
-        !!dataDesign.designData.product &&
-        !dataDesign.designData.product.obj &&
-        !dataDesign.designData.product.mtl)
-    ) {
+    const isRetailProductOrDoesNotHaveFiles =
+      !!dataProduct &&
+      !!dataProduct.product &&
+      (!dataProduct.product.isCustom ||
+        !dataProduct.product.obj ||
+        !dataProduct.product.mtl)
+
+    const designDoesNotHaveFiles =
+      !!dataDesign &&
+      !!dataDesign.designData &&
+      !!dataDesign.designData.product &&
+      !dataDesign.designData.product.obj &&
+      !dataDesign.designData.product.mtl
+
+    if (isRetailProductOrDoesNotHaveFiles || designDoesNotHaveFiles) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
@@ -509,14 +516,21 @@ export class DesignCenter extends React.Component<Props, {}> {
 
     let tabSelected = currentTab
     let loadingData = false
+    let isEditing = false
+    const productConfig = get(dataDesign, 'designData.product', product)
+    // const accessoriesColor = {}
     let currentStyle = style
-    if (dataDesign) {
+    if (dataDesign && dataDesign.designData) {
+      const { designData } = dataDesign
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
-      currentStyle = isEmpty(style) ? styleObject : style
+      const { colors: designColors = [], style: designStyle } = designData
+      currentStyle = { ...designStyle }
+      currentStyle.colors = designColors
+      isEditing = true
     }
 
-    const loadingView = loadingData && (
+    const loadingView = (
       <LoadingContainer>
         <Spin />
       </LoadingContainer>
@@ -584,79 +598,85 @@ export class DesignCenter extends React.Component<Props, {}> {
                 />
               )}
             </div>
-            <CustomizeTab
-              {...{
-                colorBlock,
-                colorBlockHovered,
-                colors,
-                loadingModel,
-                swipingView,
-                styleColors,
-                paletteName,
-                palettes,
-                text,
-                productName,
-                canvas,
-                selectedElement,
-                textFormat,
-                artFormat,
-                openPaletteModalAction,
-                myPaletteModals,
-                openResetDesignModal,
-                openResetDesignModalAction,
-                designName,
-                formatMessage,
-                customize3dMounted,
-                setCustomize3dMountedAction,
-                loadingData,
-                currentStyle,
-                undoChanges,
-                redoChanges,
-                product,
-                stitchingColor,
-                setStitchingColorAction,
-                bindingColor,
-                zipperColor,
-                bibColor,
-                images,
-                uploadingFile,
-                searchClipParam,
-                setSearchClipParamAction,
-                designHasChanges,
-                isUserAuthenticated
-              }}
-              onUploadFile={uploadFileAction}
-              onAccessoryColorSelected={setAccessoryColorAction}
-              currentTab={tabSelected}
-              design={designObject}
-              onUpdateText={setTextAction}
-              undoEnabled={undoChanges.length > 0}
-              redoEnabled={redoChanges.length > 0}
-              onSelectColorBlock={setColorBlockAction}
-              onHoverColorBlock={setHoverColorBlockAction}
-              onSelectColor={setColorAction}
-              onSelectPalette={setPaletteAction}
-              onChangePaletteName={setPaletteNameAction}
-              onSetPalettes={setPalettesAction}
-              onLoadModel={setLoadingModel}
-              onUndoAction={designUndoAction}
-              onRedoAction={designRedoAction}
-              onResetAction={designResetAction}
-              onClearAction={designClearAction}
-              onPressQuickView={this.handleOpenQuickView}
-              onOpenSaveDesign={openSaveDesignAction}
-              onApplyCanvasEl={setCanvasElement}
-              onSelectEl={setSelectedElement}
-              onRemoveEl={removeCanvasElement}
-              onSelectTextFormat={setTextFormatAction}
-              onSelectArtFormat={setArtFormatAction}
-              onUnmountTab={setCanvasJsonAction}
-              onCanvasElementResized={onCanvasElementResizedAction}
-              onCanvasElementDragged={onCanvasElementDraggedAction}
-              onCanvasElementRotated={onCanvasElementRotatedAction}
-              onCanvasElementTextChanged={onCanvasElementTextChangedAction}
-              onReApplyImageEl={onReApplyImageElementAction}
-            />
+            {loadingData ? (
+              loadingView
+            ) : (
+              <CustomizeTab
+                {...{
+                  colorBlock,
+                  colorBlockHovered,
+                  colors,
+                  loadingModel,
+                  swipingView,
+                  styleColors,
+                  paletteName,
+                  palettes,
+                  text,
+                  productName,
+                  canvas,
+                  selectedElement,
+                  textFormat,
+                  artFormat,
+                  openPaletteModalAction,
+                  myPaletteModals,
+                  openResetDesignModal,
+                  openResetDesignModalAction,
+                  designName,
+                  formatMessage,
+                  customize3dMounted,
+                  setCustomize3dMountedAction,
+                  loadingData,
+                  currentStyle,
+                  undoChanges,
+                  redoChanges,
+                  stitchingColor,
+                  setStitchingColorAction,
+                  bindingColor,
+                  zipperColor,
+                  bibColor,
+                  images,
+                  uploadingFile,
+                  searchClipParam,
+                  setSearchClipParamAction,
+                  designHasChanges,
+                  isUserAuthenticated,
+                  isEditing
+                }}
+                product={productConfig}
+                onUploadFile={uploadFileAction}
+                onAccessoryColorSelected={setAccessoryColorAction}
+                currentTab={tabSelected}
+                design={designObject}
+                onUpdateText={setTextAction}
+                undoEnabled={undoChanges.length > 0}
+                redoEnabled={redoChanges.length > 0}
+                onSelectColorBlock={setColorBlockAction}
+                onHoverColorBlock={setHoverColorBlockAction}
+                onSelectColor={setColorAction}
+                onSelectPalette={setPaletteAction}
+                onChangePaletteName={setPaletteNameAction}
+                onSetPalettes={setPalettesAction}
+                onLoadModel={setLoadingModel}
+                onUndoAction={designUndoAction}
+                onRedoAction={designRedoAction}
+                onResetAction={designResetAction}
+                onClearAction={designClearAction}
+                onPressQuickView={this.handleOpenQuickView}
+                onOpenSaveDesign={openSaveDesignAction}
+                onApplyCanvasEl={setCanvasElement}
+                onSelectEl={setSelectedElement}
+                onRemoveEl={removeCanvasElement}
+                onSelectTextFormat={setTextFormatAction}
+                onSelectArtFormat={setArtFormatAction}
+                onUnmountTab={setCanvasJsonAction}
+                onCanvasElementResized={onCanvasElementResizedAction}
+                onCanvasElementDragged={onCanvasElementDraggedAction}
+                onCanvasElementRotated={onCanvasElementRotatedAction}
+                onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+                onReApplyImageEl={onReApplyImageElementAction}
+                onSetEditConfig={setEditConfigAction}
+              />
+            )}
             <PreviewTab
               {...{
                 history,
@@ -726,7 +746,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
           ) : (
-            loadingView
+            <div />
           )}
         </Container>
         <Modal

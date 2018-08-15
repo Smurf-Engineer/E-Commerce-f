@@ -53,6 +53,7 @@ import {
   CANVAS_ELEMENT_ROTATED_ACTION,
   CANVAS_ELEMENT_TEXT_CHANGED,
   REAPPLY_CANVAS_IMAGE_ACTION,
+  SET_EDIT_DESIGN_CONFIG_ACTION,
   Changes,
   CanvasElements,
   WHITE,
@@ -786,6 +787,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingFile', action.isUploading)
     case SET_SEARCH_CLIPARTPARAM:
       return state.set('searchClipParam', action.param)
+    case SET_EDIT_DESIGN_CONFIG_ACTION:
+      return state.merge({
+        colors: action.colors,
+        styleColors: action.colors,
+        // stitchingColor: action.accessoriesColor.flatlockColor,
+        bindingColor: action.accessoriesColor.bindingColor,
+        zipperColor: action.accessoriesColor.zipperColor,
+        bibColor: action.accessoriesColor.bibColor
+      })
     default:
       return state
   }

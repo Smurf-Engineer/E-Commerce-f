@@ -136,9 +136,10 @@ export type DesignType = {
   shortId?: string
   visible?: boolean
   product: Product
+  colors: ColorBlock[]
   image: string
   createdAt: string
-  style?: Style
+  style: Style
 }
 
 export type SaveDesignType = {
@@ -785,6 +786,13 @@ export type StitchingColor = {
 
 export type AccesoryColor = 'black' | 'white'
 
+export type AccessoriesColor = {
+  flatlockColor: string
+  flatlockCode: string
+  bindingColor: string
+  bibBraceColor: string
+  zipperColor: string
+}
 export interface ClickParam {
   key: string
   keyPath: Array<string>
