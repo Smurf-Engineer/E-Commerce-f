@@ -19,15 +19,14 @@ import {
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
+import EmptyContainer from '../EmptyContainer'
 import {
   Container,
   PaginationRow,
   LoadingContainer,
   TitleError,
   MessageError,
-  DeleteConfirmMessage,
-  EmptyContainer,
-  EmptyMessage
+  DeleteConfirmMessage
 } from './styledComponents'
 import {
   DesignResultType,
@@ -195,9 +194,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
     if (!designs.length) {
       return (
-        <EmptyContainer>
-          <EmptyMessage>{formatMessage(messages.messageEmpty)}</EmptyMessage>
-        </EmptyContainer>
+        <EmptyContainer message={formatMessage(messages.messageEmpty)} />
       )
     }
 

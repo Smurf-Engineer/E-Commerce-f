@@ -3,10 +3,11 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { Container, EmptyMessage, EmptyContainer } from './styledComponents'
+import { Container, LoadingContainer } from './styledComponents'
 import { ImageFile } from '../../../types/common'
 import ImageItem from '../ImageItem'
 import Spin from '../../../../node_modules/antd/lib/spin'
+import EmptyContainer from '../../EmptyContainer'
 
 interface Props {
   images: ImageFile[]
@@ -23,16 +24,14 @@ const ImagesList = ({
 }: Props) => {
   if (loading) {
     return (
-      <EmptyContainer>
+      <LoadingContainer>
         <Spin />
-      </EmptyContainer>
+      </LoadingContainer>
     )
   }
   if (images && !images.length) {
     return (
-      <EmptyContainer>
-        <EmptyMessage>{formatMessage(messages.emptyImages)}</EmptyMessage>
-      </EmptyContainer>
+      <EmptyContainer message={formatMessage(messages.emptyImages)} />
     )
   }
   const list = images.map((image, index) => (

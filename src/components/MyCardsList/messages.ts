@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.MyCardsList.tittle',
-    defaultMessage: 'MyCardsList'
+  emptyMessage: {
+    id: 'components.MyCardsList.emptyMessage',
+    defaultMessage: 'There are no saved credit cards.'
   }
 })

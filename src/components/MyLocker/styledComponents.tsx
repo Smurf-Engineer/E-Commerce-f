@@ -60,19 +60,3 @@ export const DeleteConfirmMessage = styled.div`
   letter-spacing: 0.2px;
   line-height: 22px;
 `
-export const EmptyContainer = styled.div`
-  width: 100%;
-  height: 25vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-export const EmptyMessage = styled.div`
-  color: #bebebe;
-  font-family: 'Avenir Next';
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  line-height: 21px;
-  text-align: center;
-`

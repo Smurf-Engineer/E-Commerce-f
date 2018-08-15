@@ -33,23 +33,6 @@ export const VerticalDivider = styled.div`
   margin: 24px 0;
 `
 
-export const EmptyContainer = styled.div`
-  width: 100%;
-  height: 25vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
-
-export const EmptyMessage = styled.div`
-  color: #bebebe;
-  font-family: 'Avenir Next';
-  font-size: 14px;
-  letter-spacing: 0.1px;
-  line-height: 21px;
-  text-align: center;
-`
-
 export const ModalMessage = styled.div`
   color: #5f6062;
   font-family: 'Avenir Next';
