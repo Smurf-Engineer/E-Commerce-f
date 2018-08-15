@@ -489,8 +489,9 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (
       !!dataProduct &&
       !!dataProduct.product &&
-      !dataProduct.product.obj &&
-      !dataProduct.product.mtl
+      (!dataProduct.product.isCustom ||
+        !dataProduct.product.obj ||
+        !dataProduct.product.mtl)
     ) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }

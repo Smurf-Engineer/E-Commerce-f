@@ -44,5 +44,9 @@ export default defineMessages({
   enterTextPlaceholder: {
     id: 'components.TextTab.enterTextPlaceholder',
     defaultMessage: 'Enter Text'
+  },
+  applyButton: {
+    id: 'components.TextTab.applyButton',
+    defaultMessage: 'Apply'
   }
 })
