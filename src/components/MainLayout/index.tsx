@@ -11,7 +11,11 @@ import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
-import { RegionConfig, CartItems } from '../../types/common'
+import {
+  RegionConfig,
+  CartItems,
+  UserType
+} from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -20,6 +24,7 @@ import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES } from './constants'
 import Intercom from 'react-intercom'
+import { IntercomAPI } from 'react-intercom'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 
@@ -30,7 +35,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   history: any
   client: any
-  user: object
+  user: UserType
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
@@ -82,10 +87,12 @@ class MainLayout extends React.Component<Props, {}> {
       history: {
         location: { search, pathname }
       },
-      user: appUser
+      user
     } = this.props
+
     const { login } = queryString.parse(search)
-    const userLogged = !!appUser
+    const userLogged = !!user
+
     if (
       (pathname === '/faq' || pathname === '/shopping-cart') &&
       login === 'open' &&
@@ -110,6 +117,8 @@ class MainLayout extends React.Component<Props, {}> {
     } = this.props
     client.resetStore()
     deleteUserSession()
+    // https://developers.intercom.com/installing-intercom/docs/intercom-javascript#section-intercomshutdown
+    IntercomAPI('shutdown')
     if (REDIRECT_ROUTES.includes(pathname)) {
       window.location.replace('/')
     }
@@ -138,7 +147,8 @@ class MainLayout extends React.Component<Props, {}> {
       itemsInCart,
       shoppingCart,
       designCenter: { designHasChanges },
-      openWithoutSaveModalAction
+      openWithoutSaveModalAction,
+      user
     } = this.props
 
     const { formatMessage } = intl
@@ -157,9 +167,18 @@ class MainLayout extends React.Component<Props, {}> {
       })
     }
 
-    const numeroDeElementosEnElCarritoCuleroDeMierda = shoppingCart.cart
+    const numberOfProductsInCart = shoppingCart.cart
       ? numberOfProducts
       : itemsInCart
+
+    let userData = {}
+    if (!!user) {
+      userData = {
+        user_id: user.id,
+        email: user.email,
+        name: `${user.name} ${user.lastName}`
+      }
+    }
 
     return (
       <Layout>
@@ -167,7 +186,7 @@ class MainLayout extends React.Component<Props, {}> {
           <MenuBar
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
-            itemsInCart={numeroDeElementosEnElCarritoCuleroDeMierda}
+            itemsInCart={numberOfProductsInCart}
             {...{
               fakeWidth,
               history,
@@ -210,7 +229,7 @@ class MainLayout extends React.Component<Props, {}> {
           {...{ productId, history, yotpoId, formatMessage }}
         />
         <div className="app">
-          <Intercom appID={config.intercomKey} {...this.props.user} />
+          <Intercom appID={config.intercomKey} {...userData} />
         </div>
       </Layout>
     )
