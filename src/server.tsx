@@ -9,10 +9,12 @@ import { ServerStyleSheet } from 'styled-components'
 import fetch from 'node-fetch'
 import Html from './helpers/Html'
 import renderHtml from './helpers/render'
+import UAParser from 'ua-parser-js'
 import { configureServerClient } from './apollo'
 import App from './screens/App'
 import configureStore from './store'
 import config from './config'
+import { SET_USER_AGENT_ACTION } from './store/constants'
 
 const server = express()
 interface Region {
@@ -56,9 +58,13 @@ server
 
     const store = configureStore()
 
+    const parser = new UAParser(req.headers['user-agent'] as string)
+    const ua = parser.getResult()
+
     const { dispatch } = store
     const mobileDetect = mobileParser(req)
     dispatch(setMobileDetect(mobileDetect))
+    dispatch({ type: SET_USER_AGENT_ACTION, client: ua })
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
