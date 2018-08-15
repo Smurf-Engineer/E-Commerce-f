@@ -92,7 +92,7 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
     case SET_USER_ACTION:
       return state.set('user', action.user)
     case SET_USER_AGENT_ACTION:
-      return state.set('client', action.client)
+      return state.set('clientInfo', action.client)
     default:
       return state
   }
