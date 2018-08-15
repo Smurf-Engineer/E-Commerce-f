@@ -58,6 +58,23 @@ export const getDesignQuery = gql`
         id
         code
         name
+        obj
+        mtl
+        label
+        bumpMap: bump_map
+        flatlock
+        binding {
+          white
+          black
+        }
+        zipper {
+          white
+          black
+        }
+        bibBrace {
+          white
+          black
+        }
       }
       colors {
         id
