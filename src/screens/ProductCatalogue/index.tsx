@@ -86,11 +86,31 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       location: { search },
       setSelectedFilters
     } = this.props
-    const queryParams = queryString.parse(search)
-    if (queryParams.gender) {
+
+    const { gender, category } = queryString.parse(search)
+
+    if (gender) {
       const filterObject = {
         type: 'genderFilters',
-        name: upperFirst(queryParams.gender),
+        name: upperFirst(gender),
+        firstGenderSet: true
+      }
+      setSelectedFilters(filterObject)
+    }
+
+    if (category) {
+      let categoryName =
+        (category.includes('-') && category.split('-')) || upperFirst(category)
+
+      if (Array.isArray(categoryName) && categoryName.length > 1) {
+        categoryName = `${upperFirst(categoryName[0])} & ${upperFirst(
+          categoryName[1]
+        )}`
+      }
+
+      const filterObject = {
+        type: 'categoryFilters',
+        name: categoryName,
         firstGenderSet: true
       }
       setSelectedFilters(filterObject)

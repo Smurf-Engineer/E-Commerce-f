@@ -26,7 +26,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   type: number
-  onPressSeeAll: (type: number) => void
+  onPressSeeAll: (type: number, category: string, sport: number) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
   setSportAction: (sport: number) => void
@@ -52,8 +52,14 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 
   handleOnPressSeeAll = () => {
-    const { onPressSeeAll, type } = this.props
-    onPressSeeAll(type)
+    const {
+      onPressSeeAll,
+      data: { categories },
+      type,
+      categorySelected,
+      sportSelected
+    } = this.props
+    onPressSeeAll(type, categories[categorySelected].name, sportSelected)
   }
 
   getFilter = (array: any[], index: number) =>

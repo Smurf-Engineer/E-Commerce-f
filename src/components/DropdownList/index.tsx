@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
+import lowerFirst from 'lodash/lowerFirst'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -73,9 +74,46 @@ export class DropdownList extends React.PureComponent<Props> {
     push(route)
   }
 
-  handleOnSeeAll = (type: number) => {
-    const { history } = this.props
-    history.push('/product-catalogue')
+  handleOnSeeAll = (type: number, categorySelected: string) => {
+    const {
+      history: {
+        push,
+        location: { search, pathname }
+      }
+    } = this.props
+
+    const { gender, category } = queryString.parse(search)
+
+    const toGender = type ? 'women' : 'men'
+    let toCategory: any = categorySelected.replace(/\s/g, '')
+
+    toCategory =
+      (toCategory.includes('&') && toCategory.split('&')) ||
+      lowerFirst(toCategory)
+
+    if (Array.isArray(toCategory) && toCategory.length > 1) {
+      toCategory = `${lowerFirst(toCategory[0])}-${lowerFirst(toCategory[1])}`
+    }
+
+    const route = `/product-catalogue?gender=${toGender}&category=${toCategory}`
+    const atProductCatalogue = (pathname as String).includes(
+      'product-catalogue'
+    )
+
+    const isChangingGender = atProductCatalogue && gender && gender !== toGender
+    const isChangingCategory =
+      atProductCatalogue && category && category !== toCategory
+
+    if (
+      (atProductCatalogue && (!gender || !category)) ||
+      isChangingGender ||
+      isChangingCategory
+    ) {
+      window.location.replace(route)
+      return
+    }
+
+    push(route)
   }
 
   handleOnCustomize = (id: string) => {
@@ -140,7 +178,7 @@ export class DropdownList extends React.PureComponent<Props> {
             <MenuGender
               {...{ genders, sports, visible, formatMessage, currentCurrency }}
               type={index}
-              onPressSeeAll={this.handleOnSeeAllFilters}
+              onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
               sportSelected={genderSportSelected}

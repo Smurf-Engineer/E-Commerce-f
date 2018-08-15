@@ -36,7 +36,8 @@ export const ProductHorizontalList = ({
   width = '60%',
   genderFilter,
   formatMessage,
-  currentCurrency
+  currentCurrency,
+  onPressSeeAll
 }: Props) => {
   if (data.loading) {
     return (
@@ -110,7 +111,7 @@ export const ProductHorizontalList = ({
     <Container {...{ width }}>
       {list}
       <AllButton>
-        <SeeAllButton {...{ formatMessage }} />
+        <SeeAllButton onClick={onPressSeeAll} {...{ formatMessage }} />
       </AllButton>
     </Container>
   )
