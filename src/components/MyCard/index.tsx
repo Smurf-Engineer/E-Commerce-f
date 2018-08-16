@@ -94,6 +94,7 @@ const MyCard = ({
       <StyledCheckbox
         checked={selectedCardId === id}
         onChange={handleSelectCard}
+        checkColor={'#4A90E2'}
       >
         {formatMessage(messages.useThisCardLabel)}
       </StyledCheckbox>

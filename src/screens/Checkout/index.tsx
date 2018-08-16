@@ -253,9 +253,11 @@ class Checkout extends React.Component<Props, {}> {
         title={step}
         icon={
           currentStep > index ? (
-            <CheckIcon type="check-circle-o" clickable={currentStep > index} />
+            <StepIcon clickable={currentStep > index}>
+              <CheckIcon type="check-circle-o" />
+            </StepIcon>
           ) : currentStep === index ? (
-            <StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>
+            <StepIcon>{index + 1}</StepIcon>
           ) : null
         }
         onClick={this.handleOnStepClick(index)}

@@ -174,8 +174,8 @@ export class MyAddressesList extends React.Component<Props, {}> {
     const renderView = !!addresses.length ? (
       addressesList
     ) : (
-        <EmptyContainer message={formatMessage(messages.emptyMessage)} />
-      )
+      <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+    )
 
     return (
       <Container {...{ listForMyAccount }}>
