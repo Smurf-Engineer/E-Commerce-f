@@ -1170,7 +1170,10 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyClipArt = (url, style = {}, position = {}, idElement) => {
+  applyClipArt = (url, style = {}, position = {}, idElement, fileId) => {
+    console.log('---------------fileId---------------')
+    console.log(fileId)
+    console.log('------------------------------------')
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
@@ -1201,12 +1204,12 @@ class Render3D extends PureComponent {
           shape.set({ scaleX: scaleFactorX, scaleY: scaleFactorY }).setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
+          position.scaleX = scaleFactorX
+          position.scaleY = scaleFactorY
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
-          const {
-            canvasEl: { fileId }
-          } = this.state
+          el.fileId = fileId
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src: url,
             style,
@@ -1244,12 +1247,16 @@ class Render3D extends PureComponent {
         {
           const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = el
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          canvasObject.src = object.state.src
+          const {
+            state: { fileId, src }
+          } = object
+          canvasObject.src = src
           canvasObject.style = {
             fill,
             stroke,
             strokeWidth
           }
+          canvasObject.fileId = fileId
         }
         break
       case CanvasElements.Image:
@@ -1441,6 +1448,7 @@ class Render3D extends PureComponent {
 
     if (!!intersects.length && intersects[0].uv) {
       const { canvasEl } = this.state
+      console.log(canvasEl)
       const meshName = get(intersects[0], 'object.name', '')
       const uv = intersects[0].uv
       const validMesh =
@@ -1450,6 +1458,7 @@ class Render3D extends PureComponent {
         meshName === BIB_BRACE
       if (!!canvasEl && validMesh) {
         const el = Object.assign({}, canvasEl)
+        const { fileId } = canvasEl
         this.setState({ canvasEl: null }, () => {
           document.getElementById('render-3d').style.cursor = 'default'
           const left = uv.x * CANVAS_SIZE
@@ -1462,7 +1471,13 @@ class Render3D extends PureComponent {
               this.applyImage(el.file, { left, top })
               break
             case CanvasElements.Path:
-              this.applyClipArt(el.url, el.style, { left, top })
+              this.applyClipArt(
+                el.url,
+                el.style,
+                { left, top },
+                undefined,
+                fileId
+              )
               break
             default:
               break
