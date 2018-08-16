@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.DesignCenterInspiration.tittle',
-    defaultMessage: 'DesignCenterInspiration'
+  emptyMessage: {
+    id: 'components.DesignCenterInspiration.emptyMessage',
+    defaultMessage: 'Seems like there are no inspiration color variations, yet.'
   }
 })

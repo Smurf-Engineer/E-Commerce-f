@@ -14,9 +14,7 @@ import {
   Container,
   ScreenTitle,
   BottomContainer,
-  Column,
-  EmptyContainer,
-  EmptyMessage
+  Column
 } from './styledComponents'
 import OverviewHeader from './OverviewHeader'
 import OrdersList from '../OrderHistory/OrdersList'
@@ -26,6 +24,7 @@ import withLoading from '../WithLoading'
 import PaymentData from '../PaymentData'
 import AddressData from './AddressData'
 import ProfileData from './ProfileData'
+import EmptyContainer from '../EmptyContainer'
 import {
   ADDRESSES,
   CREDIT_CARDS,
@@ -70,19 +69,15 @@ class Overview extends React.Component<Props, {}> {
     const contentAddress = addresses.length ? (
       <AddressData address={addresses[0]} {...{ formatMessage }} />
     ) : (
-      <EmptyContainer>
-        <EmptyMessage>{formatMessage(messages.emptyAddress)}</EmptyMessage>
-      </EmptyContainer>
-    )
+        <EmptyContainer message={formatMessage(messages.emptyAddress)} />
+      )
     const { cards } = payment
     const contentPayment =
       cards && cards.length ? (
         <PaymentData card={cards[0]} />
       ) : (
-        <EmptyContainer>
-          <EmptyMessage>{formatMessage(messages.emptyPayment)}</EmptyMessage>
-        </EmptyContainer>
-      )
+          <EmptyContainer message={formatMessage(messages.emptyPayment)} />
+        )
     const profileHeader = (
       <OverviewHeader
         id={PROFILE_SETTINGS}
