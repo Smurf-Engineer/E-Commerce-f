@@ -3,6 +3,10 @@
  */
 import styled from 'styled-components'
 
+type StyleProps = {
+  browserName?: string
+}
+
 export const Container = styled.div`
   padding: 60px 35px;
   display: flex;
@@ -10,10 +14,8 @@ export const Container = styled.div`
 
   @media (min-width: 320px) and (max-width: 425px) {
     flex-direction: column;
-    /* -webkit-min-height: 850px; */
-  }
-  @media (min-width: 320px) and (max-width: 425px) and (-moz-images-in-menus: 0) {
-    min-height: 850px;
+    ${({ browserName }: StyleProps) =>
+      browserName === 'Firefox' ? 'min-height: 850px;' : ''};
   }
 `
 

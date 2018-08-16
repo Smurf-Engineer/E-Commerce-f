@@ -13,13 +13,16 @@ import image3 from '../../assets/racesuits-2.jpg'
 
 interface Props {
   history: any
+  browserName?: string
 }
 
 // TODO: EVERYTHING HARDCODED FOR THE MOMENT CHANGE  LATER
 class FeaturedCategory extends React.PureComponent<Props, {}> {
   render() {
+    const { browserName } = this.props
+
     return (
-      <Container>
+      <Container {...{ browserName }}>
         <Category>
           <StyledImg src={image1} onClick={this.handleClick} />
           <Text>

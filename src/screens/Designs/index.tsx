@@ -14,15 +14,16 @@ import ThreeD from '../../components/Render3D'
 import * as designsActions from './actions'
 import { styleQuery } from './data'
 import { QueryProps, DesignSaved } from '../../types/common'
-import quickView from '../../assets/quickview.svg'
+// TODO: Commented all quickview related until confirm it won't be needed
+// import quickView from '../../assets/quickview.svg'
 import {
   Container,
   Title,
   Message,
-  ContainerError,
-  Row,
-  Model,
-  QuickView
+  ContainerError
+  // Row,
+  // Model,
+  // QuickView
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -32,7 +33,7 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
-  openQuickViewAction: (index: number) => void
+  // openQuickViewAction: (index: number) => void
   loadingModel: boolean
   // Redux actions
   setLoadingAction: (loading: boolean) => void
@@ -43,15 +44,15 @@ export class Designs extends React.Component<Props, {}> {
     window.location.replace('/')
   }
 
-  handleOpenQuickView = () => {
-    const {
-      data: {
-        design: { product }
-      },
-      openQuickViewAction: openQuickView
-    } = this.props
-    openQuickView(product.id)
-  }
+  // handleOpenQuickView = () => {
+  //   const {
+  //     data: {
+  //       design: { product }
+  //     },
+  //     openQuickViewAction: openQuickView
+  //   } = this.props
+  //   openQuickView(product.id)
+  // }
 
   render() {
     const {
@@ -72,14 +73,15 @@ export class Designs extends React.Component<Props, {}> {
     }
 
     const { svg, product } = design
-    const { name } = product
+    // TODO commented name of product for quickview
+    // const { name } = product
 
     return (
       <Container>
-        <Row>
+        {/* <Row>
           <Model>{name}</Model>
           <QuickView onClick={this.handleOpenQuickView} src={quickView} />
-        </Row>
+        </Row> */}
         <ThreeD {...{ svg, product }} />
       </Container>
     )

@@ -11,11 +11,7 @@ import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
-import {
-  RegionConfig,
-  CartItems,
-  UserType
-} from '../../types/common'
+import { RegionConfig, CartItems, UserType } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -31,7 +27,7 @@ import config from '../../config/index'
 const { Content } = Layout
 
 interface Props extends RouteComponentProps<any> {
-  children: React.ReactChild
+  children: React.ReactChildren
   intl: InjectedIntl
   history: any
   client: any
