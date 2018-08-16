@@ -63,6 +63,16 @@ interface Props {
 }
 
 export class MyAddressesList extends React.Component<Props, {}> {
+  componentDidMount() {
+    const { data, listForMyAccount, showAddressFormAction } = this.props
+    const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
+    const addressPresent = !!addresses.length
+
+    if (!addressPresent && !listForMyAccount) {
+      showAddressFormAction(true)
+    }
+  }
+
   render() {
     const {
       showForm,
