@@ -49,6 +49,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   fakeWidth: number
   currentCurrency: string
+  clientInfo: any
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -113,8 +114,12 @@ export class Home extends React.Component<Props, {}> {
       searchString,
       intl,
       fakeWidth,
-      currentCurrency
+      currentCurrency,
+      clientInfo: {
+        browser: { name: browserName }
+      }
     } = this.props
+
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
@@ -177,7 +182,7 @@ export class Home extends React.Component<Props, {}> {
               <FormattedMessage {...messages.orderingLabel} />
             </PropositionTile>
           </PropositionTilesContainer>
-          <ImagesGrid {...{ fakeWidth, history }} />
+          <ImagesGrid {...{ fakeWidth, history, browserName }} />
           <YotpoHome />
         </Container>
       </Layout>
@@ -189,7 +194,9 @@ const mapStateToProps = (state: any) => {
   const home = state.get('home').toJS()
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...home, ...responsive, ...langProps }
+  const app = state.get('app').toJS()
+
+  return { ...home, ...responsive, ...langProps, ...app }
 }
 
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })

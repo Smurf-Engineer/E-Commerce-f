@@ -5,11 +5,14 @@ export const saveDesignName = graphql(
   gql`
     mutation saveDesign($design: DesignInput!, $colors: [String]!) {
       saveDesign(design: $design, colors: $colors) {
-        id
-        name
-        shortId: short_id
-        image
+        designId: id
+        designName: name
+        designImage: image
         svg: output_svg
+        designCode: code
+        shared
+        shortId: short_id
+        createdAt: created_at
         product {
           id
           code
@@ -17,6 +20,7 @@ export const saveDesignName = graphql(
           name
           type: name
           description: short_description
+          shortDescription: short_description
           collections
           isTopProduct
           weight
