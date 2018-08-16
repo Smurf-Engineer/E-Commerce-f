@@ -303,12 +303,18 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     }
   }
 
-  handleOnApplyArt = (url: string, style?: CanvasElement) => {
+  handleOnApplyArt = (url: string, fileId?: number, style?: CanvasElement) => {
     const { selectedElement } = this.props
     if (selectedElement) {
+      console.log(fileId)
       this.render3D.applyClipArt(url, style)
     } else {
-      this.render3D.applyCanvasEl({ url, style, type: CanvasElements.Path })
+      this.render3D.applyCanvasEl({
+        url,
+        style,
+        type: CanvasElements.Path,
+        fileId
+      })
     }
   }
 }

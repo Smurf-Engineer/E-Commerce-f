@@ -894,6 +894,7 @@ class Render3D extends PureComponent {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
 
           const canvasJson = JSON.stringify(this.canvasTexture)
+          console.log(JSON.parse(canvasJson))
           const saveDesign = {
             canvasJson,
             designBase64,
@@ -904,6 +905,11 @@ class Render3D extends PureComponent {
         }, 200)
       )
     }
+  }
+
+  save = () => {
+    const canvasJson = JSON.stringify(this.canvasTexture)
+    console.log(canvasJson)
   }
 
   render() {
@@ -920,6 +926,10 @@ class Render3D extends PureComponent {
       canvas,
       selectedElement
     } = this.props
+
+    console.log('------------------------------------')
+    console.log(this.state)
+    console.log('------------------------------------')
 
     {
       /*
@@ -983,7 +993,7 @@ class Render3D extends PureComponent {
         </Dropdown>
         */}
         <ButtonWrapper>
-          <Button type="primary" onClick={this.takeDesignPicture}>
+          <Button type="primary" onClick={this.save}>
             Save
           </Button>
         </ButtonWrapper>
@@ -1070,11 +1080,13 @@ class Render3D extends PureComponent {
       fileUrl,
       img => {
         const imageEl = new fabric.Image(img, {
+          fileId: '123456789abcde',
           id,
           hasRotatingPoint: false,
           ...position
         })
         let el = {
+          fileId: '123456789abcde',
           id,
           imageSize
         }
@@ -1192,10 +1204,14 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
+          const {
+            canvasEl: { fileId }
+          } = this.state
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src: url,
             style,
-            position
+            position,
+            fileId
           })
           this.canvasTexture.setActiveObject(shape)
         }
