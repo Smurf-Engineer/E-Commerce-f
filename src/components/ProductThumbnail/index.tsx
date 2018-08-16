@@ -42,6 +42,7 @@ interface Props {
   customizableLabel?: string
   myLockerList?: boolean
   currentCurrency: string
+  disableSlider?: boolean
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -126,7 +127,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       customizable,
       currentCurrency,
       customizableLabel,
-      myLockerList
+      myLockerList,
+      disableSlider
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -158,7 +160,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             hideQuickView,
             urlProduct,
             myLockerList,
-            currentCurrency
+            currentCurrency,
+            disableSlider
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

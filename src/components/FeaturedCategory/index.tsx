@@ -2,9 +2,10 @@
  * FeaturedCategory Component - Created by cazarez on 25/05/18.
  */
 import * as React from 'react'
+import { FormattedMessage } from 'react-intl'
 
-// import messages from './messages'
-import { Container, Text, StyledImg } from './styledComponents'
+import messages from './messages'
+import { Container, Text, StyledImg, Category } from './styledComponents'
 
 import image1 from '../../assets/Racesuits.jpg'
 import image2 from '../../assets/Outerwear.jpg'
@@ -12,25 +13,34 @@ import image3 from '../../assets/racesuits-2.jpg'
 
 interface Props {
   history: any
+  browserName?: string
 }
 
 // TODO: EVERYTHING HARDCODED FOR THE MOMENT CHANGE  LATER
 class FeaturedCategory extends React.PureComponent<Props, {}> {
   render() {
+    const { browserName } = this.props
+
     return (
-      <Container>
-        <div>
+      <Container {...{ browserName }}>
+        <Category>
           <StyledImg src={image1} onClick={this.handleClick} />
-          <Text>{'OUTWEAR'}</Text>
-        </div>
-        <div>
+          <Text>
+            <FormattedMessage {...messages.outWearLabel} />
+          </Text>
+        </Category>
+        <Category>
           <StyledImg src={image2} onClick={this.handleClick} />
-          <Text>{'RACE SUITS'}</Text>
-        </div>
-        <div>
+          <Text>
+            <FormattedMessage {...messages.raceSuitsLabel} />
+          </Text>
+        </Category>
+        <Category>
           <StyledImg src={image3} onClick={this.handleClick} />
-          <Text>{'JUPITER COLLECTION'}</Text>
-        </div>
+          <Text>
+            <FormattedMessage {...messages.jupiterLabel} />
+          </Text>
+        </Category>
       </Container>
     )
   }
