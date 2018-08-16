@@ -534,6 +534,7 @@ export interface CanvasElement {
   fill?: string
   stroke?: string
   strokeWidth?: number
+  fileId?: number
 }
 
 export interface CanvasType {

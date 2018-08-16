@@ -40,7 +40,7 @@ interface Props {
   data: Data
   selectedElement: CanvasElement
   formatMessage: (messageDescriptor: any) => string
-  onApplyArt: (url: string, fileId?: number, style?: CanvasElement) => void
+  onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   setSearchClipParamAction: (searchParam: string) => void
 }
@@ -147,26 +147,26 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     const { selectedElement, onSelectArtFormat, onApplyArt } = this.props
     onSelectArtFormat('fill', fillColor)
     selectedElement.fill = fillColor
-    onApplyArt('', undefined, selectedElement)
+    onApplyArt('', selectedElement)
   }
 
   handleOnSelectStrokeWidth = (strokeWidth: number) => {
     const { selectedElement, onSelectArtFormat, onApplyArt } = this.props
     onSelectArtFormat('strokeWidth', strokeWidth)
     selectedElement.strokeWidth = strokeWidth
-    onApplyArt('', undefined, selectedElement)
+    onApplyArt('', selectedElement)
   }
 
   handleOnSelectStrokeColor = (strokeColor: string) => {
     const { onSelectArtFormat, onApplyArt, selectedElement } = this.props
     onSelectArtFormat('stroke', strokeColor)
     selectedElement.stroke = strokeColor
-    onApplyArt('', undefined, selectedElement)
+    onApplyArt('', selectedElement)
   }
 
   handleOnApplyArt = (url: string, fileId: number) => () => {
     const { onApplyArt } = this.props
-    onApplyArt(url, fileId)
+    onApplyArt(url, undefined, fileId)
   }
 }
 type OwnProps = {
