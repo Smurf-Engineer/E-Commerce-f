@@ -10,6 +10,8 @@ import { FormattedMessage } from 'react-intl'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import isEmpty from 'lodash/isEmpty'
+import forEach from 'lodash/forEach'
+import uniq from 'lodash/uniq'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -893,12 +895,15 @@ class Render3D extends PureComponent {
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
 
+          // TODO: send designFiles object when saveDesign mutation is ready
+          // const designFiles = this.getDesignFiles()
           const canvasJson = JSON.stringify(this.canvasTexture)
           const saveDesign = {
             canvasJson,
             designBase64,
             canvasSvg: this.canvasTexture.toSVG(),
-            styleId: currentStyle.id
+            styleId: currentStyle.id,
+            designFiles
           }
           onOpenSaveDesign(true, saveDesign)
         }, 200)
@@ -906,9 +911,18 @@ class Render3D extends PureComponent {
     }
   }
 
-  save = () => {
-    const canvasJson = JSON.stringify(this.canvasTexture)
-    console.log(canvasJson)
+  getDesignFiles = () => {
+    const {
+      canvas: { image, path }
+    } = this.props
+    const files = []
+    const svgs = []
+    forEach(image, img => files.push(img.fileId))
+    forEach(path, pth => svgs.push(pth.fileId))
+
+    return {
+      designFiles: { files: uniq(files), svgs: uniq(svgs) }
+    }
   }
 
   render() {
@@ -988,7 +1002,8 @@ class Render3D extends PureComponent {
         </Dropdown>
         */}
         <ButtonWrapper>
-          <Button type="primary" onClick={this.save}>
+          <Button type="primary" onClick={this.takeDesignPicture}>
+            {/* <Button type="primary" onClick={this.getDesignFiles}> */}
             Save
           </Button>
         </ButtonWrapper>
