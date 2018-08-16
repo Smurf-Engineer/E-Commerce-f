@@ -894,7 +894,6 @@ class Render3D extends PureComponent {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
 
           const canvasJson = JSON.stringify(this.canvasTexture)
-          console.log(JSON.parse(canvasJson))
           const saveDesign = {
             canvasJson,
             designBase64,
@@ -926,10 +925,6 @@ class Render3D extends PureComponent {
       canvas,
       selectedElement
     } = this.props
-
-    console.log('------------------------------------')
-    console.log(this.state)
-    console.log('------------------------------------')
 
     {
       /*
@@ -1080,16 +1075,11 @@ class Render3D extends PureComponent {
       fileUrl,
       img => {
         const imageEl = new fabric.Image(img, {
-          fileId: '123456789abcde',
           id,
           hasRotatingPoint: false,
           ...position
         })
-        let el = {
-          fileId: '123456789abcde',
-          id,
-          imageSize
-        }
+        let el = { id, imageSize }
         if (position.scaleX) {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
@@ -1099,17 +1089,23 @@ class Render3D extends PureComponent {
             .setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
+          position.scaleX = scaleFactorX
+          position.scaleY = scaleFactorY
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
+          const { id: fileId } = file
+          el.fileId = fileId
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
             style: undefined,
-            position
+            position,
+            fileId
           })
           this.canvasTexture.setActiveObject(imageEl)
         } else {
+          el.fileId = file.id
           const { onReApplyImageEl } = this.props
           onReApplyImageEl(el)
         }
@@ -1171,9 +1167,6 @@ class Render3D extends PureComponent {
   }
 
   applyClipArt = (url, style = {}, position = {}, idElement, fileId) => {
-    console.log('---------------fileId---------------')
-    console.log(fileId)
-    console.log('------------------------------------')
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
@@ -1262,7 +1255,11 @@ class Render3D extends PureComponent {
       case CanvasElements.Image:
         {
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          canvasObject.src = object.state.src
+          const {
+            state: { src, fileId }
+          } = object
+          canvasObject.src = src
+          canvasObject.fileId = fileId
         }
         break
     }
@@ -1308,15 +1305,24 @@ class Render3D extends PureComponent {
         }
         break
       case CanvasElements.Image: {
+        const {
+          state: {
+            src: { id: fileId }
+          }
+        } = objectToClone
         canvasEl = {
           id,
           imageSize: { width: el.width, height: el.height },
           scaleX: el.scaleX,
-          scaleY: el.scaleY
+          scaleY: el.scaleY,
+          fileId
         }
         break
       }
       case CanvasElements.Path: {
+        const {
+          state: { fileId }
+        } = objectToClone
         canvasStyle = {
           fill: el.fill || '#000000',
           stroke: el.stroke || '#000000',
@@ -1324,7 +1330,10 @@ class Render3D extends PureComponent {
         }
         canvasEl = {
           id,
-          ...canvasStyle
+          ...canvasStyle,
+          scaleX: el.scaleX,
+          scaleY: el.scaleY,
+          fileId
         }
       }
       default:
@@ -1345,10 +1354,12 @@ class Render3D extends PureComponent {
       state: {
         src,
         style: styleSaved,
-        position: { left, top }
+        position: { left, top },
+        fileId: pathFileId
       }
     } = objectToClone
     const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
+    const fileId = pathFileId ? { fileId: pathFileId } : {}
     onApplyCanvasEl(canvasEl, elementType, false, {
       src,
       style,
@@ -1358,7 +1369,8 @@ class Render3D extends PureComponent {
         scaleX: el.scaleX,
         scaleY: el.scaleY,
         transformMatrix: el.transformMatrix
-      }
+      },
+      ...fileId
     })
   }
 
@@ -1448,7 +1460,6 @@ class Render3D extends PureComponent {
 
     if (!!intersects.length && intersects[0].uv) {
       const { canvasEl } = this.state
-      console.log(canvasEl)
       const meshName = get(intersects[0], 'object.name', '')
       const uv = intersects[0].uv
       const validMesh =

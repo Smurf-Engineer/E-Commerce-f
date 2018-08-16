@@ -165,7 +165,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
   }
 
   handleOnApplyArt = (url: string, fileId: number) => () => {
-    console.log(fileId)
     const { onApplyArt } = this.props
     onApplyArt(url, fileId)
   }

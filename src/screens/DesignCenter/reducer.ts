@@ -497,7 +497,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_CANVAS_ELEMENT_ACTION: {
       const { el, typeEl, canvasObj } = action
-      console.log(canvasObj)
       const canvas = state.get('canvas')
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
