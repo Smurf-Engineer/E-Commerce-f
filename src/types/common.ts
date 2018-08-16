@@ -20,6 +20,11 @@ export interface DesignSaved {
   product: Product
   style?: Style
   shortId?: string
+  flatlockColor?: string
+  flatlockCode?: string
+  bindingColor?: string
+  bibBraceColor?: string
+  zipperColor?: string
 }
 
 export interface SelectedItem {

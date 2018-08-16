@@ -27,9 +27,6 @@ const DesignCenterTabs = ({
   designHasChanges,
   isEditing
 }: Props) => {
-  console.log('------IS-------------')
-  console.log(isEditing)
-  console.log('---------------------------')
   const handleOnSelectTab = (index: any) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => {
     const { ThemeTab, StyleTab, CustomizeTab } = DesignTabs

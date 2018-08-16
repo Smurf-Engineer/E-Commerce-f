@@ -15,6 +15,7 @@ import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
+
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -206,6 +207,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   formatMessage: (messageDescriptor: any) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
+  setLoadedCanvasAction: (canvas: CanvasType) => void
   setEditConfigAction: (
     colors: string[],
     accessoriesColor: AccessoriesColor
@@ -457,11 +459,20 @@ export class DesignCenter extends React.Component<Props, {}> {
       user,
       responsive,
       onReApplyImageElementAction,
-      setEditConfigAction
+      setEditConfigAction,
+      setLoadedCanvasAction
     } = this.props
-
+    const { formatMessage } = intl
     const { openBottomSheet } = this.state
+    const {
+      CustomizeTab: CustomizeTabIndex,
+      ThemeTab: ThemeTabIndex,
+      StyleTab: StyleTabIndex
+    } = DesignTabs
 
+    /**
+     * Redirect for mobile
+     */
     if (!!responsive && responsive.phone) {
       return (
         <Layout
@@ -472,23 +483,28 @@ export class DesignCenter extends React.Component<Props, {}> {
       )
     }
 
+    /**
+     * Redirect for missing params
+     */
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
-    const { formatMessage } = intl
-    const productId = get(dataDesign, 'designData.product.id', queryParams.id)
-    const productName =
-      get(dataProduct, 'product.name') ||
-      get(dataDesign, 'designData.product.name', '')
-
-    const canvasJson = get(dataDesign, 'designData.canvas')
-    const styleId = get(dataDesign, 'designData.styleId')
-
-    let designObject = design
-    if (canvasJson) {
-      designObject = { ...designObject, canvasJson, styleId }
+    const productQueryWithError = !!dataProduct && !!dataProduct.error
+    const designQueryWithError = !!dataDesign && !!dataDesign.error
+    if (productQueryWithError || designQueryWithError) {
+      // TODO: Change for error message
+      return (
+        <Layout
+          {...{ history, intl }}
+          hideBottomHeader={true}
+          hideFooter={true}
+        >
+          <Header onPressBack={this.handleOnPressBack} />
+          <div>Error</div>
+        </Layout>
+      )
     }
 
     const isRetailProductOrDoesNotHaveFiles =
@@ -505,35 +521,46 @@ export class DesignCenter extends React.Component<Props, {}> {
       !dataDesign.designData.product.obj &&
       !dataDesign.designData.product.mtl
 
+    /**
+     * Redirect for retail products or missing 3D files
+     */
     if (isRetailProductOrDoesNotHaveFiles || designDoesNotHaveFiles) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
-    const {
-      CustomizeTab: CustomizeTabIndex,
-      ThemeTab: ThemeTabIndex,
-      StyleTab: StyleTabIndex
-    } = DesignTabs
+    const productId = get(dataDesign, 'designData.product.id', queryParams.id)
+    const productName =
+      get(dataProduct, 'product.name') ||
+      get(dataDesign, 'designData.product.name', '')
+
+    const canvasJson = get(dataDesign, 'designData.canvas')
+    const styleId = get(dataDesign, 'designData.styleId')
+
+    let designObject = design
+    // TODO: REMOVE styleId?
+    if (canvasJson) {
+      designObject = { ...designObject, canvasJson, styleId }
+    }
 
     let tabSelected =
       !tabChanged && !dataProduct ? CustomizeTabIndex : currentTab
     let loadingData = true && !dataProduct
     let isEditing = !!dataDesign
-    const productConfig = get(dataDesign, 'designData.product', product)
+    let productConfig = product
     let currentStyle = style
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
-      tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
-      loadingData = !!dataDesign.loading
       const {
-        id: designId,
+        // TODO: WIP Modal changes
+        /* id: designId, */
         colors: designColors = [],
         style: designStyle,
         flatlockCode,
         flatlockColor,
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
-        zipperColor: zipperAccesoryColor
+        zipperColor: zipperAccesoryColor,
+        product: designProduct
       } = designData
       const designConfig = {
         flatlockCode,
@@ -542,6 +569,9 @@ export class DesignCenter extends React.Component<Props, {}> {
         bindingColor: bindingAccesoryColor,
         zipperColor: zipperAccesoryColor
       }
+      tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
+      loadingData = !!dataDesign.loading
+      productConfig = designProduct
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
@@ -647,8 +677,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   currentStyle,
                   undoChanges,
                   redoChanges,
-                  stitchingColor,
                   setStitchingColorAction,
+                  stitchingColor,
                   bindingColor,
                   zipperColor,
                   bibColor,
@@ -693,6 +723,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onCanvasElementTextChanged={onCanvasElementTextChangedAction}
                 onReApplyImageEl={onReApplyImageElementAction}
                 onSetEditConfig={setEditConfigAction}
+                onSetCanvasObject={setLoadedCanvasAction}
               />
             )}
             <PreviewTab
@@ -712,9 +743,13 @@ export class DesignCenter extends React.Component<Props, {}> {
                 editDesignAction,
                 formatMessage,
                 svgOutputUrl,
-                product,
-                savedDesign
+                savedDesign,
+                stitchingColor,
+                bindingColor,
+                zipperColor,
+                bibColor
               }}
+              product={productConfig}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}
               onLoadModel={setLoadingModel}

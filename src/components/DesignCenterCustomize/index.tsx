@@ -56,7 +56,7 @@ interface Props {
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
-  customize3dMounted: boolean
+  customize3dMounted: boolean // TODO: is necessary?
   design: SaveDesignType
   loadingData?: boolean
   undoChanges: Change[]
@@ -106,6 +106,7 @@ interface Props {
   onCanvasElementRotated: (element: CanvasRotated) => void
   onCanvasElementTextChanged: (oldText: string, newText: string) => void
   onReApplyImageEl: (el: CanvasElement) => void
+  onSetCanvasObject: (el: CanvasType) => void
   onSetEditConfig: (
     colors: string[],
     accessoriesColor: AccessoriesColor
@@ -184,7 +185,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       designHasChanges,
       isUserAuthenticated,
       isEditing,
-      onSetEditConfig
+      onSetEditConfig,
+      onSetCanvasObject
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -286,7 +288,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               selectedElement,
               isEditing,
               onSelectPalette,
-              onSetEditConfig
+              onSetEditConfig,
+              onSetCanvasObject
             }}
           />
         ) : (

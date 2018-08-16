@@ -75,3 +75,35 @@ export const clickOnCorner = (boundingBox = {}, corners = {}, uv = {}) => {
 
   return isPointInsideOfIcon(corners.tl.corner, point) ? DELETE_ACTION : ''
 }
+
+export const getTextCanvasElement = el => {
+  const { id, text, fill, stroke, strokeWidth, fontFamily } = el
+  const element = {
+    id,
+    text,
+    textFormat: {
+      fill,
+      stroke,
+      strokeWidth,
+      fontFamily
+    }
+  }
+  return element
+}
+
+export const getClipArtCanvasElement = el => {
+  const { id, fill, stroke, strokeWidth, scaleX, scaleY } = el
+  const element = { id, fill, stroke, strokeWidth, scaleX, scaleY }
+  return element
+}
+
+export const getImageCanvas = el => {
+  const { id, scaleX, scaleY, width, height } = el
+  const element = {
+    id,
+    scaleX,
+    scaleY,
+    imageSize: { width, height }
+  }
+  return element
+}

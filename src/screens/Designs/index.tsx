@@ -71,7 +71,14 @@ export class Designs extends React.Component<Props, {}> {
       )
     }
 
-    const { svg, product } = design
+    const {
+      svg,
+      product,
+      flatlockColor,
+      bindingColor,
+      bibBraceColor,
+      zipperColor
+    } = design
     const { name } = product
 
     return (
@@ -80,7 +87,13 @@ export class Designs extends React.Component<Props, {}> {
           <Model>{name}</Model>
           <QuickView onClick={this.handleOpenQuickView} src={quickView} />
         </Row>
-        <ThreeD {...{ svg, product }} />
+        <ThreeD
+          {...{ svg, product }}
+          zipperColor={zipperColor}
+          bindingColor={bindingColor}
+          bibColor={bibBraceColor}
+          flatlockColor={flatlockColor}
+        />
       </Container>
     )
   }

@@ -83,23 +83,23 @@ export class TextTab extends React.PureComponent<Props, State> {
             <OptionText
               onClick={this.changePage(1, 0)}
               title={formatMessage(messages.font)}
-              option={textFormat.fontFamily}
+              option={!!textFormat && textFormat.fontFamily}
             />
             <OptionText
               onClick={this.changePage(1, 1)}
               title={formatMessage(messages.fill)}
-              color={textFormat.fill}
+              color={!!textFormat && textFormat.fill}
             />
             <OptionText
               onClick={this.changePage(1, 2)}
               title={formatMessage(messages.outline)}
-              color={textFormat.stroke}
+              color={!!textFormat && textFormat.stroke}
             />
           </div>
           <TextEditor
             {...{ option, formatMessage }}
             text={text || productName}
-            strokeWidth={textFormat.strokeWidth}
+            strokeWidth={textFormat && textFormat.strokeWidth}
             onSelectFont={this.handleOnSelectFont}
             onSelectFill={this.handleOnSelectFill}
             onSelectStrokeWidth={this.handleOnSelectStrokeWidth}

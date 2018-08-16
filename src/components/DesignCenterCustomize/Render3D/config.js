@@ -71,7 +71,3 @@ export const BRANDING_MESH = 'Branding_Mesh'
 export const BIB_BRACE_NAME = 'bibBrace'
 export const ZIPPER_NAME = 'zipper'
 export const BINDING_NAME = 'binding'
-
-/* Accesories color */
-export const ACCESSORY_WHITE = 'white'
-export const ACCESSORY_BLACK = 'black'

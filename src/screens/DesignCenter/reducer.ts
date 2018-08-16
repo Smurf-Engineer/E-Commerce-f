@@ -59,7 +59,8 @@ import {
   WHITE,
   BLACK,
   AccessoryColors,
-  ElementsToApplyScale
+  ElementsToApplyScale,
+  SET_LOADED_CANVAS_ACTION
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 
@@ -552,6 +553,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_ELEMENT_ACTION: {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
+      console.log('------SELECTED-------')
+      console.log(canvasElement)
+      console.log('---------------------------')
       if (canvasElement && typeEl === CanvasElements.Text) {
         return state.merge({
           selectedElement: id,
@@ -799,6 +803,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       } = accessoriesColor
       const stitchingColor = { name: flatlockCode, value: flatlockColor }
       return state.merge({
+        loadingModel: true,
         colors: colors,
         styleColors: colors,
         stitchingColor: fromJS(stitchingColor),
@@ -809,6 +814,21 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         // styleId
         // savedDesignId
       })
+    }
+    case SET_LOADED_CANVAS_ACTION: {
+      const {
+        canvas: { text, path, image }
+      } = action
+      const textIds = Object.keys(text)
+      const pathIds = Object.keys(path)
+      const imageds = Object.keys(image)
+      const canvas = state.get('canvas')
+      const updatedCanvas = canvas.withMutations((map: any) => {
+        textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
+        pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
+        imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+      })
+      return state.set('canvas', updatedCanvas)
     }
     default:
       return state

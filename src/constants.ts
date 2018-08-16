@@ -16,3 +16,7 @@ export const GRIP_TAPE = 'FINAL Grip_Tape'
 export const SOLAR_BIB_BRACE = 'FINAL Solar_Bib_Brace'
 export const DPI = 96
 export const CM_PER_INCH = 2.54
+
+/* Accesories color */
+export const ACCESSORY_WHITE = 'white'
+export const ACCESSORY_BLACK = 'black'

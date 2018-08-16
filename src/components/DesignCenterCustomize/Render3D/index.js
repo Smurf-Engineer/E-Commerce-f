@@ -47,9 +47,7 @@ import {
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
-  CHANGE_ACTIONS,
-  ACCESSORY_WHITE,
-  ACCESSORY_BLACK
+  CHANGE_ACTIONS
 } from './config'
 import {
   MESH,
@@ -61,7 +59,8 @@ import {
   DPI,
   CM_PER_INCH,
   PROPEL_PALMS,
-  GRIP_TAPE
+  GRIP_TAPE,
+  ACCESSORY_WHITE
 } from '../../../constants'
 import {
   Changes,
@@ -72,7 +71,13 @@ import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
-import { isMouseOver, clickOnCorner } from './utils'
+import {
+  isMouseOver,
+  clickOnCorner,
+  getTextCanvasElement,
+  getClipArtCanvasElement,
+  getImageCanvas
+} from './utils'
 // TODO: JV2 - Phase II
 // import arrowDown from '../../../assets/downarrow.svg'
 // import topIcon from '../../../assets/Cube-Top.svg'
@@ -114,8 +119,7 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor,
-      loadingModel
+      bibColor: oldBibColor
     } = this.props
     const {
       colors: nextColors,
@@ -124,7 +128,8 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
+      loadingModel
     } = nextProps
 
     if (loadingModel) {
@@ -247,9 +252,6 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
-
-    const { setCustomize3dMountedAction } = this.props
-    setCustomize3dMountedAction(true)
   }
 
   componentWillUnmount() {
@@ -275,6 +277,78 @@ class Render3D extends PureComponent {
     this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
     this.raycaster.setFromCamera(this.mouse, this.camera)
     return this.raycaster.intersectObjects(objects, true)
+  }
+
+  convertToFabricObjects = elements =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.enlivenObjects(elements, objects => {
+          resolve(objects)
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+  loadFabricImage = url =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.loadImage(url, img => resolve(img), undefined, 'Anonymous')
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+  loadCanvasTexture = async object => {
+    try {
+      const { onSetCanvasObject } = this.props
+      const canvas = { text: {}, image: {}, path: {} }
+      const elements = []
+      const imagesElements = []
+      const imagesPromises = []
+      const { objects } = JSON.parse(object)
+      for (const el of objects) {
+        const elId = shortid.generate()
+        el.id = elId
+        el.hasRotatingPoint = false
+        switch (el.type) {
+          case CanvasElements.Text: {
+            elements.push(el)
+            const element = getTextCanvasElement(el)
+            canvas.text[elId] = element
+            break
+          }
+          case CanvasElements.Path: {
+            const element = getClipArtCanvasElement(el)
+            canvas.path[elId] = element
+            elements.push(el)
+          }
+          case CanvasElements.Image: {
+            const element = getImageCanvas(el)
+            canvas.image[elId] = element
+            imagesElements.push(el)
+            imagesPromises.push(this.loadFabricImage(el.src))
+          }
+          default:
+            break
+        }
+      }
+      let images = []
+      if (!!imagesElements.length) {
+        images = await Promise.all(imagesPromises)
+      }
+      images.forEach((img, index) => {
+        const config = imagesElements[index] || {}
+        const imageEl = new fabric.Image(img, { ...config })
+        this.canvasTexture.add(imageEl)
+      })
+      const fabricObjects = await this.convertToFabricObjects(elements)
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      onSetCanvasObject(canvas)
+      this.canvasTexture.renderAll()
+    } catch (e) {
+      console.error('Error loading canvas object: ', e.message)
+    }
   }
 
   loadTextures = (design, product) =>
@@ -385,7 +459,6 @@ class Render3D extends PureComponent {
       isEditing,
       onSetEditConfig
     } = this.props
-    onLoadModel(true)
 
     const loadedTextures = await this.loadTextures(
       currentStyle,
@@ -396,6 +469,8 @@ class Render3D extends PureComponent {
     if (isEditing) {
       // TODO: Send styleId and designId
       onSetEditConfig(loadedTextures.colors, accessoriesColor || {})
+    } else {
+      onLoadModel(true)
     }
 
     this.mtlLoader.load(product.mtl, materials => {
@@ -522,7 +597,8 @@ class Render3D extends PureComponent {
           canvas.height = CANVAS_SIZE
           this.canvasTexture = new fabric.Canvas(canvas, {
             width: CANVAS_SIZE,
-            height: CANVAS_SIZE
+            height: CANVAS_SIZE,
+            crossOrigin: 'Anonymous'
           })
           const canvasTexture = new THREE.CanvasTexture(canvas)
           canvasTexture.minFilter = THREE.LinearFilter
@@ -565,11 +641,7 @@ class Render3D extends PureComponent {
           this.scene.add(object)
 
           if (design && design.canvasJson) {
-            // TODO: Set each one of the canvasJson.objects
-            this.canvasTexture.loadFromJSON(
-              design.canvasJson,
-              () => (canvasTexture.needsUpdate = true)
-            )
+            this.loadCanvasTexture(design.canvasJson)
           }
 
           onLoadModel(false)
@@ -768,6 +840,8 @@ class Render3D extends PureComponent {
         break
     }
     onUndoAction()
+    this.canvasTexture.discardActiveObject()
+    this.canvasTexture.renderAll()
   }
 
   handleOnClickRedo = () => {
@@ -802,6 +876,8 @@ class Render3D extends PureComponent {
         break
     }
     onRedoAction()
+    this.canvasTexture.discardActiveObject()
+    this.canvasTexture.renderAll()
   }
 
   changeTextCanvasElement = (canvasElement, applyNewText = false) => {
@@ -924,7 +1000,7 @@ class Render3D extends PureComponent {
           const saveDesign = {
             canvasJson,
             designBase64,
-            canvasSvg: this.canvasTexture.toSVG(),
+            canvasSvg: '',
             styleId: currentStyle.id
           }
           onOpenSaveDesign(true, saveDesign)
@@ -1193,9 +1269,9 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects = [], options) => {
+      fabric.loadSVGFromURL(url, (objects, options) => {
         const id = idElement || shortid.generate()
-        const shape = fabric.util.groupSVGElements(objects, options)
+        const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
           id,
           hasRotatingPoint: false,
@@ -1255,6 +1331,7 @@ class Render3D extends PureComponent {
         {
           const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = el
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
+          if (!object) break //FIXME: add new method to delete duplicate elements
           canvasObject.src = object.state.src
           canvasObject.style = {
             fill,
@@ -1266,6 +1343,7 @@ class Render3D extends PureComponent {
       case CanvasElements.Image:
         {
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
+          if (!object) break //FIXME: add new method to delete duplicate elements
           canvasObject.src = object.state.src
         }
         break
@@ -1286,13 +1364,14 @@ class Render3D extends PureComponent {
   }
 
   duplicateElement = el => {
-    const { onApplyCanvasEl, undoChanges } = this.props
+    const { onApplyCanvasEl, undoChanges, isEditing } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const objectToClone = find(undoChanges, {
-      type: Changes.Add,
-      state: { id: el.id }
-    })
+    const objectToClone =
+      find(undoChanges, {
+        type: Changes.Add,
+        state: { id: el.id }
+      }) || {}
 
     const elementType = el.get('type')
     const id = shortid.generate()
@@ -1345,6 +1424,7 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
+    if (this.props.isEditing) return //FIXME: add only id and style to canvas when duplicate
     const {
       state: {
         src,
