@@ -4,7 +4,8 @@
 import styled, { css } from 'styled-components'
 
 interface ThumbnailProps {
-  selected: boolean
+  selected?: boolean
+  design?: boolean
 }
 
 interface ContainerProps {
@@ -36,18 +37,9 @@ export const ThumbnailImg = styled.img`
   background-color: #f1f4f5;
   border: 1px solid
     ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
-  width: 100%;
 
-  &:hover {
-    cursor: pointer;
-  }
-`
-export const ThumbnailImg3d = styled.img`
-  background-color: #f1f4f5;
-  border: 1px solid
-    ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
-  height: 100%;
-  object-fit: cover;
+  ${({ design }: ThumbnailProps) => (design ? 'height: 100%' : '')};
+  ${({ design }: ThumbnailProps) => (design ? 'object-fit: cover;' : '')};
   width: 100%;
 
   &:hover {

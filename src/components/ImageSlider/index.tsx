@@ -10,7 +10,6 @@ import {
   ThumbnailContainer,
   ImageThumbnails,
   ThumbnailImg,
-  ThumbnailImg3d,
   SelectedImage,
   Arrows,
   ArrowContainer,
@@ -110,28 +109,17 @@ class ImageSlider extends React.Component<Props, StateProps> {
       </ThumbnailContainer>
     ))
 
-    const thumbnailsWith3d = ThumbnailsArrayWith3D.map(
-      (thumbnail, i) =>
-        (i === 0 && (
-          <ThumbnailContainer design={true} key={i}>
-            <ThumbnailImg3d
-              id={i.toString()}
-              src={thumbnail}
-              onClick={this.selectThumbnail}
-              selected={index === i}
-            />
-          </ThumbnailContainer>
-        )) || (
-          <ThumbnailContainer design={false} key={i}>
-            <ThumbnailImg
-              id={i.toString()}
-              src={thumbnail}
-              onClick={this.selectThumbnail}
-              selected={index === i}
-            />
-          </ThumbnailContainer>
-        )
-    )
+    const thumbnailsWith3d = ThumbnailsArrayWith3D.map((thumbnail, i) => (
+      <ThumbnailContainer design={i === 0} key={i}>
+        <ThumbnailImg
+          id={i.toString()}
+          src={thumbnail}
+          onClick={this.selectThumbnail}
+          selected={index === i}
+          design={i === 0}
+        />
+      </ThumbnailContainer>
+    ))
 
     const selectedImages = ThumbnailsArray.map((thumbnail, i) => (
       <SelectedImage key={i}>

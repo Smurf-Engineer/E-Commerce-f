@@ -100,6 +100,10 @@ export const GetDesignByIdQuery = gql`
         image
       }
       image
+      flatlockColor: flatlock_code
+      zipperColor: zipper_color
+      bindingColor: binding_color
+      bibBraceColor: bib_brace_color
       shared
       svg: output_svg
       code
