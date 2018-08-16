@@ -37,44 +37,49 @@ class MyCardsList extends React.Component<Props, {}> {
       selectCardToPayAction,
       selectedCard
     } = this.props
-    const cardsList = !!items.length
-      ? items.map((cardItem, key) => {
-          const {
-            last4,
-            name,
-            brand,
-            expMonth,
-            expYear,
-            defaultPayment,
-            id
-          } = cardItem
-          return (
-            <MyCard
-              cardIndex={key}
-              markedAsDefault={String(id) === idDefaultCard}
-              showCardForm={showCardFormAction}
-              {...{
-                id,
-                key,
-                last4,
-                name,
-                brand,
-                expMonth,
-                expYear,
-                defaultPayment,
-                formatMessage,
-                showConfirmDelete,
-                selectCardAsDefault,
-                paymentsRender,
-                listForMyAccount,
-                setStripeCardDataAction,
-                selectCardToPayAction,
-                selectedCard
-              }}
-            />
-          )
-        })
-      : <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+
+    let cardsList
+    if (!!items.length) {
+      cardsList = items.map((cardItem, key) => {
+        const {
+          last4,
+          name,
+          brand,
+          expMonth,
+          expYear,
+          defaultPayment,
+          id
+        } = cardItem
+        return (
+          <MyCard
+            cardIndex={key}
+            markedAsDefault={String(id) === idDefaultCard}
+            showCardForm={showCardFormAction}
+            {...{
+              id,
+              key,
+              last4,
+              name,
+              brand,
+              expMonth,
+              expYear,
+              defaultPayment,
+              formatMessage,
+              showConfirmDelete,
+              selectCardAsDefault,
+              paymentsRender,
+              listForMyAccount,
+              setStripeCardDataAction,
+              selectCardToPayAction,
+              selectedCard
+            }}
+          />
+        )
+      })
+    } else if (listForMyAccount) {
+      cardsList = <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+    }
+
     return (
       <Container>
         <CardsList>{cardsList}</CardsList>
