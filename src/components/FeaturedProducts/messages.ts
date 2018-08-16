@@ -19,6 +19,6 @@ export default defineMessages({
   },
   customizable: {
     id: 'components.FeaturedProducts.customizable',
-    defaultMessage: 'Customizable'
+    defaultMessage: 'Customize'
   }
 })
