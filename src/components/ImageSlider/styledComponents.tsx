@@ -61,9 +61,18 @@ export const SwipeContainer = styled.div`
     width: 100%;
   }
 
-  @media (min-width: 320px) and (max-width: 1024px) {
+  @media (min-width: 426px) and (max-width: 1024px) {
     width: 100%;
     height: 536px;
+  }
+
+  @media (max-width: 425px) {
+    height: 300px;
+
+    div div:first-child {
+      width: 100%;
+      height: 300px;
+    }
   }
 `
 export const SwipeImg = styled.img`
