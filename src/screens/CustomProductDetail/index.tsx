@@ -146,6 +146,10 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const svgUrl = get(design, 'svg', '')
+    const flatlockColor = get(design, 'flatlockColor', '')
+    const zipperColor = get(design, 'zipperColor', '')
+    const bindingColor = get(design, 'bindingColor', '')
+    const bibColor = get(design, 'bibBraceColor', '')
     const product = get(design, 'product', null)
 
     const productId = get(product, 'productId')
@@ -364,7 +368,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <ImagePreview>
                 <ImagesSlider
                   onLoadModel={setLoadingModel}
-                  threeDmodel={<Render3D svg={svgUrl} {...{ product }} />}
+                  threeDmodel={
+                    <Render3D
+                      svg={svgUrl}
+                      {...{
+                        product,
+                        bindingColor,
+                        zipperColor,
+                        bibColor,
+                        flatlockColor
+                      }}
+                    />
+                  }
                   customProduct={true}
                   customImage={designImage}
                   images={thumbnails}
