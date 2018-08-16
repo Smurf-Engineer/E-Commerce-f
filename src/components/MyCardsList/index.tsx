@@ -39,7 +39,7 @@ class MyCardsList extends React.Component<Props, {}> {
     } = this.props
 
     let cardsList
-    if (!!items.length) {
+    if (!!items && !!items.length) {
       cardsList = items.map((cardItem, key) => {
         const {
           last4,
