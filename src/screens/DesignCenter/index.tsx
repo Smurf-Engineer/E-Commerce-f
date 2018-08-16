@@ -515,20 +515,36 @@ export class DesignCenter extends React.Component<Props, {}> {
       StyleTab: StyleTabIndex
     } = DesignTabs
 
-    let tabSelected = currentTab
-    let loadingData = false
-    let isEditing = false
+    let tabSelected =
+      !tabChanged && !dataProduct ? CustomizeTabIndex : currentTab
+    let loadingData = true && !dataProduct
+    let isEditing = !!dataDesign
     const productConfig = get(dataDesign, 'designData.product', product)
-    // const accessoriesColor = {}
     let currentStyle = style
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
-      const { colors: designColors = [], style: designStyle } = designData
+      const {
+        id: designId,
+        colors: designColors = [],
+        style: designStyle,
+        flatlockCode,
+        flatlockColor,
+        bibBraceColor: bibBraceAccesoryColor,
+        bindingColor: bindingAccesoryColor,
+        zipperColor: zipperAccesoryColor
+      } = designData
+      const designConfig = {
+        flatlockCode,
+        flatlockColor,
+        bibBraceColor: bibBraceAccesoryColor,
+        bindingColor: bindingAccesoryColor,
+        zipperColor: zipperAccesoryColor
+      }
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
-      isEditing = true
+      currentStyle.accessoriesColor = designConfig
     }
 
     const loadingView = (
@@ -547,6 +563,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             currentTheme={themeId}
             onSelectTab={this.handleOnSelectTab}
             currentTab={tabSelected}
+            isEditing={isEditing || loadingData}
             {...{ designHasChanges, styleIndex }}
           />
           <SwipeableViews
@@ -743,12 +760,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                   <FormattedMessage {...messages.inspirationTtitle} />
                 </StyledTitle>
                 <DesignCenterInspiration
-                  styleId={style.id}
+                  styleId={currentStyle.id}
                   {...{ setPaletteAction, formatMessage }}
                   hideBottomSheet={this.toggleBottomSheet}
-                  onPressSeeAll={() => {}}
-                  onPressCustomize={() => {}}
-                  onPressQuickView={() => {}}
                 />
               </SwipeableBottomSheet>
             </BottomSheetWrapper>

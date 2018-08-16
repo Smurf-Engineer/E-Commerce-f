@@ -140,6 +140,11 @@ export type DesignType = {
   image: string
   createdAt: string
   style: Style
+  flatlockColor: string
+  flatlockCode: string
+  bindingColor: string
+  bibBraceColor: string
+  zipperColor: string
 }
 
 export type SaveDesignType = {
@@ -252,11 +257,14 @@ export interface RegionConfig {
   currency: number | string
 }
 
+export type EditDesign = {}
+
 export interface Style {
   id: number
   name: string
   image: string
   colorBlocks: ColorBlock[]
+  accessoriesColor?: EditDesign
 }
 
 export interface Theme {

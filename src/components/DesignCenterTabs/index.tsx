@@ -13,6 +13,7 @@ interface Props {
   currentTheme: number
   styleIndex: number
   designHasChanges: boolean
+  isEditing: boolean
   onSelectTab: (index: number) => void
 }
 
@@ -23,8 +24,12 @@ const DesignCenterTabs = ({
   onSelectTab,
   styleIndex,
   currentTheme,
-  designHasChanges
+  designHasChanges,
+  isEditing
 }: Props) => {
+  console.log('------IS-------------')
+  console.log(isEditing)
+  console.log('---------------------------')
   const handleOnSelectTab = (index: any) => () => onSelectTab(index)
   const tabs = steps.map((step, index) => {
     const { ThemeTab, StyleTab, CustomizeTab } = DesignTabs
@@ -35,10 +40,11 @@ const DesignCenterTabs = ({
         (currentTab === StyleTab || currentTab === CustomizeTab))
     return (
       <Tab
-        {...{ index, activeOnClick }}
+        {...{ index }}
         key={index}
+        activeOnClick={isEditing ? false : activeOnClick}
         selected={currentTab === index}
-        onSelectTab={activeOnClick ? handleOnSelectTab(index) : undefined}
+        onSelectTab={handleOnSelectTab(index)}
       >
         <FormattedMessage {...messages[step]} />
       </Tab>

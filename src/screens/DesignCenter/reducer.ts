@@ -788,15 +788,28 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingFile', action.isUploading)
     case SET_SEARCH_CLIPARTPARAM:
       return state.set('searchClipParam', action.param)
-    case SET_EDIT_DESIGN_CONFIG_ACTION:
+    case SET_EDIT_DESIGN_CONFIG_ACTION: {
+      const { colors, accessoriesColor } = action
+      const {
+        bindingColor,
+        zipperColor,
+        bibBraceColor,
+        flatlockColor,
+        flatlockCode
+      } = accessoriesColor
+      const stitchingColor = { name: flatlockCode, value: flatlockColor }
       return state.merge({
-        colors: action.colors,
-        styleColors: action.colors,
-        // stitchingColor: action.accessoriesColor.flatlockColor,
-        bindingColor: action.accessoriesColor.bindingColor,
-        zipperColor: action.accessoriesColor.zipperColor,
-        bibColor: action.accessoriesColor.bibColor
+        colors: colors,
+        styleColors: colors,
+        stitchingColor: fromJS(stitchingColor),
+        bindingColor,
+        zipperColor,
+        bibColor: bibBraceColor
+        // TODO: Set these fields
+        // styleId
+        // savedDesignId
       })
+    }
     default:
       return state
   }

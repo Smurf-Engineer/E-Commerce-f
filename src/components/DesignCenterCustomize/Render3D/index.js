@@ -48,8 +48,8 @@ import {
   ZIPPER_NAME,
   BINDING_NAME,
   CHANGE_ACTIONS,
-  WARNING_FACTOR,
-  NUMBER_OF_DECIMALS
+  ACCESSORY_WHITE,
+  ACCESSORY_BLACK
 } from './config'
 import {
   MESH,
@@ -61,8 +61,7 @@ import {
   DPI,
   CM_PER_INCH,
   PROPEL_PALMS,
-  GRIP_TAPE,
-  SOLAR_BIB_BRACE
+  GRIP_TAPE
 } from '../../../constants'
 import {
   Changes,
@@ -115,7 +114,8 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor
+      bibColor: oldBibColor,
+      loadingModel
     } = this.props
     const {
       colors: nextColors,
@@ -126,6 +126,10 @@ class Render3D extends PureComponent {
       zipperColor,
       bibColor
     } = nextProps
+
+    if (loadingModel) {
+      return
+    }
 
     if (oldBibColor !== bibColor && !!this.bibBrace) {
       this.changeExtraColor(BIB_BRACE_NAME, bibColor)
@@ -383,9 +387,15 @@ class Render3D extends PureComponent {
     } = this.props
     onLoadModel(true)
 
-    const loadedTextures = await this.loadTextures(currentStyle, product)
+    const loadedTextures = await this.loadTextures(
+      currentStyle,
+      product,
+      isEditing
+    )
+    const { accessoriesColor } = currentStyle
     if (isEditing) {
-      onSetEditConfig(loadedTextures.colors, {})
+      // TODO: Send styleId and designId
+      onSetEditConfig(loadedTextures.colors, accessoriesColor || {})
     }
 
     this.mtlLoader.load(product.mtl, materials => {
@@ -412,10 +422,12 @@ class Render3D extends PureComponent {
           const { flatlock, areas, bumpMap, branding, colors } = loadedTextures
           /* Stitching */
           if (!!flatlock) {
+            const color =
+              (isEditing && accessoriesColor.flatlockColor) || '#FFFFFF'
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color: '#FFFFFF'
+              color
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
@@ -426,9 +438,11 @@ class Render3D extends PureComponent {
 
           /* Zipper */
           if (!!this.zipper) {
+            const color =
+              (isEditing && accessoriesColor.zipperColor) || ACCESSORY_WHITE
             const zipperIndex = getMeshIndex(ZIPPER)
             const zipperMaterial = new THREE.MeshPhongMaterial({
-              map: this.zipper.white,
+              map: this.zipper[color],
               transparent: true
             })
             children[zipperIndex].material = zipperMaterial
@@ -436,9 +450,11 @@ class Render3D extends PureComponent {
           }
           /* Binding */
           if (!!this.binding) {
+            const color =
+              (isEditing && accessoriesColor.bindingColor) || ACCESSORY_WHITE
             const bindingIndex = getMeshIndex(BINDING)
             const bindingMaterial = new THREE.MeshPhongMaterial({
-              map: this.binding.white,
+              map: this.binding[color],
               transparent: true
             })
             children[bindingIndex].material = bindingMaterial
@@ -446,9 +462,11 @@ class Render3D extends PureComponent {
           }
           /* Bib Brace */
           if (!!this.bibBrace) {
+            const color =
+              (isEditing && accessoriesColor.bibBraceColor) || ACCESSORY_WHITE
             const bibBraceIndex = getMeshIndex(BIB_BRACE)
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
-              map: this.bibBrace.white
+              map: this.bibBrace[color]
             })
             children[bibBraceIndex].material = bibBraceMaterial
             this.setState({ bibBraceIndex })
@@ -547,6 +565,7 @@ class Render3D extends PureComponent {
           this.scene.add(object)
 
           if (design && design.canvasJson) {
+            // TODO: Set each one of the canvasJson.objects
             this.canvasTexture.loadFromJSON(
               design.canvasJson,
               () => (canvasTexture.needsUpdate = true)
