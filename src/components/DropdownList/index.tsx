@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
-import lowerFirst from 'lodash/lowerFirst'
+import lowerCase from 'lodash/lowerCase'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -74,7 +74,11 @@ export class DropdownList extends React.PureComponent<Props> {
     push(route)
   }
 
-  handleOnSeeAll = (type: number, categorySelected: string) => {
+  handleOnSeeAll = (
+    type: number,
+    categorySelected: string,
+    sportSelected: string
+  ) => {
     const {
       history: {
         push,
@@ -82,33 +86,26 @@ export class DropdownList extends React.PureComponent<Props> {
       }
     } = this.props
 
-    const { gender, category } = queryString.parse(search)
+    const { gender, category, sport } = queryString.parse(search)
 
     const toGender = type ? 'women' : 'men'
-    let toCategory: any = categorySelected.replace(/\s/g, '')
+    const toCategory = categorySelected.replace(' & ', ' ')
+    const toSport = sportSelected && lowerCase(sportSelected)
 
-    toCategory =
-      (toCategory.includes('&') && toCategory.split('&')) ||
-      lowerFirst(toCategory)
-
-    if (Array.isArray(toCategory) && toCategory.length > 1) {
-      toCategory = `${lowerFirst(toCategory[0])}-${lowerFirst(toCategory[1])}`
-    }
-
-    const route = `/product-catalogue?gender=${toGender}&category=${toCategory}`
+    const route = `/product-catalogue?gender=${toGender}&category=${toCategory}&sport=${toSport}`
     const atProductCatalogue = (pathname as String).includes(
       'product-catalogue'
     )
 
+    const isMissingFilter = !gender || !category || !sport
     const isChangingGender = atProductCatalogue && gender && gender !== toGender
     const isChangingCategory =
       atProductCatalogue && category && category !== toCategory
+    const isChangingSport = atProductCatalogue && sport && sport !== toSport
+    const isChangingFilter =
+      isChangingGender || isChangingCategory || isChangingSport
 
-    if (
-      (atProductCatalogue && (!gender || !category)) ||
-      isChangingGender ||
-      isChangingCategory
-    ) {
+    if ((atProductCatalogue && isMissingFilter) || isChangingFilter) {
       window.location.replace(route)
       return
     }

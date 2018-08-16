@@ -26,15 +26,15 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   type: number
-  onPressSeeAll: (type: number, category: string, sport: number) => void
+  onPressSeeAll: (type: number, category: string, sport: string) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
   setSportAction: (sport: number) => void
   setCategoryAction: (category: number) => void
   sportSelected: number
   categorySelected: number
-  genders?: Filter[]
-  sports?: Filter[]
+  genders: Filter[]
+  sports: Filter[]
   visible: boolean
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
@@ -55,11 +55,16 @@ export class MenuGender extends React.PureComponent<Props, {}> {
     const {
       onPressSeeAll,
       data: { categories },
+      sports,
       type,
       categorySelected,
       sportSelected
     } = this.props
-    onPressSeeAll(type, categories[categorySelected].name, sportSelected)
+    onPressSeeAll(
+      type,
+      categories[categorySelected].name,
+      sports[sportSelected].name
+    )
   }
 
   getFilter = (array: any[], index: number) =>

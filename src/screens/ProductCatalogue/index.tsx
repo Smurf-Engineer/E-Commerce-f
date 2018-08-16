@@ -87,7 +87,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       setSelectedFilters
     } = this.props
 
-    const { gender, category } = queryString.parse(search)
+    const { gender, category, sport } = queryString.parse(search)
 
     if (gender) {
       const filterObject = {
@@ -99,18 +99,22 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
 
     if (category) {
-      let categoryName =
-        (category.includes('-') && category.split('-')) || upperFirst(category)
-
-      if (Array.isArray(categoryName) && categoryName.length > 1) {
-        categoryName = `${upperFirst(categoryName[0])} & ${upperFirst(
-          categoryName[1]
-        )}`
-      }
+      const categoryName = this.getFormattedFilterName(category, '&')
 
       const filterObject = {
         type: 'categoryFilters',
         name: categoryName,
+        firstGenderSet: true
+      }
+      setSelectedFilters(filterObject)
+    }
+
+    if (sport) {
+      const sportName = this.getFormattedFilterName(sport)
+
+      const filterObject = {
+        type: 'sportFilters',
+        name: sportName,
         firstGenderSet: true
       }
       setSelectedFilters(filterObject)
@@ -364,6 +368,22 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   handleOpenSidebar = () => {
     const { openSidebar, openSidebarMobile } = this.props
     openSidebarMobile(!openSidebar)
+  }
+
+  getFormattedFilterName = (
+    name: string,
+    separator?: string
+  ): string | string[] => {
+    if (!name.includes(' ')) {
+      return upperFirst(name)
+    }
+
+    const array = name.split(' ')
+    const first = upperFirst(array[0])
+    const divider = separator ? ` ${separator} ` : ' '
+    const second = upperFirst(array[1])
+
+    return `${first}${divider}${second}`
   }
 }
 
