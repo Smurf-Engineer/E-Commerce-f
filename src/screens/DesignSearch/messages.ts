@@ -6,7 +6,15 @@ import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'screens.DesignSearch.tittle',
-    defaultMessage: 'DesignSearch'
+    id: 'screens.DesignSearch.title',
+    defaultMessage: 'ORDER SEARCH'
+  },
+  designerTool: {
+    id: 'screens.DesignSearch.designerTool',
+    defaultMessage: 'Designer Tool'
+  },
+  addCode: {
+    id: 'screens.DesignSearch.designerTool',
+    defaultMessage: 'Add JV2-CODE'
   }
 })
