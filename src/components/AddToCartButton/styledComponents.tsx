@@ -6,7 +6,7 @@ import Button from 'antd/lib/button'
 
 export const Container = styled.div`
   display: flex;
-  /* flex-direction: column; */
+  flex-direction: column;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;

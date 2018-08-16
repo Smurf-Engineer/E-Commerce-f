@@ -120,9 +120,6 @@ export class Home extends React.Component<Props, {}> {
       }
     } = this.props
 
-    console.log('########### HOME ##################')
-    console.log(this.props, browserName)
-    console.log('##################################')
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
