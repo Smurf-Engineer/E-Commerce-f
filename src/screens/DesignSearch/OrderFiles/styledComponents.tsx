@@ -26,7 +26,7 @@ export const Code = styled.div`
   margin-bottom: 4px;
 `
 
-export const Status = styled.div`
+export const StatusContainer = styled.div`
   display: flex;
 `
 
@@ -35,6 +35,14 @@ export const Label = styled.div`
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.11px;
+`
+
+export const Status = styled.div`
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.11px;
+  margin-left: 8px;
 `
 
 export const Data = styled.div`

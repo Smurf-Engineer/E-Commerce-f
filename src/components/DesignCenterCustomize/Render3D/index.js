@@ -902,8 +902,7 @@ class Render3D extends PureComponent {
             canvasJson,
             designBase64,
             canvasSvg: this.canvasTexture.toSVG(),
-            styleId: currentStyle.id,
-            designFiles
+            styleId: currentStyle.id
           }
           onOpenSaveDesign(true, saveDesign)
         }, 200)

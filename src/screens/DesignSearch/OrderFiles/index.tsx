@@ -4,7 +4,15 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container, Image, Code, Data, Status, Label } from './styledComponents'
+import {
+  Container,
+  Image,
+  Code,
+  Data,
+  Status,
+  Label,
+  StatusContainer
+} from './styledComponents'
 import { OrderSearchResult } from '../../../types/common'
 
 interface Props {
@@ -19,12 +27,12 @@ const OrderFiles = ({
       <Image src={image} />
       <Data>
         <Code>{productCode}</Code>
-        <Status>
+        <StatusContainer>
           <Label>
             <FormattedMessage {...messages.status} />
           </Label>
-          <Label>{status}</Label>
-        </Status>
+          <Status>{status}</Status>
+        </StatusContainer>
       </Data>
     </Container>
   )
