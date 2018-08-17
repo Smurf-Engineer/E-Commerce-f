@@ -22,6 +22,7 @@ import {
   HeaderPriceDetailEmpty
 } from './styledComponents'
 import get from 'lodash/get'
+import filter from 'lodash/filter'
 import CartListItemTable from '../../components/CartListItemTable'
 import {
   PriceRange,
@@ -33,6 +34,7 @@ import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
 import { FormattedMessage } from 'react-intl'
 import AddToCartButton from '../AddToCartButton'
+import config from '../../config/index'
 
 interface CartItems {
   product: Product
@@ -94,6 +96,8 @@ interface Props {
   itemIndex: number
   onlyRead?: boolean
   canReorder?: boolean
+  currentCurrency: string
+  currencySymbol?: string
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -175,6 +179,8 @@ class CartListItem extends React.Component<Props, {}> {
       canReorder,
       productTotal,
       unitPrice,
+      currentCurrency,
+      currencySymbol,
       handleAddItemDetail = () => {},
       handledeleteItemDetail = () => {},
       setLabelItemDetail = () => {},
@@ -195,21 +201,26 @@ class CartListItem extends React.Component<Props, {}> {
 
     const productPriceRanges = get(cartItem, 'product.priceRange', [])
 
-    let priceRange = this.getPriceRange(productPriceRanges, quantitySum)
+    // get prices from currency
+    const currencyPrices = filter(productPriceRanges, {
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
+
+    let priceRange = this.getPriceRange(currencyPrices, quantitySum)
 
     priceRange =
       priceRange && priceRange.price === 0
-        ? productPriceRanges[productPriceRanges.length - 1]
+        ? currencyPrices[currencyPrices.length - 1]
         : priceRange
 
     const itemTotal = priceRange
       ? priceRange.price * quantitySum
       : unitPrice || 0 * quantitySum
     const total = productTotal || itemTotal
-    const unitaryPrice = priceRange ? priceRange.price : unitPrice
+    const unitaryPrice = unitPrice || priceRange.price
 
-    const nextPrice = productPriceRanges.length
-      ? this.getNextPrice(productPriceRanges, quantitySum)
+    const nextPrice = currencyPrices.length
+      ? this.getNextPrice(currencyPrices, quantitySum)
       : { items: 0, price: 0 }
 
     const table = (
@@ -249,16 +260,18 @@ class CartListItem extends React.Component<Props, {}> {
           </ItemDetailsHeaderNameDetail>
         </NameContainer>
         <PriceContainer>
-          <ItemDetailsHeaderPrice>{`$${total || 0}`}</ItemDetailsHeaderPrice>
+          <ItemDetailsHeaderPrice>{`${currencySymbol || '$'} ${total ||
+            0}`}</ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} $${unitaryPrice || 0}`}
+            {`${formatMessage(messages.unitPrice)} ${currencySymbol ||
+              '$'} ${unitaryPrice || 0}`}
           </ItemDetailsHeaderPriceDetail>
           {!onlyRead && nextPrice.items > 0 ? (
             <ItemDetailsHeaderPriceDetail>
               <FormattedMessage
                 {...messages.addMoreFor}
                 values={{
-                  price: nextPrice.price,
+                  price: `${currencySymbol || '$'} ${nextPrice.price}`,
                   products: nextPrice.items
                 }}
               />

@@ -244,8 +244,11 @@ class Checkout extends React.Component<Props, {}> {
     }
 
     const shoppingCart = stateLocation.cart as CartItems[]
-    const shoppingCartData = getShoppingCartData(shoppingCart)
-    const { total, totalWithoutDiscount, weightSum } = shoppingCartData
+    const shoppingCartData = getShoppingCartData(
+      shoppingCart,
+      currentCurrency || config.defaultCurrency
+    )
+    const { total, totalWithoutDiscount, weightSum, symbol } = shoppingCartData
     const { Step } = Steps
     const steps = stepperTitles.map((step, index) => (
       <Step
@@ -276,7 +279,11 @@ class Checkout extends React.Component<Props, {}> {
         <PaypalExpressBtn
           env={config.paypalEnv}
           client={paypalClient}
-          currency={'USD'} // TODO: set currency
+          currency={
+            currentCurrency
+              ? currentCurrency.toUpperCase()
+              : config.defaultCurrency.toUpperCase()
+          }
           shipping={1}
           onSuccess={this.onPaypalSuccess}
           onCancel={this.onPaypalCancel}
@@ -391,6 +398,7 @@ class Checkout extends React.Component<Props, {}> {
                 formatMessage={intl.formatMessage}
                 total={!proDesign ? total : total + DESIGNREVIEWFEE}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
+                currencySymbol={symbol}
                 {...{ totalWithoutDiscount }}
               />
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
@@ -572,7 +580,10 @@ class Checkout extends React.Component<Props, {}> {
     const cardId = selectedCard && selectedCard.id
 
     // get taxes and shipping from query
-    const shoppingCartData = getShoppingCartData(shoppingCart)
+    const shoppingCartData = getShoppingCartData(
+      shoppingCart,
+      currentCurrency || config.defaultCurrency
+    )
     const { weightSum } = shoppingCartData
 
     const taxAddress: TaxAddressObj = {
@@ -629,8 +640,8 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.weight')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
-        unset(priceRange, 'shortName')
-        unset(priceRange, 'abbreviation')
+        // unset(priceRange, 'shortName')
+        // unset(priceRange, 'abbreviation')
       })
       forEach(cartItem.itemDetails, itemDetail => {
         unset(itemDetail, 'gender.__typename')

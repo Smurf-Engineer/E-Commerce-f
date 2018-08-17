@@ -61,6 +61,7 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   openSidebar: boolean
   client: any
+  currentCurrency: string
   // Redux actions
   logoutAction: () => void
   setOpenKeysAction: (keys: string[]) => void
@@ -145,13 +146,14 @@ export class Account extends React.Component<Props, {}> {
       isMobile,
       intl: { formatMessage },
       history,
-      openQuickViewAction: openQuickView
+      openQuickViewAction: openQuickView,
+      currentCurrency
     } = this.props
     switch (screen) {
       case OVERVIEW:
         return (
           <Overview
-            {...{ history, formatMessage }}
+            {...{ history, formatMessage, currentCurrency }}
             goToScreen={this.handleOnGoToScreen}
           />
         )
@@ -320,7 +322,8 @@ export class Account extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const account = state.get('account').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...account, ...responsive }
+  const langProps = state.get('languageProvider').toJS()
+  return { ...account, ...responsive, ...langProps }
 }
 
 const AccountEnhance = compose(
