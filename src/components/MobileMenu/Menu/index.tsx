@@ -3,7 +3,9 @@
  */
 import * as React from 'react'
 import { compose, withApollo } from 'react-apollo'
+import queryString from 'query-string'
 import upperFirst from 'lodash/upperFirst'
+import lowerCase from 'lodash/lowerCase'
 import MenuAntd from 'antd/lib/menu'
 import Spin from 'antd/lib/spin'
 import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
@@ -38,7 +40,8 @@ interface Props {
 class Menu extends React.PureComponent<Props, {}> {
   state = {
     openKeys: [''],
-    genderSelected: null
+    genderSelected: null,
+    sportSelected: null
   }
 
   componentWillReceiveProps({ menuOpen }: Props) {
@@ -51,9 +54,51 @@ class Menu extends React.PureComponent<Props, {}> {
     this.setState({ genderSelected: gender })
   }
 
-  handleClick = ({ item, key, selectedKeys }: any) => {
-    const { history } = this.props
-    history.push(`/product-catalogue?${key}`)
+  handleOpenSport = (sport: string) => {
+    this.setState({ sportSelected: sport })
+  }
+
+  handleClick = ({
+    item: {
+      props: { children }
+    },
+    key,
+    selectedKeys
+  }: any) => {
+    const {
+      history: {
+        push,
+        location: { search, pathname }
+      }
+    } = this.props
+
+    const { genderSelected, sportSelected } = this.state
+
+    const { gender, category, sport } = queryString.parse(search)
+
+    const toGender = !!genderSelected ? 'men' : 'women'
+    const toCategory = children.replace(' & ', ' ')
+    const toSport = sportSelected && lowerCase(sportSelected)
+
+    const route = `/product-catalogue?${key}`
+    const atProductCatalogue = (pathname as String).includes(
+      'product-catalogue'
+    )
+
+    const isMissingFilter = !gender || !category || !sport
+    const isChangingGender = atProductCatalogue && gender && gender !== toGender
+    const isChangingCategory =
+      atProductCatalogue && category && category !== toCategory
+    const isChangingSport = atProductCatalogue && sport && sport !== toSport
+    const isChangingFilter =
+      isChangingGender || isChangingCategory || isChangingSport
+
+    if ((atProductCatalogue && isMissingFilter) || isChangingFilter) {
+      window.location.replace(route)
+      return
+    }
+
+    push(route)
   }
 
   onOpenChange = (openKeys: string[]) => {
@@ -153,11 +198,14 @@ class Menu extends React.PureComponent<Props, {}> {
               !!categories.length && (
                 <SubMenu
                   key={`${genderName}-${label}-${key}`}
+                  onClick={this.handleOpenSport(label)}
                   title={upperFirst(label)}
                 >
                   {categories.map(({ name }: Filter) => (
                     <MenuAntd.Item
-                      key={`gender=${genderName}&sport=${label}&category=${name}`}
+                      key={`gender=${genderName}&sport=${label}&category=${lowerCase(
+                        name
+                      )}`}
                     >
                       {name}
                     </MenuAntd.Item>
@@ -177,6 +225,7 @@ class Menu extends React.PureComponent<Props, {}> {
           !!categories.length && (
             <SubMenu
               key={`menu-${label}-${index}`}
+              onClick={this.handleOpenSport(label)}
               title={
                 <span>
                   <FormattedMessage {...messages[label]} />
@@ -184,7 +233,9 @@ class Menu extends React.PureComponent<Props, {}> {
               }
             >
               {categories.map(({ name: categoryName }: any) => (
-                <MenuAntd.Item key={`sport=${label}&category=${categoryName}`}>
+                <MenuAntd.Item
+                  key={`sport=${label}&category=${lowerCase(categoryName)}`}
+                >
                   {categoryName}
                 </MenuAntd.Item>
               ))}
