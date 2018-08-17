@@ -28,6 +28,7 @@ interface StateProps {
   selectedCountryId: string | undefined
   selectedRegion: string | undefined
   selectedCity: string | undefined
+  selectedRegionCode: string | undefined
 }
 
 interface Props {
@@ -51,7 +52,8 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     selectedCountry: '',
     selectedCountryId: '',
     selectedRegion: '',
-    selectedCity: ''
+    selectedCity: '',
+    selectedRegionCode: ''
   }
 
   render() {
@@ -69,7 +71,12 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       formatMessage
     } = this.props
 
-    const { selectedCountry, selectedRegion, selectedCountryId } = this.state
+    const {
+      selectedCountry,
+      selectedRegion,
+      selectedCountryId,
+      selectedRegionCode
+    } = this.state
 
     return (
       <ShippingFormContainer>
@@ -163,7 +170,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               {...{ formatMessage }}
               disabled={!country}
               country={selectedCountryId}
-              region={selectedRegion}
+              region={
+                selectedRegion
+                  ? `${selectedRegion}-${selectedRegionCode}`
+                  : undefined
+              }
               handleRegionChange={this.handleRegionChange}
             />
             {!stateProvince &&
@@ -237,10 +248,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     inputChangeAction(COUNTRY_VALUE_ID, value)
   }
 
-  handleRegionChange = (value: any) => {
+  handleRegionChange = (value: any, regionCode: string) => {
     const { inputChangeAction } = this.props
     this.setState({
       selectedRegion: value,
+      selectedRegionCode: regionCode,
       selectedCity: ''
     })
     inputChangeAction(STATE_VALUE_ID, value)

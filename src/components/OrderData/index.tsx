@@ -52,6 +52,7 @@ interface Props {
   data: Data
   sendEmailAlert: boolean
   sendSmsAlert: boolean
+  currentCurrency: string
   // actions
   emailAlertCheckedAction: (checked: boolean) => void
   smsAlertCheckedAction: (checked: boolean) => void
@@ -85,11 +86,13 @@ class OrderData extends React.Component<Props, {}> {
           shippingTax,
           payment: { stripeCharge },
           cart,
-          paymentMethod
+          paymentMethod,
+          currency
         }
       },
       sendEmailAlert,
-      sendSmsAlert
+      sendSmsAlert,
+      currentCurrency
     } = this.props
 
     const cardName = get(stripeCharge, 'cardData.name', '')
@@ -130,7 +133,8 @@ class OrderData extends React.Component<Props, {}> {
 
           const priceRange = {
             quantity: '0',
-            price: 0
+            price: 0,
+            shortName: ''
           }
 
           const itemImage = designId ? designImage || '' : images[0].front
@@ -140,7 +144,14 @@ class OrderData extends React.Component<Props, {}> {
             : shortDescription
           return (
             <CartListItem
-              {...{ formatMessage, productTotal, unitPrice, cartItem }}
+              {...{
+                formatMessage,
+                productTotal,
+                unitPrice,
+                cartItem,
+                currentCurrency
+              }}
+              currencySymbol={currency.shortName}
               key={index}
               image={itemImage}
               title={itemTitle}
@@ -249,6 +260,7 @@ class OrderData extends React.Component<Props, {}> {
               shipping={shippingTax}
               discount={0}
               onlyRead={true}
+              currencySymbol={currency.shortName}
               {...{ formatMessage }}
             />
           </SummaryContainer>

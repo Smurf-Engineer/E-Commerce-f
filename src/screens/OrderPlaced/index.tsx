@@ -13,11 +13,13 @@ import messages from './messages'
 import { Container } from './styledComponents'
 import OrderDataContent from '../../components/OrderData'
 import Layout from '../../components/MainLayout'
+import config from '../../config/index'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   sendEmailAlert: boolean
   sendSmsAlert: boolean
+  currentCurrency: string
   // Reducer Actions
   emailAlertCheckedAction: (checked: boolean) => void
   smsAlertCheckedAction: (checked: boolean) => void
@@ -32,7 +34,8 @@ export class OrderPlaced extends React.Component<Props, {}> {
       emailAlertCheckedAction,
       smsAlertCheckedAction,
       sendEmailAlert,
-      sendSmsAlert
+      sendSmsAlert,
+      currentCurrency
     } = this.props
 
     const queryParams = queryString.parse(search)
@@ -49,6 +52,7 @@ export class OrderPlaced extends React.Component<Props, {}> {
         <Container>
           <OrderDataContent
             formatMessage={intl.formatMessage}
+            currentCurrency={currentCurrency || config.defaultCurrency}
             {...{
               orderId,
               emailAlertCheckedAction,
@@ -64,11 +68,21 @@ export class OrderPlaced extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('orderPlaced').toJS()
+const mapStateToProps = (state: any) => {
+  const orderProps = state.get('orderPlaced').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return {
+    ...orderProps,
+    ...langProps
+  }
+}
 
 const OrderPlacedEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...orderPlacedActions })
+  connect(
+    mapStateToProps,
+    { ...orderPlacedActions }
+  )
 )(OrderPlaced)
 
 export default OrderPlacedEnhance

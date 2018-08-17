@@ -76,6 +76,7 @@ export type ImageType = {
 export type PriceRange = {
   quantity: string
   price: number
+  shortName: string
 }
 
 export interface GenderType {
@@ -495,6 +496,7 @@ export interface OrderDetailsInfo {
   payment: PaymentCharges
   cart: CartItems[]
   status: string
+  currency: Currency
 }
 
 export interface OrderDataInfo {
@@ -523,6 +525,7 @@ export interface OrderDataInfo {
   }
   cart: CartItems[]
   paymentMethod: string
+  currency: Currency
 }
 
 export interface TextFormat {
@@ -772,6 +775,11 @@ export interface Country {
 
 export interface CountryRegion {
   region: string
+  code: CountryCode
+}
+
+export interface CountryCode {
+  shortCode: string
 }
 
 export interface City {
