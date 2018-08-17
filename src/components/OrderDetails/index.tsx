@@ -58,13 +58,21 @@ interface Props {
   orderId: string
   data?: Data
   from: string
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   onReturn: (id: string) => void
 }
 
 export class OrderDetails extends React.Component<Props, {}> {
   render() {
-    const { data, orderId, from, formatMessage, onReturn } = this.props
+    const {
+      data,
+      orderId,
+      from,
+      formatMessage,
+      onReturn,
+      currentCurrency
+    } = this.props
 
     const handleOnReturn = () => onReturn('')
 
@@ -103,7 +111,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       netsuit,
       payment: { stripeCharge },
       cart,
-      status
+      status,
+      currency
     } = data.orderQuery
 
     const deliveryDate =
@@ -127,7 +136,8 @@ export class OrderDetails extends React.Component<Props, {}> {
 
           const priceRange = {
             quantity: '0',
-            price: 0
+            price: 0,
+            shortName: ''
           }
 
           const itemImage = designId ? designImage || '' : images[0].front
@@ -137,7 +147,14 @@ export class OrderDetails extends React.Component<Props, {}> {
             : shortDescription
           return (
             <CartListItem
-              {...{ formatMessage, productTotal, unitPrice, cartItem }}
+              {...{
+                formatMessage,
+                productTotal,
+                unitPrice,
+                cartItem,
+                currentCurrency
+              }}
+              currencySymbol={currency.shortName}
               key={index}
               image={itemImage}
               title={itemTitle}
@@ -223,8 +240,10 @@ export class OrderDetails extends React.Component<Props, {}> {
               total={totalSum + shippingTax}
               subtotal={totalSum}
               shipping={shippingTax}
+              taxes={0} // TODO: get
               discount={0}
               onlyRead={true}
+              currencySymbol={currency.shortName}
               {...{ formatMessage }}
             />
           </OrderSummaryContainer>

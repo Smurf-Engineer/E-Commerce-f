@@ -8,6 +8,7 @@ import QuickViewSlider from '../QuickViewSlider'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../Ratings'
 import get from 'lodash/get'
+import filter from 'lodash/filter'
 import messages from './messages'
 import {
   AvailablePrices,
@@ -30,6 +31,7 @@ import closeIcon from '../../assets/cancel-button.svg'
 import ProductInfo from '../../components/ProductInfo'
 import { QueryProps, Product } from '../../types/common'
 import { QuickViewQuery } from './data'
+import config from '../../config/index'
 
 interface State {
   showDescription: boolean
@@ -57,6 +59,7 @@ interface Props {
   history: any
   hideSliderButtons?: boolean
   formatMessage: (messageDescriptor: any) => string
+  currentCurrency: string
 }
 
 export class QuickView extends React.Component<Props, State> {
@@ -72,7 +75,8 @@ export class QuickView extends React.Component<Props, State> {
       handleClose,
       data,
       hideSliderButtons,
-      formatMessage
+      formatMessage,
+      currentCurrency
     } = this.props
 
     const { showDescription, showDetails, showSpecs } = this.state
@@ -98,9 +102,14 @@ export class QuickView extends React.Component<Props, State> {
       yotpoAverageScore
     } = product
 
+    // get prices from currency
+    const currencyPrices = filter(priceRange, {
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
+
     const renderPrices =
       !loading &&
-      priceRange.map(
+      currencyPrices.map(
         ({ price, quantity }, index: number) =>
           index < 4 && (
             <AvailablePrices key={index}>

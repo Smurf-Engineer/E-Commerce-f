@@ -23,6 +23,6 @@ export default defineMessages({
   },
   addMoreFor: {
     id: 'components.ProductInfo.addMoreFor',
-    defaultMessage: 'Add {products} more for ${price}'
+    defaultMessage: 'Add {products} more for {price}'
   }
 })

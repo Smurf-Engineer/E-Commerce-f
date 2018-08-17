@@ -29,6 +29,9 @@ export const getOrderQuery = gql`
       billingCity: billing_address_city
       billingZipCode: billing_address_zip_code
       shippingTax: shipping_tax
+      currency {
+        shortName: short_name
+      }
       orderDate: created_at
       netsuit: netsuit_order {
         orderStatus {

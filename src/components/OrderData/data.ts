@@ -23,6 +23,9 @@ export const getOrderQuery = gql`
       billingZipCode: billing_address_zip_code
       billingCountry: billing_address_country
       shippingTax: shipping_tax
+      currency {
+        shortName: short_name
+      }
       payment: payment_object {
         paypalCharge {
           id

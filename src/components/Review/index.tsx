@@ -79,7 +79,7 @@ class Review extends React.PureComponent<Props, {}> {
       return <div />
     }
 
-    const shoppingCartData = getShoppingCartData(cart)
+    const shoppingCartData = getShoppingCartData(cart, currency)
     const { priceRangeToApply } = shoppingCartData
 
     const renderList = cart
@@ -100,6 +100,7 @@ class Review extends React.PureComponent<Props, {}> {
             : shortDescription
           return (
             <CartListItem
+              currentCurrency={currency}
               formatMessage={formatMessage}
               key={index}
               title={itemTitle}
@@ -108,6 +109,7 @@ class Review extends React.PureComponent<Props, {}> {
               price={currencyPrices[priceRangeToApply]}
               itemIndex={index}
               onlyRead={true}
+              currencySymbol={currencyPrices[0].shortName}
               {...{ cartItem }}
             />
           )
