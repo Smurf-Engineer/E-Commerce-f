@@ -201,6 +201,7 @@ class Menu extends React.PureComponent<Props, {}> {
           }
         >
           {sports.map(({ label, categories }: any, key: number) => {
+            // TODO: Check this out.
             this.getCategories(label)
             return (
               !!categories.length && (
@@ -226,6 +227,7 @@ class Menu extends React.PureComponent<Props, {}> {
 
     const optionsSports = menuOptionsSports.map(
       ({ label, categories }, index) => {
+        // TODO: Check this out.
         this.getCategories(label)
         return (
           <SubMenu
