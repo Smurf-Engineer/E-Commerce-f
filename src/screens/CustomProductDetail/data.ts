@@ -23,7 +23,6 @@ export const GetDesignByIdQuery = gql`
           id
           type: name
           description: short_description
-          shortDescription: short_description
           images: pictures {
             front: front_image
             back: back_image
@@ -111,7 +110,7 @@ export const GetDesignByIdQuery = gql`
     }
   }
 `
-export const desginsQuery = gql`
+export const designsQuery = gql`
   query GetDesigns($limit: Int, $offset: Int) {
     myDesigns: myDesigns(limit: $limit, offset: $offset) {
       designs {

@@ -13,7 +13,7 @@ import filter from 'lodash/filter'
 import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery, desginsQuery } from './data'
+import { GetDesignByIdQuery, designsQuery } from './data'
 import {
   Container,
   Content,
@@ -67,6 +67,8 @@ import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
 import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
+
+const MAX_AMOUNT_PRICES = 4
 
 interface MyDesignsData extends QueryProps {
   myDesigns: { designs: DesignType[] }
@@ -186,7 +188,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       currencyPrices.length &&
       currencyPrices.map(
         ({ price, quantity }, index: number) =>
-          index < 4 && (
+          index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
               <PriceQuantity {...{ index, price, quantity }} />
             </AvailablePrices>
@@ -492,7 +494,7 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
-  graphql<any>(desginsQuery, {
+  graphql<any>(designsQuery, {
     options: () => {
       return {
         variables: {
