@@ -6,6 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Search from 'antd/lib/input/Search'
+import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
 import messages from './messages'
 import {
@@ -16,9 +17,11 @@ import {
   Content,
   Title,
   ContentHeader,
-  Subtitle
+  Subtitle,
+  LoadingContainer
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
+import OrderFiles from './OrderFiles'
 
 interface Props {
   history: any
@@ -26,7 +29,6 @@ interface Props {
 
 export class DesignSearch extends React.Component<Props, {}> {
   render() {
-    console.log(this.props)
     return (
       <Container>
         <Header>
@@ -46,10 +48,14 @@ export class DesignSearch extends React.Component<Props, {}> {
           </Subtitle>
           <Search
             placeholder="Product Code"
-            onSearch={value => console.log(value)}
+            onSearch={this.handleOnSearch}
             enterButton={true}
             size="large"
           />
+          <LoadingContainer>
+            <Spin />
+          </LoadingContainer>
+          <OrderFiles />
         </Content>
       </Container>
     )
@@ -58,6 +64,10 @@ export class DesignSearch extends React.Component<Props, {}> {
   goToDesignerTool = () => {
     const { history } = this.props
     history.push('designer-tool')
+  }
+
+  handleOnSearch = (value: string) => {
+    // TODO: execute query
   }
 }
 
