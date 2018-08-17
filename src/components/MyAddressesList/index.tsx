@@ -184,7 +184,9 @@ export class MyAddressesList extends React.Component<Props, {}> {
     if (!!addresses.length) {
       renderView = addressesList
     } else if (listForMyAccount) {
-      renderView = <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+      renderView = (
+        <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+      )
     }
 
     return (
@@ -221,7 +223,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
   handleOnSelectAddress = (index: number) => {
     const {
-      selectAddressAction = () => { },
+      selectAddressAction = () => {},
       data: {
         userAddresses: { addresses }
       }

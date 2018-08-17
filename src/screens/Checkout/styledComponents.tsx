@@ -133,11 +133,12 @@ export const PlaceOrderButton = styled(Button)`
 `
 
 interface StepProps {
-  clickable: boolean
+  clickable?: boolean
 }
 
 export const StepIcon = styled.div`
-  background-color: #4a90e2;
+  background-color: ${({ clickable }: StepProps) =>
+    !clickable ? '#4a90e2' : '#fff'};
   color: #fff;
   width: 32px;
   border-radius: 50%;
@@ -147,8 +148,7 @@ export const StepIcon = styled.div`
 
 export const CheckIcon = styled(Icon)`
   color: #4a90e2;
-  width: 32px;
-  cursor: ${({ clickable }: StepProps) => (clickable ? 'pointer' : 'default')};
+  font-size: 27px;
 `
 
 export const paypalButtonStyle = {

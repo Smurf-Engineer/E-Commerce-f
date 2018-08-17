@@ -253,9 +253,11 @@ class Checkout extends React.Component<Props, {}> {
         title={step}
         icon={
           currentStep > index ? (
-            <CheckIcon type="check-circle-o" clickable={currentStep > index} />
+            <StepIcon clickable={currentStep > index}>
+              <CheckIcon type="check-circle-o" />
+            </StepIcon>
           ) : currentStep === index ? (
-            <StepIcon clickable={currentStep > index}>{index + 1}</StepIcon>
+            <StepIcon>{index + 1}</StepIcon>
           ) : null
         }
         onClick={this.handleOnStepClick(index)}
@@ -604,6 +606,11 @@ class Checkout extends React.Component<Props, {}> {
     forEach(shoppingCart, cartItem => {
       unset(cartItem, 'designImage')
       unset(cartItem, 'designName')
+      unset(cartItem, 'svg')
+      unset(cartItem, 'shared')
+      unset(cartItem, 'shortId')
+      unset(cartItem, 'createdAt')
+      unset(cartItem, '__typename')
       unset(cartItem, 'product.shortDescription')
       unset(cartItem, 'product.isTopProduct')
       unset(cartItem, 'product.__typename')

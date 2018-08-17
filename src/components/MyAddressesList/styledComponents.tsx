@@ -25,7 +25,7 @@ export const Title = styled.div`
   margin-bottom: 20px;
 `
 export const AddAddressBtn = styled(Button)`
-  height: 40px;
+  height: 50px;
   width: 221px;
   border: 2px solid #4a90e2;
   border-radius: 2px;
@@ -39,8 +39,9 @@ export const AddAddressBtn = styled(Button)`
   margin: 0 0 20px;
 
   &:hover {
-    color: #4a90e2;
+    background-color: #4a90e2;
     border-color: #4a90e2;
+    color: #fff;
   }
 `
 
