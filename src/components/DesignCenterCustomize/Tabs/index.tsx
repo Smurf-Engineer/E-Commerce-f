@@ -21,7 +21,8 @@ import {
   StitchingColor,
   AccesoryColor,
   Product,
-  ImageFile
+  ImageFile,
+  CanvasElement
 } from '../../../types/common'
 import { Container } from './styledComponents'
 
@@ -60,7 +61,7 @@ interface Props {
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   onApplyImage: (file: ImageFile) => void
-  onApplyArt: (url: string) => void
+  onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
   onSelectArtFormat: (key: string, value: string | number) => void

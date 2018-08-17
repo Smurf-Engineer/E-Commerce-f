@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
+import { RED } from '../../theme/colors'
 
 type StyleProps = {
   checkColor?: string
@@ -74,11 +75,10 @@ export const StyledCheckbox = styled(Checkbox)`
 
   .ant-checkbox:hover .ant-checkbox-inner,
   .ant-checkbox-input:focus > .ant-checkbox-inner {
-    border-color: ${({ checkColor }: StyleProps) => checkColor || '#e61737'};
+    border-color: ${({ checkColor }: StyleProps) => checkColor || RED};
   }
   .ant-checkbox-checked .ant-checkbox-inner,
   .ant-checkbox-indeterminate .ant-checkbox-inner {
-    background-color: ${({ checkColor }: StyleProps) =>
-      checkColor || '#e61737'};
+    background-color: ${({ checkColor }: StyleProps) => checkColor || RED};
   }
 `
