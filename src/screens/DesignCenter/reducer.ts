@@ -790,7 +790,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SEARCH_CLIPARTPARAM:
       return state.set('searchClipParam', action.param)
     case SET_EDIT_DESIGN_CONFIG_ACTION: {
-      const { colors, accessoriesColor } = action
+      const { colors, accessoriesColor, savedDesignId } = action
       const {
         bindingColor,
         zipperColor,
@@ -806,10 +806,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         stitchingColor: fromJS(stitchingColor),
         bindingColor,
         zipperColor,
-        bibColor: bibBraceColor
-        // TODO: Set these fields
-        // styleId
-        // savedDesignId
+        bibColor: bibBraceColor,
+        savedDesignId
       })
     }
     case SET_LOADED_CANVAS_ACTION: {

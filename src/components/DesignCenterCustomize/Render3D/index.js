@@ -466,10 +466,9 @@ class Render3D extends PureComponent {
       product,
       isEditing
     )
-    const { accessoriesColor } = currentStyle
+    const { accessoriesColor, designId } = currentStyle
     if (isEditing) {
-      // TODO: Send styleId and designId
-      onSetEditConfig(loadedTextures.colors, accessoriesColor || {})
+      onSetEditConfig(loadedTextures.colors, accessoriesColor || {}, designId)
     } else {
       onLoadModel(true)
     }

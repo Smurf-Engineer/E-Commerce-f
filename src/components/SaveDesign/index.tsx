@@ -19,7 +19,8 @@ import {
   ButtonWrapper,
   Button,
   StyledSaveAs,
-  CheckWrapper
+  CheckWrapper,
+  InputWrapper
 } from './styledComponents'
 import {
   SaveDesignType,
@@ -29,6 +30,7 @@ import {
   CanvasType
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
+import { ACCENT_COLOR, GREY } from '../../theme/colors'
 
 type DesignInput = {
   name?: string
@@ -279,6 +281,9 @@ export class SaveDesign extends React.Component<Props, {}> {
       checkedTerms,
       saveDesignLoading
     } = this.props
+
+    const disabledSaveButton = !checkedTerms || !designName
+
     return (
       <Container>
         <Modal
@@ -286,7 +291,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           footer={null}
           closable={false}
           maskClosable={true}
-          width={'30%'}
+          width={'25%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
         >
@@ -295,7 +300,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           </Title>
           {savedDesignId !== '' ? (
             <StyledSaveAs>
-              <ButtonWrapper>
+              <ButtonWrapper color="">
                 <Button
                   type="primary"
                   disabled={!checkedTerms}
@@ -314,30 +319,30 @@ export class SaveDesign extends React.Component<Props, {}> {
               <FormattedMessage {...messages.modalText} />
             </Text>
           )}
-          <StyledInput
-            id="saveDesignName"
-            value={designName}
-            placeholder={formatMessage(messages.placeholder)}
-            onChange={this.handleInputChange}
-            maxLength="15"
-          />
+          <InputWrapper>
+            <StyledInput
+              id="saveDesignName"
+              value={designName}
+              placeholder={formatMessage(messages.placeholder)}
+              onChange={this.handleInputChange}
+              maxLength="15"
+            />
+          </InputWrapper>
           <CheckWrapper>
             <Checkbox onChange={this.toggleChecked}>
               {formatMessage(messages.checkCopyright)}
             </Checkbox>
           </CheckWrapper>
-          <ButtonWrapper>
+          <ButtonWrapper color={disabledSaveButton ? GREY : ACCENT_COLOR}>
             <Button
               type="primary"
-              disabled={!checkedTerms}
+              disabled={disabledSaveButton}
               onClick={this.handleSaveName}
               loading={saveDesignLoading}
             >
-              {savedDesignId !== '' ? (
-                <FormattedMessage {...messages.modalSaveAsNewDesign} />
-              ) : (
-                <FormattedMessage {...messages.save} />
-              )}
+              {savedDesignId !== ''
+                ? formatMessage(messages.modalSaveAsNewDesign)
+                : formatMessage(messages.save)}
             </Button>
           </ButtonWrapper>
         </Modal>

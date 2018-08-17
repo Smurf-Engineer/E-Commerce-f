@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import AntdButton from 'antd/lib/button'
+import { ACCENT_COLOR } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: #222;
@@ -44,16 +45,20 @@ export const Button = styled(AntdButton)`
   width: 100%;
 `
 
+type PropsButton = {
+  color: string
+}
+
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${({ color }: PropsButton) => color};
+    border-color: ${({ color }: PropsButton) => color};
     width: 100%;
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${({ color }: PropsButton) => color};
+    border-color: ${({ color }: PropsButton) => color};
   }
 `
 export const CheckWrapper = styled.div`
@@ -61,10 +66,28 @@ export const CheckWrapper = styled.div`
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
   .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: #4a90e2;
+    border-color: ${ACCENT_COLOR};
   }
   .ant-checkbox-checked .ant-checkbox-inner,
   .ant-checkbox-indeterminate .ant-checkbox-inner {
-    background-color: #4a90e2;
+    background-color: ${ACCENT_COLOR};
+  }
+`
+
+export const InputWrapper = styled.div`
+  padding: 4px 0px;
+  .ant-input:hover {
+    border-color: ${ACCENT_COLOR};
+  }
+
+  .ant-input:focus {
+    border-color: ${ACCENT_COLOR};
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  }
+
+  .ant-input::selection {
+    background: ${ACCENT_COLOR};
   }
 `

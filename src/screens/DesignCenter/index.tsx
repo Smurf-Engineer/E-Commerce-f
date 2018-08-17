@@ -34,7 +34,10 @@ import {
   ModalMessage,
   StyledGhostButton,
   StyledButton,
-  LoadingContainer
+  LoadingContainer,
+  Error,
+  Title,
+  ErrorMessage
 } from './styledComponents'
 import {
   Palette,
@@ -210,7 +213,8 @@ interface Props extends RouteComponentProps<any> {
   setLoadedCanvasAction: (canvas: CanvasType) => void
   setEditConfigAction: (
     colors: string[],
-    accessoriesColor: AccessoriesColor
+    accessoriesColor: AccessoriesColor,
+    savedDesignId: string
   ) => void
 }
 
@@ -496,7 +500,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     const productQueryWithError = !!dataProduct && !!dataProduct.error
     const designQueryWithError = !!dataDesign && !!dataDesign.error
     if (productQueryWithError || designQueryWithError) {
-      // TODO: Change for error message
       return (
         <Layout
           {...{ history, intl }}
@@ -504,7 +507,12 @@ export class DesignCenter extends React.Component<Props, {}> {
           hideFooter={true}
         >
           <Header onPressBack={this.handleOnPressBack} />
-          <div>Error</div>
+          <Error>
+            <Title>Oops!</Title>
+            <ErrorMessage>
+              <FormattedMessage {...messages.errorMessage} />
+            </ErrorMessage>
+          </Error>
         </Layout>
       )
     }
@@ -520,7 +528,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       !!dataDesign &&
       !!dataDesign.designData &&
       !!dataDesign.designData.product &&
-      (!dataDesign.designData.product.obj || !dataDesign.designData.product.mtl)
+      (!dataDesign.designData.product.obj ||
+        !dataDesign.designData.product.mtl ||
+        !dataDesign.designData.canEdit)
 
     /**
      * Redirect for retail products or missing 3D files
@@ -535,12 +545,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataDesign, 'designData.product.name', '')
 
     const canvasJson = get(dataDesign, 'designData.canvas')
-    const styleId = get(dataDesign, 'designData.styleId')
-
     let designObject = design
-    // TODO: REMOVE styleId?
     if (canvasJson) {
-      designObject = { ...designObject, canvasJson, styleId }
+      designObject = { ...designObject, canvasJson }
     }
 
     let tabSelected =
@@ -552,8 +559,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       const {
-        // TODO: WIP Modal changes
-        /* id: designId, */
+        shortId: designId,
         colors: designColors = [],
         style: designStyle,
         flatlockCode,
@@ -576,6 +582,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
+      currentStyle.designId = designId
     }
 
     const loadingView = (

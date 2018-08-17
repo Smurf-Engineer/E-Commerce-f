@@ -1,5 +1,6 @@
 {
   "screens.NotFoundPage.header": "Page not found.",
+  "components.withError.error": "Something went wrong",
   "components.menuBar.login": "LOGIN",
   "components.menuBar.men": "MEN",
   "components.menuBar.women": "WOMEN",
@@ -145,7 +146,7 @@
   "components.ShareDesignModal.addMessageLabel": "Add a message...",
   "components.ShareDesignModal.sendButtonLabel": "Send",
   "components.ShareDesignModal.copyButtonLabel": "Copy",
-  "components.SaveDesign.modalTitle": "Save your design",
+  "components.SaveDesign.modalTitle": "SAVE YOUR DESIGN",
   "components.SaveDesign.modalText": "Name it something that is simple and recognizable to you.",
   "components.SaveDesign.modalSaveAsNewDesign": "Save as new design",
   "components.SaveDesign.placeholder": "Design name",

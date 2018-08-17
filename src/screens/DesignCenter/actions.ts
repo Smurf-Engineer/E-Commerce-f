@@ -408,11 +408,13 @@ export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
 
 export const setEditConfigAction = (
   colors: string[],
-  accessoriesColor: AccessoriesColor
+  accessoriesColor: AccessoriesColor,
+  savedDesignId: string
 ): AnyAction => ({
   type: SET_EDIT_DESIGN_CONFIG_ACTION,
   colors,
-  accessoriesColor
+  accessoriesColor,
+  savedDesignId
 })
 
 export const setLoadedCanvasAction = (canvas: CanvasType): AnyAction => ({
