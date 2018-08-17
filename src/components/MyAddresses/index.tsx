@@ -12,6 +12,7 @@ import ShippingAddressForm from '../../components/ShippingAddressForm'
 import {
   Container,
   StyledEmptyButton,
+  ButtonWrapper,
   Title,
   StyledCheckbox
 } from './styledComponents'
@@ -47,6 +48,7 @@ interface Props {
   currentPage: number
   limit: number
   skip: number
+  listForMyAccount: boolean
   formatMessage: (messageDescriptor: any) => string
   // reducer actions
   selectDropdownAction: (id: string, value: string) => void
@@ -98,7 +100,8 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       setAddressToUpdateAction,
       currentPage,
       skip,
-      limit
+      limit,
+      listForMyAccount
     } = this.props
 
     const content = (
@@ -114,21 +117,23 @@ class MyAddresses extends React.PureComponent<Props, {}> {
           showDeleteAddressConfirmAction,
           setAddressToUpdateAction,
           currentPage,
-          skip
+          skip,
+          listForMyAccount
         }}
         itemsNumber={limit}
         withPagination={true}
         paginationAlignment={'start'}
         changePage={this.handlechangePage}
-        listForMyAccount={true}
       />
     )
 
     return (
       <Container>
-        <StyledEmptyButton type="danger" onClick={this.handleOnShowModal}>
-          {formatMessage(messages.addAddress)}
-        </StyledEmptyButton>
+        <ButtonWrapper {...{ listForMyAccount }}>
+          <StyledEmptyButton type="danger" onClick={this.handleOnShowModal}>
+            {formatMessage(messages.addAddress)}
+          </StyledEmptyButton>
+        </ButtonWrapper>
         {content}
         <Modal
           visible={showAddressModal}

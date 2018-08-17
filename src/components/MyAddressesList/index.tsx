@@ -18,6 +18,7 @@ import {
   Content,
   Title,
   AddAddressBtn,
+  ButtonWrapper,
   AddressesList,
   PaginationRow,
   DeleteConfirmMessage
@@ -195,10 +196,13 @@ export class MyAddressesList extends React.Component<Props, {}> {
           {!listForMyAccount ? (
             <Title>{formatMessage(messages.title)}</Title>
           ) : null}
+          {/* TODO: Render this button from MyAddresses */}
           {!renderForModal && !listForMyAccount ? (
-            <AddAddressBtn onClick={this.showAddressForm}>
-              {formatMessage(messages.addAddressLabel)}
-            </AddAddressBtn>
+            <ButtonWrapper {...{ listForMyAccount }}>
+              <AddAddressBtn onClick={this.showAddressForm}>
+                {formatMessage(messages.addAddressLabel)}
+              </AddAddressBtn>
+            </ButtonWrapper>
           ) : null}
         </Content>
         {renderView}
