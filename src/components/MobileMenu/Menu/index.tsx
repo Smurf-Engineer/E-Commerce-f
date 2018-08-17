@@ -141,13 +141,13 @@ class Menu extends React.PureComponent<Props, {}> {
       fetchPolicy: 'network-only'
     })
 
-    if (genderId === undefined) {
-      let sport = menuOptionsSports.find(x => x.label === sportName)
+    if (!genderId) {
+      const sport = menuOptionsSports.find(x => x.label === sportName)
       if (sport) {
         sport.categories = categories
       }
     } else {
-      let gender = menuOptionsGenders[genderId - 1].sports.find(
+      const gender = menuOptionsGenders[genderId - 1].sports.find(
         x => x.label === sportName
       )
       if (gender) {
