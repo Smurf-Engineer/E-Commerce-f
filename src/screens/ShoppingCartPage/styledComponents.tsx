@@ -355,7 +355,7 @@ export const ReviewButton = styled(Button)`
   height: 50px;
   width: 220px;
   font-size: 16px;
-  font-weight: 100;
+  font-weight: 300;
 
   @media (max-width: 550px) {
     width: 100%;

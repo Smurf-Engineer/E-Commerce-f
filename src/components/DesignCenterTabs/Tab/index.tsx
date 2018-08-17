@@ -14,7 +14,7 @@ interface Props {
   selected?: boolean
   activeOnClick: boolean
   index: number
-  onSelectTab?: () => void
+  onSelectTab: () => void
 }
 
 const Tab = ({
@@ -24,8 +24,13 @@ const Tab = ({
   onSelectTab,
   activeOnClick
 }: Props) => {
+  const handleOnSelectTab = () => {
+    if (activeOnClick) {
+      onSelectTab()
+    }
+  }
   return (
-    <Container onClick={onSelectTab}>
+    <Container onClick={handleOnSelectTab}>
       {index === 0 && <Divider type="vertical" />}
       <TabContainer {...{ selected, activeOnClick }}>
         <Text {...{ selected, activeOnClick }}>

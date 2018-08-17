@@ -93,8 +93,7 @@ class MyCards extends React.Component<Props, {}> {
   }
   componentDidMount() {
     const {
-      showCardForm,
-      showCardFormAction = () => {},
+      showCardFormAction = () => { },
       data: {
         userCards: { cards, default: idDefaultCard }
       }
@@ -111,10 +110,11 @@ class MyCards extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
 
-    if ((cards && !!cards.length) || !showCardForm) {
+    if (!!cards && !!cards.length) {
       const defaultCard = find(cards, { id: idDefaultCard })
-
       showCardFormAction(false, defaultCard)
+    } else {
+      showCardFormAction(true)
     }
   }
   render() {

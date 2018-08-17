@@ -3,11 +3,13 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { WHITE, GRAY_DARK, BLUE } from '../../theme/colors'
 
 type StyledProps = {
   paginationAlignment?: string
   listForMyAccount?: boolean
 }
+
 export const Container = styled.div`
   width: 100%;
 `
@@ -24,24 +26,28 @@ export const Title = styled.div`
   line-height: 22px;
   margin-bottom: 20px;
 `
+export const ButtonWrapper = styled.div`
+  .ant-btn {
+    background-color: ${WHITE};
+    border-color: ${BLUE};
+    color: ${BLUE};
+  }
+  .ant-btn:hover {
+    background-color: ${BLUE};
+    color: ${WHITE};
+  }
+`
+
 export const AddAddressBtn = styled(Button)`
-  height: 40px;
+  height: 50px;
   width: 221px;
-  border: 2px solid #4a90e2;
+  border: 2px solid ${BLUE};
   border-radius: 2px;
-  background-color: #ffffff;
-  color: #4a90e2;
   font-family: 'Avenir Next';
   font-size: 16px;
-  letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
-  margin: 0 0 20px;
-
-  &:hover {
-    color: #4a90e2;
-    border-color: #4a90e2;
-  }
+  margin-bottom: 20px;
 `
 
 export const AddressesList = styled.div`
@@ -60,7 +66,7 @@ export const AddressesList = styled.div`
 `
 
 export const ViewAllAddresses = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
@@ -84,7 +90,7 @@ export const Message = styled.div`
 `
 
 export const DeleteConfirmMessage = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;

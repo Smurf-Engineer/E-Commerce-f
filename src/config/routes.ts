@@ -1,4 +1,5 @@
 /* Routes */
+import DesignSearch from '../screens/DesignSearch'
 import CustomProductDetail from '../screens/CustomProductDetail'
 import FitAndSizing from '../screens/FitAndSizing'
 import WorkAtJakroo from '../screens/WorkAtJakroo'
@@ -33,6 +34,11 @@ import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
+  {
+    path: '/design-search',
+    name: 'designSearch',
+    component: DesignSearch
+  },
   {
     path: '/custom-product',
     name: 'customProductDetail',

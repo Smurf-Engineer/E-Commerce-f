@@ -20,6 +20,11 @@ export interface DesignSaved {
   product: Product
   style?: Style
   shortId?: string
+  flatlockColor?: string
+  flatlockCode?: string
+  bindingColor?: string
+  bibBraceColor?: string
+  zipperColor?: string
 }
 
 export interface SelectedItem {
@@ -71,6 +76,7 @@ export type ImageType = {
 export type PriceRange = {
   quantity: string
   price: number
+  shortName: string
 }
 
 export interface GenderType {
@@ -136,9 +142,15 @@ export type DesignType = {
   shortId?: string
   visible?: boolean
   product: Product
+  colors: ColorBlock[]
   image: string
   createdAt: string
-  style?: Style
+  style: Style
+  flatlockColor: string
+  flatlockCode: string
+  bindingColor: string
+  bibBraceColor: string
+  zipperColor: string
 }
 
 export type SaveDesignType = {
@@ -251,11 +263,14 @@ export interface RegionConfig {
   currency: number | string
 }
 
+export type EditDesign = {}
+
 export interface Style {
   id: number
   name: string
   image: string
   colorBlocks: ColorBlock[]
+  accessoriesColor?: EditDesign
 }
 
 export interface Theme {
@@ -481,6 +496,7 @@ export interface OrderDetailsInfo {
   payment: PaymentCharges
   cart: CartItems[]
   status: string
+  currency: Currency
 }
 
 export interface OrderDataInfo {
@@ -509,6 +525,7 @@ export interface OrderDataInfo {
   }
   cart: CartItems[]
   paymentMethod: string
+  currency: Currency
 }
 
 export interface TextFormat {
@@ -534,6 +551,7 @@ export interface CanvasElement {
   fill?: string
   stroke?: string
   strokeWidth?: number
+  fileId?: number
 }
 
 export interface CanvasType {
@@ -757,6 +775,11 @@ export interface Country {
 
 export interface CountryRegion {
   region: string
+  code: CountryCode
+}
+
+export interface CountryCode {
+  shortCode: string
 }
 
 export interface City {
@@ -785,6 +808,13 @@ export type StitchingColor = {
 
 export type AccesoryColor = 'black' | 'white'
 
+export type AccessoriesColor = {
+  flatlockColor: string
+  flatlockCode: string
+  bindingColor: string
+  bibBraceColor: string
+  zipperColor: string
+}
 export interface ClickParam {
   key: string
   keyPath: Array<string>
@@ -887,4 +917,9 @@ export interface Inspiration {
   name: string
   image: string
   colors: string[]
+}
+
+export interface DesignFiles {
+  files: number[]
+  svgs: number[]
 }

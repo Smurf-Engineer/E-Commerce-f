@@ -8,6 +8,8 @@ import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
 import Checkbox from 'antd/lib/checkbox'
 import get from 'lodash/get'
+import forEach from 'lodash/forEach'
+import uniq from 'lodash/uniq'
 import messages from './messages'
 import {
   Container,
@@ -23,7 +25,9 @@ import {
   SaveDesignType,
   Product,
   DesignSaved,
-  StitchingColor
+  StitchingColor,
+  CanvasType,
+  DesignFiles
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 
@@ -38,6 +42,7 @@ type DesignInput = {
   zipper_color?: string
   binding_color?: string
   bib_brace_color?: string
+  designFiles?: DesignFiles
 }
 
 interface Data {
@@ -65,6 +70,7 @@ interface Props {
   bindingColor: string
   zipperColor: string
   bibColor: string
+  canvas: CanvasType
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
@@ -127,13 +133,16 @@ export class SaveDesign extends React.Component<Props, {}> {
 
     const { designBase64, canvasJson, styleId } = design
 
+    const designFiles = this.getDesignFiles()
+
     try {
       const designObj: DesignInput = {
         name: designName,
         product_id: productId,
         image: designBase64,
         styleId,
-        canvas: canvasJson
+        canvas: canvasJson,
+        designFiles
       }
 
       /* Accessory colors  */
@@ -239,6 +248,29 @@ export class SaveDesign extends React.Component<Props, {}> {
     const { setCheckedTerms } = this.props
     const { checked } = evt.target
     setCheckedTerms(checked)
+  }
+
+  getDesignFiles = () => {
+    const {
+      canvas: { image, path }
+    } = this.props
+    const files: number[] = []
+    const svgs: number[] = []
+    // tslint:disable:curly
+    forEach(image, img => {
+      const { fileId } = img
+      if (fileId) files.push(fileId)
+    })
+    forEach(path, pth => {
+      const { fileId } = pth
+      if (fileId) svgs.push(fileId)
+    })
+    // tslint:enable:curly
+
+    return {
+      files: uniq(files),
+      svgs: uniq(svgs)
+    }
   }
 
   render() {

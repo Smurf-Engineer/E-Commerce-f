@@ -18,6 +18,7 @@ import {
   Content,
   Title,
   AddAddressBtn,
+  ButtonWrapper,
   AddressesList,
   PaginationRow,
   DeleteConfirmMessage
@@ -63,6 +64,15 @@ interface Props {
 }
 
 export class MyAddressesList extends React.Component<Props, {}> {
+  componentWillMount() {
+    const { data, listForMyAccount, showAddressFormAction } = this.props
+    const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
+
+    if (!addresses.length && !listForMyAccount) {
+      showAddressFormAction(true)
+    }
+  }
+
   render() {
     const {
       showForm,
@@ -171,11 +181,14 @@ export class MyAddressesList extends React.Component<Props, {}> {
       </Modal>
     )
 
-    const renderView = !!addresses.length ? (
-      addressesList
-    ) : (
+    let renderView
+    if (!!addresses.length) {
+      renderView = addressesList
+    } else if (listForMyAccount) {
+      renderView = (
         <EmptyContainer message={formatMessage(messages.emptyMessage)} />
       )
+    }
 
     return (
       <Container {...{ listForMyAccount }}>
@@ -183,10 +196,13 @@ export class MyAddressesList extends React.Component<Props, {}> {
           {!listForMyAccount ? (
             <Title>{formatMessage(messages.title)}</Title>
           ) : null}
+          {/* TODO: Render this button from MyAddresses */}
           {!renderForModal && !listForMyAccount ? (
-            <AddAddressBtn onClick={this.showAddressForm}>
-              {formatMessage(messages.addAddressLabel)}
-            </AddAddressBtn>
+            <ButtonWrapper {...{ listForMyAccount }}>
+              <AddAddressBtn onClick={this.showAddressForm}>
+                {formatMessage(messages.addAddressLabel)}
+              </AddAddressBtn>
+            </ButtonWrapper>
           ) : null}
         </Content>
         {renderView}
