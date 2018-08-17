@@ -312,23 +312,29 @@ class Render3D extends PureComponent {
         const elId = shortid.generate()
         el.id = elId
         el.hasRotatingPoint = false
+        // console.log(el, 'element')
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
             const element = getTextCanvasElement(el)
             canvas.text[elId] = element
+            // console.log(element, 'text')
             break
           }
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
             elements.push(el)
+            // console.log(element, 'path')
+            break
           }
           case CanvasElements.Image: {
             const element = getImageCanvas(el)
+            // console.log(element, 'image')
             canvas.image[elId] = element
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
+            break
           }
           default:
             break
@@ -338,6 +344,10 @@ class Render3D extends PureComponent {
       if (!!imagesElements.length) {
         images = await Promise.all(imagesPromises)
       }
+      console.log(images, 'imagenessssss')
+      console.log(elements, 'elementoosssss')
+      // FIXME: HERE
+
       images.forEach((img, index) => {
         const config = imagesElements[index] || {}
         const imageEl = new fabric.Image(img, { ...config })
@@ -404,6 +414,7 @@ class Render3D extends PureComponent {
         const images = []
         loadedTextures.colors = []
         reversedAreas.forEach(({ color, image }) => {
+          console.log(image, 'image')
           loadedTextures.colors.push(color)
           images.push(image)
         })
@@ -1451,7 +1462,7 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
-    if (this.props.isEditing) return //FIXME: add only id and style to canvas when duplicate
+    if (isEditing) return //FIXME: add only id and style to canvas when duplicate
     const {
       state: {
         src,
