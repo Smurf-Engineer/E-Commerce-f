@@ -71,6 +71,14 @@ const dummyProduct: OrderSearchResult = {
 
 export class DesignSearch extends React.Component<Props, {}> {
   render() {
+    // TODO: uncomment when query is implemented
+    // if (data.loading) {
+    //   return (
+    //     <LoadingContainer>
+    //       <Spin />
+    //     </LoadingContainer>
+    //   )
+    // }
     return (
       <Container>
         <Header>
@@ -94,9 +102,6 @@ export class DesignSearch extends React.Component<Props, {}> {
             enterButton={true}
             size="large"
           />
-          {/* <LoadingContainer>
-            <Spin />
-          </LoadingContainer> */}
           <OrderFiles order={dummyProduct} />
         </Content>
       </Container>

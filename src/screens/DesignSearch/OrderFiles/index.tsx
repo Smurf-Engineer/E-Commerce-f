@@ -17,6 +17,7 @@ import {
 } from './styledComponents'
 import { OrderSearchResult } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
+import AccessoryColor from '../AccessoryColor'
 
 interface Props {
   order: OrderSearchResult
@@ -30,7 +31,14 @@ const OrderFiles = ({
   ))
   return (
     <Container>
-      <Image src={image} />
+      <div>
+        <AccessoryColor name="Bid brace color" color="black" />
+        <AccessoryColor
+          name="Stitching"
+          stitchingColor={{ name: 'FSC-22', value: '#92499E' }}
+        />
+        <Image src={image} />
+      </div>
       <Data>
         <Code>{productCode}</Code>
         <StatusContainer>
