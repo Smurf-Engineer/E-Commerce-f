@@ -553,9 +553,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_ELEMENT_ACTION: {
       const { id, typeEl } = action
       const canvasElement = state.getIn(['canvas', typeEl, id])
-      console.log('------SELECTED-------')
-      console.log(canvasElement)
-      console.log('---------------------------')
       if (canvasElement && typeEl === CanvasElements.Text) {
         return state.merge({
           selectedElement: id,
