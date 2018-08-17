@@ -22,7 +22,8 @@ import {
   ImageFile,
   CanvasResized,
   CanvasDragged,
-  CanvasRotated
+  CanvasRotated,
+  AccessoriesColor
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -55,7 +56,7 @@ interface Props {
   artFormat: ArtFormat
   myPaletteModals: MyPaletteDesignCenterModals
   openResetDesignModal: boolean
-  customize3dMounted: boolean
+  customize3dMounted: boolean // TODO: is necessary?
   design: SaveDesignType
   loadingData?: boolean
   undoChanges: Change[]
@@ -66,6 +67,7 @@ interface Props {
   searchClipParam: string
   designHasChanges: boolean
   isUserAuthenticated: boolean
+  isEditing: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -104,6 +106,11 @@ interface Props {
   onCanvasElementRotated: (element: CanvasRotated) => void
   onCanvasElementTextChanged: (oldText: string, newText: string) => void
   onReApplyImageEl: (el: CanvasElement) => void
+  onSetCanvasObject: (el: CanvasType) => void
+  onSetEditConfig: (
+    colors: string[],
+    accessoriesColor: AccessoriesColor
+  ) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -176,7 +183,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCanvasElementTextChanged,
       onReApplyImageEl,
       designHasChanges,
-      isUserAuthenticated
+      isUserAuthenticated,
+      isEditing,
+      onSetEditConfig,
+      onSetCanvasObject
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -275,7 +285,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onReApplyImageEl,
               designHasChanges,
               canvas,
-              selectedElement
+              selectedElement,
+              isEditing,
+              onSelectPalette,
+              onSetEditConfig,
+              onSetCanvasObject
             }}
           />
         ) : (

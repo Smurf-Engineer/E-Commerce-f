@@ -19,7 +19,12 @@ import {
 } from './styledComponents'
 import Render3D from '../../components/Render3D'
 import messages from './messages'
-import { Product, SaveDesignType } from '../../types/common'
+import {
+  Product,
+  SaveDesignType,
+  StitchingColor,
+  AccesoryColor
+} from '../../types/common'
 import ShareDesignModal from '../ShareDesignModal'
 import quickView from '../../assets/quickview.svg'
 import AddToTeamStore from '../AddToTeamStore'
@@ -40,6 +45,10 @@ interface Props {
   teamStoreId: string
   svgOutputUrl: string
   savedDesign: SaveDesignType
+  stitchingColor?: StitchingColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  bibColor?: AccesoryColor
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
@@ -86,7 +95,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       addItemToStore,
       product,
       svgOutputUrl,
-      savedDesign
+      savedDesign,
+      stitchingColor,
+      bibColor,
+      bindingColor,
+      zipperColor
     } = this.props
 
     const itemToAdd = Object.assign(savedDesign, {
@@ -114,7 +127,16 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         {currentTab === DesignTabs.PreviewTab &&
           !swipingView && (
             <Render>
-              <Render3D svg={svgOutputUrl} {...{ product }} />
+              <Render3D
+                {...{
+                  product,
+                  bindingColor,
+                  zipperColor,
+                  bibColor
+                }}
+                svg={svgOutputUrl}
+                flatlockColor={!!stitchingColor && stitchingColor.value}
+              />
               <BottomButtons>
                 {/* TODO: Hide TeamStore Flow
                 <ButtonWrapper>

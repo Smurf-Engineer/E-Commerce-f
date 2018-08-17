@@ -46,9 +46,7 @@ import {
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
-  CHANGE_ACTIONS,
-  WARNING_FACTOR,
-  NUMBER_OF_DECIMALS
+  CHANGE_ACTIONS
 } from './config'
 import {
   MESH,
@@ -61,8 +59,10 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  SOLAR_BIB_BRACE
+  ACCESSORY_WHITE,
+  DEFAULT_COLOR
 } from '../../../constants'
+import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
 import {
   Changes,
   CanvasElements
@@ -72,7 +72,13 @@ import ModalTitle from '../../ModalTitle'
 import Slider from '../../ZoomSlider'
 import OptionsController from '../OptionsController'
 import messages from './messages'
-import { isMouseOver, clickOnCorner } from './utils'
+import {
+  isMouseOver,
+  clickOnCorner,
+  getTextCanvasElement,
+  getClipArtCanvasElement,
+  getImageCanvas
+} from './utils'
 // TODO: JV2 - Phase II
 // import arrowDown from '../../../assets/downarrow.svg'
 // import topIcon from '../../../assets/Cube-Top.svg'
@@ -123,8 +129,13 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
+      loadingModel
     } = nextProps
+
+    if (loadingModel) {
+      return
+    }
 
     if (oldBibColor !== bibColor && !!this.bibBrace) {
       this.changeExtraColor(BIB_BRACE_NAME, bibColor)
@@ -242,9 +253,6 @@ class Render3D extends PureComponent {
 
     this.controls = controls
     this.start()
-
-    const { setCustomize3dMountedAction } = this.props
-    setCustomize3dMountedAction(true)
   }
 
   componentWillUnmount() {
@@ -270,6 +278,78 @@ class Render3D extends PureComponent {
     this.mouse.set(point.x * 2 - 1, -(point.y * 2) + 1)
     this.raycaster.setFromCamera(this.mouse, this.camera)
     return this.raycaster.intersectObjects(objects, true)
+  }
+
+  convertToFabricObjects = elements =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.enlivenObjects(elements, objects => {
+          resolve(objects)
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+  loadFabricImage = url =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.loadImage(url, img => resolve(img), undefined, 'Anonymous')
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+  loadCanvasTexture = async object => {
+    try {
+      const { onSetCanvasObject } = this.props
+      const canvas = { text: {}, image: {}, path: {} }
+      const elements = []
+      const imagesElements = []
+      const imagesPromises = []
+      const { objects } = JSON.parse(object)
+      for (const el of objects) {
+        const elId = shortid.generate()
+        el.id = elId
+        el.hasRotatingPoint = false
+        switch (el.type) {
+          case CanvasElements.Text: {
+            elements.push(el)
+            const element = getTextCanvasElement(el)
+            canvas.text[elId] = element
+            break
+          }
+          case CanvasElements.Path: {
+            const element = getClipArtCanvasElement(el)
+            canvas.path[elId] = element
+            elements.push(el)
+          }
+          case CanvasElements.Image: {
+            const element = getImageCanvas(el)
+            canvas.image[elId] = element
+            imagesElements.push(el)
+            imagesPromises.push(this.loadFabricImage(el.src))
+          }
+          default:
+            break
+        }
+      }
+      let images = []
+      if (!!imagesElements.length) {
+        images = await Promise.all(imagesPromises)
+      }
+      images.forEach((img, index) => {
+        const config = imagesElements[index] || {}
+        const imageEl = new fabric.Image(img, { ...config })
+        this.canvasTexture.add(imageEl)
+      })
+      const fabricObjects = await this.convertToFabricObjects(elements)
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      onSetCanvasObject(canvas)
+      this.canvasTexture.renderAll()
+    } catch (e) {
+      console.error('Error loading canvas object: ', e.message)
+    }
   }
 
   loadTextures = (design, product) =>
@@ -310,7 +390,17 @@ class Render3D extends PureComponent {
           loadedTextures.branding.minFilter = THREE.LinearFilter
         }
         loadedTextures.bumpMap = this.textureLoader.load(bumpMap)
-        const reversedAreas = reverse(colors)
+        loadedTextures.bumpMap.minFilter = THREE.LinearFilter
+        /**
+         * I had to implement this because when we load one design
+         * the colors had a propert from apollo, that causes fail on
+         * the lodash reverse function.
+         */
+        const sanitizedColors = colors.map(({ color, image }) => ({
+          color,
+          image
+        }))
+        const reversedAreas = reverse(sanitizedColors)
         const images = []
         loadedTextures.colors = []
         reversedAreas.forEach(({ color, image }) => {
@@ -362,11 +452,28 @@ class Render3D extends PureComponent {
 
   render3DModel = async () => {
     /* Object and MTL load */
-    const { onLoadModel, currentStyle, design, product } = this.props
-    onLoadModel(true)
+    const {
+      onLoadModel,
+      currentStyle,
+      design,
+      product,
+      isEditing,
+      onSetEditConfig
+    } = this.props
 
-    const loadedTextures = await this.loadTextures(currentStyle, product)
-    // TODO: Get the OBJ and MTL from the design
+    const loadedTextures = await this.loadTextures(
+      currentStyle,
+      product,
+      isEditing
+    )
+    const { accessoriesColor } = currentStyle
+    if (isEditing) {
+      // TODO: Send styleId and designId
+      onSetEditConfig(loadedTextures.colors, accessoriesColor || {})
+    } else {
+      onLoadModel(true)
+    }
+
     this.mtlLoader.load(product.mtl, materials => {
       materials.preload()
       this.objLoader.setMaterials(materials)
@@ -391,10 +498,12 @@ class Render3D extends PureComponent {
           const { flatlock, areas, bumpMap, branding, colors } = loadedTextures
           /* Stitching */
           if (!!flatlock) {
+            const color =
+              (isEditing && accessoriesColor.flatlockColor) || DEFAULT_COLOR
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color: '#FFFFFF'
+              color
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
@@ -405,9 +514,11 @@ class Render3D extends PureComponent {
 
           /* Zipper */
           if (!!this.zipper) {
+            const color =
+              (isEditing && accessoriesColor.zipperColor) || ACCESSORY_WHITE
             const zipperIndex = getMeshIndex(ZIPPER)
             const zipperMaterial = new THREE.MeshPhongMaterial({
-              map: this.zipper.white,
+              map: this.zipper[color],
               transparent: true
             })
             children[zipperIndex].material = zipperMaterial
@@ -415,9 +526,11 @@ class Render3D extends PureComponent {
           }
           /* Binding */
           if (!!this.binding) {
+            const color =
+              (isEditing && accessoriesColor.bindingColor) || ACCESSORY_WHITE
             const bindingIndex = getMeshIndex(BINDING)
             const bindingMaterial = new THREE.MeshPhongMaterial({
-              map: this.binding.white,
+              map: this.binding[color],
               transparent: true
             })
             children[bindingIndex].material = bindingMaterial
@@ -425,9 +538,11 @@ class Render3D extends PureComponent {
           }
           /* Bib Brace */
           if (!!this.bibBrace) {
+            const color =
+              (isEditing && accessoriesColor.bibBraceColor) || ACCESSORY_WHITE
             const bibBraceIndex = getMeshIndex(BIB_BRACE)
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
-              map: this.bibBrace.white
+              map: this.bibBrace[color]
             })
             children[bibBraceIndex].material = bibBraceMaterial
             this.setState({ bibBraceIndex })
@@ -436,7 +551,7 @@ class Render3D extends PureComponent {
           /* Back material */
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: '#000000'
+            color: BLACK
           })
 
           // Setup the texture layers
@@ -447,35 +562,22 @@ class Render3D extends PureComponent {
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
           if (labelIndex >= 0) {
-            object.children[labelIndex].material.color.set('#ffffff')
+            object.children[labelIndex].material.color.set(DEFAULT_COLOR)
           }
           const propelPalmsIndex = findIndex(
             children,
             ({ name }) => name === PROPEL_PALMS
           )
           if (propelPalmsIndex >= 0) {
-            object.children[propelPalmsIndex].material.color.set('#ffffff')
+            object.children[propelPalmsIndex].material.color.set(DEFAULT_COLOR)
           }
           const gripTapeIndex = findIndex(
             children,
             ({ name }) => name === GRIP_TAPE
           )
           if (gripTapeIndex >= 0) {
-            object.children[gripTapeIndex].material.color.set('#ffffff')
+            object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
-          // TODO: WIP
-          // const solarBibBraceIndex = findIndex(
-          //   children,
-          //   ({ name }) => name === SOLAR_BIB_BRACE
-          // )
-          // if (
-          //   solarBibBraceIndex >= 0 &&
-          //   !!object.children[solarBibBraceIndex].material.length
-          // ) {
-          //   object.children[solarBibBraceIndex].material.forEach(material =>
-          //     material.color.set('#ffffff')
-          //   )
-          // }
 
           areas.forEach(
             (map, index) =>
@@ -496,7 +598,8 @@ class Render3D extends PureComponent {
           canvas.height = CANVAS_SIZE
           this.canvasTexture = new fabric.Canvas(canvas, {
             width: CANVAS_SIZE,
-            height: CANVAS_SIZE
+            height: CANVAS_SIZE,
+            crossOrigin: 'Anonymous'
           })
           const canvasTexture = new THREE.CanvasTexture(canvas)
           canvasTexture.minFilter = THREE.LinearFilter
@@ -539,10 +642,7 @@ class Render3D extends PureComponent {
           this.scene.add(object)
 
           if (design && design.canvasJson) {
-            this.canvasTexture.loadFromJSON(
-              design.canvasJson,
-              () => (canvasTexture.needsUpdate = true)
-            )
+            this.loadCanvasTexture(design.canvasJson)
           }
 
           onLoadModel(false)
@@ -660,7 +760,7 @@ class Render3D extends PureComponent {
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {
       object.children[objectChildCount + colorBlockHovered].material.color.set(
-        '#f2f2f2'
+        SELECTION_3D_AREA
       )
     } else {
       this.setupColors(colors)
@@ -741,6 +841,8 @@ class Render3D extends PureComponent {
         break
     }
     onUndoAction()
+    this.canvasTexture.discardActiveObject()
+    this.canvasTexture.renderAll()
   }
 
   handleOnClickRedo = () => {
@@ -775,6 +877,8 @@ class Render3D extends PureComponent {
         break
     }
     onRedoAction()
+    this.canvasTexture.discardActiveObject()
+    this.canvasTexture.renderAll()
   }
 
   changeTextCanvasElement = (canvasElement, applyNewText = false) => {
@@ -897,7 +1001,6 @@ class Render3D extends PureComponent {
           const saveDesign = {
             canvasJson,
             designBase64,
-            canvasSvg: this.canvasTexture.toSVG(),
             styleId: currentStyle.id
           }
           onOpenSaveDesign(true, saveDesign)
@@ -1166,9 +1269,9 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects = [], options) => {
+      fabric.loadSVGFromURL(url, (objects, options) => {
         const id = idElement || shortid.generate()
-        const shape = fabric.util.groupSVGElements(objects, options)
+        const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
           id,
           hasRotatingPoint: false,
@@ -1177,8 +1280,8 @@ class Render3D extends PureComponent {
         })
         const el = {
           id,
-          fill: '#000000',
-          stroke: '#000000',
+          fill: BLACK,
+          stroke: BLACK,
           strokeWidth: 0,
           ...style
         }
@@ -1226,8 +1329,9 @@ class Render3D extends PureComponent {
         break
       case CanvasElements.Path:
         {
-          const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = el
+          const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
+          if (!object) break //FIXME: add new method to delete duplicate elements
           canvasObject.src = object.state.src
           canvasObject.style = {
             fill,
@@ -1239,6 +1343,7 @@ class Render3D extends PureComponent {
       case CanvasElements.Image:
         {
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
+          if (!object) break //FIXME: add new method to delete duplicate elements
           canvasObject.src = object.state.src
         }
         break
@@ -1259,13 +1364,14 @@ class Render3D extends PureComponent {
   }
 
   duplicateElement = el => {
-    const { onApplyCanvasEl, undoChanges } = this.props
+    const { onApplyCanvasEl, undoChanges, isEditing } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const objectToClone = find(undoChanges, {
-      type: Changes.Add,
-      state: { id: el.id }
-    })
+    const objectToClone =
+      find(undoChanges, {
+        type: Changes.Add,
+        state: { id: el.id }
+      }) || {}
 
     const elementType = el.get('type')
     const id = shortid.generate()
@@ -1295,8 +1401,8 @@ class Render3D extends PureComponent {
       }
       case CanvasElements.Path: {
         canvasStyle = {
-          fill: el.fill || '#000000',
-          stroke: el.stroke || '#000000',
+          fill: el.fill || BLACK,
+          stroke: el.stroke || BLACK,
           strokeWidth: el.strokeWidth || 0
         }
         canvasEl = {
@@ -1318,6 +1424,7 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
+    if (this.props.isEditing) return //FIXME: add only id and style to canvas when duplicate
     const {
       state: {
         src,

@@ -53,12 +53,14 @@ import {
   CANVAS_ELEMENT_ROTATED_ACTION,
   CANVAS_ELEMENT_TEXT_CHANGED,
   REAPPLY_CANVAS_IMAGE_ACTION,
+  SET_EDIT_DESIGN_CONFIG_ACTION,
   Changes,
   CanvasElements,
   WHITE,
   BLACK,
   AccessoryColors,
-  ElementsToApplyScale
+  ElementsToApplyScale,
+  SET_LOADED_CANVAS_ACTION
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 
@@ -787,6 +789,44 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingFile', action.isUploading)
     case SET_SEARCH_CLIPARTPARAM:
       return state.set('searchClipParam', action.param)
+    case SET_EDIT_DESIGN_CONFIG_ACTION: {
+      const { colors, accessoriesColor } = action
+      const {
+        bindingColor,
+        zipperColor,
+        bibBraceColor,
+        flatlockColor,
+        flatlockCode
+      } = accessoriesColor
+      const stitchingColor = { name: flatlockCode, value: flatlockColor }
+      return state.merge({
+        loadingModel: true,
+        colors: colors,
+        styleColors: colors,
+        stitchingColor: fromJS(stitchingColor),
+        bindingColor,
+        zipperColor,
+        bibColor: bibBraceColor
+        // TODO: Set these fields
+        // styleId
+        // savedDesignId
+      })
+    }
+    case SET_LOADED_CANVAS_ACTION: {
+      const {
+        canvas: { text, path, image }
+      } = action
+      const textIds = Object.keys(text)
+      const pathIds = Object.keys(path)
+      const imageds = Object.keys(image)
+      const canvas = state.get('canvas')
+      const updatedCanvas = canvas.withMutations((map: any) => {
+        textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
+        pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
+        imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+      })
+      return state.set('canvas', updatedCanvas)
+    }
     default:
       return state
   }

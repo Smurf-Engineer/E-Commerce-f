@@ -54,6 +54,16 @@ export const getDesignQuery = gql`
       id
       name
       shortId: short_id
+      flatlockColor: flatlock
+      flatlockCode: flatlock_code
+      bindingColor: binding_color
+      bibBraceColor: bib_brace_color
+      zipperColor: zipper_color
+      colors {
+        id
+        color
+        image
+      }
       product {
         id
         code
@@ -76,22 +86,14 @@ export const getDesignQuery = gql`
           black
         }
       }
-      colors {
-        id
-        color
-        image
-      }
       styleId: style_id
       style {
         id
         name
         image
-        branding
-        colors: colorsBlocks {
-          image
-          color
-          colorDesc: colordesc
-        }
+        width
+        height
+        brandingPng: branding_png
       }
       canvas
       flatlock
