@@ -1000,7 +1000,6 @@ class Render3D extends PureComponent {
           const saveDesign = {
             canvasJson,
             designBase64,
-            canvasSvg: '',
             styleId: currentStyle.id
           }
           onOpenSaveDesign(true, saveDesign)
