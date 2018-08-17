@@ -11,9 +11,12 @@ import {
   Data,
   Status,
   Label,
-  StatusContainer
+  StatusContainer,
+  FinalSvg,
+  AssetsLabel
 } from './styledComponents'
 import { OrderSearchResult } from '../../../types/common'
+import DownloadItem from '../DownloadItem'
 
 interface Props {
   order: OrderSearchResult
@@ -22,6 +25,9 @@ interface Props {
 const OrderFiles = ({
   order: { productCode, image, status, svgUrl, assets }
 }: Props) => {
+  const assetsList = assets.map(({ fileUrl, name }, index) => (
+    <DownloadItem key={index} url={fileUrl} {...{ name }} />
+  ))
   return (
     <Container>
       <Image src={image} />
@@ -33,6 +39,13 @@ const OrderFiles = ({
           </Label>
           <Status>{status}</Status>
         </StatusContainer>
+        <FinalSvg>
+          <DownloadItem url={svgUrl} name="Final SVG" />
+        </FinalSvg>
+        <AssetsLabel>
+          <FormattedMessage {...messages.assets} />
+        </AssetsLabel>
+        {assetsList}
       </Data>
     </Container>
   )

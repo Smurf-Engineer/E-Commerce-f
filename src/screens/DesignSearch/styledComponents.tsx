@@ -7,7 +7,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #fff;
 `
 
@@ -44,7 +44,7 @@ export const Content = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin: 10vh 0;
+  margin-top: 10vh;
 `
 
 export const Title = styled.div`

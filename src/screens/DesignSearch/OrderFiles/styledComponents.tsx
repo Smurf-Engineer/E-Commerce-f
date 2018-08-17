@@ -5,9 +5,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex: 1;
-  justify-content: flex-start;
+  padding-top: 48px;
+  margin-bottom: 10vh;
 `
 
 export const Image = styled.img`
@@ -50,4 +51,17 @@ export const Data = styled.div`
   flex-direction: column;
   margin-left: 32px;
   min-height: 320px;
+`
+
+export const FinalSvg = styled.div`
+  margin: 16px 0;
+`
+
+export const AssetsLabel = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.18px;
+  line-height: 22px;
 `

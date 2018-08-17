@@ -2,8 +2,7 @@
  * DownloadItem Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import { Container, Name } from './styledComponents'
-import Icon from 'antd/lib/icon'
+import { Container, Name, Icon } from './styledComponents'
 
 interface Props {
   url: string
@@ -14,7 +13,7 @@ const DownloadItem = ({ name, url }: Props) => {
   return (
     <Container>
       <Name>{name}</Name>
-      <a href={url}>
+      <a href={url} download={name} target="_blank">
         <Icon type="download" />
       </a>
     </Container>
