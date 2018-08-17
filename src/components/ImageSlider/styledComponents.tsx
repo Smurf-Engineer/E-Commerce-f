@@ -11,6 +11,12 @@ export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media (min-width: 1440px) {
+    margin: 0 auto;
+    max-width: 600px;
+    max-height: 800px;
+  }
 `
 
 export const Text = styled.div`
@@ -31,7 +37,7 @@ export const ThumbnailImg = styled.img`
   background-color: #f1f4f5;
   border: 1px solid
     ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
-  width: 100%;
+  width: 99%;
 
   &:hover {
     cursor: pointer;

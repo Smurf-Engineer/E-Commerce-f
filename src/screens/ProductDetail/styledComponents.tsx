@@ -19,10 +19,8 @@ export const Content = styled.div`
     padding: 0px 12px 50px 12px;
   }
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) {
+  @media (min-width: 1440px) {
+    justify-content: center;
   }
 `
 
@@ -38,6 +36,10 @@ export const ImagePreview = styled.div`
   @media (min-width: 481px) and (max-width: 768px) {
     padding: 0 20px 0 0;
     width: 100%;
+  }
+
+  @media (min-width: 1440px) {
+    max-width: 1000px;
   }
 `
 
