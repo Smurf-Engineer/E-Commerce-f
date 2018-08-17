@@ -111,6 +111,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
           selectAddressAction={setSelectedAddress}
           renderForModal={renderInModal}
           changePage={this.handlechangePage}
+          listForMyAccount={false}
           {...{
             withPagination,
             showAddressFormAction,
