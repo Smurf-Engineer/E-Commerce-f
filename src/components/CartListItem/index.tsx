@@ -223,6 +223,8 @@ class CartListItem extends React.Component<Props, {}> {
       ? this.getNextPrice(currencyPrices, quantitySum)
       : { items: 0, price: 0 }
 
+    const symbol = currencySymbol || '$'
+
     const table = (
       <CartListItemTable
         {...{
@@ -260,18 +262,18 @@ class CartListItem extends React.Component<Props, {}> {
           </ItemDetailsHeaderNameDetail>
         </NameContainer>
         <PriceContainer>
-          <ItemDetailsHeaderPrice>{`${currencySymbol || '$'} ${total ||
+          <ItemDetailsHeaderPrice>{`${symbol} ${total ||
             0}`}</ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${currencySymbol ||
-              '$'} ${unitaryPrice || 0}`}
+            {`${formatMessage(messages.unitPrice)} ${symbol} ${unitaryPrice ||
+              0}`}
           </ItemDetailsHeaderPriceDetail>
           {!onlyRead && nextPrice.items > 0 ? (
             <ItemDetailsHeaderPriceDetail>
               <FormattedMessage
                 {...messages.addMoreFor}
                 values={{
-                  price: `${currencySymbol || '$'} ${nextPrice.price}`,
+                  price: `${symbol} ${nextPrice.price}`,
                   products: nextPrice.items
                 }}
               />

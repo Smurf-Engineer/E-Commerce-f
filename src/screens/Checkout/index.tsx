@@ -640,8 +640,6 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.weight')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
-        // unset(priceRange, 'shortName')
-        // unset(priceRange, 'abbreviation')
       })
       forEach(cartItem.itemDetails, itemDetail => {
         unset(itemDetail, 'gender.__typename')
