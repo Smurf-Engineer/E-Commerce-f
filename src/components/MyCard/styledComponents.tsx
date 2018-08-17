@@ -4,6 +4,11 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
+import { RED } from '../../theme/colors'
+
+type StyleProps = {
+  checkColor?: string
+}
 
 export const Container = styled.div`
   margin-right: 10%;
@@ -67,4 +72,13 @@ export const StyledCheckbox = styled(Checkbox)`
   letter-spacing: 0.2px;
   line-height: 22px;
   margin: 5px 0;
+
+  .ant-checkbox:hover .ant-checkbox-inner,
+  .ant-checkbox-input:focus > .ant-checkbox-inner {
+    border-color: ${({ checkColor }: StyleProps) => checkColor || RED};
+  }
+  .ant-checkbox-checked .ant-checkbox-inner,
+  .ant-checkbox-indeterminate .ant-checkbox-inner {
+    background-color: ${({ checkColor }: StyleProps) => checkColor || RED};
+  }
 `

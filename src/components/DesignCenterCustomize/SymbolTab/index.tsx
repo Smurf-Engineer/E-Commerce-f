@@ -7,7 +7,7 @@ import { FormattedMessage } from 'react-intl'
 import debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
 import { compose } from 'react-apollo'
-import { Spin } from 'antd'
+import Spin from 'antd/lib/spin'
 import WithError from '../../WithError'
 import OptionText from '../../OptionText'
 import TextEditor from '../TextEditor'
@@ -40,7 +40,7 @@ interface Props {
   data: Data
   selectedElement: CanvasElement
   formatMessage: (messageDescriptor: any) => string
-  onApplyArt: (url: string, style?: CanvasElement) => void
+  onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   setSearchClipParamAction: (searchParam: string) => void
 }
@@ -67,7 +67,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       clipArts && !!clipArts.length ? (
         clipArts.map(({ id, url }) => (
           <Col key={id}>
-            <Icon src={url} onClick={this.handleOnApplyArt(url)} />
+            <Icon src={url} onClick={this.handleOnApplyArt(url, id)} />
           </Col>
         ))
       ) : (
@@ -164,9 +164,9 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     onApplyArt('', selectedElement)
   }
 
-  handleOnApplyArt = (url: string) => () => {
+  handleOnApplyArt = (url: string, fileId: number) => () => {
     const { onApplyArt } = this.props
-    onApplyArt(url)
+    onApplyArt(url, undefined, fileId)
   }
 }
 type OwnProps = {
