@@ -1177,7 +1177,7 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        let el = { id, imageSize }
+        const el = { id, imageSize }
         if (position.scaleX) {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
@@ -1457,11 +1457,10 @@ class Render3D extends PureComponent {
         src,
         style: styleSaved,
         position: { left, top },
-        fileId: pathFileId
+        fileId
       }
     } = objectToClone
     const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
-    const fileId = pathFileId ? { fileId: pathFileId } : {}
     onApplyCanvasEl(canvasEl, elementType, false, {
       src,
       style,
@@ -1472,7 +1471,7 @@ class Render3D extends PureComponent {
         scaleY: el.scaleY,
         transformMatrix: el.transformMatrix
       },
-      ...fileId
+      fileId
     })
   }
 
