@@ -606,6 +606,11 @@ class Checkout extends React.Component<Props, {}> {
     forEach(shoppingCart, cartItem => {
       unset(cartItem, 'designImage')
       unset(cartItem, 'designName')
+      unset(cartItem, 'svg')
+      unset(cartItem, 'shared')
+      unset(cartItem, 'shortId')
+      unset(cartItem, 'createdAt')
+      unset(cartItem, '__typename')
       unset(cartItem, 'product.shortDescription')
       unset(cartItem, 'product.isTopProduct')
       unset(cartItem, 'product.__typename')
