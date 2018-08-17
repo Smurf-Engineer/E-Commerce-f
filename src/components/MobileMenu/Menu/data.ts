@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const categoriesQuery = gql`
-  query getCategories($sportId: Int!, $genderId: Int!) {
-    categoriesSport(sportId: $sportId, genderId: $genderId) {
+  query categories($sportId: Int!, $genderId: Int) {
+    categories: categoriesSport(sportId: $sportId, genderId: $genderId) {
       id
       name
     }
