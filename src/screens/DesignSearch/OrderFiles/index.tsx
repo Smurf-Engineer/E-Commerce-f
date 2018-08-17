@@ -4,14 +4,28 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import { Container } from './styledComponents'
+import { Container, Image, Code, Data, Status, Label } from './styledComponents'
+import { OrderSearchResult } from '../../../types/common'
 
-interface Props {}
+interface Props {
+  order: OrderSearchResult
+}
 
-const OrderFiles = (props: Props) => {
+const OrderFiles = ({
+  order: { productCode, image, status, svgUrl, assets }
+}: Props) => {
   return (
     <Container>
-      <FormattedMessage {...messages.status} />
+      <Image src={image} />
+      <Data>
+        <Code>{productCode}</Code>
+        <Status>
+          <Label>
+            <FormattedMessage {...messages.status} />
+          </Label>
+          <Label>{status}</Label>
+        </Status>
+      </Data>
     </Container>
   )
 }

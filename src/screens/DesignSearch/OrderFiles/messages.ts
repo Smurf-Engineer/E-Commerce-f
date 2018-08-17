@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   status: {
     id: 'components.OrderFiles.status',
-    defaultMessage: 'Status:'
+    defaultMessage: 'Status: '
   },
   assets: {
     id: 'components.OrderFiles.assets',

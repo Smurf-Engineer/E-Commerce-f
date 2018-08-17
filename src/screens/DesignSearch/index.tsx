@@ -22,9 +22,31 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
+import { OrderSearchResult } from '../../types/common'
 
 interface Props {
   history: any
+}
+
+const dummyProduct: OrderSearchResult = {
+  productCode: 'JV2-01-002-01',
+  image:
+    'https://storage.googleapis.com/jakroo-storage/product_images/fondo/product-img-fondo-01-front.png',
+  status: 'ACTIVE ORDER',
+  svgUrl:
+    'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/a9f606543354e-converted5.png',
+  assets: [
+    {
+      name: 'Logo.png',
+      fileUrl:
+        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
+    },
+    {
+      name: 'Sponsorlogo.svg',
+      fileUrl:
+        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
+    }
+  ]
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
@@ -52,10 +74,10 @@ export class DesignSearch extends React.Component<Props, {}> {
             enterButton={true}
             size="large"
           />
-          <LoadingContainer>
+          {/* <LoadingContainer>
             <Spin />
-          </LoadingContainer>
-          <OrderFiles />
+          </LoadingContainer> */}
+          <OrderFiles order={dummyProduct} />
         </Content>
       </Container>
     )

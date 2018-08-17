@@ -888,3 +888,16 @@ export interface Inspiration {
   image: string
   colors: string[]
 }
+
+export interface OrderSearchResult {
+  productCode: string
+  image: string
+  status: string
+  svgUrl: string
+  assets: FilesDownload[]
+}
+
+export interface FilesDownload {
+  name: string
+  fileUrl: string
+}
