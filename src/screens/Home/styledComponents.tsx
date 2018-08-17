@@ -23,7 +23,8 @@ export const SearchBarContent = styled.div`
     transform: translate(-50%, -50%);
   }
 
-  @media (min-width: 481px) and (max-width: 767px) {
+  @media (min-width: 481px) and (max-width: 767px) and (orientation: landscape) {
+    position: unset;
   }
 
   @media (min-width: 320px) and (max-width: 480px) {

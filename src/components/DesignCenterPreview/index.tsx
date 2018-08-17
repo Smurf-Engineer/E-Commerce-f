@@ -138,11 +138,12 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                 flatlockColor={!!stitchingColor && stitchingColor.value}
               />
               <BottomButtons>
-                {/* TODO: Hide TeamStore Flow<ButtonWrapper>
-                <Button onClick={this.openAddToStoreModal}>
-                  <FormattedMessage {...messages.addToTeam} />
-                </Button>
-              </ButtonWrapper>*/}
+                {/* TODO: Hide TeamStore Flow
+                <ButtonWrapper>
+                  <Button onClick={this.openAddToStoreModal}>
+                    <FormattedMessage {...messages.addToTeam} />
+                  </Button>
+                </ButtonWrapper> */}
                 <ButtonWrapper>
                   <AddToCartButton
                     orderDetails={true}
