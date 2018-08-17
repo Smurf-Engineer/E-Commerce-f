@@ -222,25 +222,23 @@ class Menu extends React.PureComponent<Props, {}> {
       ({ label, categories }, index) => {
         this.getCategories(label)
         return (
-          !!categories.length && (
-            <SubMenu
-              key={`menu-${label}-${index}`}
-              onClick={this.handleOpenSport(label)}
-              title={
-                <span>
-                  <FormattedMessage {...messages[label]} />
-                </span>
-              }
-            >
-              {categories.map(({ name: categoryName }: any) => (
-                <MenuAntd.Item
-                  key={`sport=${label}&category=${lowerCase(categoryName)}`}
-                >
-                  {categoryName}
-                </MenuAntd.Item>
-              ))}
-            </SubMenu>
-          )
+          <SubMenu
+            key={`menu-${label}-${index}`}
+            onClick={this.handleOpenSport(label)}
+            title={
+              <span>
+                <FormattedMessage {...messages[label]} />
+              </span>
+            }
+          >
+            {categories.map(({ name: categoryName }: any) => (
+              <MenuAntd.Item
+                key={`sport=${label}&category=${lowerCase(categoryName)}`}
+              >
+                {categoryName}
+              </MenuAntd.Item>
+            ))}
+          </SubMenu>
         )
       }
     )
