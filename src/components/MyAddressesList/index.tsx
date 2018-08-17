@@ -20,12 +20,13 @@ import {
   AddAddressBtn,
   AddressesList,
   PaginationRow,
-  Message,
   DeleteConfirmMessage
 } from './styledComponents'
 import MyAddress from '../MyAddress'
 import ModalFooter from '../ModalFooter'
 import ModalTitle from '../ModalTitle'
+import EmptyContainer from '../EmptyContainer'
+
 import { QueryProps, AddressType } from '../../types/common'
 
 interface Data extends QueryProps {
@@ -62,6 +63,15 @@ interface Props {
 }
 
 export class MyAddressesList extends React.Component<Props, {}> {
+  componentWillMount() {
+    const { data, listForMyAccount, showAddressFormAction } = this.props
+    const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
+
+    if (!addresses.length && !listForMyAccount) {
+      showAddressFormAction(true)
+    }
+  }
+
   render() {
     const {
       showForm,
@@ -170,13 +180,12 @@ export class MyAddressesList extends React.Component<Props, {}> {
       </Modal>
     )
 
-    const renderView = !!addresses.length ? (
-      addressesList
-    ) : (
-      <Container>
-        <Message>{formatMessage(messages.emptyMessage)}</Message>
-      </Container>
-    )
+    let renderView
+    if (!!addresses.length) {
+      renderView = addressesList
+    } else if (listForMyAccount) {
+      renderView = <EmptyContainer message={formatMessage(messages.emptyMessage)} />
+    }
 
     return (
       <Container {...{ listForMyAccount }}>
@@ -212,7 +221,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
   handleOnSelectAddress = (index: number) => {
     const {
-      selectAddressAction = () => {},
+      selectAddressAction = () => { },
       data: {
         userAddresses: { addresses }
       }

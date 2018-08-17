@@ -37,20 +37,3 @@ export const Column = styled.div`
   display: flex;
   flex-direction: column;
 `
-
-export const EmptyContainer = styled.div`
-  display: flex;
-  height: 25vh;
-  justify-content: center;
-  align-items: center;
-  background-color: #fff;
-`
-
-export const EmptyMessage = styled.div`
-  color: #bebebe;
-  font-family: 'Avenir Next';
-  font-size: 16px;
-  line-height: 22px;
-  letter-spacing: 0.11px;
-  text-align: center;
-`

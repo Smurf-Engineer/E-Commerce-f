@@ -38,10 +38,12 @@ import orderHistory from '../components/OrderHistory/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
+import designSearch from '../screens/DesignSearch/reducer'
 import { Reducer } from '../types/common'
 import { SET_USER_ACTION, SET_USER_AGENT_ACTION } from './constants'
 
 export interface ReducersObject {
+  designSearch: any
   customProductDetail: any
   warrantyProgram: any
   orderPlaced: any
@@ -92,7 +94,7 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
     case SET_USER_ACTION:
       return state.set('user', action.user)
     case SET_USER_AGENT_ACTION:
-      return state.set('client', action.client)
+      return state.set('clientInfo', action.client)
     default:
       return state
   }
@@ -139,6 +141,7 @@ const responsiveReducer: Reducer<any> = (
 }
 
 const rootReducer = combineReducers({
+  designSearch,
   customProductDetail,
   warrantyProgram,
   orderPlaced,

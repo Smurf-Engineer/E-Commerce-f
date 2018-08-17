@@ -274,6 +274,7 @@
   "components.MyAddresses.titleDeleteModal": "Are you sure?",
   "components.MyAddresses.messageDeleteModal":
     "This will permanently delete this address",
+  "components.MyAddresses.empty": "There are no addresses on your account",
   "screen.Teamstores.shareModalTitle": "SHARE YOUR TEAMSTORE!",
   "screen.Teamstores.errorMessage":
     "Something wrong happened. Please try again!",
@@ -758,8 +759,13 @@
 
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
 
+  "components.MyCardsList.emptyMessage": "There are no saved credit cards",
   "components.MyLocker.titleError": "Oops!",
+  "components.MyLocker.message":
+    "These are the designs that you have created and saved.",
   "components.MyLocker.messageError": "Something went wrong",
+  "components.MyLocker.messageEmpty":
+    "Your Locker is empty. Go to the design app and start an awesome design!",
   "components.MyLocker.deleteDesign": "Delete",
   "components.MyLocker.titleDeleteModal": "Are you sure?",
   "components.MyLocker.messageDeleteModal":
@@ -1160,5 +1166,7 @@
   "screens.ShoppingCartPage.optionalLabel": "Optional",
   "screens.ShoppingCartPage.pleaseReadLabel": "PLEASE READ",
   "screens.ShoppingCartPage.reviewMyOrderLabel": "REVIEW MY ORDER",
-  "screens.ShoppingCartPage.dontReview": "Continue without review"
+  "screens.ShoppingCartPage.dontReview": "Continue without review",
+  "components.DesignCenterInspiration.emptyMessage":
+    "Seems like there are no inspiration color variations, yet."
 }

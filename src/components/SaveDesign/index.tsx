@@ -8,6 +8,8 @@ import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
 import Checkbox from 'antd/lib/checkbox'
 import get from 'lodash/get'
+import forEach from 'lodash/forEach'
+import uniq from 'lodash/uniq'
 import messages from './messages'
 import {
   Container,
@@ -23,7 +25,8 @@ import {
   SaveDesignType,
   Product,
   DesignSaved,
-  StitchingColor
+  StitchingColor,
+  CanvasType
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 
@@ -65,6 +68,7 @@ interface Props {
   bindingColor: string
   zipperColor: string
   bibColor: string
+  canvas: CanvasType
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
@@ -150,6 +154,9 @@ export class SaveDesign extends React.Component<Props, {}> {
       if (hasBibBrace) {
         designObj.bib_brace_color = bibColor
       }
+
+      // TODO: send designFiles object when saveDesign mutation is ready
+      // const designFiles = this.getDesignFiles()
 
       setSaveDesignLoading(true)
       const response = await saveDesignNameMutation({
@@ -239,6 +246,28 @@ export class SaveDesign extends React.Component<Props, {}> {
     const { setCheckedTerms } = this.props
     const { checked } = evt.target
     setCheckedTerms(checked)
+  }
+
+  getDesignFiles = () => {
+    const {
+      canvas: { image, path }
+    } = this.props
+    const files: number[] = []
+    const svgs: number[] = []
+    // tslint:disable:curly
+    forEach(image, img => {
+      const { fileId } = img
+      if (fileId) files.push(fileId)
+    })
+    forEach(path, pth => {
+      const { fileId } = pth
+      if (fileId) svgs.push(fileId)
+    })
+    // tslint:enable:curly
+
+    return {
+      designFiles: { files: uniq(files), svgs: uniq(svgs) }
+    }
   }
 
   render() {

@@ -19,7 +19,7 @@ export default defineMessages({
   },
   emptyMessage: {
     id: 'components.MyAddressesList.empty',
-    defaultMessage: `There's no any address on your account`
+    defaultMessage: `There are no addresses on your account`
   },
   deleteAddress: {
     id: 'components.MyAddressesList.deleteAddress',

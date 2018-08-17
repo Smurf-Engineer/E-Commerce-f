@@ -2,70 +2,51 @@
  * DesignCenterInspiration Component - Created by gustavomedina on 23/04/18.
  */
 import * as React from 'react'
-import Spin from 'antd/lib/spin'
 import { compose, graphql } from 'react-apollo'
-import ProductThumbnail from '../ProductThumbnail'
-import {
-  Container,
-  ContainerLoading,
-  FooterThumbnailInspiration
-} from './styledComponents'
-import { DesignResultType, QueryProps, Filter } from '../../types/common'
+import messages from './messages'
+import { Container, EmptyContainer, EmptyMessage } from './styledComponents'
+import { QueryProps, Filter, Inspiration } from '../../types/common'
 import { desginsQuery } from './data'
+import InspirationItem from './InspirationItem'
+import WithLoading from '../WithLoading'
+import WithError from '../WithError'
 
 interface Data extends QueryProps {
-  designs?: DesignResultType
+  inspirations?: Inspiration[]
 }
 
 interface Props {
   data: Data
-  genderFilter?: Filter
-  sportFilter: Filter
-  onPressSeeAll: () => void
-  onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number) => void
   width?: string
   category: Filter
+  styleId?: number
+  setPaletteAction: (colors: string[]) => void
+  hideBottomSheet: () => void
+  formatMessage: (messageDescriptor: any) => string
 }
 
 export const DesignCenterInspiration = ({
   data,
-  onPressSeeAll,
-  onPressCustomize,
-  onPressQuickView,
-  width = '60%',
-  genderFilter,
-  sportFilter,
-  category
+  setPaletteAction,
+  hideBottomSheet,
+  formatMessage
 }: Props) => {
-  if (data.loading) {
+  const { inspirations = [] } = data
+
+  if (!inspirations.length) {
     return (
-      <ContainerLoading {...{ width }}>
-        <Spin />
-      </ContainerLoading>
+      <EmptyContainer>
+        <EmptyMessage>{formatMessage(messages.emptyMessage)}</EmptyMessage>
+      </EmptyContainer>
     )
   }
 
-  // TODO: Empty error
-  if (data.error) {
-    return <div>Error...</div>
-  }
-
-  const designs: DesignResultType = data.designs || ({} as DesignResultType)
-
-  const list = designs.designs.map(({ id, shortId, name, product }, index) => {
+  const list = inspirations.map((inspiration, index) => {
     return (
-      <ProductThumbnail
+      <InspirationItem
         key={index}
-        id={shortId}
-        yotpoId={product.yotpoId}
-        labelButton="ADD TO CART"
-        isTopProduct={product.isTopProduct}
-        onPressCustomize={(idd: string) => {}}
-        onPressQuickView={(idi: number, yotpoId: string) => {}}
-        image="https://storage.googleapis.com/jakroo-storage/product-img-tour-01.png" // TODO: Get design image
-        isStoreThumbnail={true}
-        footer={<FooterThumbnailInspiration>{name}</FooterThumbnailInspiration>}
+        {...{ inspiration, hideBottomSheet }}
+        setColors={setPaletteAction}
       />
     )
   })
@@ -73,15 +54,17 @@ export const DesignCenterInspiration = ({
 }
 
 type OwnProps = {
-  productId?: number
+  styleId?: number
 }
 
 const DesignCenterInspirationEnhance = compose(
   graphql<Data>(desginsQuery, {
-    options: ({ productId }: OwnProps) => ({
-      variables: { productId }
+    options: ({ styleId }: OwnProps) => ({
+      variables: { styleId }
     })
-  })
+  }),
+  WithLoading,
+  WithError
 )(DesignCenterInspiration)
 
 export default DesignCenterInspirationEnhance
