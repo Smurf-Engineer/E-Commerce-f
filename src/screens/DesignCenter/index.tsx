@@ -15,7 +15,6 @@ import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
-
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -73,6 +72,7 @@ import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
+import { DEFAULT_ROUTE } from '../../constants'
 
 const { info } = Modal
 
@@ -470,6 +470,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       StyleTab: StyleTabIndex
     } = DesignTabs
 
+    const redirect = <Redirect to={DEFAULT_ROUTE} />
+
     /**
      * Redirect for mobile
      */
@@ -488,7 +490,7 @@ export class DesignCenter extends React.Component<Props, {}> {
      */
     const queryParams = queryString.parse(search)
     if (!queryParams.id && !queryParams.designId) {
-      return <Redirect to="/us?lang=en&currency=usd" />
+      return redirect
     }
 
     const productQueryWithError = !!dataProduct && !!dataProduct.error
@@ -518,14 +520,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       !!dataDesign &&
       !!dataDesign.designData &&
       !!dataDesign.designData.product &&
-      !dataDesign.designData.product.obj &&
-      !dataDesign.designData.product.mtl
+      (!dataDesign.designData.product.obj || !dataDesign.designData.product.mtl)
 
     /**
      * Redirect for retail products or missing 3D files
      */
     if (isRetailProductOrDoesNotHaveFiles || designDoesNotHaveFiles) {
-      return <Redirect to="/us?lang=en&currency=usd" />
+      return redirect
     }
 
     const productId = get(dataDesign, 'designData.product.id', queryParams.id)

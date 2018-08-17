@@ -1,10 +1,10 @@
 /**
  * App Global Constants
  */
+import { WHITE } from './theme/colors'
 
-/**
- * 3D Constants
- */
+/* 3D Constants */
+export const DEFAULT_COLOR = WHITE
 export const FLATLOCK = 'FINAL JV2_Flatlock'
 export const MESH = 'FINAL JV2_Design_Mesh'
 export const RED_TAG = 'Red_Tag FINAL'
@@ -20,3 +20,6 @@ export const CM_PER_INCH = 2.54
 /* Accesories color */
 export const ACCESSORY_WHITE = 'white'
 export const ACCESSORY_BLACK = 'black'
+
+/* Routes  */
+export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'

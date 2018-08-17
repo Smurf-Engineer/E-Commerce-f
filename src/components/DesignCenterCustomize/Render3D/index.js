@@ -59,8 +59,10 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE
+  ACCESSORY_WHITE,
+  DEFAULT_COLOR
 } from '../../../constants'
+import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
 import {
   Changes,
   CanvasElements
@@ -497,7 +499,7 @@ class Render3D extends PureComponent {
           /* Stitching */
           if (!!flatlock) {
             const color =
-              (isEditing && accessoriesColor.flatlockColor) || '#FFFFFF'
+              (isEditing && accessoriesColor.flatlockColor) || DEFAULT_COLOR
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
@@ -549,7 +551,7 @@ class Render3D extends PureComponent {
           /* Back material */
           const insideMaterial = new THREE.MeshPhongMaterial({
             side: THREE.BackSide,
-            color: '#000000'
+            color: BLACK
           })
 
           // Setup the texture layers
@@ -560,21 +562,21 @@ class Render3D extends PureComponent {
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
           if (labelIndex >= 0) {
-            object.children[labelIndex].material.color.set('#ffffff')
+            object.children[labelIndex].material.color.set(DEFAULT_COLOR)
           }
           const propelPalmsIndex = findIndex(
             children,
             ({ name }) => name === PROPEL_PALMS
           )
           if (propelPalmsIndex >= 0) {
-            object.children[propelPalmsIndex].material.color.set('#ffffff')
+            object.children[propelPalmsIndex].material.color.set(DEFAULT_COLOR)
           }
           const gripTapeIndex = findIndex(
             children,
             ({ name }) => name === GRIP_TAPE
           )
           if (gripTapeIndex >= 0) {
-            object.children[gripTapeIndex].material.color.set('#ffffff')
+            object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
 
           areas.forEach(
@@ -758,7 +760,7 @@ class Render3D extends PureComponent {
     const { colors } = this.props
     if (object && colorBlockHovered >= 0) {
       object.children[objectChildCount + colorBlockHovered].material.color.set(
-        '#f2f2f2'
+        SELECTION_3D_AREA
       )
     } else {
       this.setupColors(colors)
@@ -1278,8 +1280,8 @@ class Render3D extends PureComponent {
         })
         const el = {
           id,
-          fill: '#000000',
-          stroke: '#000000',
+          fill: BLACK,
+          stroke: BLACK,
           strokeWidth: 0,
           ...style
         }
@@ -1327,7 +1329,7 @@ class Render3D extends PureComponent {
         break
       case CanvasElements.Path:
         {
-          const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = el
+          const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
           if (!object) break //FIXME: add new method to delete duplicate elements
           canvasObject.src = object.state.src
@@ -1399,8 +1401,8 @@ class Render3D extends PureComponent {
       }
       case CanvasElements.Path: {
         canvasStyle = {
-          fill: el.fill || '#000000',
-          stroke: el.stroke || '#000000',
+          fill: el.fill || BLACK,
+          stroke: el.stroke || BLACK,
           strokeWidth: el.strokeWidth || 0
         }
         canvasEl = {
