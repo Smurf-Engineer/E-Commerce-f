@@ -5,3 +5,4 @@
 export const WHITE = '#FFFFFF'
 export const BLACK = '#000000'
 export const SELECTION_3D_AREA = '#f2f2f2'
+export const RED = '#E61737'

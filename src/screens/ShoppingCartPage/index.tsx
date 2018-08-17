@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import has from 'lodash/has'
 import find from 'lodash/find'
+import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
@@ -37,6 +38,7 @@ import {
   ContinueButton
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
+import config from '../../config/index'
 
 import Ordersummary from '../../components/OrderSummary'
 import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
@@ -98,6 +100,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
   showReviewDesignModalAction: (open: boolean) => void
+  currentCurrency: string
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -257,11 +260,15 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       history,
       cart,
       showDeleteLastItemModal,
-      showReviewDesignModal
+      showReviewDesignModal,
+      currentCurrency
     } = this.props
     const { formatMessage } = intl
 
-    const shoppingCartData = getShoppingCartData(cart)
+    const shoppingCartData = getShoppingCartData(
+      cart,
+      currentCurrency || config.defaultCurrency
+    )
     const {
       total,
       totalWithoutDiscount,
@@ -271,14 +278,25 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       numberOfProducts
     } = shoppingCartData
 
+    let symbol: string = '$'
+
     const cartItems = cart || []
     let activeCheckout = true
     const renderList = cartItems.map((cartItem, index) => {
       if (!this.isAllSetInProduct(cartItem)) {
         activeCheckout = false
       }
+
+      // get prices from currency
+      const currencyPrices = filter(cartItem.product.priceRange, {
+        abbreviation: currentCurrency || config.defaultCurrency
+      })
+
+      symbol = currencyPrices[0].shortName
+
       return (
         <CartItem
+          {...{ currentCurrency }}
           formatMessage={formatMessage}
           key={index}
           title={
@@ -291,12 +309,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
               ? `${cartItem.product.name} ${cartItem.product.shortDescription}`
               : cartItem.product.shortDescription
           }
-          price={cartItem.product.priceRange[priceRangeToApply]}
+          price={currencyPrices[priceRangeToApply]}
           image={
             cartItem.designId
               ? cartItem.designImage || ''
               : cartItem.product.images[0].front
           }
+          currencySymbol={symbol}
           cartItem={cartItem}
           handleAddItemDetail={this.handleAddItemDetail}
           handledeleteItemDetail={this.handledeleteItemDetail}
@@ -377,6 +396,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                 <Ordersummary
                   subtotal={total}
                   shipping={0}
+                  currencySymbol={symbol}
                   {...{ formatMessage, totalWithoutDiscount, total }}
                 />
                 <ButtonWrapper disabled={!activeCheckout}>
@@ -425,7 +445,14 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('shoppingCartPage').toJS()
+const mapStateToProps = (state: any) => {
+  const shoppingProps = state.get('shoppingCartPage').toJS()
+  const langProps = state.get('languageProvider').toJS()
+  return {
+    ...shoppingProps,
+    ...langProps
+  }
+}
 
 const ShoppingCartPageEnhance = compose(
   injectIntl,

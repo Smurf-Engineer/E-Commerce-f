@@ -21,14 +21,17 @@ interface Props {
   country?: string
   region: string
   disabled: boolean
-  handleRegionChange: (value: any) => void
+  handleRegionChange: (value: any, regionCode: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class RegionSelect extends React.Component<Props, {}> {
   handleSelectChange = async (value: any) => {
     const { handleRegionChange } = this.props
-    handleRegionChange(value)
+    handleRegionChange(
+      value.substr(0, value.indexOf('-')),
+      value.substr(value.indexOf('-') + 1, value.length)
+    )
   }
 
   handleFilter = (input: string, { props }: any) =>
@@ -38,11 +41,15 @@ export class RegionSelect extends React.Component<Props, {}> {
     const { data, region, formatMessage, disabled } = this.props
     let dropdownOptions: any = []
     if (data && data.regions && data.regions.length) {
-      dropdownOptions = data.regions.map(({ region: regionItem }, index) => (
-        <Option value={regionItem} key={index}>
-          {regionItem}
-        </Option>
-      ))
+      dropdownOptions = data.regions.map(
+        ({ region: regionItem, code }, index) => {
+          return (
+            <Option value={`${regionItem}-${code.shortCode}`} key={index}>
+              {regionItem}
+            </Option>
+          )
+        }
+      )
     }
 
     return (

@@ -175,19 +175,20 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       selectedCard: { id: selectedCardId }
     } = this.props
 
-    const error =
+    const emptyForm =
       !sameBillingAndShipping &&
       (!firstName ||
         !lastName ||
         !street ||
-        !apartment ||
         !country ||
         !stateProvince ||
         !city ||
         !zipCode ||
         !phone)
-    if ((!cardHolderName && !selectedCardId) || error) {
+
+    if ((!cardHolderName && !selectedCardId) || emptyForm) {
       invalidBillingFormAction(true)
+      return
     }
     const stripeTokenData = {
       name: cardHolderName,
@@ -206,7 +207,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
-    } else {
+    } else if (!emptyForm) {
       if (!selectedCardId) {
         const {
           token: {
