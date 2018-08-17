@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Search from 'antd/lib/input/Search'
-import Spin from 'antd/lib/spin'
+// import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
 import messages from './messages'
 import {
@@ -17,8 +17,8 @@ import {
   Content,
   Title,
   ContentHeader,
-  Subtitle,
-  LoadingContainer
+  Subtitle
+  // LoadingContainer
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'

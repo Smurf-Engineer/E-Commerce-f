@@ -53,7 +53,9 @@ import {
   CANVAS_ELEMENT_DRAGGED_ACTION,
   CANVAS_ELEMENT_ROTATED_ACTION,
   CANVAS_ELEMENT_TEXT_CHANGED,
-  REAPPLY_CANVAS_IMAGE_ACTION
+  REAPPLY_CANVAS_IMAGE_ACTION,
+  SET_EDIT_DESIGN_CONFIG_ACTION,
+  SET_LOADED_CANVAS_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -68,7 +70,9 @@ import {
   DesignSaved,
   CanvasResized,
   CanvasDragged,
-  CanvasRotated
+  CanvasRotated,
+  AccessoriesColor,
+  CanvasType
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -400,4 +404,18 @@ export const onCanvasElementTextChangedAction = (
 export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
   type: REAPPLY_CANVAS_IMAGE_ACTION,
   el
+})
+
+export const setEditConfigAction = (
+  colors: string[],
+  accessoriesColor: AccessoriesColor
+): AnyAction => ({
+  type: SET_EDIT_DESIGN_CONFIG_ACTION,
+  colors,
+  accessoriesColor
+})
+
+export const setLoadedCanvasAction = (canvas: CanvasType): AnyAction => ({
+  type: SET_LOADED_CANVAS_ACTION,
+  canvas
 })

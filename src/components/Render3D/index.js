@@ -11,7 +11,7 @@ import {
   FLATLOCK,
   PROPEL_PALMS,
   GRIP_TAPE,
-  SOLAR_BIB_BRACE
+  ACCESSORY_WHITE
 } from '../../constants'
 import messages from './messages'
 
@@ -28,7 +28,7 @@ class Render3D extends PureComponent {
 
   async componentDidMount() {
     /* Renderer config */
-    const { svg, product = {} } = this.props
+    const { svg, product = {}, flatlockColor } = this.props
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
@@ -74,7 +74,6 @@ class Render3D extends PureComponent {
       objLoader.load(
         product.obj,
         object => {
-          this.handleOnLoadModel(false)
           const objectChilds = object.children.length
           this.setState({ objectChilds })
 
@@ -98,7 +97,7 @@ class Render3D extends PureComponent {
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color: '#FFFFFF'
+              color: flatlockColor || '#FFFFFF'
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
@@ -169,24 +168,12 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set('#ffffff')
           }
-          // TODO: WIP
-          // const solarBibBraceIndex = findIndex(
-          //   children,
-          //   ({ name }) => name === SOLAR_BIB_BRACE
-          // )
-          // if (
-          //   solarBibBraceIndex >= 0 &&
-          //   !!object.children[solarBibBraceIndex].material.length
-          // ) {
-          //   object.children[solarBibBraceIndex].material.forEach(material =>
-          //     material.color.set('#ffffff')
-          //   )
-          // }
 
           /* Object Conig */
           object.position.y = 0
           object.name = 'jersey'
           scene.add(object)
+          this.handleOnLoadModel(false)
         },
         this.onProgress,
         this.onError
@@ -212,23 +199,30 @@ class Render3D extends PureComponent {
   loadTextures = (product, area) =>
     new Promise((resolve, reject) => {
       try {
+        const { bindingColor, zipperColor, bibColor } = this.props
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         // TODO: Get the colors: zipper, binding, bibBrace and flatlock
         if (!!zipper) {
-          const { white } = zipper
-          loadedTextures.zipper = textureLoader.load(white)
+          const texture = !!zipper[zipperColor]
+            ? zipper[zipperColor]
+            : ACCESSORY_WHITE
+          loadedTextures.zipper = textureLoader.load(texture)
           loadedTextures.zipper.minFilter = THREE.LinearFilter
         }
         if (!!binding) {
-          const { white } = binding
-          loadedTextures.binding = textureLoader.load(white)
+          const texture = !!binding[bindingColor]
+            ? binding[bindingColor]
+            : ACCESSORY_WHITE
+          loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
         }
         if (!!bibBrace) {
-          const { white } = bibBrace
-          loadedTextures.bibBrace = textureLoader.load(white)
+          const texture = !!bibBrace[bibColor]
+            ? bibBrace[bibColor]
+            : ACCESSORY_WHITE
+          loadedTextures.bibBrace = textureLoader.load(texture)
           loadedTextures.bibBrace.minFilter = THREE.LinearFilter
         }
         if (!!flatlock) {
