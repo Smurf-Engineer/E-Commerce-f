@@ -5,7 +5,6 @@ import * as React from 'react'
 import { compose, withApollo } from 'react-apollo'
 import queryString from 'query-string'
 import upperFirst from 'lodash/upperFirst'
-import lowerCase from 'lodash/lowerCase'
 import MenuAntd from 'antd/lib/menu'
 import Spin from 'antd/lib/spin'
 import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
@@ -78,7 +77,7 @@ class Menu extends React.PureComponent<Props, {}> {
 
     const toGender = !!genderSelected ? 'men' : 'women'
     const toCategory = children.replace(' & ', ' ')
-    const toSport = sportSelected && lowerCase(sportSelected)
+    const toSport = sportSelected && (sportSelected as string).toLowerCase()
 
     const route = `/product-catalogue?${key}`
     const atProductCatalogue = (pathname as String).includes(

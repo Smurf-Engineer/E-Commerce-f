@@ -8,7 +8,6 @@ import { connect } from 'react-redux'
 import { compose, graphql } from 'react-apollo'
 import Menu from 'antd/lib/menu'
 import queryString from 'query-string'
-import lowerCase from 'lodash/lowerCase'
 import { categoriesQuery } from './data'
 import MenuGender from '../MenuGender'
 import MenuSports from '../MenuSports'
@@ -90,7 +89,7 @@ export class DropdownList extends React.PureComponent<Props> {
 
     const toGender = type ? 'women' : 'men'
     const toCategory = categorySelected.replace(' & ', ' ')
-    const toSport = sportSelected && lowerCase(sportSelected)
+    const toSport = sportSelected && (sportSelected as string).toLowerCase()
 
     const route = `/product-catalogue?gender=${toGender}&category=${toCategory}&sport=${toSport}`
     const atProductCatalogue = (pathname as String).includes(
