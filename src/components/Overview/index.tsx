@@ -52,6 +52,7 @@ interface Props {
   history: any
   data: Data
   orderId: string
+  currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
   goToScreen: (screen: string) => void
   setOrderIdAction: (orderId: string) => void
@@ -63,21 +64,22 @@ class Overview extends React.Component<Props, {}> {
       formatMessage,
       orderId,
       data: { profile, address, payment },
-      goToScreen
+      goToScreen,
+      currentCurrency
     } = this.props
     const { addresses } = address
     const contentAddress = addresses.length ? (
       <AddressData address={addresses[0]} {...{ formatMessage }} />
     ) : (
-        <EmptyContainer message={formatMessage(messages.emptyAddress)} />
-      )
+      <EmptyContainer message={formatMessage(messages.emptyAddress)} />
+    )
     const { cards } = payment
     const contentPayment =
       cards && cards.length ? (
         <PaymentData card={cards[0]} />
       ) : (
-          <EmptyContainer message={formatMessage(messages.emptyPayment)} />
-        )
+        <EmptyContainer message={formatMessage(messages.emptyPayment)} />
+      )
     const profileHeader = (
       <OverviewHeader
         id={PROFILE_SETTINGS}
@@ -174,7 +176,7 @@ class Overview extends React.Component<Props, {}> {
         </Container>
         <OrderDetails
           onReturn={this.handleOnOrderClick}
-          {...{ orderId, formatMessage }}
+          {...{ orderId, formatMessage, currentCurrency }}
         />
       </SwipeableViews>
     )

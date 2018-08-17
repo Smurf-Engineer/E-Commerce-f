@@ -298,7 +298,7 @@
   "components.ProductInfo.unitPrice": "Unit price:",
   "components.ProductInfo.addMore": "+ Add More",
   "components.ProductInfo.delete": "Delete",
-  "components.ProductInfo.addMoreFor": "Add {products} more for ${price}",
+  "components.ProductInfo.addMoreFor": "Add {products} more for {price}",
   "components.AddToTeamStore.tittle": "ADD TO TEAM STORE",
   "components.AddToTeamStore.teamstoreListTitle": "My Team Stores",
   "components.AddToTeamStore.addTeamstoreLabel": "+ ADD NEW TEAM STORE",

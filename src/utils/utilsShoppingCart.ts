@@ -1,7 +1,11 @@
 import { CartItems, PriceRange } from '../types/common'
 import get from 'lodash/get'
+import filter from 'lodash/filter'
 
-export const getShoppingCartData = (shoppingCart: CartItems[]) => {
+export const getShoppingCartData = (
+  shoppingCart: CartItems[],
+  currency: string
+) => {
   let totalSum = 0
   let weightSum = 0
   let totalWithoutDiscount = 0
@@ -11,6 +15,7 @@ export const getShoppingCartData = (shoppingCart: CartItems[]) => {
   let maxquantity = 0
   let numberOfProducts = 0
   let nameOfFirstProduct = ''
+  let symbol = '$'
   if (shoppingCart) {
     shoppingCart.map((cartItem, index) => {
       const quantities = cartItem.itemDetails.map(itemDetail => {
@@ -39,9 +44,18 @@ export const getShoppingCartData = (shoppingCart: CartItems[]) => {
         maxquantity = quantitySum
       }
 
+      // get prices from currency
+      const currencyPrices = filter(cartItem.product.priceRange, {
+        abbreviation: currency
+      })
+
+      symbol =
+        currencyPrices && currencyPrices.length
+          ? currencyPrices[0].shortName
+          : '$'
+
       totalWithoutDiscount =
-        totalWithoutDiscount +
-        quantitySum * cartItem.product.priceRange[0].price
+        totalWithoutDiscount + quantitySum * currencyPrices[0].price
     })
 
     if (justOneOfEveryItem && shoppingCart.length) {
@@ -59,14 +73,20 @@ export const getShoppingCartData = (shoppingCart: CartItems[]) => {
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
       const productPriceRanges = get(cartItem, 'product.priceRange', [])
+
+      // get prices from currency
+      const currencyPrices = filter(productPriceRanges, {
+        abbreviation: currency
+      })
+
       let priceRange =
         priceRangeToApply !== 0
-          ? cartItem.product.priceRange[priceRangeToApply]
-          : getPriceRange(productPriceRanges, quantitySum)
+          ? currencyPrices[priceRangeToApply]
+          : getPriceRange(currencyPrices, quantitySum)
 
       priceRange =
         priceRange.price === 0
-          ? productPriceRanges[productPriceRanges.length - 1]
+          ? currencyPrices[currencyPrices.length - 1]
           : priceRange
 
       // increase the total
@@ -80,7 +100,8 @@ export const getShoppingCartData = (shoppingCart: CartItems[]) => {
     priceRangeToApply,
     nameOfFirstProduct,
     show25PercentMessage,
-    numberOfProducts
+    numberOfProducts,
+    symbol
   }
 }
 

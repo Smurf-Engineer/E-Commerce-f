@@ -220,6 +220,7 @@ class MainLayout extends React.Component<Props, {}> {
         )}
         <QuickView
           open={!!productId}
+          currentCurrency={currentCurrency || config.defaultCurrency}
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
           {...{ productId, history, yotpoId, formatMessage }}

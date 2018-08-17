@@ -39,7 +39,6 @@ interface Data extends QueryProps {
 interface Props {
   data?: Data
   taxes: any
-  client: any
   total: number
   subtotal: number
   shipping?: number
@@ -50,6 +49,7 @@ interface Props {
   weight?: string
   shipAddress?: TaxAddressObj
   proDesignReview?: number
+  currencySymbol?: string
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -65,7 +65,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       discount,
       totalWithoutDiscount,
       onlyRead,
-      proDesignReview
+      proDesignReview,
+      currencySymbol
     } = this.props
 
     const renderDiscount = discount ? (
@@ -96,6 +97,8 @@ export class OrderSummary extends React.Component<Props, {}> {
     const shippingTotal = get(data, 'shipping.total', 0)
     const taxesTotal = get(data, 'taxes.total', 0)
 
+    const symbol = currencySymbol || '$'
+
     return (
       <Container>
         <SummaryTitle>
@@ -103,23 +106,23 @@ export class OrderSummary extends React.Component<Props, {}> {
         </SummaryTitle>
         <OrderItem>
           <FormattedMessage {...messages.subtotal} />
-          <div>{`USD$${subtotal}`}</div>
+          <div>{`${symbol} ${subtotal}`}</div>
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
           <OrderItem hide={!taxesTotal}>
             <FormattedMessage {...messages.taxes} />
-            <div>{`USD$${taxesTotal}`}</div>
+            <div>{`${symbol} ${taxesTotal}`}</div>
           </OrderItem>
           <OrderItem hide={!shippingTotal}>
             <FormattedMessage {...messages.shipping} />
-            <div>{`USD$${shippingTotal}`}</div>
+            <div>{`${symbol} ${shippingTotal}`}</div>
           </OrderItem>
 
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
-              <div>{`$${proDesignReview}`}</div>
+              <div>{`${symbol} ${proDesignReview}`}</div>
             </OrderItem>
           )}
 
@@ -156,7 +159,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         ) : null}
         <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
           <FormattedMessage {...messages.total} />
-          <div>{`USD$${total}`}</div>
+          <div>{`${symbol} ${total}`}</div>
         </TotalOrderItem>
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>

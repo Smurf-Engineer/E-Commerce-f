@@ -5,6 +5,9 @@ export const regionsQuery = gql`
     regions: getRegions(country: $country) {
       region: name
       country
+      code: adminCodes1 {
+        shortCode: ISO3166_2
+      }
     }
   }
 `

@@ -26,7 +26,8 @@ import {
   Product,
   DesignSaved,
   StitchingColor,
-  CanvasType
+  CanvasType,
+  DesignFiles
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 
@@ -41,6 +42,7 @@ type DesignInput = {
   zipper_color?: string
   binding_color?: string
   bib_brace_color?: string
+  designFiles?: DesignFiles
 }
 
 interface Data {
@@ -131,13 +133,16 @@ export class SaveDesign extends React.Component<Props, {}> {
 
     const { designBase64, canvasJson, styleId } = design
 
+    const designFiles = this.getDesignFiles()
+
     try {
       const designObj: DesignInput = {
         name: designName,
         product_id: productId,
         image: designBase64,
         styleId,
-        canvas: canvasJson
+        canvas: canvasJson,
+        designFiles
       }
 
       /* Accessory colors  */
@@ -154,9 +159,6 @@ export class SaveDesign extends React.Component<Props, {}> {
       if (hasBibBrace) {
         designObj.bib_brace_color = bibColor
       }
-
-      // TODO: send designFiles object when saveDesign mutation is ready
-      // const designFiles = this.getDesignFiles()
 
       setSaveDesignLoading(true)
       const response = await saveDesignNameMutation({
@@ -266,7 +268,8 @@ export class SaveDesign extends React.Component<Props, {}> {
     // tslint:enable:curly
 
     return {
-      designFiles: { files: uniq(files), svgs: uniq(svgs) }
+      files: uniq(files),
+      svgs: uniq(svgs)
     }
   }
 
