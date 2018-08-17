@@ -918,3 +918,8 @@ export interface Inspiration {
   image: string
   colors: string[]
 }
+
+export interface DesignFiles {
+  files: number[]
+  svgs: number[]
+}
