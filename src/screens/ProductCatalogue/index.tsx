@@ -67,6 +67,7 @@ interface Props extends RouteComponentProps<any> {
   openSidebar: boolean
   currentCurrency: string
   setFilterAction: (filter: {}) => void
+  clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
   setSelectedFilters: (filter: object) => void
   sortBySelected: (sortBy: string) => void
@@ -82,12 +83,24 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   componentWillMount() {
+    this.checkFilters()
+  }
+
+  componentWillUnmount() {
+    const { resetReducerAction } = this.props
+    resetReducerAction()
+  }
+
+  checkFilters() {
     const {
-      location: { search },
-      setSelectedFilters
+      location: { search, state },
+      setSelectedFilters,
+      clearFiltersAction
     } = this.props
 
     const { gender, category, sport } = queryString.parse(search)
+
+    clearFiltersAction()
 
     if (gender) {
       const filterObject = {
@@ -119,11 +132,10 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       }
       setSelectedFilters(filterObject)
     }
-  }
 
-  componentWillUnmount() {
-    const { resetReducerAction } = this.props
-    resetReducerAction()
+    if (state) {
+      state.forced = false
+    }
   }
 
   render() {
@@ -149,6 +161,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     let sortByLabel = ''
     if (loading) {
       return null
+    }
+
+    const {
+      location: { state }
+    } = history
+
+    const forced = get(state, 'forced', false)
+
+    if (forced) {
+      this.checkFilters()
     }
 
     switch (orderBy) {

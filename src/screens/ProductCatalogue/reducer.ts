@@ -10,7 +10,8 @@ import {
   ORDERBY_SELECTED,
   SET_SKIP_VALUE,
   OPEN_SIDEBAR_MOBILE,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  CLEAR_FILTERS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -63,6 +64,12 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('openSidebar', action.open)
     case RESET_REDUCER_DATA:
       return initialState
+    case CLEAR_FILTERS:
+      return state.merge({
+        genderFilters: {},
+        sportFilters: {},
+        categoryFilters: {}
+      })
     default:
       return state
   }

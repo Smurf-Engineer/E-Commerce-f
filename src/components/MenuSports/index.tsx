@@ -92,24 +92,28 @@ export class MenuSports extends React.PureComponent<Props, {}> {
             filterSelected={categorySelected}
             onHoverFilter={this.handleOnHoverCategory}
           />
-          <SeeAllButton
-            onClick={this.handleOnPressSeeAll}
-            {...{ formatMessage }}
-          />
+          {loading ? null : (
+            <SeeAllButton
+              onClick={this.handleOnPressSeeAll}
+              {...{ formatMessage }}
+            />
+          )}
         </Filters>
         <Divider type="vertical" />
-        <ProductList
-          {...{
-            sportFilter,
-            categoryFilter,
-            onPressCustomize,
-            onPressQuickView,
-            formatMessage,
-            currentCurrency
-          }}
-          width={'80%'}
-          onPressSeeAll={this.handleOnPressSeeAll}
-        />
+        {loading ? null : (
+          <ProductList
+            {...{
+              sportFilter,
+              categoryFilter,
+              onPressCustomize,
+              onPressQuickView,
+              formatMessage,
+              currentCurrency
+            }}
+            width={'80%'}
+            onPressSeeAll={this.handleOnPressSeeAll}
+          />
+        )}
       </Container>
     )
   }

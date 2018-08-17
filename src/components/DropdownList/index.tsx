@@ -28,6 +28,9 @@ import {
 import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
+const MEN = 'men'
+const WOMEN = 'women'
+
 interface Data extends QueryProps {
   genders: Filter[]
   sports: Filter[]
@@ -81,13 +84,14 @@ export class DropdownList extends React.PureComponent<Props> {
     const {
       history: {
         push,
+        replace,
         location: { search, pathname }
       }
     } = this.props
 
     const { gender, category, sport } = queryString.parse(search)
 
-    const toGender = type ? 'women' : 'men'
+    const toGender = type ? WOMEN : MEN
     const toCategory = categorySelected.replace(' & ', ' ')
     const toSport = sportSelected && (sportSelected as string).toLowerCase()
 
@@ -96,16 +100,21 @@ export class DropdownList extends React.PureComponent<Props> {
       'product-catalogue'
     )
 
+    let isChangingGender = false
+    let isChangingCategory = false
+    let isChangingSport = false
+
+    if (atProductCatalogue) {
+      isChangingGender = gender && gender !== toGender
+      isChangingCategory = category && category !== toCategory
+      isChangingSport = sport && sport !== toSport
+    }
     const isMissingFilter = !gender || !category || !sport
-    const isChangingGender = atProductCatalogue && gender && gender !== toGender
-    const isChangingCategory =
-      atProductCatalogue && category && category !== toCategory
-    const isChangingSport = atProductCatalogue && sport && sport !== toSport
     const isChangingFilter =
       isChangingGender || isChangingCategory || isChangingSport
 
     if ((atProductCatalogue && isMissingFilter) || isChangingFilter) {
-      window.location.replace(route)
+      replace(route, { forced: true })
       return
     }
 
