@@ -160,7 +160,7 @@ export class Account extends React.Component<Props, {}> {
       case ORDER_HISTORY:
         return <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
-        return <MyAddresses {...{ formatMessage }} />
+        return <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
       case CREDIT_CARDS:
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
