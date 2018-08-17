@@ -837,18 +837,17 @@ export default designCenterReducer
 const addCanvasElement = (state: any, canvasToAdd: Change) => {
   const canvas = state.get('canvas')
   const {
-    state: { src, style, type: canvasType, id }
+    state: { id, src, style, position, type: canvasType, fileId }
   } = canvasToAdd
-  const canvasObject: any = { id }
+  let canvasObject
   switch (canvasType) {
     case CanvasElements.Text:
-      canvasObject.text = src
-      canvasObject.textFormat = style
+      canvasObject = { id, text: src, textFormat: style }
       break
     case CanvasElements.Path:
-      canvasObject.fill = style.fill || '#000000'
-      canvasObject.stroke = style.stroke || '#000000'
-      canvasObject.strokeWidth = style.strokeWidth || 0
+      const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = style
+      const { scaleX, scaleY } = position
+      canvasObject = { id, fill, stroke, strokeWidth, scaleX, scaleY, fileId }
       break
     case CanvasElements.Image:
     default:

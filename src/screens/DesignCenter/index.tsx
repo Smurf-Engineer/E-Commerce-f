@@ -768,7 +768,8 @@ export class DesignCenter extends React.Component<Props, {}> {
               stitchingColor,
               bindingColor,
               zipperColor,
-              bibColor
+              bibColor,
+              canvas
             }}
             hasFlatlock={!!product && !!product.flatlock}
             hasZipper={!!product && !!product.zipper}

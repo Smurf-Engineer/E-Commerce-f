@@ -1177,10 +1177,7 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        let el = {
-          id,
-          imageSize
-        }
+        const el = { id, imageSize }
         if (position.scaleX) {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
@@ -1190,17 +1187,23 @@ class Render3D extends PureComponent {
             .setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
+          position.scaleX = scaleFactorX
+          position.scaleY = scaleFactorY
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
+          const { id: fileId } = file
+          el.fileId = fileId
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
             style: undefined,
-            position
+            position,
+            fileId
           })
           this.canvasTexture.setActiveObject(imageEl)
         } else {
+          el.fileId = file.id
           const { onReApplyImageEl } = this.props
           onReApplyImageEl(el)
         }
@@ -1261,7 +1264,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyClipArt = (url, style = {}, position = {}, idElement) => {
+  applyClipArt = (url, style = {}, position = {}, idElement, fileId) => {
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
@@ -1292,13 +1295,17 @@ class Render3D extends PureComponent {
           shape.set({ scaleX: scaleFactorX, scaleY: scaleFactorY }).setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
+          position.scaleX = scaleFactorX
+          position.scaleY = scaleFactorY
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
+          el.fileId = fileId
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src: url,
             style,
-            position
+            position,
+            fileId
           })
           this.canvasTexture.setActiveObject(shape)
         }
@@ -1332,19 +1339,27 @@ class Render3D extends PureComponent {
           const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
           if (!object) break //FIXME: add new method to delete duplicate elements
-          canvasObject.src = object.state.src
+          const {
+            state: { fileId, src }
+          } = object
+          canvasObject.src = src
           canvasObject.style = {
             fill,
             stroke,
             strokeWidth
           }
+          canvasObject.fileId = fileId
         }
         break
       case CanvasElements.Image:
         {
           const object = find(undoChanges, { type: Changes.Add, state: { id } })
           if (!object) break //FIXME: add new method to delete duplicate elements
-          canvasObject.src = object.state.src
+          const {
+            state: { src, fileId }
+          } = object
+          canvasObject.src = src
+          canvasObject.fileId = fileId
         }
         break
     }
@@ -1391,15 +1406,24 @@ class Render3D extends PureComponent {
         }
         break
       case CanvasElements.Image: {
+        const {
+          state: {
+            src: { id: fileId }
+          }
+        } = objectToClone
         canvasEl = {
           id,
           imageSize: { width: el.width, height: el.height },
           scaleX: el.scaleX,
-          scaleY: el.scaleY
+          scaleY: el.scaleY,
+          fileId
         }
         break
       }
       case CanvasElements.Path: {
+        const {
+          state: { fileId }
+        } = objectToClone
         canvasStyle = {
           fill: el.fill || BLACK,
           stroke: el.stroke || BLACK,
@@ -1407,7 +1431,10 @@ class Render3D extends PureComponent {
         }
         canvasEl = {
           id,
-          ...canvasStyle
+          ...canvasStyle,
+          scaleX: el.scaleX,
+          scaleY: el.scaleY,
+          fileId
         }
       }
       default:
@@ -1429,7 +1456,8 @@ class Render3D extends PureComponent {
       state: {
         src,
         style: styleSaved,
-        position: { left, top }
+        position: { left, top },
+        fileId
       }
     } = objectToClone
     const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
@@ -1442,7 +1470,8 @@ class Render3D extends PureComponent {
         scaleX: el.scaleX,
         scaleY: el.scaleY,
         transformMatrix: el.transformMatrix
-      }
+      },
+      fileId
     })
   }
 
@@ -1541,6 +1570,7 @@ class Render3D extends PureComponent {
         meshName === BIB_BRACE
       if (!!canvasEl && validMesh) {
         const el = Object.assign({}, canvasEl)
+        const { fileId } = canvasEl
         this.setState({ canvasEl: null }, () => {
           document.getElementById('render-3d').style.cursor = 'default'
           const left = uv.x * CANVAS_SIZE
@@ -1553,7 +1583,13 @@ class Render3D extends PureComponent {
               this.applyImage(el.file, { left, top })
               break
             case CanvasElements.Path:
-              this.applyClipArt(el.url, el.style, { left, top })
+              this.applyClipArt(
+                el.url,
+                el.style,
+                { left, top },
+                undefined,
+                fileId
+              )
               break
             default:
               break
