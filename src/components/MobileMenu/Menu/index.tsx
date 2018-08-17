@@ -2,27 +2,31 @@
  * Menu Component - Created by david on 03/04/18.
  */
 import * as React from 'react'
+import { compose, withApollo } from 'react-apollo'
+import upperFirst from 'lodash/upperFirst'
 import MenuAntd from 'antd/lib/menu'
+import Spin from 'antd/lib/spin'
 import { Container, Bottom, menuStyle, SeeAll } from './styledComponents'
 import { FormattedMessage } from 'react-intl'
 import messages from './messages'
-import Spin from 'antd/lib/spin'
+import { Filter } from '../../../types/common'
+import { categoriesQuery } from './data'
 
 const { SubMenu } = MenuAntd
 
-const menuOptionsGenders = [
-  { label: 'men', visible: false },
-  { label: 'women', visible: false }
+const menuOptionsSports = [
+  { label: 'cycling', visible: false, categories: [] as Filter[] },
+  { label: 'triathlon', visible: false, categories: [] as Filter[] },
+  { label: 'active', visible: false, categories: [] as Filter[] }
 ]
 
-const menuOptionsSports = [
-  { label: 'cycling', visible: false },
-  { label: 'triathlon', visible: false },
-  { label: 'nordic', visible: false },
-  { label: 'active', visible: false }
+const menuOptionsGenders = [
+  { label: 'men', visible: false, sports: menuOptionsSports },
+  { label: 'women', visible: false, sports: menuOptionsSports }
 ]
 
 interface Props {
+  client: any
   data?: any
   history: any
   loginButton: React.ReactNode
@@ -33,13 +37,18 @@ interface Props {
 
 class Menu extends React.PureComponent<Props, {}> {
   state = {
-    openKeys: ['']
+    openKeys: [''],
+    genderSelected: null
   }
 
   componentWillReceiveProps({ menuOpen }: Props) {
     if (menuOpen === false) {
       this.setState({ openKeys: [''] })
     }
+  }
+
+  handleOpenGender = (gender: number) => {
+    this.setState({ genderSelected: gender })
   }
 
   handleClick = ({ item, key, selectedKeys }: any) => {
@@ -61,9 +70,55 @@ class Menu extends React.PureComponent<Props, {}> {
     const { history } = this.props
     history.push(`/product-catalogue`)
   }
+
+  fetchCategories = async (
+    sportId: number,
+    genderId: number | undefined,
+    sportName: string
+  ) => {
+    const {
+      client: { query }
+    } = this.props
+
+    const {
+      data: { categories }
+    } = await query({
+      query: categoriesQuery,
+      variables: { sportId, genderId: genderId || 1 },
+      fetchPolicy: 'network-only'
+    })
+
+    if (genderId === undefined) {
+      let sport = menuOptionsSports.find(x => x.label === sportName)
+      if (sport) {
+        sport.categories = categories
+      }
+    } else {
+      let gender = menuOptionsGenders[genderId - 1].sports.find(
+        x => x.label === sportName
+      )
+      if (gender) {
+        gender.categories = categories
+      }
+    }
+  }
+
+  getCategories = (sportName: string) => {
+    const {
+      data: { sports }
+    } = this.props
+    const { genderSelected } = this.state
+
+    const sportId = sports.find(
+      ({ name }: any) => name === upperFirst(sportName)
+    ).id
+    const genderId = genderSelected !== null ? genderSelected + 1 : undefined
+    this.fetchCategories(sportId, genderId, sportName)
+  }
+
   render() {
     const {
-      data: { loading, error, categories, sports },
+      data: { loading, error },
       loginButton,
       regionButton,
       formatMessage
@@ -82,49 +137,64 @@ class Menu extends React.PureComponent<Props, {}> {
     }
 
     const optionsGender = menuOptionsGenders.map(
-      ({ label: genderName }, index) => (
+      ({ label: genderName, sports }, index) => (
         <SubMenu
           key={`menu-${genderName}-${index}`}
+          onClick={this.handleOpenGender(index)}
           title={
             <span>
               <FormattedMessage {...messages[genderName]} />
             </span>
           }
         >
-          {sports.map(({ id: sportId, name: sportName }: any) => (
-            <SubMenu
-              key={`${genderName}-${sportId}-${index}`}
-              title={sportName}
-            >
-              {categories.map(({ id: categoryId, name: categoryName }: any) => (
-                <MenuAntd.Item
-                  key={`genderFilter=${genderName}&sportFilters=${sportName}&categoryFilters=${categoryName}`}
+          {sports.map(({ label, categories }: any, key: number) => {
+            this.getCategories(label)
+            return (
+              categories &&
+              !!categories.length && (
+                <SubMenu
+                  key={`${genderName}-${label}-${key}`}
+                  title={upperFirst(label)}
                 >
-                  {categoryName}
-                </MenuAntd.Item>
-              ))}
-            </SubMenu>
-          ))}
+                  {categories.map(({ name }: Filter) => (
+                    <MenuAntd.Item
+                      key={`gender=${genderName}&sport=${label}&category=${name}`}
+                    >
+                      {name}
+                    </MenuAntd.Item>
+                  ))}
+                </SubMenu>
+              )
+            )
+          })}
         </SubMenu>
       )
     )
 
-    const optionsSports = menuOptionsSports.map(({ label }, index) => (
-      <SubMenu
-        key={`menu-${label}-${index}`}
-        title={
-          <span>
-            <FormattedMessage {...messages[label]} />
-          </span>
-        }
-      >
-        {categories.map(({ id, name }: any) => (
-          <MenuAntd.Item key={`sportFilters=${label}&categoryFilters=${name}`}>
-            {name}
-          </MenuAntd.Item>
-        ))}
-      </SubMenu>
-    ))
+    const optionsSports = menuOptionsSports.map(
+      ({ label, categories }, index) => {
+        this.getCategories(label)
+        return (
+          categories &&
+          !!categories.length && (
+            <SubMenu
+              key={`menu-${label}-${index}`}
+              title={
+                <span>
+                  <FormattedMessage {...messages[label]} />
+                </span>
+              }
+            >
+              {categories.map(({ name: categoryName }: any) => (
+                <MenuAntd.Item key={`sport=${label}&category=${categoryName}`}>
+                  {categoryName}
+                </MenuAntd.Item>
+              ))}
+            </SubMenu>
+          )
+        )
+      }
+    )
 
     const options = [...optionsGender, ...optionsSports]
 
@@ -153,4 +223,6 @@ class Menu extends React.PureComponent<Props, {}> {
   }
 }
 
-export default Menu
+const MenuEnhance = compose(withApollo)(Menu)
+
+export default MenuEnhance
