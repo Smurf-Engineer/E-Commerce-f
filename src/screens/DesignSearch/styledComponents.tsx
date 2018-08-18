@@ -65,7 +65,7 @@ export const Subtitle = styled.div`
   margin: 20px 0 16px;
 `
 
-export const LoadingContainer = styled.div`
+export const LoadErrContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;

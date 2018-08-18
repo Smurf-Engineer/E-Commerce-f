@@ -16,5 +16,9 @@ export default defineMessages({
   addCode: {
     id: 'screens.DesignSearch.designerTool',
     defaultMessage: 'Add JV2-CODE'
+  },
+  notFound: {
+    id: 'screens.DesignSearch.notFound',
+    defaultMessage: 'Order not found...'
   }
 })

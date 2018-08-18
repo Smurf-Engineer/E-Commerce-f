@@ -17,30 +17,43 @@ import {
 } from './styledComponents'
 import { OrderSearchResult } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
-import AccessoryColor from '../AccessoryColor'
+// import AccessoryColor from '../AccessoryColor'
 
 interface Props {
   order: OrderSearchResult
 }
 
 const OrderFiles = ({
-  order: { productCode, image, status, svgUrl, assets }
+  order: {
+    code,
+    image,
+    status,
+    svgUrl,
+    assets: { svgs, files }
+  }
 }: Props) => {
-  const assetsList = assets.map(({ fileUrl, name }, index) => (
-    <DownloadItem key={index} url={fileUrl} {...{ name }} />
-  ))
+  // const assetsArray = []
+  for (let file of files) {
+    console.log(file)
+  }
+  for (let svg of svgs) {
+    console.log(svg)
+  }
+  // const assetsList = assets.map(({ fileUrl, name }, index) => (
+  //   <DownloadItem key={index} url={fileUrl} {...{ name }} />
+  // ))
   return (
     <Container>
       <div>
-        <AccessoryColor name="Bid brace color" color="black" />
+        {/* <AccessoryColor name="Bid brace color" color="black" />
         <AccessoryColor
           name="Stitching"
           stitchingColor={{ name: 'FSC-22', value: '#92499E' }}
-        />
+        /> */}
         <Image src={image} />
       </div>
       <Data>
-        <Code>{productCode}</Code>
+        <Code>{code}</Code>
         <StatusContainer>
           <Label>
             <FormattedMessage {...messages.status} />
@@ -53,7 +66,7 @@ const OrderFiles = ({
         <AssetsLabel>
           <FormattedMessage {...messages.assets} />
         </AssetsLabel>
-        {assetsList}
+        {/* {assetsList} */}
       </Data>
     </Container>
   )

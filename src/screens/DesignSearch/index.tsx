@@ -3,10 +3,10 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { compose } from 'react-apollo'
+import { withApollo, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Search from 'antd/lib/input/Search'
-// import Spin from 'antd/lib/spin'
+import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
 import messages from './messages'
 import {
@@ -17,68 +17,47 @@ import {
   Content,
   Title,
   ContentHeader,
-  Subtitle
-  // LoadingContainer
+  Subtitle,
+  LoadErrContainer
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
 import { OrderSearchResult } from '../../types/common'
+import { orderSearchQuery } from './data'
 
 interface Props {
   history: any
-}
-
-const dummyProduct: OrderSearchResult = {
-  productCode: 'JV2-01-002-01',
-  image:
-    'https://storage.googleapis.com/jakroo-storage/product_images/fondo/product-img-fondo-01-front.png',
-  status: 'ACTIVE ORDER',
-  svgUrl:
-    'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/a9f606543354e-converted5.png',
-  assets: [
-    {
-      name: 'Logo.png',
-      fileUrl:
-        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
-    },
-    {
-      name: 'Sponsorlogo.svg',
-      fileUrl:
-        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
-    },
-    {
-      name: 'Sponsor123.svg',
-      fileUrl:
-        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
-    },
-    {
-      name: 'Back.svg',
-      fileUrl:
-        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
-    },
-    {
-      name: 'Square.svg',
-      fileUrl:
-        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
-    },
-    {
-      name: 'Cellphone.svg',
-      fileUrl:
-        'https://storage.googleapis.com/jakroo-storage/my_files_folder_test/S17BSSLmX/ala_lei_ai_vector_2.png'
-    }
-  ]
+  client: any
+  loading: boolean
+  order?: OrderSearchResult
+  notFound: boolean
+  // redux actions
+  resetDataAction: () => void
+  setLoadingAction: () => void
+  setNotFoundAction: () => void
+  setOrderAction: (order: OrderSearchResult) => void
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   render() {
-    // TODO: uncomment when query is implemented
-    // if (data.loading) {
-    //   return (
-    //     <LoadingContainer>
-    //       <Spin />
-    //     </LoadingContainer>
-    //   )
-    // }
+    const { loading, notFound, order } = this.props
+
+    let loadErrContent = <Spin />
+    if (notFound) {
+      loadErrContent = <FormattedMessage {...messages.notFound} />
+    }
+    const orderContent = order && <OrderFiles {...{ order }} />
+    const content =
+      loading || notFound ? (
+        <LoadErrContainer>{loadErrContent}</LoadErrContainer>
+      ) : (
+        orderContent
+      )
     return (
       <Container>
         <Header>
@@ -102,7 +81,7 @@ export class DesignSearch extends React.Component<Props, {}> {
             enterButton={true}
             size="large"
           />
-          <OrderFiles order={dummyProduct} />
+          {content}
         </Content>
       </Container>
     )
@@ -113,8 +92,28 @@ export class DesignSearch extends React.Component<Props, {}> {
     history.push('designer-tool')
   }
 
-  handleOnSearch = (value: string) => {
-    // TODO: execute query
+  handleOnSearch = async (code: string) => {
+    const {
+      client: { query },
+      setLoadingAction,
+      setNotFoundAction,
+      setOrderAction
+    } = this.props
+
+    setLoadingAction()
+
+    try {
+      const data = await query({
+        query: orderSearchQuery,
+        variables: { code },
+        fetchPolicy: 'network-only'
+      })
+      setOrderAction(data.data.order)
+      console.log(data)
+      // setNotFoundAction()
+    } catch (e) {
+      setNotFoundAction()
+    }
   }
 }
 
@@ -124,7 +123,8 @@ const DesignSearchEnhance = compose(
   connect(
     mapStateToProps,
     { ...designSearchActions }
-  )
+  ),
+  withApollo
 )(DesignSearch)
 
 export default DesignSearchEnhance

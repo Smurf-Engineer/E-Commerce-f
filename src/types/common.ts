@@ -920,16 +920,26 @@ export interface Inspiration {
 }
 
 export interface OrderSearchResult {
-  productCode: string
+  code: string
   image: string
   status: string
   svgUrl: string
-  assets: FilesDownload[]
+  assets: FilesDownload
+  bibColor?: AccesoryColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  stitchingValue?: string
+  stitchingName?: string
 }
 
 export interface FilesDownload {
-  name: string
-  fileUrl: string
+  files: UserFiles[]
+  svgs: UserFiles[]
+}
+
+export interface UserFiles {
+  file: string
+  original?: string
 }
 
 export interface DesignFiles {
