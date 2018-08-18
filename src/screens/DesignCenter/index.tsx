@@ -576,8 +576,7 @@ export class DesignCenter extends React.Component<Props, {}> {
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
         zipperColor: zipperAccesoryColor,
-        product: designProduct,
-        name: savedName
+        product: designProduct
       } = designData
       const designConfig = {
         flatlockCode,
@@ -589,7 +588,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
       productConfig = designProduct
-      name = savedName
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig

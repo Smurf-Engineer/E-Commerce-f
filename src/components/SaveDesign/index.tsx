@@ -204,8 +204,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       zipperColor,
       bindingColor,
       bibColor,
-      afterSaveDesign,
-      designName
+      afterSaveDesign
     } = this.props
 
     const designFiles = this.getDesignFiles()
@@ -240,7 +239,8 @@ export class SaveDesign extends React.Component<Props, {}> {
         variables: { designId: savedDesignId, designObj, colors }
       })
 
-      const data: Data = get(response, 'data.saveDesignAs', false)
+      const data: Data = get(response, 'data.saveDesignAs', {})
+      const designName: Data = get(response, 'data.saveDesignAs.designName', '')
       setSaveDesignChangesLoading(false)
 
       if (data) {
