@@ -9,7 +9,7 @@ export const Container = styled.div`
 `
 export const Content = styled.div`
   display: flex;
-  padding: 0px 32px 50px 32px;
+  padding: 0px 32px 250px 32px;
 
   @media (min-width: 320px) and (max-width: 572px) {
     display: block;
@@ -187,6 +187,28 @@ export const QuestionSpan = styled.span`
     cursor: pointer;
   }
 `
+export const RelatedProductsContainer = styled.div`
+  margin-bottom: 80px;
+  padding: 0px 32px;
+
+  @media (min-width: 1440px) {
+    padding: 0px 10%;
+  }
+`
+export const ReviewsHeader = styled.div`
+  align-items: center;
+  background-color: #f7f7f7;
+  color: #5f6062;
+  display: flex;
+  font-family: 'Avenir Next';
+  font-size: 18px;
+  font-weight: 600;
+  height: 38px;
+  letter-spacing: 0.23px;
+  line-height: 25px;
+  margin-bottom: 15px;
+  padding-left: 32px;
+`
 export const ButtonsRow = styled.div`
   display: flex;
   margin: 30px 0 25px;
@@ -205,4 +227,34 @@ export const DetailsList = styled.ul`
 
 export const DetailsListItem = styled.li`
   margin-bottom: 15px;
+`
+export const PrivateContainer = styled.div`
+  align-items: center;
+  background-color: #fff;
+  display: flex;
+  height: 80vh;
+  justify-content: center;
+`
+export const PrivateTitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  height: 22px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  margin-bottom: 10px;
+  margin-top: -25px;
+  text-align: center;
+  width: 100%;
+`
+export const PrivateSubtitle = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  height: 23px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  text-align: center;
+  width: 100%;
 `
