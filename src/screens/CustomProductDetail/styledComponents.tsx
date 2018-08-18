@@ -16,14 +16,12 @@ export const Content = styled.div`
     padding: 0px 12px 50px 12px;
   }
 
-  @media (min-width: 768px) and (max-width: 1024px) {
-  }
-
-  @media (min-width: 573px) and (max-width: 767px) {
+  @media (min-width: 1440px) {
+    justify-content: center;
   }
 `
 export const ImagePreview = styled.div`
-  padding: 0 50px;
+  padding: 70px 50px 0px;
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 572px) {
@@ -190,10 +188,6 @@ export const QuestionSpan = styled.span`
 export const RelatedProductsContainer = styled.div`
   margin-bottom: 80px;
   padding: 0px 32px;
-
-  @media (min-width: 1440px) {
-    padding: 0px 10%;
-  }
 `
 export const ReviewsHeader = styled.div`
   align-items: center;

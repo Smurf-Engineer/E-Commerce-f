@@ -14,6 +14,10 @@ export const Title = styled.div`
   letter-spacing: 0.11px;
   line-height: 22px;
   width: 82.34%;
+
+  @media (min-width: 1440px) {
+    padding: 0px 10%;
+  }
 `
 export const Divider = styled(AntDivider)`
   margin-top: 15px;
@@ -21,11 +25,14 @@ export const Divider = styled(AntDivider)`
 export const ProductsContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   overflow: auto;
   white-space: nowrap;
 
-  div {
-    margin: 0px;
+  section {
+    margin: 0px 40px 0px 0px;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 0px 10%;
   }
 `
