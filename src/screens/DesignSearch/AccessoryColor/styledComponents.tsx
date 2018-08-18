@@ -47,6 +47,6 @@ export const Oval = styled.div`
   border: 1px solid
     ${({ color }: OvalProps) =>
       color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
-  background-color: ${({ color }: OvalProps) => color || '#fff'};
+  background-color: ${({ color }: OvalProps) => color || WHITE};
   align-self: center;
 `

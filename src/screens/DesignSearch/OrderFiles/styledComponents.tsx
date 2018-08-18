@@ -2,6 +2,7 @@
  * Styled Components - Created by miguelcanobbio on 16/08/18.
  */
 import styled from 'styled-components'
+import { GRAY_DARK, GRAY_LIGHTEST } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -11,10 +12,11 @@ export const Container = styled.div`
   margin-bottom: 10vh;
 `
 
+// background-color: #eff2f4;
 export const Image = styled.img`
   width: 320px;
   height: 320px;
-  background-color: #eff2f4;
+  background-color: ${GRAY_LIGHTEST};
   object-fit: contain;
 `
 
@@ -58,7 +60,7 @@ export const FinalSvg = styled.div`
 `
 
 export const AssetsLabel = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;

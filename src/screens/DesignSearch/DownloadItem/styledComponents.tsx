@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import icon from 'antd/lib/icon'
+import { GRAY_DARK } from '../../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -11,7 +12,7 @@ export const Container = styled.div`
 `
 
 export const Name = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
@@ -20,6 +21,6 @@ export const Name = styled.div`
 `
 
 export const Icon = styled(icon)`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
 `

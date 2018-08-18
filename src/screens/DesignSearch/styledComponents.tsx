@@ -2,19 +2,20 @@
  * Styled Components - Created by miguelcanobbio on 15/08/18.
  */
 import styled from 'styled-components'
+import { WHITE, GRAY_HEADER, GRAY_DARK } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-height: 100vh;
-  background-color: #fff;
+  background-color: ${WHITE};
 `
 
 export const Header = styled.div`
   height: 70px;
   widht: 100%;
-  background-color: #f7f7f7;
+  background-color: ${GRAY_HEADER};
 `
 
 export const ContentHeader = styled.div`
@@ -28,7 +29,7 @@ export const ContentHeader = styled.div`
 export const LogoIcon = styled.img``
 
 export const DesignerLink = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
@@ -48,7 +49,7 @@ export const Content = styled.div`
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
@@ -57,7 +58,7 @@ export const Title = styled.div`
 `
 
 export const Subtitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
