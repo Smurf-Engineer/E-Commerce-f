@@ -28,7 +28,7 @@ export const setDefaultScreenAction = (
 ): AnyAction => ({
   type: SET_DEFAULT_SCREEN,
   screen,
-  openCreations
+  openCreations: true
 })
 
 export const setCurrentScreenAction = (screen: string) => ({
