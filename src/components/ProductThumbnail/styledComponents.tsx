@@ -3,7 +3,7 @@
  */
 import styled, { keyframes } from 'styled-components'
 
-export const Container = styled.div`
+export const Container = styled.section`
   margin: 0px 16px;
   width: 220px;
 

@@ -272,10 +272,6 @@ export const AddToCartButton = styled(Button)`
 export const RelatedProductsContainer = styled.div`
   margin-bottom: 80px;
   padding: 0px 32px;
-
-  @media (min-width: 1440px) {
-    padding: 0px 10%;
-  }
 `
 export const ReviewsHeader = styled.div`
   align-items: center;
