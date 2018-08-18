@@ -323,12 +323,14 @@ class Render3D extends PureComponent {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
             elements.push(el)
+            break
           }
           case CanvasElements.Image: {
             const element = getImageCanvas(el)
             canvas.image[elId] = element
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
+            break
           }
           default:
             break

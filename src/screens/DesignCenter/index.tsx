@@ -15,6 +15,7 @@ import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
+import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -109,6 +110,7 @@ interface Props extends RouteComponentProps<any> {
   designName: string
   savedDesignId: string
   saveDesignLoading: boolean
+  saveDesignChangesLoading: boolean
   text: string
   style: Style
   themeId: number
@@ -168,6 +170,7 @@ interface Props extends RouteComponentProps<any> {
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
+  saveDesignChangesLoadingAction: (loading: boolean) => void
   setTextAction: (text: string) => void
   setStyleComplexity: (index: number, colors: string[]) => void
   openAddToTeamStoreModalAction: (open: boolean) => void
@@ -360,9 +363,13 @@ export class DesignCenter extends React.Component<Props, {}> {
   handleOnAddToCart = () => {
     const {
       designName,
+      dataDesign,
       intl: { formatMessage }
     } = this.props
-    Message.success(formatMessage(messages.addedToCart, { designName }))
+    const name = get(dataDesign, 'designData.product.name', '')
+    Message.success(
+      formatMessage(messages.addedToCart, { designName: designName || name })
+    )
   }
 
   render() {
@@ -392,6 +399,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       loadingModel,
       designName,
       saveDesignLoading,
+      saveDesignChangesLoading,
       setLoadingModel,
       designUndoAction,
       designRedoAction,
@@ -408,6 +416,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       checkedTerms,
       setCheckedTermsAction,
       saveDesignLoadingAction,
+      saveDesignChangesLoadingAction,
       setTextAction,
       openAddToTeamStoreModalAction,
       setStyleComplexity,
@@ -545,9 +554,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataDesign, 'designData.product.name', '')
 
     const canvasJson = get(dataDesign, 'designData.canvas')
+    const styleId = get(dataDesign, 'designData.styleId')
     let designObject = design
     if (canvasJson) {
-      designObject = { ...designObject, canvasJson }
+      designObject = { ...designObject, canvasJson, styleId }
     }
 
     let tabSelected =
@@ -556,6 +566,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = product
     let currentStyle = style
+    let name = null
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       const {
@@ -567,7 +578,8 @@ export class DesignCenter extends React.Component<Props, {}> {
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
         zipperColor: zipperAccesoryColor,
-        product: designProduct
+        product: designProduct,
+        name: savedName
       } = designData
       const designConfig = {
         flatlockCode,
@@ -579,6 +591,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       tabSelected = !tabChanged ? CustomizeTabIndex : currentTab
       loadingData = !!dataDesign.loading
       productConfig = designProduct
+      name = savedName
       currentStyle = { ...designStyle }
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
@@ -769,29 +782,31 @@ export class DesignCenter extends React.Component<Props, {}> {
             {...{
               productId,
               formatMessage,
-              design,
               colors,
-              designName,
               stitchingColor,
               bindingColor,
               zipperColor,
               bibColor,
-              canvas
+              canvas,
+              designName,
+              isUserAuthenticated
             }}
-            hasFlatlock={!!product && !!product.flatlock}
-            hasZipper={!!product && !!product.zipper}
-            hasBinding={!!product && !!product.binding}
-            hasBibBrace={!!product && !!product.bibBrace}
+            design={isEmpty(design) ? designObject : design}
+            hasFlatlock={!!productConfig && !!productConfig.flatlock}
+            hasZipper={!!productConfig && !!productConfig.zipper}
+            hasBinding={!!productConfig && !!productConfig.binding}
+            hasBibBrace={!!productConfig && !!productConfig.bibBrace}
             open={openSaveDesign}
             requestClose={this.closeSaveDesignModal}
             onDesignName={setDesignNameAction}
-            designName={designName}
             afterSaveDesign={this.handleAfterSaveDesign}
             savedDesignId={savedDesignId}
             checkedTerms={checkedTerms}
             setCheckedTerms={setCheckedTermsAction}
             setSaveDesignLoading={saveDesignLoadingAction}
+            setSaveDesignChangesLoading={saveDesignChangesLoadingAction}
             saveDesignLoading={saveDesignLoading}
+            saveDesignChangesLoading={saveDesignChangesLoading}
           />
           {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
@@ -897,7 +912,8 @@ const DesignCenterEnhance = compose(
       const queryParams = queryString.parse(search)
       return {
         skip: !queryParams.designId,
-        variables: { designId: queryParams.designId }
+        variables: { designId: queryParams.designId },
+        fetchPolicy: 'network-only'
       }
     },
     name: 'dataDesign'

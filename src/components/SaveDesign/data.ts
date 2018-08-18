@@ -53,7 +53,7 @@ export const saveDesignName = graphql(
     }
   `,
   {
-    name: 'saveDesignNameMutation'
+    name: 'saveDesign'
   }
 )
 
@@ -74,6 +74,6 @@ export const saveDesignChanges = graphql(
     }
   `,
   {
-    name: 'saveDesignChangesMutation'
+    name: 'saveDesignAs'
   }
 )

@@ -55,7 +55,8 @@ import {
   CANVAS_ELEMENT_TEXT_CHANGED,
   REAPPLY_CANVAS_IMAGE_ACTION,
   SET_EDIT_DESIGN_CONFIG_ACTION,
-  SET_LOADED_CANVAS_ACTION
+  SET_LOADED_CANVAS_ACTION,
+  SAVE_DESIGN_CHANGES_LOADING
 } from './constants'
 import {
   AnyAction,
@@ -191,6 +192,13 @@ export const openShareModalAction = (open: boolean): AnyAction => ({
 
 export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({
   type: SAVE_DESIGN_LOADING,
+  loading
+})
+
+export const saveDesignChangesLoadingAction = (
+  loading: boolean
+): AnyAction => ({
+  type: SAVE_DESIGN_CHANGES_LOADING,
   loading
 })
 

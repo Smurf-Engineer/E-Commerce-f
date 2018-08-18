@@ -60,7 +60,8 @@ import {
   BLACK,
   AccessoryColors,
   ElementsToApplyScale,
-  SET_LOADED_CANVAS_ACTION
+  SET_LOADED_CANVAS_ACTION,
+  SAVE_DESIGN_CHANGES_LOADING
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 
@@ -92,6 +93,7 @@ export const initialState = fromJS({
   style: {},
   complexity: 0,
   saveDesignLoading: false,
+  saveDesignChangesLoading: false,
   text: '',
   openAddToStoreModal: false,
   teamStoreId: '',
@@ -486,6 +488,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('checkedTerms', action.checked)
     case SAVE_DESIGN_LOADING:
       return state.set('saveDesignLoading', action.loading)
+    case SAVE_DESIGN_CHANGES_LOADING:
+      return state.set('saveDesignChangesLoading', action.loading)
     case CLEAR_DESIGN_INFO:
       return state.merge({ checkedTerms: false })
     case SET_TEXT_ACTION:
