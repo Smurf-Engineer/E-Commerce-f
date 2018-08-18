@@ -144,7 +144,7 @@
   "components.ProductCatalogueThumbnailsList.addToCart": "ADD TO CART",
   "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
   "components.ProductCatalogueThumbnailsList.edit": "EDIT",
-  "components.ProductCatalogueThumbnailsList.customizable": "Customizable",
+  "components.ProductCatalogueThumbnailsList.customizable": "Customize",
 
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
@@ -929,12 +929,12 @@
 
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
-  "components.ProductHorizontalList.customizable": "Customizable",
+  "components.ProductHorizontalList.customizable": "Customize",
 
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
   "components.FeaturedProducts.addToCart": "ADD TO CART",
-  "components.FeaturedProducts.customizable": "Customizable",
+  "components.FeaturedProducts.customizable": "Customize",
 
   "components.CitySelect.select": "Select city",
   "components.RegionSelect.select": "Select state/province",
@@ -1088,6 +1088,10 @@
   "screens.CustomProductDetail.temperatures": "TEMPERATURE RANGE",
   "screens.CustomProductDetail.materials": "MATERIALS",
   "screens.CustomProductDetail.standard": "Standard",
+  "screens.CustomProductDetail.oops": "Oops!",
+  "screens.CustomProductDetail.seemsPrivate":
+    "Seems like this design is private or not available",
+  "screens.CustomProductDetail.reviews": "Reviews",
 
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage":
@@ -1124,7 +1128,7 @@
   "components.RelatedProducts.tittle": "Related Products",
   "components.RelatedProducts.addToCart": "ADD TO CART",
   "components.RelatedProducts.customize": "CUSTOMIZE",
-  "components.RelatedProducts.customizableLabel": "Customizable",
+  "components.RelatedProducts.customizableLabel": "Customize",
 
   "components.QuickView.intendedUseLabel": "INTENDED USE",
   "components.QuickView.descriptionLabel": "Description",

@@ -19,6 +19,6 @@ export default defineMessages({
   },
   customizableLabel: {
     id: 'components.RelatedProducts.customizableLabel',
-    defaultMessage: 'Customizable'
+    defaultMessage: 'Customize'
   }
 })

@@ -117,7 +117,12 @@ export class Account extends React.Component<Props, {}> {
   }
 
   handleOnSelectItem = ({ key }: any) => {
-    const { setCurrentScreenAction } = this.props
+    const { history, setCurrentScreenAction } = this.props
+
+    if (key === SCREEN_LOCKER) {
+      history.replace(`/account?option=${SCREEN_LOCKER}`)
+    }
+
     setCurrentScreenAction(key)
   }
 
@@ -160,7 +165,7 @@ export class Account extends React.Component<Props, {}> {
       case ORDER_HISTORY:
         return <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
-        return <MyAddresses {...{ formatMessage }} />
+        return <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
       case CREDIT_CARDS:
         return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
