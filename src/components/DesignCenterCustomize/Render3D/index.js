@@ -323,12 +323,14 @@ class Render3D extends PureComponent {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
             elements.push(el)
+            break
           }
           case CanvasElements.Image: {
             const element = getImageCanvas(el)
             canvas.image[elId] = element
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
+            break
           }
           default:
             break
@@ -466,10 +468,9 @@ class Render3D extends PureComponent {
       product,
       isEditing
     )
-    const { accessoriesColor } = currentStyle
+    const { accessoriesColor, designId } = currentStyle
     if (isEditing) {
-      // TODO: Send styleId and designId
-      onSetEditConfig(loadedTextures.colors, accessoriesColor || {})
+      onSetEditConfig(loadedTextures.colors, accessoriesColor || {}, designId)
     } else {
       onLoadModel(true)
     }

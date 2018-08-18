@@ -17,6 +17,7 @@ export const Container = styled.div`
 
 export const LoadingContainer = styled.div`
   display: flex;
+  flex-direction: column;
   flex: 1;
   height: 60vh;
   justify-content: center;

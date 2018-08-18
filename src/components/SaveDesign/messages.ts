@@ -11,7 +11,7 @@ export default defineMessages({
   },
   modalTitle: {
     id: 'components.SaveDesign.modalTitle',
-    defaultMessage: 'Save your design'
+    defaultMessage: 'SAVE YOUR DESIGN'
   },
   modalText: {
     id: 'components.SaveDesign.modalText',
