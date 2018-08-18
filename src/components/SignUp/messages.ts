@@ -36,7 +36,7 @@ export default defineMessages({
   },
   newsLetterSignUp: {
     id: 'components.signUp.newsLetterSignUp',
-    defaultMessage: 'Sign in to jakroo newsletter'
+    defaultMessage: `Sign me up to Jakroo's newsletter`
   },
   termsAndPolicyLegend: {
     id: 'components.signUp.termsAndPolicyLegend',

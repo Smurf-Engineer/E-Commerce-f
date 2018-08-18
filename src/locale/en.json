@@ -86,7 +86,7 @@
   "components.signUp.passwordLabel":
     "Password * Must be at least 8 characters long",
   "components.signUp.repeatPasswordLabel": "Re-enter Password",
-  "components.signUp.newsLetterSignUp": "Sign in to jakroo newsletter",
+  "components.signUp.newsLetterSignUp": "Sign me up to Jakroo's newsletter",
   "components.signUp.termsAndPolicyLegend":
     "By creating an account, you agree to Jakroo's Privacy Policy and Terms of Use",
   "components.signUp.createAccountButtonLabel": "CREATE ACCOUNT",
