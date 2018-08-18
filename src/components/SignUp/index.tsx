@@ -197,7 +197,7 @@ class SignUp extends React.Component<Props, StateProps> {
     }
 
     const user = {
-      email,
+      email: email.toLowerCase(),
       first_name: name,
       last_name: lastName,
       password,
