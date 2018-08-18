@@ -17,7 +17,8 @@ import {
 } from './styledComponents'
 import { OrderSearchResult } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
-// import AccessoryColor from '../AccessoryColor'
+import FilesList from '../FilesList'
+import AccessoryColors from '../AccessoryColors'
 
 interface Props {
   order: OrderSearchResult
@@ -29,29 +30,27 @@ const OrderFiles = ({
     image,
     status,
     svgUrl,
-    assets: { svgs, files }
+    assets,
+    stitchingName,
+    stitchingValue,
+    bibColor,
+    zipperColor,
+    bindingColor
   }
 }: Props) => {
-  const assetsArray = []
-  for (let file of files) {
-    const { original, fileUrl } = file
-    const url = original ? original : fileUrl
-    assetsArray.push(url)
-  }
-  for (let svg of svgs) {
-    assetsArray.push(svg.fileUrl)
-  }
-  const assetsList = assetsArray.map((fileUrl, index) => (
-    <DownloadItem key={index} url={fileUrl} />
-  ))
+  const statusOrder = status.replace(/_/g, ' ')
   return (
     <Container>
       <div>
-        {/* <AccessoryColor name="Bid brace color" color="black" />
-        <AccessoryColor
-          name="Stitching"
-          stitchingColor={{ name: 'FSC-22', value: '#92499E' }}
-        /> */}
+        <AccessoryColors
+          {...{
+            stitchingName,
+            stitchingValue,
+            bibColor,
+            zipperColor,
+            bindingColor
+          }}
+        />
         <Image src={image} />
       </div>
       <Data>
@@ -60,7 +59,7 @@ const OrderFiles = ({
           <Label>
             <FormattedMessage {...messages.status} />
           </Label>
-          <Status>{status}</Status>
+          <Status>{statusOrder}</Status>
         </StatusContainer>
         <FinalSvg>
           <DownloadItem url={svgUrl} name="Final SVG" />
@@ -68,7 +67,7 @@ const OrderFiles = ({
         <AssetsLabel>
           <FormattedMessage {...messages.assets} />
         </AssetsLabel>
-        {assetsList}
+        <FilesList {...{ assets }} />
       </Data>
     </Container>
   )

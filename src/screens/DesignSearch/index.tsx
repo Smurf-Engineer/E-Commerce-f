@@ -101,7 +101,6 @@ export class DesignSearch extends React.Component<Props, {}> {
     } = this.props
 
     setLoadingAction()
-
     try {
       const data = await query({
         query: orderSearchQuery,
@@ -109,8 +108,6 @@ export class DesignSearch extends React.Component<Props, {}> {
         fetchPolicy: 'network-only'
       })
       setOrderAction(data.data.order)
-      console.log(data)
-      // setNotFoundAction()
     } catch (e) {
       setNotFoundAction()
     }

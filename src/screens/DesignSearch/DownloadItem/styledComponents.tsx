@@ -16,7 +16,7 @@ export const Name = styled.div`
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
-  margin-right: 4px;
+  margin-right: 8px;
 `
 
 export const Icon = styled(icon)`

@@ -11,6 +11,7 @@ import {
   Oval
 } from './styledComponents'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { BLACK } from '../../DesignCenter/constants'
 
 interface Props {
   name: string
@@ -18,9 +19,10 @@ interface Props {
   color?: AccesoryColor
 }
 
-const AccessoryColor = ({ name, stitchingColor }: Props) => {
+const AccessoryColor = ({ name, stitchingColor, color }: Props) => {
   const stitchingName = get(stitchingColor, 'name', '')
   const stitchingValue = get(stitchingColor, 'value', '')
+  const accessColor = color === BLACK ? '#000000' : '#ffffff'
   return (
     <Container>
       <Name>{name}</Name>
@@ -30,7 +32,7 @@ const AccessoryColor = ({ name, stitchingColor }: Props) => {
           <Oval color={stitchingValue} />
         </Stitching>
       ) : (
-        <Oval color={'#000'} />
+        <Oval color={accessColor} />
       )}
     </Container>
   )
