@@ -540,7 +540,7 @@ class Checkout extends React.Component<Props, {}> {
       paymentMethod,
       stripeToken,
       selectedCard,
-      client,
+      client: { query },
       currentCurrency
     } = this.props
 
@@ -594,20 +594,25 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: shippingAddress.zipCode
     }
 
-    const data = client.readQuery({
+    const taxResponse = await query({
       query: getTaxQuery,
       variables: {
         country: billingCountry,
         weight: weightSum,
         shipAddress: taxAddress
-      }
+      },
+      fetchPolicy: 'network-only'
     })
 
-    const taxId = get(data, 'taxes.internalId', null)
-    const taxAmount = get(data, 'taxes.total', null)
-    const shippingId = get(data, 'shipping.internalId', null)
-    const shippingCarrier = get(data, 'shipping.carrier', null)
-    const shippingAmount = get(data, 'shipping.total', null)
+    const {
+      data: { taxes, shipping }
+    } = taxResponse
+
+    const taxId = get(taxes, 'internalId', null)
+    const taxAmount = get(taxes, 'total', null)
+    const shippingId = get(shipping, 'internalId', null)
+    const shippingCarrier = get(shipping, 'carrier', null)
+    const shippingAmount = get(shipping, 'total', null)
 
     /*
     * TODO: Find a better solution to unset these properties
@@ -645,11 +650,9 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.temperatures')
       unset(cartItem, 'product.sports')
       unset(cartItem, 'product.weight')
-      unset(cartItem, 'svg')
-      unset(cartItem, 'shared')
-      unset(cartItem, 'shortId')
-      unset(cartItem, 'createdAt')
-      unset(cartItem, '__typename')
+      unset(cartItem, 'product.productId')
+      unset(cartItem, 'product.genderId')
+      unset(cartItem, 'product.relatedProducts')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
       })
@@ -660,6 +663,7 @@ class Checkout extends React.Component<Props, {}> {
         unset(itemDetail, '__typename')
       })
     })
+
     const orderObj = {
       proDesign,
       paymentMethod,

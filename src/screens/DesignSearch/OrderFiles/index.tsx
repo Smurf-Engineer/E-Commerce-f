@@ -32,16 +32,18 @@ const OrderFiles = ({
     assets: { svgs, files }
   }
 }: Props) => {
-  // const assetsArray = []
+  const assetsArray = []
   for (let file of files) {
-    console.log(file)
+    const { original, fileUrl } = file
+    const url = original ? original : fileUrl
+    assetsArray.push(url)
   }
   for (let svg of svgs) {
-    console.log(svg)
+    assetsArray.push(svg.fileUrl)
   }
-  // const assetsList = assets.map(({ fileUrl, name }, index) => (
-  //   <DownloadItem key={index} url={fileUrl} {...{ name }} />
-  // ))
+  const assetsList = assetsArray.map((fileUrl, index) => (
+    <DownloadItem key={index} url={fileUrl} />
+  ))
   return (
     <Container>
       <div>
@@ -66,7 +68,7 @@ const OrderFiles = ({
         <AssetsLabel>
           <FormattedMessage {...messages.assets} />
         </AssetsLabel>
-        {/* {assetsList} */}
+        {assetsList}
       </Data>
     </Container>
   )

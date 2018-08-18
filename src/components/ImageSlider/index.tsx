@@ -99,7 +99,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
     // ########
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
-      <ThumbnailContainer key={i}>
+      <ThumbnailContainer design={false} key={i}>
         <ThumbnailImg
           id={i.toString()}
           src={thumbnail}
@@ -110,12 +110,13 @@ class ImageSlider extends React.Component<Props, StateProps> {
     ))
 
     const thumbnailsWith3d = ThumbnailsArrayWith3D.map((thumbnail, i) => (
-      <ThumbnailContainer key={i}>
+      <ThumbnailContainer design={i === 0} key={i}>
         <ThumbnailImg
           id={i.toString()}
           src={thumbnail}
           onClick={this.selectThumbnail}
           selected={index === i}
+          design={i === 0}
         />
       </ThumbnailContainer>
     ))

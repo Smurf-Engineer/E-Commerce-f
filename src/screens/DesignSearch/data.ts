@@ -11,11 +11,11 @@ export const orderSearchQuery = gql`
       image
       assets: media {
         files {
-          file: file_url
+          fileUrl: file_url
           original: original_file
         }
         svgs {
-          file: url
+          fileUrl: url
         }
       }
       svgUrl: output_svg

@@ -938,7 +938,7 @@ export interface FilesDownload {
 }
 
 export interface UserFiles {
-  file: string
+  fileUrl: string
   original?: string
 }
 

@@ -6,13 +6,15 @@ import { Container, Name, Icon } from './styledComponents'
 
 interface Props {
   url: string
-  name: string
+  name?: string
 }
 
 const DownloadItem = ({ name, url }: Props) => {
+  const completeName = String(url.split('/').pop())
+  const fileName = name || completeName
   return (
     <Container>
-      <Name>{name}</Name>
+      <Name>{fileName}</Name>
       <a href={url} download={name} target="_blank">
         <Icon type="download" />
       </a>
