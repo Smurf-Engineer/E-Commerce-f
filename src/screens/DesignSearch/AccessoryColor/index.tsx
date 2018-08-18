@@ -12,6 +12,7 @@ import {
 } from './styledComponents'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
 import { BLACK } from '../../DesignCenter/constants'
+import * as Colors from '../../../theme/colors'
 
 interface Props {
   name: string
@@ -22,7 +23,7 @@ interface Props {
 const AccessoryColor = ({ name, stitchingColor, color }: Props) => {
   const stitchingName = get(stitchingColor, 'name', '')
   const stitchingValue = get(stitchingColor, 'value', '')
-  const accessColor = color === BLACK ? '#000000' : '#ffffff'
+  const accessColor = color === BLACK ? Colors.BLACK : Colors.WHITE
   return (
     <Container>
       <Name>{name}</Name>

@@ -8,6 +8,13 @@ import OrderFiles from './index'
 describe('<OrderFiles />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
-    ReactDOM.render(<OrderFiles />, div)
+    const order = {
+      code: '',
+      image: '',
+      status: '',
+      svgUrl: '',
+      assets: { files: [], svgs: [] }
+    }
+    ReactDOM.render(<OrderFiles {...{ order }} />, div)
   })
 })

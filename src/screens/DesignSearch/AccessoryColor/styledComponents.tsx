@@ -2,6 +2,7 @@
  * Styled Components - Created by miguelcanobbio on 17/08/18.
  */
 import styled from 'styled-components'
+import { GRAY_DARK, WHITE, GRAY } from '../../../theme/colors'
 
 export const Container = styled.div`
   padding: 4px 0;
@@ -11,7 +12,7 @@ export const Container = styled.div`
 `
 
 export const Name = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
@@ -21,7 +22,7 @@ export const Name = styled.div`
 `
 
 export const ColorLabel = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
@@ -45,7 +46,7 @@ export const Oval = styled.div`
   border-radius: 50%;
   border: 1px solid
     ${({ color }: OvalProps) =>
-      color && color.toLowerCase() !== '#ffffff' ? color : '#bebebe'};
+      color && color.toLowerCase() !== WHITE.toLowerCase() ? color : GRAY};
   background-color: ${({ color }: OvalProps) => color || '#fff'};
   align-self: center;
 `
