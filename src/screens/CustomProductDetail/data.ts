@@ -7,6 +7,7 @@ export const GetDesignByIdQuery = gql`
       name
       shortId: short_id
       product {
+        id
         productId: id
         yotpoId: yotpo_id
         name
@@ -18,6 +19,29 @@ export const GetDesignByIdQuery = gql`
         details
         materials: materials_info
         temperatures: temperature_range
+        relatedProducts: related {
+          id
+          type: name
+          description: short_description
+          images: pictures {
+            front: front_image
+            back: back_image
+            left: left_image
+            right: right_image
+            genderId: gender_id
+          }
+          isTopProduct
+          customizable: design_center
+          genderId: gender_id
+          collections
+          yotpoId: yotpo_id
+          priceRange {
+            price
+            quantity
+            abbreviation
+            shortName: short_name
+          }
+        }
         genders {
           id
           name: gender
@@ -50,6 +74,23 @@ export const GetDesignByIdQuery = gql`
           total: total_reviews
           averageScore: average_score
         }
+        obj
+        mtl
+        label
+        bumpMap: bump_map
+        flatlock
+        binding {
+          white
+          black
+        }
+        zipper {
+          white
+          black
+        }
+        bibBrace {
+          white
+          black
+        }
       }
       colors {
         id
@@ -58,10 +99,24 @@ export const GetDesignByIdQuery = gql`
         image
       }
       image
+      flatlockColor: flatlock_code
+      zipperColor: zipper_color
+      bindingColor: binding_color
+      bibBraceColor: bib_brace_color
       shared
       svg: output_svg
       code
       createdAt: created_at
+    }
+  }
+`
+export const designsQuery = gql`
+  query GetDesigns($limit: Int, $offset: Int) {
+    myDesigns: myDesigns(limit: $limit, offset: $offset) {
+      designs {
+        id
+        shortId: short_id
+      }
     }
   }
 `

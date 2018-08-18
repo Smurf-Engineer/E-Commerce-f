@@ -43,6 +43,6 @@ export default defineMessages({
   },
   customizable: {
     id: 'components.ProductCatalogueThumbnailsList.customizable',
-    defaultMessage: 'Customizable'
+    defaultMessage: 'Customize'
   }
 })

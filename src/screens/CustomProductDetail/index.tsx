@@ -2,7 +2,7 @@
  * CustomProductDetail Screen - Created by jorge on 03/08/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl } from 'react-intl'
+import { injectIntl, FormattedMessage, InjectedIntl } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
@@ -10,9 +10,10 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
+import isEmpty from 'lodash/isEmpty'
 import * as customProductDetailActions from './actions'
 import messages from './messages'
-import { GetDesignByIdQuery } from './data'
+import { GetDesignByIdQuery, designsQuery } from './data'
 import {
   Container,
   Content,
@@ -35,9 +36,14 @@ import {
   SectionButton,
   SizeRowTitleRow,
   QuestionSpan,
+  RelatedProductsContainer,
+  ReviewsHeader,
   ButtonsRow,
   DetailsList,
-  DetailsListItem
+  DetailsListItem,
+  PrivateContainer,
+  PrivateTitle,
+  PrivateSubtitle
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
@@ -48,16 +54,25 @@ import {
   SelectedType,
   ItemDetailType,
   FitStyle,
-  CartItemDetail
+  CartItemDetail,
+  Product
 } from '../../types/common'
-import ThreeDRender from '../TeamstoreProductPage/Product3D'
+import Render3D from '../../components/Render3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
+import RelatedProducts from '../../components/RelatedProducts'
 import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
+import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
+
+const MAX_AMOUNT_PRICES = 4
+
+interface MyDesignsData extends QueryProps {
+  myDesigns: { designs: DesignType[] }
+}
 
 interface Data extends QueryProps {
   design: DesignType
@@ -66,6 +81,7 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
+  designsData: MyDesignsData
   selectedGender: SelectedType
   selectedSize: SelectedType
   selectedFit: SelectedType
@@ -90,7 +106,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       history,
       location: { search },
       setLoadingModel,
-      data: { design },
+      data: { design, error },
+      designsData: { myDesigns },
       selectedGender,
       selectedSize,
       selectedFit,
@@ -104,11 +121,37 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const queryParams = queryString.parse(search)
 
+    const shared = get(design, 'shared', false)
+    const shortId = get(design, 'shortId', '')
+
+    const designs = get(myDesigns, 'designs', [] as DesignType[])
+
+    const ownedDesign = designs && designs.find(d => d.shortId === shortId)
+
+    if (error || (!shared && !ownedDesign)) {
+      return (
+        <Layout {...{ history, intl }}>
+          <PrivateContainer>
+            <div>
+              <PrivateTitle>{formatMessage(messages.oops)}</PrivateTitle>
+              <PrivateSubtitle>
+                {formatMessage(messages.seemsPrivate)}
+              </PrivateSubtitle>
+            </div>
+          </PrivateContainer>
+        </Layout>
+      )
+    }
+
     const designId = queryParams.id
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
-    const colors = get(design, 'colors')
+    const designCode = get(design, 'code', '')
     const svgUrl = get(design, 'svg', '')
+    const flatlockColor = get(design, 'flatlockColor', '')
+    const zipperColor = get(design, 'zipperColor', '')
+    const bindingColor = get(design, 'bindingColor', '')
+    const bibColor = get(design, 'bibBraceColor', '')
     const product = get(design, 'product', null)
 
     const productId = get(product, 'productId')
@@ -122,6 +165,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
     const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
     const details = get(product, 'details', '')
+    const products = get(product, 'relatedProducts', [] as Product[])
     const intendedUse = get(product, 'intendedUse', '')
     const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
@@ -142,11 +186,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
-      currencyPrices.map(({ price, quantity }, index: number) => (
-        <AvailablePrices key={index}>
-          <PriceQuantity {...{ index, price, quantity }} />
-        </AvailablePrices>
-      ))
+      currencyPrices.map(
+        ({ price, quantity }, index: number) =>
+          index < MAX_AMOUNT_PRICES && (
+            <AvailablePrices key={index}>
+              <PriceQuantity {...{ index, price, quantity }} />
+            </AvailablePrices>
+          )
+      )
 
     const maleGender = get(genders, '0.name', '')
     const femaleGender = get(genders, '1.name', '')
@@ -186,18 +233,21 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       ))
 
     const availableFits = (fitStyles &&
-      fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
-        <div key={index}>
-          <SectionButton
-            id={String(id)}
-            selected={id === selectedFit.id}
-            large={true}
-            onClick={this.handleSelectedFit({ id, name: fitName })}
-          >
-            {fitName}
-          </SectionButton>
-        </div>
-      ))) || (
+      fitStyles.map(
+        ({ id, name: fitName }: SelectedType, index: number) =>
+          id && (
+            <div key={index}>
+              <SectionButton
+                id={String(id)}
+                selected={id === selectedFit.id}
+                large={true}
+                onClick={this.handleSelectedFit({ id, name: fitName })}
+              >
+                {fitName}
+              </SectionButton>
+            </div>
+          )
+      )) || (
       <SectionButton
         id={'1'}
         selected={1 === selectedFit.id}
@@ -228,15 +278,16 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
-    const fitSection = (
-      <SectionRow>
-        <SectionTitleContainer>
-          <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
-          <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
-        </SectionTitleContainer>
-        <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
-      </SectionRow>
-    )
+    const fitSection = !isEmpty(fitStyles) &&
+      fitStyles[0].id && (
+        <SectionRow>
+          <SectionTitleContainer>
+            <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
+            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+          </SectionTitleContainer>
+          <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
+        </SectionRow>
+      )
 
     const itemDetails = [] as CartItemDetail[]
 
@@ -319,7 +370,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <ImagePreview>
                 <ImagesSlider
                   onLoadModel={setLoadingModel}
-                  threeDmodel={<ThreeDRender {...{ colors, svgUrl }} />}
+                  threeDmodel={
+                    <Render3D
+                      svg={svgUrl}
+                      {...{
+                        product,
+                        bindingColor,
+                        zipperColor,
+                        bibColor,
+                        flatlockColor
+                      }}
+                    />
+                  }
                   customProduct={true}
                   customImage={designImage}
                   images={thumbnails}
@@ -330,6 +392,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   <TitleSubtitleContainer>
                     <Title>{designName}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
+                    {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
                   <EditDesignButton onClick={this.gotToEditDesign(designId)}>
                     {formatMessage(messages.editDesign)}
@@ -353,6 +416,17 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               />
             </Content>
           )}
+          {product && (
+            <RelatedProductsContainer>
+              <RelatedProducts
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ products, history, formatMessage }}
+              />
+            </RelatedProductsContainer>
+          )}
+          <ReviewsHeader>
+            <FormattedMessage {...messages.reviews} />
+          </ReviewsHeader>
           <YotpoReviews {...{ yotpoId }} />
         </Container>
       </Layout>
@@ -420,6 +494,18 @@ type OwnProps = {
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
+  graphql<any>(designsQuery, {
+    options: () => {
+      return {
+        variables: {
+          limit: 12,
+          offset: 0
+        },
+        fetchPolicy: 'network-only'
+      }
+    },
+    name: 'designsData'
+  }),
   graphql<Data>(GetDesignByIdQuery, {
     options: (ownprops: OwnProps) => {
       const {
@@ -429,10 +515,12 @@ const CustomProductDetailEnhance = compose(
       return {
         variables: {
           designId: queryParams ? queryParams.id : null
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     }
   }),
+  withLoading,
   connect(
     mapStateToProps,
     { ...customProductDetailActions }

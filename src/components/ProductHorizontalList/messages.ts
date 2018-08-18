@@ -15,6 +15,6 @@ export default defineMessages({
   },
   customizable: {
     id: 'components.ProductHorizontalList.customizable',
-    defaultMessage: 'Customizable'
+    defaultMessage: 'Customize'
   }
 })
