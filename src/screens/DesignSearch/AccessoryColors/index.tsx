@@ -2,7 +2,6 @@
  * AccessoryColors Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import { Container } from './styledComponents'
 import { AccesoryColor } from '../../../types/common'
 import AccessoryColor from '../AccessoryColor'
 
@@ -22,7 +21,7 @@ const AccessoryColors = ({
   bindingColor
 }: Props) => {
   return (
-    <Container>
+    <div>
       {bibColor && <AccessoryColor name="Bib Brace Color" color={bibColor} />}
       {zipperColor && (
         <AccessoryColor name="Zipper Color" color={zipperColor} />
@@ -37,7 +36,7 @@ const AccessoryColors = ({
             stitchingColor={{ name: stitchingName, value: stitchingValue }}
           />
         )}
-    </Container>
+    </div>
   )
 }
 

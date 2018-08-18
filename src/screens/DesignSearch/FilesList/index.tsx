@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { Container } from './styledComponents'
 import { FilesDownload } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import messages from './messages'
@@ -28,7 +27,7 @@ const FilesList = ({ assets: { files, svgs } }: Props) => {
   const list = assetsArray.map((fileUrl, index) => (
     <DownloadItem key={index} url={fileUrl} />
   ))
-  return <Container>{list}</Container>
+  return <div>{list}</div>
 }
 
 export default FilesList
