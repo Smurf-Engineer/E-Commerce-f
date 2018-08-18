@@ -65,6 +65,7 @@ interface Props extends RouteComponentProps<any> {
   apartment: string
   country: string
   stateProvince: string
+  stateProvinceCode: string
   city: string
   zipCode: string
   phone: string
@@ -150,6 +151,7 @@ class Checkout extends React.Component<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone,
@@ -207,6 +209,7 @@ class Checkout extends React.Component<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone
@@ -218,6 +221,7 @@ class Checkout extends React.Component<Props, {}> {
       apartment: billingApartment,
       country: billingCountry,
       stateProvince: billingStateProvince,
+      stateProvinceCode: billingStateProvince,
       city: billingCity,
       zipCode: billingZipCode,
       phone: billingPhone
@@ -232,7 +236,7 @@ class Checkout extends React.Component<Props, {}> {
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
         country: shippingAddress.country,
-        state: shippingAddress.stateProvince,
+        state: shippingAddress.stateProvinceCode,
         zipCode: shippingAddress.zipCode
       }
 
@@ -521,6 +525,7 @@ class Checkout extends React.Component<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone,
@@ -551,6 +556,7 @@ class Checkout extends React.Component<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone
@@ -562,6 +568,7 @@ class Checkout extends React.Component<Props, {}> {
       apartment: billingApartment,
       country: billingCountry,
       stateProvince: billingStateProvince,
+      stateProvinceCode: billingStateProvince,
       city: billingCity,
       zipCode: billingZipCode,
       phone: billingPhone
@@ -588,9 +595,13 @@ class Checkout extends React.Component<Props, {}> {
     )
     const { weightSum } = shoppingCartData
 
+    console.log('------------shippingAddress.stateProvinceCode,---------------')
+    console.log(shippingAddress.stateProvinceCode)
+    console.log('---------------------------')
+
     const taxAddress: TaxAddressObj = {
       country: shippingAddress.country,
-      state: shippingAddress.stateProvince,
+      state: shippingAddress.stateProvinceCode,
       zipCode: shippingAddress.zipCode
     }
 

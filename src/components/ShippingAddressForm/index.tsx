@@ -21,6 +21,7 @@ import RegionSelect from '../RegionSelect'
 
 const COUNTRY_VALUE_ID = 'country'
 const STATE_VALUE_ID = 'stateProvince'
+const STATE_CODE_VALUE_ID = 'stateProvinceCode'
 const CITY_VALUE_ID = 'city'
 
 interface StateProps {
@@ -38,6 +39,7 @@ interface Props {
   apartment: string
   country: string
   stateProvince: string
+  stateProvinceCode: string
   city: string
   zipCode: string
   phone: string
@@ -256,6 +258,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       selectedCity: ''
     })
     inputChangeAction(STATE_VALUE_ID, value)
+    inputChangeAction(STATE_CODE_VALUE_ID, regionCode)
   }
 
   handleCityChange = async (value: any) => {
