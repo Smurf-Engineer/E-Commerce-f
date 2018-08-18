@@ -610,6 +610,8 @@
   "components.ProfileForm.phone": "Phone",
   "components.ProfileForm.save": "Save",
   "components.ProfileForm.changePassword": "Change Password",
+  "components.ProfileSettings.errorTitle": "Oops!",
+  "components.ProfileSettings.errorMessage": "Something went wrong",
   "components.ProfileSettings.profileTitle": "Profile",
   "components.ProfileSettings.profileSuccessMessage": "Your profile has been updated!",
   "components.ProfileSettings.save": "Save",
@@ -768,7 +770,6 @@
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
   "components.ProductHorizontalList.customizable": "Customize",
   "components.ProductHorizontalList.retail": "View full details",
-
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
   "components.FeaturedProducts.addToCart": "ADD TO CART",
