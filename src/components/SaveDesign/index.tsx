@@ -208,14 +208,6 @@ export class SaveDesign extends React.Component<Props, {}> {
       designName
     } = this.props
 
-    console.log('---------------------------')
-    console.log(design)
-    console.log('---------------------------')
-
-    if (design) {
-      return
-    }
-
     const designFiles = this.getDesignFiles()
     const { designBase64, canvasJson, styleId } = design
     const designObj: DesignInput = {

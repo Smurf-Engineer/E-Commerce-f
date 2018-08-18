@@ -15,7 +15,6 @@ import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
-import isEmpty from 'lodash/isEmpty'
 import Layout from '../../components/MainLayout'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
@@ -566,7 +565,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = product
     let currentStyle = style
-    let name = null
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       const {
@@ -791,7 +789,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               designName,
               isUserAuthenticated
             }}
-            design={isEmpty(design) ? designObject : design}
+            design={!!design.canvasJson ? design : designObject}
             hasFlatlock={!!productConfig && !!productConfig.flatlock}
             hasZipper={!!productConfig && !!productConfig.zipper}
             hasBinding={!!productConfig && !!productConfig.binding}
