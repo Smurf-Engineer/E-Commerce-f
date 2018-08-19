@@ -7,7 +7,6 @@ import { compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
 import Checkbox from 'antd/lib/checkbox'
-import get from 'lodash/get'
 import forEach from 'lodash/forEach'
 import uniq from 'lodash/uniq'
 import messages from './messages'
@@ -25,12 +24,12 @@ import {
 import {
   SaveDesignType,
   Product,
-  DesignSaved,
   StitchingColor,
   CanvasType,
   DesignFiles
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
+import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
 
 type DesignInput = {
@@ -47,12 +46,28 @@ type DesignInput = {
   designFiles?: DesignFiles
 }
 
-interface Data {
-  id: number
-  shortId: string
-  name: string
-  svg: string
+interface SaveDesignData {
+  createdAt: string
+  designCode: string
+  designId: number
+  designImage: string
+  designName: string
   product: Product
+  shared: boolean
+  shortId: string
+  svg: string
+  canvas: string
+  bibBraceColor: string
+  bindingColor: string
+  flatlockCode: string
+  flatlockColor: string
+  zipperColor: string
+}
+
+interface Data {
+  data: {
+    savedDesign: SaveDesignData
+  }
 }
 
 interface Props {
@@ -74,6 +89,7 @@ interface Props {
   zipperColor: string
   bibColor: string
   isUserAuthenticated: boolean
+  isEditing: boolean
   canvas: CanvasType
   requestClose: () => void
   onDesignName: (name: string) => void
@@ -83,7 +99,8 @@ interface Props {
   afterSaveDesign: (
     id: string,
     svg: string,
-    design: DesignSaved
+    design: SaveDesignData,
+    updateColors?: boolean
   ) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   setSaveDesignLoading: (loading: boolean) => void
@@ -124,7 +141,9 @@ export class SaveDesign extends React.Component<Props, {}> {
       zipperColor,
       bindingColor,
       bibColor,
-      isUserAuthenticated
+      isUserAuthenticated,
+      isEditing,
+      savedDesignId
     } = this.props
 
     if (!designName) {
@@ -165,18 +184,18 @@ export class SaveDesign extends React.Component<Props, {}> {
       }
 
       setSaveDesignLoading(true)
-      const response = await saveDesign({
-        variables: { design: designObj, colors }
+      await saveDesign({
+        variables: { design: designObj, colors },
+        update: (store: any, { data: { savedDesign } }: Data) => {
+          const { shortId, svg } = savedDesign
+          message.success(formatMessage(messages.saveSuccess, { designName }))
+          if (!isEditing && !savedDesignId) {
+            afterSaveDesign(shortId, svg, savedDesign, true)
+          }
+          requestClose()
+        }
       })
-      const data: Data = get(response, 'data.saveDesign', false)
       setSaveDesignLoading(false)
-
-      if (data) {
-        const { shortId, svg } = data
-        message.success(formatMessage(messages.saveSuccess, { designName }))
-        afterSaveDesign(shortId, svg, data)
-        requestClose()
-      }
     } catch (error) {
       setSaveDesignLoading(false)
       const errorMessage =
@@ -204,7 +223,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       zipperColor,
       bindingColor,
       bibColor,
-      afterSaveDesign
+      afterSaveDesign,
+      isEditing
     } = this.props
 
     const designFiles = this.getDesignFiles()
@@ -235,20 +255,42 @@ export class SaveDesign extends React.Component<Props, {}> {
       }
 
       setSaveDesignChangesLoading(true)
-      const response = await saveDesignAs({
-        variables: { designId: savedDesignId, designObj, colors }
+      await saveDesignAs({
+        variables: { designId: savedDesignId, designObj, colors },
+        update: (store: any, { data: { savedDesign } }: Data) => {
+          const {
+            svg,
+            designName,
+            canvas,
+            bibBraceColor,
+            bindingColor: updatedBindingColor,
+            flatlockCode,
+            flatlockColor,
+            zipperColor: updatedZipperColor
+          } = savedDesign
+          if (isEditing) {
+            const data = store.readQuery({
+              query: getDesignQuery,
+              variables: { designId: savedDesignId }
+            })
+            data.designData.canvas = canvas
+            data.designData.bibBraceColor = bibBraceColor
+            data.designData.bindingColor = updatedBindingColor
+            data.designData.flatlockCode = flatlockCode
+            data.designData.flatlockColor = flatlockColor
+            data.designData.zipperColor = updatedZipperColor
+            store.writeQuery({
+              query: getDesignQuery,
+              variables: { designId: savedDesignId },
+              data
+            })
+          }
+          message.success(formatMessage(messages.saveSuccess, { designName }))
+          afterSaveDesign(savedDesignId, svg, savedDesign, !isEditing)
+          requestClose()
+        }
       })
-
-      const data: Data = get(response, 'data.saveDesignAs', {})
-      const designName: Data = get(response, 'data.saveDesignAs.designName', '')
       setSaveDesignChangesLoading(false)
-
-      if (data) {
-        const { svg } = data
-        message.success(formatMessage(messages.saveSuccess, { designName }))
-        afterSaveDesign(savedDesignId, svg, data)
-        requestClose()
-      }
     } catch (error) {
       setSaveDesignChangesLoading(false)
       const errorMessage =
@@ -336,7 +378,7 @@ export class SaveDesign extends React.Component<Props, {}> {
             />
           </InputWrapper>
           <CheckWrapper>
-            <Checkbox onChange={this.toggleChecked}>
+            <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
               {formatMessage(messages.checkCopyright)}
             </Checkbox>
           </CheckWrapper>

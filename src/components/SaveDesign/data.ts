@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 export const saveDesignName = graphql(
   gql`
     mutation saveDesign($design: DesignInput!, $colors: [String]!) {
-      saveDesign(design: $design, colors: $colors) {
+      savedDesign: saveDesign(design: $design, colors: $colors) {
         designId: id
         designName: name
         designImage: image
@@ -13,6 +13,17 @@ export const saveDesignName = graphql(
         shared
         shortId: short_id
         createdAt: created_at
+        colors {
+          id
+          color
+          image
+        }
+        flatlockColor: flatlock
+        flatlockCode: flatlock_code
+        bindingColor: binding_color
+        bibBraceColor: bib_brace_color
+        zipperColor: zipper_color
+        canvas
         product {
           id
           code
@@ -64,7 +75,7 @@ export const saveDesignChanges = graphql(
       $designObj: DesignInput!
       $colors: [String]!
     ) {
-      saveDesignAs(
+      savedDesign: saveDesignAs(
         designId: $designId
         designObj: $designObj
         colors: $colors
@@ -77,6 +88,17 @@ export const saveDesignChanges = graphql(
         shared
         shortId: short_id
         createdAt: created_at
+        colors {
+          id
+          color
+          image
+        }
+        flatlockColor: flatlock
+        flatlockCode: flatlock_code
+        bindingColor: binding_color
+        bibBraceColor: bib_brace_color
+        zipperColor: zipper_color
+        canvas
         product {
           id
           code
