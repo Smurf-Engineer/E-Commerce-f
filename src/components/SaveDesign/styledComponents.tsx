@@ -4,10 +4,9 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import AntdButton from 'antd/lib/button'
+import { BLUE, BLUE_SHADOW } from '../../theme/colors'
 
-export const Container = styled.div`
-  background-color: #222;
-`
+export const Container = styled.div``
 
 export const Title = styled.div`
   height: 27px;
@@ -44,16 +43,22 @@ export const Button = styled(AntdButton)`
   width: 100%;
 `
 
+type PropsButton = {
+  color: string
+}
+
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${({ color }: PropsButton) => color};
+    border-color: ${({ color }: PropsButton) => color};
     width: 100%;
   }
+  .ant-btn-ghost:hover,
+  .ant-btn-ghost:focus,
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${({ color }: PropsButton) => color};
+    border-color: ${({ color }: PropsButton) => color};
   }
 `
 export const CheckWrapper = styled.div`
@@ -61,10 +66,28 @@ export const CheckWrapper = styled.div`
   .ant-checkbox-wrapper:hover,
   .ant-checkbox:hover .ant-checkbox-inner,
   .ant-checkbox-input:focus + .ant-checkbox-inner {
-    border-color: #4a90e2;
+    border-color: ${BLUE};
   }
   .ant-checkbox-checked .ant-checkbox-inner,
   .ant-checkbox-indeterminate .ant-checkbox-inner {
-    background-color: #4a90e2;
+    background-color: ${BLUE};
+  }
+`
+
+export const InputWrapper = styled.div`
+  padding: 4px 0px;
+  .ant-input:hover {
+    border-color: ${BLUE};
+  }
+
+  .ant-input:focus {
+    border-color: ${BLUE};
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px ${BLUE_SHADOW};
+    box-shadow: 0 0 0 2px ${BLUE_SHADOW};
+  }
+
+  .ant-input::selection {
+    background: ${BLUE};
   }
 `

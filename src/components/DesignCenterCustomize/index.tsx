@@ -109,7 +109,8 @@ interface Props {
   onSetCanvasObject: (el: CanvasType) => void
   onSetEditConfig: (
     colors: string[],
-    accessoriesColor: AccessoriesColor
+    accessoriesColor: AccessoriesColor,
+    savedDesignId: string
   ) => void
 }
 
