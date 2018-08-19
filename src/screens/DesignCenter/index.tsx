@@ -165,7 +165,12 @@ interface Props extends RouteComponentProps<any> {
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
   openSaveDesignAction: (open: boolean, imageBase64: string) => void
-  saveDesignIdAction: (id: string, svgUrl: string, design: DesignSaved) => void
+  saveDesignIdAction: (
+    id: string,
+    svgUrl: string,
+    design: DesignSaved,
+    updateColors?: boolean
+  ) => void
   setCheckedTermsAction: (checked: boolean) => void
   clearDesignInfoAction: () => void
   saveDesignLoadingAction: (loading: boolean) => void
@@ -259,9 +264,14 @@ export class DesignCenter extends React.Component<Props, {}> {
     this.setState({ openBottomSheet: open })
   }
 
-  handleAfterSaveDesign = (id: string, svgUrl: string, design: DesignSaved) => {
+  handleAfterSaveDesign = (
+    id: string,
+    svgUrl: string,
+    design: DesignSaved,
+    updateColors = false
+  ) => {
     const { saveDesignIdAction } = this.props
-    saveDesignIdAction(id, svgUrl, design)
+    saveDesignIdAction(id, svgUrl, design, updateColors)
     this.handleOnSelectTab(DesignTabs.PreviewTab)
   }
 
@@ -785,7 +795,8 @@ export class DesignCenter extends React.Component<Props, {}> {
               bibColor,
               canvas,
               designName,
-              isUserAuthenticated
+              isUserAuthenticated,
+              isEditing
             }}
             design={!!design.canvasJson ? design : designObject}
             hasFlatlock={!!productConfig && !!productConfig.flatlock}
