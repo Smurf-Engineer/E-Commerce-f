@@ -42,7 +42,7 @@ class QuickViewSlider extends React.Component<Props, State> {
     const {
       gotoCustomize,
       productImages,
-      isRetail,
+      isRetail = false,
       hideSliderButtons,
       product,
       formatMessage

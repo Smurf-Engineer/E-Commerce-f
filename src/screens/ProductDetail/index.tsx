@@ -11,6 +11,7 @@ import queryString from 'query-string'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
+import find from 'lodash/find'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -64,7 +65,8 @@ import {
   ImageType,
   CartItemDetail,
   SelectedType,
-  Filter
+  Filter,
+  PriceRange
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
 import ChessColors from '../../assets/chess-colors.svg'
@@ -183,6 +185,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         ? []
         : imagesArray.filter(post => post.genderId !== images.genderId)
 
+    let retailPrice
     if (product) {
       const currencyPrices = filter(product.priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
@@ -198,6 +201,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
           return !isRetail && index >= 4 ? null : render
         }
+      )
+
+      const getRetailPrice = find(currencyPrices, {
+        quantity: 'Personal'
+      }) as PriceRange
+
+      retailPrice = (
+        <AvailablePrices>
+          <PriceQuantity
+            index={1}
+            price={getRetailPrice.price}
+            quantity={getRetailPrice.quantity}
+          />
+        </AvailablePrices>
       )
     }
 
@@ -404,7 +421,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
-                <PricesRow>{renderPrices}</PricesRow>
+                <PricesRow>{!isRetail ? renderPrices : retailPrice}</PricesRow>
                 <Ratings
                   stars={5}
                   starDimension={'15px'}

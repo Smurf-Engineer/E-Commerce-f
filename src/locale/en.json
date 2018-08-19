@@ -930,6 +930,7 @@
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
   "components.ProductHorizontalList.customizable": "Customize",
+  "components.ProductHorizontalList.retail": "View full details",
 
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
