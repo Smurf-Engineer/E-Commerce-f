@@ -595,10 +595,6 @@ class Checkout extends React.Component<Props, {}> {
     )
     const { weightSum } = shoppingCartData
 
-    console.log('------------shippingAddress.stateProvinceCode,---------------')
-    console.log(shippingAddress.stateProvinceCode)
-    console.log('---------------------------')
-
     const taxAddress: TaxAddressObj = {
       country: shippingAddress.country,
       state: shippingAddress.stateProvinceCode,
