@@ -29,10 +29,7 @@ import {
   DesignFiles
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
-import {
-  getProductQuery,
-  getDesignQuery
-} from '../../screens/DesignCenter/data'
+import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
 
 type DesignInput = {
@@ -59,6 +56,12 @@ interface SaveDesignData {
   shared: boolean
   shortId: string
   svg: string
+  canvas: string
+  bibBraceColor: string
+  bindingColor: string
+  flatlockCode: string
+  flatlockColor: string
+  zipperColor: string
 }
 
 interface Data {
@@ -184,10 +187,11 @@ export class SaveDesign extends React.Component<Props, {}> {
       await saveDesign({
         variables: { design: designObj, colors },
         update: (store: any, { data: { savedDesign } }: Data) => {
-          // TODO: UPDATE MY LOCKER
           const { shortId, svg } = savedDesign
           message.success(formatMessage(messages.saveSuccess, { designName }))
-          afterSaveDesign(shortId, svg, savedDesign, !isEditing)
+          if (!isEditing && !savedDesignId) {
+            afterSaveDesign(shortId, svg, savedDesign, true)
+          }
           requestClose()
         }
       })
@@ -219,7 +223,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       zipperColor,
       bindingColor,
       bibColor,
-      afterSaveDesign
+      afterSaveDesign,
+      isEditing
     } = this.props
 
     const designFiles = this.getDesignFiles()
@@ -253,9 +258,35 @@ export class SaveDesign extends React.Component<Props, {}> {
       await saveDesignAs({
         variables: { designId: savedDesignId, designObj, colors },
         update: (store: any, { data: { savedDesign } }: Data) => {
-          const { svg, designName } = savedDesign
+          const {
+            svg,
+            designName,
+            canvas,
+            bibBraceColor,
+            bindingColor: updatedBindingColor,
+            flatlockCode,
+            flatlockColor,
+            zipperColor: updatedZipperColor
+          } = savedDesign
+          if (isEditing) {
+            const data = store.readQuery({
+              query: getDesignQuery,
+              variables: { designId: savedDesignId }
+            })
+            data.designData.canvas = canvas
+            data.designData.bibBraceColor = bibBraceColor
+            data.designData.bindingColor = updatedBindingColor
+            data.designData.flatlockCode = flatlockCode
+            data.designData.flatlockColor = flatlockColor
+            data.designData.zipperColor = updatedZipperColor
+            store.writeQuery({
+              query: getDesignQuery,
+              variables: { designId: savedDesignId },
+              data
+            })
+          }
           message.success(formatMessage(messages.saveSuccess, { designName }))
-          afterSaveDesign(savedDesignId, svg, savedDesign)
+          afterSaveDesign(savedDesignId, svg, savedDesign, !isEditing)
           requestClose()
         }
       })
