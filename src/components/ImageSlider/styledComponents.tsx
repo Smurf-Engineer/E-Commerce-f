@@ -16,6 +16,12 @@ export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media (min-width: 1440px) {
+    margin: 0 auto;
+    max-width: 600px;
+    max-height: 800px;
+  }
 `
 
 export const Text = styled.div`
@@ -37,10 +43,9 @@ export const ThumbnailImg = styled.img`
   background-color: #f1f4f5;
   border: 1px solid
     ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
-
   ${({ design }: ThumbnailProps) => (design ? 'height: 100%' : '')};
   ${({ design }: ThumbnailProps) => (design ? 'object-fit: cover;' : '')};
-  width: 100%;
+  width: 99%;
 
   &:hover {
     cursor: pointer;
@@ -76,6 +81,8 @@ export const SwipeContainer = styled.div`
   }
 `
 export const SwipeImg = styled.img`
+  max-height: 600px;
+  max-width: 600px;
   width: 100%;
 `
 export const ThreeDThumbnailContair = styled.div`
@@ -106,7 +113,7 @@ export const ArrowContainer = styled.div`
     squareArrows
       ? css`
           align-items: center;
-          background-color: #dcdcdc;
+          background-color: rgba(255, 255, 255, 0.6);
           border: 0.2px solid rgba(220, 220, 220, 0.34);
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
           display: flex;

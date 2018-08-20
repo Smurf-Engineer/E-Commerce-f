@@ -55,5 +55,9 @@ export default defineMessages({
   unsupportedDeviceButton: {
     id: 'screens.DesignCenter.unsupportedDeviceButton',
     defaultMessage: 'Got it!'
+  },
+  errorMessage: {
+    id: 'components.withError.error',
+    defaultMessage: 'Something went wrong'
   }
 })

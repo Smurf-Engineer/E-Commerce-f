@@ -151,6 +151,8 @@ export type DesignType = {
   bindingColor: string
   bibBraceColor: string
   zipperColor: string
+  canEdit: boolean
+  styleId: number
 }
 
 export type SaveDesignType = {
@@ -271,6 +273,8 @@ export interface Style {
   image: string
   colorBlocks: ColorBlock[]
   accessoriesColor?: EditDesign
+  designId?: string
+  styleId?: number
 }
 
 export interface Theme {

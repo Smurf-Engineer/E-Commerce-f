@@ -55,7 +55,8 @@ import {
   CANVAS_ELEMENT_TEXT_CHANGED,
   REAPPLY_CANVAS_IMAGE_ACTION,
   SET_EDIT_DESIGN_CONFIG_ACTION,
-  SET_LOADED_CANVAS_ACTION
+  SET_LOADED_CANVAS_ACTION,
+  SAVE_DESIGN_CHANGES_LOADING
 } from './constants'
 import {
   AnyAction,
@@ -194,15 +195,24 @@ export const saveDesignLoadingAction = (loading: boolean): AnyAction => ({
   loading
 })
 
+export const saveDesignChangesLoadingAction = (
+  loading: boolean
+): AnyAction => ({
+  type: SAVE_DESIGN_CHANGES_LOADING,
+  loading
+})
+
 export const saveDesignIdAction = (
   id: string,
   svgUrl: string,
-  design: DesignSaved
+  design: DesignSaved,
+  updateColors?: boolean
 ): AnyAction => ({
   type: SAVE_DESIGN_ID,
   id,
   svgUrl,
-  design
+  design,
+  updateColors
 })
 
 export const setCheckedTermsAction = (checked: boolean): AnyAction => ({
@@ -408,11 +418,13 @@ export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
 
 export const setEditConfigAction = (
   colors: string[],
-  accessoriesColor: AccessoriesColor
+  accessoriesColor: AccessoriesColor,
+  savedDesignId: string
 ): AnyAction => ({
   type: SET_EDIT_DESIGN_CONFIG_ACTION,
   colors,
-  accessoriesColor
+  accessoriesColor,
+  savedDesignId
 })
 
 export const setLoadedCanvasAction = (canvas: CanvasType): AnyAction => ({

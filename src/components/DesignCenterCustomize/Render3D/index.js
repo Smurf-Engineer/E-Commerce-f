@@ -469,7 +469,11 @@ class Render3D extends PureComponent {
       design,
       product,
       isEditing,
-      onSetEditConfig
+      onSetEditConfig,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -477,10 +481,9 @@ class Render3D extends PureComponent {
       product,
       isEditing
     )
-    const { accessoriesColor } = currentStyle
+    const { accessoriesColor, designId } = currentStyle
     if (isEditing) {
-      // TODO: Send styleId and designId
-      onSetEditConfig(loadedTextures.colors, accessoriesColor || {})
+      onSetEditConfig(loadedTextures.colors, accessoriesColor || {}, designId)
     } else {
       onLoadModel(true)
     }
@@ -510,7 +513,8 @@ class Render3D extends PureComponent {
           /* Stitching */
           if (!!flatlock) {
             const color =
-              (isEditing && accessoriesColor.flatlockColor) || DEFAULT_COLOR
+              (isEditing && accessoriesColor.flatlockColor) ||
+              stitchingColor.value
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
@@ -526,7 +530,7 @@ class Render3D extends PureComponent {
           /* Zipper */
           if (!!this.zipper) {
             const color =
-              (isEditing && accessoriesColor.zipperColor) || ACCESSORY_WHITE
+              (isEditing && accessoriesColor.zipperColor) || zipperColor
             const zipperIndex = getMeshIndex(ZIPPER)
             const zipperMaterial = new THREE.MeshPhongMaterial({
               map: this.zipper[color],
@@ -538,7 +542,7 @@ class Render3D extends PureComponent {
           /* Binding */
           if (!!this.binding) {
             const color =
-              (isEditing && accessoriesColor.bindingColor) || ACCESSORY_WHITE
+              (isEditing && accessoriesColor.bindingColor) || bindingColor
             const bindingIndex = getMeshIndex(BINDING)
             const bindingMaterial = new THREE.MeshPhongMaterial({
               map: this.binding[color],
@@ -550,7 +554,7 @@ class Render3D extends PureComponent {
           /* Bib Brace */
           if (!!this.bibBrace) {
             const color =
-              (isEditing && accessoriesColor.bibBraceColor) || ACCESSORY_WHITE
+              (isEditing && accessoriesColor.bibBraceColor) || bibColor
             const bibBraceIndex = getMeshIndex(BIB_BRACE)
             const bibBraceMaterial = new THREE.MeshPhongMaterial({
               map: this.bibBrace[color]

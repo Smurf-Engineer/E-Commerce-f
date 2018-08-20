@@ -416,14 +416,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               />
             </Content>
           )}
-          {product && (
-            <RelatedProductsContainer>
-              <RelatedProducts
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ products, history, formatMessage }}
-              />
-            </RelatedProductsContainer>
-          )}
+          {product &&
+            !!products.length && (
+              <RelatedProductsContainer>
+                <RelatedProducts
+                  currentCurrency={currentCurrency || config.defaultCurrency}
+                  {...{ products, history, formatMessage }}
+                />
+              </RelatedProductsContainer>
+            )}
           <ReviewsHeader>
             <FormattedMessage {...messages.reviews} />
           </ReviewsHeader>

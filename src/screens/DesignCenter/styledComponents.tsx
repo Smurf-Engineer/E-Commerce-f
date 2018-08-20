@@ -76,7 +76,32 @@ export const LoadingContainer = styled.div`
   display: flex;
   flex: 1;
   width: 100%;
-  height: 50vh;
+  height: 100vh;
   justify-content: center;
   align-items: center;
+`
+
+export const Error = styled.div`
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`
+
+export const Title = styled.div`
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+`
+
+export const ErrorMessage = styled.div`
+  margin-top: 16px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
 `
