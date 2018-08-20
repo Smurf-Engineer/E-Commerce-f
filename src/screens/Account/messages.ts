@@ -39,7 +39,7 @@ export default defineMessages({
   },
   logout: {
     id: 'screens.Account.menu.logout',
-    defaultMessage: 'LOGOUT'
+    defaultMessage: 'LOG OUT'
   },
   myLocker: {
     id: 'screens.Account.submenu.myLocker',
