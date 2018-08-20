@@ -205,12 +205,14 @@ export const saveDesignChangesLoadingAction = (
 export const saveDesignIdAction = (
   id: string,
   svgUrl: string,
-  design: DesignSaved
+  design: DesignSaved,
+  updateColors?: boolean
 ): AnyAction => ({
   type: SAVE_DESIGN_ID,
   id,
   svgUrl,
-  design
+  design,
+  updateColors
 })
 
 export const setCheckedTermsAction = (checked: boolean): AnyAction => ({

@@ -17,10 +17,6 @@ export default defineMessages({
     id: 'components.CreditCardFormBilling.expiryDate',
     defaultMessage: 'Expiry date'
   },
-  securityCode: {
-    id: 'components.CreditCardFormBilling.cardNumber',
-    defaultMessage: 'CVV/CVC'
-  },
   billingAddress: {
     id: 'components.CreditCardFormBilling.billingAddress',
     defaultMessage: 'Billing Address'

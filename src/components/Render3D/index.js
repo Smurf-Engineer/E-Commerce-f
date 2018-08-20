@@ -54,7 +54,7 @@ class Render3D extends PureComponent {
     /* Scene and light */
     const scene = new THREE.Scene()
     const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.78)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
     directionalLight.position.copy(camera.position)
 
     const mtlLoader = new THREE.MTLLoader()
