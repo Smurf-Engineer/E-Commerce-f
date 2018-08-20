@@ -26,7 +26,6 @@ export const Row = styled.div`
 
 export const TextColors = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;
@@ -34,7 +33,6 @@ export const TextColors = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   margin: 0px 8px;

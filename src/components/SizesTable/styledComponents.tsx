@@ -38,7 +38,6 @@ export const HeaderCell = styled.div`
 `
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -59,7 +58,6 @@ export const Row = styled.div`
 `
 export const Cell = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 35px;
@@ -67,7 +65,6 @@ export const Cell = styled.div`
 `
 export const TableTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;

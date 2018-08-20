@@ -19,7 +19,6 @@ export const StyledImage = styled.img`
 
 export const PaymentText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

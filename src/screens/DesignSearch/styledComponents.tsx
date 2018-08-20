@@ -30,7 +30,6 @@ export const LogoIcon = styled.img``
 
 export const DesignerLink = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -50,7 +49,6 @@ export const Content = styled.div`
 
 export const Title = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.18px;
@@ -59,7 +57,6 @@ export const Title = styled.div`
 
 export const Subtitle = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

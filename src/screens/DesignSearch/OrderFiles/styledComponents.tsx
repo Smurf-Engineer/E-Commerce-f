@@ -20,7 +20,6 @@ export const Image = styled.img`
 `
 
 export const Code = styled.div`
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 0.23px;
@@ -33,14 +32,12 @@ export const StatusContainer = styled.div`
 `
 
 export const Label = styled.div`
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.11px;
 `
 
 export const Status = styled.div`
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 500;
   letter-spacing: 0.11px;
@@ -60,7 +57,6 @@ export const FinalSvg = styled.div`
 
 export const AssetsLabel = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.18px;

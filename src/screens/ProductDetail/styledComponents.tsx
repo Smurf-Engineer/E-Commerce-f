@@ -53,7 +53,6 @@ export const ProductData = styled.div`
 `
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
@@ -65,7 +64,6 @@ export const Title = styled.div`
 
 export const Subtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 
@@ -118,7 +116,6 @@ export const PricesRow = styled.div`
 
 export const Description = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `
@@ -129,7 +126,6 @@ export const ButtonsRow = styled.div`
 
   .ant-btn {
     color: #e61737;
-    font-family: 'Avenir Next';
     font-size: 16px;
     line-height: 22px;
     text-align: center;
@@ -155,7 +151,6 @@ export const CompareButton = styled(Button)`
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
-  font-family: 'Avenir Next';
   height: 40px;
   width: 120.79px;
 `
@@ -171,7 +166,6 @@ export const GenderRow = styled.div`
 export const SectionTitle = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -231,7 +225,6 @@ export const SizeRowTitleRow = styled.div`
 export const GetFittedLabel = styled.div`
   height: 22px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   &:hover {
@@ -244,7 +237,6 @@ export const QuestionSpan = styled.span`
   height: 23px;
   width: 8.06px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   &:hover {
@@ -278,7 +270,6 @@ export const ReviewsHeader = styled.div`
   background-color: #f7f7f7;
   color: #5f6062;
   display: flex;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   height: 38px;
@@ -293,7 +284,6 @@ export const YotpoImageSlider = styled.div``
 export const Downloadtemplate = styled.div`
   height: 19px;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   margin-left: 10px;
@@ -312,7 +302,6 @@ export const AvailableLabel = styled.div`
   margin-top: 15px;
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-style: italic;
   line-height: 22px;

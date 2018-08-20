@@ -10,7 +10,6 @@ export const Container = styled.div`
 export const Message = styled.div`
   max-width: 500px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -19,7 +18,6 @@ export const Message = styled.div`
 
 export const Subtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -35,7 +33,6 @@ export const VerticalDivider = styled.div`
 
 export const ModalMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;

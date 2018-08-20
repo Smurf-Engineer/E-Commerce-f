@@ -20,7 +20,6 @@ export const Cell = styled.td`
   text-align: left;
   padding: 8px 0;
   color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 35px;

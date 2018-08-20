@@ -21,7 +21,6 @@ export const ContainerError = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -29,7 +28,6 @@ export const Title = styled.div`
 
 export const Message = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;
@@ -38,7 +36,6 @@ export const Message = styled.div`
 export const Model = styled.div`
   color: #5f6062;
   user-select: none;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;

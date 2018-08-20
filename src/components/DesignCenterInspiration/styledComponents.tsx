@@ -23,7 +23,6 @@ export const EmptyContainer = styled.div`
 
 export const EmptyMessage = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;

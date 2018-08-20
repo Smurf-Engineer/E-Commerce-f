@@ -10,7 +10,6 @@ export const Container = styled.div`
 
 export const TeamsKitsTitle = styled.div`
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 0.61px;
@@ -50,7 +49,6 @@ export const TopImageButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -64,7 +62,6 @@ export const TopImageButton = styled(Button)`
 export const SectionTitle = styled.div`
   margin-bottom: 30px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -84,7 +81,6 @@ export const SectionSubtitle = styled.div`
 export const SectionText = styled.div`
   padding: 0 25px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -161,7 +157,6 @@ export const OrderAndFabricText = styled.div`
   padding: 50px 0;
   width: 95%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

@@ -13,7 +13,6 @@ export const Text = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -46,7 +45,6 @@ export const ErrorContainer = styled.div`
 
 export const ErrorTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -54,7 +52,6 @@ export const ErrorTitle = styled.div`
 
 export const Message = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;

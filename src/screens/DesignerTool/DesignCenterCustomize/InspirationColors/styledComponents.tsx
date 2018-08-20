@@ -22,7 +22,6 @@ export const Text = styled.div`
 export const EmptyLabel = styled.div`
   padding-top: 16px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -39,7 +38,6 @@ export const Row = styled.div`
 
 export const Label = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

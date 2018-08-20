@@ -39,7 +39,6 @@ export const SearchBackground = styled.img`
 export const TeamStoreText = styled.div`
   height: 44px;
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -57,7 +56,6 @@ export const ButtonRow = styled.div`
     height: 22px;
     width: 100.9px;
     color: #5f6062;
-    font-family: 'Avenir Next';
     font-size: 16px;
     line-height: 22px;
     text-align: center;
@@ -86,7 +84,6 @@ export const Title = styled.div`
   height: 33px;
   text-align: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
@@ -106,7 +103,6 @@ export const GetSponsored = styled.div`
   height: 16px;
   text-align: center;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
 `

@@ -46,7 +46,6 @@ export const Info = styled.div`
 
 export const Name = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -58,7 +57,6 @@ export const Name = styled.div`
 
 export const Size = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 10px;
@@ -67,7 +65,6 @@ export const Size = styled.div`
 
 export const Delete = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

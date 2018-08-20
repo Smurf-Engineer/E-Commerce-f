@@ -18,7 +18,6 @@ export const SideBar = styled.div`
 
 export const OptionMenu = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -49,7 +48,6 @@ export const FiltersTitle = styled.div`
     showChildren ? 'inline-block' : 'none'};
   height: 36.95px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -59,7 +57,6 @@ export const FiltersTitle = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: 600;
   line-height: 27px;
@@ -70,7 +67,6 @@ interface ScreenTitleProps {
 export const ScreenTitle = styled.div`
   color: #5f6062;
   display: ${({ show }: ScreenTitleProps) => (show ? 'block' : 'none')};
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 27px;

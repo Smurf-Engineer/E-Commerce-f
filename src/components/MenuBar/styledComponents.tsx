@@ -71,7 +71,6 @@ export const TeamStoresMenuContainer = styled.div`
 
 export const TeamStoresMenuTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   line-height: 25px;
   border-bottom: 4px solid #e61737;

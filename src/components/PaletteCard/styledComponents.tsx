@@ -22,7 +22,6 @@ export const ColorButtons = styled.div`
 
 export const Name = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   ${({ myFilesList }: StyledProps) =>
@@ -66,7 +65,6 @@ export const MyFilesHeader = styled.div`
 
 export const DeleteText = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 23px;

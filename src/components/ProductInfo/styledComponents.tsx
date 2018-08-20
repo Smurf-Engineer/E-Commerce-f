@@ -18,7 +18,6 @@ export const Title = styled.div`
     titleWidth ? titleWidth : '411.45px'};
   color: ${({ titleColor }: TitleProps) =>
     titleColor ? titleColor : '#5f6062'};
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -30,7 +29,6 @@ export const ProductInfoTitle = styled.div`
 
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -52,7 +50,6 @@ export const StyledDivider = styled(Divider)`
 `
 export const DescriptionContent = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 0px;

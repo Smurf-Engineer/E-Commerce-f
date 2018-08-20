@@ -50,7 +50,6 @@ export const HelpContainer = styled.div`
 export const NeedHelp = styled.div`
   height: 19px;
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   margin: 17px 0 5px 0;
@@ -61,7 +60,6 @@ export const GetStartedButton = styled(Button)`
   height: 51px;
   border-radius: 0;
 
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
 `
@@ -80,7 +78,6 @@ export const PropositionTilesContainer = styled.div`
 `
 export const PropositionTile = styled.div`
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 20px;
   letter-spacing: 0.25px;
   line-height: 27px;

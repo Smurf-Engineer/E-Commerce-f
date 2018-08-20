@@ -52,7 +52,6 @@ export const InputTitleContainer = styled.div`
 export const Label = styled.div`
   height: 19px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -66,7 +65,6 @@ export const ContainerBilling = styled.div`
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -86,7 +84,6 @@ export const StyledCheckbox = styled(Checkbox)`
 export const ErrorMsg = styled.div`
   height: 16px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -94,7 +91,6 @@ export const ErrorMsg = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -121,7 +117,6 @@ export const ContinueButton = styled(Button)`
 export const StripeCardElement = {
   base: {
     fontSize: '16px',
-    fontFamily: 'Avenir Next',
     color: '#5f6062'
   }
 }

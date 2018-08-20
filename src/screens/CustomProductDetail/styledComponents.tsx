@@ -49,7 +49,6 @@ export const TitleRow = styled.div`
 export const TitleSubtitleContainer = styled.div``
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
@@ -60,7 +59,6 @@ export const Title = styled.div`
 `
 export const Subtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 
@@ -96,13 +94,11 @@ export const AvailablePrices = styled.div`
 `
 export const Description = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `
 export const AvailableLabel = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-style: italic;
   height: 22px;
@@ -121,7 +117,6 @@ export const SectionTitleContainer = styled.div`
 `
 export const SectionTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   height: 25px;
@@ -174,7 +169,6 @@ export const SizeRowTitleRow = styled.div`
 `
 export const QuestionSpan = styled.span`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   height: 23px;
   line-height: 23px;
@@ -194,7 +188,6 @@ export const ReviewsHeader = styled.div`
   background-color: #f7f7f7;
   color: #5f6062;
   display: flex;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   height: 38px;
@@ -209,7 +202,6 @@ export const ButtonsRow = styled.div`
 
   .ant-btn {
     color: #e61737;
-    font-family: 'Avenir Next';
     font-size: 16px;
     line-height: 22px;
     text-align: center;
@@ -231,7 +223,6 @@ export const PrivateContainer = styled.div`
 `
 export const PrivateTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   height: 22px;
@@ -244,7 +235,6 @@ export const PrivateTitle = styled.div`
 `
 export const PrivateSubtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   height: 23px;
   letter-spacing: 0.11px;

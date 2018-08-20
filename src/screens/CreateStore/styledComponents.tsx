@@ -15,7 +15,6 @@ export const Container = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -23,7 +22,6 @@ export const Title = styled.div`
 
 export const Subtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -32,21 +30,18 @@ export const Subtitle = styled.div`
 
 export const Message = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 23px;
 `
 
 export const PriceMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `
 
 export const LockerMessage = styled.div`
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 21px;
 `
@@ -54,14 +49,12 @@ export const LockerMessage = styled.div`
 export const DragMessage = styled.p`
   color: #5f6062;
   padding: 4px 0px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
 `
 
 export const DragTypes = styled.p`
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 13px;
   line-height: 18px;
 `
@@ -106,7 +99,6 @@ export const RowSwitch = styled.div`
 
 export const ButtonDelete = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   margin-left: 8px;

@@ -16,7 +16,6 @@ export const StyledTitle = styled.div`
   background-color: #fff;
   padding: 16px 0;
   box-sizing: border-box;
-  font-family: Avenir Next;
   color: black;
   min-height: 64px;
   font-size: 24px;
@@ -39,7 +38,6 @@ export const BottomSheetWrapper = styled.div`
 
 export const ModalMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -92,7 +90,6 @@ export const Error = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -100,7 +97,6 @@ export const Title = styled.div`
 
 export const ErrorMessage = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;

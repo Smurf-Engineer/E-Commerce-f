@@ -54,7 +54,6 @@ export const Header = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
@@ -73,7 +72,6 @@ export const Button = styled.div`
     disabled ? 'not-allowed' : 'pointer'};
   user-select: none;
   color: ${({ disabled }: ButtonProps) => (disabled ? '#A0A0A0' : '#ffffff')};
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 `
