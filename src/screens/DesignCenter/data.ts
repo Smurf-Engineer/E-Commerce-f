@@ -59,6 +59,7 @@ export const getDesignQuery = gql`
       bindingColor: binding_color
       bibBraceColor: bib_brace_color
       zipperColor: zipper_color
+      canEdit: can_edit
       colors {
         id
         color

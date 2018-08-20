@@ -4,13 +4,24 @@
 import styled, { css } from 'styled-components'
 
 interface ThumbnailProps {
-  selected: boolean
+  selected?: boolean
+  design?: boolean
+}
+
+interface ContainerProps {
+  design: boolean
 }
 
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  @media (min-width: 1440px) {
+    margin: 0 auto;
+    max-width: 600px;
+    max-height: 800px;
+  }
 `
 
 export const Text = styled.div`
@@ -26,12 +37,15 @@ export const ImageThumbnails = styled.div`
 export const ThumbnailContainer = styled.div`
   display: inline-block;
   width: 25%;
+  ${({ design }: ContainerProps) => (design ? 'height: 100%' : '')};
 `
 export const ThumbnailImg = styled.img`
   background-color: #f1f4f5;
   border: 1px solid
     ${({ selected }: ThumbnailProps) => (selected ? 'grey' : '#fff')};
-  width: 100%;
+  ${({ design }: ThumbnailProps) => (design ? 'height: 100%' : '')};
+  ${({ design }: ThumbnailProps) => (design ? 'object-fit: cover;' : '')};
+  width: 99%;
 
   &:hover {
     cursor: pointer;
@@ -47,12 +61,28 @@ export const SwipeContainer = styled.div`
   position: relative;
   width: 100%;
 
-  @media (min-width: 320px) and (max-width: 1024px) {
+  div div:first-child {
+    height: 536px;
     width: 100%;
   }
-`
 
+  @media (min-width: 426px) and (max-width: 1024px) {
+    width: 100%;
+    height: 536px;
+  }
+
+  @media (max-width: 425px) {
+    height: 300px;
+
+    div div:first-child {
+      width: 100%;
+      height: 300px;
+    }
+  }
+`
 export const SwipeImg = styled.img`
+  max-height: 600px;
+  max-width: 600px;
   width: 100%;
 `
 export const ThreeDThumbnailContair = styled.div`
@@ -60,13 +90,14 @@ export const ThreeDThumbnailContair = styled.div`
   width: 660px;
 `
 
-export const Arrows = styled.div`
+export const Arrows = styled.section`
   align-self: center;
   display: flex;
   justify-content: space-between;
   padding: 0;
   position: absolute;
   width: 98%;
+  height: 44px;
 
   @media (min-width: 320px) and (max-width: 425px) {
     display: none;
@@ -82,7 +113,7 @@ export const ArrowContainer = styled.div`
     squareArrows
       ? css`
           align-items: center;
-          background-color: #dcdcdc;
+          background-color: rgba(255, 255, 255, 0.6);
           border: 0.2px solid rgba(220, 220, 220, 0.34);
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
           display: flex;

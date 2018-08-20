@@ -14,7 +14,7 @@ export default defineMessages({
     defaultMessage: 'Team Store Name'
   },
   orderCutOffLabel: {
-    id: 'components.StoreForm.requiredFieldLabel',
+    id: 'components.StoreForm.cutOff',
     defaultMessage: 'Cut Off Date'
   },
   requiredFieldLabel: {

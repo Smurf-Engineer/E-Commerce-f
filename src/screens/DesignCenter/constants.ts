@@ -39,6 +39,7 @@ export const SAVE_DESIGN_ID = `${namespace}/SAVE_DESIGN_ID`
 export const SET_CHECKED_TERMS = `${namespace}/SET_CHECKED_TERMS`
 export const CLEAR_DESIGN_INFO = `${namespace}/CLEAR_DESIGN_INFO`
 export const SAVE_DESIGN_LOADING = `${namespace}/SAVE_DESIGN_LOADING`
+export const SAVE_DESIGN_CHANGES_LOADING = `${namespace}/SAVE_DESIGN_CHANGES_LOADING`
 export const OPEN_ADD_TOTEAMSTORE = `${namespace}/ADD_TOTEAMSTORE`
 export const SET_ITEM_TOADD = `${namespace}/SET_ITEM_TOADD`
 

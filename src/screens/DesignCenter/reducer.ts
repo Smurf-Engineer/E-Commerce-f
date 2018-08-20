@@ -60,9 +60,11 @@ import {
   BLACK,
   AccessoryColors,
   ElementsToApplyScale,
-  SET_LOADED_CANVAS_ACTION
+  SET_LOADED_CANVAS_ACTION,
+  SAVE_DESIGN_CHANGES_LOADING
 } from './constants'
 import { Reducer, Change } from '../../types/common'
+import { DEFAULT_COLOR } from '../../constants'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -70,7 +72,7 @@ export const initialState = fromJS({
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
-  stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
+  stitchingColor: { name: 'FSC-17', value: DEFAULT_COLOR },
   bindingColor: WHITE,
   zipperColor: WHITE,
   bibColor: WHITE,
@@ -92,6 +94,7 @@ export const initialState = fromJS({
   style: {},
   complexity: 0,
   saveDesignLoading: false,
+  saveDesignChangesLoading: false,
   text: '',
   openAddToStoreModal: false,
   teamStoreId: '',
@@ -425,7 +428,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         currentTab: 2,
         designName: '',
-        checkedTerms: false
+        checkedTerms: false,
+        swipingView: true
       })
     case SET_SWIPING_TAB_ACTION:
       return state.set('swipingView', action.isSwiping)
@@ -475,17 +479,33 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
-    case SAVE_DESIGN_ID:
+    case SAVE_DESIGN_ID: {
+      const { id, svgUrl, design, updateColors } = action
+      if (updateColors) {
+        const style = state.get('style')
+        const updatedStyle = style.set('colors', List.of(...design.colors))
+        return state.merge({
+          savedDesignId: id,
+          designHasChanges: false,
+          svgOutputUrl: svgUrl,
+          savedDesign: design,
+          style: updatedStyle
+        })
+      }
+
       return state.merge({
-        savedDesignId: action.id,
+        savedDesignId: id,
         designHasChanges: false,
-        svgOutputUrl: action.svgUrl,
-        savedDesign: action.design
+        svgOutputUrl: svgUrl,
+        savedDesign: design
       })
+    }
     case SET_CHECKED_TERMS:
       return state.set('checkedTerms', action.checked)
     case SAVE_DESIGN_LOADING:
       return state.set('saveDesignLoading', action.loading)
+    case SAVE_DESIGN_CHANGES_LOADING:
+      return state.set('saveDesignChangesLoading', action.loading)
     case CLEAR_DESIGN_INFO:
       return state.merge({ checkedTerms: false })
     case SET_TEXT_ACTION:
@@ -790,7 +810,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SEARCH_CLIPARTPARAM:
       return state.set('searchClipParam', action.param)
     case SET_EDIT_DESIGN_CONFIG_ACTION: {
-      const { colors, accessoriesColor } = action
+      const { colors, accessoriesColor, savedDesignId } = action
       const {
         bindingColor,
         zipperColor,
@@ -806,10 +826,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         stitchingColor: fromJS(stitchingColor),
         bindingColor,
         zipperColor,
-        bibColor: bibBraceColor
-        // TODO: Set these fields
-        // styleId
-        // savedDesignId
+        bibColor: bibBraceColor,
+        savedDesignId
       })
     }
     case SET_LOADED_CANVAS_ACTION: {
