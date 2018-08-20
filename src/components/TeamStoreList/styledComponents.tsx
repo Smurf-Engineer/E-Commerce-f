@@ -29,7 +29,6 @@ export const FeaturedStoreItem = styled.div``
 export const Notfound = styled.div`
   height: 45px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;

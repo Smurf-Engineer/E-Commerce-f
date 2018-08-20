@@ -18,7 +18,6 @@ export const Content = styled.div`
 export const Title = styled.div`
   height: 27px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -46,7 +45,6 @@ export const SummaryContainer = styled.div`
 
 export const SubTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -72,7 +70,6 @@ export const ShippingBillingContainer = styled.div`
 
 export const PaymentText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -97,7 +94,6 @@ export const OrderNumberContainer = styled.div`
 export const TitleStyled = styled.div`
   width: 300px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -110,7 +106,6 @@ export const TitleStyled = styled.div`
 
 export const StyledText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   letter-spacing: 0.11px;
   line-height: 23px;
   font-size: 16px;
@@ -118,7 +113,6 @@ export const StyledText = styled.div`
 
 export const StyledDropText = styled.div`
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   letter-spacing: 0.11px;
   line-height: 23px;
   font-size: 16px;
@@ -138,7 +132,6 @@ export const ContainerCheckBox = styled.div`
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -146,7 +139,6 @@ export const StyledCheckbox = styled(Checkbox)`
 
 export const StyledEmailPhoneText = styled.div`
   color: #bebebe;
-  font-family: 'Avenir Next';
   letter-spacing: 0.11px;
   line-height: 23px;
   font-size: 16px;

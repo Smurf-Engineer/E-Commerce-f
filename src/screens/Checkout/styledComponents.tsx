@@ -26,7 +26,6 @@ export const Content = styled.div`
 export const CheckoutTitle = styled.div`
   height: 27px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -37,7 +36,6 @@ export const CheckoutTitle = styled.div`
 export const SummaryTitle = styled.div`
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;

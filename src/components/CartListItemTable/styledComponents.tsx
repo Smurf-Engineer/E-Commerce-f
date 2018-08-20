@@ -85,7 +85,6 @@ export const InfoCell = styled.div`
   width: 100%;
   text-align: ${({ align }: CellProps) => (align ? align : 'left')};
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
 `
 
@@ -101,7 +100,6 @@ interface TitleProps {
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -112,7 +110,6 @@ export const Title = styled.div`
 
 export const Price = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
@@ -124,7 +121,6 @@ export const MobileEmtpytable = styled.div`
   padding: 50px 40px 50px;
   border-bottom: 1px solid #dcdcdc;
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 21px;

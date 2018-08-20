@@ -25,7 +25,6 @@ export const Text = styled.div`
   height: 19px;
   width: 187.18px;
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   text-align: right;

@@ -18,7 +18,6 @@ export const Render = styled.div`
 export const Model = styled.div`
   color: #5f6062;
   user-select: none;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -63,7 +62,6 @@ export const ButtonRight = styled(AntdButton)`
 `
 export const DragText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   user-select: none;
   font-size: 14px;
   line-height: 23px;
@@ -84,7 +82,6 @@ export const ModelType = styled.div`
 
 export const ModelText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   user-select: none;
   font-size: 16px;
   line-height: 22px;

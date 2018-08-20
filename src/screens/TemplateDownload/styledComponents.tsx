@@ -23,7 +23,6 @@ export const Title = styled.div`
   width: 100%;
   height: 33px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -62,7 +61,6 @@ export const TemplatesList = styled.div`
 
 export const TitleError = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -70,7 +68,6 @@ export const TitleError = styled.div`
 
 export const Message = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;
@@ -85,7 +82,6 @@ export const EmptyContainer = styled.div`
 
 export const EmptyMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;

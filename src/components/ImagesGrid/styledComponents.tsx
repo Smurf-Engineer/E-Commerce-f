@@ -11,13 +11,11 @@ export const Text = styled.div`
 
 export const DetailsContent = styled.div`
   width: 100%;
-  font-family: 'Avenir Next' !important;
 `
 
 export const TestimonialsContent = styled.div`
   max-width: 98% !important;
   padding-left: 30px;
-  font-family: 'Avenir Next' !important;
 `
 
 export const CarouselContent = styled.div`
@@ -102,7 +100,6 @@ export const CardQuote = styled.div`
 export const TextQuote = styled.div`
   width: 384px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 36px;
 
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -126,7 +123,6 @@ export const ScenesFromTitle = styled.div`
     withoutCarouselContent ? '' : '36px 0 26px'};
   text-align: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;

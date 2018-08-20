@@ -15,7 +15,6 @@ export const Title = styled.div`
   width: 100%;
   height: 33px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -27,7 +26,6 @@ export const Title = styled.div`
 export const Subtitle = styled.div`
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -48,7 +46,6 @@ export const HeaderText = styled.div`
   margin-bottom: 10px;
   text-align: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -62,7 +59,6 @@ interface InfoTextProps {
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -70,7 +66,6 @@ export const Text = styled.div`
 
 export const InfoText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

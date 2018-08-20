@@ -27,7 +27,6 @@ export const Container = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -63,7 +62,6 @@ export const InputTitleContainer = styled.div`
 export const Label = styled.div`
   height: 19px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -101,7 +99,6 @@ export const StyledInputUnity = styled(Input)`
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -133,7 +130,6 @@ export const LoadingErrorContainer = styled.div`
 
 export const ErrorMessage = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;

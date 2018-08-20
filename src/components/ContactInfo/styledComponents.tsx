@@ -3,10 +3,8 @@
  */
 import styled from 'styled-components'
 
-const fontFamily = 'Avenir Next'
 export const Container = styled.div`
   color: #fff;
-  font-family: ${fontFamily};
   font-size: 12px;
   line-height: 16px;
   margin-bottom: 15px;

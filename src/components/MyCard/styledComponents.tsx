@@ -20,7 +20,6 @@ export const Container = styled.div`
 
 export const PaymentText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -41,7 +40,6 @@ export const StyledImage = styled.img`
 export const ItalicText = styled.div`
   width: 128px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -67,7 +65,6 @@ export const StyledButton = styled(Button)`
 export const StyledCheckbox = styled(Checkbox)`
   height: 36px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;

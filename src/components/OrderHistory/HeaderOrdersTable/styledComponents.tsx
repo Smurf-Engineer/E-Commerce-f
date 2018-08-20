@@ -43,7 +43,6 @@ export const Header = styled.th`
   text-align: left;
   padding: 8px 0;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;

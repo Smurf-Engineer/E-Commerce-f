@@ -15,7 +15,6 @@ export const LoginLabel = styled.div`
   height: 25px;
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -34,7 +33,6 @@ export const RememberMeRow = styled.div`
   justify-content: space-between;
   height: 19px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   text-align: right;
@@ -61,7 +59,6 @@ export const NotAMemberLabel = styled.div`
   height: 22px;
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 22px;
   text-align: center;

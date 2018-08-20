@@ -29,7 +29,6 @@ export const StyledLabel = styled.div`
   height: 10%;
   width: 25%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 10px;
@@ -39,7 +38,6 @@ export const StyledFooterLabel = styled.div`
   height: 30%;
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 10px;
@@ -50,7 +48,6 @@ export const TitleLabel = styled.div`
   height: 27px;
   width: 145px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;

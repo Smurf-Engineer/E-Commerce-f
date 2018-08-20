@@ -8,7 +8,6 @@ export const Container = styled.div`
 `
 export const ScreenTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 27px;

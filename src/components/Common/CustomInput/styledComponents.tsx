@@ -16,7 +16,6 @@ export const Container = styled.div`
 
 export const FloatingText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   padding-bottom: 5px;
 `
 

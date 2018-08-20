@@ -16,7 +16,6 @@ export const Container = styled.div`
 export const Label = styled.div`
   display: flex;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   margin-bottom: 6px;
@@ -28,7 +27,6 @@ export const Label = styled.div`
 
 export const Required = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   margin-bottom: 6px;
@@ -45,7 +43,6 @@ export const Column = styled.div`
 
 export const Error = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   padding: 4px;

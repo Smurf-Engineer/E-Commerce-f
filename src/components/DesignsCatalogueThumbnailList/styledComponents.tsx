@@ -30,7 +30,6 @@ export const HeadRow = styled.div`
 export const TotalItems = styled.div`
   height: 23px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `
@@ -42,7 +41,6 @@ export const SortOptions = styled.div`
 export const SortByLabel = styled.div`
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;

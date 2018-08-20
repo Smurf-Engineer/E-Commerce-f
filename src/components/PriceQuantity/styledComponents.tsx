@@ -23,7 +23,6 @@ export const PriceLabel = styled.div`
 
   color: ${({ priceColor }: StyleProps) =>
     priceColor ? priceColor : '#5f6062'};
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -35,7 +34,6 @@ export const PriceLabel = styled.div`
 export const QuantityLabel = styled.div`
   height: 16px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
 `

@@ -13,7 +13,6 @@ export const Container = styled.div`
 
 export const Name = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -23,7 +22,6 @@ export const Name = styled.div`
 
 export const ColorLabel = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;

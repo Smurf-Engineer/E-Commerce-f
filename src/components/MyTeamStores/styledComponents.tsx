@@ -26,7 +26,6 @@ export const AddTeamStoreButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -37,7 +36,6 @@ export const CreateTeamStoreLegend = styled.div`
   height: 46px;
   width: 464px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -51,7 +49,6 @@ export const CreateTeamStoreLegend = styled.div`
 
 export const DeleteConfirmMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;

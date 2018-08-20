@@ -37,7 +37,6 @@ export const Tab = styled.div`
 `
 
 export const Text = styled.div`
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   color: ${({ selected }: SelectedProps) => (selected ? '#fff' : '#e61737')};

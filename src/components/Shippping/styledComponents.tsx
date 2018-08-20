@@ -19,7 +19,6 @@ export const Text = styled.div`
 export const Title = styled.div`
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -34,7 +33,6 @@ export const ShippinPriorityText = styled.div`
   height: 46px;
   width: 281px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-style: italic;
   letter-spacing: 0.11px;
@@ -45,7 +43,6 @@ export const ShippinPriorityText = styled.div`
 export const StyledCheckbox = styled(Checkbox)`
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -54,7 +51,6 @@ export const StyledCheckbox = styled(Checkbox)`
 
 export const ViewAllAddresses = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;

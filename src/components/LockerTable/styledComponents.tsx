@@ -63,7 +63,6 @@ interface TitleProps {
 export const Title = styled.div`
   width: 58px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -73,7 +72,6 @@ export const Title = styled.div`
 
 export const Price = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
@@ -85,7 +83,6 @@ export const DeleteButton = styled.div`
   text-align: right;
   user-select: none;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
@@ -100,7 +97,6 @@ export const Center = styled.div`
 
 export const Name = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -110,7 +106,6 @@ export const Name = styled.div`
 export const Description = styled.div`
   color: #5f6062;
   width: 40%;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -123,7 +118,6 @@ export const MobileEmtpytable = styled.div`
   padding: 50px 40px 50px;
   border-bottom: 1px solid #dcdcdc;
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 21px;

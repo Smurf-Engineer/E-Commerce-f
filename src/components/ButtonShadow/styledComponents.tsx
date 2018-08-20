@@ -32,7 +32,6 @@ export const Container = styled.div`
 export const Text = styled.div`
   user-select: none;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 23px;
   text-align: center;
