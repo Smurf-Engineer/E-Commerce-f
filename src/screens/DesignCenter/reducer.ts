@@ -61,7 +61,8 @@ import {
   AccessoryColors,
   ElementsToApplyScale,
   SET_LOADED_CANVAS_ACTION,
-  SAVE_DESIGN_CHANGES_LOADING
+  SAVE_DESIGN_CHANGES_LOADING,
+  CANVAS_ELEMENT_DUPLICATED_ACTION
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_COLOR } from '../../constants'
@@ -803,6 +804,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
       }
+      return state
+    }
+    case CANVAS_ELEMENT_DUPLICATED_ACTION: {
+      const { id } = action
       return state
     }
     case SET_UPLOADING_FILE_ACTION:
