@@ -12,7 +12,6 @@ export const Container = styled.div`
   margin-bottom: 10vh;
 `
 
-// background-color: #eff2f4;
 export const Image = styled.img`
   width: 320px;
   height: 320px;

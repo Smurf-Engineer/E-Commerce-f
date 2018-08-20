@@ -15,7 +15,7 @@ const FilesList = ({ assets: { files, svgs } }: Props) => {
   const assetsArray = []
   for (let file of files) {
     const { original, fileUrl } = file
-    const url = original ? original : fileUrl
+    const url = original || fileUrl
     assetsArray.push(url)
   }
   for (let svg of svgs) {
