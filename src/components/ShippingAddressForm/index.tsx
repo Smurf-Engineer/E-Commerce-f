@@ -131,9 +131,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               value={street}
               onChange={this.handleInputChange}
             />
-            {!street &&
+            {(!street || this.hasAddressError(street)) &&
               hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+                <ErrorMsg>{formatMessage(messages.requiredAddressLabel)}</ErrorMsg>
               )}
             <StyledInput
               id="apartment"
@@ -239,6 +239,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     )
   }
 
+  hasAddressError = (street: string) => {
+    const poboxRegex = new RegExp('[PO.]*\\s?B(ox)?.*\\d+', 'i')
+    const isPoBox = !!street.match(poboxRegex)
+    return isPoBox
+  }
   handleCountryChange = (value: any, countryId: string) => {
     const { inputChangeAction } = this.props
     this.setState({
@@ -275,12 +280,14 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       currentTarget: { id, value }
     } = evt
 
-    const regex = /^[0-9]+$/
-    const isNumber = regex.test(value)
-
-    if (value && id === 'phone' && !isNumber) {
-      return
+    if (value && id === 'phone') {
+      const numberRegex = /^[0-9]+$/
+      const isNumber = numberRegex.test(value)
+      if (!isNumber) {
+        return
+      }
     }
+
     inputChangeAction(id, value)
   }
 

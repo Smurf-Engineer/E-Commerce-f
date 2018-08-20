@@ -237,11 +237,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentTarget: { id, value }
     } = evt
 
-    const regex = /^[0-9]+$/
-    const isNumber = regex.test(value)
-
-    if (value && id === 'phone' && !isNumber) {
-      return
+    if (value && id === 'phone') {
+      const regex = /^[0-9]+$/
+      const isNumber = regex.test(value)
+      if (!isNumber) {
+        return
+      }
     }
     inputChangeAction(id, value)
   }

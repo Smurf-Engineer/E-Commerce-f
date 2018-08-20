@@ -463,6 +463,12 @@ class Checkout extends React.Component<Props, {}> {
       validFormAction
     } = this.props
 
+    const poboxRegex = new RegExp('[PO.]*\\s?B(ox)?.*\\d+', 'i')
+    const isPoBox = !!street.match(poboxRegex)
+    // TODO: APO regex
+    // const apoRegex = new RegExp('[APO.]\\s\\d+', 'i')
+    // const apo = street.match(apoRegex)
+
     const error =
       !firstName ||
       !lastName ||
@@ -471,7 +477,9 @@ class Checkout extends React.Component<Props, {}> {
       !stateProvince ||
       !city ||
       !zipCode ||
-      !phone
+      !phone ||
+      isPoBox
+
     if (error) {
       validFormAction(error)
       return
