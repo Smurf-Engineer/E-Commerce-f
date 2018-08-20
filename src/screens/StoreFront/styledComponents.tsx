@@ -24,7 +24,6 @@ export const SideBar = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -35,7 +34,6 @@ export const Title = styled.div`
 
 export const AboutTitle = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -47,7 +45,6 @@ export const AboutTitle = styled.div`
 
 export const ErrorTitle = styled.div`
   color: #e21530;
-  font-family: Avenir Next;
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -68,7 +65,6 @@ export const TierContainer = styled.div`
 
 export const OrderTitle = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -85,7 +81,6 @@ export const Content = styled.div`
 export const PriceTitle = styled.div`
   padding-top: 27px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -95,7 +90,6 @@ export const PriceTitle = styled.div`
 export const PriceDescription = styled.div`
   padding-top: 10px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -103,7 +97,6 @@ export const PriceDescription = styled.div`
 
 export const TierTitle = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -114,7 +107,6 @@ export const TierTitle = styled.div`
 export const TierDescription = styled.div`
   padding-top: 5px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -181,7 +173,6 @@ export const CalendarFinalView = styled.div`
 
 export const CalendarTitle = styled.div`
   text-align: center;
-  font-family: 'Avenir Next';
   width: 100%;
   height: 20px;
   color: #ffffff;
@@ -191,7 +182,6 @@ export const CalendarTitle = styled.div`
 
 export const CalendarFinalTitle = styled.div`
   text-align: center;
-  font-family: 'Avenir Next';
   width: 100%;
   height: 20px;
   color: #ffffff;
@@ -203,7 +193,6 @@ export const CalendarDay = styled.div`
   text-align: center;
   width: 100%;
   height: 80%;
-  font-family: 'Avenir Next';
   font-size: 36px;
   font-weight: bold;
   color: #5f6062;
@@ -238,7 +227,6 @@ export const ButtonsContainer = styled.div`
 
 export const DatesTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;

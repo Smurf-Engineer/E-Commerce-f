@@ -11,7 +11,7 @@ export default defineMessages({
   },
   email: {
     id: 'components.EmailContact.email',
-    defaultMessage: 'E-mail'
+    defaultMessage: 'Email'
   },
   send: {
     id: 'components.EmailContact.send',

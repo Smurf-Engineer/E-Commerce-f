@@ -16,7 +16,6 @@ export const Container = styled.div`
 export const Title = styled.div`
   margin-bottom: 10px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -36,7 +35,6 @@ export const ListItem = styled.div`
   width: 121px;
   color: ${({ selected }: ContainerProps) =>
     selected ? '#e61737' : '#5f6062'};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -50,7 +48,6 @@ export const ListTitle = styled.div`
   margin: 10px;
   height: 16px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -62,7 +59,6 @@ export const AddTeamStoreButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;

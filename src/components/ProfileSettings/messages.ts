@@ -5,6 +5,14 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
+  errorTitle: {
+    id: 'components.ProfileSettings.errorTitle',
+    defaultMessage: 'Oops!'
+  },
+  errorMessage: {
+    id: 'components.ProfileSettings.errorMessage',
+    defaultMessage: 'Something went wrong'
+  },
   profileTitle: {
     id: 'components.ProfileSettings.profileTitle',
     defaultMessage: 'Profile'

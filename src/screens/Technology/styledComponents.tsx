@@ -11,7 +11,6 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -30,7 +29,6 @@ export const StyledImg = styled.img`
 
 export const Title = styled.div`
   color: #ffffff;
-  font-family: Avenir Next;
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 0.61px;
@@ -70,7 +68,6 @@ export const TopImageButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -97,7 +94,6 @@ export const ParagraphContainer = styled.div`
   margin-top: 114px;
   padding-left: 40px;
   padding-right: 40px;
-  font-family: Avenir Next;
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;
@@ -111,7 +107,6 @@ export const OkoeImg = styled.img`
 
 export const Paragraph = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -136,7 +131,6 @@ export const TechImg = styled.img`
 
 export const TechParagraph = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -163,7 +157,6 @@ export const LineCopy = styled.div`
 export const SecondTitle = styled.div`
   height: 27px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -176,7 +169,6 @@ export const SecondTitle = styled.div`
 export const Subtitle = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 18px;
   letter-spacing: 0.13px;
   line-height: 25px;
@@ -189,7 +181,6 @@ export const TechContainer = styled.div`
   flex-direction: row;
   align-items: flex-start;
   padding: 40px;
-  font-family: Avenir Next;
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;
@@ -204,7 +195,6 @@ export const ProContainer = styled.div`
   justify-content: space-evenly;
   width: 100%;
   padding: 40px;
-  font-family: Avenir Next;
 `
 
 export const ProItem = styled.div`
@@ -218,7 +208,6 @@ export const ProText = styled.div`
   width: 300px;
   margin-top: 20px;
   margin-bottom: 30px;
-  font-family: Avenir Next;
 
   .highlight {
     color: red;

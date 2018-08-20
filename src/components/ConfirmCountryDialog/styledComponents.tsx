@@ -17,7 +17,6 @@ export const Title = styled.div`
   height: 44px;
   width: 298px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.18px;

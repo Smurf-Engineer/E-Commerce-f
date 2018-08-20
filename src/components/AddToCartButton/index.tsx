@@ -113,8 +113,8 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       )
       this.saveInLocalStorage(itemToAdd)
     } else {
-      const candAddToStore = onClick()
-      if (!candAddToStore) {
+      const canAddToStore = onClick()
+      if (!canAddToStore) {
         Message.warning(
           intl.formatMessage(
             itemProdPage
@@ -154,7 +154,9 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
           return
         }
         if (item) {
-          this.saveInLocalStorage(item)
+          this.saveInLocalStorage(
+            this.getItemWithDetails(item, '', '', '', '', '', false)
+          )
         }
       }
     }

@@ -36,7 +36,6 @@ export const HeaderTextContainer = styled.div`
 export const Title = styled.div`
   align-self: flex-end;
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 0.61px;
@@ -56,7 +55,6 @@ export const HeaderDialog = styled.div`
   color: #5f6062;
   display: flex;
   flex-direction: column;
-  font-family: 'Avenir Next';
   font-size: 16px;
   height: 200px;
   justify-content: center;
@@ -85,7 +83,6 @@ export const ContentSection = styled.div`
 `
 export const SectionTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;

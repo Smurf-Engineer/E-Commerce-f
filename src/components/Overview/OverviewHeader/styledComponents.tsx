@@ -24,7 +24,6 @@ export const Content = styled.div`
 
 export const Label = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -36,7 +35,6 @@ export const ViewContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;

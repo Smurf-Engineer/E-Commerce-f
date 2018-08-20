@@ -24,7 +24,6 @@ export const Text = styled.div`
 
 export const Label = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

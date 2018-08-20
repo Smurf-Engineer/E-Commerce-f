@@ -18,7 +18,6 @@ export const StyledImage = styled.img`
 export const Title = styled.div`
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 0.16px;
@@ -29,7 +28,6 @@ export const Title = styled.div`
 export const Subtitle = styled.div`
   widht: 100%;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -48,7 +46,6 @@ export const DownloadIcon = {
 
 export const DownloadText = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;

@@ -28,7 +28,6 @@ export const Text = styled.div`
   color: #5f6062;
   text-align: center;
   cursor: pointer;
-  font-family: 'Avenir Next';
   font-size: 18px;
   line-height: 25px;
   padding: 0px 10px;
@@ -37,7 +36,6 @@ export const Text = styled.div`
 export const Label = styled.div`
   text-align: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   margin-bottom: 13px;
 `
@@ -49,7 +47,6 @@ export const Option = styled.div`
 
 export const MenuOption = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   margin-left: 12px;
   font-size: 14px;
   line-height: 22px;

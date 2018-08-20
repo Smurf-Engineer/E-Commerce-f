@@ -26,7 +26,6 @@ export const DraggerBottom = styled.div`
 `
 export const LoginMessage = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;
@@ -43,7 +42,6 @@ export const Header = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
@@ -55,7 +53,6 @@ type Props = {
 
 export const Recommendation = styled.div`
   color: ${({ color = '#5f6062' }: Props) => color};
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 23px;

@@ -10,7 +10,6 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -31,7 +30,6 @@ export const ColorWrapper = styled.div`
 export const Subtitle = styled.div`
   height: 40px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -42,7 +40,6 @@ export const Subtitle = styled.div`
 export const MainTitle = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -54,7 +51,6 @@ export const MainTitle = styled.div`
 export const SecondaryTitle = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -64,7 +60,6 @@ export const SecondaryTitle = styled.div`
 
 export const SectionText = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -89,7 +84,6 @@ export const SectionText = styled.div`
 export const ThirdTitle = styled.div`
   height: 27px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -113,7 +107,6 @@ export const ContentContainer = styled.div`
 
 export const DesignText = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -147,7 +140,6 @@ export const LineCopy = styled.div`
 
 export const FlatLockText = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

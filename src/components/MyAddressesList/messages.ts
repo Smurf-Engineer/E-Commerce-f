@@ -13,13 +13,9 @@ export default defineMessages({
     id: 'components.MyAddressesList.addAddressLabel',
     defaultMessage: '+ ADD ADDRESS'
   },
-  seeAllAddressesLabel: {
-    id: 'components.MyAddressesList.seeAllAddressesLabel',
-    defaultMessage: 'See All'
-  },
   emptyMessage: {
     id: 'components.MyAddressesList.empty',
-    defaultMessage: `There are no addresses on your account`
+    defaultMessage: 'There are no addresses on your account'
   },
   deleteAddress: {
     id: 'components.MyAddressesList.deleteAddress',

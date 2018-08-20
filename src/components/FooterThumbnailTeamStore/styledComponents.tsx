@@ -9,7 +9,6 @@ export const Footer = styled.div`
 
 export const Type = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: bold;
   line-height: 19px;
@@ -25,7 +24,6 @@ export const Type = styled.div`
 export const Description = styled.div`
   user-select: none;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   padding: 2px 0px;
@@ -50,7 +48,6 @@ export const Label = styled.div`
   user-select: none;
   color: #5f6062;
   padding: 4px 0px;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   text-align: right;
@@ -60,7 +57,6 @@ export const PriceLabel = styled.div`
   user-select: none;
   color: #5f6062;
   padding: 4px 0px;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   text-align: right;
@@ -72,7 +68,6 @@ export const RedPriceLabel = styled.div`
   user-select: none;
   color: #e61737;
   padding: 4px 0px;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   text-align: right;
@@ -83,7 +78,6 @@ export const RedPriceLabel = styled.div`
 export const Price = styled.div`
   user-select: none;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   font-weight: 600;
   line-height: 16px;
@@ -91,7 +85,6 @@ export const Price = styled.div`
 
 export const Delete = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   cursor: pointer;
@@ -99,7 +92,6 @@ export const Delete = styled.div`
 
 export const Private = styled.span`
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
 `
@@ -136,5 +128,4 @@ export const ProgressText = styled.div`
   z-index: 1;
   margin-top: 6px;
   margin-left: 4px;
-  font-family: 'Avenir Next';
 `

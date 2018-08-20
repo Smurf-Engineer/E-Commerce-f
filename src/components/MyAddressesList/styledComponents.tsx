@@ -19,7 +19,6 @@ export const Content = styled.div`
 export const Title = styled.div`
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -43,7 +42,6 @@ export const AddAddressBtn = styled(Button)`
   width: 221px;
   border: 2px solid ${BLUE};
   border-radius: 2px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   text-align: center;
@@ -67,7 +65,6 @@ export const AddressesList = styled.div`
 
 export const ViewAllAddresses = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -83,7 +80,6 @@ export const PaginationRow = styled.div`
 
 export const Message = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;
@@ -91,7 +87,6 @@ export const Message = styled.div`
 
 export const DeleteConfirmMessage = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;

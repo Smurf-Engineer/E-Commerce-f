@@ -23,7 +23,6 @@ export const Text = styled.div`
 
 export const Title = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -31,7 +30,6 @@ export const Title = styled.div`
 
 export const Message = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;
@@ -53,7 +51,6 @@ export const StyledEmptyButton = styled(Button)`
   width: 221px;
   border: 2px solid ${BUTTON_COLOR};
   border-radius: 2px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   text-align: center;
@@ -63,7 +60,6 @@ export const StyledEmptyButton = styled(Button)`
 export const StyledCheckbox = styled(Checkbox)`
   height: 22px;
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -72,7 +68,6 @@ export const StyledCheckbox = styled(Checkbox)`
 
 export const DeleteConfirmMessage = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;

@@ -32,7 +32,6 @@ export const FiltersTitle = styled.div`
     showChildren ? 'inline-block' : 'none'};
   height: 36.95px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;

@@ -10,7 +10,6 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -38,7 +37,6 @@ export const AnchorButton = styled.div`
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -55,7 +53,6 @@ export const SectionContainder = styled.div``
 
 export const SectionTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -65,7 +62,6 @@ export const SectionTitle = styled.div`
 export const SectionText = styled.div`
   padding: 30px 40px 0;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

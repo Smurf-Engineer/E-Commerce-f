@@ -31,7 +31,6 @@ export const Text = styled.div`
 
 export const Label = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -39,7 +38,6 @@ export const Label = styled.div`
 
 export const Message = styled.div`
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 21px;
 `
@@ -51,7 +49,6 @@ export const inputStyle = {
 
 export const Error = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   padding: 4px;

@@ -10,6 +10,8 @@
   "components.menuBar.active": "ACTIVE",
   "components.menuBar.seeAll": "SEE ALL",
   "components.menuBar.error": "Something went wrong",
+  "components.menuBar.googleLoginLabel": "LOG IN WITH GOOGLE",
+  "components.menuBar.facebookLoginLabel": "LOG IN WITH FACEBOOK",
   "components.menunBar.teamStoresTitle": "TEAM STORES",
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",
@@ -42,10 +44,17 @@
   "components.footer.aboutUs.company": "Company",
   "components.footer.aboutUs.jobs": "Job Opportunities",
   "components.footer.aboutUs.investorsRelations": "Investors Relations",
+  "components.footer.aboutUs.technology": "Technology",
   "components.footer.teams.title": "TEAMS",
   "components.footer.teams.stores": "Team Stores",
   "components.footer.teams.kits": "Team Ordering",
   "components.footer.teams.sponsor": "Get Sponsored",
+  "components.addToCartButton.validationMessage":
+    "Please select color, size and fit style!",
+  "components.addToCartButton.validationMessageProdPage":
+    "Please select gender, size and fit style!",
+  "components.addToCartButton.successfulAddMessage":
+    "{name} has been succesfully added to cart!",
   "components.DesignCenterHeader.back": "Back to Jakroo",
   "components.DesignCenterHeader.date": "Estimated Delivery Date: {date}",
   "components.DesignCenterTabs.theme": "Theme",
@@ -58,11 +67,12 @@
   "components.DesignCenterInfo.style": "SELECT A DESIGN",
   "components.DesignCenterInfo.styleMessage":
     "Select a base design to start as a canvas of your new gear. You can select a complexity that satisfies your taste.",
+  "components.DesignCenterInfo.customize": "CUSTOMIZE",
+  "components.DesignCenterInfo.preview": "PREVIEW",
   "components.designCenterCustomize.Tab.color": "Color",
   "components.designCenterCustomize.Tab.text": "Text",
   "components.designCenterCustomize.Tab.symbol": "Symbol",
   "components.designCenterCustomize.Tab.upload": "Upload",
-
   "components.designCenterCustomize.ColorTab.selectColor": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalette": "My Palette",
   "components.designCenterCustomize.ColorTab.color": "Color {name}",
@@ -102,7 +112,7 @@
   "components.Logout.myLockerLabel": "My Locker",
   "components.Logout.myAccountLabel": "My Account",
   "components.Logout.profileSettingsLabel": "Profile Settings",
-  "components.Logout.logoutLabel": "Logout",
+  "components.Logout.logoutLabel": "Log out",
   "components.Render3D.drag": "Drag to rotate",
   "components.Render3D.productOnly": "Product Only",
   "components.Render3D.withAvatar": "With Avatar",
@@ -118,8 +128,13 @@
     "Resetting the design will revert back to the original selected design.",
   "components.Render3D.modalConfirmText": "Confirm",
   "components.Render3D.modalCancelText": "Cancel",
+  "components.forgotPassword.forgotPassWordLabel": "Forgot your password?",
+  "components.forgotPassword.enterEmailLabel":
+    "Enter your email to receive instructions on how to reset your password.",
   "components.forgotPassword.emailLabel": "Email",
   "components.forgotPassword.invalidEmailLabel": "Invalid email!",
+  "components.forgotPassword.sendButtonLabel": "SEND",
+  "components.forgotPassword.returnToLoginLabel": "Or return to LOG IN",
   "components.ResetPassword.passwordLabel": "Password",
   "components.ResetPassword.confirmPasswordLabel": "confirmPassword",
   "components.ResetPassword.newPasswordLabel": "New password",
@@ -146,7 +161,6 @@
   "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
   "components.ProductCatalogueThumbnailsList.edit": "EDIT",
   "components.ProductCatalogueThumbnailsList.customizable": "Customize",
-
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
@@ -161,7 +175,8 @@
   "components.ShareDesignModal.sendButtonLabel": "Send",
   "components.ShareDesignModal.copyButtonLabel": "Copy",
   "components.SaveDesign.modalTitle": "SAVE YOUR DESIGN",
-  "components.SaveDesign.modalText": "Name it something that is simple and recognizable to you.",
+  "components.SaveDesign.modalText":
+    "Name it something that is simple and recognizable to you.",
   "components.SaveDesign.modalSaveAsNewDesign": "Save as new design",
   "components.SaveDesign.placeholder": "Design name",
   "components.SaveDesign.invalidNameMessage": "Invalid design name",
@@ -189,6 +204,8 @@
   "screens.Account.submenu.filtersTitle": "MY ACCOUNT ",
   "components.FooterThumbnailLocker.private": "Private",
   "components.FooterThumbnailLocker.delete": "Delete",
+  "components.FooterThumbnailTeamStore.estimatedPrice": "Estimated price",
+  "components.FooterThumbnailTeamStore.currentPrice": "Current price",
   "screens.teamstoreProductPage.dynamicPriceDropTitle": "DYNAMIC PRICE DROP",
   "screens.teamstoreProductPage.everybodyWinsText":
     "With JAKROO's Dynamic Price Drop, everybody wins!",
@@ -254,7 +271,14 @@
   "components.LockerTable.visible": "Visible",
   "components.StoreForm.requiredFieldLabel": "This field is required",
   "components.StoreForm.changeLabel": "Change",
-  "componentes.StoreForm.deleteLabel": "Delete",
+  "components.StoreForm.teamStoreName": "Team Store Name",
+  "components.StoreForm.cutOff": "Cut Off Date",
+  "components.StoreForm.deleteLabel": "Delete",
+  "components.StoreForm.desiredDeliveryLabel": "Desired Delivery Date",
+  "components.StoreForm.deliveryErrorLabel":
+    "Delivery date cannot be on a Sunday or Federal Holiday'",
+  "components.storeForm.errorMsg":
+    "Something wrong happened. Please try again!",
   "components.MyTeamStores.tittle": "My TeamStores",
   "components.MyTeamStores.addTeamstoreLabel": "+ ADD NEW TEAM STORE",
   "components.MyTeamStores.createTeamStoreText":
@@ -274,7 +298,20 @@
   "components.MyAddresses.titleDeleteModal": "Are you sure?",
   "components.MyAddresses.messageDeleteModal":
     "This will permanently delete this address",
-  "components.MyAddresses.empty": "There are no addresses on your account",
+  "components.MyAddresses.addAddress": "+ ADD ADDRESS",
+  "components.MyAddresses.modalTitle": "Shipping Address",
+  "components.MyAddresses.defaultBillingAddress":
+    "Make default billing address",
+  "components.MyAddresses.saveAddress": "Save",
+  "components.MyAddressesList.titleDeleteModal": "Are you sure?",
+  "components.MyAddressesList.deleteAddress": "Delete",
+  "components.MyAddressesList.empty": "There are no addresses on your account",
+  "components.MyAddress.useThisAddress": "Use this address",
+  "components.MyAddress.edit": "Edit",
+  "components.MyAddress.defaultShipping": "Default shipping address",
+  "components.MyAddress.defaultBilling": "Default billing address",
+  "components.MyAddress.defaultBillingAndShipping":
+    "Default shipping and billing address",
   "screen.Teamstores.shareModalTitle": "SHARE YOUR TEAMSTORE!",
   "screen.Teamstores.errorMessage":
     "Something wrong happened. Please try again!",
@@ -337,7 +374,7 @@
   "screen.StoreFrontContent.invalidPass": "Invalid passcode value.",
   "screen.StoreFrontContent.passcodeNeeded": "Passcode needed.",
   "screen.StoreFrontContent.targetPrice": "Target Price",
-  "components.CreditCardFormBilling.cardNumber": "CVV/CVC",
+  "components.CreditCardFormBilling.cardNumber": "Card information",
   "components.CreditCardFormBilling.cardholderName": "Cardholder name",
   "components.CreditCardFormBilling.expiryDate": "Expiry date",
   "components.CreditCardFormBilling.billingAddress": "Billing Address",
@@ -596,7 +633,6 @@
     "Innovation is crucial to our ongoing success. We innovate because we are passionate about creating products and services that enrich the experience of our customers.",
   "screens.WarrantyProgram.required": "This field is required",
   "screens.WarrantyProgram.selectFile": " Select File",
-
   "screens.JerseyComparison.title": "WHICH JERSEY SUITS YOU?",
   "screens.JerseyComparison.headerMessage":
     "Here at JAKROO, you can select from 3 versions of our short-sleeve jerseys to best match your performance requirements.",
@@ -692,7 +728,8 @@
   "components.ChangePasswordModal.save": "Save",
   "components.ChangePasswordModal.requiredField":
     "This field is required and must be equal to newPassword",
-
+  "components.ChangePasswordModal.confirmError":
+    "This field is required and must be equal to newPassword",
   "components.LanguageAndCurrencyForm.region": "Region",
   "components.LanguageAndCurrencyForm.language": "Language",
   "components.LanguageAndCurrencyForm.currency": "Currency",
@@ -700,7 +737,6 @@
   "components.LanguageAndCurrencyForm.selectRegion": "Select Region",
   "components.LanguageAndCurrencyForm.selectLanguage": "Select Language",
   "components.LanguageAndCurrencyForm.selectCurrency": "Select Currency",
-
   "components.MeasurementsForm.metric": "Metric",
   "components.MeasurementsForm.imperial": "Imperial",
   "components.MeasurementsForm.man": "Man",
@@ -720,14 +756,14 @@
   "components.MeasurementsForm.shoulders": "Shoulders",
   "components.MeasurementsForm.neck": "Neck",
   "components.MeasurementsForm.save": "Save",
-
   "components.ProfileForm.firstName": "First Name",
   "components.ProfileForm.lastName": "Last Name",
   "components.ProfileForm.email": "E-mail",
   "components.ProfileForm.phone": "Phone",
   "components.ProfileForm.save": "Save",
   "components.ProfileForm.changePassword": "Change Password",
-
+  "components.ProfileSettings.errorTitle": "Oops!",
+  "components.ProfileSettings.errorMessage": "Something went wrong",
   "components.ProfileSettings.profileTitle": "Profile",
   "components.ProfileSettings.profileSuccessMessage":
     "Your profile has been updated!",
@@ -749,16 +785,13 @@
   "components.ProfileSettings.emailTitle": "E-mail Preferences",
   "components.ProfileSettings.emailSignUpNewsLetter":
     "Yes, I would like to sign up for your Newsletter",
-
   "screens.TemplateDownload.title": "TEMPLATE DOWNLOAD",
   "screens.TemplateDownload.name": "TOUR",
   "screens.TemplateDownload.description": "SHORT SLEEVE JERSEY",
   "screens.TemplateDownload.errorTitle": "Oops!",
   "screens.TemplateDownload.errorMessage": "Something went wrong",
   "screens.TemplateDownload.emptyMessage": "No templates available",
-
   "components.TemplateDownloadItem.downloadTemplate": "Download Template",
-
   "components.MyCardsList.emptyMessage": "There are no saved credit cards",
   "components.MyLocker.titleError": "Oops!",
   "components.MyLocker.message":
@@ -772,14 +805,12 @@
     "\"{designName}\" will be deleted from your locker",
   "components.MyLocker.designOnCartError":
     "You cannot delete designs that are on your cart",
-
   "components.UploadTab.title": "Upload Logo and Images",
   "components.UploadTab.imageExtensionError":
     "Oh no! Your file has to be in eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd",
   "components.UploadTab.imageSizeError":
     "Oh no! Your image has to be Max. 20mb",
   "components.UploadTab.loginMessage": "Log in to upload an image",
-
   "components.MyPalette.paletteSaved": "Your Palette is saved",
   "components.MyPalette.modalTitle": "ARE YOU SURE?",
   "components.MyPalette.deletePaletteMessage":
@@ -796,14 +827,12 @@
   "components.DesignCenterStyle.emptyTitle": "Oops!",
   "components.DesignCenterStyle.emptyMessage":
     "Seems there is no designs of this complexity, yet.",
-
   "components.DesignCenterGrid.title": "DesignCenterGrid",
   "components.DesignCenterGrid.modalNewTheme": "NEW THEME?",
   "components.DesignCenterGrid.modalNewThemeMessage":
     "By selecting a different theme you have to restart the customization.",
   "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
-
   "screens.DesignCenter.title": "DesignCenter",
   "screens.DesignCenter.inspirationTtitle": "Inspiration",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
@@ -849,12 +878,10 @@
   "components.TextTab.applyButton": "Apply",
   "components.seAllButton.seeAll": "See All",
   "components.seAllButton.seeAllFilters": "See All Filters",
-
   "components.ConfirmCountryDialog.tittle":
     "WHAT IS YOUR COUNTRY OF RESIDENCE?",
   "components.ConfirmCountryDialog.save": "Save",
   "components.ConfirmCountryDialog.placeholder": "Select country",
-
   "components.DesignsCatalogueThumbnailList.tittle":
     "DesignsCatalogueThumbnailList",
   "components.DesignsCatalogueThumbnailList.emptyResults": "No results found",
@@ -883,7 +910,6 @@
   "components.ShippingAddressForm.selectCityLabel": "Select City",
   "components.ShippingAddressForm.zipCodeLabel": "ZIP / Postal Code",
   "components.ShippingAddressForm.phoneLabel": "Phone",
-
   "components.OrdersList.title": "Recent Orders",
   "components.OrdersList.orderNumber": "Order Number",
   "components.OrdersList.orderNo": "Order No.",
@@ -892,7 +918,6 @@
   "components.OrdersList.tracking": "Tracking",
   "components.OrdersList.status": "Status",
   "components.OrdersList.emptyMessage": "No orders yet",
-
   "components.Overview.title": "OVERVIEW",
   "components.Overview.headerTitle": "Recent Orders",
   "components.Overview.profile": "Profile",
@@ -900,7 +925,6 @@
   "components.Overview.payment": "Payment Methods",
   "components.Overview.emptyAddress": "No addresses added",
   "components.Overview.emptyPayment": "No cards added",
-
   "components.OrderDetails.title": "Order Details",
   "components.OrderDetails.backToHistory": "Back to Order History",
   "components.OrderDetails.backToOverview": "Back to Overview",
@@ -910,6 +934,7 @@
   "components.OrderDetails.orderDate": "Order Date",
   "components.OrderDetails.trackingNumber": "Tracking Number",
   "components.OrderDetails.orderSummary": "Order Summary",
+  "components.OrderDetails.status": "Status",
   "components.OrderDetails.subtotal": "Subtotal",
   "components.OrderDetails.taxes": "Taxes",
   "components.OrderDetails.shipping": "Shipping",
@@ -922,29 +947,22 @@
   "components.OrderDetails.payment": "Payment",
   "components.OrderDetails.annotation":
     "* For any cancelations or refunds inquiry, please contact Customer Service.",
-
   "components.OrderHistory.title": "ORDER HISTORY",
-
   "components.CartListItem.reorder": "Reorder",
-
   "components.ProductHorizontalList.addToCart": "ADD TO CART",
   "components.ProductHorizontalList.customize": "CUSTOMIZE",
   "components.ProductHorizontalList.customizable": "Customize",
-
+  "components.ProductHorizontalList.retail": "View full details",
   "components.FeaturedProducts.title": "FEATURED PRODUCTS",
   "components.FeaturedProducts.customize": "CUSTOMIZE",
   "components.FeaturedProducts.addToCart": "ADD TO CART",
   "components.FeaturedProducts.customizable": "Customize",
-
   "components.CitySelect.select": "Select city",
   "components.RegionSelect.select": "Select state/province",
   "components.CountrySelect.select": "Select country",
-
   "components.ImageItem.delete": "Delete",
-
   "components.ImagesList.emptyImages": "No images, yet",
   "components.MyFiles.emptyPalettes": "No palettes, yet",
-
   "components.MyFiles.message":
     "These are the assets that you have used in your designs. You will be able to use it and edit them in our design app.",
   "components.MyFiles.myPalettes": "My Palettes",
@@ -952,7 +970,6 @@
   "components.MyFiles.modalTitle": "ARE YOU SURE?",
   "components.MyFiles.paletteMessage": "You're about to delete this palette",
   "components.MyFiles.imageMessage": "You're about to delete this image",
-
   "components.PaletteCard.apply": "Apply",
   "components.PaletteCard.color1": "Color 1",
   "components.PaletteCard.color2": "Color 2",
@@ -960,7 +977,6 @@
   "components.PaletteCard.color4": "Color 4",
   "components.PaletteCard.color5": "Color 5",
   "components.PaletteCard.delete": "Delete",
-
   "screens.FitAndSizing.tittle": "FIT & SIZING",
   "screens.FitAndSizing.bodySizeTitle": "BODY SIZE CHART",
   "screens.FitAndSizing.bodySizeDescription":
@@ -1015,10 +1031,8 @@
     "Standard Fit style provides regular fitting, by balancing aerodynamic performance with comfort functionality.",
   "screens.FitAndSizing.relaxedFitDescription":
     "Relaxed Fit style provides looser fitting in the shoulders, torso, neck and arms.",
-
   "components.designCenterCustomize.SelectColors.selectColors": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalettes": "My Palettes",
-
   "components.designCenterCustomize.SelectColors.baseColors": "Base Colors",
   "components.designCenterCustomize.SelectColors.color1": "Area 1",
   "components.designCenterCustomize.SelectColors.color2": "Area 2",
@@ -1029,13 +1043,11 @@
   "components.designCenterCustomize.SelectColors.binding": "Binding",
   "components.designCenterCustomize.SelectColors.zipper": "Zipper",
   "components.designCenterCustomize.SelectColors.bibColor": "Bib brace color",
-
   "components.designCenterCustomize.ColorTab.area1": "Area 1",
   "components.designCenterCustomize.ColorTab.area2": "Area 2",
   "components.designCenterCustomize.ColorTab.area3": "Area 3",
   "components.designCenterCustomize.ColorTab.area4": "Area 4",
   "components.designCenterCustomize.ColorTab.area5": "Area 5",
-
   "screens.WorkAtJakroo.tittle": "WORK AT JAKROO",
   "screens.WorkAtJakroo.headerDialog":
     "It takes more than just passion to be the leader in your category. That’s why at JAKROO we seek the exceptional, the motivated and the innovative. Depending on your educational background and objectives, JAKROO offers opportunities ranging from graphic design, website development, business analysis, and sports marketing. Our internship programs provide candidates with the opportunity to gain valuable hands-on experience in virtually every area of the On Demand Custom Apparel Business.",
@@ -1071,9 +1083,7 @@
   "screens.WorkAtJakroo.graphicDesignerHeader": "Graphic Designer",
   "screens.WorkAtJakroo.graphicDesignerContent":
     "<p>JAKROO Custom Apparel is hiring a new talented Graphic Designer to join our growing Creative Team. You will work closely with our other Designers to create custom apparel designs for team sports such as Cycling, Running, Triathlon, and Cross Country Skiing. Ability to multi task and be creative with short deadlines is a must. We are looking for a designer who can \"hit the ground running\" and become an asset to our growing company.</p><p><strong>Job Description:</strong></p><p>- Translate client notes into one-of-a-kind sports apparel designs using Adobe Illustrator.<br />- Re-work and manipulate existing vector art to create eye catching designs.<br />- Vetting and proofing design's before sending to printing department.<br />- Review completed design concepts by other designers before sending to client.</p><p><strong>Key Requirements:</strong></p><p>- Graphic design professional best practices: Quick keys, layering, grouping, bleeds, embedding, expanding graphics, etc.<br />- Excellent time management.<br />- Attention to detail and accuracy mandatory.<br />- Adobe Illustrator & Photoshop.<br />- Work in fast pace environment with tight deadlines.<br />- Superior communication and interpersonal skills.<br />- Working knowledge of Pantone color matching system.<br />- Quick to learn.<br />- Mac OSX.<br />- Go get 'em attitude.</p><p><strong>Additional Skills (preferred, but not required):</strong></p><p>- Experience working within 3D design software tools such as Lotta, V-Stitcher, Optitex.</p><p><strong>****IMPORTANT****</strong><br />In order to ensure that your resume lands in the correct hands, be sure to include the title position <strong>\"Jakroo Graphic Design Position\"</strong> into the subject line of your email or in the body of your resume/cover letter.</p><p><strong>PLEASE INCLUDE PORTFOLIO SAMPLES IN YOUR EMAIL. EMAILS WITHOUT ATTACHMENTS OR LINKS WILL NOT BE CONSIDERED.</strong></p><p>Due to the high volume of resumes that we receive, only applicants that match the skill requirements of the position may be contacted for an interview.</p><p><strong>Location:</strong> Pleasanton, CA</p><p><strong>Experience:</strong> 2-3 Years</p><p><strong>Status:</strong> Full-Time</p><p><strong>Salary:</strong> 36-42K, Medical, 401K, Paid Vacation, Great working environment</p><p><strong>Location:</strong> Pleasanton, CA</p><p>To apply, please send your cover letter and resume to: <a href=\"mailto:jobs@jakroousa.com\">Talent Acquisition</a></p>",
-
   "screens.Checkout.continueButtonLabel": "Continue",
-
   "screens.CustomProductDetail.editDesign": "EDIT DESIGN",
   "screens.CustomProductDetail.oneGenderLabel": "Available for Men/Women",
   "screens.CustomProductDetail.unisexGenderLabel":
@@ -1092,11 +1102,9 @@
   "screens.CustomProductDetail.seemsPrivate":
     "Seems like this design is private or not available",
   "screens.CustomProductDetail.reviews": "Reviews",
-
   "screens.Designs.errorTitle": "Oops",
   "screens.Designs.errorMessage":
     "Seems like the design was deleted or is not available",
-
   "screens.ProductDetail.customizeLabel": "CUSTOMIZE",
   "screens.ProductDetail.buyNowLabel": "BUY NOW",
   "screens.ProductDetail.intendedUseLabel": "INTENDED USE",
@@ -1116,7 +1124,6 @@
   "screens.ProductDetail.femaleGenderLabel": "Available for Women",
   "screens.ProductDetail.maleGenderLabel": "Available for Men",
   "screens.ProductDetail.unisexGenderLabel": "Available for Men and Women",
-
   "components.TeamDragger.tittle": "Click or drag files to this area",
   "components.TeamDragger.files": "Files in .eps .ai .svg .tiff .pdf .jpg",
   "components.TeamDragger.size": "20 MB max",
@@ -1124,12 +1131,10 @@
   "components.UploadTab.recommendationMessage":
     "For best results upload .eps, .ai, .svg or .pdf files. Vector files will scale larger without loss resolution or clarity. You can also upload .jpg, .png, .tiff, .gif, and .bmp files. However, these file types are raster graphics. Raster graphics file has a maximum size. Scaling beyond the maximum size will result in pixelation and blurriness of the images.",
   "components.Render3D.sizeMessage": "Aprox image size",
-
   "components.RelatedProducts.tittle": "Related Products",
   "components.RelatedProducts.addToCart": "ADD TO CART",
   "components.RelatedProducts.customize": "CUSTOMIZE",
   "components.RelatedProducts.customizableLabel": "Customize",
-
   "components.QuickView.intendedUseLabel": "INTENDED USE",
   "components.QuickView.descriptionLabel": "Description",
   "components.QuickView.detailsLabel": "Details",
@@ -1139,7 +1144,6 @@
   "components.QuickView.fullDetails": "Full Details",
   "components.QuickViewSlider.addToCart": "ADD TO CART",
   "components.QuickViewSlider.customize": "CUSTOMIZE",
-
   "screens.ShoppingCartPage.tittle": "My cart",
   "screens.ShoppingCartPage.browse": "BROWSE",
   "screens.ShoppingCartPage.emptyTitle":
@@ -1172,5 +1176,49 @@
   "screens.ShoppingCartPage.reviewMyOrderLabel": "REVIEW MY ORDER",
   "screens.ShoppingCartPage.dontReview": "Continue without review",
   "components.DesignCenterInspiration.emptyMessage":
-    "Seems like there are no inspiration color variations, yet."
+    "Seems like there are no inspiration color variations, yet.",
+  "components.CartListItemTable.tittle": "CartListItemTable",
+  "components.CartListItemTable.gender": "Gender",
+  "components.CartListItemTable.size": "Size",
+  "components.CartListItemTable.fit": "Fit",
+  "components.CartListItemTable.label": "Label",
+  "components.CartListItemTable.quantity": "Quantity",
+  "components.CartListItemTable.genderPlaceholder": "Select gender",
+  "components.CartListItemTable.sizePlaceholder": "Select size",
+  "components.CartListItemTable.fitPlaceholder": "Select fit",
+  "components.CartListItemTable.labelPlaceholder": "Label",
+  "components.EmailContact.tittle": "CONTACT STORE MANAGER",
+  "components.EmailContact.email": "Email",
+  "components.EmailContact.send": "Send",
+  "components.EmailContact.askMe": "Ask me anything",
+  "components.EmailContact.nameLabel": "Write message to ",
+  "components.EmailContact.invalidMessage": "Invalid email message.",
+  "components.EmailContact.storeManager": "store manager",
+  "components.FeaturedCategory.outWearLabel": "OUTWEAR",
+  "components.FeaturedCategory.raceSuitsLabel": "RACE SUITS",
+  "components.FeaturedCategory.jupiterLabel": "JUPITER COLLECTION",
+  "components.ModalFooter.confirm": "Confirm",
+  "components.ModalFooter.cancel": "Cancel",
+  "components.OverviewHeader.view": "View",
+  "components.Payment.paymentMethod": "Payment Method",
+  "components.Payment.methodCreditCard": "Credit Card",
+  "components.Payment.methodPaypal": "Paypal",
+  "components.Payment.methodAlipay": "Alipay",
+  "components.Payment.methodBankTransfer": "Bank Transfer",
+  "components.RegionSelect.title": "Select state/province",
+  "components.Review.items": "Items",
+  "components.Review.shippingAddress": "Shipping Address",
+  "components.Review.billingAddress": "Billing Address",
+  "components.Review.payment": "Payment",
+  "components.Review.edit": "Edit",
+  "components.Shippping.tittle": "Shipping Address",
+  "components.TeamPassCode.modalTitle": "This team store is private",
+  "components.TeamPassCode.modalText": "Please enter the pass code",
+  "components.TeamPassCode.modalSaveAsNewDesign": "Save as new design",
+  "components.TeamPassCode.invalidNameMessage": "Invalid pass code value",
+  "screen.TeamPassCode.passcodeNeeded": "Passcode needed.",
+  "screen.TeamPassCode.invalidPass": "Invalid passcode value.",
+  "components.TeamPassCode.save": "Enter",
+  "components.TeamStoreList.notFoundMessage":
+    "No results or the team is private"
 }

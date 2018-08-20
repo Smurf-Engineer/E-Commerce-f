@@ -17,7 +17,6 @@ export const ColorButtons = styled.div`
 export const Name = styled.div`
   color: #5f6062;
   font-weight: 600;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `

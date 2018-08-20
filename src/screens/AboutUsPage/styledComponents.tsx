@@ -24,7 +24,6 @@ export const StyledImg = styled.img`
 
 export const Title = styled.div`
   color: #ffffff;
-  font-family: Avenir Next;
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 0.61px;
@@ -64,7 +63,6 @@ export const TopImageButton = styled(Button)`
   border-radius: 2px;
   background-color: #ffffff;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -92,7 +90,6 @@ export const DescriptionItem = styled.div`
 
 export const ItemTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -101,7 +98,6 @@ export const ItemTitle = styled.div`
 
 export const ItemContent = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -120,7 +116,6 @@ export const ItemsContainer = styled.div`
 
 export const MeetTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -143,7 +138,6 @@ export const PeopleImage = styled.img`
 `
 export const PeopleName = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -152,7 +146,6 @@ export const PeopleName = styled.div`
 
 export const PeoplePosition = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 19px;
@@ -217,7 +210,6 @@ export const MapRelativeContainer = styled.div`
 
 export const LineText = styled.div`
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 18px;
   letter-spacing: 0.13px;
   line-height: 25px;
@@ -262,7 +254,6 @@ export const HeaderDialog = styled.div`
   right: 0px;
 
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   letter-spacing: 0.2px;
   line-height: 25px;

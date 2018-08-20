@@ -146,7 +146,8 @@ export class Login extends React.Component<Props, StateProps> {
   }
 
   handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
-    const { email, password } = this.state
+    const { password } = this.state
+    const email = this.state.email.toLowerCase()
     const { loginWithEmail, requestClose, formatMessage, login } = this.props
 
     if (!email || !password) {

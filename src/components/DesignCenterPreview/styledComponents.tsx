@@ -65,7 +65,6 @@ export const ButtonsContainer = styled.div`
 export const Model = styled.div`
   color: #5f6062;
   user-select: none;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;

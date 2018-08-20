@@ -10,7 +10,6 @@ export const ViewContainer = styled.div`
   display: flex;
   align-items: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -23,7 +22,6 @@ export const ViewContainer = styled.div`
 `
 export const Div = styled.div`
   display: flex;
-  font-family: 'Avenir Next';
   justify-content: space-between;
   margin-bottom: 64px;
   margin-top: 48px;
@@ -78,7 +76,6 @@ export const OrderDelivery = styled.div`
 `
 export const DeliveryDate = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -100,7 +97,6 @@ export const DeliveryInfo = styled.div`
 export const DeliveryLabels = styled.div`
   color: #5f6062;
   display: inline-block;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -113,7 +109,6 @@ export const DeliveryLabel = styled.div`
 export const DeliveryData = styled.div`
   color: #5f6062;
   display: inline-block;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -154,7 +149,6 @@ export const Items = styled.div`
 export const TitleStyled = styled.div`
   color: #5f6062;
   display: flex;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   justify-content: space-between;
@@ -181,7 +175,6 @@ export const ShippingBillingCard = styled.div`
 `
 export const SubTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -189,7 +182,6 @@ export const SubTitle = styled.div`
 `
 export const PaymentText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
