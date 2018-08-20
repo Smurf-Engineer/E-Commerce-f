@@ -1004,5 +1004,5 @@
   "screen.TeamPassCode.passcodeNeeded": "Passcode needed.",
   "screen.TeamPassCode.invalidPass": "Invalid passcode value.",
   "components.TeamPassCode.save": "Enter",
-  "components.TeamStoreList.notFoundMessage": "No results or the team is private",
+  "components.TeamStoreList.notFoundMessage": "No results or the team is private"
 }
