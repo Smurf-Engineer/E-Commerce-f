@@ -60,7 +60,6 @@ export const ProductData = styled.div`
 `
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
@@ -72,7 +71,6 @@ export const Title = styled.div`
 
 export const Subtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 
@@ -127,7 +125,6 @@ export const PricesRow = styled.div`
 
 export const Description = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `
@@ -138,7 +135,6 @@ export const ButtonsRow = styled.div`
 
   .ant-btn {
     color: #e61737;
-    font-family: 'Avenir Next';
     font-size: 16px;
     line-height: 22px;
     text-align: center;
@@ -182,7 +178,6 @@ export const GenderRow = styled.div`
 export const SectionTitle = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -227,7 +222,6 @@ export const SizeRowTitleRow = styled.div`
 export const GetFittedLabel = styled.div`
   height: 22px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   &:hover {
@@ -240,7 +234,6 @@ export const QuestionSpan = styled.span`
   height: 23px;
   width: 8.06px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   &:hover {
@@ -268,7 +261,6 @@ export const AddToCartButton = styled(Button)`
 export const JakrooWidgetsTitle = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -280,7 +272,6 @@ export const YotpoImageSlider = styled.div``
 export const Downloadtemplate = styled.div`
   height: 19px;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   margin-left: 10px;
@@ -297,7 +288,6 @@ export const AvailableLabel = styled.div`
   margin-top: 15px;
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-style: italic;
   line-height: 22px;
@@ -323,13 +313,11 @@ export const OrdersInfo = styled.div`
 
 export const CurrentOrder = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `
 export const EstimatePrice = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   margin-bottom: 15px;
@@ -358,14 +346,12 @@ export const DynamicPriceModalTitle = styled.div`
   height: 27px;
   margin-bottom: 10px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
 `
 export const StyledParagraph = styled.p`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
 `
@@ -379,7 +365,6 @@ export const GotItButton = styled(Button)`
   border-radius: 2px;
   background-color: #4a90e2;
   color: #fff;
-  font-family: 'Avenir Next';
 `
 export const BreadCrumbRow = styled.div`
   padding: 12px 0 12px 48px;
@@ -406,7 +391,6 @@ export const TeamStoresTitleContainer = styled.div`
 
 export const TeamStoresTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   line-height: 25px;
   border-bottom: 4px solid #e61737;
@@ -422,7 +406,6 @@ export const ThumbnailFooterTitle = styled.div`
   height: 18.75px;
   width: 209px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: bold;
   letter-spacing: 0.16px;
@@ -432,7 +415,6 @@ export const ThumbnailFooterSubtitle = styled.div`
   height: 15.79px;
   width: 146px;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -446,7 +428,6 @@ export const ThumbnailFooterPriceContainer = styled.div`
 export const ThumbnailFooterPricelabel = styled.div`
   height: 15.79px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;

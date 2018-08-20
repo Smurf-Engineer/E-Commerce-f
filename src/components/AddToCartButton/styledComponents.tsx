@@ -56,7 +56,6 @@ export const CustomizeButton = styled.div`
   user-select: none;
   background-color: #e61737b3;
   color: #fff;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   display: flex;
@@ -79,7 +78,6 @@ interface Prop {
 
 export const ButtonWrapper = styled.span`
   align-self: flex-end;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;

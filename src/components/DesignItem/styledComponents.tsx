@@ -19,7 +19,6 @@ export const Row = styled.div`
 
 export const Name = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -30,7 +29,6 @@ export const Name = styled.div`
 export const DeleteButton = styled.div`
   cursor: pointer;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

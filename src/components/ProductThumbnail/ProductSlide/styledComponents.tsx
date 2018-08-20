@@ -79,7 +79,6 @@ export const TopContainer = styled.div`
 export const TopText = styled.div`
   user-select: none;
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 8px;
   font-weight: 500;
   line-height: 11px;
@@ -122,7 +121,6 @@ export const CustomizeButton = styled.div`
   user-select: none;
   background-color: #e61737b3;
   color: #fff;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   display: flex;

@@ -25,7 +25,6 @@ export const BoxHeader = styled.div`
     checked ? '2px solid #e61737;' : '0.5px solid #DCDCDC;'};
   border-radius: 2px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 23px;

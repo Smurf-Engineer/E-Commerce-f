@@ -9,7 +9,6 @@ export const Container = styled.div``
 export const Label = styled.div`
   text-align: center;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   margin-bottom: 13px;
 `
@@ -28,7 +27,6 @@ export const Text = styled.div`
   color: ${({ selected }: TextProps) => (selected ? '#e61737' : ' #5f6062')};
   text-align: center;
   cursor: pointer;
-  font-family: 'Avenir Next';
   font-size: 18px;
   line-height: 25px;
   padding: 0px 10px;

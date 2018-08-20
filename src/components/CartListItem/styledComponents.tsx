@@ -53,7 +53,6 @@ export const PriceContainer = styled.div`
 
 export const ItemDetailsHeaderName = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -63,7 +62,6 @@ export const ItemDetailsHeaderName = styled.div`
 
 export const ItemDetailsHeaderNameDetail = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -71,7 +69,6 @@ export const ItemDetailsHeaderNameDetail = styled.div`
 
 export const ItemDetailsHeaderPrice = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -85,7 +82,6 @@ export const ItemDetailsHeaderPrice = styled.div`
 
 export const ItemDetailsHeaderPriceDetail = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 10px;
   letter-spacing: 0.13px;
   line-height: 14px;
@@ -129,7 +125,6 @@ export const FooterItem = styled.div`
 
 export const AddMore = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -140,7 +135,6 @@ export const AddMore = styled.div`
 export const DeleteItem = styled.div`
   margin-top: 20px;
   color: #e61737;
-  font-family: Avenir Next;
   font-size: 12px;
   letter-spacing: 0.09px;
   line-height: 16px;

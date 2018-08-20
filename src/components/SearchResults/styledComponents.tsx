@@ -16,7 +16,6 @@ export const TitleContainer = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   line-height: 23px;
 `
 
@@ -33,6 +32,5 @@ export const Results = styled.div`
 
 export const EmptySearch = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   line-height: 23px;
 `

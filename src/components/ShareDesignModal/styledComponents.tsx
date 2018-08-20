@@ -23,13 +23,11 @@ export const ShareLinkContainer = styled.div`
 export const Title = styled.div`
   margin-bottom: 5px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 `
 export const Asterisk = styled.span`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   margin-left: 5px;
@@ -55,7 +53,6 @@ export const InputWrapper = styled.div`
     height: 40px;
     border-radius: 0;
     color: #bebebe;
-    font-family: 'Avenir Next';
     font-size: 16px;
     line-height: 22px;
   }

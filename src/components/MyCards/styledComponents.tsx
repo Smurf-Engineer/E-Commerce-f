@@ -46,7 +46,6 @@ export const StyledEmptyButton = styled(Button)`
   width: 221px;
   border: 2px solid ${BUTTON_COLOR};
   border-radius: 2px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   text-align: center;
@@ -55,7 +54,6 @@ export const StyledEmptyButton = styled(Button)`
 
 export const DeleteConfirmMessage = styled.div`
   color: ${GRAY_DARK};
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;

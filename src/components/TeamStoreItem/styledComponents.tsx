@@ -49,7 +49,6 @@ export const CardTitle = styled.div`
   height: 25px;
   width: 100%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -66,7 +65,6 @@ export const ShareButton = styled(Button)`
 
   span {
     color: #5f6062;
-    font-family: 'Avenir Next';
     font-size: 14px;
     letter-spacing: 0.1px;
     line-height: 19px;

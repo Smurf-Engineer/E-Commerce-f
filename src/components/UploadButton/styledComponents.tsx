@@ -17,7 +17,6 @@ export const Text = styled.div`
 
 export const ButtonUpload = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-weight: 600;
   font-size: 14px;
   line-height: 22px;

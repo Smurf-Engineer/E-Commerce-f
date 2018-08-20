@@ -23,7 +23,6 @@ export const TitleSectionRow = styled.div`
 `
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -50,7 +49,6 @@ export const AnchorButton = styled.div`
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -78,7 +76,6 @@ export const ContentSection = styled.div`
 `
 export const SectionTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -95,7 +92,6 @@ export const SectionTitle = styled.div`
 `
 export const SectionDescription = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -112,7 +108,6 @@ export const SizingOptionsRow = styled.div`
 `
 export const RadioGroup = styled(radioGroup)`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -158,7 +153,6 @@ export const FitStyle = styled.div`
 export const FitStyleTitle = styled.div`
   color: #5f6062;
   display: flex;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   justify-content: center;
@@ -171,7 +165,6 @@ export const FitStyleImage = styled.img`
 `
 export const FitStyleDescription = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;

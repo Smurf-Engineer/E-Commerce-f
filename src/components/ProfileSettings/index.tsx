@@ -111,6 +111,7 @@ interface Props {
 class ProfileSettings extends React.Component<Props, {}> {
   render() {
     const {
+      formatMessage,
       profileData: { loading, error }
     } = this.props
     if (loading) {
@@ -123,8 +124,8 @@ class ProfileSettings extends React.Component<Props, {}> {
     if (error) {
       return (
         <LoadingErrorContainer>
-          <Title>Oops!</Title>
-          <ErrorMessage>Something went wrong</ErrorMessage>
+          <Title>{formatMessage(messages.errorTitle)}</Title>
+          <ErrorMessage>{formatMessage(messages.errorMessage)}</ErrorMessage>
         </LoadingErrorContainer>
       )
     }
@@ -140,7 +141,6 @@ class ProfileSettings extends React.Component<Props, {}> {
         }
       },
       regionsOptions: { regions },
-      formatMessage,
       firstName,
       lastName,
       email,

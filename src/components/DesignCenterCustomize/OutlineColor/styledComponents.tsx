@@ -12,7 +12,6 @@ export const Header = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -31,7 +30,6 @@ export const Row = styled.div`
 
 export const Value = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;

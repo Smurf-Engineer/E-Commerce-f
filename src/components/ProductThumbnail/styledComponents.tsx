@@ -49,7 +49,6 @@ export const TopContainer = styled.div`
 
 export const TopText = styled.div`
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 8px;
   font-weight: 500;
   line-height: 11px;
@@ -65,7 +64,6 @@ export const QuickView = styled.img``
 
 export const Type = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: bold;
   line-height: 19px;
@@ -80,7 +78,6 @@ export const Type = styled.div`
 export const Description = styled.div`
   user-select: none;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   padding: 2px 0px;
@@ -112,7 +109,6 @@ export const InfoContainer = styled.div`
 export const Label = styled.div`
   color: #5f6062;
   display: flex;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   user-select: none;
@@ -125,7 +121,6 @@ export const ImgIcon = styled.img`
 export const Price = styled.div`
   user-select: none;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   font-weight: 600;
   line-height: 16px;

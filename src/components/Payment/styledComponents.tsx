@@ -10,7 +10,6 @@ export const Container = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -35,7 +34,6 @@ export const MethodButton = styled(Button)`
   background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   margin-left: 5px;
-  font-family: 'Avenir Next';
 
   &:hover,
   &::selection,

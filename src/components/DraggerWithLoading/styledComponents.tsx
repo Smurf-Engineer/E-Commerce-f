@@ -17,14 +17,12 @@ export const Text = styled.div`
 export const DragMessage = styled.div`
   color: #5f6062;
   padding: 4px 0px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
 `
 
 export const DragTypes = styled.div`
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 13px;
   line-height: 18px;
 `

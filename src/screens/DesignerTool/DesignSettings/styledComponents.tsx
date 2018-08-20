@@ -60,7 +60,6 @@ export const InputWrapper = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.18px;
@@ -69,7 +68,6 @@ export const Title = styled.div`
 
 export const Subtitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -78,7 +76,6 @@ export const Subtitle = styled.div`
 
 export const ErrorLabel = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;

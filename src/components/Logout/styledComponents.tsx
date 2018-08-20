@@ -33,5 +33,6 @@ export const Icon = styled(icon)`
 
 export const menuStyle = {
   marginTop: 15,
-  borderRadius: 0
+  borderRadius: 0,
+  paddingBottom: 20
 }

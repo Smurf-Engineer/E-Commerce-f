@@ -50,7 +50,6 @@ export const StyledSubMenuInner = styled.span`
   height: 25px;
   width: 169px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -77,7 +76,6 @@ export const StyledSiderInner = styled.div`
   height: 75px;
   width: 221px;
   color: #5f6062;
-  font-family: Avenir Next;
   margin: 8px;
   font-size: 18px;
   font-weight: 60;
