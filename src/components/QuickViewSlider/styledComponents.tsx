@@ -15,7 +15,6 @@ export const Text = styled.div`
 
 export const StyledButton = styled(Button)`
   background-color: #fff;
-  color: #f5222d;
   border: 2px solid #f5222d;
   width: 220px;
   height: 50px;
@@ -31,6 +30,10 @@ export const StyledButton = styled(Button)`
 `
 export const ButtonRow = styled.div`
   text-align: center;
+
+  .ant-btn {
+    color: ${RED};
+  }
 `
 
 export const Available = styled.div`
