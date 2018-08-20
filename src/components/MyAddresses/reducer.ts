@@ -30,6 +30,7 @@ export const initialState = fromJS({
   apartment: '',
   country: '',
   stateProvince: '',
+  stateProvinceCode: '',
   city: '',
   zipCode: '',
   phone: '',

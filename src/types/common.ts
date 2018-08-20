@@ -393,6 +393,7 @@ export interface AddressType {
   apartment: string
   country: string
   stateProvince: string
+  stateProvinceCode: string
   city: string
   zipCode: string
   phone: string
