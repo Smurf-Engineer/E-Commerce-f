@@ -19,6 +19,7 @@ import {
   ItemsContainer,
   ItemTitle,
   ItemContent,
+  SectionContainer,
   MeetTitle,
   PeopleItem,
   PeopleImage,
@@ -233,12 +234,16 @@ export class AboutUsPage extends React.Component<Props, {}> {
               <FormattedMessage {...messages.headerDialog} />
             </HeaderDialog>
           </ImageTitleContainer>
-          <ItemsContainer>{idealsList}</ItemsContainer>
+          <SectionContainer>
+            <ItemsContainer>{idealsList}</ItemsContainer>
+          </SectionContainer>
           <Divider />
-          <MeetTitle>
-            <FormattedMessage {...messages.meetTitle} />
-          </MeetTitle>
-          <ItemsContainer>{peopleList}</ItemsContainer>
+          <SectionContainer>
+            <MeetTitle>
+              <FormattedMessage {...messages.meetTitle} />
+            </MeetTitle>
+            <ItemsContainer>{peopleList}</ItemsContainer>
+          </SectionContainer>
           <Divider />
           <MeetTitle>
             <FormattedMessage {...messages.historyTitle} />

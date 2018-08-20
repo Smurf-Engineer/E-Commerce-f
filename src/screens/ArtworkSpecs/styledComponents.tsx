@@ -148,3 +148,16 @@ export const FlatLockText = styled.div`
   margin-right: 32px;
   margin-top: 28px;
 `
+export const SectionContainer = styled.div`
+  max-width: 1024px;
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
+  }
+`
+export const ColorChartContainer = styled.div`
+  @media (min-width: 1025px) {
+    margin: 0 auto;
+    max-width: 500px;
+  }
+`

@@ -113,7 +113,13 @@ export const ItemsContainer = styled.div`
   padding: 30px;
   margin-top: 50px;
 `
+export const SectionContainer = styled.div`
+  max-width: 1024px;
 
+  @media (min-width: 1025px) {
+    margin: 0 auto;
+  }
+`
 export const MeetTitle = styled.div`
   color: #5f6062;
   font-size: 18px;

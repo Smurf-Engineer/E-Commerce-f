@@ -12,10 +12,15 @@ export const Text = styled.div`
 `
 
 export const TitleSectionRow = styled.div`
+  max-width: 1024px;
   padding: 28px 32px 64px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 28px 32px 0px;
+  }
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
   }
 `
 
@@ -82,10 +87,15 @@ export const AnchorButton = styled.div`
 `
 
 export const ContentSection = styled.div`
+  max-width: 1024px;
   padding: 37px 32px 17px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 20px 8px 0px;
+  }
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
   }
 `
 
