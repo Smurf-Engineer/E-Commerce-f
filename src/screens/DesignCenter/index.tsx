@@ -64,7 +64,8 @@ import {
   CanvasDragged,
   CanvasRotated,
   Responsive,
-  AccessoriesColor
+  AccessoriesColor,
+  CanvasObjects
 } from '../../types/common'
 import {
   getProductQuery,
@@ -217,6 +218,11 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   formatMessage: (messageDescriptor: any) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
+  onCanvasElementDuplicatedAction: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
   setLoadedCanvasAction: (canvas: CanvasType) => void
   setEditConfigAction: (
     colors: string[],
@@ -481,6 +487,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       user,
       responsive,
       onReApplyImageElementAction,
+      onCanvasElementDuplicatedAction,
       setEditConfigAction,
       setLoadedCanvasAction
     } = this.props
@@ -491,6 +498,14 @@ export class DesignCenter extends React.Component<Props, {}> {
       ThemeTab: ThemeTabIndex,
       StyleTab: StyleTabIndex
     } = DesignTabs
+
+    console.log('-----------undo-----------')
+    console.log(undoChanges)
+    console.log('-----------redo-----------')
+    console.log(redoChanges)
+    console.log('-----------canvas-----------')
+    console.log(canvas.text)
+    console.log('---------------------------')
 
     const redirect = <Redirect to={DEFAULT_ROUTE} />
 
@@ -717,6 +732,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isUserAuthenticated,
                   isEditing
                 }}
+                onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
                 onUploadFile={uploadFileAction}
                 onAccessoryColorSelected={setAccessoryColorAction}

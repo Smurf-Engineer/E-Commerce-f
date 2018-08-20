@@ -854,6 +854,9 @@ class Render3D extends PureComponent {
       case Changes.ChangeText:
         this.changeTextCanvasElement(changeToApply)
         break
+      case Changes.Duplicate:
+        this.deleteDuplicateCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -869,6 +872,7 @@ class Render3D extends PureComponent {
       type,
       state: { id }
     } = changeToApply
+    let skipAction = false
     switch (type) {
       case Changes.Add:
         this.reAddCanvasElement(changeToApply)
@@ -890,12 +894,33 @@ class Render3D extends PureComponent {
       case Changes.ChangeText:
         this.changeTextCanvasElement(changeToApply, true)
         break
+      case Changes.Duplicate:
+        this.reDuplicateCanvasElement(changeToApply)
+        skipAction = true
+        break
       default:
         break
     }
-    onRedoAction()
+    if (!skipAction) onRedoAction()
     this.canvasTexture.discardActiveObject()
     this.canvasTexture.renderAll()
+  }
+
+  deleteDuplicateCanvasElement = canvasElement => {
+    const {
+      state: { id }
+    } = canvasElement
+    this.deleteElementById(id)
+  }
+
+  reDuplicateCanvasElement = canvasElement => {
+    const {
+      state: { id, originalId }
+    } = canvasElement
+    const element = this.getElementById(originalId)
+    if (element) {
+      this.duplicateElement(element, id)
+    }
   }
 
   changeTextCanvasElement = (canvasElement, applyNewText = false) => {
@@ -1392,71 +1417,18 @@ class Render3D extends PureComponent {
 
   deleteElementById = id => {
     const object = this.getElementById(id)
-    this.canvasTexture.remove(object)
+    if (object) {
+      this.canvasTexture.remove(object)
+    }
   }
 
-  duplicateElement = el => {
-    const { onApplyCanvasEl, undoChanges, isEditing } = this.props
+  duplicateElement = (el, oldId) => {
+    const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const objectToClone =
-      find(undoChanges, {
-        type: Changes.Add,
-        state: { id: el.id }
-      }) || {}
-
     const elementType = el.get('type')
-    const id = shortid.generate()
-    let canvasEl = {}
-    let canvasStyle = {}
-    switch (elementType) {
-      case CanvasElements.Text:
-        {
-          const text = el.get('text')
-          const textFormat = {
-            fontFamily: el.fontFamily,
-            stroke: el.stroke,
-            fill: el.fill,
-            strokeWidth: el.strokeWidth
-          }
-          canvasEl = { id, text, textFormat }
-        }
-        break
-      case CanvasElements.Image: {
-        const {
-          state: {
-            src: { id: fileId }
-          }
-        } = objectToClone
-        canvasEl = {
-          id,
-          imageSize: { width: el.width, height: el.height },
-          scaleX: el.scaleX,
-          scaleY: el.scaleY,
-          fileId
-        }
-        break
-      }
-      case CanvasElements.Path: {
-        const {
-          state: { fileId }
-        } = objectToClone
-        canvasStyle = {
-          fill: el.fill || BLACK,
-          stroke: el.stroke || BLACK,
-          strokeWidth: el.strokeWidth || 0
-        }
-        canvasEl = {
-          id,
-          ...canvasStyle,
-          scaleX: el.scaleX,
-          scaleY: el.scaleY,
-          fileId
-        }
-      }
-      default:
-        break
-    }
+    const id = oldId || shortid.generate()
+    let canvasEl = { id, originalId: el.id }
 
     el.clone(clone => {
       clone.set({
@@ -1468,28 +1440,7 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
-    if (isEditing) return //FIXME: add only id and style to canvas when duplicate
-    const {
-      state: {
-        src,
-        style: styleSaved,
-        position: { left, top },
-        fileId
-      }
-    } = objectToClone
-    const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
-    onApplyCanvasEl(canvasEl, elementType, false, {
-      src,
-      style,
-      position: {
-        left: left + EXTRA_POSITION,
-        top: top + EXTRA_POSITION,
-        scaleX: el.scaleX,
-        scaleY: el.scaleY,
-        transformMatrix: el.transformMatrix
-      },
-      fileId
-    })
+    onCanvasElementDuplicated(canvasEl, elementType, oldId)
   }
 
   setLayerElement = el => {

@@ -61,7 +61,8 @@ import {
   AccessoryColors,
   ElementsToApplyScale,
   SET_LOADED_CANVAS_ACTION,
-  SAVE_DESIGN_CHANGES_LOADING
+  SAVE_DESIGN_CHANGES_LOADING,
+  CANVAS_ELEMENT_DUPLICATED_ACTION
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_COLOR } from '../../constants'
@@ -243,10 +244,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         state: { type: canvasType, id }
       } = undoStep
       switch (type) {
+        case Changes.Duplicate:
         case Changes.Add: {
           const canvas = state.get('canvas')
           const updatedCanvas = canvas.deleteIn([canvasType, id])
-
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
@@ -323,10 +324,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const redoStep = redoChanges.first()
-      const {
-        type,
-        state: { type: canvasType, id }
-      } = redoStep
+      const { type } = redoStep
       switch (type) {
         case Changes.Add: {
           const updatedCanvas = addCanvasElement(state, redoStep)
@@ -338,6 +336,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Delete: {
+          const {
+            state: { type: canvasType, id }
+          } = redoStep
           const canvass = state.get('canvas')
           const updatedCanvas = canvass.deleteIn([canvasType, id])
           return state.merge({
@@ -391,7 +392,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Colors:
-        default:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
           return state.merge({
@@ -399,6 +399,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             colors: redoStep.state
           })
+        case Changes.Duplicate:
+        default:
+          return state
       }
     }
     case SET_PALETTE_NAME_ACTION:
@@ -804,6 +807,31 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         }
       }
       return state
+    }
+    case CANVAS_ELEMENT_DUPLICATED_ACTION: {
+      const { canvasEl, elementType, oldId } = action
+      const { id, originalId } = canvasEl
+      let stepToAdd = {
+        type: Changes.Duplicate,
+        state: { id, originalId, type: elementType }
+      }
+      const canvas = state.get('canvas')
+      const canvasToClone = canvas.getIn([elementType, originalId])
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const updatedCanvas = canvas.setIn([elementType, id], {
+        ...canvasToClone,
+        id
+      })
+      if (oldId) {
+        stepToAdd = redoChanges.first()
+      }
+      return state.merge({
+        canvas: updatedCanvas,
+        undoChanges: undoChanges.unshift(stepToAdd),
+        redoChanges: redoChanges.clear(),
+        selectedElement: ''
+      })
     }
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)

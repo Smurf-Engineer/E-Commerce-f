@@ -56,7 +56,9 @@ import {
   REAPPLY_CANVAS_IMAGE_ACTION,
   SET_EDIT_DESIGN_CONFIG_ACTION,
   SET_LOADED_CANVAS_ACTION,
-  SAVE_DESIGN_CHANGES_LOADING
+  SAVE_DESIGN_CHANGES_LOADING,
+  CANVAS_ELEMENT_DUPLICATED_ACTION,
+  CanvasElements
 } from './constants'
 import {
   AnyAction,
@@ -430,4 +432,15 @@ export const setEditConfigAction = (
 export const setLoadedCanvasAction = (canvas: CanvasType): AnyAction => ({
   type: SET_LOADED_CANVAS_ACTION,
   canvas
+})
+
+export const onCanvasElementDuplicatedAction = (
+  canvasEl: any,
+  elementType: CanvasElements,
+  oldId?: string
+): AnyAction => ({
+  type: CANVAS_ELEMENT_DUPLICATED_ACTION,
+  canvasEl,
+  elementType,
+  oldId
 })

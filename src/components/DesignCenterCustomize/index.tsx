@@ -23,7 +23,8 @@ import {
   CanvasResized,
   CanvasDragged,
   CanvasRotated,
-  AccessoriesColor
+  AccessoriesColor,
+  CanvasObjects
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -106,6 +107,11 @@ interface Props {
   onCanvasElementRotated: (element: CanvasRotated) => void
   onCanvasElementTextChanged: (oldText: string, newText: string) => void
   onReApplyImageEl: (el: CanvasElement) => void
+  onCanvasElementDuplicated: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
   onSetCanvasObject: (el: CanvasType) => void
   onSetEditConfig: (
     colors: string[],
@@ -183,6 +189,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCanvasElementRotated,
       onCanvasElementTextChanged,
       onReApplyImageEl,
+      onCanvasElementDuplicated,
       designHasChanges,
       isUserAuthenticated,
       isEditing,
@@ -284,6 +291,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onCanvasElementRotated,
               onCanvasElementTextChanged,
               onReApplyImageEl,
+              onCanvasElementDuplicated,
               designHasChanges,
               canvas,
               selectedElement,
