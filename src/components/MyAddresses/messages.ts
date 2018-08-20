@@ -9,10 +9,6 @@ export default defineMessages({
     id: 'components.MyAddresses.tittle',
     defaultMessage: 'MyAddresses'
   },
-  emptyMessage: {
-    id: 'components.MyAddresses.empty',
-    defaultMessage: `There are no addresses on your account`
-  },
   addAddress: {
     id: 'components.MyAddresses.addAddress',
     defaultMessage: '+ ADD ADDRESS'
@@ -32,17 +28,5 @@ export default defineMessages({
   saveAddress: {
     id: 'components.MyAddresses.saveAddress',
     defaultMessage: 'Save'
-  },
-  deleteAddress: {
-    id: 'components.MyAddresses.deleteAddress',
-    defaultMessage: 'Delete'
-  },
-  titleDeleteModal: {
-    id: 'components.MyAddresses.titleDeleteModal',
-    defaultMessage: 'Are you sure?'
-  },
-  messageDeleteModal: {
-    id: 'components.MyAddresses.messageDeleteModal',
-    defaultMessage: 'This will permanently delete this address'
   }
 })

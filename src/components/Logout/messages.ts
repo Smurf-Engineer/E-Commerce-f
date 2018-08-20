@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.Logout.tittle',
-    defaultMessage: 'Logout'
+    defaultMessage: 'Log out'
   },
   myLockerLabel: {
     id: 'components.Logout.myLockerLabel',
@@ -23,6 +23,6 @@ export default defineMessages({
   },
   logoutLabel: {
     id: 'components.Logout.logoutLabel',
-    defaultMessage: 'Logout'
+    defaultMessage: 'Log out'
   }
 })
