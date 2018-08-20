@@ -16,5 +16,9 @@ export default defineMessages({
   customizable: {
     id: 'components.ProductHorizontalList.customizable',
     defaultMessage: 'Customize'
+  },
+  retatil: {
+    id: 'components.ProductHorizontalList.retail',
+    defaultMessage: 'View full details'
   }
 })

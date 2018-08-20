@@ -115,14 +115,18 @@ const ProductSlide = ({
     )
   })
 
-  const buttonToRender =
-    labelButton === 'CUSTOMIZE' ? (
-      <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
-        <CustomizeButton>{labelButton}</CustomizeButton>
-      </ButtonContainer>
-    ) : (
-      labelButton
-    )
+  const buttonToRender = (
+    <ButtonContainer
+      {...{ myLockerList }}
+      onClick={
+        // TODO: change validation for a boolean prop
+        labelButton === 'CUSTOMIZE' ? onPressCustomize : onPressThumbnail
+      }
+    >
+      <CustomizeButton>{labelButton}</CustomizeButton>
+    </ButtonContainer>
+  )
+
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>

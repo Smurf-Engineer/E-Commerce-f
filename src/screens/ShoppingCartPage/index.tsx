@@ -133,6 +133,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
         return
       }
       showReviewDesignModalAction(true)
+    } else {
+      this.handleCheckout()()
     }
   }
 
