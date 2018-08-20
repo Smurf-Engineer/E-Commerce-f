@@ -214,7 +214,14 @@ export const StyledRadioGroup = styled.div`
     flex-wrap: wrap;
   }
 `
+export const SizeStyledRadioGroup = styled.div`
+  display: inline-block;
+  width: 100%;
 
+  .ant-radio-wrapper {
+    width: 47%;
+  }
+`
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   margin-top: 30px;

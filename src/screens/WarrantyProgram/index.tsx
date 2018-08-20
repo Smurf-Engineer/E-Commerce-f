@@ -36,6 +36,7 @@ import {
   InputsContainer,
   TwoInputsContainer,
   StyledRadioGroup,
+  SizeStyledRadioGroup,
   ButtonWrapper,
   UploadedFile,
   SmallInputsContainer
@@ -484,13 +485,13 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                     <Label>{intl.formatMessage(messages.size)}</Label>
                     <RequiredSpan>*</RequiredSpan>
                   </InputTitleContainer>
-                  <StyledRadioGroup>
+                  <SizeStyledRadioGroup>
                     <RadioGroup
                       options={sizeOptions}
                       onChange={this.handleSizeChange}
                       value={size}
                     />
-                  </StyledRadioGroup>
+                  </SizeStyledRadioGroup>
                   {!size &&
                     hasError && (
                       <ErrorMsg>
