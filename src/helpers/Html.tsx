@@ -31,6 +31,11 @@ const Html = ({ content, state, reduxState }: Props) => (
       src="//staticw2.yotpo.com/Rnb6ShWsqfzkqYmFM5RuNHtDJvKIcsexNP7yvpUO/widget.js"
     />
     <link
+      type="text/css"
+      rel="stylesheet"
+      href="//fast.fonts.net/cssapi/e3c47c0e-c78f-405c-a79f-73c6e8d39aef.css"
+    />
+    <link
       rel="stylesheet"
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
