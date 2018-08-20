@@ -136,7 +136,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const { showDetails, showSpecs } = this.state
     const productId = get(product, 'id')
     const name = get(product, 'name', '')
-    const code = get(product, 'code', '')
+    // TODO: commented until MNP code gets implemented in all retail products
+    // const code = get(product, 'code', '')
     const type = get(product, 'type', '')
     const description = get(product, 'description', '')
     const intendedUse = get(product, 'intendedUse', '')
@@ -416,8 +417,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                    {isRetail &&
-                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>}
+                    {/* TODO: MNP code hidden until all the codes are implemented for the retail products
+                     {isRetail &&
+                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>} */}
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
