@@ -504,7 +504,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     console.log('-----------redo-----------')
     console.log(redoChanges)
     console.log('-----------canvas-----------')
-    console.log(canvas.text)
+    console.log(canvas)
     console.log('---------------------------')
 
     const redirect = <Redirect to={DEFAULT_ROUTE} />

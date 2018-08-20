@@ -1202,6 +1202,7 @@ class Render3D extends PureComponent {
         this.applyText(src, style, position, id)
         break
       case CanvasElements.Image:
+        console.log(canvasEl)
         this.applyImage(src, position, id)
         break
     }
@@ -1209,7 +1210,7 @@ class Render3D extends PureComponent {
 
   applyImage = (file = {}, position = {}, idElement) => {
     const { scaleFactorX, scaleFactorY } = this.state
-    const { fileUrl, size: imageSize } = file
+    const { fileUrl, size: imageSize, id: fileId, type } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
       fileUrl,
@@ -1219,7 +1220,7 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        const el = { id, imageSize }
+        const el = { id, imageSize, type, ...position, fileId, src: fileUrl }
         if (position.scaleX) {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
@@ -1234,8 +1235,6 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
-          const { id: fileId } = file
-          el.fileId = fileId
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -1245,7 +1244,6 @@ class Render3D extends PureComponent {
           })
           this.canvasTexture.setActiveObject(imageEl)
         } else {
-          el.fileId = file.id
           const { onReApplyImageEl } = this.props
           onReApplyImageEl(el)
         }
@@ -1343,6 +1341,7 @@ class Render3D extends PureComponent {
         this.canvasTexture.add(shape)
         if (!idElement) {
           el.fileId = fileId
+          el.src = url
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src: url,
             style,
@@ -1357,7 +1356,7 @@ class Render3D extends PureComponent {
   }
 
   deleteElement = el => {
-    const { undoChanges } = this.props
+    const { canvas } = this.props
     const type = el.get('type')
     const { id, left, top, scaleX, scaleY, transformMatrix } = el
     const canvasObject = {
@@ -1379,11 +1378,9 @@ class Render3D extends PureComponent {
       case CanvasElements.Path:
         {
           const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
-          const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          if (!object) break //FIXME: add new method to delete duplicate elements
-          const {
-            state: { fileId, src }
-          } = object
+          const object = canvas.path[id]
+          if (!object) break //FIXME: add delete when editing
+          const { fileId, src } = object
           canvasObject.src = src
           canvasObject.style = {
             fill,
@@ -1395,12 +1392,10 @@ class Render3D extends PureComponent {
         break
       case CanvasElements.Image:
         {
-          const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          if (!object) break //FIXME: add new method to delete duplicate elements
-          const {
-            state: { src, fileId }
-          } = object
-          canvasObject.src = src
+          const object = canvas.image[id]
+          if (!object) break //FIXME: add delete when editing
+          const { src, fileId, imageSize, type } = object
+          canvasObject.src = { id: fileId, fileUrl: src, size: imageSize, type }
           canvasObject.fileId = fileId
         }
         break

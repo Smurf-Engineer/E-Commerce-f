@@ -552,6 +552,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case REAPPLY_CANVAS_IMAGE_ACTION: {
       const { el } = action
+      console.log(el)
       return state.setIn(['canvas', CanvasElements.Image, el.id], el)
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {
@@ -824,7 +825,13 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         id
       })
       if (oldId) {
-        stepToAdd = redoChanges.first()
+        const redoChange = redoChanges.first()
+        return state.merge({
+          canvas: updatedCanvas,
+          undoChanges: undoChanges.unshift(redoChange),
+          redoChanges: redoChanges.shift(),
+          selectedElement: ''
+        })
       }
       return state.merge({
         canvas: updatedCanvas,
@@ -892,8 +899,15 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
       break
     case CanvasElements.Path:
       const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = style
-      const { scaleX, scaleY } = position
-      canvasObject = { id, fill, stroke, strokeWidth, scaleX, scaleY, fileId }
+      canvasObject = {
+        id,
+        fill,
+        stroke,
+        strokeWidth,
+        ...position,
+        fileId,
+        src
+      }
       break
     case CanvasElements.Image:
     default:
