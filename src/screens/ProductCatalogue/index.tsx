@@ -58,6 +58,7 @@ interface Props extends RouteComponentProps<any> {
   categoryFilters: FilterType
   seasonFilters: FilterType
   fit_styleFilters: FilterType
+  typeFilters: FilterType
   temperatureFilters: FilterType
   orderBy: string
   limit: number
@@ -147,6 +148,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       categoryFilters,
       seasonFilters,
       fit_styleFilters: fitStyleFilters,
+      typeFilters,
       orderBy,
       limit,
       skip,
@@ -190,7 +192,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       sportFilters,
       categoryFilters,
       seasonFilters,
-      fitStyleFilters
+      fitStyleFilters,
+      typeFilters
     ]
 
     const renderFilters = filtersGraph.map(

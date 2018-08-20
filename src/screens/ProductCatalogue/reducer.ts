@@ -27,6 +27,7 @@ export const initialState = fromJS({
   categoryFilters: {},
   seasonFilters: {},
   fit_styleFilters: {},
+  typeFilters: {},
   TemperatureFilters: {},
   openSidebar: false
 })

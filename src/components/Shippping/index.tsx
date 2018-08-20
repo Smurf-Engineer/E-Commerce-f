@@ -49,6 +49,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
         apartment,
         country,
         stateProvince,
+        stateProvinceCode,
         city,
         zipCode,
         phone
@@ -150,6 +151,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
               apartment,
               country,
               stateProvince,
+              stateProvinceCode,
               city,
               zipCode,
               phone,
