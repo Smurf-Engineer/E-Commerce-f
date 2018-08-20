@@ -923,6 +923,29 @@ export interface Inspiration {
   colors: string[]
 }
 
+export interface OrderSearchResult {
+  code: string
+  image: string
+  status: string
+  svgUrl: string
+  assets: FilesDownload
+  bibColor?: AccesoryColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  stitchingValue?: string
+  stitchingName?: string
+}
+
+export interface FilesDownload {
+  files: UserFiles[]
+  svgs: UserFiles[]
+}
+
+export interface UserFiles {
+  fileUrl: string
+  original?: string
+}
+
 export interface DesignFiles {
   files: number[]
   svgs: number[]
