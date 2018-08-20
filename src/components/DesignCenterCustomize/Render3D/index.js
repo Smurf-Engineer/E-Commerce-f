@@ -344,16 +344,18 @@ class Render3D extends PureComponent {
       if (!!imagesElements.length) {
         images = await Promise.all(imagesPromises)
       }
-      console.log(images, 'imagenessssss')
-      console.log(elements, 'elementoosssss')
+      // console.log(images[0], 'imagenessssss')
+      // console.log(elements, 'elementoosssss')
       // FIXME: HERE
 
       images.forEach((img, index) => {
         const config = imagesElements[index] || {}
         const imageEl = new fabric.Image(img, { ...config })
+        console.log(imageEl, 'image')
         this.canvasTexture.add(imageEl)
       })
       const fabricObjects = await this.convertToFabricObjects(elements)
+      console.log(fabricObjects, 'elements converted')
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       onSetCanvasObject(canvas)
       this.canvasTexture.renderAll()
