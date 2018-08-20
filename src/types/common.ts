@@ -393,6 +393,7 @@ export interface AddressType {
   apartment: string
   country: string
   stateProvince: string
+  stateProvinceCode: string
   city: string
   zipCode: string
   phone: string
@@ -921,6 +922,29 @@ export interface Inspiration {
   name: string
   image: string
   colors: string[]
+}
+
+export interface OrderSearchResult {
+  code: string
+  image: string
+  status: string
+  svgUrl: string
+  assets: FilesDownload
+  bibColor?: AccesoryColor
+  bindingColor?: AccesoryColor
+  zipperColor?: AccesoryColor
+  stitchingValue?: string
+  stitchingName?: string
+}
+
+export interface FilesDownload {
+  files: UserFiles[]
+  svgs: UserFiles[]
+}
+
+export interface UserFiles {
+  fileUrl: string
+  original?: string
 }
 
 export interface DesignFiles {

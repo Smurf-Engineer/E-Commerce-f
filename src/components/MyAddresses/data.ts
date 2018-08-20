@@ -14,6 +14,7 @@ export const addresesQuery = gql`
       apartment
       country
       stateProvince: state_province
+      stateProvinceCode: state_province_code
       city
       zipCode: zip_code
       phone
@@ -34,6 +35,7 @@ export const addAddressMutation = graphql(
         apartment
         country
         stateProvince: state_province
+        stateProvinceCode: state_province_code
         city
         zipCode: zip_code
         phone

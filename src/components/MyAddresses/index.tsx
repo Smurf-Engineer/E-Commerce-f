@@ -34,6 +34,7 @@ interface Props {
   apartment: string
   country: string
   stateProvince: string
+  stateProvinceCode: string
   city: string
   zipCode: string
   phone: string
@@ -83,6 +84,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone,
@@ -155,6 +157,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
               apartment,
               country,
               stateProvince,
+              stateProvinceCode,
               city,
               zipCode,
               phone,
@@ -231,6 +234,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone,
@@ -262,6 +266,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       apartment,
       country,
       stateProvince,
+      stateProvinceCode,
       city,
       zipCode,
       phone,
