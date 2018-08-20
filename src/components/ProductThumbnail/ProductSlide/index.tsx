@@ -119,6 +119,7 @@ const ProductSlide = ({
     <ButtonContainer
       {...{ myLockerList }}
       onClick={
+        // TODO: change validation for a boolean prop
         labelButton === 'CUSTOMIZE' ? onPressCustomize : onPressThumbnail
       }
     >

@@ -421,7 +421,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
-                <PricesRow>{!isRetail ? renderPrices : retailPrice}</PricesRow>
+                <PricesRow>{isRetail ? retailPrice : renderPrices}</PricesRow>
                 <Ratings
                   stars={5}
                   starDimension={'15px'}
