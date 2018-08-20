@@ -50,7 +50,7 @@ export const AnchorButton = styled.div`
     margin-bottom: 10px;
   }
 `
-export const SectionContainder = styled.div`
+export const SectionContainer = styled.div`
   margin-bottom: 60px;
 `
 
@@ -103,6 +103,10 @@ export const TextExpand = styled.div`
 
 export const ExpandContainter = styled.div`
   padding: 30px;
+
+  @media (max-width: 480px) {
+    padding: 30px 10px;
+  }
 `
 
 export const Row = styled.div`
@@ -161,6 +165,7 @@ export const FormInfo = styled.div`
   line-height: 19px;
 
   @media (min-width: 320px) and (max-width: 480px) {
+    margin-top: 15px;
     width: 100%;
   }
 `
@@ -168,10 +173,10 @@ export const FormInfo = styled.div`
 export const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap-reverse;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 24px;
-  align-items: flex-end;
+  align-items: center;
 `
 
 export const InputsContainer = styled.div`
@@ -183,8 +188,12 @@ export const InputsContainer = styled.div`
 `
 
 export const SmallInputsContainer = styled.div`
-  width: 45%;
   margin-top: 5px;
+  width: 45%;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
 `
 
 export const TwoInputsContainer = styled.div`
@@ -192,7 +201,9 @@ export const TwoInputsContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   @media (min-width: 320px) and (max-width: 480px) {
+    flex-wrap: wrap;
     width: 100%;
   }
 `
@@ -235,8 +246,35 @@ export const ButtonWrapper = styled.div`
     background-color: #4a90e2;
     border-color: #4a90e2;
   }
-`
 
+  @media (min-width: 320px) and (max-width: 480px) {
+    .ant-btn-primary {
+      width: 100%;
+    }
+  }
+`
+export const GenderSizeContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 50%;
+
+  & > div {
+    width: 100%;
+  }
+
+  & > div:first-child {
+    margin-bottom: 10px;
+  }
+
+  label {
+    margin-right: 0px;
+  }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;
+  }
+`
 export const UploadedFile = styled.div`
   color: #bebebe;
   font-size: 14px;
