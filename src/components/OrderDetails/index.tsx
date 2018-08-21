@@ -241,7 +241,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               total={totalSum + shippingAmount + taxAmount}
               subtotal={totalSum}
               shipping={shippingAmount}
-              taxes={taxAmount} // TODO: get
+              taxes={taxAmount}
               discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}
