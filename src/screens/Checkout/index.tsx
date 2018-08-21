@@ -369,7 +369,8 @@ class Checkout extends React.Component<Props, {}> {
                     showCardForm,
                     showCardFormAction,
                     selectCardToPayAction,
-                    selectedCard
+                    selectedCard,
+                    paymentMethod
                   }}
                   showContent={currentStep === PaymentTab}
                   formatMessage={intl.formatMessage}

@@ -17,6 +17,8 @@ import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
 import MyCards from '../MyCards'
+import { PaymentOptions } from '../../screens/Checkout/constants'
+const { CREDITCARD, PAYPAL } = PaymentOptions
 
 interface Props {
   billingAddress: AddressType
@@ -28,6 +30,7 @@ interface Props {
   showContent: boolean
   showCardForm: boolean
   selectedCard: CreditCardData
+  paymentMethod: string
   formatMessage: (messageDescriptor: any) => string
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -81,12 +84,13 @@ class Payment extends React.PureComponent<Props, {}> {
       openConfirm: false
     })
     saveCountryAction(countryCode)
+
     nextStep()
   }
 
   handlePaypalClick = () => {
     const { setPaymentMethodAction } = this.props
-    setPaymentMethodAction('paypal')
+    setPaymentMethodAction(PAYPAL)
     this.setState({
       openConfirm: true
     })
@@ -94,7 +98,7 @@ class Payment extends React.PureComponent<Props, {}> {
 
   handleCreditCardClick = () => {
     const { setPaymentMethodAction } = this.props
-    setPaymentMethodAction('credit card')
+    setPaymentMethodAction(CREDITCARD)
   }
 
   render() {
@@ -117,7 +121,8 @@ class Payment extends React.PureComponent<Props, {}> {
       showCardForm,
       showCardFormAction,
       selectCardToPayAction,
-      selectedCard
+      selectedCard,
+      paymentMethod
     } = this.props
     const { stripe, openConfirm } = this.state
 
@@ -129,10 +134,16 @@ class Payment extends React.PureComponent<Props, {}> {
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
         <ContainerMethods>
-          <MethodButton selected={true} onClick={this.handleCreditCardClick}>
+          <MethodButton
+            selected={paymentMethod === CREDITCARD}
+            onClick={this.handleCreditCardClick}
+          >
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
-          <MethodButton onClick={this.handlePaypalClick}>
+          <MethodButton
+            selected={paymentMethod === PAYPAL}
+            onClick={this.handlePaypalClick}
+          >
             {formatMessage(messages.methodPaypal)}
           </MethodButton>
           {/* <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
