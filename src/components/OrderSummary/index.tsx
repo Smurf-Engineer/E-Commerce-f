@@ -38,7 +38,7 @@ interface Data extends QueryProps {
 
 interface Props {
   data?: Data
-  taxes: any
+  taxes: number
   total: number
   subtotal: number
   shipping?: number
@@ -66,7 +66,9 @@ export class OrderSummary extends React.Component<Props, {}> {
       totalWithoutDiscount,
       onlyRead,
       proDesignReview,
-      currencySymbol
+      currencySymbol,
+      shipping,
+      taxes
     } = this.props
 
     const renderDiscount = discount ? (
@@ -112,13 +114,13 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-          <OrderItem hide={!taxesTotal}>
+          <OrderItem hide={!taxesTotal && !taxes}>
             <FormattedMessage {...messages.taxes} />
-            <div>{`${symbol} ${taxesTotal}`}</div>
+            <div>{`${symbol} ${taxesTotal || taxes}`}</div>
           </OrderItem>
-          <OrderItem hide={!shippingTotal}>
+          <OrderItem hide={!shippingTotal && !shipping}>
             <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal}`}</div>
+            <div>{`${symbol} ${shippingTotal || shipping}`}</div>
           </OrderItem>
 
           {!!proDesignReview && (
