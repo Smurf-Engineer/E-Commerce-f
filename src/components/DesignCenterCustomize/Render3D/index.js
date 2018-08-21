@@ -1058,8 +1058,6 @@ class Render3D extends PureComponent {
       heightInCm = height
     }
 
-    console.log('RENDER')
-
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
