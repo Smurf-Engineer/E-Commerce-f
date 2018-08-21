@@ -67,14 +67,16 @@ export const AnchorsRow = styled.div`
   }
 `
 export const AnchorButton = styled.div`
-  padding: 14px 52px;
-  margin-bottom: 10px;
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
+  flex-direction: column;
   font-size: 16px;
+  justify-content: center;
   letter-spacing: 0.11px;
   line-height: 22px;
+  margin-bottom: 10px;
+  padding: 14px 52px;
   text-align: center;
 
   &:hover {
