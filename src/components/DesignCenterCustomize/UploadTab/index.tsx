@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import message from 'antd/lib/message'
-import Message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
 import remove from 'lodash/remove'
 import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
@@ -26,6 +26,9 @@ import {
   EmptyContainer,
   LoginMessage
 } from './styledComponents'
+import { RED } from '../../../theme/colors'
+
+const { confirm } = Modal
 
 interface Data extends QueryProps {
   images: ImageFile[]
@@ -113,7 +116,7 @@ class UploadTab extends React.PureComponent<Props, State> {
           onClickDelete={this.handleOnDelete}
         />
         <DraggerBottom>{dragger}</DraggerBottom>
-        <Recommendation color="#E61737">
+        <Recommendation color={RED}>
           <FormattedMessage {...messages.recommendationTitle} />
         </Recommendation>
         <Recommendation>
@@ -143,7 +146,7 @@ class UploadTab extends React.PureComponent<Props, State> {
       const { size, name } = file
       // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
       if (size / 1000000 > 20) {
-        Message.error(formatMessage(messages.imageSizeError))
+        message.error(formatMessage(messages.imageSizeError))
         return false
       }
       const fileExtension = this.getFileExtension(name)
@@ -153,7 +156,7 @@ class UploadTab extends React.PureComponent<Props, State> {
           (fileExtension as String).toLowerCase()
         ) === -1
       ) {
-        Message.error(formatMessage(messages.imageExtensionError))
+        message.error(formatMessage(messages.imageExtensionError))
         return false
       }
 
@@ -164,23 +167,30 @@ class UploadTab extends React.PureComponent<Props, State> {
   }
 
   handleOnDelete = async (fileId: number) => {
-    try {
-      const { deleteFile } = this.props
-      await deleteFile({
-        variables: { fileId },
-        update: (store: any) => {
-          const data = store.readQuery({ query: userfilesQuery })
-          const updatedImages = remove(
-            data.images,
-            (image: ImageFile) => image.id !== fileId
-          )
-          data.images = updatedImages
-          store.writeQuery({ query: userfilesQuery, data })
+    const { formatMessage } = this.props
+    confirm({
+      title: formatMessage(messages.confirmTitle),
+      content: formatMessage(messages.confirmMessage),
+      onOk: async () => {
+        try {
+          const { deleteFile } = this.props
+          await deleteFile({
+            variables: { fileId },
+            update: (store: any) => {
+              const data = store.readQuery({ query: userfilesQuery })
+              const updatedImages = remove(
+                data.images,
+                (image: ImageFile) => image.id !== fileId
+              )
+              data.images = updatedImages
+              store.writeQuery({ query: userfilesQuery, data })
+            }
+          })
+        } catch (e) {
+          message.error(e.message)
         }
-      })
-    } catch (e) {
-      message.error(e.message)
-    }
+      }
+    })
   }
 
   clearState = () => {
