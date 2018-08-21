@@ -26,6 +26,9 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ColorList from '../../screens/DesignerTool/DesignCenterCustomize/ColorList'
+import vector from '../../assets/vector.svg'
+import raster from '../../assets/raster.png'
+import fsc from '../../assets/fsc.png'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -48,21 +51,13 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
               <FormattedMessage {...messages.maintitle} />
             </MainTitle>
             <ContentContainer>
-              <StyledImage
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/vector.svg'
-                }
-              />
+              <StyledImage src={vector} />
               <DesignText>
                 <FormattedMessage {...messages.vectorWork} />
               </DesignText>
             </ContentContainer>
             <ContentContainer>
-              <StyledImage
-                src={
-                  'https://storage.googleapis.com/jakroo-storage/screens/artwork/raster.webp'
-                }
-              />
+              <StyledImage src={raster} />
               <DesignText>
                 <FormattedMessage {...messages.rasterWork} />
               </DesignText>
@@ -96,11 +91,7 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
             <FlatLockText>
               <FormattedMessage {...messages.flatLockText} />
             </FlatLockText>
-            <StyledFlatLockImage
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/artwork/FSCW.webp'
-              }
-            />
+            <StyledFlatLockImage src={fsc} />
           </SectionContainer>
         </Container>
       </Layout>
