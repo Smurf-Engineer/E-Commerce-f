@@ -113,22 +113,24 @@ export class JerseyComparison extends React.Component<Props, {}> {
       </Column>
     ))
 
-    const priceJerseys = jerseysInfo.map(({ title }, i) => (
-      <PriceColumn key={i}>
-        <PriceTitlesContainer>{pricesTitles}</PriceTitlesContainer>
-        <div>
-          {this.getPricesArray(title.defaultMessage).map(
-            ({ price }, key: number) => (
+    const priceJerseys = jerseysInfo.map(({ title }, i) => {
+      const msg = formatMessage(title)
+
+      return (
+        <PriceColumn key={i}>
+          <PriceTitlesContainer>{pricesTitles}</PriceTitlesContainer>
+          <div>
+            {this.getPricesArray(msg).map(({ price }, key: number) => (
               <InfoText {...{ key }}>
                 {key < MAX_LIMIT_PRICES
                   ? `$ ${price}`
                   : formatMessage(messages.priceCallUs)}
               </InfoText>
-            )
-          )}
-        </div>
-      </PriceColumn>
-    ))
+            ))}
+          </div>
+        </PriceColumn>
+      )
+    })
 
     return (
       <Layout {...{ intl, history }}>
