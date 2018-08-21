@@ -29,6 +29,8 @@ export const getOrderQuery = gql`
       billingCity: billing_address_city
       billingZipCode: billing_address_zip_code
       shippingTax: shipping_tax
+      taxAmount: tax_amount
+      shippingAmount: shipping_amount
       currency {
         shortName: short_name
       }
