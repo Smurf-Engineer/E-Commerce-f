@@ -76,8 +76,9 @@ export const SectionText = styled.div`
   }
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding: 30px 10px 0px;
     flex-direction: column;
+    margin: 0px;
+    padding: 30px 8px 0px;
   }
 `
 
@@ -102,6 +103,7 @@ export const ContentContainer = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;
+    padding: 0px 8px;
   }
 `
 
