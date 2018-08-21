@@ -73,8 +73,10 @@ export class JerseyComparison extends React.Component<Props, {}> {
 
       return (
         <Column key={i}>
-          <Title onClick={this.handleOnClickJersey(msg)}>{msg}</Title>
-          <StyledImage src={image} onClick={this.handleOnClickJersey(msg)} />
+          <div onClick={this.handleOnClickJersey(msg)}>
+            <Title>{msg}</Title>
+            <StyledImage src={image} />
+          </div>
           <Text>{formatMessage(message)}</Text>
         </Column>
       )

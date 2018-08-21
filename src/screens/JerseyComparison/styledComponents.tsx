@@ -101,6 +101,7 @@ export const PriceColumn = styled.div`
 
 export const StyledImage = styled.img`
   object-fit: contain;
+  width: 100%;
 
   &:hover {
     cursor: pointer;
