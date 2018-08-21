@@ -29,7 +29,7 @@ export const CanvasContainer = styled.div`
 export const Render = styled.div`
   width: 800px;
   height: 600px;
-  cursor: pointer;
+  cursor: grab;
 `
 
 export const Model = styled.div`

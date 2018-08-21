@@ -108,7 +108,8 @@ class Render3D extends PureComponent {
     oldRotation: null,
     scaleFactor: 1,
     scaleFactorX: 1,
-    scaleFactorY: 1
+    scaleFactorY: 1,
+    isFirstAdd: true
   }
 
   dragComponent = null
@@ -1057,6 +1058,8 @@ class Render3D extends PureComponent {
       heightInCm = height
     }
 
+    console.log('RENDER')
+
     return (
       <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
         <Row>
@@ -1135,8 +1138,9 @@ class Render3D extends PureComponent {
 
   applyCanvasEl = canvasEl => {
     if (this.canvasTexture) {
+      const { isFirstAdd } = this.state
       const objects = this.canvasTexture.getObjects()
-      if (!objects.length) {
+      if (!objects.length && isFirstAdd) {
         let element = canvasEl.type
         if (canvasEl.type === CanvasElements.Path) {
           element = 'symbol'
@@ -1148,8 +1152,12 @@ class Render3D extends PureComponent {
           okType: 'default'
         })
         setTimeout(() => modal.destroy(), 10000)
+        document.getElementById('render-3d').style.cursor = 'no-drop'
+        this.setState({ canvasEl, isFirstAdd: false })
+      } else {
+        document.getElementById('render-3d').style.cursor = 'no-drop'
+        this.setState({ canvasEl })
       }
-      this.setState({ canvasEl })
     }
   }
 
@@ -1486,7 +1494,7 @@ class Render3D extends PureComponent {
 
   onMouseUp = evt => {
     evt.preventDefault()
-
+    document.getElementById('render-3d').style.cursor = 'grab'
     const action = this.dragComponent && this.dragComponent.action
 
     if (CHANGE_ACTIONS.includes(action)) {
@@ -1551,7 +1559,10 @@ class Render3D extends PureComponent {
 
   onMouseDown = evt => {
     evt.preventDefault()
-
+    if (!this.canvasTexture) {
+      return
+    }
+    document.getElementById('render-3d').style.cursor = 'grabbing'
     const array = this.getMousePosition(
       this.container,
       evt.clientX,
@@ -1579,7 +1590,6 @@ class Render3D extends PureComponent {
         const el = Object.assign({}, canvasEl)
         const { fileId } = canvasEl
         this.setState({ canvasEl: null }, () => {
-          document.getElementById('render-3d').style.cursor = 'pointer'
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
           switch (el.type) {
@@ -1697,7 +1707,6 @@ class Render3D extends PureComponent {
 
       if (this.state.canvasEl) {
         this.setState({ canvasEl: null })
-        document.getElementById('render-3d').style.cursor = 'pointer'
       }
     }
   }
@@ -1782,6 +1791,8 @@ class Render3D extends PureComponent {
       }
     } else if (!!intersects.length && !!this.state.canvasEl) {
       document.getElementById('render-3d').style.cursor = 'crosshair'
+    } else if (!!this.state.canvasEl) {
+      document.getElementById('render-3d').style.cursor = 'no-drop'
     }
   }
 
