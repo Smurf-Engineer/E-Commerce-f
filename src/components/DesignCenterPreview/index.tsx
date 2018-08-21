@@ -154,7 +154,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                 </ButtonWrapper>
               </BottomButtons>
               <ButtonWrapperRight>
-                <ButtonRight type="primary">
+                <ButtonRight onClick={this.handleOnKeepShoping} type="primary">
                   <FormattedMessage {...messages.keepShoping} />
                 </ButtonRight>
               </ButtonWrapperRight>
@@ -184,6 +184,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         </Modal>
       </Container>
     )
+  }
+
+  handleOnKeepShoping = () => {
+    const { history } = this.props
+    history.push('/product-catalogue')
   }
 
   openAddToStoreModal = () => {

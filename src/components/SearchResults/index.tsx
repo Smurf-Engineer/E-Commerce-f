@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import AnimateHeight from 'react-animate-height'
 import CloseIcon from '../../assets/cancel-button.svg'
 import { QueryProps, Product } from '../../types/common'
@@ -14,8 +15,8 @@ import {
   CloseImg,
   Results
 } from './styledComponents'
+import messages from './messages'
 import ProductThumbnail from '../ProductThumbnail'
-import AddToCartButton from '../AddToCartButton'
 
 interface Data extends QueryProps {
   productSearch: Product[]
@@ -69,7 +70,7 @@ export class SearchResults extends React.Component<Props, {}> {
         const productImages = product.images ? product.images[0] : {}
         return (
           <ProductThumbnail
-            {...{ currentCurrency }}
+            {...{ currentCurrency, customizable }}
             key={key}
             onPressCustomize={this.gotoCustomize}
             id={id}
@@ -82,13 +83,9 @@ export class SearchResults extends React.Component<Props, {}> {
             onPressQuickView={quickViewAction}
             labelButton={
               customizable ? (
-                'CUSTOMIZE'
+                <FormattedMessage {...messages.customizeLabel} />
               ) : (
-                <AddToCartButton
-                  label={'ADD TO CART'}
-                  renderForThumbnail={true}
-                  item={{ product }}
-                />
+                <FormattedMessage {...messages.fullDetailsLabel} />
               )
             }
           />

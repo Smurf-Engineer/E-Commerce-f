@@ -38,3 +38,8 @@ export enum CheckoutTabs {
   PaymentTab = 1,
   RevieTab = 2
 }
+
+export enum PaymentOptions {
+  PAYPAL = 'paypal',
+  CREDITCARD = 'credit card'
+}
