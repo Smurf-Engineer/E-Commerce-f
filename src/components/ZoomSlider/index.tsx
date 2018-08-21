@@ -5,6 +5,10 @@ import * as React from 'react'
 import Slider from 'react-rangeslider'
 import { Container, Button } from './styledComponents'
 
+const MIN_ZOOM = 25
+const MAX_ZOOM = 200
+const MIDDLE = (MAX_ZOOM - MIN_ZOOM) / 2 + MIN_ZOOM
+
 interface Props {
   onChangeZoom: (value: number) => void
 }
@@ -15,7 +19,7 @@ interface State {
 
 class ZoomSlider extends React.PureComponent<Props, State> {
   state = {
-    value: 62
+    value: MIDDLE
   }
 
   handleOnChangeValue = (value: number) =>
@@ -25,7 +29,7 @@ class ZoomSlider extends React.PureComponent<Props, State> {
     const { value } = this.state
     const { onChangeZoom } = this.props
 
-    if (value < 70) {
+    if (value < MAX_ZOOM) {
       this.setState(
         ({ value: prevValue }) => ({ value: prevValue + 2 }),
         () => onChangeZoom(this.state.value)
@@ -37,7 +41,7 @@ class ZoomSlider extends React.PureComponent<Props, State> {
     const { value } = this.state
     const { onChangeZoom } = this.props
 
-    if (value > 20) {
+    if (value > MIN_ZOOM) {
       this.setState(
         ({ value: prevValue }) => ({ value: prevValue - 2 }),
         () => onChangeZoom(this.state.value)
@@ -51,8 +55,8 @@ class ZoomSlider extends React.PureComponent<Props, State> {
       <Container>
         <Button onClick={this.handleZoomIn}>+</Button>
         <Slider
-          min={25}
-          max={100}
+          min={MIN_ZOOM}
+          max={MAX_ZOOM}
           value={value}
           tooltip={false}
           orientation="vertical"

@@ -56,7 +56,6 @@ export const SearchInput = styled(Search)`
     border-radius: 0px;
     border: 0;
     color: #bebebe;
-    font-family: 'Avenir Next' !important;
     font-size: 16px;
     line-height: 22px;
   }

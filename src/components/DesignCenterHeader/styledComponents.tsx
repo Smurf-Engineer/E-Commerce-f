@@ -39,7 +39,6 @@ export const BackButton = styled.div`
 
 export const Back = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 `
@@ -55,7 +54,6 @@ export const BackIcon = styled.img`
 
 export const Date = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
   position: absolute;

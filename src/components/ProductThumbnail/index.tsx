@@ -167,7 +167,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
             urlProduct,
             myLockerList,
             currentCurrency,
-            disableSlider
+            disableSlider,
+            customizable
           }}
           onMouseEnter={this.handleOnHover}
           onMouseLeave={this.handleOnBlur}

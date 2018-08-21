@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { RED } from '../../theme/colors'
 
 export const Container = styled.div`
   margin-bottom: 10px;
@@ -15,7 +16,6 @@ export const Text = styled.div`
 export const StyledButton = styled(Button)`
   background-color: #fff;
   border: 2px solid #f5222d;
-  color: #f5222d;
   width: 220px;
   height: 50px;
 
@@ -23,9 +23,17 @@ export const StyledButton = styled(Button)`
     color: #fff
     background-color: #f5222d;
   }
+
+  span {
+    color: ${RED};
+  }
 `
 export const ButtonRow = styled.div`
   text-align: center;
+
+  .ant-btn {
+    color: ${RED};
+  }
 `
 
 export const Available = styled.div`

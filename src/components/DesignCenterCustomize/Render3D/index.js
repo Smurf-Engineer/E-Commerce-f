@@ -108,7 +108,8 @@ class Render3D extends PureComponent {
     oldRotation: null,
     scaleFactor: 1,
     scaleFactorX: 1,
-    scaleFactorY: 1
+    scaleFactorY: 1,
+    isFirstAdd: true
   }
 
   dragComponent = null
@@ -1135,8 +1136,9 @@ class Render3D extends PureComponent {
 
   applyCanvasEl = canvasEl => {
     if (this.canvasTexture) {
+      const { isFirstAdd } = this.state
       const objects = this.canvasTexture.getObjects()
-      if (!objects.length) {
+      if (!objects.length && isFirstAdd) {
         let element = canvasEl.type
         if (canvasEl.type === CanvasElements.Path) {
           element = 'symbol'
@@ -1148,9 +1150,12 @@ class Render3D extends PureComponent {
           okType: 'default'
         })
         setTimeout(() => modal.destroy(), 10000)
+        document.getElementById('render-3d').style.cursor = 'no-drop'
+        this.setState({ canvasEl, isFirstAdd: false })
+      } else {
+        document.getElementById('render-3d').style.cursor = 'no-drop'
+        this.setState({ canvasEl })
       }
-      document.getElementById('render-3d').style.cursor = 'crosshair'
-      this.setState({ canvasEl })
     }
   }
 
@@ -1487,7 +1492,7 @@ class Render3D extends PureComponent {
 
   onMouseUp = evt => {
     evt.preventDefault()
-
+    document.getElementById('render-3d').style.cursor = 'grab'
     const action = this.dragComponent && this.dragComponent.action
 
     if (CHANGE_ACTIONS.includes(action)) {
@@ -1552,7 +1557,10 @@ class Render3D extends PureComponent {
 
   onMouseDown = evt => {
     evt.preventDefault()
-
+    if (!this.canvasTexture) {
+      return
+    }
+    document.getElementById('render-3d').style.cursor = 'grabbing'
     const array = this.getMousePosition(
       this.container,
       evt.clientX,
@@ -1565,6 +1573,8 @@ class Render3D extends PureComponent {
       this.scene.children
     )
 
+    const activeEl = this.canvasTexture.getActiveObject()
+    const { onSelectEl } = this.props
     if (!!intersects.length && intersects[0].uv) {
       const { canvasEl } = this.state
       const meshName = get(intersects[0], 'object.name', '')
@@ -1578,7 +1588,6 @@ class Render3D extends PureComponent {
         const el = Object.assign({}, canvasEl)
         const { fileId } = canvasEl
         this.setState({ canvasEl: null }, () => {
-          document.getElementById('render-3d').style.cursor = 'default'
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
           switch (el.type) {
@@ -1602,7 +1611,6 @@ class Render3D extends PureComponent {
           }
         })
       } else {
-        const activeEl = this.canvasTexture.getActiveObject()
         if (activeEl && !this.dragComponent) {
           const boundingBox = activeEl.getBoundingRect()
           const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
@@ -1655,7 +1663,6 @@ class Render3D extends PureComponent {
         }
 
         let allDeactive = true
-        const { onSelectEl } = this.props
         this.canvasTexture.forEachObject(el => {
           const boundingBox = el.getBoundingRect()
           const isInside = isMouseOver(boundingBox, uv)
@@ -1687,12 +1694,18 @@ class Render3D extends PureComponent {
           onSelectEl('')
           this.canvasTexture.discardActiveObject()
         }
-
         this.canvasTexture.renderAll()
       }
-    } else if (this.state.canvasEl) {
-      this.setState({ canvasEl: null })
-      document.getElementById('render-3d').style.cursor = 'default'
+    } else {
+      if (!!activeEl) {
+        onSelectEl('')
+        this.canvasTexture.discardActiveObject()
+        this.canvasTexture.renderAll()
+      }
+
+      if (this.state.canvasEl) {
+        this.setState({ canvasEl: null })
+      }
     }
   }
 
@@ -1710,6 +1723,7 @@ class Render3D extends PureComponent {
       this.onClickPosition,
       this.scene.children
     )
+
     if (!!intersects.length && intersects[0].uv && !!this.dragComponent) {
       const meshName = get(intersects[0], 'object.name', '')
       const validMesh =
@@ -1743,24 +1757,6 @@ class Render3D extends PureComponent {
               })
               .setCoords()
             this.canvasTexture.renderAll()
-            // TODO: Change to DPI warning not to scale.
-            // const scaleXTemp = scaleX.toFixed(NUMBER_OF_DECIMALS)
-            // const scaleYTemp = scaleY.toFixed(NUMBER_OF_DECIMALS)
-            // const scaleFactorTemp =
-            //   scaleFactor.toFixed(NUMBER_OF_DECIMALS) + WARNING_FACTOR
-            // if (
-            //   (scaleXTemp > scaleFactorTemp || scaleYTemp > scaleFactorTemp) &&
-            //   !this.dragComponent.alreadyNotified &&
-            //   this.dragComponent.isImage
-            // ) {
-            //   this.showResolutionWarningModal()
-            // } else if (
-            //   scaleXTemp <= scaleFactorTemp &&
-            //   scaleYTemp <= scaleFactorTemp &&
-            //   this.dragComponent.alreadyNotified
-            // ) {
-            //   this.dragComponent.alreadyNotified = false
-            // }
             break
           }
           case ROTATE_ACTION: {
@@ -1791,6 +1787,10 @@ class Render3D extends PureComponent {
             break
         }
       }
+    } else if (!!intersects.length && !!this.state.canvasEl) {
+      document.getElementById('render-3d').style.cursor = 'crosshair'
+    } else if (!!this.state.canvasEl) {
+      document.getElementById('render-3d').style.cursor = 'no-drop'
     }
   }
 

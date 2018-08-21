@@ -37,7 +37,6 @@ export const CheckoutButton = styled(Button)`
 
 export const SummaryTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   height: 25px;
@@ -73,7 +72,6 @@ export const OrderItem = styled.div`
   margin-bottom: 10px;
 
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -86,7 +84,6 @@ export const FlexWrapper = styled.div`
 
 export const DeleteLabel = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.09px;
   line-height: 16px;
@@ -101,7 +98,6 @@ export const TotalOrderItem = styled.div`
     withoutMarginBottom ? '4px' : '20px'};
   margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -115,7 +111,6 @@ export const YouSavedOrderItem = styled.div`
   margin-bottom: 20px;
   margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -143,7 +138,6 @@ export const CollapseWrapper = styled.div`
     display: flex;
     flex-direction: row;
     color: #5f6062;
-    font-family: Avenir Next;
     font-size: 12px;
     letter-spacing: 0.15px;
     line-height: 16px;

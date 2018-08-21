@@ -19,7 +19,6 @@ export const TitleContainer = styled.div`
 export const Title = styled.div`
   height: 22.74px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 23px;

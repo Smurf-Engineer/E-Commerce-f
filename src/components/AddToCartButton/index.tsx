@@ -154,7 +154,9 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
           return
         }
         if (item) {
-          this.saveInLocalStorage(item)
+          this.saveInLocalStorage(
+            this.getItemWithDetails(item, '', '', '', '', '', false)
+          )
         }
       }
     }

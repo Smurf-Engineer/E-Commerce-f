@@ -25,7 +25,6 @@ export const FacebookButtonWrapper = styled.div`
 `
 
 export const GoogleButton = styled(GoogleLogin)`
-  font-family: 'Avenir next';
   width: 100%;
   height: 50px;
   background-color: #f0372d;

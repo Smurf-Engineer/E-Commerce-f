@@ -14,5 +14,4 @@ export const YotpoHomeContainer = styled.div``
 export const YotpoReviews = styled.div`
   max-width: 98%; !important;
   padding-left: 30px;
-  font-family: 'Avenir Next' !important;
 `

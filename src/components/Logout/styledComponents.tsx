@@ -34,7 +34,7 @@ export const Icon = styled(icon)`
 `
 
 export const menuStyle = {
+  marginTop: 15,
   borderRadius: 0,
-  fontFamily: 'Avenir Next',
-  marginTop: 15
+  paddingBottom: 20
 }

@@ -22,7 +22,6 @@ export const Container = styled.div`
 export const Title = styled.div`
   user-select: none;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -30,7 +29,6 @@ export const Title = styled.div`
 export const Option = styled.div`
   user-select: none;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   text-align: right;

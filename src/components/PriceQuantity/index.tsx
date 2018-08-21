@@ -5,8 +5,8 @@ import * as React from 'react'
 import { Container, PriceLabel, QuantityLabel } from './styledComponents'
 
 interface Props {
-  price: number
-  quantity: string
+  price?: number
+  quantity?: string
   index: number
   priceColor?: string
 }

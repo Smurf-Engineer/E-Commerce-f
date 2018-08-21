@@ -25,7 +25,6 @@ export const QuickView = styled.img`
 
 export const Model = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -33,7 +32,6 @@ export const Model = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -49,7 +47,6 @@ export const CenterDiv = styled.div`
 export const Message = styled.div`
   margin-top: 10px;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 21px;
   text-align: center;

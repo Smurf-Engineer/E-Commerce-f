@@ -20,7 +20,6 @@ export const Container = styled.div`
 export const Title = styled.div`
   margin-top: 16;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
 `
@@ -50,7 +49,6 @@ export const Row = styled.div`
 
 export const ModalMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -69,7 +67,6 @@ export const Empty = styled.div`
 
 export const EmptyTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -77,7 +74,6 @@ export const EmptyTitle = styled.div`
 
 export const EmptyMessage = styled.div`
   margin-top: 16px;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
   text-align: center;

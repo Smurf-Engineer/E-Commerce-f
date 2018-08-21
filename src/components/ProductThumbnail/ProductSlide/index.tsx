@@ -39,6 +39,7 @@ interface Props {
   myLockerList?: boolean
   currentCurrency: string
   disableSlider?: boolean
+  customizable?: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -66,7 +67,8 @@ const ProductSlide = ({
   hideQuickView,
   // urlProduct, TODO: WIP new way to right click
   myLockerList,
-  disableSlider = false
+  disableSlider = false,
+  customizable
 }: Props) => {
   if (image) {
     return (
@@ -115,14 +117,15 @@ const ProductSlide = ({
     )
   })
 
-  const buttonToRender =
-    labelButton === 'CUSTOMIZE' ? (
-      <ButtonContainer {...{ myLockerList }} onClick={onPressCustomize}>
-        <CustomizeButton>{labelButton}</CustomizeButton>
-      </ButtonContainer>
-    ) : (
-      labelButton
-    )
+  const buttonToRender = (
+    <ButtonContainer
+      {...{ myLockerList }}
+      onClick={customizable ? onPressCustomize : onPressThumbnail}
+    >
+      <CustomizeButton>{labelButton}</CustomizeButton>
+    </ButtonContainer>
+  )
+
   return (
     <ImageContainer {...{ onMouseEnter, onMouseLeave, isTopProduct }}>
       <ImageTop>

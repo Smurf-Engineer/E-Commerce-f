@@ -11,7 +11,6 @@ export const Container = styled.div``
 export const SignUpLabel = styled.div`
   height: 25px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -20,7 +19,6 @@ export const SignUpLabel = styled.div`
 export const Text = styled.div`
   height: 46px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 23px;
   text-align: center;
@@ -38,7 +36,6 @@ export const OrLabel = styled.div`
   height: 27px;
   margin: 0 24px;
   color: #dadada;
-  font-family: 'Avenir Next';
   font-size: 18px;
   line-height: 25px;
   text-align: center;
@@ -66,7 +63,6 @@ export const NewsLetterText = styled.div`
   height: 22px;
   width: 301.35px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   padding-left: 10px;
@@ -78,7 +74,6 @@ export const CreateAccountContainer = styled.div`
 export const CreateAccountText = styled.div`
   height: 32px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   text-align: center;

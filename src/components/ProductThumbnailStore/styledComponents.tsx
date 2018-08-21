@@ -23,7 +23,6 @@ export const QuickView = styled.img``
 
 export const Type = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: bold;
   line-height: 19px;
@@ -38,7 +37,6 @@ export const Type = styled.div`
 export const Description = styled.div`
   user-select: none;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
   padding 2px 0px;
@@ -62,7 +60,6 @@ export const InfoContainer = styled.div`
 export const Date = styled.div`
   user-select: none;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 16px;
 `

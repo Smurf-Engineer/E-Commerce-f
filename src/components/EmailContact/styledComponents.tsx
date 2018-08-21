@@ -16,7 +16,6 @@ export const Text = styled.div`
 export const Title = styled.div`
   height: 27px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -26,7 +25,6 @@ export const Title = styled.div`
 export const Label = styled.div`
   height: 19px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -37,7 +35,6 @@ export const Label = styled.div`
 export const TitleLabel = styled.div`
   height: 19px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

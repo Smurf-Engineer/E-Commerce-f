@@ -9,6 +9,7 @@ import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../Ratings'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
+import find from 'lodash/find'
 import messages from './messages'
 import {
   AvailablePrices,
@@ -29,7 +30,7 @@ import Spin from 'antd/lib/spin'
 
 import closeIcon from '../../assets/cancel-button.svg'
 import ProductInfo from '../../components/ProductInfo'
-import { QueryProps, Product } from '../../types/common'
+import { QueryProps, Product, PriceRange } from '../../types/common'
 import { QuickViewQuery } from './data'
 import config from '../../config/index'
 
@@ -102,6 +103,7 @@ export class QuickView extends React.Component<Props, State> {
       yotpoAverageScore
     } = product
 
+    const isRetail = retailMen || retailWomen
     // get prices from currency
     const currencyPrices = filter(priceRange, {
       abbreviation: currentCurrency || config.defaultCurrency
@@ -118,6 +120,20 @@ export class QuickView extends React.Component<Props, State> {
           )
       )
 
+    const getRetailPrice = find(currencyPrices, {
+      quantity: 'Personal'
+    }) as PriceRange
+
+    const retailPrice = !loading && (
+      <AvailablePrices>
+        <PriceQuantity
+          index={1}
+          price={getRetailPrice.price}
+          quantity={getRetailPrice.quantity}
+        />
+      </AvailablePrices>
+    )
+
     const productImages = images || []
 
     const imageSlider = loading ? (
@@ -129,8 +145,13 @@ export class QuickView extends React.Component<Props, State> {
         // TODO: filter by gender
         available={5}
         gotoCustomize={this.gotoCustomize}
-        isRetail={(retailMen && retailWomen) || false}
-        {...{ hideSliderButtons, product, productImages, formatMessage }}
+        {...{
+          isRetail,
+          hideSliderButtons,
+          product,
+          productImages,
+          formatMessage
+        }}
       />
     )
 
@@ -206,7 +227,9 @@ export class QuickView extends React.Component<Props, State> {
             </Col>
             <Col span={12}>
               <Title>{name}</Title>
-              <PriceQuantityRow>{renderPrices}</PriceQuantityRow>
+              <PriceQuantityRow>
+                {!isRetail ? renderPrices : retailPrice}
+              </PriceQuantityRow>
               <Ratings
                 stars={5}
                 starDimension={'15px'}

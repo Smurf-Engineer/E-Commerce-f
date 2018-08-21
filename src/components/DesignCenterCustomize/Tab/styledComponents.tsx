@@ -11,7 +11,6 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   line-height: 19px;
   margin-top: 4px;

@@ -46,7 +46,6 @@ export const SideBar = styled.div`
 
 export const AddOneMoreMessage = styled.div`
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -55,7 +54,6 @@ export const AddOneMoreMessage = styled.div`
 
 export const EmptyTitle = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -73,7 +71,6 @@ export const StyledEmptyButton = styled(Button)`
 
 export const EmptyDescription = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -84,7 +81,6 @@ export const EmptyDescription = styled.div`
 
 export const OptionMenu = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -103,7 +99,6 @@ export const Content = styled.div`
 
 export const SummaryTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -134,7 +129,6 @@ export const OrderItem = styled.div`
   margin-bottom: 10px;
 
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -146,7 +140,6 @@ export const TotalOrderItem = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -155,7 +148,6 @@ export const TotalOrderItem = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: 600;
   line-height: 27px;
@@ -175,7 +167,6 @@ export const Title = styled.div`
 
 export const ScreenTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -212,7 +203,6 @@ export const InputWrapper = styled.div`
     height: 40px;
     border-radius: 0;
     color: #bebebe;
-    font-family: 'Avenir Next';
     font-size: 16px;
     line-height: 22px;
   }
@@ -240,7 +230,6 @@ export const CollapseWrapper = styled.div`
     display: flex;
     flex-direction: row;
     color: #5f6062;
-    font-family: Avenir Next;
     font-size: 12px;
     letter-spacing: 0.15px;
     line-height: 16px;
@@ -267,7 +256,6 @@ export const menuStyle = { width: '100%', marginLeft: -24, paddingTop: 52 }
 
 export const DeleteConfirmMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -275,7 +263,6 @@ export const DeleteConfirmMessage = styled.div`
 
 export const OptionalLabel = styled.span`
   color: #5f6062;
-  font-family: inherit;
   font-size: 16px;
   font-style: italic;
   letter-spacing: 0.25px;
@@ -286,7 +273,6 @@ export const OptionalLabel = styled.span`
 export const ProReviewTitle = styled.div`
   margin-top: 25px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -295,7 +281,6 @@ export const ProReviewTitle = styled.div`
 export const PleaseReadLabel = styled.div`
   margin: 16px 0 0;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -305,7 +290,6 @@ export const PleaseReadLabel = styled.div`
 export const ProDesignReviewContent = styled.div`
   margin: 40px 0 55px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -336,7 +320,6 @@ export const ModalButtonsWrapper = styled.div`
 `
 
 export const ContinueButton = styled(Button)`
-  font-family: Avenir Next;
   grid-area: continue;
   border-color: #e61737;
   color: #e61737;
@@ -350,7 +333,6 @@ export const ContinueButton = styled(Button)`
 `
 
 export const ReviewButton = styled(Button)`
-  font-family: Avenir Next;
   grid-area: review;
   height: 50px;
   width: 220px;

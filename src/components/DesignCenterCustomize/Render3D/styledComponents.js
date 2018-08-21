@@ -29,12 +29,12 @@ export const CanvasContainer = styled.div`
 export const Render = styled.div`
   width: 800px;
   height: 600px;
+  cursor: grab;
 `
 
 export const Model = styled.div`
   color: #5f6062;
   user-select: none;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -70,7 +70,6 @@ export const Button = styled(AntdButton)`
 `
 export const DragText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   user-select: none;
   font-size: 14px;
   line-height: 23px;
@@ -91,7 +90,6 @@ export const ModelType = styled.div`
 
 export const ModelText = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   user-select: none;
   font-size: 16px;
   line-height: 22px;
@@ -132,7 +130,6 @@ export const ButtonWrapper = styled.div`
 
 export const ModalMessage = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -152,7 +149,6 @@ export const SizeBox = styled.div`
 
 export const SizeLabel = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -160,7 +156,6 @@ export const SizeLabel = styled.div`
 
 export const Size = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.15px;

@@ -18,7 +18,6 @@ export const Image = styled.img`
 export const Title = styled.div`
   width: 221px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;

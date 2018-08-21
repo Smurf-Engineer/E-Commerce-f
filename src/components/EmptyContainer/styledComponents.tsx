@@ -10,7 +10,6 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 21px;

@@ -23,7 +23,6 @@ export const Text = styled.div`
 
 export const Font = styled.div`
   color: #5f6062;
-  font-family: Avenir Next;
   font-size: 16px;
   padding-top: 4px;
   letter-spacing: 0.11px;

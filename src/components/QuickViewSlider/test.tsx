@@ -8,6 +8,7 @@ import QuickViewSlider from './index'
 describe('<QuickViewSlider />', () => {
   test('renders without exploding', () => {
     const div = document.createElement('div')
+    const format = (message: any) => 'string'
     ReactDOM.render(
       <QuickViewSlider
         productImages={[
@@ -16,6 +17,7 @@ describe('<QuickViewSlider />', () => {
         available={0}
         gotoCustomize={() => {}}
         isRetail={false}
+        formatMessage={format}
       />,
       div
     )

@@ -12,7 +12,6 @@ export const Title = styled.div`
   height: 27px;
   width: 210px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   line-height: 27px;
@@ -22,7 +21,6 @@ export const Text = styled.span`
   height: 42px;
   width: 303.78px;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 21px;
   margin-top: 10px;

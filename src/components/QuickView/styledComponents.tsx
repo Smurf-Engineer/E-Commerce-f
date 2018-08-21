@@ -22,7 +22,6 @@ export const Title = styled.div`
   height: 33px;
   width: 281px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   line-height: 33px;
@@ -65,7 +64,6 @@ export const ProductInfoTitle = styled.div`
   height: 22px;
   width: auto;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -73,7 +71,6 @@ export const ProductInfoTitle = styled.div`
 export const DescriptionContent = styled.div`
   width: 329px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 0px;
@@ -83,7 +80,6 @@ export const DescriptionContent = styled.div`
 export const DetailsContent = styled.div`
   width: 329px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 22px;
   margin-bottom: 0px;

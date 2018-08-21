@@ -8,7 +8,6 @@ export const Container = styled.div``
 
 export const ColorLabel = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;

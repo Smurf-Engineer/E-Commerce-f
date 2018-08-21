@@ -11,7 +11,6 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 24px;
   font-weight: bold;
   letter-spacing: 0.3px;
@@ -39,7 +38,6 @@ export const AnchorButton = styled.div`
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -58,7 +56,6 @@ export const SectionContainder = styled.div`
 
 export const SectionTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -68,7 +65,6 @@ export const SectionTitle = styled.div`
 
 export const SectionSubTitle = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -79,7 +75,6 @@ export const SectionSubTitle = styled.div`
 export const SectionText = styled.div`
   padding: 30px 40px 0;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -144,7 +139,6 @@ export const InputTitleContainer = styled.div`
 `
 export const Label = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -154,7 +148,6 @@ export const ErrorMsg = styled.div`
   height: 16px;
   width: 127.9px;
   color: #e61737;
-  font-family: 'Avenir Next';
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -163,7 +156,6 @@ export const ErrorMsg = styled.div`
 export const FormInfo = styled.div`
   width: 30%;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
@@ -240,7 +232,6 @@ export const ButtonWrapper = styled.div`
 
 export const UploadedFile = styled.div`
   color: #bebebe;
-  font-family: 'Avenir Next';
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 23px;

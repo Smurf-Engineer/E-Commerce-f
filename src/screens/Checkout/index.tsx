@@ -369,7 +369,8 @@ class Checkout extends React.Component<Props, {}> {
                     showCardForm,
                     showCardFormAction,
                     selectCardToPayAction,
-                    selectedCard
+                    selectedCard,
+                    paymentMethod
                   }}
                   showContent={currentStep === PaymentTab}
                   formatMessage={intl.formatMessage}
@@ -660,6 +661,8 @@ class Checkout extends React.Component<Props, {}> {
       unset(cartItem, 'product.productId')
       unset(cartItem, 'product.genderId')
       unset(cartItem, 'product.relatedProducts')
+      unset(cartItem, 'product.template')
+      unset(cartItem, 'product.gender_id')
       forEach(cartItem.product.priceRange, priceRange => {
         unset(priceRange, '__typename')
       })

@@ -37,7 +37,6 @@ export const Categories = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 22px;
 `

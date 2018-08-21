@@ -17,7 +17,6 @@ export const ForgotPasswordLabel = styled.div`
   height: 25px;
   width: 196px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -27,7 +26,6 @@ export const EnterEmailLabel = styled.div`
   height: 42px;
   width: 356px;
   color: #8c8c8c;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 21px;
   text-align: center;
@@ -50,7 +48,6 @@ export const StyledButtonSend = styled(Button)`
 export const ReturnToLogin = styled.div`
   height: 22px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   line-height: 22px;

@@ -8,7 +8,6 @@ import Spin from 'antd/lib/spin'
 import messages from './messages'
 import SeeAllButton from '../SeeAllButton'
 import ProductThumbnail from '../ProductThumbnail'
-import AddToCartButton from '../AddToCartButton'
 import { productsQuery } from './data'
 import { ProductType, QueryProps, Filter } from '../../types/common'
 
@@ -94,15 +93,9 @@ export const ProductHorizontalList = ({
         gender={genderId}
         customizableLabel={formatMessage(messages.customizable)}
         labelButton={
-          customizable ? (
-            formatMessage(messages.customize)
-          ) : (
-            <AddToCartButton
-              label={formatMessage(messages.addToCart)}
-              renderForThumbnail={true}
-              item={{ product }}
-            />
-          )
+          customizable
+            ? formatMessage(messages.customize)
+            : formatMessage(messages.retatil)
         }
       />
     )

@@ -13,7 +13,6 @@ export const Header = styled.div`
 
 export const Title = styled.div`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
@@ -57,7 +56,6 @@ export const Button = styled.div`
   cursor: pointer;
   user-select: none;
   color: #ffffff;
-  font-family: 'Avenir Next';
   font-size: 14px;
   line-height: 19px;
 `
@@ -102,7 +100,6 @@ export const Icon = styled.img`
 export const NotFound = styled.div`
   width: 100%;
   margin-top: 40px;
-  font-family: 'Avenir Next';
   text-align: center;
 `
 

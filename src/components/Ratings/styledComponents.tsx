@@ -13,7 +13,6 @@ export const Text = styled.div`
   height: 23px;
   width: 100.29px;
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 23px;
 `

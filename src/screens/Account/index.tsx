@@ -88,7 +88,7 @@ export class Account extends React.Component<Props, {}> {
     const { option } = queryParams
     if (option) {
       if (option === SCREEN_LOCKER || option === MY_FILES) {
-        setDefaultScreenAction(option, true)
+        setDefaultScreenAction(option)
         return
       }
       setDefaultScreenAction(option)
