@@ -124,22 +124,6 @@ export default defineMessages({
     id: 'screens.JerseyComparison.fondoMaterial3',
     defaultMessage: '• YKK Zipper'
   },
-  fondoPrice1: {
-    id: 'screens.JerseyComparison.fondoPricing1',
-    defaultMessage: '$119'
-  },
-  fondoPrice2: {
-    id: 'screens.JerseyComparison.fondoPrice2',
-    defaultMessage: '$75'
-  },
-  fondoPrice3: {
-    id: 'screens.JerseyComparison.fondoPrice3',
-    defaultMessage: '$69'
-  },
-  fondoPrice4: {
-    id: 'screens.JerseyComparison.fondoPricing4',
-    defaultMessage: '$63'
-  },
   tourTitle: {
     id: 'screens.JerseyComparison.tourTitle',
     defaultMessage: 'TOUR'
@@ -213,22 +197,6 @@ export default defineMessages({
     id: 'screens.JerseyComparison.tourMaterial5',
     defaultMessage: '• Flatlock Stitching'
   },
-  tourPrice1: {
-    id: 'screens.JerseyComparison.tourPricing1',
-    defaultMessage: '$129'
-  },
-  tourPrice2: {
-    id: 'screens.JerseyComparison.tourPrice2',
-    defaultMessage: '$99'
-  },
-  tourPrice3: {
-    id: 'screens.JerseyComparison.tourPrice3',
-    defaultMessage: '$92'
-  },
-  tourPrice4: {
-    id: 'screens.JerseyComparison.tourPricing4',
-    defaultMessage: '$80'
-  },
   novaTitle: {
     id: 'screens.JerseyComparison.tourTitle',
     defaultMessage: 'NOVA'
@@ -297,21 +265,5 @@ export default defineMessages({
   novaMaterial4: {
     id: 'screens.JerseyComparison.novaMaterial4',
     defaultMessage: '• Flatlock Stitching'
-  },
-  novaPrice1: {
-    id: 'screens.JerseyComparison.novaPricing1',
-    defaultMessage: '$129'
-  },
-  novaPrice2: {
-    id: 'screens.JerseyComparison.novaPrice2',
-    defaultMessage: '$99'
-  },
-  novaPrice3: {
-    id: 'screens.JerseyComparison.novaPrice3',
-    defaultMessage: '$92'
-  },
-  novaPrice4: {
-    id: 'screens.JerseyComparison.novaPricing4',
-    defaultMessage: '$80'
   }
 })
