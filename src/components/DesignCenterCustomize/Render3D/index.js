@@ -310,7 +310,6 @@ class Render3D extends PureComponent {
       const imagesElements = []
       const imagesPromises = []
       const { objects } = JSON.parse(object)
-      console.log(objects, 'objetos')
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
@@ -326,8 +325,6 @@ class Render3D extends PureComponent {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
             paths.push(el)
-            console.log(el, 'element')
-            console.log(element, 'path')
             break
           }
           case CanvasElements.Image: {
@@ -412,7 +409,6 @@ class Render3D extends PureComponent {
         const images = []
         loadedTextures.colors = []
         reversedAreas.forEach(({ color, image }) => {
-          console.log(image, 'image')
           loadedTextures.colors.push(color)
           images.push(image)
         })
@@ -1192,18 +1188,20 @@ class Render3D extends PureComponent {
 
   reAddCanvasElement = canvasEl => {
     const {
-      state: { id, type, style, src, path, position }
+      state: { id, type, style, src, position }
     } = canvasEl
     switch (type) {
       case CanvasElements.Path:
-        this.applyClipArt(src, style, position, id)
-        break
+        if (src) {
+          this.applyClipArt(src, style, position, id)
+          break
+        }
+        this.applyClipArtFromOriginal(id, style, position)
       case CanvasElements.Text:
         this.applyText(src, style, position, id)
         break
       case CanvasElements.Image:
-        source = src || path
-        this.applyImage(source, position, id)
+        this.applyImage(src, position, id)
         break
     }
   }
@@ -1312,9 +1310,7 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      console.log(src)
       fabric.loadSVGFromURL(src, (objects, options) => {
-        console.log(options)
         const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
@@ -1357,6 +1353,17 @@ class Render3D extends PureComponent {
     }
   }
 
+  applyClipArtFromOriginal = async (id, style, position) => {
+    const { originalPaths } = this.props
+    const originalPath = find(originalPaths, { id })
+    if (originalPath) {
+      const canvasEl = { ...originalPath, ...style, ...position }
+      const fabricObjects = await this.convertToFabricObjects([canvasEl])
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      this.canvasTexture.renderAll()
+    }
+  }
+
   deleteElement = el => {
     const { canvas } = this.props
     const type = el.get('type')
@@ -1390,9 +1397,6 @@ class Render3D extends PureComponent {
           if (src) {
             canvasObject.src = src
             canvasObject.fileId = fileId
-          } else {
-            const{originalPaths} = this.props
-            console.log(originalPaths)
           }
         }
         break
