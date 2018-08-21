@@ -431,11 +431,15 @@ export const setEditConfigAction = (
 
 export const setLoadedCanvasAction = (
   canvas: CanvasType,
-  paths: any[]
+  paths: any[],
+  reseting = false,
+  accessoriesColor?: AccessoriesColor
 ): AnyAction => ({
   type: SET_LOADED_CANVAS_ACTION,
   canvas,
-  paths
+  paths,
+  reseting,
+  accessoriesColor
 })
 
 export const onCanvasElementDuplicatedAction = (

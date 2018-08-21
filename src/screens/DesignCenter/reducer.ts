@@ -411,7 +411,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('palettes', action.palettes)
     case SET_LOADING_MODEL:
       return state.set('loadingModel', action.loading)
-    case DESIGN_RESET_ACTION:
+    case DESIGN_RESET_ACTION: // FIXME:
       return state.merge({
         colors: state.get('styleColors'),
         stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
@@ -571,7 +571,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         canvas: updatedCanvas,
         selectedElement: '',
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case SET_SELECTED_ELEMENT_ACTION: {
@@ -629,7 +630,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             canvas: updatedCanvas,
             textFormat: newFormat,
             undoChanges: undoChanges.unshift(lastStep),
-            redoChanges: redoChanges.clear()
+            redoChanges: redoChanges.clear(),
+            designHasChanges: true
           })
         }
         return state
@@ -662,7 +664,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         canvas: updatedCanvas,
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
@@ -739,7 +742,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           canvas: updatedCanvas,
           undoChanges: undoChanges.unshift(lastStep),
-          redoChanges: redoChanges.clear()
+          redoChanges: redoChanges.clear(),
+          designHasChanges: true
         })
       }
 
@@ -756,7 +760,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.merge({
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case CANVAS_ELEMENT_ROTATED_ACTION: {
@@ -767,7 +772,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.merge({
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case UPLOAD_FILE_ACTION_SUCCESS: {
@@ -803,7 +809,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state.merge({
             canvas: updatedCanvas,
             undoChanges: undoChanges.unshift(lastStep),
-            redoChanges: redoChanges.clear()
+            redoChanges: redoChanges.clear(),
+            designHasChanges: true
           })
         }
       }
@@ -830,14 +837,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           canvas: updatedCanvas,
           undoChanges: undoChanges.unshift(redoChange),
           redoChanges: redoChanges.shift(),
-          selectedElement: ''
+          selectedElement: '',
+          designHasChanges: true
         })
       }
       return state.merge({
         canvas: updatedCanvas,
         undoChanges: undoChanges.unshift(stepToAdd),
         redoChanges: redoChanges.clear(),
-        selectedElement: ''
+        selectedElement: '',
+        designHasChanges: true
       })
     }
     case SET_UPLOADING_FILE_ACTION:
@@ -868,7 +877,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case SET_LOADED_CANVAS_ACTION: {
       const {
         paths,
-        canvas: { text, path, image }
+        canvas: { text, path, image },
+        reseting,
+        accessoriesColor
       } = action
       const textIds = Object.keys(text)
       const pathIds = Object.keys(path)
@@ -879,7 +890,33 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
         imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
       })
-      return state.merge({ canvas: updatedCanvas, originalPaths: paths })
+      if (!reseting) {
+        return state.merge({
+          canvas: updatedCanvas,
+          originalPaths: paths
+        })
+      }
+      const colors = state.get('styleColors')
+      const {
+        bindingColor,
+        zipperColor,
+        bibBraceColor: bibColor,
+        flatlockColor,
+        flatlockCode
+      } = accessoriesColor
+      const stitchingColor = { name: flatlockCode, value: flatlockColor }
+      return state.merge({
+        canvas: updatedCanvas,
+        colors,
+        undoChanges: [],
+        redoChanges: [],
+        openResetDesignModal: false,
+        designHasChanges: false,
+        stitchingColor: fromJS(stitchingColor),
+        bindingColor,
+        zipperColor,
+        bibColor
+      })
     }
     default:
       return state

@@ -113,7 +113,12 @@ interface Props {
     elementType: CanvasObjects,
     oldId?: string
   ) => void
-  onSetCanvasObject: (el: CanvasType, paths: any[]) => void
+  onSetCanvasObject: (
+    el: CanvasType,
+    paths: any[],
+    reseting: boolean,
+    accessoriesColor?: AccessoriesColor
+  ) => void
   onSetEditConfig: (
     colors: string[],
     accessoriesColor: AccessoriesColor,

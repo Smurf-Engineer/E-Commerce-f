@@ -224,7 +224,12 @@ interface Props extends RouteComponentProps<any> {
     elementType: CanvasObjects,
     oldId?: string
   ) => void
-  setLoadedCanvasAction: (canvas: CanvasType, paths: any[]) => void
+  setLoadedCanvasAction: (
+    canvas: CanvasType,
+    paths: any[],
+    reseting: boolean,
+    accessoriesColor?: AccessoriesColor
+  ) => void
   setEditConfigAction: (
     colors: string[],
     accessoriesColor: AccessoriesColor,

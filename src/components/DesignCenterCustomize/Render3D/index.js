@@ -299,7 +299,7 @@ class Render3D extends PureComponent {
       }
     })
 
-  loadCanvasTexture = async object => {
+  loadCanvasTexture = async (object, reseting) => {
     try {
       const { onSetCanvasObject } = this.props
       const canvas = { text: {}, image: {}, path: {} }
@@ -348,6 +348,15 @@ class Render3D extends PureComponent {
       })
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
+      if (reseting) {
+        const { currentStyle } = this.props
+        onSetCanvasObject(
+          canvas,
+          paths,
+          reseting,
+          currentStyle.accessoriesColor
+        )
+      }
       onSetCanvasObject(canvas, paths)
       this.canvasTexture.renderAll()
     } catch (e) {
@@ -1009,8 +1018,15 @@ class Render3D extends PureComponent {
   }
 
   onReset = () => {
+    const { isEditing, design, onResetAction, currentStyle } = this.props
     this.canvasTexture.clear()
-    this.props.onResetAction()
+    if (!isEditing) {
+      onResetAction()
+      return
+    }
+    if (design && design.canvasJson) {
+      this.loadCanvasTexture(design.canvasJson, true)
+    }
   }
 
   handleOnClickClear = () => this.props.onClearAction()
