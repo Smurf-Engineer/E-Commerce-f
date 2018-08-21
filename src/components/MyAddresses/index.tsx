@@ -20,6 +20,7 @@ import { QueryProps, AddressType } from '../../types/common'
 import messages from './messages'
 import { addAddressMutation, updateAddressMutation } from './data'
 import { GetAddressListQuery } from '../MyAddressesList/data'
+import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
 interface Data extends QueryProps {
   addresses: AddressType[]
@@ -244,6 +245,7 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       resetReducerDataAction,
       validFormAction
     } = this.props
+
     const error =
       !firstName ||
       !lastName ||
@@ -252,11 +254,15 @@ class MyAddresses extends React.PureComponent<Props, {}> {
       !stateProvince ||
       !city ||
       !zipCode ||
-      !phone
+      !phone ||
+      isPoBox(street) ||
+      isApoCity(city)
+
     if (error) {
       validFormAction(error)
       return
     }
+
     const isUpdatingAddress = addressIdToMutate !== -1
     const address = {
       id: isUpdatingAddress ? addressIdToMutate : undefined,

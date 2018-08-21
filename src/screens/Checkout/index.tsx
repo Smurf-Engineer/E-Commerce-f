@@ -21,7 +21,7 @@ import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
 import { CheckoutTabs } from './constants'
 import MediaQuery from 'react-responsive'
-import { isPoBox } from '../../utils/utilsAddressVaidation'
+import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
 import {
   Container,
@@ -474,7 +474,8 @@ class Checkout extends React.Component<Props, {}> {
       !city ||
       !zipCode ||
       !phone ||
-      isPoBox(street)
+      isPoBox(street) ||
+      isApoCity(city)
 
     if (error) {
       validFormAction(error)
