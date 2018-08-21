@@ -31,5 +31,13 @@ export default defineMessages({
   loginMessage: {
     id: 'components.UploadTab.loginMessage',
     defaultMessage: 'Log in to upload an image'
+  },
+  confirmTitle: {
+    id: 'components.MyFiles.modalTitle',
+    defaultMessage: 'ARE YOU SURE?'
+  },
+  confirmMessage: {
+    id: 'components.MyFiles.imageMessage',
+    defaultMessage: `You're about to delete this image`
   }
 })

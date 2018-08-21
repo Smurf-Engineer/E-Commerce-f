@@ -502,6 +502,8 @@ export interface OrderDetailsInfo {
   cart: CartItems[]
   status: string
   currency: Currency
+  taxAmount: number
+  shippingAmount: number
 }
 
 export interface OrderDataInfo {

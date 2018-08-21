@@ -107,12 +107,13 @@ export class OrderDetails extends React.Component<Props, {}> {
       billingStateProvince,
       billingCity,
       billingZipCode,
-      shippingTax,
       netsuit,
       payment: { stripeCharge },
       cart,
       status,
-      currency
+      currency,
+      taxAmount,
+      shippingAmount
     } = data.orderQuery
 
     const deliveryDate =
@@ -237,10 +238,10 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderDelivery>
           <OrderSummaryContainer>
             <OrderSummary
-              total={totalSum + shippingTax}
+              total={totalSum + shippingAmount + taxAmount}
               subtotal={totalSum}
-              shipping={shippingTax}
-              taxes={0} // TODO: get
+              shipping={shippingAmount}
+              taxes={taxAmount}
               discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}

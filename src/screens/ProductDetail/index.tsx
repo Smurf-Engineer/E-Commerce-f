@@ -36,7 +36,7 @@ import {
   SectionButtonsContainer,
   SectionButton,
   SizeRowTitleRow,
-  GetFittedLabel,
+  // GetFittedLabel, TODO: hide get fitted for Jakroo phase I
   QuestionSpan,
   RelatedProductsContainer,
   ReviewsHeader,
@@ -349,9 +349,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             <SectionTitle>{formatMessage(messages.sizeLabel)}</SectionTitle>
             <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
           </SectionTitleContainer>
-          <GetFittedLabel onClick={this.gotoGetFittedPage}>
+          {/* TODO: Hide get fitted for Jakroo phase I
+            <GetFittedLabel onClick={this.gotoGetFittedPage}>
             {formatMessage(messages.getFittedLabel)}
-          </GetFittedLabel>
+          </GetFittedLabel> */}
         </SizeRowTitleRow>
         <SectionButtonsContainer>{availableSizes}</SectionButtonsContainer>
       </SectionRow>
