@@ -23,6 +23,12 @@ import {
 import Layout from '../../components/MainLayout'
 import jerseysInfo from './jerseysInfo'
 
+const jerseys = [
+  { name: 'FONDO', id: 7 },
+  { name: 'TOUR', id: 17 },
+  { name: 'NOVA', id: 11 }
+]
+
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
 }
@@ -48,8 +54,13 @@ export class JerseyComparison extends React.Component<Props, {}> {
 
     const mainJerseys = jerseysInfo.map(({ title, image, message }, i) => (
       <Column key={i}>
-        <Title>{formatMessage(title)}</Title>
-        <StyledImage src={image} />
+        <Title onClick={() => this.handleOnClickJersey(title.defaultMessage)}>
+          {formatMessage(title)}
+        </Title>
+        <StyledImage
+          src={image}
+          onClick={() => this.handleOnClickJersey(title.defaultMessage)}
+        />
         <Text>{formatMessage(message)}</Text>
       </Column>
     ))
@@ -123,6 +134,19 @@ export class JerseyComparison extends React.Component<Props, {}> {
         </Container>
       </Layout>
     )
+  }
+
+  handleOnClickJersey = (title: string) => {
+    const {
+      history: { push }
+    } = this.props
+
+    const jersey = jerseys.find(
+      ({ name }) => name.toLowerCase() === title.toLowerCase()
+    )
+    const id = jersey && jersey.id
+
+    push(`/product?id=${id}&yotpoId=${title.toLowerCase()}`)
   }
 }
 

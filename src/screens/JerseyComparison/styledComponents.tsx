@@ -12,15 +12,19 @@ export const Container = styled.div`
 `
 
 export const Title = styled.div`
-  width: 100%;
-  height: 33px;
   color: #5f6062;
   font-size: 24px;
   font-weight: bold;
+  height: 33px;
   letter-spacing: 0.3px;
   line-height: 33px;
   margin: 24px 0;
   text-align: center;
+  width: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const Subtitle = styled.div`
@@ -97,6 +101,10 @@ export const PriceColumn = styled.div`
 
 export const StyledImage = styled.img`
   object-fit: contain;
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const PriceTitlesContainer = styled.div`
