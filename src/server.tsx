@@ -32,39 +32,42 @@ server
     const client = configureServerClient()
     const location = req.url
     const context = {}
+    const store = configureStore()
+    const { dispatch } = store
 
-    if (location === '/') {
-      try {
-        const resultFetch = await fetch(
-          `${config.graphqlUriBase}region?ip=${req.ip}`
-        )
-        const json: Region = await resultFetch.json()
-        res.redirect(
-          `/${json.code}?lang=${json.lang}&currency=${json.currency}`
-        )
-      } catch (error) {
-        const locale = {
-          region: 'global',
-          code: 'us',
-          lang: 'en',
-          currency: 'usd'
-        }
-        res.redirect(
-          `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
-        )
-      }
-      return
+    let locale: Region = {
+      region: 'global',
+      code: 'us',
+      lang: 'en',
+      currency: 'usd'
     }
 
-    const store = configureStore()
+    try {
+      const resultFetch = await fetch(
+        `${config.graphqlUriBase}region?ip=${req.ip}`
+      )
+      locale = await resultFetch.json()
+    } catch (error) {
+      console.error(error)
+    }
+
+    if (location === '/') {
+      res.redirect(
+        `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
+      )
+      return
+    }
 
     const parser = new UAParser(req.headers['user-agent'] as string)
     const ua = parser.getResult()
 
-    const { dispatch } = store
     const mobileDetect = mobileParser(req)
     dispatch(setMobileDetect(mobileDetect))
-    dispatch({ type: SET_USER_AGENT_ACTION, client: ua })
+    dispatch({
+      type: SET_USER_AGENT_ACTION,
+      client: ua,
+      country: locale.code
+    })
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
