@@ -68,18 +68,17 @@ export class JerseyComparison extends React.Component<Props, {}> {
       </InfoText>
     ))
 
-    const mainJerseys = jerseysInfo.map(({ title, image, message }, i) => (
-      <Column key={i}>
-        <Title onClick={this.handleOnClickJersey(title.defaultMessage)}>
-          {formatMessage(title)}
-        </Title>
-        <StyledImage
-          src={image}
-          onClick={this.handleOnClickJersey(title.defaultMessage)}
-        />
-        <Text>{formatMessage(message)}</Text>
-      </Column>
-    ))
+    const mainJerseys = jerseysInfo.map(({ title, image, message }, i) => {
+      const msg = formatMessage(title)
+
+      return (
+        <Column key={i}>
+          <Title onClick={this.handleOnClickJersey(msg)}>{msg}</Title>
+          <StyledImage src={image} onClick={this.handleOnClickJersey(msg)} />
+          <Text>{formatMessage(message)}</Text>
+        </Column>
+      )
+    })
     const detailsJerseys = jerseysInfo.map(({ details }, i) => (
       <Column key={i}>
         {details.map((detail, index) => (
