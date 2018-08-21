@@ -17,6 +17,7 @@ import {
   StyledImg,
   DescriptionItem,
   ItemsContainer,
+  PeopleContainer,
   ItemTitle,
   ItemContent,
   SectionContainer,
@@ -242,7 +243,7 @@ export class AboutUsPage extends React.Component<Props, {}> {
             <MeetTitle>
               <FormattedMessage {...messages.meetTitle} />
             </MeetTitle>
-            <ItemsContainer>{peopleList}</ItemsContainer>
+            <PeopleContainer>{peopleList}</PeopleContainer>
           </SectionContainer>
           <Divider />
           <MeetTitle>

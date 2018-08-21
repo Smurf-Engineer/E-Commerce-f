@@ -23,12 +23,12 @@ export const StyledImg = styled.img`
 `
 
 export const Title = styled.div`
+  align-self: flex-end;
   color: #ffffff;
   font-size: 48px;
   font-weight: bold;
   letter-spacing: 0.61px;
   line-height: 66px;
-  align-self: flex-end;
   text-align: right;
 
   @media (min-width: 320px) and (max-width: 767px) {
@@ -39,21 +39,20 @@ export const Title = styled.div`
 `
 
 export const HeaderTextContainer = styled.div`
+  align-items: flex-end;
+  bottom: 108px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  align-items: flex-end;
-
-  text-align: right;
-  width: 50%;
-
   margin: 0px;
   position: absolute;
-  bottom: 70px;
   right: 36px;
+  text-align: right;
 
-  @media (min-width: 320px) and (max-width: 815px) {
-    right: 5px;
+  @media (min-width: 320px) and (max-width: 767px) {
+    margin-top: -100px;
+    margin-left: -2px;
+    position: initial;
     width: 100%;
   }
 `
@@ -85,15 +84,14 @@ export const DescriptionItem = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-  /* width: 20%; */
 `
 
 export const ItemTitle = styled.div`
   color: #5f6062;
   font-size: 16px;
+  font-weight: bold;
   letter-spacing: 0.11px;
   line-height: 23px;
-  font-weight: bold;
 `
 
 export const ItemContent = styled.div`
@@ -103,7 +101,19 @@ export const ItemContent = styled.div`
   line-height: 23px;
   width: 217px;
 `
+export const PeopleContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  padding: 30px;
+  margin-top: 50px;
 
+  @media (max-width: 659px) {
+    justify-content: center;
+  }
+`
 export const ItemsContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -112,6 +122,17 @@ export const ItemsContainer = styled.div`
   width: 100%;
   padding: 30px;
   margin-top: 50px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 30px 10px;
+    margin-top: 0px;
+  }
+
+  @media (max-width: 493px) {
+    div {
+      width: 100%;
+    }
+  }
 `
 export const SectionContainer = styled.div`
   max-width: 1024px;
@@ -133,7 +154,6 @@ export const PeopleItem = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 20px;
-  /* width: 20%; */
 `
 
 export const PeopleImage = styled.img`
@@ -219,54 +239,68 @@ export const LineText = styled.div`
   font-size: 18px;
   letter-spacing: 0.13px;
   line-height: 25px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 0 auto;
+  }
 `
 
 export const MapTextContainer = styled.div`
+  align-items: flex-start;
+  background-color: #e61737;
+  bottom: 400px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-
+  margin: 0px;
+  padding: 22px;
+  position: absolute;
+  right: 0px;
   text-align: left;
   width: 374px;
-  padding: 22px;
-
-  margin: 0px;
-  position: absolute;
-  bottom: 400px;
-  right: 0px;
-
-  background-color: #e61737;
 
   @media (min-width: 320px) and (max-width: 480px) {
+    bottom: 0px;
     width: 100%;
   }
 `
 
 export const HeaderDialog = styled.div`
+  align-items: flex-start;
+  background-color: #ffffff;
+  bottom: -80px;
+  color: #5f6062;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  text-align: left;
-  width: 50%;
+  font-size: 16px;
   height: 150px;
-  padding: 22px;
-
-  margin: 0px;
-  position: absolute;
-  bottom: -80px;
-  right: 0px;
-
-  color: #5f6062;
-  font-size: 18px;
+  justify-content: center;
   letter-spacing: 0.2px;
   line-height: 25px;
+  margin: 0px;
+  padding: 22px;
+  position: absolute;
+  right: 0px;
+  text-align: left;
+  width: 81%;
 
-  background-color: #ffffff;
+  @media (max-width: 480px) {
+    padding: 0px 10px 0px;
+  }
 
-  @media (min-width: 320px) and (max-width: 767px) {
+  @media (min-width: 481px) and (max-width: 767px) {
+    padding: 40px 32px 0px;
+  }
+
+  @media (max-width: 767px) {
+    height: initial;
+    margin-top: 5%;
+    position: initial;
     width: 100%;
+  }
+
+  @media (min-width: 1440px) {
+    padding-left: 5%;
+    width: 50%;
   }
 `
