@@ -113,10 +113,9 @@ interface Props {
     elementType: CanvasObjects,
     oldId?: string
   ) => void
-  onSetCanvasObject: (
-    el: CanvasType,
-    paths: any[],
-    reseting: boolean,
+  onSetCanvasObject: (el: CanvasType, paths: any[]) => void
+  onResetEditing: (
+    canvas: CanvasType,
     accessoriesColor?: AccessoriesColor
   ) => void
   onSetEditConfig: (
@@ -201,7 +200,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       isEditing,
       onSetEditConfig,
       onSetCanvasObject,
-      originalPaths
+      originalPaths,
+      onResetEditing
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -306,7 +306,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectPalette,
               onSetEditConfig,
               onSetCanvasObject,
-              originalPaths
+              originalPaths,
+              onResetEditing
             }}
           />
         ) : (

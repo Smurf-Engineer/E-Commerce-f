@@ -58,7 +58,8 @@ import {
   SET_LOADED_CANVAS_ACTION,
   SAVE_DESIGN_CHANGES_LOADING,
   CANVAS_ELEMENT_DUPLICATED_ACTION,
-  CanvasElements
+  CanvasElements,
+  DESIGN_RESET_EDITING_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -431,15 +432,11 @@ export const setEditConfigAction = (
 
 export const setLoadedCanvasAction = (
   canvas: CanvasType,
-  paths: any[],
-  reseting = false,
-  accessoriesColor?: AccessoriesColor
+  paths: any[]
 ): AnyAction => ({
   type: SET_LOADED_CANVAS_ACTION,
   canvas,
-  paths,
-  reseting,
-  accessoriesColor
+  paths
 })
 
 export const onCanvasElementDuplicatedAction = (
@@ -451,4 +448,13 @@ export const onCanvasElementDuplicatedAction = (
   canvasEl,
   elementType,
   oldId
+})
+
+export const onResetEditingAction = (
+  canvas: CanvasType,
+  accessoriesColor?: AccessoriesColor
+): AnyAction => ({
+  type: DESIGN_RESET_EDITING_ACTION,
+  canvas,
+  accessoriesColor
 })

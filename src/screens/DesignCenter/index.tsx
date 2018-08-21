@@ -224,10 +224,9 @@ interface Props extends RouteComponentProps<any> {
     elementType: CanvasObjects,
     oldId?: string
   ) => void
-  setLoadedCanvasAction: (
+  setLoadedCanvasAction: (canvas: CanvasType, paths: any[]) => void
+  onResetEditingAction: (
     canvas: CanvasType,
-    paths: any[],
-    reseting: boolean,
     accessoriesColor?: AccessoriesColor
   ) => void
   setEditConfigAction: (
@@ -496,6 +495,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       onCanvasElementDuplicatedAction,
       setEditConfigAction,
       setLoadedCanvasAction,
+      onResetEditingAction,
       originalPaths
     } = this.props
     const { formatMessage } = intl
@@ -767,6 +767,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onReApplyImageEl={onReApplyImageElementAction}
                 onSetEditConfig={setEditConfigAction}
                 onSetCanvasObject={setLoadedCanvasAction}
+                onResetEditing={onResetEditingAction}
               />
             )}
             <PreviewTab

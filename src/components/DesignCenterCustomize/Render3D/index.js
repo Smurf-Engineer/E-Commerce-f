@@ -349,15 +349,11 @@ class Render3D extends PureComponent {
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       if (reseting) {
-        const { currentStyle } = this.props
-        onSetCanvasObject(
-          canvas,
-          paths,
-          reseting,
-          currentStyle.accessoriesColor
-        )
+        const { currentStyle, onResetEditing } = this.props
+        onResetEditing(canvas, currentStyle.accessoriesColor)
+      } else {
+        onSetCanvasObject(canvas, paths)
       }
-      onSetCanvasObject(canvas, paths)
       this.canvasTexture.renderAll()
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
@@ -1757,6 +1753,7 @@ class Render3D extends PureComponent {
               activeEl.height / 2
             )
             this.canvasTexture.renderAll()
+            break
           }
           default:
             break

@@ -54,15 +54,16 @@ import {
   CANVAS_ELEMENT_TEXT_CHANGED,
   REAPPLY_CANVAS_IMAGE_ACTION,
   SET_EDIT_DESIGN_CONFIG_ACTION,
+  SET_LOADED_CANVAS_ACTION,
+  SAVE_DESIGN_CHANGES_LOADING,
+  CANVAS_ELEMENT_DUPLICATED_ACTION,
+  DESIGN_RESET_EDITING_ACTION,
   Changes,
   CanvasElements,
   WHITE,
   BLACK,
   AccessoryColors,
-  ElementsToApplyScale,
-  SET_LOADED_CANVAS_ACTION,
-  SAVE_DESIGN_CHANGES_LOADING,
-  CANVAS_ELEMENT_DUPLICATED_ACTION
+  ElementsToApplyScale
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_COLOR } from '../../constants'
@@ -875,27 +876,16 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_LOADED_CANVAS_ACTION: {
-      const {
-        paths,
-        canvas: { text, path, image },
-        reseting,
-        accessoriesColor
-      } = action
-      const textIds = Object.keys(text)
-      const pathIds = Object.keys(path)
-      const imageds = Object.keys(image)
-      const canvas = state.get('canvas')
-      const updatedCanvas = canvas.withMutations((map: any) => {
-        textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
-        pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
-        imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+      const { paths, canvas } = action
+      const updatedCanvas = getCanvas(state, canvas)
+      return state.merge({
+        canvas: updatedCanvas,
+        originalPaths: paths
       })
-      if (!reseting) {
-        return state.merge({
-          canvas: updatedCanvas,
-          originalPaths: paths
-        })
-      }
+    }
+    case DESIGN_RESET_EDITING_ACTION: {
+      const { canvas, accessoriesColor } = action
+      const updatedCanvas = getCanvas(state, canvas)
       const colors = state.get('styleColors')
       const {
         bindingColor,
@@ -992,4 +982,18 @@ const changeTextCanvasElement = (
   const text = newTextToApply ? newText : oldText
   const canvasElement = canvas.getIn([CanvasElements.Text, id])
   return canvas.setIn([CanvasElements.Text, id], { ...canvasElement, text })
+}
+
+const getCanvas = (state: any, canvasToSet: any) => {
+  const { text, path, image } = canvasToSet
+  const textIds = Object.keys(text)
+  const pathIds = Object.keys(path)
+  const imageds = Object.keys(image)
+  const canvas = state.get('canvas')
+  const updatedCanvas = canvas.withMutations((map: any) => {
+    textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
+    pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
+    imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+  })
+  return updatedCanvas
 }
