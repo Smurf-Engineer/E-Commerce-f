@@ -12,7 +12,6 @@ import {
   ProductsContainer
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
-import AddToCartButton from '../AddToCartButton'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import { Product } from '../../types/common'
 
@@ -64,15 +63,9 @@ export class RelatedProducts extends React.Component<Props, {}> {
           onPressCustomize={this.handleOnCustomize}
           customizableLabel={formatMessage(messages.customizableLabel)}
           labelButton={
-            customizable ? (
-              formatMessage(messages.customize)
-            ) : (
-              <AddToCartButton
-                label={formatMessage(messages.addToCart)}
-                renderForThumbnail={true}
-                item={{ product }}
-              />
-            )
+            customizable
+              ? formatMessage(messages.customize)
+              : formatMessage(messages.viewFullDetailsLabel)
           }
         />
       )

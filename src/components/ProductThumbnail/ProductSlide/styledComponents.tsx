@@ -7,10 +7,9 @@ export const ImageContainer = styled.div`
   user-select: none;
   position: relative;
   cursor: pointer;
-  background-color: #f1f4f5;
   height: 214.13px;
-  width: 220px;
-  padding: 10px;
+  width: 100%;
+  padding: 10px 0;
   text-align: center;
 
   @media (min-width: 321px) and (max-width: 480px) {
@@ -97,7 +96,7 @@ export const Arrows = styled.div`
   flex-direction: row;
   position: absolute;
   top: 110px;
-  width: 200px;
+  width: 100%;
   justify-content: space-between;
 `
 
@@ -111,7 +110,7 @@ export const ButtonContainer = styled.div`
   user-select: none;
   display: flex;
   position: absolute;
-  width: 200px;
+  width: 100%;
   justify-content: center;
   top: ${({ myLockerList }: ButtonContainerProps) =>
     myLockerList ? '140px' : '170px'};
