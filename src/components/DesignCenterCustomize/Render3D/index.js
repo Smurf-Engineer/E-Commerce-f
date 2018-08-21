@@ -304,33 +304,33 @@ class Render3D extends PureComponent {
     try {
       const { onSetCanvasObject } = this.props
       const canvas = { text: {}, image: {}, path: {} }
-      const elements = []
+      let elements = []
+      const paths = []
       const imagesElements = []
       const imagesPromises = []
       const { objects } = JSON.parse(object)
+      console.log(objects, 'objetos')
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
         el.hasRotatingPoint = false
-        // console.log(el, 'element')
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
             const element = getTextCanvasElement(el)
             canvas.text[elId] = element
-            // console.log(element, 'text')
             break
           }
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
-            elements.push(el)
-            // console.log(element, 'path')
+            paths.push(el)
+            console.log(el, 'element')
+            console.log(element, 'path')
             break
           }
           case CanvasElements.Image: {
             const element = getImageCanvas(el)
-            // console.log(element, 'image')
             canvas.image[elId] = element
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
@@ -340,24 +340,19 @@ class Render3D extends PureComponent {
             break
         }
       }
+      elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
         images = await Promise.all(imagesPromises)
       }
-      // console.log(images[0], 'imagenessssss')
-      // console.log(elements, 'elementoosssss')
-      // FIXME: HERE
-
       images.forEach((img, index) => {
         const config = imagesElements[index] || {}
         const imageEl = new fabric.Image(img, { ...config })
-        console.log(imageEl, 'image')
         this.canvasTexture.add(imageEl)
       })
       const fabricObjects = await this.convertToFabricObjects(elements)
-      console.log(fabricObjects, 'elements converted')
       fabricObjects.forEach(o => this.canvasTexture.add(o))
-      onSetCanvasObject(canvas)
+      onSetCanvasObject(canvas, paths)
       this.canvasTexture.renderAll()
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
@@ -1192,7 +1187,7 @@ class Render3D extends PureComponent {
 
   reAddCanvasElement = canvasEl => {
     const {
-      state: { id, type, style, src, position }
+      state: { id, type, style, src, path, position }
     } = canvasEl
     switch (type) {
       case CanvasElements.Path:
@@ -1202,8 +1197,8 @@ class Render3D extends PureComponent {
         this.applyText(src, style, position, id)
         break
       case CanvasElements.Image:
-        console.log(canvasEl)
-        this.applyImage(src, position, id)
+        source = src || path
+        this.applyImage(source, position, id)
         break
     }
   }
@@ -1304,7 +1299,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyClipArt = (url, style = {}, position = {}, idElement, fileId) => {
+  applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
@@ -1312,7 +1307,9 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects, options) => {
+      console.log(src)
+      fabric.loadSVGFromURL(src, (objects, options) => {
+        console.log(options)
         const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
@@ -1341,9 +1338,9 @@ class Render3D extends PureComponent {
         this.canvasTexture.add(shape)
         if (!idElement) {
           el.fileId = fileId
-          el.src = url
+          el.src = src
           onApplyCanvasEl(el, CanvasElements.Path, false, {
-            src: url,
+            src,
             style,
             position,
             fileId
@@ -1379,21 +1376,24 @@ class Render3D extends PureComponent {
         {
           const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
           const object = canvas.path[id]
-          if (!object) break //FIXME: add delete when editing
           const { fileId, src } = object
-          canvasObject.src = src
           canvasObject.style = {
             fill,
             stroke,
             strokeWidth
           }
-          canvasObject.fileId = fileId
+          if (src) {
+            canvasObject.src = src
+            canvasObject.fileId = fileId
+          } else {
+            const{originalPaths} = this.props
+            console.log(originalPaths)
+          }
         }
         break
       case CanvasElements.Image:
         {
           const object = canvas.image[id]
-          if (!object) break //FIXME: add delete when editing
           const { src, fileId, imageSize, type } = object
           canvasObject.src = { id: fileId, fileUrl: src, size: imageSize, type }
           canvasObject.fileId = fileId

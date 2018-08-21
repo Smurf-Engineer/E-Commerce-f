@@ -105,6 +105,7 @@ export const initialState = fromJS({
     image: {},
     path: {}
   },
+  originalPaths: [],
   textFormat: {
     fontFamily: 'Avenir',
     stroke: '#000',
@@ -552,7 +553,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case REAPPLY_CANVAS_IMAGE_ACTION: {
       const { el } = action
-      console.log(el)
       return state.setIn(['canvas', CanvasElements.Image, el.id], el)
     }
     case REMOVE_CANVAS_ELEMENT_ACTION: {
@@ -867,6 +867,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_LOADED_CANVAS_ACTION: {
       const {
+        paths,
         canvas: { text, path, image }
       } = action
       const textIds = Object.keys(text)
@@ -878,7 +879,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
         imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
       })
-      return state.set('canvas', updatedCanvas)
+      return state.merge({ canvas: updatedCanvas, originalPaths: paths })
     }
     default:
       return state
@@ -890,7 +891,7 @@ export default designCenterReducer
 const addCanvasElement = (state: any, canvasToAdd: Change) => {
   const canvas = state.get('canvas')
   const {
-    state: { id, src, style, position, type: canvasType, fileId }
+    state: { id, src, path, style, position, type: canvasType, fileId }
   } = canvasToAdd
   let canvasObject
   switch (canvasType) {
@@ -906,7 +907,8 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
         strokeWidth,
         ...position,
         fileId,
-        src
+        src,
+        path
       }
       break
     case CanvasElements.Image:

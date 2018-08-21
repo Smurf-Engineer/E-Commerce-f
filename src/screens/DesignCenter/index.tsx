@@ -145,6 +145,7 @@ interface Props extends RouteComponentProps<any> {
   savedDesign: SaveDesignType
   user: object
   responsive: Responsive
+  originalPaths: any[]
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -223,7 +224,7 @@ interface Props extends RouteComponentProps<any> {
     elementType: CanvasObjects,
     oldId?: string
   ) => void
-  setLoadedCanvasAction: (canvas: CanvasType) => void
+  setLoadedCanvasAction: (canvas: CanvasType, paths: any[]) => void
   setEditConfigAction: (
     colors: string[],
     accessoriesColor: AccessoriesColor,
@@ -489,7 +490,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       onReApplyImageElementAction,
       onCanvasElementDuplicatedAction,
       setEditConfigAction,
-      setLoadedCanvasAction
+      setLoadedCanvasAction,
+      originalPaths
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -499,10 +501,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       StyleTab: StyleTabIndex
     } = DesignTabs
 
-    console.log('-----------undo-----------')
-    console.log(undoChanges)
-    console.log('-----------redo-----------')
-    console.log(redoChanges)
+    // console.log('-----------undo-----------')
+    // console.log(undoChanges)
+    // console.log('-----------redo-----------')
+    // console.log(redoChanges)
     console.log('-----------canvas-----------')
     console.log(canvas)
     console.log('---------------------------')
@@ -730,7 +732,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   setSearchClipParamAction,
                   designHasChanges,
                   isUserAuthenticated,
-                  isEditing
+                  isEditing,
+                  originalPaths
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}

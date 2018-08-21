@@ -98,12 +98,13 @@ export const getClipArtCanvasElement = el => {
 }
 
 export const getImageCanvas = el => {
-  const { id, scaleX, scaleY, width, height } = el
+  const { id, scaleX, scaleY, width, height, src } = el
   const element = {
     id,
     scaleX,
     scaleY,
-    imageSize: { width, height }
+    imageSize: { width, height },
+    src
   }
   return element
 }

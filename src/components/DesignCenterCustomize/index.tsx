@@ -69,6 +69,7 @@ interface Props {
   designHasChanges: boolean
   isUserAuthenticated: boolean
   isEditing: boolean
+  originalPaths: any[]
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -112,7 +113,7 @@ interface Props {
     elementType: CanvasObjects,
     oldId?: string
   ) => void
-  onSetCanvasObject: (el: CanvasType) => void
+  onSetCanvasObject: (el: CanvasType, paths: any[]) => void
   onSetEditConfig: (
     colors: string[],
     accessoriesColor: AccessoriesColor,
@@ -194,7 +195,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       isUserAuthenticated,
       isEditing,
       onSetEditConfig,
-      onSetCanvasObject
+      onSetCanvasObject,
+      originalPaths
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -298,7 +300,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               isEditing,
               onSelectPalette,
               onSetEditConfig,
-              onSetCanvasObject
+              onSetCanvasObject,
+              originalPaths
             }}
           />
         ) : (

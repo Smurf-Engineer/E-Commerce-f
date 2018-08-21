@@ -429,9 +429,13 @@ export const setEditConfigAction = (
   savedDesignId
 })
 
-export const setLoadedCanvasAction = (canvas: CanvasType): AnyAction => ({
+export const setLoadedCanvasAction = (
+  canvas: CanvasType,
+  paths: any[]
+): AnyAction => ({
   type: SET_LOADED_CANVAS_ACTION,
-  canvas
+  canvas,
+  paths
 })
 
 export const onCanvasElementDuplicatedAction = (
