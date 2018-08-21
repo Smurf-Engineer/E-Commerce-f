@@ -501,14 +501,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       StyleTab: StyleTabIndex
     } = DesignTabs
 
-    // console.log('-----------undo-----------')
-    // console.log(undoChanges)
-    // console.log('-----------redo-----------')
-    // console.log(redoChanges)
-    // console.log('-----------canvas-----------')
-    // console.log(canvas)
-    // console.log('---------------------------')
-
     const redirect = <Redirect to={DEFAULT_ROUTE} />
 
     /**

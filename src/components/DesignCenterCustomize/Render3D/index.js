@@ -9,7 +9,6 @@ import { FormattedMessage } from 'react-intl'
 // import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -59,7 +58,6 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE,
   DEFAULT_COLOR
 } from '../../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
