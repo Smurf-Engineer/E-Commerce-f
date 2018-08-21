@@ -21,6 +21,8 @@ import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation } from './data'
 import { CheckoutTabs } from './constants'
 import MediaQuery from 'react-responsive'
+import { isPoBox } from '../../utils/utilsAddressVaidation'
+
 import {
   Container,
   Content,
@@ -463,12 +465,6 @@ class Checkout extends React.Component<Props, {}> {
       validFormAction
     } = this.props
 
-    const poboxRegex = new RegExp('[PO.]*\\s?B(ox)?.*\\d+', 'i')
-    const isPoBox = !!street.match(poboxRegex)
-    // TODO: APO regex
-    // const apoRegex = new RegExp('[APO.]\\s\\d+', 'i')
-    // const apo = street.match(apoRegex)
-
     const error =
       !firstName ||
       !lastName ||
@@ -478,7 +474,7 @@ class Checkout extends React.Component<Props, {}> {
       !city ||
       !zipCode ||
       !phone ||
-      isPoBox
+      isPoBox(street)
 
     if (error) {
       validFormAction(error)

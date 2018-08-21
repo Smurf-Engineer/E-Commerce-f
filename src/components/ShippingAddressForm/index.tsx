@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import { isNumber, isPoBox } from '../../utils/utilsAddressVaidation'
 import {
   ShippingFormContainer,
   Row,
@@ -240,9 +241,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 
   hasAddressError = (street: string) => {
-    const poboxRegex = new RegExp('[PO.]*\\s?B(ox)?.*\\d+', 'i')
-    const isPoBox = !!street.match(poboxRegex)
-    return isPoBox
+    return isPoBox(street)
   }
   handleCountryChange = (value: any, countryId: string) => {
     const { inputChangeAction } = this.props
@@ -281,9 +280,7 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     } = evt
 
     if (value && id === 'phone') {
-      const numberRegex = /^[0-9]+$/
-      const isNumber = numberRegex.test(value)
-      if (!isNumber) {
+      if (!isNumber(value)) {
         return
       }
     }
