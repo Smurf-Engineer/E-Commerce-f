@@ -70,12 +70,12 @@ export class JerseyComparison extends React.Component<Props, {}> {
 
     const mainJerseys = jerseysInfo.map(({ title, image, message }, i) => (
       <Column key={i}>
-        <Title onClick={() => this.handleOnClickJersey(title.defaultMessage)}>
+        <Title onClick={this.handleOnClickJersey(title.defaultMessage)}>
           {formatMessage(title)}
         </Title>
         <StyledImage
           src={image}
-          onClick={() => this.handleOnClickJersey(title.defaultMessage)}
+          onClick={this.handleOnClickJersey(title.defaultMessage)}
         />
         <Text>{formatMessage(message)}</Text>
       </Column>
@@ -180,7 +180,7 @@ export class JerseyComparison extends React.Component<Props, {}> {
     return currencyPrices.slice(0, MAX_LIMIT_PRICES + 1) || []
   }
 
-  handleOnClickJersey = (title: string) => {
+  handleOnClickJersey = (title: string) => () => {
     const {
       history: { push }
     } = this.props
