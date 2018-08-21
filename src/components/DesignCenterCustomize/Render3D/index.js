@@ -349,8 +349,11 @@ class Render3D extends PureComponent {
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       if (reseting) {
-        const { currentStyle, onResetEditing } = this.props
-        onResetEditing(canvas, currentStyle.accessoriesColor)
+        const {
+          currentStyle: { accessoriesColor },
+          onResetEditing
+        } = this.props
+        onResetEditing(canvas, accessoriesColor)
       } else {
         onSetCanvasObject(canvas, paths)
       }
@@ -867,7 +870,7 @@ class Render3D extends PureComponent {
       type,
       state: { id }
     } = changeToApply
-    let skipAction = false
+    let skipRedo = false
     switch (type) {
       case Changes.Add:
         this.reAddCanvasElement(changeToApply)
@@ -891,12 +894,12 @@ class Render3D extends PureComponent {
         break
       case Changes.Duplicate:
         this.reDuplicateCanvasElement(changeToApply)
-        skipAction = true
+        skipRedo = true
         break
       default:
         break
     }
-    if (!skipAction) onRedoAction()
+    if (!skipRedo) onRedoAction()
     this.canvasTexture.discardActiveObject()
     this.canvasTexture.renderAll()
   }

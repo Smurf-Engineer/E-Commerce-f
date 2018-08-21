@@ -412,7 +412,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('palettes', action.palettes)
     case SET_LOADING_MODEL:
       return state.set('loadingModel', action.loading)
-    case DESIGN_RESET_ACTION: // FIXME:
+    case DESIGN_RESET_ACTION:
       return state.merge({
         colors: state.get('styleColors'),
         stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
