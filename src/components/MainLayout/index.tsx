@@ -57,6 +57,7 @@ interface Props extends RouteComponentProps<any> {
   shoppingCart: any
   designCenter: any
   openLogoutModal: boolean
+  initialCountryCode: string
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
@@ -164,7 +165,8 @@ class MainLayout extends React.Component<Props, {}> {
       openWithoutSaveModalAction,
       user,
       openLogoutModal,
-      openLogoutModalAction
+      openLogoutModalAction,
+      initialCountryCode
     } = this.props
 
     const { formatMessage } = intl
@@ -215,7 +217,8 @@ class MainLayout extends React.Component<Props, {}> {
               openLoginAction,
               teamStoresHeader,
               designHasChanges,
-              openWithoutSaveModalAction
+              openWithoutSaveModalAction,
+              initialCountryCode
             }}
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}

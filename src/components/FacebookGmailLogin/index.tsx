@@ -15,18 +15,14 @@ import {
 } from './styledComponents'
 import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
-import config from '../../config/index'
 
-const CHECK_IP_ADDRESS: string = `${config.geoIpUrl}check?access_key=${
-  config.geoIpAccesKey
-}`
-const DEFAULT_COUNTRY_CODE: string = 'us'
 interface Props {
   formatMessage: (messageDescriptor: any, values?: object) => string
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   requestClose: () => void
   handleLogin: (user: object) => void
+  initialCountryCode: string
 }
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
@@ -57,26 +53,18 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   }
   componentClicked = (evt: any) => {}
 
-  geoLocate = async () => {
-    let code: string = DEFAULT_COUNTRY_CODE
-    try {
-      const resultFetch = await fetch(CHECK_IP_ADDRESS)
-      const jsonRegion: any = await resultFetch.json()
-      code = jsonRegion.country_code
-    } catch (error) {
-      console.error(error)
-    }
-    return code
-  }
-
   responseFacebook = async (facebookResp: {}) => {
-    const { loginWithFacebook, requestClose, handleLogin } = this.props
+    const {
+      loginWithFacebook,
+      requestClose,
+      handleLogin,
+      initialCountryCode
+    } = this.props
     const token = get(facebookResp, 'accessToken')
 
     try {
-      const countryCode = await this.geoLocate()
       const response = await loginWithFacebook({
-        variables: { token, countryCode }
+        variables: { token, countryCode: initialCountryCode }
       })
       const data = get(response, 'data.facebookSignIn', false)
 
@@ -92,13 +80,17 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
   }
 
   googleLoginSuccess = async (resp: {}) => {
-    const { loginWithGoogle, requestClose, handleLogin } = this.props
+    const {
+      loginWithGoogle,
+      requestClose,
+      handleLogin,
+      initialCountryCode
+    } = this.props
     const token = get(resp, 'tokenId', false)
 
     try {
-      const countryCode = await this.geoLocate()
       const response = await loginWithGoogle({
-        variables: { token, countryCode }
+        variables: { token, countryCode: initialCountryCode }
       })
       const data = get(response, 'data.googleSignIn', false)
 

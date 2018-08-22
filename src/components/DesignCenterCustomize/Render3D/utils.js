@@ -11,6 +11,14 @@ import {
   CANVAS_SIZE
 } from './config'
 
+const actionButtons = {
+  br: SCALE_ACTION,
+  bl: ROTATE_ACTION,
+  tr: DUPLICATE_ACTION,
+  tl: DELETE_ACTION,
+  mb: BRING_TO_FRONT_ACTION
+}
+
 const calculateTriangleArea = (A, B, C) =>
   C.x * B.y - B.x * C.y - (C.x * A.y - A.x * C.y) + (B.x * A.y - A.x * B.y)
 
@@ -43,37 +51,17 @@ export const isMouseOver = (bb, uv) => {
   return isPointInsideOfTriangle(rect, point)
 }
 
-// TODO: Canvas size from SVG files?
-export const clickOnCorner = (boundingBox = {}, corners = {}, uv = {}) => {
+export const clickOnCorner = (corners = {}, uv = {}) => {
   const point = { x: uv.x * CANVAS_SIZE, y: (1 - uv.y) * CANVAS_SIZE }
 
-  const horizontalLine = boundingBox.top + boundingBox.height / 2
-  const verticalLine = boundingBox.left + boundingBox.width / 2
-
-  if (point.y >= horizontalLine) {
-    const isOnRotate = isPointInsideOfIcon(corners.bl.corner, point)
-    if (isOnRotate) {
-      return ROTATE_ACTION
+  for (let corner in actionButtons) {
+    const isOnCorner = isPointInsideOfIcon(corners[corner].corner, point)
+    if (isOnCorner) {
+      return actionButtons[corner]
     }
-
-    const isOnLayer = isPointInsideOfIcon(corners.mb.corner, point)
-    if (isOnLayer) {
-      return BRING_TO_FRONT_ACTION
-    }
-
-    const isOnScale = isPointInsideOfIcon(corners.br.corner, point)
-    if (isOnScale) {
-      return SCALE_ACTION
-    }
-
-    return ''
   }
 
-  if (point.x >= verticalLine) {
-    return isPointInsideOfIcon(corners.tr.corner, point) ? DUPLICATE_ACTION : ''
-  }
-
-  return isPointInsideOfIcon(corners.tl.corner, point) ? DELETE_ACTION : ''
+  return ''
 }
 
 export const getTextCanvasElement = el => {
@@ -98,12 +86,13 @@ export const getClipArtCanvasElement = el => {
 }
 
 export const getImageCanvas = el => {
-  const { id, scaleX, scaleY, width, height } = el
+  const { id, scaleX, scaleY, width, height, src } = el
   const element = {
     id,
     scaleX,
     scaleY,
-    imageSize: { width, height }
+    imageSize: { width, height },
+    src
   }
   return element
 }

@@ -4,6 +4,11 @@
 export const CANVAS_SIZE = 1024
 export const WARNING_FACTOR = 0.2
 export const NUMBER_OF_DECIMALS = 3
+export const CENTER_ORIGIN = 'center'
+export const EXTRA_POSITION = 30
+export const BACK_VIEW = 0
+export const LEFT_VIEW = 3
+export const TOP_VIEW = 4
 export const viewPositions = {
   0: {
     // Back
@@ -28,14 +33,19 @@ export const viewPositions = {
     x: 249.7141197905644,
     y: 4.759701275836918,
     z: -10.96374119486817
+  },
+  4: {
+    // TOP
+    x: 0,
+    y: 250,
+    z: 0
   }
 }
 
 export const fabricJsConfig = {
   settings: {
     borderColor: 'black',
-    cornerSize: 30,
-    cornerPadding: 10
+    cornerSize: 30
   },
   tl: {
     icon: 'delete.svg'

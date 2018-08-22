@@ -40,7 +40,11 @@ import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearch from '../screens/DesignSearch/reducer'
 import { Reducer } from '../types/common'
-import { SET_USER_ACTION, SET_USER_AGENT_ACTION } from './constants'
+import {
+  SET_USER_ACTION,
+  SET_USER_AGENT_ACTION,
+  SET_COUNTRY_CODE
+} from './constants'
 
 export interface ReducersObject {
   designSearch: any
@@ -86,7 +90,8 @@ export interface ReducersObject {
 }
 
 const appInitialState = fromJS({
-  user: null
+  user: null,
+  initialCountryCode: 'us'
 })
 
 const appReducer: Reducer<any> = (state = appInitialState, action) => {
@@ -94,7 +99,12 @@ const appReducer: Reducer<any> = (state = appInitialState, action) => {
     case SET_USER_ACTION:
       return state.set('user', action.user)
     case SET_USER_AGENT_ACTION:
-      return state.set('clientInfo', action.client)
+      return state.merge({
+        clientInfo: action.client,
+        initialCountryCode: action.country
+      })
+    case SET_COUNTRY_CODE:
+      return state.set('initialCountryCode', action.country)
     default:
       return state
   }

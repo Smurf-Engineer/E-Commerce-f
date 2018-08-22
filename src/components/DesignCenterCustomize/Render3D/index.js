@@ -9,7 +9,6 @@ import { FormattedMessage } from 'react-intl'
 // import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -28,7 +27,9 @@ import {
   ModalMessage,
   Size,
   SizeBox,
-  SizeLabel
+  SizeLabel,
+  BottomControls,
+  TopButton
 } from './styledComponents'
 import {
   viewPositions,
@@ -46,7 +47,12 @@ import {
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
-  CHANGE_ACTIONS
+  CHANGE_ACTIONS,
+  CENTER_ORIGIN,
+  EXTRA_POSITION,
+  TOP_VIEW,
+  BACK_VIEW,
+  LEFT_VIEW
 } from './config'
 import {
   MESH,
@@ -59,7 +65,6 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE,
   DEFAULT_COLOR
 } from '../../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
@@ -79,19 +84,17 @@ import {
   getClipArtCanvasElement,
   getImageCanvas
 } from './utils'
-// TODO: JV2 - Phase II
-// import arrowDown from '../../../assets/downarrow.svg'
-// import topIcon from '../../../assets/Cube-Top.svg'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
+import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
+import topIcon from '../../../assets/Cube-Top.svg'
 
-const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
-const EXTRA_POSITION = 30
+const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -301,11 +304,12 @@ class Render3D extends PureComponent {
       }
     })
 
-  loadCanvasTexture = async object => {
+  loadCanvasTexture = async (object, reseting) => {
     try {
       const { onSetCanvasObject } = this.props
       const canvas = { text: {}, image: {}, path: {} }
-      const elements = []
+      let elements = []
+      const paths = []
       const imagesElements = []
       const imagesPromises = []
       const { objects } = JSON.parse(object)
@@ -323,7 +327,7 @@ class Render3D extends PureComponent {
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
-            elements.push(el)
+            paths.push(el)
             break
           }
           case CanvasElements.Image: {
@@ -337,6 +341,7 @@ class Render3D extends PureComponent {
             break
         }
       }
+      elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
         images = await Promise.all(imagesPromises)
@@ -348,7 +353,15 @@ class Render3D extends PureComponent {
       })
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
-      onSetCanvasObject(canvas)
+      if (reseting) {
+        const {
+          currentStyle: { accessoriesColor },
+          onResetEditing
+        } = this.props
+        onResetEditing(canvas, accessoriesColor)
+      } else {
+        onSetCanvasObject(canvas, paths)
+      }
       this.canvasTexture.renderAll()
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
@@ -776,7 +789,10 @@ class Render3D extends PureComponent {
 
   handleOnPressLeft = () => {
     const { currentView } = this.state
-    const nextView = currentView === 0 ? 3 : currentView - 1
+    const nextView =
+      currentView === BACK_VIEW || currentView === TOP_VIEW
+        ? LEFT_VIEW
+        : currentView - 1
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
@@ -784,10 +800,19 @@ class Render3D extends PureComponent {
 
   handleOnPressRight = () => {
     const { currentView } = this.state
-    const nextView = currentView === 3 ? 0 : currentView + 1
+    const nextView =
+      currentView === LEFT_VIEW || currentView === TOP_VIEW
+        ? BACK_VIEW
+        : currentView + 1
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
+  }
+
+  handleOnPressTop = () => {
+    const viewPosition = viewPositions[TOP_VIEW]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: TOP_VIEW })
   }
 
   handleOnChangeZoom = value => {
@@ -844,6 +869,9 @@ class Render3D extends PureComponent {
       case Changes.ChangeText:
         this.changeTextCanvasElement(changeToApply)
         break
+      case Changes.Duplicate:
+        this.deleteDuplicateCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -859,6 +887,7 @@ class Render3D extends PureComponent {
       type,
       state: { id }
     } = changeToApply
+    let skipRedo = false
     switch (type) {
       case Changes.Add:
         this.reAddCanvasElement(changeToApply)
@@ -880,12 +909,33 @@ class Render3D extends PureComponent {
       case Changes.ChangeText:
         this.changeTextCanvasElement(changeToApply, true)
         break
+      case Changes.Duplicate:
+        this.reDuplicateCanvasElement(changeToApply)
+        skipRedo = true
+        break
       default:
         break
     }
-    onRedoAction()
+    if (!skipRedo) onRedoAction()
     this.canvasTexture.discardActiveObject()
     this.canvasTexture.renderAll()
+  }
+
+  deleteDuplicateCanvasElement = canvasElement => {
+    const {
+      state: { id }
+    } = canvasElement
+    this.deleteElementById(id)
+  }
+
+  reDuplicateCanvasElement = canvasElement => {
+    const {
+      state: { id, originalId }
+    } = canvasElement
+    const element = this.getElementById(originalId)
+    if (element) {
+      this.duplicateElement(element, id)
+    }
   }
 
   changeTextCanvasElement = (canvasElement, applyNewText = false) => {
@@ -984,8 +1034,15 @@ class Render3D extends PureComponent {
   }
 
   onReset = () => {
+    const { isEditing, design, onResetAction, currentStyle } = this.props
     this.canvasTexture.clear()
-    this.props.onResetAction()
+    if (!isEditing) {
+      onResetAction()
+      return
+    }
+    if (design && design.canvasJson) {
+      this.loadCanvasTexture(design.canvasJson, true)
+    }
   }
 
   handleOnClickClear = () => this.props.onClearAction()
@@ -1107,9 +1164,12 @@ class Render3D extends PureComponent {
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
-          <ViewButton onClick={this.handleOnPressLeft} src={left} />
-          <img src={cubeViews[currentView]} />
-          <ViewButton onClick={this.handleOnPressRight} src={right} />
+          <TopButton onClick={this.handleOnPressTop} src={top} />
+          <BottomControls>
+            <ViewButton onClick={this.handleOnPressLeft} src={left} />
+            <img src={cubeViews[currentView]} />
+            <ViewButton onClick={this.handleOnPressRight} src={right} />
+          </BottomControls>
         </ViewControls>
         {/* Reset Modal */}
         <Modal
@@ -1165,8 +1225,11 @@ class Render3D extends PureComponent {
     } = canvasEl
     switch (type) {
       case CanvasElements.Path:
-        this.applyClipArt(src, style, position, id)
-        break
+        if (src) {
+          this.applyClipArt(src, style, position, id)
+          break
+        }
+        this.applyClipArtFromOriginal(id, style, position)
       case CanvasElements.Text:
         this.applyText(src, style, position, id)
         break
@@ -1178,7 +1241,7 @@ class Render3D extends PureComponent {
 
   applyImage = (file = {}, position = {}, idElement) => {
     const { scaleFactorX, scaleFactorY } = this.state
-    const { fileUrl, size: imageSize } = file
+    const { fileUrl, size: imageSize, id: fileId, type } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
       fileUrl,
@@ -1188,7 +1251,7 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        const el = { id, imageSize }
+        const el = { id, imageSize, type, ...position, fileId, src: fileUrl }
         if (position.scaleX) {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
@@ -1203,8 +1266,6 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
-          const { id: fileId } = file
-          el.fileId = fileId
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -1214,7 +1275,6 @@ class Render3D extends PureComponent {
           })
           this.canvasTexture.setActiveObject(imageEl)
         } else {
-          el.fileId = file.id
           const { onReApplyImageEl } = this.props
           onReApplyImageEl(el)
         }
@@ -1247,8 +1307,6 @@ class Render3D extends PureComponent {
         id,
         hasRotatingPoint: false,
         fontSize: 50,
-        snapAngle: 1,
-        snapThreshold: 45,
         scaleX: 1.0,
         scaleY: 1.0,
         ...position,
@@ -1275,7 +1333,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyClipArt = (url, style = {}, position = {}, idElement, fileId) => {
+  applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
@@ -1283,7 +1341,7 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects, options) => {
+      fabric.loadSVGFromURL(src, (objects, options) => {
         const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
@@ -1312,8 +1370,9 @@ class Render3D extends PureComponent {
         this.canvasTexture.add(shape)
         if (!idElement) {
           el.fileId = fileId
+          el.src = src
           onApplyCanvasEl(el, CanvasElements.Path, false, {
-            src: url,
+            src,
             style,
             position,
             fileId
@@ -1325,8 +1384,19 @@ class Render3D extends PureComponent {
     }
   }
 
+  applyClipArtFromOriginal = async (id, style, position) => {
+    const { originalPaths } = this.props
+    const originalPath = find(originalPaths, { id })
+    if (originalPath) {
+      const canvasEl = { ...originalPath, ...style, ...position }
+      const fabricObjects = await this.convertToFabricObjects([canvasEl])
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      this.canvasTexture.renderAll()
+    }
+  }
+
   deleteElement = el => {
-    const { undoChanges } = this.props
+    const { canvas } = this.props
     const type = el.get('type')
     const { id, left, top, scaleX, scaleY, transformMatrix } = el
     const canvasObject = {
@@ -1348,28 +1418,24 @@ class Render3D extends PureComponent {
       case CanvasElements.Path:
         {
           const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
-          const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          if (!object) break //FIXME: add new method to delete duplicate elements
-          const {
-            state: { fileId, src }
-          } = object
-          canvasObject.src = src
+          const object = canvas.path[id]
+          const { fileId, src } = object
           canvasObject.style = {
             fill,
             stroke,
             strokeWidth
           }
-          canvasObject.fileId = fileId
+          if (src) {
+            canvasObject.src = src
+            canvasObject.fileId = fileId
+          }
         }
         break
       case CanvasElements.Image:
         {
-          const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          if (!object) break //FIXME: add new method to delete duplicate elements
-          const {
-            state: { src, fileId }
-          } = object
-          canvasObject.src = src
+          const object = canvas.image[id]
+          const { src, fileId, imageSize, type } = object
+          canvasObject.src = { id: fileId, fileUrl: src, size: imageSize, type }
           canvasObject.fileId = fileId
         }
         break
@@ -1386,71 +1452,18 @@ class Render3D extends PureComponent {
 
   deleteElementById = id => {
     const object = this.getElementById(id)
-    this.canvasTexture.remove(object)
+    if (object) {
+      this.canvasTexture.remove(object)
+    }
   }
 
-  duplicateElement = el => {
-    const { onApplyCanvasEl, undoChanges, isEditing } = this.props
+  duplicateElement = (el, oldId) => {
+    const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const objectToClone =
-      find(undoChanges, {
-        type: Changes.Add,
-        state: { id: el.id }
-      }) || {}
-
     const elementType = el.get('type')
-    const id = shortid.generate()
-    let canvasEl = {}
-    let canvasStyle = {}
-    switch (elementType) {
-      case CanvasElements.Text:
-        {
-          const text = el.get('text')
-          const textFormat = {
-            fontFamily: el.fontFamily,
-            stroke: el.stroke,
-            fill: el.fill,
-            strokeWidth: el.strokeWidth
-          }
-          canvasEl = { id, text, textFormat }
-        }
-        break
-      case CanvasElements.Image: {
-        const {
-          state: {
-            src: { id: fileId }
-          }
-        } = objectToClone
-        canvasEl = {
-          id,
-          imageSize: { width: el.width, height: el.height },
-          scaleX: el.scaleX,
-          scaleY: el.scaleY,
-          fileId
-        }
-        break
-      }
-      case CanvasElements.Path: {
-        const {
-          state: { fileId }
-        } = objectToClone
-        canvasStyle = {
-          fill: el.fill || BLACK,
-          stroke: el.stroke || BLACK,
-          strokeWidth: el.strokeWidth || 0
-        }
-        canvasEl = {
-          id,
-          ...canvasStyle,
-          scaleX: el.scaleX,
-          scaleY: el.scaleY,
-          fileId
-        }
-      }
-      default:
-        break
-    }
+    const id = oldId || shortid.generate()
+    let canvasEl = { id, originalId: el.id }
 
     el.clone(clone => {
       clone.set({
@@ -1462,28 +1475,7 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
-    if (this.props.isEditing) return //FIXME: add only id and style to canvas when duplicate
-    const {
-      state: {
-        src,
-        style: styleSaved,
-        position: { left, top },
-        fileId
-      }
-    } = objectToClone
-    const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
-    onApplyCanvasEl(canvasEl, elementType, false, {
-      src,
-      style,
-      position: {
-        left: left + EXTRA_POSITION,
-        top: top + EXTRA_POSITION,
-        scaleX: el.scaleX,
-        scaleY: el.scaleY,
-        transformMatrix: el.transformMatrix
-      },
-      fileId
-    })
+    onCanvasElementDuplicated(canvasEl, elementType, oldId)
   }
 
   setLayerElement = el => {
@@ -1612,8 +1604,7 @@ class Render3D extends PureComponent {
         })
       } else {
         if (activeEl && !this.dragComponent) {
-          const boundingBox = activeEl.getBoundingRect()
-          const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
+          const action = clickOnCorner(activeEl.oCoords, uv)
           if (action) {
             switch (action) {
               case DELETE_ACTION:
@@ -1627,13 +1618,24 @@ class Render3D extends PureComponent {
                 break
               case SCALE_ACTION: {
                 const { scaleX: oldScaleX, scaleY: oldScaleY } = activeEl
+                const sX = uv.x * CANVAS_SIZE
+                const sY = (1 - uv.y) * CANVAS_SIZE
                 this.setState({
                   oldScale: { oldScaleX, oldScaleY }
                 })
                 this.controls.enabled = false
+                const currentTransform = {
+                  originX: activeEl.originX,
+                  originY: activeEl.originY,
+                  scaleX: oldScaleX,
+                  scaleY: oldScaleY,
+                  ex: sX,
+                  ey: sY,
+                  original: Object.assign({}, activeEl)
+                }
                 this.dragComponent = {
                   action: SCALE_ACTION,
-                  alreadyNotified: false,
+                  currentTransform,
                   isImage: activeEl.get('type') === CanvasElements.Image
                 }
                 break
@@ -1642,16 +1644,18 @@ class Render3D extends PureComponent {
                 this.setState({ oldRotation: activeEl.transformMatrix })
                 const sX = uv.x * CANVAS_SIZE
                 const sY = (1 - uv.y) * CANVAS_SIZE
-                const startPoint = { x: sX, y: sY }
-                const oX = activeEl.left + activeEl.width / 2
-                const oY = activeEl.top + activeEl.height / 2
-                const originPoint = { x: oX, y: oY }
                 this.controls.enabled = false
+                const currentTransform = {
+                  originX: CENTER_ORIGIN,
+                  originY: CENTER_ORIGIN,
+                  ex: sX,
+                  ey: sY,
+                  theta: fabric.util.degreesToRadians(activeEl.angle)
+                }
                 this.dragComponent = {
                   el: activeEl,
-                  action: ROTATE_ACTION,
-                  startPoint,
-                  originPoint
+                  currentTransform,
+                  action: ROTATE_ACTION
                 }
                 break
               }
@@ -1671,8 +1675,8 @@ class Render3D extends PureComponent {
             onSelectEl(el.id, el.get('type'))
             const left = uv.x * CANVAS_SIZE
             const top = (1 - uv.y) * CANVAS_SIZE
-            const differenceX = left - boundingBox.left
-            const differenceY = top - boundingBox.top
+            const differenceX = left - el.left
+            const differenceY = top - el.top
             const dragComponent = {
               differenceX,
               differenceY,
@@ -1733,7 +1737,12 @@ class Render3D extends PureComponent {
         meshName === BIB_BRACE
       if (validMesh) {
         const activeEl = this.canvasTexture.getActiveObject()
-        const { differenceX, differenceY, action } = this.dragComponent
+        const {
+          differenceX,
+          differenceY,
+          action,
+          currentTransform
+        } = this.dragComponent
         const uv = intersects[0].uv
         switch (action) {
           case DRAG_ACTION: {
@@ -1744,44 +1753,18 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
-            const cursorLeft = uv.x * CANVAS_SIZE
-            const cursorTop = (1 - uv.y) * CANVAS_SIZE
-            const width = cursorLeft - activeEl.left
-            const height = cursorTop - activeEl.top
-            const scaleX = width / activeEl.width
-            const scaleY = height / activeEl.height
-            activeEl
-              .set({
-                scaleX: Math.max(0, scaleX),
-                scaleY: Math.max(0, scaleY)
-              })
-              .setCoords()
+            const cX = uv.x * CANVAS_SIZE
+            const cY = (1 - uv.y) * CANVAS_SIZE
+            this.scaleObject(cX, cY, currentTransform)
             this.canvasTexture.renderAll()
             break
           }
           case ROTATE_ACTION: {
-            const { startPoint, originPoint } = this.dragComponent
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
-
-            if (!activeEl.oldAngle) {
-              activeEl.oldAngle = fabric.util.degreesToRadians(90)
-            }
-            let radians = Math.atan2(cY - originPoint.y, cX - originPoint.x)
-            radians -= Math.atan2(
-              startPoint.y - originPoint.y,
-              startPoint.x - originPoint.x
-            )
-            radians += activeEl.oldAngle
-            this.dragComponent.oldAngle = radians
-
-            this.rotateObject(
-              activeEl,
-              radians - 1.5708,
-              activeEl.width / 2,
-              activeEl.height / 2
-            )
+            this.rotateObject(cX, cY, currentTransform)
             this.canvasTexture.renderAll()
+            break
           }
           default:
             break
@@ -1794,28 +1777,64 @@ class Render3D extends PureComponent {
     }
   }
 
-  rotateObject = (fabObj, angleRadian, pivotX, pivotY) => {
-    const ty = pivotY - fabObj.height / 2.0
-    const tx = pivotX - fabObj.width / 2.0
-    if (angleRadian >= Math.PI * 2) {
-      angleRadian -= Math.PI * 2
+  scaleObject = (x, y, currentTransform) => {
+    const { originX, originY, original } = currentTransform
+    const el = this.canvasTexture.getActiveObject()
+    if (!el) {
+      return
     }
-    const angle2 = Math.atan2(ty, tx)
-    const angle3 = (2 * angle2 + angleRadian - Math.PI) / 2.0
-    const pdist_sq = tx * tx + ty * ty
-    const disp = Math.sqrt(2 * pdist_sq * (1 - Math.cos(angleRadian)))
-    fabObj
-      .set({
-        transformMatrix: [
-          Math.cos(angleRadian),
-          Math.sin(angleRadian),
-          -Math.sin(angleRadian),
-          Math.cos(angleRadian),
-          disp * Math.cos(angle3),
-          disp * Math.sin(angle3)
-        ]
-      })
-      .setCoords()
+    const constraintPosition = el.translateToOriginPoint(
+      el.getCenterPoint(),
+      originX,
+      originY
+    )
+    const localMouse = el.toLocalPoint(new fabric.Point(x, y), originX, originY)
+    const dim = el._getTransformedDimensions()
+    const dist = localMouse.y + localMouse.x
+    const lastDist =
+      (dim.y * original.scaleY) / el.scaleY +
+      (dim.x * original.scaleX) / el.scaleX
+    const signX = localMouse.x < 0 ? -1 : 1
+    const signY = localMouse.y < 0 ? -1 : 1
+
+    const scaleX = signX * Math.abs((currentTransform.scaleX * dist) / lastDist)
+    const scaleY = signY * Math.abs((currentTransform.scaleY * dist) / lastDist)
+    el.set({ scaleX, scaleY })
+    el.setPositionByOrigin(
+      constraintPosition,
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    el.setCoords()
+  }
+
+  rotateObject = (x, y, currentTransform) => {
+    const { ey, ex, originX, originY, theta } = currentTransform
+    const el = this.canvasTexture.getActiveObject()
+    if (!el) {
+      return
+    }
+    const constraintPosition = el.translateToOriginPoint(
+      el.getCenterPoint(),
+      originX,
+      originY
+    )
+    const lastAngle = Math.atan2(
+      ey - constraintPosition.y,
+      ex - constraintPosition.x
+    )
+    const currentAngle = Math.atan2(
+      y - constraintPosition.y,
+      x - constraintPosition.x
+    )
+    let angle = fabric.util.radiansToDegrees(currentAngle - lastAngle + theta)
+    if (angle < 0) {
+      angle = 360 + angle
+    }
+    angle %= 360
+    el.set('angle', angle)
+    el.setPositionByOrigin(constraintPosition, originX, originY)
+    el.setCoords()
   }
 
   /* Warning modals */

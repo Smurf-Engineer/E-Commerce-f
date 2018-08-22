@@ -167,21 +167,6 @@ export class Shipping extends React.PureComponent<Props, {}> {
       </Container>
     )
   }
-  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { inputChangeAction } = this.props
-    const {
-      currentTarget: { id, value }
-    } = evt
-
-    const regex = /^[0-9]+$/
-    const isNumber = regex.test(value)
-
-    if (value && id === 'phone' && !isNumber) {
-      return
-    }
-
-    inputChangeAction(id, value)
-  }
 
   selectedDropDown = (param: ClickParam) => {
     const { selectDropdownAction } = this.props

@@ -28,6 +28,7 @@ import messages from './messages'
 
 interface Props {
   open: boolean
+  initialCountryCode: string
   requestClose: () => void
   loginWithEmail: (variables: {}) => void
   loginWithFacebook: (variables: {}) => void
@@ -59,7 +60,8 @@ export class Login extends React.Component<Props, StateProps> {
       requestClose,
       formatMessage,
       handleForgotPassword,
-      login
+      login,
+      initialCountryCode
     } = this.props
     const { isLoginIn, email, password } = this.state
     const renderView = isLoginIn ? (
@@ -93,7 +95,7 @@ export class Login extends React.Component<Props, StateProps> {
           </StyledLoginButton>
           <FacebookGmailLogin
             handleLogin={login}
-            {...{ requestClose, formatMessage }}
+            {...{ requestClose, formatMessage, initialCountryCode }}
           />
         </FormContainer>
         <NotAMemberLabel>
@@ -104,11 +106,11 @@ export class Login extends React.Component<Props, StateProps> {
         </NotAMemberLabel>
       </div>
     ) : (
-        <SignUp
-          closeSignUp={this.showLogin}
-          {...{ requestClose, formatMessage }}
-        />
-      )
+      <SignUp
+        closeSignUp={this.showLogin}
+        {...{ requestClose, formatMessage, initialCountryCode }}
+      />
+    )
     return (
       <JakrooModal
         open={open}

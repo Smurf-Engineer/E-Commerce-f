@@ -13,12 +13,10 @@ import {
   Container,
   Title,
   CarouselContent,
-  ArrowWrapper,
   Arrow,
   Loading
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
-import AddToCartButton from '../AddToCartButton'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
 import { ProductType, QueryProps, DesignType } from '../../types/common'
@@ -34,16 +32,8 @@ interface Props {
   openQuickView: (id: number) => void
 }
 
-const arrowLeft = (
-  <ArrowWrapper>
-    <Arrow src={leftArrow} />
-  </ArrowWrapper>
-)
-const arrowRight = (
-  <ArrowWrapper>
-    <Arrow src={rightArrow} />
-  </ArrowWrapper>
-)
+const arrowLeft = <Arrow src={leftArrow} />
+const arrowRight = <Arrow src={rightArrow} />
 
 const settings = {
   dots: false,
@@ -133,16 +123,9 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
               customizable
             }}
             labelButton={
-              customizable ? (
-                formatMessage(messages.customize)
-              ) : (
-                <AddToCartButton
-                  label={formatMessage(messages.addToCart)}
-                  renderForThumbnail={true}
-                  item={{ product }}
-                  {...{ formatMessage }}
-                />
-              )
+              customizable
+                ? formatMessage(messages.customize)
+                : formatMessage(messages.viewFullDetailsLabel)
             }
           />
         </div>

@@ -28,18 +28,13 @@ import {
   LogInLabel
 } from './styledComponents'
 import messages from './messages'
-import config from '../../config/index'
-
-const CHECK_IP_ADDRESS: string = `${config.geoIpUrl}check?access_key=${
-  config.geoIpAccesKey
-}`
-const DEFAULT_COUNTRY_CODE: string = 'us'
 
 interface Props {
   closeSignUp: () => void
   signUpUser: (variables: {}) => void
   requestClose: () => void
   formatMessage: (messageDescriptor: any, values?: object) => string
+  initialCountryCode: string
 }
 interface StateProps {
   name: string
@@ -176,7 +171,12 @@ class SignUp extends React.Component<Props, StateProps> {
       repeatPassword,
       newsLetter
     } = this.state
-    const { signUpUser, formatMessage, closeSignUp } = this.props
+    const {
+      signUpUser,
+      formatMessage,
+      closeSignUp,
+      initialCountryCode
+    } = this.props
 
     if (password.length < 8) {
       if (!name || !lastName || !email || !password || !repeatPassword) {
@@ -187,22 +187,13 @@ class SignUp extends React.Component<Props, StateProps> {
       return
     }
 
-    let code: string = DEFAULT_COUNTRY_CODE
-    try {
-      const resultFetch = await fetch(CHECK_IP_ADDRESS)
-      const jsonRegion: any = await resultFetch.json()
-      code = jsonRegion.country_code
-    } catch (error) {
-      console.error(error)
-    }
-
     const user = {
       email: email.toLowerCase(),
       first_name: name,
       last_name: lastName,
       password,
       newsletter_subscribed: newsLetter,
-      countryCode: code
+      countryCode: initialCountryCode
     }
 
     try {
