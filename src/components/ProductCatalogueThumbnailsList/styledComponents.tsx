@@ -59,6 +59,8 @@ export const ThumbnailsList = styled.ul`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  ${({ withoutPadding }: HeadRowProps) =>
+    withoutPadding ? 'padding: 0px;' : ''};
   width: 100%;
 
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -69,23 +71,33 @@ export const ThumbnailsList = styled.ul`
     padding: 0;
     justify-content: space-between;
   }
-
-  margin-left: ${({ withoutPadding }: HeadRowProps) =>
-    withoutPadding ? '-54px' : '0'};
 `
 
 export const ThumbnailListItem = styled.li`
+  display: flex;
   list-style: none;
-  display: inline-block;
-  width: calc(100% / 4);
-  padding-bottom: 20px;
+  width: calc(95% / 2);
 
-  @media (min-width: 481px) and (max-width: 1024px) {
+  @media (min-width: 481px) {
+    justify-content: center;
+    width: 50%;
+  }
+
+  @media (min-width: 755px) {
     width: calc(100% / 3);
   }
 
-  @media (min-width: 320px) and (max-width: 480px) {
-    width: calc(95% / 2);
+  @media (min-width: 769px) {
+    width: 50%;
+  }
+
+  @media (min-width: 990px) {
+    padding-bottom: 20px;
+    width: 33%;
+  }
+
+  @media (min-width: 1260px) {
+    width: 25%;
   }
 `
 
