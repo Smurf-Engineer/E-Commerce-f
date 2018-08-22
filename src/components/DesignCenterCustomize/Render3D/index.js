@@ -9,7 +9,6 @@ import { FormattedMessage } from 'react-intl'
 // import Menu from 'antd/lib/menu'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
@@ -59,7 +58,6 @@ import {
   CM_PER_INCH,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE,
   DEFAULT_COLOR
 } from '../../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
@@ -301,11 +299,12 @@ class Render3D extends PureComponent {
       }
     })
 
-  loadCanvasTexture = async object => {
+  loadCanvasTexture = async (object, reseting) => {
     try {
       const { onSetCanvasObject } = this.props
       const canvas = { text: {}, image: {}, path: {} }
-      const elements = []
+      let elements = []
+      const paths = []
       const imagesElements = []
       const imagesPromises = []
       const { objects } = JSON.parse(object)
@@ -323,7 +322,7 @@ class Render3D extends PureComponent {
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
-            elements.push(el)
+            paths.push(el)
             break
           }
           case CanvasElements.Image: {
@@ -337,6 +336,7 @@ class Render3D extends PureComponent {
             break
         }
       }
+      elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
         images = await Promise.all(imagesPromises)
@@ -348,7 +348,15 @@ class Render3D extends PureComponent {
       })
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
-      onSetCanvasObject(canvas)
+      if (reseting) {
+        const {
+          currentStyle: { accessoriesColor },
+          onResetEditing
+        } = this.props
+        onResetEditing(canvas, accessoriesColor)
+      } else {
+        onSetCanvasObject(canvas, paths)
+      }
       this.canvasTexture.renderAll()
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
@@ -844,6 +852,9 @@ class Render3D extends PureComponent {
       case Changes.ChangeText:
         this.changeTextCanvasElement(changeToApply)
         break
+      case Changes.Duplicate:
+        this.deleteDuplicateCanvasElement(changeToApply)
+        break
       default:
         break
     }
@@ -859,6 +870,7 @@ class Render3D extends PureComponent {
       type,
       state: { id }
     } = changeToApply
+    let skipRedo = false
     switch (type) {
       case Changes.Add:
         this.reAddCanvasElement(changeToApply)
@@ -880,12 +892,33 @@ class Render3D extends PureComponent {
       case Changes.ChangeText:
         this.changeTextCanvasElement(changeToApply, true)
         break
+      case Changes.Duplicate:
+        this.reDuplicateCanvasElement(changeToApply)
+        skipRedo = true
+        break
       default:
         break
     }
-    onRedoAction()
+    if (!skipRedo) onRedoAction()
     this.canvasTexture.discardActiveObject()
     this.canvasTexture.renderAll()
+  }
+
+  deleteDuplicateCanvasElement = canvasElement => {
+    const {
+      state: { id }
+    } = canvasElement
+    this.deleteElementById(id)
+  }
+
+  reDuplicateCanvasElement = canvasElement => {
+    const {
+      state: { id, originalId }
+    } = canvasElement
+    const element = this.getElementById(originalId)
+    if (element) {
+      this.duplicateElement(element, id)
+    }
   }
 
   changeTextCanvasElement = (canvasElement, applyNewText = false) => {
@@ -984,8 +1017,15 @@ class Render3D extends PureComponent {
   }
 
   onReset = () => {
+    const { isEditing, design, onResetAction, currentStyle } = this.props
     this.canvasTexture.clear()
-    this.props.onResetAction()
+    if (!isEditing) {
+      onResetAction()
+      return
+    }
+    if (design && design.canvasJson) {
+      this.loadCanvasTexture(design.canvasJson, true)
+    }
   }
 
   handleOnClickClear = () => this.props.onClearAction()
@@ -1165,8 +1205,11 @@ class Render3D extends PureComponent {
     } = canvasEl
     switch (type) {
       case CanvasElements.Path:
-        this.applyClipArt(src, style, position, id)
-        break
+        if (src) {
+          this.applyClipArt(src, style, position, id)
+          break
+        }
+        this.applyClipArtFromOriginal(id, style, position)
       case CanvasElements.Text:
         this.applyText(src, style, position, id)
         break
@@ -1178,7 +1221,7 @@ class Render3D extends PureComponent {
 
   applyImage = (file = {}, position = {}, idElement) => {
     const { scaleFactorX, scaleFactorY } = this.state
-    const { fileUrl, size: imageSize } = file
+    const { fileUrl, size: imageSize, id: fileId, type } = file
     const id = idElement || shortid.generate()
     fabric.util.loadImage(
       fileUrl,
@@ -1188,7 +1231,7 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        const el = { id, imageSize }
+        const el = { id, imageSize, type, ...position, fileId, src: fileUrl }
         if (position.scaleX) {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
@@ -1203,8 +1246,6 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
-          const { id: fileId } = file
-          el.fileId = fileId
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -1214,7 +1255,6 @@ class Render3D extends PureComponent {
           })
           this.canvasTexture.setActiveObject(imageEl)
         } else {
-          el.fileId = file.id
           const { onReApplyImageEl } = this.props
           onReApplyImageEl(el)
         }
@@ -1275,7 +1315,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyClipArt = (url, style = {}, position = {}, idElement, fileId) => {
+  applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
@@ -1283,7 +1323,7 @@ class Render3D extends PureComponent {
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(url, (objects, options) => {
+      fabric.loadSVGFromURL(src, (objects, options) => {
         const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
@@ -1312,8 +1352,9 @@ class Render3D extends PureComponent {
         this.canvasTexture.add(shape)
         if (!idElement) {
           el.fileId = fileId
+          el.src = src
           onApplyCanvasEl(el, CanvasElements.Path, false, {
-            src: url,
+            src,
             style,
             position,
             fileId
@@ -1325,8 +1366,19 @@ class Render3D extends PureComponent {
     }
   }
 
+  applyClipArtFromOriginal = async (id, style, position) => {
+    const { originalPaths } = this.props
+    const originalPath = find(originalPaths, { id })
+    if (originalPath) {
+      const canvasEl = { ...originalPath, ...style, ...position }
+      const fabricObjects = await this.convertToFabricObjects([canvasEl])
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      this.canvasTexture.renderAll()
+    }
+  }
+
   deleteElement = el => {
-    const { undoChanges } = this.props
+    const { canvas } = this.props
     const type = el.get('type')
     const { id, left, top, scaleX, scaleY, transformMatrix } = el
     const canvasObject = {
@@ -1348,28 +1400,24 @@ class Render3D extends PureComponent {
       case CanvasElements.Path:
         {
           const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
-          const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          if (!object) break //FIXME: add new method to delete duplicate elements
-          const {
-            state: { fileId, src }
-          } = object
-          canvasObject.src = src
+          const object = canvas.path[id]
+          const { fileId, src } = object
           canvasObject.style = {
             fill,
             stroke,
             strokeWidth
           }
-          canvasObject.fileId = fileId
+          if (src) {
+            canvasObject.src = src
+            canvasObject.fileId = fileId
+          }
         }
         break
       case CanvasElements.Image:
         {
-          const object = find(undoChanges, { type: Changes.Add, state: { id } })
-          if (!object) break //FIXME: add new method to delete duplicate elements
-          const {
-            state: { src, fileId }
-          } = object
-          canvasObject.src = src
+          const object = canvas.image[id]
+          const { src, fileId, imageSize, type } = object
+          canvasObject.src = { id: fileId, fileUrl: src, size: imageSize, type }
           canvasObject.fileId = fileId
         }
         break
@@ -1386,71 +1434,18 @@ class Render3D extends PureComponent {
 
   deleteElementById = id => {
     const object = this.getElementById(id)
-    this.canvasTexture.remove(object)
+    if (object) {
+      this.canvasTexture.remove(object)
+    }
   }
 
-  duplicateElement = el => {
-    const { onApplyCanvasEl, undoChanges, isEditing } = this.props
+  duplicateElement = (el, oldId) => {
+    const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const objectToClone =
-      find(undoChanges, {
-        type: Changes.Add,
-        state: { id: el.id }
-      }) || {}
-
     const elementType = el.get('type')
-    const id = shortid.generate()
-    let canvasEl = {}
-    let canvasStyle = {}
-    switch (elementType) {
-      case CanvasElements.Text:
-        {
-          const text = el.get('text')
-          const textFormat = {
-            fontFamily: el.fontFamily,
-            stroke: el.stroke,
-            fill: el.fill,
-            strokeWidth: el.strokeWidth
-          }
-          canvasEl = { id, text, textFormat }
-        }
-        break
-      case CanvasElements.Image: {
-        const {
-          state: {
-            src: { id: fileId }
-          }
-        } = objectToClone
-        canvasEl = {
-          id,
-          imageSize: { width: el.width, height: el.height },
-          scaleX: el.scaleX,
-          scaleY: el.scaleY,
-          fileId
-        }
-        break
-      }
-      case CanvasElements.Path: {
-        const {
-          state: { fileId }
-        } = objectToClone
-        canvasStyle = {
-          fill: el.fill || BLACK,
-          stroke: el.stroke || BLACK,
-          strokeWidth: el.strokeWidth || 0
-        }
-        canvasEl = {
-          id,
-          ...canvasStyle,
-          scaleX: el.scaleX,
-          scaleY: el.scaleY,
-          fileId
-        }
-      }
-      default:
-        break
-    }
+    const id = oldId || shortid.generate()
+    let canvasEl = { id, originalId: el.id }
 
     el.clone(clone => {
       clone.set({
@@ -1462,28 +1457,7 @@ class Render3D extends PureComponent {
       })
       this.canvasTexture.add(clone)
     })
-    if (this.props.isEditing) return //FIXME: add only id and style to canvas when duplicate
-    const {
-      state: {
-        src,
-        style: styleSaved,
-        position: { left, top },
-        fileId
-      }
-    } = objectToClone
-    const style = !isEmpty(canvasStyle) ? canvasStyle : styleSaved
-    onApplyCanvasEl(canvasEl, elementType, false, {
-      src,
-      style,
-      position: {
-        left: left + EXTRA_POSITION,
-        top: top + EXTRA_POSITION,
-        scaleX: el.scaleX,
-        scaleY: el.scaleY,
-        transformMatrix: el.transformMatrix
-      },
-      fileId
-    })
+    onCanvasElementDuplicated(canvasEl, elementType, oldId)
   }
 
   setLayerElement = el => {
@@ -1782,6 +1756,7 @@ class Render3D extends PureComponent {
               activeEl.height / 2
             )
             this.canvasTexture.renderAll()
+            break
           }
           default:
             break

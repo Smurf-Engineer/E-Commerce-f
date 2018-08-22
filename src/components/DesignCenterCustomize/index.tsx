@@ -23,7 +23,8 @@ import {
   CanvasResized,
   CanvasDragged,
   CanvasRotated,
-  AccessoriesColor
+  AccessoriesColor,
+  CanvasObjects
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -68,6 +69,7 @@ interface Props {
   designHasChanges: boolean
   isUserAuthenticated: boolean
   isEditing: boolean
+  originalPaths: any[]
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -106,7 +108,16 @@ interface Props {
   onCanvasElementRotated: (element: CanvasRotated) => void
   onCanvasElementTextChanged: (oldText: string, newText: string) => void
   onReApplyImageEl: (el: CanvasElement) => void
-  onSetCanvasObject: (el: CanvasType) => void
+  onCanvasElementDuplicated: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
+  onSetCanvasObject: (el: CanvasType, paths: any[]) => void
+  onResetEditing: (
+    canvas: CanvasType,
+    accessoriesColor?: AccessoriesColor
+  ) => void
   onSetEditConfig: (
     colors: string[],
     accessoriesColor: AccessoriesColor,
@@ -183,11 +194,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCanvasElementRotated,
       onCanvasElementTextChanged,
       onReApplyImageEl,
+      onCanvasElementDuplicated,
       designHasChanges,
       isUserAuthenticated,
       isEditing,
       onSetEditConfig,
-      onSetCanvasObject
+      onSetCanvasObject,
+      originalPaths,
+      onResetEditing
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -284,13 +298,16 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onCanvasElementRotated,
               onCanvasElementTextChanged,
               onReApplyImageEl,
+              onCanvasElementDuplicated,
               designHasChanges,
               canvas,
               selectedElement,
               isEditing,
               onSelectPalette,
               onSetEditConfig,
-              onSetCanvasObject
+              onSetCanvasObject,
+              originalPaths,
+              onResetEditing
             }}
           />
         ) : (
