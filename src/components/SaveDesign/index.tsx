@@ -44,6 +44,7 @@ type DesignInput = {
   binding_color?: string
   bib_brace_color?: string
   designFiles?: DesignFiles
+  canvas_files?: string
 }
 
 interface SaveDesignData {
@@ -165,7 +166,8 @@ export class SaveDesign extends React.Component<Props, {}> {
         image: designBase64,
         styleId,
         canvas: canvasJson,
-        designFiles
+        designFiles,
+        canvas_files: '' // TODO: miguel will fix
       }
 
       /* Accessory colors */
@@ -235,7 +237,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       image: designBase64,
       canvas: canvasJson,
       styleId,
-      designFiles
+      designFiles,
+      canvas_files: '' // TODO: miguel will fix
     }
 
     try {
