@@ -24,7 +24,6 @@ export const LoginLabel = styled.div`
 export const FormContainer = styled.div``
 export const StyledInput = styled(Input)`
   border-radius: 0px;
-  font-family: 'Avenir Next';
   margin-bottom: 20px;
 `
 
@@ -51,7 +50,6 @@ export const StyledLoginButton = styled(Button)`
   background-color: #fff;
   border-color: #e61737;
   border-radius: 0px;
-  font-family: 'Avenir Next';
   height: 50px;
   margin-bottom: 10px;
   width: 100%;

@@ -7,13 +7,11 @@ import icon from 'antd/lib/icon'
 export const Container = styled.div`
   align-items: center;
   display: flex;
-  font-family: 'Avenir Next';
 `
 
 export const Text = styled.div`
   color: #5f6062;
   cursor: pointer;
-  font-family: 'Avenir Next';
   font-size: 14px;
 
   @media (max-width: 991px) {

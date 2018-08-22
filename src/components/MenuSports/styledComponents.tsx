@@ -7,7 +7,6 @@ import AntDivider from 'antd/lib/divider'
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  font-family: 'Avenir Next';
   margin-right: -14px;
   padding: 0px 0px 0px 16px;
 `
@@ -23,7 +22,6 @@ export const LoadingContainer = styled.div`
 export const Filters = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: 'Avenir Next';
   justify-content: space-between;
   width: 20%;
 `

@@ -7,7 +7,6 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  font-family: 'Avenir Next';
   margin-right: -14px;
   padding: 0px 4px 0px 16px;
 `
@@ -24,13 +23,11 @@ export const LoadingContainer = styled.div`
 export const Filters = styled.div`
   display: flex;
   flex-direction: column;
-  font-family: 'Avenir Next';
   justify-content: space-between;
   width: 15%;
 `
 
 export const Categories = styled.div`
-  font-family: 'Avenir Next';
   padding-left: 16px;
   width: 25%;
 `

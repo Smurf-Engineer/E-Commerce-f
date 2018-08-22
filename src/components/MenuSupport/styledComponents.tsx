@@ -10,19 +10,16 @@ export const Container = styled.div`
 export const Text = styled.div`
   color: #5f6062;
   cursor: pointer;
-  font-family: 'Avenir Next';
   font-size: 14px;
 `
 
 export const Link = styled.a`
   color: #5f6062;
-  font-family: 'Avenir Next';
   font-size: 16px;
   line-height: 25px;
 `
 
 export const menuStyle = {
   borderRadius: 0,
-  fontFamily: 'Avenir Next',
   marginTop: 15
 }

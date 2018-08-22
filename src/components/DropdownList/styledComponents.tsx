@@ -20,7 +20,6 @@ export const Option = styled.div`
 `
 
 export const overStyle = {
-  fontFamily: 'Avenir Next',
   paddingTop: 4,
   width: '100%'
 }
@@ -29,7 +28,6 @@ export const menuStyle = {
   backgroundColor: 'transparent',
   borderBottom: 0,
   display: 'flex',
-  fontFamily: 'Avenir Next',
   justifyContent: 'space-between',
   width: '100%'
 } as React.CSSProperties
