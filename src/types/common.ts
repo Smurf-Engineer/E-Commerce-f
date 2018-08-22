@@ -559,6 +559,8 @@ export interface CanvasElement {
   stroke?: string
   strokeWidth?: number
   fileId?: number
+  src?: string
+  canvasPath?: string
 }
 
 export interface CanvasType {
@@ -952,4 +954,10 @@ export interface UserFiles {
 export interface DesignFiles {
   files: number[]
   svgs: number[]
+}
+
+export interface CanvasFile {
+  fileId: number
+  src?: string
+  canvasPath?: string
 }

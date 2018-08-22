@@ -918,7 +918,16 @@ export default designCenterReducer
 const addCanvasElement = (state: any, canvasToAdd: Change) => {
   const canvas = state.get('canvas')
   const {
-    state: { id, src, path, style, position, type: canvasType, fileId }
+    state: {
+      id,
+      src,
+      path,
+      canvasPath,
+      style,
+      position,
+      type: canvasType,
+      fileId
+    }
   } = canvasToAdd
   let canvasObject
   switch (canvasType) {
@@ -935,7 +944,8 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
         ...position,
         fileId,
         src,
-        path
+        path,
+        canvasPath
       }
       break
     case CanvasElements.Image:

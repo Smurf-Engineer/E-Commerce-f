@@ -1352,11 +1352,14 @@ class Render3D extends PureComponent {
         if (!idElement) {
           el.fileId = fileId
           el.src = src
+          const canvasPath = JSON.stringify(shape.path)
+          el.canvasPath = canvasPath
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src,
             style,
             position,
-            fileId
+            fileId,
+            canvasPath
           })
           this.canvasTexture.setActiveObject(shape)
         }
@@ -1400,7 +1403,7 @@ class Render3D extends PureComponent {
         {
           const { fill = BLACK, stroke = BLACK, strokeWidth = 0 } = el
           const object = canvas.path[id]
-          const { fileId, src } = object
+          const { fileId, src, canvasPath } = object
           canvasObject.style = {
             fill,
             stroke,
@@ -1410,6 +1413,7 @@ class Render3D extends PureComponent {
             canvasObject.src = src
             canvasObject.fileId = fileId
           }
+          canvasObject.canvasPath = canvasPath
         }
         break
       case CanvasElements.Image:
