@@ -18,11 +18,12 @@ import SocialMedia from '../../components/SocialMedia'
 import QuickView from '../../components/QuickView'
 import { Header, Footer } from './styledComponents'
 import SearchResults from '../SearchResults'
-import { REDIRECT_ROUTES } from './constants'
+import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
 import Intercom from 'react-intercom'
 import { IntercomAPI } from 'react-intercom'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
+import LogoutModal from '../LogoutModal'
 
 const { Content } = Layout
 
@@ -55,10 +56,12 @@ interface Props extends RouteComponentProps<any> {
   itemsInCart: number
   shoppingCart: any
   designCenter: any
+  openLogoutModal: boolean
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
   saveUserSession: (user: object) => void
+  openLogoutModalAction: (open: boolean) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -103,6 +106,21 @@ class MainLayout extends React.Component<Props, {}> {
     setSearchParam(value)
   }
 
+  handleOnClickLogout = () => {
+    const {
+      openLogoutModalAction,
+      history: {
+        location: { pathname }
+      }
+    } = this.props
+
+    if (CONFIRM_LOGOUT.includes(pathname)) {
+      return openLogoutModalAction(true)
+    }
+
+    this.onLogout()
+  }
+
   onLogout = () => {
     const {
       deleteUserSession,
@@ -144,7 +162,9 @@ class MainLayout extends React.Component<Props, {}> {
       shoppingCart,
       designCenter: { designHasChanges },
       openWithoutSaveModalAction,
-      user
+      user,
+      openLogoutModal,
+      openLogoutModalAction
     } = this.props
 
     const { formatMessage } = intl
@@ -199,7 +219,7 @@ class MainLayout extends React.Component<Props, {}> {
             }}
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
-            logoutAction={this.onLogout}
+            logoutAction={this.handleOnClickLogout}
             hideBottom={hideBottomHeader}
           />
         </Header>
@@ -224,6 +244,11 @@ class MainLayout extends React.Component<Props, {}> {
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
           {...{ productId, history, yotpoId, formatMessage }}
+        />
+        <LogoutModal
+          open={openLogoutModal}
+          onLogout={this.onLogout}
+          {...{ openLogoutModalAction, formatMessage }}
         />
         <div className="app">
           <Intercom appID={config.intercomKey} {...userData} />
