@@ -16,8 +16,6 @@ import messages from './messages'
 import {
   Container,
   StyledRow,
-  StyledLoginButton,
-  StyledLabel,
   TitleLabel,
   radioGroupStyle,
   StyledFooterLabel,
@@ -141,12 +139,13 @@ class FitInfo extends React.Component<Props, {}> {
           destroyOnClose={true}
           onCancel={this.handleCancel}
         >
-          <StyledLabel>
+          {/* TODO: Uncomment when the widget gets implemented */}
+          {/* <StyledLabel>
             <FormattedMessage {...messages.getFittedLabel} />
           </StyledLabel>
           <StyledLoginButton type="danger" onClick={this.gotoGetFittedPage}>
             <FormattedMessage {...messages.getFittedButton} />
-          </StyledLoginButton>
+          </StyledLoginButton> */}
           <StyledRow>
             <Col span={12}>
               <TitleLabel>
@@ -206,7 +205,10 @@ type OwnProps = {
 const mapStateToProps = (state: any) => state.get('fitInfo').toJS()
 
 const FitInfoEnhance = compose(
-  connect(mapStateToProps, { ...fitActions }),
+  connect(
+    mapStateToProps,
+    { ...fitActions }
+  ),
   graphql<Data>(categoriesQuery, {
     options: (ownprops: OwnProps) => {
       const { productId } = ownprops
