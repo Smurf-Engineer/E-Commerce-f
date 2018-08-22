@@ -1631,8 +1631,10 @@ class Render3D extends PureComponent {
                 })
                 this.controls.enabled = false
                 const currentTransform = {
-                  originX: 'center',
-                  originY: 'center',
+                  originX: activeEl.originX,
+                  originY: activeEl.originY,
+                  scaleX: oldScaleX,
+                  scaleY: oldScaleY,
                   ex: sX,
                   ey: sY,
                   original: Object.assign({}, activeEl)
@@ -1741,7 +1743,12 @@ class Render3D extends PureComponent {
         meshName === BIB_BRACE
       if (validMesh) {
         const activeEl = this.canvasTexture.getActiveObject()
-        const { differenceX, differenceY, action } = this.dragComponent
+        const {
+          differenceX,
+          differenceY,
+          action,
+          currentTransform
+        } = this.dragComponent
         const uv = intersects[0].uv
         switch (action) {
           case DRAG_ACTION: {
@@ -1754,14 +1761,14 @@ class Render3D extends PureComponent {
           case SCALE_ACTION: {
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
-            this.scaleObject(cX, cY, this.dragComponent.currentTransform)
+            this.scaleObject(cX, cY, currentTransform)
             this.canvasTexture.renderAll()
             break
           }
           case ROTATE_ACTION: {
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
-            this.rotateObject(cX, cY, this.dragComponent.currentTransform)
+            this.rotateObject(cX, cY, currentTransform)
             this.canvasTexture.renderAll()
             break
           }
@@ -1777,44 +1784,34 @@ class Render3D extends PureComponent {
   }
 
   scaleObject = (x, y, currentTransform) => {
+    const { originX, originY, original } = currentTransform
     const el = this.canvasTexture.getActiveObject()
     if (!el) {
       return
     }
-
     const constraintPosition = el.translateToOriginPoint(
       el.getCenterPoint(),
-      currentTransform.originX,
-      currentTransform.originY
+      originX,
+      originY
     )
-    const localMouse = el.toLocalPoint(
-      new fabric.Point(x, y),
-      currentTransform.originX,
-      currentTransform.originY
-    )
+    const localMouse = el.toLocalPoint(new fabric.Point(x, y), originX, originY)
     const dim = el._getTransformedDimensions()
-    this.scaleObjectEqually(localMouse, el, currentTransform, dim)
+    const dist = localMouse.y + localMouse.x
+    const lastDist =
+      (dim.y * original.scaleY) / el.scaleY +
+      (dim.x * original.scaleX) / el.scaleX
+    const signX = localMouse.x < 0 ? -1 : 1
+    const signY = localMouse.y < 0 ? -1 : 1
+
+    const scaleX = signX * Math.abs((currentTransform.scaleX * dist) / lastDist)
+    const scaleY = signY * Math.abs((currentTransform.scaleY * dist) / lastDist)
+    el.set({ scaleX, scaleY })
     el.setPositionByOrigin(
       constraintPosition,
       currentTransform.originX,
       currentTransform.originY
     )
     el.setCoords()
-  }
-
-  scaleObjectEqually = (localMouse, target, transform, _dim) => {
-    const dist = localMouse.y + localMouse.x
-    const lastDist =
-      (_dim.y * transform.original.scaleY) / target.scaleY +
-      (_dim.x * transform.original.scaleX) / target.scaleX
-    const signX = localMouse.x < 0 ? -1 : 1
-    const signY = localMouse.y < 0 ? -1 : 1
-
-    transform.newScaleX =
-      signX * Math.abs((transform.original.scaleX * dist) / lastDist)
-    transform.newScaleY =
-      signY * Math.abs((transform.original.scaleY * dist) / lastDist)
-    target.set({ scaleX: transform.newScaleX, scaleY: transform.newScaleY })
   }
 
   rotateObject = (x, y, currentTransform) => {

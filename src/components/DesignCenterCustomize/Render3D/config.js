@@ -34,8 +34,7 @@ export const viewPositions = {
 export const fabricJsConfig = {
   settings: {
     borderColor: 'black',
-    cornerSize: 30,
-    cornerPadding: 8
+    cornerSize: 30
   },
   tl: {
     icon: 'delete.svg'
