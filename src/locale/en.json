@@ -1135,6 +1135,7 @@
   "components.RelatedProducts.addToCart": "ADD TO CART",
   "components.RelatedProducts.customize": "CUSTOMIZE",
   "components.RelatedProducts.customizableLabel": "Customize",
+  "components.RelatedProducts.viewFullDetailsLabel": "View full details",
   "components.QuickView.intendedUseLabel": "INTENDED USE",
   "components.QuickView.descriptionLabel": "Description",
   "components.QuickView.detailsLabel": "Details",

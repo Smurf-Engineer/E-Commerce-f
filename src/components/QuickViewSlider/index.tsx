@@ -17,7 +17,6 @@ import {
   ArrowRight,
   ArrowLeft
 } from './styledComponents'
-import AddToCartButton from '../../components/AddToCartButton'
 import messages from './messages'
 
 interface Props {
@@ -70,19 +69,7 @@ class QuickViewSlider extends React.Component<Props, State> {
       itemDetails.push(detail)
     }
 
-    const item = Object.assign({}, { product }, { itemDetails })
-
-    const onClick = () => true
-
-    const addToCartButton = product && (
-      <AddToCartButton
-        centered={true}
-        label={formatMessage(messages.addToCart)}
-        {...{ item, onClick, formatMessage }}
-      />
-    )
-
-    const renderButton = isRetail ? addToCartButton : customizeButton
+    const renderButton = !isRetail ? customizeButton : null
     return (
       <Container>
         <SwipeableViews enableMouseEvents={true} {...{ index }}>
