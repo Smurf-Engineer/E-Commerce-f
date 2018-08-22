@@ -20,5 +20,9 @@ export default defineMessages({
   customizableLabel: {
     id: 'components.RelatedProducts.customizableLabel',
     defaultMessage: 'Customize'
+  },
+  viewFullDetailsLabel: {
+    id: 'components.RelatedProducts.viewFullDetailsLabel',
+    defaultMessage: 'View full details'
   }
 })

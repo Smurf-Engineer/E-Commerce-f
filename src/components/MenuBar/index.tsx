@@ -46,6 +46,7 @@ interface Props {
   teamStoresHeader?: boolean | undefined
   itemsInCart: number
   designHasChanges: boolean
+  initialCountryCode: string
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
@@ -113,7 +114,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       teamStoresHeader,
       itemsInCart,
       designHasChanges,
-      openWithoutSaveModalAction
+      openWithoutSaveModalAction,
+      initialCountryCode
     } = this.props
     let user: any
     if (typeof window !== 'undefined') {
@@ -221,7 +223,7 @@ class MenuBar extends React.Component<Props, StateProps> {
           requestClose={this.handleCloseLogin}
           handleForgotPassword={this.handleOpenForgotPassword}
           login={saveUserToLocal}
-          {...{ formatMessage }}
+          {...{ formatMessage, initialCountryCode }}
         />
         <ForgotPassword
           open={openForgotPassword}

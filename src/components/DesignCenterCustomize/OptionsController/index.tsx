@@ -49,6 +49,12 @@ const OptionsController = ({
     }
   }
 
+  const handleResetClick = () => {
+    if (resetEnabled) {
+      onClickReset()
+    }
+  }
+
   return (
     <OptionsContainer>
       <Options>
@@ -68,7 +74,7 @@ const OptionsController = ({
         <Tooltip placement="right" title={formatMessage(messages.reset)}>
           <OptionButton
             disabled={!resetEnabled}
-            onClick={onClickReset}
+            onClick={handleResetClick}
             withMargin={true}
           >
             <img src={resetIcon} />

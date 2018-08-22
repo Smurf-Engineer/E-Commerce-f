@@ -54,14 +54,16 @@ import {
   CANVAS_ELEMENT_TEXT_CHANGED,
   REAPPLY_CANVAS_IMAGE_ACTION,
   SET_EDIT_DESIGN_CONFIG_ACTION,
+  SET_LOADED_CANVAS_ACTION,
+  SAVE_DESIGN_CHANGES_LOADING,
+  CANVAS_ELEMENT_DUPLICATED_ACTION,
+  DESIGN_RESET_EDITING_ACTION,
   Changes,
   CanvasElements,
   WHITE,
   BLACK,
   AccessoryColors,
-  ElementsToApplyScale,
-  SET_LOADED_CANVAS_ACTION,
-  SAVE_DESIGN_CHANGES_LOADING
+  ElementsToApplyScale
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_COLOR } from '../../constants'
@@ -104,6 +106,7 @@ export const initialState = fromJS({
     image: {},
     path: {}
   },
+  originalPaths: [],
   textFormat: {
     fontFamily: 'Avenir',
     stroke: '#000',
@@ -243,10 +246,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         state: { type: canvasType, id }
       } = undoStep
       switch (type) {
+        case Changes.Duplicate:
         case Changes.Add: {
           const canvas = state.get('canvas')
           const updatedCanvas = canvas.deleteIn([canvasType, id])
-
           return state.merge({
             undoChanges: undoChanges.shift(),
             redoChanges: redoChanges.unshift(undoStep),
@@ -323,10 +326,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       const undoChanges = state.get('undoChanges')
       const redoChanges = state.get('redoChanges')
       const redoStep = redoChanges.first()
-      const {
-        type,
-        state: { type: canvasType, id }
-      } = redoStep
+      const { type } = redoStep
       switch (type) {
         case Changes.Add: {
           const updatedCanvas = addCanvasElement(state, redoStep)
@@ -338,6 +338,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Delete: {
+          const {
+            state: { type: canvasType, id }
+          } = redoStep
           const canvass = state.get('canvas')
           const updatedCanvas = canvass.deleteIn([canvasType, id])
           return state.merge({
@@ -391,7 +394,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           })
         }
         case Changes.Colors:
-        default:
           const currentState = state.get(redoStep.type)
           const undoStep = { type: redoStep.type, state: currentState }
           return state.merge({
@@ -399,6 +401,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             redoChanges: redoChanges.shift(),
             colors: redoStep.state
           })
+        case Changes.Duplicate:
+        default:
+          return state
       }
     }
     case SET_PALETTE_NAME_ACTION:
@@ -567,7 +572,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         canvas: updatedCanvas,
         selectedElement: '',
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case SET_SELECTED_ELEMENT_ACTION: {
@@ -625,7 +631,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             canvas: updatedCanvas,
             textFormat: newFormat,
             undoChanges: undoChanges.unshift(lastStep),
-            redoChanges: redoChanges.clear()
+            redoChanges: redoChanges.clear(),
+            designHasChanges: true
           })
         }
         return state
@@ -658,7 +665,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         canvas: updatedCanvas,
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case OPEN_DELETE_OR_APPLY_PALETTE_MODAL: {
@@ -735,7 +743,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           canvas: updatedCanvas,
           undoChanges: undoChanges.unshift(lastStep),
-          redoChanges: redoChanges.clear()
+          redoChanges: redoChanges.clear(),
+          designHasChanges: true
         })
       }
 
@@ -752,7 +761,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.merge({
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case CANVAS_ELEMENT_ROTATED_ACTION: {
@@ -763,7 +773,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.merge({
         undoChanges: undoChanges.unshift(lastStep),
-        redoChanges: redoChanges.clear()
+        redoChanges: redoChanges.clear(),
+        designHasChanges: true
       })
     }
     case UPLOAD_FILE_ACTION_SUCCESS: {
@@ -799,11 +810,45 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           return state.merge({
             canvas: updatedCanvas,
             undoChanges: undoChanges.unshift(lastStep),
-            redoChanges: redoChanges.clear()
+            redoChanges: redoChanges.clear(),
+            designHasChanges: true
           })
         }
       }
       return state
+    }
+    case CANVAS_ELEMENT_DUPLICATED_ACTION: {
+      const { canvasEl, elementType, oldId } = action
+      const { id, originalId } = canvasEl
+      let stepToAdd = {
+        type: Changes.Duplicate,
+        state: { id, originalId, type: elementType }
+      }
+      const canvas = state.get('canvas')
+      const canvasToClone = canvas.getIn([elementType, originalId])
+      const undoChanges = state.get('undoChanges')
+      const redoChanges = state.get('redoChanges')
+      const updatedCanvas = canvas.setIn([elementType, id], {
+        ...canvasToClone,
+        id
+      })
+      if (oldId) {
+        const redoChange = redoChanges.first()
+        return state.merge({
+          canvas: updatedCanvas,
+          undoChanges: undoChanges.unshift(redoChange),
+          redoChanges: redoChanges.shift(),
+          selectedElement: '',
+          designHasChanges: true
+        })
+      }
+      return state.merge({
+        canvas: updatedCanvas,
+        undoChanges: undoChanges.unshift(stepToAdd),
+        redoChanges: redoChanges.clear(),
+        selectedElement: '',
+        designHasChanges: true
+      })
     }
     case SET_UPLOADING_FILE_ACTION:
       return state.set('uploadingFile', action.isUploading)
@@ -831,19 +876,37 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_LOADED_CANVAS_ACTION: {
-      const {
-        canvas: { text, path, image }
-      } = action
-      const textIds = Object.keys(text)
-      const pathIds = Object.keys(path)
-      const imageds = Object.keys(image)
-      const canvas = state.get('canvas')
-      const updatedCanvas = canvas.withMutations((map: any) => {
-        textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
-        pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
-        imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+      const { paths, canvas } = action
+      const updatedCanvas = getCanvas(state, canvas)
+      return state.merge({
+        canvas: updatedCanvas,
+        originalPaths: paths
       })
-      return state.set('canvas', updatedCanvas)
+    }
+    case DESIGN_RESET_EDITING_ACTION: {
+      const { canvas, accessoriesColor } = action
+      const updatedCanvas = getCanvas(state, canvas)
+      const colors = state.get('styleColors')
+      const {
+        bindingColor,
+        zipperColor,
+        bibBraceColor: bibColor,
+        flatlockColor,
+        flatlockCode
+      } = accessoriesColor
+      const stitchingColor = { name: flatlockCode, value: flatlockColor }
+      return state.merge({
+        canvas: updatedCanvas,
+        colors,
+        undoChanges: [],
+        redoChanges: [],
+        openResetDesignModal: false,
+        designHasChanges: false,
+        stitchingColor: fromJS(stitchingColor),
+        bindingColor,
+        zipperColor,
+        bibColor
+      })
     }
     default:
       return state
@@ -855,7 +918,7 @@ export default designCenterReducer
 const addCanvasElement = (state: any, canvasToAdd: Change) => {
   const canvas = state.get('canvas')
   const {
-    state: { id, src, style, position, type: canvasType, fileId }
+    state: { id, src, path, style, position, type: canvasType, fileId }
   } = canvasToAdd
   let canvasObject
   switch (canvasType) {
@@ -864,8 +927,16 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
       break
     case CanvasElements.Path:
       const { fill = '#000000', stroke = '#000000', strokeWidth = 0 } = style
-      const { scaleX, scaleY } = position
-      canvasObject = { id, fill, stroke, strokeWidth, scaleX, scaleY, fileId }
+      canvasObject = {
+        id,
+        fill,
+        stroke,
+        strokeWidth,
+        ...position,
+        fileId,
+        src,
+        path
+      }
       break
     case CanvasElements.Image:
     default:
@@ -911,4 +982,18 @@ const changeTextCanvasElement = (
   const text = newTextToApply ? newText : oldText
   const canvasElement = canvas.getIn([CanvasElements.Text, id])
   return canvas.setIn([CanvasElements.Text, id], { ...canvasElement, text })
+}
+
+const getCanvas = (state: any, canvasToSet: any) => {
+  const { text, path, image } = canvasToSet
+  const textIds = Object.keys(text)
+  const pathIds = Object.keys(path)
+  const imageds = Object.keys(image)
+  const canvas = state.get('canvas')
+  const updatedCanvas = canvas.withMutations((map: any) => {
+    textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
+    pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
+    imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+  })
+  return updatedCanvas
 }
