@@ -10,6 +10,7 @@ interface Props {
   currentColor?: string
   colorBlockHovered?: number
   selected?: boolean
+  name: string
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock?: (index: number) => void
 }
@@ -20,7 +21,8 @@ const ColorButton = ({
   onHoverColorBlock = () => {},
   label,
   currentColor,
-  selected = false
+  selected = false,
+  name
 }: Props) => {
   const handleOnPressColorBlock = () => onSelectColorBlock(index)
   const handleOnHoverColorBlock = () => onHoverColorBlock(index)
@@ -31,9 +33,12 @@ const ColorButton = ({
       onMouseEnter={handleOnHoverColorBlock}
       onMouseLeave={handleOnBlurColorBlock}
     >
-      <OvalSelected {...{ selected }}>
-        <Oval {...{ currentColor }} />
-      </OvalSelected>
+      <div className="custom-tooltip">
+        <OvalSelected {...{ selected }}>
+          <Oval {...{ currentColor }} />
+        </OvalSelected>
+        {!!name && <div className="tooltip-content">{name}</div>}
+      </div>
       <Text>{label}</Text>
     </Container>
   )
