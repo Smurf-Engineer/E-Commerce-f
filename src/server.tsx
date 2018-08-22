@@ -22,6 +22,7 @@ interface Region {
   code: string
   lang: string
   currency: string
+  realCountryCode: string
 }
 
 server
@@ -39,7 +40,8 @@ server
       region: 'global',
       code: 'us',
       lang: 'en',
-      currency: 'usd'
+      currency: 'usd',
+      realCountryCode: 'us'
     }
 
     try {
@@ -66,7 +68,7 @@ server
     dispatch({
       type: SET_USER_AGENT_ACTION,
       client: ua,
-      country: locale.code
+      country: locale.realCountryCode
     })
 
     getDataFromTree(App as any).then(() => {
