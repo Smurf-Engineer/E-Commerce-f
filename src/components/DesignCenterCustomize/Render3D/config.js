@@ -4,6 +4,7 @@
 export const CANVAS_SIZE = 1024
 export const WARNING_FACTOR = 0.2
 export const NUMBER_OF_DECIMALS = 3
+export const CENTER_ORIGIN = 'center'
 export const viewPositions = {
   0: {
     // Back
@@ -34,8 +35,7 @@ export const viewPositions = {
 export const fabricJsConfig = {
   settings: {
     borderColor: 'black',
-    cornerSize: 30,
-    cornerPadding: 10
+    cornerSize: 30
   },
   tl: {
     icon: 'delete.svg'
