@@ -101,14 +101,27 @@ export const ViewButton = styled.img`
   cursor: pointer;
 `
 
+export const TopButton = styled.img`
+  cursor: pointer;
+  align-self: center;
+  width: 15px;
+  height: 15px;
+  padding-bottom: 2px;
+`
+
 export const ViewControls = styled.div`
+  position: absolute;
+  top: 68px;
+  right: 26px;
+  display: flex;
+  flex-direction: column;
+`
+
+export const BottomControls = styled.div`
   display: flex;
   width: 76px;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  top: 68px;
-  right: 26px;
 `
 
 export const LoadingContainer = styled.div`

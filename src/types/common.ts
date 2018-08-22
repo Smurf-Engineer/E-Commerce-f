@@ -153,6 +153,7 @@ export type DesignType = {
   zipperColor: string
   canEdit: boolean
   styleId: number
+  canvasFiles?: string
 }
 
 export type SaveDesignType = {

@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 08/06/18.
  */
 import styled from 'styled-components'
+import { GRAY_LIGHTEST, WHITE, RED } from '../../../theme/colors'
 
 export const Container = styled.div`
   padding-top: 16px;
@@ -28,12 +29,13 @@ export const Col = styled.li`
 export const Image = styled.img`
   height: 88px;
   width: 88px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: ${GRAY_LIGHTEST};
   cursor: pointer;
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const Info = styled.div`
@@ -64,7 +66,7 @@ export const Size = styled.div`
 `
 
 export const Delete = styled.div`
-  color: #e61737;
+  color: ${RED};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

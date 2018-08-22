@@ -47,6 +47,7 @@ type DesignInput = {
   binding_color?: string
   bib_brace_color?: string
   designFiles?: DesignFiles
+  canvas_files?: string
 }
 
 interface SaveDesignData {
@@ -168,8 +169,8 @@ export class SaveDesign extends React.Component<Props, {}> {
         image: designBase64,
         styleId,
         canvas: canvasJson,
-        designFiles
-        // canvasFiles: JSON.stringify(canvasFiles)
+        designFiles,
+        canvas_files: JSON.stringify(canvasFiles)
       }
       // FIXME: HERE
 
@@ -232,7 +233,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       isEditing
     } = this.props
 
-    const { designFiles /* canvasFiles */ } = this.getDesignFiles()
+    const { designFiles, canvasFiles } = this.getDesignFiles()
     const { designBase64, canvasJson, styleId } = design
     const designObj: DesignInput = {
       name: '',
@@ -240,8 +241,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       image: designBase64,
       canvas: canvasJson,
       styleId,
-      designFiles
-      // canvasFiles: JSON.stringify(canvasFiles)
+      designFiles,
+      canvas_files: JSON.stringify(canvasFiles)
     }
     // FIXME: HERE
 

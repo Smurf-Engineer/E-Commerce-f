@@ -577,6 +577,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataDesign, 'designData.product.name', '')
 
     const canvasJson = get(dataDesign, 'designData.canvas')
+    const canvasFiles = get(dataDesign, 'designData.canvasFiles', '')
     const styleId = get(dataDesign, 'designData.styleId')
     let designObject = design
     if (canvasJson) {
@@ -730,7 +731,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   designHasChanges,
                   isUserAuthenticated,
                   isEditing,
-                  originalPaths
+                  originalPaths,
+                  canvasFiles
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}

@@ -98,6 +98,7 @@ export const getDesignQuery = gql`
       }
       canvas
       flatlock
+      canvasFiles: canvas_files
     }
   }
 `

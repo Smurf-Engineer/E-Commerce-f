@@ -8,3 +8,32 @@ body {
 .ant-modal-body {
   line-height: normal;
 }
+
+.custom-tooltip {
+  position: relative;
+  display: inline-block;
+  width: 54px;
+}
+
+.custom-tooltip .tooltip-content {
+  visibility: hidden;
+  max-width: 250px;
+  padding: 6px 8px;
+  color: #fff;
+  text-align: center;
+  text-decoration: none;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 1px;
+  font-size: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  min-height: 26px;
+
+  /* Position the tooltip */
+  position: absolute;
+  top: 40px;
+  z-index: 1;
+}
+
+.custom-tooltip:hover .tooltip-content {
+  visibility: visible;
+}
