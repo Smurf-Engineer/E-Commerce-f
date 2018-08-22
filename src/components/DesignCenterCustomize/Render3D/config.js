@@ -35,7 +35,7 @@ export const fabricJsConfig = {
   settings: {
     borderColor: 'black',
     cornerSize: 30,
-    cornerPadding: 10
+    cornerPadding: 8
   },
   tl: {
     icon: 'delete.svg'

@@ -1247,8 +1247,6 @@ class Render3D extends PureComponent {
         id,
         hasRotatingPoint: false,
         fontSize: 50,
-        snapAngle: 1,
-        snapThreshold: 45,
         scaleX: 1.0,
         scaleY: 1.0,
         ...position,
@@ -1612,8 +1610,7 @@ class Render3D extends PureComponent {
         })
       } else {
         if (activeEl && !this.dragComponent) {
-          const boundingBox = activeEl.getBoundingRect()
-          const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
+          const action = clickOnCorner(activeEl.oCoords, uv)
           if (action) {
             switch (action) {
               case DELETE_ACTION:
@@ -1627,13 +1624,22 @@ class Render3D extends PureComponent {
                 break
               case SCALE_ACTION: {
                 const { scaleX: oldScaleX, scaleY: oldScaleY } = activeEl
+                const sX = uv.x * CANVAS_SIZE
+                const sY = (1 - uv.y) * CANVAS_SIZE
                 this.setState({
                   oldScale: { oldScaleX, oldScaleY }
                 })
                 this.controls.enabled = false
+                const currentTransform = {
+                  originX: 'center',
+                  originY: 'center',
+                  ex: sX,
+                  ey: sY,
+                  original: Object.assign({}, activeEl)
+                }
                 this.dragComponent = {
                   action: SCALE_ACTION,
-                  alreadyNotified: false,
+                  currentTransform,
                   isImage: activeEl.get('type') === CanvasElements.Image
                 }
                 break
@@ -1642,16 +1648,18 @@ class Render3D extends PureComponent {
                 this.setState({ oldRotation: activeEl.transformMatrix })
                 const sX = uv.x * CANVAS_SIZE
                 const sY = (1 - uv.y) * CANVAS_SIZE
-                const startPoint = { x: sX, y: sY }
-                const oX = activeEl.left + activeEl.width / 2
-                const oY = activeEl.top + activeEl.height / 2
-                const originPoint = { x: oX, y: oY }
                 this.controls.enabled = false
+                const currentTransform = {
+                  originX: 'center',
+                  originY: 'center',
+                  ex: sX,
+                  ey: sY,
+                  theta: fabric.util.degreesToRadians(activeEl.angle)
+                }
                 this.dragComponent = {
                   el: activeEl,
-                  action: ROTATE_ACTION,
-                  startPoint,
-                  originPoint
+                  currentTransform,
+                  action: ROTATE_ACTION
                 }
                 break
               }
@@ -1671,8 +1679,8 @@ class Render3D extends PureComponent {
             onSelectEl(el.id, el.get('type'))
             const left = uv.x * CANVAS_SIZE
             const top = (1 - uv.y) * CANVAS_SIZE
-            const differenceX = left - boundingBox.left
-            const differenceY = top - boundingBox.top
+            const differenceX = left - el.left
+            const differenceY = top - el.top
             const dragComponent = {
               differenceX,
               differenceY,
@@ -1744,44 +1752,18 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
-            const cursorLeft = uv.x * CANVAS_SIZE
-            const cursorTop = (1 - uv.y) * CANVAS_SIZE
-            const width = cursorLeft - activeEl.left
-            const height = cursorTop - activeEl.top
-            const scaleX = width / activeEl.width
-            const scaleY = height / activeEl.height
-            activeEl
-              .set({
-                scaleX: Math.max(0, scaleX),
-                scaleY: Math.max(0, scaleY)
-              })
-              .setCoords()
+            const cX = uv.x * CANVAS_SIZE
+            const cY = (1 - uv.y) * CANVAS_SIZE
+            this.scaleObject(cX, cY, this.dragComponent.currentTransform)
             this.canvasTexture.renderAll()
             break
           }
           case ROTATE_ACTION: {
-            const { startPoint, originPoint } = this.dragComponent
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
-
-            if (!activeEl.oldAngle) {
-              activeEl.oldAngle = fabric.util.degreesToRadians(90)
-            }
-            let radians = Math.atan2(cY - originPoint.y, cX - originPoint.x)
-            radians -= Math.atan2(
-              startPoint.y - originPoint.y,
-              startPoint.x - originPoint.x
-            )
-            radians += activeEl.oldAngle
-            this.dragComponent.oldAngle = radians
-
-            this.rotateObject(
-              activeEl,
-              radians - 1.5708,
-              activeEl.width / 2,
-              activeEl.height / 2
-            )
+            this.rotateObject(cX, cY, this.dragComponent.currentTransform)
             this.canvasTexture.renderAll()
+            break
           }
           default:
             break
@@ -1794,28 +1776,79 @@ class Render3D extends PureComponent {
     }
   }
 
-  rotateObject = (fabObj, angleRadian, pivotX, pivotY) => {
-    const ty = pivotY - fabObj.height / 2.0
-    const tx = pivotX - fabObj.width / 2.0
-    if (angleRadian >= Math.PI * 2) {
-      angleRadian -= Math.PI * 2
+  scaleObject = (x, y, currentTransform) => {
+    const el = this.canvasTexture.getActiveObject()
+    if (!el) {
+      return
     }
-    const angle2 = Math.atan2(ty, tx)
-    const angle3 = (2 * angle2 + angleRadian - Math.PI) / 2.0
-    const pdist_sq = tx * tx + ty * ty
-    const disp = Math.sqrt(2 * pdist_sq * (1 - Math.cos(angleRadian)))
-    fabObj
-      .set({
-        transformMatrix: [
-          Math.cos(angleRadian),
-          Math.sin(angleRadian),
-          -Math.sin(angleRadian),
-          Math.cos(angleRadian),
-          disp * Math.cos(angle3),
-          disp * Math.sin(angle3)
-        ]
-      })
-      .setCoords()
+
+    const constraintPosition = el.translateToOriginPoint(
+      el.getCenterPoint(),
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    const localMouse = el.toLocalPoint(
+      new fabric.Point(x, y),
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    const dim = el._getTransformedDimensions()
+    this.scaleObjectEqually(localMouse, el, currentTransform, dim)
+    el.setPositionByOrigin(
+      constraintPosition,
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    el.setCoords()
+  }
+
+  scaleObjectEqually = (localMouse, target, transform, _dim) => {
+    const dist = localMouse.y + localMouse.x
+    const lastDist =
+      (_dim.y * transform.original.scaleY) / target.scaleY +
+      (_dim.x * transform.original.scaleX) / target.scaleX
+    const signX = localMouse.x < 0 ? -1 : 1
+    const signY = localMouse.y < 0 ? -1 : 1
+
+    transform.newScaleX =
+      signX * Math.abs((transform.original.scaleX * dist) / lastDist)
+    transform.newScaleY =
+      signY * Math.abs((transform.original.scaleY * dist) / lastDist)
+    target.set({ scaleX: transform.newScaleX, scaleY: transform.newScaleY })
+  }
+
+  rotateObject = (x, y, currentTransform) => {
+    const el = this.canvasTexture.getActiveObject()
+    if (!el) {
+      return
+    }
+    const constraintPosition = el.translateToOriginPoint(
+      el.getCenterPoint(),
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    const lastAngle = Math.atan2(
+      currentTransform.ey - constraintPosition.y,
+      currentTransform.ex - constraintPosition.x
+    )
+    const currentAngle = Math.atan2(
+      y - constraintPosition.y,
+      x - constraintPosition.x
+    )
+    let angle = fabric.util.radiansToDegrees(
+      currentAngle - lastAngle + currentTransform.theta
+    )
+    if (angle < 0) {
+      angle = 360 + angle
+    }
+    angle %= 360
+    el.set('angle', angle)
+    el.setPositionByOrigin(
+      constraintPosition,
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    el.setCoords()
   }
 
   /* Warning modals */
