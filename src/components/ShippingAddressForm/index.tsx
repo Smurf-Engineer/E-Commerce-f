@@ -3,6 +3,8 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import { isNumberValue, isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
+import { PHONE_FIELD } from '../../constants'
 import {
   ShippingFormContainer,
   Row,
@@ -131,9 +133,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               value={street}
               onChange={this.handleInputChange}
             />
-            {!street &&
+            {(!street || this.hasAddressError(street, city)) &&
               hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+                <ErrorMsg>{formatMessage(messages.requiredAddressLabel)}</ErrorMsg>
               )}
             <StyledInput
               id="apartment"
@@ -239,6 +241,10 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
     )
   }
 
+  hasAddressError = (street: string, city: string) => {
+    return isPoBox(street) || isApoCity(city)
+  }
+
   handleCountryChange = (value: any, countryId: string) => {
     const { inputChangeAction } = this.props
     this.setState({
@@ -275,12 +281,10 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
       currentTarget: { id, value }
     } = evt
 
-    const regex = /^[0-9]+$/
-    const isNumber = regex.test(value)
-
-    if (value && id === 'phone' && !isNumber) {
+    if (value && id === PHONE_FIELD && !isNumberValue(value)) {
       return
     }
+
     inputChangeAction(id, value)
   }
 

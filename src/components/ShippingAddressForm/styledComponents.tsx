@@ -88,7 +88,7 @@ export const DropDownPlaceHolder = styled(Button)`
 `
 export const ErrorMsg = styled.div`
   height: 16px;
-  width: 127.9px;
+  width: 100%;
   color: #e61737;
   font-size: 12px;
   letter-spacing: 0.15px;

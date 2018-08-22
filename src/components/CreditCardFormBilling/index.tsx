@@ -4,7 +4,9 @@
 import * as React from 'react'
 import { injectStripe, CardElement } from 'react-stripe-elements'
 import AnimateHeight from 'react-animate-height'
+import { isNumberValue } from '../../utils/utilsAddressValidation'
 import messages from './messages'
+import { PHONE_FIELD } from '../../constants'
 import {
   Container,
   Row,
@@ -237,10 +239,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentTarget: { id, value }
     } = evt
 
-    const regex = /^[0-9]+$/
-    const isNumber = regex.test(value)
-
-    if (value && id === 'phone' && !isNumber) {
+    if (value && id === PHONE_FIELD && !isNumberValue(value)) {
       return
     }
     inputChangeAction(id, value)

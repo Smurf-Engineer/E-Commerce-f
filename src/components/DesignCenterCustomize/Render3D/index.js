@@ -27,7 +27,9 @@ import {
   ModalMessage,
   Size,
   SizeBox,
-  SizeLabel
+  SizeLabel,
+  BottomControls,
+  TopButton
 } from './styledComponents'
 import {
   viewPositions,
@@ -45,7 +47,12 @@ import {
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
-  CHANGE_ACTIONS
+  CHANGE_ACTIONS,
+  CENTER_ORIGIN,
+  EXTRA_POSITION,
+  TOP_VIEW,
+  BACK_VIEW,
+  LEFT_VIEW
 } from './config'
 import {
   MESH,
@@ -77,19 +84,17 @@ import {
   getClipArtCanvasElement,
   getImageCanvas
 } from './utils'
-// TODO: JV2 - Phase II
-// import arrowDown from '../../../assets/downarrow.svg'
-// import topIcon from '../../../assets/Cube-Top.svg'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
+import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
+import topIcon from '../../../assets/Cube-Top.svg'
 
-const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
-const EXTRA_POSITION = 30
+const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -784,7 +789,10 @@ class Render3D extends PureComponent {
 
   handleOnPressLeft = () => {
     const { currentView } = this.state
-    const nextView = currentView === 0 ? 3 : currentView - 1
+    const nextView =
+      currentView === BACK_VIEW || currentView === TOP_VIEW
+        ? LEFT_VIEW
+        : currentView - 1
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
@@ -792,10 +800,19 @@ class Render3D extends PureComponent {
 
   handleOnPressRight = () => {
     const { currentView } = this.state
-    const nextView = currentView === 3 ? 0 : currentView + 1
+    const nextView =
+      currentView === LEFT_VIEW || currentView === TOP_VIEW
+        ? BACK_VIEW
+        : currentView + 1
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
+  }
+
+  handleOnPressTop = () => {
+    const viewPosition = viewPositions[TOP_VIEW]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: TOP_VIEW })
   }
 
   handleOnChangeZoom = value => {
@@ -1147,9 +1164,12 @@ class Render3D extends PureComponent {
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
-          <ViewButton onClick={this.handleOnPressLeft} src={left} />
-          <img src={cubeViews[currentView]} />
-          <ViewButton onClick={this.handleOnPressRight} src={right} />
+          <TopButton onClick={this.handleOnPressTop} src={top} />
+          <BottomControls>
+            <ViewButton onClick={this.handleOnPressLeft} src={left} />
+            <img src={cubeViews[currentView]} />
+            <ViewButton onClick={this.handleOnPressRight} src={right} />
+          </BottomControls>
         </ViewControls>
         {/* Reset Modal */}
         <Modal
@@ -1287,8 +1307,6 @@ class Render3D extends PureComponent {
         id,
         hasRotatingPoint: false,
         fontSize: 50,
-        snapAngle: 1,
-        snapThreshold: 45,
         scaleX: 1.0,
         scaleY: 1.0,
         ...position,
@@ -1586,8 +1604,7 @@ class Render3D extends PureComponent {
         })
       } else {
         if (activeEl && !this.dragComponent) {
-          const boundingBox = activeEl.getBoundingRect()
-          const action = clickOnCorner(boundingBox, activeEl.oCoords, uv)
+          const action = clickOnCorner(activeEl.oCoords, uv)
           if (action) {
             switch (action) {
               case DELETE_ACTION:
@@ -1601,13 +1618,24 @@ class Render3D extends PureComponent {
                 break
               case SCALE_ACTION: {
                 const { scaleX: oldScaleX, scaleY: oldScaleY } = activeEl
+                const sX = uv.x * CANVAS_SIZE
+                const sY = (1 - uv.y) * CANVAS_SIZE
                 this.setState({
                   oldScale: { oldScaleX, oldScaleY }
                 })
                 this.controls.enabled = false
+                const currentTransform = {
+                  originX: activeEl.originX,
+                  originY: activeEl.originY,
+                  scaleX: oldScaleX,
+                  scaleY: oldScaleY,
+                  ex: sX,
+                  ey: sY,
+                  original: Object.assign({}, activeEl)
+                }
                 this.dragComponent = {
                   action: SCALE_ACTION,
-                  alreadyNotified: false,
+                  currentTransform,
                   isImage: activeEl.get('type') === CanvasElements.Image
                 }
                 break
@@ -1616,16 +1644,18 @@ class Render3D extends PureComponent {
                 this.setState({ oldRotation: activeEl.transformMatrix })
                 const sX = uv.x * CANVAS_SIZE
                 const sY = (1 - uv.y) * CANVAS_SIZE
-                const startPoint = { x: sX, y: sY }
-                const oX = activeEl.left + activeEl.width / 2
-                const oY = activeEl.top + activeEl.height / 2
-                const originPoint = { x: oX, y: oY }
                 this.controls.enabled = false
+                const currentTransform = {
+                  originX: CENTER_ORIGIN,
+                  originY: CENTER_ORIGIN,
+                  ex: sX,
+                  ey: sY,
+                  theta: fabric.util.degreesToRadians(activeEl.angle)
+                }
                 this.dragComponent = {
                   el: activeEl,
-                  action: ROTATE_ACTION,
-                  startPoint,
-                  originPoint
+                  currentTransform,
+                  action: ROTATE_ACTION
                 }
                 break
               }
@@ -1645,8 +1675,8 @@ class Render3D extends PureComponent {
             onSelectEl(el.id, el.get('type'))
             const left = uv.x * CANVAS_SIZE
             const top = (1 - uv.y) * CANVAS_SIZE
-            const differenceX = left - boundingBox.left
-            const differenceY = top - boundingBox.top
+            const differenceX = left - el.left
+            const differenceY = top - el.top
             const dragComponent = {
               differenceX,
               differenceY,
@@ -1707,7 +1737,12 @@ class Render3D extends PureComponent {
         meshName === BIB_BRACE
       if (validMesh) {
         const activeEl = this.canvasTexture.getActiveObject()
-        const { differenceX, differenceY, action } = this.dragComponent
+        const {
+          differenceX,
+          differenceY,
+          action,
+          currentTransform
+        } = this.dragComponent
         const uv = intersects[0].uv
         switch (action) {
           case DRAG_ACTION: {
@@ -1718,43 +1753,16 @@ class Render3D extends PureComponent {
             break
           }
           case SCALE_ACTION: {
-            const cursorLeft = uv.x * CANVAS_SIZE
-            const cursorTop = (1 - uv.y) * CANVAS_SIZE
-            const width = cursorLeft - activeEl.left
-            const height = cursorTop - activeEl.top
-            const scaleX = width / activeEl.width
-            const scaleY = height / activeEl.height
-            activeEl
-              .set({
-                scaleX: Math.max(0, scaleX),
-                scaleY: Math.max(0, scaleY)
-              })
-              .setCoords()
+            const cX = uv.x * CANVAS_SIZE
+            const cY = (1 - uv.y) * CANVAS_SIZE
+            this.scaleObject(cX, cY, currentTransform)
             this.canvasTexture.renderAll()
             break
           }
           case ROTATE_ACTION: {
-            const { startPoint, originPoint } = this.dragComponent
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
-
-            if (!activeEl.oldAngle) {
-              activeEl.oldAngle = fabric.util.degreesToRadians(90)
-            }
-            let radians = Math.atan2(cY - originPoint.y, cX - originPoint.x)
-            radians -= Math.atan2(
-              startPoint.y - originPoint.y,
-              startPoint.x - originPoint.x
-            )
-            radians += activeEl.oldAngle
-            this.dragComponent.oldAngle = radians
-
-            this.rotateObject(
-              activeEl,
-              radians - 1.5708,
-              activeEl.width / 2,
-              activeEl.height / 2
-            )
+            this.rotateObject(cX, cY, currentTransform)
             this.canvasTexture.renderAll()
             break
           }
@@ -1769,28 +1777,64 @@ class Render3D extends PureComponent {
     }
   }
 
-  rotateObject = (fabObj, angleRadian, pivotX, pivotY) => {
-    const ty = pivotY - fabObj.height / 2.0
-    const tx = pivotX - fabObj.width / 2.0
-    if (angleRadian >= Math.PI * 2) {
-      angleRadian -= Math.PI * 2
+  scaleObject = (x, y, currentTransform) => {
+    const { originX, originY, original } = currentTransform
+    const el = this.canvasTexture.getActiveObject()
+    if (!el) {
+      return
     }
-    const angle2 = Math.atan2(ty, tx)
-    const angle3 = (2 * angle2 + angleRadian - Math.PI) / 2.0
-    const pdist_sq = tx * tx + ty * ty
-    const disp = Math.sqrt(2 * pdist_sq * (1 - Math.cos(angleRadian)))
-    fabObj
-      .set({
-        transformMatrix: [
-          Math.cos(angleRadian),
-          Math.sin(angleRadian),
-          -Math.sin(angleRadian),
-          Math.cos(angleRadian),
-          disp * Math.cos(angle3),
-          disp * Math.sin(angle3)
-        ]
-      })
-      .setCoords()
+    const constraintPosition = el.translateToOriginPoint(
+      el.getCenterPoint(),
+      originX,
+      originY
+    )
+    const localMouse = el.toLocalPoint(new fabric.Point(x, y), originX, originY)
+    const dim = el._getTransformedDimensions()
+    const dist = localMouse.y + localMouse.x
+    const lastDist =
+      (dim.y * original.scaleY) / el.scaleY +
+      (dim.x * original.scaleX) / el.scaleX
+    const signX = localMouse.x < 0 ? -1 : 1
+    const signY = localMouse.y < 0 ? -1 : 1
+
+    const scaleX = signX * Math.abs((currentTransform.scaleX * dist) / lastDist)
+    const scaleY = signY * Math.abs((currentTransform.scaleY * dist) / lastDist)
+    el.set({ scaleX, scaleY })
+    el.setPositionByOrigin(
+      constraintPosition,
+      currentTransform.originX,
+      currentTransform.originY
+    )
+    el.setCoords()
+  }
+
+  rotateObject = (x, y, currentTransform) => {
+    const { ey, ex, originX, originY, theta } = currentTransform
+    const el = this.canvasTexture.getActiveObject()
+    if (!el) {
+      return
+    }
+    const constraintPosition = el.translateToOriginPoint(
+      el.getCenterPoint(),
+      originX,
+      originY
+    )
+    const lastAngle = Math.atan2(
+      ey - constraintPosition.y,
+      ex - constraintPosition.x
+    )
+    const currentAngle = Math.atan2(
+      y - constraintPosition.y,
+      x - constraintPosition.x
+    )
+    let angle = fabric.util.radiansToDegrees(currentAngle - lastAngle + theta)
+    if (angle < 0) {
+      angle = 360 + angle
+    }
+    angle %= 360
+    el.set('angle', angle)
+    el.setPositionByOrigin(constraintPosition, originX, originY)
+    el.setCoords()
   }
 
   /* Warning modals */
