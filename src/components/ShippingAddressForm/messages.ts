@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.ShippingAddressForm.requiredLabel',
     defaultMessage: 'This field is required'
   },
+  requiredAddressLabel: {
+    id: 'components.ShippingAddressForm.requiredAddressLabel',
+    defaultMessage: 'Enter a valid address. We do not ship to APO or PO Boxes.'
+  },
   firstNameLabel: {
     id: 'components.ShippingAddressForm.firstNameLabel',
     defaultMessage: 'First name'

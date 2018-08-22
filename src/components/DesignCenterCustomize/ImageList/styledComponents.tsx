@@ -28,7 +28,8 @@ export const Col = styled.li`
 export const Image = styled.img`
   height: 88px;
   width: 88px;
-  object-fit: cover;
+  object-fit: contain;
+  background-color: #f1f4f5;
   cursor: pointer;
 `
 

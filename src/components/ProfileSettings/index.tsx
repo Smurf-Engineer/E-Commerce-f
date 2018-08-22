@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 import Message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import * as ProfileSettingsActions from './actions'
+import { PHONE_FIELD } from '../../constants'
+import { isNumberValue } from '../../utils/utilsAddressValidation'
 import {
   regionsQuery,
   profileSettingsQuery,
@@ -380,19 +382,16 @@ class ProfileSettings extends React.Component<Props, {}> {
     } = evt
 
     const regex = /^\d*(\.\d*)?$/
-    const regexPhone = /^\d+$/
-
-    const isNumber = regex.test(value)
-    const isValidPhone = regexPhone.test(value)
+    const isValidNumber = regex.test(value)
 
     const checkIsDecimalNumber = id.match(
       /^(weight|heightFirst|heightSecond|chestSize|waistSize|hipsSize|inseamSize|shouldersSize|neckSize)$/
     )
 
-    if (value && checkIsDecimalNumber && !isNumber) {
+    if (value && checkIsDecimalNumber && !isValidNumber) {
       return
     }
-    if (value && id === 'phone' && !isValidPhone) {
+    if (value && id === PHONE_FIELD && !isNumberValue(value)) {
       return
     }
     inputChangeAction(id, value)
