@@ -64,7 +64,8 @@ import {
   CanvasDragged,
   CanvasRotated,
   Responsive,
-  AccessoriesColor
+  AccessoriesColor,
+  CanvasObjects
 } from '../../types/common'
 import {
   getProductQuery,
@@ -144,6 +145,7 @@ interface Props extends RouteComponentProps<any> {
   savedDesign: SaveDesignType
   user: object
   responsive: Responsive
+  originalPaths: any[]
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -217,7 +219,16 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   formatMessage: (messageDescriptor: any) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
-  setLoadedCanvasAction: (canvas: CanvasType) => void
+  onCanvasElementDuplicatedAction: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
+  setLoadedCanvasAction: (canvas: CanvasType, paths: any[]) => void
+  onResetEditingAction: (
+    canvas: CanvasType,
+    accessoriesColor?: AccessoriesColor
+  ) => void
   setEditConfigAction: (
     colors: string[],
     accessoriesColor: AccessoriesColor,
@@ -481,8 +492,11 @@ export class DesignCenter extends React.Component<Props, {}> {
       user,
       responsive,
       onReApplyImageElementAction,
+      onCanvasElementDuplicatedAction,
       setEditConfigAction,
-      setLoadedCanvasAction
+      setLoadedCanvasAction,
+      onResetEditingAction,
+      originalPaths
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -715,8 +729,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                   setSearchClipParamAction,
                   designHasChanges,
                   isUserAuthenticated,
-                  isEditing
+                  isEditing,
+                  originalPaths
                 }}
+                onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
                 onUploadFile={uploadFileAction}
                 onAccessoryColorSelected={setAccessoryColorAction}
@@ -751,6 +767,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onReApplyImageEl={onReApplyImageElementAction}
                 onSetEditConfig={setEditConfigAction}
                 onSetCanvasObject={setLoadedCanvasAction}
+                onResetEditing={onResetEditingAction}
               />
             )}
             <PreviewTab

@@ -13,8 +13,6 @@ interface ConfigType {
   paypalClientId: string
   paypalEnv: string
   googleMapKey: string
-  geoIpUrl: string
-  geoIpAccesKey: string
   intercomKey: string
   defaultCurrency: string
 }
@@ -31,8 +29,6 @@ const config: ConfigType = {
     'AWuWtjrHnZd_nLLXI-x40UtoX7cNxqYNjh9CrfDeNO6y4Ik2xADqapxfzXzHCPeIgrFSP-45-2gYkiO-',
   paypalEnv: 'sandbox',
   googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
-  geoIpUrl: 'http://api.ipstack.com/',
-  geoIpAccesKey: 'e5dc4d0a6fc61af61307fe520cc67f66',
   intercomKey: 'nmbw72i7',
   defaultCurrency: 'usd'
 }
