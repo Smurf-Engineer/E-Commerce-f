@@ -27,7 +27,9 @@ import {
   ModalMessage,
   Size,
   SizeBox,
-  SizeLabel
+  SizeLabel,
+  BottomControls,
+  TopButton
 } from './styledComponents'
 import {
   viewPositions,
@@ -46,7 +48,11 @@ import {
   ZIPPER_NAME,
   BINDING_NAME,
   CHANGE_ACTIONS,
-  CENTER_ORIGIN
+  CENTER_ORIGIN,
+  EXTRA_POSITION,
+  TOP_VIEW,
+  BACK_VIEW,
+  LEFT_VIEW
 } from './config'
 import {
   MESH,
@@ -78,19 +84,17 @@ import {
   getClipArtCanvasElement,
   getImageCanvas
 } from './utils'
-// TODO: JV2 - Phase II
-// import arrowDown from '../../../assets/downarrow.svg'
-// import topIcon from '../../../assets/Cube-Top.svg'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
+import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
+import topIcon from '../../../assets/Cube-Top.svg'
 
-const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon]
-const EXTRA_POSITION = 30
+const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -785,7 +789,10 @@ class Render3D extends PureComponent {
 
   handleOnPressLeft = () => {
     const { currentView } = this.state
-    const nextView = currentView === 0 ? 3 : currentView - 1
+    const nextView =
+      currentView === BACK_VIEW || currentView === TOP_VIEW
+        ? LEFT_VIEW
+        : currentView - 1
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
@@ -793,10 +800,19 @@ class Render3D extends PureComponent {
 
   handleOnPressRight = () => {
     const { currentView } = this.state
-    const nextView = currentView === 3 ? 0 : currentView + 1
+    const nextView =
+      currentView === LEFT_VIEW || currentView === TOP_VIEW
+        ? BACK_VIEW
+        : currentView + 1
     const viewPosition = viewPositions[nextView]
     this.cameraUpdate(viewPosition)
     this.setState({ currentView: nextView })
+  }
+
+  handleOnPressTop = () => {
+    const viewPosition = viewPositions[TOP_VIEW]
+    this.cameraUpdate(viewPosition)
+    this.setState({ currentView: TOP_VIEW })
   }
 
   handleOnChangeZoom = value => {
@@ -1148,9 +1164,12 @@ class Render3D extends PureComponent {
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
-          <ViewButton onClick={this.handleOnPressLeft} src={left} />
-          <img src={cubeViews[currentView]} />
-          <ViewButton onClick={this.handleOnPressRight} src={right} />
+          <TopButton onClick={this.handleOnPressTop} src={top} />
+          <BottomControls>
+            <ViewButton onClick={this.handleOnPressLeft} src={left} />
+            <img src={cubeViews[currentView]} />
+            <ViewButton onClick={this.handleOnPressRight} src={right} />
+          </BottomControls>
         </ViewControls>
         {/* Reset Modal */}
         <Modal
