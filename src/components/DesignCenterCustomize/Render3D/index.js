@@ -46,7 +46,8 @@ import {
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
-  CHANGE_ACTIONS
+  CHANGE_ACTIONS,
+  CENTER_ORIGIN
 } from './config'
 import {
   MESH,
@@ -1652,8 +1653,8 @@ class Render3D extends PureComponent {
                 const sY = (1 - uv.y) * CANVAS_SIZE
                 this.controls.enabled = false
                 const currentTransform = {
-                  originX: 'center',
-                  originY: 'center',
+                  originX: CENTER_ORIGIN,
+                  originY: CENTER_ORIGIN,
                   ex: sX,
                   ey: sY,
                   theta: fabric.util.degreesToRadians(activeEl.angle)
@@ -1815,36 +1816,31 @@ class Render3D extends PureComponent {
   }
 
   rotateObject = (x, y, currentTransform) => {
+    const { ey, ex, originX, originY, theta } = currentTransform
     const el = this.canvasTexture.getActiveObject()
     if (!el) {
       return
     }
     const constraintPosition = el.translateToOriginPoint(
       el.getCenterPoint(),
-      currentTransform.originX,
-      currentTransform.originY
+      originX,
+      originY
     )
     const lastAngle = Math.atan2(
-      currentTransform.ey - constraintPosition.y,
-      currentTransform.ex - constraintPosition.x
+      ey - constraintPosition.y,
+      ex - constraintPosition.x
     )
     const currentAngle = Math.atan2(
       y - constraintPosition.y,
       x - constraintPosition.x
     )
-    let angle = fabric.util.radiansToDegrees(
-      currentAngle - lastAngle + currentTransform.theta
-    )
+    let angle = fabric.util.radiansToDegrees(currentAngle - lastAngle + theta)
     if (angle < 0) {
       angle = 360 + angle
     }
     angle %= 360
     el.set('angle', angle)
-    el.setPositionByOrigin(
-      constraintPosition,
-      currentTransform.originX,
-      currentTransform.originY
-    )
+    el.setPositionByOrigin(constraintPosition, originX, originY)
     el.setCoords()
   }
 
