@@ -125,15 +125,26 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       limit,
       setDesignsData
     } = this.props
-    const offset = offsetParam !== undefined ? offsetParam : offsetProp
-    const page = pageParam !== undefined ? pageParam : pageProp
+    let offset = offsetParam !== undefined ? offsetParam : offsetProp
+    let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    if (!offsetParam && !pageParam) {
+      const fullPage = !(offset % limit)
+      const maxPageNumber = offset / limit
+
+      if (fullPage && currentPage > maxPageNumber) {
+        currentPage--
+        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
+      }
+    }
+
     try {
       const data = await query({
         query: desginsQuery,
         variables: { limit, offset },
         fetchPolicy: 'network-only'
       })
-      setDesignsData(data, offset, page)
+      setDesignsData(data, offset, currentPage)
     } catch (e) {
       throw e
     }
@@ -171,6 +182,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       error,
       formatMessage,
       designs,
+      limit,
       currentPage,
       fullCount,
       deleteModal: { modalLoading, openDeleteModal, designName }
@@ -178,19 +190,22 @@ export class MyLocker extends React.PureComponent<Props, {}> {
 
     let alternativeContent = null
     if (loading) {
-      alternativeContent =
-        (<LoadingContainer>
+      alternativeContent = (
+        <LoadingContainer>
           <Spin />
-        </LoadingContainer>)
+        </LoadingContainer>
+      )
     } else if (error) {
-      alternativeContent =
-        (<LoadingContainer>
+      alternativeContent = (
+        <LoadingContainer>
           <TitleError>{formatMessage(messages.titleError)}</TitleError>
           <MessageError>{formatMessage(messages.messageError)}</MessageError>
-        </LoadingContainer>)
+        </LoadingContainer>
+      )
     } else if (!designs.length) {
-      alternativeContent =
-        (<EmptyContainer message={formatMessage(messages.messageEmpty)} />)
+      alternativeContent = (
+        <EmptyContainer message={formatMessage(messages.messageEmpty)} />
+      )
     }
 
     let withoutPadding = true
@@ -212,7 +227,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           />
           <Pagination
             current={currentPage}
-            pageSize={12}
+            pageSize={limit}
             total={Number(fullCount)}
             onChange={this.handleOnChangePage}
           />
