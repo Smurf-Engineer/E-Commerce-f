@@ -327,7 +327,7 @@ const MeasurementsForm = ({
   return (
     <Container>
       <Row>
-        <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+        <Column inputhWidth={!isMobile ? '41%' : '50%'}>
           <RadioGroup
             value={msrmntSystemSelected || msrmntSystemSelectedMS || 'imperial'}
             onChange={handleOnMsrmntSystemChange}
@@ -340,7 +340,7 @@ const MeasurementsForm = ({
             </RadioButton>
           </RadioGroup>
         </Column>
-        <Column inputhWidth={!isMobile ? '31%' : '48%'}>
+        <Column inputhWidth={!isMobile ? '41%' : '50%'}>
           <RadioGroup
             value={msrmntGenderSelected || msrmntGenderSelectedMS || 'man'}
             onChange={handleOnMsrmntGenderChange}
@@ -351,7 +351,6 @@ const MeasurementsForm = ({
             </RadioButton>
           </RadioGroup>
         </Column>
-        {!isMobile ? <Column inputhWidth={'31%'} /> : null}
       </Row>
       {!isMobile ? (
         <div>
