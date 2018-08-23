@@ -97,9 +97,15 @@ interface Props extends RouteComponentProps<any> {
   addItemToCartAction: (item: any) => void
   setShowDetailsAction: (show: boolean) => void
   setShowSpecsAction: (show: boolean) => void
+  resetDataAction: () => void
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   render() {
     const {
       intl,
