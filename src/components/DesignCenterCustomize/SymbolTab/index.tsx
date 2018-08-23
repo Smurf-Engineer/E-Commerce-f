@@ -39,6 +39,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   selectedElement: CanvasElement
+  selectedItem: number
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
@@ -60,14 +61,19 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     const {
       data: { loading, clipArts },
       selectedElement,
-      formatMessage
+      formatMessage,
+      selectedItem
     } = this.props
 
     const artList =
       clipArts && !!clipArts.length ? (
         clipArts.map(({ id, url }) => (
           <Col key={id}>
-            <Icon src={url} onClick={this.handleOnApplyArt(url, id)} />
+            <Icon
+              selected={selectedItem === id}
+              src={url}
+              onClick={this.handleOnApplyArt(url, id)}
+            />
           </Col>
         ))
       ) : (

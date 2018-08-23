@@ -561,6 +561,11 @@ export interface CanvasElement {
   fileId?: number
 }
 
+export interface SelectedAsset {
+  id?: number
+  type?: string
+}
+
 export interface CanvasType {
   text: {
     [id: string]: CanvasElement

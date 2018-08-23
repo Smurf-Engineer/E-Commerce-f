@@ -21,13 +21,14 @@ const getSizeInCentimeters = (pixels: number): number => {
 
 interface Props {
   images: ImageFile[]
+  currentSelected: number
   onClickImage: (file: ImageFile) => void
   onClickDelete: (id: number) => void
 }
 
 class ImageList extends React.PureComponent<Props, {}> {
   render() {
-    const { images } = this.props
+    const { images, currentSelected } = this.props
     const imageList = images.map((file, index) => {
       const { id, fileUrl, size } = file
       const completeName = fileUrl.split('/').pop()
@@ -39,7 +40,7 @@ class ImageList extends React.PureComponent<Props, {}> {
         height = getSizeInCentimeters(size.height)
       }
       return (
-        <Row key={index}>
+        <Row key={index} selected={currentSelected === id}>
           <Image src={fileUrl} onClick={this.handleOnClickImage(file)} />
           <Info>
             <Name>{name || completeName}</Name>

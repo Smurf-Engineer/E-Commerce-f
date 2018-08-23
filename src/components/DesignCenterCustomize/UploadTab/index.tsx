@@ -54,6 +54,7 @@ interface Props {
   images: ImageFile[]
   uploadingFile: boolean
   isUserAuthenticated: boolean
+  selectedItem: number
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
@@ -73,7 +74,12 @@ class UploadTab extends React.PureComponent<Props, State> {
     }
   }
   render() {
-    const { data, uploadingFile, isUserAuthenticated } = this.props
+    const {
+      data,
+      uploadingFile,
+      isUserAuthenticated,
+      selectedItem
+    } = this.props
 
     if (!isUserAuthenticated) {
       return (
@@ -114,6 +120,7 @@ class UploadTab extends React.PureComponent<Props, State> {
           onClickImage={this.handleOnAddImage}
           images={imagesData}
           onClickDelete={this.handleOnDelete}
+          currentSelected={selectedItem}
         />
         <DraggerBottom>{dragger}</DraggerBottom>
         <Recommendation color={RED}>
