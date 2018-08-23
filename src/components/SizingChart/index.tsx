@@ -14,7 +14,7 @@ import SizesTable from '../SizesTable'
 import { Chart } from '../../types/common'
 
 interface Props {
-  boxHeaders: string[]
+  boxHeaders?: string[]
   chart: Chart
   units: string
   formatMessage: (messageDescriptor: any) => string
@@ -28,15 +28,17 @@ class SizingChart extends React.Component<Props, {}> {
       chart: { title, tables }
     } = this.props
 
-    const renderBoxHeaderList = boxHeaders.map((boxHeader, index) => {
-      const checked = title === boxHeader
+    const renderBoxHeaderList =
+      boxHeaders &&
+      boxHeaders.map((boxHeader, index) => {
+        const checked = title === boxHeader
 
-      return (
-        <BoxHeader key={index} {...{ checked }}>
-          <FormattedMessage {...messages[boxHeader]} />
-        </BoxHeader>
-      )
-    })
+        return (
+          <BoxHeader key={index} {...{ checked }}>
+            <FormattedMessage {...messages[boxHeader]} />
+          </BoxHeader>
+        )
+      })
 
     const renderTableList = tables.map((table, index) => (
       <SizesTable key={index} {...{ units, table }} />
@@ -44,7 +46,7 @@ class SizingChart extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <BoxHeaderRow>{renderBoxHeaderList}</BoxHeaderRow>
+        {boxHeaders && <BoxHeaderRow>{renderBoxHeaderList}</BoxHeaderRow>}
         <TableList multiple={tables.length > 1}>{renderTableList}</TableList>
       </Container>
     )
