@@ -957,7 +957,7 @@
   "screens.ShoppingCartPage.zipCodePlaceholder": "Zip/Postal Code",
   "screens.ShoppingCartPage.promoCodePlaceholder": "Promo Code",
   "screens.ShoppingCartPage.giftPlaceholder": "Gift Certificate",
-  "screens.ShoppingCartPage.addOneMoreMessage": "*Add 1 more item to your cart to save 25% on your entire order",
+  "screens.ShoppingCartPage.addOneMoreMessage": "*Add 1 more item to your cart to save 20% on your entire order",
   "screens.ShoppingCartPage.titleDeleteModal": "Are you sure?",
   "screens.ShoppingCartPage.messageDeleteItem": "\"{nameOfFirstProduct}\" will be deleted from your cart",
   "screens.ShoppingCartPage.delete": "Delete",
@@ -1011,7 +1011,6 @@
   "screen.TeamPassCode.invalidPass": "Invalid passcode value.",
   "components.TeamPassCode.save": "Enter",
   "components.TeamStoreList.notFoundMessage": "No results or the team is private",
-
   "components.LogoutModal.title": "Log Out",
   "components.LogoutModal.confirm": "Confirm",
   "components.LogoutModal.logout": "Are you sure you want to log out?"
