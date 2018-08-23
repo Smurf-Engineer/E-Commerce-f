@@ -122,7 +122,9 @@ class ColorsTab extends React.PureComponent<Props, State> {
         <Top>
           <Row
             onClick={
-              !stitchingTab ? this.handleOnBack : this.handleOnResetIndex
+              !isFirstTab && !stitchingTab
+                ? this.handleOnBack
+                : this.handleOnResetIndex
             }
           >
             {!isFirstTab && <Arrow type={'left'} />}
