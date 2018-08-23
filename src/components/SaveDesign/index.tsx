@@ -9,6 +9,8 @@ import message from 'antd/lib/message'
 import Checkbox from 'antd/lib/checkbox'
 import forEach from 'lodash/forEach'
 import uniq from 'lodash/uniq'
+import uniqWith from 'lodash/uniqWith'
+import isEqual from 'lodash/isEqual'
 import messages from './messages'
 import {
   Container,
@@ -26,7 +28,8 @@ import {
   Product,
   StitchingColor,
   CanvasType,
-  DesignFiles
+  DesignFiles,
+  CanvasFile
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
@@ -158,7 +161,7 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
 
     const { designBase64, canvasJson, styleId } = design
-    const designFiles = this.getDesignFiles()
+    const { designFiles, canvasFiles } = this.getDesignFiles()
     try {
       const designObj: DesignInput = {
         name: designName,
@@ -167,7 +170,7 @@ export class SaveDesign extends React.Component<Props, {}> {
         styleId,
         canvas: canvasJson,
         designFiles,
-        canvas_files: '' // TODO: miguel will fix
+        canvas_files: JSON.stringify(canvasFiles)
       }
 
       /* Accessory colors */
@@ -229,7 +232,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       isEditing
     } = this.props
 
-    const designFiles = this.getDesignFiles()
+    const { designFiles, canvasFiles } = this.getDesignFiles()
     const { designBase64, canvasJson, styleId } = design
     const designObj: DesignInput = {
       name: '',
@@ -238,7 +241,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       canvas: canvasJson,
       styleId,
       designFiles,
-      canvas_files: '' // TODO: miguel will fix
+      canvas_files: JSON.stringify(canvasFiles)
     }
 
     try {
@@ -311,24 +314,36 @@ export class SaveDesign extends React.Component<Props, {}> {
 
   getDesignFiles = () => {
     const {
-      canvas: { image, path }
+      canvas: { image, path: clipArt }
     } = this.props
     const files: number[] = []
     const svgs: number[] = []
-    // tslint:disable:curly
+    const images: CanvasFile[] = []
+    const paths: CanvasFile[] = []
     forEach(image, img => {
-      const { fileId } = img
-      if (fileId) files.push(fileId)
+      const { fileId, src } = img
+      if (fileId) {
+        files.push(fileId)
+        images.push({ fileId, src })
+      }
     })
-    forEach(path, pth => {
-      const { fileId } = pth
-      if (fileId) svgs.push(fileId)
+    forEach(clipArt, pth => {
+      const { fileId, canvasPath } = pth
+      if (fileId) {
+        svgs.push(fileId)
+        paths.push({ fileId, canvasPath })
+      }
     })
-    // tslint:enable:curly
 
     return {
-      files: uniq(files),
-      svgs: uniq(svgs)
+      designFiles: {
+        files: uniq(files),
+        svgs: uniq(svgs)
+      },
+      canvasFiles: {
+        paths: uniqWith(paths, isEqual),
+        images: uniqWith(images, isEqual)
+      }
     }
   }
 
