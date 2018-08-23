@@ -7,16 +7,14 @@ import { Container, Color, Row, Col } from './styledComponents'
 import colors from './colors'
 
 interface Props {
-  onSelectColor: (color: string) => void
   height?: string
 }
 
-const ColorList = ({ onSelectColor, height }: Props) => {
-  const handleOnSelectColor = (color: string) => () => onSelectColor(color)
+const ColorList = ({ height }: Props) => {
   const colorsList = colors.map(({ value, name }, index) => (
     <Tooltip key={index} title={name}>
       <Col>
-        <Color color={value} onClick={handleOnSelectColor(value)} />
+        <Color color={value} />
       </Col>
     </Tooltip>
   ))
