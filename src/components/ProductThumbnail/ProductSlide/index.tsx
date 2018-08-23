@@ -40,6 +40,7 @@ interface Props {
   currentCurrency: string
   disableSlider?: boolean
   customizable?: boolean
+  backgroundColor?: string
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -68,12 +69,19 @@ const ProductSlide = ({
   // urlProduct, TODO: WIP new way to right click
   myLockerList,
   disableSlider = false,
-  customizable
+  customizable,
+  backgroundColor
 }: Props) => {
   if (image) {
     return (
       <ImageContainer
-        {...{ onMouseEnter, onMouseLeave, isTopProduct, hideCustomButton }}
+        {...{
+          onMouseEnter,
+          onMouseLeave,
+          isTopProduct,
+          hideCustomButton,
+          backgroundColor
+        }}
       >
         <ImageTop>
           <AboveTablet>
