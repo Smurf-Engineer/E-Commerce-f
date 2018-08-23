@@ -893,7 +893,7 @@
   "components.DesignsCatalogueThumbnailList.addToCart": "ADD TO CART",
   "components.ShippingAddressForm.tittle": "ShippingAddressForm",
   "components.ShippingAddressForm.requiredLabel": "This field is required",
-  "components.ShippingAddressForm.requiredAddressLabel": "This field is required. We do not ship to APO and PO Boxes.",
+  "components.ShippingAddressForm.requiredAddressLabel": "We do not ship to APO and PO Boxes.",
   "components.ShippingAddressForm.firstNameLabel": "First name",
   "components.ShippingAddressForm.lastNameLabel": "Last Name",
   "components.ShippingAddressForm.addressNameLabel": "Address",
