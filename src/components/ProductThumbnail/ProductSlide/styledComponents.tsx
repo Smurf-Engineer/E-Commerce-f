@@ -3,13 +3,20 @@
  */
 import styled from 'styled-components'
 
+type StyledProps = {
+  backgroundColor?: string
+}
+
 export const ImageContainer = styled.div`
   user-select: none;
   position: relative;
   cursor: pointer;
+  ${({ backgroundColor }: StyledProps) =>
+    backgroundColor ? `background-color: ${backgroundColor}` : ''};
   height: 214.13px;
   width: 100%;
-  padding: 10px 0;
+  padding: ${({ backgroundColor }: StyledProps) =>
+    backgroundColor ? '10px' : '10px 0'};
   text-align: center;
 
   @media (min-width: 321px) and (max-width: 480px) {

@@ -18,6 +18,7 @@ import {
   DesignType,
   ClickParam
 } from '../../types/common'
+import { GRAY_LIGHTEST } from '../../theme/colors'
 import {
   Container,
   Content,
@@ -108,6 +109,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
+                backgroundColor={GRAY_LIGHTEST}
                 footer={
                   <FooterThumbnailLocker
                     {...{
