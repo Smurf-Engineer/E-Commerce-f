@@ -228,7 +228,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             />
           </Row>
         </SectionContainer>
-        {/* MEASUREMENTS */}
+        {/* MEASUREMENTS
         <Title>{formatMessage(messages.measurementsTitle)}</Title>
         <SectionContainer>
           <MeasurementsForm
@@ -254,9 +254,9 @@ class ProfileSettings extends React.Component<Props, {}> {
               isMobile
             }}
           />
-        </SectionContainer>
+        </SectionContainer> */}
         {/*SMS Preferences*/}
-        <SectionContainer>
+        {/* <SectionContainer>
           <Title>{formatMessage(messages.smsTitle)}</Title>
           <Row marginBottom={'0'}>
             <StyledCheckbox
@@ -294,7 +294,7 @@ class ProfileSettings extends React.Component<Props, {}> {
               </StyledButton>
             </Column>
           </Row>
-        </SectionContainer>
+        </SectionContainer> */}
         {/*Email Preferences*/}
         <SectionContainer>
           <Title>{formatMessage(messages.emailTitle)}</Title>
