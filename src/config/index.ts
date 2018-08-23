@@ -2,35 +2,18 @@
  * App config
  */
 
-interface ConfigType {
-  graphQlUrl?: string
-  googleId?: string
-  facebookId?: string
-  graphqlUriBase?: string
-  baseUrl?: string
-  storageUrl: string
-  pkStripe: string
-  paypalClientId: string
-  paypalEnv: string
-  googleMapKey: string
-  intercomKey: string
-  defaultCurrency: string
-}
-
-const config: ConfigType = {
-  graphQlUrl: process.env.RAZZLE_GRAPHQL_URL,
-  googleId: process.env.RAZZLE_GOOGLE_ID,
-  facebookId: process.env.RAZZLE_FACEBOOK_ID,
-  graphqlUriBase: 'https://api.jakroo.tailrecursive.co/api/',
-  baseUrl: 'https://dev.jakroo.tailrecursive.co/',
-  storageUrl: 'https://storage.googleapis.com/jakroo-storage',
-  pkStripe: 'pk_test_USJaHD7YvJFcFsgwOixnJDrq',
-  paypalClientId:
-    'AWuWtjrHnZd_nLLXI-x40UtoX7cNxqYNjh9CrfDeNO6y4Ik2xADqapxfzXzHCPeIgrFSP-45-2gYkiO-',
-  paypalEnv: 'sandbox',
-  googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
-  intercomKey: 'nmbw72i7',
-  defaultCurrency: 'usd'
+const config = {
+  googleId: process.env.GOOGLE_ID,
+  facebookId: process.env.FACEBOOK_ID,
+  graphqlUriBase: process.env.GRAPHQL_URI_BASE,
+  baseUrl: process.env.BASE_URL,
+  storageUrl: process.env.STORAGE_URL,
+  pkStripe: process.env.PK_STRIPE,
+  paypalClientId: process.env.PAYPAL_CLIENT_ID,
+  paypalEnv: process.env.PAYPAL_ENV,
+  googleMapKey: process.env.GOOGLE_MAP_KEY,
+  intercomKey: process.env.INTERCOM_KEY,
+  defaultCurrency: process.env.DEFAULT_CURRENCY
 }
 
 export default config

@@ -1,5 +1,6 @@
 'use strict'
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
@@ -87,6 +88,21 @@ module.exports = {
     config.plugins.push(new ExtractTextPlugin('static/css/styles.css'))
     config.plugins.push(
       new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop')
+    )
+    config.plugins.push(
+      new webpack.EnvironmentPlugin([
+        'GOOGLE_ID',
+        'FACEBOOK_ID',
+        'GRAPHQL_URI_BASE',
+        'BASE_URL',
+        'STORAGE_URL',
+        'PK_STRIPE',
+        'PAYPAL_CLIENT_ID',
+        'PAYPAL_ENV',
+        'GOOGLE_MAP_KEY',
+        'INTERCOM_KEY',
+        'DEFAULT_CURRENCY'
+      ])
     )
 
     config.plugins.push(new webpack.IgnorePlugin(/utf-8-validate|bufferutil/))
