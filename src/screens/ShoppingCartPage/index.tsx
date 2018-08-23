@@ -298,7 +298,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
       return (
         <CartItem
-          {...{ currentCurrency }}
+          currentCurrency={currentCurrency || config.defaultCurrency}
           formatMessage={formatMessage}
           key={index}
           title={
