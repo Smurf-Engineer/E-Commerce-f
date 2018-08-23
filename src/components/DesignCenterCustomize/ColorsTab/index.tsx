@@ -155,7 +155,10 @@ class ColorsTab extends React.PureComponent<Props, State> {
               hasStitching,
               hasZipper,
               hasBinding,
-              hasBibBrace
+              hasBibBrace,
+              onSelectColorBlock,
+              onHoverColorBlock,
+              colorBlockHovered
             }}
           />
           <BaseColors

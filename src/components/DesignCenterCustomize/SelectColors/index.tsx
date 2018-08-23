@@ -27,6 +27,9 @@ interface Props {
   hasZipper: boolean
   hasBinding: boolean
   hasBibBrace: boolean
+  colorBlockHovered: number
+  onSelectColorBlock: (index: number) => void
+  onHoverColorBlock: (index: number) => void
   goToBaseColors: () => void
   goToStitching: () => void
   showContent: boolean
@@ -53,18 +56,26 @@ class SelectColors extends React.PureComponent<Props, {}> {
       hasStitching,
       hasZipper,
       hasBinding,
-      hasBibBrace
+      hasBibBrace,
+      colorBlockHovered,
+      onSelectColorBlock,
+      onHoverColorBlock
     } = this.props
     if (!showContent) {
       return null
     }
-    const colorButtons = colorsBlocks.map((label, i) => (
+    const colorButtons = colorsBlocks.map((label, index) => (
       <ColorButton
-        key={i}
-        index={i}
+        key={index}
         label={formatMessage(label)}
-        onSelectColorBlock={() => {}}
-        currentColor={colors[i]}
+        currentColor={colors[index]}
+        {...{
+          name,
+          index,
+          colorBlockHovered,
+          onSelectColorBlock,
+          onHoverColorBlock
+        }}
       />
     ))
     return (
