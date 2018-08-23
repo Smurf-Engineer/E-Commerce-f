@@ -278,7 +278,7 @@
   "components.OrderData.orderNumber": "Order Number",
   "components.OrderData.orderDate": "Order Date",
   "components.OrderData.items": "Items",
-  "components.OrderData.messageReatil": "Text about shipping needing signature. And other important information. Voluptate reprehenderit quis non excepteur deserunt veniam anim mollit. Amet occaecat aliquip elit nisi eu deserunt amet laboris magna adipisicing aute minim velit occaecat. Cillum aliquip enim excepteur anim. Id officia fugiat incididunt elit tempor excepteur id laborum minim magna sint velit officia. Sunt deserunt culpa sunt esse aliqua reprehenderit exercitation eu enim. Elit duis cillum pariatur excepteur non fugiat ipsum minim in consequat consequat.",
+  "components.OrderData.messageRetail": "<p>We’ve received your order and are working on it now. Every detail matters to us. All customized items are made to order and cannot be changed once your order enters the production process. Please double check your order and let us know immediately of any problems or concerns. If you requested a Pro Review, the production process will begin once the Review process has been completed.</p><p>If you ordered inline collection items together with customized items, all items will ship together based on the published delivery date. All orders will be shipped via Fedex or UPS International Priority. Signature is required by default for the security of your order. We will send you a shipping update when the order has shipped.  </p>",
   "components.OrderData.messageTeamstore": "Pricing will drop as ordered quantities reach the next discount level. Your final purchase price will be confirmed at the end of the ordering period.",
   "components.OrderData.priceDropAlert": "Price Drop Alert",
   "components.OrderData.priceDropMessage": "It looks like you have purchased an item from a team store.\nGet an alert anytime the price drops for your team when\nmore people place their orders.",
@@ -1011,7 +1011,6 @@
   "screen.TeamPassCode.invalidPass": "Invalid passcode value.",
   "components.TeamPassCode.save": "Enter",
   "components.TeamStoreList.notFoundMessage": "No results or the team is private",
-
   "components.LogoutModal.title": "Log Out",
   "components.LogoutModal.confirm": "Confirm",
   "components.LogoutModal.logout": "Are you sure you want to log out?"

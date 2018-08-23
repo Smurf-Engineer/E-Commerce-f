@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
+import { FormattedHTMLMessage } from 'react-intl'
 import {
   Container,
   InfoContainer,
@@ -120,6 +121,11 @@ class OrderData extends React.Component<Props, {}> {
       )
 
     const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
+
+    const orderMessage = isThereTeamstoreProduct
+      ? messages.messageTeamstore
+      : messages.messageRetail
+
     const renderList = cart
       ? cart.map((cartItem, index) => {
           const {
@@ -185,12 +191,7 @@ class OrderData extends React.Component<Props, {}> {
               <StyledText>{orderDate}</StyledText>
             </OrderNumberContainer>
             <StyledText>
-              {formatMessage(
-                isThereTeamstoreProduct
-                  ? messages.messageTeamstore
-                  : messages.messageReatil
-              )}
-              {/* TODO: add correct text for reatil */}
+              <FormattedHTMLMessage {...orderMessage} />
             </StyledText>
             <ShippingBillingContainer>
               <div>

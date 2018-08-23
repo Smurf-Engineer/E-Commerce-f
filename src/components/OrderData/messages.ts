@@ -33,11 +33,11 @@ export default defineMessages({
     id: 'components.OrderData.items',
     defaultMessage: 'Items'
   },
-  messageReatil: {
-    id: 'components.OrderData.messageReatil',
+  messageRetail: {
+    id: 'components.OrderData.messageRetail',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'Text about shipping needing signature. And other important information. Voluptate reprehenderit quis non excepteur deserunt veniam anim mollit. Amet occaecat aliquip elit nisi eu deserunt amet laboris magna adipisicing aute minim velit occaecat. Cillum aliquip enim excepteur anim. Id officia fugiat incididunt elit tempor excepteur id laborum minim magna sint velit officia. Sunt deserunt culpa sunt esse aliqua reprehenderit exercitation eu enim. Elit duis cillum pariatur excepteur non fugiat ipsum minim in consequat consequat.'
+      '<p>We’ve received your order and are working on it now. Every detail matters to us. All customized items are made to order and cannot be changed once your order enters the production process. Please double check your order and let us know immediately of any problems or concerns. If you requested a Pro Review, the production process will begin once the Review process has been completed.</p><p>If you ordered inline collection items together with customized items, all items will ship together based on the published delivery date. All orders will be shipped via Fedex or UPS International Priority. Signature is required by default for the security of your order. We will send you a shipping update when the order has shipped.  </p>'
   },
   messageTeamstore: {
     id: 'components.OrderData.messageTeamstore',
