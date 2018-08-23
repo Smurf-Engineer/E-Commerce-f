@@ -11,7 +11,6 @@ import Steps from 'antd/lib/steps'
 import Message from 'antd/lib/message'
 import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
-import forEach from 'lodash/forEach'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
@@ -53,7 +52,23 @@ import {
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 
+type ProductCart = {
+  id: number
+  code: string
+  yotpoId: string
+  name: string
+}
+
+interface CartItem {
+  designId: string
+  designCode: string
+  product: ProductCart
+  itemDetails: CartItemDetail[]
+}
+
 interface CartItems {
+  designId: string
+  designCode: string
   product: Product
   itemDetails: CartItemDetail[]
 }
@@ -627,64 +642,34 @@ class Checkout extends React.Component<Props, {}> {
     const shippingCarrier = get(shipping, 'carrier', null)
     const shippingAmount = get(shipping, 'total', null)
 
-    /*
-    * TODO: Find a better solution to unset these properties
-    * from cart Object.
-    * Maybe don't save them on localStorage
-    */
-    forEach(shoppingCart, cartItem => {
-      unset(cartItem, 'designImage')
-      unset(cartItem, 'designName')
-      unset(cartItem, 'svg')
-      unset(cartItem, 'shared')
-      unset(cartItem, 'shortId')
-      unset(cartItem, 'createdAt')
-      unset(cartItem, '__typename')
-      unset(cartItem, 'product.shortDescription')
-      unset(cartItem, 'product.isTopProduct')
-      unset(cartItem, 'product.__typename')
-      unset(cartItem, 'product.genders')
-      unset(cartItem, 'product.fitStyles')
-      unset(cartItem, 'product.retailMen')
-      unset(cartItem, 'product.collections')
-      unset(cartItem, 'product.images')
-      unset(cartItem, 'product.type')
-      unset(cartItem, 'product.retailWomen')
-      unset(cartItem, 'product.customizable')
-      unset(cartItem, 'product.description')
-      unset(cartItem, 'product.sizeRange')
-      unset(cartItem, 'product.details')
-      unset(cartItem, 'product.sport_id')
-      unset(cartItem, 'product.materials')
-      unset(cartItem, 'product.yotpoAverageScore')
-      unset(cartItem, 'product.intendedUse')
-      unset(cartItem, 'product.retail_version')
-      unset(cartItem, 'product.category_id')
-      unset(cartItem, 'product.temperatures')
-      unset(cartItem, 'product.sports')
-      unset(cartItem, 'product.weight')
-      unset(cartItem, 'product.productId')
-      unset(cartItem, 'product.genderId')
-      unset(cartItem, 'product.relatedProducts')
-      unset(cartItem, 'product.template')
-      unset(cartItem, 'product.gender_id')
-      forEach(cartItem.product.priceRange, priceRange => {
-        unset(priceRange, '__typename')
-      })
-      forEach(cartItem.itemDetails, itemDetail => {
-        unset(itemDetail, 'gender.__typename')
-        unset(itemDetail, 'fit.__typename')
-        unset(itemDetail, 'size.__typename')
-        unset(itemDetail, '__typename')
-      })
-    })
+    const sanitizedCart = shoppingCart.map(
+      ({ designCode, designId, product, itemDetails }: CartItems) => {
+        const item = { designCode, designId } as CartItem
+        const productItem = {
+          id: product.id,
+          code: product.code,
+          name: product.name,
+          yotpoId: product.yotpoId
+        }
+        item.product = productItem
+        item.itemDetails = itemDetails.map(
+          ({ gender, quantity, size }: any) => {
+            unset(gender, '__typename')
+            unset(quantity, '__typename')
+            unset(size, '__typename')
+            return { gender, quantity, size }
+          }
+        )
+        return item
+      }
+    )
 
     const orderObj = {
       proDesign,
       paymentMethod,
       cardId,
       tokenId: stripeToken,
-      cart: shoppingCart,
+      cart: sanitizedCart,
       shippingAddress,
       billingAddress,
       paypalData: paypalObj || null,

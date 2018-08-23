@@ -46,7 +46,7 @@ server
 
     try {
       const resultFetch = await fetch(
-        `${config.graphqlUriBase}region?ip=${req.ip}`
+        `${config.graphqlUriBase}region?ip=${'177.228.119.27'}`
       )
       locale = await resultFetch.json()
     } catch (error) {
