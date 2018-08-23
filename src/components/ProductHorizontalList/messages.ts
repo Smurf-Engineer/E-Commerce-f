@@ -19,6 +19,6 @@ export default defineMessages({
   },
   retatil: {
     id: 'components.ProductHorizontalList.retail',
-    defaultMessage: 'View full details'
+    defaultMessage: 'FULL DETAILS'
   }
 })
