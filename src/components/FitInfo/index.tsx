@@ -3,15 +3,13 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { compose, graphql } from 'react-apollo'
+import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
 import Col from 'antd/lib/col'
 import Radio from 'antd/lib/radio'
-import FitInfoTable from '../FitInfoTable'
-import { categoriesQuery } from './data'
-import { QueryProps, Product } from '../../types/common'
+import { Product } from '../../types/common'
 import messages from './messages'
 import {
   Container,
@@ -20,15 +18,23 @@ import {
   radioGroupStyle,
   StyledFooterLabel,
   ImageContainer,
-  ImageStyle
+  ImageStyle,
+  SizingTable
 } from './styledComponents'
 import * as fitActions from './actions'
+import SizingChart from '../SizingChart'
+import slimFit from '../../assets/slim_fit.svg'
+import standardFit from '../../assets/standard_fit.svg'
+import relaxedFit from '../../assets/relaxed_fit.svg'
+import { charts } from '../../screens/FitAndSizing/staticData'
 
 const RadioButton = Radio.Button
 const RadioGroup = Radio.Group
 
-interface Data extends QueryProps {
-  product: Product
+const IMAGES = {
+  slim: slimFit,
+  standard: standardFit,
+  relaxed: relaxedFit
 }
 
 interface Props {
@@ -41,13 +47,13 @@ interface Props {
   setMetric: (param: string) => void
   dispatch: any
   open: boolean
-  data: Data
-  productId: number
+  product: Product
   gender: number
   fitStyle: number
   fitStyleDescription: string
   fitStyleImage: string
   metric: string
+  formatMessage: (messageDescriptor: any, values?: {}) => string
 }
 
 class FitInfo extends React.Component<Props, {}> {
@@ -58,16 +64,20 @@ class FitInfo extends React.Component<Props, {}> {
 
   onFitChange = (e: any) => {
     const {
-      data: { product },
+      product: { fitStyles },
       setFitStyle,
       setFitStyleDescription,
       setFitStyleImage
     } = this.props
-    const selectedStyle = find(product.fitStyles, { id: e.target.value })
+    const selectedStyle = find(fitStyles, { id: e.target.value })
     setFitStyle(e.target.value)
+    const name = selectedStyle ? selectedStyle.name : ''
     setFitStyleDescription(selectedStyle ? selectedStyle.info : '')
-    setFitStyleImage(selectedStyle ? selectedStyle.image : '')
+    const image = this.getFitStyleImage(name.toLowerCase())
+    setFitStyleImage(image)
   }
+
+  getFitStyleImage = (fitStyle: string) => (fitStyle ? IMAGES[fitStyle] : '')
 
   onMetricChange = (e: any) => {
     const { setMetric } = this.props
@@ -82,51 +92,58 @@ class FitInfo extends React.Component<Props, {}> {
   render() {
     const {
       open,
-      data,
       gender,
       metric,
+      fitStyle,
+      product: { genders, fitStyles },
       fitStyleDescription,
-      fitStyleImage
+      fitStyleImage,
+      setGender,
+      setFitStyle,
+      setFitStyleDescription,
+      setFitStyleImage,
+      formatMessage
     } = this.props
-    const { product } = data
 
-    let genderList
-    let fitStylesList
-    let sizingTable
-
-    if (!data.loading && !data.error) {
-      genderList = product.genders.map(
-        ({ id, name }, index) =>
-          id ? (
-            <RadioButton key={id} value={id}>
-              {name}
-            </RadioButton>
-          ) : (
-            undefined
-          )
-      )
-
-      fitStylesList = product.fitStyles.map(
-        (fit, index) =>
-          fit.id ? (
-            <RadioButton key={fit.id} value={fit.id}>
-              {fit.name}
-            </RadioButton>
-          ) : (
-            undefined
-          )
-      )
-
-      sizingTable = product ? (
-        <FitInfoTable
-          bodyChartId={product.bodyChartId}
-          metric={metric}
-          genderId={gender}
-        />
-      ) : (
-        <div> No data. </div>
-      )
+    if (genders.length === 1) {
+      setGender(genders[0].id)
     }
+
+    if (fitStyles.length === 1) {
+      setFitStyle(fitStyles[0].id)
+    }
+
+    const selectedStyle = find(fitStyles, { id: fitStyle })
+    const fitName = selectedStyle ? selectedStyle.name : ''
+    setFitStyleDescription(selectedStyle ? selectedStyle.info : '')
+    const image = this.getFitStyleImage(fitName && fitName.toLowerCase())
+    setFitStyleImage(image)
+
+    const genderList = genders.map(
+      ({ id, name }) =>
+        id && (
+          <RadioButton key={id} value={id}>
+            {name}
+          </RadioButton>
+        )
+    )
+
+    const fitStylesList = fitStyles.map(
+      ({ id, name }) =>
+        id && (
+          <RadioButton key={id} value={id}>
+            {name}
+          </RadioButton>
+        )
+    )
+
+    const genderFilter = genders.find(({ id }) => id === gender)
+    const genderName = genderFilter && genderFilter.name.toLowerCase()
+    const chart = charts.find(({ title }) => title === genderName) || charts[0]
+
+    const sizingTable = (
+      <SizingChart units={metric} {...{ chart, formatMessage }} />
+    )
 
     return (
       <Container>
@@ -135,7 +152,7 @@ class FitInfo extends React.Component<Props, {}> {
           footer={null}
           closable={false}
           maskClosable={true}
-          width={'60%'}
+          width={'85%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
         >
@@ -153,29 +170,35 @@ class FitInfo extends React.Component<Props, {}> {
               </TitleLabel>
               <StyledRow>
                 <Col span={14}>
-                  <RadioGroup defaultValue="1" onChange={this.onGenderChange}>
+                  <RadioGroup
+                    defaultValue={gender}
+                    onChange={this.onGenderChange}
+                  >
                     {genderList}
                   </RadioGroup>
                 </Col>
                 <Col span={6}>
-                  <RadioGroup defaultValue="1" onChange={this.onMetricChange}>
-                    <RadioButton value="IN">
+                  <RadioGroup
+                    defaultValue={metric}
+                    onChange={this.onMetricChange}
+                  >
+                    <RadioButton value="in">
                       <FormattedMessage {...messages.inches} />
                     </RadioButton>
-                    <RadioButton value="CM">
+                    <RadioButton value="cm">
                       <FormattedMessage {...messages.centimeters} />
                     </RadioButton>
                   </RadioGroup>
                 </Col>
               </StyledRow>
-              {sizingTable}
+              <SizingTable>{sizingTable}</SizingTable>
             </Col>
             <Col span={12}>
               <TitleLabel>
                 <FormattedMessage {...messages.fitStyles} />
               </TitleLabel>
               <RadioGroup
-                defaultValue="1"
+                defaultValue={fitStyle}
                 style={radioGroupStyle}
                 onChange={this.onFitChange}
               >
@@ -198,26 +221,13 @@ class FitInfo extends React.Component<Props, {}> {
   }
 }
 
-type OwnProps = {
-  productId?: number
-}
-
 const mapStateToProps = (state: any) => state.get('fitInfo').toJS()
 
 const FitInfoEnhance = compose(
   connect(
     mapStateToProps,
     { ...fitActions }
-  ),
-  graphql<Data>(categoriesQuery, {
-    options: (ownprops: OwnProps) => {
-      const { productId } = ownprops
-      return {
-        fetchPolicy: 'always',
-        variables: { id: productId || 0 }
-      }
-    }
-  })
+  )
 )(FitInfo)
 
 export default FitInfoEnhance

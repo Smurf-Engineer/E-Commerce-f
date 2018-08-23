@@ -20,7 +20,7 @@ export const initialState = fromJS({
   fitStyle: 1,
   fitStyleDescription: '',
   fitStyleImage: '',
-  metric: 'IN'
+  metric: 'in'
 })
 
 const fitInfoReducer: Reducer<any> = (state = initialState, action) => {
