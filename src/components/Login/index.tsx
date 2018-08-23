@@ -108,6 +108,7 @@ export class Login extends React.Component<Props, StateProps> {
     ) : (
       <SignUp
         closeSignUp={this.showLogin}
+        login={this.onSignedUp}
         {...{ requestClose, formatMessage, initialCountryCode }}
       />
     )
@@ -128,6 +129,12 @@ export class Login extends React.Component<Props, StateProps> {
     const { requestClose } = this.props
     requestClose()
     this.setState({ isLoginIn: true })
+  }
+
+  onSignedUp = (data: any) => {
+    const { login } = this.props
+    login(data)
+    this.onClosemodal()
   }
 
   showLogin = () => {
