@@ -154,7 +154,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const bibColor = get(design, 'bibBraceColor', '')
     const product = get(design, 'product', null)
 
-    const productId = get(product, 'productId')
     const images = get(product, 'images', [])
     const genderId = get(product, 'genderId', 0)
     const genders = get(product, 'genders', [] as Filter[])
@@ -412,7 +411,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               <FitInfo
                 open={openFitInfo}
                 requestClose={this.closeFitInfoModal}
-                {...{ productId, history }}
+                {...{ product, history, formatMessage }}
               />
             </Content>
           )}
