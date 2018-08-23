@@ -7,6 +7,6 @@ export default defineMessages({
   },
   fullDetailsLabel: {
     id: 'components.searchBar.fullDetailsLabel',
-    defaultMessage: 'View full details'
+    defaultMessage: 'FULL DETAILS'
   }
 })
