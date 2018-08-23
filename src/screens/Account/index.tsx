@@ -49,6 +49,7 @@ import {
   DrawerSidebar
 } from './styledComponents'
 import MyFiles from '../../components/MyFiles'
+import config from '../../config'
 
 const { SubMenu } = Menu
 
@@ -158,7 +159,8 @@ export class Account extends React.Component<Props, {}> {
       case OVERVIEW:
         return (
           <Overview
-            {...{ history, formatMessage, currentCurrency }}
+            {...{ history, formatMessage }}
+            currentCurrency={currentCurrency || config.defaultCurrency}
             goToScreen={this.handleOnGoToScreen}
           />
         )
