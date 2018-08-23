@@ -41,6 +41,11 @@ export const SectionContainer = styled.div`
     width: 100%;
     margin-bottom: 24px;
   }
+
+  @media (min-width: 769px) and (max-width: 900px) {
+    width: 100%;
+    padding-right: 20px;
+  }
 `
 
 export const Row = styled.div`

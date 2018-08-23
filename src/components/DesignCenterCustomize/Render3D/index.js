@@ -1589,7 +1589,7 @@ class Render3D extends PureComponent {
     )
 
     const activeEl = this.canvasTexture.getActiveObject()
-    const { onSelectEl } = this.props
+    const { onSelectEl, onSelectedItem } = this.props
     if (!!intersects.length && intersects[0].uv) {
       const { canvasEl } = this.state
       const meshName = get(intersects[0], 'object.name', '')
@@ -1603,6 +1603,7 @@ class Render3D extends PureComponent {
         const el = Object.assign({}, canvasEl)
         const { fileId } = canvasEl
         this.setState({ canvasEl: null }, () => {
+          onSelectedItem({})
           const left = uv.x * CANVAS_SIZE
           const top = (1 - uv.y) * CANVAS_SIZE
           switch (el.type) {
@@ -1731,6 +1732,8 @@ class Render3D extends PureComponent {
       }
 
       if (this.state.canvasEl) {
+        const { onSelectedItem } = this.props
+        onSelectedItem({})
         this.setState({ canvasEl: null })
       }
     }

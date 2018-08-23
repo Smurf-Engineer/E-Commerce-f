@@ -23,6 +23,6 @@ export default defineMessages({
   },
   viewFullDetailsLabel: {
     id: 'components.RelatedProducts.viewFullDetailsLabel',
-    defaultMessage: 'View full details'
+    defaultMessage: 'FULL DETAILS'
   }
 })

@@ -564,6 +564,11 @@ export interface CanvasElement {
   canvasPath?: string
 }
 
+export interface SelectedAsset {
+  id?: number
+  type?: string
+}
+
 export interface CanvasType {
   text: {
     [id: string]: CanvasElement

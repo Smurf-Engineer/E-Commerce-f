@@ -65,7 +65,8 @@ import {
   CanvasRotated,
   Responsive,
   AccessoriesColor,
-  CanvasObjects
+  CanvasObjects,
+  SelectedAsset
 } from '../../types/common'
 import {
   getProductQuery,
@@ -146,6 +147,7 @@ interface Props extends RouteComponentProps<any> {
   user: object
   responsive: Responsive
   originalPaths: any[]
+  selectedItem: SelectedAsset
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -217,6 +219,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementDraggedAction: (element: CanvasDragged) => void
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
+  setSelectedItemAction: (item: SelectedAsset) => void
   formatMessage: (messageDescriptor: any) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
   onCanvasElementDuplicatedAction: (
@@ -496,7 +499,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       setEditConfigAction,
       setLoadedCanvasAction,
       onResetEditingAction,
-      originalPaths
+      originalPaths,
+      setSelectedItemAction,
+      selectedItem
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -732,7 +737,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isUserAuthenticated,
                   isEditing,
                   originalPaths,
-                  canvasFiles
+                  canvasFiles,
+                  selectedItem
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
@@ -770,6 +776,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetEditConfig={setEditConfigAction}
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
+                onSelectedItem={setSelectedItemAction}
               />
             )}
             <PreviewTab

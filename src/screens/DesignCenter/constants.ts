@@ -67,6 +67,7 @@ export const SET_EDIT_DESIGN_CONFIG_ACTION = `${namespace}/SET_EDIT_DESIGN_CONFI
 export const SET_INITIAL_LOAD_CUSTOMIZE_ACTION = `${namespace}/SET_INITIAL_LOAD_CUSTOMIZE_ACTION`
 export const SET_LOADED_CANVAS_ACTION = `${namespace}/SET_LOADED_CANVAS_ACTION`
 export const DESIGN_RESET_EDITING_ACTION = `${namespace}/DESIGN_RESET_EDITING_ACTION`
+export const SET_SELECTED_ITEM_ACTION = `${namespace}/SET_SELECTED_ITEM_ACTION`
 
 export enum DesignTabs {
   ThemeTab = 0,
