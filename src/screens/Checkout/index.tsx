@@ -694,7 +694,7 @@ class Checkout extends React.Component<Props, {}> {
       shippingId,
       shippingCarrier,
       shippingAmount,
-      currency: currentCurrency,
+      currency: currentCurrency || config.defaultCurrency,
       weight: weightSum
     }
 
