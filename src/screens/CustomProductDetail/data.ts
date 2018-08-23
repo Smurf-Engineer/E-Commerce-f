@@ -49,6 +49,7 @@ export const GetDesignByIdQuery = gql`
         fitStyles {
           id
           name: description
+          info
         }
         sizeRange: size_range {
           id
