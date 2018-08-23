@@ -486,6 +486,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID: {
       const { id, svgUrl, design, updateColors } = action
+      const canvas = {
+        text: {},
+        image: {},
+        path: {}
+      }
       if (updateColors) {
         const style = state.get('style')
         const updatedStyle = style.set('colors', List.of(...design.colors))
@@ -494,7 +499,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           designHasChanges: false,
           svgOutputUrl: svgUrl,
           savedDesign: design,
-          style: updatedStyle
+          style: updatedStyle,
+          canvas
         })
       }
 
@@ -502,7 +508,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         savedDesignId: id,
         designHasChanges: false,
         svgOutputUrl: svgUrl,
-        savedDesign: design
+        savedDesign: design,
+        canvas
       })
     }
     case SET_CHECKED_TERMS:

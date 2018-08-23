@@ -314,9 +314,6 @@ class Render3D extends PureComponent {
       const imagesPromises = []
       const { objects } = JSON.parse(object)
       const canvasFileIds = JSON.parse(canvasFiles)
-      console.log('------------------------------------')
-      console.log(canvasFileIds)
-      console.log('------------------------------------')
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
@@ -339,6 +336,7 @@ class Render3D extends PureComponent {
               })
               if (canvasPath) {
                 canvas.path[elId].fileId = canvasPath.fileId
+                canvas.path[elId].canvasPath = canvasPath.canvasPath
               }
             }
             break

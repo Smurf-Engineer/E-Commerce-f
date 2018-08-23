@@ -172,7 +172,6 @@ export class SaveDesign extends React.Component<Props, {}> {
         designFiles,
         canvas_files: JSON.stringify(canvasFiles)
       }
-      // FIXME: HERE
 
       /* Accessory colors */
       if (hasFlatlock) {
@@ -234,9 +233,6 @@ export class SaveDesign extends React.Component<Props, {}> {
     } = this.props
 
     const { designFiles, canvasFiles } = this.getDesignFiles()
-    console.log(designFiles)
-    console.log(canvasFiles)
-    return
     const { designBase64, canvasJson, styleId } = design
     const designObj: DesignInput = {
       name: '',
@@ -247,7 +243,6 @@ export class SaveDesign extends React.Component<Props, {}> {
       designFiles,
       canvas_files: JSON.stringify(canvasFiles)
     }
-    // FIXME: HERE
 
     try {
       /* Accessory colors  */
@@ -321,8 +316,6 @@ export class SaveDesign extends React.Component<Props, {}> {
     const {
       canvas: { image, path: clipArt }
     } = this.props
-    console.log(clipArt)
-    console.log(image)
     const files: number[] = []
     const svgs: number[] = []
     const images: CanvasFile[] = []
