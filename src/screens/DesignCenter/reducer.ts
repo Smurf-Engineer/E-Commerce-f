@@ -58,6 +58,7 @@ import {
   SAVE_DESIGN_CHANGES_LOADING,
   CANVAS_ELEMENT_DUPLICATED_ACTION,
   DESIGN_RESET_EDITING_ACTION,
+  SET_SELECTED_ITEM_ACTION,
   Changes,
   CanvasElements,
   WHITE,
@@ -137,7 +138,8 @@ export const initialState = fromJS({
   uploadingFile: false,
   images: [],
   searchClipParam: '',
-  savedDesign: {}
+  savedDesign: {},
+  selectedItem: {}
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -538,6 +540,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       if (selectedElement) {
         return state.merge({
+          selectedElement: el.id,
           canvas: updatedCanvas,
           undoChanges: undoChanges.unshift(lastStep),
           redoChanges: redoChanges.clear()
@@ -908,6 +911,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         bibColor
       })
     }
+    case SET_SELECTED_ITEM_ACTION:
+      return state.set('selectedItem', action.item)
     default:
       return state
   }

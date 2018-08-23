@@ -24,7 +24,8 @@ import {
   CanvasDragged,
   CanvasRotated,
   AccessoriesColor,
-  CanvasObjects
+  CanvasObjects,
+  SelectedAsset
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -70,6 +71,7 @@ interface Props {
   isUserAuthenticated: boolean
   isEditing: boolean
   originalPaths: any[]
+  selectedItem: SelectedAsset
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -108,6 +110,7 @@ interface Props {
   onCanvasElementRotated: (element: CanvasRotated) => void
   onCanvasElementTextChanged: (oldText: string, newText: string) => void
   onReApplyImageEl: (el: CanvasElement) => void
+  onSelectedItem: (item: SelectedAsset) => void
   onCanvasElementDuplicated: (
     canvasEl: any,
     elementType: CanvasObjects,
@@ -201,7 +204,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSetEditConfig,
       onSetCanvasObject,
       originalPaths,
-      onResetEditing
+      onResetEditing,
+      onSelectedItem,
+      selectedItem
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -250,7 +255,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             uploadingFile,
             searchClipParam,
             setSearchClipParamAction,
-            isUserAuthenticated
+            isUserAuthenticated,
+            selectedItem
           }}
           onSelectStitchingColor={setStitchingColorAction}
           onApplyText={this.handleOnApplyText}
@@ -307,7 +313,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSetEditConfig,
               onSetCanvasObject,
               originalPaths,
-              onResetEditing
+              onResetEditing,
+              onSelectedItem
             }}
           />
         ) : (
@@ -318,8 +325,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   }
 
   handleOnApplyText = (text: string, style: TextFormat) => {
-    const { selectedElement } = this.props
-    if (selectedElement) {
+    const { selectedElement, canvas } = this.props
+    if (!!canvas.text[selectedElement]) {
       this.render3D.applyText(text, style)
     } else {
       this.render3D.applyCanvasEl({ text, style, type: CanvasElements.Text })
@@ -327,19 +334,17 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   }
 
   handleOnApplyImage = (file: ImageFile) => {
-    const { selectedElement } = this.props
-    if (selectedElement) {
-      this.render3D.applyImage(file)
-    } else {
-      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
-    }
+    const { onSelectedItem } = this.props
+    this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
+    onSelectedItem({ id: file.id, type: CanvasElements.Image })
   }
 
   handleOnApplyArt = (url: string, style?: CanvasElement, fileId?: number) => {
-    const { selectedElement } = this.props
-    if (selectedElement) {
+    const { selectedElement, canvas, onSelectedItem } = this.props
+    if (!!canvas.path[selectedElement]) {
       this.render3D.applyClipArt(url, style)
     } else {
+      onSelectedItem({ id: fileId, type: CanvasElements.Path })
       this.render3D.applyCanvasEl({
         url,
         style,
