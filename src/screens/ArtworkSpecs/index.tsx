@@ -80,7 +80,7 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
               <FormattedMessage {...messages.colorChart} />
             </ThirdTitle>
             <ColorWrapper>
-              <ColorList height={'100%'} onSelectColor={(col: string) => {}} />
+              <ColorList height={'100%'} />
             </ColorWrapper>
           </ColorChartContainer>
           <LineCopy />
