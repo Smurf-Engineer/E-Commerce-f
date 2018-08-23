@@ -140,7 +140,6 @@ export class DesignSearch extends React.Component<Props, {}> {
       }
     )
     const blobFile = await fileResponse.blob()
-    console.log(blobFile)
     const url = window.URL.createObjectURL(blobFile)
     const a = document.createElement('a')
     a.href = url
