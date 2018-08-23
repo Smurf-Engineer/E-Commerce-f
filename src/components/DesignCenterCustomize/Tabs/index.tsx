@@ -22,9 +22,11 @@ import {
   AccesoryColor,
   Product,
   ImageFile,
-  CanvasElement
+  CanvasElement,
+  SelectedAsset
 } from '../../../types/common'
 import { Container } from './styledComponents'
+import { CanvasElements } from '../../../screens/DesignCenter/constants'
 
 const { TabPane } = AntdTabs
 
@@ -52,6 +54,7 @@ interface Props {
   onUploadFile: (file: any) => void
   searchClipParam: string
   isUserAuthenticated: boolean
+  selectedItem: SelectedAsset
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -111,7 +114,8 @@ const Tabs = ({
   uploadingFile,
   searchClipParam,
   setSearchClipParamAction,
-  isUserAuthenticated
+  isUserAuthenticated,
+  selectedItem
 }: Props) => {
   return (
     <Container>
@@ -169,6 +173,9 @@ const Tabs = ({
               setSearchClipParamAction
             }}
             selectedElement={canvas.path[selectedElement]}
+            selectedItem={
+              selectedItem.type === CanvasElements.Path && selectedItem.id
+            }
           />
         </TabPane>
         <TabPane tab={<Tab label="upload" icon={uploadIcon} />} key="4">
@@ -181,6 +188,9 @@ const Tabs = ({
               uploadingFile,
               isUserAuthenticated
             }}
+            selectedItem={
+              selectedItem.type === CanvasElements.Image && selectedItem.id
+            }
           />
         </TabPane>
       </AntdTabs>

@@ -2,6 +2,13 @@
  * Styled Components - Created by david on 08/06/18.
  */
 import styled from 'styled-components'
+import {
+  GRAY_LIGHTEST,
+  WHITE,
+  RED,
+  GRAY,
+  TRANSPARENT
+} from '../../../theme/colors'
 
 export const Container = styled.div`
   padding-top: 16px;
@@ -9,11 +16,16 @@ export const Container = styled.div`
   padding: 15px 32px 32px 32px;
   height: 200px;
 `
+type RowProps = {
+  selected: boolean
+}
 
 export const Row = styled.div`
   display: flex;
   flex: 1;
-  padding-bottom: 8px;
+  padding: 4px;
+  border: 1px solid
+    ${({ selected }: RowProps) => (selected ? GRAY : TRANSPARENT)};
 `
 
 export const Col = styled.li`
@@ -29,12 +41,12 @@ export const Image = styled.img`
   height: 88px;
   width: 88px;
   object-fit: contain;
-  background-color: #f1f4f5;
+  background-color: ${GRAY_LIGHTEST};
   cursor: pointer;
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const Info = styled.div`
@@ -65,7 +77,7 @@ export const Size = styled.div`
 `
 
 export const Delete = styled.div`
-  color: #e61737;
+  color: ${RED};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;

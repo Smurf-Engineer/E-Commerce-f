@@ -59,7 +59,8 @@ import {
   SAVE_DESIGN_CHANGES_LOADING,
   CANVAS_ELEMENT_DUPLICATED_ACTION,
   CanvasElements,
-  DESIGN_RESET_EDITING_ACTION
+  DESIGN_RESET_EDITING_ACTION,
+  SET_SELECTED_ITEM_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -76,7 +77,8 @@ import {
   CanvasDragged,
   CanvasRotated,
   AccessoriesColor,
-  CanvasType
+  CanvasType,
+  SelectedAsset
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -457,4 +459,9 @@ export const onResetEditingAction = (
   type: DESIGN_RESET_EDITING_ACTION,
   canvas,
   accessoriesColor
+})
+
+export const setSelectedItemAction = (item: SelectedAsset): AnyAction => ({
+  type: SET_SELECTED_ITEM_ACTION,
+  item
 })

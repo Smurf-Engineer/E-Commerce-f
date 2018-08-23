@@ -38,8 +38,8 @@ export const Oval = styled.div`
 `
 
 export const OvalSelected = styled.div`
-  height: 40px;
   width: 40px;
+  height: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;

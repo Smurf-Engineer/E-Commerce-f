@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdInput from 'antd/lib/input'
+import { GRAY, TRANSPARENT } from '../../../theme/colors'
 
 export const Container = styled.div``
 
@@ -67,7 +68,7 @@ interface ListProps {
 export const List = styled.div`
   overflow: auto;
   height: ${({ height }: ListProps) => height}vh;
-  padding: 0px 32px 32px 32px;
+  padding: 4px 32px 32px 32px;
 
   @media (min-height: 800px) {
     height: 55vh;
@@ -91,10 +92,16 @@ export const Col = styled.li`
   margin-bottom: 6px;
 `
 
+type ColProps = {
+  selected: boolean
+}
+
 export const Icon = styled.img`
   cursor: pointer;
   width: 48px;
   height: 48px;
+  border: 1px solid
+    ${({ selected }: ColProps) => (selected ? GRAY : TRANSPARENT)};
 `
 
 export const NotFound = styled.div`
