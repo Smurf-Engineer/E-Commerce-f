@@ -1173,14 +1173,15 @@ class Render3D extends PureComponent {
             Save
           </Button>
         </ButtonWrapper>
-        <OptionsController
+        {/* TODO: uncomment controllers when bugs from undo/redo and reset be fixed */}
+        {/* <OptionsController
           {...{ undoEnabled, redoEnabled, formatMessage }}
           resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnOpenResetModal}
           onClickClear={this.handleOnClickClear}
-        />
+        /> */}
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
           <TopButton onClick={this.handleOnPressTop} src={top} />
