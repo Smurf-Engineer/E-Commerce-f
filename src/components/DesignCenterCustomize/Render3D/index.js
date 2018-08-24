@@ -313,7 +313,7 @@ class Render3D extends PureComponent {
       const imagesElements = []
       const imagesPromises = []
       const { objects } = JSON.parse(object)
-      const canvasFileIds = JSON.parse(canvasFiles)
+      const canvasFileIds = canvasFiles && JSON.parse(canvasFiles)
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
