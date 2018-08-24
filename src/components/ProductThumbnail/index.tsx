@@ -19,6 +19,8 @@ import ImageSlide from './ProductSlide'
 import { ImageType, PriceRange } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
+const LIMIT_PRICE_RANGE = 3
+
 interface Props {
   id: number
   type?: string
@@ -140,12 +142,16 @@ class ProductThumbnail extends React.Component<Props, {}> {
         abbreviation: currentCurrency
       })
 
+    let lastPrice = LIMIT_PRICE_RANGE
+
+    if (currencyPrices && currencyPrices.length < LIMIT_PRICE_RANGE) {
+      lastPrice = currencyPrices.length - 1
+    }
+
     const price =
       currencyPrices &&
       currencyPrices.length &&
-      `$${currencyPrices[0].price} - $${
-        currencyPrices[currencyPrices.length - 1].price
-      }`
+      `$${currencyPrices[0].price} - $${currencyPrices[lastPrice].price}`
 
     let urlProduct = this.getUrlProduct()
     return (

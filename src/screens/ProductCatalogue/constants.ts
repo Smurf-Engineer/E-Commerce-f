@@ -14,3 +14,4 @@ export const SET_SELECTED_FILTERS = `${namespace}/SET_SELECTED_FILTERS`
 export const OPEN_SIDEBAR_MOBILE = `${namespace}/OPEN_SIDEBAR_MOBILE`
 
 export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`
+export const CLEAR_FILTERS = `${namespace}/CLEAR_FILTERS`

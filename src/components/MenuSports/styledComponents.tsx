@@ -7,8 +7,8 @@ import AntDivider from 'antd/lib/divider'
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0px 0px 0px 16px;
   margin-right: -14px;
+  padding: 0px 0px 0px 16px;
 `
 
 export const LoadingContainer = styled.div`
@@ -21,9 +21,9 @@ export const LoadingContainer = styled.div`
 
 export const Filters = styled.div`
   display: flex;
-  width: 20%;
   flex-direction: column;
   justify-content: space-between;
+  width: 20%;
 `
 
 export const Divider = styled(AntDivider)`

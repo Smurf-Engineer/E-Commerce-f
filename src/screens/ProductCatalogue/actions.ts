@@ -9,7 +9,8 @@ import {
   SET_SELECTED_FILTERS,
   SET_SKIP_VALUE,
   OPEN_SIDEBAR_MOBILE,
-  RESET_REDUCER_DATA
+  RESET_REDUCER_DATA,
+  CLEAR_FILTERS
 } from './constants'
 import { AnyAction, Filter } from '../../types/common'
 
@@ -51,4 +52,8 @@ export const openSidebarMobile = (open: boolean) => ({
 
 export const resetReducerAction = () => ({
   type: RESET_REDUCER_DATA
+})
+
+export const clearFiltersAction = () => ({
+  type: CLEAR_FILTERS
 })
