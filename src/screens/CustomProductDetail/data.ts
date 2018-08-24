@@ -106,6 +106,7 @@ export const GetDesignByIdQuery = gql`
       bibBraceColor: bib_brace_color
       shared
       svg: output_svg
+      canvas
       code
       createdAt: created_at
     }

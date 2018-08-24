@@ -49,6 +49,7 @@ interface Props {
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
+  canvas: string
   formatMessage: (messageDescriptor: any) => string
   onPressQuickView: () => void
   onLoadModel: (loading: boolean) => void
@@ -99,7 +100,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       stitchingColor,
       bibColor,
       bindingColor,
-      zipperColor
+      zipperColor,
+      canvas
     } = this.props
 
     const itemToAdd = Object.assign(savedDesign, {
@@ -132,7 +134,8 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                   product,
                   bindingColor,
                   zipperColor,
-                  bibColor
+                  bibColor,
+                  canvas
                 }}
                 svg={svgOutputUrl}
                 flatlockColor={!!stitchingColor && stitchingColor.value}

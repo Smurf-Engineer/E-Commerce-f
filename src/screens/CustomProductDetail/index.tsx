@@ -148,6 +148,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const svgUrl = get(design, 'svg', '')
+    const canvas = get(design, 'canvas', '')
     const flatlockColor = get(design, 'flatlockColor', '')
     const zipperColor = get(design, 'zipperColor', '')
     const bindingColor = get(design, 'bindingColor', '')
@@ -373,6 +374,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Render3D
                       svg={svgUrl}
                       {...{
+                        canvas,
                         product,
                         bindingColor,
                         zipperColor,

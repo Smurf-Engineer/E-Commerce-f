@@ -802,6 +802,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 zipperColor,
                 bibColor
               }}
+              canvas={designObject.canvasJson}
               product={productConfig}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}

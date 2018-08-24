@@ -5,6 +5,7 @@ import { WHITE } from './theme/colors'
 
 /* 3D Constants */
 export const DEFAULT_COLOR = WHITE
+export const DEFAULT_FONT = 'Advent Pro'
 export const FLATLOCK = 'FINAL JV2_Flatlock'
 export const MESH = 'FINAL JV2_Design_Mesh'
 export const RED_TAG = 'Red_Tag FINAL'

@@ -67,7 +67,7 @@ import {
   ElementsToApplyScale
 } from './constants'
 import { Reducer, Change } from '../../types/common'
-import { DEFAULT_COLOR } from '../../constants'
+import { DEFAULT_COLOR, DEFAULT_FONT } from '../../constants'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -109,9 +109,9 @@ export const initialState = fromJS({
   },
   originalPaths: [],
   textFormat: {
-    fontFamily: 'Avenir',
-    stroke: '#000',
-    fill: '#000',
+    fontFamily: DEFAULT_FONT,
+    stroke: BLACK,
+    fill: BLACK,
     strokeWidth: 0
   },
   selectedElement: '',

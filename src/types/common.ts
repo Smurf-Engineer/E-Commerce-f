@@ -18,6 +18,7 @@ export interface DesignSaved {
   name: string
   svg: string
   product: Product
+  canvas: string
   style?: Style
   shortId?: string
   flatlockColor?: string
