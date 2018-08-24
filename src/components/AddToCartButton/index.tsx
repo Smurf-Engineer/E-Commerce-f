@@ -77,7 +77,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
             </ReorderButton>
           </ButtonWrapper>
         ) : (
-          <StyledButton centered={Number(centered)} onClick={this.addToCart}>
+          <StyledButton centered={Number(!!centered)} onClick={this.addToCart}>
             {label}
           </StyledButton>
         )}
