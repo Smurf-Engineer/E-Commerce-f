@@ -143,6 +143,7 @@
   "components.ProductCatalogueThumbnailsList.customize": "CUSTOMIZE",
   "components.ProductCatalogueThumbnailsList.edit": "EDIT",
   "components.ProductCatalogueThumbnailsList.customizable": "Customize",
+  "components.ProductCatalogueThumbnailsList.retailLabel": "FULL DETAILS",
   "components.DesignCenterPreview.shareButton": "Share",
   "components.DesignCenterPreview.editButton": "Edit",
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",

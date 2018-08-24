@@ -120,6 +120,7 @@ export const getOrderQuery = gql`
         productTotal
         designName
         designImage
+        designCode
       }
       status
     }
