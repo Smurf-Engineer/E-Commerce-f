@@ -3,11 +3,30 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import col from 'antd/lib/col'
 import Row from 'antd/lib/row'
 import { GRAY_LIGHTEST, GRAY_DARK, RED, WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: #222;
+`
+export const Col = styled(col)`
+  @media (max-width: 628px) {
+    text-align: center;
+    width: 100%;
+
+    .ant-radio-group {
+      display: flex;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .ant-radio-group > label {
+      align-items: center;
+      display: flex;
+      height: 50px;
+    }
+  }
 `
 export const StyledLabel = styled.div`
   color: ${GRAY_DARK};
@@ -28,6 +47,13 @@ export const StyledRow = styled(Row)`
   display: list-item;
   margin-top: 10px;
 `
+export const ReverseDiv = styled.div`
+  @media (max-width: 628px) {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
+  }
+`
 export const TitleLabel = styled.div`
   color: ${GRAY_DARK};
   font-size: 20px;
@@ -36,14 +62,28 @@ export const TitleLabel = styled.div`
   line-height: 27px;
   margin-top: 20px;
   width: 145px;
+
+  @media (max-width: 628px) {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
 `
 export const SizingTable = styled.div`
+  text-align: left;
+
   div > div {
     margin-top: 0px;
     padding-left: 0px;
   }
   div > div > div {
     width: 100%;
+  }
+
+  @media (max-width: 374px) {
+    div > div > div {
+      font-size: 11px;
+    }
   }
 `
 export const radioGroupStyle = {
@@ -59,7 +99,8 @@ export const ImageContainer = styled.div`
   width: 100%;
 `
 export const ImageStyle = {
-  height: '100%'
+  height: '100%',
+  width: '100%'
 }
 export const StyledFooterLabel = styled.div`
   color: ${GRAY_DARK};
