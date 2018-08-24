@@ -92,7 +92,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
             filterSelected={categorySelected}
             onHoverFilter={this.handleOnHoverCategory}
           />
-          {loading || !categories.length ? null : (
+          {loading || (categories && !categories.length) ? null : (
             <SeeAllButton
               onClick={this.handleOnPressSeeAll}
               {...{ formatMessage }}
@@ -100,7 +100,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
           )}
         </Filters>
         <Divider type="vertical" />
-        {loading || !categories.length ? null : (
+        {loading || (categories && !categories.length) ? null : (
           <ProductList
             {...{
               sportFilter,
