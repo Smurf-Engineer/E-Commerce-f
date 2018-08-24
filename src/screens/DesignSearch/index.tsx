@@ -138,9 +138,7 @@ export class DesignSearch extends React.Component<Props, {}> {
       a.download = `${code}.zip`
       a.click()
     } catch (e) {
-      Message.error(
-        'An unknown error has occurred while trying to download this file, try again later.'
-      )
+      Message.error(messages.errorDownload.defaultMessage)
     }
   }
 }
