@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import { GRAY_DARK, GRAY_LIGHTEST } from '../../../theme/colors'
+import icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   display: flex;
@@ -29,6 +30,7 @@ export const Code = styled.div`
 
 export const StatusContainer = styled.div`
   display: flex;
+  margin-bottom: 16px;
 `
 
 export const Label = styled.div`
@@ -61,4 +63,14 @@ export const AssetsLabel = styled.div`
   font-weight: 600;
   letter-spacing: 0.18px;
   line-height: 22px;
+`
+
+export const DownloadAll = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const Icon = styled(icon)`
+  margin-right: 8px;
 `

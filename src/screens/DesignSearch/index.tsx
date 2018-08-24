@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import Search from 'antd/lib/input/Search'
 import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
+import { restoreUserSession } from '../../components/MainLayout/api'
 import messages from './messages'
 import {
   Container,
@@ -22,8 +23,10 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
-import { OrderSearchResult } from '../../types/common'
+import { OrderSearchResult, UserType } from '../../types/common'
 import { orderSearchQuery } from './data'
+import { downloadFile } from './api'
+import Message from 'antd/lib/message'
 
 interface Props {
   history: any
@@ -31,7 +34,9 @@ interface Props {
   loading: boolean
   order?: OrderSearchResult
   notFound: boolean
+  user: UserType
   // redux actions
+  restoreUserSessionAction: () => void
   resetDataAction: () => void
   setLoadingAction: () => void
   setNotFoundAction: () => void
@@ -39,6 +44,14 @@ interface Props {
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
+  componentWillMount() {
+    const { user } = this.props
+    if (typeof window !== 'undefined' && !user) {
+      const { restoreUserSessionAction } = this.props
+      restoreUserSessionAction()
+    }
+  }
+
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -51,7 +64,9 @@ export class DesignSearch extends React.Component<Props, {}> {
     if (notFound) {
       loadErrContent = <FormattedMessage {...messages.notFound} />
     }
-    const orderContent = order && <OrderFiles {...{ order }} />
+    const orderContent = order && (
+      <OrderFiles {...{ order }} downloadFile={this.downloadAllFiles} />
+    )
     const content =
       loading || notFound ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
@@ -112,14 +127,32 @@ export class DesignSearch extends React.Component<Props, {}> {
       setNotFoundAction()
     }
   }
+
+  downloadAllFiles = async (code: string) => {
+    try {
+      const { user } = this.props
+      const blobFile = await downloadFile(user, code)
+      const url = window.URL.createObjectURL(blobFile)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${code}.zip`
+      a.click()
+    } catch (e) {
+      Message.error(messages.errorDownload.defaultMessage)
+    }
+  }
 }
 
-const mapStateToProps = (state: any) => state.get('designSearch').toJS()
+const mapStateToProps = (state: any) => {
+  const designSearch = state.get('designSearch').toJS()
+  const app = state.get('app').toJS()
+  return { ...designSearch, ...app }
+}
 
 const DesignSearchEnhance = compose(
   connect(
     mapStateToProps,
-    { ...designSearchActions }
+    { ...designSearchActions, restoreUserSessionAction: restoreUserSession }
   ),
   withApollo
 )(DesignSearch)
