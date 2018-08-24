@@ -76,8 +76,9 @@ export const SectionText = styled.div`
   }
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding: 30px 10px 0px;
     flex-direction: column;
+    margin: 0px;
+    padding: 30px 8px 0px;
   }
 `
 
@@ -102,6 +103,7 @@ export const ContentContainer = styled.div`
 
   @media (min-width: 320px) and (max-width: 480px) {
     flex-direction: column;
+    padding: 0px 8px;
   }
 `
 
@@ -147,4 +149,17 @@ export const FlatLockText = styled.div`
   margin-left: 32px;
   margin-right: 32px;
   margin-top: 28px;
+`
+export const SectionContainer = styled.div`
+  max-width: 1024px;
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
+  }
+`
+export const ColorChartContainer = styled.div`
+  @media (min-width: 1025px) {
+    margin: 0 auto;
+    max-width: 500px;
+  }
 `
