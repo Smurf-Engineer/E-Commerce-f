@@ -44,6 +44,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   teamStoreId?: string
+  designCode?: string
 }
 
 interface Props {
@@ -191,7 +192,7 @@ class CartListItem extends React.Component<Props, {}> {
       removeItem = () => {}
     } = this.props
 
-    const { designId, designName, designImage } = cartItem
+    const { designId, designName, designImage, designCode } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
@@ -260,6 +261,7 @@ class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>
+          <div>{designCode}</div>
         </NameContainer>
         <PriceContainer>
           <ItemDetailsHeaderPrice>{`${symbol} ${total ||

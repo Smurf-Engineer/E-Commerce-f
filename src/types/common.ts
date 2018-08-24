@@ -443,6 +443,7 @@ export interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  designCode?: string
   teamStoreId?: string
 }
 
