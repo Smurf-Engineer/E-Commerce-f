@@ -66,7 +66,8 @@ import {
   Responsive,
   AccessoriesColor,
   CanvasObjects,
-  SelectedAsset
+  SelectedAsset,
+  SaveDesignData
 } from '../../types/common'
 import {
   getProductQuery,
@@ -143,7 +144,7 @@ interface Props extends RouteComponentProps<any> {
   images: ImageFile[]
   uploadingFile: boolean
   searchClipParam: string
-  savedDesign: SaveDesignType
+  savedDesign: SaveDesignData
   user: object
   responsive: Responsive
   originalPaths: any[]

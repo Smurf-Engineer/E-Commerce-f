@@ -163,6 +163,24 @@ export type SaveDesignType = {
   styleId: number
 }
 
+export interface SaveDesignData {
+  createdAt: string
+  designCode: string
+  designId: number
+  designImage: string
+  designName: string
+  product: Product
+  shared: boolean
+  shortId: string
+  svg: string
+  canvas: string
+  bibBraceColor: string
+  bindingColor: string
+  flatlockCode: string
+  flatlockColor: string
+  zipperColor: string
+}
+
 export type TeamStoreItemtype = {
   team_store_id: number
   design_id: string

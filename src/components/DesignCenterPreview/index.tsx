@@ -21,7 +21,7 @@ import Render3D from '../../components/Render3D'
 import messages from './messages'
 import {
   Product,
-  SaveDesignType,
+  SaveDesignData,
   StitchingColor,
   AccesoryColor
 } from '../../types/common'
@@ -44,7 +44,7 @@ interface Props {
   openAddToStoreModal: boolean
   teamStoreId: string
   svgOutputUrl: string
-  savedDesign: SaveDesignType
+  savedDesign: SaveDesignData
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
@@ -102,9 +102,11 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       zipperColor
     } = this.props
 
-    const itemToAdd = Object.assign(savedDesign, {
+    const itemToAdd = Object.assign({}, savedDesign, {
       itemDetails: [{ quantity: 1 }]
     })
+
+    const { shortId, designName, designImage } = savedDesign
 
     return (
       <Container>
@@ -150,6 +152,9 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
                     label={formatMessage(messages.addToCart)}
                     onClick={this.handleAddToCart}
                     item={itemToAdd}
+                    itemProdPage={true}
+                    designId={shortId}
+                    {...{ designName, designImage }}
                   />
                 </ButtonWrapper>
               </BottomButtons>
