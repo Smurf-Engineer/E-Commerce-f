@@ -328,6 +328,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}
+          {...{ history }}
         />
       )
     })
