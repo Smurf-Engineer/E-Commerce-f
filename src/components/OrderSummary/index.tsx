@@ -62,7 +62,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       total,
       subtotal,
       formatMessage,
-      discount,
+      // discount,
       totalWithoutDiscount,
       onlyRead,
       proDesignReview,
@@ -71,36 +71,35 @@ export class OrderSummary extends React.Component<Props, {}> {
       taxes
     } = this.props
 
-    const renderDiscount = discount ? (
-      <OrderItem>
-        {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-        <FlexWrapper>
-          <div>{formatMessage(messages.discountCode)}</div>
-          <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
-        </FlexWrapper>
-        <div>{`USD$${discount}`}</div> */}
-        {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-      </OrderItem>
-    ) : (
-        <ZipCodeInputWrapper>
-          <ShareLinkInput
-            disabled={true}
-            id="url"
-            placeholder={formatMessage(messages.zipCodePlaceholder)}
-            enterButton={formatMessage(messages.estimate)}
-            size="default"
-            maxLength="5"
-            onChange={() => { }}
-          />
-        </ZipCodeInputWrapper>
-      )
+    // const renderDiscount = discount ? (
+    //   <OrderItem>
+    //     {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
+    //     <FlexWrapper>
+    //       <div>{formatMessage(messages.discountCode)}</div>
+    //       <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
+    //     </FlexWrapper>
+    //     <div>{`USD$${discount}`}</div> */}
+    //     {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
+    //   </OrderItem>
+    // ) : (
+    //     <ZipCodeInputWrapper>
+    //       <ShareLinkInput
+    //         disabled={true}
+    //         id="url"
+    //         placeholder={formatMessage(messages.zipCodePlaceholder)}
+    //         enterButton={formatMessage(messages.estimate)}
+    //         size="default"
+    //         maxLength="5"
+    //         onChange={() => { }}
+    //       />
+    //     </ZipCodeInputWrapper>
+    //   )
     const youSaved = Number(totalWithoutDiscount) - total
 
-    const shippingTotal = get(data, 'shipping.total', 0)
-    const taxesTotal = get(data, 'taxes.total', 0)
+    const shippingTotal = get(data, 'shipping.total', shipping) || 0
+    const taxesTotal = get(data, 'taxes.total', taxes) || 0
 
     const sumTotal = (total + shippingTotal + taxesTotal).toFixed(2)
-
     const symbol = currencySymbol || '$'
 
     return (
@@ -114,11 +113,11 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-          <OrderItem hide={!taxesTotal && !taxes}>
+          <OrderItem hide={!taxesTotal}>
             <FormattedMessage {...messages.taxes} />
             <div>{`${symbol} ${taxesTotal.toFixed(2)}`}</div>
           </OrderItem>
-          <OrderItem hide={!shippingTotal && !shipping}>
+          <OrderItem hide={!shippingTotal}>
             <FormattedMessage {...messages.shipping} />
             <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
           </OrderItem>
