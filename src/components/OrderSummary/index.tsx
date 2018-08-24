@@ -31,6 +31,9 @@ import {
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 
+const COUNTRY_CODE_US = 'us'
+const COUNTRY_CODE_CANADA = 'ca'
+
 interface Data extends QueryProps {
   taxes: NetsuiteTax[]
   shipping: NetsuiteShipping
@@ -108,11 +111,11 @@ export class OrderSummary extends React.Component<Props, {}> {
     if (taxesAmount && country) {
       let taxTotal = 0
       switch (country.toLowerCase()) {
-        case 'us':
+        case COUNTRY_CODE_US:
           taxTotal = (total * taxesAmount) / 100 // calculate tax
           taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           break
-        case 'ca': // TODO: pending confirmation
+        case COUNTRY_CODE_CANADA: // TODO: pending confirmation
           taxTotal = (total * taxesAmount) / 100 // calculate tax
           taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           break
