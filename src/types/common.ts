@@ -534,6 +534,8 @@ export interface OrderDataInfo {
   cart: CartItems[]
   paymentMethod: string
   currency: Currency
+  shippingAmount: number
+  taxAmount: number
 }
 
 export interface TextFormat {

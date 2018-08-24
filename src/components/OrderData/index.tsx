@@ -83,7 +83,8 @@ class OrderData extends React.Component<Props, {}> {
           billingZipCode,
           billingCountry,
           billingApartment,
-          shippingTax,
+          shippingAmount,
+          taxAmount,
           payment: { stripeCharge },
           cart,
           paymentMethod,
@@ -255,9 +256,10 @@ class OrderData extends React.Component<Props, {}> {
           <SummaryContainer>
             {/* TODO: add discount*/}
             <OrderSummary
-              total={totalSum + shippingTax}
+              total={totalSum + shippingAmount}
               subtotal={totalSum}
-              shipping={shippingTax}
+              shipping={shippingAmount}
+              taxes={taxAmount}
               discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}
