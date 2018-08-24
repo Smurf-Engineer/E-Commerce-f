@@ -337,7 +337,7 @@ class CartListItem extends React.Component<Props, {}> {
             return (
               <Container>
                 <ItemDetails>
-                  <Image src={image} />
+                  <Image src={image} onClick={this.gotToProductPage} />
                   <ItemDetails>{itemDetailsHeader}</ItemDetails>
                 </ItemDetails>
                 <div>
