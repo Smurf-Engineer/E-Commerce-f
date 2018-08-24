@@ -31,6 +31,9 @@ import {
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 
+const COUNTRY_CODE_US = 'us'
+const COUNTRY_CODE_CANADA = 'ca'
+
 interface Data extends QueryProps {
   taxes: NetsuiteTax[]
   shipping: NetsuiteShipping
@@ -68,7 +71,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       proDesignReview,
       currencySymbol,
       shipping,
-      taxes
+      taxes,
+      country
     } = this.props
 
     // const renderDiscount = discount ? (
@@ -99,8 +103,28 @@ export class OrderSummary extends React.Component<Props, {}> {
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
     const taxesTotal = get(data, 'taxes.total', taxes) || 0
 
-    const sumTotal = (total + shippingTotal + taxesTotal).toFixed(2)
     const symbol = currencySymbol || '$'
+
+    // get tax fee
+    const taxesAmount = taxesTotal || taxes
+    let taxFee = 0
+    if (taxesAmount && country) {
+      let taxTotal = 0
+      switch (country.toLowerCase()) {
+        case COUNTRY_CODE_US:
+          taxTotal = (total * taxesAmount) / 100 // calculate tax
+          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          break
+        case COUNTRY_CODE_CANADA: // TODO: pending confirmation
+          taxTotal = (total * taxesAmount) / 100 // calculate tax
+          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          break
+        default:
+          break
+      }
+    }
+
+    const sumTotal = total + shippingTotal + taxFee
 
     return (
       <Container>
@@ -113,14 +137,6 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-          <OrderItem hide={!taxesTotal}>
-            <FormattedMessage {...messages.taxes} />
-            <div>{`${symbol} ${taxesTotal.toFixed(2)}`}</div>
-          </OrderItem>
-          <OrderItem hide={!shippingTotal}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
-          </OrderItem>
 
           {!!proDesignReview && (
             <OrderItem>
@@ -129,6 +145,14 @@ export class OrderSummary extends React.Component<Props, {}> {
             </OrderItem>
           )}
 
+          <OrderItem hide={!taxFee}>
+            <FormattedMessage {...messages.taxes} />
+            <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!shippingTotal}>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+          </OrderItem>
           {/* Uncomment to display discount ammount or shipping estimate */}
           {/* {!onlyRead ? renderDiscount : null} */}
         </CalculationsWrapper>
@@ -144,7 +168,7 @@ export class OrderSummary extends React.Component<Props, {}> {
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
                     size="default"
-                    onChange={() => { }}
+                    onChange={() => {}}
                   />
                 </ZipCodeInputWrapper>
               </Panel>
