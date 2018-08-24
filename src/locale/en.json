@@ -945,7 +945,7 @@
   "screens.ShoppingCartPage.zipCodePlaceholder": "Zip/Postal Code",
   "screens.ShoppingCartPage.promoCodePlaceholder": "Promo Code",
   "screens.ShoppingCartPage.giftPlaceholder": "Gift Certificate",
-  "screens.ShoppingCartPage.addOneMoreMessage": "*Add 1 more item to your cart to save 25% on your entire order",
+  "screens.ShoppingCartPage.addOneMoreMessage": "*Add 1 more item to your cart to save 20% on your entire order",
   "screens.ShoppingCartPage.titleDeleteModal": "Are you sure?",
   "screens.ShoppingCartPage.messageDeleteItem": "\"{nameOfFirstProduct}\" will be deleted from your cart",
   "screens.ShoppingCartPage.delete": "Delete",
