@@ -206,8 +206,8 @@ class SignUp extends React.Component<Props, StateProps> {
           id: get(data, 'user.shortId', ''),
           token: get(data, 'token', ''),
           name: get(data, 'user.name', ''),
-          lastName: get(data, 'user.lastName'),
-          email: get(data, 'user.email')
+          lastName: get(data, 'user.lastName', ''),
+          email: get(data, 'user.email', '')
         }
         message.info(
           formatMessage(messages.welcomeMessage, {
