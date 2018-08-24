@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import Button from 'antd/lib/button'
 import messages from './messages'
 import {
   Container,
@@ -13,7 +14,9 @@ import {
   Label,
   StatusContainer,
   FinalSvg,
-  AssetsLabel
+  AssetsLabel,
+  Icon,
+  DownloadAll
 } from './styledComponents'
 import { OrderSearchResult } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
@@ -22,6 +25,7 @@ import AccessoryColors from '../AccessoryColors'
 
 interface Props {
   order: OrderSearchResult
+  downloadFile: (code: string) => void
 }
 
 const OrderFiles = ({
@@ -36,9 +40,13 @@ const OrderFiles = ({
     bibColor,
     zipperColor,
     bindingColor
-  }
+  },
+  downloadFile
 }: Props) => {
   const statusOrder = status.replace(/_/g, ' ')
+  const onDownload = () => {
+    downloadFile(code)
+  }
   return (
     <Container>
       <div>
@@ -61,6 +69,12 @@ const OrderFiles = ({
           </Label>
           <Status>{statusOrder}</Status>
         </StatusContainer>
+        <Button onClick={onDownload}>
+          <DownloadAll>
+            <Icon type="download" />
+            <FormattedMessage {...messages.downloadAll} />
+          </DownloadAll>
+        </Button>
         <FinalSvg>
           <DownloadItem url={svgUrl} name="Final SVG" />
         </FinalSvg>
