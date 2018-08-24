@@ -49,7 +49,13 @@ export const AnchorButton = styled.div`
     margin-bottom: 10px;
   }
 `
-export const SectionContainder = styled.div``
+export const SectionContainder = styled.div`
+  max-width: 1024px;
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
+  }
+`
 
 export const SectionTitle = styled.div`
   color: #5f6062;

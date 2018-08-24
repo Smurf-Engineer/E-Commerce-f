@@ -21,13 +21,6 @@ const jerseysInfo = [
       messages.fondoMaterial1,
       messages.fondoMaterial2,
       messages.fondoMaterial3
-    ],
-    prices: [
-      messages.fondoPrice1,
-      messages.fondoPrice2,
-      messages.fondoPrice3,
-      messages.fondoPrice4,
-      messages.priceCallUs
     ]
   },
   {
@@ -52,13 +45,6 @@ const jerseysInfo = [
       messages.tourMaterial3,
       messages.tourMaterial4,
       messages.tourMaterial5
-    ],
-    prices: [
-      messages.tourPrice1,
-      messages.tourPrice2,
-      messages.tourPrice3,
-      messages.tourPrice4,
-      messages.priceCallUs
     ]
   },
   {
@@ -83,13 +69,6 @@ const jerseysInfo = [
       messages.novaMaterial2,
       messages.novaMaterial3,
       messages.novaMaterial4
-    ],
-    prices: [
-      messages.novaPrice1,
-      messages.novaPrice2,
-      messages.novaPrice3,
-      messages.novaPrice4,
-      messages.priceCallUs
     ]
   }
 ]

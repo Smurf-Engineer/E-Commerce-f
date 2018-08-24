@@ -30,6 +30,21 @@ import {
   TechParagraph
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
+import fullmoon from '../../assets/Fullmoon.png'
+import timeOut from '../../assets/Timeout.png'
+import saphire from '../../assets/Saphire.png'
+import diamond from '../../assets/diamond.png'
+import onyx from '../../assets/onix.png'
+import fastFlow from '../../assets/fastflow.png'
+import airsteam from '../../assets/airsteam.png'
+import atom85 from '../../assets/atom-85.png'
+import standard from '../../assets/standard.png'
+import tri from '../../assets/Tri.png'
+import youth from '../../assets/Youth.png'
+import jakrooPro from '../../assets/jakroopro.png'
+import tech1 from '../../assets/tech1.png'
+import oekoTex from '../../assets/oeko-tex.png'
+import techHeader from '../../assets/Tech-header.jpg'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -37,59 +52,50 @@ interface Props extends RouteComponentProps<any> {
 
 const fabricsArray = [
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/Fullmoon.webp',
+    url: fullmoon,
     id: 'fullMoonContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/Timeout.webp',
+    url: timeOut,
     id: 'timeOutContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/Saphire.webp',
+    url: saphire,
     id: 'saphireContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/Diamond.webp',
+    url: diamond,
     id: 'diamondContent'
   },
   {
-    url: 'https://storage.googleapis.com/jakroo-storage/screens/tech/Onyx.webp',
+    url: onyx,
     id: 'onyxContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/Fastflow.webp',
+    url: fastFlow,
     id: 'fastFlowContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/airsteam.webp',
+    url: airsteam,
     id: 'airStreamContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/atom85.webp',
+    url: atom85,
     id: 'atomContent'
   }
 ]
 
 const techArray = [
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/standard.webp',
+    url: standard,
     id: 'standardContent'
   },
   {
-    url: 'https://storage.googleapis.com/jakroo-storage/screens/tech/Tri.webp',
+    url: tri,
     id: 'triContent'
   },
   {
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/tech/Youth.webp',
+    url: youth,
     id: 'youthContent'
   }
 ]
@@ -143,11 +149,7 @@ export class Technology extends React.Component<Props, {}> {
       <Layout {...{ intl, history }}>
         <Container>
           <ImageTitleContainer>
-            <StyledImg
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/tech/header-tech.webp'
-              }
-            />
+            <StyledImg src={techHeader} />
             <HeaderTextContainer>
               <Title>
                 <FormattedMessage {...messages.title} />
@@ -163,11 +165,7 @@ export class Technology extends React.Component<Props, {}> {
             </HeaderTextContainer>
           </ImageTitleContainer>
           <ParagraphContainer>
-            <OkoeImg
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/tech/oeko-tex.webp'
-              }
-            />
+            <OkoeImg src={oekoTex} />
             <Paragraph
               dangerouslySetInnerHTML={{
                 __html: intl.formatMessage(messages.oeko)
@@ -188,11 +186,7 @@ export class Technology extends React.Component<Props, {}> {
             <FormattedMessage {...messages.chamoisSubTitle} />
           </Subtitle>
           <TechContainer>
-            <TechImg
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/tech/tech1.webp'
-              }
-            />
+            <TechImg src={tech1} />
             <TechParagraph
               dangerouslySetInnerHTML={{
                 __html: intl.formatMessage(messages.chamoisTech)
@@ -200,11 +194,7 @@ export class Technology extends React.Component<Props, {}> {
             />
           </TechContainer>
           <TechContainer>
-            <TechImg
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/tech/JakrooPRO.webp'
-              }
-            />
+            <TechImg src={jakrooPro} />
             <TechParagraph
               dangerouslySetInnerHTML={{
                 __html: intl.formatMessage(messages.proContent)
