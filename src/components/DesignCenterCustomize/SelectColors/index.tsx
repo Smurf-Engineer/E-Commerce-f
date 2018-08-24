@@ -68,7 +68,6 @@ class SelectColors extends React.PureComponent<Props, {}> {
             <Arrow type="right" />
           </BaseTitle>
           <ColorButtons
-            colorBlock={-1}
             {...{
               colors,
               onSelectColorBlock,

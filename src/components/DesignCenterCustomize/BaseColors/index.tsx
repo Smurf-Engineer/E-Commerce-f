@@ -3,12 +3,7 @@
  */
 import * as React from 'react'
 import Divider from 'antd/lib/divider'
-// import findIndex from 'lodash/findIndex'
-// import find from 'lodash/find'
-// import messages from './messages'
-// import ColorButton from '../../ColorButton'
 import ColorList from '../ColorList'
-// import baseColors from '../ColorList/colors'
 import { Container } from './styledComponents'
 import ColorButtons from '../ColorButtons'
 
