@@ -12,5 +12,9 @@ export default defineMessages({
   assets: {
     id: 'components.OrderFiles.assets',
     defaultMessage: 'Assets'
+  },
+  downloadAll: {
+    id: 'components.OrderFiles.downloadAll',
+    defaultMessage: 'Download All Files'
   }
 })

@@ -115,7 +115,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
             filterSelected={sportSelected}
             onHoverFilter={this.handleOnHoverFilter}
           />
-          {loading || !categories.length ? null : (
+          {loading || (categories && !categories.length) ? null : (
             <SeeAllButton
               withFilterWord={true}
               onClick={this.handleOnPressSeeAll}
@@ -126,7 +126,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
         <Divider type="vertical" />
         {categoriesContent}
         <Divider type="vertical" />
-        {loading || !categories.length ? null : (
+        {loading || (categories && !categories.length) ? null : (
           <ProductList
             {...{
               onPressCustomize,
