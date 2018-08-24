@@ -848,20 +848,10 @@
   "components.designCenterCustomize.SelectColors.selectColors": "Select Colors",
   "components.designCenterCustomize.ColorTab.myPalettes": "My Palettes",
   "components.designCenterCustomize.SelectColors.baseColors": "Base Colors",
-  "components.designCenterCustomize.SelectColors.color1": "Area 1",
-  "components.designCenterCustomize.SelectColors.color2": "Area 2",
-  "components.designCenterCustomize.SelectColors.color3": "Area 3",
-  "components.designCenterCustomize.SelectColors.color4": "Area 4",
-  "components.designCenterCustomize.SelectColors.color5": "Area 5",
   "components.designCenterCustomize.SelectColors.stitching": "Stitching",
   "components.designCenterCustomize.SelectColors.binding": "Binding",
   "components.designCenterCustomize.SelectColors.zipper": "Zipper",
   "components.designCenterCustomize.SelectColors.bibColor": "Bib brace color",
-  "components.designCenterCustomize.ColorTab.area1": "Area 1",
-  "components.designCenterCustomize.ColorTab.area2": "Area 2",
-  "components.designCenterCustomize.ColorTab.area3": "Area 3",
-  "components.designCenterCustomize.ColorTab.area4": "Area 4",
-  "components.designCenterCustomize.ColorTab.area5": "Area 5",
   "screens.WorkAtJakroo.tittle": "WORK AT JAKROO",
   "screens.WorkAtJakroo.headerDialog": "It takes more than just passion to be the leader in your category. That’s why at JAKROO we seek the exceptional, the motivated and the innovative. Depending on your educational background and objectives, JAKROO offers opportunities ranging from graphic design, website development, business analysis, and sports marketing. Our internship programs provide candidates with the opportunity to gain valuable hands-on experience in virtually every area of the On Demand Custom Apparel Business.",
   "screens.WorkAtJakroo.currentJobsTitle": "CURRENT JOB OPENINGS AT JAKROO USA",
@@ -1014,5 +1004,11 @@
 
   "components.LogoutModal.title": "Log Out",
   "components.LogoutModal.confirm": "Confirm",
-  "components.LogoutModal.logout": "Are you sure you want to log out?"
+  "components.LogoutModal.logout": "Are you sure you want to log out?",
+
+  "components.designCenterCustomize.ColorButtons.color1": "Area 1",
+  "components.designCenterCustomize.ColorButtons.color2": "Area 2",
+  "components.designCenterCustomize.ColorButtons.color3": "Area 3",
+  "components.designCenterCustomize.ColorButtons.color4": "Area 4",
+  "components.designCenterCustomize.ColorButtons.color5": "Area 5"
 }

@@ -8,14 +8,13 @@ import {
   BaseColors,
   BaseTitle,
   ColorLabel,
-  ColorButtons,
   Arrow,
   Divider
 } from './styledComponents'
-import ColorButton from '../../ColorButton'
 import AccessoryColor from '../AccessoryColor'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
+import ColorButtons from '../ColorButtons'
 
 interface Props {
   colors: string[]
@@ -36,9 +35,6 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
-
-const { area1, area2, area3, area4, area5 } = messages
-const colorsBlocks = [area1, area2, area3, area4, area5]
 
 class SelectColors extends React.PureComponent<Props, {}> {
   render() {
@@ -64,20 +60,6 @@ class SelectColors extends React.PureComponent<Props, {}> {
     if (!showContent) {
       return null
     }
-    const colorButtons = colorsBlocks.map((label, index) => (
-      <ColorButton
-        key={index}
-        label={formatMessage(label)}
-        currentColor={colors[index]}
-        {...{
-          name,
-          index,
-          colorBlockHovered,
-          onSelectColorBlock,
-          onHoverColorBlock
-        }}
-      />
-    ))
     return (
       <Container>
         <BaseColors onClick={goToBaseColors}>
@@ -85,7 +67,16 @@ class SelectColors extends React.PureComponent<Props, {}> {
             <ColorLabel>{formatMessage(messages.baseColors)}</ColorLabel>
             <Arrow type="right" />
           </BaseTitle>
-          <ColorButtons>{colorButtons}</ColorButtons>
+          <ColorButtons
+            colorBlock={-1}
+            {...{
+              colors,
+              onSelectColorBlock,
+              colorBlockHovered,
+              onHoverColorBlock,
+              formatMessage
+            }}
+          />
         </BaseColors>
         <Divider />
         {hasStitching && (

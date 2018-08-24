@@ -29,13 +29,6 @@ export const Arrow = styled(Icon)`
   font-size: 16px;
 `
 
-export const ColorButtons = styled.div`
-  display: flex;
-  justify-content: space-around;
-  padding: 14px 32px 0px 32px;
-  margin-bottom: 16px;
-`
-
 export const Divider = styled.div`
   margin: 0 32px 4px 32px;
   height: 1px;
