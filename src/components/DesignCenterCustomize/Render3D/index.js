@@ -3,6 +3,7 @@ import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
 import filter from 'lodash/filter'
+import FontFaceObserver from 'fontfaceobserver'
 import { FormattedMessage } from 'react-intl'
 // TODO: JV2 - Phase II
 // import Dropdown from 'antd/lib/dropdown'
@@ -312,6 +313,7 @@ class Render3D extends PureComponent {
       const paths = []
       const imagesElements = []
       const imagesPromises = []
+      const fonts = []
       const { objects } = JSON.parse(object)
       const canvasFileIds = JSON.parse(canvasFiles)
       for (const el of objects) {
@@ -321,6 +323,7 @@ class Render3D extends PureComponent {
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
+            fonts.push(el.fontFamily)
             const element = getTextCanvasElement(el)
             canvas.text[elId] = element
             break
@@ -370,6 +373,11 @@ class Render3D extends PureComponent {
         const imageEl = new fabric.Image(img, { ...config })
         this.canvasTexture.add(imageEl)
       })
+      const fontsPromises = fonts.map(font => {
+        const fontObserver = new FontFaceObserver(font)
+        return fontObserver.load()
+      })
+      await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       if (reseting) {

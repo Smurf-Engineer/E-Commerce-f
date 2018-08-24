@@ -4,20 +4,39 @@
 import * as React from 'react'
 import { Container, Text, Item, Font } from './styledComponents'
 
-// TODO: Dummie data
 const fonts = [
-  'Arial Black',
-  'Avenir',
-  'Bangla',
-  'Baskerville',
-  'Circular Std',
-  'Courier New',
-  'Fira Code',
-  'Gill Sans',
-  'Luminari',
-  'Sathu',
-  'Trattatello',
-  'Verdana'
+  'Advent Pro',
+  'Alfa Slab One',
+  'Archivo Black',
+  'Bangers',
+  'Baumans',
+  'Black Ops One',
+  'Ceviche One',
+  'Clicker Script',
+  'Creepster',
+  'Dancing Script',
+  'Fontdiner Swanky',
+  'Goudy Bookletter 1911',
+  'Great Vibes',
+  'Luckiest Guy',
+  'Maven Pro',
+  'Metal Mania',
+  'Oswald',
+  'Pacifico',
+  'Permanent Marker',
+  'Pinyon Script',
+  'Racing Sans One',
+  'Rancho',
+  'Righteous',
+  'Rock Salt',
+  'Russo One',
+  'Sanchez',
+  'Satisfy',
+  'Slackey',
+  'Stardos Stencil',
+  'UnifrakturMaguntia',
+  'Yellowtail',
+  'Yesteryear'
 ]
 
 interface Props {
