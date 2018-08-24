@@ -314,6 +314,9 @@ class Render3D extends PureComponent {
       const imagesPromises = []
       const { objects } = JSON.parse(object)
       const canvasFileIds = JSON.parse(canvasFiles)
+      console.log('------------------------------------')
+      console.log(objects)
+      console.log('------------------------------------')
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
@@ -323,6 +326,12 @@ class Render3D extends PureComponent {
             elements.push(el)
             const element = getTextCanvasElement(el)
             canvas.text[elId] = element
+            break
+          }
+          case CanvasElements.Group: {
+            const element = getImageCanvas(el)
+            canvas.image[elId] = element
+            paths.push(el)
             break
           }
           case CanvasElements.Path: {
@@ -371,6 +380,9 @@ class Render3D extends PureComponent {
         this.canvasTexture.add(imageEl)
       })
       const fabricObjects = await this.convertToFabricObjects(elements)
+      console.log('------------------------------------')
+      console.log(fabricObjects)
+      console.log('------------------------------------')
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       if (reseting) {
         const {
