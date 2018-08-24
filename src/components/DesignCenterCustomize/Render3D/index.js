@@ -313,7 +313,7 @@ class Render3D extends PureComponent {
       const imagesElements = []
       const imagesPromises = []
       const { objects } = JSON.parse(object)
-      const canvasFileIds = JSON.parse(canvasFiles)
+      const canvasFileIds = canvasFiles && JSON.parse(canvasFiles)
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
@@ -1173,14 +1173,15 @@ class Render3D extends PureComponent {
             Save
           </Button>
         </ButtonWrapper>
-        <OptionsController
+        {/* TODO: uncomment controllers when bugs from undo/redo and reset be fixed */}
+        {/* <OptionsController
           {...{ undoEnabled, redoEnabled, formatMessage }}
           resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnOpenResetModal}
           onClickClear={this.handleOnClickClear}
-        />
+        /> */}
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
           <TopButton onClick={this.handleOnPressTop} src={top} />
