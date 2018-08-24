@@ -68,7 +68,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       proDesignReview,
       currencySymbol,
       shipping,
-      taxes
+      taxes,
+      country
     } = this.props
 
     const renderDiscount = discount ? (
@@ -99,9 +100,28 @@ export class OrderSummary extends React.Component<Props, {}> {
     const shippingTotal = get(data, 'shipping.total', 0)
     const taxesTotal = get(data, 'taxes.total', 0)
 
-    const sumTotal = total + shippingTotal + taxesTotal
-
     const symbol = currencySymbol || '$'
+
+    // get tax fee
+    const taxesAmount = taxesTotal || taxes
+    let taxFee = 0
+    if (taxesAmount && country) {
+      let taxTotal = 0
+      switch (country.toLowerCase()) {
+        case 'us':
+          taxTotal = (total * taxesAmount) / 100 // calculate tax
+          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          break
+        case 'ca': // TODO: pending confirmation
+          taxTotal = (total * taxesAmount) / 100 // calculate tax
+          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          break
+        default:
+          break
+      }
+    }
+
+    const sumTotal = total + shippingTotal + taxFee
 
     return (
       <Container>
@@ -114,14 +134,6 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-          <OrderItem hide={!taxesTotal && !taxes}>
-            <FormattedMessage {...messages.taxes} />
-            <div>{`${symbol} ${taxesTotal || taxes}`}</div>
-          </OrderItem>
-          <OrderItem hide={!shippingTotal && !shipping}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal || shipping}`}</div>
-          </OrderItem>
 
           {!!proDesignReview && (
             <OrderItem>
@@ -130,6 +142,14 @@ export class OrderSummary extends React.Component<Props, {}> {
             </OrderItem>
           )}
 
+          <OrderItem hide={!taxFee}>
+            <FormattedMessage {...messages.taxes} />
+            <div>{`${symbol} ${taxFee}`}</div>
+          </OrderItem>
+          <OrderItem hide={!shippingTotal && !shipping}>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`${symbol} ${shippingTotal || shipping}`}</div>
+          </OrderItem>
           {!onlyRead ? renderDiscount : null}
         </CalculationsWrapper>
         <CodeDivider />
