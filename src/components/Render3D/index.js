@@ -159,7 +159,6 @@ class Render3D extends PureComponent {
             side: THREE.FrontSide,
             bumpMap: bumpMap
           })
-          texture.needsUpdate = true
 
           // /* Assign materials */
           const cloneObject = children[meshIndex].clone()
