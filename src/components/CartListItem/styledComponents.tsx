@@ -104,6 +104,7 @@ export const Image = styled.img`
   height: 200.29px;
   width: 180.44px;
   background-color: #f1f4f5;
+  cursor: pointer;
 
   @media only screen and (max-width: 481px) {
     height: 129px;

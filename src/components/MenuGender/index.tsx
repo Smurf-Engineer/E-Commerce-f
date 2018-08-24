@@ -26,15 +26,15 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   type: number
-  onPressSeeAll: (type: number) => void
+  onPressSeeAll: (type: number, category: string, sport: string) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
   setSportAction: (sport: number) => void
   setCategoryAction: (category: number) => void
   sportSelected: number
   categorySelected: number
-  genders?: Filter[]
-  sports?: Filter[]
+  genders: Filter[]
+  sports: Filter[]
   visible: boolean
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
@@ -52,8 +52,19 @@ export class MenuGender extends React.PureComponent<Props, {}> {
   }
 
   handleOnPressSeeAll = () => {
-    const { onPressSeeAll, type } = this.props
-    onPressSeeAll(type)
+    const {
+      onPressSeeAll,
+      data: { categories },
+      sports,
+      type,
+      categorySelected,
+      sportSelected
+    } = this.props
+    onPressSeeAll(
+      type,
+      categories[categorySelected].name,
+      sports[sportSelected].name
+    )
   }
 
   getFilter = (array: any[], index: number) =>
@@ -104,16 +115,18 @@ export class MenuGender extends React.PureComponent<Props, {}> {
             filterSelected={sportSelected}
             onHoverFilter={this.handleOnHoverFilter}
           />
-          <SeeAllButton
-            withFilterWord={true}
-            onClick={this.handleOnPressSeeAll}
-            {...{ formatMessage }}
-          />
+          {loading || !categories.length ? null : (
+            <SeeAllButton
+              withFilterWord={true}
+              onClick={this.handleOnPressSeeAll}
+              {...{ formatMessage }}
+            />
+          )}
         </Filters>
         <Divider type="vertical" />
         {categoriesContent}
         <Divider type="vertical" />
-        {loading ? null : (
+        {loading || !categories.length ? null : (
           <ProductList
             {...{
               onPressCustomize,
