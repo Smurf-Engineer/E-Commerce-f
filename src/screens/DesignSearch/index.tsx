@@ -25,7 +25,8 @@ import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
 import { OrderSearchResult, UserType } from '../../types/common'
 import { orderSearchQuery } from './data'
-import config from '../../config/index'
+import { downloadFile } from './api'
+import Message from 'antd/lib/message'
 
 interface Props {
   history: any
@@ -64,7 +65,7 @@ export class DesignSearch extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.notFound} />
     }
     const orderContent = order && (
-      <OrderFiles {...{ order }} downloadFile={this.downloadFile} />
+      <OrderFiles {...{ order }} downloadFile={this.downloadAllFiles} />
     )
     const content =
       loading || notFound ? (
@@ -127,24 +128,20 @@ export class DesignSearch extends React.Component<Props, {}> {
     }
   }
 
-  downloadFile = async (code: string) => {
-    const { user } = this.props
-    const fileResponse = await fetch(
-      `${config.graphqlUriBase}design-files?designCode=${code}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        }
-      }
-    )
-    const blobFile = await fileResponse.blob()
-    const url = window.URL.createObjectURL(blobFile)
-    const a = document.createElement('a')
-    a.href = url
-    a.download = `${code}.zip`
-    a.click()
+  downloadAllFiles = async (code: string) => {
+    try {
+      const { user } = this.props
+      const blobFile = await downloadFile(user, code)
+      const url = window.URL.createObjectURL(blobFile)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `${code}.zip`
+      a.click()
+    } catch (e) {
+      Message.error(
+        'An unknown error has occurred while trying to download this file, try again later.'
+      )
+    }
   }
 }
 
