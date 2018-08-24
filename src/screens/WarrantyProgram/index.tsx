@@ -21,7 +21,7 @@ import messages from './messages'
 import {
   Container,
   Text,
-  SectionContainder,
+  SectionContainer,
   SectionTitle,
   SectionText,
   SectionSubTitle,
@@ -36,6 +36,8 @@ import {
   InputsContainer,
   TwoInputsContainer,
   StyledRadioGroup,
+  GenderSizeContainer,
+  SizeStyledRadioGroup,
   ButtonWrapper,
   UploadedFile,
   SmallInputsContainer
@@ -291,7 +293,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     return (
       <Layout {...{ intl, history }}>
         <Container>
-          <SectionContainder>
+          <SectionContainer>
             <Text>
               <FormattedMessage {...messages.title} />
             </Text>
@@ -300,9 +302,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                 __html: intl.formatMessage(messages.titleText)
               }}
             />
-          </SectionContainder>
+          </SectionContainer>
           <Divider />
-          <SectionContainder>
+          <SectionContainer>
             <SectionTitle id="TermsAndConditions">
               {intl.formatMessage(messages.warrantyTitle).toLocaleUpperCase()}
             </SectionTitle>
@@ -314,7 +316,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                 __html: intl.formatMessage(messages.warrantyText)
               }}
             />
-          </SectionContainder>
+          </SectionContainer>
           <ExpandContainter>
             <DivInfo
               titleWidth={'85%'}
@@ -454,50 +456,49 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
               </FlexContainer>
 
               <FlexContainer>
-                <InputsContainer>
-                  <InputTitleContainer>
-                    <Label>{intl.formatMessage(messages.gender)}</Label>
-                    <RequiredSpan>*</RequiredSpan>
-                  </InputTitleContainer>
-                  <StyledRadioGroup>
-                    <RadioGroup
-                      options={genderOptions}
-                      onChange={this.handleGenderChange}
-                      value={gender}
-                    />
-                  </StyledRadioGroup>
-                  {!gender &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
-                </InputsContainer>
+                <GenderSizeContainer>
+                  <InputsContainer>
+                    <InputTitleContainer>
+                      <Label>{intl.formatMessage(messages.gender)}</Label>
+                      <RequiredSpan>*</RequiredSpan>
+                    </InputTitleContainer>
+                    <StyledRadioGroup>
+                      <RadioGroup
+                        options={genderOptions}
+                        onChange={this.handleGenderChange}
+                        value={gender}
+                      />
+                    </StyledRadioGroup>
+                    {!gender &&
+                      hasError && (
+                        <ErrorMsg>
+                          <FormattedMessage {...messages.required} />
+                        </ErrorMsg>
+                      )}
+                  </InputsContainer>
+                  <InputsContainer>
+                    <InputTitleContainer>
+                      <Label>{intl.formatMessage(messages.size)}</Label>
+                      <RequiredSpan>*</RequiredSpan>
+                    </InputTitleContainer>
+                    <SizeStyledRadioGroup>
+                      <RadioGroup
+                        options={sizeOptions}
+                        onChange={this.handleSizeChange}
+                        value={size}
+                      />
+                    </SizeStyledRadioGroup>
+                    {!size &&
+                      hasError && (
+                        <ErrorMsg>
+                          <FormattedMessage {...messages.required} />
+                        </ErrorMsg>
+                      )}
+                  </InputsContainer>
+                </GenderSizeContainer>
                 <FormInfo>
                   <FormattedMessage {...messages.genderInfo} />
                 </FormInfo>
-              </FlexContainer>
-
-              <FlexContainer>
-                <InputsContainer>
-                  <InputTitleContainer>
-                    <Label>{intl.formatMessage(messages.size)}</Label>
-                    <RequiredSpan>*</RequiredSpan>
-                  </InputTitleContainer>
-                  <StyledRadioGroup>
-                    <RadioGroup
-                      options={sizeOptions}
-                      onChange={this.handleSizeChange}
-                      value={size}
-                    />
-                  </StyledRadioGroup>
-                  {!size &&
-                    hasError && (
-                      <ErrorMsg>
-                        <FormattedMessage {...messages.required} />
-                      </ErrorMsg>
-                    )}
-                </InputsContainer>
               </FlexContainer>
 
               <FlexContainer>

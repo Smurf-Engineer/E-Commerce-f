@@ -134,7 +134,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
-    const productId = get(product, 'id')
     const name = get(product, 'name', '')
     // TODO: commented until MNP code gets implemented in all retail products
     // const code = get(product, 'code', '')
@@ -446,8 +445,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               <FitInfo
                 open={openFitInfo}
                 requestClose={this.closeFitInfoModal}
-                productId={productId}
-                history={history}
+                {...{ product, history, formatMessage }}
               />
             </Content>
           )}

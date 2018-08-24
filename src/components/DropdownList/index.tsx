@@ -28,6 +28,9 @@ import {
 import messages from './messages'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 
+const MEN = 'men'
+const WOMEN = 'women'
+
 interface Data extends QueryProps {
   genders: Filter[]
   sports: Filter[]
@@ -73,9 +76,49 @@ export class DropdownList extends React.PureComponent<Props> {
     push(route)
   }
 
-  handleOnSeeAll = (type: number) => {
-    const { history } = this.props
-    history.push('/product-catalogue')
+  handleOnSeeAll = (
+    type: number,
+    categorySelected: string,
+    sportSelected: string
+  ) => {
+    const {
+      history: {
+        push,
+        replace,
+        location: { search, pathname }
+      }
+    } = this.props
+
+    const { gender, category, sport } = queryString.parse(search)
+
+    const toGender = type ? WOMEN : MEN
+    const toCategory = categorySelected.replace(' & ', ' ')
+    const toSport = sportSelected && (sportSelected as string).toLowerCase()
+
+    const route = `/product-catalogue?gender=${toGender}&category=${toCategory}&sport=${toSport}`
+    const atProductCatalogue = (pathname as String).includes(
+      'product-catalogue'
+    )
+
+    let isChangingGender = false
+    let isChangingCategory = false
+    let isChangingSport = false
+
+    if (atProductCatalogue) {
+      isChangingGender = gender && gender !== toGender
+      isChangingCategory = category && category !== toCategory
+      isChangingSport = sport && sport !== toSport
+    }
+    const isMissingFilter = !gender || !category || !sport
+    const isChangingFilter =
+      isChangingGender || isChangingCategory || isChangingSport
+
+    if ((atProductCatalogue && isMissingFilter) || isChangingFilter) {
+      replace(route, { forced: true })
+      return
+    }
+
+    push(route)
   }
 
   handleOnCustomize = (id: string) => {
@@ -140,7 +183,7 @@ export class DropdownList extends React.PureComponent<Props> {
             <MenuGender
               {...{ genders, sports, visible, formatMessage, currentCurrency }}
               type={index}
-              onPressSeeAll={this.handleOnSeeAllFilters}
+              onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
               sportSelected={genderSportSelected}

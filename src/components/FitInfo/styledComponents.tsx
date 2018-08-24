@@ -4,100 +4,69 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Row from 'antd/lib/row'
+import { GRAY_LIGHTEST, GRAY_DARK, RED, WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: #222;
 `
-
-export const ImageStyle = {
-  height: '100%'
-}
-
-export const Text = styled.div`
-  color: #fff;
-`
-
-export const CloseIcon = styled.img`
-  position: absolute;
-  right: 20px;
-  &:hover {
-    cursor: pointer;
-  }
-`
-
 export const StyledLabel = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
   height: 10%;
+  line-height: 22px;
+  margin-bottom: 10px;
   width: 25%;
-  color: #5f6062;
-  font-size: 16px;
-  line-height: 22px;
-  margin-bottom: 10px;
 `
-
-export const StyledFooterLabel = styled.div`
-  height: 30%;
-  width: 100%;
-  color: #5f6062;
-  font-size: 16px;
-  line-height: 22px;
-  margin-bottom: 10px;
+export const StyledLoginButton = styled(Button)`
+  background-color: ${WHITE};
+  border-color: ${RED};
+  border-radius: 0px;
+  height: 50px;
+  width: 20%;
+`
+export const StyledRow = styled(Row)`
+  display: list-item;
   margin-top: 10px;
 `
-
 export const TitleLabel = styled.div`
-  height: 27px;
-  width: 145px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: bold;
+  height: 27px;
   line-height: 27px;
   margin-top: 20px;
+  width: 145px;
 `
-
-export const StyledLoginButton = styled(Button)`
-  border-radius: 0px;
-  width: 20%;
-  height: 50px;
-  border-color: #e61737;
-  background-color: #fff;
+export const SizingTable = styled.div`
+  div > div {
+    margin-top: 0px;
+    padding-left: 0px;
+  }
+  div > div > div {
+    width: 100%;
+  }
 `
-
-export const StyledRow = styled(Row)`
-  margin-top: 10px;
-  display: list-item;
-`
-
-export const CenterDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
-
-export const ImageDiv = styled.div`
-  background-color: #fff;
-  width: 100%;
-  height: 20px%;
-`
-
-export const ImageContainer = styled.div`
-  user-select: none;
-  position: relative;
-  cursor: pointer;
-  background-color: #f1f4f5;
-  height: 430px;
-  width: 100%;
-  padding: 10px;
-  text-align: center;
-
-  margin-top: 10px;
-`
-
 export const radioGroupStyle = {
   marginTop: '10px'
 }
-
-export const tableStyle = {
-  marginTop: '10px',
-  marginRight: '10px'
+export const ImageContainer = styled.div`
+  background-color: ${GRAY_LIGHTEST};
+  cursor: pointer;
+  margin-top: 45px;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  width: 100%;
+`
+export const ImageStyle = {
+  height: '100%'
 }
+export const StyledFooterLabel = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  height: 30%;
+  line-height: 22px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  width: 100%;
+`

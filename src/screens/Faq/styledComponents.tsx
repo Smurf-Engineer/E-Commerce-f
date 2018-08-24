@@ -12,10 +12,15 @@ export const Text = styled.div`
 `
 
 export const TitleSectionRow = styled.div`
+  max-width: 1024px;
   padding: 28px 32px 64px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 28px 32px 0px;
+  }
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
   }
 `
 
@@ -62,14 +67,17 @@ export const AnchorsRow = styled.div`
   }
 `
 export const AnchorButton = styled.div`
-  padding: 14px 52px;
-  margin-bottom: 10px;
   border: 2px solid #e61737;
   border-radius: 2px;
   color: #e61737;
+  display: flex;
+  flex-direction: column;
   font-size: 16px;
+  justify-content: center;
   letter-spacing: 0.11px;
   line-height: 22px;
+  margin-bottom: 10px;
+  padding: 14px 52px;
   text-align: center;
 
   &:hover {
@@ -82,10 +90,15 @@ export const AnchorButton = styled.div`
 `
 
 export const ContentSection = styled.div`
+  max-width: 1024px;
   padding: 37px 32px 17px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     padding: 20px 8px 0px;
+  }
+
+  @media (min-width: 1025px) {
+    margin: 0 auto;
   }
 `
 

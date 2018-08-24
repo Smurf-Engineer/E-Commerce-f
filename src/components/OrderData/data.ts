@@ -68,6 +68,9 @@ export const getOrderQuery = gql`
         productTotal
         teamStoreId
       }
+      preorder
+      taxAmount: tax_amount
+      shippingAmount: shipping_amount
     }
   }
 `

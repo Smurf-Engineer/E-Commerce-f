@@ -16,18 +16,6 @@ interface Props {
 }
 
 const MenuSupport = (props: Props) => {
-  // TODO: implement this logic goTo function when links added propperly
-  /*const goTo = (routeToGo: string) => {
-    if (
-      (location.pathname as String).includes('design-center') &&
-      designHasChanges
-    ) {
-      openWithoutSaveModalAction(true, routeToGo)
-      return
-    }
-    push(routeToGo)
-  }*/
-
   const items = links.map(({ label, url }, index) => (
     <Menu.Item key={index}>
       <Link href={url}>
@@ -35,7 +23,9 @@ const MenuSupport = (props: Props) => {
       </Link>
     </Menu.Item>
   ))
+
   const menu = <Menu style={menuStyle}>{items}</Menu>
+
   return (
     <Dropdown overlay={menu}>
       <Text>
