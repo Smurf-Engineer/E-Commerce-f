@@ -279,7 +279,8 @@ class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>
-          <div>{designCode}</div>
+          {/* TODO: add validation for use NPM code for retail product when implemented in the backend */}
+          <div>{designCode || ''}</div>
         </NameContainer>
         <PriceContainer>
           <ItemDetailsHeaderPrice>{`${symbol} ${total ||
