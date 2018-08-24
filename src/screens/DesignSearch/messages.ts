@@ -20,5 +20,10 @@ export default defineMessages({
   notFound: {
     id: 'screens.DesignSearch.notFound',
     defaultMessage: 'Order not found...'
+  },
+  errorDownload: {
+    id: 'screens.DesignSearch.notFound',
+    defaultMessage:
+      'An unknown error has occurred while trying to download this file, try again later.'
   }
 })

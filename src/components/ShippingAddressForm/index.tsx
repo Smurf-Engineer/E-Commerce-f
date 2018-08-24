@@ -133,7 +133,11 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               value={street}
               onChange={this.handleInputChange}
             />
-            {(!street || this.hasAddressError(street, city)) &&
+            {!street &&
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+              )}
+            {this.hasAddressError(street, city) &&
               hasError && (
                 <ErrorMsg>{formatMessage(messages.requiredAddressLabel)}</ErrorMsg>
               )}

@@ -4,10 +4,10 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
+  align-items: center;
+  cursor: pointer;
   display: flex;
   flex-direction: row;
-  cursor: pointer;
-  align-items: center;
 `
 
 export const Text = styled.div`

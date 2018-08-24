@@ -25,7 +25,7 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   type: number
-  onPressSeeAll: (type: number) => void
+  onPressSeeAll: (gender: number, category: string, sport: string) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
   setCategoryAction: (sport: number) => void
@@ -43,8 +43,14 @@ export class MenuSports extends React.PureComponent<Props, {}> {
   }
 
   handleOnPressSeeAll = () => {
-    const { onPressSeeAll, type } = this.props
-    onPressSeeAll(type)
+    const {
+      data: { categories },
+      sports,
+      onPressSeeAll,
+      type,
+      categorySelected
+    } = this.props
+    onPressSeeAll(0, categories[categorySelected].name, sports[type].name)
   }
 
   getFilter = (array: any[], index: number) =>
@@ -86,24 +92,28 @@ export class MenuSports extends React.PureComponent<Props, {}> {
             filterSelected={categorySelected}
             onHoverFilter={this.handleOnHoverCategory}
           />
-          <SeeAllButton
-            onClick={this.handleOnPressSeeAll}
-            {...{ formatMessage }}
-          />
+          {loading || (categories && !categories.length) ? null : (
+            <SeeAllButton
+              onClick={this.handleOnPressSeeAll}
+              {...{ formatMessage }}
+            />
+          )}
         </Filters>
         <Divider type="vertical" />
-        <ProductList
-          {...{
-            sportFilter,
-            categoryFilter,
-            onPressCustomize,
-            onPressQuickView,
-            formatMessage,
-            currentCurrency
-          }}
-          width={'80%'}
-          onPressSeeAll={this.handleOnPressSeeAll}
-        />
+        {loading || (categories && !categories.length) ? null : (
+          <ProductList
+            {...{
+              sportFilter,
+              categoryFilter,
+              onPressCustomize,
+              onPressQuickView,
+              formatMessage,
+              currentCurrency
+            }}
+            width={'80%'}
+            onPressSeeAll={this.handleOnPressSeeAll}
+          />
+        )}
       </Container>
     )
   }

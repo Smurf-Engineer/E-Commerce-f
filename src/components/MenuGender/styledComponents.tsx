@@ -7,8 +7,8 @@ import styled from 'styled-components'
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
-  padding: 0px 4px 0px 16px;
   margin-right: -14px;
+  padding: 0px 4px 0px 16px;
 `
 
 export const LoadingContainer = styled.div`
@@ -22,14 +22,14 @@ export const LoadingContainer = styled.div`
 
 export const Filters = styled.div`
   display: flex;
-  width: 15%;
   flex-direction: column;
   justify-content: space-between;
+  width: 15%;
 `
 
 export const Categories = styled.div`
-  width: 25%;
   padding-left: 16px;
+  width: 25%;
 `
 
 export const Text = styled.div`

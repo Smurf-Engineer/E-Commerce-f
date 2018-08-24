@@ -9,8 +9,8 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #5f6062;
-  font-size: 14px;
   cursor: pointer;
+  font-size: 14px;
 `
 
 export const Link = styled.a`
@@ -20,6 +20,6 @@ export const Link = styled.a`
 `
 
 export const menuStyle = {
-  marginTop: 15,
-  borderRadius: 0
+  borderRadius: 0,
+  marginTop: 15
 }

@@ -71,6 +71,7 @@ interface Props {
   isUserAuthenticated: boolean
   isEditing: boolean
   originalPaths: any[]
+  canvasFiles: string
   selectedItem: SelectedAsset
   // Redux actions
   onUploadFile: (file: any) => void
@@ -205,6 +206,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSetCanvasObject,
       originalPaths,
       onResetEditing,
+      canvasFiles,
       onSelectedItem,
       selectedItem
     } = this.props
@@ -314,6 +316,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSetCanvasObject,
               originalPaths,
               onResetEditing,
+              canvasFiles,
               onSelectedItem
             }}
           />

@@ -44,6 +44,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   teamStoreId?: string
+  shortId?: string
 }
 
 interface Props {
@@ -98,6 +99,7 @@ interface Props {
   canReorder?: boolean
   currentCurrency: string
   currencySymbol?: string
+  history?: any
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -165,6 +167,23 @@ class CartListItem extends React.Component<Props, {}> {
       }
     }
     return markslider
+  }
+
+  gotToProductPage = () => {
+    const {
+      cartItem: {
+        designId,
+        product: { id, yotpoId }
+      },
+      history
+    } = this.props
+    let productUrl = `/product?id=${id}&yotpoId=${yotpoId}`
+
+    if (designId) {
+      productUrl = `/custom-product?id=${designId}`
+    }
+
+    history.push(productUrl)
   }
 
   render() {
@@ -305,7 +324,7 @@ class CartListItem extends React.Component<Props, {}> {
           if (matches) {
             return (
               <Container>
-                <Image src={image} />
+                <Image src={image} onClick={this.gotToProductPage} />
                 <ItemDetails>
                   {itemDetailsHeader}
                   {table}
@@ -318,7 +337,7 @@ class CartListItem extends React.Component<Props, {}> {
             return (
               <Container>
                 <ItemDetails>
-                  <Image src={image} />
+                  <Image src={image} onClick={this.gotToProductPage} />
                   <ItemDetails>{itemDetailsHeader}</ItemDetails>
                 </ItemDetails>
                 <div>

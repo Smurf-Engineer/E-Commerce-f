@@ -153,6 +153,7 @@ export type DesignType = {
   zipperColor: string
   canEdit: boolean
   styleId: number
+  canvasFiles?: string
 }
 
 export type SaveDesignType = {
@@ -533,6 +534,8 @@ export interface OrderDataInfo {
   cart: CartItems[]
   paymentMethod: string
   currency: Currency
+  shippingAmount: number
+  taxAmount: number
 }
 
 export interface TextFormat {
@@ -559,6 +562,8 @@ export interface CanvasElement {
   stroke?: string
   strokeWidth?: number
   fileId?: number
+  src?: string
+  canvasPath?: string
 }
 
 export interface SelectedAsset {
@@ -957,4 +962,10 @@ export interface UserFiles {
 export interface DesignFiles {
   files: number[]
   svgs: number[]
+}
+
+export interface CanvasFile {
+  fileId: number
+  src?: string
+  canvasPath?: string
 }

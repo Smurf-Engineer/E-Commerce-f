@@ -155,7 +155,15 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
         }
         if (item) {
           this.saveInLocalStorage(
-            this.getItemWithDetails(item, '', '', '', '', '', false)
+            this.getItemWithDetails(
+              item,
+              item.designId,
+              item.teamStoreId,
+              item.designName,
+              item.designImage,
+              item.designCode,
+              false
+            )
           )
         }
       }
@@ -197,7 +205,6 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       renderForThumbnail,
       getTotalItemsIncart: countCartItems
     } = this.props
-
     const productName = renderForThumbnail
       ? get(item, 'product.name')
       : item.product.name

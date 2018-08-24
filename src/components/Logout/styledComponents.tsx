@@ -5,22 +5,22 @@ import styled from 'styled-components'
 import icon from 'antd/lib/icon'
 
 export const Container = styled.div`
-  display: flex;
   align-items: center;
+  display: flex;
 `
 
 export const Text = styled.div`
   color: #5f6062;
-  font-size: 14px;
   cursor: pointer;
+  font-size: 14px;
 
   @media (max-width: 991px) {
+    align-items: center;
     color: #5f6062;
+    display: flex;
     font-weight: 600;
     height: 40px;
     margin: 2px 0;
-    display: flex;
-    align-items: center;
   }
 `
 

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
+import { FormattedHTMLMessage } from 'react-intl'
 import {
   Container,
   InfoContainer,
@@ -83,7 +84,8 @@ class OrderData extends React.Component<Props, {}> {
           billingZipCode,
           billingCountry,
           billingApartment,
-          shippingTax,
+          shippingAmount,
+          taxAmount,
           payment: { stripeCharge },
           cart,
           paymentMethod,
@@ -120,6 +122,11 @@ class OrderData extends React.Component<Props, {}> {
       )
 
     const isThereTeamstoreProduct = cart.some(c => !!c.teamStoreId)
+
+    const orderMessage = isThereTeamstoreProduct
+      ? messages.messageTeamstore
+      : messages.messageRetail
+
     const renderList = cart
       ? cart.map((cartItem, index) => {
           const {
@@ -185,12 +192,7 @@ class OrderData extends React.Component<Props, {}> {
               <StyledText>{orderDate}</StyledText>
             </OrderNumberContainer>
             <StyledText>
-              {formatMessage(
-                isThereTeamstoreProduct
-                  ? messages.messageTeamstore
-                  : messages.messageReatil
-              )}
-              {/* TODO: add correct text for reatil */}
+              <FormattedHTMLMessage {...orderMessage} />
             </StyledText>
             <ShippingBillingContainer>
               <div>
@@ -255,9 +257,10 @@ class OrderData extends React.Component<Props, {}> {
           <SummaryContainer>
             {/* TODO: add discount*/}
             <OrderSummary
-              total={totalSum + shippingTax}
+              total={totalSum + shippingAmount}
               subtotal={totalSum}
-              shipping={shippingTax}
+              shipping={shippingAmount}
+              taxes={taxAmount}
               discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}

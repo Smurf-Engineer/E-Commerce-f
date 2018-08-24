@@ -488,6 +488,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID: {
       const { id, svgUrl, design, updateColors } = action
+      const canvas = {
+        text: {},
+        image: {},
+        path: {}
+      }
       if (updateColors) {
         const style = state.get('style')
         const updatedStyle = style.set('colors', List.of(...design.colors))
@@ -496,7 +501,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           designHasChanges: false,
           svgOutputUrl: svgUrl,
           savedDesign: design,
-          style: updatedStyle
+          style: updatedStyle,
+          canvas
         })
       }
 
@@ -504,7 +510,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         savedDesignId: id,
         designHasChanges: false,
         svgOutputUrl: svgUrl,
-        savedDesign: design
+        savedDesign: design,
+        canvas
       })
     }
     case SET_CHECKED_TERMS:
@@ -923,7 +930,16 @@ export default designCenterReducer
 const addCanvasElement = (state: any, canvasToAdd: Change) => {
   const canvas = state.get('canvas')
   const {
-    state: { id, src, path, style, position, type: canvasType, fileId }
+    state: {
+      id,
+      src,
+      path,
+      canvasPath,
+      style,
+      position,
+      type: canvasType,
+      fileId
+    }
   } = canvasToAdd
   let canvasObject
   switch (canvasType) {
@@ -940,7 +956,8 @@ const addCanvasElement = (state: any, canvasToAdd: Change) => {
         ...position,
         fileId,
         src,
-        path
+        path,
+        canvasPath
       }
       break
     case CanvasElements.Image:

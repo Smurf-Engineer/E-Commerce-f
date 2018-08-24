@@ -14,6 +14,8 @@ import {
   ContentContainer,
   StyledImage,
   LineCopy,
+  SectionContainer,
+  ColorChartContainer,
   SecondaryTitle,
   SectionText,
   ThirdTitle,
@@ -24,6 +26,9 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ColorList from '../../screens/DesignerTool/DesignCenterCustomize/ColorList'
+import vector from '../../assets/vector.svg'
+import raster from '../../assets/raster.png'
+import fsc from '../../assets/fsc.png'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
@@ -35,63 +40,59 @@ export class ArtworkSpecs extends React.Component<Props, {}> {
     return (
       <Layout {...{ intl, history }}>
         <Container>
-          <Text>
-            <FormattedMessage {...messages.title} />
-          </Text>
-          <Subtitle>
-            <FormattedMessage {...messages.subtitle} />
-          </Subtitle>
-          <MainTitle>
-            <FormattedMessage {...messages.maintitle} />
-          </MainTitle>
-          <ContentContainer>
-            <StyledImage
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/vector.svg'
-              }
+          <SectionContainer>
+            <Text>
+              <FormattedMessage {...messages.title} />
+            </Text>
+            <Subtitle>
+              <FormattedMessage {...messages.subtitle} />
+            </Subtitle>
+            <MainTitle>
+              <FormattedMessage {...messages.maintitle} />
+            </MainTitle>
+            <ContentContainer>
+              <StyledImage src={vector} />
+              <DesignText>
+                <FormattedMessage {...messages.vectorWork} />
+              </DesignText>
+            </ContentContainer>
+            <ContentContainer>
+              <StyledImage src={raster} />
+              <DesignText>
+                <FormattedMessage {...messages.rasterWork} />
+              </DesignText>
+            </ContentContainer>
+          </SectionContainer>
+          <LineCopy />
+          <SectionContainer>
+            <SecondaryTitle>
+              <FormattedMessage {...messages.whatType} />
+            </SecondaryTitle>
+            <SectionText
+              dangerouslySetInnerHTML={{
+                __html: intl.formatMessage(messages.completeText)
+              }}
             />
-            <DesignText>
-              <FormattedMessage {...messages.vectorWork} />
-            </DesignText>
-          </ContentContainer>
-          <ContentContainer>
-            <StyledImage
-              src={
-                'https://storage.googleapis.com/jakroo-storage/screens/artwork/raster.webp'
-              }
-            />
-            <DesignText>
-              <FormattedMessage {...messages.rasterWork} />
-            </DesignText>
-          </ContentContainer>
+          </SectionContainer>
           <LineCopy />
-          <SecondaryTitle>
-            <FormattedMessage {...messages.whatType} />
-          </SecondaryTitle>
-          <SectionText
-            dangerouslySetInnerHTML={{
-              __html: intl.formatMessage(messages.completeText)
-            }}
-          />
+          <ColorChartContainer>
+            <ThirdTitle>
+              <FormattedMessage {...messages.colorChart} />
+            </ThirdTitle>
+            <ColorWrapper>
+              <ColorList height={'100%'} />
+            </ColorWrapper>
+          </ColorChartContainer>
           <LineCopy />
-          <ThirdTitle>
-            <FormattedMessage {...messages.colorChart} />
-          </ThirdTitle>
-          <ColorWrapper>
-            <ColorList height={'100%'} onSelectColor={(col: string) => {}} />
-          </ColorWrapper>
-          <LineCopy />
-          <ThirdTitle>
-            <FormattedMessage {...messages.flatLock} />
-          </ThirdTitle>
-          <FlatLockText>
-            <FormattedMessage {...messages.flatLockText} />
-          </FlatLockText>
-          <StyledFlatLockImage
-            src={
-              'https://storage.googleapis.com/jakroo-storage/screens/artwork/FSCW.webp'
-            }
-          />
+          <SectionContainer>
+            <ThirdTitle>
+              <FormattedMessage {...messages.flatLock} />
+            </ThirdTitle>
+            <FlatLockText>
+              <FormattedMessage {...messages.flatLockText} />
+            </FlatLockText>
+            <StyledFlatLockImage src={fsc} />
+          </SectionContainer>
         </Container>
       </Layout>
     )

@@ -68,6 +68,7 @@ interface Props extends RouteComponentProps<any> {
   openSidebar: boolean
   currentCurrency: string
   setFilterAction: (filter: {}) => void
+  clearFiltersAction: () => void
   openQuickViewAction: (index: number) => void
   setSelectedFilters: (filter: object) => void
   sortBySelected: (sortBy: string) => void
@@ -83,24 +84,59 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   componentWillMount() {
-    const {
-      location: { search },
-      setSelectedFilters
-    } = this.props
-    const queryParams = queryString.parse(search)
-    if (queryParams.gender) {
-      const filterObject = {
-        type: 'genderFilters',
-        name: upperFirst(queryParams.gender),
-        firstGenderSet: true
-      }
-      setSelectedFilters(filterObject)
-    }
+    this.checkFilters()
   }
 
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
+  }
+
+  checkFilters() {
+    const {
+      location: { search, state },
+      setSelectedFilters,
+      clearFiltersAction
+    } = this.props
+
+    const { gender, category, sport } = queryString.parse(search)
+
+    clearFiltersAction()
+
+    if (gender) {
+      const filterObject = {
+        type: 'genderFilters',
+        name: upperFirst(gender),
+        firstGenderSet: true
+      }
+      setSelectedFilters(filterObject)
+    }
+
+    if (category) {
+      const categoryName = this.getFormattedFilterName(category, '&')
+
+      const filterObject = {
+        type: 'categoryFilters',
+        name: categoryName,
+        firstGenderSet: true
+      }
+      setSelectedFilters(filterObject)
+    }
+
+    if (sport) {
+      const sportName = this.getFormattedFilterName(sport)
+
+      const filterObject = {
+        type: 'sportFilters',
+        name: sportName,
+        firstGenderSet: true
+      }
+      setSelectedFilters(filterObject)
+    }
+
+    if (state) {
+      state.forced = false
+    }
   }
 
   render() {
@@ -127,6 +163,16 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     let sortByLabel = ''
     if (loading) {
       return null
+    }
+
+    const {
+      location: { state }
+    } = history
+
+    const forced = get(state, 'forced', false)
+
+    if (forced) {
+      this.checkFilters()
     }
 
     switch (orderBy) {
@@ -347,6 +393,22 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   handleOpenSidebar = () => {
     const { openSidebar, openSidebarMobile } = this.props
     openSidebarMobile(!openSidebar)
+  }
+
+  getFormattedFilterName = (
+    name: string,
+    separator?: string
+  ): string | string[] => {
+    if (!name.includes(' ')) {
+      return upperFirst(name)
+    }
+
+    const array = name.split(' ')
+    const first = upperFirst(array[0])
+    const divider = separator ? ` ${separator} ` : ' '
+    const second = upperFirst(array[1])
+
+    return `${first}${divider}${second}`
   }
 }
 
