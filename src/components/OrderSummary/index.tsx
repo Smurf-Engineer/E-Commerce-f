@@ -65,7 +65,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       total,
       subtotal,
       formatMessage,
-      discount,
+      // discount,
       totalWithoutDiscount,
       onlyRead,
       proDesignReview,
@@ -75,33 +75,33 @@ export class OrderSummary extends React.Component<Props, {}> {
       country
     } = this.props
 
-    const renderDiscount = discount ? (
-      <OrderItem>
-        {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-        <FlexWrapper>
-          <div>{formatMessage(messages.discountCode)}</div>
-          <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
-        </FlexWrapper>
-        <div>{`USD$${discount}`}</div> */}
-        {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-      </OrderItem>
-    ) : (
-      <ZipCodeInputWrapper>
-        <ShareLinkInput
-          disabled={true}
-          id="url"
-          placeholder={formatMessage(messages.zipCodePlaceholder)}
-          enterButton={formatMessage(messages.estimate)}
-          size="default"
-          maxLength="5"
-          onChange={() => {}}
-        />
-      </ZipCodeInputWrapper>
-    )
+    // const renderDiscount = discount ? (
+    //   <OrderItem>
+    //     {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
+    //     <FlexWrapper>
+    //       <div>{formatMessage(messages.discountCode)}</div>
+    //       <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
+    //     </FlexWrapper>
+    //     <div>{`USD$${discount}`}</div> */}
+    //     {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
+    //   </OrderItem>
+    // ) : (
+    //     <ZipCodeInputWrapper>
+    //       <ShareLinkInput
+    //         disabled={true}
+    //         id="url"
+    //         placeholder={formatMessage(messages.zipCodePlaceholder)}
+    //         enterButton={formatMessage(messages.estimate)}
+    //         size="default"
+    //         maxLength="5"
+    //         onChange={() => { }}
+    //       />
+    //     </ZipCodeInputWrapper>
+    //   )
     const youSaved = Number(totalWithoutDiscount) - total
 
-    const shippingTotal = get(data, 'shipping.total', 0)
-    const taxesTotal = get(data, 'taxes.total', 0)
+    const shippingTotal = get(data, 'shipping.total', shipping) || 0
+    const taxesTotal = get(data, 'taxes.total', taxes) || 0
 
     const symbol = currencySymbol || '$'
 
@@ -133,7 +133,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         </SummaryTitle>
         <OrderItem>
           <FormattedMessage {...messages.subtotal} />
-          <div>{`${symbol} ${subtotal}`}</div>
+          <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
@@ -141,19 +141,20 @@ export class OrderSummary extends React.Component<Props, {}> {
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
-              <div>{`${symbol} ${proDesignReview}`}</div>
+              <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
 
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
-            <div>{`${symbol} ${taxFee}`}</div>
+            <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
           </OrderItem>
-          <OrderItem hide={!shippingTotal && !shipping}>
+          <OrderItem hide={!shippingTotal}>
             <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal || shipping}`}</div>
+            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
           </OrderItem>
-          {!onlyRead ? renderDiscount : null}
+          {/* Uncomment to display discount ammount or shipping estimate */}
+          {/* {!onlyRead ? renderDiscount : null} */}
         </CalculationsWrapper>
         <CodeDivider />
         {!onlyRead ? (
@@ -166,16 +167,6 @@ export class OrderSummary extends React.Component<Props, {}> {
                     id="url"
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
-                    size="default"
-                    onChange={() => {}}
-                  />
-                </ZipCodeInputWrapper>
-                <ZipCodeInputWrapper>
-                  <ShareLinkInput
-                    disabled={true}
-                    id="url"
-                    enterButton={formatMessage(messages.apply)}
-                    placeholder={formatMessage(messages.giftPlaceholder)}
                     size="default"
                     onChange={() => {}}
                   />
