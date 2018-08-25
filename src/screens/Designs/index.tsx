@@ -78,7 +78,8 @@ export class Designs extends React.Component<Props, {}> {
       flatlockColor,
       bindingColor,
       bibBraceColor,
-      zipperColor
+      zipperColor,
+      canvas
     } = design
 
     return (
@@ -88,7 +89,7 @@ export class Designs extends React.Component<Props, {}> {
           <QuickView onClick={this.handleOpenQuickView} src={quickView} />
         </Row>*/}
         <ThreeD
-          {...{ svg, product }}
+          {...{ svg, product, canvas }}
           zipperColor={zipperColor}
           bindingColor={bindingColor}
           bibColor={bibBraceColor}

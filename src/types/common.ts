@@ -18,6 +18,7 @@ export interface DesignSaved {
   name: string
   svg: string
   product: Product
+  canvas: string
   style?: Style
   shortId?: string
   flatlockColor?: string
@@ -161,6 +162,24 @@ export type SaveDesignType = {
   canvasSvg: string
   canvasJson: string
   styleId: number
+}
+
+export interface SaveDesignData {
+  createdAt: string
+  designCode: string
+  designId: number
+  designImage: string
+  designName: string
+  product: Product
+  shared: boolean
+  shortId: string
+  svg: string
+  canvas: string
+  bibBraceColor: string
+  bindingColor: string
+  flatlockCode: string
+  flatlockColor: string
+  zipperColor: string
 }
 
 export type TeamStoreItemtype = {
@@ -443,6 +462,7 @@ export interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  designCode?: string
   teamStoreId?: string
 }
 

@@ -66,7 +66,8 @@ import {
   Responsive,
   AccessoriesColor,
   CanvasObjects,
-  SelectedAsset
+  SelectedAsset,
+  SaveDesignData
 } from '../../types/common'
 import {
   getProductQuery,
@@ -143,7 +144,7 @@ interface Props extends RouteComponentProps<any> {
   images: ImageFile[]
   uploadingFile: boolean
   searchClipParam: string
-  savedDesign: SaveDesignType
+  savedDesign: SaveDesignData
   user: object
   responsive: Responsive
   originalPaths: any[]
@@ -802,6 +803,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 zipperColor,
                 bibColor
               }}
+              canvas={designObject.canvasJson}
               product={productConfig}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}
