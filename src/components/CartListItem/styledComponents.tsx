@@ -3,6 +3,10 @@
  */
 import styled from 'styled-components'
 
+type StyleProps = {
+  onlyRead?: boolean
+}
+
 export const Container = styled.li`
   list-style-type: none;
   display: flex;
@@ -104,7 +108,7 @@ export const Image = styled.img`
   height: 200.29px;
   width: 180.44px;
   background-color: #f1f4f5;
-  cursor: pointer;
+  ${({ onlyRead }: StyleProps) => (!onlyRead ? 'cursor: pointer' : '')};
 
   @media only screen and (max-width: 481px) {
     height: 129px;
