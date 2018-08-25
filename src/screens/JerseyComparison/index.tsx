@@ -6,6 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
+import MediaQuery from 'react-responsive'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
 import messages from './messages'
@@ -132,31 +133,73 @@ export class JerseyComparison extends React.Component<Props, {}> {
       )
     })
 
+    const headerSection = (
+      <div>
+        <Title>{formatMessage(messages.title)}</Title>
+        <HeaderText>{formatMessage(messages.headerMessage)}</HeaderText>
+      </div>
+    )
+
+    const renderDesktopView = (
+      <Container>
+        {headerSection}
+        <Row>{mainJerseys}</Row>
+        <Subtitle>{formatMessage(messages.details)}</Subtitle>
+        <Divider />
+        <Row>{detailsJerseys}</Row>
+        <Subtitle>{formatMessage(messages.intentedUse)}</Subtitle>
+        <Divider />
+        <Row>{useJerseys}</Row>
+        <Subtitle>{formatMessage(messages.weather)}</Subtitle>
+        <Divider />
+        <Row>{weatherJerseys}</Row>
+        <Subtitle>{formatMessage(messages.fit)}</Subtitle>
+        <Divider />
+        <Row>{fitJerseys}</Row>
+        <Subtitle>{formatMessage(messages.materials)}</Subtitle>
+        <Divider />
+        <Row>{materialJerseys}</Row>
+        <Subtitle>{formatMessage(messages.pricing)}</Subtitle>
+        <Divider />
+        <Row>{priceJerseys}</Row>
+      </Container>
+    )
+
+    const renderResponsiveView = (
+      <Container>
+        {headerSection}
+        {jerseysInfo.map((jersey, i) => (
+          <div key={i}>
+            {mainJerseys[i]}
+            <Subtitle>{formatMessage(messages.details)}</Subtitle>
+            <Divider />
+            <Row>{detailsJerseys[i]}</Row>
+            <Subtitle>{formatMessage(messages.intentedUse)}</Subtitle>
+            <Divider />
+            <Row>{useJerseys[i]}</Row>
+            <Subtitle>{formatMessage(messages.weather)}</Subtitle>
+            <Divider />
+            <Row>{weatherJerseys[i]}</Row>
+            <Subtitle>{formatMessage(messages.fit)}</Subtitle>
+            <Divider />
+            <Row>{fitJerseys[i]}</Row>
+            <Subtitle>{formatMessage(messages.materials)}</Subtitle>
+            <Divider />
+            <Row>{materialJerseys[i]}</Row>
+            <Subtitle>{formatMessage(messages.pricing)}</Subtitle>
+            <Divider />
+            <Row>{priceJerseys[i]}</Row>
+            <Divider />
+          </div>
+        ))}
+      </Container>
+    )
+
     return (
       <Layout {...{ intl, history }}>
-        <Container>
-          <Title>{formatMessage(messages.title)}</Title>
-          <HeaderText>{formatMessage(messages.headerMessage)}</HeaderText>
-          <Row>{mainJerseys}</Row>
-          <Subtitle>{formatMessage(messages.details)}</Subtitle>
-          <Divider />
-          <Row>{detailsJerseys}</Row>
-          <Subtitle>{formatMessage(messages.intentedUse)}</Subtitle>
-          <Divider />
-          <Row>{useJerseys}</Row>
-          <Subtitle>{formatMessage(messages.weather)}</Subtitle>
-          <Divider />
-          <Row>{weatherJerseys}</Row>
-          <Subtitle>{formatMessage(messages.fit)}</Subtitle>
-          <Divider />
-          <Row>{fitJerseys}</Row>
-          <Subtitle>{formatMessage(messages.materials)}</Subtitle>
-          <Divider />
-          <Row>{materialJerseys}</Row>
-          <Subtitle>{formatMessage(messages.pricing)}</Subtitle>
-          <Divider />
-          <Row>{priceJerseys}</Row>
-        </Container>
+        <MediaQuery minWidth={'553px'}>
+          {matches => (matches ? renderDesktopView : renderResponsiveView)}
+        </MediaQuery>
       </Layout>
     )
   }
