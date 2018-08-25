@@ -67,7 +67,7 @@ import {
   ElementsToApplyScale
 } from './constants'
 import { Reducer, Change } from '../../types/common'
-import { DEFAULT_COLOR } from '../../constants'
+import { DEFAULT_COLOR, DEFAULT_FONT } from '../../constants'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -109,9 +109,9 @@ export const initialState = fromJS({
   },
   originalPaths: [],
   textFormat: {
-    fontFamily: 'Avenir',
-    stroke: '#000',
-    fill: '#000',
+    fontFamily: DEFAULT_FONT,
+    stroke: BLACK,
+    fill: BLACK,
     strokeWidth: 0
   },
   selectedElement: '',
@@ -488,11 +488,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID: {
       const { id, svgUrl, design, updateColors } = action
-      const canvas = {
-        text: {},
-        image: {},
-        path: {}
-      }
       if (updateColors) {
         const style = state.get('style')
         const updatedStyle = style.set('colors', List.of(...design.colors))
@@ -501,8 +496,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           designHasChanges: false,
           svgOutputUrl: svgUrl,
           savedDesign: design,
-          style: updatedStyle,
-          canvas
+          style: updatedStyle
         })
       }
 
@@ -510,8 +504,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         savedDesignId: id,
         designHasChanges: false,
         svgOutputUrl: svgUrl,
-        savedDesign: design,
-        canvas
+        savedDesign: design
       })
     }
     case SET_CHECKED_TERMS:
@@ -887,7 +880,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_LOADED_CANVAS_ACTION: {
       const { paths, canvas } = action
-      const updatedCanvas = getCanvas(state, canvas)
+      const updatedCanvas = getCanvas(canvas)
       return state.merge({
         canvas: updatedCanvas,
         originalPaths: paths
@@ -895,7 +888,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case DESIGN_RESET_EDITING_ACTION: {
       const { canvas, accessoriesColor } = action
-      const updatedCanvas = getCanvas(state, canvas)
+      const updatedCanvas = getCanvas(canvas)
       const colors = state.get('styleColors')
       const {
         bindingColor,
@@ -1006,12 +999,12 @@ const changeTextCanvasElement = (
   return canvas.setIn([CanvasElements.Text, id], { ...canvasElement, text })
 }
 
-const getCanvas = (state: any, canvasToSet: any) => {
+const getCanvas = (canvasToSet: any) => {
   const { text, path, image } = canvasToSet
   const textIds = Object.keys(text)
   const pathIds = Object.keys(path)
   const imageds = Object.keys(image)
-  const canvas = state.get('canvas')
+  const canvas = fromJS({ text: {}, image: {}, path: {} })
   const updatedCanvas = canvas.withMutations((map: any) => {
     textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
     pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))

@@ -36,6 +36,7 @@ export const styleQuery = gql`
         }
       }
       svg: output_svg
+      canvas
     }
   }
 `

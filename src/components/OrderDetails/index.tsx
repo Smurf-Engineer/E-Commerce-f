@@ -120,7 +120,6 @@ export class OrderDetails extends React.Component<Props, {}> {
       netsuit && netsuit.orderStatus && netsuit.orderStatus.deliveryDate
 
     let totalSum = 0
-
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
           const {
