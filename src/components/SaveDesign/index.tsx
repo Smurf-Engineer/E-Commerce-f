@@ -25,11 +25,11 @@ import {
 } from './styledComponents'
 import {
   SaveDesignType,
-  Product,
   StitchingColor,
   CanvasType,
   DesignFiles,
-  CanvasFile
+  CanvasFile,
+  SaveDesignData
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
@@ -48,24 +48,6 @@ type DesignInput = {
   bib_brace_color?: string
   designFiles?: DesignFiles
   canvas_files?: string
-}
-
-interface SaveDesignData {
-  createdAt: string
-  designCode: string
-  designId: number
-  designImage: string
-  designName: string
-  product: Product
-  shared: boolean
-  shortId: string
-  svg: string
-  canvas: string
-  bibBraceColor: string
-  bindingColor: string
-  flatlockCode: string
-  flatlockColor: string
-  zipperColor: string
 }
 
 interface Data {
