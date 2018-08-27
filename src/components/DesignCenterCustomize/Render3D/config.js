@@ -9,6 +9,7 @@ export const EXTRA_POSITION = 30
 export const BACK_VIEW = 0
 export const LEFT_VIEW = 3
 export const TOP_VIEW = 4
+export const EXTRA_FIELDS = ['fileId', 'fileUrl']
 export const viewPositions = {
   0: {
     // Back

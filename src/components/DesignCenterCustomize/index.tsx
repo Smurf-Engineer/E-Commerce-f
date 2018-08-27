@@ -33,6 +33,8 @@ import {
   CanvasElements
 } from '../../screens/DesignCenter/constants'
 
+const SVG_FILE = 'image/svg+xml'
+
 interface Props {
   colorBlock: number
   colorBlockHovered: number
@@ -338,8 +340,19 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
   handleOnApplyImage = (file: ImageFile) => {
     const { onSelectedItem } = this.props
-    this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
-    onSelectedItem({ id: file.id, type: CanvasElements.Image })
+
+    if (file.type === SVG_FILE) {
+      const { fileUrl, id } = file
+      this.render3D.applyCanvasEl({
+        url: fileUrl,
+        style: {},
+        type: CanvasElements.Path,
+        fileId: id
+      })
+    } else {
+      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
+      onSelectedItem({ id: file.id, type: CanvasElements.Image })
+    }
   }
 
   handleOnApplyArt = (url: string, style?: CanvasElement, fileId?: number) => {

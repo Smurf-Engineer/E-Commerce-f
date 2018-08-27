@@ -95,7 +95,8 @@ export enum Changes {
 export enum CanvasElements {
   Text = 'text',
   Path = 'path',
-  Image = 'image'
+  Image = 'image',
+  Group = 'group'
 }
 
 export enum AccessoryColors {
