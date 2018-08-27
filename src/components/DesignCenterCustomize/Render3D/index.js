@@ -54,7 +54,8 @@ import {
   TOP_VIEW,
   BACK_VIEW,
   LEFT_VIEW,
-  EXTRA_FIELDS
+  EXTRA_FIELDS,
+  INITIAL_ZOOM
 } from './config'
 import {
   MESH,
@@ -240,6 +241,9 @@ class Render3D extends PureComponent {
     this.mtlLoader = mtlLoader
     this.objLoader = objLoader
     this.textureLoader = textureLoader
+
+    this.camera.zoom = INITIAL_ZOOM
+    this.camera.updateProjectionMatrix()
 
     this.render3DModel()
 
@@ -833,8 +837,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = (value * 1.0) / 100
-      this.camera.zoom = zoomValue * 2
+      this.camera.zoom = value / 100.0
       this.camera.updateProjectionMatrix()
     }
   }
@@ -1354,56 +1357,62 @@ class Render3D extends PureComponent {
   }
 
   applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
-    const activeEl = this.canvasTexture.getActiveObject()
-    const { scaleFactorX, scaleFactorY } = this.state
-    if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
-      activeEl.set({ ...style })
-      this.canvasTexture.renderAll()
-    } else {
-      const { onApplyCanvasEl } = this.props
-      fabric.loadSVGFromURL(src, (objects, options) => {
-        const id = idElement || shortid.generate()
-        const shape = fabric.util.groupSVGElements(objects || [], options)
-        shape.set({
-          id,
-          fileId,
-          fileUrl: src,
-          hasRotatingPoint: false,
-          ...position,
-          ...style
-        })
-        const el = {
-          id,
-          fill: BLACK,
-          stroke: BLACK,
-          strokeWidth: 0,
-          ...style
-        }
-        if (position.scaleX) {
-          el.scaleX = position.scaleX
-          el.scaleY = position.scaleY
-        } else {
-          shape.set({ scaleX: scaleFactorX, scaleY: scaleFactorY }).setCoords()
-          el.scaleX = scaleFactorX
-          el.scaleY = scaleFactorY
-          position.scaleX = scaleFactorX
-          position.scaleY = scaleFactorY
-        }
-        this.canvasTexture.add(shape)
-        if (!idElement) {
-          // TODO: DELETE?
-          el.fileId = fileId
-          el.src = src
-          onApplyCanvasEl(el, CanvasElements.Path, false, {
-            src,
-            style,
-            position,
-            fileId
-          })
-          this.canvasTexture.setActiveObject(shape)
-        }
+    try {
+      const activeEl = this.canvasTexture.getActiveObject()
+      const { scaleFactorX, scaleFactorY } = this.state
+      if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
+        activeEl.set({ ...style })
         this.canvasTexture.renderAll()
-      })
+      } else {
+        const { onApplyCanvasEl } = this.props
+        fabric.loadSVGFromURL(src, (objects, options) => {
+          const id = idElement || shortid.generate()
+          const shape = fabric.util.groupSVGElements(objects || [], options)
+          shape.set({
+            id,
+            fileId,
+            fileUrl: src,
+            hasRotatingPoint: false,
+            ...position,
+            ...style
+          })
+          const el = {
+            id,
+            fill: BLACK,
+            stroke: BLACK,
+            strokeWidth: 0,
+            ...style
+          }
+          if (position.scaleX) {
+            el.scaleX = position.scaleX
+            el.scaleY = position.scaleY
+          } else {
+            shape
+              .set({ scaleX: scaleFactorX, scaleY: scaleFactorY })
+              .setCoords()
+            el.scaleX = scaleFactorX
+            el.scaleY = scaleFactorY
+            position.scaleX = scaleFactorX
+            position.scaleY = scaleFactorY
+          }
+          this.canvasTexture.add(shape)
+          if (!idElement) {
+            // TODO: DELETE?
+            el.fileId = fileId
+            el.src = src
+            onApplyCanvasEl(el, CanvasElements.Path, false, {
+              src,
+              style,
+              position,
+              fileId
+            })
+            this.canvasTexture.setActiveObject(shape)
+          }
+          this.canvasTexture.renderAll()
+        })
+      }
+    } catch (error) {
+      console.error(error.message)
     }
   }
 
