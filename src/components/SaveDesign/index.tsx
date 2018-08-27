@@ -143,16 +143,13 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
 
     const { designBase64, canvasJson, styleId } = design
-    const { designFiles, canvasFiles } = this.getDesignFiles()
     try {
       const designObj: DesignInput = {
         name: designName,
         product_id: productId,
         image: designBase64,
         styleId,
-        canvas: canvasJson,
-        designFiles,
-        canvas_files: JSON.stringify(canvasFiles)
+        canvas: canvasJson
       }
 
       /* Accessory colors */
@@ -214,16 +211,13 @@ export class SaveDesign extends React.Component<Props, {}> {
       isEditing
     } = this.props
 
-    const { designFiles, canvasFiles } = this.getDesignFiles()
     const { designBase64, canvasJson, styleId } = design
     const designObj: DesignInput = {
       name: '',
       product_id: productId,
       image: designBase64,
       canvas: canvasJson,
-      styleId,
-      designFiles,
-      canvas_files: JSON.stringify(canvasFiles)
+      styleId
     }
 
     try {

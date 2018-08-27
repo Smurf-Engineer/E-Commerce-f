@@ -338,29 +338,11 @@ class Render3D extends PureComponent {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
             paths.push(el)
-            if (canvasFileIds) {
-              const currentPath = JSON.stringify(el.path)
-              const canvasPath = find(canvasFileIds.paths, {
-                canvasPath: currentPath
-              })
-              if (canvasPath) {
-                canvas.path[elId].fileId = canvasPath.fileId
-                canvas.path[elId].canvasPath = canvasPath.canvasPath
-              }
-            }
             break
           }
           case CanvasElements.Image: {
             const element = getImageCanvas(el)
             canvas.image[elId] = element
-            if (canvasFileIds) {
-              const canvasImage = find(canvasFileIds.images, {
-                src: el.src
-              })
-              if (canvasImage) {
-                canvas.image[elId].fileId = canvasImage.fileId
-              }
-            }
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
             break
@@ -1093,8 +1075,9 @@ class Render3D extends PureComponent {
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
-
-          const canvasJson = JSON.stringify(this.canvasTexture)
+          const canvasJson = JSON.stringify(
+            this.canvasTexture.toObject(['fileId', 'fileUrl'])
+          )
           const saveDesign = {
             canvasJson,
             designBase64,
@@ -1290,8 +1273,9 @@ class Render3D extends PureComponent {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
         } else {
+          // TODO: THIS IS NEW FILE ID
           imageEl
-            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY })
+            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY, fileId })
             .setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
@@ -1300,6 +1284,7 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
+          // TODO: DELETE?
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -1380,6 +1365,8 @@ class Render3D extends PureComponent {
         const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
           id,
+          fileId,
+          fileUrl: src,
           hasRotatingPoint: false,
           ...position,
           ...style
@@ -1403,16 +1390,14 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
+          // TODO: DELETE?
           el.fileId = fileId
           el.src = src
-          const canvasPath = JSON.stringify(shape.path)
-          el.canvasPath = canvasPath
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src,
             style,
             position,
-            fileId,
-            canvasPath
+            fileId
           })
           this.canvasTexture.setActiveObject(shape)
         }
