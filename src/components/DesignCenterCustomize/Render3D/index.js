@@ -183,14 +183,12 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
-
+    const { isMobile } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const devicePixelRatio = window.devicePixelRatio || 1
-    const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
-      .matches
 
-    const precision = largeScreen ? 'highp' : 'lowp'
+    const precision = isMobile ? 'lowp' : 'highp'
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -205,8 +203,6 @@ class Render3D extends PureComponent {
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
-    const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
-      .matches
 
     camera.position.z = 250
 
@@ -498,7 +494,7 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -1357,62 +1353,56 @@ class Render3D extends PureComponent {
   }
 
   applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
-    try {
-      const activeEl = this.canvasTexture.getActiveObject()
-      const { scaleFactorX, scaleFactorY } = this.state
-      if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
-        activeEl.set({ ...style })
-        this.canvasTexture.renderAll()
-      } else {
-        const { onApplyCanvasEl } = this.props
-        fabric.loadSVGFromURL(src, (objects, options) => {
-          const id = idElement || shortid.generate()
-          const shape = fabric.util.groupSVGElements(objects || [], options)
-          shape.set({
-            id,
-            fileId,
-            fileUrl: src,
-            hasRotatingPoint: false,
-            ...position,
-            ...style
-          })
-          const el = {
-            id,
-            fill: BLACK,
-            stroke: BLACK,
-            strokeWidth: 0,
-            ...style
-          }
-          if (position.scaleX) {
-            el.scaleX = position.scaleX
-            el.scaleY = position.scaleY
-          } else {
-            shape
-              .set({ scaleX: scaleFactorX, scaleY: scaleFactorY })
-              .setCoords()
-            el.scaleX = scaleFactorX
-            el.scaleY = scaleFactorY
-            position.scaleX = scaleFactorX
-            position.scaleY = scaleFactorY
-          }
-          this.canvasTexture.add(shape)
-          if (!idElement) {
-            // TODO: DELETE?
-            el.fileId = fileId
-            el.src = src
-            onApplyCanvasEl(el, CanvasElements.Path, false, {
-              src,
-              style,
-              position,
-              fileId
-            })
-            this.canvasTexture.setActiveObject(shape)
-          }
-          this.canvasTexture.renderAll()
+    const activeEl = this.canvasTexture.getActiveObject()
+    const { scaleFactorX, scaleFactorY } = this.state
+    if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
+      activeEl.set({ ...style })
+      this.canvasTexture.renderAll()
+    } else {
+      const { onApplyCanvasEl } = this.props
+      fabric.loadSVGFromURL(src, (objects, options) => {
+        const id = idElement || shortid.generate()
+        const shape = fabric.util.groupSVGElements(objects || [], options)
+        shape.set({
+          id,
+          fileId,
+          fileUrl: src,
+          hasRotatingPoint: false,
+          ...position,
+          ...style
         })
-      }
-    } catch (error) {
-      console.error(error.message)
+        const el = {
+          id,
+          fill: BLACK,
+          stroke: BLACK,
+          strokeWidth: 0,
+          ...style
+        }
+        if (position.scaleX) {
+          el.scaleX = position.scaleX
+          el.scaleY = position.scaleY
+        } else {
+          shape.set({ scaleX: scaleFactorX, scaleY: scaleFactorY }).setCoords()
+          el.scaleX = scaleFactorX
+          el.scaleY = scaleFactorY
+          position.scaleX = scaleFactorX
+          position.scaleY = scaleFactorY
+        }
+        this.canvasTexture.add(shape)
+        if (!idElement) {
+          // TODO: DELETE?
+          el.fileId = fileId
+          el.src = src
+          onApplyCanvasEl(el, CanvasElements.Path, false, {
+            src,
+            style,
+            position,
+            fileId
+          })
+          this.canvasTexture.setActiveObject(shape)
+        }
+        this.canvasTexture.renderAll()
+      })
     }
   }
 
