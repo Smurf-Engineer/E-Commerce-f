@@ -13,10 +13,11 @@ import {
   InfoContainer,
   Label,
   Price,
-  ImgIcon
+  ImgIcon,
+  RetailColors
 } from './styledComponents'
 import ImageSlide from './ProductSlide'
-import { ImageType, PriceRange } from '../../types/common'
+import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
 const LIMIT_PRICE_RANGE = 3
@@ -46,6 +47,7 @@ interface Props {
   currentCurrency: string
   disableSlider?: boolean
   backgroundColor?: string
+  colors: ProductColors[]
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -132,7 +134,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       customizableLabel,
       myLockerList,
       disableSlider,
-      backgroundColor
+      backgroundColor,
+      colors
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -154,6 +157,20 @@ class ProductThumbnail extends React.Component<Props, {}> {
       `$${currencyPrices[0].price} - $${currencyPrices[lastPrice].price}`
 
     let urlProduct = this.getUrlProduct()
+    const colorList =
+      colors &&
+      colors.map(({ image: imageColor }: ProductColors, index) => (
+        <ImgIcon src={imageColor} key={index} />
+      ))
+
+    const colorOptions = customizable ? (
+      <Label>
+        <ImgIcon src={colorWheelIcon} />
+        {customizableLabel}
+      </Label>
+    ) : (
+      <RetailColors>{colorList}</RetailColors>
+    )
     return (
       <Container>
         <ImageSlide
@@ -187,13 +204,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
           <Footer>
             <Type>{type}</Type>
             <Description>{description}</Description>
-            <InfoContainer customizable={!!customizable}>
-              {customizable && (
-                <Label>
-                  <ImgIcon src={colorWheelIcon} />
-                  {customizableLabel}
-                </Label>
-              )}
+            <InfoContainer>
+              {colorOptions}
               <Price>{price}</Price>
             </InfoContainer>
           </Footer>

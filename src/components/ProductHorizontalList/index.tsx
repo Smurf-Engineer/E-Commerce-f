@@ -69,7 +69,8 @@ export const ProductHorizontalList = ({
       isTopProduct,
       collections,
       yotpoId,
-      customizable
+      customizable,
+      colors
     } = product
 
     const productImages = images ? images[0] : {}
@@ -87,7 +88,8 @@ export const ProductHorizontalList = ({
           collections,
           yotpoId,
           currentCurrency,
-          customizable
+          customizable,
+          colors
         }}
         images={productImages}
         gender={genderId}

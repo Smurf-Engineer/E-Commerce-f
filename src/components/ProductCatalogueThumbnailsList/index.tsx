@@ -175,7 +175,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             isTopProduct,
             collections,
             priceRange,
-            customizable
+            customizable,
+            colors
           } = product
 
           // TODO: filter by gender
@@ -196,7 +197,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   isTopProduct,
                   collections,
                   priceRange,
-                  customizable
+                  customizable,
+                  colors
                 }}
                 labelButton={
                   customizable
