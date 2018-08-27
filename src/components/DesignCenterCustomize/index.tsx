@@ -342,12 +342,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     const { onSelectedItem } = this.props
 
     if (file.type === SVG_FILE) {
-      const { fileUrl, id } = file
       this.render3D.applyCanvasEl({
-        url: fileUrl,
-        style: {},
-        type: CanvasElements.Path,
-        fileId: id
+        file,
+        type: CanvasElements.Group
       })
     } else {
       this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
