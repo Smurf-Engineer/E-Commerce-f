@@ -53,7 +53,8 @@ import {
   EXTRA_POSITION,
   TOP_VIEW,
   BACK_VIEW,
-  LEFT_VIEW
+  LEFT_VIEW,
+  EXTRA_FIELDS
 } from './config'
 import {
   MESH,
@@ -1076,7 +1077,7 @@ class Render3D extends PureComponent {
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
           const canvasJson = JSON.stringify(
-            this.canvasTexture.toObject(['fileId', 'fileUrl'])
+            this.canvasTexture.toObject(EXTRA_FIELDS)
           )
           const saveDesign = {
             canvasJson,
@@ -1273,7 +1274,7 @@ class Render3D extends PureComponent {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
         } else {
-          // TODO: THIS IS NEW FILE ID
+          // TODO: THIS IS THE NEW FILE ID
           imageEl
             .set({ scaleX: scaleFactorX, scaleY: scaleFactorY, fileId })
             .setCoords()
