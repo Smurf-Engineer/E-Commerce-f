@@ -60,6 +60,10 @@ export const GetProductsQuery = gql`
           left: left_image
           right: right_image
         }
+        colors {
+          name
+          image
+        }
       }
     }
   }

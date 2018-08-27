@@ -46,7 +46,7 @@ interface Data extends QueryProps {
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
-  openQuickView: (id: number) => void
+  openQuickView: (id: number, yotpoId: string) => void
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
@@ -175,7 +175,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             isTopProduct,
             collections,
             priceRange,
-            customizable
+            customizable,
+            colors
           } = product
 
           // TODO: filter by gender
@@ -196,7 +197,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                   isTopProduct,
                   collections,
                   priceRange,
-                  customizable
+                  customizable,
+                  colors
                 }}
                 labelButton={
                   customizable
@@ -273,9 +275,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     history.push(`/design-center?designId=${designId}`)
   }
 
-  handlePressQuickView = (id: number) => {
+  handlePressQuickView = (id: number, yotpoId: string) => {
     const { openQuickView } = this.props
-    openQuickView(id)
+    openQuickView(id, yotpoId)
   }
 
   // TODO: Handle add to cart

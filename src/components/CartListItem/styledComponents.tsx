@@ -2,6 +2,11 @@
  * Styled Components - Created by gustavomedina on 04/05/18.
  */
 import styled from 'styled-components'
+import { GREEN, GRAY_DARK } from '../../theme/colors'
+
+type StyleProps = {
+  onlyRead?: boolean
+}
 
 export const Container = styled.li`
   list-style-type: none;
@@ -80,9 +85,14 @@ export const ItemDetailsHeaderPrice = styled.div`
   }
 `
 
+interface ItemDetailsHeaderProps {
+  highlighted?: boolean
+}
+
 export const ItemDetailsHeaderPriceDetail = styled.div`
-  color: #5f6062;
-  font-size: 10px;
+  color:  ${({ highlighted }: ItemDetailsHeaderProps) =>
+    highlighted ? GREEN : GRAY_DARK};
+  font-size: 12px;
   letter-spacing: 0.13px;
   line-height: 14px;
   text-align: right;
@@ -104,7 +114,7 @@ export const Image = styled.img`
   height: 200.29px;
   width: 180.44px;
   background-color: #f1f4f5;
-  cursor: pointer;
+  ${({ onlyRead }: StyleProps) => (!onlyRead ? 'cursor: pointer' : '')};
 
   @media only screen and (max-width: 481px) {
     height: 129px;
