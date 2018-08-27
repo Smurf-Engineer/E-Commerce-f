@@ -269,7 +269,7 @@ class CartListItem extends React.Component<Props, {}> {
               0}`}
           </ItemDetailsHeaderPriceDetail>
           {!onlyRead && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail>
+            <ItemDetailsHeaderPriceDetail highlighted={true}>
               <FormattedMessage
                 {...messages.addMoreFor}
                 values={{
