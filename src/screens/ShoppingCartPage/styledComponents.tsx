@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { GREEN, RED, GRAY_DARK, GRAY_LIGHT, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -45,7 +46,7 @@ export const SideBar = styled.div`
 `
 
 export const AddOneMoreMessage = styled.div`
-  color: #e61737;
+  color: ${GREEN};
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
@@ -53,7 +54,7 @@ export const AddOneMoreMessage = styled.div`
 `
 
 export const EmptyTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -65,12 +66,12 @@ export const StyledEmptyButton = styled(Button)`
   border-radius: 0px;
   width: 100%;
   height: 50px;
-  border-color: #e61737;
+  border-color: ${RED};
   background-color: #fff;
 `
 
 export const EmptyDescription = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
@@ -80,7 +81,7 @@ export const EmptyDescription = styled.div`
 `
 
 export const OptionMenu = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -98,7 +99,7 @@ export const Content = styled.div`
 `
 
 export const SummaryTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -110,7 +111,7 @@ export const Divider = styled.div`
   box-sizing: border-box;
   height: 1px;
   width: 100%;
-  border: 1px solid #dcdcdc;
+  border: 1px solid ${GRAY_LIGHT};
   margin-bottom: 10px;
 `
 
@@ -118,7 +119,7 @@ export const CodeDivider = styled.div`
   box-sizing: border-box;
   height: 1px;
   width: 100%;
-  border: 1px solid #dcdcdc;
+  border: 1px solid ${GRAY_LIGHT};
   margin-bottom: 0;
 `
 
@@ -128,7 +129,7 @@ export const OrderItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
 
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -139,7 +140,7 @@ export const TotalOrderItem = styled.div`
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 20px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -147,7 +148,7 @@ export const TotalOrderItem = styled.div`
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: 600;
   line-height: 27px;
@@ -166,7 +167,7 @@ export const Title = styled.div`
 `
 
 export const ScreenTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   line-height: 25px;
@@ -176,19 +177,22 @@ interface ButtonWrapperProps {
   disabled: boolean
 }
 
+const disabledBorder = '#D9D9D9'
+const disabledBackground = '#F5F5F5'
+
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn-primary {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? '#F5F5F5' : '#4a90e2'};
+    disabled ? disabledBackground : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? '#D9D9D9' : '#4a90e2'};
+    disabled ? disabledBorder : BLUE};
   }
   .ant-btn-primary:hover {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? '#F5F5F5' : '#49aae2'};
+    disabled ? disabledBackground : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-      disabled ? '#D9D9D9' : '#49aae2'};
+    disabled ? disabledBorder : BLUE};
   }
 `
 
@@ -215,11 +219,11 @@ export const ZipCodeInputWrapper = styled.div`
   }
   .ant-btn {
     border-radius: 0;
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
     &:hover {
-      background-color: #4a90e2;
-      border-color: #4a90e2;
+      background-color: ${BLUE};
+      border-color: ${BLUE};
     }
   }
 `
