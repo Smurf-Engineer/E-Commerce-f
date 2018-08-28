@@ -124,7 +124,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       }
     }
 
-    const sumTotal = total + shippingTotal + taxFee
+    const sumTotal =
+      total + shippingTotal + taxFee + (!!proDesignReview && proDesignReview)
 
     return (
       <Container>

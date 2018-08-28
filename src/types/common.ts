@@ -525,6 +525,7 @@ export interface OrderDetailsInfo {
   currency: Currency
   taxAmount: number
   shippingAmount: number
+  proDesign: boolean
 }
 
 export interface OrderDataInfo {
@@ -556,6 +557,7 @@ export interface OrderDataInfo {
   currency: Currency
   shippingAmount: number
   taxAmount: number
+  proDesign: boolean
 }
 
 export interface TextFormat {

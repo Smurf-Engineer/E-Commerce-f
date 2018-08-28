@@ -50,6 +50,8 @@ import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
 
+const PRO_DESIGN_FEE = 15
+
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
 }
@@ -113,7 +115,8 @@ export class OrderDetails extends React.Component<Props, {}> {
       status,
       currency,
       taxAmount,
-      shippingAmount
+      shippingAmount,
+      proDesign
     } = data.orderQuery
 
     const deliveryDate =
@@ -244,6 +247,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}
+              proDesignReview={(proDesign && PRO_DESIGN_FEE) || 0}
               {...{ formatMessage }}
             />
           </OrderSummaryContainer>
