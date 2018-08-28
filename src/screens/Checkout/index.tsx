@@ -640,7 +640,7 @@ class Checkout extends React.Component<Props, {}> {
     const taxAmount = get(taxes, 'total', null)
     const shippingId = get(shipping, 'internalId', null)
     const shippingCarrier = get(shipping, 'carrier', null)
-    const shippingAmount = get(shipping, 'total', null)
+    const shippingAmount = get(shipping, 'total', '0')
 
     const sanitizedCart = shoppingCart.map(
       ({ designCode, designId, product, itemDetails }: CartItems) => {
@@ -679,7 +679,7 @@ class Checkout extends React.Component<Props, {}> {
       taxAmount,
       shippingId,
       shippingCarrier,
-      shippingAmount,
+      shippingAmount: shippingAmount || '0',
       currency: currentCurrency || config.defaultCurrency,
       weight: weightSum
     }

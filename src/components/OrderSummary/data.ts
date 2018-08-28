@@ -8,6 +8,9 @@ export const getTaxQuery = gql`
   ) {
     taxes: getTaxesByAddress(shipAddress: $shipAddress) {
       total
+      rate
+      rate_pst
+      rate_gst
       internalId
     }
 
