@@ -74,6 +74,7 @@ interface Props {
   isEditing: boolean
   originalPaths: any[]
   selectedItem: SelectedAsset
+  isMobile: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -208,7 +209,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       originalPaths,
       onResetEditing,
       onSelectedItem,
-      selectedItem
+      selectedItem,
+      isMobile
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -316,7 +318,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSetCanvasObject,
               originalPaths,
               onResetEditing,
-              onSelectedItem
+              onSelectedItem,
+              isMobile
             }}
           />
         ) : (
