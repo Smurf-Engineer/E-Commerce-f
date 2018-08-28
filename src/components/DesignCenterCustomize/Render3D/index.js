@@ -308,7 +308,7 @@ class Render3D extends PureComponent {
 
   loadCanvasTexture = async (object, reseting) => {
     try {
-      const { onSetCanvasObject, canvasFiles } = this.props
+      const { onSetCanvasObject } = this.props
       const canvas = { text: {}, image: {}, path: {} }
       let elements = []
       const paths = []
@@ -316,7 +316,6 @@ class Render3D extends PureComponent {
       const imagesPromises = []
       const fonts = []
       const { objects } = JSON.parse(object)
-      const canvasFileIds = canvasFiles && JSON.parse(canvasFiles)
       for (const el of objects) {
         const elId = shortid.generate()
         el.id = elId
@@ -1274,7 +1273,6 @@ class Render3D extends PureComponent {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
         } else {
-          // TODO: THIS IS THE NEW FILE ID
           imageEl
             .set({ scaleX: scaleFactorX, scaleY: scaleFactorY, fileId })
             .setCoords()
@@ -1285,9 +1283,8 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
-          // TODO: DELETE?
           const { onApplyCanvasEl } = this.props
-          onApplyCanvasEl(el, 'image', undefined, {
+          onApplyCanvasEl(el, CanvasElements.Image, undefined, {
             src: file,
             style: undefined,
             position,
@@ -1367,7 +1364,6 @@ class Render3D extends PureComponent {
         const shapeObject = {
           id,
           fileId,
-          fileUrl: src,
           hasRotatingPoint: false,
           ...position,
           ...style
@@ -1408,7 +1404,6 @@ class Render3D extends PureComponent {
   }
 
   applyGroup = (file = {}, position = {}, idElement) => {
-    // FIXME:
     const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl: src, size: imageSize, id: fileId, type } = file
     fabric.loadSVGFromURL(src, (objects, options) => {
@@ -1417,7 +1412,6 @@ class Render3D extends PureComponent {
       const shapeObject = {
         id,
         fileId,
-        fileUrl: src,
         hasRotatingPoint: false,
         ...position
       }
@@ -1531,7 +1525,7 @@ class Render3D extends PureComponent {
     const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const type = el.get('type')
+    const { type, fileId } = el
     const elementType =
       type === CanvasElements.Group ? CanvasElements.Image : type
     const id = oldId || shortid.generate()
@@ -1543,7 +1537,8 @@ class Render3D extends PureComponent {
         hasRotatingPoint: false,
         left: boundingBox.left + EXTRA_POSITION,
         top: boundingBox.top + EXTRA_POSITION,
-        stroke: el.stroke
+        stroke: el.stroke,
+        fileId
       })
       this.canvasTexture.add(clone)
     })
@@ -1664,7 +1659,7 @@ class Render3D extends PureComponent {
             case CanvasElements.Image:
               this.applyImage(el.file, { left, top })
               break
-            case CanvasElements.Group: // FIXME:
+            case CanvasElements.Group:
               this.applyGroup(el.file, { left, top })
               break
             case CanvasElements.Path:

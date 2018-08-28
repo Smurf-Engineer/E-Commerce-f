@@ -7,10 +7,6 @@ import { compose } from 'react-apollo'
 import Modal from 'antd/lib/modal'
 import message from 'antd/lib/message'
 import Checkbox from 'antd/lib/checkbox'
-import forEach from 'lodash/forEach'
-import uniq from 'lodash/uniq'
-import uniqWith from 'lodash/uniqWith'
-import isEqual from 'lodash/isEqual'
 import messages from './messages'
 import {
   Container,
@@ -28,7 +24,6 @@ import {
   StitchingColor,
   CanvasType,
   DesignFiles,
-  CanvasFile,
   SaveDesignData
 } from '../../types/common'
 import { saveDesignName, saveDesignChanges } from './data'
@@ -286,41 +281,6 @@ export class SaveDesign extends React.Component<Props, {}> {
     const { setCheckedTerms } = this.props
     const { checked } = evt.target
     setCheckedTerms(checked)
-  }
-
-  getDesignFiles = () => {
-    const {
-      canvas: { image, path: clipArt }
-    } = this.props
-    const files: number[] = []
-    const svgs: number[] = []
-    const images: CanvasFile[] = []
-    const paths: CanvasFile[] = []
-    forEach(image, img => {
-      const { fileId, src } = img
-      if (fileId) {
-        files.push(fileId)
-        images.push({ fileId, src })
-      }
-    })
-    forEach(clipArt, pth => {
-      const { fileId, canvasPath } = pth
-      if (fileId) {
-        svgs.push(fileId)
-        paths.push({ fileId, canvasPath })
-      }
-    })
-
-    return {
-      designFiles: {
-        files: uniq(files),
-        svgs: uniq(svgs)
-      },
-      canvasFiles: {
-        paths: uniqWith(paths, isEqual),
-        images: uniqWith(images, isEqual)
-      }
-    }
   }
 
   render() {
