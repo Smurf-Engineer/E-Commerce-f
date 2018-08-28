@@ -156,3 +156,7 @@ export const paypalButtonStyle = {
   shape: 'rect',
   tagline: false
 }
+export const CurrencyWarningText = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+`
