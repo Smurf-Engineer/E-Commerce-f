@@ -13,8 +13,11 @@ export const downloadFile = async (user: UserType, code: string) => {
         }
       }
     )
-    const blobFile = await fileResponse.blob()
-    return Promise.resolve(blobFile)
+    if (fileResponse.ok) {
+      const blobFile = await fileResponse.blob()
+      return Promise.resolve(blobFile)
+    }
+    throw 'Unknown Error'
   } catch (e) {
     return Promise.reject(e)
   }
