@@ -778,6 +778,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
                 onSelectedItem={setSelectedItemAction}
+                isMobile={!!responsive && responsive.mobile}
               />
             )}
             <PreviewTab

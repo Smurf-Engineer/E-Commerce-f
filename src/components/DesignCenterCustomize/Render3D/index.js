@@ -54,7 +54,8 @@ import {
   TOP_VIEW,
   BACK_VIEW,
   LEFT_VIEW,
-  EXTRA_FIELDS
+  EXTRA_FIELDS,
+  INITIAL_ZOOM
 } from './config'
 import {
   MESH,
@@ -182,14 +183,12 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
-
+    const { isMobile } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const devicePixelRatio = window.devicePixelRatio || 1
-    const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
-      .matches
 
-    const precision = largeScreen ? 'highp' : 'lowp'
+    const precision = isMobile ? 'lowp' : 'highp'
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -204,8 +203,6 @@ class Render3D extends PureComponent {
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
-    const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
-      .matches
 
     camera.position.z = 250
 
@@ -240,6 +237,9 @@ class Render3D extends PureComponent {
     this.mtlLoader = mtlLoader
     this.objLoader = objLoader
     this.textureLoader = textureLoader
+
+    this.camera.zoom = INITIAL_ZOOM
+    this.camera.updateProjectionMatrix()
 
     this.render3DModel()
 
@@ -494,7 +494,7 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -833,8 +833,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = (value * 1.0) / 100
-      this.camera.zoom = zoomValue * 2
+      this.camera.zoom = value / 100.0
       this.camera.updateProjectionMatrix()
     }
   }
