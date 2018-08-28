@@ -209,7 +209,7 @@ class SignUp extends React.Component<Props, StateProps> {
           lastName: get(data, 'user.lastName', ''),
           email: get(data, 'user.email', '')
         }
-        message.info(
+        message.success(
           formatMessage(messages.welcomeMessage, {
             name: get(data, 'user.name', '')
           })
