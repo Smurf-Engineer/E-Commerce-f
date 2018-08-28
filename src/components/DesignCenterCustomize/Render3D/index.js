@@ -55,7 +55,8 @@ import {
   BACK_VIEW,
   LEFT_VIEW,
   EXTRA_FIELDS,
-  INITIAL_ZOOM
+  INITIAL_ZOOM,
+  THUMBNAIL_ZOOM
 } from './config'
 import {
   MESH,
@@ -493,7 +494,7 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor,
+      bibColor
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -1069,7 +1070,7 @@ class Render3D extends PureComponent {
       this.canvasTexture.discardActiveObject()
       this.canvasTexture.renderAll()
       const viewPosition = viewPositions[2]
-      this.handleOnChangeZoom(62)
+      this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
@@ -1166,7 +1167,7 @@ class Render3D extends PureComponent {
         */}
         <ButtonWrapper>
           <Button type="primary" onClick={this.takeDesignPicture}>
-            Save
+            {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>
         {/* TODO: uncomment controllers when bugs from undo/redo and reset be fixed */}
