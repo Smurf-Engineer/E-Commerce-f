@@ -12,6 +12,8 @@
   "components.menuBar.error": "Something went wrong",
   "components.menuBar.googleLoginLabel": "LOG IN WITH GOOGLE",
   "components.menuBar.facebookLoginLabel": "LOG IN WITH FACEBOOK",
+  "components.menuBar.googleSignUpLabel": "SIGN UP WITH GOOGLE",
+  "components.menuBar.facebookSignUpLabel": "SIGN UP WITH FACEBOOK",
   "components.menunBar.teamStoresTitle": "TEAM STORES",
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",

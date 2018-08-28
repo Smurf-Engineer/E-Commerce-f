@@ -3,31 +3,33 @@
  */
 import styled from 'styled-components'
 import GoogleLogin from 'react-google-login'
+import { FACEBOOKBLUE, WHITE, GOOGLERED } from '../../theme/colors'
 export const Container = styled.div`
   width: 100%;
   margin-bottom: 30px;
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const FacebookButtonWrapper = styled.div`
-  .kep-login-facebook {
-    background-color: #395ca9;
-    color: #fff;
+  .login-facebook {
+    background-color: ${FACEBOOKBLUE};
+    color: ${WHITE};
     font-size: inherit;
     padding: 15px 0;
     text-transform: uppercase;
     width: 100%;
+    cursor: pointer;
   }
 `
 
 export const GoogleButton = styled(GoogleLogin)`
   width: 100%;
   height: 50px;
-  background-color: #f0372d;
-  color: #fff;
+  background-color: ${GOOGLERED};
+  color: ${WHITE};
   margin-bottom: 10px;
 
   &:hover {
