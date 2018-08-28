@@ -237,7 +237,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderDelivery>
           <OrderSummaryContainer>
             <OrderSummary
-              total={totalSum + shippingAmount + taxAmount}
+              total={totalSum}
               subtotal={totalSum}
               shipping={shippingAmount}
               taxes={taxAmount}
