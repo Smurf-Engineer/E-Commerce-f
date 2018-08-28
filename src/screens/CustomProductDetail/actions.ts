@@ -8,7 +8,8 @@ import {
   SET_SELECTED_FIT,
   OPEN_FITINFO,
   SET_SHOW_DETAILS,
-  SET_SHOW_SPECS
+  SET_SHOW_SPECS,
+  RESET_DATA
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -45,4 +46,8 @@ export const setShowDetailsAction = (show: boolean) => ({
 export const setShowSpecsAction = (show: boolean) => ({
   type: SET_SHOW_SPECS,
   show
+})
+
+export const resetDataAction = () => ({
+  type: RESET_DATA
 })
