@@ -53,7 +53,9 @@ import {
   EXTRA_POSITION,
   TOP_VIEW,
   BACK_VIEW,
-  LEFT_VIEW
+  LEFT_VIEW,
+  EXTRA_FIELDS,
+  INITIAL_ZOOM
 } from './config'
 import {
   MESH,
@@ -181,14 +183,12 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
-
+    const { isMobile } = this.props
     const { clientWidth, clientHeight } = this.container
 
     const devicePixelRatio = window.devicePixelRatio || 1
-    const largeScreen = window.matchMedia('only screen and (min-width: 1024px)')
-      .matches
 
-    const precision = largeScreen ? 'highp' : 'lowp'
+    const precision = isMobile ? 'lowp' : 'highp'
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
@@ -203,8 +203,6 @@ class Render3D extends PureComponent {
     /* Camera */
     const aspect = clientWidth / clientHeight
     const camera = new THREE.PerspectiveCamera(25, aspect, 0.1, 1000)
-    const isMobile = window.matchMedia('only screen and (max-width: 1366px)')
-      .matches
 
     camera.position.z = 250
 
@@ -239,6 +237,9 @@ class Render3D extends PureComponent {
     this.mtlLoader = mtlLoader
     this.objLoader = objLoader
     this.textureLoader = textureLoader
+
+    this.camera.zoom = INITIAL_ZOOM
+    this.camera.updateProjectionMatrix()
 
     this.render3DModel()
 
@@ -328,33 +329,21 @@ class Render3D extends PureComponent {
             canvas.text[elId] = element
             break
           }
+          case CanvasElements.Group: {
+            const element = getImageCanvas(el)
+            canvas.image[elId] = element
+            paths.push(el)
+            break
+          }
           case CanvasElements.Path: {
             const element = getClipArtCanvasElement(el)
             canvas.path[elId] = element
             paths.push(el)
-            if (canvasFileIds) {
-              const currentPath = JSON.stringify(el.path)
-              const canvasPath = find(canvasFileIds.paths, {
-                canvasPath: currentPath
-              })
-              if (canvasPath) {
-                canvas.path[elId].fileId = canvasPath.fileId
-                canvas.path[elId].canvasPath = canvasPath.canvasPath
-              }
-            }
             break
           }
           case CanvasElements.Image: {
             const element = getImageCanvas(el)
             canvas.image[elId] = element
-            if (canvasFileIds) {
-              const canvasImage = find(canvasFileIds.images, {
-                src: el.src
-              })
-              if (canvasImage) {
-                canvas.image[elId].fileId = canvasImage.fileId
-              }
-            }
             imagesElements.push(el)
             imagesPromises.push(this.loadFabricImage(el.src))
             break
@@ -505,7 +494,7 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -844,8 +833,7 @@ class Render3D extends PureComponent {
 
   handleOnChangeZoom = value => {
     if (this.camera) {
-      const zoomValue = (value * 1.0) / 100
-      this.camera.zoom = zoomValue * 2
+      this.camera.zoom = value / 100.0
       this.camera.updateProjectionMatrix()
     }
   }
@@ -1087,8 +1075,9 @@ class Render3D extends PureComponent {
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
-
-          const canvasJson = JSON.stringify(this.canvasTexture)
+          const canvasJson = JSON.stringify(
+            this.canvasTexture.toObject(EXTRA_FIELDS)
+          )
           const saveDesign = {
             canvasJson,
             designBase64,
@@ -1284,8 +1273,9 @@ class Render3D extends PureComponent {
           el.scaleX = position.scaleX
           el.scaleY = position.scaleY
         } else {
+          // TODO: THIS IS THE NEW FILE ID
           imageEl
-            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY })
+            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY, fileId })
             .setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
@@ -1294,6 +1284,7 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(imageEl)
         if (!idElement) {
+          // TODO: DELETE?
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, 'image', undefined, {
             src: file,
@@ -1374,6 +1365,8 @@ class Render3D extends PureComponent {
         const shape = fabric.util.groupSVGElements(objects || [], options)
         shape.set({
           id,
+          fileId,
+          fileUrl: src,
           hasRotatingPoint: false,
           ...position,
           ...style
@@ -1397,16 +1390,14 @@ class Render3D extends PureComponent {
         }
         this.canvasTexture.add(shape)
         if (!idElement) {
+          // TODO: DELETE?
           el.fileId = fileId
           el.src = src
-          const canvasPath = JSON.stringify(shape.path)
-          el.canvasPath = canvasPath
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src,
             style,
             position,
-            fileId,
-            canvasPath
+            fileId
           })
           this.canvasTexture.setActiveObject(shape)
         }

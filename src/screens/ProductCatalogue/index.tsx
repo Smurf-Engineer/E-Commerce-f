@@ -104,6 +104,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     clearFiltersAction()
 
     if (gender) {
+      this.setState({ ['showgenderFilters']: true } as any)
       const filterObject = {
         type: 'genderFilters',
         name: upperFirst(gender),

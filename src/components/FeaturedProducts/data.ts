@@ -58,6 +58,10 @@ export const GetProductsQuery = gql`
           id
           name
         }
+        colors {
+          name
+          image
+        }
       }
     }
   }

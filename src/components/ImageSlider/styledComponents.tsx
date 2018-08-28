@@ -55,7 +55,12 @@ export const SelectedImage = styled.div`
   text-align: center;
 `
 
+interface ArrowsProps {
+  squareArrows: boolean
+}
+
 export const SwipeContainer = styled.div`
+  align-items: center;
   display: flex;
   justify-content: center;
   position: relative;
@@ -64,6 +69,29 @@ export const SwipeContainer = styled.div`
   div div:first-child {
     height: 536px;
     width: 100%;
+  }
+
+  section {
+    ${({ squareArrows }: ArrowsProps) =>
+      squareArrows
+        ? css`
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.6);
+            border: 0.2px solid rgba(220, 220, 220, 0.34);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
+            display: flex;
+            justify-content: center;
+            width: 180px;
+          `
+        : ''};
+  }
+
+  section:first-child {
+    margin-right: -${({ squareArrows }: ArrowsProps) => (squareArrows ? '35' : '18')}px;
+  }
+
+  section:last-child {
+    margin-left: -${({ squareArrows }: ArrowsProps) => (squareArrows ? '35' : '18')}px;
   }
 
   @media (min-width: 426px) and (max-width: 1024px) {
@@ -89,49 +117,15 @@ export const ThreeDThumbnailContair = styled.div`
   text-align: center;
   width: 660px;
 `
-
-export const Arrows = styled.section`
-  align-self: center;
-  display: flex;
-  justify-content: space-between;
-  padding: 0;
-  position: absolute;
-  width: 98%;
-  height: 44px;
-
-  @media (min-width: 320px) and (max-width: 425px) {
-    display: none;
-  }
-`
-
-interface ArrowsProps {
-  squareArrows: boolean
-}
-
-export const ArrowContainer = styled.div`
-  ${({ squareArrows }: ArrowsProps) =>
-    squareArrows
-      ? css`
-          align-items: center;
-          background-color: rgba(255, 255, 255, 0.6);
-          border: 0.2px solid rgba(220, 220, 220, 0.34);
-          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
-          display: flex;
-          height: 43px;
-          justify-content: center;
-          width: 37.39px;
-        `
-      : ''};
+export const ArrowContainer = styled.section`
+  height: 43px;
+  z-index: 1;
 
   &:hover {
     cursor: pointer;
   }
 `
-export const ArrowRight = styled.img`
-  height: 22.09px;
-  width: 10px;
-`
-export const ArrowLeft = styled.img`
+export const Arrow = styled.img`
   height: 22.09px;
   width: 10px;
 `

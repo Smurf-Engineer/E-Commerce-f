@@ -38,7 +38,8 @@ export class RelatedProducts extends React.Component<Props, {}> {
         collections,
         customizable,
         yotpoId,
-        genderId: gender = 0
+        genderId: gender = 0,
+        colors
       } = product
 
       const productImages = images ? images[0] : {}
@@ -56,7 +57,8 @@ export class RelatedProducts extends React.Component<Props, {}> {
             yotpoId,
             gender,
             customizable,
-            currentCurrency
+            currentCurrency,
+            colors
           }}
           images={productImages}
           onPressQuickView={this.handleOnQuickView}

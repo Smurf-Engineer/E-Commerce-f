@@ -133,6 +133,7 @@ export interface Product {
   weight: number
   relatedProducts: Product[]
   isCustom?: boolean
+  colors?: ProductColors
 }
 
 export type DesignType = {
@@ -988,4 +989,9 @@ export interface CanvasFile {
   fileId: number
   src?: string
   canvasPath?: string
+}
+
+export interface ProductColors {
+  name: string
+  image: string
 }

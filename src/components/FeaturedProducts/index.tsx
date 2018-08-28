@@ -102,7 +102,8 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
         isTopProduct,
         images,
         priceRange,
-        customizable
+        customizable,
+        colors
       } = product
       return (
         <div {...{ key }}>
@@ -120,7 +121,8 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
               description,
               isTopProduct,
               priceRange,
-              customizable
+              customizable,
+              colors
             }}
             labelButton={
               customizable

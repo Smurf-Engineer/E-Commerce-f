@@ -653,11 +653,12 @@ class Checkout extends React.Component<Props, {}> {
         }
         item.product = productItem
         item.itemDetails = itemDetails.map(
-          ({ gender, quantity, size }: any) => {
+          ({ gender, quantity, size, fit }: any) => {
             unset(gender, '__typename')
             unset(quantity, '__typename')
             unset(size, '__typename')
-            return { gender, quantity, size }
+            unset(fit, '__typename')
+            return { gender, quantity, size, fit }
           }
         )
         return item

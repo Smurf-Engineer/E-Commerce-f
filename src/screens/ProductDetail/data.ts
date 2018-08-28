@@ -81,6 +81,10 @@ export const GetProductsByIdQuery = gql`
           abbreviation
           shortName: short_name
         }
+        colors {
+          name
+          image
+        }
       }
     }
   }
