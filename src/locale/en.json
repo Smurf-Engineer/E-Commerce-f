@@ -103,6 +103,7 @@
   "components.Logout.myAccountLabel": "My Account",
   "components.Logout.profileSettingsLabel": "Profile Settings",
   "components.Logout.logoutLabel": "Log out",
+  "components.Render3D.saveButton": "Save",
   "components.Render3D.drag": "Drag to rotate",
   "components.Render3D.productOnly": "Product Only",
   "components.Render3D.withAvatar": "With Avatar",
