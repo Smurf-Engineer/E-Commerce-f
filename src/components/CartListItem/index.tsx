@@ -219,9 +219,6 @@ class CartListItem extends React.Component<Props, {}> {
     const { designId, designName, designImage, designCode } = cartItem
 
     const retailProduct = !designId
-    console.log('---------------------------')
-    console.log(retailProduct)
-    console.log('---------------------------')
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
