@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
 import find from 'lodash/find'
 import * as productDetailActions from './actions'
@@ -173,17 +172,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const yotpoId = queryParams.yotpoId || ''
 
-    const genderId = queryParams.gender || 0
-    const genderIndex = findIndex(imagesArray, {
-      genderId: parseInt(genderId, 10)
-    })
-
-    const images = imagesArray[genderIndex] || imagesArray[0]
-
+    const images = imagesArray[0]
     const moreImages =
-      genderIndex !== -1
-        ? []
-        : imagesArray.filter(post => post.genderId !== images.genderId)
+      imagesArray.length > 1
+        ? imagesArray.filter(({ genderId }) => genderId !== images.genderId)
+        : []
 
     let retailPrice
     if (product) {
