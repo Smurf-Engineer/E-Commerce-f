@@ -54,7 +54,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
             fields="name,email,picture"
             callback={this.responseFacebook}
             scope="public_profile, email"
-            render={(renderProps: any) => (
+            render={renderProps => (
               <button className="login-facebook" onClick={renderProps.onClick}>
                 {facebookLabel}
               </button>
