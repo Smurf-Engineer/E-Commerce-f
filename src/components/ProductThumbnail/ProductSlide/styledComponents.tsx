@@ -114,13 +114,14 @@ interface ButtonContainerProps {
 }
 
 export const ButtonContainer = styled.div`
-  user-select: none;
   display: flex;
-  position: absolute;
-  width: 100%;
   justify-content: center;
+  left: 0;
+  position: absolute;
   top: ${({ myLockerList }: ButtonContainerProps) =>
     myLockerList ? '140px' : '170px'};
+  user-select: none;
+  width: 100%;
 `
 
 export const CustomizeButton = styled.div`
