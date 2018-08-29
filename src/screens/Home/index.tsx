@@ -127,6 +127,7 @@ export class Home extends React.Component<Props, {}> {
         closeResults={this.closeResults}
         openResults={this.openResults}
         quickViewAction={this.handleOnQuickView}
+        currentCurrency={currentCurrency || config.defaultCurrency}
         {...{ history, SearchResults }}
       />
     ) : null
