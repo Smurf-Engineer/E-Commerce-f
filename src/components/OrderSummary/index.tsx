@@ -101,9 +101,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     const youSaved = Number(totalWithoutDiscount) - total
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
-
     const taxRates = get(data, 'taxes', null)
-
     const symbol = currencySymbol || '$'
 
     // pro design fee
@@ -199,12 +197,12 @@ export class OrderSummary extends React.Component<Props, {}> {
         ) : null}
         <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
           <FormattedMessage {...messages.total} />
-          <div>{`${symbol} ${sumTotal}`}</div>
+          <div>{`${symbol} ${sumTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             <FormattedMessage {...messages.youSaved} />
-            <div>{`$${youSaved}`}</div>
+            <div>{`$${youSaved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
       </Container>
