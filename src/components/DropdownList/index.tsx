@@ -84,18 +84,25 @@ export class DropdownList extends React.PureComponent<Props> {
     const {
       history: {
         push,
-        replace,
         location: { search, pathname }
       }
     } = this.props
 
     const { gender, category, sport } = queryString.parse(search)
 
+    let genderString = ''
+    if (type > 0) {
+      genderString = `gender=${WOMEN}&`
+    }
+    if (type === 0) {
+      genderString = `gender=${MEN}&`
+    }
+
     const toGender = type ? WOMEN : MEN
     const toCategory = categorySelected.replace(' & ', ' ')
     const toSport = sportSelected && (sportSelected as string).toLowerCase()
 
-    const route = `/product-catalogue?gender=${toGender}&category=${toCategory}&sport=${toSport}`
+    const route = `/product-catalogue?${genderString}category=${toCategory}&sport=${toSport}`
     const atProductCatalogue = (pathname as String).includes(
       'product-catalogue'
     )
@@ -114,7 +121,7 @@ export class DropdownList extends React.PureComponent<Props> {
       isChangingGender || isChangingCategory || isChangingSport
 
     if ((atProductCatalogue && isMissingFilter) || isChangingFilter) {
-      replace(route, { forced: true })
+      window.location.replace(route)
       return
     }
 
@@ -164,7 +171,8 @@ export class DropdownList extends React.PureComponent<Props> {
       sportOptions,
       formatMessage,
       genderSportSelected,
-      currentCurrency
+      currentCurrency,
+      history
     } = this.props
     const { genders, sports } = data
 
@@ -181,7 +189,14 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuGender
-              {...{ genders, sports, visible, formatMessage, currentCurrency }}
+              {...{
+                genders,
+                sports,
+                visible,
+                formatMessage,
+                currentCurrency,
+                history
+              }}
               type={index}
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
@@ -210,7 +225,7 @@ export class DropdownList extends React.PureComponent<Props> {
           }
           content={
             <MenuSports
-              {...{ sports, visible, formatMessage, currentCurrency }}
+              {...{ sports, visible, formatMessage, currentCurrency, history }}
               type={index}
               name={label}
               onPressSeeAll={this.handleOnSeeAll}
