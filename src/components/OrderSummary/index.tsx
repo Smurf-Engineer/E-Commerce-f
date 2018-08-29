@@ -101,9 +101,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     const youSaved = Number(totalWithoutDiscount) - total
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
-    // const taxesTotal = get(data, 'taxes.total', taxes) || 0
 
-    // const shippingRates = get(data, 'shipping', null)
     const taxRates = get(data, 'taxes', null)
 
     const symbol = currencySymbol || '$'
@@ -123,7 +121,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           taxTotal = (total * taxesAmount) / 100 // calculate tax
           taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           break
-        case COUNTRY_CODE_CANADA: // TODO: pending confirmation
+        case COUNTRY_CODE_CANADA:
           if (taxRates) {
             taxGst =
               ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
@@ -139,7 +137,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     }
 
     const sumTotal =
-      total + shippingTotal + taxFee + (!!proDesignReview && proDesignReview)
+      subtotal + shippingTotal + taxFee + taxGst + taxPst + proDesignFee
 
     return (
       <Container>
