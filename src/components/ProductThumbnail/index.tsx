@@ -75,6 +75,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
     const { images } = this.props
     let { currentImage } = this.state
     const keys = Object.keys(images || {})
+    const index = keys.indexOf('genderId')
+    if (index) {
+      keys.splice(index, 1)
+    }
     currentImage += 1
     if (currentImage >= keys.length - 1) {
       return
