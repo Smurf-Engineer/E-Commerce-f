@@ -64,13 +64,14 @@ export class SearchResults extends React.Component<Props, {}> {
           collections,
           type,
           isTopProduct,
-          customizable
+          customizable,
+          colors
         } = product
         // TODO: filter by gender
         const productImages = product.images ? product.images[0] : {}
         return (
           <ProductThumbnail
-            {...{ currentCurrency, customizable }}
+            {...{ currentCurrency, customizable, colors }}
             key={key}
             onPressCustomize={this.gotoCustomize}
             id={id}

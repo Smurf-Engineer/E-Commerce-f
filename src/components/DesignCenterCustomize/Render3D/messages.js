@@ -59,5 +59,9 @@ export default defineMessages({
   sizeMessage: {
     id: 'components.Render3D.sizeMessage',
     defaultMessage: 'Aprox image size'
+  },
+  saveButton: {
+    id: 'components.Render3D.saveButton',
+    defaultMessage: 'Save'
   }
 })

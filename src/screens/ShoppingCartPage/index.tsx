@@ -280,7 +280,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       numberOfProducts
     } = shoppingCartData
 
-    let symbol: string = '$'
+    let symbol = '$'
 
     const cartItems = cart || []
     let activeCheckout = true

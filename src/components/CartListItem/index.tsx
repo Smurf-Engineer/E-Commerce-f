@@ -175,8 +175,14 @@ class CartListItem extends React.Component<Props, {}> {
         designId,
         product: { id, yotpoId }
       },
-      history
+      history,
+      onlyRead
     } = this.props
+
+    if (onlyRead) {
+      return
+    }
+
     let productUrl = `/product?id=${id}&yotpoId=${yotpoId}`
 
     if (designId) {
@@ -289,8 +295,8 @@ class CartListItem extends React.Component<Props, {}> {
             {`${formatMessage(messages.unitPrice)} ${symbol} ${unitaryPrice ||
               0}`}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail>
+          {!onlyRead && designId && nextPrice.items > 0 ? (
+            <ItemDetailsHeaderPriceDetail highlighted={true}>
               <FormattedMessage
                 {...messages.addMoreFor}
                 values={{
@@ -326,7 +332,11 @@ class CartListItem extends React.Component<Props, {}> {
           if (matches) {
             return (
               <Container>
-                <Image src={image} onClick={this.gotToProductPage} />
+                <Image
+                  {...{ onlyRead }}
+                  src={image}
+                  onClick={this.gotToProductPage}
+                />
                 <ItemDetails>
                   {itemDetailsHeader}
                   {table}
@@ -339,7 +349,11 @@ class CartListItem extends React.Component<Props, {}> {
             return (
               <Container>
                 <ItemDetails>
-                  <Image src={image} onClick={this.gotToProductPage} />
+                  <Image
+                    {...{ onlyRead }}
+                    src={image}
+                    onClick={this.gotToProductPage}
+                  />
                   <ItemDetails>{itemDetailsHeader}</ItemDetails>
                 </ItemDetails>
                 <div>

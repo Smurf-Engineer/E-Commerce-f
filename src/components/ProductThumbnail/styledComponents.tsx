@@ -91,15 +91,10 @@ export const Description = styled.div`
   }
 `
 
-interface InfoProps {
-  customizable: boolean
-}
-
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: ${({ customizable }: InfoProps) =>
-    customizable ? 'space-between' : 'flex-end'};
+  justify-content: space-between;
   user-select: none;
 
   @media (min-width: 320px) and (max-width: 425px) {
@@ -148,3 +143,5 @@ export const Arrows = styled.div`
 export const Arrow = styled.img`
   user-select: none;
 `
+
+export const RetailColors = styled.div``

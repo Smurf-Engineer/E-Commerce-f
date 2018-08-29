@@ -133,6 +133,7 @@ export interface Product {
   weight: number
   relatedProducts: Product[]
   isCustom?: boolean
+  colors?: ProductColors
 }
 
 export type DesignType = {
@@ -154,7 +155,6 @@ export type DesignType = {
   zipperColor: string
   canEdit: boolean
   styleId: number
-  canvasFiles?: string
 }
 
 export type SaveDesignType = {
@@ -525,6 +525,7 @@ export interface OrderDetailsInfo {
   currency: Currency
   taxAmount: number
   shippingAmount: number
+  proDesign: boolean
 }
 
 export interface OrderDataInfo {
@@ -556,6 +557,7 @@ export interface OrderDataInfo {
   currency: Currency
   shippingAmount: number
   taxAmount: number
+  proDesign: boolean
 }
 
 export interface TextFormat {
@@ -989,4 +991,9 @@ export interface CanvasFile {
   fileId: number
   src?: string
   canvasPath?: string
+}
+
+export interface ProductColors {
+  name: string
+  image: string
 }

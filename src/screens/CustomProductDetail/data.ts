@@ -30,6 +30,10 @@ export const GetDesignByIdQuery = gql`
             right: right_image
             genderId: gender_id
           }
+          colors {
+            image
+            name
+          }
           isTopProduct
           customizable: design_center
           genderId: gender_id

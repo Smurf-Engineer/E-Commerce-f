@@ -33,6 +33,8 @@ import {
   CanvasElements
 } from '../../screens/DesignCenter/constants'
 
+const SVG_FILE = 'image/svg+xml'
+
 interface Props {
   colorBlock: number
   colorBlockHovered: number
@@ -71,8 +73,8 @@ interface Props {
   isUserAuthenticated: boolean
   isEditing: boolean
   originalPaths: any[]
-  canvasFiles: string
   selectedItem: SelectedAsset
+  isMobile: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -206,9 +208,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSetCanvasObject,
       originalPaths,
       onResetEditing,
-      canvasFiles,
       onSelectedItem,
-      selectedItem
+      selectedItem,
+      isMobile
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -316,8 +318,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSetCanvasObject,
               originalPaths,
               onResetEditing,
-              canvasFiles,
-              onSelectedItem
+              onSelectedItem,
+              isMobile
             }}
           />
         ) : (
@@ -338,8 +340,16 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
   handleOnApplyImage = (file: ImageFile) => {
     const { onSelectedItem } = this.props
-    this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
-    onSelectedItem({ id: file.id, type: CanvasElements.Image })
+
+    if (file.type === SVG_FILE) {
+      this.render3D.applyCanvasEl({
+        file,
+        type: CanvasElements.Group
+      })
+    } else {
+      this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
+      onSelectedItem({ id: file.id, type: CanvasElements.Image })
+    }
   }
 
   handleOnApplyArt = (url: string, style?: CanvasElement, fileId?: number) => {

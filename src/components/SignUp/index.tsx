@@ -73,7 +73,10 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          <FacebookGmailLogin {...{ requestClose, formatMessage }} />
+          <FacebookGmailLogin
+            signUpView={true}
+            {...{ requestClose, formatMessage }}
+          />
         </SocialMediaContainer>
         <DividerRow>
           <LeftDivider />
@@ -209,7 +212,7 @@ class SignUp extends React.Component<Props, StateProps> {
           lastName: get(data, 'user.lastName', ''),
           email: get(data, 'user.email', '')
         }
-        message.info(
+        message.success(
           formatMessage(messages.welcomeMessage, {
             name: get(data, 'user.name', '')
           })
