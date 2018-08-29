@@ -22,3 +22,14 @@ export const getTaxQuery = gql`
     }
   }
 `
+
+export const getCouponCode = gql`
+  query discountCode($code: String!) {
+    getDiscountCode(code: $code) {
+      code
+      discountAmount
+      type
+      rate
+    }
+  }
+`

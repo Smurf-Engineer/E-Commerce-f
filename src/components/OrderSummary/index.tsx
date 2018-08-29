@@ -56,7 +56,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
 }
 
-const ShareLinkInput = Input.Search
+const InputSearch = Input.Search
 const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
   render() {
@@ -87,7 +87,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     //   </OrderItem>
     // ) : (
     //     <ZipCodeInputWrapper>
-    //       <ShareLinkInput
+    //       <InputSearch
     //         disabled={true}
     //         id="url"
     //         placeholder={formatMessage(messages.zipCodePlaceholder)}
@@ -162,13 +162,12 @@ export class OrderSummary extends React.Component<Props, {}> {
             <Collapse bordered={false}>
               <Panel header={formatMessage(messages.discountCode)} key="1">
                 <ZipCodeInputWrapper>
-                  <ShareLinkInput
-                    disabled={true}
+                  <InputSearch
                     id="url"
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
                     size="default"
-                    onChange={() => {}}
+                    onSearch={this.applyCouponCode}
                   />
                 </ZipCodeInputWrapper>
               </Panel>
@@ -187,6 +186,10 @@ export class OrderSummary extends React.Component<Props, {}> {
         ) : null}
       </Container>
     )
+  }
+
+  applyCouponCode = (code: string) => {
+    console.log(code)
   }
 }
 
