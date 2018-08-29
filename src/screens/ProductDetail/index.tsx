@@ -106,6 +106,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   addItemToCartAction: (item: any) => void
+  resetReducerAction: () => void
 }
 
 interface StateProps {
@@ -117,6 +118,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: true,
     showSpecs: true
+  }
+
+  componentWillUnmount() {
+    const { resetReducerAction } = this.props
+    resetReducerAction()
   }
 
   render() {
@@ -525,32 +531,30 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       selectedFit,
       selectedSize,
+      selectedGender,
       data: { product },
       intl: { formatMessage }
     } = this.props
 
-    const details = [] as CartItemDetail[]
+    const itemDetails = [] as CartItemDetail[]
     if (product) {
       const detail: CartItemDetail = {
         fit: selectedFit,
         size: selectedSize,
+        gender: selectedGender,
         quantity: 1
       }
-      details.push(detail)
+      itemDetails.push(detail)
     }
-    const itemToAdd = Object.assign(
-      {},
-      { product },
-      {
-        itemDetails: details
-      }
-    )
+    const itemToAdd = Object.assign({}, { product }, { itemDetails })
+
     return (
       <ButtonsRow>
         <AddtoCartButton
           onClick={this.validateAddtoCart}
           label={formatMessage(messages.addToCartButtonLabel)}
           item={itemToAdd}
+          itemProdPage={true}
         />
       </ButtonsRow>
     )
