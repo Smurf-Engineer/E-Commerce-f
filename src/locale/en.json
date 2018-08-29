@@ -1002,5 +1002,7 @@
   "components.TeamStoreList.notFoundMessage": "No results or the team is private",
   "components.LogoutModal.title": "Log Out",
   "components.LogoutModal.confirm": "Confirm",
-  "components.LogoutModal.logout": "Are you sure you want to log out?"
+  "components.LogoutModal.logout": "Are you sure you want to log out?",
+  "screens.ShoppingCartPage.taxesGst": "GST/HST",
+  "screens.ShoppingCartPage.taxesPst": "PST"
 }

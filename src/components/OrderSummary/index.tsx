@@ -35,7 +35,7 @@ const COUNTRY_CODE_US = 'us'
 const COUNTRY_CODE_CANADA = 'ca'
 
 interface Data extends QueryProps {
-  taxes: NetsuiteTax[]
+  taxes: NetsuiteTax
   shipping: NetsuiteShipping
 }
 
@@ -101,12 +101,20 @@ export class OrderSummary extends React.Component<Props, {}> {
     const youSaved = Number(totalWithoutDiscount) - total
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
-    const taxesTotal = get(data, 'taxes.total', taxes) || 0
+    // const taxesTotal = get(data, 'taxes.total', taxes) || 0
+
+    // const shippingRates = get(data, 'shipping', null)
+    const taxRates = get(data, 'taxes', null)
 
     const symbol = currencySymbol || '$'
 
+    // pro design fee
+    const proDesignFee = proDesignReview || 0
     // get tax fee
-    const taxesAmount = taxesTotal || taxes
+    const taxesAmount = (taxRates && taxRates.total) || taxes
+    // canadian taxes
+    let taxGst = 0
+    let taxPst = 0
     let taxFee = 0
     if (taxesAmount && country) {
       let taxTotal = 0
@@ -116,8 +124,14 @@ export class OrderSummary extends React.Component<Props, {}> {
           taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           break
         case COUNTRY_CODE_CANADA: // TODO: pending confirmation
-          taxTotal = (total * taxesAmount) / 100 // calculate tax
-          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          if (taxRates) {
+            taxGst =
+              ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
+              100 // calculate tax
+            taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
+            taxGst = Math.round(taxGst * 100) / 100
+            taxPst = Math.round(taxPst * 100) / 100
+          }
           break
         default:
           break
@@ -137,18 +151,27 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-
+          {/* pro design */}
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
               <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
-
+          {/* taxes */}
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
             <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
           </OrderItem>
+          <OrderItem hide={!taxGst}>
+            <FormattedMessage {...messages.taxesGst} />
+            <div>{`${symbol} ${taxGst.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxPst}>
+            <FormattedMessage {...messages.taxesPst} />
+            <div>{`${symbol} ${taxPst.toFixed(2)}`}</div>
+          </OrderItem>
+          {/* shipping */}
           <OrderItem hide={!shippingTotal}>
             <FormattedMessage {...messages.shipping} />
             <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
