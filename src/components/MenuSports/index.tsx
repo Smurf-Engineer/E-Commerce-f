@@ -25,7 +25,12 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   type: number
-  onPressSeeAll: (gender: number, category: string, sport: string) => void
+  history: any
+  onPressSeeAll: (
+    gender: number | undefined,
+    category: string,
+    sport: string
+  ) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
   setCategoryAction: (sport: number) => void
@@ -42,7 +47,12 @@ export class MenuSports extends React.PureComponent<Props, {}> {
     setCategoryAction(categorySelected)
   }
 
-  handleOnPressSeeAll = () => {
+  onSeeAllFilters = () => {
+    const { history } = this.props
+    history.push('/product-catalogue')
+  }
+
+  onPressSeeAll = () => {
     const {
       data: { categories },
       sports,
@@ -50,7 +60,11 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       type,
       categorySelected
     } = this.props
-    onPressSeeAll(0, categories[categorySelected].name, sports[type].name)
+    onPressSeeAll(
+      undefined,
+      categories[categorySelected].name,
+      sports[type].name
+    )
   }
 
   getFilter = (array: any[], index: number) =>
@@ -94,7 +108,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
           />
           {loading || (categories && !categories.length) ? null : (
             <SeeAllButton
-              onClick={this.handleOnPressSeeAll}
+              onClick={this.onSeeAllFilters}
               {...{ formatMessage }}
             />
           )}
@@ -111,7 +125,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
               currentCurrency
             }}
             width={'80%'}
-            onPressSeeAll={this.handleOnPressSeeAll}
+            onPressSeeAll={this.onPressSeeAll}
           />
         )}
       </Container>
