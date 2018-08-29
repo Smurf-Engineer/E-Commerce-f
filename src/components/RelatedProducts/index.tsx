@@ -13,19 +13,20 @@ import {
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-import { Product, ImageType } from '../../types/common'
+import { Product } from '../../types/common'
 
 interface Props {
   history: any
   dispatch: any
   currentCurrency: string
   products: Product[]
+  phone: boolean
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class RelatedProducts extends React.Component<Props, {}> {
   render() {
-    const { products, currentCurrency, formatMessage } = this.props
+    const { products, phone, currentCurrency, formatMessage } = this.props
 
     const renderProductList = products.map((product, key) => {
       const {
@@ -42,15 +43,7 @@ export class RelatedProducts extends React.Component<Props, {}> {
         colors
       } = product
 
-      const productImages: ImageType = images ? images[0] : ({} as ImageType)
-
-      let image = ''
-      if (
-        typeof window !== 'undefined' &&
-        window.matchMedia('(max-width: 768px)').matches
-      ) {
-        image = productImages && productImages.front
-      }
+      const productImages = images ? images[0] : {}
 
       return (
         <ProductThumbnail
@@ -66,13 +59,13 @@ export class RelatedProducts extends React.Component<Props, {}> {
             gender,
             customizable,
             currentCurrency,
-            colors,
-            image
+            colors
           }}
           images={productImages}
           onPressQuickView={this.handleOnQuickView}
           onPressCustomize={this.handleOnCustomize}
           customizableLabel={formatMessage(messages.customizableLabel)}
+          disableSlider={phone}
           labelButton={
             customizable
               ? formatMessage(messages.customize)
@@ -102,11 +95,12 @@ export class RelatedProducts extends React.Component<Props, {}> {
   }
 }
 
+const mapStateToProps = (state: any) => state.get('responsive').toJS()
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const RelatedProductsEnhance = compose(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )
 )(RelatedProducts)
