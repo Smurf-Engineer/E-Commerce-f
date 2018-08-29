@@ -17,7 +17,7 @@ import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
-import { AddAddressMutation, PlaceOrderMutation } from './data'
+import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
 import { CheckoutTabs } from './constants'
 import MediaQuery from 'react-responsive'
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
@@ -570,14 +570,28 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = (event: any) => {
-    // TODO: Change the condition for a validation of currencies between
-    // the selected one and the one from billingAddress.
-    const condition = true
-    if (condition) {
-      const { openCurrencyWarningAction } = this.props
+  handleOnPlaceOrder = async (event: any) => {
+    const {
+      client: { query },
+      billingCountry,
+      currentCurrency,
+      openCurrencyWarningAction
+    } = this.props
+
+    const {
+      data: { currency }
+    } = await query({
+      query: CurrencyQuery,
+      variables: { countryCode: billingCountry },
+      fetchPolicy: 'network-only'
+    })
+
+    const selectedCurrency = currentCurrency || config.defaultCurrency
+
+    if (currency.toLowerCase() !== selectedCurrency) {
       return openCurrencyWarningAction(true)
     }
+
     this.placeOrder(event)
   }
 
