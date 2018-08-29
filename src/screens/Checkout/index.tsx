@@ -47,7 +47,8 @@ import {
   Product,
   StripeCardData,
   CreditCardData,
-  TaxAddressObj
+  TaxAddressObj,
+  ItemDetailType
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -653,12 +654,17 @@ class Checkout extends React.Component<Props, {}> {
         }
         item.product = productItem
         item.itemDetails = itemDetails.map(
-          ({ gender, quantity, size, fit }: any) => {
+          ({ gender, quantity, size, fit }: CartItemDetail) => {
+            const fitId = get(fit, 'id')
+            const fitName = get(fit, 'name')
+            const fitObj: ItemDetailType = {
+              id: fitId,
+              name: fitName
+            }
             unset(gender, '__typename')
             unset(quantity, '__typename')
             unset(size, '__typename')
-            unset(fit, '__typename')
-            return { gender, quantity, size, fit }
+            return { gender, quantity, size, fit: fitObj }
           }
         )
         return item

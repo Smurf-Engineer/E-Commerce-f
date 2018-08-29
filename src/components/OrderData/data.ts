@@ -72,6 +72,7 @@ export const getOrderQuery = gql`
       preorder
       taxAmount: tax_amount
       shippingAmount: shipping_amount
+      proDesign: pro_design
     }
   }
 `

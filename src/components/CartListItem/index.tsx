@@ -289,25 +289,25 @@ class CartListItem extends React.Component<Props, {}> {
           <div>{designCode || ''}</div>
         </NameContainer>
         <PriceContainer>
-          <ItemDetailsHeaderPrice>{`${symbol} ${total ||
-            0}`}</ItemDetailsHeaderPrice>
+          <ItemDetailsHeaderPrice>
+            {`${symbol} ${(total || 0).toFixed(2)}`}
+          </ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${unitaryPrice ||
-              0}`}
+            {`${formatMessage(messages.unitPrice)} ${symbol} ${(unitaryPrice || 0).toFixed(2)}`}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && nextPrice.items > 0 ? (
+          {!onlyRead && designId && nextPrice.items > 0 ? (
             <ItemDetailsHeaderPriceDetail highlighted={true}>
               <FormattedMessage
                 {...messages.addMoreFor}
                 values={{
-                  price: `${symbol} ${nextPrice.price}`,
+                  price: `${symbol} ${nextPrice.price.toFixed(2)}`,
                   products: nextPrice.items
                 }}
               />
             </ItemDetailsHeaderPriceDetail>
           ) : (
-            <HeaderPriceDetailEmpty />
-          )}
+              <HeaderPriceDetailEmpty />
+            )}
         </PriceContainer>
       </ItemDetailsHeader>
     )
