@@ -233,6 +233,7 @@ class MainLayout extends React.Component<Props, {}> {
           closeResults={this.closeResults}
           openResults={this.openResults}
           quickViewAction={this.openQuickView}
+          currentCurrency={currentCurrency || config.defaultCurrency}
         />
         <Content>{children}</Content>
         {!hideFooter && (

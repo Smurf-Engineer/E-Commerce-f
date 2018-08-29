@@ -198,7 +198,7 @@ export default defineMessages({
     defaultMessage: '• Flatlock Stitching'
   },
   novaTitle: {
-    id: 'screens.JerseyComparison.tourTitle',
+    id: 'screens.JerseyComparison.novaTitle',
     defaultMessage: 'NOVA'
   },
   novaMessage: {
