@@ -101,12 +101,11 @@ export class OrderSummary extends React.Component<Props, {}> {
     const youSaved = Number(totalWithoutDiscount) - total
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
-    const taxesTotal = get(data, 'taxes.total', taxes) || 0
+    const taxesAmount = get(data, 'taxes.total', taxes) || 0
 
     const symbol = currencySymbol || '$'
 
     // get tax fee
-    const taxesAmount = taxesTotal || taxes
     let taxFee = 0
     if (taxesAmount && country) {
       let taxTotal = 0
@@ -124,7 +123,8 @@ export class OrderSummary extends React.Component<Props, {}> {
       }
     }
 
-    const sumTotal = total + shippingTotal + taxFee
+    const sumTotal =
+      total + shippingTotal + taxFee + (!!proDesignReview && proDesignReview)
 
     return (
       <Container>
@@ -168,7 +168,7 @@ export class OrderSummary extends React.Component<Props, {}> {
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
                     size="default"
-                    onChange={() => {}}
+                    onChange={() => { }}
                   />
                 </ZipCodeInputWrapper>
               </Panel>
@@ -177,12 +177,12 @@ export class OrderSummary extends React.Component<Props, {}> {
         ) : null}
         <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
           <FormattedMessage {...messages.total} />
-          <div>{`${symbol} ${sumTotal}`}</div>
+          <div>{`${symbol} ${sumTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             <FormattedMessage {...messages.youSaved} />
-            <div>{`$${youSaved}`}</div>
+            <div>{`$${youSaved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
       </Container>
