@@ -421,7 +421,7 @@ class Checkout extends React.Component<Props, {}> {
                 shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
-                total={!proDesign ? total : total + DESIGNREVIEWFEE}
+                total={total}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
                 {...{ totalWithoutDiscount }}

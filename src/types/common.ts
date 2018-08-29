@@ -713,12 +713,13 @@ export interface ITemplateDownload {
 
 export interface NetsuiteTax {
   internalId: string
-  rate: string
+  rate: number
   countryCode: string
-  ratePST: string
-  rateGST: string
+  ratePst: number
+  rateGst: number
   state: string
   zip: string
+  total: number
 }
 
 export interface NetsuiteShipping {
