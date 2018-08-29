@@ -123,6 +123,7 @@ export const getOrderQuery = gql`
         designCode
       }
       status
+      proDesign: pro_design
     }
   }
 `
