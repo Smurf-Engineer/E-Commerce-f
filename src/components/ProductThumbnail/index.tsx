@@ -155,10 +155,14 @@ class ProductThumbnail extends React.Component<Props, {}> {
       lastPrice = currencyPrices.length - 1
     }
 
-    const price =
-      currencyPrices &&
-      currencyPrices.length &&
-      `$${currencyPrices[0].price} - $${currencyPrices[lastPrice].price}`
+    let price = ''
+    if (currencyPrices && currencyPrices.length) {
+      price = `$${currencyPrices[0].price}`
+
+      if (customizable) {
+        price += ` - $${currencyPrices[lastPrice].price}`
+      }
+    }
 
     let urlProduct = this.getUrlProduct()
     const colorList =
