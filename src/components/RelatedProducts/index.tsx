@@ -13,7 +13,7 @@ import {
 } from './styledComponents'
 import ProductThumbnail from '../ProductThumbnail'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-import { Product } from '../../types/common'
+import { Product, ImageType } from '../../types/common'
 
 interface Props {
   history: any
@@ -42,7 +42,15 @@ export class RelatedProducts extends React.Component<Props, {}> {
         colors
       } = product
 
-      const productImages = images ? images[0] : {}
+      const productImages: ImageType = images ? images[0] : ({} as ImageType)
+
+      let image = ''
+      if (
+        typeof window !== 'undefined' &&
+        window.matchMedia('(max-width: 768px)').matches
+      ) {
+        image = productImages && productImages.front
+      }
 
       return (
         <ProductThumbnail
@@ -58,7 +66,8 @@ export class RelatedProducts extends React.Component<Props, {}> {
             gender,
             customizable,
             currentCurrency,
-            colors
+            colors,
+            image
           }}
           images={productImages}
           onPressQuickView={this.handleOnQuickView}
