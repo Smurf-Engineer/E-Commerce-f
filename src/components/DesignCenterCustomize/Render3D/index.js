@@ -1076,8 +1076,11 @@ class Render3D extends PureComponent {
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
           const canvasJson = JSON.stringify(
-            this.canvasTexture.toObject(EXTRA_FIELDS)
+            this.canvasTexture.toDatalessJSON(EXTRA_FIELDS)
           )
+          console.log('------------------------------------')
+          console.log(canvasJson)
+          console.log('------------------------------------')
           const saveDesign = {
             canvasJson,
             designBase64,
@@ -1381,7 +1384,11 @@ class Render3D extends PureComponent {
           shape.set({ ...shapeObject })
         } else {
           shape
-            .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
+            .set({
+              ...shapeObject,
+              scaleX: scaleFactorX,
+              scaleY: scaleFactorY
+            })
             .setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
@@ -1422,7 +1429,12 @@ class Render3D extends PureComponent {
         shape.set({ ...shapeObject })
       } else {
         shape
-          .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
+          .set({
+            ...shapeObject,
+            scaleX: scaleFactorX,
+            scaleY: scaleFactorY,
+            sourcePath: src
+          })
           .setCoords()
         el.scaleX = scaleFactorX
         el.scaleY = scaleFactorY
