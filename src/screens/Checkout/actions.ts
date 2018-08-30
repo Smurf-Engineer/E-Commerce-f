@@ -25,7 +25,8 @@ import {
   OPEN_ADDRESSES_MODAL,
   SET_SKIP_VALUE,
   SHOW_CARD_FORM,
-  SET_SELECTED_CARD_TO_PAY
+  SET_SELECTED_CARD_TO_PAY,
+  OPEN_CURRENCY_WARNING
 } from './constants'
 import { AnyAction, AddressType, CreditCardData } from '../../types/common'
 
@@ -168,4 +169,9 @@ export const setSkipValueAction = (
   type: SET_SKIP_VALUE,
   skip,
   currentPage
+})
+
+export const openCurrencyWarningAction = (open: boolean): AnyAction => ({
+  type: OPEN_CURRENCY_WARNING,
+  open
 })

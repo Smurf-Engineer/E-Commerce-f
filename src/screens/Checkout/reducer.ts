@@ -27,7 +27,8 @@ import {
   OPEN_ADDRESSES_MODAL,
   SET_SKIP_VALUE,
   SHOW_CARD_FORM,
-  SET_SELECTED_CARD_TO_PAY
+  SET_SELECTED_CARD_TO_PAY,
+  OPEN_CURRENCY_WARNING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -80,7 +81,8 @@ export const initialState = fromJS({
   loadingPlaceOrder: false,
   paymentMethod: 'credit card',
   countryId: null,
-  openAddressesModal: false
+  openAddressesModal: false,
+  openCurrencyWarning: false
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -224,6 +226,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('billingCountry', action.countryCode)
     case OPEN_ADDRESSES_MODAL:
       return state.set('openAddressesModal', action.open)
+    case OPEN_CURRENCY_WARNING:
+      return state.set('openCurrencyWarning', action.open)
     default:
       return state
   }
