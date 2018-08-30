@@ -122,6 +122,7 @@
   "components.forgotPassword.invalidEmailLabel": "Invalid email!",
   "components.forgotPassword.sendButtonLabel": "SEND",
   "components.forgotPassword.returnToLoginLabel": "Or return to LOG IN",
+
   "components.ResetPassword.passwordLabel": "Password",
   "components.ResetPassword.confirmPasswordLabel": "confirmPassword",
   "components.ResetPassword.newPasswordLabel": "New password",
@@ -130,6 +131,8 @@
   "components.ResetPassword.invalidPasswordMessage": "Invalid password!",
   "components.ResetPassword.resetTokenMessage": "Reset token needed",
   "components.ResetPassword.noMatchingMessage": "No matching passwords",
+  "components.ResetPassword.cancel": "Cancel",
+
   "components.FitInfo.sizeChart": "SIZING CHART",
   "components.FitInfo.fitStyles": "FIT STYLES",
   "components.FitInfo.getFittedLabel": "Don’t want to look at charts? We’ll get you the right sizing",
