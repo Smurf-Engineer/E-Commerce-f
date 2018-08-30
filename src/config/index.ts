@@ -9,7 +9,9 @@ interface ConfigType {
   graphqlUriBase?: string
   baseUrl?: string
   storageUrl: string
-  pkStripe: string
+  pkStripeUS: string
+  pkStripeCA: string
+  pkStripeEU: string
   paypalClientIdTest: string
   paypalClientIdUS: string
   paypalClientIdCA: string
@@ -28,9 +30,9 @@ const config: ConfigType = {
   baseUrl: 'https://dev.jakroo.tailrecursive.co/',
   storageUrl: 'https://storage.googleapis.com/jakroo-storage',
   pkStripe: 'pk_test_USJaHD7YvJFcFsgwOixnJDrq',
-  pkStripeUS: 'pk_test_xxx',
-  pkStripeCA: 'pk_test_xxx',
-  pkStripeEU: 'pk_test_xxx',
+  pkStripeUS: 'pk_test_fk4Pkn82s8efHXd1CdwMHIUe',
+  pkStripeCA: 'pk_test_sju2REbLoHMBDZUJUmCbVKEf',
+  pkStripeEU: 'pk_test_GkbzZt7CzM9M1Wg41oiV8MK9',
   paypalClientIdTest:
     'AWuWtjrHnZd_nLLXI-x40UtoX7cNxqYNjh9CrfDeNO6y4Ik2xADqapxfzXzHCPeIgrFSP-45-2gYkiO-',
   paypalClientIdUS: 'A3ZJ5tCmobw4dtbuCuY0OnkDhEwSAb-b59G0zW-AhbDZQT1eyMF5KzCC',
