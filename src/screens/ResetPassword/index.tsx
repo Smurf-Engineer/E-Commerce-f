@@ -12,6 +12,9 @@ import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
+  Header,
+  ContentHeader,
+  LogoIcon,
   FormContainer,
   StyledInput,
   StyledLoginButton,
@@ -19,6 +22,7 @@ import {
 } from './styledComponents'
 import { setPassword, setConfirmPassword } from './actions'
 import { resetPassword } from './data'
+import logo from '../../assets/jakroo_logo.svg'
 
 interface Props {
   changeResetPassword: (variables: {}) => void
@@ -72,14 +76,18 @@ export class ResetPassword extends React.Component<Props, {}> {
 
   handlePasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     dispatch(setPassword(value))
   }
 
   handleConfirmPasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     dispatch(setConfirmPassword(value))
   }
@@ -96,6 +104,11 @@ export class ResetPassword extends React.Component<Props, {}> {
     const { intl, password, confirmPassword } = this.props
     return (
       <Container>
+        <Header>
+          <ContentHeader>
+            <LogoIcon src={logo} />
+          </ContentHeader>
+        </Header>
         <StyledCard title={intl.formatMessage(messages.changePasswordLabel)}>
           <FormContainer>
             <StyledInput
@@ -131,7 +144,10 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const ResetPasswordEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   resetPassword
 )(ResetPassword)
 export default ResetPasswordEnhance

@@ -5,13 +5,26 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
+import { GRAY_HEADER } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `
-
+export const Header = styled.div`
+  background-color: ${GRAY_HEADER};
+  height: 70px;
+  width: 100%;
+`
+export const ContentHeader = styled.div`
+  align-items: center;
+  display: flex;
+  margin: auto;
+  max-width: 1024px;
+  padding: 18px 36px;
+`
+export const LogoIcon = styled.img``
 export const LoginLabel = styled.div`
   height: 25px;
   width: 100%;
