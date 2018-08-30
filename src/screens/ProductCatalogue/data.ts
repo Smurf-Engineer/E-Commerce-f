@@ -5,6 +5,7 @@ export const GetFiltersQuery = gql`
     filters {
       name
       options {
+        filterId: id
         name
       }
     }
