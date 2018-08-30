@@ -5,15 +5,16 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
-import { GRAY_HEADER } from '../../theme/colors'
+import { WHITE, GRAY_LIGHT } from '../../theme/colors'
 
 export const Container = styled.div`
+  background-color: ${WHITE};
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 `
 export const Header = styled.div`
-  background-color: ${GRAY_HEADER};
+  background-color: ${WHITE};
   height: 70px;
   width: 100%;
 `
@@ -25,15 +26,10 @@ export const ContentHeader = styled.div`
   padding: 18px 36px;
 `
 export const LogoIcon = styled.img``
-export const LoginLabel = styled.div`
-  height: 25px;
+export const Divider = styled.div`
+  background-color: ${GRAY_LIGHT};
+  height: 1px;
   width: 100%;
-  color: #5f6062;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 25px;
-  text-align: center;
-  margin-bottom: 40px;
 `
 export const FormContainer = styled.div``
 

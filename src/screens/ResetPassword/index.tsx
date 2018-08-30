@@ -15,6 +15,7 @@ import {
   Header,
   ContentHeader,
   LogoIcon,
+  Divider,
   FormContainer,
   StyledInput,
   StyledLoginButton,
@@ -22,15 +23,16 @@ import {
 } from './styledComponents'
 import { setPassword, setConfirmPassword } from './actions'
 import { resetPassword } from './data'
+import Layout from '../../components/MainLayout'
 import logo from '../../assets/jakroo_logo.svg'
 
 interface Props {
-  changeResetPassword: (variables: {}) => void
   history: any
   dispatch: any
   password: string
   confirmPassword: string
   intl: InjectedIntl
+  changeResetPassword: (variables: {}) => void
 }
 
 export class ResetPassword extends React.Component<Props, {}> {
@@ -101,39 +103,45 @@ export class ResetPassword extends React.Component<Props, {}> {
   }
 
   render() {
-    const { intl, password, confirmPassword } = this.props
+    const { intl, history, password, confirmPassword } = this.props
+
     return (
-      <Container>
+      <Layout hideFooter={true} hideBottomHeader={true} {...{ history, intl }}>
         <Header>
           <ContentHeader>
             <LogoIcon src={logo} />
           </ContentHeader>
         </Header>
-        <StyledCard title={intl.formatMessage(messages.changePasswordLabel)}>
-          <FormContainer>
-            <StyledInput
-              id="password"
-              value={password}
-              type="Password"
-              placeholder={intl.formatMessage(messages.newPasswordLabel)}
-              onChange={this.handlePasswordChange}
-            />
-            <StyledInput
-              id="confirmPassword"
-              value={confirmPassword}
-              type="Password"
-              placeholder={intl.formatMessage(messages.confirmNewPasswordLabel)}
-              onChange={this.handleConfirmPasswordChange}
-            />
-            <StyledLoginButton
-              type="danger"
-              onClick={this.handleChangePassword}
-            >
-              {intl.formatMessage(messages.changePasswordLabel)}
-            </StyledLoginButton>
-          </FormContainer>
-        </StyledCard>
-      </Container>
+        <Divider />
+        <Container>
+          <StyledCard title={intl.formatMessage(messages.changePasswordLabel)}>
+            <FormContainer>
+              <StyledInput
+                id="password"
+                value={password}
+                type="Password"
+                placeholder={intl.formatMessage(messages.newPasswordLabel)}
+                onChange={this.handlePasswordChange}
+              />
+              <StyledInput
+                id="confirmPassword"
+                value={confirmPassword}
+                type="Password"
+                placeholder={intl.formatMessage(
+                  messages.confirmNewPasswordLabel
+                )}
+                onChange={this.handleConfirmPasswordChange}
+              />
+              <StyledLoginButton
+                type="danger"
+                onClick={this.handleChangePassword}
+              >
+                {intl.formatMessage(messages.changePasswordLabel)}
+              </StyledLoginButton>
+            </FormContainer>
+          </StyledCard>
+        </Container>
+      </Layout>
     )
   }
 }
