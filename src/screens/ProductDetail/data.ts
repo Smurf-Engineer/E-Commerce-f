@@ -22,6 +22,7 @@ export const GetProductsByIdQuery = gql`
       details
       materials: materials_info
       temperatures: temperature_range
+      weight
       genders {
         id
         name: gender
