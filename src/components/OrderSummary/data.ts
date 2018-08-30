@@ -6,12 +6,16 @@ export const getTaxQuery = gql`
     $weight: Float!
     $shipAddress: NetsuiteTaxAddress!
   ) {
-    taxes: getTaxesByAddress(shipAddress: $shipAddress) {
+    taxes: getTaxesByAddress(
+      shipAddress: $shipAddress
+      countrySubsidiary: $country
+    ) {
       total
       rate
       ratePst: rate_pst
       rateGst: rate_gst
       internalId
+      countrySub
     }
 
     shipping: getShippingByCountry(country: $country, weight: $weight) {
