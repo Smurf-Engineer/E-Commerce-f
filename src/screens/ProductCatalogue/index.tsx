@@ -26,18 +26,19 @@ import {
   FiltersTitle,
   ResultsColumn
 } from './styledComponents'
-import { QueryProps, ClickParam } from '../../types/common'
+import { QueryProps, ClickParam, Filter } from '../../types/common'
 import { GetFiltersQuery } from './data'
 import Icon from 'antd/lib/icon'
 import config from '../../config/index'
 
-interface FilterOptions {
-  name: string
+interface FilterOptions extends Filter {
   selected: boolean
+  filterId: number
 }
+
 interface FilterType {
-  index: number
-  id: string
+  index?: number
+  id?: string
   name: string
   options: FilterOptions[]
 }
@@ -127,10 +128,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     if (sport) {
       const sportName = this.getFormattedFilterName(sport)
 
-      const filterObject = {
+      let filterObject = {
         type: 'sportFilters',
-        name: sportName,
-        firstGenderSet: true
+        name: sportName
       }
       setSelectedFilters(filterObject)
     }
@@ -162,7 +162,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     } = this.props
 
     let sortByLabel = ''
-    if (loading) {
+    if (loading || !filtersGraph.length) {
       return null
     }
 
@@ -352,13 +352,13 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
   }
 
   getFilterIndexes = (filterOptions: FilterOptions[], filters: object) => {
-    let indexes = ''
-    filterOptions.forEach((option: FilterOptions, index: number) => {
+    let optionsIds = ''
+    filterOptions.forEach((option: FilterOptions) => {
       if (has(filters, option.name) && filters[option.name]) {
-        indexes += `${index + 1},`
+        optionsIds += `${option.filterId},`
       }
     })
-    return trimEnd(indexes, ',')
+    return trimEnd(optionsIds, ',')
   }
 
   handleOrderBy = (evt: ClickParam) => {
@@ -382,7 +382,6 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const {
       target: { name, value }
     } = evt
-
     const noSpacesValue = value.replace(/\s/g, '')
     const filterObject = {
       type: `${noSpacesValue}Filters`,
