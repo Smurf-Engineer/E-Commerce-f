@@ -393,8 +393,8 @@ export interface TeamstoreResult {
 }
 
 export type ItemDetailType = {
-  id: number
-  name: string
+  id?: number
+  name?: string
 }
 
 export type CartItemDetail = {

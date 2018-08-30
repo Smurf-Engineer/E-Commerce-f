@@ -65,8 +65,9 @@ export const ImageTop = styled.div`
   display: flex;
   flex-direction: row;
   position: absolute;
-  width: 200px;
+  width: 100%;
   justify-content: space-between;
+  padding: 5px 5px 0;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100px;
@@ -105,6 +106,7 @@ export const Arrows = styled.div`
   top: 110px;
   width: 100%;
   justify-content: space-between;
+  padding: 0 5px;
 `
 
 export const Arrow = styled.img``
