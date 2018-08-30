@@ -5,14 +5,16 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
+import Message from 'antd/lib/message'
 import {
   QueryProps,
   NetsuiteTax,
   NetsuiteShipping,
   TaxAddressObj,
-  AddressObj
+  AddressObj,
+  CouponCode
 } from '../../types/common'
-import { getTaxQuery } from './data'
+import { getTaxQuery, applyPromoCodeMutation } from './data'
 import messages from './messages'
 import {
   Container,
@@ -24,9 +26,9 @@ import {
   ZipCodeInputWrapper,
   CollapseWrapper,
   CalculationsWrapper,
-  YouSavedOrderItem
-  //  FlexWrapper,  UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-  //  DeleteLabel
+  YouSavedOrderItem,
+  FlexWrapper,
+  DeleteLabel
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
@@ -54,6 +56,11 @@ interface Props {
   proDesignReview?: number
   currencySymbol?: string
   formatMessage: (messageDescriptor: any) => string
+  couponCode?: string
+  setCouponCodeAction?: (code: CouponCode) => void
+  deleteCouponCodeAction?: () => void
+  // mutations
+  applyPromoCode: (variables: {}) => Promise<any>
 }
 
 const InputSearch = Input.Search
@@ -75,30 +82,11 @@ export class OrderSummary extends React.Component<Props, {}> {
       country
     } = this.props
 
-    // const renderDiscount = discount ? (
-    //   <OrderItem>
-    //     {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-    //     <FlexWrapper>
-    //       <div>{formatMessage(messages.discountCode)}</div>
-    //       <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
-    //     </FlexWrapper>
-    //     <div>{`USD$${discount}`}</div> */}
-    //     {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-    //   </OrderItem>
-    // ) : (
-    //     <ZipCodeInputWrapper>
-    //       <InputSearch
-    //         disabled={true}
-    //         id="url"
-    //         placeholder={formatMessage(messages.zipCodePlaceholder)}
-    //         enterButton={formatMessage(messages.estimate)}
-    //         size="default"
-    //         maxLength="5"
-    //         onChange={() => { }}
-    //       />
-    //     </ZipCodeInputWrapper>
-    //   )
-    const youSaved = Number(totalWithoutDiscount) - total
+    const discount = 12
+
+    const youSaved = totalWithoutDiscount
+      ? totalWithoutDiscount + discount - total
+      : 0
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
     const taxesAmount = get(data, 'taxes.total', taxes) || 0
@@ -124,7 +112,24 @@ export class OrderSummary extends React.Component<Props, {}> {
     }
 
     const sumTotal =
-      total + shippingTotal + taxFee + (!!proDesignReview && proDesignReview)
+      total +
+      shippingTotal +
+      taxFee +
+      (!!proDesignReview && proDesignReview) -
+      discount
+
+    const renderDiscount = (
+      <OrderItem>
+        <FlexWrapper>
+          <div>{formatMessage(messages.discountLabel)}</div>
+          <DeleteLabel onClick={this.deleteCouponCode}>
+            {formatMessage(messages.deleteLabel)}
+          </DeleteLabel>
+        </FlexWrapper>
+        <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
+        {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
+      </OrderItem>
+    )
 
     return (
       <Container>
@@ -137,14 +142,12 @@ export class OrderSummary extends React.Component<Props, {}> {
         </OrderItem>
         <CalculationsWrapper>
           <Divider />
-
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
               <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
-
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
             <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
@@ -153,8 +156,7 @@ export class OrderSummary extends React.Component<Props, {}> {
             <FormattedMessage {...messages.shipping} />
             <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
           </OrderItem>
-          {/* Uncomment to display discount ammount or shipping estimate */}
-          {/* {!onlyRead ? renderDiscount : null} */}
+          {!onlyRead && renderDiscount}
         </CalculationsWrapper>
         <CodeDivider />
         {!onlyRead ? (
@@ -167,7 +169,7 @@ export class OrderSummary extends React.Component<Props, {}> {
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
                     size="default"
-                    onSearch={this.applyCouponCode}
+                    onSearch={this.onApplyCouponCode}
                   />
                 </ZipCodeInputWrapper>
               </Panel>
@@ -188,8 +190,33 @@ export class OrderSummary extends React.Component<Props, {}> {
     )
   }
 
-  applyCouponCode = (code: string) => {
-    console.log(code)
+  onApplyCouponCode = async (code: string) => {
+    try {
+      const { applyPromoCode, setCouponCodeAction = () => {} } = this.props
+      const data = await applyPromoCode({
+        variables: { code }
+      })
+      console.log(data)
+      const {
+        data: { couponCode }
+      } = data
+      if (couponCode) {
+        setCouponCodeAction(couponCode)
+        Message.success('Coupon applied')
+      } else {
+        Message.error('Unknow error occurred')
+      }
+    } catch (error) {
+      const { deleteCouponCodeAction = () => {} } = this.props
+      deleteCouponCodeAction()
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      Message.error(errorMessage)
+    }
+  }
+
+  deleteCouponCode = () => {
+    // handleOnDeleteDiscount
   }
 }
 
@@ -206,7 +233,8 @@ const OrderSummaryEnhance = compose(
       variables: { country, weight, shipAddress },
       fetchPolicy: 'network-only'
     })
-  })
+  }),
+  applyPromoCodeMutation
 )(OrderSummary)
 
 export default OrderSummaryEnhance

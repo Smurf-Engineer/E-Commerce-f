@@ -18,7 +18,8 @@ import {
   SET_SHIPPING_ACTION,
   SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA,
-  SHOW_REVIEW_DESIGN_MODAL
+  SHOW_REVIEW_DESIGN_MODAL,
+  SET_COUPON_CODE
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -29,7 +30,8 @@ export const initialState = fromJS({
   total: 0,
   shipping: 0,
   showDeleteLastItemModal: false,
-  showReviewDesignModal: false
+  showReviewDesignModal: false,
+  couponCode: ''
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -108,6 +110,8 @@ const shoppingCartPageReducer: Reducer<any> = (
       return initialState
     case SHOW_REVIEW_DESIGN_MODAL:
       return state.set('showReviewDesignModal', action.show)
+    case SET_COUPON_CODE:
+      return state.set('couponCode', action.couponCode)
     default:
       return state
   }

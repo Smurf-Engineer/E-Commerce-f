@@ -25,9 +25,16 @@ import {
   OPEN_ADDRESSES_MODAL,
   SET_SKIP_VALUE,
   SHOW_CARD_FORM,
-  SET_SELECTED_CARD_TO_PAY
+  SET_SELECTED_CARD_TO_PAY,
+  SET_COUPON_CODE,
+  DELETE_COUPON_CODE
 } from './constants'
-import { AnyAction, AddressType, CreditCardData } from '../../types/common'
+import {
+  AnyAction,
+  AddressType,
+  CreditCardData,
+  CouponCode
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -168,4 +175,13 @@ export const setSkipValueAction = (
   type: SET_SKIP_VALUE,
   skip,
   currentPage
+})
+
+export const setCouponCodeAction = (couponCode: CouponCode): AnyAction => ({
+  type: SET_COUPON_CODE,
+  couponCode
+})
+
+export const deleteCouponCodeAction = (): AnyAction => ({
+  type: DELETE_COUPON_CODE
 })

@@ -17,7 +17,8 @@ import {
   SET_SHIPPING_ACTION,
   SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA,
-  SHOW_REVIEW_DESIGN_MODAL
+  SHOW_REVIEW_DESIGN_MODAL,
+  SET_COUPON_CODE
 } from './constants'
 import { AnyAction, ItemDetailType, CartItems } from '../../types/common'
 
@@ -132,4 +133,9 @@ export const showDeleteLastItemModalAction = (show: boolean): AnyAction => ({
 export const showReviewDesignModalAction = (show: boolean): AnyAction => ({
   type: SHOW_REVIEW_DESIGN_MODAL,
   show
+})
+
+export const setCouponCodeAction = (couponCode: string): AnyAction => ({
+  type: SET_COUPON_CODE,
+  couponCode
 })

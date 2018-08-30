@@ -996,3 +996,12 @@ export interface ProductColors {
   name: string
   image: string
 }
+
+export interface CouponCode {
+  code: string
+  type: couponType
+  discountAmount?: string
+  rate?: string
+}
+
+type couponType = '%' | '$'

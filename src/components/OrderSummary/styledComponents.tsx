@@ -88,6 +88,7 @@ export const DeleteLabel = styled.div`
   letter-spacing: 0.09px;
   line-height: 16px;
   margin-left: 10px;
+  cursor: pointer;
 `
 
 export const TotalOrderItem = styled.div`

@@ -63,6 +63,9 @@ interface Props extends RouteComponentProps<any> {
   cart: CartItems[]
   showDeleteLastItemModal: boolean
   showReviewDesignModal: boolean
+  currentCurrency: string
+  couponCode: string
+  // Redux actions
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -95,12 +98,13 @@ interface Props extends RouteComponentProps<any> {
     detailIndex: number,
     quantity: number
   ) => void
-  setInitialData: () => void
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
-  saveToStorage: (cart: CartItems[]) => void
   showReviewDesignModalAction: (open: boolean) => void
-  currentCurrency: string
+  setCouponCodeAction: (code: string) => void
+  // thunk actions
+  setInitialData: () => void
+  saveToStorage: (cart: CartItems[]) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -263,7 +267,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       showDeleteLastItemModal,
       showReviewDesignModal,
-      currentCurrency
+      currentCurrency,
+      couponCode,
+      setCouponCodeAction
     } = this.props
     const { formatMessage } = intl
 
@@ -400,7 +406,13 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   subtotal={total}
                   shipping={0}
                   currencySymbol={symbol}
-                  {...{ formatMessage, totalWithoutDiscount, total }}
+                  {...{
+                    formatMessage,
+                    totalWithoutDiscount,
+                    total,
+                    couponCode,
+                    setCouponCodeAction
+                  }}
                 />
                 <ButtonWrapper disabled={!activeCheckout}>
                   <CheckoutButton

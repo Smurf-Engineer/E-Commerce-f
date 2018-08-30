@@ -48,7 +48,8 @@ import {
   StripeCardData,
   CreditCardData,
   TaxAddressObj,
-  ItemDetailType
+  ItemDetailType,
+  CouponCode
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -122,6 +123,8 @@ interface Props extends RouteComponentProps<any> {
   showCardForm: boolean
   selectedCard: CreditCardData
   currentCurrency: string
+  couponCode: CouponCode
+  // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -147,6 +150,8 @@ interface Props extends RouteComponentProps<any> {
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  setCouponCodeAction: (code: CouponCode) => void
+  deleteCouponCodeAction: () => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -217,7 +222,9 @@ class Checkout extends React.Component<Props, {}> {
       showCardFormAction,
       selectCardToPayAction,
       selectedCard,
-      currentCurrency
+      currentCurrency,
+      couponCode,
+      setCouponCodeAction
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -424,7 +431,7 @@ class Checkout extends React.Component<Props, {}> {
                 total={!proDesign ? total : total + DESIGNREVIEWFEE}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
-                {...{ totalWithoutDiscount }}
+                {...{ totalWithoutDiscount, setCouponCodeAction, couponCode }}
               />
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
