@@ -16,8 +16,6 @@ export const OPEN_SIDEBAR_MOBILE = `${namespace}/OPEN_SIDEBAR_MOBILE`
 export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`
 export const CLEAR_FILTERS = `${namespace}/CLEAR_FILTERS`
 
-export const CYCLING_FILTER = 'Cycling'
-
 export enum cyclingGroup {
   CYCLING = 'Cycling',
   ROADBIKE = 'Road Bike',
