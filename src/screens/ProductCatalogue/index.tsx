@@ -353,9 +353,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
   getFilterIndexes = (filterOptions: FilterOptions[], filters: object) => {
     let optionsIds = ''
-    filterOptions.forEach((option: FilterOptions) => {
-      if (has(filters, option.name) && filters[option.name]) {
-        optionsIds += `${option.filterId},`
+    filterOptions.forEach(({ name, filterId }: FilterOptions) => {
+      if (has(filters, name) && filters[name]) {
+        optionsIds += `${filterId},`
       }
     })
     return trimEnd(optionsIds, ',')
