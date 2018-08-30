@@ -18,8 +18,7 @@ import {
   SET_SHIPPING_ACTION,
   SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA,
-  SHOW_REVIEW_DESIGN_MODAL,
-  SET_COUPON_CODE
+  SHOW_REVIEW_DESIGN_MODAL
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -110,8 +109,6 @@ const shoppingCartPageReducer: Reducer<any> = (
       return initialState
     case SHOW_REVIEW_DESIGN_MODAL:
       return state.set('showReviewDesignModal', action.show)
-    case SET_COUPON_CODE:
-      return state.set('couponCode', action.couponCode)
     default:
       return state
   }

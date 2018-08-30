@@ -224,7 +224,8 @@ class Checkout extends React.Component<Props, {}> {
       selectedCard,
       currentCurrency,
       couponCode,
-      setCouponCodeAction
+      setCouponCodeAction,
+      deleteCouponCodeAction
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -423,7 +424,6 @@ class Checkout extends React.Component<Props, {}> {
               <MediaQuery maxWidth={480}>{showPaypalButton}</MediaQuery>
               <OrderSummary
                 subtotal={total}
-                discount={10}
                 country={billingCountry}
                 shipAddress={taxAddress}
                 weight={weightSum}
@@ -431,7 +431,17 @@ class Checkout extends React.Component<Props, {}> {
                 total={!proDesign ? total : total + DESIGNREVIEWFEE}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
-                {...{ totalWithoutDiscount, setCouponCodeAction, couponCode }}
+                showCouponInput={true}
+                totalWithoutDiscount={
+                  !proDesign
+                    ? totalWithoutDiscount
+                    : totalWithoutDiscount + DESIGNREVIEWFEE
+                }
+                {...{
+                  couponCode,
+                  setCouponCodeAction,
+                  deleteCouponCodeAction
+                }}
               />
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
@@ -662,8 +672,8 @@ class Checkout extends React.Component<Props, {}> {
         item.product = productItem
         item.itemDetails = itemDetails.map(
           ({ gender, quantity, size, fit }: CartItemDetail) => {
-            const fitId = get(fit, 'id')
-            const fitName = get(fit, 'name')
+            const fitId = get(fit, 'id', 0)
+            const fitName = get(fit, 'name', '')
             const fitObj: ItemDetailType = {
               id: fitId,
               name: fitName

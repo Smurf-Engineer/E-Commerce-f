@@ -22,7 +22,6 @@ import {
   OrderItem,
   TotalOrderItem,
   Divider,
-  CodeDivider,
   ZipCodeInputWrapper,
   CollapseWrapper,
   CalculationsWrapper,
@@ -55,8 +54,9 @@ interface Props {
   shipAddress?: TaxAddressObj
   proDesignReview?: number
   currencySymbol?: string
+  showCouponInput?: boolean
   formatMessage: (messageDescriptor: any) => string
-  couponCode?: string
+  couponCode?: CouponCode
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
   // mutations
@@ -73,7 +73,9 @@ export class OrderSummary extends React.Component<Props, {}> {
       subtotal,
       formatMessage,
       // discount,
-      totalWithoutDiscount,
+      showCouponInput,
+      couponCode,
+      totalWithoutDiscount = 0,
       onlyRead,
       proDesignReview,
       currencySymbol,
@@ -82,11 +84,30 @@ export class OrderSummary extends React.Component<Props, {}> {
       country
     } = this.props
 
-    const discount = 12
+    let discount = 0
 
-    const youSaved = totalWithoutDiscount
-      ? totalWithoutDiscount + discount - total
-      : 0
+    if (couponCode) {
+      const { discountAmount, type, rate } = couponCode
+      switch (type) {
+        case '%':
+          const percentage = rate && rate.substring(0, rate.length - 1)
+          discount = (totalWithoutDiscount * Number(percentage)) / 100
+          break
+        case '$':
+          discount = Number(discountAmount)
+          break
+        default:
+          break
+      }
+    }
+
+    console.log('---------------------------')
+    console.log(totalWithoutDiscount, 'totalwithoutdiscount')
+    console.log(total, 'total')
+    console.log(discount, 'total')
+    console.log('---------------------------')
+
+    const youSaved = totalWithoutDiscount + discount - total
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
     const taxesAmount = get(data, 'taxes.total', taxes) || 0
@@ -118,18 +139,11 @@ export class OrderSummary extends React.Component<Props, {}> {
       (!!proDesignReview && proDesignReview) -
       discount
 
-    const renderDiscount = (
-      <OrderItem>
-        <FlexWrapper>
-          <div>{formatMessage(messages.discountLabel)}</div>
-          <DeleteLabel onClick={this.deleteCouponCode}>
-            {formatMessage(messages.deleteLabel)}
-          </DeleteLabel>
-        </FlexWrapper>
-        <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
-        {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-      </OrderItem>
-    )
+    const amountsDivider =
+      !!proDesignReview ||
+      taxFee ||
+      shippingTotal ||
+      (!onlyRead && discount > 0)
 
     return (
       <Container>
@@ -141,25 +155,37 @@ export class OrderSummary extends React.Component<Props, {}> {
           <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>
-          <Divider />
+          <Divider withMargin={amountsDivider} />
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
               <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
-          <OrderItem hide={!taxFee}>
-            <FormattedMessage {...messages.taxes} />
-            <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
-          </OrderItem>
-          <OrderItem hide={!shippingTotal}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
-          </OrderItem>
-          {!onlyRead && renderDiscount}
+          {!onlyRead &&
+            discount > 0 && (
+              <OrderItem>
+                <FlexWrapper>
+                  <div>{formatMessage(messages.discountLabel)}</div>
+                  <DeleteLabel onClick={this.deleteCouponCode}>
+                    {formatMessage(messages.deleteLabel)}
+                  </DeleteLabel>
+                </FlexWrapper>
+                <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
+                {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
+              </OrderItem>
+            )}
         </CalculationsWrapper>
-        <CodeDivider />
-        {!onlyRead ? (
+        <OrderItem hide={!taxFee}>
+          <FormattedMessage {...messages.taxes} />
+          <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
+        </OrderItem>
+        <OrderItem hide={!shippingTotal}>
+          <FormattedMessage {...messages.shipping} />
+          <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+        </OrderItem>
+        {amountsDivider && <Divider />}
+        {!onlyRead && showCouponInput ? (
           <CollapseWrapper>
             <Collapse bordered={false}>
               <Panel header={formatMessage(messages.discountCode)} key="1">
@@ -176,7 +202,10 @@ export class OrderSummary extends React.Component<Props, {}> {
             </Collapse>
           </CollapseWrapper>
         ) : null}
-        <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
+        <TotalOrderItem
+          withoutMarginBottom={youSaved > 0}
+          {...{ onlyRead, showCouponInput }}
+        >
           <FormattedMessage {...messages.total} />
           <div>{`${symbol} ${sumTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
@@ -216,7 +245,8 @@ export class OrderSummary extends React.Component<Props, {}> {
   }
 
   deleteCouponCode = () => {
-    // handleOnDeleteDiscount
+    const { deleteCouponCodeAction = () => {} } = this.props
+    deleteCouponCodeAction()
   }
 }
 

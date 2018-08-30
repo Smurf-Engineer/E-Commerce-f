@@ -101,7 +101,6 @@ interface Props extends RouteComponentProps<any> {
   showDeleteLastItemModalAction: (show: boolean) => void
   resetReducerData: () => void
   showReviewDesignModalAction: (open: boolean) => void
-  setCouponCodeAction: (code: string) => void
   // thunk actions
   setInitialData: () => void
   saveToStorage: (cart: CartItems[]) => void
@@ -268,8 +267,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       showDeleteLastItemModal,
       showReviewDesignModal,
       currentCurrency,
-      couponCode,
-      setCouponCodeAction
+      couponCode
     } = this.props
     const { formatMessage } = intl
 
@@ -410,8 +408,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                     formatMessage,
                     totalWithoutDiscount,
                     total,
-                    couponCode,
-                    setCouponCodeAction
+                    couponCode
                   }}
                 />
                 <ButtonWrapper disabled={!activeCheckout}>

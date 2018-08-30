@@ -7,6 +7,7 @@ import Button from 'antd/lib/button'
 interface TotalProps {
   onlyRead?: boolean
   withoutMarginBottom?: boolean
+  showCouponInput?: boolean
 }
 
 export const Container = styled.div`
@@ -45,20 +46,17 @@ export const SummaryTitle = styled.div`
   margin-bottom: 25px;
 `
 
+interface DividerProps {
+  withMargin?: boolean
+}
+
 export const Divider = styled.div`
   box-sizing: border-box;
   height: 1px;
   width: 100%;
-  border: 1px solid #dcdcdc;
-  margin-bottom: 10px;
-`
-
-export const CodeDivider = styled.div`
-  box-sizing: border-box;
-  height: 1px;
-  width: 100%;
-  border: 1px solid #dcdcdc;
-  margin-bottom: 0;
+  background-color: #dcdcdc;
+  margin-bottom: ${({ withMargin }: DividerProps) =>
+    withMargin ? '10px' : '0'};
 `
 
 interface DisplayProps {
@@ -97,7 +95,8 @@ export const TotalOrderItem = styled.div`
   justify-content: space-between;
   margin-bottom: ${({ withoutMarginBottom }: TotalProps) =>
     withoutMarginBottom ? '4px' : '20px'};
-  margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
+  margin-top: ${({ onlyRead, showCouponInput }: TotalProps) =>
+    onlyRead || !showCouponInput ? '10px' : '0'};
   color: #5f6062;
   font-size: 16px;
   font-weight: 600;
