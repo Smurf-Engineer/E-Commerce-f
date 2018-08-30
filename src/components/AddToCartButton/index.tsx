@@ -29,6 +29,7 @@ interface CartItems {
   designImage?: string
   designCode?: string
   teamStoreId?: string
+  shortId?: string
 }
 
 interface Props {
@@ -153,7 +154,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
           this.saveInLocalStorage(
             this.getItemWithDetails(
               item,
-              item.designId,
+              item.shortId,
               item.teamStoreId,
               item.designName,
               item.designImage,

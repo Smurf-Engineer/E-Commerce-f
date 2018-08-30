@@ -11,10 +11,12 @@ import {
   SET_SKIP_VALUE,
   OPEN_SIDEBAR_MOBILE,
   RESET_REDUCER_DATA,
-  CLEAR_FILTERS
+  CLEAR_FILTERS,
+  cyclingGroup
 } from './constants'
 import { Reducer } from '../../types/common'
 
+const { CYCLING, MOUNTAINBIKE, ROADBIKE } = cyclingGroup
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   typeOfFilter: '',
@@ -48,6 +50,14 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
       const {
         filter: { type, name, firstGenderSet }
       } = action
+      if (name === CYCLING) {
+        return state.merge({
+          sportFilters: {
+            [MOUNTAINBIKE]: true,
+            [ROADBIKE]: true
+          }
+        })
+      }
       return state
         .updateIn(
           [type, name],

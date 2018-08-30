@@ -37,7 +37,7 @@ export const Page = styled.div`
   text-align: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
+    width: 123px;
     height: 180px;
   }
 `
@@ -65,8 +65,9 @@ export const ImageTop = styled.div`
   display: flex;
   flex-direction: row;
   position: absolute;
-  width: 200px;
+  width: 100%;
   justify-content: space-between;
+  padding: 5px 5px 0;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100px;
@@ -105,6 +106,7 @@ export const Arrows = styled.div`
   top: 110px;
   width: 100%;
   justify-content: space-between;
+  padding: 0 5px;
 `
 
 export const Arrow = styled.img``
@@ -114,13 +116,14 @@ interface ButtonContainerProps {
 }
 
 export const ButtonContainer = styled.div`
-  user-select: none;
   display: flex;
-  position: absolute;
-  width: 100%;
   justify-content: center;
+  left: 0;
+  position: absolute;
   top: ${({ myLockerList }: ButtonContainerProps) =>
     myLockerList ? '140px' : '170px'};
+  user-select: none;
+  width: 100%;
 `
 
 export const CustomizeButton = styled.div`
