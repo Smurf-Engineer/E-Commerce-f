@@ -23,6 +23,8 @@ module.exports = {
         )
     )
 
+    config.module.rules[1].exclude.push(/\.mjs$/)
+
     // Safely locate Babel-Loader in Razzle's webpack internals
     const babelLoader = config.module.rules.findIndex(
       rule => rule.options && rule.options.babelrc
@@ -37,7 +39,10 @@ module.exports = {
       include,
       test: /\.tsx?$/,
       loader: 'ts-loader',
-      options: {}
+      options: {
+        transpileOnly: true,
+        experimentalWatchApi: true
+      }
     }
 
     const tslintLoader = {
@@ -65,18 +70,26 @@ module.exports = {
     //
     config.module.rules.push(tsLoader)
 
-    config.module.rules.push({
-      test: /\.ant$/,
-      loader: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader!less-loader'
-      })
-    })
+    config.module.rules.push(
+      {
+        test: /\.ant$/,
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: 'css-loader!less-loader'
+        })
+      },
+      {
+        test: /\.less$/,
+        use: ['style-loader', 'css-loader', 'less-loader']
+      }
+    )
 
     config.plugins.push(new ExtractTextPlugin('static/css/styles.css'))
     config.plugins.push(
       new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop')
     )
+
+    config.plugins.push(new webpack.IgnorePlugin(/utf-8-validate|bufferutil/))
 
     return config
   }

@@ -1,23 +1,27 @@
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
+import { createStore, applyMiddleware, compose } from 'redux'
+import { fromJS } from 'immutable'
 import { createLogger } from 'redux-logger'
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import rootReducer from './rootReducer'
 
-declare global {
-  interface Window {
-    __DEV___: any
-  }
+export interface Process {
+  browser: boolean
 }
 
+const composeStore: any =
+  process.env.NODE_ENV === 'development' ? composeWithDevTools : compose
+
 const loggerMiddleware = createLogger({
-  predicate: () => window.__DEV___
+  predicate: () =>
+    process.env.NODE_ENV === 'development' && typeof window === 'object'
 })
 
-const configureStore = () => {
+const configureStore = (preloadedState = {}) => {
   const store = createStore(
     rootReducer,
-    {},
-    composeWithDevTools(applyMiddleware(loggerMiddleware))
+    fromJS(preloadedState),
+    composeStore(applyMiddleware(thunk, loggerMiddleware))
   )
 
   return store

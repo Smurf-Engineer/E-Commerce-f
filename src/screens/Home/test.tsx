@@ -1,18 +1,7 @@
-import * as React from 'react'
-import * as ReactDOM from 'react-dom'
 import homeReducer, { initialState } from './reducer'
-import { Home } from './index'
 import { defaultAction } from './actions'
 
 describe('Home Reducer', () => {
-  it('renders without exploding', () => {
-    const data = { users: [{ id: 'ds', email: 'some@jr.com' }] }
-
-    const div = document.createElement('div')
-    // tslint:disable-next-line:no-empty
-    ReactDOM.render(<Home defaultAction={() => {}} />, div)
-  })
-
   it('Return the default state for unknow action', () => {
     let state = homeReducer(initialState, { type: 'unknow' })
     expect(state).toEqual(initialState)

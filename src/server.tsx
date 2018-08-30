@@ -1,30 +1,75 @@
 import * as React from 'react'
 import * as express from 'express'
-import { fromJS } from 'immutable'
+import { setMobileDetect, mobileParser } from 'react-responsive-redux'
 import { ApolloProvider, getDataFromTree } from 'react-apollo'
 import { Provider } from 'react-redux'
-import { renderToString, renderToStaticMarkup } from 'react-dom/server'
+import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router-dom'
 import { ServerStyleSheet } from 'styled-components'
+import fetch from 'node-fetch'
 import Html from './helpers/Html'
 import renderHtml from './helpers/render'
+import UAParser from 'ua-parser-js'
 import { configureServerClient } from './apollo'
 import App from './screens/App'
 import configureStore from './store'
-
-const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
+import config from './config'
+import { SET_USER_AGENT_ACTION } from './store/constants'
 
 const server = express()
+interface Region {
+  region: string
+  code: string
+  lang: string
+  currency: string
+  realCountryCode: string
+}
 
 server
+  .set('trust proxy', true)
   .disable('x-powered-by')
   .use(express.static(process.env.RAZZLE_PUBLIC_DIR!))
-  .get('/*', (req: express.Request, res: express.Response) => {
+  .get('/*', async (req: express.Request, res: express.Response) => {
     const client = configureServerClient()
     const location = req.url
     const context = {}
-
     const store = configureStore()
+    const { dispatch } = store
+
+    let locale: Region = {
+      region: 'global',
+      code: 'us',
+      lang: 'en',
+      currency: 'usd',
+      realCountryCode: 'us'
+    }
+
+    try {
+      const resultFetch = await fetch(
+        `${config.graphqlUriBase}region?ip=${req.ip}`
+      )
+      locale = await resultFetch.json()
+    } catch (error) {
+      console.error(error)
+    }
+
+    if (location === '/') {
+      res.redirect(
+        `/${locale.code}?lang=${locale.lang}&currency=${locale.currency}`
+      )
+      return
+    }
+
+    const parser = new UAParser(req.headers['user-agent'] as string)
+    const ua = parser.getResult()
+
+    const mobileDetect = mobileParser(req)
+    dispatch(setMobileDetect(mobileDetect))
+    dispatch({
+      type: SET_USER_AGENT_ACTION,
+      client: ua,
+      country: locale.realCountryCode
+    })
 
     getDataFromTree(App as any).then(() => {
       const sheet = new ServerStyleSheet()
@@ -37,11 +82,13 @@ server
           </Provider>
         </ApolloProvider>
       )
-      const content = renderToString(jsx)
 
+      const content = renderToString(jsx)
       const styleTags = sheet.getStyleTags()
       const state = client.extract()
-      const html = <Html {...{ content, state }} />
+      const finalState = store.getState()
+
+      const html = <Html {...{ content, state }} reduxState={finalState} />
       const htmlString = renderHtml(styleTags, html)
       res.status(200)
       res.send(htmlString)

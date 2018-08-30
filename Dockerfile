@@ -3,20 +3,23 @@ FROM davidglez/alpine-pm2
 # create app directory in container
 RUN mkdir -p /app
 
+# RUN npm install pm2 -g
+
+# RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+# RUN export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
 # set /app directory as default working directory
 WORKDIR /app
 
 # only copy package.json initially so that `RUN yarn` layer is recreated only
 # if there are changes in package.json
-ADD package.json yarn.lock /app/
+ADD package.json yarn.lock  /app/
 
-# --pure-lockfile: Don’t generate a yarn.lock lockfile
+# --Don�t generate a yarn.lock lockfile
 RUN yarn --pure-lockfile
 
 # copy all file from current dir to /app in container
 COPY . /app/
-
-RUN yarn --pure-lockfile
 
 RUN yarn build
 

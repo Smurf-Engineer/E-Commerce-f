@@ -1,15 +1,32 @@
 ---
+# docker image
+image: node:9.4.0
+
+# set docker enabled
 options:
   docker: true
 
+definitions:
+  services:
+    docker:
+      memory: 2048
+
 pipelines:
+  default:
+  - step:
+      script:
+      - npm install --production
+      - npm run lint
   branches:
     development:
     - step:
         script:
-        # install git and verify if the desired folder has changes
-        # - apt-get update && apt-get install -y unzip git
-        # - if [ git diff HEAD~ --name-only|grep api ]; then echo "File does not exist"; fi
+        # install yarn and yarn build
+        # - curl -o- -L https://yarnpkg.com/install.sh | bash
+        # - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+        - export CI=false
+        # - npm install --production
+        # - yarn build
         # Installing gcloud
         - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
         - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
@@ -30,4 +47,4 @@ pipelines:
         - docker tag us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
         - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
         # Deploy the image
-        - kubectl set image deployment $APP $APP=us.us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
+        - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development

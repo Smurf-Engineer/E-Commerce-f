@@ -1,0 +1,12 @@
+{
+  "screens.NotFoundPage.header": "Page not found.",
+  "components.menuBar.men": "MÄNNER",
+  "components.menuBar.women": "FRAU",
+  "components.menuBar.cycling": "RADFAHREN",
+  "components.menuBar.triathlon": "TRIATHLON",
+  "components.menuBar.nordic": "NORDISCH",
+  "components.menuBar.active": "AKTIV",
+  "components.ImagesGrid.quote":
+    "Iets suggestiefs over de gemeenschap en hun belang voor Jakroo. Misschien een citaat” -Jakroo",
+  "components.searchBar.hint": "Suchen Sie nach einem Produkt"
+}
