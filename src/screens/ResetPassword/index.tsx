@@ -107,7 +107,13 @@ export class ResetPassword extends React.Component<Props, {}> {
     }
   }
 
-  handleCancel = () => {}
+  handleCancel = () => {
+    const {
+      history: { push }
+    } = this.props
+
+    push('/us?lang=en&currency=usd')
+  }
 
   render() {
     const { intl, history, password, confirmPassword } = this.props
