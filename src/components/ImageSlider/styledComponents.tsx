@@ -50,6 +50,10 @@ export const ThumbnailImg = styled.img`
   &:hover {
     cursor: pointer;
   }
+
+  @media (min-width: 1025px) {
+    height: inherit;
+  }
 `
 export const SelectedImage = styled.div`
   text-align: center;
@@ -72,6 +76,7 @@ export const SwipeContainer = styled.div`
   }
 
   section {
+    position: absolute;
     ${({ squareArrows }: ArrowsProps) =>
       squareArrows
         ? css`
@@ -81,30 +86,29 @@ export const SwipeContainer = styled.div`
             box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.07);
             display: flex;
             justify-content: center;
-            width: 180px;
+            width: 30px;
           `
         : ''};
   }
 
   section:first-child {
-    margin-right: -${({ squareArrows }: ArrowsProps) => (squareArrows ? '35' : '18')}px;
+    left: ${({ squareArrows }: ArrowsProps) => (squareArrows ? '5' : '15')}px;
   }
 
   section:last-child {
-    margin-left: -${({ squareArrows }: ArrowsProps) => (squareArrows ? '35' : '18')}px;
+    right: ${({ squareArrows }: ArrowsProps) => (squareArrows ? '5' : '15')}px;
   }
 
-  @media (min-width: 426px) and (max-width: 1024px) {
-    width: 100%;
-    height: 536px;
+  @media (min-width: 481px) and (max-width: 768px) {
+    margin-top: 70px;
   }
 
-  @media (max-width: 425px) {
-    height: 300px;
+  @media (min-width: 320px) {
+    height: 100%;
 
     div div:first-child {
       width: 100%;
-      height: 300px;
+      height: 100%;
     }
   }
 `

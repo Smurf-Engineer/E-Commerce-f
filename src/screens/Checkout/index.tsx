@@ -17,7 +17,7 @@ import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
-import { AddAddressMutation, PlaceOrderMutation } from './data'
+import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
 import { CheckoutTabs } from './constants'
 import MediaQuery from 'react-responsive'
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
@@ -33,7 +33,8 @@ import {
   PlaceOrderButton,
   paypalButtonStyle,
   StepIcon,
-  CheckIcon
+  CheckIcon,
+  CurrencyWarningText
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -48,10 +49,13 @@ import {
   StripeCardData,
   CreditCardData,
   TaxAddressObj,
-  ItemDetailType
+  ItemDetailType,
+  CouponCode
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import Modal from 'antd/lib/modal'
+import ModalFooter from '../../components/ModalFooter'
 
 type ProductCart = {
   id: number
@@ -122,6 +126,9 @@ interface Props extends RouteComponentProps<any> {
   showCardForm: boolean
   selectedCard: CreditCardData
   currentCurrency: string
+  couponCode?: CouponCode
+  openCurrencyWarning: boolean
+  // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -147,6 +154,9 @@ interface Props extends RouteComponentProps<any> {
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  setCouponCodeAction: (code: CouponCode) => void
+  deleteCouponCodeAction: () => void
+  openCurrencyWarningAction: (open: boolean) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -217,7 +227,11 @@ class Checkout extends React.Component<Props, {}> {
       showCardFormAction,
       selectCardToPayAction,
       selectedCard,
-      currentCurrency
+      currentCurrency,
+      couponCode,
+      setCouponCodeAction,
+      deleteCouponCodeAction,
+      openCurrencyWarning
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -261,7 +275,8 @@ class Checkout extends React.Component<Props, {}> {
     const { state: stateLocation } = location
     const { ShippingTab, RevieTab, PaymentTab } = CheckoutTabs
 
-    if (!stateLocation || !stateLocation.cart) {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+    if (!cart || !cart.length || !stateLocation || !stateLocation.cart) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
@@ -416,22 +431,59 @@ class Checkout extends React.Component<Props, {}> {
               <MediaQuery maxWidth={480}>{showPaypalButton}</MediaQuery>
               <OrderSummary
                 subtotal={total}
-                discount={10}
                 country={billingCountry}
+                shipAddressCountry={shippingAddress.country}
                 shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
-                total={!proDesign ? total : total + DESIGNREVIEWFEE}
+                total={total}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
-                {...{ totalWithoutDiscount }}
+                showCouponInput={true}
+                totalWithoutDiscount={
+                  !proDesign
+                    ? totalWithoutDiscount
+                    : totalWithoutDiscount + DESIGNREVIEWFEE
+                }
+                {...{
+                  couponCode,
+                  setCouponCodeAction,
+                  deleteCouponCodeAction
+                }}
               />
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
           </Content>
         </Container>
+        <Modal
+          visible={openCurrencyWarning}
+          footer={
+            <ModalFooter
+              okText={intl.formatMessage(messages.confirm)}
+              onOk={this.placeOrder}
+              onCancel={this.handleOnCancelWarning}
+              formatMessage={intl.formatMessage}
+            />
+          }
+          destroyOnClose={false}
+          maskClosable={false}
+          closable={false}
+        >
+          <CurrencyWarningText>
+            {intl.formatMessage(messages.correctCurrency, {
+              currentCurrency: (
+                currentCurrency || config.defaultCurrency
+              ).toUpperCase()
+            })}
+          </CurrencyWarningText>
+        </Modal>
       </Layout>
     )
+  }
+
+  handleOnCancelWarning = () => {
+    const { openCurrencyWarningAction } = this.props
+    openCurrencyWarningAction(false)
   }
 
   handleOnStepClick = (step: number) => () => {
@@ -523,7 +575,7 @@ class Checkout extends React.Component<Props, {}> {
       paymentId: payment.paymentID,
       payerId: payment.payerID
     }
-    this.handleOnPlaceOrder(undefined, obj)
+    this.placeOrder(undefined, obj)
   }
 
   onPaypalCancel = (data: AnalyserNode) => {
@@ -537,7 +589,32 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (event: any, paypalObj?: object) => {
+  handleOnPlaceOrder = async (event: any) => {
+    const {
+      client: { query },
+      billingCountry,
+      currentCurrency,
+      openCurrencyWarningAction
+    } = this.props
+
+    const { data } = await query({
+      query: CurrencyQuery,
+      variables: { countryCode: billingCountry },
+      fetchPolicy: 'network-only'
+    })
+
+    const selectedCurrency = currentCurrency || config.defaultCurrency
+
+    if (data && data.currency) {
+      if (data.currency.toLowerCase() !== selectedCurrency) {
+        return openCurrencyWarningAction(true)
+      }
+    }
+
+    this.placeOrder(event)
+  }
+
+  placeOrder = async (event: any, paypalObj?: object) => {
     const {
       location,
       placeOrder,
@@ -568,7 +645,8 @@ class Checkout extends React.Component<Props, {}> {
       stripeToken,
       selectedCard,
       client: { query },
-      currentCurrency
+      currentCurrency,
+      couponCode: couponObject
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -655,8 +733,8 @@ class Checkout extends React.Component<Props, {}> {
         item.product = productItem
         item.itemDetails = itemDetails.map(
           ({ gender, quantity, size, fit }: CartItemDetail) => {
-            const fitId = get(fit, 'id')
-            const fitName = get(fit, 'name')
+            const fitId = get(fit, 'id', 0)
+            const fitName = get(fit, 'name', '')
             const fitObj: ItemDetailType = {
               id: fitId,
               name: fitName
@@ -670,6 +748,8 @@ class Checkout extends React.Component<Props, {}> {
         return item
       }
     )
+
+    const couponCode = couponObject && couponObject.code
 
     const orderObj = {
       proDesign,
@@ -687,7 +767,8 @@ class Checkout extends React.Component<Props, {}> {
       shippingCarrier,
       shippingAmount: shippingAmount || '0',
       currency: currentCurrency || config.defaultCurrency,
-      weight: weightSum
+      weight: weightSum,
+      couponCode
     }
 
     try {

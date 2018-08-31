@@ -393,8 +393,8 @@ export interface TeamstoreResult {
 }
 
 export type ItemDetailType = {
-  id: number
-  name: string
+  id?: number
+  name?: string
 }
 
 export type CartItemDetail = {
@@ -713,12 +713,14 @@ export interface ITemplateDownload {
 
 export interface NetsuiteTax {
   internalId: string
-  rate: string
+  rate: number
   countryCode: string
-  ratePST: string
-  rateGST: string
+  ratePst: number
+  rateGst: number
   state: string
   zip: string
+  total: number
+  countrySub: string
 }
 
 export interface NetsuiteShipping {
@@ -996,3 +998,12 @@ export interface ProductColors {
   name: string
   image: string
 }
+
+export interface CouponCode {
+  code: string
+  type: couponType
+  discountAmount?: string
+  rate?: string
+}
+
+type couponType = '%' | 'flat'

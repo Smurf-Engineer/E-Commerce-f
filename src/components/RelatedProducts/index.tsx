@@ -20,12 +20,13 @@ interface Props {
   dispatch: any
   currentCurrency: string
   products: Product[]
+  phone: boolean
   formatMessage: (messageDescriptor: any) => string
 }
 
 export class RelatedProducts extends React.Component<Props, {}> {
   render() {
-    const { products, currentCurrency, formatMessage } = this.props
+    const { products, phone, currentCurrency, formatMessage } = this.props
 
     const renderProductList = products.map((product, key) => {
       const {
@@ -64,6 +65,7 @@ export class RelatedProducts extends React.Component<Props, {}> {
           onPressQuickView={this.handleOnQuickView}
           onPressCustomize={this.handleOnCustomize}
           customizableLabel={formatMessage(messages.customizableLabel)}
+          disableSlider={phone}
           labelButton={
             customizable
               ? formatMessage(messages.customize)
@@ -93,11 +95,12 @@ export class RelatedProducts extends React.Component<Props, {}> {
   }
 }
 
+const mapStateToProps = (state: any) => state.get('responsive').toJS()
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const RelatedProductsEnhance = compose(
   connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
   )
 )(RelatedProducts)

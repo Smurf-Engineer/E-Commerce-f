@@ -32,6 +32,9 @@ export const SAVE_COUNTRY = `${namespace}/SAVE_COUNTRY`
 
 export const OPEN_ADDRESSES_MODAL = `${namespace}/OPEN_ADDRESSES_MODAL`
 export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
+export const SET_COUPON_CODE = `${namespace}/SET_COUPON_CODE`
+export const DELETE_COUPON_CODE = `${namespace}/DELETE_COUPON_CODE`
+export const OPEN_CURRENCY_WARNING = `${namespace}/OPEN_CURRENCY_WARNING`
 
 export enum CheckoutTabs {
   ShippingTab = 0,
@@ -43,3 +46,6 @@ export enum PaymentOptions {
   PAYPAL = 'paypal',
   CREDITCARD = 'credit card'
 }
+
+export const PERCENTAGE_PROMO = '%'
+export const FLAT_PROMO = 'flat'

@@ -77,6 +77,7 @@ export const getOrderQuery = gql`
           collections
           isTopProduct
           weight
+          mpn
           priceRange {
             quantity
             price

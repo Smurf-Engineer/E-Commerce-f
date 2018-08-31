@@ -9,8 +9,8 @@ import { connect } from 'react-redux'
 import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
+import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import * as productDetailActions from './actions'
 import messages from './messages'
@@ -159,6 +159,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
+    const mpnCode = get(product, 'mpn')
 
     let genderMessage = messages.maleGenderLabel
 
@@ -179,17 +180,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const yotpoId = queryParams.yotpoId || ''
 
-    const genderId = queryParams.gender || 0
+    const gender = queryParams.gender || 0
     const genderIndex = findIndex(imagesArray, {
-      genderId: parseInt(genderId, 10)
+      genderId: parseInt(gender, 10)
     })
 
     const images = imagesArray[genderIndex] || imagesArray[0]
 
     const moreImages =
-      genderIndex !== -1
-        ? []
-        : imagesArray.filter(post => post.genderId !== images.genderId)
+      imagesArray.length > 1
+        ? imagesArray.filter(({ genderId }) => genderId !== images.genderId)
+        : []
 
     let retailPrice
     if (product) {
@@ -423,9 +424,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                    {/* TODO: MNP code hidden until all the codes are implemented for the retail products
-                     {isRetail &&
-                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>} */}
+                    <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>

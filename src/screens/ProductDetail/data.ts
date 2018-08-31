@@ -11,6 +11,7 @@ export const GetProductsByIdQuery = gql`
       shortDescription: short_description
       category_id
       sport_id
+      mpn
       sports {
         id
         name
@@ -22,6 +23,7 @@ export const GetProductsByIdQuery = gql`
       details
       materials: materials_info
       temperatures: temperature_range
+      weight
       genders {
         id
         name: gender

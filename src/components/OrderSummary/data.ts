@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const getTaxQuery = gql`
   query getTaxes(
@@ -6,12 +7,16 @@ export const getTaxQuery = gql`
     $weight: Float!
     $shipAddress: NetsuiteTaxAddress!
   ) {
-    taxes: getTaxesByAddress(shipAddress: $shipAddress) {
+    taxes: getTaxesByAddress(
+      shipAddress: $shipAddress
+      countrySubsidiary: $country
+    ) {
       total
       rate
-      rate_pst
-      rate_gst
+      ratePst: rate_pst
+      rateGst: rate_gst
       internalId
+      countrySub
     }
 
     shipping: getShippingByCountry(country: $country, weight: $weight) {
@@ -22,3 +27,19 @@ export const getTaxQuery = gql`
     }
   }
 `
+
+export const applyPromoCodeMutation = graphql(
+  gql`
+    mutation getPromoCode($code: String!) {
+      couponCode: getDiscountCode(code: $code) {
+        code
+        discountAmount
+        type
+        rate
+      }
+    }
+  `,
+  {
+    name: 'applyPromoCode'
+  }
+)
