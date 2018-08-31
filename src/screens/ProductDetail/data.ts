@@ -11,6 +11,7 @@ export const GetProductsByIdQuery = gql`
       shortDescription: short_description
       category_id
       sport_id
+      mpn
       sports {
         id
         name

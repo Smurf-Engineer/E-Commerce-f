@@ -225,6 +225,7 @@ class CartListItem extends React.Component<Props, {}> {
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
     const productPriceRanges = get(cartItem, 'product.priceRange', [])
+    const mpnCode = get(cartItem, 'product.mpn', '')
 
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
@@ -286,7 +287,7 @@ class CartListItem extends React.Component<Props, {}> {
             {description}
           </ItemDetailsHeaderNameDetail>
           {/* TODO: add validation for use MPN code for retail product when implemented in the backend */}
-          <div>{designCode || ''}</div>
+          <div>{designCode || mpnCode}</div>
         </NameContainer>
         <PriceContainer>
           <ItemDetailsHeaderPrice>

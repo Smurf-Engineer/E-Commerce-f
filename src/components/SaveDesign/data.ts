@@ -111,6 +111,7 @@ export const saveDesignChanges = graphql(
           collections
           isTopProduct
           weight
+          mpn
           priceRange {
             quantity
             price
