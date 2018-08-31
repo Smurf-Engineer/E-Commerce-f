@@ -580,9 +580,7 @@ class Checkout extends React.Component<Props, {}> {
       openCurrencyWarningAction
     } = this.props
 
-    const {
-      data: { currency }
-    } = await query({
+    const { data } = await query({
       query: CurrencyQuery,
       variables: { countryCode: billingCountry },
       fetchPolicy: 'network-only'
@@ -590,8 +588,10 @@ class Checkout extends React.Component<Props, {}> {
 
     const selectedCurrency = currentCurrency || config.defaultCurrency
 
-    if (currency.toLowerCase() !== selectedCurrency) {
-      return openCurrencyWarningAction(true)
+    if (data && data.currency) {
+      if (data.currency.toLowerCase() !== selectedCurrency) {
+        return openCurrencyWarningAction(true)
+      }
     }
 
     this.placeOrder(event)
