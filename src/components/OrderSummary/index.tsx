@@ -71,7 +71,6 @@ export class OrderSummary extends React.Component<Props, {}> {
     const {
       data,
       subtotal,
-      total,
       formatMessage,
       showCouponInput,
       couponCode,
@@ -107,20 +106,21 @@ export class OrderSummary extends React.Component<Props, {}> {
       switch (countrySubsidiary.toLowerCase()) {
         case COUNTRY_CODE_US:
           if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-            taxTotal = (total * taxesAmount) / 100 // calculate tax
+            taxTotal = ((subtotal + proDesignFee) * taxesAmount) / 100 // calculate tax
             taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           }
           break
         case COUNTRY_CODE_CANADA:
-          if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA) {
-            if (taxRates) {
-              taxGst =
-                ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
-                100 // calculate tax
-              taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
-              taxGst = Math.round(taxGst * 100) / 100
-              taxPst = Math.round(taxPst * 100) / 100
-            }
+          if (
+            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA &&
+            taxRates
+          ) {
+            taxGst =
+              ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
+              100 // calculate tax
+            taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
+            taxGst = Math.round(taxGst * 100) / 100
+            taxPst = Math.round(taxPst * 100) / 100
           }
           break
         default:
