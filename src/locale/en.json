@@ -24,6 +24,7 @@
   "components.ImagesGrid.quote": "Something evocative about community and their importance to Jakroo. Maybe a quote” -Jakroo",
   "components.ImagesGrid.scenesFromLabel": "SCENES FROM OUR COMMUNITY",
   "components.searchBar.hint": "Search for a product",
+  "components.searchResults.customizable": "Customize",
   "screens.Home.help.find": "Not sure? We'll help you find out.",
   "screens.Home.start.button": "GET STARTED",
   "screens.Home.flexibleLabel": "FLEXIBLE",
