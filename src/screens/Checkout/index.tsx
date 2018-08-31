@@ -49,7 +49,8 @@ import {
   StripeCardData,
   CreditCardData,
   TaxAddressObj,
-  ItemDetailType
+  ItemDetailType,
+  CouponCode
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -125,7 +126,9 @@ interface Props extends RouteComponentProps<any> {
   showCardForm: boolean
   selectedCard: CreditCardData
   currentCurrency: string
+  couponCode?: CouponCode
   openCurrencyWarning: boolean
+  // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
@@ -151,6 +154,8 @@ interface Props extends RouteComponentProps<any> {
   setSkipValueAction: (limit: number, pageNumber: number) => void
   showCardFormAction: (open: boolean) => void
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  setCouponCodeAction: (code: CouponCode) => void
+  deleteCouponCodeAction: () => void
   openCurrencyWarningAction: (open: boolean) => void
 }
 
@@ -223,6 +228,9 @@ class Checkout extends React.Component<Props, {}> {
       selectCardToPayAction,
       selectedCard,
       currentCurrency,
+      couponCode,
+      setCouponCodeAction,
+      deleteCouponCodeAction,
       openCurrencyWarning
     } = this.props
 
@@ -423,7 +431,6 @@ class Checkout extends React.Component<Props, {}> {
               <MediaQuery maxWidth={480}>{showPaypalButton}</MediaQuery>
               <OrderSummary
                 subtotal={total}
-                discount={10}
                 country={billingCountry}
                 shipAddressCountry={shippingAddress.country}
                 shipAddress={taxAddress}
@@ -432,7 +439,17 @@ class Checkout extends React.Component<Props, {}> {
                 total={total}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
-                {...{ totalWithoutDiscount }}
+                showCouponInput={true}
+                totalWithoutDiscount={
+                  !proDesign
+                    ? totalWithoutDiscount
+                    : totalWithoutDiscount + DESIGNREVIEWFEE
+                }
+                {...{
+                  couponCode,
+                  setCouponCodeAction,
+                  deleteCouponCodeAction
+                }}
               />
               <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
@@ -628,7 +645,8 @@ class Checkout extends React.Component<Props, {}> {
       stripeToken,
       selectedCard,
       client: { query },
-      currentCurrency
+      currentCurrency,
+      couponCode: couponObject
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -715,8 +733,8 @@ class Checkout extends React.Component<Props, {}> {
         item.product = productItem
         item.itemDetails = itemDetails.map(
           ({ gender, quantity, size, fit }: CartItemDetail) => {
-            const fitId = get(fit, 'id')
-            const fitName = get(fit, 'name')
+            const fitId = get(fit, 'id', 0)
+            const fitName = get(fit, 'name', '')
             const fitObj: ItemDetailType = {
               id: fitId,
               name: fitName
@@ -730,6 +748,8 @@ class Checkout extends React.Component<Props, {}> {
         return item
       }
     )
+
+    const couponCode = couponObject && couponObject.code
 
     const orderObj = {
       proDesign,
@@ -747,7 +767,8 @@ class Checkout extends React.Component<Props, {}> {
       shippingCarrier,
       shippingAmount: shippingAmount || '0',
       currency: currentCurrency || config.defaultCurrency,
-      weight: weightSum
+      weight: weightSum,
+      couponCode
     }
 
     try {

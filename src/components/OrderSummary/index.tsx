@@ -5,14 +5,16 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { compose, graphql } from 'react-apollo'
 import get from 'lodash/get'
+import Message from 'antd/lib/message'
 import {
   QueryProps,
   NetsuiteTax,
   NetsuiteShipping,
   TaxAddressObj,
-  AddressObj
+  AddressObj,
+  CouponCode
 } from '../../types/common'
-import { getTaxQuery } from './data'
+import { getTaxQuery, applyPromoCodeMutation } from './data'
 import messages from './messages'
 import {
   Container,
@@ -20,16 +22,16 @@ import {
   OrderItem,
   TotalOrderItem,
   Divider,
-  CodeDivider,
   ZipCodeInputWrapper,
   CollapseWrapper,
   CalculationsWrapper,
-  YouSavedOrderItem
-  //  FlexWrapper,  UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-  //  DeleteLabel
+  YouSavedOrderItem,
+  FlexWrapper,
+  DeleteLabel
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
+import { PERCENTAGE_PROMO, FLAT_PROMO } from '../../screens/Checkout/constants'
 
 const COUNTRY_CODE_US = 'us'
 const COUNTRY_CODE_CANADA = 'ca'
@@ -54,20 +56,26 @@ interface Props {
   shipAddressCountry?: string
   proDesignReview?: number
   currencySymbol?: string
+  showCouponInput?: boolean
   formatMessage: (messageDescriptor: any) => string
+  couponCode?: CouponCode
+  setCouponCodeAction?: (code: CouponCode) => void
+  deleteCouponCodeAction?: () => void
+  // mutations
+  applyPromoCode: (variables: {}) => Promise<any>
 }
 
-const ShareLinkInput = Input.Search
+const InputSearch = Input.Search
 const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
   render() {
     const {
       data,
-      total,
       subtotal,
       formatMessage,
-      // discount,
-      totalWithoutDiscount,
+      showCouponInput,
+      couponCode,
+      totalWithoutDiscount = 0,
       onlyRead,
       proDesignReview,
       currencySymbol,
@@ -76,31 +84,6 @@ export class OrderSummary extends React.Component<Props, {}> {
       country,
       shipAddressCountry
     } = this.props
-
-    // const renderDiscount = discount ? (
-    //   <OrderItem>
-    //     {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-    //     <FlexWrapper>
-    //       <div>{formatMessage(messages.discountCode)}</div>
-    //       <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
-    //     </FlexWrapper>
-    //     <div>{`USD$${discount}`}</div> */}
-    //     {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-    //   </OrderItem>
-    // ) : (
-    //     <ZipCodeInputWrapper>
-    //       <ShareLinkInput
-    //         disabled={true}
-    //         id="url"
-    //         placeholder={formatMessage(messages.zipCodePlaceholder)}
-    //         enterButton={formatMessage(messages.estimate)}
-    //         size="default"
-    //         maxLength="5"
-    //         onChange={() => { }}
-    //       />
-    //     </ZipCodeInputWrapper>
-    //   )
-    const youSaved = Number(totalWithoutDiscount) - total
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
     const taxRates = get(data, 'taxes', null)
@@ -113,6 +96,28 @@ export class OrderSummary extends React.Component<Props, {}> {
 
     // pro design fee
     const proDesignFee = proDesignReview || 0
+    // add proDesignFee to subtotal
+    let sumTotal = subtotal + proDesignFee
+
+    let discount = 0
+    if (couponCode) {
+      const { type, rate } = couponCode
+      switch (type) {
+        case PERCENTAGE_PROMO: // '%'
+          const percentage = rate && rate.substring(0, rate.length - 1)
+          discount = (sumTotal * Number(percentage)) / 100
+          break
+        case FLAT_PROMO: // 'flat
+          discount = Number(rate)
+          break
+        default:
+          break
+      }
+    }
+
+    // get subtotal minus discount
+    sumTotal -= discount
+
     // get tax fee
     const taxesAmount = (taxRates && taxRates.total) || taxes
     // canadian taxes
@@ -124,20 +129,19 @@ export class OrderSummary extends React.Component<Props, {}> {
       switch (countrySubsidiary.toLowerCase()) {
         case COUNTRY_CODE_US:
           if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-            taxTotal = ((subtotal + proDesignFee) * taxesAmount) / 100 // calculate tax
+            taxTotal = (sumTotal * taxesAmount) / 100 // calculate tax
             taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           }
           break
         case COUNTRY_CODE_CANADA:
-          if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA) {
-            if (taxRates) {
-              taxGst =
-                ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
-                100 // calculate tax
-              taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
-              taxGst = Math.round(taxGst * 100) / 100
-              taxPst = Math.round(taxPst * 100) / 100
-            }
+          if (
+            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA &&
+            taxRates
+          ) {
+            taxGst = ((shippingTotal + sumTotal) * taxRates.rateGst) / 100 // calculate tax
+            taxPst = (sumTotal * taxRates.ratePst) / 100 // calculate tax
+            taxGst = Math.round(taxGst * 100) / 100
+            taxPst = Math.round(taxPst * 100) / 100
           }
           break
         default:
@@ -145,8 +149,15 @@ export class OrderSummary extends React.Component<Props, {}> {
       }
     }
 
-    const sumTotal =
-      subtotal + shippingTotal + taxFee + taxGst + taxPst + proDesignFee
+    const youSaved = totalWithoutDiscount - sumTotal
+
+    sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+
+    const amountsDivider =
+      !!proDesignReview ||
+      taxFee ||
+      shippingTotal ||
+      (!onlyRead && discount > 0)
 
     return (
       <Container>
@@ -158,14 +169,26 @@ export class OrderSummary extends React.Component<Props, {}> {
           <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>
-          <Divider />
-          {/* pro design */}
+          <Divider withMargin={amountsDivider} />
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
               <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
+          {!onlyRead &&
+            discount > 0 && (
+              <OrderItem>
+                <FlexWrapper>
+                  <div>{formatMessage(messages.discountLabel)}</div>
+                  <DeleteLabel onClick={this.deleteCouponCode}>
+                    {formatMessage(messages.deleteLabel)}
+                  </DeleteLabel>
+                </FlexWrapper>
+                <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
+                {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
+              </OrderItem>
+            )}
           {/* taxes */}
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
@@ -184,29 +207,29 @@ export class OrderSummary extends React.Component<Props, {}> {
             <FormattedMessage {...messages.shipping} />
             <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
           </OrderItem>
-          {/* Uncomment to display discount ammount or shipping estimate */}
-          {/* {!onlyRead ? renderDiscount : null} */}
         </CalculationsWrapper>
-        <CodeDivider />
-        {!onlyRead ? (
+        {amountsDivider && <Divider />}
+        {!onlyRead && showCouponInput ? (
           <CollapseWrapper>
             <Collapse bordered={false}>
               <Panel header={formatMessage(messages.discountCode)} key="1">
                 <ZipCodeInputWrapper>
-                  <ShareLinkInput
-                    disabled={true}
+                  <InputSearch
                     id="url"
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
                     size="default"
-                    onChange={() => {}}
+                    onSearch={this.onApplyCouponCode}
                   />
                 </ZipCodeInputWrapper>
               </Panel>
             </Collapse>
           </CollapseWrapper>
         ) : null}
-        <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
+        <TotalOrderItem
+          withoutMarginBottom={youSaved > 0}
+          {...{ onlyRead, showCouponInput }}
+        >
           <FormattedMessage {...messages.total} />
           <div>{`${symbol} ${sumTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
@@ -218,6 +241,40 @@ export class OrderSummary extends React.Component<Props, {}> {
         ) : null}
       </Container>
     )
+  }
+
+  onApplyCouponCode = async (code: string) => {
+    const {
+      applyPromoCode,
+      setCouponCodeAction = () => {},
+      deleteCouponCodeAction = () => {},
+      formatMessage
+    } = this.props
+    try {
+      const data = await applyPromoCode({
+        variables: { code }
+      })
+      const {
+        data: { couponCode }
+      } = data
+      if (couponCode) {
+        setCouponCodeAction(couponCode)
+        Message.success(formatMessage(messages.couponApplied))
+      } else {
+        deleteCouponCodeAction()
+        Message.error(formatMessage(messages.couponError))
+      }
+    } catch (error) {
+      deleteCouponCodeAction()
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      Message.error(errorMessage)
+    }
+  }
+
+  deleteCouponCode = () => {
+    const { deleteCouponCodeAction = () => {} } = this.props
+    deleteCouponCodeAction()
   }
 }
 
@@ -234,7 +291,8 @@ const OrderSummaryEnhance = compose(
       variables: { country, weight, shipAddress },
       fetchPolicy: 'network-only'
     })
-  })
+  }),
+  applyPromoCodeMutation
 )(OrderSummary)
 
 export default OrderSummaryEnhance
