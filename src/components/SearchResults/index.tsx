@@ -89,6 +89,9 @@ export class SearchResults extends React.Component<Props, {}> {
               onPressCustomize={this.gotoCustomize}
               images={productImages}
               onPressQuickView={quickViewAction}
+              customizableLabel={
+                <FormattedMessage {...messages.customizable} />
+              }
               labelButton={
                 customizable ? (
                   <FormattedMessage {...messages.customizeLabel} />
