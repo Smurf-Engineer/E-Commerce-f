@@ -19,7 +19,7 @@ import {
 import ProductThumbnail from '../ProductThumbnail'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import { QueryProps, DesignType, Product } from '../../types/common'
+import { QueryProps, Product } from '../../types/common'
 
 interface Data extends QueryProps {
   featuredProducts: Product[]
@@ -154,44 +154,9 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
     openQuickView(id)
   }
 }
-type OwnProps = {
-  genderFilters?: string
-  sportFilters?: string
-  categoryFilters?: string
-  seasonFilters?: string
-  fitFilters?: string
-  temperatureFilters?: string
-  limit?: number
-  orderBy?: string
-  skip?: number
-  designs?: DesignType[]
-}
 
-const FeaturedProductsEnhanced = compose(
-  graphql<Data>(GetProductsQuery, {
-    options: ({
-      genderFilters,
-      categoryFilters,
-      sportFilters,
-      seasonFilters,
-      limit = 10,
-      orderBy,
-      skip,
-      designs
-    }: OwnProps) => {
-      return {
-        variables: {
-          gender: genderFilters ? genderFilters : null,
-          category: categoryFilters ? categoryFilters : null,
-          sport: sportFilters ? sportFilters : null,
-          season: seasonFilters ? seasonFilters : null,
-          limit: limit ? limit : null,
-          order: orderBy ? orderBy : null,
-          offset: skip ? skip : null
-        }
-      }
-    }
-  })
-)(FeaturedProducts)
+const FeaturedProductsEnhanced = compose(graphql<Data>(GetProductsQuery))(
+  FeaturedProducts
+)
 
 export default FeaturedProductsEnhanced

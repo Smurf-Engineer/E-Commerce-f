@@ -159,6 +159,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
+    const mpnCode = get(product, 'mpn')
 
     let genderMessage = messages.maleGenderLabel
 
@@ -423,9 +424,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                    {/* TODO: MNP code hidden until all the codes are implemented for the retail products
-                     {isRetail &&
-                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>} */}
+                    <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
