@@ -244,12 +244,13 @@ export class OrderSummary extends React.Component<Props, {}> {
   }
 
   onApplyCouponCode = async (code: string) => {
+    const {
+      applyPromoCode,
+      setCouponCodeAction = () => {},
+      deleteCouponCodeAction = () => {},
+      formatMessage
+    } = this.props
     try {
-      const {
-        applyPromoCode,
-        setCouponCodeAction = () => {},
-        formatMessage
-      } = this.props
       const data = await applyPromoCode({
         variables: { code }
       })
@@ -260,10 +261,10 @@ export class OrderSummary extends React.Component<Props, {}> {
         setCouponCodeAction(couponCode)
         Message.success(formatMessage(messages.couponApplied))
       } else {
+        deleteCouponCodeAction()
         Message.error(formatMessage(messages.couponError))
       }
     } catch (error) {
-      const { deleteCouponCodeAction = () => {} } = this.props
       deleteCouponCodeAction()
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
