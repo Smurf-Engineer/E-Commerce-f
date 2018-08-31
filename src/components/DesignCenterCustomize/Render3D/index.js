@@ -189,7 +189,7 @@ class Render3D extends PureComponent {
 
     const devicePixelRatio = window.devicePixelRatio || 1
 
-    const precision = isMobile ? 'lowp' : 'highp'
+    const precision = 'highp'
     const renderer = new THREE.WebGLRenderer({
       alpha: true,
       antialias: true,
