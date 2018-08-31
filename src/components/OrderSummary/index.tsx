@@ -124,7 +124,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       switch (countrySubsidiary.toLowerCase()) {
         case COUNTRY_CODE_US:
           if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-            taxTotal = (total * taxesAmount) / 100 // calculate tax
+            taxTotal = (total * proDesignFee) / 100 // calculate tax
             taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           }
           break
