@@ -425,6 +425,7 @@ class Checkout extends React.Component<Props, {}> {
                 subtotal={total}
                 discount={10}
                 country={billingCountry}
+                shipAddressCountry={shippingAddress.country}
                 shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
@@ -579,9 +580,7 @@ class Checkout extends React.Component<Props, {}> {
       openCurrencyWarningAction
     } = this.props
 
-    const {
-      data: { currency }
-    } = await query({
+    const { data } = await query({
       query: CurrencyQuery,
       variables: { countryCode: billingCountry },
       fetchPolicy: 'network-only'
@@ -589,8 +588,10 @@ class Checkout extends React.Component<Props, {}> {
 
     const selectedCurrency = currentCurrency || config.defaultCurrency
 
-    if (currency.toLowerCase() !== selectedCurrency) {
-      return openCurrencyWarningAction(true)
+    if (data && data.currency) {
+      if (data.currency.toLowerCase() !== selectedCurrency) {
+        return openCurrencyWarningAction(true)
+      }
     }
 
     this.placeOrder(event)
