@@ -95,6 +95,28 @@ export class OrderSummary extends React.Component<Props, {}> {
 
     // pro design fee
     const proDesignFee = proDesignReview || 0
+    // add proDesignFee to subtotal
+    let sumTotal = subtotal + proDesignFee
+
+    let discount = 0
+    if (couponCode) {
+      const { type, rate } = couponCode
+      switch (type) {
+        case '%':
+          const percentage = rate && rate.substring(0, rate.length - 1)
+          discount = (sumTotal * Number(percentage)) / 100
+          break
+        case 'flat':
+          discount = Number(rate)
+          break
+        default:
+          break
+      }
+    }
+
+    // get subtotal minus discount
+    sumTotal -= discount
+
     // get tax fee
     const taxesAmount = (taxRates && taxRates.total) || taxes
     // canadian taxes
@@ -106,7 +128,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       switch (countrySubsidiary.toLowerCase()) {
         case COUNTRY_CODE_US:
           if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-            taxTotal = ((subtotal + proDesignFee) * taxesAmount) / 100 // calculate tax
+            taxTotal = (sumTotal * taxesAmount) / 100 // calculate tax
             taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           }
           break
@@ -115,10 +137,8 @@ export class OrderSummary extends React.Component<Props, {}> {
             shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA &&
             taxRates
           ) {
-            taxGst =
-              ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
-              100 // calculate tax
-            taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
+            taxGst = ((shippingTotal + sumTotal) * taxRates.rateGst) / 100 // calculate tax
+            taxPst = (sumTotal * taxRates.ratePst) / 100 // calculate tax
             taxGst = Math.round(taxGst * 100) / 100
             taxPst = Math.round(taxPst * 100) / 100
           }
@@ -128,33 +148,9 @@ export class OrderSummary extends React.Component<Props, {}> {
       }
     }
 
-    let discount = 0
+    const youSaved = totalWithoutDiscount - sumTotal
 
-    if (couponCode) {
-      const { type, rate } = couponCode
-      switch (type) {
-        case '%':
-          const percentage = rate && rate.substring(0, rate.length - 1)
-          discount = ((subtotal + proDesignFee) * Number(percentage)) / 100
-          break
-        case 'flat':
-          discount = Number(rate)
-          break
-        default:
-          break
-      }
-    }
-
-    const youSaved = totalWithoutDiscount + discount - subtotal - proDesignFee
-
-    const sumTotal =
-      subtotal +
-      shippingTotal +
-      taxFee +
-      taxGst +
-      taxPst +
-      proDesignFee -
-      discount
+    sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
 
     const amountsDivider =
       !!proDesignReview ||
@@ -252,7 +248,6 @@ export class OrderSummary extends React.Component<Props, {}> {
       const data = await applyPromoCode({
         variables: { code }
       })
-      console.log(data)
       const {
         data: { couponCode }
       } = data
