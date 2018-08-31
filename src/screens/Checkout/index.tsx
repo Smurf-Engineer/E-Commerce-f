@@ -425,6 +425,7 @@ class Checkout extends React.Component<Props, {}> {
                 subtotal={total}
                 discount={10}
                 country={billingCountry}
+                shipAddressCountry={shippingAddress.country}
                 shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
