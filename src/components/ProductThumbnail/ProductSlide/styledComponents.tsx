@@ -37,7 +37,7 @@ export const Page = styled.div`
   text-align: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 123px;
+    width: 100%;
     height: 180px;
   }
 `
