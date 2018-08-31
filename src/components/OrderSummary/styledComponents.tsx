@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { WHITE, BLUE, GRAY_LIGHT, GRAY_DARK, RED } from '../../theme/colors'
 
 interface TotalProps {
   onlyRead?: boolean
@@ -17,18 +18,18 @@ export const Container = styled.div`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn-primary {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
     width: 100%;
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 export const CheckoutButton = styled(Button)`
@@ -37,7 +38,7 @@ export const CheckoutButton = styled(Button)`
 `
 
 export const SummaryTitle = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   height: 25px;
@@ -54,7 +55,7 @@ export const Divider = styled.div`
   box-sizing: border-box;
   height: 1px;
   width: 100%;
-  background-color: #dcdcdc;
+  background-color: ${GRAY_LIGHT};
   margin-bottom: ${({ withMargin }: DividerProps) =>
     withMargin ? '10px' : '0'};
 `
@@ -69,7 +70,7 @@ export const OrderItem = styled.div`
   justify-content: space-between;
   margin-bottom: 10px;
 
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -81,7 +82,7 @@ export const FlexWrapper = styled.div`
 `
 
 export const DeleteLabel = styled.div`
-  color: #e61737;
+  color: ${RED};
   font-size: 12px;
   letter-spacing: 0.09px;
   line-height: 16px;
@@ -97,7 +98,7 @@ export const TotalOrderItem = styled.div`
     withoutMarginBottom ? '4px' : '20px'};
   margin-top: ${({ onlyRead, showCouponInput }: TotalProps) =>
     onlyRead || !showCouponInput ? '10px' : '0'};
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -110,7 +111,7 @@ export const YouSavedOrderItem = styled.div`
   justify-content: space-between;
   margin-bottom: 20px;
   margin-top: ${({ onlyRead }: TotalProps) => (onlyRead ? '10px' : '0')};
-  color: #e61737;
+  color: ${RED};
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -123,11 +124,11 @@ export const ZipCodeInputWrapper = styled.div`
   }
   .ant-btn {
     border-radius: 0;
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
     &:hover {
-      background-color: #4a90e2;
-      border-color: #4a90e2;
+      background-color: ${BLUE};
+      border-color: ${BLUE};
     }
   }
 `
@@ -137,7 +138,7 @@ export const CollapseWrapper = styled.div`
   .ant-collapse .ant-collapse-item .ant-collapse-header {
     display: flex;
     flex-direction: row;
-    color: #5f6062;
+    color: ${GRAY_DARK};
     font-size: 12px;
     letter-spacing: 0.15px;
     line-height: 16px;
