@@ -123,7 +123,7 @@ interface Props extends RouteComponentProps<any> {
   showCardForm: boolean
   selectedCard: CreditCardData
   currentCurrency: string
-  couponCode: CouponCode
+  couponCode?: CouponCode
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -428,7 +428,7 @@ class Checkout extends React.Component<Props, {}> {
                 shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
-                total={!proDesign ? total : total + DESIGNREVIEWFEE}
+                total={total}
                 proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
                 showCouponInput={true}
@@ -585,7 +585,8 @@ class Checkout extends React.Component<Props, {}> {
       stripeToken,
       selectedCard,
       client: { query },
-      currentCurrency
+      currentCurrency,
+      couponCode: couponObject
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -688,6 +689,8 @@ class Checkout extends React.Component<Props, {}> {
       }
     )
 
+    const couponCode = couponObject && couponObject.code
+
     const orderObj = {
       proDesign,
       paymentMethod,
@@ -704,7 +707,8 @@ class Checkout extends React.Component<Props, {}> {
       shippingCarrier,
       shippingAmount: shippingAmount || '0',
       currency: currentCurrency || config.defaultCurrency,
-      weight: weightSum
+      weight: weightSum,
+      couponCode
     }
 
     try {

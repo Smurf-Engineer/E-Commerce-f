@@ -36,7 +36,7 @@ const COUNTRY_CODE_US = 'us'
 const COUNTRY_CODE_CANADA = 'ca'
 
 interface Data extends QueryProps {
-  taxes: NetsuiteTax[]
+  taxes: NetsuiteTax
   shipping: NetsuiteShipping
 }
 
@@ -69,10 +69,8 @@ export class OrderSummary extends React.Component<Props, {}> {
   render() {
     const {
       data,
-      total,
       subtotal,
       formatMessage,
-      // discount,
       showCouponInput,
       couponCode,
       totalWithoutDiscount = 0,
@@ -84,59 +82,66 @@ export class OrderSummary extends React.Component<Props, {}> {
       country
     } = this.props
 
-    let discount = 0
-
-    if (couponCode) {
-      const { discountAmount, type, rate } = couponCode
-      switch (type) {
-        case '%':
-          const percentage = rate && rate.substring(0, rate.length - 1)
-          discount = (totalWithoutDiscount * Number(percentage)) / 100
-          break
-        case '$':
-          discount = Number(discountAmount)
-          break
-        default:
-          break
-      }
-    }
-
-    console.log('---------------------------')
-    console.log(totalWithoutDiscount, 'totalwithoutdiscount')
-    console.log(total, 'total')
-    console.log(discount, 'total')
-    console.log('---------------------------')
-
-    const youSaved = totalWithoutDiscount + discount - total
-
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
-    const taxesAmount = get(data, 'taxes.total', taxes) || 0
-
+    const taxRates = get(data, 'taxes', null)
     const symbol = currencySymbol || '$'
 
+    // pro design fee
+    const proDesignFee = proDesignReview || 0
     // get tax fee
+    const taxesAmount = (taxRates && taxRates.total) || taxes
+    // canadian taxes
+    let taxGst = 0
+    let taxPst = 0
     let taxFee = 0
     if (taxesAmount && country) {
       let taxTotal = 0
       switch (country.toLowerCase()) {
         case COUNTRY_CODE_US:
-          taxTotal = (total * taxesAmount) / 100 // calculate tax
+          taxTotal = (subtotal * taxesAmount) / 100 // calculate tax
           taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
           break
-        case COUNTRY_CODE_CANADA: // TODO: pending confirmation
-          taxTotal = (total * taxesAmount) / 100 // calculate tax
-          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+        case COUNTRY_CODE_CANADA:
+          if (taxRates) {
+            taxGst =
+              ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
+              100 // calculate tax
+            taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
+            taxGst = Math.round(taxGst * 100) / 100
+            taxPst = Math.round(taxPst * 100) / 100
+          }
           break
         default:
           break
       }
     }
 
+    let discount = 0
+
+    if (couponCode) {
+      const { type, rate } = couponCode
+      switch (type) {
+        case '%':
+          const percentage = rate && rate.substring(0, rate.length - 1)
+          discount = ((subtotal + proDesignFee) * Number(percentage)) / 100
+          break
+        case 'flat':
+          discount = Number(rate)
+          break
+        default:
+          break
+      }
+    }
+
+    const youSaved = totalWithoutDiscount + discount - subtotal - proDesignFee
+
     const sumTotal =
-      total +
+      subtotal +
       shippingTotal +
       taxFee +
-      (!!proDesignReview && proDesignReview) -
+      taxGst +
+      taxPst +
+      proDesignFee -
       discount
 
     const amountsDivider =
@@ -175,15 +180,25 @@ export class OrderSummary extends React.Component<Props, {}> {
                 {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
               </OrderItem>
             )}
+          {/* taxes */}
+          <OrderItem hide={!taxFee}>
+            <FormattedMessage {...messages.taxes} />
+            <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxGst}>
+            <FormattedMessage {...messages.taxesGst} />
+            <div>{`${symbol} ${taxGst.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxPst}>
+            <FormattedMessage {...messages.taxesPst} />
+            <div>{`${symbol} ${taxPst.toFixed(2)}`}</div>
+          </OrderItem>
+          {/* shipping */}
+          <OrderItem hide={!shippingTotal}>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+          </OrderItem>
         </CalculationsWrapper>
-        <OrderItem hide={!taxFee}>
-          <FormattedMessage {...messages.taxes} />
-          <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
-        </OrderItem>
-        <OrderItem hide={!shippingTotal}>
-          <FormattedMessage {...messages.shipping} />
-          <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
-        </OrderItem>
         {amountsDivider && <Divider />}
         {!onlyRead && showCouponInput ? (
           <CollapseWrapper>
