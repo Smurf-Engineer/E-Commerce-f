@@ -34,4 +34,14 @@ export const ProductsContainer = styled.div`
   @media (min-width: 1440px) {
     padding: 0px 10%;
   }
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    section {
+      width: 220px;
+    }
+
+    section div:last-child {
+      width: 150px;
+    }
+  }
 `
