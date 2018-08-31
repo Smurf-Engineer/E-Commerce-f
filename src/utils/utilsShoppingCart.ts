@@ -10,6 +10,7 @@ export const getShoppingCartData = (
   let weightSum = 0
   let totalWithoutDiscount = 0
   let priceRangeToApply = 0
+  let priceRangeRetails = 0
   let show25PercentMessage = false
   let justOneOfEveryItem = true
   let maxquantity = 0
@@ -79,10 +80,19 @@ export const getShoppingCartData = (
         abbreviation: currency
       })
 
-      let priceRange =
-        priceRangeToApply !== 0
-          ? currencyPrices[priceRangeToApply]
-          : getPriceRange(currencyPrices, quantitySum)
+      let priceRange
+      if (!cartItem.designId) {
+        // cartItem is a retail product
+        priceRangeRetails = numberOfProducts > 1 ? 1 : 0
+        priceRange = currencyPrices[priceRangeRetails]
+      } else {
+        priceRange =
+          priceRangeToApply !== 0
+            ? currencyPrices[priceRangeToApply]
+            : getPriceRange(currencyPrices, quantitySum)
+      }
+
+      console.log(priceRange, 'priceRange')
 
       priceRange =
         priceRange.price === 0
