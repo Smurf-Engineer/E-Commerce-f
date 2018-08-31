@@ -720,6 +720,7 @@ export interface NetsuiteTax {
   state: string
   zip: string
   total: number
+  countrySub: string
 }
 
 export interface NetsuiteShipping {

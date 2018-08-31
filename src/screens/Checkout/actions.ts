@@ -27,7 +27,8 @@ import {
   SHOW_CARD_FORM,
   SET_SELECTED_CARD_TO_PAY,
   SET_COUPON_CODE,
-  DELETE_COUPON_CODE
+  DELETE_COUPON_CODE,
+  OPEN_CURRENCY_WARNING
 } from './constants'
 import {
   AnyAction,
@@ -184,4 +185,9 @@ export const setCouponCodeAction = (couponCode: CouponCode): AnyAction => ({
 
 export const deleteCouponCodeAction = (): AnyAction => ({
   type: DELETE_COUPON_CODE
+})
+
+export const openCurrencyWarningAction = (open: boolean): AnyAction => ({
+  type: OPEN_CURRENCY_WARNING,
+  open
 })

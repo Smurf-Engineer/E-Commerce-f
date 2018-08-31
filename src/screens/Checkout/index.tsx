@@ -17,7 +17,7 @@ import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
-import { AddAddressMutation, PlaceOrderMutation } from './data'
+import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
 import { CheckoutTabs } from './constants'
 import MediaQuery from 'react-responsive'
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
@@ -33,7 +33,8 @@ import {
   PlaceOrderButton,
   paypalButtonStyle,
   StepIcon,
-  CheckIcon
+  CheckIcon,
+  CurrencyWarningText
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -53,6 +54,8 @@ import {
 } from '../../types/common'
 import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import Modal from 'antd/lib/modal'
+import ModalFooter from '../../components/ModalFooter'
 
 type ProductCart = {
   id: number
@@ -124,6 +127,7 @@ interface Props extends RouteComponentProps<any> {
   selectedCard: CreditCardData
   currentCurrency: string
   couponCode?: CouponCode
+  openCurrencyWarning: boolean
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -152,6 +156,7 @@ interface Props extends RouteComponentProps<any> {
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
   setCouponCodeAction: (code: CouponCode) => void
   deleteCouponCodeAction: () => void
+  openCurrencyWarningAction: (open: boolean) => void
 }
 
 const stepperTitles = ['SHIPPING', 'PAYMENT', 'REVIEW']
@@ -225,7 +230,8 @@ class Checkout extends React.Component<Props, {}> {
       currentCurrency,
       couponCode,
       setCouponCodeAction,
-      deleteCouponCodeAction
+      deleteCouponCodeAction,
+      openCurrencyWarning
     } = this.props
 
     const shippingAddress: AddressType = {
@@ -269,7 +275,8 @@ class Checkout extends React.Component<Props, {}> {
     const { state: stateLocation } = location
     const { ShippingTab, RevieTab, PaymentTab } = CheckoutTabs
 
-    if (!stateLocation || !stateLocation.cart) {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+    if (!cart || !cart.length || !stateLocation || !stateLocation.cart) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
@@ -425,6 +432,7 @@ class Checkout extends React.Component<Props, {}> {
               <OrderSummary
                 subtotal={total}
                 country={billingCountry}
+                shipAddressCountry={shippingAddress.country}
                 shipAddress={taxAddress}
                 weight={weightSum}
                 formatMessage={intl.formatMessage}
@@ -447,8 +455,35 @@ class Checkout extends React.Component<Props, {}> {
             </SummaryContainer>
           </Content>
         </Container>
+        <Modal
+          visible={openCurrencyWarning}
+          footer={
+            <ModalFooter
+              okText={intl.formatMessage(messages.confirm)}
+              onOk={this.placeOrder}
+              onCancel={this.handleOnCancelWarning}
+              formatMessage={intl.formatMessage}
+            />
+          }
+          destroyOnClose={false}
+          maskClosable={false}
+          closable={false}
+        >
+          <CurrencyWarningText>
+            {intl.formatMessage(messages.correctCurrency, {
+              currentCurrency: (
+                currentCurrency || config.defaultCurrency
+              ).toUpperCase()
+            })}
+          </CurrencyWarningText>
+        </Modal>
       </Layout>
     )
+  }
+
+  handleOnCancelWarning = () => {
+    const { openCurrencyWarningAction } = this.props
+    openCurrencyWarningAction(false)
   }
 
   handleOnStepClick = (step: number) => () => {
@@ -540,7 +575,7 @@ class Checkout extends React.Component<Props, {}> {
       paymentId: payment.paymentID,
       payerId: payment.payerID
     }
-    this.handleOnPlaceOrder(undefined, obj)
+    this.placeOrder(undefined, obj)
   }
 
   onPaypalCancel = (data: AnalyserNode) => {
@@ -554,7 +589,32 @@ class Checkout extends React.Component<Props, {}> {
     Message.error(err, 5)
   }
 
-  handleOnPlaceOrder = async (event: any, paypalObj?: object) => {
+  handleOnPlaceOrder = async (event: any) => {
+    const {
+      client: { query },
+      billingCountry,
+      currentCurrency,
+      openCurrencyWarningAction
+    } = this.props
+
+    const {
+      data: { currency }
+    } = await query({
+      query: CurrencyQuery,
+      variables: { countryCode: billingCountry },
+      fetchPolicy: 'network-only'
+    })
+
+    const selectedCurrency = currentCurrency || config.defaultCurrency
+
+    if (currency.toLowerCase() !== selectedCurrency) {
+      return openCurrencyWarningAction(true)
+    }
+
+    this.placeOrder(event)
+  }
+
+  placeOrder = async (event: any, paypalObj?: object) => {
     const {
       location,
       placeOrder,

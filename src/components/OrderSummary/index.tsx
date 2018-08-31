@@ -52,6 +52,7 @@ interface Props {
   country?: string
   weight?: string
   shipAddress?: TaxAddressObj
+  shipAddressCountry?: string
   proDesignReview?: number
   currencySymbol?: string
   showCouponInput?: boolean
@@ -70,6 +71,7 @@ export class OrderSummary extends React.Component<Props, {}> {
     const {
       data,
       subtotal,
+      total,
       formatMessage,
       showCouponInput,
       couponCode,
@@ -79,12 +81,18 @@ export class OrderSummary extends React.Component<Props, {}> {
       currencySymbol,
       shipping,
       taxes,
-      country
+      country,
+      shipAddressCountry
     } = this.props
 
     const shippingTotal = get(data, 'shipping.total', shipping) || 0
     const taxRates = get(data, 'taxes', null)
     const symbol = currencySymbol || '$'
+
+    // countries to compare tax
+    const countrySubsidiary =
+      (taxRates && taxRates.countrySub) || COUNTRY_CODE_US
+    const shippingAddressCountry = shipAddressCountry || COUNTRY_CODE_US
 
     // pro design fee
     const proDesignFee = proDesignReview || 0
@@ -96,19 +104,23 @@ export class OrderSummary extends React.Component<Props, {}> {
     let taxFee = 0
     if (taxesAmount && country) {
       let taxTotal = 0
-      switch (country.toLowerCase()) {
+      switch (countrySubsidiary.toLowerCase()) {
         case COUNTRY_CODE_US:
-          taxTotal = (subtotal * taxesAmount) / 100 // calculate tax
-          taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
+            taxTotal = (total * taxesAmount) / 100 // calculate tax
+            taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
+          }
           break
         case COUNTRY_CODE_CANADA:
-          if (taxRates) {
-            taxGst =
-              ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
-              100 // calculate tax
-            taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
-            taxGst = Math.round(taxGst * 100) / 100
-            taxPst = Math.round(taxPst * 100) / 100
+          if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA) {
+            if (taxRates) {
+              taxGst =
+                ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) /
+                100 // calculate tax
+              taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
+              taxGst = Math.round(taxGst * 100) / 100
+              taxPst = Math.round(taxPst * 100) / 100
+            }
           }
           break
         default:

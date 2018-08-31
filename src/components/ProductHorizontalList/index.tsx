@@ -59,7 +59,6 @@ export const ProductHorizontalList = ({
   }
 
   const list = products.products.map((product, key) => {
-    // TODO: filter by gender
     const {
       id,
       type,
@@ -73,7 +72,14 @@ export const ProductHorizontalList = ({
       colors
     } = product
 
-    const productImages = images ? images[0] : {}
+    let productImages
+
+    if (images) {
+      productImages = genderId
+        ? images.find(image => image.genderId === genderId)
+        : images[0]
+    }
+
     return (
       <ProductThumbnail
         {...{

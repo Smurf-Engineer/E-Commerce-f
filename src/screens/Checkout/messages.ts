@@ -16,5 +16,14 @@ export default defineMessages({
   continueButtonLabel: {
     id: 'screens.Checkout.continueButtonLabel',
     defaultMessage: 'Continue'
+  },
+  confirm: {
+    id: 'screens.Checkout.confirm',
+    defaultMessage: 'Confirm'
+  },
+  correctCurrency: {
+    id: 'screens.Checkout.correctCurrency',
+    defaultMessage:
+      'Your selected Currency is {currentCurrency}. Is this the currency you wish to proceed?'
   }
 })
