@@ -29,8 +29,7 @@ export const initialState = fromJS({
   total: 0,
   shipping: 0,
   showDeleteLastItemModal: false,
-  showReviewDesignModal: false,
-  couponCode: ''
+  showReviewDesignModal: false
 })
 
 const shoppingCartPageReducer: Reducer<any> = (

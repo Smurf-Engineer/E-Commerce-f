@@ -31,6 +31,7 @@ import {
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
+import { PERCENTAGE_PROMO, FLAT_PROMO } from '../../screens/Checkout/constants'
 
 const COUNTRY_CODE_US = 'us'
 const COUNTRY_CODE_CANADA = 'ca'
@@ -102,11 +103,11 @@ export class OrderSummary extends React.Component<Props, {}> {
     if (couponCode) {
       const { type, rate } = couponCode
       switch (type) {
-        case '%':
+        case PERCENTAGE_PROMO: // '%'
           const percentage = rate && rate.substring(0, rate.length - 1)
           discount = (sumTotal * Number(percentage)) / 100
           break
-        case 'flat':
+        case FLAT_PROMO: // 'flat
           discount = Number(rate)
           break
         default:
@@ -244,7 +245,11 @@ export class OrderSummary extends React.Component<Props, {}> {
 
   onApplyCouponCode = async (code: string) => {
     try {
-      const { applyPromoCode, setCouponCodeAction = () => {} } = this.props
+      const {
+        applyPromoCode,
+        setCouponCodeAction = () => {},
+        formatMessage
+      } = this.props
       const data = await applyPromoCode({
         variables: { code }
       })
@@ -253,9 +258,9 @@ export class OrderSummary extends React.Component<Props, {}> {
       } = data
       if (couponCode) {
         setCouponCodeAction(couponCode)
-        Message.success('Coupon applied')
+        Message.success(formatMessage(messages.couponApplied))
       } else {
-        Message.error('Unknow error occurred')
+        Message.error(formatMessage(messages.couponError))
       }
     } catch (error) {
       const { deleteCouponCodeAction = () => {} } = this.props

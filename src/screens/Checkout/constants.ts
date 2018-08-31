@@ -46,3 +46,6 @@ export enum PaymentOptions {
   PAYPAL = 'paypal',
   CREDITCARD = 'credit card'
 }
+
+export const PERCENTAGE_PROMO = '%'
+export const FLAT_PROMO = 'flat'

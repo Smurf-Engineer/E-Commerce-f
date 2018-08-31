@@ -64,7 +64,6 @@ interface Props extends RouteComponentProps<any> {
   showDeleteLastItemModal: boolean
   showReviewDesignModal: boolean
   currentCurrency: string
-  couponCode: string
   // Redux actions
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
@@ -266,8 +265,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       showDeleteLastItemModal,
       showReviewDesignModal,
-      currentCurrency,
-      couponCode
+      currentCurrency
     } = this.props
     const { formatMessage } = intl
 
@@ -407,8 +405,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                   {...{
                     formatMessage,
                     totalWithoutDiscount,
-                    total,
-                    couponCode
+                    total
                   }}
                 />
                 <ButtonWrapper disabled={!activeCheckout}>
