@@ -40,5 +40,9 @@ export default defineMessages({
   noMatchingMessage: {
     id: 'components.ResetPassword.noMatchingMessage',
     defaultMessage: 'No matching passwords'
+  },
+  cancel: {
+    id: 'components.ResetPassword.cancel',
+    defaultMessage: 'Cancel'
   }
 })
