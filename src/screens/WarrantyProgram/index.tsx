@@ -222,7 +222,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
         const user = JSON.parse(localStorage.getItem('user') || '')
 
         const uploadResp = await fetch(
-          `${config.graphqlUriBase}uploadWarrantyImage`,
+          `${config.graphqlUriBase}/upload/warrantyImage`,
           {
             method: 'POST',
             headers: {
