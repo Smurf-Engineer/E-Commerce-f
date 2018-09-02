@@ -34,6 +34,11 @@ export const ColorButtons = styled.div`
   justify-content: space-around;
   padding: 14px 32px 0px 32px;
   margin-bottom: 16px;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    flex-wrap: wrap;
+    padding: 20px 0px 10px 18px;
+  }
 `
 
 export const Divider = styled.div`
