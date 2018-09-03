@@ -11,8 +11,8 @@ export const Container = styled.div`
 `
 
 export const Render = styled.div`
+  height: ${({ customProduct }) => (customProduct ? '536px' : '90vh')};
   width: 100%;
-  height: 90vh;
 `
 
 export const Model = styled.div`

@@ -379,6 +379,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   threeDmodel={
                     <Render3D
                       svg={svgUrl}
+                      customProduct={true}
                       {...{
                         canvas,
                         product,
