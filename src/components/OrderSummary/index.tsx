@@ -104,8 +104,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       const { type, rate } = couponCode
       switch (type) {
         case PERCENTAGE_PROMO: // '%'
-          const percentage = rate && rate.substring(0, rate.length - 1)
-          discount = (sumTotal * Number(percentage)) / 100
+          discount = (sumTotal * Number(rate)) / 100
           break
         case FLAT_PROMO: // 'flat
           discount = Number(rate)
