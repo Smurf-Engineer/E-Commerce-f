@@ -49,3 +49,14 @@ export enum PaymentOptions {
 
 export const PERCENTAGE_PROMO = '%'
 export const FLAT_PROMO = 'flat'
+
+// COUNTRY CODES
+export const COUNTRY_CODE_US = 'us'
+export const COUNTRY_CODE_CANADA = 'ca'
+// EUROPE
+export const COUNTRY_CODE_AT = 'at'
+export const COUNTRY_CODE_DE = 'de'
+export const COUNTRY_CODE_CH = 'ch'
+export const COUNTRY_CODE_ES = 'es'
+export const COUNTRY_CODE_IT = 'it'
+export const COUNTRY_CODE_FR = 'fr'

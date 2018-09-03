@@ -31,10 +31,14 @@ import {
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
-import { PERCENTAGE_PROMO, FLAT_PROMO } from '../../screens/Checkout/constants'
-
-const COUNTRY_CODE_US = 'us'
-const COUNTRY_CODE_CANADA = 'ca'
+import {
+  PERCENTAGE_PROMO,
+  FLAT_PROMO,
+  COUNTRY_CODE_US,
+  COUNTRY_CODE_CANADA,
+  COUNTRY_CODE_AT,
+  COUNTRY_CODE_DE
+} from '../../screens/Checkout/constants'
 
 interface Data extends QueryProps {
   taxes: NetsuiteTax
@@ -123,6 +127,8 @@ export class OrderSummary extends React.Component<Props, {}> {
     let taxGst = 0
     let taxPst = 0
     let taxFee = 0
+    let taxVat = 0
+    let taxVatTotal = 0
     if (taxesAmount && country) {
       let taxTotal = 0
       switch (countrySubsidiary.toLowerCase()) {
@@ -143,6 +149,31 @@ export class OrderSummary extends React.Component<Props, {}> {
             taxPst = Math.round(taxPst * 100) / 100
           }
           break
+        case COUNTRY_CODE_AT:
+          if (
+            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_DE ||
+            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_DE
+          ) {
+            taxVatTotal = taxesAmount / 100
+            taxVat =
+              sumTotal -
+              proDesignFee -
+              (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+              shippingTotal * taxVatTotal +
+              proDesignFee * taxVatTotal
+            taxVat = Math.round(taxVat * 100) / 100
+          }
+          break
+        case COUNTRY_CODE_DE:
+          taxVatTotal = taxesAmount / 100
+          taxVat =
+            sumTotal -
+            proDesignFee -
+            (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+            shippingTotal * taxVatTotal +
+            proDesignFee * taxVatTotal
+          taxVat = Math.round(taxVat * 100) / 100
+          break
         default:
           break
       }
@@ -150,7 +181,16 @@ export class OrderSummary extends React.Component<Props, {}> {
 
     const youSaved = totalWithoutDiscount - sumTotal
 
-    sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+    if (taxVat) {
+      taxVatTotal = taxesAmount / 100
+      sumTotal =
+        (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+        taxVat +
+        shippingTotal +
+        proDesignFee
+    } else {
+      sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+    }
 
     const amountsDivider =
       !!proDesignReview ||
@@ -200,6 +240,10 @@ export class OrderSummary extends React.Component<Props, {}> {
           <OrderItem hide={!taxPst}>
             <FormattedMessage {...messages.taxesPst} />
             <div>{`${symbol} ${taxPst.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxVat}>
+            <FormattedMessage {...messages.taxesVat} />
+            <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>
           </OrderItem>
           {/* shipping */}
           <OrderItem hide={!shippingTotal}>
