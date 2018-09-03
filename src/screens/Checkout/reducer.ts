@@ -30,7 +30,8 @@ import {
   SET_SELECTED_CARD_TO_PAY,
   SET_COUPON_CODE,
   DELETE_COUPON_CODE,
-  OPEN_CURRENCY_WARNING
+  OPEN_CURRENCY_WARNING,
+  SET_SELECTED_ADDRESSES
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -117,6 +118,35 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         indexAddressSelected: action.index,
         showForm: false
       })
+    case SET_SELECTED_ADDRESSES: {
+      const {
+        address: {
+          firstName,
+          lastName,
+          street,
+          apartment,
+          country,
+          city,
+          zipCode,
+          phone,
+          stateProvince
+        },
+        index
+      } = action
+      return state.merge({
+        ...action.address,
+        billingFirstName: firstName,
+        billingLastName: lastName,
+        billingStreet: street,
+        billingApartment: apartment,
+        billingCountry: country,
+        billingStateProvince: stateProvince,
+        billingCity: city,
+        billingZipCode: zipCode,
+        billingPhone: phone,
+        indexAddressSelected: index
+      })
+    }
     case SAME_BILLING_AND_SHIPPING_UNCHECKED:
       return state.merge({
         sameBillingAndShipping: false,

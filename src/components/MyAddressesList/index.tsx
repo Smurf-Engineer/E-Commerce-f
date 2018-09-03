@@ -117,7 +117,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
         ((defaultShipping && indexAddressSelected === -1) ||
           indexAddressSelected === key)
       if (!showForm && isSelected) {
-        this.handleOnSelectAddress(key)
         atLeastOneIsSelected = true
       }
       if (

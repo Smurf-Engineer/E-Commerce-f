@@ -14,6 +14,7 @@ import {
   SAME_BILLING_AND_SHIPPING_CHECKED,
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
   SET_SELECTED_ADDRESS,
+  SET_SELECTED_ADDRESSES,
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
@@ -97,6 +98,15 @@ export const setSelectedAddressAction = (
   index: number
 ): AnyAction => ({
   type: SET_SELECTED_ADDRESS,
+  address,
+  index
+})
+
+export const setSelectedAddressesAction = (
+  address: AddressType,
+  index: number
+): AnyAction => ({
+  type: SET_SELECTED_ADDRESSES,
   address,
   index
 })

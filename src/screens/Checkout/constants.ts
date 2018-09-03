@@ -13,6 +13,7 @@ export const SELECT_DROPDOWN = `${namespace}/SELECT_DROPDOWN`
 export const SMS_CHECK = `${namespace}/SMS_CHECK`
 export const EMAIL_CHECK = `${namespace}/EMAIL_CHECK`
 export const SET_SELECTED_ADDRESS = `${namespace}/SET_SELECTED_ADDRESS`
+export const SET_SELECTED_ADDRESSES = `${namespace}/SET_SELECTED_ADDRESSES`
 export const SHOW_ADDRESS_FORM = `${namespace}/SHOW_ADDRESS_FORM`
 // Billing
 export const VALID_BILLING_FORM = `${namespace}/VALID_BILLING_FORM`
@@ -39,7 +40,7 @@ export const OPEN_CURRENCY_WARNING = `${namespace}/OPEN_CURRENCY_WARNING`
 export enum CheckoutTabs {
   ShippingTab = 0,
   PaymentTab = 1,
-  RevieTab = 2
+  ReviewTab = 2
 }
 
 export enum PaymentOptions {
@@ -47,5 +48,7 @@ export enum PaymentOptions {
   CREDITCARD = 'credit card'
 }
 
+export const COUNTRY_CODE_US = 'us'
+export const COUNTRY_CODE_CANADA = 'ca'
 export const PERCENTAGE_PROMO = '%'
 export const FLAT_PROMO = 'flat'
