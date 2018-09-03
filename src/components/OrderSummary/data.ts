@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const getTaxQuery = gql`
   query getTaxes(
@@ -26,3 +27,19 @@ export const getTaxQuery = gql`
     }
   }
 `
+
+export const applyPromoCodeMutation = graphql(
+  gql`
+    mutation getPromoCode($code: String!) {
+      couponCode: getDiscountCode(code: $code) {
+        code
+        discountAmount
+        type
+        rate
+      }
+    }
+  `,
+  {
+    name: 'applyPromoCode'
+  }
+)

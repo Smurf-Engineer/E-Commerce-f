@@ -42,6 +42,7 @@ export const getOrderQuery = gql`
       }
       cart {
         product {
+          mpn
           name
           shortDescription: short_description
           images: pictures {

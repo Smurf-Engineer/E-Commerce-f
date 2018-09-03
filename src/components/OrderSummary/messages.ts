@@ -76,5 +76,13 @@ export default defineMessages({
   proDesigner: {
     id: 'screens.ShoppingCartPage.proDesigner',
     defaultMessage: 'Pro Designer Review'
+  },
+  couponApplied: {
+    id: 'screens.Checkout.couponApplied',
+    defaultMessage: 'Coupon applied'
+  },
+  couponError: {
+    id: 'screens.Checkout.couponError',
+    defaultMessage: 'Invalid promo code'
   }
 })
