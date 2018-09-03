@@ -490,6 +490,7 @@
   "screens.WarrantyProgram.description": "Description of warranty issue",
   "screens.WarrantyProgram.attachPicture": "Attach a picture:",
   "screens.WarrantyProgram.submit": "Submit",
+  "screens.WarrantyProgram.successClaim": "Claim Saved",
   "screens.AboutUsPage.tittle": "AT THE INTERSECTION OF INNOVATION AND CREATIVITY IS JAKROO",
   "screens.AboutUsPage.meetTitle": "MEET US",
   "screens.AboutUsPage.historyTitle": "OUR HISTORY",
