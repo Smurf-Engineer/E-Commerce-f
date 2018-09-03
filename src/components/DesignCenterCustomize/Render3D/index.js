@@ -1076,7 +1076,7 @@ class Render3D extends PureComponent {
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
           const canvasJson = JSON.stringify(
-            this.canvasTexture.toDatalessJSON(EXTRA_FIELDS)
+            this.canvasTexture.toObject(EXTRA_FIELDS)
           )
           const saveDesign = {
             canvasJson,
