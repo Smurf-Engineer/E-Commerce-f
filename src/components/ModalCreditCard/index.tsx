@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import { injectStripe, CardElement } from 'react-stripe-elements'
-import Modal from 'antd/lib/modal'
 import messages from './messages'
 import {
   Container,
@@ -47,70 +46,59 @@ class ModalCreditCard extends React.Component<Props, {}> {
       cardHolderName,
       hasError,
       newCardLoading,
-      visible,
       cardAsDefaultPayment
     } = this.props
     return (
-      <Modal
-        {...{ visible }}
-        confirmLoading={newCardLoading}
-        footer={[
-          <StyledGhostButton key="cancel" onClick={this.handleOnCancel}>
-            {formatMessage(messages.cancel)}
-          </StyledGhostButton>,
-          <StyledButton
-            type="primary"
-            key="submit"
-            loading={newCardLoading}
-            onClick={this.handleOnRequestToken}
+      <Container>
+        <Row>
+          <Column inputhWidth={'100%'}>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.cardNumber)}</Label>
+              <RequiredSpan>*</RequiredSpan>
+            </InputTitleContainer>
+            <ContainerInput>
+              <CardElement hidePostalCode={true} style={StripeCardElement} />
+            </ContainerInput>
+            {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
+          </Column>
+        </Row>
+        <Row>
+          <Column inputhWidth={'100%'}>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.cardholderName)}</Label>
+              <RequiredSpan>*</RequiredSpan>
+            </InputTitleContainer>
+            <StyledInput
+              id={'cardHolderName'}
+              value={cardHolderName}
+              onChange={this.handleInputChange}
+            />
+            {!cardHolderName &&
+              hasError && (
+                <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+              )}
+          </Column>
+        </Row>
+        <Row withoutMargin={true}>
+          <StyledCheckbox
+            checked={cardAsDefaultPayment}
+            onChange={this.handleOnDefaultChecked}
           >
-            {formatMessage(messages.saveCard)}
-          </StyledButton>
-        ]}
-        closable={false}
-        maskClosable={false}
-        destroyOnClose={true}
-      >
-        <Container>
-          <Row>
-            <Column inputhWidth={'100%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.cardNumber)}</Label>
-                <RequiredSpan>*</RequiredSpan>
-              </InputTitleContainer>
-              <ContainerInput>
-                <CardElement hidePostalCode={true} style={StripeCardElement} />
-              </ContainerInput>
-              {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
-            </Column>
-          </Row>
-          <Row>
-            <Column inputhWidth={'100%'}>
-              <InputTitleContainer>
-                <Label>{formatMessage(messages.cardholderName)}</Label>
-                <RequiredSpan>*</RequiredSpan>
-              </InputTitleContainer>
-              <StyledInput
-                id={'cardHolderName'}
-                value={cardHolderName}
-                onChange={this.handleInputChange}
-              />
-              {!cardHolderName &&
-                hasError && (
-                  <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
-                )}
-            </Column>
-          </Row>
-          <Row withoutMargin={true}>
-            <StyledCheckbox
-              checked={cardAsDefaultPayment}
-              onChange={this.handleOnDefaultChecked}
-            >
-              {formatMessage(messages.defaultPayment)}
-            </StyledCheckbox>
-          </Row>
-        </Container>
-      </Modal>
+            {formatMessage(messages.defaultPayment)}
+          </StyledCheckbox>
+        </Row>
+        <StyledButton
+          type="primary"
+          key="submit"
+          loading={newCardLoading}
+          onClick={this.handleOnRequestToken}
+        >
+          {formatMessage(messages.saveCard)}
+        </StyledButton>
+        <StyledGhostButton key="cancel" onClick={this.handleOnCancel}>
+          {formatMessage(messages.cancel)}
+        </StyledGhostButton>
+      </Container>
     )
   }
 

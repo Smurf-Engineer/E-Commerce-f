@@ -14,6 +14,7 @@ import withError from '../WithError'
 import withLoading from '../WithLoading'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
+import CountryModal from '../../components/ConfirmCountryDialog'
 import messages from './messages'
 import {
   cardsQuery,
@@ -21,7 +22,6 @@ import {
   updateCardMutation,
   deleteCardMutation
 } from './data'
-
 import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
   Container,
@@ -57,6 +57,8 @@ interface Props {
   showCardForm: boolean
   listForMyAccount: boolean
   selectedCard: CreditCardData
+  openCountryModal: boolean
+  billingCountry: string
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
@@ -67,6 +69,8 @@ interface Props {
   hideDeleteCardConfirmAction: () => void
   setLoadingAction: (loading: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
+  openCountryModalAction: (open: boolean) => void
+  saveCountryAction: (countryCode: string | null) => void
   setDeleteLoadingAction: (loading: boolean) => void
   setDefaultPaymentCheckedAction: (checked: boolean) => void
   setCardToUpdateAction: (card: CreditCardData) => void
@@ -91,9 +95,15 @@ class MyCards extends React.Component<Props, {}> {
   state = {
     stripe: null
   }
+  componentWillUnmount() {
+    const { listForMyAccount, resetReducerDataAction } = this.props
+    if (listForMyAccount) {
+      resetReducerDataAction()
+    }
+  }
   componentDidMount() {
     const {
-      showCardFormAction = () => { },
+      showCardFormAction = () => {},
       data: {
         userCards: { cards, default: idDefaultCard }
       }
@@ -140,6 +150,8 @@ class MyCards extends React.Component<Props, {}> {
       loading,
       paymentsRender = true,
       listForMyAccount,
+      openCountryModal,
+      billingCountry,
       setStripeCardDataAction,
       selectCardToPayAction,
       selectedCard
@@ -162,6 +174,31 @@ class MyCards extends React.Component<Props, {}> {
             {formatMessage(messages.addCard)}
           </StyledEmptyButton>
         </ButtonWrapper>
+        {billingCountry && (
+          <StripeProvider {...{ stripe }}>
+            <Elements>
+              <ModalCreditCard
+                {...{
+                  stripe,
+                  formatMessage,
+                  cardHolderName,
+                  hasError,
+                  stripeError,
+                  inputChangeAction,
+                  setStripeErrorAction,
+                  showCardModalAction,
+                  validFormAction,
+                  setModalLoadingAction,
+                  setDefaultPaymentCheckedAction,
+                  cardAsDefaultPayment
+                }}
+                saveAddress={this.handleOnSaveCard}
+                visible={showCardModal}
+                newCardLoading={modalLoading}
+              />
+            </Elements>
+          </StripeProvider>
+        )}
         <MyCardsList
           items={cards}
           {...{
@@ -176,29 +213,6 @@ class MyCards extends React.Component<Props, {}> {
           showConfirmDelete={this.handleOnShowDeleteCardConfirm}
           selectCardAsDefault={this.handleOnSelectCardAsDefault}
         />
-        <StripeProvider {...{ stripe }}>
-          <Elements>
-            <ModalCreditCard
-              {...{
-                stripe,
-                formatMessage,
-                cardHolderName,
-                hasError,
-                stripeError,
-                inputChangeAction,
-                setStripeErrorAction,
-                showCardModalAction,
-                validFormAction,
-                setModalLoadingAction,
-                setDefaultPaymentCheckedAction,
-                cardAsDefaultPayment
-              }}
-              saveAddress={this.handleOnSaveCard}
-              visible={showCardModal}
-              newCardLoading={modalLoading}
-            />
-          </Elements>
-        </StripeProvider>
         <Modal
           visible={showDeleteCardConfirm}
           confirmLoading={deleteLoading}
@@ -221,15 +235,31 @@ class MyCards extends React.Component<Props, {}> {
             {formatMessage(messages.messageDeleteModal)}
           </DeleteConfirmMessage>
         </Modal>
+        <CountryModal
+          {...{ formatMessage }}
+          open={openCountryModal}
+          requestClose={this.handleCancelCountryModal}
+          onSave={this.handleConfirmSaveCountryModal}
+        />
       </Container>
     )
+  }
+  handleCancelCountryModal = () => {
+    const { openCountryModalAction } = this.props
+    openCountryModalAction(false)
+  }
+
+  handleConfirmSaveCountryModal = (countryCode: string | null) => {
+    const { openCountryModalAction, saveCountryAction } = this.props
+    openCountryModalAction(false)
+    saveCountryAction(countryCode)
   }
   handleOnAddNewCard = () => {
     const {
       listForMyAccount,
-      showCardModalAction,
       showCardFormAction,
       showCardForm,
+      openCountryModalAction,
       data: {
         userCards: { cards, default: idDefaultCard }
       }
@@ -237,7 +267,7 @@ class MyCards extends React.Component<Props, {}> {
     const defaultCard = find(cards, { id: idDefaultCard })
 
     if (listForMyAccount) {
-      showCardModalAction(true)
+      openCountryModalAction(true)
     } else {
       showCardFormAction(!showCardForm, defaultCard)
     }

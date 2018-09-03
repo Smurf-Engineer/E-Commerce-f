@@ -11,6 +11,8 @@ import {
   SHOW_DELETE_CARD_CONFIRM,
   HIDE_DELETE_CARD_CONFIRM,
   SET_MODAL_LOADING,
+  OPEN_COUNTRY_MODAL,
+  SAVE_COUNTRY,
   SET_DELETE_LOADING,
   RESET_REDUCER_DATA,
   SET_CARD_UPDATE,
@@ -29,6 +31,8 @@ export const initialState = fromJS({
   showCardModal: false,
   showDeleteCardConfirm: false,
   modalLoading: false,
+  openCountryModal: false,
+  billingCountry: '',
   deleteLoading: false,
   defaultPayment: false,
   hasError: false,
@@ -84,6 +88,10 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('cardAsDefaultPayment', action.checked)
     case SET_LOADING:
       return state.set('loading', action.loading)
+    case OPEN_COUNTRY_MODAL:
+      return state.set('openCountryModal', action.open)
+    case SAVE_COUNTRY:
+      return state.set('billingCountry', action.countryCode)
     default:
       return state
   }
