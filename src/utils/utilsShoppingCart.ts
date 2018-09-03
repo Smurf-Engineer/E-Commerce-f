@@ -92,8 +92,6 @@ export const getShoppingCartData = (
             : getPriceRange(currencyPrices, quantitySum)
       }
 
-      console.log(priceRange, 'priceRange')
-
       priceRange =
         priceRange.price === 0
           ? currencyPrices[currencyPrices.length - 1]
