@@ -267,9 +267,9 @@ export class QuickView extends React.Component<Props, State> {
   }
 
   gotoProductPage = () => {
-    const { history, productId, yotpoId, handleClose } = this.props
+    const { history, productId, yotpoId, gender, handleClose } = this.props
     handleClose()
-    history.push(`/product?id=${productId}&yotpoId=${yotpoId}`)
+    history.push(`/product?id=${productId}&yotpoId=${yotpoId}&gender=${gender}`)
   }
 }
 
