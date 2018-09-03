@@ -55,9 +55,6 @@ export const ThumbnailImg = styled.img`
     height: inherit;
   }
 `
-export const SelectedImage = styled.div`
-  text-align: center;
-`
 
 interface ArrowsProps {
   squareArrows: boolean
@@ -69,11 +66,6 @@ export const SwipeContainer = styled.div`
   justify-content: center;
   position: relative;
   width: 100%;
-
-  div div:first-child {
-    height: 536px;
-    width: 100%;
-  }
 
   section {
     position: absolute;
@@ -105,12 +97,12 @@ export const SwipeContainer = styled.div`
 
   @media (min-width: 320px) {
     height: 100%;
-
-    div div:first-child {
-      width: 100%;
-      height: 100%;
-    }
   }
+`
+export const SelectedImage = styled.article`
+  height: 100%;
+  text-align: center;
+  width: 100%;
 `
 export const SwipeImg = styled.img`
   max-height: 600px;

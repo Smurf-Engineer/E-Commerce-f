@@ -296,10 +296,14 @@ class Render3D extends PureComponent {
 
   render() {
     const { showDragmessage, progress, loadingModel } = this.state
+    const { customProduct } = this.props
 
     return (
       <Container onKeyDown={this.handleOnKeyDown}>
-        <Render innerRef={container => (this.container = container)}>
+        <Render
+          {...{ customProduct }}
+          innerRef={container => (this.container = container)}
+        >
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
         {showDragmessage && (

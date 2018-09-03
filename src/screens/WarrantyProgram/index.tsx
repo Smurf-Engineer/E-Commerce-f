@@ -42,10 +42,11 @@ import {
   UploadedFile,
   SmallInputsContainer
 } from './styledComponents'
+import { sendWarrantyClaimImage } from './api'
 import Layout from '../../components/MainLayout'
 import DivInfo from '../../components/ProductInfo'
-import config from '../../config/index'
 import { requestWarrantyMutation } from './data'
+import { UserType } from '../../types/common'
 
 const RadioGroup = Radio.Group
 const { TextArea } = Input
@@ -70,6 +71,7 @@ interface Props extends RouteComponentProps<any> {
   hasError: boolean
   loadingSend: boolean
   requestWarranty: any
+  user: UserType
   resetReducerDataAction: () => void
   inputChangeAction: (id: string, value: string) => void
   setProductIs: (value: string) => void
@@ -190,7 +192,9 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       problems,
       productIs,
       requestWarranty,
-      resetReducerDataAction
+      resetReducerDataAction,
+      user,
+      intl
     } = this.props
     const { file } = this.state
     let fileResponse = ''
@@ -217,24 +221,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     setLoadingAction(true)
     try {
       if (file) {
-        const formData = new FormData()
-        formData.append('file', file as any)
-        const user = JSON.parse(localStorage.getItem('user') || '')
-
-        const uploadResp = await fetch(
-          `${config.graphqlUriBase}uploadWarrantyImage`,
-          {
-            method: 'POST',
-            headers: {
-              Accept: 'application/json',
-              Authorization: `Bearer ${user.token}`
-            },
-            body: formData
-          }
-        )
-        const bannerResp = await uploadResp.json()
-
-        fileResponse = bannerResp.image
+        const { image } = await sendWarrantyClaimImage(file, user)
+        fileResponse = image
       }
 
       const warrantyObject = {
@@ -252,13 +240,10 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
         image: fileResponse
       }
 
-      const {
-        data: { warrantyProgramRequest }
-      } = await requestWarranty({
+      await requestWarranty({
         variables: { warrantyObject }
       })
-
-      message.success(warrantyProgramRequest.message)
+      message.success(intl.formatMessage(messages.successClaim))
 
       resetReducerDataAction()
       this.setState({ file: null, fileName: '' })
@@ -288,8 +273,8 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       hasError,
       loadingSend
     } = this.props
-    const { fileName } = this.state
-    const { openForm } = this.state
+    const { fileName, openForm } = this.state
+
     return (
       <Layout {...{ intl, history }}>
         <Container>
@@ -579,7 +564,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
                   onClick={this.handleSendData}
                   loading={loadingSend}
                 >
-                  <FormattedMessage {...messages.submit} />
+                  {intl.formatMessage(messages.submit)}
                 </Button>
               </ButtonWrapper>
             </DivInfo>
@@ -590,7 +575,12 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('warrantyProgram').toJS()
+const mapStateToProps = (state: any) => {
+  return {
+    ...state.get('warrantyProgram').toJS(),
+    user: state.get('app').get('user')
+  }
+}
 
 const WarrantyProgramEnhance = compose(
   injectIntl,
