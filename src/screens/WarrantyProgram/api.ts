@@ -1,20 +1,18 @@
 import config from '../../config'
 import { UserType } from '../../types/common'
-import message from 'antd/lib/message'
-import { setLoadingAction } from './actions'
 
 /**
  * Thunk Actions
  */
 
-export const sendWarrantyClaim = async (file: any, user: UserType) => {
+export const sendWarrantyClaimImage = async (file: any, user: UserType) => {
   try {
     const formData = new FormData()
 
     formData.append('file', file)
 
     const response = await fetch(
-      `${config.graphqlUriBase}/upload/warrantyImage`,
+      `${config.graphqlUriBase}upload/warrantyImage`,
       {
         method: 'POST',
         headers: {

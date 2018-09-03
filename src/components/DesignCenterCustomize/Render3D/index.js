@@ -1078,9 +1078,6 @@ class Render3D extends PureComponent {
           const canvasJson = JSON.stringify(
             this.canvasTexture.toDatalessJSON(EXTRA_FIELDS)
           )
-          console.log('------------------------------------')
-          console.log(canvasJson)
-          console.log('------------------------------------')
           const saveDesign = {
             canvasJson,
             designBase64,
