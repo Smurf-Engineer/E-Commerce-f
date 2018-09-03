@@ -1381,11 +1381,7 @@ class Render3D extends PureComponent {
           shape.set({ ...shapeObject })
         } else {
           shape
-            .set({
-              ...shapeObject,
-              scaleX: scaleFactorX,
-              scaleY: scaleFactorY
-            })
+            .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
             .setCoords()
           el.scaleX = scaleFactorX
           el.scaleY = scaleFactorY
@@ -1426,12 +1422,7 @@ class Render3D extends PureComponent {
         shape.set({ ...shapeObject })
       } else {
         shape
-          .set({
-            ...shapeObject,
-            scaleX: scaleFactorX,
-            scaleY: scaleFactorY,
-            sourcePath: src
-          })
+          .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
           .setCoords()
         el.scaleX = scaleFactorX
         el.scaleY = scaleFactorY
