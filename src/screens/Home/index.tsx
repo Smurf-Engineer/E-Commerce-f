@@ -78,19 +78,20 @@ export class Home extends React.Component<Props, {}> {
     }
 
     const script = document.createElement('script')
-    script.src = 'https://consent.cookiebot.com/1b3f0d8b-c158-4fbd-a58b-3f42fb058a43/cd.js'
+    script.src =
+      'https://consent.cookiebot.com/1b3f0d8b-c158-4fbd-a58b-3f42fb058a43/cd.js'
     script.id = 'CookieDeclaration'
     script.type = 'text/javascript'
     script.async = true
     document.body.appendChild(script)
   }
 
-  handleOnQuickView = (id: number, yotpoId: string) => {
+  handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
-    dispatch(openQuickViewAction(id, yotpoId))
+    dispatch(openQuickViewAction(id, yotpoId, gender))
   }
 
-  onCloseModal = () => openQuickViewAction(0, '')
+  onCloseModal = () => openQuickViewAction(0, '', 0)
 
   openResults = () => {
     const { dispatch } = this.props

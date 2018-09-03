@@ -133,9 +133,9 @@ export class DropdownList extends React.PureComponent<Props> {
     history.push(`/design-center?id=${id}`)
   }
 
-  handleOnQuickView = (id: number, yotpoId: string) => {
+  handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
-    dispatch(openQuickViewAction(id, yotpoId))
+    dispatch(openQuickViewAction(id, yotpoId, gender))
   }
 
   handleOnHideGenderMenu = (visible: boolean, index: number) => {

@@ -49,7 +49,7 @@ interface Props {
   backgroundColor?: string
   colors: ProductColors[]
   onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number, yotpoId: string) => void
+  onPressQuickView: (id: number, yotpoId: string, gender: number) => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
@@ -98,8 +98,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handleOnPressQuickView = () => {
-    const { onPressQuickView, id, yotpoId } = this.props
-    onPressQuickView(id, yotpoId)
+    const { onPressQuickView, id, yotpoId, gender } = this.props
+    onPressQuickView(id, yotpoId, gender || 0)
   }
 
   getUrlProduct = () => {

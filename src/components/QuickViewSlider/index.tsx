@@ -4,6 +4,7 @@
 import * as React from 'react'
 import SwipeableViews from 'react-swipeable-views'
 import get from 'lodash/get'
+import findIndex from 'lodash/findIndex'
 import { ImageType, CartItemDetail, Product } from '../../types/common'
 import NextArrow from '../../assets/arrow.svg'
 import PreviousArrow from '../../assets/leftarrow.svg'
@@ -25,6 +26,7 @@ interface Props {
   isRetail: boolean
   hideSliderButtons?: boolean
   product?: Product
+  gender: number
   gotoCustomize?: () => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -44,16 +46,18 @@ class QuickViewSlider extends React.Component<Props, State> {
       isRetail = false,
       hideSliderButtons,
       product,
+      gender,
       formatMessage
     } = this.props
     const { index } = this.state
 
-    // TODO: filter by gender
-    const front = get(productImages[0], 'front', '')
-    const right = get(productImages[0], 'right', '')
-    const back = get(productImages[0], 'back', '')
-    const left = get(productImages[0], 'left', '')
-    // const { front, right, left, back } = productImages[0] || (new ImageType)
+    const genderIndex = findIndex(productImages, { genderId: gender })
+    const images = productImages[genderIndex] || productImages[0]
+
+    const front = get(images, 'front', '')
+    const right = get(images, 'right', '')
+    const back = get(images, 'back', '')
+    const left = get(images, 'left', '')
 
     const customizeButton = (
       <StyledButton onClick={gotoCustomize}>

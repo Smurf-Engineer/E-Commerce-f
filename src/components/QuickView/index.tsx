@@ -57,6 +57,7 @@ interface Props {
   handleClose: () => void
   productId: number
   yotpoId: string
+  gender: number
   history: any
   hideSliderButtons?: boolean
   formatMessage: (messageDescriptor: any) => string
@@ -77,7 +78,8 @@ export class QuickView extends React.Component<Props, State> {
       data,
       hideSliderButtons,
       formatMessage,
-      currentCurrency
+      currentCurrency,
+      gender
     } = this.props
 
     const { showDescription, showDetails, showSpecs } = this.state
@@ -142,7 +144,6 @@ export class QuickView extends React.Component<Props, State> {
       </Loading>
     ) : (
       <QuickViewSlider
-        // TODO: filter by gender
         available={5}
         gotoCustomize={this.gotoCustomize}
         {...{
@@ -150,6 +151,7 @@ export class QuickView extends React.Component<Props, State> {
           hideSliderButtons,
           product,
           productImages,
+          gender,
           formatMessage
         }}
       />

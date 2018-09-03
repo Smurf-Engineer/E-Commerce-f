@@ -21,7 +21,7 @@ interface Props {
   sportFilter: Filter
   onPressSeeAll: () => void
   onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number) => void
+  onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   width?: string
   categoryFilter: Filter
   currentCurrency: string
