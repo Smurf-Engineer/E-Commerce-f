@@ -41,6 +41,7 @@ interface Props {
   currentLanguage: number
   currentCurrency: string
   intl: InjectedIntl
+  hideTop?: boolean
   hideBottom?: boolean
   fakeWidth: number
   teamStoresHeader?: boolean | undefined
@@ -106,6 +107,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       currentRegion,
       currentLanguage,
       currentCurrency,
+      hideTop,
       hideBottom,
       intl,
       logoutAction,
@@ -177,43 +179,47 @@ class MenuBar extends React.Component<Props, StateProps> {
             if (matches) {
               return (
                 <Container>
-                  <Row>
-                    <MenuSupport
-                      {...{
-                        designHasChanges,
-                        openWithoutSaveModalAction
-                      }}
-                    />
-                    <TopRow>
-                      {menuRegion}
-                      <Cart
-                        totalItems={itemsInCart}
+                  {!hideTop && (
+                    <Row>
+                      <MenuSupport
                         {...{
-                          history,
                           designHasChanges,
                           openWithoutSaveModalAction
                         }}
                       />
-                      {loggedUser}
-                    </TopRow>
-                  </Row>
+                      <TopRow>
+                        {menuRegion}
+                        <Cart
+                          totalItems={itemsInCart}
+                          {...{
+                            history,
+                            designHasChanges,
+                            openWithoutSaveModalAction
+                          }}
+                        />
+                        {loggedUser}
+                      </TopRow>
+                    </Row>
+                  )}
                   <Divider />
                   {!hideBottom && bottomRowContent}
                 </Container>
               )
             } else {
               return (
-                <MenuMobile
-                  {...{
-                    history,
-                    designHasChanges,
-                    openWithoutSaveModalAction,
-                    formatMessage
-                  }}
-                  totalItems={itemsInCart}
-                  loginButton={loggedUser}
-                  regionButton={menuRegion}
-                />
+                !hideTop && (
+                  <MenuMobile
+                    {...{
+                      history,
+                      designHasChanges,
+                      openWithoutSaveModalAction,
+                      formatMessage
+                    }}
+                    totalItems={itemsInCart}
+                    loginButton={loggedUser}
+                    regionButton={menuRegion}
+                  />
+                )
               )
             }
           }}

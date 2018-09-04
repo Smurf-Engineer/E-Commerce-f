@@ -151,5 +151,9 @@ export default defineMessages({
   selectFile: {
     id: 'screens.WarrantyProgram.selectFile',
     defaultMessage: ' Select File'
+  },
+  successClaim: {
+    id: 'screens.WarrantyProgram.successClaim',
+    defaultMessage: 'Claim Saved'
   }
 })

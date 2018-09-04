@@ -3,11 +3,12 @@
  */
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
+import { GRAY_DARK, GRAY_LIGHT } from '../../../theme/colors'
 
 export const Container = styled.div``
 
 export const ColorLabel = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -25,19 +26,24 @@ export const BaseTitle = styled.div`
 `
 
 export const Arrow = styled(Icon)`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
 `
 
 export const ColorButtons = styled.div`
   display: flex;
   justify-content: space-around;
-  padding: 14px 32px 0px 32px;
   margin-bottom: 16px;
+  padding: 14px 32px 0px 32px;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    flex-wrap: wrap;
+    padding: 20px 0px 10px 18px;
+  }
 `
 
 export const Divider = styled.div`
-  margin: 0 32px 4px 32px;
+  background-color: ${GRAY_LIGHT};
   height: 1px;
-  background-color: #dcdcdc;
+  margin: 0 32px 4px 32px;
 `

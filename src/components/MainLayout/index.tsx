@@ -53,6 +53,7 @@ interface Props extends RouteComponentProps<any> {
   currentCurrency: string
   yotpoId: string
   productGender: number
+  hideTopHeader: boolean
   hideBottomHeader: boolean
   hideFooter: boolean
   fakeWidth: number
@@ -173,6 +174,7 @@ class MainLayout extends React.Component<Props, {}> {
       currentLanguage,
       currentCurrency,
       intl,
+      hideTopHeader,
       hideBottomHeader,
       hideFooter,
       fakeWidth,
@@ -242,6 +244,7 @@ class MainLayout extends React.Component<Props, {}> {
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.handleOnClickLogout}
+            hideTop={hideTopHeader}
             hideBottom={hideBottomHeader}
           />
         </Header>
