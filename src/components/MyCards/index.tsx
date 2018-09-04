@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import AnimateHeight from 'react-animate-height'
 import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
@@ -174,7 +175,7 @@ class MyCards extends React.Component<Props, {}> {
             {formatMessage(messages.addCard)}
           </StyledEmptyButton>
         </ButtonWrapper>
-        {billingCountry && (
+        <AnimateHeight height={!billingCountry ? 0 : 'auto'} duration={500}>
           <StripeProvider {...{ stripe }}>
             <Elements>
               <ModalCreditCard
@@ -198,7 +199,7 @@ class MyCards extends React.Component<Props, {}> {
               />
             </Elements>
           </StripeProvider>
-        )}
+        </AnimateHeight>
         <MyCardsList
           items={cards}
           {...{
