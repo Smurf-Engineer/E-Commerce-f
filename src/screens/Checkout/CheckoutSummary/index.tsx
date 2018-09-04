@@ -27,7 +27,8 @@ import {
   PERCENTAGE_PROMO,
   FLAT_PROMO,
   COUNTRY_CODE_US,
-  COUNTRY_CODE_CANADA
+  COUNTRY_CODE_CANADA,
+  PaymentOptions
 } from '../constants'
 
 interface Data extends QueryProps {
@@ -96,8 +97,6 @@ const CheckoutSummary = ({
   const shippingTotal = get(data, 'shipping.total', shipping) || 0
   const taxRates = get(data, 'taxes', null)
 
-  console.log(data, 'DATA')
-
   // countries to compare tax
   const countrySubsidiary = (taxRates && taxRates.countrySub) || COUNTRY_CODE_US
   const shippingAddressCountry = shipAddressCountry || COUNTRY_CODE_US
@@ -165,7 +164,7 @@ const CheckoutSummary = ({
     : config.defaultCurrency.toUpperCase()
 
   const orderButtonComponent =
-    paymentMethod === 'paypal' ? (
+    paymentMethod === PaymentOptions.PAYPAL ? (
       <PaypalExpressBtn
         env={config.paypalEnv}
         client={paypalClient}
@@ -175,7 +174,7 @@ const CheckoutSummary = ({
         onError={onPaypalError}
         style={paypalButtonStyle}
         paymentOptions={{ intent: 'authorize' }}
-        total={sumTotal}
+        total={sumTotal.toFixed(2)}
         {...{ currency }}
       />
     ) : (
