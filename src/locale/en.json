@@ -662,7 +662,7 @@
   "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
   "screens.DesignCenter.title": "DesignCenter",
-  "screens.DesignCenter.inspirationTtitle": "Inspiration",
+  "screens.DesignCenter.inspirationTtitle": "Color Ideas",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
   "screens.DesignCenter.addedToStore": "\"{designName}\" added to \"{storeName}\"",
   "screens.DesignCenter.outWithoutSaveModalTitle": "SAVE CURRENT DESIGN",
