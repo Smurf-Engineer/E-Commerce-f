@@ -270,6 +270,7 @@
   "components.MyAddresses.modalTitle": "Shipping Address",
   "components.MyAddresses.defaultBillingAddress": "Make default billing address",
   "components.MyAddresses.saveAddress": "Save",
+  "components.MyAddresses.shippingTitle": "Shipping Address",
   "components.MyAddressesList.titleDeleteModal": "Are you sure?",
   "components.MyAddressesList.deleteAddress": "Delete",
   "components.MyAddressesList.empty": "There are no addresses on your account",
@@ -665,7 +666,7 @@
   "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
   "screens.DesignCenter.title": "DesignCenter",
-  "screens.DesignCenter.inspirationTtitle": "Inspiration",
+  "screens.DesignCenter.inspirationTtitle": "Color Ideas",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
   "screens.DesignCenter.addedToStore": "\"{designName}\" added to \"{storeName}\"",
   "screens.DesignCenter.outWithoutSaveModalTitle": "SAVE CURRENT DESIGN",
@@ -1022,5 +1023,6 @@
   "components.LogoutModal.confirm": "Confirm",
   "components.LogoutModal.logout": "Are you sure you want to log out?",
   "screens.ShoppingCartPage.taxesGst": "GST/HST",
-  "screens.ShoppingCartPage.taxesPst": "PST"
+  "screens.ShoppingCartPage.taxesPst": "PST",
+  "screens.ShoppingCartPage.taxesVat": "VAT"
 }

@@ -194,7 +194,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
       <Container {...{ listForMyAccount }}>
         <Content>
           {!listForMyAccount ? (
-            <Title>{formatMessage(messages.title)}</Title>
+            <Title marginBottom={'30px'}>{formatMessage(messages.title)}</Title>
           ) : null}
           {/* TODO: Render this button from MyAddresses */}
           {!renderForModal && !listForMyAccount ? (
@@ -205,6 +205,12 @@ export class MyAddressesList extends React.Component<Props, {}> {
             </ButtonWrapper>
           ) : null}
         </Content>
+        {!renderForModal &&
+          !listForMyAccount && (
+            <Title marginBottom={'20px'}>
+              {formatMessage(messages.shippingTitle)}
+            </Title>
+          )}
         {renderView}
         {withPagination ? (
           <PaginationRow {...{ paginationAlignment }}>
