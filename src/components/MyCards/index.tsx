@@ -5,13 +5,12 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import find from 'lodash/find'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 import config from '../../config'
 import * as MyCardsActions from './actions'
-import withError from '../WithError'
-import withLoading from '../WithLoading'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
 import CountryModal from '../../components/ConfirmCountryDialog'
@@ -106,12 +105,7 @@ class MyCards extends React.Component<Props, {}> {
     }
   }
   componentDidMount() {
-    const {
-      showCardFormAction = () => {},
-      data: {
-        userCards: { cards, default: idDefaultCard }
-      }
-    } = this.props
+    const { showCardFormAction = () => {}, data } = this.props
     // In addition to loading asynchronously, this code is safe to server-side render.
     const stripeJs = document.createElement('script')
     stripeJs.src = 'https://js.stripe.com/v3/'
@@ -124,18 +118,20 @@ class MyCards extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
 
-    if (!!cards && !!cards.length) {
-      const defaultCard = find(cards, { id: idDefaultCard })
-      showCardFormAction(false, defaultCard)
-    } else {
-      showCardFormAction(true)
+    if (data) {
+      const {
+        userCards: { cards, default: idDefaultCard }
+      } = data
+      if (!!cards && !!cards.length) {
+        const defaultCard = find(cards, { id: idDefaultCard })
+        return showCardFormAction(false, defaultCard)
+      }
     }
+    showCardFormAction(true)
   }
   render() {
     const {
-      data: {
-        userCards: { cards, default: idDefaultCard }
-      },
+      data,
       formatMessage,
       cardHolderName,
       stripeError,
@@ -198,6 +194,10 @@ class MyCards extends React.Component<Props, {}> {
         </Container>
       )
     }
+
+    const userCards = get(data, 'userCards', {})
+    const cards = get(userCards, 'cards', [] as CreditCardData[])
+    const idDefaultCard = get(userCards, 'default', '')
 
     return (
       <Container>
@@ -288,10 +288,13 @@ class MyCards extends React.Component<Props, {}> {
       showCardModalAction,
       showCardFormAction,
       showCardForm,
-      data: {
-        userCards: { cards, default: idDefaultCard }
-      }
+      data
     } = this.props
+
+    const userCards = get(data, 'userCards', {})
+    const cards = get(userCards, 'cards', [] as CreditCardData[])
+    const idDefaultCard = get(userCards, 'default', '')
+
     const defaultCard = find(cards, { id: idDefaultCard })
 
     if (listForMyAccount) {
@@ -376,12 +379,20 @@ class MyCards extends React.Component<Props, {}> {
   }
 }
 
+interface OwnProps {
+  billingCountry?: string
+}
+
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
 const MyCardsEnhance = compose(
-  graphql(cardsQuery),
-  withLoading,
-  withError,
+  graphql(cardsQuery, {
+    options: ({ billingCountry }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      variables: { countryCode: billingCountry },
+      skip: !billingCountry
+    })
+  }),
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,
