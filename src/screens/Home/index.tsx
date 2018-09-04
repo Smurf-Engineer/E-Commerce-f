@@ -36,7 +36,7 @@ import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 
 const BackgroundImg =
-  'https://storage.googleapis.com/jakroo-storage/slider/unlimited_posibilities.png'
+  'https://storage.googleapis.com/jakroo-storage/slider/unlimited_posibilities.jpg'
 interface Props extends RouteComponentProps<any> {
   someKey?: string
   productId: number
