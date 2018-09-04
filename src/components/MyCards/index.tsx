@@ -59,6 +59,7 @@ interface Props {
   selectedCard: CreditCardData
   openCountryModal: boolean
   billingCountry: string
+  country?: string
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
@@ -121,7 +122,7 @@ class MyCards extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
 
-    if (data) {
+    if (data && data.userCards) {
       const {
         userCards: { cards, default: idDefaultCard }
       } = data
@@ -155,6 +156,7 @@ class MyCards extends React.Component<Props, {}> {
       listForMyAccount,
       openCountryModal,
       billingCountry,
+      country,
       setStripeCardDataAction,
       selectCardToPayAction,
       selectedCard
@@ -171,7 +173,9 @@ class MyCards extends React.Component<Props, {}> {
       />
     )
 
-    if (loading || (!billingCountry && openCountryModal)) {
+    const countryCode = billingCountry || country
+
+    if (loading || (!countryCode && openCountryModal)) {
       return (
         <Container>
           <LoadingContainer>
@@ -182,7 +186,7 @@ class MyCards extends React.Component<Props, {}> {
       )
     }
 
-    if (!billingCountry && !openCountryModal) {
+    if (!countryCode && !openCountryModal) {
       return (
         <Container>
           <SelectCountryMessage>
@@ -204,11 +208,13 @@ class MyCards extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <ButtonWrapper {...{ listForMyAccount }}>
-          <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
-            {formatMessage(messages.addCard)}
-          </StyledEmptyButton>
-        </ButtonWrapper>
+        {(listForMyAccount || !!cards.length) && (
+          <ButtonWrapper {...{ listForMyAccount }}>
+            <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
+              {formatMessage(messages.addCard)}
+            </StyledEmptyButton>
+          </ButtonWrapper>
+        )}
         <StripeProvider {...{ stripe }}>
           <Elements>
             <ModalCreditCard

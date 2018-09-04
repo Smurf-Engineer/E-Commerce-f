@@ -335,6 +335,7 @@
   "components.CreditCardFormBilling.sameShippingAddress": "Same as shipping address",
   "components.CreditCardFormBilling.continue": "Continue",
   "components.CreditCardFormBilling.requiredField": "This field is required",
+  "components.CreditCardFormBilling.methodCreditCard": "Credit Card",
   "components.CreditCardForm.tittle": "CreditCardForm",
   "components.CreditCardForm.cardNumber": "Card information",
   "components.CreditCardForm.cardholderName": "Cardholder name",

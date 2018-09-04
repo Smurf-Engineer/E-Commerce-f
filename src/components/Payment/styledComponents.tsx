@@ -3,13 +3,14 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { GRAY_DARK, WHITE, GRAY_LIGHT, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   width: 100%;
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -26,27 +27,23 @@ interface ButtonProps {
 }
 
 export const MethodButton = styled(Button)`
-  height: 40px;
-  width: 138.23px;
-  color: ${({ selected }: ButtonProps) => (selected ? '#4a90e2' : '#dcdcdc')};
-  border: 2px solid #dcdcdc;
+  background-color: ${WHITE};
+  border: 2px solid ${GRAY_LIGHT};
   border-radius: 2px;
-  background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
+  height: 40px;
   margin-left: 5px;
+  width: 138.23px;
 
   &:hover,
   &::selection,
   &::after,
   &:focus {
-    color: #4a90e2;
-    border-color: #4a90e2;
+    border-color: ${BLUE};
+    color: ${BLUE};
   }
 
   border: 0.5px solid
-    ${({ selected }: ButtonProps) => (selected ? '#4a90e2' : '#DCDCDC')};
-`
-
-export const MyCardsRow = styled.div`
-  margin-bottom: 20px;
+    ${({ selected }: ButtonProps) => (selected ? BLUE : GRAY_LIGHT)};
 `
