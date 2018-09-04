@@ -352,6 +352,8 @@
   "components.MyCards.deleteCard": "Delete",
   "components.MyCards.titleDeleteModal": "Are you sure?",
   "components.MyCards.messageDeleteModal": "This will permanently delete this card",
+  "components.MyCards.selectCountryMessage": "You need to select a country first",
+  "components.MyCards.selectCountry": "Select Country",
   "screens.Compliance.title": "COMPLIANCE",
   "screens.Compliance.bsciMessage": "The Business Social Compliance Initiative (BSCI) is a leading supply chain management system that supports companies to drive social compliance and improvements within factories.",
   "screens.Compliance.bsciSubtitle": "JAKROO is BSCI compliant:",
