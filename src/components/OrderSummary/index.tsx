@@ -151,7 +151,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           break
         case COUNTRY_CODE_AT:
           if (
-            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_DE ||
+            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_AT ||
             shippingAddressCountry.toLowerCase() === COUNTRY_CODE_DE
           ) {
             taxVatTotal = taxesAmount / 100
