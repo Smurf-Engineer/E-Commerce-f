@@ -125,6 +125,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     resetReducerAction()
   }
 
+  componentDidMount() {
+    const {
+      data: { product },
+      setSelectedFitAction
+    } = this.props
+    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    if (!fitStyles.length || !fitStyles[0].id) {
+      setSelectedFitAction({ id: 1, name: 'Standard' })
+    }
+  }
+
   render() {
     const {
       intl,
@@ -303,30 +314,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     let availableFits
     if (product) {
       availableFits =
-        fitStyles.length && fitStyles[0].id ? (
-          fitStyles.map(
-            ({ id, name: fitName }: SelectedType, index: number) => (
-              <div key={index}>
-                <SectionButton
-                  id={id.toString()}
-                  selected={id === selectedFit.id}
-                  large={true}
-                  onClick={this.handleSelectedFit({ id, name: fitName })}
-                >
-                  {fitName}
-                </SectionButton>
-              </div>
-            )
-          )
-        ) : (
-          <SectionButton
-            id={'1'}
-            selected={1 === selectedFit.id}
-            onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
-          >
-            {'Standard'}
-          </SectionButton>
-        )
+        fitStyles.length &&
+        fitStyles[0].id &&
+        fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
+          <div key={index}>
+            <SectionButton
+              id={id.toString()}
+              selected={id === selectedFit.id}
+              large={true}
+              onClick={this.handleSelectedFit({ id, name: fitName })}
+            >
+              {fitName}
+            </SectionButton>
+          </div>
+        ))
     }
 
     const gendersSection = (
@@ -364,7 +365,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const fitSection = (
+    const fitSection = !!availableFits && (
       <SectionRow>
         <SectionTitleContainer>
           <SectionTitle>{formatMessage(messages.fitLabel)}</SectionTitle>

@@ -24,12 +24,13 @@ import {
 import OrderSummary from '../../../components/OrderSummary'
 import config from '../../../config/index'
 import {
-  PERCENTAGE_PROMO,
-  FLAT_PROMO,
   COUNTRY_CODE_US,
   COUNTRY_CODE_CANADA,
+  COUNTRY_CODE_AT,
+  COUNTRY_CODE_DE,
   PaymentOptions
 } from '../constants'
+import { getDiscount } from '../../../utils/utilsCheckout'
 
 interface Data extends QueryProps {
   taxes: NetsuiteTax
@@ -107,28 +108,21 @@ const CheckoutSummary = ({
 
   let discount = 0
   if (couponCode) {
-    const { type, rate } = couponCode
-    switch (type) {
-      case PERCENTAGE_PROMO: // '%'
-        discount = (sumTotal * Number(rate)) / 100
-        break
-      case FLAT_PROMO: // 'flat
-        discount = Number(rate)
-        break
-      default:
-        break
-    }
+    // get discount
+    discount = getDiscount(couponCode, sumTotal)
   }
 
   // get subtotal minus discount
   sumTotal -= discount
 
   // get tax fee
-  const taxesAmount = taxRates && taxRates.total
+  const taxesAmount = (taxRates && taxRates.total) || 0
   // canadian taxes
   let taxGst = 0
   let taxPst = 0
   let taxFee = 0
+  let taxVat = 0
+  let taxVatTotal = 0
   if (taxesAmount && country) {
     let taxTotal = 0
     switch (countrySubsidiary.toLowerCase()) {
@@ -149,6 +143,31 @@ const CheckoutSummary = ({
           taxPst = Math.round(taxPst * 100) / 100
         }
         break
+      case COUNTRY_CODE_AT:
+        if (
+          shippingAddressCountry.toLowerCase() === COUNTRY_CODE_AT ||
+          shippingAddressCountry.toLowerCase() === COUNTRY_CODE_DE
+        ) {
+          taxVatTotal = taxesAmount / 100
+          taxVat =
+            sumTotal -
+            proDesignFee -
+            (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+            shippingTotal * taxVatTotal +
+            proDesignFee * taxVatTotal
+          taxVat = Math.round(taxVat * 100) / 100
+        }
+        break
+      case COUNTRY_CODE_DE:
+        taxVatTotal = taxesAmount / 100
+        taxVat =
+          sumTotal -
+          proDesignFee -
+          (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+          shippingTotal * taxVatTotal +
+          proDesignFee * taxVatTotal
+        taxVat = Math.round(taxVat * 100) / 100
+        break
       default:
         break
     }
@@ -156,7 +175,18 @@ const CheckoutSummary = ({
 
   const youSaved = totalWithoutDiscount - sumTotal
 
-  sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+  // sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+
+  if (taxVat) {
+    taxVatTotal = taxesAmount / 100
+    sumTotal =
+      (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+      taxVat +
+      shippingTotal +
+      proDesignFee
+  } else {
+    sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+  }
 
   const currency = currentCurrency
     ? currentCurrency.toUpperCase()

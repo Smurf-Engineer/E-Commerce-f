@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'screens.ShoppingCartPage.taxesPst',
     defaultMessage: 'PST'
   },
+  taxesVat: {
+    id: 'screens.ShoppingCartPage.taxesVat',
+    defaultMessage: 'VAT'
+  },
   shipping: {
     id: 'screens.ShoppingCartPage.shipping',
     defaultMessage: 'Shipping'

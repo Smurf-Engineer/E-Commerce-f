@@ -35,6 +35,7 @@ interface Props {
   taxFee?: number
   taxPst?: number
   taxGst?: number
+  taxVat?: number
   sumTotal?: number
   currencySymbol?: string
   showCouponInput?: boolean
@@ -54,21 +55,18 @@ export class OrderSummary extends React.Component<Props, {}> {
       subtotal,
       formatMessage,
       showCouponInput,
-      totalWithoutDiscount = 0,
       onlyRead,
       proDesignReview = 0,
       currencySymbol,
       taxFee = 0,
       taxPst = 0,
       taxGst = 0,
+      taxVat = 0,
       youSaved = 0,
       shippingTotal = 0,
       discount = 0,
       sumTotal = 0
     } = this.props
-
-    console.log(totalWithoutDiscount, 'withoutDiscount')
-    console.log(sumTotal, 'total')
 
     const symbol = currencySymbol || '$'
 
@@ -124,6 +122,10 @@ export class OrderSummary extends React.Component<Props, {}> {
           <OrderItem hide={!taxPst}>
             <FormattedMessage {...messages.taxesPst} />
             <div>{`${symbol} ${taxPst.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxVat}>
+            <FormattedMessage {...messages.taxesVat} />
+            <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>
           </OrderItem>
           {/* shipping */}
           <OrderItem hide={!shippingTotal}>
