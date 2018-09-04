@@ -314,10 +314,15 @@ class MyCards extends React.Component<Props, {}> {
     const {
       resetReducerDataAction,
       addNewCard,
+      billingCountry,
       cardAsDefaultPayment
     } = this.props
     await addNewCard({
-      variables: { token: stripeToken, defaultValue: cardAsDefaultPayment },
+      variables: {
+        token: stripeToken,
+        defaultValue: cardAsDefaultPayment,
+        countryCode: billingCountry
+      },
       refetchQueries: [{ query: cardsQuery }]
     })
     resetReducerDataAction()

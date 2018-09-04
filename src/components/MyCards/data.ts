@@ -22,8 +22,16 @@ export const cardsQuery = gql`
 
 export const addCardMutation = graphql(
   gql`
-    mutation addusercard($token: String!, $defaultValue: Boolean!) {
-      addUserCard(token: $token, defaultValue: $defaultValue) {
+    mutation addusercard(
+      $token: String!
+      $defaultValue: Boolean!
+      $countryCode: String!
+    ) {
+      addUserCard(
+        token: $token
+        defaultValue: $defaultValue
+        countryCode: $countryCode
+      ) {
         id
       }
     }
