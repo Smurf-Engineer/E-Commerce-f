@@ -4,7 +4,6 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import AnimateHeight from 'react-animate-height'
 import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
@@ -29,6 +28,7 @@ import {
   ButtonWrapper,
   StyledEmptyButton,
   DeleteConfirmMessage,
+  SelectCountryMessage,
   LoadingContainer
 } from './styledComponents'
 import ModalTitle from '../ModalTitle'
@@ -96,6 +96,9 @@ class MyCards extends React.Component<Props, {}> {
   state = {
     stripe: null
   }
+  componentWillMount() {
+    this.handleOpenCountryModal()
+  }
   componentWillUnmount() {
     const { listForMyAccount, resetReducerDataAction } = this.props
     if (listForMyAccount) {
@@ -160,11 +163,39 @@ class MyCards extends React.Component<Props, {}> {
 
     const { stripe } = this.state
 
-    if (loading) {
+    const countryModal = (
+      <CountryModal
+        {...{ formatMessage }}
+        open={openCountryModal}
+        requestClose={this.handleCancelCountryModal}
+        onSave={this.handleConfirmSaveCountryModal}
+      />
+    )
+
+    if (loading || (!billingCountry && openCountryModal)) {
       return (
-        <LoadingContainer>
-          <Spin />
-        </LoadingContainer>
+        <Container>
+          <LoadingContainer>
+            <Spin />
+          </LoadingContainer>
+          {countryModal}
+        </Container>
+      )
+    }
+
+    if (!billingCountry && !openCountryModal) {
+      return (
+        <Container>
+          <SelectCountryMessage>
+            {formatMessage(messages.selectCountryMessage)}
+          </SelectCountryMessage>
+          <ButtonWrapper {...{ listForMyAccount }}>
+            <StyledEmptyButton onClick={this.handleOpenCountryModal}>
+              {formatMessage(messages.selectCountry)}
+            </StyledEmptyButton>
+          </ButtonWrapper>
+          {countryModal}
+        </Container>
       )
     }
 
@@ -175,31 +206,29 @@ class MyCards extends React.Component<Props, {}> {
             {formatMessage(messages.addCard)}
           </StyledEmptyButton>
         </ButtonWrapper>
-        <AnimateHeight height={!billingCountry ? 0 : 'auto'} duration={500}>
-          <StripeProvider {...{ stripe }}>
-            <Elements>
-              <ModalCreditCard
-                {...{
-                  stripe,
-                  formatMessage,
-                  cardHolderName,
-                  hasError,
-                  stripeError,
-                  inputChangeAction,
-                  setStripeErrorAction,
-                  showCardModalAction,
-                  validFormAction,
-                  setModalLoadingAction,
-                  setDefaultPaymentCheckedAction,
-                  cardAsDefaultPayment
-                }}
-                saveAddress={this.handleOnSaveCard}
-                visible={showCardModal}
-                newCardLoading={modalLoading}
-              />
-            </Elements>
-          </StripeProvider>
-        </AnimateHeight>
+        <StripeProvider {...{ stripe }}>
+          <Elements>
+            <ModalCreditCard
+              {...{
+                stripe,
+                formatMessage,
+                cardHolderName,
+                hasError,
+                stripeError,
+                inputChangeAction,
+                setStripeErrorAction,
+                showCardModalAction,
+                validFormAction,
+                setModalLoadingAction,
+                setDefaultPaymentCheckedAction,
+                cardAsDefaultPayment
+              }}
+              saveAddress={this.handleOnSaveCard}
+              visible={showCardModal}
+              newCardLoading={modalLoading}
+            />
+          </Elements>
+        </StripeProvider>
         <MyCardsList
           items={cards}
           {...{
@@ -236,14 +265,12 @@ class MyCards extends React.Component<Props, {}> {
             {formatMessage(messages.messageDeleteModal)}
           </DeleteConfirmMessage>
         </Modal>
-        <CountryModal
-          {...{ formatMessage }}
-          open={openCountryModal}
-          requestClose={this.handleCancelCountryModal}
-          onSave={this.handleConfirmSaveCountryModal}
-        />
       </Container>
     )
+  }
+  handleOpenCountryModal = () => {
+    const { openCountryModalAction } = this.props
+    openCountryModalAction(true)
   }
   handleCancelCountryModal = () => {
     const { openCountryModalAction } = this.props
@@ -258,9 +285,9 @@ class MyCards extends React.Component<Props, {}> {
   handleOnAddNewCard = () => {
     const {
       listForMyAccount,
+      showCardModalAction,
       showCardFormAction,
       showCardForm,
-      openCountryModalAction,
       data: {
         userCards: { cards, default: idDefaultCard }
       }
@@ -268,7 +295,7 @@ class MyCards extends React.Component<Props, {}> {
     const defaultCard = find(cards, { id: idDefaultCard })
 
     if (listForMyAccount) {
-      openCountryModalAction(true)
+      showCardModalAction(true)
     } else {
       showCardFormAction(!showCardForm, defaultCard)
     }

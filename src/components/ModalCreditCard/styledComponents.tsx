@@ -24,12 +24,7 @@ interface RowProps {
 }
 
 export const Container = styled.div`
-  margin-bottom: 25px;
-  width: 50%;
-
-  @media (max-width: 550px) {
-    width: 100%;
-  }
+  width: 100%;
 `
 
 export const Row = styled.div`
@@ -92,6 +87,7 @@ export const StyledButton = styled(Button)`
   border-radius: 5px;
   color: ${WHITE};
   height: 40px;
+  margin-right: 8px;
   width: 85px;
 
   &:hover {
@@ -106,7 +102,6 @@ export const StyledGhostButton = styled(Button)`
   border-radius: 5px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   height: 40px;
-  margin-left: 8px;
   width: 85px;
 
   &:hover {

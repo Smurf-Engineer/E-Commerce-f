@@ -48,11 +48,7 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
     case CHANGE_INPUT:
       return state.merge({ [action.id]: action.value })
     case SHOW_CARD_MODAL: {
-      if (action.show) {
-        return state.set('showCardModal', true)
-      } else {
-        return initialState
-      }
+      return state.set('showCardModal', action.show)
     }
     case SHOW_DELETE_CARD_CONFIRM:
       return state.merge({
