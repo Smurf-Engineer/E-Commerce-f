@@ -39,7 +39,6 @@ interface Data extends QueryProps {
 interface Props {
   showOrderButton: boolean
   data?: Data
-  // taxes: number
   subtotal: number
   shipping?: number
   totalWithoutDiscount?: number

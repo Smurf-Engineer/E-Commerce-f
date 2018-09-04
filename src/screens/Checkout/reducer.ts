@@ -31,7 +31,8 @@ import {
   SET_COUPON_CODE,
   DELETE_COUPON_CODE,
   OPEN_CURRENCY_WARNING,
-  SET_SELECTED_ADDRESSES
+  SET_SELECTED_ADDRESSES,
+  PaymentOptions
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -253,8 +254,26 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingPlaceOrder', action.loading)
     case RESET_DATA:
       return initialState
-    case SET_PAYMENT_METHOD:
-      return state.set('paymentMethod', action.method)
+    case SET_PAYMENT_METHOD: {
+      const { method } = action
+      if (method === PaymentOptions.PAYPAL) {
+        return state.merge({
+          paymentMethod: method,
+          sameBillingAndShipping: false,
+          billingFirstName: '',
+          billingLastName: '',
+          billingStreet: '',
+          billingApartment: '',
+          billingCountry: '',
+          billingState: '',
+          billingCity: '',
+          billingZipCode: '',
+          billingPhone: '',
+          billingHasError: false
+        })
+      }
+      return state.set('paymentMethod', method)
+    }
     case SAVE_COUNTRY:
       return state.set('billingCountry', action.countryCode)
     case OPEN_ADDRESSES_MODAL:
