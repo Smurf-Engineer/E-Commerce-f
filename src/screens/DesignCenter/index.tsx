@@ -633,7 +633,12 @@ export class DesignCenter extends React.Component<Props, {}> {
     const isUserAuthenticated = !!user
 
     return (
-      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
+      <Layout
+        {...{ history, intl }}
+        hideTopHeader={responsive.tablet}
+        hideBottomHeader={true}
+        hideFooter={true}
+      >
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
           <Tabs
