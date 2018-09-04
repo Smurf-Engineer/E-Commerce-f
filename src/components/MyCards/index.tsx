@@ -96,7 +96,10 @@ class MyCards extends React.Component<Props, {}> {
     stripe: null
   }
   componentWillMount() {
-    this.handleOpenCountryModal()
+    const { listForMyAccount } = this.props
+    if (listForMyAccount) {
+      this.handleOpenCountryModal()
+    }
   }
   componentWillUnmount() {
     const { listForMyAccount, resetReducerDataAction } = this.props
