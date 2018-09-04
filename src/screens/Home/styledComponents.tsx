@@ -11,9 +11,9 @@ export const HomeHeader = styled.div`
 
 export const SearchBarContent = styled.div`
   position: absolute;
-  top: 510px;
-  left: 360px;
-  right: 360px;
+  top: 430px;
+  left: 315px;
+  right: 300px;
   color: #fff;
 
   @media (min-width: 768px) and (max-width: 1024px) {
