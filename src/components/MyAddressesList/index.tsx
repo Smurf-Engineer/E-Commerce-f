@@ -194,7 +194,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
       <Container {...{ listForMyAccount }}>
         <Content>
           {!listForMyAccount ? (
-            <Title margin={'0 0 30px 0'}>{formatMessage(messages.title)}</Title>
+            <Title marginBottom={'30px'}>{formatMessage(messages.title)}</Title>
           ) : null}
           {/* TODO: Render this button from MyAddresses */}
           {!renderForModal && !listForMyAccount ? (
@@ -207,7 +207,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
         </Content>
         {!renderForModal &&
           !listForMyAccount && (
-            <Title margin={'0 0 20px 0'}>
+            <Title marginBottom={'20px'}>
               {formatMessage(messages.shippingTitle)}
             </Title>
           )}

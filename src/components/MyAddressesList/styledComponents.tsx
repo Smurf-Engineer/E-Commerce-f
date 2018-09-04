@@ -8,7 +8,7 @@ import { WHITE, GRAY_DARK, BLUE } from '../../theme/colors'
 type StyledProps = {
   paginationAlignment?: string
   listForMyAccount?: boolean
-  margin?: string
+  marginBottom?: string
 }
 
 export const Container = styled.div`
@@ -24,7 +24,7 @@ export const Title = styled.div`
   font-weight: 600;
   letter-spacing: 0.11px;
   line-height: 22px;
-  ${({ margin }: StyledProps) => `margin: ${margin};`};
+  ${({ marginBottom }: StyledProps) => `margin-bottom: ${marginBottom};`}
 `
 export const ButtonWrapper = styled.div`
   .ant-btn {
