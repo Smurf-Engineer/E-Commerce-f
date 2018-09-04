@@ -115,7 +115,7 @@ class MainLayout extends React.Component<Props, {}> {
       script.src = 'https://consent.cookiebot.com/uc.js'
       script.id = 'Cookiebot'
       script.type = 'text/javascript'
-      script.setAttribute('data-cbid', '1b3f0d8b-c158-4fbd-a58b-3f42fb058a43')
+      script.setAttribute('cbid', '1b3f0d8b-c158-4fbd-a58b-3f42fb058a43')
       script.async = true
       document.getElementsByTagName('head')[0].appendChild(script)
     }

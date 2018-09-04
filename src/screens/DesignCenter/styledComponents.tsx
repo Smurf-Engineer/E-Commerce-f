@@ -22,7 +22,7 @@ export const StyledTitle = styled.div`
   text-align: left;
   flex: 1;
   margin-left: 15px;
-
+  cursor: pointer;
   color: #5f6062;
   font-size: 18px;
   font-weight: 600;
