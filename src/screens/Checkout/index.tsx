@@ -53,6 +53,7 @@ import Modal from 'antd/lib/modal'
 import ModalFooter from '../../components/ModalFooter'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
+import { DEFAULT_ROUTE } from '../../constants'
 
 type ProductCart = {
   id: number
@@ -277,7 +278,7 @@ class Checkout extends React.Component<Props, {}> {
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
     if (!stateLocation || !stateLocation.cart || !stateLocation.cart.length) {
-      return <Redirect to="/us?lang=en&currency=usd" />
+      return <Redirect to={DEFAULT_ROUTE} />
     }
 
     const { cart } = stateLocation
