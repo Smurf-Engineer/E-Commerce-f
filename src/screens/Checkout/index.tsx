@@ -506,19 +506,6 @@ class Checkout extends React.Component<Props, {}> {
       validFormAction
     } = this.props
 
-    console.log(firstName, 'firstName')
-    console.log(lastName, 'lastName')
-    console.log(street, 'street')
-    console.log(country, 'country')
-    console.log(stateProvince, 'stateProvince')
-    console.log(city, 'city')
-    console.log(zipCode, 'zipCode')
-    console.log(phone, 'phone')
-    console.log(isPoBox(street), 'isPoBox')
-    console.log(street, 'street')
-    console.log(isApoCity(city), 'firstName')
-    console.log(city, 'city')
-
     const error =
       !firstName ||
       !lastName ||
