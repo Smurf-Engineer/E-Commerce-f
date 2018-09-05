@@ -552,8 +552,8 @@ class Checkout extends React.Component<Props, {}> {
   onPaypalSuccess = (payment: any) => {
     // paypal payment succeded
     const obj = {
-      paymentId: payment.paymentID,
-      payerId: payment.payerID
+      payment: payment.paymentID,
+      payer: payment.payerID
     }
     this.placeOrder(undefined, obj)
   }
@@ -739,7 +739,7 @@ class Checkout extends React.Component<Props, {}> {
       cart: sanitizedCart,
       shippingAddress,
       billingAddress,
-      paypalData: paypalObj || null,
+      paymentData: paypalObj || null,
       countrySubsidiary: billingCountry,
       taxId,
       taxAmount,
