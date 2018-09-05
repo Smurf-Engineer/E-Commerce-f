@@ -276,7 +276,7 @@ class Checkout extends React.Component<Props, {}> {
     const { state: stateLocation } = location
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
-    if (!stateLocation || !stateLocation.cart || !stateLocation.cart) {
+    if (!stateLocation || !stateLocation.cart || !stateLocation.cart.length) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
