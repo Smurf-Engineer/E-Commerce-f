@@ -133,6 +133,8 @@ const CheckoutSummary = ({
     sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
   }
 
+  sumTotal = Math.round(sumTotal * 100) / 100
+
   const currency = currentCurrency
     ? currentCurrency.toUpperCase()
     : config.defaultCurrency.toUpperCase()
@@ -148,7 +150,7 @@ const CheckoutSummary = ({
         onError={onPaypalError}
         style={paypalButtonStyle}
         paymentOptions={{ intent: 'authorize' }}
-        total={sumTotal.toFixed(2)}
+        total={sumTotal}
         {...{ currency }}
       />
     ) : (
