@@ -739,7 +739,7 @@ class Checkout extends React.Component<Props, {}> {
       cart: sanitizedCart,
       shippingAddress,
       billingAddress,
-      paypalData: paypalObj || null,
+      paymentData: paypalObj || null,
       countrySubsidiary: billingCountry,
       taxId,
       taxAmount,
