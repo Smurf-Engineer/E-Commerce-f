@@ -178,6 +178,7 @@ const CheckoutSummary = ({
           discount,
           taxGst,
           taxPst,
+          taxVat,
           sumTotal,
           youSaved
         }}
