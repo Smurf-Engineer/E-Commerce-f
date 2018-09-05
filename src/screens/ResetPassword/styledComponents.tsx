@@ -91,20 +91,7 @@ export const JoinNowLabel = styled.span`
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 100%;
-
-  @media (min-width: 550px) {
-    width: 70%;
-  }
-
-  @media (min-width: 771px) {
-    width: 50%;
-  }
-
-  @media (min-width: 971px) {
-    width: 40%;
-  }
 `
 export const StyledChangePasswordButton = styled(Button)`
   background-color: ${BLUE};
@@ -112,10 +99,10 @@ export const StyledChangePasswordButton = styled(Button)`
   border-radius: 0px;
   height: 50px;
   margin-bottom: 10px;
-  width: 100%;
+  width: 146px;
 
-  @media (min-width: 550px) {
-    width: initial;
+  @media (max-width: 505px) {
+    width: 100%;
   }
 `
 export const StyledCancelButton = styled(Button)`
@@ -126,10 +113,12 @@ export const StyledCancelButton = styled(Button)`
   letter-spacing: 0.11px;
   line-height: 22px;
   margin-bottom: 10px;
-  width: 100%;
+  margin-left: 10px;
+  width: 146px;
 
-  @media (min-width: 550px) {
-    width: initial;
+  @media (max-width: 505px) {
+    margin-left: 0px;
+    width: 100%;
   }
 `
 export const NotAMemberLabel = styled.div`
