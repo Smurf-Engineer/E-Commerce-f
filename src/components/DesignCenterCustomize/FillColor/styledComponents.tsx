@@ -5,9 +5,5 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   height: 55vh;
-  padding: 12px;
-`
-
-export const Text = styled.div`
-  color: #fff;
+  padding: 12px 0px;
 `
