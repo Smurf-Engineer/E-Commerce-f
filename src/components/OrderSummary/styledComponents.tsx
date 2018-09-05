@@ -159,3 +159,7 @@ export const CalculationsWrapper = styled.div`
   display: 'flex';
   flex-direction: column;
 `
+
+export const DiscountAmout = styled.div`
+  color: ${RED};
+`

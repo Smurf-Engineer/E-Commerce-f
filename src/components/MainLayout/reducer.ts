@@ -16,6 +16,7 @@ export const initialState = fromJS({
   showSearchResults: false,
   productId: 0,
   yotpoId: '',
+  productGender: 0,
   hideQuickViewSliderButtons: false,
   openLogin: false,
   itemsInCart: 0,
@@ -32,6 +33,7 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         productId: action.id,
         yotpoId: action.yotpoId,
+        productGender: action.gender,
         hideQuickViewSliderButtons: action.hideSliderButtons
       })
     case OPEN_LOGIN_MODAL:

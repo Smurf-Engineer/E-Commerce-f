@@ -15,11 +15,13 @@ import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import { CreditCardData } from '../../types/common'
 
+const defaultCard = { name: '', last4: '', brand: '', expMonth: 0, expYear: 0 }
+
 interface Props {
-  card: CreditCardData
+  card?: CreditCardData
 }
 
-const PaymentData = ({ card }: Props) => {
+const PaymentData = ({ card = defaultCard }: Props) => {
   const { expMonth, name, last4, expYear, brand } = card
   const month = expMonth > 9 ? expMonth : `0${expMonth}`
   return (

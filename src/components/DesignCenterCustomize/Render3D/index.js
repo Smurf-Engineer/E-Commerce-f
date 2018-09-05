@@ -56,7 +56,9 @@ import {
   LEFT_VIEW,
   EXTRA_FIELDS,
   INITIAL_ZOOM,
-  THUMBNAIL_ZOOM
+  THUMBNAIL_ZOOM,
+  CAMERA_MIN_ZOOM,
+  CAMERA_MAX_ZOOM
 } from './config'
 import {
   MESH,
@@ -250,9 +252,9 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
-    controls.minDistance = 0
-    controls.maxDistance = 350
-    controls.enableZoom = isMobile
+    controls.minDistance = CAMERA_MIN_ZOOM
+    controls.maxDistance = CAMERA_MAX_ZOOM
+    // controls.enableZoom = isMobile TODO: Pan zoom
 
     this.container.addEventListener('mousedown', this.onMouseDown, false)
     this.container.addEventListener('mouseup', this.onMouseUp, false)

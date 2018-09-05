@@ -19,7 +19,8 @@ import {
   CalculationsWrapper,
   YouSavedOrderItem,
   FlexWrapper,
-  DeleteLabel
+  DeleteLabel,
+  DiscountAmout
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
@@ -107,7 +108,9 @@ export class OrderSummary extends React.Component<Props, {}> {
                   </DeleteLabel>
                 )}
               </FlexWrapper>
-              <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
+              <DiscountAmout>
+                {`- ${symbol} ${discount.toFixed(2)}`}
+              </DiscountAmout>
             </OrderItem>
           )}
           {/* taxes */}
