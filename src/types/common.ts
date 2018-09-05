@@ -526,6 +526,12 @@ export interface OrderDetailsInfo {
   taxAmount: number
   shippingAmount: number
   proDesign: boolean
+  taxGst?: number
+  taxPst?: number
+  taxVat?: number
+  taxFee?: number
+  total?: number
+  discount?: number
 }
 
 export interface OrderDataInfo {
@@ -547,17 +553,19 @@ export interface OrderDataInfo {
   billingCountry: string
   billingApartment: string
   shippingTax: number
-  payment: {
-    stripeCharge: {
-      cardData: CreditCardData
-    }
-  }
+  payment: PaymentCharges
   cart: CartItems[]
   paymentMethod: string
   currency: Currency
   shippingAmount: number
   taxAmount: number
   proDesign: boolean
+  taxGst?: number
+  taxPst?: number
+  taxVat?: number
+  taxFee?: number
+  total?: number
+  discount?: number
 }
 
 export interface TextFormat {

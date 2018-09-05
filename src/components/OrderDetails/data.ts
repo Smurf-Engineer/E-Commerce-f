@@ -124,7 +124,14 @@ export const getOrderQuery = gql`
         designCode
       }
       status
+      shippingAmount: shipping_amount
       proDesign: pro_design
+      discount: discount_amount
+      total: total_amount
+      taxFee: tax
+      taxPst: tax_pst
+      taxGst: tax_gst
+      taxVat: tax_vat
     }
   }
 `

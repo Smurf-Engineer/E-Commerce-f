@@ -117,6 +117,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
         ((defaultShipping && indexAddressSelected === -1) ||
           indexAddressSelected === key)
       if (!showForm && isSelected) {
+        this.handleOnSelectAddress(key)
         atLeastOneIsSelected = true
       }
       if (
@@ -292,7 +293,7 @@ type OwnProps = {
 
 const MyadressesListEnhanced = compose(
   graphql(GetAddressListQuery, {
-    options: ({ itemsNumber, skip, listForMyAccount }: OwnProps) => {
+    options: ({ itemsNumber, skip }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: {

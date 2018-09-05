@@ -4,6 +4,13 @@
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
 
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 35em;
+`
+
 export const Container = styled.div``
 
 export const ViewContainer = styled.div`
@@ -64,16 +71,17 @@ export const OrderInfo = styled.div`
   margin-top: 42px;
   padding-right: 34px;
 
-  @media (max-width: 550px) and (min-width: 320px) {
+  @media (max-width: 658px) and (min-width: 320px) {
     display: block;
     padding-right: 0px;
   }
 `
 export const OrderDelivery = styled.div`
-  @media (max-width: 963px) and (min-width: 551px) {
+  @media (max-width: 963px) and (min-width: 659px) {
     width: 50%;
   }
 `
+
 export const DeliveryDate = styled.div`
   color: #5f6062;
   font-size: 18px;
@@ -131,18 +139,22 @@ export const Info = styled.div`
   margin-bottom: 12px;
 `
 export const OrderSummaryContainer = styled.div`
-  width: 222px;
+  width: 25%;
 
-  @media (max-width: 550px) and (min-width: 320px) {
+  @media (max-width: 1375px) and (min-width: 659px) {
+    width: 258px;
+  }
+
+  @media (max-width: 658px) and (min-width: 320px) {
     margin-top: 50px;
     width: 100%;
   }
 `
 export const Items = styled.div`
-  margin-top: 100px;
+  margin-top: 48px;
   padding-right: 34px;
 
-  @media (max-width: 550px) and (min-width: 320px) {
+  @media (max-width: 658px) and (min-width: 320px) {
     padding-right: 0px;
   }
 `
@@ -163,13 +175,13 @@ export const ShippingBillingContainer = styled.div`
   justify-content: space-between;
   margin: 40px 10% 0px 0;
 
-  @media (max-width: 425px) and (min-width: 320px) {
+  @media (max-width: 658px) and (min-width: 320px) {
     flex-wrap: wrap;
     margin-right: 0px;
   }
 `
 export const ShippingBillingCard = styled.div`
-  @media (max-width: 425px) and (min-width: 320px) {
+  @media (max-width: 658px) and (min-width: 320px) {
     margin-right: 5px;
   }
 `
@@ -180,17 +192,6 @@ export const SubTitle = styled.div`
   line-height: 22px;
   margin-bottom: 24px;
 `
-export const PaymentText = styled.div`
-  color: #5f6062;
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 23px;
-`
-export const CardNumber = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 6px 0;
-`
 export const StyledImage = styled.img`
   margin-left: 8px;
   width: 42px;
@@ -199,7 +200,7 @@ export const StyledImage = styled.img`
 export const Annotation = styled.div`
   margin: 80px 0px 66px;
 
-  @media (max-width: 425px) and (min-width: 320px) {
+  @media (max-width: 658px) and (min-width: 320px) {
     margin-bottom: 58px;
   }
 `
