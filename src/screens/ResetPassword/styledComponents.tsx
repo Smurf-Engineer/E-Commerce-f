@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
-import { WHITE, GRAY_DARK, GRAY_LIGHT, RED } from '../../theme/colors'
+import { WHITE, GRAY_DARK, GRAY_LIGHT, RED, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -107,8 +107,8 @@ export const ButtonsContainer = styled.div`
   }
 `
 export const StyledChangePasswordButton = styled(Button)`
-  background-color: ${WHITE};
-  border-color: ${RED};
+  background-color: ${BLUE};
+  border-color: ${BLUE};
   border-radius: 0px;
   height: 50px;
   margin-bottom: 10px;
