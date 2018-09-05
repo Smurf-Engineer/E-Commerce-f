@@ -18,6 +18,7 @@ export interface DesignSaved {
   name: string
   svg: string
   product: Product
+  canvas: string
   style?: Style
   shortId?: string
   flatlockColor?: string
@@ -132,6 +133,7 @@ export interface Product {
   weight: number
   relatedProducts: Product[]
   isCustom?: boolean
+  colors?: ProductColors
 }
 
 export type DesignType = {
@@ -153,7 +155,6 @@ export type DesignType = {
   zipperColor: string
   canEdit: boolean
   styleId: number
-  canvasFiles?: string
 }
 
 export type SaveDesignType = {
@@ -161,6 +162,24 @@ export type SaveDesignType = {
   canvasSvg: string
   canvasJson: string
   styleId: number
+}
+
+export interface SaveDesignData {
+  createdAt: string
+  designCode: string
+  designId: number
+  designImage: string
+  designName: string
+  product: Product
+  shared: boolean
+  shortId: string
+  svg: string
+  canvas: string
+  bibBraceColor: string
+  bindingColor: string
+  flatlockCode: string
+  flatlockColor: string
+  zipperColor: string
 }
 
 export type TeamStoreItemtype = {
@@ -374,8 +393,8 @@ export interface TeamstoreResult {
 }
 
 export type ItemDetailType = {
-  id: number
-  name: string
+  id?: number
+  name?: string
 }
 
 export type CartItemDetail = {
@@ -443,6 +462,7 @@ export interface CartItems {
   designId?: string
   designName?: string
   designImage?: string
+  designCode?: string
   teamStoreId?: string
 }
 
@@ -505,6 +525,7 @@ export interface OrderDetailsInfo {
   currency: Currency
   taxAmount: number
   shippingAmount: number
+  proDesign: boolean
 }
 
 export interface OrderDataInfo {
@@ -536,6 +557,7 @@ export interface OrderDataInfo {
   currency: Currency
   shippingAmount: number
   taxAmount: number
+  proDesign: boolean
 }
 
 export interface TextFormat {
@@ -691,12 +713,14 @@ export interface ITemplateDownload {
 
 export interface NetsuiteTax {
   internalId: string
-  rate: string
+  rate: number
   countryCode: string
-  ratePST: string
-  rateGST: string
+  ratePst: number
+  rateGst: number
   state: string
   zip: string
+  total: number
+  countrySub: string
 }
 
 export interface NetsuiteShipping {
@@ -969,3 +993,17 @@ export interface CanvasFile {
   src?: string
   canvasPath?: string
 }
+
+export interface ProductColors {
+  name: string
+  image: string
+}
+
+export interface CouponCode {
+  code: string
+  type: couponType
+  discountAmount?: string
+  rate?: string
+}
+
+type couponType = '%' | 'flat'

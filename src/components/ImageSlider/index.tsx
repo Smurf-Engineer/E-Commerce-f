@@ -11,10 +11,8 @@ import {
   ImageThumbnails,
   ThumbnailImg,
   SelectedImage,
-  Arrows,
   ArrowContainer,
-  ArrowLeft,
-  ArrowRight,
+  Arrow,
   SwipeImg
 } from './styledComponents'
 import NextArrow from '../../assets/arrow.svg'
@@ -142,22 +140,14 @@ class ImageSlider extends React.Component<Props, StateProps> {
     )
     return (
       <Container>
-        <SwipeContainer>
+        <SwipeContainer squareArrows={!!squareArrows}>
+          <ArrowContainer onClick={this.handlePreviousPage}>
+            <Arrow src={PreviousArrow} />
+          </ArrowContainer>
           {index === 0 && customProduct ? threeDmodel : swipeViews}
-          <Arrows>
-            <ArrowContainer
-              squareArrows={!!squareArrows}
-              onClick={this.handlePreviousPage}
-            >
-              <ArrowLeft src={PreviousArrow} />
-            </ArrowContainer>
-            <ArrowContainer
-              squareArrows={!!squareArrows}
-              onClick={this.handleNextPage}
-            >
-              <ArrowRight src={NextArrow} />
-            </ArrowContainer>
-          </Arrows>
+          <ArrowContainer onClick={this.handleNextPage}>
+            <Arrow src={NextArrow} />
+          </ArrowContainer>
         </SwipeContainer>
         <ImageThumbnails>
           {customProduct ? thumbnailsWith3d : thumbnails}

@@ -3,16 +3,10 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { compose, graphql } from 'react-apollo'
-import get from 'lodash/get'
-import {
-  QueryProps,
-  NetsuiteTax,
-  NetsuiteShipping,
-  TaxAddressObj,
-  AddressObj
-} from '../../types/common'
-import { getTaxQuery } from './data'
+import { compose } from 'react-apollo'
+import Message from 'antd/lib/message'
+import { CouponCode } from '../../types/common'
+import { applyPromoCodeMutation } from './data'
 import messages from './messages'
 import {
   Container,
@@ -20,88 +14,71 @@ import {
   OrderItem,
   TotalOrderItem,
   Divider,
-  CodeDivider,
   ZipCodeInputWrapper,
   CollapseWrapper,
   CalculationsWrapper,
-  YouSavedOrderItem
-  //  FlexWrapper,  UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-  //  DeleteLabel
+  YouSavedOrderItem,
+  FlexWrapper,
+  DeleteLabel
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
 
-interface Data extends QueryProps {
-  taxes: NetsuiteTax[]
-  shipping: NetsuiteShipping
-}
-
 interface Props {
-  data?: Data
-  taxes: number
-  total: number
+  onlyRead?: boolean
   subtotal: number
-  shipping?: number
+  proDesignReview?: number
   totalWithoutDiscount?: number
   discount?: number
-  onlyRead?: boolean
-  country?: string
-  weight?: string
-  shipAddress?: TaxAddressObj
-  proDesignReview?: number
+  youSaved?: number
+  shippingTotal?: number
+  taxFee?: number
+  taxPst?: number
+  taxGst?: number
+  taxVat?: number
+  sumTotal?: number
   currencySymbol?: string
+  showCouponInput?: boolean
+  couponCode?: CouponCode
   formatMessage: (messageDescriptor: any) => string
+  setCouponCodeAction?: (code: CouponCode) => void
+  deleteCouponCodeAction?: () => void
+  // mutations
+  applyPromoCode: (variables: {}) => Promise<any>
 }
 
-const ShareLinkInput = Input.Search
+const InputSearch = Input.Search
 const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
   render() {
     const {
-      data,
-      total,
       subtotal,
       formatMessage,
-      discount,
-      totalWithoutDiscount,
+      showCouponInput,
       onlyRead,
-      proDesignReview,
+      proDesignReview = 0,
       currencySymbol,
-      shipping,
-      taxes
+      taxFee = 0,
+      taxPst = 0,
+      taxGst = 0,
+      taxVat = 0,
+      youSaved = 0,
+      shippingTotal = 0,
+      discount = 0,
+      sumTotal = 0
     } = this.props
 
-    const renderDiscount = discount ? (
-      <OrderItem>
-        {/* UNCOMMENT WHEN DISCOUNTS GETS DEFINED BY CLIENT
-        <FlexWrapper>
-          <div>{formatMessage(messages.discountCode)}</div>
-          <DeleteLabel>{formatMessage(messages.deleteLabel)}</DeleteLabel>
-        </FlexWrapper>
-        <div>{`USD$${discount}`}</div> */}
-        {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-      </OrderItem>
-    ) : (
-      <ZipCodeInputWrapper>
-        <ShareLinkInput
-          disabled={true}
-          id="url"
-          placeholder={formatMessage(messages.zipCodePlaceholder)}
-          enterButton={formatMessage(messages.estimate)}
-          size="default"
-          maxLength="5"
-          onChange={() => {}}
-        />
-      </ZipCodeInputWrapper>
-    )
-    const youSaved = Number(totalWithoutDiscount) - total
-
-    const shippingTotal = get(data, 'shipping.total', 0)
-    const taxesTotal = get(data, 'taxes.total', 0)
-
-    const sumTotal = total + shippingTotal + taxesTotal
-
     const symbol = currencySymbol || '$'
+
+    const netTotal =
+      sumTotal ||
+      subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
+
+    const amountsDivider =
+      !!proDesignReview ||
+      !!taxFee ||
+      !!shippingTotal ||
+      (!onlyRead && discount > 0)
 
     return (
       <Container>
@@ -110,86 +87,123 @@ export class OrderSummary extends React.Component<Props, {}> {
         </SummaryTitle>
         <OrderItem>
           <FormattedMessage {...messages.subtotal} />
-          <div>{`${symbol} ${subtotal}`}</div>
+          <div>{`${symbol} ${subtotal.toFixed(2)}`}</div>
         </OrderItem>
         <CalculationsWrapper>
-          <Divider />
-          <OrderItem hide={!taxesTotal && !taxes}>
-            <FormattedMessage {...messages.taxes} />
-            <div>{`${symbol} ${taxesTotal || taxes}`}</div>
-          </OrderItem>
-          <OrderItem hide={!shippingTotal && !shipping}>
-            <FormattedMessage {...messages.shipping} />
-            <div>{`${symbol} ${shippingTotal || shipping}`}</div>
-          </OrderItem>
-
+          <Divider withMargin={amountsDivider} />
           {!!proDesignReview && (
             <OrderItem>
               <FormattedMessage {...messages.proDesigner} />
-              <div>{`${symbol} ${proDesignReview}`}</div>
+              <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
-
-          {!onlyRead ? renderDiscount : null}
+          {discount > 0 && (
+            <OrderItem>
+              <FlexWrapper>
+                <div>{formatMessage(messages.discountLabel)}</div>
+                {!onlyRead && (
+                  <DeleteLabel onClick={this.deleteCouponCode}>
+                    {formatMessage(messages.deleteLabel)}
+                  </DeleteLabel>
+                )}
+              </FlexWrapper>
+              <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
+            </OrderItem>
+          )}
+          {/* taxes */}
+          <OrderItem hide={!taxFee}>
+            <FormattedMessage {...messages.taxes} />
+            <div>{`${symbol} ${taxFee.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxGst}>
+            <FormattedMessage {...messages.taxesGst} />
+            <div>{`${symbol} ${taxGst.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxPst}>
+            <FormattedMessage {...messages.taxesPst} />
+            <div>{`${symbol} ${taxPst.toFixed(2)}`}</div>
+          </OrderItem>
+          <OrderItem hide={!taxVat}>
+            <FormattedMessage {...messages.taxesVat} />
+            <div>{`${symbol} ${taxVat.toFixed(2)}`}</div>
+          </OrderItem>
+          {/* shipping */}
+          <OrderItem hide={!shippingTotal}>
+            <FormattedMessage {...messages.shipping} />
+            <div>{`${symbol} ${shippingTotal.toFixed(2)}`}</div>
+          </OrderItem>
         </CalculationsWrapper>
-        <CodeDivider />
-        {!onlyRead ? (
+        {amountsDivider && <Divider />}
+        {!onlyRead && showCouponInput ? (
           <CollapseWrapper>
             <Collapse bordered={false}>
               <Panel header={formatMessage(messages.discountCode)} key="1">
                 <ZipCodeInputWrapper>
-                  <ShareLinkInput
-                    disabled={true}
+                  <InputSearch
                     id="url"
                     enterButton={formatMessage(messages.apply)}
                     placeholder={formatMessage(messages.promoCodePlaceholder)}
                     size="default"
-                    onChange={() => {}}
-                  />
-                </ZipCodeInputWrapper>
-                <ZipCodeInputWrapper>
-                  <ShareLinkInput
-                    disabled={true}
-                    id="url"
-                    enterButton={formatMessage(messages.apply)}
-                    placeholder={formatMessage(messages.giftPlaceholder)}
-                    size="default"
-                    onChange={() => {}}
+                    onSearch={this.onApplyCouponCode}
                   />
                 </ZipCodeInputWrapper>
               </Panel>
             </Collapse>
           </CollapseWrapper>
         ) : null}
-        <TotalOrderItem withoutMarginBottom={youSaved > 0} {...{ onlyRead }}>
+        <TotalOrderItem
+          withoutMarginBottom={youSaved > 0}
+          {...{ onlyRead, showCouponInput }}
+        >
           <FormattedMessage {...messages.total} />
-          <div>{`${symbol} ${sumTotal}`}</div>
+          <div>{`${symbol} ${netTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             <FormattedMessage {...messages.youSaved} />
-            <div>{`$${youSaved}`}</div>
+            <div>{`$${youSaved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
       </Container>
     )
   }
+
+  onApplyCouponCode = async (code: string) => {
+    const {
+      applyPromoCode,
+      setCouponCodeAction = () => {},
+      deleteCouponCodeAction = () => {},
+      formatMessage
+    } = this.props
+
+    try {
+      const data = await applyPromoCode({
+        variables: { code }
+      })
+      const {
+        data: { couponCode }
+      } = data
+      if (couponCode) {
+        setCouponCodeAction(couponCode)
+        Message.success(formatMessage(messages.couponApplied))
+      } else {
+        deleteCouponCodeAction()
+        Message.error(formatMessage(messages.couponError))
+      }
+    } catch (error) {
+      deleteCouponCodeAction()
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      Message.error(errorMessage)
+    }
+  }
+
+  deleteCouponCode = () => {
+    const { deleteCouponCodeAction = () => {} } = this.props
+    deleteCouponCodeAction()
+  }
 }
 
-interface OwnProps {
-  country?: string
-  weight?: string
-  shipAddress?: AddressObj
-}
-
-const OrderSummaryEnhance = compose(
-  graphql(getTaxQuery, {
-    options: ({ country, weight, shipAddress }: OwnProps) => ({
-      skip: !country || !weight || !shipAddress,
-      variables: { country, weight, shipAddress },
-      fetchPolicy: 'network-only'
-    })
-  })
-)(OrderSummary)
+const OrderSummaryEnhance = compose(applyPromoCodeMutation)(OrderSummary)
 
 export default OrderSummaryEnhance

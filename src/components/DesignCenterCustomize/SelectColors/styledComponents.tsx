@@ -3,11 +3,12 @@
  */
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
+import { GRAY_DARK, GRAY_LIGHT } from '../../../theme/colors'
 
 export const Container = styled.div``
 
 export const ColorLabel = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -25,12 +26,12 @@ export const BaseTitle = styled.div`
 `
 
 export const Arrow = styled(Icon)`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
 `
 
 export const Divider = styled.div`
-  margin: 0 32px 4px 32px;
+  background-color: ${GRAY_LIGHT};
   height: 1px;
-  background-color: #dcdcdc;
+  margin: 0 32px 4px 32px;
 `

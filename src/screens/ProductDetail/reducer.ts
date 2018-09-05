@@ -9,7 +9,8 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_SIZE,
   SET_SELECTED_FIT,
-  LOADING_3D_MODEL
+  LOADING_3D_MODEL,
+  RESET_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -41,6 +42,8 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedFit', action.selected)
     case LOADING_3D_MODEL:
       return state.set('loadingModel', action.loading)
+    case RESET_DATA:
+      return initialState
     default:
       return state
   }

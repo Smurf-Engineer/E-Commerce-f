@@ -280,7 +280,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       numberOfProducts
     } = shoppingCartData
 
-    let symbol: string = '$'
+    let symbol = '$'
 
     const cartItems = cart || []
     let activeCheckout = true
@@ -398,9 +398,8 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
                 {/* TODO: Make shipping_tax value dynamic */}
                 <Ordersummary
                   subtotal={total}
-                  shipping={0}
                   currencySymbol={symbol}
-                  {...{ formatMessage, totalWithoutDiscount, total }}
+                  {...{ formatMessage, totalWithoutDiscount }}
                 />
                 <ButtonWrapper disabled={!activeCheckout}>
                   <CheckoutButton

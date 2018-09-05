@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 import findIndex from 'lodash/findIndex'
+import FontFaceObserver from 'fontfaceobserver'
 import { Container, Render, Progress, DragText } from './styledComponents'
 import {
   MESH,
@@ -13,7 +14,9 @@ import {
   GRIP_TAPE,
   ACCESSORY_WHITE
 } from '../../constants'
+import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
+import '../../screens/App/theme.ant'
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -28,7 +31,7 @@ class Render3D extends PureComponent {
 
   async componentDidMount() {
     /* Renderer config */
-    const { svg, product = {}, flatlockColor } = this.props
+    const { svg, product = {}, flatlockColor, canvas } = this.props
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
@@ -63,8 +66,23 @@ class Render3D extends PureComponent {
     scene.add(ambient)
     scene.add(directionalLight)
 
-    const loadedTextures = await this.loadTextures(product, svg)
+    try {
+      if (!!canvas) {
+        const { objects } = JSON.parse(canvas)
+        const fontsPromises = []
+        objects.forEach(o => {
+          if (o.type === CanvasElements.Text) {
+            const fontObserver = new FontFaceObserver(o.fontFamily)
+            fontsPromises.push(fontObserver.load())
+          }
+        })
+        await Promise.all(fontsPromises)
+      }
+    } catch (e) {
+      console.error(e)
+    }
 
+    const loadedTextures = await this.loadTextures(product, svg)
     /* Object and MTL load */
     mtlLoader.load(product.mtl, materials => {
       this.handleOnLoadModel(true)
@@ -229,7 +247,10 @@ class Render3D extends PureComponent {
           loadedTextures.flatlock = textureLoader.load(flatlock)
         }
         loadedTextures.bumpMap = textureLoader.load(bumpMap)
-        loadedTextures.texture = textureLoader.load(area)
+        const imageCanvas = document.createElement('canvas')
+        canvg(imageCanvas, area)
+        loadedTextures.texture = new THREE.Texture(imageCanvas)
+        loadedTextures.texture.needsUpdate = true
 
         resolve(loadedTextures)
       } catch (e) {
@@ -275,10 +296,14 @@ class Render3D extends PureComponent {
 
   render() {
     const { showDragmessage, progress, loadingModel } = this.state
+    const { customProduct } = this.props
 
     return (
       <Container onKeyDown={this.handleOnKeyDown}>
-        <Render innerRef={container => (this.container = container)}>
+        <Render
+          {...{ customProduct }}
+          innerRef={container => (this.container = container)}
+        >
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
         {showDragmessage && (

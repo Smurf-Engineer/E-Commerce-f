@@ -77,6 +77,7 @@ export const getOrderQuery = gql`
           collections
           isTopProduct
           weight
+          mpn
           priceRange {
             quantity
             price
@@ -120,8 +121,10 @@ export const getOrderQuery = gql`
         productTotal
         designName
         designImage
+        designCode
       }
       status
+      proDesign: pro_design
     }
   }
 `

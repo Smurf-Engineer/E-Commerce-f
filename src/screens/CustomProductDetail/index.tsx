@@ -97,9 +97,15 @@ interface Props extends RouteComponentProps<any> {
   addItemToCartAction: (item: any) => void
   setShowDetailsAction: (show: boolean) => void
   setShowSpecsAction: (show: boolean) => void
+  resetDataAction: () => void
 }
 
 export class CustomProductDetail extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const { resetDataAction } = this.props
+    resetDataAction()
+  }
+
   render() {
     const {
       intl,
@@ -148,6 +154,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const svgUrl = get(design, 'svg', '')
+    const canvas = get(design, 'canvas', '')
     const flatlockColor = get(design, 'flatlockColor', '')
     const zipperColor = get(design, 'zipperColor', '')
     const bindingColor = get(design, 'bindingColor', '')
@@ -372,7 +379,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   threeDmodel={
                     <Render3D
                       svg={svgUrl}
+                      customProduct={true}
                       {...{
+                        canvas,
                         product,
                         bindingColor,
                         zipperColor,

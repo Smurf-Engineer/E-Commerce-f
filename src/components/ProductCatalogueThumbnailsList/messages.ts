@@ -44,5 +44,9 @@ export default defineMessages({
   customizable: {
     id: 'components.ProductCatalogueThumbnailsList.customizable',
     defaultMessage: 'Customize'
+  },
+  retailLabel: {
+    id: 'components.ProductCatalogueThumbnailsList.retailLabel',
+    defaultMessage: 'FULL DETAILS'
   }
 })

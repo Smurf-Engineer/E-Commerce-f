@@ -9,8 +9,8 @@ import { connect } from 'react-redux'
 import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
-import findIndex from 'lodash/findIndex'
 import filter from 'lodash/filter'
+import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import * as productDetailActions from './actions'
 import messages from './messages'
@@ -106,6 +106,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   addItemToCartAction: (item: any) => void
+  resetReducerAction: () => void
 }
 
 interface StateProps {
@@ -117,6 +118,22 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: true,
     showSpecs: true
+  }
+
+  componentWillUnmount() {
+    const { resetReducerAction } = this.props
+    resetReducerAction()
+  }
+
+  componentDidMount() {
+    const {
+      data: { product },
+      setSelectedFitAction
+    } = this.props
+    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    if (!fitStyles.length || !fitStyles[0].id) {
+      setSelectedFitAction({ id: 1, name: 'Standard' })
+    }
   }
 
   render() {
@@ -153,6 +170,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
+    const mpnCode = get(product, 'mpn')
 
     let genderMessage = messages.maleGenderLabel
 
@@ -173,17 +191,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const yotpoId = queryParams.yotpoId || ''
 
-    const genderId = queryParams.gender || 0
+    const gender = queryParams.gender || 0
     const genderIndex = findIndex(imagesArray, {
-      genderId: parseInt(genderId, 10)
+      genderId: parseInt(gender, 10)
     })
 
     const images = imagesArray[genderIndex] || imagesArray[0]
 
     const moreImages =
-      genderIndex !== -1
-        ? []
-        : imagesArray.filter(post => post.genderId !== images.genderId)
+      imagesArray.length > 1
+        ? imagesArray.filter(({ genderId }) => genderId !== images.genderId)
+        : []
 
     let retailPrice
     if (product) {
@@ -296,30 +314,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     let availableFits
     if (product) {
       availableFits =
-        fitStyles.length && fitStyles[0].id ? (
-          fitStyles.map(
-            ({ id, name: fitName }: SelectedType, index: number) => (
-              <div key={index}>
-                <SectionButton
-                  id={id.toString()}
-                  selected={id === selectedFit.id}
-                  large={true}
-                  onClick={this.handleSelectedFit({ id, name: fitName })}
-                >
-                  {fitName}
-                </SectionButton>
-              </div>
-            )
-          )
-        ) : (
-          <SectionButton
-            id={'1'}
-            selected={1 === selectedFit.id}
-            onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
-          >
-            {'Standard'}
-          </SectionButton>
-        )
+        fitStyles.length &&
+        fitStyles[0].id &&
+        fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
+          <div key={index}>
+            <SectionButton
+              id={id.toString()}
+              selected={id === selectedFit.id}
+              large={true}
+              onClick={this.handleSelectedFit({ id, name: fitName })}
+            >
+              {fitName}
+            </SectionButton>
+          </div>
+        ))
     }
 
     const gendersSection = (
@@ -357,7 +365,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const fitSection = (
+    const fitSection = !!availableFits && (
       <SectionRow>
         <SectionTitleContainer>
           <SectionTitle>{formatMessage(messages.fitLabel)}</SectionTitle>
@@ -417,9 +425,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                    {/* TODO: MNP code hidden until all the codes are implemented for the retail products
-                     {isRetail &&
-                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>} */}
+                    <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
@@ -525,32 +531,30 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const {
       selectedFit,
       selectedSize,
+      selectedGender,
       data: { product },
       intl: { formatMessage }
     } = this.props
 
-    const details = [] as CartItemDetail[]
+    const itemDetails = [] as CartItemDetail[]
     if (product) {
       const detail: CartItemDetail = {
         fit: selectedFit,
         size: selectedSize,
+        gender: selectedGender,
         quantity: 1
       }
-      details.push(detail)
+      itemDetails.push(detail)
     }
-    const itemToAdd = Object.assign(
-      {},
-      { product },
-      {
-        itemDetails: details
-      }
-    )
+    const itemToAdd = Object.assign({}, { product }, { itemDetails })
+
     return (
       <ButtonsRow>
         <AddtoCartButton
           onClick={this.validateAddtoCart}
           label={formatMessage(messages.addToCartButtonLabel)}
           item={itemToAdd}
+          itemProdPage={true}
         />
       </ButtonsRow>
     )

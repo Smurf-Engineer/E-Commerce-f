@@ -7,13 +7,14 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import find from 'lodash/find'
 import Modal from 'antd/lib/modal'
-import Col from 'antd/lib/col'
 import Radio from 'antd/lib/radio'
 import { Product } from '../../types/common'
 import messages from './messages'
 import {
   Container,
+  Col,
   StyledRow,
+  ReverseDiv,
   TitleLabel,
   radioGroupStyle,
   StyledFooterLabel,
@@ -169,27 +170,29 @@ class FitInfo extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.sizeChart} />
               </TitleLabel>
               <StyledRow>
-                <Col span={14}>
-                  <RadioGroup
-                    defaultValue={gender}
-                    onChange={this.onGenderChange}
-                  >
-                    {genderList}
-                  </RadioGroup>
-                </Col>
-                <Col span={6}>
-                  <RadioGroup
-                    defaultValue={metric}
-                    onChange={this.onMetricChange}
-                  >
-                    <RadioButton value="in">
-                      <FormattedMessage {...messages.inches} />
-                    </RadioButton>
-                    <RadioButton value="cm">
-                      <FormattedMessage {...messages.centimeters} />
-                    </RadioButton>
-                  </RadioGroup>
-                </Col>
+                <ReverseDiv>
+                  <Col span={13}>
+                    <RadioGroup
+                      defaultValue={gender}
+                      onChange={this.onGenderChange}
+                    >
+                      {genderList}
+                    </RadioGroup>
+                  </Col>
+                  <Col span={8}>
+                    <RadioGroup
+                      defaultValue={metric}
+                      onChange={this.onMetricChange}
+                    >
+                      <RadioButton value="in">
+                        <FormattedMessage {...messages.inches} />
+                      </RadioButton>
+                      <RadioButton value="cm">
+                        <FormattedMessage {...messages.centimeters} />
+                      </RadioButton>
+                    </RadioGroup>
+                  </Col>
+                </ReverseDiv>
               </StyledRow>
               <SizingTable>{sizingTable}</SizingTable>
             </Col>

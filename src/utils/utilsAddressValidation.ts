@@ -4,7 +4,7 @@ export const isNumberValue = (value: string) => {
 }
 
 export const isPoBox = (value: string) => {
-  const poboxRegex = RegExp('[PO.]*\\s?B(ox)?.*\\d+', 'i')
+  const poboxRegex = RegExp('[PO.]*\\s?B(ox)?( +)*\\d+', 'i')
   return poboxRegex.test(value)
 }
 

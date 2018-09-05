@@ -27,7 +27,12 @@ import {
   OPEN_ADDRESSES_MODAL,
   SET_SKIP_VALUE,
   SHOW_CARD_FORM,
-  SET_SELECTED_CARD_TO_PAY
+  SET_SELECTED_CARD_TO_PAY,
+  SET_COUPON_CODE,
+  DELETE_COUPON_CODE,
+  OPEN_CURRENCY_WARNING,
+  SET_SELECTED_ADDRESSES,
+  PaymentOptions
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -80,7 +85,9 @@ export const initialState = fromJS({
   loadingPlaceOrder: false,
   paymentMethod: 'credit card',
   countryId: null,
-  openAddressesModal: false
+  openAddressesModal: false,
+  couponCode: null,
+  openCurrencyWarning: false
 })
 
 const checkoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -112,6 +119,35 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         indexAddressSelected: action.index,
         showForm: false
       })
+    case SET_SELECTED_ADDRESSES: {
+      const {
+        address: {
+          firstName,
+          lastName,
+          street,
+          apartment,
+          country,
+          city,
+          zipCode,
+          phone,
+          stateProvince
+        },
+        index
+      } = action
+      return state.merge({
+        ...action.address,
+        billingFirstName: firstName,
+        billingLastName: lastName,
+        billingStreet: street,
+        billingApartment: apartment,
+        billingCountry: country,
+        billingStateProvince: stateProvince,
+        billingCity: city,
+        billingZipCode: zipCode,
+        billingPhone: phone,
+        indexAddressSelected: index
+      })
+    }
     case SAME_BILLING_AND_SHIPPING_UNCHECKED:
       return state.merge({
         sameBillingAndShipping: false,
@@ -218,12 +254,36 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingPlaceOrder', action.loading)
     case RESET_DATA:
       return initialState
-    case SET_PAYMENT_METHOD:
-      return state.set('paymentMethod', action.method)
+    case SET_PAYMENT_METHOD: {
+      const { method } = action
+      if (method === PaymentOptions.PAYPAL) {
+        return state.merge({
+          paymentMethod: method,
+          sameBillingAndShipping: false,
+          billingFirstName: '',
+          billingLastName: '',
+          billingStreet: '',
+          billingApartment: '',
+          billingCountry: '',
+          billingState: '',
+          billingCity: '',
+          billingZipCode: '',
+          billingPhone: '',
+          billingHasError: false
+        })
+      }
+      return state.set('paymentMethod', method)
+    }
     case SAVE_COUNTRY:
       return state.set('billingCountry', action.countryCode)
     case OPEN_ADDRESSES_MODAL:
       return state.set('openAddressesModal', action.open)
+    case SET_COUPON_CODE:
+      return state.set('couponCode', action.couponCode)
+    case DELETE_COUPON_CODE:
+      return state.set('couponCode', null)
+    case OPEN_CURRENCY_WARNING:
+      return state.set('openCurrencyWarning', action.open)
     default:
       return state
   }

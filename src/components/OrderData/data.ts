@@ -42,6 +42,7 @@ export const getOrderQuery = gql`
       }
       cart {
         product {
+          mpn
           name
           shortDescription: short_description
           images: pictures {
@@ -64,6 +65,7 @@ export const getOrderQuery = gql`
         designId
         designName
         designImage
+        designCode
         unitPrice
         productTotal
         teamStoreId
@@ -71,6 +73,7 @@ export const getOrderQuery = gql`
       preorder
       taxAmount: tax_amount
       shippingAmount: shipping_amount
+      proDesign: pro_design
     }
   }
 `

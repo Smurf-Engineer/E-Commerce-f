@@ -37,7 +37,7 @@ import {
   Annotation,
   Date
 } from './styledComponents'
-import { OrderSummary } from '../OrderSummary'
+import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
 import MyAddress from '../MyAddress'
 import AddToCartButton from '../AddToCartButton'
@@ -49,6 +49,8 @@ import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
+
+const PRO_DESIGN_FEE = 15
 
 interface Data extends QueryProps {
   orderQuery: OrderDetailsInfo
@@ -112,15 +114,15 @@ export class OrderDetails extends React.Component<Props, {}> {
       cart,
       status,
       currency,
-      taxAmount,
-      shippingAmount
+      // taxAmount, // TODO: send to orderSummary when query return it
+      shippingAmount,
+      proDesign
     } = data.orderQuery
 
     const deliveryDate =
       netsuit && netsuit.orderStatus && netsuit.orderStatus.deliveryDate
 
     let totalSum = 0
-
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
           const {
@@ -238,13 +240,11 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderDelivery>
           <OrderSummaryContainer>
             <OrderSummary
-              total={totalSum + shippingAmount + taxAmount}
               subtotal={totalSum}
               shipping={shippingAmount}
-              taxes={taxAmount}
-              discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}
+              proDesignReview={(proDesign && PRO_DESIGN_FEE) || 0}
               {...{ formatMessage }}
             />
           </OrderSummaryContainer>

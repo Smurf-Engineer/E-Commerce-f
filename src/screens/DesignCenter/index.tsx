@@ -66,7 +66,8 @@ import {
   Responsive,
   AccessoriesColor,
   CanvasObjects,
-  SelectedAsset
+  SelectedAsset,
+  SaveDesignData
 } from '../../types/common'
 import {
   getProductQuery,
@@ -143,7 +144,7 @@ interface Props extends RouteComponentProps<any> {
   images: ImageFile[]
   uploadingFile: boolean
   searchClipParam: string
-  savedDesign: SaveDesignType
+  savedDesign: SaveDesignData
   user: object
   responsive: Responsive
   originalPaths: any[]
@@ -582,7 +583,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       get(dataDesign, 'designData.product.name', '')
 
     const canvasJson = get(dataDesign, 'designData.canvas')
-    const canvasFiles = get(dataDesign, 'designData.canvasFiles', '')
     const styleId = get(dataDesign, 'designData.styleId')
     let designObject = design
     if (canvasJson) {
@@ -633,7 +633,12 @@ export class DesignCenter extends React.Component<Props, {}> {
     const isUserAuthenticated = !!user
 
     return (
-      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
+      <Layout
+        {...{ history, intl }}
+        hideTopHeader={responsive.tablet}
+        hideBottomHeader={true}
+        hideFooter={true}
+      >
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
           <Tabs
@@ -737,7 +742,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isUserAuthenticated,
                   isEditing,
                   originalPaths,
-                  canvasFiles,
                   selectedItem
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
@@ -777,6 +781,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
                 onSelectedItem={setSelectedItemAction}
+                isMobile={!!responsive && responsive.mobile}
               />
             )}
             <PreviewTab
@@ -802,6 +807,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 zipperColor,
                 bibColor
               }}
+              canvas={designObject.canvasJson}
               product={productConfig}
               currentTab={tabSelected}
               onAddToCart={this.handleOnAddToCart}

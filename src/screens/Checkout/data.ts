@@ -28,3 +28,9 @@ export const PlaceOrderMutation = graphql(
     name: 'placeOrder'
   }
 )
+
+export const CurrencyQuery = gql`
+  query currency($countryCode: String!) {
+    currency: currencyByCountryCode(code: $countryCode)
+  }
+`

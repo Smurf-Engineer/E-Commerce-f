@@ -52,10 +52,10 @@ export class SearchResults extends React.Component<Props, {}> {
     } = this.props
 
     let list: JSX.Element[] = []
-    let totalProducst = 0
+    let totalProducts = 0
 
     if (!loading && productSearch) {
-      totalProducst = productSearch.length
+      totalProducts = productSearch.length
       list = productSearch.map((product, key) => {
         const {
           id,
@@ -64,31 +64,43 @@ export class SearchResults extends React.Component<Props, {}> {
           collections,
           type,
           isTopProduct,
-          customizable
+          customizable,
+          priceRange,
+          colors,
+          images
         } = product
         // TODO: filter by gender
-        const productImages = product.images ? product.images[0] : {}
+        const productImages = !!images ? images[0] : {}
         return (
-          <ProductThumbnail
-            {...{ currentCurrency, customizable }}
-            key={key}
-            onPressCustomize={this.gotoCustomize}
-            id={id}
-            yotpoId={yotpoId}
-            description={description}
-            collections={collections}
-            images={productImages}
-            type={type}
-            isTopProduct={isTopProduct}
-            onPressQuickView={quickViewAction}
-            labelButton={
-              customizable ? (
-                <FormattedMessage {...messages.customizeLabel} />
-              ) : (
-                <FormattedMessage {...messages.fullDetailsLabel} />
-              )
-            }
-          />
+          <div {...{ key }}>
+            <ProductThumbnail
+              {...{
+                id,
+                yotpoId,
+                description,
+                type,
+                isTopProduct,
+                collections,
+                currentCurrency,
+                customizable,
+                colors,
+                priceRange
+              }}
+              onPressCustomize={this.gotoCustomize}
+              images={productImages}
+              onPressQuickView={quickViewAction}
+              customizableLabel={
+                <FormattedMessage {...messages.customizable} />
+              }
+              labelButton={
+                customizable ? (
+                  <FormattedMessage {...messages.customizeLabel} />
+                ) : (
+                  <FormattedMessage {...messages.fullDetailsLabel} />
+                )
+              }
+            />
+          </div>
         )
       })
     }
@@ -98,7 +110,7 @@ export class SearchResults extends React.Component<Props, {}> {
         <Container>
           <TitleContainer>
             <Text
-            >{`We Found ${totalProducst} Items with "${searchParam}"`}</Text>
+            >{`We Found ${totalProducts} Items with "${searchParam}"`}</Text>
             <CloseImg src={CloseIcon} alt="close" onClick={closeResults} />
           </TitleContainer>
           <Results>{list}</Results>

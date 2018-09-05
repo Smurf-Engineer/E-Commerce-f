@@ -4,12 +4,11 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
-
-const primaryColor = '#4a90e2'
+import { BLUE, WHITE, GRAY_DARK, BLACK_SHADOW } from '../../theme/colors'
 
 export const Container = styled.div`
   padding: 40px 32px;
-  background-color: #fff;
+  background-color: ${WHITE};
 
   @media (max-width: 480px) {
     padding: 20px 10px 40px 10px;
@@ -25,7 +24,7 @@ export const Content = styled.div`
 `
 export const CheckoutTitle = styled.div`
   height: 27px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 20px;
   font-weight: bold;
   letter-spacing: 0.25px;
@@ -35,7 +34,7 @@ export const CheckoutTitle = styled.div`
 
 export const SummaryTitle = styled.div`
   height: 22px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -62,27 +61,27 @@ export const SummaryContainer = styled.div`
 `
 export const StepWrapper = styled.div`
   .ant-steps-item-process .ant-steps-item-icon {
-    background: ${primaryColor};
+    background: ${BLUE};
   }
   .ant-steps-item-process .ant-steps-item-icon {
-    border-color: ${primaryColor};
+    border-color: ${BLUE};
   }
   .ant-steps-item-wait .ant-steps-item-icon {
-    border-color: rgba(0, 0, 0, 0.25);
-    background-color: #fff;
+    border-color: ${BLACK_SHADOW};
+    background-color: ${WHITE};
   }
   .ant-steps-item-finish .ant-steps-item-icon {
-    border-color: ${primaryColor};
-    background-color: #fff;
+    border-color: ${BLUE};
+    background-color: ${WHITE};
   }
 
   .ant-steps-item-finish .ant-steps-item-icon > .ant-steps-icon {
-    color: ${primaryColor};
+    color: ${BLUE};
   }
   .ant-steps-item-finish
     > .ant-steps-item-content
     > .ant-steps-item-title:after {
-    background-color: ${primaryColor};
+    background-color: ${BLUE};
   }
 
   @media (max-width: 480px) {
@@ -102,31 +101,17 @@ export const ContinueButton = styled(Button)`
   height: 40px;
   width: 138.23px;
   border-radius: 2px;
-  background-color: ${primaryColor};
-  color: #fff;
+  background-color: ${BLUE};
+  color: ${WHITE};
 
   &:hover {
-    border-color: ${primaryColor};
-    background-color: ${primaryColor};
-    color: #fff;
+    border-color: ${BLUE};
+    background-color: ${BLUE};
+    color: ${WHITE};
   }
 
   @media (max-width: 480px) {
     width: 100%;
-  }
-`
-
-export const PlaceOrderButton = styled(Button)`
-  height: 40px;
-  width: 100%;
-  border-radius: 2px;
-  background-color: ${primaryColor};
-  color: #fff;
-
-  &:hover {
-    border-color: ${primaryColor};
-    background-color: ${primaryColor};
-    color: #fff;
   }
 `
 
@@ -149,10 +134,7 @@ export const CheckIcon = styled(Icon)`
   font-size: 27px;
 `
 
-export const paypalButtonStyle = {
-  label: 'paypal',
-  size: 'responsive',
-  color: 'blue',
-  shape: 'rect',
-  tagline: false
-}
+export const CurrencyWarningText = styled.div`
+  font-size: 18px;
+  font-weight: bold;
+`

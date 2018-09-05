@@ -12,21 +12,32 @@ import get from 'lodash/get'
 import messages from './messages'
 import {
   Container,
+  Header,
+  ContentHeader,
+  LogoIcon,
+  Divider,
   FormContainer,
+  Title,
+  InputTitleContainer,
+  Label,
+  RequiredSpan,
   StyledInput,
-  StyledLoginButton,
-  StyledCard
+  ButtonsContainer,
+  StyledChangePasswordButton,
+  StyledCancelButton
 } from './styledComponents'
 import { setPassword, setConfirmPassword } from './actions'
 import { resetPassword } from './data'
+import Layout from '../../components/MainLayout'
+import logo from '../../assets/jakroo_logo.svg'
 
 interface Props {
-  changeResetPassword: (variables: {}) => void
   history: any
   dispatch: any
   password: string
   confirmPassword: string
   intl: InjectedIntl
+  changeResetPassword: (variables: {}) => void
 }
 
 export class ResetPassword extends React.Component<Props, {}> {
@@ -72,14 +83,18 @@ export class ResetPassword extends React.Component<Props, {}> {
 
   handlePasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     dispatch(setPassword(value))
   }
 
   handleConfirmPasswordChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     dispatch(setConfirmPassword(value))
   }
@@ -92,35 +107,63 @@ export class ResetPassword extends React.Component<Props, {}> {
     }
   }
 
+  handleCancel = () => {
+    const {
+      history: { push }
+    } = this.props
+
+    push('/us?lang=en&currency=usd')
+  }
+
   render() {
-    const { intl, password, confirmPassword } = this.props
+    const { intl, history, password, confirmPassword } = this.props
+    const { formatMessage } = intl
+
     return (
-      <Container>
-        <StyledCard title={intl.formatMessage(messages.changePasswordLabel)}>
+      <Layout hideFooter={true} hideBottomHeader={true} {...{ history, intl }}>
+        <Header>
+          <ContentHeader>
+            <LogoIcon src={logo} />
+          </ContentHeader>
+        </Header>
+        <Divider />
+        <Container>
           <FormContainer>
+            <Title>{formatMessage(messages.changePasswordLabel)}</Title>
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.newPasswordLabel)}</Label>
+              <RequiredSpan>*</RequiredSpan>
+            </InputTitleContainer>
             <StyledInput
               id="password"
               value={password}
               type="Password"
-              placeholder={intl.formatMessage(messages.newPasswordLabel)}
               onChange={this.handlePasswordChange}
             />
+            <InputTitleContainer>
+              <Label>{formatMessage(messages.confirmNewPasswordLabel)}</Label>
+              <RequiredSpan>*</RequiredSpan>
+            </InputTitleContainer>
             <StyledInput
               id="confirmPassword"
               value={confirmPassword}
               type="Password"
-              placeholder={intl.formatMessage(messages.confirmNewPasswordLabel)}
               onChange={this.handleConfirmPasswordChange}
             />
-            <StyledLoginButton
-              type="danger"
-              onClick={this.handleChangePassword}
-            >
-              {intl.formatMessage(messages.changePasswordLabel)}
-            </StyledLoginButton>
+            <ButtonsContainer>
+              <StyledChangePasswordButton
+                type="danger"
+                onClick={this.handleChangePassword}
+              >
+                {formatMessage(messages.changePasswordLabel)}
+              </StyledChangePasswordButton>
+              <StyledCancelButton onClick={this.handleCancel}>
+                {formatMessage(messages.cancel)}
+              </StyledCancelButton>
+            </ButtonsContainer>
           </FormContainer>
-        </StyledCard>
-      </Container>
+        </Container>
+      </Layout>
     )
   }
 }
@@ -131,7 +174,10 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const ResetPasswordEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   resetPassword
 )(ResetPassword)
 export default ResetPasswordEnhance

@@ -9,7 +9,8 @@ import {
   SET_SELECTED_FIT,
   OPEN_FITINFO,
   SET_SHOW_DETAILS,
-  SET_SHOW_SPECS
+  SET_SHOW_SPECS,
+  RESET_DATA
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -42,6 +43,8 @@ const customProductDetailReducer: Reducer<any> = (
       return state.set('showDetails', action.show)
     case SET_SHOW_SPECS:
       return state.set('showSpecs', action.show)
+    case RESET_DATA:
+      return initialState
     default:
       return state
   }

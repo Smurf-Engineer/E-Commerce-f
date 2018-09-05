@@ -35,6 +35,7 @@ interface Props {
   requestClose: () => void
   formatMessage: (messageDescriptor: any, values?: object) => string
   initialCountryCode: string
+  login: (user: object) => void
 }
 interface StateProps {
   name: string
@@ -72,7 +73,10 @@ class SignUp extends React.Component<Props, StateProps> {
             {formatMessage(messages.createAccountLabel)}
           </SignUpLabel>
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
-          <FacebookGmailLogin {...{ requestClose, formatMessage }} />
+          <FacebookGmailLogin
+            signUpView={true}
+            {...{ requestClose, formatMessage }}
+          />
         </SocialMediaContainer>
         <DividerRow>
           <LeftDivider />
@@ -175,7 +179,8 @@ class SignUp extends React.Component<Props, StateProps> {
       signUpUser,
       formatMessage,
       closeSignUp,
-      initialCountryCode
+      initialCountryCode,
+      login
     } = this.props
 
     if (password.length < 8) {
@@ -200,11 +205,19 @@ class SignUp extends React.Component<Props, StateProps> {
       const response = await signUpUser({ variables: { user } })
       const data = get(response, 'data.signUp', false)
       if (data) {
-        message.info(
+        const userData = {
+          id: get(data, 'user.shortId', ''),
+          token: get(data, 'token', ''),
+          name: get(data, 'user.name', ''),
+          lastName: get(data, 'user.lastName', ''),
+          email: get(data, 'user.email', '')
+        }
+        message.success(
           formatMessage(messages.welcomeMessage, {
             name: get(data, 'user.name', '')
           })
         )
+        login(userData)
       }
       closeSignUp()
     } catch (error) {

@@ -36,6 +36,7 @@ export const GetProductsQuery = gql`
         customizable: design_center
         retailMen: men_retail
         retailWomen: women_retail
+        mpn
         genders {
           id
           name: gender
@@ -59,6 +60,10 @@ export const GetProductsQuery = gql`
           back: back_image
           left: left_image
           right: right_image
+        }
+        colors {
+          name
+          image
         }
       }
     }

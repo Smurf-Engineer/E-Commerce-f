@@ -43,11 +43,11 @@ export class RegionSelect extends React.Component<Props, {}> {
     if (data && data.regions && data.regions.length) {
       dropdownOptions = data.regions.map(
         ({ region: regionItem, code }, index) => {
-          return (
+          return code ? (
             <Option value={`${regionItem}-${code.shortCode}`} key={index}>
               {regionItem}
             </Option>
-          )
+          ) : null
         }
       )
     }

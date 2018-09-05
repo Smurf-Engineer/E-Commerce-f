@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
+import { RouteComponentProps } from 'react-router-dom'
 import { connect } from 'react-redux'
 import * as menuGenderActions from './actions'
 import FilterList from '../FilterList'
@@ -23,9 +24,10 @@ interface Data extends QueryProps {
   categories: Filter[]
 }
 
-interface Props {
+interface Props extends RouteComponentProps<any> {
   data: Data
   type: number
+  history: any
   onPressSeeAll: (type: number, category: string, sport: string) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number) => void
@@ -40,7 +42,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
 }
 
-export class MenuGender extends React.PureComponent<Props, {}> {
+export class MenuGender extends React.Component<Props, {}> {
   handleOnHoverFilter = (filterSelected: number, id: number) => {
     const { setSportAction } = this.props
     setSportAction(filterSelected)
@@ -51,7 +53,12 @@ export class MenuGender extends React.PureComponent<Props, {}> {
     setCategoryAction(categorySelected)
   }
 
-  handleOnPressSeeAll = () => {
+  onPressSeeAllFilters = () => {
+    const { history } = this.props
+    history.push('/product-catalogue')
+  }
+
+  onSeeAll = () => {
     const {
       onPressSeeAll,
       data: { categories },
@@ -60,6 +67,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
       categorySelected,
       sportSelected
     } = this.props
+
     onPressSeeAll(
       type,
       categories[categorySelected].name,
@@ -115,10 +123,10 @@ export class MenuGender extends React.PureComponent<Props, {}> {
             filterSelected={sportSelected}
             onHoverFilter={this.handleOnHoverFilter}
           />
-          {loading || !categories.length ? null : (
+          {loading || (categories && !categories.length) ? null : (
             <SeeAllButton
               withFilterWord={true}
-              onClick={this.handleOnPressSeeAll}
+              onClick={this.onPressSeeAllFilters}
               {...{ formatMessage }}
             />
           )}
@@ -126,7 +134,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
         <Divider type="vertical" />
         {categoriesContent}
         <Divider type="vertical" />
-        {loading || !categories.length ? null : (
+        {loading || (categories && !categories.length) ? null : (
           <ProductList
             {...{
               onPressCustomize,
@@ -137,7 +145,7 @@ export class MenuGender extends React.PureComponent<Props, {}> {
               formatMessage,
               currentCurrency
             }}
-            onPressSeeAll={this.handleOnPressSeeAll}
+            onPressSeeAll={this.onSeeAll}
           />
         )}
       </Container>

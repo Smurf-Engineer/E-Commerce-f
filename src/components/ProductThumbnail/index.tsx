@@ -13,10 +13,11 @@ import {
   InfoContainer,
   Label,
   Price,
-  ImgIcon
+  ImgIcon,
+  RetailColors
 } from './styledComponents'
 import ImageSlide from './ProductSlide'
-import { ImageType, PriceRange } from '../../types/common'
+import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
 const LIMIT_PRICE_RANGE = 3
@@ -46,6 +47,7 @@ interface Props {
   currentCurrency: string
   disableSlider?: boolean
   backgroundColor?: string
+  colors: ProductColors[]
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string) => void
 }
@@ -61,10 +63,16 @@ class ProductThumbnail extends React.Component<Props, {}> {
   handleOnBlur = () => this.setState({ isHovered: false })
 
   handleOnPressBack = () => {
+    const { images } = this.props
     let { currentImage } = this.state
+    const keys = Object.keys(images || {})
+    const index = keys.indexOf('genderId')
+    if (index !== -1) {
+      keys.splice(index, 1)
+    }
     currentImage -= 1
     if (currentImage < 0) {
-      return
+      currentImage = keys.length - 2
     }
     this.setState({ currentImage })
   }
@@ -73,9 +81,13 @@ class ProductThumbnail extends React.Component<Props, {}> {
     const { images } = this.props
     let { currentImage } = this.state
     const keys = Object.keys(images || {})
+    const index = keys.indexOf('genderId')
+    if (index !== -1) {
+      keys.splice(index, 1)
+    }
     currentImage += 1
     if (currentImage >= keys.length - 1) {
-      return
+      currentImage = 0
     }
     this.setState({ currentImage })
   }
@@ -132,7 +144,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       customizableLabel,
       myLockerList,
       disableSlider,
-      backgroundColor
+      backgroundColor,
+      colors
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -148,12 +161,30 @@ class ProductThumbnail extends React.Component<Props, {}> {
       lastPrice = currencyPrices.length - 1
     }
 
-    const price =
-      currencyPrices &&
-      currencyPrices.length &&
-      `$${currencyPrices[0].price} - $${currencyPrices[lastPrice].price}`
+    let price = ''
+    if (currencyPrices && currencyPrices.length) {
+      price = `$${currencyPrices[0].price}`
+
+      if (customizable) {
+        price += ` - $${currencyPrices[lastPrice].price}`
+      }
+    }
 
     let urlProduct = this.getUrlProduct()
+    const colorList =
+      colors &&
+      colors.map(({ image: imageColor }: ProductColors, index) => (
+        <ImgIcon src={imageColor} key={index} />
+      ))
+
+    const colorOptions = customizable ? (
+      <Label>
+        <ImgIcon src={colorWheelIcon} />
+        {customizableLabel}
+      </Label>
+    ) : (
+      <RetailColors>{colorList}</RetailColors>
+    )
     return (
       <Container>
         <ImageSlide
@@ -187,13 +218,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
           <Footer>
             <Type>{type}</Type>
             <Description>{description}</Description>
-            <InfoContainer customizable={!!customizable}>
-              {customizable && (
-                <Label>
-                  <ImgIcon src={colorWheelIcon} />
-                  {customizableLabel}
-                </Label>
-              )}
+            <InfoContainer>
+              {colorOptions}
               <Price>{price}</Price>
             </InfoContainer>
           </Footer>

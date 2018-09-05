@@ -33,7 +33,7 @@ import {
 } from './styledComponents'
 import ProfileForm from '../ProfileForm'
 import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
-import MeasurementsForm from '../MeasurementsForm'
+// import MeasurementsForm from '../MeasurementsForm'
 import {
   ClickParam,
   QueryProps,
@@ -137,8 +137,8 @@ class ProfileSettings extends React.Component<Props, {}> {
         profileData: {
           userProfile,
           languageSettings,
-          measurementSettings,
-          smsSettings,
+          // measurementSettings,
+          // smsSettings,
           emailSettings
         }
       },
@@ -152,21 +152,21 @@ class ProfileSettings extends React.Component<Props, {}> {
       language,
       currency,
       loadingRegion,
-      msrmntSystemSelected,
-      msrmntGenderSelected,
-      weight,
-      heightFirst,
-      heightSecond,
-      chestSize,
-      waistSize,
-      hipsSize,
-      inseamSize,
-      shouldersSize,
-      neckSize,
-      loadingMeasurements,
-      smsConfirmationChecked,
-      smsUpdatesChecked,
-      loadingSms,
+      // msrmntSystemSelected,
+      // msrmntGenderSelected,
+      // weight,
+      // heightFirst,
+      // heightSecond,
+      // chestSize,
+      // waistSize,
+      // hipsSize,
+      // inseamSize,
+      // shouldersSize,
+      // neckSize,
+      // loadingMeasurements,
+      // smsConfirmationChecked,
+      // smsUpdatesChecked,
+      // loadingSms,
       emailNewsletterChecked,
       loadingEmail,
       currentPassword,
@@ -179,11 +179,11 @@ class ProfileSettings extends React.Component<Props, {}> {
 
     const regionsOptions: Region[] = regions || []
 
-    const smsButtonDisabled =
-      (smsUpdatesChecked === null ||
-        smsSettings.desingUpdates === smsUpdatesChecked) &&
-      (smsConfirmationChecked === null ||
-        smsSettings.orderConfirmation === smsConfirmationChecked)
+    // const smsButtonDisabled =
+    //   (smsUpdatesChecked === null ||
+    //     smsSettings.desingUpdates === smsUpdatesChecked) &&
+    //   (smsConfirmationChecked === null ||
+    //     smsSettings.orderConfirmation === smsConfirmationChecked)
     const emailButtonDisabled =
       emailNewsletterChecked === null ||
       emailSettings.newsletter === emailNewsletterChecked
@@ -228,7 +228,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             />
           </Row>
         </SectionContainer>
-        {/* MEASUREMENTS */}
+        {/* MEASUREMENTS
         <Title>{formatMessage(messages.measurementsTitle)}</Title>
         <SectionContainer>
           <MeasurementsForm
@@ -254,9 +254,9 @@ class ProfileSettings extends React.Component<Props, {}> {
               isMobile
             }}
           />
-        </SectionContainer>
+        </SectionContainer> */}
         {/*SMS Preferences*/}
-        <SectionContainer>
+        {/* <SectionContainer>
           <Title>{formatMessage(messages.smsTitle)}</Title>
           <Row marginBottom={'0'}>
             <StyledCheckbox
@@ -294,7 +294,7 @@ class ProfileSettings extends React.Component<Props, {}> {
               </StyledButton>
             </Column>
           </Row>
-        </SectionContainer>
+        </SectionContainer> */}
         {/*Email Preferences*/}
         <SectionContainer>
           <Title>{formatMessage(messages.emailTitle)}</Title>

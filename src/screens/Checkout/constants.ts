@@ -13,6 +13,7 @@ export const SELECT_DROPDOWN = `${namespace}/SELECT_DROPDOWN`
 export const SMS_CHECK = `${namespace}/SMS_CHECK`
 export const EMAIL_CHECK = `${namespace}/EMAIL_CHECK`
 export const SET_SELECTED_ADDRESS = `${namespace}/SET_SELECTED_ADDRESS`
+export const SET_SELECTED_ADDRESSES = `${namespace}/SET_SELECTED_ADDRESSES`
 export const SHOW_ADDRESS_FORM = `${namespace}/SHOW_ADDRESS_FORM`
 // Billing
 export const VALID_BILLING_FORM = `${namespace}/VALID_BILLING_FORM`
@@ -32,14 +33,32 @@ export const SAVE_COUNTRY = `${namespace}/SAVE_COUNTRY`
 
 export const OPEN_ADDRESSES_MODAL = `${namespace}/OPEN_ADDRESSES_MODAL`
 export const SET_SKIP_VALUE = `${namespace}/SET_SKIP_VALUE`
+export const SET_COUPON_CODE = `${namespace}/SET_COUPON_CODE`
+export const DELETE_COUPON_CODE = `${namespace}/DELETE_COUPON_CODE`
+export const OPEN_CURRENCY_WARNING = `${namespace}/OPEN_CURRENCY_WARNING`
 
 export enum CheckoutTabs {
   ShippingTab = 0,
   PaymentTab = 1,
-  RevieTab = 2
+  ReviewTab = 2
 }
 
 export enum PaymentOptions {
   PAYPAL = 'paypal',
   CREDITCARD = 'credit card'
 }
+
+// PROMO TYPES
+export const PERCENTAGE_PROMO = '%'
+export const FLAT_PROMO = 'flat'
+
+// COUNTRY CODES
+export const COUNTRY_CODE_US = 'us'
+export const COUNTRY_CODE_CANADA = 'ca'
+// EUROPE
+export const COUNTRY_CODE_AT = 'at'
+export const COUNTRY_CODE_DE = 'de'
+export const COUNTRY_CODE_CH = 'ch'
+export const COUNTRY_CODE_ES = 'es'
+export const COUNTRY_CODE_IT = 'it'
+export const COUNTRY_CODE_FR = 'fr'

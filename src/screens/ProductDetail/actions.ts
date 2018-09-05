@@ -9,7 +9,8 @@ import {
   SET_SELECTED_FIT,
   SET_SELECTED_SIZE,
   LOADING_3D_MODEL,
-  ADD_ITEM_TO_CART
+  ADD_ITEM_TO_CART,
+  RESET_DATA
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -51,4 +52,8 @@ export const setLoadingModel = (loading: boolean): AnyAction => ({
 export const addItemToCartAction = (item: any): AnyAction => ({
   type: ADD_ITEM_TO_CART,
   item
+})
+
+export const resetReducerAction = (): AnyAction => ({
+  type: RESET_DATA
 })

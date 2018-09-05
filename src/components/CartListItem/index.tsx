@@ -44,7 +44,7 @@ interface CartItems {
   designName?: string
   designImage?: string
   teamStoreId?: string
-  shortId?: string
+  designCode?: string
 }
 
 interface Props {
@@ -175,8 +175,14 @@ class CartListItem extends React.Component<Props, {}> {
         designId,
         product: { id, yotpoId }
       },
-      history
+      history,
+      onlyRead
     } = this.props
+
+    if (onlyRead) {
+      return
+    }
+
     let productUrl = `/product?id=${id}&yotpoId=${yotpoId}`
 
     if (designId) {
@@ -210,7 +216,7 @@ class CartListItem extends React.Component<Props, {}> {
       removeItem = () => {}
     } = this.props
 
-    const { designId, designName, designImage } = cartItem
+    const { designId, designName, designImage, designCode } = cartItem
 
     const quantities = cartItem.itemDetails.map((itemDetail, ind) => {
       return itemDetail.quantity
@@ -219,6 +225,7 @@ class CartListItem extends React.Component<Props, {}> {
     const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
     const productPriceRanges = get(cartItem, 'product.priceRange', [])
+    const mpnCode = get(cartItem, 'product.mpn', '')
 
     // get prices from currency
     const currencyPrices = filter(productPriceRanges, {
@@ -279,27 +286,28 @@ class CartListItem extends React.Component<Props, {}> {
           <ItemDetailsHeaderNameDetail>
             {description}
           </ItemDetailsHeaderNameDetail>
+          <div>{designCode || mpnCode}</div>
         </NameContainer>
         <PriceContainer>
-          <ItemDetailsHeaderPrice>{`${symbol} ${total ||
-            0}`}</ItemDetailsHeaderPrice>
+          <ItemDetailsHeaderPrice>
+            {`${symbol} ${(total || 0).toFixed(2)}`}
+          </ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${unitaryPrice ||
-              0}`}
+            {`${formatMessage(messages.unitPrice)} ${symbol} ${(unitaryPrice || 0).toFixed(2)}`}
           </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail>
+          {!onlyRead && designId && nextPrice.items > 0 ? (
+            <ItemDetailsHeaderPriceDetail highlighted={true}>
               <FormattedMessage
                 {...messages.addMoreFor}
                 values={{
-                  price: `${symbol} ${nextPrice.price}`,
+                  price: `${symbol} ${nextPrice.price.toFixed(2)}`,
                   products: nextPrice.items
                 }}
               />
             </ItemDetailsHeaderPriceDetail>
           ) : (
-            <HeaderPriceDetailEmpty />
-          )}
+              <HeaderPriceDetailEmpty />
+            )}
         </PriceContainer>
       </ItemDetailsHeader>
     )
@@ -324,7 +332,11 @@ class CartListItem extends React.Component<Props, {}> {
           if (matches) {
             return (
               <Container>
-                <Image src={image} onClick={this.gotToProductPage} />
+                <Image
+                  {...{ onlyRead }}
+                  src={image}
+                  onClick={this.gotToProductPage}
+                />
                 <ItemDetails>
                   {itemDetailsHeader}
                   {table}
@@ -337,7 +349,11 @@ class CartListItem extends React.Component<Props, {}> {
             return (
               <Container>
                 <ItemDetails>
-                  <Image src={image} onClick={this.gotToProductPage} />
+                  <Image
+                    {...{ onlyRead }}
+                    src={image}
+                    onClick={this.gotToProductPage}
+                  />
                   <ItemDetails>{itemDetailsHeader}</ItemDetails>
                 </ItemDetails>
                 <div>

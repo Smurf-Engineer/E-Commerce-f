@@ -41,11 +41,15 @@ declare module 'react-star-ratings' {
   export default StarRatings
 }
 
-declare module 'react-facebook-login' {
+declare module 'react-facebook-login/dist/facebook-login-render-props' {
+  type FacebookProps = {
+    onClick: () => {}
+  }
   interface Props {
     appId: string
     autoLoad: boolean
     fields: string
+    render: (props: FacebookProps) => React.ReactNode
     onClick?: (param: any | null) => void
     callback: (param: any) => void
     cssClass?: string
@@ -126,7 +130,7 @@ declare module 'react-paypal-express-checkout-authorize' {
   interface Props {
     currency: string
     env: string
-    total: number
+    total: number | string
     shipping: number
     client: object
     style?: object

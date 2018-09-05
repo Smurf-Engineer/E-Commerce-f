@@ -1,6 +1,7 @@
 @import '~antd/dist/antd.less';
 @import './base.less';
 @import './range.less';
+@import url('https://fonts.googleapis.com/css?family=Advent+Pro|Alfa+Slab+One|Archivo+Black|Bangers|Baumans|Black+Ops+One|Ceviche+One|Clicker+Script|Creepster|Dancing+Script|Fontdiner+Swanky|Goudy+Bookletter+1911|Great+Vibes|Luckiest+Guy|Maven+Pro|Metal+Mania|Oswald|Pacifico|Permanent+Marker|Pinyon+Script|Racing+Sans+One|Rancho|Righteous|Rock+Salt|Russo+One|Sanchez|Satisfy|Slackey|Stardos+Stencil|UnifrakturMaguntia|Yellowtail|Yesteryear');
 
 @primary-color: #e61737;
 @layout-footer-background: #231f20;
