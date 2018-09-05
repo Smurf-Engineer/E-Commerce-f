@@ -2,14 +2,15 @@
  * Styled Components - Created by david on 26/02/18.
  */
 import styled from 'styled-components'
+import { WHITE, RED, GRAY } from '../../../theme/colors'
 
 interface ContainerProps {
   height: number
 }
 
 export const Container = styled.div`
-  overflow: auto;
   height: ${({ height }: ContainerProps) => height}vh;
+  overflow: auto;
   padding: 0px 32px 32px 32px;
 
   @media (min-height: 800px) {
@@ -18,9 +19,9 @@ export const Container = styled.div`
 `
 
 export const Dot = styled.div`
+  background-color: ${WHITE};
   height: 6px;
   width: 6px;
-  background-color: #ffffff;
 `
 
 interface ColorProps {
@@ -29,27 +30,30 @@ interface ColorProps {
 }
 
 export const Color = styled.div`
-  cursor: pointer;
-  height: 32.28px;
-  width: 32.28px;
-  border: 1px solid
-    ${({ selected }: ColorProps) => (selected ? '#E61737' : '#bebebe')};
   background-color: ${({ color }: ColorProps) => color};
+  border: 1px solid ${({ selected }: ColorProps) => (selected ? RED : GRAY)};
+  cursor: pointer;
+  width: 32.28px;
+  height: 32.28px;
 `
 
 export const Row = styled.ul`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 100%;
   padding-left: 0;
+  width: 100%;
 `
 
 export const Col = styled.li`
-  list-style: none;
   display: inline-block;
-  width: calc(100% / 7);
   height: 32px;
-  text-align: center;
+  list-style: none;
   margin-bottom: 6px;
+  text-align: center;
+  width: calc(100% / 7);
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    width: 25%;
+  }
 `
