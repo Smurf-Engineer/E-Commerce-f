@@ -1145,12 +1145,19 @@ class Render3D extends PureComponent {
             <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
           </SizeBox>
         )}
-        <Render
-          id="render-3d"
-          innerRef={container => (this.container = container)}
-        >
-          {loadingModel && <Progress type="circle" percent={progress + 1} />}
-        </Render>
+        <div>
+          <Render
+            id="render-3d"
+            innerRef={container => (this.container = container)}
+          >
+            {loadingModel && <Progress type="circle" percent={progress + 1} />}
+          </Render>
+          <ButtonWrapper>
+            <Button type="primary" onClick={this.takeDesignPicture}>
+              {formatMessage(messages.saveButton)}
+            </Button>
+          </ButtonWrapper>
+        </div>
         {showDragmessage && (
           <DragText>
             <FormattedMessage {...messages.drag} />
@@ -1165,11 +1172,6 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         */}
-        <ButtonWrapper>
-          <Button type="primary" onClick={this.takeDesignPicture}>
-            {formatMessage(messages.saveButton)}
-          </Button>
-        </ButtonWrapper>
         {/* TODO: uncomment controllers when bugs from undo/redo and reset be fixed */}
         {/* <OptionsController
           {...{ undoEnabled, redoEnabled, formatMessage }}
