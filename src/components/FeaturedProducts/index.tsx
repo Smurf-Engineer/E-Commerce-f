@@ -29,7 +29,7 @@ interface Props {
   history: any
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
-  openQuickView: (id: number) => void
+  openQuickView: (id: number, yotpoId: string, gender: number) => void
 }
 
 const arrowLeft = <Arrow src={leftArrow} />
@@ -147,11 +147,6 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
   gotoDesignCenter = (id: string) => {
     const { history } = this.props
     history.push(`/design-center?id=${id}`)
-  }
-
-  handlePressQuickView = (id: number) => {
-    const { openQuickView } = this.props
-    openQuickView(id)
   }
 }
 

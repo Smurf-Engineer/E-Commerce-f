@@ -36,7 +36,11 @@ interface Props extends RouteComponentProps<any> {
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
-  openQuickViewAction: (open: number, yotpoId: string | null) => void
+  openQuickViewAction: (
+    open: number,
+    yotpoId: string | null,
+    gender: number
+  ) => void
   openLoginAction: (open: boolean) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
@@ -48,6 +52,7 @@ interface Props extends RouteComponentProps<any> {
   currentLanguage: number
   currentCurrency: string
   yotpoId: string
+  productGender: number
   hideTopHeader: boolean
   hideBottomHeader: boolean
   hideFooter: boolean
@@ -161,6 +166,7 @@ class MainLayout extends React.Component<Props, {}> {
       searchParam,
       productId,
       yotpoId,
+      productGender,
       openLogin,
       openLoginAction,
       setRegionAction,
@@ -263,6 +269,7 @@ class MainLayout extends React.Component<Props, {}> {
           currentCurrency={currentCurrency || config.defaultCurrency}
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
+          gender={productGender}
           {...{ productId, history, yotpoId, formatMessage }}
         />
         <LogoutModal
@@ -291,13 +298,13 @@ class MainLayout extends React.Component<Props, {}> {
     showSearchResultsAction(true)
   }
 
-  openQuickView = (id: number, yotpoId: string) => {
+  openQuickView = (id: number, yotpoId: string, gender: number) => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(id, yotpoId)
+    openQuickViewAction(id, yotpoId, gender)
   }
   onCloseModal = () => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(0, '')
+    openQuickViewAction(0, '', 0)
   }
 }
 
