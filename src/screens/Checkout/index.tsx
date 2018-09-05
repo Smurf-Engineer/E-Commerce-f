@@ -276,17 +276,13 @@ class Checkout extends React.Component<Props, {}> {
     const { state: stateLocation } = location
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
-    let cartString = '[]'
-    if (typeof window !== 'undefined') {
-      cartString = localStorage.getItem('cart') || '[]'
-    }
-
-    const cart = JSON.parse(cartString)
-    if (!cart || !cart.length || !stateLocation || !stateLocation.cart) {
+    if (!stateLocation || !stateLocation.cart || !stateLocation.cart) {
       return <Redirect to="/us?lang=en&currency=usd" />
     }
 
-    const shoppingCart = stateLocation.cart as CartItems[]
+    const { cart } = stateLocation
+    const shoppingCart = cloneDeep(cart) as CartItems[]
+
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
       currentCurrency || config.defaultCurrency
