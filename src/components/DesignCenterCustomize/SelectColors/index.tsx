@@ -8,17 +8,17 @@ import {
   BaseColors,
   BaseTitle,
   ColorLabel,
-  ColorButtons,
   Arrow,
   Divider
 } from './styledComponents'
-import ColorButton from '../../ColorButton'
 import AccessoryColor from '../AccessoryColor'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
+import ColorButtons from '../ColorButtons'
 
 interface Props {
   colors: string[]
+  names: string[]
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
@@ -27,15 +27,15 @@ interface Props {
   hasZipper: boolean
   hasBinding: boolean
   hasBibBrace: boolean
+  colorBlockHovered: number
+  onSelectColorBlock: (index: number) => void
+  onHoverColorBlock: (index: number) => void
   goToBaseColors: () => void
   goToStitching: () => void
   showContent: boolean
   formatMessage: (messageDescriptor: any) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
-
-const { area1, area2, area3, area4, area5 } = messages
-const colorsBlocks = [area1, area2, area3, area4, area5]
 
 class SelectColors extends React.PureComponent<Props, {}> {
   render() {
@@ -53,20 +53,15 @@ class SelectColors extends React.PureComponent<Props, {}> {
       hasStitching,
       hasZipper,
       hasBinding,
-      hasBibBrace
+      hasBibBrace,
+      colorBlockHovered,
+      onSelectColorBlock,
+      onHoverColorBlock,
+      names
     } = this.props
     if (!showContent) {
       return null
     }
-    const colorButtons = colorsBlocks.map((label, i) => (
-      <ColorButton
-        key={i}
-        index={i}
-        label={formatMessage(label)}
-        onSelectColorBlock={() => {}}
-        currentColor={colors[i]}
-      />
-    ))
     return (
       <Container>
         <BaseColors onClick={goToBaseColors}>
@@ -74,7 +69,16 @@ class SelectColors extends React.PureComponent<Props, {}> {
             <ColorLabel>{formatMessage(messages.baseColors)}</ColorLabel>
             <Arrow type="right" />
           </BaseTitle>
-          <ColorButtons>{colorButtons}</ColorButtons>
+          <ColorButtons
+            {...{
+              names,
+              colors,
+              onSelectColorBlock,
+              colorBlockHovered,
+              onHoverColorBlock,
+              formatMessage
+            }}
+          />
         </BaseColors>
         <Divider />
         {hasStitching && (
