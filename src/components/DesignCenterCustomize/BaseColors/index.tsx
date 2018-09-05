@@ -11,8 +11,9 @@ interface Props {
   colorBlock: number
   colorBlockHovered: number
   colors: string[]
+  names: string[]
   showContent: boolean
-  onSelectColor: (color: string) => void
+  onSelectColor: (color: string, name: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -28,7 +29,8 @@ class ColorTab extends React.PureComponent<Props, {}> {
       colorBlockHovered,
       colors,
       showContent,
-      formatMessage
+      formatMessage,
+      names
     } = this.props
     if (!showContent) {
       return null
@@ -37,6 +39,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
       <Container>
         <ColorButtons
           {...{
+            names,
             colors,
             colorBlock,
             onSelectColorBlock,

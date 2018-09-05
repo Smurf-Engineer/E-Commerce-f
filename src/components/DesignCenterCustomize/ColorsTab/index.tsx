@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import findIndex from 'lodash/findIndex'
 import {
   Container,
   Arrow,
@@ -15,6 +16,7 @@ import {
 import SwipeableViews from 'react-swipeable-views'
 import BaseColors from '../BaseColors'
 import SelectColors from '../SelectColors'
+import baseColors from '../ColorList/colors'
 import {
   Palette,
   MyPaletteDesignCenterModals,
@@ -27,6 +29,7 @@ import ColorList from '../ColorList'
 
 interface State {
   index: number
+  names: string[]
 }
 
 interface Props {
@@ -61,7 +64,15 @@ const STITCHING_COLORS_INDEX = 3
 
 class ColorsTab extends React.PureComponent<Props, State> {
   state = {
-    index: SELECT_COLORS_INDEX
+    index: SELECT_COLORS_INDEX,
+    names: []
+  }
+
+  componentWillReceiveProps({ colors }: Props) {
+    const { names } = this.state
+    if (!names.length && !!colors.length) {
+      this.prepareInitialColorNames(colors)
+    }
   }
 
   handleOnBack = () => this.setState(({ index }) => ({ index: index - 1 }))
@@ -82,7 +93,6 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onHoverColorBlock,
       colorBlock,
       colorBlockHovered,
-      onSelectColor,
       onSelectStitchingColor,
       onChangePaletteName,
       paletteName,
@@ -99,7 +109,11 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onAccessoryColorSelected,
       product
     } = this.props
-    const { index } = this.state
+    const { index, names } = this.state
+
+    console.log('----------colors-----------')
+    console.log(names)
+    console.log('---------------------------')
 
     const hasStitching = !!product && !!product.flatlock
     const hasZipper = !!product && !!product.zipper
@@ -146,6 +160,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             goToStitching={this.goToStitching}
             {...{
               colors,
+              names,
               stitchingColor,
               bindingColor,
               zipperColor,
@@ -163,13 +178,14 @@ class ColorsTab extends React.PureComponent<Props, State> {
           />
           <BaseColors
             showContent={baseColorsTab}
+            onSelectColor={this.handleOnSelectColor}
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
               colorBlock,
               colorBlockHovered,
-              onSelectColor,
               colors,
+              names,
               styleColors,
               formatMessage
             }}
@@ -201,6 +217,24 @@ class ColorsTab extends React.PureComponent<Props, State> {
         </SwipeableViews>
       </Container>
     )
+  }
+
+  prepareInitialColorNames = (colors: string[]) => {
+    const names = colors.map(color => {
+      const index = findIndex(baseColors, o => o.value === color)
+      return !!baseColors[index] ? baseColors[index].name : ''
+    })
+    this.setState({ names })
+  }
+
+  handleOnSelectColor = (color: string, name: string) => {
+    this.setState(({ names }: State) => {
+      const { onSelectColor, colorBlock } = this.props
+      const updatedNames = [...names]
+      onSelectColor(color)
+      updatedNames[colorBlock] = name
+      return { names: updatedNames }
+    })
   }
 }
 

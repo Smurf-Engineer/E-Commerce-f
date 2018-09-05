@@ -2,9 +2,7 @@
  * ColorButtons Component - Created by miguelcanobbio on 23/08/18.
  */
 import * as React from 'react'
-import findIndex from 'lodash/findIndex'
 import messages from './messages'
-import baseColors from '../ColorList/colors'
 import { Container } from './styledComponents'
 import ColorButton from '../../ColorButton'
 
@@ -12,28 +10,16 @@ interface Props {
   colorBlock?: number
   colorBlockHovered: number
   colors: string[]
+  names: string[]
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
-interface State {
-  names: string[]
-}
-
 const { area1, area2, area3, area4, area5 } = messages
 const colorsBlocks = [area1, area2, area3, area4, area5]
 
-class ColorButtons extends React.Component<Props, State> {
-  state = {
-    names: []
-  }
-  componentWillReceiveProps({ colors }: Props) {
-    const { names } = this.state
-    if (!names.length && !!colors.length) {
-      this.prepareInitialColorNames(colors)
-    }
-  }
+class ColorButtons extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
@@ -41,10 +27,10 @@ class ColorButtons extends React.Component<Props, State> {
       onSelectColorBlock,
       onHoverColorBlock,
       colors,
-      colorBlock = -1
+      colorBlock = -1,
+      names
     } = this.props
     const colorButtons = colorsBlocks.map((label, index) => {
-      const { names } = this.state
       const name = names[index]
       return (
         <ColorButton
@@ -63,14 +49,6 @@ class ColorButtons extends React.Component<Props, State> {
       )
     })
     return <Container>{colorButtons}</Container>
-  }
-
-  prepareInitialColorNames = (colors: string[]) => {
-    const names = colors.map(color => {
-      const index = findIndex(baseColors, o => o.value === color)
-      return !!baseColors[index] ? baseColors[index].name : ''
-    })
-    this.setState({ names })
   }
 }
 

@@ -2,6 +2,7 @@
  * SelectColors Component - Created by miguelcanobbio on 01/08/18.
  */
 import * as React from 'react'
+// import findIndex from 'lodash/findIndex'
 import messages from './messages'
 import {
   Container,
@@ -15,9 +16,11 @@ import AccessoryColor from '../AccessoryColor'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
+// import baseColors from '../ColorList/colors'
 
 interface Props {
   colors: string[]
+  names: string[]
   stitchingColor?: StitchingColor
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
@@ -37,6 +40,15 @@ interface Props {
 }
 
 class SelectColors extends React.PureComponent<Props, {}> {
+  // state = {
+  //   names: []
+  // }
+  // componentWillReceiveProps({ colors }: Props) {
+  //   const { names } = this.state
+  //   if (!names.length && !!colors.length) {
+  //     this.prepareInitialColorNames(colors)
+  //   }
+  // }
   render() {
     const {
       goToBaseColors,
@@ -55,7 +67,8 @@ class SelectColors extends React.PureComponent<Props, {}> {
       hasBibBrace,
       colorBlockHovered,
       onSelectColorBlock,
-      onHoverColorBlock
+      onHoverColorBlock,
+      names
     } = this.props
     if (!showContent) {
       return null
@@ -69,6 +82,7 @@ class SelectColors extends React.PureComponent<Props, {}> {
           </BaseTitle>
           <ColorButtons
             {...{
+              names,
               colors,
               onSelectColorBlock,
               colorBlockHovered,
@@ -111,6 +125,14 @@ class SelectColors extends React.PureComponent<Props, {}> {
       </Container>
     )
   }
+
+  // prepareInitialColorNames = (colors: string[]) => {
+  //   const names = colors.map(color => {
+  //     const index = findIndex(baseColors, o => o.value === color)
+  //     return !!baseColors[index] ? baseColors[index].name : ''
+  //   })
+  //   this.setState({ names })
+  // }
 }
 
 export default SelectColors
