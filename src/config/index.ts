@@ -35,9 +35,9 @@ const config: ConfigType = {
   pkStripeEU: 'pk_test_GkbzZt7CzM9M1Wg41oiV8MK9',
   paypalClientIdTest:
     'AWuWtjrHnZd_nLLXI-x40UtoX7cNxqYNjh9CrfDeNO6y4Ik2xADqapxfzXzHCPeIgrFSP-45-2gYkiO-',
-  paypalClientIdUS: 'A3ZJ5tCmobw4dtbuCuY0OnkDhEwSAb-b59G0zW-AhbDZQT1eyMF5KzCC',
-  paypalClientIdCA: 'A4vBPfrTTSu-rKyirOiFEu0XoiMkAGjAL8o7xI7dvLT24b22pN5TXo.6',
-  paypalClientIdEU: 'AFcWxV21C7fd0v3bYYYRCpSSRl31AufNYvvkkCqoGhbsoOGk74iTJMPT',
+  paypalClientIdUS: 'Aa9BWTWoWoIL1tI6hkGrUeJmKUoof8CGQjaecnqo2n_Z1YRqdnC9TrvtYkf6VK_t4xdXij5E6HtT1Lag',
+  paypalClientIdCA: 'AdoDpaHlv6vrTUfWZxMxEIB_y5PJw104AkKbzQIyIdTLRe7L3HLXcFH3vsjeQhLv_SAySkWnPz2W2SH4',
+  paypalClientIdEU: 'AR6qFXX2_qyAwPBtD3FPFTW-o-6PT2cOV3V1Ra9jz604UkFOLayWEqusqR0HdnVtxXp0tnN9ruQCtKMQ',
   paypalEnv: 'sandbox',
   googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
   intercomKey: 'nmbw72i7',
