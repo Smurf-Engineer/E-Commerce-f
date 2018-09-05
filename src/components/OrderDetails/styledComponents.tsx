@@ -4,6 +4,13 @@
 import styled from 'styled-components'
 import AntdButton from 'antd/lib/button'
 
+export const LoadingContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 35em;
+`
+
 export const Container = styled.div``
 
 export const ViewContainer = styled.div`
@@ -144,7 +151,7 @@ export const OrderSummaryContainer = styled.div`
   }
 `
 export const Items = styled.div`
-  margin-top: 100px;
+  margin-top: 48px;
   padding-right: 34px;
 
   @media (max-width: 658px) and (min-width: 320px) {

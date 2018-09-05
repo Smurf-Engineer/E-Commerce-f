@@ -9,6 +9,7 @@ import messages from './messages'
 import { OrderDetailsInfo, QueryProps } from '../../types/common'
 import { getOrderQuery } from './data'
 import Icon from 'antd/lib/icon'
+import Spin from 'antd/lib/spin'
 import {
   Container,
   ViewContainer,
@@ -33,7 +34,8 @@ import {
   SubTitle,
   StyledImage,
   Annotation,
-  Date
+  Date,
+  LoadingContainer
 } from './styledComponents'
 import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
@@ -70,6 +72,14 @@ export class OrderDetails extends React.Component<Props, {}> {
       onReturn,
       currentCurrency
     } = this.props
+
+    if (data && data.loading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
+    }
 
     const handleOnReturn = () => onReturn('')
 
