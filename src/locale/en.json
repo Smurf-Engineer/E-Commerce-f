@@ -270,6 +270,7 @@
   "components.MyAddresses.modalTitle": "Shipping Address",
   "components.MyAddresses.defaultBillingAddress": "Make default billing address",
   "components.MyAddresses.saveAddress": "Save",
+  "components.MyAddresses.shippingTitle": "Shipping Address",
   "components.MyAddressesList.titleDeleteModal": "Are you sure?",
   "components.MyAddressesList.deleteAddress": "Delete",
   "components.MyAddressesList.empty": "There are no addresses on your account",
