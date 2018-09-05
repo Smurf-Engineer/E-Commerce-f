@@ -79,12 +79,12 @@ export class Home extends React.Component<Props, {}> {
     }
   }
 
-  handleOnQuickView = (id: number, yotpoId: string) => {
+  handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
-    dispatch(openQuickViewAction(id, yotpoId))
+    dispatch(openQuickViewAction(id, yotpoId, gender))
   }
 
-  onCloseModal = () => openQuickViewAction(0, '')
+  onCloseModal = () => openQuickViewAction(0, '', 0)
 
   openResults = () => {
     const { dispatch } = this.props

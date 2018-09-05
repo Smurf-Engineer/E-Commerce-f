@@ -13,13 +13,12 @@ import SwipeableViews from 'react-swipeable-views'
 import unset from 'lodash/unset'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
-import PaypalExpressBtn from 'react-paypal-express-checkout-authorize'
 import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
 import { CheckoutTabs } from './constants'
-import MediaQuery from 'react-responsive'
+
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
 import {
@@ -30,8 +29,6 @@ import {
   SummaryContainer,
   ContinueButton,
   StepWrapper,
-  PlaceOrderButton,
-  paypalButtonStyle,
   StepIcon,
   CheckIcon,
   CurrencyWarningText
@@ -40,8 +37,6 @@ import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
 import Payment from '../../components/Payment'
 import Review from '../../components/Review'
-import OrderSummary from '../../components/OrderSummary'
-import { getTaxQuery } from '../../components/OrderSummary/data'
 import {
   AddressType,
   CartItemDetail,
@@ -56,6 +51,9 @@ import config from '../../config/index'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
 import Modal from 'antd/lib/modal'
 import ModalFooter from '../../components/ModalFooter'
+import CheckoutSummary from './CheckoutSummary'
+import { getTaxQuery } from './CheckoutSummary/data'
+import { DEFAULT_ROUTE } from '../../constants'
 
 type ProductCart = {
   id: number
@@ -142,6 +140,10 @@ interface Props extends RouteComponentProps<any> {
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
   setSelectedAddressAction: (address: AddressType, indexAddress: number) => void
+  setSelectedAddressesAction: (
+    address: AddressType,
+    indexAddress: number
+  ) => void
   sameBillingAndAddressCheckedAction: () => void
   sameBillingAndAddressUncheckedAction: () => void
   saveToStorage: (cart: CartItems[]) => void
@@ -273,14 +275,15 @@ class Checkout extends React.Component<Props, {}> {
       }
 
     const { state: stateLocation } = location
-    const { ShippingTab, RevieTab, PaymentTab } = CheckoutTabs
+    const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-    if (!cart || !cart.length || !stateLocation || !stateLocation.cart) {
-      return <Redirect to="/us?lang=en&currency=usd" />
+    if (!stateLocation || !stateLocation.cart || !stateLocation.cart.length) {
+      return <Redirect to={DEFAULT_ROUTE} />
     }
 
-    const shoppingCart = stateLocation.cart as CartItems[]
+    const { cart } = stateLocation
+    const shoppingCart = cloneDeep(cart) as CartItems[]
+
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
       currentCurrency || config.defaultCurrency
@@ -304,41 +307,11 @@ class Checkout extends React.Component<Props, {}> {
       />
     ))
 
-    const paypalClient = {
-      sandbox: config.paypalClientId,
-      production: ''
-    }
-
     const {
       state: { proDesign }
     } = location
 
-    const orderButton =
-      paymentMethod === 'paypal' ? (
-        <PaypalExpressBtn
-          env={config.paypalEnv}
-          client={paypalClient}
-          currency={
-            currentCurrency
-              ? currentCurrency.toUpperCase()
-              : config.defaultCurrency.toUpperCase()
-          }
-          shipping={1}
-          onSuccess={this.onPaypalSuccess}
-          onCancel={this.onPaypalCancel}
-          onError={this.onPaypalError}
-          style={paypalButtonStyle}
-          paymentOptions={{ intent: 'authorize' }}
-          {...{ total }}
-        />
-      ) : (
-        <PlaceOrderButton
-          onClick={this.handleOnPlaceOrder}
-          loading={loadingPlaceOrder}
-        >
-          {intl.formatMessage(messages.placeOrder)}
-        </PlaceOrderButton>
-      )
+    const proDesignReview = proDesign ? DESIGNREVIEWFEE : 0
 
     const continueButton = (
       <ContinueButton onClick={this.nextStep}>
@@ -346,7 +319,8 @@ class Checkout extends React.Component<Props, {}> {
       </ContinueButton>
     )
 
-    const showPaypalButton = currentStep === RevieTab ? orderButton : null
+    const showOrderButton = currentStep === ReviewTab
+
     return (
       <Layout {...{ history, intl }}>
         <Container>
@@ -421,37 +395,37 @@ class Checkout extends React.Component<Props, {}> {
                   }}
                   currency={currentCurrency || config.defaultCurrency}
                   cart={shoppingCart}
-                  showContent={currentStep === RevieTab}
+                  showContent={currentStep === ReviewTab}
                   formatMessage={intl.formatMessage}
                   goToStep={this.handleOnGoToStep}
                 />
               </SwipeableViews>
             </StepsContainer>
             <SummaryContainer>
-              <MediaQuery maxWidth={480}>{showPaypalButton}</MediaQuery>
-              <OrderSummary
+              <CheckoutSummary
                 subtotal={total}
                 country={billingCountry}
-                shipAddressCountry={shippingAddress.country}
                 shipAddress={taxAddress}
                 weight={weightSum}
+                shipAddressCountry={shippingAddress.country}
                 formatMessage={intl.formatMessage}
-                total={total}
-                proDesignReview={proDesign ? DESIGNREVIEWFEE : 0}
                 currencySymbol={symbol}
-                showCouponInput={true}
-                totalWithoutDiscount={
-                  !proDesign
-                    ? totalWithoutDiscount
-                    : totalWithoutDiscount + DESIGNREVIEWFEE
-                }
+                totalWithoutDiscount={totalWithoutDiscount + proDesignReview}
+                onPaypalSuccess={this.onPaypalSuccess}
+                onPaypalCancel={this.onPaypalCancel}
+                onPaypalError={this.onPaypalError}
+                onPlaceOrder={this.handleOnPlaceOrder}
                 {...{
+                  showOrderButton,
                   couponCode,
                   setCouponCodeAction,
-                  deleteCouponCodeAction
+                  deleteCouponCodeAction,
+                  proDesignReview,
+                  paymentMethod,
+                  currentCurrency,
+                  loadingPlaceOrder
                 }}
               />
-              <MediaQuery minWidth={481}>{showPaypalButton}</MediaQuery>
             </SummaryContainer>
           </Content>
         </Container>
@@ -565,15 +539,23 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   handleOnSelectAddress = (address: AddressType, index: number) => {
-    const { setSelectedAddressAction } = this.props
+    const {
+      setSelectedAddressAction,
+      sameBillingAndShipping,
+      setSelectedAddressesAction
+    } = this.props
+    if (sameBillingAndShipping) {
+      setSelectedAddressesAction(address, index)
+      return
+    }
     setSelectedAddressAction(address, index)
   }
 
   onPaypalSuccess = (payment: any) => {
     // paypal payment succeded
     const obj = {
-      paymentId: payment.paymentID,
-      payerId: payment.payerID
+      payment: payment.paymentID,
+      payer: payment.payerID
     }
     this.placeOrder(undefined, obj)
   }
@@ -693,7 +675,7 @@ class Checkout extends React.Component<Props, {}> {
       shoppingCart,
       currentCurrency || config.defaultCurrency
     )
-    const { weightSum } = shoppingCartData
+    const { weightSum = 0 } = shoppingCartData
 
     const taxAddress: TaxAddressObj = {
       country: shippingAddress.country,
@@ -759,7 +741,7 @@ class Checkout extends React.Component<Props, {}> {
       cart: sanitizedCart,
       shippingAddress,
       billingAddress,
-      paypalData: paypalObj || null,
+      paymentData: paypalObj || null,
       countrySubsidiary: billingCountry,
       taxId,
       taxAmount,

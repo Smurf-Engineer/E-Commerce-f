@@ -35,6 +35,7 @@ export const GetProductsQuery = gql`
         back: back_image
         left: left_image
         right: right_image
+        genderId: gender_id
       }
       sizeRange: size_range {
         id

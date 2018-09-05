@@ -293,7 +293,7 @@ type OwnProps = {
 
 const MyadressesListEnhanced = compose(
   graphql(GetAddressListQuery, {
-    options: ({ itemsNumber, skip, listForMyAccount }: OwnProps) => {
+    options: ({ itemsNumber, skip }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: {

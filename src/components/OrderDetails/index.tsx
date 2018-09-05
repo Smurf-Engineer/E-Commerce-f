@@ -9,6 +9,7 @@ import messages from './messages'
 import { OrderDetailsInfo, QueryProps } from '../../types/common'
 import { getOrderQuery } from './data'
 import Icon from 'antd/lib/icon'
+import Spin from 'antd/lib/spin'
 import {
   Container,
   ViewContainer,
@@ -31,24 +32,20 @@ import {
   ShippingBillingContainer,
   ShippingBillingCard,
   SubTitle,
-  PaymentText,
-  CardNumber,
   StyledImage,
   Annotation,
-  Date
+  Date,
+  LoadingContainer
 } from './styledComponents'
-import { OrderSummary } from '../OrderSummary'
+import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
 import MyAddress from '../MyAddress'
 import AddToCartButton from '../AddToCartButton'
 
-import iconVisa from '../../assets/card-visa.svg'
-import iconMasterCard from '../../assets/card-master.svg'
-import iconAE from '../../assets/card-AE.svg'
-import iconDiscover from '../../assets/card-discover.svg'
-import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { ORDER_HISTORY } from '../../screens/Account/constants'
+import PaymentData from '../PaymentData'
+import { PaymentOptions } from '../../screens/Checkout/constants'
 
 const PRO_DESIGN_FEE = 15
 
@@ -75,6 +72,14 @@ export class OrderDetails extends React.Component<Props, {}> {
       onReturn,
       currentCurrency
     } = this.props
+
+    if (data && data.loading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
+    }
 
     const handleOnReturn = () => onReturn('')
 
@@ -114,15 +119,20 @@ export class OrderDetails extends React.Component<Props, {}> {
       cart,
       status,
       currency,
-      taxAmount,
       shippingAmount,
-      proDesign
+      proDesign,
+      taxGst,
+      taxPst,
+      taxVat,
+      taxFee,
+      total,
+      discount
     } = data.orderQuery
 
     const deliveryDate =
       netsuit && netsuit.orderStatus && netsuit.orderStatus.deliveryDate
 
-    let totalSum = 0
+    let subtotal = 0
     const renderItemList = cart
       ? cart.map((cartItem, index) => {
           const {
@@ -134,8 +144,7 @@ export class OrderDetails extends React.Component<Props, {}> {
             unitPrice
           } = cartItem
 
-          const prodTotal = productTotal as number
-          totalSum = totalSum + prodTotal
+          subtotal += productTotal || 0
 
           const priceRange = {
             quantity: '0',
@@ -171,26 +180,10 @@ export class OrderDetails extends React.Component<Props, {}> {
         })
       : null
 
-    const cardName = get(stripeCharge, 'cardData.name', '')
-    const cardExpYear = get(stripeCharge, 'cardData.expYear', 0)
-    const cardExpMonth = get(stripeCharge, 'cardData.expMonth', 0)
-    const cardLast4 = get(stripeCharge, 'cardData.last4', '')
-    const cardBrand = get(stripeCharge, 'cardData.brand', '')
-
-    const expYear = String(cardExpYear).substring(2, 4)
-    const expMonth = cardExpMonth > 9 ? cardExpMonth : `0${cardExpMonth}`
-    let cardIcon = this.getCardIcon(cardBrand)
-
+    const card = get(stripeCharge, 'cardData')
     const paymentMethodInfo =
-      paymentMethod === 'credit card' ? (
-        <div>
-          <PaymentText>{cardName}</PaymentText>
-          <CardNumber>
-            <PaymentText>{`X-${cardLast4}`}</PaymentText>
-            <StyledImage src={cardIcon} />
-          </CardNumber>
-          <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
-        </div>
+      paymentMethod === PaymentOptions.CREDITCARD ? (
+        <PaymentData {...{ card }} />
       ) : (
         <StyledImage src={iconPaypal} />
       )
@@ -240,15 +233,20 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderDelivery>
           <OrderSummaryContainer>
             <OrderSummary
-              total={totalSum}
-              subtotal={totalSum}
-              shipping={shippingAmount}
-              taxes={taxAmount}
-              discount={0}
               onlyRead={true}
+              sumTotal={total}
+              shippingTotal={shippingAmount}
               currencySymbol={currency.shortName}
-              proDesignReview={(proDesign && PRO_DESIGN_FEE) || 0}
-              {...{ formatMessage }}
+              proDesignReview={proDesign && PRO_DESIGN_FEE}
+              {...{
+                formatMessage,
+                taxGst,
+                taxPst,
+                taxVat,
+                taxFee,
+                discount,
+                subtotal
+              }}
             />
           </OrderSummaryContainer>
         </OrderInfo>
@@ -304,21 +302,6 @@ export class OrderDetails extends React.Component<Props, {}> {
         <Annotation>{formatMessage(messages.annotation)}</Annotation>
       </Container>
     )
-  }
-
-  getCardIcon(brand: string) {
-    switch (brand) {
-      case 'Visa':
-        return iconVisa
-      case 'MasterCard':
-        return iconMasterCard
-      case 'American Express':
-        return iconAE
-      case 'Discover':
-        return iconDiscover
-      default:
-        return iconCreditCard
-    }
   }
 
   handleOnClickReceipt = () => {

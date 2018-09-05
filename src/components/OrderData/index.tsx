@@ -11,8 +11,6 @@ import {
   InfoContainer,
   ShippingBillingContainer,
   SubTitle,
-  PaymentText,
-  CardNumber,
   StyledImage,
   SummaryContainer,
   OrderNumberContainer,
@@ -33,14 +31,11 @@ import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
 import withLoading from '../WithLoading'
 
-import iconVisa from '../../assets/card-visa.svg'
-import iconMasterCard from '../../assets/card-master.svg'
-import iconAE from '../../assets/card-AE.svg'
-import iconDiscover from '../../assets/card-discover.svg'
-import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { QueryProps, OrderDataInfo } from '../../types/common'
 import CartListItem from '../CartListItem'
+import { PaymentOptions } from '../../screens/Checkout/constants'
+import PaymentData from '../PaymentData'
 
 const PRO_DESIGN_FEE = 15
 
@@ -87,12 +82,17 @@ class OrderData extends React.Component<Props, {}> {
           billingCountry,
           billingApartment,
           shippingAmount,
-          taxAmount,
           payment: { stripeCharge },
           cart,
           paymentMethod,
           currency,
-          proDesign
+          proDesign,
+          taxGst,
+          taxPst,
+          taxVat,
+          taxFee,
+          total,
+          discount
         }
       },
       sendEmailAlert,
@@ -100,26 +100,10 @@ class OrderData extends React.Component<Props, {}> {
       currentCurrency
     } = this.props
 
-    const cardName = get(stripeCharge, 'cardData.name', '')
-    const cardExpYear = get(stripeCharge, 'cardData.expYear', 0)
-    const cardExpMonth = get(stripeCharge, 'cardData.expMonth', 0)
-    const cardLast4 = get(stripeCharge, 'cardData.last4', '')
-    const cardBrand = get(stripeCharge, 'cardData.brand', '')
-
-    const expYear = String(cardExpYear).substring(2, 4)
-    const expMonth = cardExpMonth > 9 ? cardExpMonth : `0${cardExpMonth}`
-    let cardIcon = this.getCardIcon(cardBrand)
-
+    const card = get(stripeCharge, 'cardData')
     const paymentMethodInfo =
-      paymentMethod === 'credit card' ? (
-        <div>
-          <PaymentText>{cardName}</PaymentText>
-          <CardNumber>
-            <PaymentText>{`X-${cardLast4}`}</PaymentText>
-            <StyledImage src={cardIcon} />
-          </CardNumber>
-          <PaymentText>{`EXP ${expMonth}/${expYear}`}</PaymentText>
-        </div>
+      paymentMethod === PaymentOptions.CREDITCARD ? (
+        <PaymentData {...{ card }} />
       ) : (
         <StyledImage src={iconPaypal} />
       )
@@ -130,6 +114,7 @@ class OrderData extends React.Component<Props, {}> {
       ? messages.messageTeamstore
       : messages.messageRetail
 
+    let subtotal = 0
     const renderList = cart
       ? cart.map((cartItem, index) => {
           const {
@@ -140,6 +125,8 @@ class OrderData extends React.Component<Props, {}> {
             productTotal,
             unitPrice
           } = cartItem
+
+          subtotal += productTotal || 0
 
           const priceRange = {
             quantity: '0',
@@ -174,13 +161,6 @@ class OrderData extends React.Component<Props, {}> {
           )
         })
       : null
-    let totalSum = 0
-    if (cart) {
-      cart.map((cartItem, index) => {
-        const productTotal = cartItem.productTotal as number
-        totalSum = totalSum + productTotal
-      })
-    }
     return (
       <Container>
         <Title>{title}</Title>
@@ -260,35 +240,27 @@ class OrderData extends React.Component<Props, {}> {
           <SummaryContainer>
             {/* TODO: add discount*/}
             <OrderSummary
-              total={totalSum}
-              subtotal={totalSum}
-              shipping={shippingAmount}
-              taxes={taxAmount}
-              discount={0}
+              sumTotal={total}
+              shippingTotal={shippingAmount}
               onlyRead={true}
               currencySymbol={currency.shortName}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
-              {...{ formatMessage }}
+              {...{
+                formatMessage,
+                taxGst,
+                taxPst,
+                taxVat,
+                taxFee,
+                discount,
+                subtotal
+              }}
             />
           </SummaryContainer>
         </Content>
       </Container>
     )
   }
-  getCardIcon = (brand: string) => {
-    switch (brand) {
-      case 'Visa':
-        return iconVisa
-      case 'MasterCard':
-        return iconMasterCard
-      case 'American Express':
-        return iconAE
-      case 'Discover':
-        return iconDiscover
-      default:
-        return iconCreditCard
-    }
-  }
+
   handleOnCheckedSendEmailAlert = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

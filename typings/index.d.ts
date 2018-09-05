@@ -130,7 +130,7 @@ declare module 'react-paypal-express-checkout-authorize' {
   interface Props {
     currency: string
     env: string
-    total: number
+    total: number | string
     shipping: number
     client: object
     style?: object
