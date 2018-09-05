@@ -60,7 +60,7 @@ class ImageList extends React.PureComponent<Props, {}> {
       return (
         <Row key={index} selected={currentSelected === id}>
           <Image src={fileUrl} onClick={this.handleOnClickImage(file)} />
-          <Info>
+          <Info vector={isVectorImage}>
             <Name>{name}</Name>
             <Footer>
               {isVectorImage ? (
