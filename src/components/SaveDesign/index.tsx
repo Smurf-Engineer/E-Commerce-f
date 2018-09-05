@@ -171,6 +171,9 @@ export class SaveDesign extends React.Component<Props, {}> {
           if (!isEditing && !savedDesignId) {
             afterSaveDesign(shortId, svg, savedDesign, true)
           }
+          console.log('---------------------------')
+          console.log(savedDesign)
+          console.log('---------------------------')
           requestClose()
         }
       })
