@@ -12,6 +12,8 @@ export const TOP_VIEW = 4
 export const EXTRA_FIELDS = ['fileId', 'fileUrl']
 export const INITIAL_ZOOM = 1.85
 export const THUMBNAIL_ZOOM = 150
+export const CAMERA_MIN_ZOOM = 100
+export const CAMERA_MAX_ZOOM = 350
 export const viewPositions = {
   0: {
     // Back
