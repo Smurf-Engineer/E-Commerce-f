@@ -4,6 +4,7 @@
 import * as React from 'react'
 import messages from './messages'
 import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
 import {
   Container,
   Arrow,
@@ -70,9 +71,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
 
   componentWillReceiveProps({ colors }: Props) {
     const { names } = this.state
-    if (!names.length && !!colors.length) {
-      this.prepareInitialColorNames(colors)
-    }
+    this.prepareColorNames(colors, names)
   }
 
   handleOnBack = () => this.setState(({ index }) => ({ index: index - 1 }))
@@ -215,12 +214,14 @@ class ColorsTab extends React.PureComponent<Props, State> {
     )
   }
 
-  prepareInitialColorNames = (colors: string[]) => {
+  prepareColorNames = (colors: string[], oldNames: string[]) => {
     const names = colors.map(color => {
       const index = findIndex(baseColors, o => o.value === color)
       return !!baseColors[index] ? baseColors[index].name : ''
     })
-    this.setState({ names })
+    if (!isEqual(oldNames, names)) {
+      this.setState({ names })
+    }
   }
 
   handleOnSelectColor = (color: string, name: string) => {
