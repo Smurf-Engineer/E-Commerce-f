@@ -614,7 +614,7 @@
   "components.ProfileSettings.profileTitle": "Profile",
   "components.ProfileSettings.profileSuccessMessage": "Your profile has been updated!",
   "components.ProfileSettings.save": "Save",
-  "components.ProfileSettings.passwordSuccessMessage": "Your e-mail preferences has been updated!",
+  "components.ProfileSettings.passwordSuccessMessage": "New password saved",
   "components.ProfileSettings.languageTitle": "Language and Currency Settings",
   "components.ProfileSettings.languageSuccessMessage": "Your language and currency settings has been updated!",
   "components.ProfileSettings.measurementsTitle": "Measurements",

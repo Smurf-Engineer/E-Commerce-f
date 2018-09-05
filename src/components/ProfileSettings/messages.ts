@@ -27,7 +27,7 @@ export default defineMessages({
   },
   passwordSuccessMessage: {
     id: 'components.ProfileSettings.passwordSuccessMessage',
-    defaultMessage: 'Your password has been changed!'
+    defaultMessage: 'New password saved'
   },
   languageTitle: {
     id: 'components.ProfileSettings.languageTitle',

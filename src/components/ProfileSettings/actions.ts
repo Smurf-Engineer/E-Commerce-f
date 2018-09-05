@@ -15,7 +15,8 @@ import {
   SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
-  CHANGE_PASSWORD_SUCCESS
+  CHANGE_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FORM
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -91,4 +92,8 @@ export const setSettingsLoadingAction = (
   type: SET_SETTINGS_LOADING,
   key,
   loading
+})
+
+export const resetPasswordFormAction = (): AnyAction => ({
+  type: RESET_PASSWORD_FORM
 })
