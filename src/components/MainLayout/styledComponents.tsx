@@ -3,6 +3,10 @@
  */
 import styled from 'styled-components'
 
+const HEADER_TOP_SIZE = 72
+const HEADER_BOTTOM_SIZE = 38
+const HEADER_MAX_SIZE = 110
+
 export const Container = styled.div`
   background-color: #222;
 `
@@ -12,13 +16,25 @@ export const Text = styled.div`
 `
 
 interface HeaderProps {
+  hideTop?: Boolean
   hideBottom?: boolean
+}
+
+const HEADER_HEIGHT = ({ hideTop, hideBottom }: HeaderProps) => {
+  let height = HEADER_MAX_SIZE
+  if (hideTop) {
+    height -= HEADER_TOP_SIZE
+  }
+  if (hideBottom) {
+    height -= HEADER_BOTTOM_SIZE
+  }
+  return height
 }
 
 export const Header = styled.div`
   background: #ffffff;
   padding: 0px;
-  height: ${({ hideBottom }: HeaderProps) => (hideBottom ? 38 : 110)};
+  height: ${HEADER_HEIGHT};
   line-height: 0px;
 `
 
