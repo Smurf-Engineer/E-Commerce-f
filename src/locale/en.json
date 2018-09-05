@@ -1021,5 +1021,7 @@
   "components.LogoutModal.logout": "Are you sure you want to log out?",
   "screens.ShoppingCartPage.taxesGst": "GST/HST",
   "screens.ShoppingCartPage.taxesPst": "PST",
-  "screens.ShoppingCartPage.taxesVat": "VAT"
+  "screens.ShoppingCartPage.taxesVat": "VAT",
+
+  "components.CheckoutSummary.placeOrder": "Place Order"
 }

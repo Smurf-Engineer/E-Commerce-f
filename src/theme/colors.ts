@@ -4,6 +4,7 @@
 
 export const WHITE = '#FFFFFF'
 export const BLACK = '#000000'
+export const BLACK_SHADOW = 'rgba(0, 0, 0, 0.25)'
 export const AUBERGINE = '#231F20'
 export const GRAY_DARK = '#5F6062'
 export const GRAY = '#BEBEBE'
