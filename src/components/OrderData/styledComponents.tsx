@@ -10,7 +10,7 @@ export const Content = styled.div`
   display: flex;
   justify-content: space-between;
 
-  @media (min-width: 320px) and (max-width: 700px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
   }
 `
@@ -28,7 +28,7 @@ export const Title = styled.div`
 export const InfoContainer = styled.div`
   width: 70%;
 
-  @media (min-width: 320px) and (max-width: 700px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     width: 100%;
   }
 `
@@ -37,8 +37,12 @@ export const SummaryContainer = styled.div`
   width: 25%;
   padding-left: 20px;
 
-  @media (min-width: 320px) and (max-width: 700px) {
-    padding-left: 0px;
+  @media (max-width: 1375px) and (min-width: 769px) {
+    width: 308px;
+  }
+
+  @media (min-width: 320px) and (max-width: 768px) {
+    padding-left: 8px;
     width: 100%;
   }
 `
@@ -51,28 +55,15 @@ export const SubTitle = styled.div`
   margin-bottom: 24px;
 `
 
-export const CardNumber = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 6px 0;
-`
-
 export const ShippingBillingContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin: 24px 10% 24px 0;
 
-  @media (min-width: 320px) and (max-width: 700px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     flex-wrap: wrap;
     margin-right: 0px;
   }
-`
-
-export const PaymentText = styled.div`
-  color: #5f6062;
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 23px;
 `
 
 export const StyledImage = styled.img`
@@ -86,7 +77,7 @@ export const OrderNumberContainer = styled.div`
   display: flex;
   flex-direction: row;
 
-  @media (min-width: 320px) and (max-width: 700px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     justify-content: space-between;
   }
 `
@@ -99,7 +90,7 @@ export const TitleStyled = styled.div`
   line-height: 22px;
   margin-bottom: 24px;
 
-  @media (min-width: 320px) and (max-width: 700px) {
+  @media (min-width: 320px) and (max-width: 768px) {
     margin-bottom: 18px;
   }
 `

@@ -22,13 +22,9 @@ import {
 import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
 import CartListItem from '../../components/CartListItem'
-import iconVisa from '../../assets/card-visa.svg'
-import iconMasterCard from '../../assets/card-master.svg'
-import iconAE from '../../assets/card-AE.svg'
-import iconDiscover from '../../assets/card-discover.svg'
-import iconCreditCard from '../../assets/card-default.svg'
 import iconPaypal from '../../assets/Paypal.svg'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
+import { PaymentOptions } from '../../screens/Checkout/constants'
 
 interface Props {
   showContent: boolean
@@ -153,7 +149,7 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
-            {paymentMethod === 'credit card' ? (
+            {paymentMethod === PaymentOptions.CREDITCARD ? (
               <div>
                 <PaymentData card={selectedCard} />
                 <EditInfoButton onClick={this.handleOnGoToStepTwo}>
@@ -169,20 +165,6 @@ class Review extends React.PureComponent<Props, {}> {
     )
   }
 
-  getCardIcon = (brand: string) => {
-    switch (brand) {
-      case 'Visa':
-        return iconVisa
-      case 'MasterCard':
-        return iconMasterCard
-      case 'American Express':
-        return iconAE
-      case 'Discover':
-        return iconDiscover
-      default:
-        return iconCreditCard
-    }
-  }
   handleOnGoToStepOne = () => {
     const { goToStep } = this.props
     goToStep(1)
