@@ -215,7 +215,7 @@ class MainLayout extends React.Component<Props, {}> {
 
     return (
       <Layout>
-        <Header {...{ hideBottomHeader }}>
+        <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}

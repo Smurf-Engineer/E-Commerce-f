@@ -206,7 +206,6 @@ class MenuBar extends React.Component<Props, StateProps> {
                 </Container>
               )
             } else {
-              console.log('In MenuBar, hideTop = ', hideTop)
               return (
                 !hideTop && (
                   <MenuMobile
