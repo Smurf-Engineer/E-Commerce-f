@@ -3,18 +3,10 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import { compose, graphql } from 'react-apollo'
-import get from 'lodash/get'
+import { compose } from 'react-apollo'
 import Message from 'antd/lib/message'
-import {
-  QueryProps,
-  NetsuiteTax,
-  NetsuiteShipping,
-  TaxAddressObj,
-  AddressObj,
-  CouponCode
-} from '../../types/common'
-import { getTaxQuery, applyPromoCodeMutation } from './data'
+import { CouponCode } from '../../types/common'
+import { applyPromoCodeMutation } from './data'
 import messages from './messages'
 import {
   Container,
@@ -31,38 +23,24 @@ import {
 } from './styledComponents'
 import Input from 'antd/lib/input'
 import Collapse from 'antd/lib/collapse'
-import {
-  PERCENTAGE_PROMO,
-  FLAT_PROMO,
-  COUNTRY_CODE_US,
-  COUNTRY_CODE_CANADA,
-  COUNTRY_CODE_AT,
-  COUNTRY_CODE_DE
-} from '../../screens/Checkout/constants'
-
-interface Data extends QueryProps {
-  taxes: NetsuiteTax
-  shipping: NetsuiteShipping
-}
 
 interface Props {
-  data?: Data
-  taxes: number
-  total: number
+  onlyRead?: boolean
   subtotal: number
-  shipping?: number
+  proDesignReview?: number
   totalWithoutDiscount?: number
   discount?: number
-  onlyRead?: boolean
-  country?: string
-  weight?: string
-  shipAddress?: TaxAddressObj
-  shipAddressCountry?: string
-  proDesignReview?: number
+  youSaved?: number
+  shippingTotal?: number
+  taxFee?: number
+  taxPst?: number
+  taxGst?: number
+  taxVat?: number
+  sumTotal?: number
   currencySymbol?: string
   showCouponInput?: boolean
-  formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
+  formatMessage: (messageDescriptor: any) => string
   setCouponCodeAction?: (code: CouponCode) => void
   deleteCouponCodeAction?: () => void
   // mutations
@@ -74,128 +52,32 @@ const Panel = Collapse.Panel
 export class OrderSummary extends React.Component<Props, {}> {
   render() {
     const {
-      data,
       subtotal,
       formatMessage,
       showCouponInput,
-      couponCode,
-      totalWithoutDiscount = 0,
       onlyRead,
-      proDesignReview,
+      proDesignReview = 0,
       currencySymbol,
-      shipping,
-      taxes,
-      country,
-      shipAddressCountry
+      taxFee = 0,
+      taxPst = 0,
+      taxGst = 0,
+      taxVat = 0,
+      youSaved = 0,
+      shippingTotal = 0,
+      discount = 0,
+      sumTotal = 0
     } = this.props
 
-    const shippingTotal = get(data, 'shipping.total', shipping) || 0
-    const taxRates = get(data, 'taxes', null)
     const symbol = currencySymbol || '$'
 
-    // countries to compare tax
-    const countrySubsidiary =
-      (taxRates && taxRates.countrySub) || COUNTRY_CODE_US
-    const shippingAddressCountry = shipAddressCountry || COUNTRY_CODE_US
-
-    // pro design fee
-    const proDesignFee = proDesignReview || 0
-    // add proDesignFee to subtotal
-    let sumTotal = subtotal + proDesignFee
-
-    let discount = 0
-    if (couponCode) {
-      const { type, rate } = couponCode
-      switch (type) {
-        case PERCENTAGE_PROMO: // '%'
-          discount = (sumTotal * Number(rate)) / 100
-          break
-        case FLAT_PROMO: // 'flat
-          discount = Number(rate)
-          break
-        default:
-          break
-      }
-    }
-
-    // get subtotal minus discount
-    sumTotal -= discount
-
-    // get tax fee
-    const taxesAmount = (taxRates && taxRates.total) || taxes
-    // canadian taxes
-    let taxGst = 0
-    let taxPst = 0
-    let taxFee = 0
-    let taxVat = 0
-    let taxVatTotal = 0
-    if (taxesAmount && country) {
-      let taxTotal = 0
-      switch (countrySubsidiary.toLowerCase()) {
-        case COUNTRY_CODE_US:
-          if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-            taxTotal = (sumTotal * taxesAmount) / 100 // calculate tax
-            taxFee = Math.round(taxTotal * 100) / 100 // round to 2 decimals
-          }
-          break
-        case COUNTRY_CODE_CANADA:
-          if (
-            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA &&
-            taxRates
-          ) {
-            taxGst = ((shippingTotal + sumTotal) * taxRates.rateGst) / 100 // calculate tax
-            taxPst = (sumTotal * taxRates.ratePst) / 100 // calculate tax
-            taxGst = Math.round(taxGst * 100) / 100
-            taxPst = Math.round(taxPst * 100) / 100
-          }
-          break
-        case COUNTRY_CODE_AT:
-          if (
-            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_AT ||
-            shippingAddressCountry.toLowerCase() === COUNTRY_CODE_DE
-          ) {
-            taxVatTotal = taxesAmount / 100
-            taxVat =
-              sumTotal -
-              proDesignFee -
-              (sumTotal - proDesignFee) / (1 + taxVatTotal) +
-              shippingTotal * taxVatTotal +
-              proDesignFee * taxVatTotal
-            taxVat = Math.round(taxVat * 100) / 100
-          }
-          break
-        case COUNTRY_CODE_DE:
-          taxVatTotal = taxesAmount / 100
-          taxVat =
-            sumTotal -
-            proDesignFee -
-            (sumTotal - proDesignFee) / (1 + taxVatTotal) +
-            shippingTotal * taxVatTotal +
-            proDesignFee * taxVatTotal
-          taxVat = Math.round(taxVat * 100) / 100
-          break
-        default:
-          break
-      }
-    }
-
-    const youSaved = totalWithoutDiscount - sumTotal
-
-    if (taxVat) {
-      taxVatTotal = taxesAmount / 100
-      sumTotal =
-        (sumTotal - proDesignFee) / (1 + taxVatTotal) +
-        taxVat +
-        shippingTotal +
-        proDesignFee
-    } else {
-      sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
-    }
+    const netTotal =
+      sumTotal ||
+      subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
 
     const amountsDivider =
       !!proDesignReview ||
-      taxFee ||
-      shippingTotal ||
+      !!taxFee ||
+      !!shippingTotal ||
       (!onlyRead && discount > 0)
 
     return (
@@ -215,19 +97,19 @@ export class OrderSummary extends React.Component<Props, {}> {
               <div>{`${symbol} ${proDesignReview.toFixed(2)}`}</div>
             </OrderItem>
           )}
-          {!onlyRead &&
-            discount > 0 && (
-              <OrderItem>
-                <FlexWrapper>
-                  <div>{formatMessage(messages.discountLabel)}</div>
+          {discount > 0 && (
+            <OrderItem>
+              <FlexWrapper>
+                <div>{formatMessage(messages.discountLabel)}</div>
+                {!onlyRead && (
                   <DeleteLabel onClick={this.deleteCouponCode}>
                     {formatMessage(messages.deleteLabel)}
                   </DeleteLabel>
-                </FlexWrapper>
-                <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
-                {/*TODO: when onlyRead is true, only show the disscount and disable interaction*/}
-              </OrderItem>
-            )}
+                )}
+              </FlexWrapper>
+              <div>{`- ${symbol} ${discount.toFixed(2)}`}</div>
+            </OrderItem>
+          )}
           {/* taxes */}
           <OrderItem hide={!taxFee}>
             <FormattedMessage {...messages.taxes} />
@@ -274,7 +156,7 @@ export class OrderSummary extends React.Component<Props, {}> {
           {...{ onlyRead, showCouponInput }}
         >
           <FormattedMessage {...messages.total} />
-          <div>{`${symbol} ${sumTotal.toFixed(2)}`}</div>
+          <div>{`${symbol} ${netTotal.toFixed(2)}`}</div>
         </TotalOrderItem>
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
@@ -293,6 +175,7 @@ export class OrderSummary extends React.Component<Props, {}> {
       deleteCouponCodeAction = () => {},
       formatMessage
     } = this.props
+
     try {
       const data = await applyPromoCode({
         variables: { code }
@@ -321,21 +204,6 @@ export class OrderSummary extends React.Component<Props, {}> {
   }
 }
 
-interface OwnProps {
-  country?: string
-  weight?: string
-  shipAddress?: AddressObj
-}
-
-const OrderSummaryEnhance = compose(
-  graphql(getTaxQuery, {
-    options: ({ country, weight, shipAddress }: OwnProps) => ({
-      skip: !country || !weight || !shipAddress,
-      variables: { country, weight, shipAddress },
-      fetchPolicy: 'network-only'
-    })
-  }),
-  applyPromoCodeMutation
-)(OrderSummary)
+const OrderSummaryEnhance = compose(applyPromoCodeMutation)(OrderSummary)
 
 export default OrderSummaryEnhance

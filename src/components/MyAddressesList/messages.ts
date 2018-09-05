@@ -28,5 +28,9 @@ export default defineMessages({
   messageDeleteModal: {
     id: 'components.MyAddresses.messageDeleteModal',
     defaultMessage: 'This will permanently delete this address'
+  },
+  shippingTitle: {
+    id: 'components.MyAddresses.shippingTitle',
+    defaultMessage: 'Shipping Address'
   }
 })

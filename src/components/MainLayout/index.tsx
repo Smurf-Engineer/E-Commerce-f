@@ -48,6 +48,7 @@ interface Props extends RouteComponentProps<any> {
   currentLanguage: number
   currentCurrency: string
   yotpoId: string
+  hideTopHeader: boolean
   hideBottomHeader: boolean
   hideFooter: boolean
   fakeWidth: number
@@ -100,20 +101,19 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
-    let scripts = Array
-      .from(document.querySelectorAll('script'))
-      .map(scr => scr.src)
+    let scripts = Array.from(document.querySelectorAll('script')).map(
+      scr => scr.src
+    )
 
     if (!scripts.includes('https://consent.cookiebot.com/uc.js')) {
       const script = document.createElement('script')
       script.src = 'https://consent.cookiebot.com/uc.js'
       script.id = 'Cookiebot'
       script.type = 'text/javascript'
-      script.setAttribute('data-cbid', '1b3f0d8b-c158-4fbd-a58b-3f42fb058a43')
+      script.setAttribute('cbid', '1b3f0d8b-c158-4fbd-a58b-3f42fb058a43')
       script.async = true
       document.getElementsByTagName('head')[0].appendChild(script)
     }
-
   }
 
   onSearch = (value: string) => {
@@ -168,6 +168,7 @@ class MainLayout extends React.Component<Props, {}> {
       currentLanguage,
       currentCurrency,
       intl,
+      hideTopHeader,
       hideBottomHeader,
       hideFooter,
       fakeWidth,
@@ -237,6 +238,7 @@ class MainLayout extends React.Component<Props, {}> {
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.handleOnClickLogout}
+            hideTop={hideTopHeader}
             hideBottom={hideBottomHeader}
           />
         </Header>

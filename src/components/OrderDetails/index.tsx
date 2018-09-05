@@ -37,7 +37,7 @@ import {
   Annotation,
   Date
 } from './styledComponents'
-import { OrderSummary } from '../OrderSummary'
+import OrderSummary from '../OrderSummary'
 import CartListItem from '../CartListItem'
 import MyAddress from '../MyAddress'
 import AddToCartButton from '../AddToCartButton'
@@ -114,7 +114,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       cart,
       status,
       currency,
-      taxAmount,
+      // taxAmount, // TODO: send to orderSummary when query return it
       shippingAmount,
       proDesign
     } = data.orderQuery
@@ -240,11 +240,8 @@ export class OrderDetails extends React.Component<Props, {}> {
           </OrderDelivery>
           <OrderSummaryContainer>
             <OrderSummary
-              total={totalSum}
               subtotal={totalSum}
               shipping={shippingAmount}
-              taxes={taxAmount}
-              discount={0}
               onlyRead={true}
               currencySymbol={currency.shortName}
               proDesignReview={(proDesign && PRO_DESIGN_FEE) || 0}
