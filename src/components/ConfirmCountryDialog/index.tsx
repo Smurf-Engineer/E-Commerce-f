@@ -35,8 +35,12 @@ export class ConfirmCountryDialog extends React.Component<Props, {}> {
   }
 
   handleChange = (value: any) => {
+    const { data } = this.props
+    const { countriesSubsidiaries, error, loading } = data
+    const countries = !error && !loading ? countriesSubsidiaries : []
+    const country = countries[value]
     this.setState({
-      countryCode: value
+      countryCode: country.countryCode
     })
   }
 
@@ -56,7 +60,7 @@ export class ConfirmCountryDialog extends React.Component<Props, {}> {
     const countryItems = countries.map(
       ({ countryCode: code, country }, index) => {
         return (
-          <Option key={index} value={code}>
+          <Option key={`${code}-${index}`} value={index}>
             {country}
           </Option>
         )
