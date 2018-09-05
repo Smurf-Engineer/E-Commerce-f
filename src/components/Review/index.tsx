@@ -139,7 +139,7 @@ class Review extends React.PureComponent<Props, {}> {
               street={billingStreet}
               city={`${billingCity} ${billingStateProvince}`}
               zipCode={billingZipCode}
-              country={billingCountry}
+              country={billingCountry.toUpperCase()}
               apartment={billingApartment}
               {...{ formatMessage }}
             />
