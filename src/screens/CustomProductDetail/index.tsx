@@ -226,12 +226,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const availableSizes =
       sizeRange &&
-      sizeRange.map(({ id, name: sizeName }: SelectedType, key: number) => (
+      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
             id={String(id)}
             selected={id === selectedSize.id}
-            onClick={this.handleSelectedSize({ id, name: sizeName })}
+            onClick={this.handleSelectedSize({
+              id: Number(id),
+              name: String(sizeName)
+            })}
           >
             {sizeName}
           </SectionButton>
