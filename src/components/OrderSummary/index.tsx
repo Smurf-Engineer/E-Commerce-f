@@ -164,7 +164,7 @@ export class OrderSummary extends React.Component<Props, {}> {
         {youSaved > 0 ? (
           <YouSavedOrderItem {...{ onlyRead }}>
             <FormattedMessage {...messages.youSaved} />
-            <div>{`$${youSaved.toFixed(2)}`}</div>
+            <div>{`${symbol} ${youSaved.toFixed(2)}`}</div>
           </YouSavedOrderItem>
         ) : null}
       </Container>
