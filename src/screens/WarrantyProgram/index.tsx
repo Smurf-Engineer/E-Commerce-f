@@ -218,8 +218,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       return
     }
 
-    const userLogged = !!localStorage.getItem('user')
-    if (!userLogged) {
+    if (!user) {
       message.error(formatMessage(messages.needToLogIn))
       return
     }
