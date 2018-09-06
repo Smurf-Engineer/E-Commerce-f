@@ -111,13 +111,15 @@ export class QuickView extends React.Component<Props, State> {
       abbreviation: currentCurrency || config.defaultCurrency
     })
 
+    const symbol = currencyPrices[0].shortName
+
     const renderPrices =
       !loading &&
       currencyPrices.map(
         ({ price, quantity }, index: number) =>
           index < 4 && (
             <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity }} />
+              <PriceQuantity {...{ index, price, quantity, symbol }} />
             </AvailablePrices>
           )
       )
@@ -132,6 +134,7 @@ export class QuickView extends React.Component<Props, State> {
           index={1}
           price={getRetailPrice.price}
           quantity={getRetailPrice.quantity}
+          symbol={getRetailPrice.shortName}
         />
       </AvailablePrices>
     )
