@@ -28,6 +28,7 @@ interface Props {
   handleInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   toggleModalPassword: () => void
   onChangePassword: () => void
+  resetPasswordForm: () => void
 }
 
 const ChangePasswordModal = ({
@@ -40,7 +41,8 @@ const ChangePasswordModal = ({
   handleInputChange,
   toggleModalPassword,
   hasError,
-  onChangePassword
+  onChangePassword,
+  resetPasswordForm
 }: Props) => {
   return (
     <Modal
@@ -58,6 +60,7 @@ const ChangePasswordModal = ({
       closable={false}
       maskClosable={false}
       destroyOnClose={true}
+      afterClose={resetPasswordForm}
     >
       <Container>
         <Row>

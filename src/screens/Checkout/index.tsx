@@ -53,6 +53,7 @@ import Modal from 'antd/lib/modal'
 import ModalFooter from '../../components/ModalFooter'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
+import { DEFAULT_ROUTE } from '../../constants'
 
 type ProductCart = {
   id: number
@@ -276,12 +277,13 @@ class Checkout extends React.Component<Props, {}> {
     const { state: stateLocation } = location
     const { ShippingTab, ReviewTab, PaymentTab } = CheckoutTabs
 
-    const cart = JSON.parse(localStorage.getItem('cart') || '[]')
-    if (!cart || !cart.length || !stateLocation || !stateLocation.cart) {
-      return <Redirect to="/us?lang=en&currency=usd" />
+    if (!stateLocation || !stateLocation.cart || !stateLocation.cart.length) {
+      return <Redirect to={DEFAULT_ROUTE} />
     }
 
-    const shoppingCart = stateLocation.cart as CartItems[]
+    const { cart } = stateLocation
+    const shoppingCart = cloneDeep(cart) as CartItems[]
+
     const shoppingCartData = getShoppingCartData(
       shoppingCart,
       currentCurrency || config.defaultCurrency

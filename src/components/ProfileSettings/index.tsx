@@ -108,6 +108,7 @@ interface Props {
   updateMeasurements: (variables: {}) => void
   updateRegionOptions: (variables: {}) => void
   changePassword: (variables: {}) => void
+  resetPasswordFormAction: () => void
 }
 
 class ProfileSettings extends React.Component<Props, {}> {
@@ -336,6 +337,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           onChangePassword={this.handleOnChangePassword}
           toggleModalPassword={this.handleOnToggleModalPassword}
           handleInputChange={this.handleInputChange}
+          resetPasswordForm={this.resetPasswordForm}
         />
       </Container>
     )
@@ -619,6 +621,11 @@ class ProfileSettings extends React.Component<Props, {}> {
       const errorMessage = error.graphQLErrors.map((x: any) => x.message)
       Message.error(errorMessage, 5)
     }
+  }
+
+  resetPasswordForm = () => {
+    const { resetPasswordFormAction } = this.props
+    resetPasswordFormAction()
   }
 }
 

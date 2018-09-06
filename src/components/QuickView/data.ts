@@ -41,6 +41,7 @@ export const QuickViewQuery = gql`
         back: back_image
         left: left_image
         right: right_image
+        genderId: gender_id
       }
       retailMen: men_retail
       retailWomen: women_retail

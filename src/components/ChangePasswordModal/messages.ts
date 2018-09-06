@@ -31,6 +31,6 @@ export default defineMessages({
   },
   confirmPasswordError: {
     id: 'components.ChangePasswordModal.confirmError',
-    defaultMessage: 'This field is required and must be equal to newPassword'
+    defaultMessage: 'This field is required and must be equal to new password'
   }
 })

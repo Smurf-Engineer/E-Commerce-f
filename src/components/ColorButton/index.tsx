@@ -10,7 +10,7 @@ interface Props {
   currentColor?: string
   colorBlockHovered?: number
   selected?: boolean
-  name: string
+  name?: string
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock?: (index: number) => void
 }

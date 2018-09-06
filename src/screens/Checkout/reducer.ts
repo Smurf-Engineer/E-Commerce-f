@@ -266,6 +266,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           billingApartment: '',
           billingCountry: '',
           billingState: '',
+          billingStateProvince: '',
           billingCity: '',
           billingZipCode: '',
           billingPhone: '',
