@@ -16,7 +16,8 @@ import {
   SET_MSRMNT_GENDER,
   RESET_REDUCER_DATA,
   SET_SETTINGS_LOADING,
-  CHANGE_PASSWORD_SUCCESS
+  CHANGE_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FORM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -111,6 +112,13 @@ const adressesReducer: Reducer<any> = (state = initialState, action) => {
       return state.set(action.key, action.loading)
     case RESET_REDUCER_DATA:
       return initialState
+    case RESET_PASSWORD_FORM:
+      return state.merge({
+        currentPassword: '',
+        newPassword: '',
+        newPasswordConfirm: '',
+        modalPasswordHasError: false
+      })
     default:
       return state
   }
