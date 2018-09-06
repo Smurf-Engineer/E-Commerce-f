@@ -115,6 +115,7 @@ const CheckoutSummary = ({
     sumTotal,
     shippingTotal,
     proDesignFee,
+    discount,
     taxRates,
     country
   )

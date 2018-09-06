@@ -31,6 +31,7 @@ export const getTaxes = (
   sumTotal: number,
   shippingTotal: number,
   proDesignFee: number,
+  discount: number,
   taxRates?: NetsuiteTax,
   country?: string
 ) => {
@@ -69,22 +70,34 @@ export const getTaxes = (
         ) {
           taxVatTotal = taxesAmount / 100
           taxVat =
-            sumTotal -
-            proDesignFee -
-            (sumTotal - proDesignFee) / (1 + taxVatTotal) +
-            shippingTotal * taxVatTotal +
-            proDesignFee * taxVatTotal
+            // TODO: delete if new formula calculates right
+            // sumTotal -
+            // proDesignFee -
+            // (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+            // shippingTotal * taxVatTotal +
+            // proDesignFee * taxVatTotal
+            (sumTotal / (1 + taxVatTotal) +
+              proDesignFee +
+              shippingTotal -
+              discount) *
+            taxVatTotal
           taxVat = Math.round(taxVat * 100) / 100
         }
         break
       case COUNTRY_CODE_DE:
         taxVatTotal = taxesAmount / 100
         taxVat =
-          sumTotal -
-          proDesignFee -
-          (sumTotal - proDesignFee) / (1 + taxVatTotal) +
-          shippingTotal * taxVatTotal +
-          proDesignFee * taxVatTotal
+          // TODO: delete if new formula calculates right
+          // sumTotal -
+          // proDesignFee -
+          // (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+          // shippingTotal * taxVatTotal +
+          // proDesignFee * taxVatTotal
+          (sumTotal / (1 + taxVatTotal) +
+            proDesignFee +
+            shippingTotal -
+            discount) *
+          taxVatTotal
         taxVat = Math.round(taxVat * 100) / 100
         break
       default:
