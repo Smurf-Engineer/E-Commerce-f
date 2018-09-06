@@ -37,10 +37,13 @@ export const getTaxesAndDiscount = (
       case PERCENTAGE_PROMO: // '%'
         if (taxesAmount && applySpecialTaxes) {
           taxVatTotal = taxesAmount / 100
-          discount =
-            ((subtotal / (1 + taxVatTotal) + proDesignFee) * Number(rate)) / 100
+          const totalNet = subtotal / (1 + taxVatTotal)
+          // for Austria and Germany we calculate discount
+          // discount = (totalNet + proDesignReview) * percentageDiscount
+          discount = (totalNet + proDesignFee) * (Number(rate) / 100)
         } else {
-          discount = ((subtotal + proDesignFee) * Number(rate)) / 100
+          // calculate discount with (subtotal + proDesignFee) * percentageDiscount
+          discount = (subtotal + proDesignFee) * (Number(rate) / 100)
         }
         break
       case FLAT_PROMO: // 'flat
@@ -64,7 +67,7 @@ export const getTaxesAndDiscount = (
       case COUNTRY_CODE_US:
         // for USA the tax is calculated with this formula (subtotal + proDesignReview) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-          taxTotal = ((subtotal + proDesignFee) * taxesAmount) / 100 // calculate tax
+          taxTotal = (subtotal + proDesignFee) * (taxesAmount / 100) // calculate tax
           taxFee = roundDecimals(taxTotal) // round to 2 decimals
         }
         break
