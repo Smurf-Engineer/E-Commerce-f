@@ -51,9 +51,8 @@ interface Props {
 
 class ImageList extends React.PureComponent<Props, {}> {
   render() {
-    const { images, currentSelected } = this.props
+    const { images, currentSelected, formatMessage } = this.props
     const imageList = images.map((file, index) => {
-      const { formatMessage } = this.props
       const { id, fileUrl, size, type } = file
       const isVectorImage = vectorImages.includes(type)
       const name = getFileName(fileUrl)
