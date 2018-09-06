@@ -187,6 +187,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 
+    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
+
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
@@ -194,7 +196,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ price, quantity }, index: number) =>
           index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity }} />
+              <PriceQuantity {...{ index, price, quantity, symbol }} />
             </AvailablePrices>
           )
       )
