@@ -2,13 +2,14 @@
  * Styled Components - Created by david on 08/06/18.
  */
 import styled from 'styled-components'
+import AntdButton from 'antd/lib/button'
 import {
   GRAY_LIGHTEST,
   WHITE,
-  RED,
   GRAY,
   TRANSPARENT,
-  GRAY_DARK
+  GRAY_DARK,
+  BLUE
 } from '../../../theme/colors'
 
 export const Container = styled.div`
@@ -62,19 +63,15 @@ export const Image = styled.img`
 export const Text = styled.div`
   color: ${WHITE};
 `
-interface InfoProps {
-  vector: boolean
-}
 
 export const Info = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding-left: 24px;
+  padding-left: 16px;
   width: 70%;
 
   @media (min-width: 768px) and (max-width: 991px) {
-    ${({ vector }: InfoProps) => (vector ? 'flex-direction: row' : '')};
     padding-left: 0px;
     width: 100%;
   }
@@ -96,18 +93,42 @@ export const Size = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 10px;
-  padding-bottom: 4px;
+  padding-top: 4px;
 `
 
-export const Delete = styled.div`
-  color: ${RED};
-  cursor: pointer;
-  font-size: 14px;
-  letter-spacing: 0.18px;
-  line-height: 19px;
+export const SizeRow = styled.div`
+  display: flex;
+  flex-direction: row;
 `
+
+export const Delete = styled(AntdButton)``
 
 export const Footer = styled.div`
   display: flex;
   justify-content: space-between;
 `
+
+export const Buttons = styled.div`
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: space-between;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    margin-top: 5px;
+  }
+`
+
+export const ButtonWrapper = styled.div`
+  .ant-btn-primary  {
+    background-color: ${BLUE};
+    border-color: ${BLUE};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${BLUE};
+    border-color: ${BLUE};
+  }
+`
+
+export const Apply = styled(AntdButton)``

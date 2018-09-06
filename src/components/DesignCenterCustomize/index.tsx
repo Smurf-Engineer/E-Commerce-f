@@ -348,8 +348,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       })
     } else {
       this.render3D.applyCanvasEl({ file, type: CanvasElements.Image })
-      onSelectedItem({ id: file.id, type: CanvasElements.Image })
     }
+    onSelectedItem({ id: file.id, type: CanvasElements.Image })
   }
 
   handleOnApplyArt = (url: string, style?: CanvasElement, fileId?: number) => {
