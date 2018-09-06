@@ -3,6 +3,8 @@
  */
 import * as React from 'react'
 import messages from './messages'
+import findIndex from 'lodash/findIndex'
+import isEqual from 'lodash/isEqual'
 import {
   Container,
   Arrow,
@@ -15,6 +17,7 @@ import {
 import SwipeableViews from 'react-swipeable-views'
 import BaseColors from '../BaseColors'
 import SelectColors from '../SelectColors'
+import baseColors from '../ColorList/colors'
 import {
   Palette,
   MyPaletteDesignCenterModals,
@@ -27,6 +30,7 @@ import ColorList from '../ColorList'
 
 interface State {
   index: number
+  names: string[]
 }
 
 interface Props {
@@ -61,7 +65,13 @@ const STITCHING_COLORS_INDEX = 3
 
 class ColorsTab extends React.PureComponent<Props, State> {
   state = {
-    index: SELECT_COLORS_INDEX
+    index: SELECT_COLORS_INDEX,
+    names: []
+  }
+
+  componentWillReceiveProps({ colors }: Props) {
+    const { names } = this.state
+    this.prepareColorNames(colors, names)
   }
 
   handleOnBack = () => this.setState(({ index }) => ({ index: index - 1 }))
@@ -82,7 +92,6 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onHoverColorBlock,
       colorBlock,
       colorBlockHovered,
-      onSelectColor,
       onSelectStitchingColor,
       onChangePaletteName,
       paletteName,
@@ -99,7 +108,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onAccessoryColorSelected,
       product
     } = this.props
-    const { index } = this.state
+    const { index, names } = this.state
 
     const hasStitching = !!product && !!product.flatlock
     const hasZipper = !!product && !!product.zipper
@@ -122,7 +131,9 @@ class ColorsTab extends React.PureComponent<Props, State> {
         <Top>
           <Row
             onClick={
-              !stitchingTab ? this.handleOnBack : this.handleOnResetIndex
+              !isFirstTab && !stitchingTab
+                ? this.handleOnBack
+                : this.handleOnResetIndex
             }
           >
             {!isFirstTab && <Arrow type={'left'} />}
@@ -144,6 +155,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             goToStitching={this.goToStitching}
             {...{
               colors,
+              names,
               stitchingColor,
               bindingColor,
               zipperColor,
@@ -153,18 +165,22 @@ class ColorsTab extends React.PureComponent<Props, State> {
               hasStitching,
               hasZipper,
               hasBinding,
-              hasBibBrace
+              hasBibBrace,
+              onSelectColorBlock,
+              onHoverColorBlock,
+              colorBlockHovered
             }}
           />
           <BaseColors
             showContent={baseColorsTab}
+            onSelectColor={this.handleOnSelectColor}
             {...{
               onSelectColorBlock,
               onHoverColorBlock,
               colorBlock,
               colorBlockHovered,
-              onSelectColor,
               colors,
+              names,
               styleColors,
               formatMessage
             }}
@@ -196,6 +212,26 @@ class ColorsTab extends React.PureComponent<Props, State> {
         </SwipeableViews>
       </Container>
     )
+  }
+
+  prepareColorNames = (colors: string[], oldNames: string[]) => {
+    const names = colors.map(color => {
+      const index = findIndex(baseColors, o => o.value === color)
+      return !!baseColors[index] ? baseColors[index].name : ''
+    })
+    if (!isEqual(oldNames, names)) {
+      this.setState({ names })
+    }
+  }
+
+  handleOnSelectColor = (color: string, name: string) => {
+    this.setState(({ names }: State) => {
+      const { onSelectColor, colorBlock } = this.props
+      const updatedNames = [...names]
+      onSelectColor(color)
+      updatedNames[colorBlock] = name
+      return { names: updatedNames }
+    })
   }
 }
 

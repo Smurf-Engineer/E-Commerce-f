@@ -30,18 +30,6 @@ export const Arrow = styled(Icon)`
   font-size: 16px;
 `
 
-export const ColorButtons = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 16px;
-  padding: 14px 32px 0px 32px;
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    flex-wrap: wrap;
-    padding: 20px 0px 10px 18px;
-  }
-`
-
 export const Divider = styled.div`
   background-color: ${GRAY_LIGHT};
   height: 1px;
