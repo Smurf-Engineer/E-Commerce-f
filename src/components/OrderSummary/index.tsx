@@ -37,7 +37,7 @@ interface Props {
   taxPst?: number
   taxGst?: number
   taxVat?: number
-  sumTotal?: number
+  totalSum?: number
   currencySymbol?: string
   showCouponInput?: boolean
   couponCode?: CouponCode
@@ -66,13 +66,13 @@ export class OrderSummary extends React.Component<Props, {}> {
       youSaved = 0,
       shippingTotal = 0,
       discount = 0,
-      sumTotal = 0
+      totalSum = 0
     } = this.props
 
     const symbol = currencySymbol || '$'
 
     const netTotal =
-      sumTotal ||
+      totalSum ||
       subtotal + proDesignReview + taxFee + taxPst + taxGst + shippingTotal
 
     const amountsDivider =
