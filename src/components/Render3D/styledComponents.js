@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
+import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
@@ -37,6 +38,13 @@ export const QuickView = styled.img`
 `
 
 export const Progress = styled(AntdProgress)`
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`
+
+export const Loading = styled(Spin)`
   position: absolute;
   top: 40%;
   left: 50%;
@@ -97,7 +105,7 @@ export const ViewControls = styled.div`
   display: flex;
   width: 76px;
   justify-content: space-between;
-  alignitem: center;
+  align-items: center;
   position: absolute;
   top: 68px;
   right: 26px;
@@ -134,4 +142,27 @@ export const ButtonWrapperRight = styled.div`
     background-color: #4a90e2;
     border-color: #4a90e2;
   }
+`
+
+export const Title = styled.div`
+  color: #5f6062;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+`
+
+export const Message = styled.div`
+  margin-top: 16px;
+  font-size: 16px;
+  line-height: 23px;
+  text-align: center;
+`
+
+export const ContainerError = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
 `
