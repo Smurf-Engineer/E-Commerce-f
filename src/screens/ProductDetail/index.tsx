@@ -209,11 +209,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 
+      const symbol = currencyPrices[0].shortName
+
       renderPrices = currencyPrices.map(
         ({ price, quantity }: any, index: number) => {
           const render = (
             <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity }} />
+              <PriceQuantity {...{ index, price, quantity, symbol }} />
             </AvailablePrices>
           )
 
@@ -231,6 +233,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
             index={1}
             price={getRetailPrice.price}
             quantity={getRetailPrice.quantity}
+            {...{ symbol }}
           />
         </AvailablePrices>
       )
