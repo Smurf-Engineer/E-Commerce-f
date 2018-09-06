@@ -5,6 +5,15 @@ import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import Checkbox from 'antd/lib/checkbox'
+import {
+  GRAY_DARK,
+  RED,
+  GRAY,
+  BLUE,
+  WHITE,
+  GRAY_LIGHT,
+  BLUE_SOFT
+} from '../../theme/colors'
 
 interface InputProps {
   inputhWidth?: string
@@ -21,9 +30,9 @@ export const Container = styled.div`
 export const Row = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
   margin-bottom: ${({ withoutMargin }: RowProps) =>
     withoutMargin ? '0px' : '22px'};
+  width: 100%;
 `
 
 export const Column = styled.div`
@@ -36,82 +45,82 @@ export const InputTitleContainer = styled.div`
 `
 
 export const Label = styled.div`
-  height: 19px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
+  height: 19px;
   letter-spacing: 0.18px;
   line-height: 19px;
 `
 
 export const RequiredSpan = styled.span`
-  color: #e61737;
+  color: ${RED};
   margin: 0 5px;
 `
 
 export const ContainerInput = styled.div`
-  height: 40px;
-  width: 100%;
-  border: 1px solid #bebebe;
+  border: 1px solid ${GRAY};
   border-radius: 0;
+  height: 40px;
   margin-top: 5px;
   padding: 9px 16px;
+  width: 100%;
 `
 
 export const ErrorMsg = styled.div`
-  height: 16px;
-  color: #e61737;
+  color: ${RED};
   font-size: 12px;
+  height: 16px;
   letter-spacing: 0.15px;
   line-height: 16px;
 `
 
 export const StyledInput = styled(Input)`
-  height: 40px;
-  width: 100%;
-  border: 1px solid #bebebe;
+  border: 1px solid ${GRAY};
   border-radius: 0;
-  margin-top: 5px;
-`
-
-export const StyledButton = styled(Button)`
   height: 40px;
+  margin-top: 5px;
+  width: 100%;
+`
+export const StyledButton = styled(Button)`
+  background-color: ${BLUE};
+  border-color: ${BLUE};
   border-radius: 5px;
-  background-color: #4a90e2;
-  border-color: #4a90e2;
-  color: #fff;
+  color: ${WHITE};
+  height: 40px;
+  margin-right: 8px;
+  width: 85px;
 
   &:hover {
-    background-color: #6ea6e7;
-    border-color: #6ea6e7;
+    background-color: ${BLUE_SOFT};
+    border-color: ${BLUE_SOFT};
   }
 `
 
 export const StyledGhostButton = styled(Button)`
-  height: 40px;
-  border: 1px solid #dcdcdc;
+  background-color: ${WHITE};
+  border: 1px solid ${GRAY_LIGHT};
   border-radius: 5px;
-  background-color: #ffffff;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
-  margin-right: 8px;
+  height: 40px;
+  width: 85px;
 
   &:hover {
-    border-color: #4a90e2;
-    color: #4a90e2;
+    border-color: ${BLUE};
+    color: ${BLUE};
   }
 `
 
 export const StyledCheckbox = styled(Checkbox)`
-  height: 36px;
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
+  height: 36px;
   letter-spacing: 0.2px;
   line-height: 22px;
-  margin-top 
 `
 
 export const StripeCardElement = {
   base: {
     fontSize: '16px',
-    color: '#5f6062'
+    color: GRAY_DARK
   }
 }

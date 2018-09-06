@@ -172,8 +172,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
     const details = get(product, 'details', '')
     const products = get(product, 'relatedProducts', [] as Product[])
-    const intendedUse = get(product, 'intendedUse', '')
-    const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
 
     const rating = get(yotpoAverageScore, 'averageScore', 0)
@@ -337,6 +335,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       <DetailsListItem {...{ key }}>{detail}</DetailsListItem>
     ))
 
+    const productMaterials = (materials && materials.split('-')) || ['']
+    const materialsList = productMaterials.map(
+      (material: number, key: number) => (
+        <DetailsListItem {...{ key }}>{material}</DetailsListItem>
+      )
+    )
+
     const productInfo = (
       <div>
         <ProductInfo
@@ -349,21 +354,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </ProductInfo>
         <ProductInfo
           id="Specs"
-          title={formatMessage(messages.specs)}
+          title={formatMessage(messages.materials)}
           showContent={showSpecs}
           toggleView={this.toggleProductInfo}
         >
-          <p>
-            {intendedUse &&
-              `${formatMessage(messages.intendedUse)}: ${intendedUse}`}
-          </p>
-          <p>
-            {temperatures &&
-              `${formatMessage(messages.temperatures)}: ${temperatures}`}
-          </p>
-          <p>
-            {materials && `${formatMessage(messages.materials)}: ${materials}`}
-          </p>
+          {materialsList}
         </ProductInfo>
       </div>
     )

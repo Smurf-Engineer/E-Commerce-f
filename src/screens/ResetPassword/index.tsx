@@ -152,7 +152,7 @@ export class ResetPassword extends React.Component<Props, {}> {
             />
             <ButtonsContainer>
               <StyledChangePasswordButton
-                type="danger"
+                type="primary"
                 onClick={this.handleChangePassword}
               >
                 {formatMessage(messages.changePasswordLabel)}
