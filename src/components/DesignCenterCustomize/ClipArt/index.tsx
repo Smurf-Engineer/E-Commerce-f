@@ -24,9 +24,6 @@ class ClipArt extends React.Component<Props, {}> {
 
   handleOnApplyArt = () => {
     const { url, id, onClickApply } = this.props
-    console.log('---------------------------')
-    console.log(url, id)
-    console.log('---------------------------')
     onClickApply(url, id)
   }
 }

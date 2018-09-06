@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntButton from 'antd/lib/button'
-import { GRAY, TRANSPARENT, BLUE } from '../../../theme/colors'
+import { GRAY, TRANSPARENT, BLUE, WHITE } from '../../../theme/colors'
 
 export const Container = styled.div`
   cursor: pointer;
@@ -48,5 +48,5 @@ export const Icon = styled.img`
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
