@@ -16,6 +16,7 @@ export const Container = styled.div`
   width: 74.6%;
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 `
 
 export const CanvasContainer = styled.div`
@@ -61,12 +62,8 @@ export const Progress = styled(AntdProgress)`
 `
 
 export const Button = styled(AntdButton)`
-  position: absolute;
   height: 40px;
-  bottom: 10%;
   width: 138px;
-  left: 50%;
-  transform: translate(-50%, -50%);
 `
 export const DragText = styled.div`
   color: #5f6062;
@@ -74,7 +71,7 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 19%;
+  bottom: 32%;
   left: 50%;
   transform: translate(-50%, -50%);
 `
@@ -129,7 +126,9 @@ export const LoadingContainer = styled.div`
 `
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+
   .ant-btn-primary  {
     background-color: #4a90e2;
     border-color: #4a90e2;
