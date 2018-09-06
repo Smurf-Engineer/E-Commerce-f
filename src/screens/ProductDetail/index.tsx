@@ -156,8 +156,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     // const code = get(product, 'code', '')
     const type = get(product, 'type', '')
     const description = get(product, 'description', '')
-    const intendedUse = get(product, 'intendedUse', '')
-    const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
     const genders = get(product, 'genders', [] as Filter[])
 
@@ -241,10 +239,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     let productInfo
     if (product) {
-      const productDetails =
-        product.details !== null ? product.details.split(',') : ['']
+      const detailsOptions = get(product, 'details')
+      const productDetails = (detailsOptions && detailsOptions.split(',')) || [
+        ''
+      ]
       const details = productDetails.map((detail, index) => (
         <DetailsListItem key={index}>{detail}</DetailsListItem>
+      ))
+
+      const materialsArray = (materials && materials.split('-')) || ['']
+      const materialsLit = materialsArray.map((material, index) => (
+        <DetailsListItem key={index}>{material}</DetailsListItem>
       ))
 
       productInfo = (
@@ -259,27 +264,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           </ProductInfo>
           <ProductInfo
             id="Specs"
-            title={formatMessage(messages.specsLabel)}
+            title={formatMessage(messages.materialsLabel)}
             showContent={showSpecs}
             toggleView={this.toggleProductInfo}
           >
-            <p>
-              {intendedUse
-                ? `${formatMessage(messages.intendedUseLabel)}: ${intendedUse}`
-                : null}
-            </p>
-            <p>
-              {temperatures
-                ? `${formatMessage(
-                    messages.temperaturesLabel
-                  )}: ${temperatures}`
-                : null}
-            </p>
-            <p>
-              {materials
-                ? `${formatMessage(messages.materialsLabel)}: ${materials}`
-                : null}
-            </p>
+            {materialsLit}
           </ProductInfo>
         </div>
       )

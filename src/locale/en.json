@@ -336,6 +336,7 @@
   "components.CreditCardFormBilling.sameShippingAddress": "Same as shipping address",
   "components.CreditCardFormBilling.continue": "Continue",
   "components.CreditCardFormBilling.requiredField": "This field is required",
+  "components.CreditCardFormBilling.methodCreditCard": "Credit Card",
   "components.CreditCardForm.tittle": "CreditCardForm",
   "components.CreditCardForm.cardNumber": "Card information",
   "components.CreditCardForm.cardholderName": "Cardholder name",
@@ -353,6 +354,8 @@
   "components.MyCards.deleteCard": "Delete",
   "components.MyCards.titleDeleteModal": "Are you sure?",
   "components.MyCards.messageDeleteModal": "This will permanently delete this card",
+  "components.MyCards.selectCountryMessage": "You need to select a country first",
+  "components.MyCards.selectCountry": "Select Country",
   "screens.Compliance.title": "COMPLIANCE",
   "screens.Compliance.bsciMessage": "The Business Social Compliance Initiative (BSCI) is a leading supply chain management system that supports companies to drive social compliance and improvements within factories.",
   "screens.Compliance.bsciSubtitle": "JAKROO is BSCI compliant:",
@@ -890,7 +893,7 @@
   "screens.CustomProductDetail.specs": "Specs",
   "screens.CustomProductDetail.intendedUse": "INTENDED USE",
   "screens.CustomProductDetail.temperatures": "TEMPERATURE RANGE",
-  "screens.CustomProductDetail.materials": "MATERIALS",
+  "screens.CustomProductDetail.materials": "Materials info",
   "screens.CustomProductDetail.standard": "Standard",
   "screens.CustomProductDetail.oops": "Oops!",
   "screens.CustomProductDetail.seemsPrivate": "Seems like this design is private or not available",
@@ -903,7 +906,7 @@
   "screens.ProductDetail.detailsLabel": "Details",
   "screens.ProductDetail.specsLabel": "Specs",
   "screens.ProductDetail.temperaturesLabel": "TEMPERATURE RANGE",
-  "screens.ProductDetail.materialsLabel": "MATERIALS",
+  "screens.ProductDetail.materialsLabel": "Materials info",
   "screens.ProductDetail.compareLabel": "COMPARE",
   "screens.ProductDetail.genderLabel": "Gender",
   "screens.ProductDetail.ColorsLabel": "Colors",
@@ -1019,5 +1022,8 @@
   "components.designCenterCustomize.ColorButtons.color4": "Area 4",
   "components.designCenterCustomize.ColorButtons.color5": "Area 5",
 
-  "components.CheckoutSummary.placeOrder": "Place Order"
+  "components.CheckoutSummary.placeOrder": "Place Order",
+  "components.ImageList.delete": "Delete",
+  "components.ImageList.apply": "Apply",
+  "components.ImageList.size": "Max. size {width} cm x {height} cm"
 }

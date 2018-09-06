@@ -2,10 +2,11 @@
  * Styled Components - Created by david on 08/06/18.
  */
 import styled from 'styled-components'
+import { WHITE, GRAY_LIGHTEST, GRAY_DARK } from '../../../theme/colors'
 
 export const Container = styled.div`
-  overflow: auto;
   height: 60vh;
+  overflow: auto;
 
   @media (min-height: 800px) {
     height: 85vh;
@@ -13,35 +14,36 @@ export const Container = styled.div`
 `
 
 export const DraggerContainer = styled.div`
-  padding: 8px;
   height: 50vh;
+  padding: 8px;
 `
 
 export const DraggerBottom = styled.div`
   padding: 8px;
+
   .ant-upload.ant-upload-drag {
-    background: #ffffff;
+    background: ${WHITE};
     padding: 8px 0;
   }
 `
 export const LoginMessage = styled.div`
-  margin-top: 16px;
   font-size: 16px;
   line-height: 23px;
+  margin-top: 16px;
   text-align: center;
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const Header = styled.div`
-  background-color: #f1f4f5;
+  background-color: ${GRAY_LIGHTEST};
   padding: 10px 30px;
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
@@ -52,17 +54,21 @@ type Props = {
 }
 
 export const Recommendation = styled.div`
-  color: ${({ color = '#5f6062' }: Props) => color};
+  color: ${({ color = GRAY_DARK }: Props) => color};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 23px;
   padding: 8px 34px;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 8px 10px;
+  }
 `
 
 export const EmptyContainer = styled.div`
+  align-items: center;
   display: flex;
   flex: 1;
   height: 60vh;
   justify-content: center;
-  align-items: center;
 `

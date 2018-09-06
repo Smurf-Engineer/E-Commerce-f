@@ -11,6 +11,7 @@ import Spin from 'antd/lib/spin'
 import WithError from '../../WithError'
 import OptionText from '../../OptionText'
 import TextEditor from '../TextEditor'
+import Symbol from '../ClipArt'
 import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
 import { clipArtsQuery } from './data'
 import messages from './messages'
@@ -27,7 +28,6 @@ import {
   RowList,
   Col,
   List,
-  Icon,
   Loading,
   NotFound
 } from './styledComponents'
@@ -69,10 +69,10 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       clipArts && !!clipArts.length ? (
         clipArts.map(({ id, url }) => (
           <Col key={id}>
-            <Icon
+            <Symbol
+              {...{ url, id }}
               selected={selectedItem === id}
-              src={url}
-              onClick={this.handleOnApplyArt(url, id)}
+              onClickApply={this.handleOnApplyArt}
             />
           </Col>
         ))
@@ -170,7 +170,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     onApplyArt('', selectedElement)
   }
 
-  handleOnApplyArt = (url: string, fileId: number) => () => {
+  handleOnApplyArt = (url: string, fileId: number) => {
     const { onApplyArt } = this.props
     onApplyArt(url, undefined, fileId)
   }

@@ -78,7 +78,8 @@ class UploadTab extends React.PureComponent<Props, State> {
       data,
       uploadingFile,
       isUserAuthenticated,
-      selectedItem
+      selectedItem,
+      formatMessage
     } = this.props
 
     if (!isUserAuthenticated) {
@@ -121,6 +122,7 @@ class UploadTab extends React.PureComponent<Props, State> {
           images={imagesData}
           onClickDelete={this.handleOnDelete}
           currentSelected={selectedItem}
+          {...{ formatMessage }}
         />
         <DraggerBottom>{dragger}</DraggerBottom>
         <Recommendation color={RED}>
