@@ -53,7 +53,7 @@ export const getTaxesAndDiscount = (
 
   discount = roundDecimals(discount) // round to 2 decimals
 
-  // canadian taxes
+  // taxes
   let taxGst = 0
   let taxPst = 0
   let taxFee = 0
@@ -62,6 +62,7 @@ export const getTaxesAndDiscount = (
     let taxTotal = 0
     switch (countrySubsidiary.toLowerCase()) {
       case COUNTRY_CODE_US:
+        // for USA the tax is calculated with this formula (subtotal + proDesignReview) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
           taxTotal = ((subtotal + proDesignFee) * taxesAmount) / 100 // calculate tax
           taxFee = roundDecimals(taxTotal) // round to 2 decimals
@@ -72,8 +73,11 @@ export const getTaxesAndDiscount = (
           shippingAddressCountry.toLowerCase() === COUNTRY_CODE_CANADA &&
           taxRates
         ) {
+          // for CANADA the taxes are calculated
+          // GST = (subtotal + proDesignReview + shipping) * gstRate%
           taxGst =
             ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) / 100 // calculate tax
+          // PST = (subtotal + proDesignReview) * pstRate%
           taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
           taxPst = roundDecimals(taxPst) // round to 2 decimals
@@ -82,36 +86,26 @@ export const getTaxesAndDiscount = (
       case COUNTRY_CODE_AT:
         taxVatTotal = taxesAmount / 100
         if (applySpecialTaxes) {
-          taxVat =
-            // TODO: delete if new formula calculates right
-            // subtotal -
-            // proDesignFee -
-            // (subtotal - proDesignFee) / (1 + taxVatTotal) +
-            // shippingTotal * taxVatTotal +
-            // proDesignFee * taxVatTotal
-            (subtotal / (1 + taxVatTotal) +
-              proDesignFee +
-              shippingTotal -
-              discount) *
-            taxVatTotal
-          taxVat = roundDecimals(taxVat) // round to 2 decimals
+          // explanation of taxVat at calculateTaxVat function
+          taxVat = calculateTaxVat(
+            subtotal,
+            taxVatTotal,
+            proDesignFee,
+            shippingTotal,
+            discount
+          )
         }
         break
       case COUNTRY_CODE_DE:
         taxVatTotal = taxesAmount / 100
-        taxVat =
-          // TODO: delete if new formula calculates right
-          // subtotal -
-          // proDesignFee -
-          // (subtotal - proDesignFee) / (1 + taxVatTotal) +
-          // shippingTotal * taxVatTotal +
-          // proDesignFee * taxVatTotal
-          (subtotal / (1 + taxVatTotal) +
-            proDesignFee +
-            shippingTotal -
-            discount) *
-          taxVatTotal
-        taxVat = roundDecimals(taxVat) // round to 2 decimals
+        // explanation of taxVat at calculateTaxVat function
+        taxVat = calculateTaxVat(
+          subtotal,
+          taxVatTotal,
+          proDesignFee,
+          shippingTotal,
+          discount
+        )
         break
       default:
         break
@@ -130,4 +124,19 @@ export const getTaxesAndDiscount = (
 
 export const roundDecimals = (n: number) => {
   return Math.round(n * 100) / 100
+}
+
+export const calculateTaxVat = (
+  subtotal: number,
+  taxVatTotal: number,
+  proDesignFee: number,
+  shippingTotal: number,
+  discount: number
+) => {
+  // totalNet = subtotal / (1 + taxVatTotal) NOTE: this only apply for Austria and Germany
+  // taxVat = (totalNet + proDesignReview + shipping - discount) * vatRate%
+  const totalNet = subtotal / (1 + taxVatTotal)
+  const taxVat =
+    (totalNet + proDesignFee + shippingTotal - discount) * taxVatTotal
+  return roundDecimals(taxVat) // round to 2 decimals
 }

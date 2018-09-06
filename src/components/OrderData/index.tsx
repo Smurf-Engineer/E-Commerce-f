@@ -238,7 +238,6 @@ class OrderData extends React.Component<Props, {}> {
             ) : null}
           </InfoContainer>
           <SummaryContainer>
-            {/* TODO: add discount*/}
             <OrderSummary
               totalSum={total}
               shippingTotal={shippingAmount}
