@@ -8,13 +8,20 @@ interface Props {
   price?: number
   quantity?: string
   index: number
+  symbol: string
   priceColor?: string
 }
 
-const PriceQuantity = ({ price, quantity, index, priceColor = '' }: Props) => {
+const PriceQuantity = ({
+  price,
+  quantity,
+  index,
+  symbol,
+  priceColor = ''
+}: Props) => {
   return (
     <Container>
-      <PriceLabel {...{ priceColor }}>{`$ ${price}`}</PriceLabel>
+      <PriceLabel {...{ priceColor }}>{`${symbol} ${price}`}</PriceLabel>
       <QuantityLabel>{`${quantity} ${index > 0 ? 'pcs' : ''}`}</QuantityLabel>
     </Container>
   )

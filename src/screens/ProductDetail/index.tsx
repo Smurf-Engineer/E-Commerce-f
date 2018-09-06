@@ -208,7 +208,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         : []
 
     let retailPrice
-
     if (!product || error) {
       return (
         <Layout {...{ intl, history }}>
@@ -223,11 +222,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       abbreviation: currentCurrency || config.defaultCurrency
     })
 
+    const symbol = currencyPrices[0].shortName
+
     renderPrices = currencyPrices.map(
       ({ price, quantity }: any, index: number) => {
         const render = (
           <AvailablePrices key={index}>
-            <PriceQuantity {...{ index, price, quantity }} />
+            <PriceQuantity {...{ index, price, quantity, symbol }} />
           </AvailablePrices>
         )
 
@@ -245,8 +246,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           index={1}
           price={getRetailPrice.price}
           quantity={getRetailPrice.quantity}
+          {...{ symbol }}
         />
       </AvailablePrices>
+    )
+
+    renderPrices = currencyPrices.map(
+      ({ price, quantity }: any, index: number) => {
+        const render = (
+          <AvailablePrices key={index}>
+            <PriceQuantity {...{ index, price, quantity, symbol }} />
+          </AvailablePrices>
+        )
+
+        return !isRetail && index >= 4 ? null : render
+      }
     )
 
     let productInfo
