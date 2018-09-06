@@ -194,7 +194,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       requestWarranty,
       resetReducerDataAction,
       user,
-      intl
+      intl: { formatMessage }
     } = this.props
     const { file } = this.state
     let fileResponse = ''
@@ -215,6 +215,12 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       !productIs
     ) {
       validFormAction(true)
+      return
+    }
+
+    const userLogged = !!localStorage.getItem('user')
+    if (!userLogged) {
+      message.error(formatMessage(messages.needToLogIn))
       return
     }
 
@@ -243,7 +249,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
       await requestWarranty({
         variables: { warrantyObject }
       })
-      message.success(intl.formatMessage(messages.successClaim))
+      message.success(formatMessage(messages.successClaim))
 
       resetReducerDataAction()
       this.setState({ file: null, fileName: '' })
@@ -251,7 +257,7 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
 
       setLoadingAction(false)
     } catch (error) {
-      message.error('Something wrong happened. Please try again!')
+      message.error(formatMessage(messages.somethingHappened))
       setLoadingAction(false)
     }
   }
