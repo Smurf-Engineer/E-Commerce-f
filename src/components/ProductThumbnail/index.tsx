@@ -155,6 +155,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
         abbreviation: currentCurrency
       })
 
+    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
+
     let lastPrice = LIMIT_PRICE_RANGE
 
     if (currencyPrices && currencyPrices.length < LIMIT_PRICE_RANGE) {
@@ -163,10 +165,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
 
     let price = ''
     if (currencyPrices && currencyPrices.length) {
-      price = `$${currencyPrices[0].price}`
+      price = `${symbol} ${currencyPrices[0].price}`
 
       if (customizable) {
-        price += ` - $${currencyPrices[lastPrice].price}`
+        price += ` - ${currencyPrices[lastPrice].price}`
       }
     }
 
