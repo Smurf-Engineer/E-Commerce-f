@@ -240,7 +240,7 @@ class OrderData extends React.Component<Props, {}> {
           <SummaryContainer>
             {/* TODO: add discount*/}
             <OrderSummary
-              sumTotal={total}
+              totalSum={total}
               shippingTotal={shippingAmount}
               onlyRead={true}
               currencySymbol={currency.shortName}
