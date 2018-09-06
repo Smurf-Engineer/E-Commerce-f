@@ -32,5 +32,13 @@ export default defineMessages({
   keepShoping: {
     id: 'components.DesignCenterPreview.Render3D.keepShoping',
     defaultMessage: 'Keep Shopping'
+  },
+  errorTitle: {
+    id: 'screens.Designs.errorTitle',
+    defaultMessage: 'Oops!'
+  },
+  errorMessage: {
+    id: 'screens.Designs.errorMessage',
+    defaultMessage: 'Seems like the design was deleted or is not available'
   }
 })
