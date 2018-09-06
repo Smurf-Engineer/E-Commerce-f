@@ -10,13 +10,11 @@ import {
   Container,
   Title,
   ContainerMethods,
-  MethodButton,
-  MyCardsRow
+  MethodButton
 } from './styledComponents'
 import CreditCardForm from '../CreditCardFormBilling'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
-import MyCards from '../MyCards'
 import { PaymentOptions } from '../../screens/Checkout/constants'
 const { CREDITCARD, PAYPAL } = PaymentOptions
 
@@ -152,18 +150,6 @@ class Payment extends React.PureComponent<Props, {}> {
           </MethodButton> */}
           {/* TODO: uncomment MethodButtons when paypal, alipay and bank transfer are able */}
         </ContainerMethods>
-        <Title>{formatMessage(messages.methodCreditCard)}</Title>
-        <MyCardsRow>
-          <MyCards
-            {...{
-              formatMessage,
-              showCardFormAction,
-              showCardForm,
-              selectCardToPayAction,
-              selectedCard
-            }}
-          />
-        </MyCardsRow>
         <StripeProvider {...{ stripe }}>
           <Elements>
             <CreditCardForm
@@ -184,7 +170,9 @@ class Payment extends React.PureComponent<Props, {}> {
                 setStripeCardDataAction,
                 nextStep,
                 showCardForm,
-                selectedCard
+                selectedCard,
+                showCardFormAction,
+                selectCardToPayAction
               }}
               selectDropdownAction={this.handleOnDropdownAction}
               inputChangeAction={this.handleOnChangeInput}

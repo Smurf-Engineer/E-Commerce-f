@@ -58,3 +58,10 @@ export const DeleteConfirmMessage = styled.div`
   letter-spacing: 0.2px;
   line-height: 22px;
 `
+export const SelectCountryMessage = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 22px;
+  letter-spacing: 0.2px;
+  line-height: 22px;
+  margin-bottom: 15px;
+`

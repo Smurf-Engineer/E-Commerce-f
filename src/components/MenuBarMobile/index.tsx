@@ -13,6 +13,7 @@ interface Props {
   regionButton: React.ReactNode
   totalItems: number
   designHasChanges: boolean
+  hide?: boolean
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -23,13 +24,14 @@ export const MenuBarMobile = ({
   regionButton,
   totalItems,
   designHasChanges,
+  hide,
   openWithoutSaveModalAction,
   formatMessage
 }: Props) => {
   const handleGoHome = () => window.location.replace('/')
 
   return (
-    <Container>
+    <Container {...{ hide }}>
       <Menu {...{ history, loginButton, regionButton, formatMessage }} />
       <Logo src={logo} onClick={handleGoHome} />
       <Cart

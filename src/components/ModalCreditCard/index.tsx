@@ -15,10 +15,10 @@ import {
   ContainerInput,
   ErrorMsg,
   StyledInput,
-  StripeCardElement,
   StyledButton,
   StyledGhostButton,
-  StyledCheckbox
+  StyledCheckbox,
+  StripeCardElement
 } from './styledComponents'
 
 interface Props {

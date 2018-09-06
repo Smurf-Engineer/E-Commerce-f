@@ -24,5 +24,13 @@ export default defineMessages({
   messageDeleteModal: {
     id: 'components.MyCards.messageDeleteModal',
     defaultMessage: 'This will permanently delete this card'
+  },
+  selectCountryMessage: {
+    id: 'components.MyCards.selectCountryMessage',
+    defaultMessage: 'You need to select a country first'
+  },
+  selectCountry: {
+    id: 'components.MyCards.selectCountry',
+    defaultMessage: 'Select Country'
   }
 })

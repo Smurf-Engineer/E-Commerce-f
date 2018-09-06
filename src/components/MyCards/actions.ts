@@ -10,6 +10,8 @@ import {
   SHOW_DELETE_CARD_CONFIRM,
   HIDE_DELETE_CARD_CONFIRM,
   SET_MODAL_LOADING,
+  OPEN_COUNTRY_MODAL,
+  SAVE_COUNTRY,
   SET_DELETE_LOADING,
   RESET_REDUCER_DATA,
   SET_CARD_UPDATE,
@@ -88,4 +90,14 @@ export const setStripeErrorAction = (error: string): AnyAction => ({
 export const setLoadingAction = (loading: boolean): AnyAction => ({
   type: SET_LOADING,
   loading
+})
+
+export const openCountryModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_COUNTRY_MODAL,
+  open
+})
+
+export const saveCountryAction = (countryCode: string | null): AnyAction => ({
+  type: SAVE_COUNTRY,
+  countryCode
 })

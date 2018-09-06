@@ -5,15 +5,15 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import find from 'lodash/find'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 import config from '../../config'
 import * as MyCardsActions from './actions'
-import withError from '../WithError'
-import withLoading from '../WithLoading'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
+import CountryModal from '../../components/ConfirmCountryDialog'
 import messages from './messages'
 import {
   cardsQuery,
@@ -21,13 +21,13 @@ import {
   updateCardMutation,
   deleteCardMutation
 } from './data'
-
 import { CreditCardData, QueryProps, StripeCardData } from '../../types/common'
 import {
   Container,
   ButtonWrapper,
   StyledEmptyButton,
   DeleteConfirmMessage,
+  SelectCountryMessage,
   LoadingContainer
 } from './styledComponents'
 import ModalTitle from '../ModalTitle'
@@ -57,6 +57,9 @@ interface Props {
   showCardForm: boolean
   listForMyAccount: boolean
   selectedCard: CreditCardData
+  openCountryModal: boolean
+  billingCountry: string
+  country?: string
   formatMessage: (messageDescriptor: any) => string
   // Reducer Actions
   validFormAction: (hasError: boolean) => void
@@ -67,6 +70,8 @@ interface Props {
   hideDeleteCardConfirmAction: () => void
   setLoadingAction: (loading: boolean) => void
   setModalLoadingAction: (loading: boolean) => void
+  openCountryModalAction: (open: boolean) => void
+  saveCountryAction: (countryCode: string | null) => void
   setDeleteLoadingAction: (loading: boolean) => void
   setDefaultPaymentCheckedAction: (checked: boolean) => void
   setCardToUpdateAction: (card: CreditCardData) => void
@@ -91,13 +96,20 @@ class MyCards extends React.Component<Props, {}> {
   state = {
     stripe: null
   }
+  componentWillMount() {
+    const { listForMyAccount } = this.props
+    if (listForMyAccount) {
+      this.handleOpenCountryModal()
+    }
+  }
+  componentWillUnmount() {
+    const { listForMyAccount, resetReducerDataAction } = this.props
+    if (listForMyAccount) {
+      resetReducerDataAction()
+    }
+  }
   componentDidMount() {
-    const {
-      showCardFormAction = () => { },
-      data: {
-        userCards: { cards, default: idDefaultCard }
-      }
-    } = this.props
+    const { showCardFormAction = () => {}, data } = this.props
     // In addition to loading asynchronously, this code is safe to server-side render.
     const stripeJs = document.createElement('script')
     stripeJs.src = 'https://js.stripe.com/v3/'
@@ -110,18 +122,20 @@ class MyCards extends React.Component<Props, {}> {
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
 
-    if (!!cards && !!cards.length) {
-      const defaultCard = find(cards, { id: idDefaultCard })
-      showCardFormAction(false, defaultCard)
-    } else {
-      showCardFormAction(true)
+    if (data && data.userCards) {
+      const {
+        userCards: { cards, default: idDefaultCard }
+      } = data
+      if (!!cards && !!cards.length) {
+        const defaultCard = find(cards, { id: idDefaultCard })
+        return showCardFormAction(false, defaultCard)
+      }
     }
+    showCardFormAction(true)
   }
   render() {
     const {
-      data: {
-        userCards: { cards, default: idDefaultCard }
-      },
+      data,
       formatMessage,
       cardHolderName,
       stripeError,
@@ -140,6 +154,9 @@ class MyCards extends React.Component<Props, {}> {
       loading,
       paymentsRender = true,
       listForMyAccount,
+      openCountryModal,
+      billingCountry,
+      country,
       setStripeCardDataAction,
       selectCardToPayAction,
       selectedCard
@@ -147,35 +164,57 @@ class MyCards extends React.Component<Props, {}> {
 
     const { stripe } = this.state
 
-    if (loading) {
+    const countryModal = (
+      <CountryModal
+        {...{ formatMessage }}
+        open={openCountryModal}
+        requestClose={this.handleCancelCountryModal}
+        onSave={this.handleConfirmSaveCountryModal}
+      />
+    )
+
+    const countryCode = billingCountry || country
+
+    if (loading || (!countryCode && openCountryModal)) {
       return (
-        <LoadingContainer>
-          <Spin />
-        </LoadingContainer>
+        <Container>
+          <LoadingContainer>
+            <Spin />
+          </LoadingContainer>
+          {countryModal}
+        </Container>
       )
     }
 
+    if (!countryCode && !openCountryModal) {
+      return (
+        <Container>
+          <SelectCountryMessage>
+            {formatMessage(messages.selectCountryMessage)}
+          </SelectCountryMessage>
+          <ButtonWrapper {...{ listForMyAccount }}>
+            <StyledEmptyButton onClick={this.handleOpenCountryModal}>
+              {formatMessage(messages.selectCountry)}
+            </StyledEmptyButton>
+          </ButtonWrapper>
+          {countryModal}
+        </Container>
+      )
+    }
+
+    const userCards = get(data, 'userCards', {})
+    const cards = get(userCards, 'cards', [] as CreditCardData[])
+    const idDefaultCard = get(userCards, 'default', '')
+
     return (
       <Container>
-        <ButtonWrapper {...{ listForMyAccount }}>
-          <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
-            {formatMessage(messages.addCard)}
-          </StyledEmptyButton>
-        </ButtonWrapper>
-        <MyCardsList
-          items={cards}
-          {...{
-            formatMessage,
-            idDefaultCard,
-            paymentsRender,
-            listForMyAccount,
-            setStripeCardDataAction,
-            selectCardToPayAction,
-            selectedCard
-          }}
-          showConfirmDelete={this.handleOnShowDeleteCardConfirm}
-          selectCardAsDefault={this.handleOnSelectCardAsDefault}
-        />
+        {(listForMyAccount || !!cards.length) && (
+          <ButtonWrapper {...{ listForMyAccount }}>
+            <StyledEmptyButton type="danger" onClick={this.handleOnAddNewCard}>
+              {formatMessage(messages.addCard)}
+            </StyledEmptyButton>
+          </ButtonWrapper>
+        )}
         <StripeProvider {...{ stripe }}>
           <Elements>
             <ModalCreditCard
@@ -199,6 +238,20 @@ class MyCards extends React.Component<Props, {}> {
             />
           </Elements>
         </StripeProvider>
+        <MyCardsList
+          items={cards}
+          {...{
+            formatMessage,
+            idDefaultCard,
+            paymentsRender,
+            listForMyAccount,
+            setStripeCardDataAction,
+            selectCardToPayAction,
+            selectedCard
+          }}
+          showConfirmDelete={this.handleOnShowDeleteCardConfirm}
+          selectCardAsDefault={this.handleOnSelectCardAsDefault}
+        />
         <Modal
           visible={showDeleteCardConfirm}
           confirmLoading={deleteLoading}
@@ -224,16 +277,33 @@ class MyCards extends React.Component<Props, {}> {
       </Container>
     )
   }
+  handleOpenCountryModal = () => {
+    const { openCountryModalAction } = this.props
+    openCountryModalAction(true)
+  }
+  handleCancelCountryModal = () => {
+    const { openCountryModalAction } = this.props
+    openCountryModalAction(false)
+  }
+
+  handleConfirmSaveCountryModal = (countryCode: string | null) => {
+    const { openCountryModalAction, saveCountryAction } = this.props
+    openCountryModalAction(false)
+    saveCountryAction(countryCode)
+  }
   handleOnAddNewCard = () => {
     const {
       listForMyAccount,
       showCardModalAction,
       showCardFormAction,
       showCardForm,
-      data: {
-        userCards: { cards, default: idDefaultCard }
-      }
+      data
     } = this.props
+
+    const userCards = get(data, 'userCards', {})
+    const cards = get(userCards, 'cards', [] as CreditCardData[])
+    const idDefaultCard = get(userCards, 'default', '')
+
     const defaultCard = find(cards, { id: idDefaultCard })
 
     if (listForMyAccount) {
@@ -283,10 +353,15 @@ class MyCards extends React.Component<Props, {}> {
     const {
       resetReducerDataAction,
       addNewCard,
+      billingCountry,
       cardAsDefaultPayment
     } = this.props
     await addNewCard({
-      variables: { token: stripeToken, defaultValue: cardAsDefaultPayment },
+      variables: {
+        token: stripeToken,
+        defaultValue: cardAsDefaultPayment,
+        countryCode: billingCountry
+      },
       refetchQueries: [{ query: cardsQuery }]
     })
     resetReducerDataAction()
@@ -313,12 +388,20 @@ class MyCards extends React.Component<Props, {}> {
   }
 }
 
+interface OwnProps {
+  billingCountry?: string
+}
+
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
 const MyCardsEnhance = compose(
-  graphql(cardsQuery),
-  withLoading,
-  withError,
+  graphql(cardsQuery, {
+    options: ({ billingCountry }: OwnProps) => ({
+      fetchPolicy: 'network-only',
+      variables: { countryCode: billingCountry },
+      skip: !billingCountry
+    })
+  }),
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,

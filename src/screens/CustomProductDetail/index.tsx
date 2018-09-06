@@ -172,8 +172,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
     const details = get(product, 'details', '')
     const products = get(product, 'relatedProducts', [] as Product[])
-    const intendedUse = get(product, 'intendedUse', '')
-    const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
 
     const rating = get(yotpoAverageScore, 'averageScore', 0)
@@ -189,6 +187,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         abbreviation: currentCurrency || config.defaultCurrency
       })
 
+    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
+
     const renderPrices =
       currencyPrices &&
       currencyPrices.length &&
@@ -196,7 +196,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         ({ price, quantity }, index: number) =>
           index < MAX_AMOUNT_PRICES && (
             <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity }} />
+              <PriceQuantity {...{ index, price, quantity, symbol }} />
             </AvailablePrices>
           )
       )
@@ -226,12 +226,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const availableSizes =
       sizeRange &&
-      sizeRange.map(({ id, name: sizeName }: SelectedType, key: number) => (
+      sizeRange.map(({ id, name: sizeName }: ItemDetailType, key: number) => (
         <div {...{ key }}>
           <SectionButton
             id={String(id)}
             selected={id === selectedSize.id}
-            onClick={this.handleSelectedSize({ id, name: sizeName })}
+            onClick={this.handleSelectedSize({
+              id: Number(id),
+              name: String(sizeName)
+            })}
           >
             {sizeName}
           </SectionButton>
@@ -337,6 +340,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       <DetailsListItem {...{ key }}>{detail}</DetailsListItem>
     ))
 
+    const productMaterials = (materials && materials.split('-')) || ['']
+    const materialsList = productMaterials.map(
+      (material: number, key: number) => (
+        <DetailsListItem {...{ key }}>{material}</DetailsListItem>
+      )
+    )
+
     const productInfo = (
       <div>
         <ProductInfo
@@ -349,21 +359,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
         </ProductInfo>
         <ProductInfo
           id="Specs"
-          title={formatMessage(messages.specs)}
+          title={formatMessage(messages.materials)}
           showContent={showSpecs}
           toggleView={this.toggleProductInfo}
         >
-          <p>
-            {intendedUse &&
-              `${formatMessage(messages.intendedUse)}: ${intendedUse}`}
-          </p>
-          <p>
-            {temperatures &&
-              `${formatMessage(messages.temperatures)}: ${temperatures}`}
-          </p>
-          <p>
-            {materials && `${formatMessage(messages.materials)}: ${materials}`}
-          </p>
+          {materialsList}
         </ProductInfo>
       </div>
     )
