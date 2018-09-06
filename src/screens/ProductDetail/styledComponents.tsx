@@ -340,3 +340,10 @@ export const ProductAvailableColor = styled.img`
 export const ColorWrapper = styled.div`
   height: 2.5em;
 `
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
+`
