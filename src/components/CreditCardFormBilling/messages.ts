@@ -32,5 +32,9 @@ export default defineMessages({
   requiredField: {
     id: 'components.CreditCardFormBilling.requiredField',
     defaultMessage: 'This field is required'
+  },
+  methodCreditCard: {
+    id: 'components.CreditCardFormBilling.methodCreditCard',
+    defaultMessage: 'Credit Card'
   }
 })
