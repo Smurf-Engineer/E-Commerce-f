@@ -48,6 +48,7 @@ import {
   DetailsList,
   DetailsListItem,
   ProductAvailableColor,
+  ColorWrapper,
   TitleSubtitleContainer
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
@@ -96,6 +97,7 @@ interface Props extends RouteComponentProps<any> {
   selectedGender: SelectedType
   selectedSize: SelectedType
   selectedFit: SelectedType
+  selectedColor: SelectedType
   loadingModel: boolean
   itemToAddCart: any
   currentCurrency: string
@@ -104,6 +106,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedGenderAction: (selected: SelectedType) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
+  setSelectedColorAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   addItemToCartAction: (item: any) => void
   resetReducerAction: () => void
@@ -144,6 +147,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedSize,
       selectedGender,
       selectedFit,
+      selectedColor,
       openFitInfo,
       setLoadingModel,
       currentCurrency,
@@ -339,13 +343,24 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
+    // TODO: implement actual color list when this data comes from the backend
+    const COLORS = [
+      { id: 1, name: 'colorOne', color: ChessColors },
+      { id: 2, name: 'colorTwo', color: RedColor }
+    ]
+
+    const availableColors = COLORS.map(({ id, color }) => (
+      <ProductAvailableColor
+        selected={id === selectedColor.id}
+        src={color}
+        onClick={this.handleSelectColor({ id, name })}
+      />
+    ))
+
     const colorsSection = (
       <SectionRow>
         <SectionTitle>{formatMessage(messages.ColorsLabel)}</SectionTitle>
-        <div>
-          <ProductAvailableColor src={ChessColors} />
-          <ProductAvailableColor src={RedColor} />
-        </div>
+        <ColorWrapper>{availableColors}</ColorWrapper>
       </SectionRow>
     )
 
@@ -375,7 +390,30 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const addToCartRow = this.renderAddButton()
+    const itemDetails = [] as CartItemDetail[]
+
+    if (product) {
+      const detail: CartItemDetail = {
+        fit: selectedFit,
+        size: selectedSize,
+        gender: selectedGender,
+        quantity: 1
+      }
+      itemDetails.push(detail)
+    }
+
+    const itemToAdd = Object.assign({}, { product }, { itemDetails })
+
+    const addToCartRow = (
+      <ButtonsRow>
+        <AddtoCartButton
+          onClick={this.validateAddtoCart}
+          label={formatMessage(messages.addToCartButtonLabel)}
+          item={itemToAdd}
+          itemProdPage={true}
+        />
+      </ButtonsRow>
+    )
 
     const collectionSelection = (
       <BuyNowOptions>
@@ -523,41 +561,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   validateAddtoCart = () => {
-    const { selectedSize, selectedFit } = this.props
-    return selectedSize.id >= 0 && selectedFit.id
+    const { selectedSize, selectedFit, selectedColor } = this.props
+    return selectedSize.id >= 0 && selectedFit.id && selectedColor.id
   }
 
-  renderAddButton = () => {
-    const {
-      selectedFit,
-      selectedSize,
-      selectedGender,
-      data: { product },
-      intl: { formatMessage }
-    } = this.props
-
-    const itemDetails = [] as CartItemDetail[]
-    if (product) {
-      const detail: CartItemDetail = {
-        fit: selectedFit,
-        size: selectedSize,
-        gender: selectedGender,
-        quantity: 1
-      }
-      itemDetails.push(detail)
-    }
-    const itemToAdd = Object.assign({}, { product }, { itemDetails })
-
-    return (
-      <ButtonsRow>
-        <AddtoCartButton
-          onClick={this.validateAddtoCart}
-          label={formatMessage(messages.addToCartButtonLabel)}
-          item={itemToAdd}
-          itemProdPage={true}
-        />
-      </ButtonsRow>
-    )
+  handleSelectColor = (color: SelectedType) => () => {
+    const { setSelectedColorAction } = this.props
+    setSelectedColorAction(color)
   }
 
   closeFitInfoModal = () => {
