@@ -18,7 +18,8 @@ export const Container = styled.div`
   }
 
   @media (min-width: 768px) and (max-width: 991px) {
-    span {
+    & .ant-tabs-tab-prev,
+    & .ant-tabs-tab-next {
       display: none;
     }
     & .ant-tabs-nav-container {

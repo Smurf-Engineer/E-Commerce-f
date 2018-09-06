@@ -3,27 +3,35 @@
  */
 import styled from 'styled-components'
 import AntdInput from 'antd/lib/input'
-import { GRAY, TRANSPARENT } from '../../../theme/colors'
+import {
+  GRAY_LIGHTEST,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  BLUE,
+  WHITE,
+  GRAY,
+  TRANSPARENT
+} from '../../../theme/colors'
 
 export const Container = styled.div``
 
 export const Header = styled.div`
-  background-color: #f1f4f5;
+  background-color: ${GRAY_LIGHTEST};
   padding: 10px 30px;
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   line-height: 19px;
 `
 
 export const Row = styled.div`
-  display: flex;
-  flex-direction: row;
   align-items: center;
   cursor: pointer;
+  display: flex;
+  flex-direction: row;
 `
 export const ArrowIcon = styled.img`
   padding-right: 8px;
@@ -35,30 +43,35 @@ export const Input = styled(AntdInput)`
 `
 
 export const InputWrapper = styled.div`
+  border-bottom: 1px solid ${GRAY_LIGHT};
   padding: 12px 32px;
-  border-bottom: 1px solid #dcdcdc;
+
   .ant-input-group-addon  {
     border: 0px;
   }
 
   .ant-input:hover {
-    border-color: #4a90e2;
+    border-color: ${BLUE};
   }
 
   .ant-input:focus {
-    border-color: #4a90e2;
-    outline: 0;
+    border-color: ${BLUE};
     -webkit-box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+    outline: 0;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 12px 10px;
   }
 `
 
 export const Button = styled.div`
+  color: ${WHITE};
   cursor: pointer;
-  user-select: none;
-  color: #ffffff;
   font-size: 14px;
   line-height: 19px;
+  user-select: none;
 `
 
 interface ListProps {
@@ -66,12 +79,16 @@ interface ListProps {
 }
 
 export const List = styled.div`
-  overflow: auto;
   height: ${({ height }: ListProps) => height}vh;
+  overflow: auto;
   padding: 4px 32px 32px 32px;
 
   @media (min-height: 800px) {
     height: 55vh;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 4px 5px 32px 2px;
   }
 `
 
@@ -79,17 +96,17 @@ export const RowList = styled.ul`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  width: 100%;
   padding-left: 0;
+  width: 100%;
 `
 
 export const Col = styled.li`
-  list-style: none;
   display: inline-block;
-  width: calc(100% / 4);
   height: 48px;
-  text-align: center;
+  list-style: none;
   margin-bottom: 6px;
+  text-align: center;
+  width: calc(100% / 4);
 `
 
 type ColProps = {
@@ -97,24 +114,24 @@ type ColProps = {
 }
 
 export const Icon = styled.img`
-  cursor: pointer;
-  width: 48px;
-  height: 48px;
   border: 1px solid
     ${({ selected }: ColProps) => (selected ? GRAY : TRANSPARENT)};
+  cursor: pointer;
+  height: 48px;
+  width: 48px;
 `
 
 export const NotFound = styled.div`
-  width: 100%;
   margin-top: 40px;
   text-align: center;
+  width: 100%;
 `
 
 export const Loading = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
   align-items: center;
+  display: flex;
+  height: 100%;
   justify-content: center;
   text-align: center;
+  width: 100%;
 `
