@@ -1023,5 +1023,8 @@
   "screens.ShoppingCartPage.taxesPst": "PST",
   "screens.ShoppingCartPage.taxesVat": "VAT",
 
-  "components.CheckoutSummary.placeOrder": "Place Order"
+  "components.CheckoutSummary.placeOrder": "Place Order",
+  "components.ImageList.delete": "Delete",
+  "components.ImageList.apply": "Apply",
+  "components.ImageList.size": "Max. size {width} cm x {height} cm"
 }

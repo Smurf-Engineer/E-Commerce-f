@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntButton from 'antd/lib/button'
-import { GRAY, TRANSPARENT } from '../../../theme/colors'
+import { GRAY, TRANSPARENT, BLUE } from '../../../theme/colors'
 
 export const Container = styled.div`
   cursor: pointer;
@@ -25,17 +25,17 @@ type ColProps = {
 export const Button = styled(AntButton)`
   display: none;
 
-  color: #4a90e2;
-  border-color: #4a90e2;
+  color: ${BLUE};
+  border-color: ${BLUE};
 
   .ant-btn-clicked:after {
-    border-color: #4a90e2;
+    border-color: ${BLUE};
   }
 
   ${Container}:hover & {
     display: block;
-    color: #4a90e2;
-    border-color: #4a90e2;
+    color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 

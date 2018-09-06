@@ -12,8 +12,12 @@ import {
   Name,
   Size,
   Delete,
-  Footer
+  Apply,
+  Footer,
+  Buttons,
+  ButtonWrapper
 } from './styledComponents'
+import messages from './messages'
 
 const vectorImages = [
   'application/postscript',
@@ -40,6 +44,7 @@ const getFileName = (url: string): string => {
 interface Props {
   images: ImageFile[]
   currentSelected: number
+  formatMessage: (messageDescriptor: any, params?: any) => string
   onClickImage: (file: ImageFile) => void
   onClickDelete: (id: number) => void
 }
@@ -48,6 +53,7 @@ class ImageList extends React.PureComponent<Props, {}> {
   render() {
     const { images, currentSelected } = this.props
     const imageList = images.map((file, index) => {
+      const { formatMessage } = this.props
       const { id, fileUrl, size, type } = file
       const isVectorImage = vectorImages.includes(type)
       const name = getFileName(fileUrl)
@@ -59,19 +65,25 @@ class ImageList extends React.PureComponent<Props, {}> {
       }
       return (
         <Row key={index} selected={currentSelected === id}>
-          <Image src={fileUrl} onClick={this.handleOnClickImage(file)} />
+          <Image src={fileUrl} />
           <Info>
-            <Name>{name}</Name>
-            <Footer>
-              {isVectorImage ? (
-                <div />
-              ) : (
-                <div>
-                  <Size>Max</Size>
-                  <Size>{`${width} cm x ${height} cm`}</Size>
-                </div>
+            <div>
+              <Name>{name}</Name>
+              {!isVectorImage && (
+                <Size>{formatMessage(messages.size, { width, height })}</Size>
               )}
-              <Delete onClick={this.handleOnClickDelete(id)}>Delete</Delete>
+            </div>
+            <Footer>
+              <Buttons>
+                <Delete type="ghost" onClick={this.handleOnClickDelete(id)}>
+                  {formatMessage(messages.delete)}
+                </Delete>
+                <ButtonWrapper>
+                  <Apply type="primary" onClick={this.handleOnClickImage(file)}>
+                    {formatMessage(messages.apply)}
+                  </Apply>
+                </ButtonWrapper>
+              </Buttons>
             </Footer>
           </Info>
         </Row>

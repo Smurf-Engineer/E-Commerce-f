@@ -2,12 +2,13 @@
  * Styled Components - Created by david on 08/06/18.
  */
 import styled from 'styled-components'
+import AntdButton from 'antd/lib/button'
 import {
   GRAY_LIGHTEST,
   WHITE,
-  RED,
   GRAY,
-  TRANSPARENT
+  TRANSPARENT,
+  BLUE
 } from '../../../theme/colors'
 
 export const Container = styled.div`
@@ -53,7 +54,7 @@ export const Info = styled.div`
   display: flex;
   flex-direction: column;
   width: 70%;
-  padding-left: 24px;
+  padding-left: 16px;
   justify-content: space-between;
 `
 
@@ -73,18 +74,38 @@ export const Size = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 10px;
-  padding-bottom: 4px;
+  padding-top: 4px;
 `
 
-export const Delete = styled.div`
-  color: ${RED};
-  font-size: 14px;
-  letter-spacing: 0.18px;
-  line-height: 19px;
-  cursor: pointer;
+export const SizeRow = styled.div`
+  display: flex;
+  flex-direction: row;
 `
+
+export const Delete = styled(AntdButton)``
 
 export const Footer = styled.div`
   display: flex;
   justify-content: space-between;
 `
+
+export const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
+`
+
+export const ButtonWrapper = styled.div`
+  .ant-btn-primary  {
+    background-color: ${BLUE};
+    border-color: ${BLUE};
+  }
+  .ant-btn-primary:hover {
+    background-color:${BLUE};
+    border-color: ${BLUE};
+  }
+`
+
+export const Apply = styled(AntdButton)``
