@@ -1022,5 +1022,8 @@
   "components.designCenterCustomize.ColorButtons.color4": "Area 4",
   "components.designCenterCustomize.ColorButtons.color5": "Area 5",
 
-  "components.CheckoutSummary.placeOrder": "Place Order"
+  "components.CheckoutSummary.placeOrder": "Place Order",
+  "components.ImageList.delete": "Delete",
+  "components.ImageList.apply": "Apply",
+  "components.ImageList.size": "Max. size {width} cm x {height} cm"
 }
