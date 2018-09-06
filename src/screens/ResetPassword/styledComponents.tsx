@@ -4,7 +4,7 @@
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
-import { WHITE, GRAY_DARK, GRAY_LIGHT, RED } from '../../theme/colors'
+import { WHITE, GRAY_DARK, GRAY_LIGHT, RED, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   background-color: ${WHITE};
@@ -25,7 +25,7 @@ export const ContentHeader = styled.div`
   align-items: center;
   display: flex;
   margin: auto;
-  max-width: 1024px;
+  max-width: 1440px;
   padding: 18px 36px;
 `
 export const LogoIcon = styled.img``
@@ -71,51 +71,21 @@ export const StyledInput = styled(Input)`
   height: 40px;
   margin-bottom: 20px;
 `
-export const RememberMeRow = styled.div`
-  display: flex;
-  justify-content: space-between;
-  height: 19px;
-  color: #5f6062;
-  font-size: 14px;
-  line-height: 19px;
-  text-align: right;
-  margin-bottom: 20px;
-`
-export const JoinNowLabel = styled.span`
-  font-weight: 600;
-  margin-left: 5px;
-  &:hover {
-    cursor: pointer;
-  }
-`
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 100%;
-
-  @media (min-width: 550px) {
-    width: 70%;
-  }
-
-  @media (min-width: 771px) {
-    width: 50%;
-  }
-
-  @media (min-width: 971px) {
-    width: 40%;
-  }
 `
 export const StyledChangePasswordButton = styled(Button)`
-  background-color: ${WHITE};
-  border-color: ${RED};
+  background-color: ${BLUE};
+  border-color: ${BLUE};
   border-radius: 0px;
   height: 50px;
   margin-bottom: 10px;
-  width: 100%;
+  width: 146px;
 
-  @media (min-width: 550px) {
-    width: initial;
+  @media (max-width: 505px) {
+    width: 100%;
   }
 `
 export const StyledCancelButton = styled(Button)`
@@ -126,18 +96,11 @@ export const StyledCancelButton = styled(Button)`
   letter-spacing: 0.11px;
   line-height: 22px;
   margin-bottom: 10px;
-  width: 100%;
+  margin-left: 10px;
+  width: 146px;
 
-  @media (min-width: 550px) {
-    width: initial;
+  @media (max-width: 505px) {
+    margin-left: 0px;
+    width: 100%;
   }
-`
-export const NotAMemberLabel = styled.div`
-  height: 22px;
-  width: 100%;
-  color: #5f6062;
-  font-size: 14px;
-  line-height: 22px;
-  text-align: center;
-  margin-bottom: 50px;
 `

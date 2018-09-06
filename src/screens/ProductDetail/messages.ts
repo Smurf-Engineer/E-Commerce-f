@@ -35,7 +35,7 @@ export default defineMessages({
   },
   materialsLabel: {
     id: 'screens.ProductDetail.materialsLabel',
-    defaultMessage: 'MATERIALS'
+    defaultMessage: 'Materials Info'
   },
   compareLabe: {
     id: 'screens.ProductDetail.compareLabel',

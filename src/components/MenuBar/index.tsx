@@ -216,6 +216,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                       formatMessage
                     }}
                     totalItems={itemsInCart}
+                    hide={hideTop}
                     loginButton={loggedUser}
                     regionButton={menuRegion}
                   />

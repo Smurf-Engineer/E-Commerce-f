@@ -17,7 +17,7 @@ export const SearchBarContent = styled.div`
   color: #fff;
 
   @media (min-width: 768px) and (max-width: 1024px) {
-    top: 14em;
+    top: 30em;
     width: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -36,6 +36,11 @@ export const SearchBackground = styled.img`
   width: 100%;
   height: 40em;
   object-fit: cover;
+
+  @media (max-width: 425px) {
+    width: 100%;
+    height: 15em;
+  }
 `
 export const SearchContainer = styled.div`
   position: relative;
