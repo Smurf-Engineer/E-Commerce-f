@@ -69,6 +69,7 @@ export class SearchResults extends React.Component<Props, {}> {
           colors,
           images
         } = product
+        console.log(priceRange, 'priceRange')
         // TODO: filter by gender
         const productImages = !!images ? images[0] : {}
         return (
@@ -89,6 +90,7 @@ export class SearchResults extends React.Component<Props, {}> {
               onPressCustomize={this.gotoCustomize}
               images={productImages}
               onPressQuickView={quickViewAction}
+              reversePriceRange={true}
               customizableLabel={
                 <FormattedMessage {...messages.customizable} />
               }
