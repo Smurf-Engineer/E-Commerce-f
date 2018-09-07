@@ -67,7 +67,7 @@ export const getTaxesAndDiscount = (
       case COUNTRY_CODE_US:
         // for USA the tax is calculated with this formula (subtotal + proDesignReview) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
-          taxTotal = (subtotal + proDesignFee) * (taxesAmount / 100) // calculate tax
+          taxTotal = (subtotal + proDesignFee - discount) * (taxesAmount / 100) // calculate tax
           taxFee = roundDecimals(taxTotal) // round to 2 decimals
         }
         break
@@ -79,7 +79,9 @@ export const getTaxesAndDiscount = (
           // for CANADA the taxes are calculated
           // GST = (subtotal + proDesignReview + shipping) * gstRate%
           taxGst =
-            ((shippingTotal + subtotal + proDesignFee) * taxRates.rateGst) / 100 // calculate tax
+            ((shippingTotal + subtotal + proDesignFee - discount) *
+              taxRates.rateGst) /
+            100 // calculate tax
           // PST = (subtotal + proDesignReview) * pstRate%
           taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
