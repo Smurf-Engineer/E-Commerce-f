@@ -18,6 +18,11 @@ export const getOrdersQuery = gql`
         shortId: short_id
         date: updated_at
         status
+        netsuite: netsuit_order {
+          orderStatus {
+            orderStatus
+          }
+        }
       }
     }
   }
