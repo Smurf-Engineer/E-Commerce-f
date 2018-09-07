@@ -20,19 +20,7 @@ export const getOrdersQuery = gql`
         status
         netsuite: netsuit_order {
           orderStatus {
-            internalId
-            deliveryDate: orderDate
             orderStatus
-            fulfillments {
-              date
-              status
-              packages
-              items {
-                itemId
-                designNumber
-                quantity
-              }
-            }
           }
         }
       }
