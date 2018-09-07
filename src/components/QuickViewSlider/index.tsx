@@ -33,11 +33,16 @@ interface Props {
 
 interface State {
   index: number
+  length: number
 }
 
 class QuickViewSlider extends React.Component<Props, State> {
-  state = {
-    index: 0
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      index: 0,
+      length: props.productImages.length
+    }
   }
   render() {
     const {
@@ -99,17 +104,25 @@ class QuickViewSlider extends React.Component<Props, State> {
     )
   }
   handleNextPage = () => {
-    const { index } = this.state
-    if (index < 3) {
+    const { index, length } = this.state
+    if (index <= length) {
       this.setState({ index: index + 1 })
+    } else {
+      this.resetIndex(0)
     }
   }
 
   handlePreviousPage = () => {
-    const { index } = this.state
+    const { index, length } = this.state
     if (index > 0) {
       this.setState({ index: index - 1 })
+    } else {
+      this.resetIndex(length + 1)
     }
+  }
+
+  resetIndex = (i: number) => {
+    this.setState({ index: i })
   }
 }
 
