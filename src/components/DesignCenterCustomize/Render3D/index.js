@@ -1139,6 +1139,11 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
+        <ButtonWrapper>
+          <Button type="primary" onClick={this.takeDesignPicture}>
+            {formatMessage(messages.saveButton)}
+          </Button>
+        </ButtonWrapper>
         {!!selectedImageElement && (
           <SizeBox>
             <SizeLabel>
@@ -1147,19 +1152,12 @@ class Render3D extends PureComponent {
             <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
           </SizeBox>
         )}
-        <div>
-          <Render
-            id="render-3d"
-            innerRef={container => (this.container = container)}
-          >
-            {loadingModel && <Progress type="circle" percent={progress + 1} />}
-          </Render>
-          <ButtonWrapper>
-            <Button type="primary" onClick={this.takeDesignPicture}>
-              {formatMessage(messages.saveButton)}
-            </Button>
-          </ButtonWrapper>
-        </div>
+        <Render
+          id="render-3d"
+          innerRef={container => (this.container = container)}
+        >
+          {loadingModel && <Progress type="circle" percent={progress + 1} />}
+        </Render>
         {showDragmessage && (
           <DragText>
             <FormattedMessage {...messages.drag} />
