@@ -65,7 +65,7 @@ export const getTaxesAndDiscount = (
     let taxTotal = 0
     switch (countrySubsidiary.toLowerCase()) {
       case COUNTRY_CODE_US:
-        // for USA the tax is calculated with this formula (subtotal + proDesignReview) * taxRate%
+        // for USA the tax is calculated with this formula (subtotal + proDesignReview - discountAmount) * taxRate%
         if (shippingAddressCountry.toLowerCase() === COUNTRY_CODE_US) {
           taxTotal = (subtotal + proDesignFee - discount) * (taxesAmount / 100) // calculate tax
           taxFee = roundDecimals(taxTotal) // round to 2 decimals
@@ -77,13 +77,13 @@ export const getTaxesAndDiscount = (
           taxRates
         ) {
           // for CANADA the taxes are calculated
-          // GST = (subtotal + proDesignReview + shipping) * gstRate%
+          // GST = (subtotal + proDesignReview + shipping - discountAmount) * gstRate%
           taxGst =
-            ((shippingTotal + subtotal + proDesignFee - discount) *
-              taxRates.rateGst) /
-            100 // calculate tax
-          // PST = (subtotal + proDesignReview) * pstRate%
-          taxPst = ((subtotal + proDesignFee) * taxRates.ratePst) / 100 // calculate tax
+            (shippingTotal + subtotal + proDesignFee - discount) *
+            (taxRates.rateGst / 100) // calculate tax
+          // PST = (subtotal + proDesignReview - discountAmount) * pstRate%
+          taxPst =
+            (subtotal + proDesignFee - discount) * (taxRates.ratePst / 100) // calculate tax
           taxGst = roundDecimals(taxGst) // round to 2 decimals
           taxPst = roundDecimals(taxPst) // round to 2 decimals
         }
