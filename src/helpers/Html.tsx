@@ -7,6 +7,14 @@ interface Props {
 }
 const Html = ({ content, state, reduxState }: Props) => (
   <body>
+    <noscript>
+      <iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-WRGVRP9"
+        height="0"
+        width="0"
+        style={{ display: 'none', visibility: 'hidden' }}
+      />
+    </noscript>
     <div id="root" dangerouslySetInnerHTML={{ __html: content }} />
     <script
       charSet="UTF-8"

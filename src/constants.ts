@@ -4,6 +4,7 @@
 import { WHITE } from './theme/colors'
 
 /* 3D Constants */
+export const MESH_NAME = 'mesh'
 export const DEFAULT_COLOR = WHITE
 export const DEFAULT_FONT = 'Advent Pro'
 export const FLATLOCK = 'FINAL JV2_Flatlock'
@@ -17,6 +18,7 @@ export const GRIP_TAPE = 'FINAL Grip_Tape'
 export const SOLAR_BIB_BRACE = 'FINAL Solar_Bib_Brace'
 export const DPI = 96
 export const CM_PER_INCH = 2.54
+export const CANVAS_SIZE = 1024
 
 export const PHONE_FIELD = 'phone'
 

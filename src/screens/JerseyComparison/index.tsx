@@ -121,13 +121,15 @@ export class JerseyComparison extends React.Component<Props, {}> {
         <PriceColumn key={i}>
           <PriceTitlesContainer>{pricesTitles}</PriceTitlesContainer>
           <div>
-            {this.getPricesArray(msg).map(({ price }, key: number) => (
-              <InfoText {...{ key }}>
-                {key < MAX_LIMIT_PRICES
-                  ? `$ ${price}`
-                  : formatMessage(messages.priceCallUs)}
-              </InfoText>
-            ))}
+            {this.getPricesArray(msg).map(
+              ({ price, shortName: symbol }, key: number) => (
+                <InfoText {...{ key }}>
+                  {key < MAX_LIMIT_PRICES
+                    ? `${symbol} ${price}`
+                    : formatMessage(messages.priceCallUs)}
+                </InfoText>
+              )
+            )}
           </div>
         </PriceColumn>
       )
