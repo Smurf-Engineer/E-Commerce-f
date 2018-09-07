@@ -360,13 +360,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const availableColors =
       colors &&
-      colors.map(({ id, image, name: colorName }: ProductColors) => (
-        <ProductAvailableColor
-          selected={id === selectedColor.id}
-          src={image}
-          onClick={this.handleSelectColor({ id, name: colorName })}
-        />
-      ))
+      colors.map(
+        ({ id, image, name: colorName }: ProductColors, key: number) => (
+          <ProductAvailableColor
+            selected={id === selectedColor.id}
+            src={image}
+            onClick={this.handleSelectColor({ id, name: colorName })}
+            {...{ key }}
+          />
+        )
+      )
 
     const colorsSection = (
       <SectionRow>
