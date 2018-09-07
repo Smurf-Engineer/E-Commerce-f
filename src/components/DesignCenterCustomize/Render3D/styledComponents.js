@@ -128,6 +128,9 @@ export const LoadingContainer = styled.div`
 export const ButtonWrapper = styled.div`
   display: flex;
   justify-content: center;
+  position: absolute;
+  right: 10px;
+  top: 10px;
 
   .ant-btn-primary  {
     background-color: #4a90e2;
