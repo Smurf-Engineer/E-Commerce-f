@@ -12,6 +12,11 @@ export const GetProductsByIdQuery = gql`
       category_id
       sport_id
       mpn
+      colors {
+        id
+        name
+        image
+      }
       sports {
         id
         name
@@ -84,6 +89,7 @@ export const GetProductsByIdQuery = gql`
           shortName: short_name
         }
         colors {
+          id
           name
           image
         }
