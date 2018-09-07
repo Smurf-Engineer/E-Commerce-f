@@ -71,9 +71,17 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 32%;
+  bottom: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media (min-height: 800px) and (max-height: 950px) {
+    bottom: 14%;
+  }
+
+  @media (min-height: 951px) {
+    bottom: 30%;
+  }
 `
 
 export const ModelType = styled.div`
