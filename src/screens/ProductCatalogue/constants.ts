@@ -21,3 +21,12 @@ export enum cyclingGroup {
   ROADBIKE = 'Road Bike',
   MOUNTAINBIKE = 'Mountain Bike'
 }
+
+export enum filtersNames {
+  COLLECTION = 'collection',
+  GENDER = 'gender',
+  SPORT = 'sport',
+  CATEGORY = 'category',
+  SEASON = 'season',
+  FITSTYLE = 'fit_style'
+}
