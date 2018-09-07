@@ -1366,7 +1366,7 @@ class Render3D extends PureComponent {
     const type = activeEl && activeEl.get('type')
     const isGroup = type === CanvasElements.Group
     const isClipArtElement = type === CanvasElements.Path || isGroup
-    if (isClipArtElement && !idElement) {
+    if (isClipArtElement && !idElement && !activeEl.isImageGroup) {
       if (isGroup && activeEl.forEachObject) {
         const { fill, stroke, strokeWidth } = style
         activeEl.forEachObject(o => o.set({ fill, stroke, strokeWidth }))
@@ -1435,6 +1435,7 @@ class Render3D extends PureComponent {
       const shapeObject = {
         id,
         fileId,
+        isImageGroup: true,
         hasRotatingPoint: false,
         ...position
       }
