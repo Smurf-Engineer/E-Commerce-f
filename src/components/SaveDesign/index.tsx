@@ -86,6 +86,7 @@ interface Props {
   setCheckedTerms: (checked: boolean) => void
   setSaveDesignLoading: (loading: boolean) => void
   setSaveDesignChangesLoading: (loading: boolean) => void
+  goToCustomProductPage: (designId: string) => void
 }
 
 export class SaveDesign extends React.Component<Props, {}> {
@@ -124,7 +125,8 @@ export class SaveDesign extends React.Component<Props, {}> {
       bibColor,
       isUserAuthenticated,
       isEditing,
-      savedDesignId
+      savedDesignId,
+      goToCustomProductPage
     } = this.props
 
     if (!designName) {
@@ -170,6 +172,8 @@ export class SaveDesign extends React.Component<Props, {}> {
           message.success(formatMessage(messages.saveSuccess, { designName }))
           if (!isEditing && !savedDesignId) {
             afterSaveDesign(shortId, svg, savedDesign, true)
+          } else {
+            goToCustomProductPage(shortId)
           }
           requestClose()
         }

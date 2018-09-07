@@ -396,6 +396,11 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
   }
 
+  goToCustomProductPage = (designId: string) => {
+    const { history } = this.props
+    history.push(`/custom-product?id=${designId}`)
+  }
+
   render() {
     const {
       intl,
@@ -846,6 +851,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             setSaveDesignChangesLoading={saveDesignChangesLoadingAction}
             saveDesignLoading={saveDesignLoading}
             saveDesignChangesLoading={saveDesignChangesLoading}
+            goToCustomProductPage={this.goToCustomProductPage}
           />
           {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
