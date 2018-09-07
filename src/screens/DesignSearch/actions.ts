@@ -24,8 +24,9 @@ export const setOrderAction = (order: OrderSearchResult): AnyAction => ({
   order
 })
 
-export const setNotFoundAction = (): AnyAction => ({
-  type: SET_NOT_FOUND
+export const setNotFoundAction = (noAdmin?: boolean): AnyAction => ({
+  type: SET_NOT_FOUND,
+  noAdmin
 })
 
 export const resetDataAction = (): AnyAction => ({

@@ -21,6 +21,11 @@ export default defineMessages({
     id: 'screens.DesignSearch.notFound',
     defaultMessage: 'Order not found...'
   },
+  unauthorized: {
+    id: 'screens.DesignSearch.unauthorized',
+    defaultMessage:
+      'Insufficient privileges please contact your site administrator'
+  },
   errorDownload: {
     id: 'screens.DesignSearch.notFound',
     defaultMessage:
