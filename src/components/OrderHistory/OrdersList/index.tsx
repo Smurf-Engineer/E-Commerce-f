@@ -6,12 +6,7 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import {
-  Container,
-  Header,
-  Row,
-  Table
-} from './styledComponents'
+import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
@@ -59,9 +54,7 @@ const OrdersList = ({
   const fullCount = get(ordersQuery, 'fullCount', 0)
 
   if (!orders.length) {
-    return (
-      <EmptyContainer message={formatMessage(messages.emptyMessage)} />
-    )
+    return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
 
   const header = (
@@ -113,9 +106,17 @@ const OrdersList = ({
   )
 
   const orderItems = orders.map(
-    ({ shortId, date, status }: OrderHistory, index: number) => (
-      <ItemOrder key={index} {...{ shortId, date, status, onOrderClick }} />
-    )
+    ({ shortId, date, status, netsuite }: OrderHistory, index: number) => {
+      const netsuiteObject = get(netsuite, 'orderStatus')
+      const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
+      return (
+        <ItemOrder
+          key={index}
+          status={netsuiteStatus || status}
+          {...{ shortId, date, onOrderClick }}
+        />
+      )
+    }
   )
 
   return (

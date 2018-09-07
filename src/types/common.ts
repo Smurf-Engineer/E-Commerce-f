@@ -481,10 +481,12 @@ export interface OrderHistory {
   shortId: string
   date: string
   status: string
+  netsuite?: NetsuiteObject
 }
 
 export interface OrderStatusNetsuite {
   deliveryDate?: string
+  orderStatus?: string
 }
 
 export interface NetsuiteObject {
@@ -518,7 +520,7 @@ export interface OrderDetailsInfo {
   billingCity: string
   billingZipCode: string
   shippingTax: number
-  netsuit?: NetsuiteObject
+  netsuite?: NetsuiteObject
   payment: PaymentCharges
   cart: CartItems[]
   status: string
