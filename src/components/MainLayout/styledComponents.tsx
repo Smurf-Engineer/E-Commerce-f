@@ -4,8 +4,8 @@
 import styled from 'styled-components'
 import { WHITE, AUBERGINE } from '../../theme/colors'
 
-const HEADER_TOP_SIZE = 72
-const HEADER_BOTTOM_SIZE = 38
+const HEADER_TOP_SIZE = 38
+const HEADER_BOTTOM_SIZE = 72
 const HEADER_MAX_SIZE = 110
 
 export const Container = styled.div``
