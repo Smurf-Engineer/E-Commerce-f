@@ -401,6 +401,7 @@ export type CartItemDetail = {
   gender?: ItemDetailType
   size?: ItemDetailType
   fit?: ItemDetailType
+  color?: ItemDetailType
   label?: string
   quantity: number
 }

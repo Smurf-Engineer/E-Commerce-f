@@ -407,6 +407,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       fit: selectedFit,
       size: selectedSize,
       gender: selectedGender,
+      color: selectedColor,
       quantity: 1
     }
     itemDetails.push(detail)
