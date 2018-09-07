@@ -132,11 +132,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   componentDidMount() {
     const {
       data: { product },
-      setSelectedFitAction
+      setSelectedFitAction,
+      setSelectedColorAction
     } = this.props
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    const colors = get(product, 'colors', [] as ProductColors[])
     if (!fitStyles.length || !fitStyles[0].id) {
       setSelectedFitAction({ id: 1, name: 'Standard' })
+    }
+    if (colors && colors.length === 1 && colors[0].id) {
+      const { id, name } = colors[0]
+      setSelectedColorAction({ id, name })
     }
   }
 
