@@ -9,6 +9,7 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_SIZE,
   SET_SELECTED_FIT,
+  SET_SELECTED_COLOR,
   LOADING_3D_MODEL,
   RESET_DATA
 } from './constants'
@@ -21,6 +22,7 @@ export const initialState = fromJS({
   selectedGender: {},
   selectedSize: {},
   selectedFit: {},
+  selectedColor: {},
   categoryName: '',
   loadingModel: false,
   itemToAddCart: {}
@@ -40,6 +42,8 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedSize', action.selected)
     case SET_SELECTED_FIT:
       return state.set('selectedFit', action.selected)
+    case SET_SELECTED_COLOR:
+      return state.set('selectedColor', action.selected)
     case LOADING_3D_MODEL:
       return state.set('loadingModel', action.loading)
     case RESET_DATA:

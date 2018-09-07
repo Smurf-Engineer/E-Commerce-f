@@ -2,25 +2,19 @@
  * Designs Screen - Created by david on 27/03/18.
  */
 import * as React from 'react'
-import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
+import { injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
-import withLoading from '../../components/WithLoadingData/'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
-import { compose, graphql } from 'react-apollo'
+import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
-import messages from './messages'
 import ThreeD from '../../components/Render3D'
 import * as designsActions from './actions'
-import { styleQuery } from './data'
 import { QueryProps, DesignSaved } from '../../types/common'
 // TODO: Commented all quickview related until confirm it won't be needed
 // import quickView from '../../assets/quickview.svg'
 import {
-  Container,
-  Title,
-  Message,
-  ContainerError
+  Container
   // Row,
   // Model,
   // QuickView
@@ -55,32 +49,11 @@ export class Designs extends React.Component<Props, {}> {
   // }
 
   render() {
-    const {
-      data: { error, design }
-    } = this.props
+    const { location } = this.props
 
-    if (error) {
-      return (
-        <ContainerError>
-          <Title>
-            <FormattedMessage {...messages.errorTitle} />
-          </Title>
-          <Message>
-            <FormattedMessage {...messages.errorMessage} />
-          </Message>
-        </ContainerError>
-      )
-    }
-
-    const {
-      svg,
-      product,
-      flatlockColor,
-      bindingColor,
-      bibBraceColor,
-      zipperColor,
-      canvas
-    } = design
+    const { search } = location
+    const queryParams = queryString.parse(search)
+    const designId = queryParams.id || ''
 
     return (
       <Container>
@@ -88,13 +61,7 @@ export class Designs extends React.Component<Props, {}> {
           <Model>{name}</Model>
           <QuickView onClick={this.handleOpenQuickView} src={quickView} />
         </Row>*/}
-        <ThreeD
-          {...{ svg, product, canvas }}
-          zipperColor={zipperColor}
-          bindingColor={bindingColor}
-          bibColor={bibBraceColor}
-          flatlockColor={flatlockColor}
-        />
+        <ThreeD {...{ designId }} />
       </Container>
     )
   }
@@ -102,27 +69,12 @@ export class Designs extends React.Component<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('designs').toJS()
 
-type OwnProps = {
-  location?: any
-}
-
 const DesignsEnhance = compose(
   injectIntl,
   connect(
     mapStateToProps,
     { ...designsActions, openQuickViewAction }
-  ),
-  graphql<Data>(styleQuery, {
-    options: ({ location }: OwnProps) => {
-      const { search } = location
-      const queryParams = queryString.parse(search)
-      const designId = queryParams.id || ''
-      return {
-        variables: { designId }
-      }
-    }
-  }),
-  withLoading
+  )
 )(Designs)
 
 export default DesignsEnhance

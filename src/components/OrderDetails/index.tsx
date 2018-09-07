@@ -234,7 +234,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <OrderSummaryContainer>
             <OrderSummary
               onlyRead={true}
-              sumTotal={total}
+              totalSum={total}
               shippingTotal={shippingAmount}
               currencySymbol={currency.shortName}
               proDesignReview={proDesign && PRO_DESIGN_FEE}
