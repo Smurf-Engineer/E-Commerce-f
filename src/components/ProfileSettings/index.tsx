@@ -1,6 +1,14 @@
 /**
  * ProfileSettings Component - Created by miguelcanobbio on 31/05/18.
  */
+
+/**
+ *
+ * COMMENTED CODE IS ONLY FOR HIDE OPTIONS
+ * UNCOMMENT WHEN NEED THAT OPTIONS
+ *
+ */
+
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { connect } from 'react-redux'
@@ -24,15 +32,15 @@ import {
   Container,
   Title,
   SectionContainer,
-  Row,
-  Column,
-  StyledButton,
-  StyledCheckbox,
+  // Row,
+  // Column,
+  // StyledButton,
+  // StyledCheckbox,
   LoadingErrorContainer,
   ErrorMessage
 } from './styledComponents'
 import ProfileForm from '../ProfileForm'
-import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
+// import LanguageAndCurrencyForm from '../LanguageAndCurrencyForm'
 // import MeasurementsForm from '../MeasurementsForm'
 import {
   ClickParam,
@@ -136,23 +144,23 @@ class ProfileSettings extends React.Component<Props, {}> {
       isMobile,
       profileData: {
         profileData: {
-          userProfile,
-          languageSettings,
+          userProfile
+          // languageSettings,
           // measurementSettings,
           // smsSettings,
-          emailSettings
+          // emailSettings
         }
       },
-      regionsOptions: { regions },
+      // regionsOptions: { regions },
       firstName,
       lastName,
       email,
       phone,
       loadingProfile,
-      region,
-      language,
-      currency,
-      loadingRegion,
+      // region,
+      // language,
+      // currency,
+      // loadingRegion,
       // msrmntSystemSelected,
       // msrmntGenderSelected,
       // weight,
@@ -168,8 +176,8 @@ class ProfileSettings extends React.Component<Props, {}> {
       // smsConfirmationChecked,
       // smsUpdatesChecked,
       // loadingSms,
-      emailNewsletterChecked,
-      loadingEmail,
+      // emailNewsletterChecked,
+      // loadingEmail,
       currentPassword,
       newPassword,
       newPasswordConfirm,
@@ -178,16 +186,16 @@ class ProfileSettings extends React.Component<Props, {}> {
       modalPasswordHasError
     } = this.props
 
-    const regionsOptions: Region[] = regions || []
+    // const regionsOptions: Region[] = regions || []
 
     // const smsButtonDisabled =
     //   (smsUpdatesChecked === null ||
     //     smsSettings.desingUpdates === smsUpdatesChecked) &&
     //   (smsConfirmationChecked === null ||
     //     smsSettings.orderConfirmation === smsConfirmationChecked)
-    const emailButtonDisabled =
-      emailNewsletterChecked === null ||
-      emailSettings.newsletter === emailNewsletterChecked
+    // const emailButtonDisabled =
+    //   emailNewsletterChecked === null ||
+    //   emailSettings.newsletter === emailNewsletterChecked
     return (
       <Container>
         {/* PROFILE */}
@@ -210,7 +218,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           />
         </SectionContainer>
         {/* REGION */}
-        <Title>{formatMessage(messages.languageTitle)}</Title>
+        {/*<Title>{formatMessage(messages.languageTitle)}</Title>
         <SectionContainer>
           <Row marginBottom={'0'}>
             <LanguageAndCurrencyForm
@@ -229,6 +237,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             />
           </Row>
         </SectionContainer>
+        */}
         {/* MEASUREMENTS
         <Title>{formatMessage(messages.measurementsTitle)}</Title>
         <SectionContainer>
@@ -297,6 +306,7 @@ class ProfileSettings extends React.Component<Props, {}> {
           </Row>
         </SectionContainer> */}
         {/*Email Preferences*/}
+        {/*
         <SectionContainer>
           <Title>{formatMessage(messages.emailTitle)}</Title>
           <Row>
@@ -324,6 +334,7 @@ class ProfileSettings extends React.Component<Props, {}> {
             </Column>
           </Row>
         </SectionContainer>
+         */}
         <ChangePasswordModal
           {...{
             formatMessage,
