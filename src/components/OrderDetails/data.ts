@@ -35,7 +35,7 @@ export const getOrderQuery = gql`
         shortName: short_name
       }
       orderDate: created_at
-      netsuit: netsuit_order {
+      netsuite: netsuit_order {
         orderStatus {
           internalId
           deliveryDate: orderDate
