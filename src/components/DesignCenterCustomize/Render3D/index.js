@@ -976,18 +976,10 @@ class Render3D extends PureComponent {
 
   rotateCanvasElement = (canvasElement, applyNewRotation = false) => {
     const {
-      state: { id, oldRotation, newRotation }
+      state: { id, oldRotation, newRotation, currentTransform }
     } = canvasElement
-    const element = this.getElementById(id)
-    if (element) {
-      let transformMatrix = applyNewRotation ? newRotation : oldRotation
-      element
-        .set({
-          transformMatrix
-        })
-        .setCoords()
-      this.canvasTexture.renderAll()
-    }
+    const { x, y } = applyNewRotation ? newRotation : oldRotation
+    this.rotateObject(x, y, currentTransform, id)
   }
 
   styleCanvasElement = (canvasElement, newStyle = false) => {
@@ -1117,13 +1109,13 @@ class Render3D extends PureComponent {
     } = this.props
 
     // FIXME:
-    console.log('----------canvas-----------')
-    console.log(canvas)
+    // console.log('----------canvas-----------')
+    // console.log(canvas)
     // console.log('-----------undo------------')
     // console.log(this.props.undoChanges)
     // console.log('-----------redo------------')
     // console.log(this.props.redoChanges)
-    console.log('---------------------------')
+    // console.log('---------------------------')
 
     {
       /*
@@ -1257,9 +1249,6 @@ class Render3D extends PureComponent {
   }
 
   reAddCanvasElement = canvasEl => {
-    console.log('-------------ELEMENT----------------')
-    console.log(canvasEl)
-    console.log('------------------------------------')
     const {
       state: { id, type, style, src, position, isClipArtGroup }
     } = canvasEl
@@ -1501,17 +1490,9 @@ class Render3D extends PureComponent {
   deleteElement = el => {
     const { canvas } = this.props
     const type = el.get('type')
-    const {
-      id,
-      left,
-      top,
-      scaleX,
-      scaleY,
-      transformMatrix,
-      isClipArtGroup
-    } = el
+    const { id, left, top, scaleX, scaleY, isClipArtGroup } = el
     const canvasObject = {
-      position: { left, top, scaleX, scaleY, transformMatrix }
+      position: { left, top, scaleX, scaleY }
     }
     switch (type) {
       case CanvasElements.Text:
@@ -1543,9 +1524,6 @@ class Render3D extends PureComponent {
         }
       case CanvasElements.Path:
         {
-          console.log('--------------element---------------')
-          console.log(el)
-          console.log('------------------------------------')
           const {
             fill = BLACK,
             stroke = BLACK,
@@ -1670,15 +1648,27 @@ class Render3D extends PureComponent {
           }
           break
         case ROTATE_ACTION:
-          const { transformMatrix } = activeEl
-          const { oldRotation } = this.state
-          if (oldRotation !== transformMatrix) {
-            const { onCanvasElementRotated } = this.props
-            onCanvasElementRotated({
-              id,
-              oldRotation,
-              newRotation: transformMatrix
-            })
+          const intersects = this.getIntersects(
+            this.onClickPosition,
+            this.scene.children
+          )
+          if (!isEmpty(intersects)) {
+            const uv = intersects[0].uv
+            const cX = uv.x * CANVAS_SIZE
+            const cY = (1 - uv.y) * CANVAS_SIZE
+
+            const {
+              oldRotation: { currentTransform, x, y }
+            } = this.state
+            if (x !== cX || y !== cY) {
+              const { onCanvasElementRotated } = this.props
+              onCanvasElementRotated({
+                id,
+                oldRotation: { x, y },
+                newRotation: { x: cX, y: cY },
+                currentTransform
+              })
+            }
           }
           break
       }
@@ -1790,7 +1780,6 @@ class Render3D extends PureComponent {
                 break
               }
               case ROTATE_ACTION: {
-                this.setState({ oldRotation: activeEl.transformMatrix })
                 const sX = uv.x * CANVAS_SIZE
                 const sY = (1 - uv.y) * CANVAS_SIZE
                 this.controls.enabled = false
@@ -1801,6 +1790,9 @@ class Render3D extends PureComponent {
                   ey: sY,
                   theta: fabric.util.degreesToRadians(activeEl.angle)
                 }
+                this.setState({
+                  oldRotation: { currentTransform, x: sX, y: sY }
+                })
                 this.dragComponent = {
                   el: activeEl,
                   currentTransform,
@@ -1959,9 +1951,11 @@ class Render3D extends PureComponent {
     el.setCoords()
   }
 
-  rotateObject = (x, y, currentTransform) => {
+  rotateObject = (x, y, currentTransform, idElement) => {
     const { ey, ex, originX, originY, theta } = currentTransform
-    const el = this.canvasTexture.getActiveObject()
+    const el = idElement
+      ? this.getElementById(idElement)
+      : this.canvasTexture.getActiveObject()
     if (!el) {
       return
     }
