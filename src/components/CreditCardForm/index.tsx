@@ -41,17 +41,14 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
   render() {
     const {
-      stripe,
       formatMessage,
       stripeError,
       cardHolderName,
       hasError,
       showCardForm,
-      inputChangeAction,
-      handleOnContinue,
       loadingBilling
     } = this.props
-    console.log('STIPE++++++', stripe)
+
     return (
       <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
         <Row>

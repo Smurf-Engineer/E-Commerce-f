@@ -2,12 +2,13 @@
  * CreditCardFormBilling Component - Created by miguelcanobbio on 16/05/18.
  */
 import * as React from 'react'
+import { graphql, compose } from 'react-apollo'
 import { StripeProvider, Elements } from 'react-stripe-elements'
-import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import messages from './messages'
 import { PHONE_FIELD } from '../../constants'
+import { getSubsidiaryQuery } from './data'
 import config from '../../config'
 import {
   Container,
@@ -26,6 +27,7 @@ import { AddressType, CreditCardData, StripeCardData } from '../../types/common'
 interface Props {
   cardHolderName: string
   billingAddress: AddressType
+  billingCountry: string
   hasError: boolean
   stripeError: string
   loadingBilling: boolean
@@ -37,6 +39,7 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
+  subsidiaryQuery?: number
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -64,7 +67,71 @@ interface MyWindow extends Window {
 declare var window: MyWindow
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
-  state = { stripe: null }
+  state = {
+    stripe: null,
+    reloadStripe: false
+  }
+
+  componentDidUpdate(oldProps: any) {
+    // Unload stripe script and reload in country changed
+    const {
+      billingCountry,
+      subsidiaryQuery
+    } = this.props
+
+    const loading = get(subsidiaryQuery, 'loading', false)
+    const subsidiary = get(subsidiaryQuery, 'subsidiary', null)
+
+    if (billingCountry && (billingCountry !== oldProps.billingCountry)) {
+      this.setState({ reloadStripe: true })
+    }
+
+    if (!loading && subsidiary && this.state.reloadStripe) {
+      this.setState({ reloadStripe: false })
+      const stripeNode = document.getElementById('stripeScript')
+      if (!!stripeNode) { this.unloadStripe(stripeNode) }
+      this.loadStripe(subsidiary)
+    }
+  }
+
+  loadStripe = (subsidiary: number) => {
+    let stripeKey
+    switch (subsidiary) {
+      case 1:
+        stripeKey = config.pkStripeUS
+        break
+      case 6:
+        stripeKey = config.pkStripeCA
+        break
+      case 9:
+        stripeKey = config.pkStripeEU
+        break
+      default:
+        stripeKey = config.pkStripeUS
+        break
+    }
+
+    // this code is safe to server-side render.
+    const stripeJs = document.createElement('script')
+    stripeJs.id = 'stripeScript'
+    stripeJs.src = 'https://js.stripe.com/v3/'
+    stripeJs.onload = () => {
+      this.setState({
+        stripe: window.Stripe(stripeKey)
+      })
+    }
+    // tslint:disable-next-line:no-unused-expression
+    document.body && document.body.appendChild(stripeJs)
+    return true
+  }
+
+  unloadStripe = (stripeNode: any) => {
+    document.body.removeChild(stripeNode)
+    this.setState({
+      stripe: null
+    })
+    window.Stripe = null
+  }
 
   render() {
     const {
@@ -235,23 +302,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     )
   }
 
-  loadStripe = () => {
-    // In addition to loading asynchronously, this code is safe to server-side render.
-    // const { billingAddress: { country } } = this.props
-    // const { billingAddress } = state
-    const stripeJs = document.createElement('script')
-    stripeJs.src = 'https://js.stripe.com/v3/'
-    stripeJs.async = true
-    stripeJs.onload = () => {
-      this.setState({
-        stripe: window.Stripe(config.pkStripeUS)
-      })
-    }
-    // tslint:disable-next-line:no-unused-expression
-    document.body && document.body.appendChild(stripeJs)
-    return true
-  }
-
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { inputChangeAction } = this.props
     const {
@@ -274,8 +324,9 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     const {
       target: { checked }
     } = event
-    this.loadStripe()
-    checked ? sameBillingAndAddressCheckedAction() : sameBillingAndAddressUncheckedAction()
+    checked
+      ? sameBillingAndAddressCheckedAction()
+      : sameBillingAndAddressUncheckedAction()
   }
 
   handleChangePage = (pageNumber: number) => {
@@ -290,4 +341,19 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   }
 }
 
-export default CreditCardFormBilling
+interface OwnProps {
+  billingCountry?: string
+}
+
+const CreditCardFormBillingEnhanced = compose(
+  graphql(getSubsidiaryQuery, {
+    name: 'subsidiaryQuery',
+    options: ({ billingCountry }: OwnProps) => ({
+      skip: !billingCountry,
+      variables: { code: billingCountry },
+      fetchPolicy: 'network-only'
+    })
+  })
+)(CreditCardFormBilling)
+
+export default CreditCardFormBillingEnhanced

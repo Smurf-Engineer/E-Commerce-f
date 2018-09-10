@@ -18,6 +18,7 @@ const { CREDITCARD, PAYPAL } = PaymentOptions
 
 interface Props {
   billingAddress: AddressType
+  billingCountry: string
   hasError: boolean
   cardHolderName: string
   sameBillingAndShipping: boolean
@@ -91,6 +92,7 @@ class Payment extends React.PureComponent<Props, {}> {
     const {
       formatMessage,
       billingAddress,
+      billingCountry,
       hasError,
       cardHolderName,
       sameBillingAndShipping,
@@ -151,6 +153,7 @@ class Payment extends React.PureComponent<Props, {}> {
             formatMessage,
             cardHolderName,
             billingAddress,
+            billingCountry,
             hasError,
             stripeError,
             loadingBilling,

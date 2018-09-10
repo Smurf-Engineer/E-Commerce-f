@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { GRAY, RED, GRAY_DARK, BLUE, WHITE } from '../../theme/colors'
+import { GRAY_DARK, BLUE } from '../../theme/colors'
 
 export const Container = styled.div`
   width: 100%;

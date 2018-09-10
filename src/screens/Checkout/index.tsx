@@ -369,6 +369,7 @@ class Checkout extends React.Component<Props, {}> {
                 <Payment
                   {...{
                     billingAddress,
+                    billingCountry,
                     cardHolderName,
                     stripeError,
                     setStripeErrorAction,
