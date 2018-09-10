@@ -51,7 +51,6 @@ interface Props {
   showCouponInput?: boolean
   paymentMethod: string
   currentCurrency: string
-  loadingPlaceOrder: boolean
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
   setCouponCodeAction?: (code: CouponCode) => void
@@ -87,7 +86,6 @@ const CheckoutSummary = ({
   onPaypalCancel,
   currentCurrency,
   onPlaceOrder,
-  loadingPlaceOrder,
   shipping
 }: Props) => {
   const shippingTotal = get(data, 'shipping.total', shipping) || 0
@@ -162,7 +160,7 @@ const CheckoutSummary = ({
         {...{ currency }}
       />
     ) : (
-      <PlaceOrderButton onClick={onPlaceOrder} loading={loadingPlaceOrder}>
+      <PlaceOrderButton onClick={onPlaceOrder}>
         {formatMessage(messages.placeOrder)}
       </PlaceOrderButton>
     )
