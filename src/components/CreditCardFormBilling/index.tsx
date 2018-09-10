@@ -2,7 +2,7 @@
  * CreditCardFormBilling Component - Created by miguelcanobbio on 16/05/18.
  */
 import * as React from 'react'
-import { StripeProvider, Elements, CardElement } from 'react-stripe-elements'
+import { StripeProvider, Elements } from 'react-stripe-elements'
 import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
@@ -11,25 +11,16 @@ import { PHONE_FIELD } from '../../constants'
 import config from '../../config'
 import {
   Container,
-  Row,
-  Column,
-  InputTitleContainer,
-  Label,
-  RequiredSpan,
-  ContainerInput,
-  StyledInput,
   ContainerBilling,
   Title,
-  ErrorMsg,
   StyledCheckbox,
-  ContinueButton,
-  StripeCardElement,
   MyCardsRow
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddresses from '../MyAddressesList'
 import MyAddress from '../MyAddress'
 import MyCards from '../MyCards'
+import CreditCardForm from '../CreditCardForm'
 import { AddressType, CreditCardData, StripeCardData } from '../../types/common'
 
 interface Props {
@@ -106,6 +97,11 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       indexAddressSelected,
       showBillingForm,
       showBillingAddressFormAction
+      invalidBillingFormAction,
+      setStripeCardDataAction,
+      nextStep,
+      setStripeErrorAction,
+      setLoadingBillingAction
     } = this.props
 
     const renderAddresses = (
@@ -135,6 +131,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
 
     const { stripe } = this.state
+
     return (
       <Container>
         <ContainerBilling>
@@ -188,46 +185,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         {country && (
           <div>
             <Title>{formatMessage(messages.methodCreditCard)}</Title>
-            <StripeProvider {...{ stripe }}>
-              <Elements>
-                <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
-                  <Row>
-                    <Column>
-                      <InputTitleContainer>
-                        <Label>{formatMessage(messages.cardNumber)}</Label>
-                        <RequiredSpan>*</RequiredSpan>
-                      </InputTitleContainer>
-                      <ContainerInput>
-                        <CardElement
-                          hidePostalCode={true}
-                          style={StripeCardElement}
-                        />
-                      </ContainerInput>
-                      {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
-                    </Column>
-                  </Row>
-                  <Row>
-                    <Column>
-                      <InputTitleContainer>
-                        <Label>{formatMessage(messages.cardholderName)}</Label>
-                        <RequiredSpan>*</RequiredSpan>
-                      </InputTitleContainer>
-                      <StyledInput
-                        id={'cardHolderName'}
-                        value={cardHolderName}
-                        onChange={this.handleInputChange}
-                      />
-                      {!cardHolderName &&
-                        hasError && (
-                          <ErrorMsg>
-                            {formatMessage(messages.requiredField)}
-                          </ErrorMsg>
-                        )}
-                    </Column>
-                  </Row>
-                </AnimateHeight>
-              </Elements>
-            </StripeProvider>
             <MyCardsRow>
               <MyCards
                 {...{
@@ -240,14 +197,40 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 }}
               />
             </MyCardsRow>
+            <StripeProvider {...{ stripe }}>
+              <Elements>
+                <CreditCardForm
+                  {...{
+                    stripe,
+                    stripeError,
+                    cardHolderName,
+                    firstName,
+                    lastName,
+                    street,
+                    apartment,
+                    country,
+                    stateProvince,
+                    city,
+                    zipCode,
+                    phone,
+                    sameBillingAndShipping,
+                    hasError,
+                    showCardForm,
+                    inputChangeAction,
+                    formatMessage,
+                    loadingBilling,
+                    invalidBillingFormAction,
+                    setStripeErrorAction,
+                    setLoadingBillingAction,
+                    setStripeCardDataAction,
+                    nextStep,
+                    selectedCard
+                  }}
+                />
+              </Elements>
+            </StripeProvider>
           </div>
         )}
-        <ContinueButton
-          onClick={this.handleOnContinue}
-          loading={loadingBilling}
-        >
-          {formatMessage(messages.continue)}
-        </ContinueButton>
       </Container>
     )
   }
@@ -266,89 +249,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
-    console.log('loadStripe========', billingCountry)
     return true
-  }
-
-  handleOnContinue = async (ev: any) => {
-    const {
-      cardHolderName,
-      billingAddress: {
-        firstName,
-        lastName,
-        street,
-        apartment,
-        country,
-        stateProvince,
-        city,
-        zipCode,
-        phone
-      },
-      sameBillingAndShipping,
-      invalidBillingFormAction,
-      setStripeErrorAction,
-      setLoadingBillingAction,
-      setStripeCardDataAction,
-      nextStep,
-      selectedCard
-    } = this.props
-    const { stripe } = this.state
-    const selectedCardId = get(selectedCard, 'id', '')
-
-    const emptyForm =
-      !sameBillingAndShipping &&
-      (!firstName ||
-        !lastName ||
-        !street ||
-        !country ||
-        !stateProvince ||
-        !city ||
-        !zipCode ||
-        !phone)
-
-    if ((!cardHolderName && !selectedCardId) || emptyForm) {
-      invalidBillingFormAction(true)
-      return
-    }
-    const stripeTokenData = {
-      name: cardHolderName,
-      address_line1: `${street}`,
-      address_line2: `${apartment}`,
-      address_city: `${city}`,
-      address_state: `${stateProvince}`,
-      address_zip: `${zipCode}`,
-      address_country: `${country}`
-    }
-    setLoadingBillingAction(true)
-
-    const stripeResponse = !selectedCardId
-      ? await stripe.createToken(stripeTokenData)
-      : {}
-
-    if (stripeResponse && stripeResponse.error) {
-      setStripeErrorAction(stripeResponse.error.message)
-    } else if (!emptyForm) {
-      if (!selectedCardId) {
-        const {
-          token: {
-            id: tokenId,
-            card: { id, name, brand, last4, exp_month, exp_year }
-          }
-        } = stripeResponse
-
-        const cardData: CreditCardData = {
-          id,
-          name,
-          last4,
-          expMonth: exp_month,
-          expYear: exp_year,
-          brand
-        }
-
-        setStripeCardDataAction(cardData, tokenId)
-      }
-      nextStep()
-    }
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -373,13 +274,8 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     const {
       target: { checked }
     } = event
-
-    if (checked) {
-      sameBillingAndAddressCheckedAction()
-      this.loadStripe()
-    } else {
-      sameBillingAndAddressUncheckedAction()
-    }
+    this.loadStripe()
+    checked ? sameBillingAndAddressCheckedAction() : sameBillingAndAddressUncheckedAction()
   }
 
   handleChangePage = (pageNumber: number) => {
