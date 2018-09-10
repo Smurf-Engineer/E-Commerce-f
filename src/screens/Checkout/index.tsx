@@ -31,7 +31,8 @@ import {
   StepWrapper,
   StepIcon,
   CheckIcon,
-  CurrencyWarningText
+  CurrencyWarningText,
+  PlaceOrderLoading
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -54,6 +55,7 @@ import ModalFooter from '../../components/ModalFooter'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE } from '../../constants'
+import Spin from 'antd/lib/spin'
 
 type ProductCart = {
   id: number
@@ -422,12 +424,16 @@ class Checkout extends React.Component<Props, {}> {
                   deleteCouponCodeAction,
                   proDesignReview,
                   paymentMethod,
-                  currentCurrency,
-                  loadingPlaceOrder
+                  currentCurrency
                 }}
               />
             </SummaryContainer>
           </Content>
+          {loadingPlaceOrder && (
+            <PlaceOrderLoading>
+              <Spin />
+            </PlaceOrderLoading>
+          )}
         </Container>
         <Modal
           visible={openCurrencyWarning}
@@ -683,78 +689,78 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: shippingAddress.zipCode
     }
 
-    const taxResponse = await query({
-      query: getTaxQuery,
-      variables: {
-        country: billingCountry,
-        weight: weightSum,
-        shipAddress: taxAddress
-      },
-      fetchPolicy: 'network-only'
-    })
-
-    const {
-      data: { taxes, shipping }
-    } = taxResponse
-
-    const taxId = get(taxes, 'internalId', null)
-    const taxAmount = get(taxes, 'total', null)
-    const shippingId = get(shipping, 'internalId', null)
-    const shippingCarrier = get(shipping, 'carrier', null)
-    const shippingAmount = get(shipping, 'total', '0')
-
-    const sanitizedCart = shoppingCart.map(
-      ({ designCode, designId, product, itemDetails }: CartItems) => {
-        const item = { designCode, designId } as CartItem
-        const productItem = {
-          id: product.id,
-          code: product.code,
-          name: product.name,
-          yotpoId: product.yotpoId
-        }
-        item.product = productItem
-        item.itemDetails = itemDetails.map(
-          ({ gender, quantity, size, fit }: CartItemDetail) => {
-            const fitId = get(fit, 'id', 0)
-            const fitName = get(fit, 'name', '')
-            const fitObj: ItemDetailType = {
-              id: fitId,
-              name: fitName
-            }
-            unset(gender, '__typename')
-            unset(quantity, '__typename')
-            unset(size, '__typename')
-            return { gender, quantity, size, fit: fitObj }
-          }
-        )
-        return item
-      }
-    )
-
-    const couponCode = couponObject && couponObject.code
-
-    const orderObj = {
-      proDesign,
-      paymentMethod,
-      cardId,
-      tokenId: stripeToken,
-      cart: sanitizedCart,
-      shippingAddress,
-      billingAddress,
-      paymentData: paypalObj || null,
-      countrySubsidiary: billingCountry,
-      taxId,
-      taxAmount,
-      shippingId,
-      shippingCarrier,
-      shippingAmount: shippingAmount || '0',
-      currency: currentCurrency || config.defaultCurrency,
-      weight: weightSum,
-      couponCode
-    }
-
     try {
       setLoadingPlaceOrderAction(true)
+      const taxResponse = await query({
+        query: getTaxQuery,
+        variables: {
+          country: billingCountry,
+          weight: weightSum,
+          shipAddress: taxAddress
+        },
+        fetchPolicy: 'network-only'
+      })
+
+      const {
+        data: { taxes, shipping }
+      } = taxResponse
+
+      const taxId = get(taxes, 'internalId', null)
+      const taxAmount = get(taxes, 'total', null)
+      const shippingId = get(shipping, 'internalId', null)
+      const shippingCarrier = get(shipping, 'carrier', null)
+      const shippingAmount = get(shipping, 'total', '0')
+
+      const sanitizedCart = shoppingCart.map(
+        ({ designCode, designId, product, itemDetails }: CartItems) => {
+          const item = { designCode, designId } as CartItem
+          const productItem = {
+            id: product.id,
+            code: product.code,
+            name: product.name,
+            yotpoId: product.yotpoId
+          }
+          item.product = productItem
+          item.itemDetails = itemDetails.map(
+            ({ gender, quantity, size, fit }: CartItemDetail) => {
+              const fitId = get(fit, 'id', 0)
+              const fitName = get(fit, 'name', '')
+              const fitObj: ItemDetailType = {
+                id: fitId,
+                name: fitName
+              }
+              unset(gender, '__typename')
+              unset(quantity, '__typename')
+              unset(size, '__typename')
+              return { gender, quantity, size, fit: fitObj }
+            }
+          )
+          return item
+        }
+      )
+
+      const couponCode = couponObject && couponObject.code
+
+      const orderObj = {
+        proDesign,
+        paymentMethod,
+        cardId,
+        tokenId: stripeToken,
+        cart: sanitizedCart,
+        shippingAddress,
+        billingAddress,
+        paymentData: paypalObj || null,
+        countrySubsidiary: billingCountry,
+        taxId,
+        taxAmount,
+        shippingId,
+        shippingCarrier,
+        shippingAmount: shippingAmount || '0',
+        currency: currentCurrency || config.defaultCurrency,
+        weight: weightSum,
+        couponCode
+      }
+
       const response = await placeOrder({
         variables: { orderObj }
       })
