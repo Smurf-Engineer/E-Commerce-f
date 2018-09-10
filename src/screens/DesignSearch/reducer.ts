@@ -15,7 +15,8 @@ export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
   loading: false,
   order: null,
-  notFound: false
+  notFound: false,
+  noAdmin: false
 })
 
 const designSearchReducer: Reducer<any> = (state = initialState, action) => {
@@ -34,12 +35,20 @@ const designSearchReducer: Reducer<any> = (state = initialState, action) => {
         notFound: false,
         loading: false
       })
-    case SET_NOT_FOUND:
+    case SET_NOT_FOUND: {
+      if (action.noAdmin) {
+        return state.merge({
+          order: null,
+          noAdmin: true,
+          loading: false
+        })
+      }
       return state.merge({
         order: null,
         notFound: true,
         loading: false
       })
+    }
     case RESET_DATA:
       return initialState
     default:
