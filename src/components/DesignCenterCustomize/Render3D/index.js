@@ -990,6 +990,7 @@ class Render3D extends PureComponent {
   }
 
   styleCanvasElement = (canvasElement, newStyle = false) => {
+    // FIXME:
     const {
       state: { id, newFormat, oldFormat }
     } = canvasElement
@@ -997,6 +998,9 @@ class Render3D extends PureComponent {
     const element = this.getElementById(id)
     let format = newStyle ? newFormat : oldFormat
     if (element) {
+      if (element.isClipArtGroup) {
+        element.forEachObject(o => o.set({ ...format }))
+      }
       element.set({ ...format })
       this.canvasTexture.renderAll()
     }
@@ -1112,6 +1116,14 @@ class Render3D extends PureComponent {
       selectedElement
     } = this.props
 
+    console.log('----------canvas-----------')
+    console.log(canvas)
+    console.log('-----------undo------------')
+    console.log(this.props.undoChanges)
+    console.log('-----------redo------------')
+    console.log(this.props.redoChanges)
+    console.log('---------------------------')
+
     {
       /*
       // TODO: JV2 - Phase II
@@ -1178,15 +1190,14 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         */}
-        {/* TODO: uncomment controllers when bugs from undo/redo and reset be fixed */}
-        {/* <OptionsController
+        <OptionsController
           {...{ undoEnabled, redoEnabled, formatMessage }}
           resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnOpenResetModal}
           onClickClear={this.handleOnClickClear}
-        /> */}
+        />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
           <TopButton onClick={this.handleOnPressTop} src={top} />
@@ -1395,17 +1406,11 @@ class Render3D extends PureComponent {
           ...style
         }
         if (position.scaleX) {
-          // TODO: UNDO/REDO
-          // el.scaleX = position.scaleX
-          // el.scaleY = position.scaleY
           shape.set({ ...shapeObject })
         } else {
           shape
             .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
             .setCoords()
-          // TODO: UNDO/REDO
-          // el.scaleX = scaleFactorX
-          // el.scaleY = scaleFactorY
           position.scaleX = scaleFactorX
           position.scaleY = scaleFactorY
         }
