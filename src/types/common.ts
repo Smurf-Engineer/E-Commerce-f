@@ -133,7 +133,7 @@ export interface Product {
   weight: number
   relatedProducts: Product[]
   isCustom?: boolean
-  colors?: ProductColors
+  colors?: ProductColors[]
 }
 
 export type DesignType = {
@@ -401,6 +401,7 @@ export type CartItemDetail = {
   gender?: ItemDetailType
   size?: ItemDetailType
   fit?: ItemDetailType
+  color?: ItemDetailType
   label?: string
   quantity: number
 }
@@ -481,10 +482,12 @@ export interface OrderHistory {
   shortId: string
   date: string
   status: string
+  netsuite?: NetsuiteObject
 }
 
 export interface OrderStatusNetsuite {
   deliveryDate?: string
+  orderStatus?: string
 }
 
 export interface NetsuiteObject {
@@ -518,7 +521,7 @@ export interface OrderDetailsInfo {
   billingCity: string
   billingZipCode: string
   shippingTax: number
-  netsuit?: NetsuiteObject
+  netsuite?: NetsuiteObject
   payment: PaymentCharges
   cart: CartItems[]
   status: string
@@ -1003,6 +1006,7 @@ export interface CanvasFile {
 }
 
 export interface ProductColors {
+  id: number
   name: string
   image: string
 }

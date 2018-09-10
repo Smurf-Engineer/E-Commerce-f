@@ -18,7 +18,7 @@ export const Container = styled.div`
   padding: 15px 32px 32px 32px;
   padding-top: 16px;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     height: 350px;
     padding: 5px 5px 0px;
   }
@@ -34,7 +34,7 @@ export const Row = styled.div`
   flex: 1;
   padding: 4px;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     flex-wrap: wrap;
   }
 `
@@ -55,7 +55,7 @@ export const Image = styled.img`
   object-fit: contain;
   width: 88px;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     width: 100%;
   }
 `
@@ -71,7 +71,7 @@ export const Info = styled.div`
   padding-left: 16px;
   width: 70%;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     padding-left: 0px;
     width: 100%;
   }
@@ -115,7 +115,7 @@ export const Buttons = styled.div`
   flex-direction: row;
   justify-content: space-between;
 
-  @media (min-width: 768px) and (max-width: 991px) {
+  @media (min-width: 768px) and (max-width: 1024px) {
     margin-top: 5px;
   }
 `

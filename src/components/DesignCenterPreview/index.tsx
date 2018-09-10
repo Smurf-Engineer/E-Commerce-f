@@ -94,14 +94,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
       setItemToAddAction,
       teamStoreId,
       addItemToStore,
-      product,
-      svgOutputUrl,
-      savedDesign,
-      stitchingColor,
-      bibColor,
-      bindingColor,
-      zipperColor,
-      canvas
+      savedDesign
     } = this.props
 
     const itemToAdd = Object.assign({}, savedDesign, {
@@ -131,17 +124,7 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
         {currentTab === DesignTabs.PreviewTab &&
           !swipingView && (
             <Render>
-              <Render3D
-                {...{
-                  product,
-                  bindingColor,
-                  zipperColor,
-                  bibColor,
-                  canvas
-                }}
-                svg={svgOutputUrl}
-                flatlockColor={!!stitchingColor && stitchingColor.value}
-              />
+              <Render3D designId={shortId} />
               <BottomButtons>
                 {/* TODO: Hide TeamStore Flow
                 <ButtonWrapper>

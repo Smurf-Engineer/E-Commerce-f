@@ -114,7 +114,7 @@ export class OrderDetails extends React.Component<Props, {}> {
       billingStateProvince,
       billingCity,
       billingZipCode,
-      netsuit,
+      netsuite,
       payment: { stripeCharge },
       cart,
       status,
@@ -129,8 +129,11 @@ export class OrderDetails extends React.Component<Props, {}> {
       discount
     } = data.orderQuery
 
-    const deliveryDate =
-      netsuit && netsuit.orderStatus && netsuit.orderStatus.deliveryDate
+    const netsuiteObject = get(netsuite, 'orderStatus')
+
+    const deliveryDate = netsuiteObject && netsuiteObject.deliveryDate
+
+    const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
 
     let subtotal = 0
     const renderItemList = cart
@@ -227,14 +230,14 @@ export class OrderDetails extends React.Component<Props, {}> {
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
                 <Info tracking={true}>-</Info>
-                <Info>{status}</Info>
+                <Info>{netsuiteStatus || status}</Info>
               </DeliveryData>
             </DeliveryInfo>
           </OrderDelivery>
           <OrderSummaryContainer>
             <OrderSummary
               onlyRead={true}
-              sumTotal={total}
+              totalSum={total}
               shippingTotal={shippingAmount}
               currencySymbol={currency.shortName}
               proDesignReview={proDesign && PRO_DESIGN_FEE}

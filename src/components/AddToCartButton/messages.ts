@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   validationMessage: {
     id: 'components.addToCartButton.validationMessage',
-    defaultMessage: 'Please select color, size and fit style!'
+    defaultMessage: 'Please select gender, color, size and fit style!'
   },
   validationMessageProdPage: {
     id: 'components.addToCartButton.validationMessageProdPage',

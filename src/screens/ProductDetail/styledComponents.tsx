@@ -6,6 +6,10 @@ import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
 
+interface StyledProps {
+  selected?: boolean
+}
+
 export const Container = styled.div`
   background-color: #fff;
 `
@@ -319,9 +323,30 @@ export const DetailsList = styled.ul`
 export const DetailsListItem = styled.li`
   margin-bottom: 15px;
 `
+
 export const ProductAvailableColor = styled.img`
   margin-right: 15px;
+  ${({ selected }: StyledProps) =>
+    selected
+      ? `
+      border: 2px solid red;
+      border-radius: 50%;
+    `
+      : ''};
+  width: 30px;
+
   &:hover {
     cursor: pointer;
   }
+`
+
+export const ColorWrapper = styled.div`
+  height: 2.5em;
+`
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
 `

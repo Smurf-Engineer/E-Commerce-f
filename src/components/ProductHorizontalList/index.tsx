@@ -72,13 +72,8 @@ export const ProductHorizontalList = ({
       colors
     } = product
 
-    let productImages
-
-    if (images) {
-      productImages = genderId
-        ? images.find(image => image.genderId === genderId)
-        : images[0]
-    }
+    const imagesByGender = images.find(image => image.genderId === genderId)
+    const productImages = imagesByGender || images[0]
 
     return (
       <ProductThumbnail

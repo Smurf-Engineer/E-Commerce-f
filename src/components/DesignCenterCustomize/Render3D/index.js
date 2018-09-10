@@ -332,9 +332,15 @@ class Render3D extends PureComponent {
             break
           }
           case CanvasElements.Group: {
-            const element = getImageCanvas(el)
-            canvas.image[elId] = element
-            paths.push(el)
+            if (el.isClipArtGroup) {
+              const element = getClipArtCanvasElement(el)
+              canvas.path[elId] = element
+              paths.push(el)
+            } else {
+              const element = getImageCanvas(el)
+              canvas.image[elId] = element
+              paths.push(el)
+            }
             break
           }
           case CanvasElements.Path: {
@@ -1139,6 +1145,11 @@ class Render3D extends PureComponent {
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
         </Row>
+        <ButtonWrapper>
+          <Button type="primary" onClick={this.takeDesignPicture}>
+            {formatMessage(messages.saveButton)}
+          </Button>
+        </ButtonWrapper>
         {!!selectedImageElement && (
           <SizeBox>
             <SizeLabel>
@@ -1147,19 +1158,12 @@ class Render3D extends PureComponent {
             <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
           </SizeBox>
         )}
-        <div>
-          <Render
-            id="render-3d"
-            innerRef={container => (this.container = container)}
-          >
-            {loadingModel && <Progress type="circle" percent={progress + 1} />}
-          </Render>
-          <ButtonWrapper>
-            <Button type="primary" onClick={this.takeDesignPicture}>
-              {formatMessage(messages.saveButton)}
-            </Button>
-          </ButtonWrapper>
-        </div>
+        <Render
+          id="render-3d"
+          innerRef={container => (this.container = container)}
+        >
+          {loadingModel && <Progress type="circle" percent={progress + 1} />}
+        </Render>
         {showDragmessage && (
           <DragText>
             <FormattedMessage {...messages.drag} />
@@ -1357,16 +1361,27 @@ class Render3D extends PureComponent {
   applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
-    if (activeEl && activeEl.type === CanvasElements.Path && !idElement) {
-      activeEl.set({ ...style })
+    const type = activeEl && activeEl.get('type')
+    const isGroup = type === CanvasElements.Group
+    const isClipArtElement = type === CanvasElements.Path || isGroup
+    if (isClipArtElement && !idElement && !activeEl.isImageGroup) {
+      if (isGroup && activeEl.forEachObject) {
+        const { fill, stroke, strokeWidth } = style
+        activeEl.forEachObject(o => o.set({ fill, stroke, strokeWidth }))
+        activeEl.set({ fill, stroke, strokeWidth })
+      } else {
+        activeEl.set({ ...style })
+      }
       this.canvasTexture.renderAll()
     } else {
       const { onApplyCanvasEl } = this.props
       fabric.loadSVGFromURL(src, (objects, options) => {
         const id = idElement || shortid.generate()
         const shape = fabric.util.groupSVGElements(objects || [], options)
+        const isClipArtGroup = shape.type === CanvasElements.Group
         const shapeObject = {
           id,
+          isClipArtGroup,
           fileId,
           hasRotatingPoint: false,
           ...position,
@@ -1380,15 +1395,17 @@ class Render3D extends PureComponent {
           ...style
         }
         if (position.scaleX) {
-          el.scaleX = position.scaleX
-          el.scaleY = position.scaleY
+          // TODO: UNDO/REDO
+          // el.scaleX = position.scaleX
+          // el.scaleY = position.scaleY
           shape.set({ ...shapeObject })
         } else {
           shape
             .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
             .setCoords()
-          el.scaleX = scaleFactorX
-          el.scaleY = scaleFactorY
+          // TODO: UNDO/REDO
+          // el.scaleX = scaleFactorX
+          // el.scaleY = scaleFactorY
           position.scaleX = scaleFactorX
           position.scaleY = scaleFactorY
         }
@@ -1416,6 +1433,7 @@ class Render3D extends PureComponent {
       const shapeObject = {
         id,
         fileId,
+        isImageGroup: true,
         hasRotatingPoint: false,
         ...position
       }
@@ -1529,9 +1547,11 @@ class Render3D extends PureComponent {
     const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const { type, fileId } = el
+    const { type, fileId, isClipArtGroup } = el
     const elementType =
-      type === CanvasElements.Group ? CanvasElements.Image : type
+      type === CanvasElements.Group && !isClipArtGroup
+        ? CanvasElements.Image
+        : type
     const id = oldId || shortid.generate()
     let canvasEl = { id, originalId: el.id }
 
@@ -1563,12 +1583,14 @@ class Render3D extends PureComponent {
       const { id } = activeEl
       switch (action) {
         case SCALE_ACTION:
-          const { scaleX, scaleY, type } = activeEl
+          const { scaleX, scaleY, type, isClipArtGroup } = activeEl
           const {
             oldScale: { oldScaleX = 1, oldScaleY = 1 }
           } = this.state
           const canvasType =
-            type === CanvasElements.Group ? CanvasElements.Image : type
+            type === CanvasElements.Group && !isClipArtGroup
+              ? CanvasElements.Image
+              : type
           if (scaleX !== oldScaleX || scaleY !== oldScaleY) {
             const { onCanvasElementResized } = this.props
             onCanvasElementResized({

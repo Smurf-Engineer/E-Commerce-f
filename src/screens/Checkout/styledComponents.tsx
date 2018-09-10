@@ -138,3 +138,18 @@ export const CurrencyWarningText = styled.div`
   font-size: 18px;
   font-weight: bold;
 `
+
+export const PlaceOrderLoading = styled.div`
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: ${BLACK_SHADOW};
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+`

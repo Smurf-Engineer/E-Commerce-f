@@ -114,7 +114,7 @@ export class AddToCartButton extends React.PureComponent<Props, {}> {
       if (!canAddToStore) {
         Message.warning(
           intl.formatMessage(
-            itemProdPage
+            designId
               ? messages.validationMessageProdPage
               : messages.validationMessage
           )

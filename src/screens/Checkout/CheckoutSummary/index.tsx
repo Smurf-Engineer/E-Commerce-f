@@ -24,7 +24,10 @@ import {
 import OrderSummary from '../../../components/OrderSummary'
 import config from '../../../config/index'
 import { COUNTRY_CODE_US, PaymentOptions } from '../constants'
-import { getDiscount, getTaxes } from '../../../utils/utilsCheckout'
+import {
+  getTaxesAndDiscount,
+  roundDecimals
+} from '../../../utils/utilsCheckout'
 
 interface Data extends QueryProps {
   taxes: NetsuiteTax
@@ -48,7 +51,6 @@ interface Props {
   showCouponInput?: boolean
   paymentMethod: string
   currentCurrency: string
-  loadingPlaceOrder: boolean
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
   setCouponCodeAction?: (code: CouponCode) => void
@@ -84,7 +86,6 @@ const CheckoutSummary = ({
   onPaypalCancel,
   currentCurrency,
   onPlaceOrder,
-  loadingPlaceOrder,
   shipping
 }: Props) => {
   const shippingTotal = get(data, 'shipping.total', shipping) || 0
@@ -96,45 +97,49 @@ const CheckoutSummary = ({
 
   // pro design fee
   const proDesignFee = proDesignReview || 0
-  // add proDesignFee to subtotal
-  let sumTotal = subtotal + proDesignFee
 
-  let discount = 0
-  if (couponCode) {
-    // get discount
-    discount = getDiscount(couponCode, sumTotal)
-  }
-
-  // get subtotal minus discount
-  sumTotal -= discount
-
-  // get taxes
-  const { taxGst, taxPst, taxFee, taxVat, taxVatTotal } = getTaxes(
+  const {
+    taxGst,
+    taxPst,
+    taxFee,
+    taxVat,
+    taxVatTotal,
+    discount
+  } = getTaxesAndDiscount(
     countrySubsidiary,
     shippingAddressCountry,
-    sumTotal,
+    subtotal,
     shippingTotal,
     proDesignFee,
-    discount,
+    couponCode,
     taxRates,
     country
   )
 
   // calculate youSaved amount
-  const youSaved = totalWithoutDiscount - sumTotal
+  const youSaved = totalWithoutDiscount - (subtotal + proDesignFee - discount)
 
-  // calculate sumTotal
+  let totalSum = 0
+  // calculate totalSum
   if (taxVat) {
-    sumTotal =
-      (sumTotal - proDesignFee) / (1 + taxVatTotal) +
+    totalSum =
+      subtotal / (1 + taxVatTotal) +
       taxVat +
       shippingTotal +
-      proDesignFee
+      proDesignFee -
+      discount
   } else {
-    sumTotal = sumTotal + shippingTotal + taxFee + taxGst + taxPst
+    totalSum =
+      subtotal +
+      proDesignFee +
+      shippingTotal +
+      taxFee +
+      taxGst +
+      taxPst -
+      discount
   }
 
-  sumTotal = Math.round(sumTotal * 100) / 100
+  totalSum = roundDecimals(totalSum) // round to 2 decimals
 
   const currency = currentCurrency
     ? currentCurrency.toUpperCase()
@@ -151,11 +156,11 @@ const CheckoutSummary = ({
         onError={onPaypalError}
         style={paypalButtonStyle}
         paymentOptions={{ intent: 'authorize' }}
-        total={sumTotal}
+        total={totalSum}
         {...{ currency }}
       />
     ) : (
-      <PlaceOrderButton onClick={onPlaceOrder} loading={loadingPlaceOrder}>
+      <PlaceOrderButton onClick={onPlaceOrder}>
         {formatMessage(messages.placeOrder)}
       </PlaceOrderButton>
     )
@@ -182,7 +187,7 @@ const CheckoutSummary = ({
           taxGst,
           taxPst,
           taxVat,
-          sumTotal,
+          totalSum,
           youSaved
         }}
       />

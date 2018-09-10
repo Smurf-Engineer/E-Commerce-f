@@ -46,6 +46,7 @@ interface Props {
   myLockerList?: boolean
   currentCurrency: string
   disableSlider?: boolean
+  reversePriceRange?: boolean
   backgroundColor?: string
   colors: ProductColors[]
   onPressCustomize: (id: number) => void
@@ -145,7 +146,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       myLockerList,
       disableSlider,
       backgroundColor,
-      colors
+      colors,
+      reversePriceRange
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -155,18 +157,28 @@ class ProductThumbnail extends React.Component<Props, {}> {
         abbreviation: currentCurrency
       })
 
-    let lastPrice = LIMIT_PRICE_RANGE
+    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
+
+    let lastPriceIndex = LIMIT_PRICE_RANGE
 
     if (currencyPrices && currencyPrices.length < LIMIT_PRICE_RANGE) {
-      lastPrice = currencyPrices.length - 1
+      lastPriceIndex = currencyPrices.length - 1
     }
 
     let price = ''
+
     if (currencyPrices && currencyPrices.length) {
-      price = `$${currencyPrices[0].price}`
+      const basePrice = currencyPrices[0].price
+      const lastPrice = currencyPrices[lastPriceIndex].price
+
+      price = `${symbol} ${basePrice}`
 
       if (customizable) {
-        price += ` - $${currencyPrices[lastPrice].price}`
+        if (reversePriceRange) {
+          price = `${symbol} ${lastPrice} - ${basePrice}`
+        } else {
+          price += ` - ${lastPrice}`
+        }
       }
     }
 
