@@ -11,6 +11,7 @@ import {
   SMS_CHECK,
   EMAIL_CHECK,
   SHOW_ADDRESS_FORM,
+  SHOW_BILLING_ADDRESS_FORM,
   SAME_BILLING_AND_SHIPPING_CHECKED,
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
   SET_SELECTED_ADDRESS,
@@ -85,6 +86,11 @@ export const showAddressFormAction = (show: boolean): AnyAction => ({
   show
 })
 
+export const showBillingAddressFormAction = (show: boolean): AnyAction => ({
+  type: SHOW_BILLING_ADDRESS_FORM,
+  show
+})
+
 export const sameBillingAndAddressCheckedAction = (): AnyAction => ({
   type: SAME_BILLING_AND_SHIPPING_CHECKED
 })
@@ -95,11 +101,13 @@ export const sameBillingAndAddressUncheckedAction = (): AnyAction => ({
 
 export const setSelectedAddressAction = (
   address: AddressType,
-  index: number
+  index: number,
+  billing: boolean
 ): AnyAction => ({
   type: SET_SELECTED_ADDRESS,
   address,
-  index
+  index,
+  billing
 })
 
 export const setSelectedAddressesAction = (
