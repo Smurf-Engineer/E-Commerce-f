@@ -2,6 +2,7 @@
  * Styled Components - Created by cazarez on 07/02/18.
  */
 import styled from 'styled-components'
+import { GRAY } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -24,13 +25,12 @@ export const Container = styled.div`
 export const Text = styled.div`
   height: 19px;
   width: 187.18px;
-  color: #bebebe;
+  color: ${GRAY};
   font-size: 14px;
   line-height: 19px;
   text-align: right;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    margin-top: 12px;
     text-align: center;
   }
 `
@@ -49,5 +49,14 @@ export const StyledImg = styled.img`
 
   @media (min-width: 320px) and (max-width: 480px) {
     margin: 0px 16px;
+  }
+`
+
+export const TailRecursiveURL = styled.a`
+  font-family: inherit;
+  color: ${GRAY};
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    margin: 12px 0;
   }
 `

@@ -69,11 +69,10 @@ import {
   CartItemDetail,
   SelectedType,
   Filter,
-  PriceRange
+  PriceRange,
+  ProductColors
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
-import ChessColors from '../../assets/chess-colors.svg'
-import RedColor from '../../assets/colorred.svg'
 import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
@@ -133,11 +132,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   componentDidMount() {
     const {
       data: { product },
-      setSelectedFitAction
+      setSelectedFitAction,
+      setSelectedColorAction
     } = this.props
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    const colors = get(product, 'colors', [] as ProductColors[])
     if (!fitStyles.length || !fitStyles[0].id) {
       setSelectedFitAction({ id: 1, name: 'Standard' })
+    }
+    if (colors && colors.length === 1 && colors[0].id) {
+      const { id, name } = colors[0]
+      setSelectedColorAction({ id, name })
     }
   }
 
@@ -175,6 +180,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
     const mpnCode = get(product, 'mpn')
+    const colors = get(product, 'colors', [] as ProductColors[])
 
     let genderMessage = messages.maleGenderLabel
 
@@ -352,19 +358,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    // TODO: implement actual color list when this data comes from the backend
-    const COLORS = [
-      { id: 1, name: 'colorOne', color: ChessColors },
-      { id: 2, name: 'colorTwo', color: RedColor }
-    ]
-
-    const availableColors = COLORS.map(({ id, color }) => (
-      <ProductAvailableColor
-        selected={id === selectedColor.id}
-        src={color}
-        onClick={this.handleSelectColor({ id, name })}
-      />
-    ))
+    const availableColors =
+      colors &&
+      colors.map(
+        ({ id, image, name: colorName }: ProductColors, key: number) => (
+          <ProductAvailableColor
+            selected={id === selectedColor.id}
+            src={image}
+            onClick={this.handleSelectColor({ id, name: colorName })}
+            {...{ key }}
+          />
+        )
+      )
 
     const colorsSection = (
       <SectionRow>
@@ -405,6 +410,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       fit: selectedFit,
       size: selectedSize,
       gender: selectedGender,
+      color: selectedColor,
       quantity: 1
     }
     itemDetails.push(detail)

@@ -332,7 +332,10 @@ export const ProductAvailableColor = styled.img`
       border: 2px solid red;
       border-radius: 50%;
     `
-      : ''} &:hover {
+      : ''};
+  width: 30px;
+
+  &:hover {
     cursor: pointer;
   }
 `
