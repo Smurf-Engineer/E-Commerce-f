@@ -28,6 +28,7 @@ import {
 } from './styledComponents'
 import { QueryProps, ClickParam, Filter } from '../../types/common'
 import { GetFiltersQuery } from './data'
+import { filtersNames } from './constants'
 import Icon from 'antd/lib/icon'
 import config from '../../config/index'
 
@@ -54,6 +55,7 @@ interface StateProps {
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   data: Data
+  collectionFilters: FilterType
   genderFilters: FilterType
   sportFilters: FilterType
   categoryFilters: FilterType
@@ -144,6 +146,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const {
       history,
       intl,
+      collectionFilters,
       genderFilters,
       sportFilters,
       categoryFilters,
@@ -189,6 +192,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     }
 
     const filters = [
+      collectionFilters,
       genderFilters,
       sportFilters,
       categoryFilters,
@@ -228,12 +232,35 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       </div>
     )
 
-    const genderOptions = get(filtersGraph, '0.options', [])
-    const sportOptions = get(filtersGraph, '1.options', [])
-    const categoryOptions = get(filtersGraph, '2.options', [])
-    const seasonOptions = get(filtersGraph, '3.options', [])
-    const fitStyleOptions = get(filtersGraph, '4.options', [])
+    const {
+      COLLECTION,
+      CATEGORY,
+      GENDER,
+      SPORT,
+      SEASON,
+      FITSTYLE
+    } = filtersNames
 
+    const collectionFilter = filtersGraph.find(
+      filter => filter.name === COLLECTION
+    )
+    const genderFilter = filtersGraph.find(filter => filter.name === GENDER)
+    const sportFilter = filtersGraph.find(filter => filter.name === SPORT)
+    const categoryFilter = filtersGraph.find(filter => filter.name === CATEGORY)
+    const seasonFilter = filtersGraph.find(filter => filter.name === SEASON)
+    const fitStyleFilter = filtersGraph.find(filter => filter.name === FITSTYLE)
+
+    const collectionOptions = get(collectionFilter, 'options', [])
+    const genderOptions = get(genderFilter, 'options', [])
+    const sportOptions = get(sportFilter, 'options', [])
+    const categoryOptions = get(categoryFilter, 'options', [])
+    const seasonOptions = get(seasonFilter, 'options', [])
+    const fitStyleOptions = get(fitStyleFilter, 'options', [])
+
+    const collectionIndexes = this.getFilterIndexes(
+      collectionOptions,
+      collectionFilters
+    )
     const genderIndexes = this.getFilterIndexes(genderOptions, genderFilters)
     const sportIndexes = this.getFilterIndexes(sportOptions, sportFilters)
     const categoryIndexes = this.getFilterIndexes(
@@ -274,6 +301,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         </FiltersTitle>
                         <ProductsThumbnailList
                           formatMessage={intl.formatMessage}
+                          collectionFilters={collectionIndexes}
                           genderFilters={genderIndexes}
                           sportFilters={sportIndexes}
                           categoryFilters={categoryIndexes}
@@ -313,6 +341,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                   <ResultsColumn>
                     <ProductsThumbnailList
                       formatMessage={intl.formatMessage}
+                      collectionFilters={collectionIndexes}
                       genderFilters={genderIndexes}
                       sportFilters={sportIndexes}
                       categoryFilters={categoryIndexes}
