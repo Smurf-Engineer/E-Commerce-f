@@ -340,7 +340,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       : sameBillingAndAddressUncheckedAction()
   }
 
-  handlechangePage = (pageNumber: number) => {
+  handleChangePage = (pageNumber: number) => {
     const { setSkipValueAction, limit } = this.props
     const skip = (pageNumber - 1) * limit
     setSkipValueAction(skip, pageNumber)
