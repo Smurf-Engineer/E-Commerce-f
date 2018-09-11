@@ -29,6 +29,13 @@ interface Props {
   showCardForm: boolean
   selectedCard: CreditCardData
   paymentMethod: string
+  skip: number
+  currentPage: number
+  indexAddressSelected: number
+  limit: number
+  showBillingForm: boolean
+  showBillingAddressFormAction: (show: boolean) => void
+  setSkipValueAction: (skip: number, currentPage: number) => void
   formatMessage: (messageDescriptor: any) => string
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
@@ -42,6 +49,11 @@ interface Props {
   setPaymentMethodAction: (method: string) => void
   showCardFormAction: (open: boolean) => void
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  setSelectedAddress: (
+    address: AddressType,
+    indexAddress: number,
+    billing: boolean
+  ) => void
   saveCountryAction: (countryCode: string | null) => void
 }
 
@@ -120,7 +132,15 @@ class Payment extends React.PureComponent<Props, {}> {
       showCardFormAction,
       selectCardToPayAction,
       selectedCard,
-      paymentMethod
+      paymentMethod,
+      skip,
+      currentPage,
+      setSelectedAddress,
+      indexAddressSelected,
+      limit,
+      setSkipValueAction,
+      showBillingForm,
+      showBillingAddressFormAction
     } = this.props
     const { stripe, openConfirm } = this.state
 
@@ -172,7 +192,15 @@ class Payment extends React.PureComponent<Props, {}> {
                 showCardForm,
                 selectedCard,
                 showCardFormAction,
-                selectCardToPayAction
+                selectCardToPayAction,
+                skip,
+                currentPage,
+                setSelectedAddress,
+                indexAddressSelected,
+                limit,
+                setSkipValueAction,
+                showBillingForm,
+                showBillingAddressFormAction
               }}
               selectDropdownAction={this.handleOnDropdownAction}
               inputChangeAction={this.handleOnChangeInput}
