@@ -120,8 +120,8 @@ interface StateProps {
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
-    showDetails: true,
-    showSpecs: true
+    showDetails: false,
+    showSpecs: false
   }
 
   componentWillUnmount() {
