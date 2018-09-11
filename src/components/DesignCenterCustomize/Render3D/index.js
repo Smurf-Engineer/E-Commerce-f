@@ -1490,7 +1490,18 @@ class Render3D extends PureComponent {
   deleteElement = el => {
     const { canvas } = this.props
     const type = el.get('type')
-    const { id, left, top, scaleX, scaleY, isClipArtGroup } = el
+    const { id, left, top, scaleX, scaleY, isClipArtGroup, angle } = el
+    if (angle > 0) {
+      const constraintPosition = el.translateToOriginPoint(
+        el.getCenterPoint(),
+        CENTER_ORIGIN,
+        CENTER_ORIGIN
+      )
+      console.log(constraintPosition, 'constraint position')
+      //   el.set('angle', angle)
+      // el.setPositionByOrigin(constraintPosition, CENTER_ORIGIN, CENTER_ORIGIN)
+      // el.setCoords()
+    }
     const canvasObject = {
       position: { left, top, scaleX, scaleY }
     }
