@@ -93,6 +93,7 @@ interface Props extends RouteComponentProps<any> {
   phone: string
   hasError: boolean
   showForm: boolean
+  showBillingForm: boolean
   indexAddressSelected: number
   billingFirstName: string
   billingLastName: string
@@ -141,7 +142,12 @@ interface Props extends RouteComponentProps<any> {
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
-  setSelectedAddressAction: (address: AddressType, indexAddress: number) => void
+  showBillingAddressFormAction: (show: boolean) => void
+  setSelectedAddressAction: (
+    address: AddressType,
+    indexAddress: number,
+    billing: boolean
+  ) => void
   setSelectedAddressesAction: (
     address: AddressType,
     indexAddress: number
@@ -188,6 +194,7 @@ class Checkout extends React.Component<Props, {}> {
       zipCode,
       phone,
       showForm,
+      showBillingForm,
       indexAddressSelected,
       billingFirstName,
       billingLastName,
@@ -212,6 +219,7 @@ class Checkout extends React.Component<Props, {}> {
       inputChangeAction,
       selectDropdownAction,
       showAddressFormAction,
+      showBillingAddressFormAction,
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
@@ -379,9 +387,17 @@ class Checkout extends React.Component<Props, {}> {
                     showCardFormAction,
                     selectCardToPayAction,
                     selectedCard,
-                    paymentMethod
+                    paymentMethod,
+                    skip,
+                    currentPage,
+                    indexAddressSelected,
+                    limit,
+                    setSkipValueAction,
+                    showBillingForm,
+                    showBillingAddressFormAction
                   }}
                   showContent={currentStep === PaymentTab}
+                  setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
                   nextStep={this.nextStep}
@@ -544,7 +560,11 @@ class Checkout extends React.Component<Props, {}> {
     return createUserAddress
   }
 
-  handleOnSelectAddress = (address: AddressType, index: number) => {
+  handleOnSelectAddress = (
+    address: AddressType,
+    index: number,
+    billing = false
+  ) => {
     const {
       setSelectedAddressAction,
       sameBillingAndShipping,
@@ -554,7 +574,7 @@ class Checkout extends React.Component<Props, {}> {
       setSelectedAddressesAction(address, index)
       return
     }
-    setSelectedAddressAction(address, index)
+    setSelectedAddressAction(address, index, billing)
   }
 
   onPaypalSuccess = (payment: any) => {
