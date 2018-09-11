@@ -41,14 +41,7 @@ export const getOrderQuery = gql`
           internalId
           orderStatus
           fulfillments {
-            date
-            status
             packages
-            items {
-              itemId
-              designNumber
-              quantity
-            }
           }
         }
       }
