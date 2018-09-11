@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import { StripeProvider, Elements } from 'react-stripe-elements'
+import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import messages from './messages'
@@ -163,7 +164,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentPage,
       indexAddressSelected,
       showBillingForm,
-      showBillingAddressFormAction
+      showBillingAddressFormAction,
       invalidBillingFormAction,
       setStripeCardDataAction,
       nextStep,
@@ -239,15 +240,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
               }}
             />
           </AnimateHeight>
-          ) : (
-              <MyAddress
-            {...{ street, zipCode, country, formatMessage }}
-            name={`${firstName} ${lastName}`}
-            city={`${city} ${stateProvince}`}
-            addressIndex={-1}
-            hideBottomButtons={true}
-          />
-          )}
         </ContainerBilling>
         {country && (
           <div>

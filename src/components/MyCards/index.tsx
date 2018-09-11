@@ -9,7 +9,7 @@ import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
 import { StripeProvider, Elements } from 'react-stripe-elements'
-import config from '../../config'
+// import config from '../../config'
 import * as MyCardsActions from './actions'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
@@ -90,7 +90,7 @@ interface MyWindow extends Window {
   Stripe: any
 }
 
-declare var window: MyWindow
+// declare var window: MyWindow
 
 class MyCards extends React.Component<Props, {}> {
   state = {
@@ -109,18 +109,18 @@ class MyCards extends React.Component<Props, {}> {
     }
   }
   componentDidMount() {
-    const { showCardFormAction = () => {}, data } = this.props
+    const { showCardFormAction = () => { }, data } = this.props
     // In addition to loading asynchronously, this code is safe to server-side render.
-    const stripeJs = document.createElement('script')
-    stripeJs.src = 'https://js.stripe.com/v3/'
-    stripeJs.async = true
-    stripeJs.onload = () => {
-      this.setState({
-        stripe: window.Stripe(config.pkStripe)
-      })
-    }
-    // tslint:disable-next-line:no-unused-expression
-    document.body && document.body.appendChild(stripeJs)
+    // const stripeJs = document.createElement('script')
+    // stripeJs.src = 'https://js.stripe.com/v3/'
+    // stripeJs.async = true
+    // stripeJs.onload = () => {
+    //   this.setState({
+    //     stripe: window.Stripe(config.pkStripe)
+    //   })
+    // }
+    // // tslint:disable-next-line:no-unused-expression
+    // document.body && document.body.appendChild(stripeJs)
 
     if (data && data.userCards) {
       const {
