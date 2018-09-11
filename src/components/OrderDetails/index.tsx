@@ -243,7 +243,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               <DeliveryData>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                <Info tracking={true}>{trackingNumber}</Info>
+                <Info tracking={true}>{trackingNumber || '-'}</Info>
                 <Info>{netsuiteStatus || status}</Info>
               </DeliveryData>
             </DeliveryInfo>
