@@ -10,7 +10,12 @@ import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
-import { OrderHistory, sorts, QueryProps } from '../../../types/common'
+import {
+  OrderHistory,
+  sorts,
+  QueryProps,
+  FulfillmentNetsuite
+} from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getOrdersQuery } from './data'
@@ -109,11 +114,18 @@ const OrdersList = ({
     ({ shortId, date, status, netsuite }: OrderHistory, index: number) => {
       const netsuiteObject = get(netsuite, 'orderStatus')
       const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
+      const fulfillments = get(
+        netsuiteObject,
+        'fulfillments',
+        [] as FulfillmentNetsuite[]
+      )
+      const packages = get(fulfillments, '[0].packages')
+      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || '-'
       return (
         <ItemOrder
           key={index}
           status={netsuiteStatus || status}
-          {...{ shortId, date, onOrderClick }}
+          {...{ shortId, date, onOrderClick, trackingNumber }}
         />
       )
     }

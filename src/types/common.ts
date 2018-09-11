@@ -485,9 +485,14 @@ export interface OrderHistory {
   netsuite?: NetsuiteObject
 }
 
+export interface FulfillmentNetsuite {
+  packages: string
+}
+
 export interface OrderStatusNetsuite {
   deliveryDate?: string
   orderStatus?: string
+  fulfillments?: FulfillmentNetsuite[]
 }
 
 export interface NetsuiteObject {
