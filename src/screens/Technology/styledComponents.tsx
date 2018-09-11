@@ -49,7 +49,13 @@ export const TopImageButton = styled(Button)`
 `
 export const Content = styled.div`
   @media (min-width: 1440px) {
+    max-width: 1440px;
     padding: 0px 10%;
+  }
+
+  @media (min-width: 1441px) {
+    margin: 0 auto;
+    padding: 0px;
   }
 `
 export const Title = styled.div`
@@ -151,6 +157,11 @@ export const TechImg = styled.img`
     width: 300px;
   }
 `
+
+interface ContainerProps {
+  fabrics?: boolean
+}
+
 export const ProContainer = styled.div`
   background-color: ${WHITE};
   display: flex;
@@ -159,12 +170,25 @@ export const ProContainer = styled.div`
   justify-content: space-evenly;
   padding: 40px;
   width: 100%;
+
+  @media (min-width: 1440px) {
+    justify-content: ${({ fabrics }: ContainerProps) =>
+      fabrics ? 'unset' : 'space-evenly'};
+  }
 `
 export const ProItem = styled.div`
   background-color: ${WHITE};
   display: flex;
   flex-direction: column;
   width: 300px;
+
+  @media (min-width: 1440px) {
+    ${({ fabrics }: ContainerProps) => (fabrics ? 'margin-left: 5%' : '')};
+  }
+
+  @media (min-width: 1441px) {
+    ${({ fabrics }: ContainerProps) => (fabrics ? 'margin-left: 8%' : '')};
+  }
 `
 export const ImgItem = styled.img`
   width: 300px;
