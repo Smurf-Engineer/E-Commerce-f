@@ -1108,15 +1108,6 @@ class Render3D extends PureComponent {
       selectedElement
     } = this.props
 
-    // FIXME:
-    // console.log('----------canvas-----------')
-    // console.log(canvas)
-    // console.log('-----------undo------------')
-    // console.log(this.props.undoChanges)
-    // console.log('-----------redo------------')
-    // console.log(this.props.redoChanges)
-    // console.log('---------------------------')
-
     {
       /*
       // TODO: JV2 - Phase II
@@ -1250,7 +1241,16 @@ class Render3D extends PureComponent {
 
   reAddCanvasElement = canvasEl => {
     const {
-      state: { id, type, style, src, position, isClipArtGroup, rotation }
+      state: {
+        id,
+        type,
+        style,
+        src,
+        position,
+        isClipArtGroup,
+        fileId,
+        rotation
+      }
     } = canvasEl
     switch (type) {
       case CanvasElements.Group:
@@ -1260,7 +1260,7 @@ class Render3D extends PureComponent {
         }
       case CanvasElements.Path:
         if (src) {
-          this.applyClipArt(src, style, position, id, null, rotation)
+          this.applyClipArt(src, style, position, id, fileId, rotation)
           break
         }
         this.applyClipArtFromOriginal(id, style, position)
@@ -1544,7 +1544,6 @@ class Render3D extends PureComponent {
         CENTER_ORIGIN
       )
       rotation = { angle, constraintPosition }
-      console.log(constraintPosition, 'constraint position ', angle, 'angle')
     }
     const canvasObject = {
       position: { left, top, scaleX, scaleY },
