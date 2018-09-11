@@ -5,6 +5,7 @@ import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose } from 'react-apollo'
 import filter from 'lodash/filter'
+import get from 'lodash/get'
 import {
   Container,
   Footer,
@@ -21,6 +22,7 @@ import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
 const LIMIT_PRICE_RANGE = 3
+const WHITENAME = 'White'
 
 interface Props {
   id: number
@@ -157,7 +159,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
         abbreviation: currentCurrency
       })
 
-    const symbol = currencyPrices ? currencyPrices[0].shortName : ''
+    const symbol = currencyPrices ? get(currencyPrices, '[0].shortName') : ''
 
     let lastPriceIndex = LIMIT_PRICE_RANGE
 
@@ -185,8 +187,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
     let urlProduct = this.getUrlProduct()
     const colorList =
       colors &&
-      colors.map(({ image: imageColor }: ProductColors, index) => (
-        <ImgIcon src={imageColor} key={index} />
+      colors.map(({ image: imageColor, name }: ProductColors, index) => (
+        <ImgIcon withBorder={name === WHITENAME} src={imageColor} key={index} />
       ))
 
     const colorOptions = customizable ? (
