@@ -21,6 +21,9 @@ export const getOrdersQuery = gql`
         netsuite: netsuit_order {
           orderStatus {
             orderStatus
+            fulfillments {
+              packages
+            }
           }
         }
       }
