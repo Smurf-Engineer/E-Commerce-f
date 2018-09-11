@@ -481,6 +481,7 @@ export interface OrderHistory {
   id: number
   shortId: string
   date: string
+  estimatedDate: string
   status: string
   netsuite?: NetsuiteObject
 }

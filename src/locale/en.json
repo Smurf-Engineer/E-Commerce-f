@@ -737,6 +737,7 @@
   "components.OrdersList.orderNumber": "Order Number",
   "components.OrdersList.orderNo": "Order No.",
   "components.OrdersList.date": "Date",
+  "components.OrdersList.estimatedDate": "Est. Delivery Date",
   "components.OrdersList.trackingNumber": "Tracking Number",
   "components.OrdersList.tracking": "Tracking",
   "components.OrdersList.status": "Status",
