@@ -26,6 +26,7 @@ import {
   MyCardsRow
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
+import MyAddresses from '../MyAddressesList'
 import MyAddress from '../MyAddress'
 import MyCards from '../MyCards'
 import { AddressType, CreditCardData, StripeCardData } from '../../types/common'
@@ -40,6 +41,13 @@ interface Props {
   sameBillingAndShipping: boolean
   showCardForm: boolean
   selectedCard: CreditCardData
+  skip: number
+  currentPage: number
+  indexAddressSelected: number
+  limit: number
+  showBillingForm: boolean
+  showBillingAddressFormAction: (show: boolean) => void
+  setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
@@ -51,6 +59,11 @@ interface Props {
   sameBillingAndAddressUncheckedAction: () => void
   showCardFormAction: (open: boolean) => void
   selectCardToPayAction: (card: StripeCardData, selectedCardId: string) => void
+  setSelectedAddress: (
+    address: AddressType,
+    indexAddress: number,
+    billing: boolean
+  ) => void
   nextStep: () => void
 }
 
@@ -66,6 +79,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
         apartment,
         country,
         stateProvince,
+        stateProvinceCode,
         city,
         zipCode,
         phone
@@ -79,8 +93,39 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       showCardForm,
       selectedCard,
       showCardFormAction,
-      selectCardToPayAction
+      selectCardToPayAction,
+      skip,
+      currentPage,
+      indexAddressSelected,
+      showBillingForm,
+      showBillingAddressFormAction
     } = this.props
+
+    const renderAddresses = (
+      adressesToShow?: number | null,
+      renderInModal?: boolean,
+      withPagination = false
+    ) => {
+      return (
+        <MyAddresses
+          itemsNumber={adressesToShow}
+          selectAddressAction={this.handleSelectedAddress}
+          renderForModal={renderInModal}
+          changePage={this.handlechangePage}
+          listForMyAccount={false}
+          billingAddress={true}
+          showForm={showBillingForm}
+          showAddressFormAction={showBillingAddressFormAction}
+          {...{
+            withPagination,
+            indexAddressSelected,
+            currentPage,
+            skip,
+            formatMessage
+          }}
+        />
+      )
+    }
 
     return (
       <Container>
@@ -92,7 +137,17 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           >
             {formatMessage(messages.sameShippingAddress)}
           </StyledCheckbox>
-          {!sameBillingAndShipping ? (
+          {(sameBillingAndShipping && (
+            <MyAddress
+              {...{ street, zipCode, country, formatMessage }}
+              name={`${firstName} ${lastName}`}
+              city={`${city} ${stateProvince}`}
+              addressIndex={-1}
+              hideBottomButtons={true}
+            />
+          )) ||
+            renderAddresses(4, false, false)}
+          <AnimateHeight duration={500} height={showBillingForm ? 'auto' : 0}>
             <ShippingAddressForm
               {...{
                 firstName,
@@ -101,6 +156,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 apartment,
                 country,
                 stateProvince,
+                stateProvinceCode,
                 city,
                 zipCode,
                 phone,
@@ -110,15 +166,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
                 formatMessage
               }}
             />
-          ) : (
-            <MyAddress
-              {...{ street, zipCode, country, formatMessage }}
-              name={`${firstName} ${lastName}`}
-              city={`${city} ${stateProvince}`}
-              addressIndex={-1}
-              hideBottomButtons={true}
-            />
-          )}
+          </AnimateHeight>
         </ContainerBilling>
         {country && (
           <div>
@@ -290,6 +338,17 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     checked
       ? sameBillingAndAddressCheckedAction()
       : sameBillingAndAddressUncheckedAction()
+  }
+
+  handleChangePage = (pageNumber: number) => {
+    const { setSkipValueAction, limit } = this.props
+    const skip = (pageNumber - 1) * limit
+    setSkipValueAction(skip, pageNumber)
+  }
+
+  handleSelectedAddress = (address: AddressType, indexAddress: number) => {
+    const { setSelectedAddress } = this.props
+    setSelectedAddress(address, indexAddress, true)
   }
 }
 
