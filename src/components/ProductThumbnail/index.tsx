@@ -159,7 +159,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
         abbreviation: currentCurrency
       })
 
-    const symbol = currencyPrices ? get(currencyPrices, '[0].shortName') : ''
+    const symbol = get(currencyPrices, '[0].shortName', '')
 
     let lastPriceIndex = LIMIT_PRICE_RANGE
 
