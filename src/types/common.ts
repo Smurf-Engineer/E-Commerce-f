@@ -486,7 +486,6 @@ export interface OrderHistory {
 }
 
 export interface OrderStatusNetsuite {
-  deliveryDate?: string
   orderStatus?: string
 }
 
@@ -503,6 +502,7 @@ export interface PaymentCharges {
 export interface OrderDetailsInfo {
   shortId: string
   orderDate: string
+  estimatedDate: string
   paymentMethod: string
   shippingFirstName: string
   shippingLastName: string

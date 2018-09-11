@@ -97,6 +97,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const {
       shortId,
       orderDate,
+      estimatedDate,
       paymentMethod,
       shippingFirstName,
       shippingLastName,
@@ -130,9 +131,6 @@ export class OrderDetails extends React.Component<Props, {}> {
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
-
-    const deliveryDate = netsuiteObject && netsuiteObject.deliveryDate
-
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
 
     let subtotal = 0
@@ -211,7 +209,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <OrderDelivery>
             <DeliveryDate>
               <span>{formatMessage(messages.deliveryDate)}</span>
-              <Date>{` ${deliveryDate || '-'}`}</Date>
+              <Date>{` ${estimatedDate}`}</Date>
             </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
