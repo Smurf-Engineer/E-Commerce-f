@@ -1250,30 +1250,30 @@ class Render3D extends PureComponent {
 
   reAddCanvasElement = canvasEl => {
     const {
-      state: { id, type, style, src, position, isClipArtGroup }
+      state: { id, type, style, src, position, isClipArtGroup, rotation }
     } = canvasEl
     switch (type) {
       case CanvasElements.Group:
         if (!isClipArtGroup) {
-          this.applyImage(src, position, id)
+          this.applyGroup(src, position, id, rotation)
           break
         }
       case CanvasElements.Path:
         if (src) {
-          this.applyClipArt(src, style, position, id)
+          this.applyClipArt(src, style, position, id, null, rotation)
           break
         }
         this.applyClipArtFromOriginal(id, style, position)
       case CanvasElements.Text:
-        this.applyText(src, style, position, id)
+        this.applyText(src, style, position, id, rotation)
         break
       case CanvasElements.Image:
-        this.applyImage(src, position, id)
+        this.applyImage(src, position, id, rotation)
         break
     }
   }
 
-  applyImage = (file = {}, position = {}, idElement) => {
+  applyImage = (file = {}, position = {}, idElement, rotation) => {
     const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl, size: imageSize, id: fileId, type } = file
     const id = idElement || shortid.generate()
@@ -1285,20 +1285,37 @@ class Render3D extends PureComponent {
           hasRotatingPoint: false,
           ...position
         })
-        const el = { id, imageSize, type, ...position, fileId, src: fileUrl }
-        if (position.scaleX) {
-          el.scaleX = position.scaleX
-          el.scaleY = position.scaleY
-        } else {
+
+        const scaleX = position.scaleX || scaleFactorX
+        const scaleY = position.scaleY || scaleFactorY
+        if (rotation) {
+          const { constraintPosition, angle } = rotation
           imageEl
-            .set({ scaleX: scaleFactorX, scaleY: scaleFactorY, fileId })
-            .setCoords()
-          el.scaleX = scaleFactorX
-          el.scaleY = scaleFactorY
-          position.scaleX = scaleFactorX
-          position.scaleY = scaleFactorY
+            .set({ scaleX, scaleY, fileId, angle })
+            .setPositionByOrigin(
+              constraintPosition,
+              CENTER_ORIGIN,
+              CENTER_ORIGIN
+            )
+        } else {
+          imageEl.set({ scaleX, scaleY, fileId })
         }
+        imageEl.setCoords()
+
         this.canvasTexture.add(imageEl)
+
+        const el = {
+          id,
+          imageSize,
+          type,
+          ...position,
+          fileId,
+          src: fileUrl,
+          scaleX,
+          scaleY
+        }
+        position.scaleX = scaleX
+        position.scaleY = scaleY
         if (!idElement) {
           const { onApplyCanvasEl } = this.props
           onApplyCanvasEl(el, CanvasElements.Image, undefined, {
@@ -1319,7 +1336,7 @@ class Render3D extends PureComponent {
     )
   }
 
-  applyText = (text, style, position = {}, idElement) => {
+  applyText = (text, style, position = {}, idElement, rotation) => {
     if (!this.canvasTexture || !text) {
       return
     }
@@ -1346,6 +1363,14 @@ class Render3D extends PureComponent {
         ...position,
         ...style
       })
+      if (rotation) {
+        const { constraintPosition, angle } = rotation
+        txtEl
+          .set({ angle })
+          .setPositionByOrigin(constraintPosition, CENTER_ORIGIN, CENTER_ORIGIN)
+        txtEl.setCoords()
+      } else {
+      }
       this.canvasTexture.add(txtEl)
       if (!idElement) {
         this.canvasTexture.setActiveObject(txtEl)
@@ -1367,7 +1392,14 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyClipArt = (src, style = {}, position = {}, idElement, fileId) => {
+  applyClipArt = (
+    src,
+    style = {},
+    position = {},
+    idElement,
+    fileId,
+    rotation
+  ) => {
     const activeEl = this.canvasTexture.getActiveObject()
     const { scaleFactorX, scaleFactorY } = this.state
     const type = activeEl && activeEl.get('type')
@@ -1397,6 +1429,28 @@ class Render3D extends PureComponent {
           ...position,
           ...style
         }
+
+        const scaleX = position.scaleX || scaleFactorX
+        const scaleY = position.scaleY || scaleFactorY
+        if (rotation) {
+          const { constraintPosition, angle } = rotation
+          shape
+            .set({ ...shapeObject, scaleX, scaleY, angle })
+            .setPositionByOrigin(
+              constraintPosition,
+              CENTER_ORIGIN,
+              CENTER_ORIGIN
+            )
+        } else {
+          shape.set({ ...shapeObject, scaleX, scaleY })
+        }
+        shape.setCoords()
+
+        if (isClipArtGroup && !isEmpty(style)) {
+          shape.forEachObject(o => o.set({ ...style }))
+        }
+        this.canvasTexture.add(shape)
+
         const el = {
           id,
           fill: BLACK,
@@ -1404,19 +1458,8 @@ class Render3D extends PureComponent {
           strokeWidth: 0,
           ...style
         }
-        if (position.scaleX) {
-          shape.set({ ...shapeObject })
-        } else {
-          shape
-            .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
-            .setCoords()
-          position.scaleX = scaleFactorX
-          position.scaleY = scaleFactorY
-        }
-        if (isClipArtGroup && !isEmpty(style)) {
-          shape.forEachObject(o => o.set({ ...style }))
-        }
-        this.canvasTexture.add(shape)
+        position.scaleX = scaleX
+        position.scaleY = scaleY
         if (!idElement) {
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src,
@@ -1431,7 +1474,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  applyGroup = (file = {}, position = {}, idElement) => {
+  applyGroup = (file = {}, position = {}, idElement, rotation) => {
     const { scaleFactorX, scaleFactorY } = this.state
     const { fileUrl: src, size: imageSize, id: fileId, type } = file
     fabric.loadSVGFromURL(src, (objects, options) => {
@@ -1444,21 +1487,23 @@ class Render3D extends PureComponent {
         hasRotatingPoint: false,
         ...position
       }
-      const el = { id, imageSize, type, fileId, src }
-      if (position.scaleX) {
-        el.scaleX = position.scaleX
-        el.scaleY = position.scaleY
-        shape.set({ ...shapeObject })
-      } else {
+
+      const scaleX = position.scaleX || scaleFactorX
+      const scaleY = position.scaleY || scaleFactorY
+      if (rotation) {
+        const { constraintPosition, angle } = rotation
         shape
-          .set({ ...shapeObject, scaleX: scaleFactorX, scaleY: scaleFactorY })
-          .setCoords()
-        el.scaleX = scaleFactorX
-        el.scaleY = scaleFactorY
-        position.scaleX = scaleFactorX
-        position.scaleY = scaleFactorY
+          .set({ ...shapeObject, scaleX, scaleY, angle })
+          .setPositionByOrigin(constraintPosition, CENTER_ORIGIN, CENTER_ORIGIN)
+      } else {
+        shape.set({ ...shapeObject, scaleX, scaleY })
       }
+      shape.setCoords()
       this.canvasTexture.add(shape)
+
+      const el = { id, imageSize, type, fileId, src, scaleX, scaleY }
+      position.scaleX = scaleX
+      position.scaleY = scaleY
       if (!idElement) {
         const { onApplyCanvasEl } = this.props
         onApplyCanvasEl(el, CanvasElements.Image, undefined, {
@@ -1491,19 +1536,19 @@ class Render3D extends PureComponent {
     const { canvas } = this.props
     const type = el.get('type')
     const { id, left, top, scaleX, scaleY, isClipArtGroup, angle } = el
+    let rotation = null
     if (angle > 0) {
       const constraintPosition = el.translateToOriginPoint(
         el.getCenterPoint(),
         CENTER_ORIGIN,
         CENTER_ORIGIN
       )
-      console.log(constraintPosition, 'constraint position')
-      //   el.set('angle', angle)
-      // el.setPositionByOrigin(constraintPosition, CENTER_ORIGIN, CENTER_ORIGIN)
-      // el.setCoords()
+      rotation = { angle, constraintPosition }
+      console.log(constraintPosition, 'constraint position ', angle, 'angle')
     }
     const canvasObject = {
-      position: { left, top, scaleX, scaleY }
+      position: { left, top, scaleX, scaleY },
+      rotation
     }
     switch (type) {
       case CanvasElements.Text:
