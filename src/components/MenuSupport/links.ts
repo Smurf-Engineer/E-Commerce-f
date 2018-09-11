@@ -13,7 +13,8 @@ const links = [
   },
   {
     label: 'pricing',
-    url: 'http://www.jakroo.com/price-sheets/2018Q1-USD_RETAIL_COND-2.pdf'
+    url:
+      'https://storage.googleapis.com/jakroo-storage/screens/pricingChart/JAKROO-JV2-PRICESHEET.pdf'
   },
   {
     label: 'warranty',
