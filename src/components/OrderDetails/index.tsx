@@ -144,8 +144,7 @@ export class OrderDetails extends React.Component<Props, {}> {
 
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
 
-    const packages =
-      fulfillments && !!fulfillments.length && fulfillments[0].packages
+    const packages = get(fulfillments, '[0].packages')
 
     const trackingNumber = packages && packages.replace('<BR>', ', ')
 

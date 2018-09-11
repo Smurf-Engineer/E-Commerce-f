@@ -119,10 +119,8 @@ const OrdersList = ({
         'fulfillments',
         [] as FulfillmentNetsuite[]
       )
-      const packages =
-        fulfillments && !!fulfillments.length && fulfillments[0].packages
-
-      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || ''
+      const packages = get(fulfillments, '[0].packages')
+      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || '-'
       return (
         <ItemOrder
           key={index}
