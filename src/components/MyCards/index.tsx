@@ -86,9 +86,9 @@ interface Props {
   deleteCard: (variables: {}) => void
 }
 
-interface MyWindow extends Window {
-  Stripe: any
-}
+// interface MyWindow extends Window {
+//   Stripe: any
+// }
 
 // declare var window: MyWindow
 
