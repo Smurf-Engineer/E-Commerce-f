@@ -5,9 +5,11 @@ import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
+import { RED, BLACK } from '../../theme/colors'
 
 interface StyledProps {
   selected?: boolean
+  withBorder?: boolean
 }
 
 export const Container = styled.div`
@@ -326,13 +328,11 @@ export const DetailsListItem = styled.li`
 
 export const ProductAvailableColor = styled.img`
   margin-right: 15px;
-  ${({ selected }: StyledProps) =>
+  border-radius: 50%;
+  border: ${({ selected, withBorder }: StyledProps) =>
     selected
-      ? `
-      border: 2px solid red;
-      border-radius: 50%;
-    `
-      : ''};
+      ? `2px solid ${RED}`
+      : `1px solid ${withBorder ? BLACK : 'transparent'}`};
   width: 30px;
 
   &:hover {
