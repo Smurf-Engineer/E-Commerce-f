@@ -1569,17 +1569,11 @@ class Render3D extends PureComponent {
         }
       case CanvasElements.Path:
         {
-          const {
-            fill = BLACK,
-            stroke = BLACK,
-            strokeWidth = 0,
-            fileId,
-            fileUrl
-          } = el
+          const { fill, stroke, strokeWidth, fileId, fileUrl } = el
           canvasObject.style = {
-            fill,
-            stroke,
-            strokeWidth
+            fill: fill || BLACK,
+            stroke: stroke || BLACK,
+            strokeWidth: strokeWidth || 0
           }
           if (fileUrl) {
             canvasObject.src = fileUrl
