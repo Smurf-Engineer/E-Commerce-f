@@ -12,7 +12,7 @@ import {
   paypalButtonStyle,
   PlaceOrderButton
 } from './styledComponents'
-import { getTaxQuery } from './data'
+import { getTaxQuery, getSubsidiaryQuery } from './data'
 import {
   CouponCode,
   QueryProps,
@@ -36,7 +36,8 @@ interface Data extends QueryProps {
 
 interface Props {
   showOrderButton: boolean
-  data?: Data
+  taxShipQuery?: Data
+  subsidiaryQuery?: number
   subtotal: number
   shipping?: number
   totalWithoutDiscount?: number
@@ -51,7 +52,6 @@ interface Props {
   showCouponInput?: boolean
   paymentMethod: string
   currentCurrency: string
-  loadingPlaceOrder: boolean
   formatMessage: (messageDescriptor: any) => string
   couponCode?: CouponCode
   setCouponCodeAction?: (code: CouponCode) => void
@@ -62,13 +62,7 @@ interface Props {
   onPlaceOrder: (event: any) => void
 }
 
-const paypalClient = {
-  sandbox: config.paypalClientId,
-  production: ''
-}
-
 const CheckoutSummary = ({
-  data,
   paymentMethod,
   subtotal,
   country,
@@ -87,11 +81,36 @@ const CheckoutSummary = ({
   onPaypalCancel,
   currentCurrency,
   onPlaceOrder,
-  loadingPlaceOrder,
-  shipping
+  shipping,
+  subsidiaryQuery,
+  taxShipQuery
 }: Props) => {
-  const shippingTotal = get(data, 'shipping.total', shipping) || 0
-  const taxRates = get(data, 'taxes', undefined)
+
+  // TODO: move outside render
+  let paypalClientId
+  const subsidiary = get(subsidiaryQuery, 'subsidiary', 1)
+  switch (subsidiary) {
+    case 1:
+      paypalClientId = config.paypalClientIdUS
+      break
+    case 6:
+      paypalClientId = config.paypalClientIdCA
+      break
+    case 9:
+      paypalClientId = config.paypalClientIdEU
+      break
+    default:
+      paypalClientId = config.paypalClientIdUS
+      break
+  }
+
+  const paypalClient = {
+    sandbox: paypalClientId,
+    production: ''
+  }
+
+  const shippingTotal = get(taxShipQuery, 'shipping.total', shipping) || 0
+  const taxRates = get(taxShipQuery, 'taxes', undefined)
 
   // countries to compare tax
   const countrySubsidiary = (taxRates && taxRates.countrySub) || COUNTRY_CODE_US
@@ -162,10 +181,10 @@ const CheckoutSummary = ({
         {...{ currency }}
       />
     ) : (
-      <PlaceOrderButton onClick={onPlaceOrder} loading={loadingPlaceOrder}>
-        {formatMessage(messages.placeOrder)}
-      </PlaceOrderButton>
-    )
+        <PlaceOrderButton onClick={onPlaceOrder}>
+          {formatMessage(messages.placeOrder)}
+        </PlaceOrderButton>
+      )
 
   const orderButton = showOrderButton && orderButtonComponent
   return (
@@ -206,9 +225,18 @@ interface OwnProps {
 
 const CheckoutSummaryEnhance = compose(
   graphql(getTaxQuery, {
+    name: 'taxShipQuery',
     options: ({ country, weight, shipAddress }: OwnProps) => ({
       skip: !country || !weight || !shipAddress,
       variables: { country, weight, shipAddress },
+      fetchPolicy: 'network-only'
+    })
+  }),
+  graphql(getSubsidiaryQuery, {
+    name: 'subsidiaryQuery',
+    options: ({ country }: OwnProps) => ({
+      skip: !country,
+      variables: { code: country },
       fetchPolicy: 'network-only'
     })
   })

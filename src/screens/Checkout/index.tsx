@@ -31,7 +31,8 @@ import {
   StepWrapper,
   StepIcon,
   CheckIcon,
-  CurrencyWarningText
+  CurrencyWarningText,
+  PlaceOrderLoading
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import Shipping from '../../components/Shippping'
@@ -54,6 +55,7 @@ import ModalFooter from '../../components/ModalFooter'
 import CheckoutSummary from './CheckoutSummary'
 import { getTaxQuery } from './CheckoutSummary/data'
 import { DEFAULT_ROUTE } from '../../constants'
+import Spin from 'antd/lib/spin'
 
 type ProductCart = {
   id: number
@@ -91,6 +93,7 @@ interface Props extends RouteComponentProps<any> {
   phone: string
   hasError: boolean
   showForm: boolean
+  showBillingForm: boolean
   indexAddressSelected: number
   billingFirstName: string
   billingLastName: string
@@ -139,7 +142,12 @@ interface Props extends RouteComponentProps<any> {
   smsCheckAction: (checked: boolean) => void
   emailCheckAction: (checked: boolean) => void
   showAddressFormAction: (show: boolean) => void
-  setSelectedAddressAction: (address: AddressType, indexAddress: number) => void
+  showBillingAddressFormAction: (show: boolean) => void
+  setSelectedAddressAction: (
+    address: AddressType,
+    indexAddress: number,
+    billing: boolean
+  ) => void
   setSelectedAddressesAction: (
     address: AddressType,
     indexAddress: number
@@ -186,6 +194,7 @@ class Checkout extends React.Component<Props, {}> {
       zipCode,
       phone,
       showForm,
+      showBillingForm,
       indexAddressSelected,
       billingFirstName,
       billingLastName,
@@ -210,6 +219,7 @@ class Checkout extends React.Component<Props, {}> {
       inputChangeAction,
       selectDropdownAction,
       showAddressFormAction,
+      showBillingAddressFormAction,
       sameBillingAndAddressCheckedAction,
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
@@ -359,6 +369,7 @@ class Checkout extends React.Component<Props, {}> {
                 <Payment
                   {...{
                     billingAddress,
+                    billingCountry,
                     cardHolderName,
                     stripeError,
                     setStripeErrorAction,
@@ -377,9 +388,17 @@ class Checkout extends React.Component<Props, {}> {
                     showCardFormAction,
                     selectCardToPayAction,
                     selectedCard,
-                    paymentMethod
+                    paymentMethod,
+                    skip,
+                    currentPage,
+                    indexAddressSelected,
+                    limit,
+                    setSkipValueAction,
+                    showBillingForm,
+                    showBillingAddressFormAction
                   }}
                   showContent={currentStep === PaymentTab}
+                  setSelectedAddress={this.handleOnSelectAddress}
                   formatMessage={intl.formatMessage}
                   hasError={billingHasError}
                   nextStep={this.nextStep}
@@ -422,12 +441,16 @@ class Checkout extends React.Component<Props, {}> {
                   deleteCouponCodeAction,
                   proDesignReview,
                   paymentMethod,
-                  currentCurrency,
-                  loadingPlaceOrder
+                  currentCurrency
                 }}
               />
             </SummaryContainer>
           </Content>
+          {loadingPlaceOrder && (
+            <PlaceOrderLoading>
+              <Spin />
+            </PlaceOrderLoading>
+          )}
         </Container>
         <Modal
           visible={openCurrencyWarning}
@@ -538,7 +561,11 @@ class Checkout extends React.Component<Props, {}> {
     return createUserAddress
   }
 
-  handleOnSelectAddress = (address: AddressType, index: number) => {
+  handleOnSelectAddress = (
+    address: AddressType,
+    index: number,
+    billing = false
+  ) => {
     const {
       setSelectedAddressAction,
       sameBillingAndShipping,
@@ -548,7 +575,7 @@ class Checkout extends React.Component<Props, {}> {
       setSelectedAddressesAction(address, index)
       return
     }
-    setSelectedAddressAction(address, index)
+    setSelectedAddressAction(address, index, billing)
   }
 
   onPaypalSuccess = (payment: any) => {
@@ -683,78 +710,79 @@ class Checkout extends React.Component<Props, {}> {
       zipCode: shippingAddress.zipCode
     }
 
-    const taxResponse = await query({
-      query: getTaxQuery,
-      variables: {
-        country: billingCountry,
-        weight: weightSum,
-        shipAddress: taxAddress
-      },
-      fetchPolicy: 'network-only'
-    })
-
-    const {
-      data: { taxes, shipping }
-    } = taxResponse
-
-    const taxId = get(taxes, 'internalId', null)
-    const taxAmount = get(taxes, 'total', null)
-    const shippingId = get(shipping, 'internalId', null)
-    const shippingCarrier = get(shipping, 'carrier', null)
-    const shippingAmount = get(shipping, 'total', '0')
-
-    const sanitizedCart = shoppingCart.map(
-      ({ designCode, designId, product, itemDetails }: CartItems) => {
-        const item = { designCode, designId } as CartItem
-        const productItem = {
-          id: product.id,
-          code: product.code,
-          name: product.name,
-          yotpoId: product.yotpoId
-        }
-        item.product = productItem
-        item.itemDetails = itemDetails.map(
-          ({ gender, quantity, size, fit }: CartItemDetail) => {
-            const fitId = get(fit, 'id', 0)
-            const fitName = get(fit, 'name', '')
-            const fitObj: ItemDetailType = {
-              id: fitId,
-              name: fitName
-            }
-            unset(gender, '__typename')
-            unset(quantity, '__typename')
-            unset(size, '__typename')
-            return { gender, quantity, size, fit: fitObj }
-          }
-        )
-        return item
-      }
-    )
-
-    const couponCode = couponObject && couponObject.code
-
-    const orderObj = {
-      proDesign,
-      paymentMethod,
-      cardId,
-      tokenId: stripeToken,
-      cart: sanitizedCart,
-      shippingAddress,
-      billingAddress,
-      paymentData: paypalObj || null,
-      countrySubsidiary: billingCountry,
-      taxId,
-      taxAmount,
-      shippingId,
-      shippingCarrier,
-      shippingAmount: shippingAmount || '0',
-      currency: currentCurrency || config.defaultCurrency,
-      weight: weightSum,
-      couponCode
-    }
-
     try {
       setLoadingPlaceOrderAction(true)
+      const taxResponse = await query({
+        query: getTaxQuery,
+        variables: {
+          country: billingCountry,
+          weight: weightSum,
+          shipAddress: taxAddress
+        },
+        fetchPolicy: 'network-only'
+      })
+
+      const {
+        data: { taxes, shipping }
+      } = taxResponse
+
+      const taxId = get(taxes, 'internalId', null)
+      const taxAmount = get(taxes, 'total', null)
+      const shippingId = get(shipping, 'internalId', null)
+      const shippingCarrier = get(shipping, 'carrier', null)
+      const shippingAmount = get(shipping, 'total', '0')
+
+      const sanitizedCart = shoppingCart.map(
+        ({ designCode, designId, product, itemDetails }: CartItems) => {
+          const item = { designCode, designId } as CartItem
+          const productItem = {
+            id: product.id,
+            code: product.code,
+            name: product.name,
+            yotpoId: product.yotpoId
+          }
+          item.product = productItem
+          item.itemDetails = itemDetails.map(
+            ({ gender, quantity, size, fit, color }: CartItemDetail) => {
+              const fitId = get(fit, 'id', 0)
+              const fitName = get(fit, 'name', '')
+              const fitObj: ItemDetailType = {
+                id: fitId,
+                name: fitName
+              }
+              unset(gender, '__typename')
+              unset(quantity, '__typename')
+              unset(size, '__typename')
+              unset(color, '__typename')
+              return { gender, quantity, size, fit: fitObj, color }
+            }
+          )
+          return item
+        }
+      )
+
+      const couponCode = couponObject && couponObject.code
+
+      const orderObj = {
+        proDesign,
+        paymentMethod,
+        cardId,
+        tokenId: stripeToken,
+        cart: sanitizedCart,
+        shippingAddress,
+        billingAddress,
+        paymentData: paypalObj || null,
+        countrySubsidiary: billingCountry,
+        taxId,
+        taxAmount,
+        shippingId,
+        shippingCarrier,
+        shippingAmount: shippingAmount || '0',
+        currency: currentCurrency || config.defaultCurrency,
+        weight: weightSum,
+        couponCode
+      }
+
       const response = await placeOrder({
         variables: { orderObj }
       })

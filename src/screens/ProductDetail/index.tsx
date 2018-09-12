@@ -77,6 +77,7 @@ import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
+const WHITENAME = 'White'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -122,8 +123,8 @@ interface StateProps {
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
-    showDetails: true,
-    showSpecs: true
+    showDetails: false,
+    showSpecs: false
   }
 
   componentWillUnmount() {
@@ -378,6 +379,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       colors.map(
         ({ id, image, name: colorName }: ProductColors, key: number) => (
           <ProductAvailableColor
+            withBorder={colorName === WHITENAME}
             selected={id === selectedColor.id}
             src={image}
             onClick={this.handleSelectColor({ id, name: colorName })}

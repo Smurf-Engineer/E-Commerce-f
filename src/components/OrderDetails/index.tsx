@@ -6,7 +6,11 @@ import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { OrderDetailsInfo, QueryProps } from '../../types/common'
+import {
+  OrderDetailsInfo,
+  QueryProps,
+  FulfillmentNetsuite
+} from '../../types/common'
 import { getOrderQuery } from './data'
 import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
@@ -97,6 +101,7 @@ export class OrderDetails extends React.Component<Props, {}> {
     const {
       shortId,
       orderDate,
+      estimatedDate,
       paymentMethod,
       shippingFirstName,
       shippingLastName,
@@ -130,10 +135,17 @@ export class OrderDetails extends React.Component<Props, {}> {
     } = data.orderQuery
 
     const netsuiteObject = get(netsuite, 'orderStatus')
-
-    const deliveryDate = netsuiteObject && netsuiteObject.deliveryDate
+    const fulfillments = get(
+      netsuiteObject,
+      'fulfillments',
+      [] as FulfillmentNetsuite[]
+    )
 
     const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
+
+    const packages = get(fulfillments, '[0].packages')
+
+    const trackingNumber = packages && packages.replace('<BR>', ', ')
 
     let subtotal = 0
     const renderItemList = cart
@@ -211,7 +223,7 @@ export class OrderDetails extends React.Component<Props, {}> {
           <OrderDelivery>
             <DeliveryDate>
               <span>{formatMessage(messages.deliveryDate)}</span>
-              <Date>{` ${deliveryDate || '-'}`}</Date>
+              <Date>{` ${estimatedDate}`}</Date>
             </DeliveryDate>
             <DeliveryInfo>
               <DeliveryLabels>
@@ -229,7 +241,7 @@ export class OrderDetails extends React.Component<Props, {}> {
               <DeliveryData>
                 <Info>{shortId}</Info>
                 <Info>{orderDate}</Info>
-                <Info tracking={true}>-</Info>
+                <Info tracking={true}>{trackingNumber || '-'}</Info>
                 <Info>{netsuiteStatus || status}</Info>
               </DeliveryData>
             </DeliveryInfo>

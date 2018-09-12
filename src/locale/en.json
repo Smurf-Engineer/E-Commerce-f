@@ -18,7 +18,7 @@
   "components.menuSupport.title": "SUPPORT",
   "components.menuSupport.faq": "F.A.Q.",
   "components.menuSupport.terms": "Terms of Use",
-  "components.menuSupport.pricing": "Pricing",
+  "components.menuSupport.pricing": "Pricing chart",
   "components.menuSupport.warranty": "Warranty",
   "components.menuSupport.design": "Design Support",
   "components.ImagesGrid.quote": "Something evocative about community and their importance to Jakroo. Maybe a quote” -Jakroo",
@@ -737,6 +737,7 @@
   "components.OrdersList.orderNumber": "Order Number",
   "components.OrdersList.orderNo": "Order No.",
   "components.OrdersList.date": "Date",
+  "components.OrdersList.estimatedDate": "Est. Delivery Date",
   "components.OrdersList.trackingNumber": "Tracking Number",
   "components.OrdersList.tracking": "Tracking",
   "components.OrdersList.status": "Status",
@@ -1027,5 +1028,7 @@
   "components.CheckoutSummary.placeOrder": "Place Order",
   "components.ImageList.delete": "Delete",
   "components.ImageList.apply": "Apply",
-  "components.ImageList.size": "Max. size {width} cm x {height} cm"
+  "components.ImageList.size": "Max. size {width} cm x {height} cm",
+  "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
+  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2018"
 }

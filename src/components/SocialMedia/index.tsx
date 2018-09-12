@@ -6,8 +6,10 @@ import {
   Container,
   Text,
   SocialLogosContainer,
-  StyledImg
+  StyledImg,
+  TailRecursiveURL
 } from './styledComponents'
+import messages from './messages'
 import fbLogo from '../../assets/fb.svg'
 import fbLogoHover from '../../assets/fb_hover.svg'
 import twitterLogo from '../../assets/twitter.svg'
@@ -17,11 +19,16 @@ import intagramLogoHover from '../../assets/instagram_hover.svg'
 import youtubeLogo from '../../assets/youtube.svg'
 import youtubeLogoHover from '../../assets/youtube_hover.svg'
 
-class SocialMedia extends React.Component {
+interface Props {
+  formatMessage: (messageDescriptor: any) => string
+}
+
+class SocialMedia extends React.Component<Props, {}> {
   state = {
     hoverOn: ''
   }
   render() {
+    const { formatMessage } = this.props
     const { hoverOn } = this.state
     return (
       <Container>
@@ -59,7 +66,10 @@ class SocialMedia extends React.Component {
             onClick={this.handleClick}
           />
         </SocialLogosContainer>
-        <Text>© Copyright JAKROO 2018</Text>
+        <TailRecursiveURL href="https://www.tailrecursive.co">
+          {formatMessage(messages.tailrecursive)}
+        </TailRecursiveURL>
+        <Text>{formatMessage(messages.jakrooCopyright)}</Text>
       </Container>
     )
   }
