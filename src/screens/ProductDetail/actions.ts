@@ -9,6 +9,7 @@ import {
   SET_SELECTED_FIT,
   SET_SELECTED_SIZE,
   LOADING_3D_MODEL,
+  LOADING_IMAGE,
   ADD_ITEM_TO_CART,
   RESET_DATA,
   SET_SELECTED_COLOR
@@ -62,4 +63,9 @@ export const resetReducerAction = (): AnyAction => ({
 export const setSelectedColorAction = (selected: SelectedType): AnyAction => ({
   type: SET_SELECTED_COLOR,
   selected
+})
+
+export const setLoadingImageAction = (loading: boolean): AnyAction => ({
+  type: LOADING_IMAGE,
+  loading
 })

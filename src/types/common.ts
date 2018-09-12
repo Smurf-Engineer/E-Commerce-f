@@ -72,6 +72,7 @@ export type ImageType = {
   left: string
   right: string
   genderId: number
+  colorId?: number
 }
 
 export type PriceRange = {
