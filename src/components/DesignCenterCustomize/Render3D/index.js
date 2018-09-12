@@ -1249,6 +1249,7 @@ class Render3D extends PureComponent {
         position,
         isClipArtGroup,
         fileId,
+        fileUrl,
         rotation
       }
     } = canvasEl
@@ -1259,11 +1260,9 @@ class Render3D extends PureComponent {
           break
         }
       case CanvasElements.Path:
-        if (src) {
-          this.applyClipArt(src, style, position, id, fileId, rotation)
-          break
-        }
-        this.applyClipArtFromOriginal(id, style, position)
+        const source = src || fileUrl
+        this.applyClipArt(source, style, position, id, fileId, rotation)
+        break
       case CanvasElements.Text:
         this.applyText(src, style, position, id, rotation)
         break
@@ -1424,7 +1423,7 @@ class Render3D extends PureComponent {
           id,
           isClipArtGroup,
           fileId,
-          src,
+          fileUrl: src,
           hasRotatingPoint: false,
           ...position,
           ...style
@@ -1483,6 +1482,7 @@ class Render3D extends PureComponent {
       const shapeObject = {
         id,
         fileId,
+        fileUrl: src,
         isImageGroup: true,
         hasRotatingPoint: false,
         ...position
@@ -1521,17 +1521,6 @@ class Render3D extends PureComponent {
     })
   }
 
-  applyClipArtFromOriginal = async (id, style, position) => {
-    const { originalPaths } = this.props
-    const originalPath = find(originalPaths, { id })
-    if (originalPath) {
-      const canvasEl = { ...originalPath, ...style, ...position }
-      const fabricObjects = await this.convertToFabricObjects([canvasEl])
-      fabricObjects.forEach(o => this.canvasTexture.add(o))
-      this.canvasTexture.renderAll()
-    }
-  }
-
   deleteElement = el => {
     const { canvas } = this.props
     const type = el.get('type')
@@ -1566,10 +1555,11 @@ class Render3D extends PureComponent {
         if (!isClipArtGroup) {
           {
             const object = canvas.image[id]
-            const { src, fileId, imageSize, type } = object
+            const { fileId, imageSize, type } = object
+            const { fileUrl } = el
             canvasObject.src = {
               id: fileId,
-              fileUrl: src,
+              fileUrl,
               size: imageSize,
               type
             }
@@ -1584,16 +1574,17 @@ class Render3D extends PureComponent {
             stroke = BLACK,
             strokeWidth = 0,
             fileId,
-            src
+            fileUrl
           } = el
           canvasObject.style = {
             fill,
             stroke,
             strokeWidth
           }
-          if (src) {
-            canvasObject.src = src
+          if (fileUrl) {
+            canvasObject.src = fileUrl
             canvasObject.fileId = fileId
+            canvasObject.fileUrl = fileUrl
             canvasObject.isClipArtGroup = isClipArtGroup
           }
         }
@@ -1628,7 +1619,7 @@ class Render3D extends PureComponent {
     const { onCanvasElementDuplicated } = this.props
     const boundingBox = el.getBoundingRect()
 
-    const { type, fileId, src, isClipArtGroup } = el
+    const { type, fileId, fileUrl, src, isClipArtGroup } = el
     let elementType = type
     if (type === CanvasElements.Group) {
       elementType = !isClipArtGroup ? CanvasElements.Image : CanvasElements.Path
@@ -1644,6 +1635,7 @@ class Render3D extends PureComponent {
         top: boundingBox.top + EXTRA_POSITION,
         stroke: el.stroke,
         fileId,
+        fileUrl,
         src,
         isClipArtGroup
       })
