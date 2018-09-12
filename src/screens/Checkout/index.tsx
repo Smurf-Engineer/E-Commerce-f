@@ -754,7 +754,7 @@ class Checkout extends React.Component<Props, {}> {
               unset(quantity, '__typename')
               unset(size, '__typename')
               unset(color, '__typename')
-              return { gender, quantity, size, fit: fitObj }
+              return { gender, quantity, size, fit: fitObj, color }
             }
           )
           return item
