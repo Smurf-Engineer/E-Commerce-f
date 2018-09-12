@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'components.OrdersList.date',
     defaultMessage: 'Date'
   },
+  estimatedDate: {
+    id: 'components.OrdersList.estimatedDate',
+    defaultMessage: 'Est. Delivery Date'
+  },
   trackingNumber: {
     id: 'components.OrdersList.trackingNumber',
     defaultMessage: 'Tracking Number'

@@ -58,7 +58,7 @@ const OrdersList = ({
   const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
   const fullCount = get(ordersQuery, 'fullCount', 0)
 
-  if (!orders.length) {
+  if (!orders || !orders.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
 
@@ -70,6 +70,7 @@ const OrdersList = ({
             <Row>
               <Header>{formatMessage(messages.orderNo)}</Header>
               <Header>{formatMessage(messages.date)}</Header>
+              <Header>{formatMessage(messages.estimatedDate)}</Header>
               <Header>{formatMessage(messages.tracking)}</Header>
               <Header textAlign={'right'}>
                 {formatMessage(messages.status)}
@@ -86,9 +87,15 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'updated_at'}
+              id={'created_at'}
               label={formatMessage(messages.date)}
-              sort={orderBy === 'updated_at' ? sort : 'none'}
+              sort={orderBy === 'created_at' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'estimated_date'}
+              label={formatMessage(messages.estimatedDate)}
+              sort={orderBy === 'estimated_date' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -111,7 +118,10 @@ const OrdersList = ({
   )
 
   const orderItems = orders.map(
-    ({ shortId, date, status, netsuite }: OrderHistory, index: number) => {
+    (
+      { shortId, date, estimatedDate, status, netsuite }: OrderHistory,
+      index: number
+    ) => {
       const netsuiteObject = get(netsuite, 'orderStatus')
       const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
       const fulfillments = get(
@@ -125,7 +135,7 @@ const OrdersList = ({
         <ItemOrder
           key={index}
           status={netsuiteStatus || status}
-          {...{ shortId, date, onOrderClick, trackingNumber }}
+          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber }}
         />
       )
     }
