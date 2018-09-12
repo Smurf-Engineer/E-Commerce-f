@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 
 export const GetProductsQuery = gql`
   query getProducts(
+    $collection: String
     $gender: String
     $category: String
     $sport: String
@@ -12,6 +13,7 @@ export const GetProductsQuery = gql`
     $offset: Int
   ) {
     products(
+      collection: $collection
       gender: $gender
       category: $category
       sport: $sport
