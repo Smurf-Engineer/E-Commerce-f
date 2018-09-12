@@ -481,13 +481,18 @@ export interface OrderHistory {
   id: number
   shortId: string
   date: string
+  estimatedDate: string
   status: string
   netsuite?: NetsuiteObject
 }
 
+export interface FulfillmentNetsuite {
+  packages: string
+}
+
 export interface OrderStatusNetsuite {
-  deliveryDate?: string
   orderStatus?: string
+  fulfillments?: FulfillmentNetsuite[]
 }
 
 export interface NetsuiteObject {
@@ -503,6 +508,7 @@ export interface PaymentCharges {
 export interface OrderDetailsInfo {
   shortId: string
   orderDate: string
+  estimatedDate: string
   paymentMethod: string
   shippingFirstName: string
   shippingLastName: string

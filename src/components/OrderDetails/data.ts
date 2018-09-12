@@ -35,20 +35,13 @@ export const getOrderQuery = gql`
         shortName: short_name
       }
       orderDate: created_at
+      estimatedDate: estimated_date
       netsuite: netsuit_order {
         orderStatus {
           internalId
-          deliveryDate: orderDate
           orderStatus
           fulfillments {
-            date
-            status
             packages
-            items {
-              itemId
-              designNumber
-              quantity
-            }
           }
         }
       }

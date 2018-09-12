@@ -26,3 +26,9 @@ export const getTaxQuery = gql`
     }
   }
 `
+
+export const getSubsidiaryQuery = gql`
+  query subsidiaryByCountryCode($code: String!) {
+    subsidiary: subsidiaryByCountryCode(code: $code)
+  }
+`
