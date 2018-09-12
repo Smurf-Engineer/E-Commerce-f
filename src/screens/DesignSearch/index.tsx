@@ -110,7 +110,8 @@ export class DesignSearch extends React.Component<Props, {}> {
     history.push('designer-tool')
   }
 
-  handleOnSearch = async (code: string) => {
+  handleOnSearch = async (productCode: string) => {
+    const code = productCode.trim()
     const {
       client: { query },
       setLoadingAction,
