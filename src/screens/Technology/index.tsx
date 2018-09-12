@@ -122,7 +122,7 @@ export class Technology extends React.Component<Props, {}> {
     const { intl, history } = this.props
     const fabricsList = fabricsArray.map((fabric, index) => {
       return (
-        <ProItem key={index}>
+        <ProItem key={index} fabrics={true}>
           <ImgItem src={fabric.url} />
           <ProText
             dangerouslySetInnerHTML={{
@@ -214,7 +214,7 @@ export class Technology extends React.Component<Props, {}> {
                 <FormattedMessage {...messages.fabricsTitle} />
               </SecondTitle>
             </div>
-            <ProContainer>{fabricsList}</ProContainer>
+            <ProContainer fabrics={true}>{fabricsList}</ProContainer>
           </Content>
         </Container>
       </Layout>
