@@ -93,7 +93,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const { cartItem } = props
     const colors = get(cartItem, 'product.colors', [])
-    const withColorColumn = !cartItem.designId && !colors.length
+    const withColorColumn = !cartItem.designId && colors.length
 
     let genderSelectWidth = '100%'
     let fitSelectWidth = '100%'
@@ -187,7 +187,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const colors = get(cartItem, 'product.colors', [])
     const colorImage = get(cartItem, 'itemDetails[0].colorImage', '')
-    const withColorColumn = (isRetailProduct && !colors.length) || colorImage
+    const withColorColumn = (isRetailProduct && colors.length) || colorImage
 
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
