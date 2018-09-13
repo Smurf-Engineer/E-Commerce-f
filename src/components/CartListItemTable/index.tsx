@@ -253,7 +253,7 @@ class CartListItemTable extends React.Component<Props, State> {
                 </StyledSelect>
               </Cell>
               {withColorColumn &&
-                colorObject && (
+                !!colorObject && (
                   <Cell>
                     <ProductColor src={colorObject.image} />
                   </Cell>
@@ -311,7 +311,7 @@ class CartListItemTable extends React.Component<Props, State> {
           ) : (
             <Row key={index} withColor={withColorColumn} {...{ onlyRead }}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
-              {(withColorColumn && colorObject) ||
+              {(withColorColumn && !!colorObject) ||
                 (colorImage && (
                   <InfoCell>
                     <ProductColor src={colorImage || colorObject.image} />
