@@ -18,24 +18,18 @@ import {
   HeaderCell,
   DeleteItem,
   StyledSelect,
-  StyledInputNumber
+  StyledInputNumber,
+  ProductColor
 } from './styledComponents'
 import {
-  CartItemDetail,
-  Product,
   ItemDetailType,
   FitStyle,
   Filter,
-  SizeFilter
+  SizeFilter,
+  CartItems
 } from '../../types/common'
 
 const Option = Select.Option
-
-interface CartItems {
-  product: Product
-  itemDetails: CartItemDetail[]
-  storeDesignId?: string
-}
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -86,6 +80,7 @@ interface Header {
 
 const headerTitles: Header[] = [
   { message: 'gender' },
+  { message: 'color' },
   { message: 'size' },
   { message: 'fit' },
   { message: 'quantity' },
@@ -95,23 +90,27 @@ const headerTitles: Header[] = [
 class CartListItemTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
+
+    const { cartItem } = props
+    const colors = get(cartItem, 'product.colors', [])
+    const withColorColumn = !cartItem.designId && !colors.length
+
     let genderSelectWidth = '100%'
     let fitSelectWidth = '100%'
-
     if (typeof window !== 'undefined') {
       if (window.matchMedia('(max-width: 320px)').matches) {
-        genderSelectWidth = '90px'
-        fitSelectWidth = '71px'
+        genderSelectWidth = withColorColumn ? '80px' : '90px'
+        fitSelectWidth = withColorColumn ? '61px' : '71px'
       } else if (
         window.matchMedia('(max-width: 375px) and (min-width: 321px)').matches
       ) {
-        genderSelectWidth = '90px'
-        fitSelectWidth = '88px'
+        genderSelectWidth = withColorColumn ? '78px' : '88px'
+        fitSelectWidth = withColorColumn ? '75px' : '85px'
       } else if (
         window.matchMedia('(max-width: 425px) and (min-width: 376px)').matches
       ) {
-        genderSelectWidth = '100px'
-        fitSelectWidth = '100px'
+        genderSelectWidth = withColorColumn ? '90px' : '100px'
+        fitSelectWidth = withColorColumn ? '90px' : '100px'
       }
     }
 
@@ -184,17 +183,26 @@ class CartListItemTable extends React.Component<Props, State> {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
+    const isRetailProduct = !cartItem.designId
 
-    const header = headers.map(({ width, message }, index) => (
-      <HeaderCell key={index} {...{ width }}>
-        <Title
-          titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
-          align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
-        >
-          {message ? formatMessage(messages[message]) : ''}
-        </Title>
-      </HeaderCell>
-    ))
+    const colors = get(cartItem, 'product.colors', [])
+    const colorImage = get(cartItem, 'itemDetails[0].colorImage', '')
+    const withColorColumn = (isRetailProduct && !colors.length) || colorImage
+
+    const header = headers.map(({ width, message }, index) => {
+      // tslint:disable-next-line:curly
+      if (index === 1 && !withColorColumn) return
+      return (
+        <HeaderCell key={index} {...{ width }}>
+          <Title
+            titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
+            align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
+          >
+            {message ? formatMessage(messages[message]) : ''}
+          </Title>
+        </HeaderCell>
+      )
+    })
 
     const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
     const fitOptions = fitStyles.map(fs => {
@@ -227,9 +235,11 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-          const { gender, size, fit, quantity } = item
+          const { gender, size, fit, quantity, color } = item
+          const colorName = color && color.name
+          const colorObject = find(colors, { name: colorName })
           return !onlyRead ? (
-            <Row key={index}>
+            <Row key={index} withColor={withColorColumn}>
               <Cell>
                 <StyledSelect
                   onChange={e => this.handleGenderChange(e, index)}
@@ -242,6 +252,12 @@ class CartListItemTable extends React.Component<Props, State> {
                   {genderOptions}
                 </StyledSelect>
               </Cell>
+              {withColorColumn &&
+                colorObject && (
+                  <Cell>
+                    <ProductColor src={colorObject.image} />
+                  </Cell>
+                )}
               <Cell>
                 <StyledSelect
                   onChange={e => this.handleSizeChange(e, index)}
@@ -293,8 +309,14 @@ class CartListItemTable extends React.Component<Props, State> {
               </Cell>
             </Row>
           ) : (
-            <Row key={index}>
+            <Row key={index} withColor={withColorColumn} {...{ onlyRead }}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
+              {(withColorColumn && colorObject) ||
+                (colorImage && (
+                  <InfoCell>
+                    <ProductColor src={colorImage || colorObject.image} />
+                  </InfoCell>
+                ))}
               <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
@@ -307,7 +329,9 @@ class CartListItemTable extends React.Component<Props, State> {
 
     return (
       <Table>
-        <HeaderRow>{header}</HeaderRow>
+        <HeaderRow withColor={withColorColumn} {...{ onlyRead }}>
+          {header}
+        </HeaderRow>
         {renderList}
       </Table>
     )

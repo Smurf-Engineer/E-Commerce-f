@@ -30,6 +30,10 @@ export default defineMessages({
     id: 'components.CartListItemTable.quantity',
     defaultMessage: 'Quantity'
   },
+  color: {
+    id: 'components.CartListItemTable.color',
+    defaultMessage: 'Color'
+  },
   genderPlaceholder: {
     id: 'components.CartListItemTable.genderPlaceholder',
     defaultMessage: 'Select gender'

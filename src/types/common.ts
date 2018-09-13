@@ -405,6 +405,7 @@ export type CartItemDetail = {
   color?: ItemDetailType
   label?: string
   quantity: number
+  colorImage?: string
 }
 
 export interface AddressType {

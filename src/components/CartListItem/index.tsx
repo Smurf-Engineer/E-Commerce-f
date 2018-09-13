@@ -24,28 +24,12 @@ import {
 import get from 'lodash/get'
 import filter from 'lodash/filter'
 import CartListItemTable from '../../components/CartListItemTable'
-import {
-  PriceRange,
-  Product,
-  CartItemDetail,
-  ItemDetailType
-} from '../../types/common'
+import { PriceRange, ItemDetailType, CartItems } from '../../types/common'
 import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
 import { FormattedMessage } from 'react-intl'
 import AddToCartButton from '../AddToCartButton'
 import config from '../../config/index'
-
-interface CartItems {
-  product: Product
-  itemDetails: CartItemDetail[]
-  storeDesignId?: string
-  designId?: string
-  designName?: string
-  designImage?: string
-  teamStoreId?: string
-  designCode?: string
-}
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -293,7 +277,9 @@ class CartListItem extends React.Component<Props, {}> {
             {`${symbol} ${(total || 0).toFixed(2)}`}
           </ItemDetailsHeaderPrice>
           <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${(unitaryPrice || 0).toFixed(2)}`}
+            {`${formatMessage(messages.unitPrice)} ${symbol} ${(
+              unitaryPrice || 0
+            ).toFixed(2)}`}
           </ItemDetailsHeaderPriceDetail>
           {!onlyRead && designId && nextPrice.items > 0 ? (
             <ItemDetailsHeaderPriceDetail highlighted={true}>
@@ -306,8 +292,8 @@ class CartListItem extends React.Component<Props, {}> {
               />
             </ItemDetailsHeaderPriceDetail>
           ) : (
-              <HeaderPriceDetailEmpty />
-            )}
+            <HeaderPriceDetailEmpty />
+          )}
         </PriceContainer>
       </ItemDetailsHeader>
     )
@@ -327,7 +313,7 @@ class CartListItem extends React.Component<Props, {}> {
     )
 
     const renderView = (
-      <MediaQuery minWidth={'481px'}>
+      <MediaQuery minWidth={'641px'}>
         {matches => {
           if (matches) {
             return (

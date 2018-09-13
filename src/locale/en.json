@@ -982,6 +982,7 @@
   "components.CartListItemTable.sizePlaceholder": "Select size",
   "components.CartListItemTable.fitPlaceholder": "Select fit",
   "components.CartListItemTable.labelPlaceholder": "Label",
+  "components.CartListItemTable.color": "Color",
   "components.EmailContact.tittle": "CONTACT STORE MANAGER",
   "components.EmailContact.email": "Email",
   "components.EmailContact.send": "Send",
