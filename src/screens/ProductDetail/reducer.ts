@@ -45,7 +45,7 @@ const productDetailReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SELECTED_FIT:
       return state.set('selectedFit', action.selected)
     case SET_SELECTED_COLOR:
-      return state.set('selectedColor', action.selected)
+      return state.merge({ selectedColor: action.selected, loadingImage: true })
     case LOADING_3D_MODEL:
       return state.set('loadingModel', action.loading)
     case LOADING_IMAGE:

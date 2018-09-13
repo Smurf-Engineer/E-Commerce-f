@@ -605,8 +605,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   handleSelectColor = (color: SelectedType) => () => {
-    const { setSelectedColorAction, setLoadingImageAction } = this.props
-    setLoadingImageAction(true)
+    const { setSelectedColorAction } = this.props
     setSelectedColorAction(color)
   }
 
