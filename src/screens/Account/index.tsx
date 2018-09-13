@@ -22,7 +22,7 @@ import {
   SCREEN_LOCKER,
   MY_FILES,
   ADDRESSES,
-  CREDIT_CARDS,
+  // CREDIT_CARDS,
   TEAMSTORES,
   PROFILE_SETTINGS,
   ORDER_HISTORY,
@@ -32,7 +32,7 @@ import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
 import OrderHistory from '../../components/OrderHistory'
 import MyAddresses from '../../components/MyAddresses'
-import MyCards from '../../components/MyCards'
+// import MyCards from '../../components/MyCards'
 import ProfileSettings from '../../components/ProfileSettings'
 import MyTeamStores from '../../components/MyTeamStores'
 import MyLocker from '../../components/MyLocker'
@@ -168,8 +168,8 @@ export class Account extends React.Component<Props, {}> {
         return <OrderHistory {...{ history, formatMessage }} />
       case ADDRESSES:
         return <MyAddresses listForMyAccount={true} {...{ formatMessage }} />
-      case CREDIT_CARDS:
-        return <MyCards listForMyAccount={true} {...{ formatMessage }} />
+      // case CREDIT_CARDS:
+      //   return <MyCards listForMyAccount={true} {...{ formatMessage }} />
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, formatMessage }} />
       case TEAMSTORES:
@@ -210,10 +210,10 @@ export class Account extends React.Component<Props, {}> {
             ))}
           </SubMenu>
         ) : (
-          <Menu.Item className="ant-menu-item-custom" key={title}>
-            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-          </Menu.Item>
-        )
+            <Menu.Item className="ant-menu-item-custom" key={title}>
+              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+            </Menu.Item>
+          )
     )
 
     const logoutButton = (
