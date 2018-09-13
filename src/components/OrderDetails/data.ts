@@ -107,6 +107,7 @@ export const getOrderQuery = gql`
           fit {
             name
           }
+          colorImage
           quantity
         }
         designId

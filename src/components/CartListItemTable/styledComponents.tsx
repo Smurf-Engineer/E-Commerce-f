@@ -20,7 +20,7 @@ export const Table = styled.div`
   padding-left: 16px;
   padding-right: 16px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     margin-bottom: 0;
     padding: 0;
   }
@@ -30,12 +30,17 @@ export const Body = styled.tbody``
 
 type RowProps = {
   withColor?: boolean
+  onlyRead?: boolean
 }
 
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor }: RowProps) =>
-    withColor ? '1fr 38px 1fr 1fr 1fr' : 'repeat(4, 1fr)'};
+  grid-template-columns: ${({ withColor, onlyRead }: RowProps) => {
+    if (withColor) {
+      return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
+    }
+    return 'repeat(4, 1fr)'
+  }};
   grid-gap: 3px;
 
   align-items: center;
@@ -44,7 +49,7 @@ export const Row = styled.div`
   padding-bottom: 8px;
   padding-top: 8px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     padding: 0 5px;
     height: 50px;
   }
@@ -52,15 +57,19 @@ export const Row = styled.div`
 
 export const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: ${({ withColor }: RowProps) =>
-    withColor ? '1fr 38px 1fr 1fr 1fr' : 'repeat(4, 1fr)'};
+  grid-template-columns: ${({ withColor, onlyRead }: RowProps) => {
+    if (withColor) {
+      return onlyRead ? '1fr 48px 1fr 1fr 1fr' : '1fr 38px 1fr 1fr 1fr'
+    }
+    return 'repeat(4, 1fr)'
+  }};
   grid-gap: ${({ withColor }: RowProps) => (withColor ? '3px' : '0 5px')};
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid ${GRAY_SOFT};
   padding-bottom: 4px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     padding: ${({ withColor }: RowProps) => (withColor ? '0 5px' : '0 7px')};
   }
 `

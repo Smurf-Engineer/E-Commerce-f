@@ -187,8 +187,8 @@ class CartListItemTable extends React.Component<Props, State> {
     const isRetailProduct = !cartItem.designId
 
     const colors = get(cartItem, 'product.colors', [])
-    const withColorColumn = isRetailProduct && !isEmpty(colors)
-    console.log(colors)
+    const colorImage = get(cartItem, 'itemDetails[0].colorImage', '')
+    const withColorColumn = (isRetailProduct && !isEmpty(colors)) || colorImage
 
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
@@ -310,14 +310,14 @@ class CartListItemTable extends React.Component<Props, State> {
               </Cell>
             </Row>
           ) : (
-            <Row key={index}>
+            <Row key={index} withColor={withColorColumn} {...{ onlyRead }}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
-              {withColorColumn &&
-                colorObject && (
+              {(withColorColumn && colorObject) ||
+                (colorImage && (
                   <InfoCell>
-                    <ProductColor src={colorObject.image} />
+                    <ProductColor src={colorImage || colorObject.image} />
                   </InfoCell>
-                )}
+                ))}
               <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
@@ -330,7 +330,9 @@ class CartListItemTable extends React.Component<Props, State> {
 
     return (
       <Table>
-        <HeaderRow withColor={withColorColumn}>{header}</HeaderRow>
+        <HeaderRow withColor={withColorColumn} {...{ onlyRead }}>
+          {header}
+        </HeaderRow>
         {renderList}
       </Table>
     )
