@@ -99,23 +99,27 @@ const headerTitles: Header[] = [
 class CartListItemTable extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
+
+    const { cartItem } = props
+    const colors = get(cartItem, 'product.colors', [])
+    const withColorColumn = !cartItem.designId && !isEmpty(colors)
+
     let genderSelectWidth = '100%'
     let fitSelectWidth = '100%'
-
     if (typeof window !== 'undefined') {
       if (window.matchMedia('(max-width: 320px)').matches) {
-        genderSelectWidth = '90px'
-        fitSelectWidth = '71px'
+        genderSelectWidth = withColorColumn ? '80px' : '90px'
+        fitSelectWidth = withColorColumn ? '61px' : '71px'
       } else if (
         window.matchMedia('(max-width: 375px) and (min-width: 321px)').matches
       ) {
-        genderSelectWidth = '90px'
-        fitSelectWidth = '88px'
+        genderSelectWidth = withColorColumn ? '80px' : '90px'
+        fitSelectWidth = withColorColumn ? '78px' : '88px'
       } else if (
         window.matchMedia('(max-width: 425px) and (min-width: 376px)').matches
       ) {
-        genderSelectWidth = '100px'
-        fitSelectWidth = '100px'
+        genderSelectWidth = withColorColumn ? '90px' : '100px'
+        fitSelectWidth = withColorColumn ? '90px' : '100px'
       }
     }
 
