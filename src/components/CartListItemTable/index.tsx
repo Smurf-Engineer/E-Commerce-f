@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import find from 'lodash/find'
-import isEmpty from 'lodash/isEmpty'
 import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
@@ -94,7 +93,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const { cartItem } = props
     const colors = get(cartItem, 'product.colors', [])
-    const withColorColumn = !cartItem.designId && !isEmpty(colors)
+    const withColorColumn = !cartItem.designId && !colors.length
 
     let genderSelectWidth = '100%'
     let fitSelectWidth = '100%'
@@ -188,7 +187,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const colors = get(cartItem, 'product.colors', [])
     const colorImage = get(cartItem, 'itemDetails[0].colorImage', '')
-    const withColorColumn = (isRetailProduct && !isEmpty(colors)) || colorImage
+    const withColorColumn = (isRetailProduct && !colors.length) || colorImage
 
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
