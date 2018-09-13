@@ -1548,10 +1548,10 @@ class Render3D extends PureComponent {
     const boundingBox = el.getBoundingRect()
 
     const { type, fileId, isClipArtGroup } = el
-    const elementType =
-      type === CanvasElements.Group && !isClipArtGroup
-        ? CanvasElements.Image
-        : type
+    let elementType = type
+    if (type === CanvasElements.Group) {
+      elementType = !isClipArtGroup ? CanvasElements.Image : CanvasElements.Path
+    }
     const id = oldId || shortid.generate()
     let canvasEl = { id, originalId: el.id }
 

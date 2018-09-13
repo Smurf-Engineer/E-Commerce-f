@@ -24,13 +24,15 @@ import {
   Container,
   FiltersColumn,
   FiltersTitle,
-  ResultsColumn
+  ResultsColumn,
+  Icon
 } from './styledComponents'
 import { QueryProps, ClickParam, Filter } from '../../types/common'
 import { GetFiltersQuery } from './data'
 import { filtersNames } from './constants'
-import Icon from 'antd/lib/icon'
+
 import config from '../../config/index'
+import { RED } from '../../theme/colors'
 
 interface FilterOptions extends Filter {
   selected: boolean
@@ -224,9 +226,9 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     const sidebarFilters = (
       <div>
-        <FiltersTitle showChildren={openSidebar} color={'#e61737'}>
+        <FiltersTitle showChildren={openSidebar} color={RED}>
           {intl.formatMessage(messages.filtersTitle)}
-          <Icon type="down" style={{ color: '#e61737' }} />
+          <Icon type="down" />
         </FiltersTitle>
         {renderFilters}
       </div>
