@@ -23,22 +23,14 @@ import {
   ProductColor
 } from './styledComponents'
 import {
-  CartItemDetail,
-  Product,
   ItemDetailType,
   FitStyle,
   Filter,
-  SizeFilter
+  SizeFilter,
+  CartItems
 } from '../../types/common'
 
 const Option = Select.Option
-
-interface CartItems {
-  designId: string
-  product: Product
-  itemDetails: CartItemDetail[]
-  storeDesignId?: string
-}
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -113,8 +105,8 @@ class CartListItemTable extends React.Component<Props, State> {
       } else if (
         window.matchMedia('(max-width: 375px) and (min-width: 321px)').matches
       ) {
-        genderSelectWidth = withColorColumn ? '80px' : '90px'
-        fitSelectWidth = withColorColumn ? '78px' : '88px'
+        genderSelectWidth = withColorColumn ? '78px' : '88px'
+        fitSelectWidth = withColorColumn ? '75px' : '85px'
       } else if (
         window.matchMedia('(max-width: 425px) and (min-width: 376px)').matches
       ) {
