@@ -103,14 +103,16 @@ export const getTaxesAndDiscount = (
         break
       case COUNTRY_CODE_DE:
         taxVatTotal = taxesAmount / 100
-        // explanation of taxVat at calculateTaxVat function
-        taxVat = calculateTaxVat(
-          subtotal,
-          taxVatTotal,
-          proDesignFee,
-          shippingTotal,
-          discount
-        )
+        if (applySpecialTaxes) {
+          // explanation of taxVat at calculateTaxVat function
+          taxVat = calculateTaxVat(
+            subtotal,
+            taxVatTotal,
+            proDesignFee,
+            shippingTotal,
+            discount
+          )
+        }
         break
       default:
         break

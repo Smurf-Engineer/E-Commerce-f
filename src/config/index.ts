@@ -9,6 +9,7 @@ interface ConfigType {
   graphqlUriBase?: string
   baseUrl?: string
   storageUrl: string
+  pkStripe: string
   pkStripeUS: string
   pkStripeCA: string
   pkStripeEU: string
