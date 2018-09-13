@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import find from 'lodash/find'
+import isEmpty from 'lodash/isEmpty'
 import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
@@ -18,7 +19,8 @@ import {
   HeaderCell,
   DeleteItem,
   StyledSelect,
-  StyledInputNumber
+  StyledInputNumber,
+  ProductColor
 } from './styledComponents'
 import {
   CartItemDetail,
@@ -32,6 +34,7 @@ import {
 const Option = Select.Option
 
 interface CartItems {
+  designId: string
   product: Product
   itemDetails: CartItemDetail[]
   storeDesignId?: string
@@ -86,6 +89,7 @@ interface Header {
 
 const headerTitles: Header[] = [
   { message: 'gender' },
+  { message: 'color' },
   { message: 'size' },
   { message: 'fit' },
   { message: 'quantity' },
@@ -184,17 +188,26 @@ class CartListItemTable extends React.Component<Props, State> {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
+    const isRetailProduct = !cartItem.designId
 
-    const header = headers.map(({ width, message }, index) => (
-      <HeaderCell key={index} {...{ width }}>
-        <Title
-          titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
-          align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
-        >
-          {message ? formatMessage(messages[message]) : ''}
-        </Title>
-      </HeaderCell>
-    ))
+    const colors = get(cartItem, 'product.colors', [])
+    const withColorColumn = isRetailProduct && !isEmpty(colors)
+    console.log(colors)
+
+    const header = headers.map(({ width, message }, index) => {
+      // tslint:disable-next-line:curly
+      if (index === 1 && !withColorColumn) return
+      return (
+        <HeaderCell key={index} {...{ width }}>
+          <Title
+            titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
+            align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
+          >
+            {message ? formatMessage(messages[message]) : ''}
+          </Title>
+        </HeaderCell>
+      )
+    })
 
     const fitStyles: FitStyle[] = get(cartItem, 'product.fitStyles', [])
     const fitOptions = fitStyles.map(fs => {
@@ -227,9 +240,11 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-          const { gender, size, fit, quantity } = item
+          const { gender, size, fit, quantity, color } = item
+          const colorName = color && color.name
+          const colorObject = find(colors, { name: colorName })
           return !onlyRead ? (
-            <Row key={index}>
+            <Row key={index} withColor={withColorColumn}>
               <Cell>
                 <StyledSelect
                   onChange={e => this.handleGenderChange(e, index)}
@@ -242,6 +257,12 @@ class CartListItemTable extends React.Component<Props, State> {
                   {genderOptions}
                 </StyledSelect>
               </Cell>
+              {withColorColumn &&
+                colorObject && (
+                  <Cell>
+                    <ProductColor src={colorObject.image} />
+                  </Cell>
+                )}
               <Cell>
                 <StyledSelect
                   onChange={e => this.handleSizeChange(e, index)}
@@ -295,6 +316,12 @@ class CartListItemTable extends React.Component<Props, State> {
           ) : (
             <Row key={index}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
+              {withColorColumn &&
+                colorObject && (
+                  <InfoCell>
+                    <ProductColor src={colorObject.image} />
+                  </InfoCell>
+                )}
               <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
@@ -307,7 +334,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     return (
       <Table>
-        <HeaderRow>{header}</HeaderRow>
+        <HeaderRow withColor={withColorColumn}>{header}</HeaderRow>
         {renderList}
       </Table>
     )

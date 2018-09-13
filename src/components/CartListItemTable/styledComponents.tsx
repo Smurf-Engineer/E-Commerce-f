@@ -5,18 +5,11 @@ import styled from 'styled-components'
 import Select from 'antd/lib/select'
 import Input from 'antd/lib/input'
 import InputNumber from 'antd/lib/input-number'
+import { GRAY_LIGHT, RED, GRAY, GRAY_SOFT, GRAY_DARK } from '../../theme/colors'
 
 type SelectType = {
   selectWidth?: string
 }
-
-export const Container = styled.div`
-  background-color: #222;
-`
-
-export const Text = styled.div`
-  color: #fff;
-`
 
 export const Table = styled.div`
   border-collapse: collapse;
@@ -35,14 +28,19 @@ export const Table = styled.div`
 
 export const Body = styled.tbody``
 
+type RowProps = {
+  withColor?: boolean
+}
+
 export const Row = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: ${({ withColor }: RowProps) =>
+    withColor ? '1fr 38px 1fr 1fr 1fr' : 'repeat(4, 1fr)'};
   grid-gap: 3px;
 
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #dcdcdc;
+  border-bottom: 1px solid ${GRAY_LIGHT};
   padding-bottom: 8px;
   padding-top: 8px;
 
@@ -54,15 +52,16 @@ export const Row = styled.div`
 
 export const HeaderRow = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 0 5px;
+  grid-template-columns: ${({ withColor }: RowProps) =>
+    withColor ? '1fr 38px 1fr 1fr 1fr' : 'repeat(4, 1fr)'};
+  grid-gap: ${({ withColor }: RowProps) => (withColor ? '3px' : '0 5px')};
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid #8c8c8c;
+  border-bottom: 1px solid ${GRAY_SOFT};
   padding-bottom: 4px;
 
   @media (max-width: 480px) {
-    padding: 0 7px;
+    padding: ${({ withColor }: RowProps) => (withColor ? '0 5px' : '0 7px')};
   }
 `
 
@@ -77,6 +76,7 @@ interface CellProps {
 export const Cell = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   text-align: left;
   width: ${({ width }: CellProps) => (width ? width : 100)}%;
 `
@@ -84,7 +84,7 @@ export const Cell = styled.div`
 export const InfoCell = styled.div`
   width: 100%;
   text-align: ${({ align }: CellProps) => (align ? align : 'left')};
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
 `
 
@@ -99,7 +99,7 @@ interface TitleProps {
 }
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   font-weight: 600;
   letter-spacing: 0.1px;
@@ -109,7 +109,7 @@ export const Title = styled.div`
 `
 
 export const Price = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 43px;
@@ -119,8 +119,8 @@ export const Price = styled.div`
 
 export const MobileEmtpytable = styled.div`
   padding: 50px 40px 50px;
-  border-bottom: 1px solid #dcdcdc;
-  color: #bebebe;
+  border-bottom: 1px solid ${GRAY_LIGHT};
+  color: ${GRAY};
   font-size: 14px;
   letter-spacing: 0.1px;
   line-height: 21px;
@@ -128,7 +128,7 @@ export const MobileEmtpytable = styled.div`
 `
 
 export const DeleteItem = styled.div`
-  color: #e61737;
+  color: ${RED};
   cursor: pointer;
   padding-left: 10px;
 `
@@ -144,4 +144,9 @@ export const StyledInput = styled(Input)`
 
 export const StyledInputNumber = styled(InputNumber)`
   width: 100%;
+`
+
+export const ProductColor = styled.img`
+  border-radius: 50%;
+  width: 30px;
 `
