@@ -103,6 +103,7 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   itemToAddCart: any
   currentCurrency: string
+  loadingImage: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -111,6 +112,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedColorAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   addItemToCartAction: (item: any) => void
+  setLoadingImageAction: (loading: boolean) => void
   resetReducerAction: () => void
 }
 
@@ -147,6 +149,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
   }
 
+  componentDidUpdate() {
+    const { loadingImage, setLoadingImageAction } = this.props
+    if (loadingImage) {
+      setLoadingImageAction(false)
+    }
+  }
+
   render() {
     const {
       intl,
@@ -158,6 +167,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedColor,
       openFitInfo,
       setLoadingModel,
+      loadingImage,
+      setLoadingImageAction,
       currentCurrency,
       data: { product, error }
     } = this.props
@@ -203,9 +214,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const yotpoId = queryParams.yotpoId || ''
 
     const gender = queryParams.gender || 0
-    const genderIndex = findIndex(imagesArray, {
-      genderId: parseInt(gender, 10)
-    })
+    const colorId = selectedColor && selectedColor.id
+
+    const searchObject = isRetail ? { colorId } : {}
+    if (gender) {
+      Object.assign(searchObject, { genderId: parseInt(gender, 10) })
+    }
+    const genderIndex = findIndex(imagesArray, searchObject)
 
     const images = imagesArray[genderIndex] || imagesArray[0]
 
@@ -454,11 +469,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider
-                  onLoadModel={setLoadingModel}
-                  squareArrows={true}
-                  {...{ images, moreImages }}
-                />
+                <Spin spinning={loadingImage}>
+                  {!loadingImage && (
+                    <ImagesSlider
+                      onLoadModel={setLoadingModel}
+                      squareArrows={true}
+                      {...{
+                        images,
+                        moreImages,
+                        loadingImage,
+                        setLoadingImageAction
+                      }}
+                    />
+                  )}
+                </Spin>
                 {template && (
                   <Desktop>
                     <DownloadTemplateContainer>

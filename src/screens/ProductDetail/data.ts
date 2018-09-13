@@ -51,6 +51,7 @@ export const GetProductsByIdQuery = gql`
         left: left_image
         right: right_image
         genderId: gender_id
+        colorId: color_id
       }
       priceRange {
         price
