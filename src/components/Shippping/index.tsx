@@ -5,7 +5,7 @@
 // TODO: REMOVE COMENTED CODE AFTER TEST
 import * as React from 'react'
 import AnimateHeight from 'react-animate-height'
-import Modal from 'antd/lib/modal'
+// import Modal from 'antd/lib/modal'
 
 import messages from './messages'
 // TODO uncomment ViewAllAddresses when flow for addresses modal gets defined
@@ -63,7 +63,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
       setSelectedAddress,
       indexAddressSelected,
       buttonToRender,
-      openAddressesModal,
+      // openAddressesModal,
       skip,
       currentPage
     } = this.props
@@ -127,6 +127,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
+        {/* TODO: uncomment when verify if needed 
         <Modal
           visible={openAddressesModal}
           closable={false}
@@ -134,7 +135,7 @@ export class Shipping extends React.PureComponent<Props, {}> {
           width={1000}
         >
           {renderAddresses(10, true, true)}
-        </Modal>
+        </Modal> */}
         {/* TODO: UNCOMMENT UNTIL FLOW GETS PROPERLY DEFINED
         <ViewAllAddresses onClick={this.handleOpenModalAddresses}>
           {formatMessage(messages.seeAllAddressesLabel)}
