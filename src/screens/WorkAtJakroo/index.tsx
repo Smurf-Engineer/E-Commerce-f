@@ -24,7 +24,7 @@ interface Props extends RouteComponentProps<any> {
 }
 
 const headerImg =
-  'https://storage.googleapis.com/jakroo-storage/screens/workat/workatjakroo-header.jpg'
+  'https://storage.googleapis.com/jakroo/screens/workat/workatjakroo-header.jpg'
 
 const jobOpenings = [
   {

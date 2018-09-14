@@ -62,8 +62,7 @@ class Render3D extends PureComponent {
 
     // TODO: Delete jersey textures and get from the design
     jerseyTextures.images.texture =
-      svgUrl ||
-      'https://storage.googleapis.com/jakroo-storage/models/Tour/C01-D01.svg'
+      svgUrl || 'https://storage.googleapis.com/jakroo/models/Tour/C01-D01.svg'
 
     for (const key in textures) {
       textures[key] = textureLoader.load(jerseyTextures.images[key])
@@ -186,7 +185,7 @@ class Render3D extends PureComponent {
 
   onProgress = xhr => {
     if (xhr.lengthComputable) {
-      const progress = Math.round(xhr.loaded / xhr.total * 100)
+      const progress = Math.round((xhr.loaded / xhr.total) * 100)
       this.setState({ progress })
     }
   }

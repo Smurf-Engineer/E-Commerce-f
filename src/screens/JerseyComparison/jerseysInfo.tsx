@@ -4,7 +4,7 @@ const jerseysInfo = [
   {
     title: messages.fondoTitle,
     image:
-      'https://storage.googleapis.com/jakroo-storage/screens/jersey_comparison/comp_fondo.png',
+      'https://storage.googleapis.com/jakroo/screens/jersey_comparison/comp_fondo.png',
     message: messages.fondoMessage,
     details: [
       messages.fondoDetail1,
@@ -26,7 +26,7 @@ const jerseysInfo = [
   {
     title: messages.tourTitle,
     image:
-      'https://storage.googleapis.com/jakroo-storage/screens/jersey_comparison/comp_tour.png',
+      'https://storage.googleapis.com/jakroo/screens/jersey_comparison/comp_tour.png',
     message: messages.tourMessage,
     details: [
       messages.tourDetail1,
@@ -50,7 +50,7 @@ const jerseysInfo = [
   {
     title: messages.novaTitle,
     image:
-      'https://storage.googleapis.com/jakroo-storage/screens/jersey_comparison/comp_nova.png',
+      'https://storage.googleapis.com/jakroo/screens/jersey_comparison/comp_nova.png',
     message: messages.novaMessage,
     details: [
       messages.novaDetail1,
