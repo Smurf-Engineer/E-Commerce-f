@@ -50,9 +50,10 @@ export const ThumbnailImg = styled.img`
   &:hover {
     cursor: pointer;
   }
-`
-export const SelectedImage = styled.div`
-  text-align: center;
+
+  @media (min-width: 1025px) {
+    height: inherit;
+  }
 `
 
 interface ArrowsProps {
@@ -65,11 +66,6 @@ export const SwipeContainer = styled.div`
   justify-content: center;
   position: relative;
   width: 100%;
-
-  div div:first-child {
-    height: 536px;
-    width: 100%;
-  }
 
   section {
     position: absolute;
@@ -95,19 +91,18 @@ export const SwipeContainer = styled.div`
     right: ${({ squareArrows }: ArrowsProps) => (squareArrows ? '5' : '15')}px;
   }
 
-  @media (min-width: 426px) and (max-width: 1024px) {
-    width: 100%;
-    height: 536px;
+  @media (min-width: 481px) and (max-width: 768px) {
+    margin-top: 70px;
   }
 
-  @media (max-width: 425px) {
-    height: 300px;
-
-    div div:first-child {
-      width: 100%;
-      height: 300px;
-    }
+  @media (min-width: 320px) {
+    height: 100%;
   }
+`
+export const SelectedImage = styled.article`
+  height: 100%;
+  text-align: center;
+  width: 100%;
 `
 export const SwipeImg = styled.img`
   max-height: 600px;

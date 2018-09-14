@@ -36,7 +36,11 @@ interface Props extends RouteComponentProps<any> {
   setSearchParam: (param: string) => void
   showSearchResultsAction: (show: boolean) => void
   setRegionAction: (payload: RegionConfig) => void
-  openQuickViewAction: (open: number, yotpoId: string | null) => void
+  openQuickViewAction: (
+    open: number,
+    yotpoId: string | null,
+    gender: number
+  ) => void
   openLoginAction: (open: boolean) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
@@ -48,6 +52,8 @@ interface Props extends RouteComponentProps<any> {
   currentLanguage: number
   currentCurrency: string
   yotpoId: string
+  productGender: number
+  hideTopHeader: boolean
   hideBottomHeader: boolean
   hideFooter: boolean
   fakeWidth: number
@@ -100,6 +106,19 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
+    let scripts = Array.from(document.querySelectorAll('script')).map(
+      scr => scr.src
+    )
+
+    if (!scripts.includes('https://consent.cookiebot.com/uc.js')) {
+      const script = document.createElement('script')
+      script.src = 'https://consent.cookiebot.com/uc.js'
+      script.id = 'Cookiebot'
+      script.type = 'text/javascript'
+      script.setAttribute('cbid', '1b3f0d8b-c158-4fbd-a58b-3f42fb058a43')
+      script.async = true
+      document.getElementsByTagName('head')[0].appendChild(script)
+    }
   }
 
   onSearch = (value: string) => {
@@ -147,6 +166,7 @@ class MainLayout extends React.Component<Props, {}> {
       searchParam,
       productId,
       yotpoId,
+      productGender,
       openLogin,
       openLoginAction,
       setRegionAction,
@@ -154,6 +174,7 @@ class MainLayout extends React.Component<Props, {}> {
       currentLanguage,
       currentCurrency,
       intl,
+      hideTopHeader,
       hideBottomHeader,
       hideFooter,
       fakeWidth,
@@ -200,7 +221,7 @@ class MainLayout extends React.Component<Props, {}> {
 
     return (
       <Layout>
-        <Header {...{ hideBottomHeader }}>
+        <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
             onChangeLocation={setRegionAction}
@@ -223,6 +244,7 @@ class MainLayout extends React.Component<Props, {}> {
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.handleOnClickLogout}
+            hideTop={hideTopHeader}
             hideBottom={hideBottomHeader}
           />
         </Header>
@@ -239,7 +261,7 @@ class MainLayout extends React.Component<Props, {}> {
         {!hideFooter && (
           <Footer>
             <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
-            <SocialMedia />
+            <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
         <QuickView
@@ -247,6 +269,7 @@ class MainLayout extends React.Component<Props, {}> {
           currentCurrency={currentCurrency || config.defaultCurrency}
           handleClose={this.onCloseModal}
           hideSliderButtons={hideQuickViewSliderButtons}
+          gender={productGender}
           {...{ productId, history, yotpoId, formatMessage }}
         />
         <LogoutModal
@@ -275,13 +298,13 @@ class MainLayout extends React.Component<Props, {}> {
     showSearchResultsAction(true)
   }
 
-  openQuickView = (id: number, yotpoId: string) => {
+  openQuickView = (id: number, yotpoId: string, gender: number) => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(id, yotpoId)
+    openQuickViewAction(id, yotpoId, gender)
   }
   onCloseModal = () => {
     const { openQuickViewAction } = this.props
-    openQuickViewAction(0, '')
+    openQuickViewAction(0, '', 0)
   }
 }
 

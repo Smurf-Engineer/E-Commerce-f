@@ -94,7 +94,6 @@ class ImageSlider extends React.Component<Props, StateProps> {
     }
 
     const ThumbnailsArrayWith3D = [customImage, front, right, back, left]
-    // ########
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
       <ThumbnailContainer design={false} key={i}>
@@ -136,6 +135,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
         {index === 0 ? threeDmodel : selectedImagesWith3d}
       </SwipeableViews>
     ) : (
+      // TODO: continue testing the virtualize option from swipeableViews to create a smoother loop
       <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
     )
     return (
@@ -168,15 +168,23 @@ class ImageSlider extends React.Component<Props, StateProps> {
 
     if (index < length) {
       this.setState({ index: index + 1 })
+    } else {
+      this.resetIndex(0)
     }
   }
 
   handlePreviousPage = () => {
-    const { index } = this.state
+    const { index, length } = this.state
 
     if (index > 0) {
       this.setState({ index: index - 1 })
+    } else {
+      this.resetIndex(length)
     }
+  }
+
+  resetIndex = (i: number) => {
+    this.setState({ index: i })
   }
 }
 

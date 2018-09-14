@@ -3,6 +3,10 @@
  */
 import styled, { keyframes } from 'styled-components'
 
+interface StyleProps {
+  withBorder?: boolean
+}
+
 export const Container = styled.section`
   margin: 0px 16px;
   width: 220px;
@@ -112,6 +116,8 @@ export const ImgIcon = styled.img`
   height: 15px;
   margin-right: 5px;
   width: 15px;
+  border-radius: 50%;
+  ${({ withBorder }: StyleProps) => (withBorder ? 'border: 1px solid' : '')};
 `
 export const Price = styled.div`
   user-select: none;
@@ -144,4 +150,6 @@ export const Arrow = styled.img`
   user-select: none;
 `
 
-export const RetailColors = styled.div``
+export const RetailColors = styled.div`
+  display: flex;
+`

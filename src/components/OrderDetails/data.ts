@@ -35,20 +35,13 @@ export const getOrderQuery = gql`
         shortName: short_name
       }
       orderDate: created_at
-      netsuit: netsuit_order {
+      estimatedDate: estimated_date
+      netsuite: netsuit_order {
         orderStatus {
           internalId
-          deliveryDate: orderDate
           orderStatus
           fulfillments {
-            date
-            status
             packages
-            items {
-              itemId
-              designNumber
-              quantity
-            }
           }
         }
       }
@@ -77,6 +70,7 @@ export const getOrderQuery = gql`
           collections
           isTopProduct
           weight
+          mpn
           priceRange {
             quantity
             price
@@ -113,6 +107,7 @@ export const getOrderQuery = gql`
           fit {
             name
           }
+          colorImage
           quantity
         }
         designId
@@ -123,7 +118,14 @@ export const getOrderQuery = gql`
         designCode
       }
       status
+      shippingAmount: shipping_amount
       proDesign: pro_design
+      discount: discount_amount
+      total: total_amount
+      taxFee: tax
+      taxPst: tax_pst
+      taxGst: tax_gst
+      taxVat: tax_vat
     }
   }
 `

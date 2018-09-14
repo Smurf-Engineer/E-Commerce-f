@@ -50,6 +50,7 @@ interface Props {
   showDeleteAddressConfirm: boolean
   deleteLoading: boolean
   currentPage: number
+  billingAddress?: boolean
   changePage: (pageNumber: number) => void
   formatMessage: (messageDescriptor: any) => string
   showAddressFormAction: (show: boolean, index?: number) => void
@@ -88,6 +89,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
       paginationAlignment,
       currentPage,
       changePage,
+      billingAddress,
       data
     } = this.props
 
@@ -193,9 +195,12 @@ export class MyAddressesList extends React.Component<Props, {}> {
     return (
       <Container {...{ listForMyAccount }}>
         <Content>
-          {!listForMyAccount ? (
-            <Title>{formatMessage(messages.title)}</Title>
-          ) : null}
+          {!listForMyAccount &&
+            !billingAddress && (
+              <Title marginBottom={'30px'}>
+                {formatMessage(messages.title)}
+              </Title>
+            )}
           {/* TODO: Render this button from MyAddresses */}
           {!renderForModal && !listForMyAccount ? (
             <ButtonWrapper {...{ listForMyAccount }}>
@@ -205,6 +210,13 @@ export class MyAddressesList extends React.Component<Props, {}> {
             </ButtonWrapper>
           ) : null}
         </Content>
+        {!renderForModal &&
+          !listForMyAccount &&
+          !billingAddress && (
+            <Title marginBottom={'20px'}>
+              {formatMessage(messages.shippingTitle)}
+            </Title>
+          )}
         {renderView}
         {withPagination ? (
           <PaginationRow {...{ paginationAlignment }}>
@@ -287,7 +299,7 @@ type OwnProps = {
 
 const MyadressesListEnhanced = compose(
   graphql(GetAddressListQuery, {
-    options: ({ itemsNumber, skip, listForMyAccount }: OwnProps) => {
+    options: ({ itemsNumber, skip }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: {

@@ -9,8 +9,10 @@ import {
   SET_SELECTED_FIT,
   SET_SELECTED_SIZE,
   LOADING_3D_MODEL,
+  LOADING_IMAGE,
   ADD_ITEM_TO_CART,
-  RESET_DATA
+  RESET_DATA,
+  SET_SELECTED_COLOR
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -56,4 +58,14 @@ export const addItemToCartAction = (item: any): AnyAction => ({
 
 export const resetReducerAction = (): AnyAction => ({
   type: RESET_DATA
+})
+
+export const setSelectedColorAction = (selected: SelectedType): AnyAction => ({
+  type: SET_SELECTED_COLOR,
+  selected
+})
+
+export const setLoadingImageAction = (loading: boolean): AnyAction => ({
+  type: LOADING_IMAGE,
+  loading
 })

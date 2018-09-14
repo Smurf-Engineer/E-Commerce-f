@@ -30,7 +30,7 @@ interface Props extends RouteComponentProps<any> {
   history: any
   onPressSeeAll: (type: number, category: string, sport: string) => void
   onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number) => void
+  onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   setSportAction: (sport: number) => void
   setCategoryAction: (category: number) => void
   sportSelected: number

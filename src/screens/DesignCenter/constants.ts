@@ -106,4 +106,4 @@ export enum AccessoryColors {
   Stitching = 'stitchingColor'
 }
 
-export const ElementsToApplyScale = [CanvasElements.Image, CanvasElements.Path]
+export const ElementsToApplyScale = [CanvasElements.Image]

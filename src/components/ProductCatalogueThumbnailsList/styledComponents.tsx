@@ -74,7 +74,6 @@ export const ThumbnailsList = styled.ul`
 `
 
 export const ThumbnailListItem = styled.li`
-  display: flex;
   list-style: none;
   width: calc(95% / 2);
 

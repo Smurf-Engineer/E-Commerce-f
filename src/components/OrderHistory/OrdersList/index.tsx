@@ -6,16 +6,16 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import {
-  Container,
-  Header,
-  Row,
-  Table
-} from './styledComponents'
+import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
-import { OrderHistory, sorts, QueryProps } from '../../../types/common'
+import {
+  OrderHistory,
+  sorts,
+  QueryProps,
+  FulfillmentNetsuite
+} from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getOrdersQuery } from './data'
@@ -58,10 +58,8 @@ const OrdersList = ({
   const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
   const fullCount = get(ordersQuery, 'fullCount', 0)
 
-  if (!orders.length) {
-    return (
-      <EmptyContainer message={formatMessage(messages.emptyMessage)} />
-    )
+  if (!orders || !orders.length) {
+    return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
 
   const header = (
@@ -72,6 +70,7 @@ const OrdersList = ({
             <Row>
               <Header>{formatMessage(messages.orderNo)}</Header>
               <Header>{formatMessage(messages.date)}</Header>
+              <Header>{formatMessage(messages.estimatedDate)}</Header>
               <Header>{formatMessage(messages.tracking)}</Header>
               <Header textAlign={'right'}>
                 {formatMessage(messages.status)}
@@ -88,9 +87,15 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'updated_at'}
+              id={'created_at'}
               label={formatMessage(messages.date)}
-              sort={orderBy === 'updated_at' ? sort : 'none'}
+              sort={orderBy === 'created_at' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'estimated_date'}
+              label={formatMessage(messages.estimatedDate)}
+              sort={orderBy === 'estimated_date' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -113,9 +118,27 @@ const OrdersList = ({
   )
 
   const orderItems = orders.map(
-    ({ shortId, date, status }: OrderHistory, index: number) => (
-      <ItemOrder key={index} {...{ shortId, date, status, onOrderClick }} />
-    )
+    (
+      { shortId, date, estimatedDate, status, netsuite }: OrderHistory,
+      index: number
+    ) => {
+      const netsuiteObject = get(netsuite, 'orderStatus')
+      const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
+      const fulfillments = get(
+        netsuiteObject,
+        'fulfillments',
+        [] as FulfillmentNetsuite[]
+      )
+      const packages = get(fulfillments, '[0].packages')
+      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || '-'
+      return (
+        <ItemOrder
+          key={index}
+          status={netsuiteStatus || status}
+          {...{ shortId, date, estimatedDate, onOrderClick, trackingNumber }}
+        />
+      )
+    }
   )
 
   return (

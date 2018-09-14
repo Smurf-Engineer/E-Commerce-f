@@ -30,12 +30,13 @@ import ImagesGrid from '../../components/ImagesGrid'
 import YotpoHome from '../../components/YotpoHome'
 import FeaturedProducts from '../../components/FeaturedProducts'
 import FeaturedContent from '../../components/FeaturedContent'
-import BackgroundImg from '../../assets/FE1I5781.jpg'
 import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 
+const BackgroundImg =
+  'https://storage.googleapis.com/jakroo-storage/slider/unlimited_posibilities.jpg'
 interface Props extends RouteComponentProps<any> {
   someKey?: string
   productId: number
@@ -78,12 +79,12 @@ export class Home extends React.Component<Props, {}> {
     }
   }
 
-  handleOnQuickView = (id: number, yotpoId: string) => {
+  handleOnQuickView = (id: number, yotpoId: string, gender: number) => {
     const { dispatch } = this.props
-    dispatch(openQuickViewAction(id, yotpoId))
+    dispatch(openQuickViewAction(id, yotpoId, gender))
   }
 
-  onCloseModal = () => openQuickViewAction(0, '')
+  onCloseModal = () => openQuickViewAction(0, '', 0)
 
   openResults = () => {
     const { dispatch } = this.props

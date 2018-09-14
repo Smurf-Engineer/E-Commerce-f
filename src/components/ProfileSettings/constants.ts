@@ -17,3 +17,4 @@ export const SET_MSRMNT_SYSTEM = `${namespace}/SET_MSRMNT_SYSTEM`
 export const SET_MSRMNT_GENDER = `${namespace}/SET_MSRMNT_GENDER`
 export const SET_PASSWORD_FORM_HAS_ERROR = `${namespace}/SET_PASSWORD_FORM_HAS_ERROR`
 export const SET_SETTINGS_LOADING = `${namespace}/SET_SETTINGS_LOADING`
+export const RESET_PASSWORD_FORM = `${namespace}/RESET_PASSWORD_FORM`

@@ -21,13 +21,13 @@ import OrdersList from '../OrderHistory/OrdersList'
 import OrderDetails from '../OrderDetails'
 import withError from '../WithError'
 import withLoading from '../WithLoading'
-import PaymentData from '../PaymentData'
+// import PaymentData from '../PaymentData'
 import AddressData from './AddressData'
 import ProfileData from './ProfileData'
 import EmptyContainer from '../EmptyContainer'
 import {
   ADDRESSES,
-  CREDIT_CARDS,
+  // CREDIT_CARDS,
   ORDER_HISTORY,
   PROFILE_SETTINGS
 } from '../../screens/Account/constants'
@@ -63,7 +63,7 @@ class Overview extends React.Component<Props, {}> {
     const {
       formatMessage,
       orderId,
-      data: { profile, address, payment },
+      data: { profile, address },
       goToScreen,
       currentCurrency
     } = this.props
@@ -71,15 +71,9 @@ class Overview extends React.Component<Props, {}> {
     const contentAddress = addresses.length ? (
       <AddressData address={addresses[0]} {...{ formatMessage }} />
     ) : (
-      <EmptyContainer message={formatMessage(messages.emptyAddress)} />
-    )
-    const { cards } = payment
-    const contentPayment =
-      cards && cards.length ? (
-        <PaymentData card={cards[0]} />
-      ) : (
-        <EmptyContainer message={formatMessage(messages.emptyPayment)} />
+        <EmptyContainer message={formatMessage(messages.emptyAddress)} />
       )
+
     const profileHeader = (
       <OverviewHeader
         id={PROFILE_SETTINGS}
@@ -96,14 +90,15 @@ class Overview extends React.Component<Props, {}> {
         {...{ formatMessage }}
       />
     )
-    const paymentHeader = (
-      <OverviewHeader
-        id={CREDIT_CARDS}
-        label={formatMessage(messages.payment)}
-        onGoTo={goToScreen}
-        {...{ formatMessage }}
-      />
-    )
+    // TODO: bring back when cards queries are finished
+    // const paymentHeader = (
+    //   <OverviewHeader
+    //     id={CREDIT_CARDS}
+    //     label={formatMessage(messages.payment)}
+    //     onGoTo={goToScreen}
+    //     {...{ formatMessage }}
+    //   />
+    // )
     const profileView = (
       <MediaQuery maxWidth={768}>
         {matches => {
@@ -118,10 +113,10 @@ class Overview extends React.Component<Props, {}> {
                   {addressHeader}
                   {contentAddress}
                 </Column>
-                <Column width="100%">
+                {/* <Column width="100%">
                   {paymentHeader}
                   {contentPayment}
-                </Column>
+                </Column> */}
               </div>
             )
           }
@@ -135,10 +130,10 @@ class Overview extends React.Component<Props, {}> {
                 {addressHeader}
                 {contentAddress}
               </Column>
-              <Column>
+              {/* <Column>
                 {paymentHeader}
                 {contentPayment}
-              </Column>
+              </Column> */}
             </BottomContainer>
           )
         }}

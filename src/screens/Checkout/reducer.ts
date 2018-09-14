@@ -13,6 +13,7 @@ import {
   SMS_CHECK,
   EMAIL_CHECK,
   SHOW_ADDRESS_FORM,
+  SHOW_BILLING_ADDRESS_FORM,
   SAME_BILLING_AND_SHIPPING_CHECKED,
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
   SET_SELECTED_ADDRESS,
@@ -28,7 +29,11 @@ import {
   SET_SKIP_VALUE,
   SHOW_CARD_FORM,
   SET_SELECTED_CARD_TO_PAY,
-  OPEN_CURRENCY_WARNING
+  SET_COUPON_CODE,
+  DELETE_COUPON_CODE,
+  OPEN_CURRENCY_WARNING,
+  SET_SELECTED_ADDRESSES,
+  PaymentOptions
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -76,12 +81,14 @@ export const initialState = fromJS({
   loadingBilling: false,
   stripeToken: '',
   showCardForm: false,
+  showBillingForm: false,
   selectedCard: {},
   // Review
   loadingPlaceOrder: false,
   paymentMethod: 'credit card',
   countryId: null,
   openAddressesModal: false,
+  couponCode: null,
   openCurrencyWarning: false
 })
 
@@ -108,12 +115,69 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('smsCheck', action.checked)
     case EMAIL_CHECK:
       return state.set('emailCheck', action.checked)
-    case SET_SELECTED_ADDRESS:
+    case SET_SELECTED_ADDRESS: {
+      const { address, index, billing } = action
+      let selected = { ...address }
+      if (billing) {
+        const {
+          firstName,
+          lastName,
+          street,
+          apartment,
+          country,
+          city,
+          zipCode,
+          phone,
+          stateProvince
+        } = address
+
+        selected = {
+          billingFirstName: firstName,
+          billingLastName: lastName,
+          billingStreet: street,
+          billingApartment: apartment,
+          billingCountry: country,
+          billingStateProvince: stateProvince,
+          billingCity: city,
+          billingZipCode: zipCode,
+          billingPhone: phone
+        }
+      }
       return state.merge({
-        ...action.address,
-        indexAddressSelected: action.index,
+        ...selected,
+        indexAddressSelected: index,
         showForm: false
       })
+    }
+    case SET_SELECTED_ADDRESSES: {
+      const {
+        address: {
+          firstName,
+          lastName,
+          street,
+          apartment,
+          country,
+          city,
+          zipCode,
+          phone,
+          stateProvince
+        },
+        index
+      } = action
+      return state.merge({
+        ...action.address,
+        billingFirstName: firstName,
+        billingLastName: lastName,
+        billingStreet: street,
+        billingApartment: apartment,
+        billingCountry: country,
+        billingStateProvince: stateProvince,
+        billingCity: city,
+        billingZipCode: zipCode,
+        billingPhone: phone,
+        indexAddressSelected: index
+      })
+    }
     case SAME_BILLING_AND_SHIPPING_UNCHECKED:
       return state.merge({
         sameBillingAndShipping: false,
@@ -142,6 +206,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       } = state.toJS()
       return state.merge({
         sameBillingAndShipping: true,
+        showBillingForm: false,
         billingFirstName: firstName,
         billingLastName: lastName,
         billingStreet: street,
@@ -171,6 +236,25 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         })
       }
       return state.set('showForm', false)
+    }
+    case SHOW_BILLING_ADDRESS_FORM: {
+      if (action.show) {
+        return state.merge({
+          showBillingForm: true,
+          billingFirstName: '',
+          billingLastName: '',
+          billingStreet: '',
+          billingApartment: '',
+          billingCountry: '',
+          billingStateProvince: '',
+          billingCity: '',
+          billingZipCode: '',
+          billingPhone: '',
+          hasError: false,
+          indexAddressSelected: -1
+        })
+      }
+      return state.set('showBillingForm', false)
     }
     case SHOW_CARD_FORM: {
       if (!action.open) {
@@ -220,12 +304,35 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('loadingPlaceOrder', action.loading)
     case RESET_DATA:
       return initialState
-    case SET_PAYMENT_METHOD:
-      return state.set('paymentMethod', action.method)
+    case SET_PAYMENT_METHOD: {
+      const { method } = action
+      if (method === PaymentOptions.PAYPAL) {
+        return state.merge({
+          paymentMethod: method,
+          sameBillingAndShipping: false,
+          billingFirstName: '',
+          billingLastName: '',
+          billingStreet: '',
+          billingApartment: '',
+          billingCountry: '',
+          billingState: '',
+          billingStateProvince: '',
+          billingCity: '',
+          billingZipCode: '',
+          billingPhone: '',
+          billingHasError: false
+        })
+      }
+      return state.set('paymentMethod', method)
+    }
     case SAVE_COUNTRY:
       return state.set('billingCountry', action.countryCode)
     case OPEN_ADDRESSES_MODAL:
       return state.set('openAddressesModal', action.open)
+    case SET_COUPON_CODE:
+      return state.set('couponCode', action.couponCode)
+    case DELETE_COUPON_CODE:
+      return state.set('couponCode', null)
     case OPEN_CURRENCY_WARNING:
       return state.set('openCurrencyWarning', action.open)
     default:

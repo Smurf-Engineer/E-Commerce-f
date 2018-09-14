@@ -11,6 +11,12 @@ export const GetProductsByIdQuery = gql`
       shortDescription: short_description
       category_id
       sport_id
+      mpn
+      colors {
+        id
+        name
+        image
+      }
       sports {
         id
         name
@@ -39,12 +45,13 @@ export const GetProductsByIdQuery = gql`
       collections
       isTopProduct
       intendedUse: intended_use
-      images: pictures {
+      images: original_pictures {
         front: front_image
         back: back_image
         left: left_image
         right: right_image
         genderId: gender_id
+        colorId: color_id
       }
       priceRange {
         price
@@ -83,6 +90,7 @@ export const GetProductsByIdQuery = gql`
           shortName: short_name
         }
         colors {
+          id
           name
           image
         }

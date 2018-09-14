@@ -395,12 +395,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
             <Container>
               <SideBar>
                 {sideHeaderMessage}
-                {/* TODO: Make shipping_tax value dynamic */}
                 <Ordersummary
                   subtotal={total}
-                  shipping={0}
                   currencySymbol={symbol}
-                  {...{ formatMessage, totalWithoutDiscount, total }}
+                  youSaved={totalWithoutDiscount - total}
+                  {...{ formatMessage, totalWithoutDiscount }}
                 />
                 <ButtonWrapper disabled={!activeCheckout}>
                   <CheckoutButton

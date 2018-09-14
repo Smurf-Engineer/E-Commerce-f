@@ -17,3 +17,5 @@ export const SET_CARD_UPDATE = `${namespace}/SET_CARD_UPDATE`
 export const SET_STRIPE_ERROR = `${namespace}/SET_STRIPE_ERROR`
 export const SET_DEFAULT_PAYMENT_CHECKED = `${namespace}/SET_DEFAULT_PAYMENT_CHECKED`
 export const SET_LOADING = `${namespace}/SET_LOADING`
+export const OPEN_COUNTRY_MODAL = `${namespace}/OPEN_COUNTRY_MODAL`
+export const SAVE_COUNTRY = `${namespace}/SAVE_COUNTRY`

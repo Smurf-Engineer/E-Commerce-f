@@ -1,8 +1,23 @@
 import React, { PureComponent } from 'react'
 import { FormattedMessage } from 'react-intl'
 import findIndex from 'lodash/findIndex'
+import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
-import { Container, Render, Progress, DragText } from './styledComponents'
+import isEqual from 'lodash/isEqual'
+import reverse from 'lodash/reverse'
+import { graphql, compose } from 'react-apollo'
+import { BLACK, WHITE } from '../../theme/colors'
+import { designQuery } from './data'
+import {
+  Container,
+  Render,
+  Progress,
+  DragText,
+  Title,
+  Message,
+  ContainerError,
+  Loading
+} from './styledComponents'
 import {
   MESH,
   BIB_BRACE,
@@ -12,7 +27,9 @@ import {
   FLATLOCK,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE
+  ACCESSORY_WHITE,
+  CANVAS_SIZE,
+  MESH_NAME
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
 import messages from './messages'
@@ -26,16 +43,16 @@ class Render3D extends PureComponent {
     zoomValue: 0,
     progress: 0,
     isLoading: false,
-    objectChilds: 0
+    objectChilds: 0,
+    firstLoad: true
   }
 
   async componentDidMount() {
     /* Renderer config */
-    const { svg, product = {}, flatlockColor, canvas } = this.props
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor('#fff')
+    renderer.setClearColor(WHITE)
     renderer.setSize(clientWidth, clientHeight)
 
     /* Camera */
@@ -60,148 +77,13 @@ class Render3D extends PureComponent {
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
     directionalLight.position.copy(camera.position)
 
-    const mtlLoader = new THREE.MTLLoader()
-
     scene.add(camera)
     scene.add(ambient)
     scene.add(directionalLight)
 
-    try {
-      if (!!canvas) {
-        const { objects } = JSON.parse(canvas)
-        const fontsPromises = []
-        objects.forEach(o => {
-          if (o.type === CanvasElements.Text) {
-            const fontObserver = new FontFaceObserver(o.fontFamily)
-            fontsPromises.push(fontObserver.load())
-          }
-        })
-        await Promise.all(fontsPromises)
-      }
-    } catch (e) {
-      console.error(e)
-    }
-
-    const loadedTextures = await this.loadTextures(product, svg)
-    /* Object and MTL load */
-    mtlLoader.load(product.mtl, materials => {
-      this.handleOnLoadModel(true)
-      materials.preload()
-      const objLoader = new THREE.OBJLoader()
-      objLoader.setMaterials(materials)
-      objLoader.load(
-        product.obj,
-        object => {
-          const objectChilds = object.children.length
-          this.setState({ objectChilds })
-
-          const {
-            flatlock,
-            zipper,
-            bumpMap,
-            texture,
-            binding,
-            bibBrace
-          } = loadedTextures
-          const { children } = object
-          const getMeshIndex = meshName => {
-            const index = findIndex(children, mesh => mesh.name === meshName)
-            return index < 0 ? 0 : index
-          }
-
-          const meshIndex = getMeshIndex(MESH)
-          /* Stitching */
-          if (!!flatlock) {
-            const flatlockIndex = getMeshIndex(FLATLOCK)
-            const flatlockMaterial = new THREE.MeshLambertMaterial({
-              alphaMap: flatlock,
-              color: flatlockColor || '#FFFFFF'
-            })
-            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
-            flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
-            flatlockMaterial.alphaTest = 0.5
-            children[flatlockIndex].material = flatlockMaterial
-          }
-
-          /* Zipper */
-          if (!!zipper) {
-            const zipperIndex = getMeshIndex(ZIPPER)
-            const zipperMaterial = new THREE.MeshPhongMaterial({
-              map: zipper
-            })
-            children[zipperIndex].material = zipperMaterial
-          }
-          /* Binding */
-          if (!!binding) {
-            const bindingIndex = getMeshIndex(BINDING)
-            const bindingMaterial = new THREE.MeshPhongMaterial({
-              map: binding
-            })
-            children[bindingIndex].material = bindingMaterial
-          }
-          /* Bib Brace */
-          if (!!bibBrace) {
-            const bibBraceIndex = getMeshIndex(BIB_BRACE)
-            const bibBraceMaterial = new THREE.MeshPhongMaterial({
-              map: bibBrace
-            })
-            children[bibBraceIndex].material = bibBraceMaterial
-          }
-
-          // Inside material
-          const insideMaterial = new THREE.MeshPhongMaterial({
-            side: THREE.BackSide,
-            color: '#000000'
-          })
-
-          const frontMaterial = new THREE.MeshPhongMaterial({
-            map: texture,
-            side: THREE.FrontSide,
-            bumpMap: bumpMap
-          })
-
-          // /* Assign materials */
-          const cloneObject = children[meshIndex].clone()
-          object.add(cloneObject)
-
-          children[meshIndex].material = insideMaterial
-          children[objectChilds].material = frontMaterial
-
-          /* Extra files loaded by MTL file */
-          const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
-          if (labelIndex >= 0) {
-            object.children[labelIndex].material.color.set('#ffffff')
-          }
-          const propelPalmsIndex = findIndex(
-            children,
-            ({ name }) => name === PROPEL_PALMS
-          )
-          if (propelPalmsIndex >= 0) {
-            object.children[propelPalmsIndex].material.color.set('#ffffff')
-          }
-          const gripTapeIndex = findIndex(
-            children,
-            ({ name }) => name === GRIP_TAPE
-          )
-          if (gripTapeIndex >= 0) {
-            object.children[gripTapeIndex].material.color.set('#ffffff')
-          }
-
-          /* Object Conig */
-          object.position.y = 0
-          object.name = 'jersey'
-          scene.add(object)
-          this.handleOnLoadModel(false)
-        },
-        this.onProgress,
-        this.onError
-      )
-    })
-
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
-    this.loader = mtlLoader
     this.controls = controls
     this.directionalLight = directionalLight
 
@@ -209,19 +91,39 @@ class Render3D extends PureComponent {
     this.start()
   }
 
-  componentWillUnmount() {
-    this.stop()
-    this.container.removeChild(this.renderer.domElement)
+  componentWillReceiveProps(nextProps) {
+    const {
+      data: { loading, error, design = {} }
+    } = nextProps
+    const {
+      data: { design: oldDesign = {} }
+    } = this.props
+    const notEqual = !isEqual(design, oldDesign)
+    const { firstLoad } = this.state
+    if (!loading && !error && (notEqual || firstLoad)) {
+      this.renderModel(design)
+    }
   }
 
-  loadTextures = (product, area) =>
+  componentWillUnmount() {
+    this.stop()
+    this.clearScene()
+  }
+
+  loadTextures = design =>
     new Promise((resolve, reject) => {
       try {
-        const { bindingColor, zipperColor, bibColor } = this.props
+        const {
+          product,
+          bibBraceColor,
+          bindingColor,
+          zipperColor,
+          colors,
+          style: { brandingPng }
+        } = design
+        const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
-        const { flatlock, bumpMap, zipper, binding, bibBrace } = product
-        // TODO: Get the colors: zipper, binding, bibBrace and flatlock
         if (!!zipper) {
           const texture = !!zipper[zipperColor]
             ? zipper[zipperColor]
@@ -237,8 +139,8 @@ class Render3D extends PureComponent {
           loadedTextures.binding.minFilter = THREE.LinearFilter
         }
         if (!!bibBrace) {
-          const texture = !!bibBrace[bibColor]
-            ? bibBrace[bibColor]
+          const texture = !!bibBrace[bibBraceColor]
+            ? bibBrace[bibBraceColor]
             : ACCESSORY_WHITE
           loadedTextures.bibBrace = textureLoader.load(texture)
           loadedTextures.bibBrace.minFilter = THREE.LinearFilter
@@ -246,11 +148,28 @@ class Render3D extends PureComponent {
         if (!!flatlock) {
           loadedTextures.flatlock = textureLoader.load(flatlock)
         }
+        if (!!brandingPng) {
+          loadedTextures.branding = textureLoader.load(brandingPng)
+          loadedTextures.branding.minFilter = THREE.LinearFilter
+        }
         loadedTextures.bumpMap = textureLoader.load(bumpMap)
-        const imageCanvas = document.createElement('canvas')
-        canvg(imageCanvas, area)
-        loadedTextures.texture = new THREE.Texture(imageCanvas)
-        loadedTextures.texture.needsUpdate = true
+        const sanitizedColors = colors.map(({ color, image }) => ({
+          color,
+          image
+        }))
+        const reversedAreas = reverse(sanitizedColors)
+        const images = []
+        loadedTextures.colors = []
+        reversedAreas.forEach(({ color, image }) => {
+          loadedTextures.colors.push(color)
+          images.push(image)
+        })
+        const loadedAreas = images.map(image => {
+          const areaTexture = textureLoader.load(image)
+          areaTexture.minFilter = THREE.LinearFilter
+          return areaTexture
+        })
+        loadedTextures.areas = loadedAreas
 
         resolve(loadedTextures)
       } catch (e) {
@@ -296,19 +215,296 @@ class Render3D extends PureComponent {
 
   render() {
     const { showDragmessage, progress, loadingModel } = this.state
+    const {
+      customProduct,
+      data: { loading, error }
+    } = this.props
+
+    if (error) {
+      return (
+        <ContainerError>
+          <Title>
+            <FormattedMessage {...messages.errorTitle} />
+          </Title>
+          <Message>
+            <FormattedMessage {...messages.errorMessage} />
+          </Message>
+        </ContainerError>
+      )
+    }
+
+    const circleIcon = <Icon type="loading" style={{ fontSize: 64 }} spin />
 
     return (
       <Container onKeyDown={this.handleOnKeyDown}>
-        <Render innerRef={container => (this.container = container)}>
+        <Render
+          {...{ customProduct }}
+          innerRef={container => (this.container = container)}
+        >
+          {loading && <Loading indicator={circleIcon} />}
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
-        {showDragmessage && (
-          <DragText>
-            <FormattedMessage {...messages.drag} />
-          </DragText>
-        )}
+        {showDragmessage &&
+          !loading && (
+            <DragText>
+              <FormattedMessage {...messages.drag} />
+            </DragText>
+          )}
       </Container>
     )
+  }
+
+  renderModel = async design => {
+    const { product = {}, flatlockColor } = design
+
+    const loadedTextures = await this.loadTextures(design)
+
+    /* Object and MTL load */
+    const mtlLoader = new THREE.MTLLoader()
+    mtlLoader.load(product.mtl, materials => {
+      this.handleOnLoadModel(true)
+      materials.preload()
+      const objLoader = new THREE.OBJLoader()
+      objLoader.setMaterials(materials)
+      objLoader.load(
+        product.obj,
+        async object => {
+          const {
+            areas,
+            colors,
+            flatlock,
+            zipper,
+            bumpMap,
+            binding,
+            bibBrace,
+            branding
+          } = loadedTextures
+          const { children } = object
+          const objectChildCount = children.length
+          const getMeshIndex = meshName => {
+            const index = findIndex(children, mesh => mesh.name === meshName)
+            return index < 0 ? 0 : index
+          }
+
+          const meshIndex = getMeshIndex(MESH)
+          /* Stitching */
+          if (!!flatlock) {
+            const flatlockIndex = getMeshIndex(FLATLOCK)
+            const flatlockMaterial = new THREE.MeshLambertMaterial({
+              alphaMap: flatlock,
+              color: flatlockColor || WHITE
+            })
+            flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+            flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+            flatlockMaterial.alphaTest = 0.5
+            children[flatlockIndex].material = flatlockMaterial
+          }
+
+          /* Zipper */
+          if (!!zipper) {
+            const zipperIndex = getMeshIndex(ZIPPER)
+            const zipperMaterial = new THREE.MeshPhongMaterial({
+              map: zipper
+            })
+            children[zipperIndex].material = zipperMaterial
+          }
+          /* Binding */
+          if (!!binding) {
+            const bindingIndex = getMeshIndex(BINDING)
+            const bindingMaterial = new THREE.MeshPhongMaterial({
+              map: binding
+            })
+            children[bindingIndex].material = bindingMaterial
+          }
+          /* Bib Brace */
+          if (!!bibBrace) {
+            const bibBraceIndex = getMeshIndex(BIB_BRACE)
+            const bibBraceMaterial = new THREE.MeshPhongMaterial({
+              map: bibBrace
+            })
+            children[bibBraceIndex].material = bibBraceMaterial
+          }
+
+          /* Inside material */
+          const insideMaterial = new THREE.MeshPhongMaterial({
+            side: THREE.BackSide,
+            color: BLACK
+          })
+
+          /* Assign materials */
+          children[meshIndex].material = insideMaterial
+          const areasLayers = areas.map(() => children[meshIndex].clone())
+          object.add(...areasLayers)
+
+          /* Extra files loaded by MTL file */
+          const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
+          if (labelIndex >= 0) {
+            object.children[labelIndex].material.color.set(WHITE)
+          }
+          const propelPalmsIndex = findIndex(
+            children,
+            ({ name }) => name === PROPEL_PALMS
+          )
+          if (propelPalmsIndex >= 0) {
+            object.children[propelPalmsIndex].material.color.set(WHITE)
+          }
+          const gripTapeIndex = findIndex(
+            children,
+            ({ name }) => name === GRIP_TAPE
+          )
+          if (gripTapeIndex >= 0) {
+            object.children[gripTapeIndex].material.color.set(WHITE)
+          }
+
+          areas.forEach(
+            (map, index) =>
+              (children[
+                objectChildCount + index
+              ].material = new THREE.MeshPhongMaterial({
+                map,
+                side: THREE.FrontSide,
+                color: colors[index],
+                bumpMap,
+                transparent: true
+              }))
+          )
+
+          /* Canvas */
+          const canvas = document.createElement('canvas')
+          canvas.width = CANVAS_SIZE
+          canvas.height = CANVAS_SIZE
+          this.canvasTexture = new fabric.StaticCanvas(canvas, {
+            width: CANVAS_SIZE,
+            height: CANVAS_SIZE,
+            selection: false,
+            renderOnAddRemove: false,
+            crossOrigin: 'Anonymous'
+          })
+          const canvasTexture = new THREE.CanvasTexture(canvas)
+          canvasTexture.minFilter = THREE.LinearFilter
+          this.canvasTexture.on(
+            'after:render',
+            () => (canvasTexture.needsUpdate = true)
+          )
+          const canvasMaterial = new THREE.MeshPhongMaterial({
+            map: canvasTexture,
+            side: THREE.FrontSide,
+            bumpMap,
+            transparent: true
+          })
+          const canvasObj = children[meshIndex].clone()
+          object.add(canvasObj)
+
+          const childrenLength = children.length
+          const canvasIndex = childrenLength - 1
+          children[canvasIndex].material = canvasMaterial
+
+          /* Branding  */
+          if (!!branding) {
+            const brandingObj = children[meshIndex].clone()
+            object.add(brandingObj)
+            const brandingIndex = children.length - 1
+            const brandingMaterial = new THREE.MeshPhongMaterial({
+              map: branding,
+              side: THREE.FrontSide,
+              bumpMap,
+              transparent: true
+            })
+            children[brandingIndex].material = brandingMaterial
+          }
+
+          if (design.canvas) {
+            await this.loadCanvasTexture(design.canvas)
+          }
+
+          /* Object Conig */
+          object.position.y = 0
+          object.name = MESH_NAME
+          this.scene.add(object)
+          this.setState({ loadingModel: false, firstLoad: false })
+        },
+        this.onProgress,
+        this.onError
+      )
+    })
+  }
+
+  convertToFabricObjects = elements =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.enlivenObjects(elements, objects => {
+          resolve(objects)
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+  loadFabricImage = url =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.loadImage(url, img => resolve(img), undefined, 'Anonymous')
+      } catch (e) {
+        reject(e)
+      }
+    })
+
+  loadCanvasTexture = async object => {
+    try {
+      let elements = []
+      const paths = []
+      const imagesElements = []
+      const imagesPromises = []
+      const fonts = []
+      const { objects } = JSON.parse(object)
+      for (const el of objects) {
+        el.hasRotatingPoint = false
+        switch (el.type) {
+          case CanvasElements.Text: {
+            elements.push(el)
+            fonts.push(el.fontFamily)
+            break
+          }
+          case CanvasElements.Group: {
+            paths.push(el)
+            break
+          }
+          case CanvasElements.Path: {
+            paths.push(el)
+            break
+          }
+          case CanvasElements.Image: {
+            imagesElements.push(el)
+            imagesPromises.push(this.loadFabricImage(el.src))
+            break
+          }
+          default:
+            break
+        }
+      }
+      elements = [...elements, ...paths]
+      let images = []
+      if (!!imagesElements.length) {
+        images = await Promise.all(imagesPromises)
+      }
+      images.forEach((img, index) => {
+        const config = imagesElements[index] || {}
+        const imageEl = new fabric.Image(img, { ...config })
+        this.canvasTexture.add(imageEl)
+      })
+      const fontsPromises = fonts.map(font => {
+        const fontObserver = new FontFaceObserver(font)
+        return fontObserver.load()
+      })
+      await Promise.all(fontsPromises)
+      const fabricObjects = await this.convertToFabricObjects(elements)
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      this.canvasTexture.renderAll()
+      return true
+    } catch (e) {
+      return false
+      console.error('Error loading canvas object: ', e.message)
+    }
   }
 
   clearScene = () => {
@@ -317,15 +513,30 @@ class Render3D extends PureComponent {
       object.children.forEach(({ material }) => {
         if (!!material) {
           const { map, bumpMap, alphaMap } = material
-          if (map) map.dispose()
-          if (bumpMap) bumpMap.dispose()
-          if (alphaMap) alphaMap.dispose()
+          if (map && map.dispose) map.dispose()
+          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
           material.dispose()
         }
       })
       this.scene.remove(object)
     }
+    if (this.canvasTexture) {
+      this.canvasTexture.dispose()
+    }
+    if (this.container) {
+      this.container.removeChild(this.renderer.domElement)
+    }
   }
 }
 
-export default Render3D
+const Render3DWithData = compose(
+  graphql(designQuery, {
+    options: ({ designId }) => ({
+      variables: { designId },
+      fetchPolicy: 'network-only'
+    })
+  })
+)(Render3D)
+
+export default Render3DWithData

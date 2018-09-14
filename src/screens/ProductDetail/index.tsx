@@ -10,7 +10,9 @@ import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
+import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
+import Spin from 'antd/lib/spin'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
@@ -47,7 +49,9 @@ import {
   DetailsList,
   DetailsListItem,
   ProductAvailableColor,
-  TitleSubtitleContainer
+  ColorWrapper,
+  TitleSubtitleContainer,
+  Loading
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -65,15 +69,15 @@ import {
   CartItemDetail,
   SelectedType,
   Filter,
-  PriceRange
+  PriceRange,
+  ProductColors
 } from '../../types/common'
 import DownloadIcon from '../../assets/download.svg'
-import ChessColors from '../../assets/chess-colors.svg'
-import RedColor from '../../assets/colorred.svg'
 import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
+const WHITENAME = 'White'
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -95,16 +99,20 @@ interface Props extends RouteComponentProps<any> {
   selectedGender: SelectedType
   selectedSize: SelectedType
   selectedFit: SelectedType
+  selectedColor: SelectedType
   loadingModel: boolean
   itemToAddCart: any
   currentCurrency: string
+  loadingImage: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
   setSelectedSizeAction: (selected: SelectedType) => void
   setSelectedFitAction: (selected: SelectedType) => void
+  setSelectedColorAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   addItemToCartAction: (item: any) => void
+  setLoadingImageAction: (loading: boolean) => void
   resetReducerAction: () => void
 }
 
@@ -115,13 +123,37 @@ interface StateProps {
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
-    showDetails: true,
-    showSpecs: true
+    showDetails: false,
+    showSpecs: false
   }
 
   componentWillUnmount() {
     const { resetReducerAction } = this.props
     resetReducerAction()
+  }
+
+  componentDidMount() {
+    const {
+      data: { product },
+      setSelectedFitAction,
+      setSelectedColorAction
+    } = this.props
+    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    const colors = get(product, 'colors', [] as ProductColors[])
+    if (!fitStyles.length || !fitStyles[0].id) {
+      setSelectedFitAction({ id: 1, name: 'Standard' })
+    }
+    if (colors && colors.length === 1 && colors[0].id) {
+      const { id, name } = colors[0]
+      setSelectedColorAction({ id, name })
+    }
+  }
+
+  componentDidUpdate() {
+    const { loadingImage, setLoadingImageAction } = this.props
+    if (loadingImage) {
+      setLoadingImageAction(false)
+    }
   }
 
   render() {
@@ -132,10 +164,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedSize,
       selectedGender,
       selectedFit,
+      selectedColor,
       openFitInfo,
       setLoadingModel,
+      loadingImage,
+      setLoadingImageAction,
       currentCurrency,
-      data: { product }
+      data: { product, error }
     } = this.props
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
@@ -144,8 +179,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     // const code = get(product, 'code', '')
     const type = get(product, 'type', '')
     const description = get(product, 'description', '')
-    const intendedUse = get(product, 'intendedUse', '')
-    const temperatures = get(product, 'temperatures', '')
     const materials = get(product, 'materials', '')
     const genders = get(product, 'genders', [] as Filter[])
 
@@ -158,6 +191,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const maleGender = genders.find(x => x.name === 'Men')
     const femaleGender = genders.find(x => x.name === 'Women')
+    const mpnCode = get(product, 'mpn')
+    const colors = get(product, 'colors', [] as ProductColors[])
 
     let genderMessage = messages.maleGenderLabel
 
@@ -178,90 +213,112 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const yotpoId = queryParams.yotpoId || ''
 
-    const images = imagesArray[0]
+    const gender = queryParams.gender || 0
+    const colorId = selectedColor && selectedColor.id
+
+    const searchObject = isRetail ? { colorId } : {}
+    if (gender) {
+      Object.assign(searchObject, { genderId: parseInt(gender, 10) })
+    }
+    const genderIndex = findIndex(imagesArray, searchObject)
+
+    const images = imagesArray[genderIndex] || imagesArray[0]
+
     const moreImages =
       imagesArray.length > 1
         ? imagesArray.filter(({ genderId }) => genderId !== images.genderId)
         : []
 
     let retailPrice
-    if (product) {
-      const currencyPrices = filter(product.priceRange, {
-        abbreviation: currentCurrency || config.defaultCurrency
-      })
-
-      renderPrices = currencyPrices.map(
-        ({ price, quantity }: any, index: number) => {
-          const render = (
-            <AvailablePrices key={index}>
-              <PriceQuantity {...{ index, price, quantity }} />
-            </AvailablePrices>
-          )
-
-          return !isRetail && index >= 4 ? null : render
-        }
-      )
-
-      const getRetailPrice = find(currencyPrices, {
-        quantity: 'Personal'
-      }) as PriceRange
-
-      retailPrice = (
-        <AvailablePrices>
-          <PriceQuantity
-            index={1}
-            price={getRetailPrice.price}
-            quantity={getRetailPrice.quantity}
-          />
-        </AvailablePrices>
+    if (!product || error) {
+      return (
+        <Layout {...{ intl, history }}>
+          <Loading>
+            <Spin />
+          </Loading>
+        </Layout>
       )
     }
+
+    const currencyPrices = filter(product.priceRange, {
+      abbreviation: currentCurrency || config.defaultCurrency
+    })
+
+    const symbol = currencyPrices[0].shortName
+
+    renderPrices = currencyPrices.map(
+      ({ price, quantity }: any, index: number) => {
+        const render = (
+          <AvailablePrices key={index}>
+            <PriceQuantity {...{ index, price, quantity, symbol }} />
+          </AvailablePrices>
+        )
+
+        return !isRetail && index >= 4 ? null : render
+      }
+    )
+
+    const getRetailPrice = find(currencyPrices, {
+      quantity: 'Personal'
+    }) as PriceRange
+
+    retailPrice = (
+      <AvailablePrices>
+        <PriceQuantity
+          index={1}
+          price={getRetailPrice.price}
+          quantity={getRetailPrice.quantity}
+          {...{ symbol }}
+        />
+      </AvailablePrices>
+    )
+
+    renderPrices = currencyPrices.map(
+      ({ price, quantity }: any, index: number) => {
+        const render = (
+          <AvailablePrices key={index}>
+            <PriceQuantity {...{ index, price, quantity, symbol }} />
+          </AvailablePrices>
+        )
+
+        return !isRetail && index >= 4 ? null : render
+      }
+    )
 
     let productInfo
-    if (product) {
-      const productDetails =
-        product.details !== null ? product.details.split(',') : ['']
-      const details = productDetails.map((detail, index) => (
-        <DetailsListItem key={index}>{detail}</DetailsListItem>
-      ))
+    let availableFits
 
-      productInfo = (
-        <div>
-          <ProductInfo
-            id="Details"
-            title={formatMessage(messages.detailsLabel)}
-            showContent={showDetails}
-            toggleView={this.toggleProductInfo}
-          >
-            <DetailsList>{details}</DetailsList>
-          </ProductInfo>
-          <ProductInfo
-            id="Specs"
-            title={formatMessage(messages.specsLabel)}
-            showContent={showSpecs}
-            toggleView={this.toggleProductInfo}
-          >
-            <p>
-              {intendedUse
-                ? `${formatMessage(messages.intendedUseLabel)}: ${intendedUse}`
-                : null}
-            </p>
-            <p>
-              {temperatures
-                ? `${formatMessage(
-                    messages.temperaturesLabel
-                  )}: ${temperatures}`
-                : null}
-            </p>
-            <p>
-              {materials
-                ? `${formatMessage(messages.materialsLabel)}: ${materials}`
-                : null}
-            </p>
-          </ProductInfo>
-        </div>
-      )
-    }
+    const detailsOptions = get(product, 'details')
+    const productDetails = (detailsOptions && detailsOptions.split(',')) || ['']
+    const details = productDetails.map((productDetail, index) => (
+      <DetailsListItem key={index}>{productDetail}</DetailsListItem>
+    ))
+
+    const materialsArray = (materials && materials.split('-')) || ['']
+    const materialsLit = materialsArray.map((material, index) => (
+      <DetailsListItem key={index}>{material}</DetailsListItem>
+    ))
+
+    productInfo = (
+      <div>
+        <ProductInfo
+          id="Details"
+          title={formatMessage(messages.detailsLabel)}
+          showContent={showDetails}
+          toggleView={this.toggleProductInfo}
+        >
+          <DetailsList>{details}</DetailsList>
+        </ProductInfo>
+        <ProductInfo
+          id="Specs"
+          title={formatMessage(messages.materialsLabel)}
+          showContent={showSpecs}
+          toggleView={this.toggleProductInfo}
+        >
+          {materialsLit}
+        </ProductInfo>
+      </div>
+    )
 
     const availableGenders = genders.map(
       ({ id, name: genderName }: SelectedType, key: number) => (
@@ -292,34 +349,21 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       )
     )
 
-    let availableFits
-    if (product) {
-      availableFits =
-        fitStyles.length && fitStyles[0].id ? (
-          fitStyles.map(
-            ({ id, name: fitName }: SelectedType, index: number) => (
-              <div key={index}>
-                <SectionButton
-                  id={id.toString()}
-                  selected={id === selectedFit.id}
-                  large={true}
-                  onClick={this.handleSelectedFit({ id, name: fitName })}
-                >
-                  {fitName}
-                </SectionButton>
-              </div>
-            )
-          )
-        ) : (
+    availableFits =
+      fitStyles.length &&
+      fitStyles[0].id &&
+      fitStyles.map(({ id, name: fitName }: SelectedType, index: number) => (
+        <div key={index}>
           <SectionButton
-            id={'1'}
-            selected={1 === selectedFit.id}
-            onClick={this.handleSelectedFit({ id: 1, name: 'Standard' })}
+            id={id.toString()}
+            selected={id === selectedFit.id}
+            large={true}
+            onClick={this.handleSelectedFit({ id, name: fitName })}
           >
-            {'Standard'}
+            {fitName}
           </SectionButton>
-        )
-    }
+        </div>
+      ))
 
     const gendersSection = (
       <SectionRow>
@@ -330,13 +374,24 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
+    const availableColors =
+      colors &&
+      colors.map(
+        ({ id, image, name: colorName }: ProductColors, key: number) => (
+          <ProductAvailableColor
+            withBorder={colorName === WHITENAME}
+            selected={id === selectedColor.id}
+            src={image}
+            onClick={this.handleSelectColor({ id, name: colorName })}
+            {...{ key }}
+          />
+        )
+      )
+
     const colorsSection = (
       <SectionRow>
         <SectionTitle>{formatMessage(messages.ColorsLabel)}</SectionTitle>
-        <div>
-          <ProductAvailableColor src={ChessColors} />
-          <ProductAvailableColor src={RedColor} />
-        </div>
+        <ColorWrapper>{availableColors}</ColorWrapper>
       </SectionRow>
     )
 
@@ -356,7 +411,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const fitSection = (
+    const fitSection = !!availableFits && (
       <SectionRow>
         <SectionTitleContainer>
           <SectionTitle>{formatMessage(messages.fitLabel)}</SectionTitle>
@@ -366,7 +421,29 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </SectionRow>
     )
 
-    const addToCartRow = this.renderAddButton()
+    const itemDetails = [] as CartItemDetail[]
+
+    const detail: CartItemDetail = {
+      fit: selectedFit,
+      size: selectedSize,
+      gender: selectedGender,
+      color: selectedColor,
+      quantity: 1
+    }
+    itemDetails.push(detail)
+
+    const itemToAdd = Object.assign({}, { product }, { itemDetails })
+
+    const addToCartRow = (
+      <ButtonsRow>
+        <AddtoCartButton
+          onClick={this.validateAddtoCart}
+          label={formatMessage(messages.addToCartButtonLabel)}
+          item={itemToAdd}
+          itemProdPage={true}
+        />
+      </ButtonsRow>
+    )
 
     const collectionSelection = (
       <BuyNowOptions>
@@ -392,11 +469,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider
-                  onLoadModel={setLoadingModel}
-                  squareArrows={true}
-                  {...{ images, moreImages }}
-                />
+                <Spin spinning={loadingImage}>
+                  {!loadingImage && (
+                    <ImagesSlider
+                      onLoadModel={setLoadingModel}
+                      squareArrows={true}
+                      {...{
+                        images,
+                        moreImages,
+                        loadingImage,
+                        setLoadingImageAction
+                      }}
+                    />
+                  )}
+                </Spin>
                 {template && (
                   <Desktop>
                     <DownloadTemplateContainer>
@@ -416,9 +502,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {/* TODO: Use unique name when "isRetail" */}
                     <Title>{name}</Title>
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
-                    {/* TODO: MNP code hidden until all the codes are implemented for the retail products
-                     {isRetail &&
-                      code && <Subtitle>{`MNP: JR-${code}-${name}`}</Subtitle>} */}
+                    <Subtitle>{`MPN: ${mpnCode}`}</Subtitle>
                   </TitleSubtitleContainer>
                   {validateShowCompare && renderCompareButton}
                 </TitleRow>
@@ -516,41 +600,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   validateAddtoCart = () => {
-    const { selectedSize, selectedFit } = this.props
-    return selectedSize.id >= 0 && selectedFit.id
+    const { selectedSize, selectedFit, selectedColor } = this.props
+    return selectedSize.id >= 0 && selectedFit.id && selectedColor.id
   }
 
-  renderAddButton = () => {
-    const {
-      selectedFit,
-      selectedSize,
-      selectedGender,
-      data: { product },
-      intl: { formatMessage }
-    } = this.props
-
-    const itemDetails = [] as CartItemDetail[]
-    if (product) {
-      const detail: CartItemDetail = {
-        fit: selectedFit,
-        size: selectedSize,
-        gender: selectedGender,
-        quantity: 1
-      }
-      itemDetails.push(detail)
-    }
-    const itemToAdd = Object.assign({}, { product }, { itemDetails })
-
-    return (
-      <ButtonsRow>
-        <AddtoCartButton
-          onClick={this.validateAddtoCart}
-          label={formatMessage(messages.addToCartButtonLabel)}
-          item={itemToAdd}
-          itemProdPage={true}
-        />
-      </ButtonsRow>
-    )
+  handleSelectColor = (color: SelectedType) => () => {
+    const { setSelectedColorAction } = this.props
+    setSelectedColorAction(color)
   }
 
   closeFitInfoModal = () => {

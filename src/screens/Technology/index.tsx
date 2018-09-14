@@ -13,6 +13,7 @@ import {
   StyledImg,
   HeaderTextContainer,
   TopImageButton,
+  Content,
   Title,
   ButtonsContainer,
   Paragraph,
@@ -121,7 +122,7 @@ export class Technology extends React.Component<Props, {}> {
     const { intl, history } = this.props
     const fabricsList = fabricsArray.map((fabric, index) => {
       return (
-        <ProItem key={index}>
+        <ProItem key={index} fabrics={true}>
           <ImgItem src={fabric.url} />
           <ProText
             dangerouslySetInnerHTML={{
@@ -164,55 +165,57 @@ export class Technology extends React.Component<Props, {}> {
               </ButtonsContainer>
             </HeaderTextContainer>
           </ImageTitleContainer>
-          <ParagraphContainer>
-            <OkoeImg src={oekoTex} />
-            <Paragraph
-              dangerouslySetInnerHTML={{
-                __html: intl.formatMessage(messages.oeko)
+          <Content>
+            <ParagraphContainer>
+              <OkoeImg src={oekoTex} />
+              <Paragraph
+                dangerouslySetInnerHTML={{
+                  __html: intl.formatMessage(messages.oeko)
+                }}
+              />
+            </ParagraphContainer>
+            <LineCopy />
+            <div
+              ref={section => {
+                this.tech = section
               }}
-            />
-          </ParagraphContainer>
-          <LineCopy />
-          <div
-            ref={section => {
-              this.tech = section
-            }}
-          >
-            <SecondTitle>
-              <FormattedMessage {...messages.chamoisTitle} />
-            </SecondTitle>
-          </div>
-          <Subtitle>
-            <FormattedMessage {...messages.chamoisSubTitle} />
-          </Subtitle>
-          <TechContainer>
-            <TechImg src={tech1} />
-            <TechParagraph
-              dangerouslySetInnerHTML={{
-                __html: intl.formatMessage(messages.chamoisTech)
+            >
+              <SecondTitle>
+                <FormattedMessage {...messages.chamoisTitle} />
+              </SecondTitle>
+            </div>
+            <Subtitle>
+              <FormattedMessage {...messages.chamoisSubTitle} />
+            </Subtitle>
+            <TechContainer>
+              <TechImg src={tech1} />
+              <TechParagraph
+                dangerouslySetInnerHTML={{
+                  __html: intl.formatMessage(messages.chamoisTech)
+                }}
+              />
+            </TechContainer>
+            <TechContainer>
+              <TechImg src={jakrooPro} />
+              <TechParagraph
+                dangerouslySetInnerHTML={{
+                  __html: intl.formatMessage(messages.proContent)
+                }}
+              />
+            </TechContainer>
+            <ProContainer>{proList}</ProContainer>
+            <LineCopy />
+            <div
+              ref={section => {
+                this.fabrics = section
               }}
-            />
-          </TechContainer>
-          <TechContainer>
-            <TechImg src={jakrooPro} />
-            <TechParagraph
-              dangerouslySetInnerHTML={{
-                __html: intl.formatMessage(messages.proContent)
-              }}
-            />
-          </TechContainer>
-          <ProContainer>{proList}</ProContainer>
-          <LineCopy />
-          <div
-            ref={section => {
-              this.fabrics = section
-            }}
-          >
-            <SecondTitle>
-              <FormattedMessage {...messages.fabricsTitle} />
-            </SecondTitle>
-          </div>
-          <ProContainer>{fabricsList}</ProContainer>
+            >
+              <SecondTitle>
+                <FormattedMessage {...messages.fabricsTitle} />
+              </SecondTitle>
+            </div>
+            <ProContainer fabrics={true}>{fabricsList}</ProContainer>
+          </Content>
         </Container>
       </Layout>
     )

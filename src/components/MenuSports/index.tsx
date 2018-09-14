@@ -32,7 +32,7 @@ interface Props {
     sport: string
   ) => void
   onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number) => void
+  onPressQuickView: (id: number, yotpoId: string, gender: number) => void
   setCategoryAction: (sport: number) => void
   categorySelected: number
   sports: Filter[]

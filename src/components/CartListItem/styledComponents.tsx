@@ -16,7 +16,7 @@ export const Container = styled.li`
   margin-bottom: 10px;
   width: 100%;
 
-  @media (max-width: 481px) {
+  @media (max-width: 640px) {
     flex-direction: column;
     margin-bottom: 40px;
   }
@@ -27,7 +27,7 @@ export const ItemDetails = styled.div`
   flex-direction: column;
   width: 100%;
 
-  @media (max-width: 481px) {
+  @media (max-width: 640px) {
     flex-direction: row;
   }
 `
@@ -40,7 +40,7 @@ export const ItemDetailsHeader = styled.div`
   padding-left: 16px;
   padding-right: 16px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     flex-direction: column;
     justify-content: space-around;
   }
@@ -80,7 +80,7 @@ export const ItemDetailsHeaderPrice = styled.div`
   line-height: 22px;
   text-align: right;
 
-  @media (max-width: 481px) {
+  @media (max-width: 640px) {
     text-align: left;
   }
 `
@@ -90,14 +90,14 @@ interface ItemDetailsHeaderProps {
 }
 
 export const ItemDetailsHeaderPriceDetail = styled.div`
-  color:  ${({ highlighted }: ItemDetailsHeaderProps) =>
+  color: ${({ highlighted }: ItemDetailsHeaderProps) =>
     highlighted ? GREEN : GRAY_DARK};
   font-size: 12px;
   letter-spacing: 0.13px;
   line-height: 14px;
   text-align: right;
 
-  @media (max-width: 481px) {
+  @media (max-width: 640px) {
     text-align: left;
   }
 `
@@ -116,9 +116,10 @@ export const Image = styled.img`
   background-color: #f1f4f5;
   ${({ onlyRead }: StyleProps) => (!onlyRead ? 'cursor: pointer' : '')};
 
-  @media only screen and (max-width: 481px) {
+  @media only screen and (max-width: 640px) {
     height: 129px;
     width: 46%;
+    max-width: 196px;
     margin: 0;
     object-fit: cover;
   }
@@ -129,7 +130,7 @@ export const FooterItem = styled.div`
   flex-direction: column;
   align-items: flex-end;
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     margin-top: 12px;
   }
 `
@@ -152,7 +153,7 @@ export const DeleteItem = styled.div`
   cursor: pointer;
   padding-right: 16px;
 
-  @media (max-width: 480px) {
+  @media (max-width: 640px) {
     margin-top: 1em;
   }
 `

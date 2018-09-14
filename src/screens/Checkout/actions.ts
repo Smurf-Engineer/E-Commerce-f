@@ -11,9 +11,11 @@ import {
   SMS_CHECK,
   EMAIL_CHECK,
   SHOW_ADDRESS_FORM,
+  SHOW_BILLING_ADDRESS_FORM,
   SAME_BILLING_AND_SHIPPING_CHECKED,
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
   SET_SELECTED_ADDRESS,
+  SET_SELECTED_ADDRESSES,
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
@@ -26,9 +28,16 @@ import {
   SET_SKIP_VALUE,
   SHOW_CARD_FORM,
   SET_SELECTED_CARD_TO_PAY,
+  SET_COUPON_CODE,
+  DELETE_COUPON_CODE,
   OPEN_CURRENCY_WARNING
 } from './constants'
-import { AnyAction, AddressType, CreditCardData } from '../../types/common'
+import {
+  AnyAction,
+  AddressType,
+  CreditCardData,
+  CouponCode
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -77,6 +86,11 @@ export const showAddressFormAction = (show: boolean): AnyAction => ({
   show
 })
 
+export const showBillingAddressFormAction = (show: boolean): AnyAction => ({
+  type: SHOW_BILLING_ADDRESS_FORM,
+  show
+})
+
 export const sameBillingAndAddressCheckedAction = (): AnyAction => ({
   type: SAME_BILLING_AND_SHIPPING_CHECKED
 })
@@ -87,9 +101,20 @@ export const sameBillingAndAddressUncheckedAction = (): AnyAction => ({
 
 export const setSelectedAddressAction = (
   address: AddressType,
-  index: number
+  index: number,
+  billing: boolean
 ): AnyAction => ({
   type: SET_SELECTED_ADDRESS,
+  address,
+  index,
+  billing
+})
+
+export const setSelectedAddressesAction = (
+  address: AddressType,
+  index: number
+): AnyAction => ({
+  type: SET_SELECTED_ADDRESSES,
   address,
   index
 })
@@ -169,6 +194,15 @@ export const setSkipValueAction = (
   type: SET_SKIP_VALUE,
   skip,
   currentPage
+})
+
+export const setCouponCodeAction = (couponCode: CouponCode): AnyAction => ({
+  type: SET_COUPON_CODE,
+  couponCode
+})
+
+export const deleteCouponCodeAction = (): AnyAction => ({
+  type: DELETE_COUPON_CODE
 })
 
 export const openCurrencyWarningAction = (open: boolean): AnyAction => ({

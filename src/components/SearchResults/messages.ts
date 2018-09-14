@@ -8,5 +8,9 @@ export default defineMessages({
   fullDetailsLabel: {
     id: 'components.searchBar.fullDetailsLabel',
     defaultMessage: 'FULL DETAILS'
+  },
+  customizable: {
+    id: 'components.searchResults.customizable',
+    defaultMessage: 'Customize'
   }
 })

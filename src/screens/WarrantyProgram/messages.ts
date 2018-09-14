@@ -151,5 +151,17 @@ export default defineMessages({
   selectFile: {
     id: 'screens.WarrantyProgram.selectFile',
     defaultMessage: ' Select File'
+  },
+  successClaim: {
+    id: 'screens.WarrantyProgram.successClaim',
+    defaultMessage: 'Claim Saved'
+  },
+  needToLogIn: {
+    id: 'screens.WarrantyProgram.needToLogIn',
+    defaultMessage: 'You need to be logged in first'
+  },
+  somethingHappened: {
+    id: 'screens.WarrantyProgram.somethingHappened',
+    defaultMessage: 'Something wrong happened. Please try again!'
   }
 })

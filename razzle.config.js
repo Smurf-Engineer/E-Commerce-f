@@ -1,5 +1,6 @@
 'use strict'
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   modify(baseConfig, { target, dev }, webpack) {
@@ -83,6 +84,29 @@ module.exports = {
         use: ['style-loader', 'css-loader', 'less-loader']
       }
     )
+
+    if (!dev) {
+      const index = config.plugins.findIndex(
+        plugin => plugin.constructor.name === 'UglifyJsPlugin'
+      )
+      if (index !== -1) {
+        config.plugins[index] = new UglifyJsPlugin({
+          uglifyOptions: {
+            mangle: {
+              safari10: true
+            },
+            compress: {
+              warnings: false,
+              comparisons: false
+            },
+            output: {
+              comments: false
+            }
+          },
+          sourceMap: true
+        })
+      }
+    }
 
     config.plugins.push(new ExtractTextPlugin('static/css/styles.css'))
     config.plugins.push(

@@ -72,6 +72,7 @@ export type ImageType = {
   left: string
   right: string
   genderId: number
+  colorId?: number
 }
 
 export type PriceRange = {
@@ -133,7 +134,7 @@ export interface Product {
   weight: number
   relatedProducts: Product[]
   isCustom?: boolean
-  colors?: ProductColors
+  colors?: ProductColors[]
 }
 
 export type DesignType = {
@@ -401,8 +402,10 @@ export type CartItemDetail = {
   gender?: ItemDetailType
   size?: ItemDetailType
   fit?: ItemDetailType
+  color?: ItemDetailType
   label?: string
   quantity: number
+  colorImage?: string
 }
 
 export interface AddressType {
@@ -480,11 +483,18 @@ export interface OrderHistory {
   id: number
   shortId: string
   date: string
+  estimatedDate: string
   status: string
+  netsuite?: NetsuiteObject
+}
+
+export interface FulfillmentNetsuite {
+  packages: string
 }
 
 export interface OrderStatusNetsuite {
-  deliveryDate?: string
+  orderStatus?: string
+  fulfillments?: FulfillmentNetsuite[]
 }
 
 export interface NetsuiteObject {
@@ -500,6 +510,7 @@ export interface PaymentCharges {
 export interface OrderDetailsInfo {
   shortId: string
   orderDate: string
+  estimatedDate: string
   paymentMethod: string
   shippingFirstName: string
   shippingLastName: string
@@ -518,7 +529,7 @@ export interface OrderDetailsInfo {
   billingCity: string
   billingZipCode: string
   shippingTax: number
-  netsuit?: NetsuiteObject
+  netsuite?: NetsuiteObject
   payment: PaymentCharges
   cart: CartItems[]
   status: string
@@ -526,6 +537,12 @@ export interface OrderDetailsInfo {
   taxAmount: number
   shippingAmount: number
   proDesign: boolean
+  taxGst?: number
+  taxPst?: number
+  taxVat?: number
+  taxFee?: number
+  total?: number
+  discount?: number
 }
 
 export interface OrderDataInfo {
@@ -547,17 +564,19 @@ export interface OrderDataInfo {
   billingCountry: string
   billingApartment: string
   shippingTax: number
-  payment: {
-    stripeCharge: {
-      cardData: CreditCardData
-    }
-  }
+  payment: PaymentCharges
   cart: CartItems[]
   paymentMethod: string
   currency: Currency
   shippingAmount: number
   taxAmount: number
   proDesign: boolean
+  taxGst?: number
+  taxPst?: number
+  taxVat?: number
+  taxFee?: number
+  total?: number
+  discount?: number
 }
 
 export interface TextFormat {
@@ -720,6 +739,7 @@ export interface NetsuiteTax {
   state: string
   zip: string
   total: number
+  countrySub: string
 }
 
 export interface NetsuiteShipping {
@@ -994,6 +1014,16 @@ export interface CanvasFile {
 }
 
 export interface ProductColors {
+  id: number
   name: string
   image: string
 }
+
+export interface CouponCode {
+  code: string
+  type: couponType
+  discountAmount?: string
+  rate?: string
+}
+
+type couponType = '%' | 'flat'

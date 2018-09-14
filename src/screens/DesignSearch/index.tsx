@@ -34,12 +34,13 @@ interface Props {
   loading: boolean
   order?: OrderSearchResult
   notFound: boolean
+  noAdmin?: boolean
   user: UserType
   // redux actions
   restoreUserSessionAction: () => void
   resetDataAction: () => void
   setLoadingAction: () => void
-  setNotFoundAction: () => void
+  setNotFoundAction: (admin?: boolean) => void
   setOrderAction: (order: OrderSearchResult) => void
 }
 
@@ -58,17 +59,19 @@ export class DesignSearch extends React.Component<Props, {}> {
   }
 
   render() {
-    const { loading, notFound, order } = this.props
+    const { loading, notFound, order, noAdmin } = this.props
 
     let loadErrContent = <Spin />
     if (notFound) {
       loadErrContent = <FormattedMessage {...messages.notFound} />
+    } else if (noAdmin) {
+      loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const orderContent = order && (
       <OrderFiles {...{ order }} downloadFile={this.downloadAllFiles} />
     )
     const content =
-      loading || notFound ? (
+      loading || notFound || noAdmin ? (
         <LoadErrContainer>{loadErrContent}</LoadErrContainer>
       ) : (
         orderContent
@@ -107,7 +110,8 @@ export class DesignSearch extends React.Component<Props, {}> {
     history.push('designer-tool')
   }
 
-  handleOnSearch = async (code: string) => {
+  handleOnSearch = async (productCode: string) => {
+    const code = productCode.trim()
     const {
       client: { query },
       setLoadingAction,
@@ -123,8 +127,14 @@ export class DesignSearch extends React.Component<Props, {}> {
         fetchPolicy: 'network-only'
       })
       setOrderAction(data.data.order)
-    } catch (e) {
-      setNotFoundAction()
+    } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+
+      const unauthorizedExp = /\bunauthorized\b/
+      const unauthorized = unauthorizedExp.test(errorMessage)
+
+      setNotFoundAction(unauthorized)
     }
   }
 

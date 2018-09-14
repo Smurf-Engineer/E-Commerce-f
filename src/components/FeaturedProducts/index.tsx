@@ -19,7 +19,7 @@ import {
 import ProductThumbnail from '../ProductThumbnail'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import { QueryProps, DesignType, Product } from '../../types/common'
+import { QueryProps, Product } from '../../types/common'
 
 interface Data extends QueryProps {
   featuredProducts: Product[]
@@ -29,7 +29,7 @@ interface Props {
   history: any
   currentCurrency: string
   formatMessage: (messageDescriptor: any) => string
-  openQuickView: (id: number) => void
+  openQuickView: (id: number, yotpoId: string, gender: number) => void
 }
 
 const arrowLeft = <Arrow src={leftArrow} />
@@ -148,50 +148,10 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
     const { history } = this.props
     history.push(`/design-center?id=${id}`)
   }
-
-  handlePressQuickView = (id: number) => {
-    const { openQuickView } = this.props
-    openQuickView(id)
-  }
-}
-type OwnProps = {
-  genderFilters?: string
-  sportFilters?: string
-  categoryFilters?: string
-  seasonFilters?: string
-  fitFilters?: string
-  temperatureFilters?: string
-  limit?: number
-  orderBy?: string
-  skip?: number
-  designs?: DesignType[]
 }
 
-const FeaturedProductsEnhanced = compose(
-  graphql<Data>(GetProductsQuery, {
-    options: ({
-      genderFilters,
-      categoryFilters,
-      sportFilters,
-      seasonFilters,
-      limit = 10,
-      orderBy,
-      skip,
-      designs
-    }: OwnProps) => {
-      return {
-        variables: {
-          gender: genderFilters ? genderFilters : null,
-          category: categoryFilters ? categoryFilters : null,
-          sport: sportFilters ? sportFilters : null,
-          season: seasonFilters ? seasonFilters : null,
-          limit: limit ? limit : null,
-          order: orderBy ? orderBy : null,
-          offset: skip ? skip : null
-        }
-      }
-    }
-  })
-)(FeaturedProducts)
+const FeaturedProductsEnhanced = compose(graphql<Data>(GetProductsQuery))(
+  FeaturedProducts
+)
 
 export default FeaturedProductsEnhanced

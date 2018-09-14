@@ -5,6 +5,7 @@ import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose } from 'react-apollo'
 import filter from 'lodash/filter'
+import get from 'lodash/get'
 import {
   Container,
   Footer,
@@ -21,6 +22,7 @@ import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
 const LIMIT_PRICE_RANGE = 3
+const WHITENAME = 'White'
 
 interface Props {
   id: number
@@ -46,10 +48,11 @@ interface Props {
   myLockerList?: boolean
   currentCurrency: string
   disableSlider?: boolean
+  reversePriceRange?: boolean
   backgroundColor?: string
   colors: ProductColors[]
   onPressCustomize: (id: number) => void
-  onPressQuickView: (id: number, yotpoId: string) => void
+  onPressQuickView: (id: number, yotpoId: string, gender: number) => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
@@ -98,8 +101,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handleOnPressQuickView = () => {
-    const { onPressQuickView, id, yotpoId } = this.props
-    onPressQuickView(id, yotpoId)
+    const { onPressQuickView, id, yotpoId, gender } = this.props
+    onPressQuickView(id, yotpoId, gender || 0)
   }
 
   getUrlProduct = () => {
@@ -145,7 +148,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
       myLockerList,
       disableSlider,
       backgroundColor,
-      colors
+      colors,
+      reversePriceRange
     } = this.props
     const { isHovered, currentImage } = this.state
 
@@ -155,26 +159,36 @@ class ProductThumbnail extends React.Component<Props, {}> {
         abbreviation: currentCurrency
       })
 
-    let lastPrice = LIMIT_PRICE_RANGE
+    const symbol = get(currencyPrices, '[0].shortName', '')
+
+    let lastPriceIndex = LIMIT_PRICE_RANGE
 
     if (currencyPrices && currencyPrices.length < LIMIT_PRICE_RANGE) {
-      lastPrice = currencyPrices.length - 1
+      lastPriceIndex = currencyPrices.length - 1
     }
 
     let price = ''
+
     if (currencyPrices && currencyPrices.length) {
-      price = `$${currencyPrices[0].price}`
+      const basePrice = currencyPrices[0].price
+      const lastPrice = currencyPrices[lastPriceIndex].price
+
+      price = `${symbol} ${basePrice}`
 
       if (customizable) {
-        price += ` - $${currencyPrices[lastPrice].price}`
+        if (reversePriceRange) {
+          price = `${symbol} ${lastPrice} - ${basePrice}`
+        } else {
+          price += ` - ${lastPrice}`
+        }
       }
     }
 
     let urlProduct = this.getUrlProduct()
     const colorList =
       colors &&
-      colors.map(({ image: imageColor }: ProductColors, index) => (
-        <ImgIcon src={imageColor} key={index} />
+      colors.map(({ image: imageColor, name }: ProductColors, index) => (
+        <ImgIcon withBorder={name === WHITENAME} src={imageColor} key={index} />
       ))
 
     const colorOptions = customizable ? (

@@ -5,6 +5,12 @@ import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
+import { RED, BLACK } from '../../theme/colors'
+
+interface StyledProps {
+  selected?: boolean
+  withBorder?: boolean
+}
 
 export const Container = styled.div`
   background-color: #fff;
@@ -319,9 +325,28 @@ export const DetailsList = styled.ul`
 export const DetailsListItem = styled.li`
   margin-bottom: 15px;
 `
+
 export const ProductAvailableColor = styled.img`
   margin-right: 15px;
+  border-radius: 50%;
+  border: ${({ selected, withBorder }: StyledProps) =>
+    selected
+      ? `2px solid ${RED}`
+      : `1px solid ${withBorder ? BLACK : 'transparent'}`};
+  width: 30px;
+
   &:hover {
     cursor: pointer;
   }
+`
+
+export const ColorWrapper = styled.div`
+  height: 2.5em;
+`
+
+export const Loading = styled.div`
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  align-items: center;
 `

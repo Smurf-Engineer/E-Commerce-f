@@ -285,6 +285,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 }
 
 type OwnProps = {
+  collectionFilters?: string
   genderFilters?: string
   sportFilters?: string
   categoryFilters?: string
@@ -300,6 +301,7 @@ type OwnProps = {
 const ThumbnailsListEnhance = compose(
   graphql<Data>(GetProductsQuery, {
     options: ({
+      collectionFilters,
       genderFilters,
       categoryFilters,
       sportFilters,
@@ -313,6 +315,7 @@ const ThumbnailsListEnhance = compose(
       return {
         fetchPolicy: 'network-only',
         variables: {
+          collection: collectionFilters ? collectionFilters : null,
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,
           sport: sportFilters ? sportFilters : null,

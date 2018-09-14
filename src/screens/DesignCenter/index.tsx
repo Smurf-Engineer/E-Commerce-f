@@ -396,6 +396,11 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
   }
 
+  goToCustomProductPage = (designId: string) => {
+    const { history } = this.props
+    history.push(`/custom-product?id=${designId}`)
+  }
+
   render() {
     const {
       intl,
@@ -633,7 +638,12 @@ export class DesignCenter extends React.Component<Props, {}> {
     const isUserAuthenticated = !!user
 
     return (
-      <Layout {...{ history, intl }} hideBottomHeader={true} hideFooter={true}>
+      <Layout
+        {...{ history, intl }}
+        hideTopHeader={responsive.tablet}
+        hideBottomHeader={true}
+        hideFooter={true}
+      >
         <Container>
           <Header onPressBack={this.handleOnPressBack} />
           <Tabs
@@ -841,6 +851,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             setSaveDesignChangesLoading={saveDesignChangesLoadingAction}
             saveDesignLoading={saveDesignLoading}
             saveDesignChangesLoading={saveDesignChangesLoading}
+            goToCustomProductPage={this.goToCustomProductPage}
           />
           {tabSelected === CustomizeTabIndex && !loadingData ? (
             <BottomSheetWrapper>
