@@ -45,7 +45,7 @@ export const GetProductsByIdQuery = gql`
       collections
       isTopProduct
       intendedUse: intended_use
-      images: pictures {
+      images: original_pictures {
         front: front_image
         back: back_image
         left: left_image

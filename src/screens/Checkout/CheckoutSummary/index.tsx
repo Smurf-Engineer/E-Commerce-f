@@ -86,7 +86,6 @@ const CheckoutSummary = ({
   taxShipQuery
 }: Props) => {
 
-  // TODO: move outside render
   let paypalClientId
   const subsidiary = get(subsidiaryQuery, 'subsidiary', 1)
   switch (subsidiary) {
@@ -106,7 +105,7 @@ const CheckoutSummary = ({
 
   const paypalClient = {
     sandbox: paypalClientId,
-    production: ''
+    production: paypalClientId
   }
 
   const shippingTotal = get(taxShipQuery, 'shipping.total', shipping) || 0
