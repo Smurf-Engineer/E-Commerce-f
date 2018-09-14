@@ -20,6 +20,9 @@ import { Filter, QueryProps } from '../../types/common'
 import { categoriesQuery } from './data'
 import Spin from 'antd/lib/spin'
 
+const MEN_GENDER = 'men'
+const WOMEN_GENDER = 'women'
+
 interface Data extends QueryProps {
   categories: Filter[]
 }
@@ -54,8 +57,10 @@ export class MenuGender extends React.Component<Props, {}> {
   }
 
   onPressSeeAllFilters = () => {
-    const { history } = this.props
-    history.push('/product-catalogue')
+    const { history, type } = this.props
+    history.push(
+      `/product-catalogue?gender=${type === 0 ? MEN_GENDER : WOMEN_GENDER}`
+    )
   }
 
   onSeeAll = () => {
