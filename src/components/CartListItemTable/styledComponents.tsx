@@ -157,5 +157,6 @@ export const StyledInputNumber = styled(InputNumber)`
 
 export const ProductColor = styled.img`
   border-radius: 50%;
+  border: 1px solid ${GRAY};
   width: 30px;
 `
