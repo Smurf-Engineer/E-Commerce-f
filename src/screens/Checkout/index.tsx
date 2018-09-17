@@ -574,15 +574,7 @@ class Checkout extends React.Component<Props, {}> {
   }
 
   handleOnSelectBillingAddress = (address: AddressType, index: number) => {
-    const {
-      setBillingAddressAction,
-      sameBillingAndShipping,
-      setSelectedAddressesAction
-    } = this.props
-    if (sameBillingAndShipping) {
-      setSelectedAddressesAction(address, index)
-      return
-    }
+    const { setBillingAddressAction } = this.props
     setBillingAddressAction(address, index)
   }
 
