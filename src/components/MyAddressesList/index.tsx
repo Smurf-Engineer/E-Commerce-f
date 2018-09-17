@@ -81,9 +81,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
     }
 
     if (billingAddress) {
-      if (indexAddressSelected !== -1) {
-        this.handleOnSelectAddress(Number(indexAddressSelected))
-      }
       // this is for not select a default address for CreditCardFormBilling component
       return
     }
