@@ -67,8 +67,10 @@ import ProductInfo from '../../components/ProductInfo'
 import YotpoReviews from '../../components/YotpoReviews'
 import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
+import { ProductGenders } from '../ProductDetail/constants'
 
 const MAX_AMOUNT_PRICES = 4
+const { Men, Women, Unisex } = ProductGenders
 
 interface MyDesignsData extends QueryProps {
   myDesigns: { designs: DesignType[] }
@@ -195,13 +197,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
           )
       )
 
-    const maleGender = get(genders, '0.name', '')
-    const femaleGender = get(genders, '1.name', '')
+    const maleGender = genders.find(x => x.name === Men)
+    const femaleGender = genders.find(x => x.name === Women)
+    const unisexGender = genders.find(x => x.name === Unisex)
 
-    const genderMessage =
-      femaleGender && maleGender
-        ? formatMessage(messages.unisexGenderLabel)
-        : formatMessage(messages.oneGenderLabel)
+    let genderMessage = messages.maleGenderLabel
+    if (unisexGender) {
+      genderMessage = messages.unisexGenderLabel
+    } else if (femaleGender) {
+      genderMessage = maleGender
+        ? messages.unisexGenderLabel
+        : messages.femaleGenderLabel
+    }
 
     const availableGenders = genders.map(
       ({ id, name: genderName }: SelectedType, key: number) => (
@@ -396,7 +403,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                   {...{ rating, totalReviews }}
                 />
                 <Description>{description}</Description>
-                <AvailableLabel>{genderMessage}</AvailableLabel>
+                <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
                 {collectionSelection}
                 {productInfo}
               </ProductData>
