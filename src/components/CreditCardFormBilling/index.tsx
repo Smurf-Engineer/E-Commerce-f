@@ -73,8 +73,26 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     reloadStripe: false
   }
 
+  componentDidMount() {
+    // Reload stripe on mount, in the case when user went back to Shipping Address screen.
+    const {
+      billingCountry,
+      subsidiaryQuery
+    } = this.props
+
+    const loading = get(subsidiaryQuery, 'loading', false)
+    const subsidiary = get(subsidiaryQuery, 'subsidiary', null)
+
+    if (billingCountry) {
+      this.setState({ reloadStripe: true })
+    }
+
+    if (!loading && subsidiary && this.state.reloadStripe) {
+      this.reloadStripe(subsidiary)
+    }
+  }
+
   componentDidUpdate(oldProps: any) {
-    // Unload stripe script and reload in country changed
     const {
       billingCountry,
       subsidiaryQuery
@@ -88,14 +106,17 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     }
 
     if (!loading && subsidiary && this.state.reloadStripe) {
-      this.setState({ reloadStripe: false })
-      const stripeNode = document.getElementById('stripeScript')
-      if (!!stripeNode) { this.unloadStripe(stripeNode) }
-      this.loadStripe(subsidiary)
+      this.reloadStripe(subsidiary)
     }
   }
 
-  loadStripe = (subsidiary: number) => {
+  reloadStripe = (subsidiary: number) => {
+    // Unload stripe script and reload if country changed
+    this.setState({ reloadStripe: false })
+    const stripeNode = document.getElementById('stripe-js')
+
+    if (!!stripeNode) { this.unloadStripe(stripeNode) }
+
     let stripeKey
     switch (subsidiary) {
       case 1:
@@ -114,13 +135,14 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
     // this code is safe to server-side render.
     const stripeJs = document.createElement('script')
-    stripeJs.id = 'stripeScript'
+    stripeJs.id = 'stripe-js'
     stripeJs.src = 'https://js.stripe.com/v3/'
     stripeJs.onload = () => {
       this.setState({
         stripe: window.Stripe(stripeKey)
       })
     }
+
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
     return true
