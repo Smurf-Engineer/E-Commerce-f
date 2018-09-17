@@ -1,4 +1,3 @@
----
 # docker image
 image: node:9.4.0
 
@@ -13,38 +12,68 @@ definitions:
 
 pipelines:
   default:
-  - step:
-      script:
-      - npm install --production
-      - npm run lint
-  branches:
-    development:
     - step:
         script:
-        # install yarn and yarn build
-        # - curl -o- -L https://yarnpkg.com/install.sh | bash
-        # - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
-        - export CI=false
-        # - npm install --production
-        # - yarn build
-        # Installing gcloud
-        - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
-        - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
-        - /tmp/google-cloud-sdk/install.sh -q
-        - source /tmp/google-cloud-sdk/path.bash.inc
-        # Installing kubectl
-        - gcloud components install kubectl -q
-        # Authentication
-        - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
-        - gcloud auth activate-service-account --key-file gcloud-api-key.json
-        - gcloud config set project $GCLOUD_PROJECT
-        - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone=$GCLOUD_ZONE
-        # Building images
-        - docker build . -t us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
-        # Pushing SHA1 image
-        - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
-        # Pushing latest image
-        - docker tag us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
-        - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
-        # Deploy the image
-        - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
+          - npm install --production
+          - npm run lint
+  branches:
+    development:
+      - step:
+          script:
+            # install yarn and yarn build
+            # - curl -o- -L https://yarnpkg.com/install.sh | bash
+            # - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+            - export CI=false
+            # - npm install --production
+            # - yarn build
+            # Installing gcloud
+            - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
+            - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
+            - /tmp/google-cloud-sdk/install.sh -q
+            - source /tmp/google-cloud-sdk/path.bash.inc
+            # Installing kubectl
+            - gcloud components install kubectl -q
+            # Authentication
+            - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
+            - gcloud auth activate-service-account --key-file gcloud-api-key.json
+            - gcloud config set project $GCLOUD_PROJECT
+            - gcloud container clusters get-credentials $GCLOUD_CLUSTER --zone=$GCLOUD_ZONE
+            # Building images
+            - docker build . -t us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
+            # Pushing SHA1 image
+            - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT
+            # Pushing latest image
+            - docker tag us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
+            - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT/$APP/development:latest
+            # Deploy the image
+            - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
+    production:
+      - step:
+          script:
+            # install yarn and yarn build
+            # - curl -o- -L https://yarnpkg.com/install.sh | bash
+            # - export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+            - export CI=false
+            # - npm install --production
+            # - yarn build
+            # Installing gcloud
+            - curl -o /tmp/google-cloud-sdk.tar.gz https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-sdk-161.0.0-linux-x86_64.tar.gz
+            - tar -xvf /tmp/google-cloud-sdk.tar.gz -C /tmp/
+            - /tmp/google-cloud-sdk/install.sh -q
+            - source /tmp/google-cloud-sdk/path.bash.inc
+            # Installing kubectl
+            - gcloud components install kubectl -q
+            # Authentication
+            - echo $GCLOUD_API_KEYFILE_PRODUCTION | base64 --decode --ignore-garbage > ./gcloud-api-key.json
+            - gcloud auth activate-service-account --key-file gcloud-api-key.json
+            - gcloud config set project $GCLOUD_PROJECT_PRODUCTION
+            - gcloud container clusters get-credentials $GCLOUD_CLUSTER_PRODUCTION --zone=$GCLOUD_ZONE_PRODUCTION
+            # Building images
+            - docker build . -t us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT
+            # Pushing SHA1 image
+            - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT
+            # Pushing latest image
+            - docker tag us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:latest
+            - gcloud docker -- push us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:latest
+            # Deploy the image
+            - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT_PRODUCTION/$APP/production:$BITBUCKET_COMMIT --record --namespace=production
