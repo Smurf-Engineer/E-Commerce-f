@@ -847,102 +847,109 @@ class Render3D extends PureComponent {
     }
   }
 
-  // TODO: WIP
-  handleOnKeyDown = event => {
+  onKeyDown = event => {
     let charCode = String.fromCharCode(event.which).toLowerCase()
     if (event.shiftKey && event.ctrlKey && charCode === 'z') {
-      // TODO: Handle ctrl+shift+z
+      event.preventDefault()
+      this.handleOnClickRedo()
     } else if (event.ctrlKey && charCode === 'z') {
-      // TODO: Handle ctrl+z
+      event.preventDefault()
+      this.handleOnClickUndo()
     }
 
     // For MAC we can use metaKey to detect cmd key
     if (event.shiftKey && event.metaKey && charCode === 'z') {
-      // TODO: Handle cmd+shift+z
+      event.preventDefault()
+      this.handleOnClickRedo()
     } else if (event.metaKey && charCode === 'z') {
-      // TODO: Handle cmd+z
+      event.preventDefault()
+      this.handleOnClickUndo()
     }
   }
 
   handleOnClickUndo = () => {
-    const { onUndoAction, undoChanges } = this.props
-    const changeToApply = undoChanges[0]
-    const {
-      type,
-      state: { id }
-    } = changeToApply
-    switch (type) {
-      case Changes.Add:
-        this.deleteElementById(id)
-        break
-      case Changes.Delete:
-        this.reAddCanvasElement(changeToApply)
-        break
-      case Changes.Resize:
-        this.resizeCanvasElement(changeToApply)
-        break
-      case Changes.Drag:
-        this.dragCanvasElement(changeToApply)
-        break
-      case Changes.CanvasStyle:
-        this.styleCanvasElement(changeToApply)
-        break
-      case Changes.Rotate:
-        this.rotateCanvasElement(changeToApply)
-        break
-      case Changes.ChangeText:
-        this.changeTextCanvasElement(changeToApply)
-        break
-      case Changes.Duplicate:
-        this.deleteDuplicateCanvasElement(changeToApply)
-        break
-      default:
-        break
+    const { onUndoAction, undoChanges, undoEnabled } = this.props
+    if (undoEnabled) {
+      const changeToApply = undoChanges[0]
+      const {
+        type,
+        state: { id }
+      } = changeToApply
+      switch (type) {
+        case Changes.Add:
+          this.deleteElementById(id)
+          break
+        case Changes.Delete:
+          this.reAddCanvasElement(changeToApply)
+          break
+        case Changes.Resize:
+          this.resizeCanvasElement(changeToApply)
+          break
+        case Changes.Drag:
+          this.dragCanvasElement(changeToApply)
+          break
+        case Changes.CanvasStyle:
+          this.styleCanvasElement(changeToApply)
+          break
+        case Changes.Rotate:
+          this.rotateCanvasElement(changeToApply)
+          break
+        case Changes.ChangeText:
+          this.changeTextCanvasElement(changeToApply)
+          break
+        case Changes.Duplicate:
+          this.deleteDuplicateCanvasElement(changeToApply)
+          break
+        default:
+          break
+      }
+      onUndoAction()
+      this.canvasTexture.discardActiveObject()
+      this.canvasTexture.renderAll()
     }
-    onUndoAction()
-    this.canvasTexture.discardActiveObject()
-    this.canvasTexture.renderAll()
   }
 
   handleOnClickRedo = () => {
-    const { onRedoAction, redoChanges } = this.props
-    const changeToApply = redoChanges[0]
-    const {
-      type,
-      state: { id }
-    } = changeToApply
-    let skipRedo = false
-    switch (type) {
-      case Changes.Add:
-        this.reAddCanvasElement(changeToApply)
-        break
-      case Changes.Delete:
-        this.deleteElementById(id)
-      case Changes.Resize:
-        this.resizeCanvasElement(changeToApply, true)
-        break
-      case Changes.Drag:
-        this.dragCanvasElement(changeToApply, true)
-        break
-      case Changes.CanvasStyle:
-        this.styleCanvasElement(changeToApply, true)
-        break
-      case Changes.Rotate:
-        this.rotateCanvasElement(changeToApply, true)
-        break
-      case Changes.ChangeText:
-        this.changeTextCanvasElement(changeToApply, true)
-        break
-      case Changes.Duplicate:
-        this.reDuplicateCanvasElement(changeToApply)
-        skipRedo = true
-        break
-      default:
-        break
+    const { onRedoAction, redoChanges, redoEnabled } = this.props
+    if (redoEnabled) {
+      const changeToApply = redoChanges[0]
+      const {
+        type,
+        state: { id }
+      } = changeToApply
+      let skipRedo = false
+      switch (type) {
+        case Changes.Add:
+          this.reAddCanvasElement(changeToApply)
+          break
+        case Changes.Delete:
+          this.deleteElementById(id)
+        case Changes.Resize:
+          this.resizeCanvasElement(changeToApply, true)
+          break
+        case Changes.Drag:
+          this.dragCanvasElement(changeToApply, true)
+          break
+        case Changes.CanvasStyle:
+          this.styleCanvasElement(changeToApply, true)
+          break
+        case Changes.Rotate:
+          this.rotateCanvasElement(changeToApply, true)
+          break
+        case Changes.ChangeText:
+          this.changeTextCanvasElement(changeToApply, true)
+          break
+        case Changes.Duplicate:
+          this.reDuplicateCanvasElement(changeToApply)
+          skipRedo = true
+          break
+        default:
+          break
+      }
+      if (!skipRedo) onRedoAction()
+      this.canvasTexture.discardActiveObject()
+      this.canvasTexture.renderAll()
     }
-    if (!skipRedo) onRedoAction()
-    this.canvasTexture.discardActiveObject()
-    this.canvasTexture.renderAll()
   }
 
   deleteDuplicateCanvasElement = canvasElement => {
@@ -1136,7 +1143,7 @@ class Render3D extends PureComponent {
     }
 
     return (
-      <Container onKeyDown={this.handleOnKeyDown} tabIndex="0">
+      <Container onKeyDown={this.onKeyDown} tabIndex="0">
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
