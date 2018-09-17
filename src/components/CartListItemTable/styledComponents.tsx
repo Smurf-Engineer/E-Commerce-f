@@ -41,7 +41,7 @@ export const Row = styled.div`
     }
     return 'repeat(4, 1fr)'
   }};
-  grid-gap: 3px;
+  grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '3px')};
 
   align-items: center;
   justify-content: space-between;
@@ -49,9 +49,16 @@ export const Row = styled.div`
   padding-bottom: 8px;
   padding-top: 8px;
 
-  @media (max-width: 640px) {
+  @media (min-width: 426px) and (max-width: 640px) {
     padding: 0 5px;
     height: 50px;
+    grid-gap: 5px;
+  }
+
+  @media (max-width: 425px) {
+    padding: 0 5px;
+    height: 50px;
+    grid-gap: 3px;
   }
 `
 
@@ -63,7 +70,7 @@ export const HeaderRow = styled.div`
     }
     return 'repeat(4, 1fr)'
   }};
-  grid-gap: ${({ withColor }: RowProps) => (withColor ? '3px' : '0 5px')};
+  grid-gap: ${({ withColor }: RowProps) => (withColor ? '10px' : '5px')};
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid ${GRAY_SOFT};
@@ -71,6 +78,17 @@ export const HeaderRow = styled.div`
 
   @media (max-width: 640px) {
     padding: ${({ withColor }: RowProps) => (withColor ? '0 5px' : '0 7px')};
+    grid-gap: ${({ withColor }: RowProps) => (withColor ? '3px' : '5px')};
+  }
+
+  @media (min-width: 426px) and (max-width: 640px) {
+    padding: ${({ withColor }: RowProps) => (withColor ? '0 5px' : '0 7px')};
+    grid-gap: 5px;
+  }
+
+  @media (max-width: 425px) {
+    padding: ${({ withColor }: RowProps) => (withColor ? '0 5px' : '0 7px')};
+    grid-gap: ${({ withColor }: RowProps) => (withColor ? '3px' : '5px')};
   }
 `
 
