@@ -887,7 +887,8 @@
   "screens.Checkout.couponError": "Invalid promo code",
 
   "screens.CustomProductDetail.editDesign": "EDIT DESIGN",
-  "screens.CustomProductDetail.oneGenderLabel": "Available for Men/Women",
+  "screens.CustomProductDetail.maleGenderLabel": "Available for Men",
+  "screens.CustomProductDetail.femaleGenderLabel": "Available for Women",
   "screens.CustomProductDetail.unisexGenderLabel": "Available for Men and Women",
   "screens.CustomProductDetail.gender": "Gender",
   "screens.CustomProductDetail.size": "Size",
