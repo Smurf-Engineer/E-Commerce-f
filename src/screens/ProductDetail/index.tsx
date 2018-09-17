@@ -72,12 +72,14 @@ import {
   PriceRange,
   ProductColors
 } from '../../types/common'
+import { ProductGenders } from './constants'
 import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
+const { Men, Women, Unisex } = ProductGenders
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -189,14 +191,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const template = get(product, 'template', '')
     const products = get(product, 'relatedProducts', [] as Product[])
 
-    const maleGender = genders.find(x => x.name === 'Men')
-    const femaleGender = genders.find(x => x.name === 'Women')
     const mpnCode = get(product, 'mpn')
     const colors = get(product, 'colors', [] as ProductColors[])
 
+    const maleGender = genders.find(x => x.name === Men)
+    const femaleGender = genders.find(x => x.name === Women)
+    const unisexGender = genders.find(x => x.name === Unisex)
     let genderMessage = messages.maleGenderLabel
 
-    if (femaleGender) {
+    if (unisexGender) {
+      genderMessage = messages.unisexGenderLabel
+    } else if (femaleGender) {
       genderMessage = maleGender
         ? messages.unisexGenderLabel
         : messages.femaleGenderLabel
