@@ -10,11 +10,12 @@ import {
   SELECT_DROPDOWN,
   SMS_CHECK,
   EMAIL_CHECK,
+  SET_SHIPPING_ADDRESS,
+  SET_BILLING_ADDRESS,
   SHOW_ADDRESS_FORM,
   SHOW_BILLING_ADDRESS_FORM,
   SAME_BILLING_AND_SHIPPING_CHECKED,
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
-  SET_SELECTED_ADDRESS,
   SET_SELECTED_ADDRESSES,
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
@@ -99,15 +100,22 @@ export const sameBillingAndAddressUncheckedAction = (): AnyAction => ({
   type: SAME_BILLING_AND_SHIPPING_UNCHECKED
 })
 
-export const setSelectedAddressAction = (
+export const setShippingAddressAction = (
   address: AddressType,
-  index: number,
-  billing: boolean
+  index: number
 ): AnyAction => ({
-  type: SET_SELECTED_ADDRESS,
+  type: SET_SHIPPING_ADDRESS,
   address,
-  index,
-  billing
+  index
+})
+
+export const setBillingAddressAction = (
+  address: AddressType,
+  index: number
+): AnyAction => ({
+  type: SET_BILLING_ADDRESS,
+  address,
+  index
 })
 
 export const setSelectedAddressesAction = (
