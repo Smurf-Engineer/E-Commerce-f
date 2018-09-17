@@ -119,16 +119,14 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('emailCheck', action.checked)
     case SET_SHIPPING_ADDRESS: {
       const { address, index } = action
-      let selected = { ...address }
       return state.merge({
-        ...selected,
+        ...address,
         indexAddressSelected: index,
         showForm: false
       })
     }
     case SET_BILLING_ADDRESS: {
       const { address, index } = action
-      let selected = { ...address }
       const {
         firstName,
         lastName,
@@ -141,7 +139,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         stateProvince
       } = address
 
-      selected = {
+      const selected = {
         billingFirstName: firstName,
         billingLastName: lastName,
         billingStreet: street,
