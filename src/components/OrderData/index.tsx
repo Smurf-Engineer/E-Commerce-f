@@ -65,6 +65,7 @@ class OrderData extends React.Component<Props, {}> {
       data: {
         orderData: {
           orderDate,
+          estimatedDate,
           firstName,
           lastName,
           street,
@@ -173,6 +174,10 @@ class OrderData extends React.Component<Props, {}> {
             <OrderNumberContainer>
               <TitleStyled>{formatMessage(messages.orderDate)}</TitleStyled>
               <StyledText>{orderDate}</StyledText>
+            </OrderNumberContainer>
+            <OrderNumberContainer>
+              <TitleStyled>{formatMessage(messages.estimatedDate)}</TitleStyled>
+              <StyledText>{estimatedDate}</StyledText>
             </OrderNumberContainer>
             <StyledText>
               <FormattedHTMLMessage {...orderMessage} />
