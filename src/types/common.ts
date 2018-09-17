@@ -72,6 +72,7 @@ export type ImageType = {
   left: string
   right: string
   genderId: number
+  colorId?: number
 }
 
 export type PriceRange = {
@@ -404,6 +405,7 @@ export type CartItemDetail = {
   color?: ItemDetailType
   label?: string
   quantity: number
+  colorImage?: string
 }
 
 export interface AddressType {
@@ -545,6 +547,7 @@ export interface OrderDetailsInfo {
 
 export interface OrderDataInfo {
   orderDate: string
+  estimatedDate: string
   firstName: string
   lastName: string
   street: string

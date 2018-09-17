@@ -72,12 +72,14 @@ import {
   PriceRange,
   ProductColors
 } from '../../types/common'
+import { ProductGenders } from './constants'
 import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
 
 const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
+const { Men, Women, Unisex } = ProductGenders
 
 interface ProductTypes extends Product {
   intendedUse: string
@@ -103,6 +105,7 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   itemToAddCart: any
   currentCurrency: string
+  loadingImage: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -111,6 +114,7 @@ interface Props extends RouteComponentProps<any> {
   setSelectedColorAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   addItemToCartAction: (item: any) => void
+  setLoadingImageAction: (loading: boolean) => void
   resetReducerAction: () => void
 }
 
@@ -147,6 +151,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
   }
 
+  componentDidUpdate() {
+    const { loadingImage, setLoadingImageAction } = this.props
+    if (loadingImage) {
+      setLoadingImageAction(false)
+    }
+  }
+
   render() {
     const {
       intl,
@@ -158,6 +169,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       selectedColor,
       openFitInfo,
       setLoadingModel,
+      loadingImage,
+      setLoadingImageAction,
       currentCurrency,
       data: { product, error }
     } = this.props
@@ -178,14 +191,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const template = get(product, 'template', '')
     const products = get(product, 'relatedProducts', [] as Product[])
 
-    const maleGender = genders.find(x => x.name === 'Men')
-    const femaleGender = genders.find(x => x.name === 'Women')
     const mpnCode = get(product, 'mpn')
     const colors = get(product, 'colors', [] as ProductColors[])
 
-    let genderMessage = messages.maleGenderLabel
+    const maleGender = genders.find(x => x.name === Men)
+    const femaleGender = genders.find(x => x.name === Women)
+    const unisexGender = genders.find(x => x.name === Unisex)
 
-    if (femaleGender) {
+    let genderMessage = messages.maleGenderLabel
+    if (unisexGender) {
+      genderMessage = messages.unisexGenderLabel
+    } else if (femaleGender) {
       genderMessage = maleGender
         ? messages.unisexGenderLabel
         : messages.femaleGenderLabel
@@ -203,9 +219,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const yotpoId = queryParams.yotpoId || ''
 
     const gender = queryParams.gender || 0
-    const genderIndex = findIndex(imagesArray, {
-      genderId: parseInt(gender, 10)
-    })
+    const colorId = selectedColor && selectedColor.id
+
+    const searchObject = isRetail ? { colorId } : {}
+    if (gender) {
+      Object.assign(searchObject, { genderId: parseInt(gender, 10) })
+    }
+    const genderIndex = findIndex(imagesArray, searchObject)
 
     const images = imagesArray[genderIndex] || imagesArray[0]
 
@@ -454,11 +474,20 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           {product && (
             <Content>
               <ImagePreview>
-                <ImagesSlider
-                  onLoadModel={setLoadingModel}
-                  squareArrows={true}
-                  {...{ images, moreImages }}
-                />
+                <Spin spinning={loadingImage}>
+                  {!loadingImage && (
+                    <ImagesSlider
+                      onLoadModel={setLoadingModel}
+                      squareArrows={true}
+                      {...{
+                        images,
+                        moreImages,
+                        loadingImage,
+                        setLoadingImageAction
+                      }}
+                    />
+                  )}
+                </Spin>
                 {template && (
                   <Desktop>
                     <DownloadTemplateContainer>

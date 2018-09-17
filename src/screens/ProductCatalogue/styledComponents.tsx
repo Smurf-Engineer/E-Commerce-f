@@ -3,6 +3,8 @@
  */
 import styled from 'styled-components'
 import breadcrumb from 'antd/lib/breadcrumb'
+import icon from 'antd/lib/icon'
+import { RED } from '../../theme/colors'
 
 interface StyleProps {
   showChildren?: boolean
@@ -61,3 +63,7 @@ export const StyledBreadcrumb = styled(breadcrumb)`
 export const MenuStyle = {
   width: '200px'
 }
+
+export const Icon = styled(icon)`
+  color: ${RED};
+`

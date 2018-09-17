@@ -12,7 +12,7 @@ export const CHANGE_INPUT = `${namespace}/CHANGE_INPUT`
 export const SELECT_DROPDOWN = `${namespace}/SELECT_DROPDOWN`
 export const SMS_CHECK = `${namespace}/SMS_CHECK`
 export const EMAIL_CHECK = `${namespace}/EMAIL_CHECK`
-export const SET_SELECTED_ADDRESS = `${namespace}/SET_SELECTED_ADDRESS`
+export const SET_SHIPPING_ADDRESS = `${namespace}/SET_SHIPPING_ADDRESS`
 export const SET_SELECTED_ADDRESSES = `${namespace}/SET_SELECTED_ADDRESSES`
 export const SHOW_ADDRESS_FORM = `${namespace}/SHOW_ADDRESS_FORM`
 // Billing
@@ -23,6 +23,7 @@ export const SET_STRIPE_ERROR = `${namespace}/SET_STRIPE_ERROR`
 export const SET_LOADING_BILLING = `${namespace}/SET_LOADING_BILLING`
 export const SET_STRIPE_TOKEN = `${namespace}/SET_STRIPE_TOKEN`
 export const SET_STRIPE_CARD_DATA = `${namespace}/SET_STRIPE_CARD_DATA`
+export const SET_BILLING_ADDRESS = `${namespace}/SET_BILLING_ADDRESS`
 export const SHOW_CARD_FORM = `${namespace}/SHOW_CARD_FORM`
 export const SET_SELECTED_CARD_TO_PAY = `${namespace}/SET_SELECTED_CARD_TO_PAY`
 export const SHOW_BILLING_ADDRESS_FORM = `${namespace}/SHOW_BILLING_ADDRESS_FORM`

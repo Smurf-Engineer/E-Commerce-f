@@ -9,7 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 0 36px 48px 36px;
-  height: 100vh;
+  min-height: 100vh;
 `
 export const LoadingContainer = styled.div`
   display: flex;
