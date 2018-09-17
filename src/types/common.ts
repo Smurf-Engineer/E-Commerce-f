@@ -547,6 +547,7 @@ export interface OrderDetailsInfo {
 
 export interface OrderDataInfo {
   orderDate: string
+  estimatedDate: string
   firstName: string
   lastName: string
   street: string
