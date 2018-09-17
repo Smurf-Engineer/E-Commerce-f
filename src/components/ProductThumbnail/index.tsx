@@ -53,6 +53,7 @@ interface Props {
   colors: ProductColors[]
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
+  onPressThumbnail: () => void
 }
 
 class ProductThumbnail extends React.Component<Props, {}> {
@@ -126,7 +127,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
   }
 
   handlePressThumbnail = () => {
-    const { history } = this.props
+    const { history, onPressThumbnail } = this.props
+    if (onPressThumbnail) {
+      onPressThumbnail()
+    }
     history.push(this.getUrlProduct())
   }
 

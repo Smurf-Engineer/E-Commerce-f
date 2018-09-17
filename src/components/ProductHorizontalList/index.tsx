@@ -22,6 +22,7 @@ interface Props {
   onPressSeeAll: () => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
+  onPressThumbnail: () => void
   width?: string
   categoryFilter: Filter
   currentCurrency: string
@@ -35,6 +36,7 @@ export const ProductHorizontalList = ({
   width = '60%',
   genderFilter,
   formatMessage,
+  onPressThumbnail,
   currentCurrency,
   onPressSeeAll
 }: Props) => {
@@ -82,6 +84,7 @@ export const ProductHorizontalList = ({
           id,
           onPressCustomize,
           onPressQuickView,
+          onPressThumbnail,
           type,
           description,
           priceRange,

@@ -201,6 +201,9 @@ export class DropdownList extends React.PureComponent<Props> {
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
+              onPressThumbnail={() =>
+                this.handleOnHideGenderMenu(visible, index)
+              }
               sportSelected={genderSportSelected}
               setSportAction={this.handleOnGenderSportChange}
             />
@@ -231,6 +234,9 @@ export class DropdownList extends React.PureComponent<Props> {
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
+              onPressThumbnail={() =>
+                this.handleOnHideSportsMenu(visible, index)
+              }
             />
           }
         >
