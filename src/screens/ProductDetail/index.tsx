@@ -197,8 +197,8 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const maleGender = genders.find(x => x.name === Men)
     const femaleGender = genders.find(x => x.name === Women)
     const unisexGender = genders.find(x => x.name === Unisex)
-    let genderMessage = messages.maleGenderLabel
 
+    let genderMessage = messages.maleGenderLabel
     if (unisexGender) {
       genderMessage = messages.unisexGenderLabel
     } else if (femaleGender) {
