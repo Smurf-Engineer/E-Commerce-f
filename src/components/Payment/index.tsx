@@ -30,7 +30,7 @@ interface Props {
   paymentMethod: string
   skip: number
   currentPage: number
-  indexAddressSelected: number
+  billingAddressSelected: number
   limit: number
   showBillingForm: boolean
   showBillingAddressFormAction: (show: boolean) => void
@@ -114,7 +114,7 @@ class Payment extends React.PureComponent<Props, {}> {
       skip,
       currentPage,
       setSelectedAddress,
-      indexAddressSelected,
+      billingAddressSelected,
       limit,
       setSkipValueAction,
       showBillingForm,
@@ -172,13 +172,12 @@ class Payment extends React.PureComponent<Props, {}> {
             skip,
             currentPage,
             setSelectedAddress,
-            indexAddressSelected,
             limit,
             setSkipValueAction,
             showBillingForm,
             showBillingAddressFormAction
-
           }}
+          indexAddressSelected={billingAddressSelected}
           selectDropdownAction={this.handleOnDropdownAction}
           inputChangeAction={this.handleOnChangeInput}
         />

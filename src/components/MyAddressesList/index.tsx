@@ -66,17 +66,33 @@ interface Props {
 
 export class MyAddressesList extends React.Component<Props, {}> {
   componentWillMount() {
-    const { data, listForMyAccount, showAddressFormAction } = this.props
-    const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
+    const {
+      data,
+      listForMyAccount,
+      showAddressFormAction,
+      indexAddressSelected,
+      showForm,
+      billingAddress
+    } = this.props
 
+    const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
     if (!addresses.length && !listForMyAccount) {
       showAddressFormAction(true)
     }
+
+    if (billingAddress) {
+      // this is for not select a default address for CreditCardFormBilling component
+      return
+    }
+    addresses.map(({ defaultShipping }, index) => {
+      if (!showForm && (indexAddressSelected === index || defaultShipping)) {
+        this.handleOnSelectAddress(index)
+      }
+    })
   }
 
   render() {
     const {
-      showForm,
       formatMessage,
       listForMyAccount = false,
       showAddressFormAction,
@@ -99,7 +115,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
 
     const addresses: AddressType[] = get(data, 'userAddresses.addresses', [])
     const fullCount = get(data, 'userAddresses.fullCount', 0)
-    let atLeastOneIsSelected = false
 
     const adressesList = addresses.map((address, key) => {
       const {
@@ -114,22 +129,6 @@ export class MyAddressesList extends React.Component<Props, {}> {
         defaultBilling,
         defaultShipping
       } = address
-      const isSelected =
-        !showForm &&
-        ((defaultShipping && indexAddressSelected === -1) ||
-          indexAddressSelected === key)
-      if (!showForm && isSelected) {
-        this.handleOnSelectAddress(key)
-        atLeastOneIsSelected = true
-      }
-      if (
-        key === addresses.length - 1 &&
-        !atLeastOneIsSelected &&
-        addresses &&
-        !showForm
-      ) {
-        this.handleOnSelectAddress(0)
-      }
       return (
         <MyAddress
           {...{
@@ -138,9 +137,9 @@ export class MyAddressesList extends React.Component<Props, {}> {
             showAddressFormAction,
             showConfirmDeleteAction,
             defaultBilling,
-            defaultShipping,
-            isSelected
+            defaultShipping
           }}
+          isSelected={indexAddressSelected === key}
           showAddressFormAction={this.handleOnEditAddress}
           showConfirmDeleteAction={this.handleOnShowDeleteAddressConfirm}
           selectAddressAction={this.handleOnSelectAddress}
