@@ -211,7 +211,7 @@ export class MyAddressesList extends React.Component<Props, {}> {
           ) : null}
         </Content>
         {!renderForModal &&
-          !listForMyAccount &&
+          (!listForMyAccount && !!addresses.length) &&
           !billingAddress && (
             <Title marginBottom={'20px'}>
               {formatMessage(messages.shippingTitle)}
