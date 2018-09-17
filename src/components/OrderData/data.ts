@@ -5,6 +5,7 @@ export const getOrderQuery = gql`
     orderData: getOrder(orderId: $orderId) {
       id
       orderDate: created_at
+      estimatedDate: estimated_date
       paymentMethod: payment_method
       firstName: shipping_address_first_name
       lastName: shipping_address_last_name

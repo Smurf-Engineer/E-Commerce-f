@@ -62,5 +62,9 @@ export default defineMessages({
   sendSms: {
     id: 'components.OrderData.sendSms',
     defaultMessage: 'Send alert via SMS'
+  },
+  estimatedDate: {
+    id: 'components.OrderData.estimatedDate',
+    defaultMessage: 'Delivery Date'
   }
 })

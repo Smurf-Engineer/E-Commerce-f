@@ -311,12 +311,11 @@ class CartListItemTable extends React.Component<Props, State> {
           ) : (
             <Row key={index} withColor={withColorColumn} {...{ onlyRead }}>
               <InfoCell>{gender && gender.name ? gender.name : '-'}</InfoCell>
-              {(withColorColumn && !!colorObject) ||
-                (colorImage && (
-                  <InfoCell>
-                    <ProductColor src={colorImage || colorObject.image} />
-                  </InfoCell>
-                ))}
+              {((withColorColumn && !!colorObject) || colorImage) && (
+                <InfoCell>
+                  <ProductColor src={colorImage || colorObject.image} />
+                </InfoCell>
+              )}
               <InfoCell>{size && size.name ? size.name : '-'}</InfoCell>
               <InfoCell>{fit && fit.name ? fit.name : '-'}</InfoCell>
               {/* TODO: Delete after confirm label won't be necessary in table
