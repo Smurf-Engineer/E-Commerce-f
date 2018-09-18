@@ -1,4 +1,5 @@
 import { renderToStaticMarkup } from 'react-dom/server'
+import config from '../config'
 const assets = require(process.env.RAZZLE_ASSETS_MANIFEST!)
 
 const renderHtml = (styleTags: any, html: any) => {
@@ -16,7 +17,7 @@ const renderHtml = (styleTags: any, html: any) => {
           <script>
             window.fbAsyncInit = function() {
               FB.init({
-                appId            : '1656476814419105',
+                appId            : ${config.facebookId},
                 autoLogAppEvents : true,
                 xfbml            : true,
                 version          : 'v2.12'
