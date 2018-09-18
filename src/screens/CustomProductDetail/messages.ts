@@ -13,9 +13,13 @@ export default defineMessages({
     id: 'screens.CustomProductDetail.editDesign',
     defaultMessage: 'EDIT DESIGN'
   },
-  oneGenderLabel: {
-    id: 'screens.CustomProductDetail.oneGenderLabel',
-    defaultMessage: 'Available for Men/Women'
+  femaleGenderLabel: {
+    id: 'screens.CustomProductDetail.femaleGenderLabel',
+    defaultMessage: 'Available for Women'
+  },
+  maleGenderLabel: {
+    id: 'screens.CustomProductDetail.maleGenderLabel',
+    defaultMessage: 'Available for Men'
   },
   unisexGenderLabel: {
     id: 'screens.CustomProductDetail.unisexGenderLabel',

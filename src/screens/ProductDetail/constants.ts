@@ -15,3 +15,9 @@ export const LOADING_3D_MODEL = `${namespace}/LOADING_3D_MODEL`
 export const LOADING_IMAGE = `${namespace}/LOADING_IMAGE`
 export const ADD_ITEM_TO_CART = `${namespace}/ADD_ITEM_TO_CART`
 export const RESET_DATA = `${namespace}/RESET_DATA`
+
+export enum ProductGenders {
+  Women = 'Women',
+  Men = 'Men',
+  Unisex = 'Unisex'
+}
