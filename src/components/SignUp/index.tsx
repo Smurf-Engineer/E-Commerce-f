@@ -56,7 +56,13 @@ class SignUp extends React.Component<Props, StateProps> {
     newsLetter: false
   }
   render() {
-    const { closeSignUp, requestClose, formatMessage } = this.props
+    const {
+      closeSignUp,
+      requestClose,
+      formatMessage,
+      initialCountryCode,
+      login
+    } = this.props
     const {
       name,
       lastName,
@@ -75,7 +81,8 @@ class SignUp extends React.Component<Props, StateProps> {
           <Text>{formatMessage(messages.saveAndAccessLegend)}</Text>
           <FacebookGmailLogin
             signUpView={true}
-            {...{ requestClose, formatMessage }}
+            handleLogin={login}
+            {...{ requestClose, formatMessage, initialCountryCode }}
           />
         </SocialMediaContainer>
         <DividerRow>

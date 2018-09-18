@@ -74,7 +74,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       loginWithFacebook,
       requestClose,
       handleLogin,
-      initialCountryCode
+      initialCountryCode,
+      formatMessage
     } = this.props
     const token = get(facebookResp, 'accessToken')
 
@@ -91,6 +92,13 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         requestClose()
       }
     } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+
+      const unauthorizedExp = /\balready an account\b/
+      if (unauthorizedExp.test(errorMessage)) {
+        message.error(formatMessage(messages.userExistsError))
+      }
       console.error(error)
     }
   }
