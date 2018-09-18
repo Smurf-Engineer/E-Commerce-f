@@ -184,7 +184,6 @@ export const SectionTitleContainer = styled.div`
 interface ButtonProps {
   selected: boolean
   large?: boolean
-  singleSize?: boolean
 }
 
 export const SectionButton = styled.div`
@@ -199,8 +198,7 @@ export const SectionButton = styled.div`
   margin-right: 14px;
   padding: 14px;
   justify-content: center;
-  width: ${({ large, singleSize }: ButtonProps) =>
-    large ? '139px;' : `${singleSize ? 'auto' : '55px'}`};
+  width: ${({ large }: ButtonProps) => (large ? '139' : 'auto')};
 
   &:hover {
     cursor: pointer;
