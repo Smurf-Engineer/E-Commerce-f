@@ -16,6 +16,7 @@ import Spin from 'antd/lib/spin'
 import * as productDetailActions from './actions'
 import messages from './messages'
 import { GetProductsByIdQuery } from './data'
+import { oneSize } from './constants'
 import {
   Container,
   Content,
@@ -344,6 +345,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       ({ id, name: sizeName }: SelectedType, index: number) => (
         <div key={index}>
           <SectionButton
+            oneSize={sizeName === oneSize}
             id={String(id)}
             selected={id === selectedSize.id}
             onClick={this.handleSelectedSize({ id, name: sizeName })}

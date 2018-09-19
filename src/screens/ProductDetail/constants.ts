@@ -16,6 +16,8 @@ export const LOADING_IMAGE = `${namespace}/LOADING_IMAGE`
 export const ADD_ITEM_TO_CART = `${namespace}/ADD_ITEM_TO_CART`
 export const RESET_DATA = `${namespace}/RESET_DATA`
 
+export const oneSize = 'One Size'
+
 export enum ProductGenders {
   Women = 'Women',
   Men = 'Men',
