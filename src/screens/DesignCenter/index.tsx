@@ -16,7 +16,10 @@ import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
-import { openQuickViewAction } from '../../components/MainLayout/actions'
+import {
+  openQuickViewAction,
+  openLoginAction
+} from '../../components/MainLayout/actions'
 import * as designCenterActions from './actions'
 import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
@@ -238,6 +241,7 @@ interface Props extends RouteComponentProps<any> {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
+  openLoginAction: (open: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -507,7 +511,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       onResetEditingAction,
       originalPaths,
       setSelectedItemAction,
-      selectedItem
+      selectedItem,
+      openLoginAction: openLoginModalAction
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -747,7 +752,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isUserAuthenticated,
                   isEditing,
                   originalPaths,
-                  selectedItem
+                  selectedItem,
+                  openLoginModalAction
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
@@ -938,7 +944,12 @@ const DesignCenterEnhance = compose(
   addTeamStoreItemMutation,
   connect(
     mapStateToProps,
-    { ...designCenterActions, ...designCenterApiActions, openQuickViewAction }
+    {
+      ...designCenterActions,
+      ...designCenterApiActions,
+      openQuickViewAction,
+      openLoginAction
+    }
   ),
   graphql<DataProduct>(getProductQuery, {
     options: ({ location }: OwnProps) => {
