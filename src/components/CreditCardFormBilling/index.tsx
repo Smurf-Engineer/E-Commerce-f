@@ -68,92 +68,22 @@ interface MyWindow extends Window {
 declare var window: MyWindow
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
-  state = {
-    stripe: null,
-    reloadStripe: false
-  }
+  state = { stripe: null }
 
   componentDidMount() {
-    // Reload stripe on mount, in the case when user went back to Shipping Address screen.
-    const {
-      billingCountry,
-      subsidiaryQuery
-    } = this.props
-
-    const loading = get(subsidiaryQuery, 'loading', false)
-    const subsidiary = get(subsidiaryQuery, 'subsidiary', null)
-
-    if (billingCountry) {
-      this.setState({ reloadStripe: true })
-    }
-
-    if (!loading && subsidiary && this.state.reloadStripe) {
-      this.reloadStripe(subsidiary)
-    }
-  }
-
-  componentDidUpdate(oldProps: any) {
-    const {
-      billingCountry,
-      subsidiaryQuery
-    } = this.props
-
-    const loading = get(subsidiaryQuery, 'loading', false)
-    const subsidiary = get(subsidiaryQuery, 'subsidiary', null)
-
-    if (billingCountry && (billingCountry !== oldProps.billingCountry)) {
-      this.setState({ reloadStripe: true })
-    }
-
-    if (!loading && subsidiary && this.state.reloadStripe) {
-      this.reloadStripe(subsidiary)
-    }
-  }
-
-  reloadStripe = (subsidiary: number) => {
-    // Unload stripe script and reload if country changed
-    this.setState({ reloadStripe: false })
-    const stripeNode = document.getElementById('stripe-js')
-
-    if (!!stripeNode) { this.unloadStripe(stripeNode) }
-
-    let stripeKey
-    switch (subsidiary) {
-      case 1:
-        stripeKey = config.pkStripeUS
-        break
-      case 6:
-        stripeKey = config.pkStripeCA
-        break
-      case 9:
-        stripeKey = config.pkStripeEU
-        break
-      default:
-        stripeKey = config.pkStripeUS
-        break
-    }
-
     // this code is safe to server-side render.
     const stripeJs = document.createElement('script')
     stripeJs.id = 'stripe-js'
+    stripeJs.asyn = true
     stripeJs.src = 'https://js.stripe.com/v3/'
     stripeJs.onload = () => {
       this.setState({
-        stripe: window.Stripe(stripeKey)
+        stripe: window.Stripe(config.pkStripeUS)
       })
     }
-
     // tslint:disable-next-line:no-unused-expression
     document.body && document.body.appendChild(stripeJs)
     return true
-  }
-
-  unloadStripe = (stripeNode: any) => {
-    document.body.removeChild(stripeNode)
-    this.setState({
-      stripe: null
-    })
-    window.Stripe = null
   }
 
   render() {
