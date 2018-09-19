@@ -1027,6 +1027,7 @@
   "components.designCenterCustomize.ColorButtons.color3": "Area 3",
   "components.designCenterCustomize.ColorButtons.color4": "Area 4",
   "components.designCenterCustomize.ColorButtons.color5": "Area 5",
+  "components.DesignCenterCustomize.invalidUser": "You must be logged in to save designs.",
 
   "components.CheckoutSummary.placeOrder": "Place Order",
   "components.ImageList.delete": "Delete",
@@ -1035,5 +1036,5 @@
   "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
   "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2018",
 
-  "components.DesignCenterCustomize.invalidUser": "You must be logged in to save designs."
+  "components.FaceboomGmailLogin.userExistsError": "An email for this account already exists, please log in with your email"
 }

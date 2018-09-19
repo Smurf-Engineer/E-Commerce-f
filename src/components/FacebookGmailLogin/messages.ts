@@ -20,5 +20,10 @@ export default defineMessages({
   welcomeMessage: {
     id: 'components.login.welcomeMessage',
     defaultMessage: 'Hi {name}! Welcome to Jakroo'
+  },
+  userExistsError: {
+    id: 'components.FaceboomGmailLogin.userExistsError',
+    defaultMessage:
+      'An email for this account already exists, please log in with your email'
   }
 })
