@@ -16,6 +16,7 @@ import {
 import config from '../../config'
 import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
+const unauthorizedExp = /\balready an account\b/
 
 interface Props {
   formatMessage: (messageDescriptor: any, values?: object) => string
@@ -95,7 +96,6 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
 
-      const unauthorizedExp = /\balready an account\b/
       if (unauthorizedExp.test(errorMessage)) {
         message.error(formatMessage(messages.userExistsError))
       }
@@ -108,7 +108,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       loginWithGoogle,
       requestClose,
       handleLogin,
-      initialCountryCode
+      initialCountryCode,
+      formatMessage
     } = this.props
     const token = get(resp, 'tokenId', false)
 
@@ -127,7 +128,12 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     } catch (error) {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
-      message.error(errorMessage)
+
+      if (unauthorizedExp.test(errorMessage)) {
+        message.error(formatMessage(messages.userExistsError))
+      } else {
+        message.error(errorMessage)
+      }
       console.error(error)
     }
   }
