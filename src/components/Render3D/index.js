@@ -516,7 +516,7 @@ class Render3D extends PureComponent {
           if (map && map.dispose) map.dispose()
           if (bumpMap && bumpMap.dispose) bumpMap.dispose()
           if (alphaMap && alphaMap.dispose) alphaMap.dispose()
-          material.dispose()
+          if (material.dispose) material.dispose()
         }
       })
       this.scene.remove(object)
