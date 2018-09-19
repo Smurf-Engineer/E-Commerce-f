@@ -1073,6 +1073,11 @@ class Render3D extends PureComponent {
   handleOnChange3DModel = () => {}
 
   takeDesignPicture = () => {
+    const { isUserAuthenticated, openLoginAction } = this.props
+    if (!isUserAuthenticated) {
+      openLoginAction()
+      return
+    }
     if (this.renderer) {
       const { onOpenSaveDesign, currentStyle } = this.props
       this.canvasTexture.discardActiveObject()

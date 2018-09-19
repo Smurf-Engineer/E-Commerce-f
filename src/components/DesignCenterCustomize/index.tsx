@@ -5,6 +5,7 @@ import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import Spin from 'antd/lib/spin'
+import Message from 'antd/lib/message'
 import {
   Palette,
   CanvasElement,
@@ -32,6 +33,7 @@ import {
   DesignTabs,
   CanvasElements
 } from '../../screens/DesignCenter/constants'
+import messages from './messages'
 
 const SVG_FILE = 'image/svg+xml'
 
@@ -129,6 +131,7 @@ interface Props {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
+  openLoginModalAction: (open: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -270,6 +273,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         {showRender3d && !loadingData ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
+            openLoginAction={this.handleOnOpenLogin}
             {...{
               text,
               colors,
@@ -319,7 +323,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               originalPaths,
               onResetEditing,
               onSelectedItem,
-              isMobile
+              isMobile,
+              isUserAuthenticated
             }}
           />
         ) : (
@@ -327,6 +332,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         )}
       </Container>
     )
+  }
+
+  handleOnOpenLogin = () => {
+    const { openLoginModalAction, formatMessage } = this.props
+    Message.warning(formatMessage(messages.invalidUser))
+    openLoginModalAction(true)
   }
 
   handleOnApplyText = (text: string, style: TextFormat) => {
