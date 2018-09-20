@@ -9,11 +9,11 @@ import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
 import { StripeProvider, Elements } from 'react-stripe-elements'
-// import config from '../../config'
+import config from '../../config'
 import * as MyCardsActions from './actions'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
-import CountryModal from '../../components/ConfirmCountryDialog'
+// import CountryModal from '../../components/ConfirmCountryDialog'
 import messages from './messages'
 import {
   cardsQuery,
@@ -97,10 +97,10 @@ class MyCards extends React.Component<Props, {}> {
     stripe: null
   }
   componentWillMount() {
-    const { listForMyAccount } = this.props
-    if (listForMyAccount) {
-      this.handleOpenCountryModal()
-    }
+    // const { listForMyAccount } = this.props
+    // if (listForMyAccount) {
+    //   this.handleOpenCountryModal()
+    // }
   }
   componentWillUnmount() {
     const { listForMyAccount, resetReducerDataAction } = this.props
@@ -110,17 +110,17 @@ class MyCards extends React.Component<Props, {}> {
   }
   componentDidMount() {
     const { showCardFormAction = () => { }, data } = this.props
-    // In addition to loading asynchronously, this code is safe to server-side render.
-    // const stripeJs = document.createElement('script')
-    // stripeJs.src = 'https://js.stripe.com/v3/'
-    // stripeJs.async = true
-    // stripeJs.onload = () => {
-    //   this.setState({
-    //     stripe: window.Stripe(config.pkStripe)
-    //   })
-    // }
-    // // tslint:disable-next-line:no-unused-expression
-    // document.body && document.body.appendChild(stripeJs)
+    // In addition to loading asynchronously, this code is safe to server - side render.
+    const stripeJs = document.createElement('script')
+    stripeJs.src = 'https://js.stripe.com/v3/'
+    stripeJs.async = true
+    stripeJs.onload = () => {
+      this.setState({
+        stripe: window.Stripe(config.pkStripeUS)
+      })
+    }
+    // tslint:disable-next-line:no-unused-expression
+    document.body && document.body.appendChild(stripeJs)
 
     if (data && data.userCards) {
       const {
@@ -164,43 +164,43 @@ class MyCards extends React.Component<Props, {}> {
 
     const { stripe } = this.state
 
-    const countryModal = (
-      <CountryModal
-        {...{ formatMessage }}
-        open={openCountryModal}
-        requestClose={this.handleCancelCountryModal}
-        onSave={this.handleConfirmSaveCountryModal}
-      />
-    )
+    // const countryModal = (
+    //   <CountryModal
+    //     {...{ formatMessage }}
+    //     open={openCountryModal}
+    //     requestClose={this.handleCancelCountryModal}
+    //     onSave={this.handleConfirmSaveCountryModal}
+    //   />
+    // )
 
-    const countryCode = billingCountry || country
+    // const countryCode = billingCountry || country
 
-    if (loading || (!countryCode && openCountryModal)) {
+    if (loading) {
       return (
         <Container>
           <LoadingContainer>
             <Spin />
           </LoadingContainer>
-          {countryModal}
+          {/* {countryModal} */}
         </Container>
       )
     }
 
-    if (!countryCode && !openCountryModal) {
-      return (
-        <Container>
-          <SelectCountryMessage>
-            {formatMessage(messages.selectCountryMessage)}
-          </SelectCountryMessage>
-          <ButtonWrapper {...{ listForMyAccount }}>
-            <StyledEmptyButton onClick={this.handleOpenCountryModal}>
-              {formatMessage(messages.selectCountry)}
-            </StyledEmptyButton>
-          </ButtonWrapper>
-          {countryModal}
-        </Container>
-      )
-    }
+    // if (!countryCode && !openCountryModal) {
+    //   return (
+    //     <Container>
+    //       <SelectCountryMessage>
+    //         {formatMessage(messages.selectCountryMessage)}
+    //       </SelectCountryMessage>
+    //       <ButtonWrapper {...{ listForMyAccount }}>
+    //         <StyledEmptyButton onClick={this.handleOpenCountryModal}>
+    //           {formatMessage(messages.selectCountry)}
+    //         </StyledEmptyButton>
+    //       </ButtonWrapper>
+    //       {countryModal}
+    //     </Container>
+    //   )
+    // }
 
     const userCards = get(data, 'userCards', {})
     const cards = get(userCards, 'cards', [] as CreditCardData[])
@@ -277,20 +277,20 @@ class MyCards extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleOpenCountryModal = () => {
-    const { openCountryModalAction } = this.props
-    openCountryModalAction(true)
-  }
-  handleCancelCountryModal = () => {
-    const { openCountryModalAction } = this.props
-    openCountryModalAction(false)
-  }
+  // handleOpenCountryModal = () => {
+  //   const { openCountryModalAction } = this.props
+  //   openCountryModalAction(true)
+  // }
+  // handleCancelCountryModal = () => {
+  //   const { openCountryModalAction } = this.props
+  //   openCountryModalAction(false)
+  // }
 
-  handleConfirmSaveCountryModal = (countryCode: string | null) => {
-    const { openCountryModalAction, saveCountryAction } = this.props
-    openCountryModalAction(false)
-    saveCountryAction(countryCode)
-  }
+  // handleConfirmSaveCountryModal = (countryCode: string | null) => {
+  //   const { openCountryModalAction, saveCountryAction } = this.props
+  //   openCountryModalAction(false)
+  //   saveCountryAction(countryCode)
+  // }
   handleOnAddNewCard = () => {
     const {
       listForMyAccount,
@@ -398,8 +398,8 @@ const MyCardsEnhance = compose(
   graphql(cardsQuery, {
     options: ({ billingCountry }: OwnProps) => ({
       fetchPolicy: 'network-only',
-      variables: { countryCode: billingCountry },
-      skip: !billingCountry
+      // variables: { countryCode: billingCountry },
+      // skip: !billingCountry
     })
   }),
   addCardMutation,

@@ -50,48 +50,52 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
     } = this.props
 
     return (
-      <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
-        <Row>
-          <Column>
-            <InputTitleContainer>
-              <Label>{formatMessage(messages.cardNumber)}</Label>
-              <RequiredSpan>*</RequiredSpan>
-            </InputTitleContainer>
-            <ContainerInput>
-              <CardElement
-                hidePostalCode={true}
-                style={StripeCardElement}
+      <div>
+        <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
+          <Row>
+            <Column>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.cardNumber)}</Label>
+                <RequiredSpan>*</RequiredSpan>
+              </InputTitleContainer>
+              <ContainerInput>
+                <CardElement
+                  hidePostalCode={true}
+                  style={StripeCardElement}
+                />
+              </ContainerInput>
+              {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
+            </Column>
+          </Row>
+          <Row>
+            <Column>
+              <InputTitleContainer>
+                <Label>{formatMessage(messages.cardholderName)}</Label>
+                <RequiredSpan>*</RequiredSpan>
+              </InputTitleContainer>
+              <StyledInput
+                id={'cardHolderName'}
+                value={cardHolderName}
+                onChange={this.handleInputChange}
               />
-            </ContainerInput>
-            {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
-          </Column>
-        </Row>
-        <Row>
-          <Column>
-            <InputTitleContainer>
-              <Label>{formatMessage(messages.cardholderName)}</Label>
-              <RequiredSpan>*</RequiredSpan>
-            </InputTitleContainer>
-            <StyledInput
-              id={'cardHolderName'}
-              value={cardHolderName}
-              onChange={this.handleInputChange}
-            />
-            {!cardHolderName &&
-              hasError && (
-                <ErrorMsg>
-                  {formatMessage(messages.requiredField)}
-                </ErrorMsg>
-              )}
-          </Column>
-        </Row>
+              {!cardHolderName &&
+                hasError && (
+                  <ErrorMsg>
+                    {formatMessage(messages.requiredField)}
+                  </ErrorMsg>
+                )}
+            </Column>
+          </Row>
+
+        </AnimateHeight>
         <ContinueButton
           onClick={this.handleOnContinue}
           loading={loadingBilling}
         >
           {formatMessage(messages.continue)}
         </ContinueButton>
-      </AnimateHeight>
+      </div>
+
     )
   }
 

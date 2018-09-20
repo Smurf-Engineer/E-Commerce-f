@@ -27,10 +27,10 @@ export const options = [
     title: ADDRESSES,
     options: []
   },
-  // {
-  //   title: CREDIT_CARDS,
-  //   options: []
-  // },
+  {
+    title: CREDIT_CARDS,
+    options: []
+  },
   {
     title: PROFILE_SETTINGS,
     options: []

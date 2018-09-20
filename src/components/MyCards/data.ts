@@ -5,8 +5,8 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const cardsQuery = gql`
-  query getusercards($countryCode: String!) {
-    userCards: getUserCards(countryCode: $countryCode) {
+  query getusercards {
+    userCards: getUserCards {
       default
       cards {
         id
