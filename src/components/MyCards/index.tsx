@@ -14,6 +14,9 @@ import * as MyCardsActions from './actions'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
 import messages from './messages'
+import config from '../../config'
+import withError from '../../components/WithError'
+import withLoading from '../../components/WithLoading'
 import {
   cardsQuery,
   addCardMutation,
@@ -79,6 +82,12 @@ interface Props {
   deleteCard: (variables: {}) => void
 }
 
+interface MyWindow extends Window {
+  Stripe: any
+}
+
+declare var window: MyWindow
+
 class MyCards extends React.Component<Props, {}> {
   state = {
     stripe: null
@@ -92,17 +101,22 @@ class MyCards extends React.Component<Props, {}> {
   }
   componentDidMount() {
     const { showCardFormAction = () => { }, data } = this.props
-    // In addition to loading asynchronously, this code is safe to server - side render.
-    const stripeJs = document.createElement('script')
-    stripeJs.src = 'https://js.stripe.com/v3/'
-    stripeJs.async = true
-    stripeJs.onload = () => {
-      this.setState({
-        stripe: window.Stripe(config.pkStripeUS)
-      })
+    if (window.Stripe) {
+      this.setState({ stripe: window.Stripe(config.pkStripeUS) })
+    } else {
+      // this code is safe to server-side render.
+      const stripeJs = document.createElement('script')
+      stripeJs.id = 'stripe-js'
+      stripeJs.async = true
+      stripeJs.src = 'https://js.stripe.com/v3/'
+      stripeJs.onload = () => {
+        this.setState({
+          stripe: window.Stripe(config.pkStripeUS)
+        })
+      }
+      // tslint:disable-next-line:no-unused-expression
+      document.body && document.body.appendChild(stripeJs)
     }
-    // tslint:disable-next-line:no-unused-expression
-    document.body && document.body.appendChild(stripeJs)
 
     if (data && data.userCards) {
       const {
@@ -324,18 +338,12 @@ class MyCards extends React.Component<Props, {}> {
   }
 }
 
-interface OwnProps {
-  billingCountry?: string
-}
-
 const mapStateToProps = (state: any) => state.get('cards').toJS()
 
 const MyCardsEnhance = compose(
-  graphql(cardsQuery, {
-    options: ({ billingCountry }: OwnProps) => ({
-      fetchPolicy: 'network-only',
-    })
-  }),
+  graphql(cardsQuery),
+  withLoading,
+  withError,
   addCardMutation,
   updateCardMutation,
   deleteCardMutation,

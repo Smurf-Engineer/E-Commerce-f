@@ -2,32 +2,39 @@
  * CreditCardFormBilling Component - Created by miguelcanobbio on 16/05/18.
  */
 import * as React from 'react'
-import { StripeProvider, Elements } from 'react-stripe-elements'
+import { injectStripe, CardElement } from 'react-stripe-elements'
 import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import messages from './messages'
 import { PHONE_FIELD } from '../../constants'
-import config from '../../config'
 import {
   Container,
   ContainerBilling,
+  ContainerInput,
   ContinueButton,
   Title,
   StyledCheckbox,
-  MyCardsRow
+  StyledInput,
+  MyCardsRow,
+  Row,
+  Column,
+  RequiredSpan,
+  InputTitleContainer,
+  Label,
+  ErrorMsg,
+  StripeCardElement
 } from './styledComponents'
 import ShippingAddressForm from '../ShippingAddressForm'
 import MyAddresses from '../MyAddressesList'
 import MyAddress from '../MyAddress'
 import MyCards from '../MyCards'
-import CreditCardForm from '../CreditCardForm'
 import { AddressType, CreditCardData, StripeCardData } from '../../types/common'
 
 interface Props {
+  stripe: any
   cardHolderName: string
   billingAddress: AddressType
-  billingCountry: string
   hasError: boolean
   stripeError: string
   loadingBilling: boolean
@@ -59,30 +66,8 @@ interface Props {
   ) => void
   nextStep: () => void
 }
-interface MyWindow extends Window {
-  Stripe: any
-}
-
-declare var window: MyWindow
 
 class CreditCardFormBilling extends React.Component<Props, {}> {
-  state = { stripe: null }
-
-  componentDidMount() {
-    // this code is safe to server-side render.
-    const stripeJs = document.createElement('script')
-    stripeJs.id = 'stripe-js'
-    stripeJs.asyn = true
-    stripeJs.src = 'https://js.stripe.com/v3/'
-    stripeJs.onload = () => {
-      this.setState({
-        stripe: window.Stripe(config.pkStripeUS)
-      })
-    }
-    // tslint:disable-next-line:no-unused-expression
-    document.body && document.body.appendChild(stripeJs)
-    return true
-  }
 
   render() {
     const {
@@ -114,12 +99,7 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       currentPage,
       indexAddressSelected,
       showBillingForm,
-      showBillingAddressFormAction,
-      invalidBillingFormAction,
-      setStripeCardDataAction,
-      nextStep,
-      setStripeErrorAction,
-      setLoadingBillingAction
+      showBillingAddressFormAction
     } = this.props
 
     const renderAddresses = (
@@ -148,8 +128,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       )
     }
 
-    const { stripe } = this.state
-
     return (
       <Container>
         <div>
@@ -166,38 +144,44 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
               }}
             />
           </MyCardsRow>
-          <StripeProvider {...{ stripe }}>
-            <Elements>
-              <CreditCardForm
-                {...{
-                  stripe,
-                  stripeError,
-                  cardHolderName,
-                  firstName,
-                  lastName,
-                  street,
-                  apartment,
-                  country,
-                  stateProvince,
-                  city,
-                  zipCode,
-                  phone,
-                  sameBillingAndShipping,
-                  hasError,
-                  showCardForm,
-                  inputChangeAction,
-                  formatMessage,
-                  loadingBilling,
-                  invalidBillingFormAction,
-                  setStripeErrorAction,
-                  setLoadingBillingAction,
-                  setStripeCardDataAction,
-                  nextStep,
-                  selectedCard
-                }}
-              />
-            </Elements>
-          </StripeProvider>
+          <AnimateHeight height={!showCardForm ? 0 : 'auto'} duration={500}>
+            <Row>
+              <Column>
+                <InputTitleContainer>
+                  <Label>{formatMessage(messages.cardNumber)}</Label>
+                  <RequiredSpan>*</RequiredSpan>
+                </InputTitleContainer>
+                <ContainerInput>
+                  <CardElement
+                    hidePostalCode={true}
+                    style={StripeCardElement}
+                  />
+                </ContainerInput>
+                {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
+              </Column>
+            </Row>
+            <Row>
+              <Column>
+                <InputTitleContainer>
+                  <Label>{formatMessage(messages.cardholderName)}</Label>
+                  <RequiredSpan>*</RequiredSpan>
+                </InputTitleContainer>
+                <StyledInput
+                  id={'cardHolderName'}
+                  value={cardHolderName}
+                  onChange={this.handleInputChange}
+                />
+                {!cardHolderName &&
+                  hasError && (
+                    <ErrorMsg>
+                      {formatMessage(messages.requiredField)}
+                    </ErrorMsg>
+                  )}
+              </Column>
+            </Row>
+
+          </AnimateHeight>
+
         </div>
         <ContainerBilling>
           <Title>{formatMessage(messages.billingAddress)}</Title>
@@ -251,15 +235,17 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   handleOnContinue = async (ev: any) => {
     const {
       cardHolderName,
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
+      billingAddress: {
+        firstName,
+        lastName,
+        street,
+        apartment,
+        country,
+        stateProvince,
+        city,
+        zipCode,
+        phone
+      },
       sameBillingAndShipping,
       invalidBillingFormAction,
       setStripeErrorAction,
@@ -269,7 +255,6 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
       selectedCard,
       stripe
     } = this.props
-
     const selectedCardId = get(selectedCard, 'id', '')
 
     const emptyForm =
@@ -366,4 +351,4 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   }
 }
 
-export default CreditCardFormBilling
+export default injectStripe(CreditCardFormBilling)
