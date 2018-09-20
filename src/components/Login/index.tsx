@@ -48,7 +48,7 @@ interface StateProps {
 
 export class Login extends React.Component<Props, StateProps> {
   state = {
-    isLoginIn: true,
+    isLoginIn: false,
     email: '',
     password: '',
     validEmail: false,

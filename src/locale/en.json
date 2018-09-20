@@ -1,7 +1,7 @@
 {
   "screens.NotFoundPage.header": "Page not found.",
   "components.withError.error": "Something went wrong",
-  "components.menuBar.login": "LOGIN",
+  "components.menuBar.login": "SIGN UP",
   "components.menuBar.men": "MEN",
   "components.menuBar.women": "WOMEN",
   "components.menuBar.cycling": "CYCLING",

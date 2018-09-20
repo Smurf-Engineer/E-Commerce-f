@@ -19,6 +19,8 @@ pipelines:
   branches:
     development:
       - step:
+          name: Deploy to Kubernetes
+          deployment: staging
           script:
             # install yarn and yarn build
             # - curl -o- -L https://yarnpkg.com/install.sh | bash
@@ -49,6 +51,8 @@ pipelines:
             - kubectl set image deployment $APP $APP=us.gcr.io/$GCLOUD_PROJECT/$APP/development:$BITBUCKET_COMMIT --record --namespace=development
     master:
       - step:
+          name: Deploy to Kubernetes
+          deployment: production
           script:
             # install yarn and yarn build
             # - curl -o- -L https://yarnpkg.com/install.sh | bash
