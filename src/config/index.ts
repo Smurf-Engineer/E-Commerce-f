@@ -9,10 +9,7 @@ interface ConfigType {
   graphqlUriBase?: string
   baseUrl?: string
   storageUrl?: string
-  pkStripe?: string
   pkStripeUS?: string
-  pkStripeCA?: string
-  pkStripeEU?: string
   paypalClientId?: string
   paypalClientIdTest?: string
   paypalClientIdUS?: string
@@ -30,10 +27,7 @@ const config: ConfigType = {
   graphqlUriBase: process.env.GRAPHQL_URI_BASE,
   baseUrl: process.env.BASE_URL,
   storageUrl: process.env.STORAGE_URL,
-  pkStripe: process.env.PK_STRIPE,
   pkStripeUS: process.env.PK_STRIPE_US,
-  pkStripeCA: process.env.PK_STRIPE_CA,
-  pkStripeEU: process.env.PK_STRIPE_EU,
   paypalClientId: process.env.PAYPAL_CLIENT_ID,
   paypalClientIdUS: process.env.PAYPAL_CLIENT_ID_US,
   paypalClientIdCA: process.env.PAYPAL_CLIENT_ID_CA,

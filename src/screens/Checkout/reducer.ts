@@ -16,8 +16,7 @@ import {
   SHOW_BILLING_ADDRESS_FORM,
   SAME_BILLING_AND_SHIPPING_CHECKED,
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
-  SET_SHIPPING_ADDRESS,
-  SET_BILLING_ADDRESS,
+  SET_SELECTED_ADDRESS,
   SET_STRIPE_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
@@ -63,7 +62,6 @@ export const initialState = fromJS({
   currentPage: 1,
   limit: ADDRESSES_TO_SHOW,
   // Billing
-  billingAddressSelected: -1,
   billingFirstName: '',
   billingLastName: '',
   billingStreet: '',
@@ -117,44 +115,38 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('smsCheck', action.checked)
     case EMAIL_CHECK:
       return state.set('emailCheck', action.checked)
-    case SET_SHIPPING_ADDRESS: {
-      const { address, index } = action
-      return state.merge({
-        ...address,
-        indexAddressSelected: index,
-        showForm: false
-      })
-    }
-    case SET_BILLING_ADDRESS: {
-      const { address, index } = action
-      const {
-        firstName,
-        lastName,
-        street,
-        apartment,
-        country,
-        city,
-        zipCode,
-        phone,
-        stateProvince
-      } = address
+    case SET_SELECTED_ADDRESS: {
+      const { address, index, billing } = action
+      let selected = { ...address }
+      if (billing) {
+        const {
+          firstName,
+          lastName,
+          street,
+          apartment,
+          country,
+          city,
+          zipCode,
+          phone,
+          stateProvince
+        } = address
 
-      const selected = {
-        billingFirstName: firstName,
-        billingLastName: lastName,
-        billingStreet: street,
-        billingApartment: apartment,
-        billingCountry: country,
-        billingStateProvince: stateProvince,
-        billingCity: city,
-        billingZipCode: zipCode,
-        billingPhone: phone
+        selected = {
+          billingFirstName: firstName,
+          billingLastName: lastName,
+          billingStreet: street,
+          billingApartment: apartment,
+          billingCountry: country,
+          billingStateProvince: stateProvince,
+          billingCity: city,
+          billingZipCode: zipCode,
+          billingPhone: phone
+        }
       }
-
       return state.merge({
         ...selected,
-        billingAddressSelected: index,
-        showBillingForm: false
+        indexAddressSelected: index,
+        showForm: false
       })
     }
     case SET_SELECTED_ADDRESSES: {
@@ -223,8 +215,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
         billingStateProvince: stateProvince,
         billingCity: city,
         billingZipCode: zipCode,
-        billingPhone: phone,
-        billingAddressSelected: -1
+        billingPhone: phone
       })
     }
     case SHOW_ADDRESS_FORM: {
@@ -260,7 +251,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
           billingZipCode: '',
           billingPhone: '',
           hasError: false,
-          billingAddressSelected: -1
+          indexAddressSelected: -1
         })
       }
       return state.set('showBillingForm', false)

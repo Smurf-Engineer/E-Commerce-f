@@ -2,14 +2,12 @@
  * CreditCardFormBilling Component - Created by miguelcanobbio on 16/05/18.
  */
 import * as React from 'react'
-import { graphql, compose } from 'react-apollo'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 import AnimateHeight from 'react-animate-height'
 import get from 'lodash/get'
 import { isNumberValue } from '../../utils/utilsAddressValidation'
 import messages from './messages'
 import { PHONE_FIELD } from '../../constants'
-import { getSubsidiaryQuery } from './data'
 import config from '../../config'
 import {
   Container,
@@ -41,7 +39,6 @@ interface Props {
   indexAddressSelected: number
   limit: number
   showBillingForm: boolean
-  subsidiaryQuery?: number
   showBillingAddressFormAction: (show: boolean) => void
   setSkipValueAction: (skip: number, currentPage: number) => void
   setStripeCardDataAction: (card: CreditCardData, stripeToken: string) => void
@@ -369,19 +366,4 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
   }
 }
 
-interface OwnProps {
-  billingCountry?: string
-}
-
-const CreditCardFormBillingEnhanced = compose(
-  graphql(getSubsidiaryQuery, {
-    name: 'subsidiaryQuery',
-    options: ({ billingCountry }: OwnProps) => ({
-      skip: !billingCountry,
-      variables: { code: billingCountry },
-      fetchPolicy: 'network-only'
-    })
-  })
-)(CreditCardFormBilling)
-
-export default CreditCardFormBillingEnhanced
+export default CreditCardFormBilling
