@@ -490,18 +490,19 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     />
                   )}
                 </Spin>
-                {template && (
-                  <Desktop>
-                    <DownloadTemplateContainer>
-                      <DownloadAnchor href={template}>
-                        <DownloadImg src={DownloadIcon} />
-                        <Downloadtemplate>
-                          {formatMessage(messages.downloadLabel)}
-                        </Downloadtemplate>
-                      </DownloadAnchor>
-                    </DownloadTemplateContainer>
-                  </Desktop>
-                )}
+                {!isRetail &&
+                  template && (
+                    <Desktop>
+                      <DownloadTemplateContainer>
+                        <DownloadAnchor href={template}>
+                          <DownloadImg src={DownloadIcon} />
+                          <Downloadtemplate>
+                            {formatMessage(messages.downloadLabel)}
+                          </Downloadtemplate>
+                        </DownloadAnchor>
+                      </DownloadTemplateContainer>
+                    </Desktop>
+                  )}
               </ImagePreview>
               <ProductData>
                 <TitleRow>
