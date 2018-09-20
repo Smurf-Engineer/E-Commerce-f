@@ -187,7 +187,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const colors = get(cartItem, 'product.colors', [])
     const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
-    const withColorColumn = (isRetailProduct && colors.length) || colorImg
+    const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
 
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
