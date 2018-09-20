@@ -186,8 +186,8 @@ class CartListItemTable extends React.Component<Props, State> {
     const isRetailProduct = !cartItem.designId
 
     const colors = get(cartItem, 'product.colors', [])
-    const colorImage = get(cartItem, 'itemDetails[0].colorImage', '')
-    const withColorColumn = (isRetailProduct && colors.length) || colorImage
+    const colorImg = get(cartItem, 'itemDetails[0].colorImage', '')
+    const withColorColumn = (isRetailProduct && !!colors.length) || !!colorImg
 
     const header = headers.map(({ width, message }, index) => {
       // tslint:disable-next-line:curly
@@ -235,7 +235,7 @@ class CartListItemTable extends React.Component<Props, State> {
 
     const renderList = cartItem
       ? cartItem.itemDetails.map((item, index) => {
-          const { gender, size, fit, quantity, color } = item
+          const { gender, size, fit, quantity, color, colorImage } = item
           const colorName = color && color.name
           const colorObject = find(colors, { name: colorName })
           return !onlyRead ? (
