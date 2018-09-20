@@ -3,7 +3,9 @@
  */
 import styled from 'styled-components'
 import Checkbox from 'antd/lib/checkbox'
-import { GRAY_DARK, BLUE } from '../../theme/colors'
+import Input from 'antd/lib/input'
+import Button from 'antd/lib/button'
+import { GRAY, RED, GRAY_DARK, BLUE, WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
   width: 100%;
@@ -43,4 +45,21 @@ export const Title = styled.div`
 
 export const MyCardsRow = styled.div`
   margin-bottom: 20px;
+`
+export const ContinueButton = styled(Button)`
+  background-color: ${BLUE};
+  border-radius: 2px;
+  color: ${WHITE};
+  height: 40px;
+  width: 138.23px;
+
+  &:hover {
+    background-color: ${BLUE};
+    border-color: ${BLUE};
+    color: ${WHITE};
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `

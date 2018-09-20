@@ -88,12 +88,12 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
           </Row>
 
         </AnimateHeight>
-        <ContinueButton
+        {/* <ContinueButton
           onClick={this.handleOnContinue}
           loading={loadingBilling}
         >
           {formatMessage(messages.continue)}
-        </ContinueButton>
+        </ContinueButton> */}
       </div>
 
     )
@@ -107,84 +107,84 @@ class CreditCardFormBilling extends React.Component<Props, {}> {
 
     inputChangeAction(id, value)
   }
-  handleOnContinue = async (ev: any) => {
-    const {
-      cardHolderName,
-      firstName,
-      lastName,
-      street,
-      apartment,
-      country,
-      stateProvince,
-      city,
-      zipCode,
-      phone,
-      sameBillingAndShipping,
-      invalidBillingFormAction,
-      setStripeErrorAction,
-      setLoadingBillingAction,
-      setStripeCardDataAction,
-      nextStep,
-      selectedCard,
-      stripe
-    } = this.props
+  // handleOnContinue = async (ev: any) => {
+  //   const {
+  //     cardHolderName,
+  //     firstName,
+  //     lastName,
+  //     street,
+  //     apartment,
+  //     country,
+  //     stateProvince,
+  //     city,
+  //     zipCode,
+  //     phone,
+  //     sameBillingAndShipping,
+  //     invalidBillingFormAction,
+  //     setStripeErrorAction,
+  //     setLoadingBillingAction,
+  //     setStripeCardDataAction,
+  //     nextStep,
+  //     selectedCard,
+  //     stripe
+  //   } = this.props
 
-    const selectedCardId = get(selectedCard, 'id', '')
+  //   const selectedCardId = get(selectedCard, 'id', '')
 
-    const emptyForm =
-      !sameBillingAndShipping &&
-      (!firstName ||
-        !lastName ||
-        !street ||
-        !country ||
-        !stateProvince ||
-        !city ||
-        !zipCode ||
-        !phone)
+  //   const emptyForm =
+  //     !sameBillingAndShipping &&
+  //     (!firstName ||
+  //       !lastName ||
+  //       !street ||
+  //       !country ||
+  //       !stateProvince ||
+  //       !city ||
+  //       !zipCode ||
+  //       !phone)
 
-    if ((!cardHolderName && !selectedCardId) || emptyForm) {
-      invalidBillingFormAction(true)
-      return
-    }
-    const stripeTokenData = {
-      name: cardHolderName,
-      address_line1: `${street}`,
-      address_line2: `${apartment}`,
-      address_city: `${city}`,
-      address_state: `${stateProvince}`,
-      address_zip: `${zipCode}`,
-      address_country: `${country}`
-    }
-    setLoadingBillingAction(true)
+  //   if ((!cardHolderName && !selectedCardId) || emptyForm) {
+  //     invalidBillingFormAction(true)
+  //     return
+  //   }
+  //   const stripeTokenData = {
+  //     name: cardHolderName,
+  //     address_line1: `${street}`,
+  //     address_line2: `${apartment}`,
+  //     address_city: `${city}`,
+  //     address_state: `${stateProvince}`,
+  //     address_zip: `${zipCode}`,
+  //     address_country: `${country}`
+  //   }
+  //   setLoadingBillingAction(true)
 
-    const stripeResponse = !selectedCardId
-      ? await stripe.createToken(stripeTokenData)
-      : {}
-    if (stripeResponse && stripeResponse.error) {
-      setStripeErrorAction(stripeResponse.error.message)
-    } else if (!emptyForm) {
-      if (!selectedCardId) {
-        const {
-          token: {
-            id: tokenId,
-            card: { id, name, brand, last4, exp_month, exp_year }
-          }
-        } = stripeResponse
+  //   const stripeResponse = !selectedCardId
+  //     ? await stripe.createToken(stripeTokenData)
+  //     : {}
+  //   if (stripeResponse && stripeResponse.error) {
+  //     setStripeErrorAction(stripeResponse.error.message)
+  //   } else if (!emptyForm) {
+  //     if (!selectedCardId) {
+  //       const {
+  //         token: {
+  //           id: tokenId,
+  //           card: { id, name, brand, last4, exp_month, exp_year }
+  //         }
+  //       } = stripeResponse
 
-        const cardData: CreditCardData = {
-          id,
-          name,
-          last4,
-          expMonth: exp_month,
-          expYear: exp_year,
-          brand
-        }
+  //       const cardData: CreditCardData = {
+  //         id,
+  //         name,
+  //         last4,
+  //         expMonth: exp_month,
+  //         expYear: exp_year,
+  //         brand
+  //       }
 
-        setStripeCardDataAction(cardData, tokenId)
-      }
-      nextStep()
-    }
-  }
+  //       setStripeCardDataAction(cardData, tokenId)
+  //     }
+  //     nextStep()
+  //   }
+  // }
 }
 
 export default injectStripe(CreditCardFormBilling)
