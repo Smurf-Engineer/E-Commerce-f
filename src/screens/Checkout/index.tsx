@@ -588,7 +588,7 @@ class Checkout extends React.Component<Props, {}> {
 
   onPaypalCancel = (data: AnalyserNode) => {
     // User pressed "cancel" or close Paypal's popup!
-    console.error('The payment was cancelled!', data)
+    console.error('The payment was cancelled!')
   }
 
   onPaypalError = (err: any) => {
