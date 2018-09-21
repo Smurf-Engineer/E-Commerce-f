@@ -266,7 +266,8 @@ class Render3D extends PureComponent {
 
   componentWillUnmount() {
     const { onUnmountTab } = this.props
-    const canvasJson = JSON.stringify(this.canvasTexture)
+    const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+    const canvasJson = JSON.stringify(designCanvas)
     onUnmountTab(canvasJson)
     if (this.renderer) {
       this.stop()
@@ -1088,9 +1089,8 @@ class Render3D extends PureComponent {
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
-          const canvasJson = JSON.stringify(
-            this.canvasTexture.toObject(EXTRA_FIELDS)
-          )
+          const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+          const canvasJson = JSON.stringify(designCanvas)
           const saveDesign = {
             canvasJson,
             designBase64,
