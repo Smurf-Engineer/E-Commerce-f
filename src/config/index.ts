@@ -8,41 +8,40 @@ interface ConfigType {
   facebookId?: string
   graphqlUriBase?: string
   baseUrl?: string
-  storageUrl: string
-  pkStripe: string
-  pkStripeUS: string
-  pkStripeCA: string
-  pkStripeEU: string
-  paypalClientIdTest: string
-  paypalClientIdUS: string
-  paypalClientIdCA: string
-  paypalClientIdEU: string
-  paypalEnv: string
-  googleMapKey: string
-  intercomKey: string
-  defaultCurrency: string
+  storageUrl?: string
+  pkStripe?: string
+  pkStripeUS?: string
+  pkStripeCA?: string
+  pkStripeEU?: string
+  paypalClientId?: string
+  paypalClientIdTest?: string
+  paypalClientIdUS?: string
+  paypalClientIdCA?: string
+  paypalClientIdEU?: string
+  paypalEnv?: string
+  googleMapKey?: string
+  intercomKey?: string
+  defaultCurrency?: string
 }
 
 const config: ConfigType = {
-  graphQlUrl: process.env.RAZZLE_GRAPHQL_URL,
-  googleId: process.env.RAZZLE_GOOGLE_ID,
-  facebookId: process.env.RAZZLE_FACEBOOK_ID,
-  graphqlUriBase: 'https://api.jakroo.tailrecursive.co/api/',
-  baseUrl: 'https://dev.jakroo.tailrecursive.co/',
-  storageUrl: 'https://storage.googleapis.com/jakroo-storage',
-  pkStripe: 'pk_test_USJaHD7YvJFcFsgwOixnJDrq',
-  pkStripeUS: 'pk_test_fk4Pkn82s8efHXd1CdwMHIUe',
-  pkStripeCA: 'pk_test_sju2REbLoHMBDZUJUmCbVKEf',
-  pkStripeEU: 'pk_test_GkbzZt7CzM9M1Wg41oiV8MK9',
-  paypalClientIdTest:
-    'AWuWtjrHnZd_nLLXI-x40UtoX7cNxqYNjh9CrfDeNO6y4Ik2xADqapxfzXzHCPeIgrFSP-45-2gYkiO-',
-  paypalClientIdUS: 'Aa9BWTWoWoIL1tI6hkGrUeJmKUoof8CGQjaecnqo2n_Z1YRqdnC9TrvtYkf6VK_t4xdXij5E6HtT1Lag',
-  paypalClientIdCA: 'AdoDpaHlv6vrTUfWZxMxEIB_y5PJw104AkKbzQIyIdTLRe7L3HLXcFH3vsjeQhLv_SAySkWnPz2W2SH4',
-  paypalClientIdEU: 'AR6qFXX2_qyAwPBtD3FPFTW-o-6PT2cOV3V1Ra9jz604UkFOLayWEqusqR0HdnVtxXp0tnN9ruQCtKMQ',
-  paypalEnv: 'sandbox',
-  googleMapKey: 'AIzaSyAhSNGqAuj6AL4mJ0oNogYDK1UJcc_ws5U',
-  intercomKey: 'nmbw72i7',
-  defaultCurrency: 'usd'
+  googleId: process.env.GOOGLE_ID,
+  facebookId: process.env.FACEBOOK_ID,
+  graphqlUriBase: process.env.GRAPHQL_URI_BASE,
+  baseUrl: process.env.BASE_URL,
+  storageUrl: process.env.STORAGE_URL,
+  pkStripe: process.env.PK_STRIPE,
+  pkStripeUS: process.env.PK_STRIPE_US,
+  pkStripeCA: process.env.PK_STRIPE_CA,
+  pkStripeEU: process.env.PK_STRIPE_EU,
+  paypalClientId: process.env.PAYPAL_CLIENT_ID,
+  paypalClientIdUS: process.env.PAYPAL_CLIENT_ID_US,
+  paypalClientIdCA: process.env.PAYPAL_CLIENT_ID_CA,
+  paypalClientIdEU: process.env.PAYPAL_CLIENT_ID_EU,
+  paypalEnv: process.env.PAYPAL_ENV,
+  googleMapKey: process.env.GOOGLE_MAP_KEY,
+  intercomKey: process.env.INTERCOM_KEY,
+  defaultCurrency: process.env.DEFAULT_CURRENCY
 }
 
 export default config

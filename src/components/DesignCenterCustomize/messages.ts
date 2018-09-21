@@ -5,8 +5,8 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.DesignCenterCustomize.tittle',
-    defaultMessage: 'DesignCenterCustomize'
+  invalidUser: {
+    id: 'components.DesignCenterCustomize.invalidUser',
+    defaultMessage: 'You must be logged in to save designs.'
   }
 })

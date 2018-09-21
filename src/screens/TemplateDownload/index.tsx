@@ -60,13 +60,15 @@ export class TemplateDownload extends React.Component<Props, {}> {
       )
     }
     const templatesList = templates.map(
-      ({ pictures, name, description, fileUrl }, i) => (
-        <TemplateDownloadItem
-          key={i}
-          imageSource={pictures[0].imageSource}
-          {...{ formatMessage, name, description, fileUrl }}
-        />
-      )
+      ({ pictures, name, description, fileUrl, retailMen, retailWomen }, i) =>
+        !retailMen &&
+        !retailWomen && (
+          <TemplateDownloadItem
+            key={i}
+            imageSource={pictures[0].imageSource}
+            {...{ formatMessage, name, description, fileUrl }}
+          />
+        )
     )
     const content = templates.length ? (
       <TemplatesList>{templatesList}</TemplatesList>

@@ -113,6 +113,28 @@ module.exports = {
       new webpack.NormalModuleReplacementPlugin(/\/iconv-loader$/, 'node-noop')
     )
 
+    config.plugins.push(
+      new webpack.EnvironmentPlugin([
+        'GOOGLE_ID',
+        'FACEBOOK_ID',
+        'GRAPHQL_URI_BASE',
+        'BASE_URL',
+        'STORAGE_URL',
+        'PK_STRIPE',
+        'PK_STRIPE_US',
+        'PK_STRIPE_CA',
+        'PK_STRIPE_EU',
+        'PAYPAL_CLIENT_ID',
+        'PAYPAL_CLIENT_ID_US',
+        'PAYPAL_CLIENT_ID_CA',
+        'PAYPAL_CLIENT_ID_EU',
+        'PAYPAL_ENV',
+        'GOOGLE_MAP_KEY',
+        'INTERCOM_KEY',
+        'DEFAULT_CURRENCY'
+      ])
+    )
+
     config.plugins.push(new webpack.IgnorePlugin(/utf-8-validate|bufferutil/))
 
     return config
