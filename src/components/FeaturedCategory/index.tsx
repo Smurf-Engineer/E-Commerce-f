@@ -7,9 +7,9 @@ import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import { Container, Text, StyledImg, Category } from './styledComponents'
 
-import image1 from '../../assets/Racesuits.jpg'
-import image2 from '../../assets/Outerwear.jpg'
-import image3 from '../../assets/racesuits-2.jpg'
+import image1 from '../../assets/black-to-basics.jpg'
+import image2 from '../../assets/high-visibility-gear.jpg'
+import image3 from '../../assets/warmers.jpg'
 
 interface Props {
   history: any
@@ -26,19 +26,19 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
         <Category>
           <StyledImg src={image1} onClick={this.handleClick} />
           <Text>
-            <FormattedMessage {...messages.outWearLabel} />
+            <FormattedMessage {...messages.blackToBasicsLabel} />
           </Text>
         </Category>
         <Category>
           <StyledImg src={image2} onClick={this.handleClick} />
           <Text>
-            <FormattedMessage {...messages.raceSuitsLabel} />
+            <FormattedMessage {...messages.highVisibilityLabel} />
           </Text>
         </Category>
         <Category>
           <StyledImg src={image3} onClick={this.handleClick} />
           <Text>
-            <FormattedMessage {...messages.jupiterLabel} />
+            <FormattedMessage {...messages.warmersLabel} />
           </Text>
         </Category>
       </Container>
