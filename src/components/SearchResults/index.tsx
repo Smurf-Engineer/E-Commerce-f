@@ -87,6 +87,7 @@ export class SearchResults extends React.Component<Props, {}> {
                 priceRange
               }}
               onPressCustomize={this.gotoCustomize}
+              onPressThumbnail={closeResults}
               images={productImages}
               onPressQuickView={quickViewAction}
               reversePriceRange={true}

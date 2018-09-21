@@ -33,6 +33,7 @@ interface Props {
   ) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
+  onPressThumbnail: () => void
   setCategoryAction: (sport: number) => void
   categorySelected: number
   sports: Filter[]
@@ -79,6 +80,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       categorySelected,
       sports,
       formatMessage,
+      onPressThumbnail,
       currentCurrency,
       data: { categories, loading }
     } = this.props
@@ -122,6 +124,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
               onPressCustomize,
               onPressQuickView,
               formatMessage,
+              onPressThumbnail,
               currentCurrency
             }}
             width={'80%'}

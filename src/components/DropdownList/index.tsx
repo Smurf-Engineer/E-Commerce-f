@@ -164,6 +164,12 @@ export class DropdownList extends React.PureComponent<Props> {
     dispatch(setGenderSportAction(sportSelected))
   }
 
+  onHideGenderMenu = (visible: boolean, index: number) =>
+    this.handleOnHideGenderMenu(visible, index)
+
+  onHideSportsMenu = (visible: boolean, index: number) =>
+    this.handleOnHideSportsMenu(visible, index)
+
   render() {
     const {
       data,
@@ -201,6 +207,7 @@ export class DropdownList extends React.PureComponent<Props> {
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
+              onPressThumbnail={this.onHideGenderMenu}
               sportSelected={genderSportSelected}
               setSportAction={this.handleOnGenderSportChange}
             />
@@ -231,6 +238,7 @@ export class DropdownList extends React.PureComponent<Props> {
               onPressSeeAll={this.handleOnSeeAll}
               onPressQuickView={this.handleOnQuickView}
               onPressCustomize={this.handleOnCustomize}
+              onPressThumbnail={this.onHideSportsMenu}
             />
           }
         >
