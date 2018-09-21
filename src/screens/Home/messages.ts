@@ -16,26 +16,26 @@ export default defineMessages({
   },
   flexibleLabel: {
     id: 'screens.Home.flexibleLabel',
-    defaultMessage: 'FLEXIBLE'
+    defaultMessage: 'FLEXIBLE DESIGN OPTIONS'
   },
-  desigOptionsLabel: {
-    id: 'screens.Home.designOptionsLabel',
-    defaultMessage: 'Design Options'
-  },
-  superUltraLabel: {
-    id: 'screens.Home.superUltraLabel',
-    defaultMessage: 'SUPER ULTRA'
+  collectionOrCustom: {
+    id: 'screens.Home.collectionOrCustom',
+    defaultMessage: 'COLLECTION OR CUSTOM'
   },
   fastDeliveryLabel: {
     id: 'screens.Home.fastDelivery',
-    defaultMessage: 'Fast Delivery'
+    defaultMessage: 'FAST DELIVERY'
+  },
+  twoWeeksOrLess: {
+    id: 'screens.Home.twoWeeksOrLess',
+    defaultMessage: '2 WEEKS OR LESS'
   },
   easyLabel: {
     id: 'screens.Home.easyLabel',
-    defaultMessage: 'EASY'
+    defaultMessage: 'EASY ORDERING'
   },
-  orderingLabel: {
-    id: 'screens.Home.orderingLabel',
-    defaultMessage: 'Ordering'
+  priceDrop: {
+    id: 'screens.Home.priceDrop',
+    defaultMessage: 'SAVE WITH DYNAMIC PRICE DROP'
   }
 })

@@ -22,7 +22,8 @@ import {
   SearchContainer,
   SearchBarContent,
   PropositionTilesContainer,
-  PropositionTile
+  PropositionTile,
+  SubText
 } from './styledComponents'
 import SearchResults from '../../components/SearchResults'
 import SearchBar from '../../components/SearchBar'
@@ -121,6 +122,8 @@ export class Home extends React.Component<Props, {}> {
       }
     } = this.props
 
+    const { formatMessage } = intl
+
     const searchResults = searchString ? (
       <SearchResults
         searchParam={searchString}
@@ -138,10 +141,7 @@ export class Home extends React.Component<Props, {}> {
           <SearchContainer>
             <SearchBackground src={BackgroundImg} />
             <SearchBarContent>
-              <SearchBar
-                search={this.onSearch}
-                formatMessage={intl.formatMessage}
-              />
+              <SearchBar search={this.onSearch} {...{ formatMessage }} />
               {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
               <HelpContainer>
                 <NeedHelp>
@@ -173,15 +173,15 @@ export class Home extends React.Component<Props, {}> {
           <PropositionTilesContainer>
             <PropositionTile>
               <FormattedMessage {...messages.flexibleLabel} />
-              <FormattedMessage {...messages.desigOptionsLabel} />
+              <SubText>{formatMessage(messages.collectionOrCustom)}</SubText>
             </PropositionTile>
             <PropositionTile>
-              <FormattedMessage {...messages.superUltraLabel} />
               <FormattedMessage {...messages.fastDeliveryLabel} />
+              <SubText>{formatMessage(messages.twoWeeksOrLess)}</SubText>
             </PropositionTile>
             <PropositionTile>
               <FormattedMessage {...messages.easyLabel} />
-              <FormattedMessage {...messages.orderingLabel} />
+              <SubText>{formatMessage(messages.priceDrop)}</SubText>
             </PropositionTile>
           </PropositionTilesContainer>
           <ImagesGrid {...{ fakeWidth, history, browserName }} />
