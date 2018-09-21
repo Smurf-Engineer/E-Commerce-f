@@ -164,12 +164,6 @@ export class DropdownList extends React.PureComponent<Props> {
     dispatch(setGenderSportAction(sportSelected))
   }
 
-  onHideGenderMenu = (visible: boolean, index: number) =>
-    this.handleOnHideGenderMenu(visible, index)
-
-  onHideSportsMenu = (visible: boolean, index: number) =>
-    this.handleOnHideSportsMenu(visible, index)
-
   render() {
     const {
       data,
