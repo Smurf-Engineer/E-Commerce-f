@@ -167,13 +167,18 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     } = this.props
 
     let sortByLabel = ''
-    if (loading || !filtersGraph.length) {
+    if (loading || !filtersGraph || !filtersGraph.length) {
       return null
     }
 
     const {
-      location: { state }
+      location: { search, state }
     } = history
+
+    let contentTile = ''
+    if (search.includes('contentTile')) {
+      contentTile = search.replace('?contentTile=', '')
+    }
 
     const forced = get(state, 'forced', false)
 
@@ -321,7 +326,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                             openQuickView,
                             history,
                             sortByLabel,
-                            currentPage
+                            currentPage,
+                            contentTile
                           }}
                         />
                       </ResultsColumn>
@@ -361,7 +367,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
                         openQuickView,
                         history,
                         sortByLabel,
-                        currentPage
+                        currentPage,
+                        contentTile
                       }}
                     />
                   </ResultsColumn>

@@ -24,19 +24,27 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
     return (
       <Container {...{ browserName }}>
         <Category>
-          <StyledImg src={image1} onClick={this.handleClick} />
+          <StyledImg
+            id="black_to_basics"
+            src={image1}
+            onClick={this.handleClick}
+          />
           <Text>
             <FormattedMessage {...messages.blackToBasicsLabel} />
           </Text>
         </Category>
         <Category>
-          <StyledImg src={image2} onClick={this.handleClick} />
+          <StyledImg
+            id="high_visibility"
+            src={image2}
+            onClick={this.handleClick}
+          />
           <Text>
             <FormattedMessage {...messages.highVisibilityLabel} />
           </Text>
         </Category>
         <Category>
-          <StyledImg src={image3} onClick={this.handleClick} />
+          <StyledImg id="warmers" src={image3} onClick={this.handleClick} />
           <Text>
             <FormattedMessage {...messages.warmersLabel} />
           </Text>
@@ -45,9 +53,9 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
     )
   }
 
-  handleClick = () => {
+  handleClick = (evt: any) => {
     const { history } = this.props
-    history.push('/product-catalogue')
+    history.push(`/product-catalogue?contentTile=${evt.target.id}`)
   }
 }
 
