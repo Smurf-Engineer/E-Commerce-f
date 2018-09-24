@@ -25,7 +25,7 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
       <Container {...{ browserName }}>
         <Category>
           <StyledImg
-            id="black_to_basics"
+            id="black_to_basic"
             src={image1}
             onClick={this.handleClick}
           />
