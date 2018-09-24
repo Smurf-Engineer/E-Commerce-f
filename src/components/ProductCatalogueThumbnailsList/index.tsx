@@ -181,11 +181,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             colors
           } = product
 
-          const imgGender = images.find(
+          const imgsByGender = images.find(
             item => item.genderId === parseInt(genderFilters, 10)
           )
 
-          const productImages = images ? imgGender || images[0] : {}
+          const productImages = images ? imgsByGender || images[0] : {}
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
