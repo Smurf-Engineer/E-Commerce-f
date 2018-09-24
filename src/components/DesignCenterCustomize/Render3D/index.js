@@ -318,11 +318,13 @@ class Render3D extends PureComponent {
       const imagesElements = []
       const imagesPromises = []
       const fonts = []
+      const indexes = {}
       const { objects } = JSON.parse(object)
-      for (const el of objects) {
+      objects.forEach((el, index) => {
         const elId = shortid.generate()
         el.id = elId
         el.hasRotatingPoint = false
+        indexes[elId] = index
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
@@ -359,7 +361,7 @@ class Render3D extends PureComponent {
           default:
             break
         }
-      }
+      })
       elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
@@ -386,6 +388,9 @@ class Render3D extends PureComponent {
       } else {
         onSetCanvasObject(canvas, paths)
       }
+      this.canvasTexture.getObjects().forEach(el => {
+        el.moveTo(indexes[el.id])
+      })
       this.canvasTexture.renderAll()
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
