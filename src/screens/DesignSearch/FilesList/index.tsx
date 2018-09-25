@@ -14,12 +14,16 @@ interface Props {
 const FilesList = ({ assets: { files, svgs } }: Props) => {
   const assetsArray = []
   for (let file of files) {
-    const { original, fileUrl } = file
-    const url = original || fileUrl
-    assetsArray.push(url)
+    if (file) {
+      const { original, fileUrl } = file
+      const url = original || fileUrl
+      assetsArray.push(url)
+    }
   }
   for (let svg of svgs) {
-    assetsArray.push(svg.fileUrl)
+    if (svg) {
+      assetsArray.push(svg.fileUrl)
+    }
   }
   if (!assetsArray.length) {
     return <FormattedMessage {...messages.empty} />
