@@ -19,11 +19,12 @@ const DesignSupport = ({ formatMessage }: Props) => {
           {formatMessage(messages.artwork)}
         </UnderlinedLink>
       </Text>
+      {/* TODO: uncomment when be needed
       <Text>
         <UnderlinedLink link="/template-download">
           {formatMessage(messages.template)}
         </UnderlinedLink>
-      </Text>
+      </Text> */}
       <Text>
         <UnderlinedLink link="/fit-and-sizing">
           {formatMessage(messages.fit)}
