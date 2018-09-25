@@ -192,10 +192,8 @@ class Render3D extends PureComponent {
   }
 
   componentWillMount() {
-    if (typeof window !== 'undefined') {
-      const hideHint = localStorage.getItem('disableDesignCenterHint')
-      this.setState({ showHelpModal: !hideHint })
-    }
+    const hideHint = this.getHelpModalValueFromLocal()
+    this.setState({ showHelpModal: !hideHint })
   }
 
   componentDidMount() {
@@ -1131,10 +1129,8 @@ class Render3D extends PureComponent {
       selectedElement
     } = this.props
 
-    let showHint
-    if (typeof window !== 'undefined') {
-      showHint = localStorage.getItem('disableDesignCenterHint')
-    }
+    const showHint = this.getHelpModalValueFromLocal()
+
     {
       /*
       // TODO: JV2 - Phase II
@@ -1247,7 +1243,7 @@ class Render3D extends PureComponent {
           <HintModalImage src={hintImg} alt="" />
           {!showHint && (
             <TurnOffHintRow>
-              <Checkbox onChange={this.disableHint}>
+              <Checkbox onChange={this.disableHelpModal}>
                 {formatMessage(messages.turOffHint)}
               </Checkbox>
             </TurnOffHintRow>
@@ -1256,7 +1252,8 @@ class Render3D extends PureComponent {
       </Container>
     )
   }
-  disableHint = evt => {
+
+  disableHelpModal = evt => {
     const {
       target: { checked }
     } = evt
@@ -1268,6 +1265,12 @@ class Render3D extends PureComponent {
   handleHelpModal = () => {
     const { showHelpModal } = this.state
     this.setState({ showHelpModal: !showHelpModal })
+  }
+
+  getHelpModalValueFromLocal = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('disableDesignCenterHint')
+    }
   }
 
   applyCanvasEl = canvasEl => {
