@@ -13,8 +13,10 @@ import {
   GoogleIcon,
   GoogleLabel
 } from './styledComponents'
+import config from '../../config'
 import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
+const unauthorizedExp = /\balready an account\b/
 
 interface Props {
   formatMessage: (messageDescriptor: any, values?: object) => string
@@ -40,7 +42,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     return (
       <Container>
         <GoogleButton
-          clientId="32595750537-deiet8319orbo3c54uqin9aqkpnbchbu.apps.googleusercontent.com"
+          clientId={config.googleId || ''}
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
         >
@@ -49,7 +51,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         </GoogleButton>
         <FacebookButtonWrapper>
           <FacebookLogin
-            appId="1656476814419105"
+            appId={config.facebookId || ''}
             autoLoad={false}
             fields="name,email,picture"
             callback={this.responseFacebook}
@@ -73,7 +75,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       loginWithFacebook,
       requestClose,
       handleLogin,
-      initialCountryCode
+      initialCountryCode,
+      formatMessage
     } = this.props
     const token = get(facebookResp, 'accessToken')
 
@@ -90,6 +93,12 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         requestClose()
       }
     } catch (error) {
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+
+      if (unauthorizedExp.test(errorMessage)) {
+        message.error(formatMessage(messages.userExistsError))
+      }
       console.error(error)
     }
   }
@@ -99,7 +108,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       loginWithGoogle,
       requestClose,
       handleLogin,
-      initialCountryCode
+      initialCountryCode,
+      formatMessage
     } = this.props
     const token = get(resp, 'tokenId', false)
 
@@ -118,7 +128,12 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
     } catch (error) {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
-      message.error(errorMessage)
+
+      if (unauthorizedExp.test(errorMessage)) {
+        message.error(formatMessage(messages.userExistsError))
+      } else {
+        message.error(errorMessage)
+      }
       console.error(error)
     }
   }

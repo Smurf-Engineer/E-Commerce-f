@@ -729,6 +729,8 @@ export interface ITemplateDownload {
     }
   ]
   fileUrl: string
+  retailMen: boolean
+  retailWomen: boolean
 }
 
 export interface NetsuiteTax {

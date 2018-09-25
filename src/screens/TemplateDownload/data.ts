@@ -12,6 +12,8 @@ export const templatesQuery = gql`
         imageSource: front_image
       }
       fileUrl: template
+      retailMen: men_retail
+      retailWomen: women_retail
     }
   }
 `
