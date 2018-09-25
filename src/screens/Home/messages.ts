@@ -16,11 +16,11 @@ export default defineMessages({
   },
   flexibleLabel: {
     id: 'screens.Home.flexibleLabel',
-    defaultMessage: 'FLEXIBLE'
+    defaultMessage: 'FLEXIBLE DESIGN OPTIONS'
   },
   desigOptionsLabel: {
     id: 'screens.Home.designOptionsLabel',
-    defaultMessage: 'Design Options'
+    defaultMessage: 'COLLECTION OR CUSTOM'
   },
   superUltraLabel: {
     id: 'screens.Home.superUltraLabel',
@@ -28,14 +28,14 @@ export default defineMessages({
   },
   fastDeliveryLabel: {
     id: 'screens.Home.fastDelivery',
-    defaultMessage: 'Fast Delivery'
+    defaultMessage: '2 WEEKS OR LESS'
   },
   easyLabel: {
     id: 'screens.Home.easyLabel',
-    defaultMessage: 'EASY'
+    defaultMessage: 'EASY ORDERING'
   },
   orderingLabel: {
     id: 'screens.Home.orderingLabel',
-    defaultMessage: 'Ordering'
+    defaultMessage: 'SAVE WITH DYNAMIC PRICE DROP'
   }
 })

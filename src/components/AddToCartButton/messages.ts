@@ -15,6 +15,6 @@ export default defineMessages({
   },
   successfulAddMessage: {
     id: 'components.addToCartButton.successfulAddMessage',
-    defaultMessage: '{name} has been succesfully added to cart!'
+    defaultMessage: '{name} has been successfully added to cart!'
   }
 })
