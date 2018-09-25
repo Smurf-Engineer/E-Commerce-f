@@ -9,16 +9,16 @@ export default defineMessages({
     id: 'components.FeaturedCategory.tittle',
     defaultMessage: 'FeaturedCategory'
   },
-  outWearLabel: {
-    id: 'components.FeaturedCategory.outWearLabel',
-    defaultMessage: 'OUTWEAR'
+  blackToBasicsLabel: {
+    id: 'components.FeaturedCategory.blackToBasicsLabel',
+    defaultMessage: 'BLACK TO BASICS'
   },
-  raceSuitsLabel: {
-    id: 'components.FeaturedCategory.raceSuitsLabel',
-    defaultMessage: 'RACE SUITS'
+  highVisibilityLabel: {
+    id: 'components.FeaturedCategory.highVisibilityLabel',
+    defaultMessage: 'HIGH VISIBILITY'
   },
-  jupiterLabel: {
-    id: 'components.FeaturedCategory.jupiterLabel',
-    defaultMessage: 'JUPITER COLLECTION'
+  warmersLabel: {
+    id: 'components.FeaturedCategory.warmersLabel',
+    defaultMessage: 'WARMERS'
   }
 })
