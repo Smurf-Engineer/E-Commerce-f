@@ -18,24 +18,24 @@ export default defineMessages({
     id: 'screens.Home.flexibleLabel',
     defaultMessage: 'FLEXIBLE DESIGN OPTIONS'
   },
-  desigOptionsLabel: {
-    id: 'screens.Home.designOptionsLabel',
+  collectionOrCustom: {
+    id: 'screens.Home.collectionOrCustom',
     defaultMessage: 'COLLECTION OR CUSTOM'
-  },
-  superUltraLabel: {
-    id: 'screens.Home.superUltraLabel',
-    defaultMessage: 'SUPER ULTRA'
   },
   fastDeliveryLabel: {
     id: 'screens.Home.fastDelivery',
+    defaultMessage: 'FAST DELIVERY'
+  },
+  twoWeeksOrLess: {
+    id: 'screens.Home.twoWeeksOrLess',
     defaultMessage: '2 WEEKS OR LESS'
   },
   easyLabel: {
     id: 'screens.Home.easyLabel',
     defaultMessage: 'EASY ORDERING'
   },
-  orderingLabel: {
-    id: 'screens.Home.orderingLabel',
+  priceDrop: {
+    id: 'screens.Home.priceDrop',
     defaultMessage: 'SAVE WITH DYNAMIC PRICE DROP'
   }
 })

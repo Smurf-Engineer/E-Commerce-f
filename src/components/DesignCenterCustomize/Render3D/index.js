@@ -266,7 +266,8 @@ class Render3D extends PureComponent {
 
   componentWillUnmount() {
     const { onUnmountTab } = this.props
-    const canvasJson = JSON.stringify(this.canvasTexture)
+    const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+    const canvasJson = JSON.stringify(designCanvas)
     onUnmountTab(canvasJson)
     if (this.renderer) {
       this.stop()
@@ -318,11 +319,13 @@ class Render3D extends PureComponent {
       const imagesElements = []
       const imagesPromises = []
       const fonts = []
+      const indexes = {}
       const { objects } = JSON.parse(object)
-      for (const el of objects) {
+      objects.forEach((el, index) => {
         const elId = shortid.generate()
         el.id = elId
         el.hasRotatingPoint = false
+        indexes[elId] = index
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
@@ -359,7 +362,7 @@ class Render3D extends PureComponent {
           default:
             break
         }
-      }
+      })
       elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
@@ -386,6 +389,9 @@ class Render3D extends PureComponent {
       } else {
         onSetCanvasObject(canvas, paths)
       }
+      this.canvasTexture.getObjects().forEach(el => {
+        el.moveTo(indexes[el.id])
+      })
       this.canvasTexture.renderAll()
     } catch (e) {
       console.error('Error loading canvas object: ', e.message)
@@ -1088,9 +1094,8 @@ class Render3D extends PureComponent {
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
           const designBase64 = this.renderer.domElement.toDataURL('image/png')
-          const canvasJson = JSON.stringify(
-            this.canvasTexture.toObject(EXTRA_FIELDS)
-          )
+          const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+          const canvasJson = JSON.stringify(designCanvas)
           const saveDesign = {
             canvasJson,
             designBase64,

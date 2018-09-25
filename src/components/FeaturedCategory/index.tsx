@@ -7,9 +7,9 @@ import { FormattedMessage } from 'react-intl'
 import messages from './messages'
 import { Container, Text, StyledImg, Category } from './styledComponents'
 
-import image1 from '../../assets/Racesuits.jpg'
-import image2 from '../../assets/Outerwear.jpg'
-import image3 from '../../assets/racesuits-2.jpg'
+import image1 from '../../assets/black-to-basics.jpg'
+import image2 from '../../assets/high-visibility-gear.jpg'
+import image3 from '../../assets/warmers.jpg'
 
 interface Props {
   history: any
@@ -24,30 +24,38 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
     return (
       <Container {...{ browserName }}>
         <Category>
-          <StyledImg src={image1} onClick={this.handleClick} />
+          <StyledImg
+            id="black_to_basic"
+            src={image1}
+            onClick={this.handleClick}
+          />
           <Text>
-            <FormattedMessage {...messages.outWearLabel} />
+            <FormattedMessage {...messages.blackToBasicsLabel} />
           </Text>
         </Category>
         <Category>
-          <StyledImg src={image2} onClick={this.handleClick} />
+          <StyledImg
+            id="high_visibility"
+            src={image2}
+            onClick={this.handleClick}
+          />
           <Text>
-            <FormattedMessage {...messages.raceSuitsLabel} />
+            <FormattedMessage {...messages.highVisibilityLabel} />
           </Text>
         </Category>
         <Category>
-          <StyledImg src={image3} onClick={this.handleClick} />
+          <StyledImg id="warmers" src={image3} onClick={this.handleClick} />
           <Text>
-            <FormattedMessage {...messages.jupiterLabel} />
+            <FormattedMessage {...messages.warmersLabel} />
           </Text>
         </Category>
       </Container>
     )
   }
 
-  handleClick = () => {
+  handleClick = (evt: any) => {
     const { history } = this.props
-    history.push('/product-catalogue')
+    history.push(`/product-catalogue?contentTile=${evt.target.id}`)
   }
 }
 
