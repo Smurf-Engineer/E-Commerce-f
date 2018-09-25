@@ -95,6 +95,11 @@ export const getOrderQuery = gql`
             left: left_image
             right: right_image
           }
+          colors {
+            id
+            name
+            image
+          }
         }
         itemDetails {
           label
@@ -105,6 +110,9 @@ export const getOrderQuery = gql`
             name
           }
           fit {
+            name
+          }
+          color {
             name
           }
           colorImage

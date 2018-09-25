@@ -33,6 +33,7 @@ interface Props {
   ) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
+  onPressThumbnail: (visible: boolean, index: number) => void
   setCategoryAction: (sport: number) => void
   categorySelected: number
   sports: Filter[]
@@ -65,6 +66,11 @@ export class MenuSports extends React.PureComponent<Props, {}> {
       categories[categorySelected].name,
       sports[type].name
     )
+  }
+
+  onPressThumbnail = () => {
+    const { visible, type, onPressThumbnail } = this.props
+    onPressThumbnail(visible, type)
   }
 
   getFilter = (array: any[], index: number) =>
@@ -124,6 +130,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            onPressThumbnail={this.onPressThumbnail}
             width={'80%'}
             onPressSeeAll={this.onPressSeeAll}
           />

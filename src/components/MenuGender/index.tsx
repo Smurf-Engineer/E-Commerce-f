@@ -34,6 +34,7 @@ interface Props extends RouteComponentProps<any> {
   onPressSeeAll: (type: number, category: string, sport: string) => void
   onPressCustomize: (id: number) => void
   onPressQuickView: (id: number, yotpoId: string, gender: number) => void
+  onPressThumbnail: (visible: boolean, index: number) => void
   setSportAction: (sport: number) => void
   setCategoryAction: (category: number) => void
   sportSelected: number
@@ -78,6 +79,11 @@ export class MenuGender extends React.Component<Props, {}> {
       categories[categorySelected].name,
       sports[sportSelected].name
     )
+  }
+
+  onPressThumbnail = () => {
+    const { visible, type, onPressThumbnail } = this.props
+    onPressThumbnail(visible, type)
   }
 
   getFilter = (array: any[], index: number) =>
@@ -150,6 +156,7 @@ export class MenuGender extends React.Component<Props, {}> {
               formatMessage,
               currentCurrency
             }}
+            onPressThumbnail={this.onPressThumbnail}
             onPressSeeAll={this.onSeeAll}
           />
         )}

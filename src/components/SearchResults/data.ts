@@ -42,6 +42,7 @@ export const searchResultsQuery = gql`
         right: right_image
       }
       colors {
+        id
         name
         image
       }
