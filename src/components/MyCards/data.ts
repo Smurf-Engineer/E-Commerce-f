@@ -5,8 +5,8 @@ import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const cardsQuery = gql`
-  query getusercards($countryCode: String!) {
-    userCards: getUserCards(countryCode: $countryCode) {
+  query getusercards {
+    userCards: getUserCards {
       default
       cards {
         id
@@ -43,8 +43,8 @@ export const addCardMutation = graphql(
 
 export const updateCardMutation = graphql(
   gql`
-    mutation updatecard($cardId: String!, $countryCode: String!) {
-      updateUserCard(cardId: $cardId, countryCode: $countryCode) {
+    mutation updatecard($cardId: String!) {
+      updateUserCard(cardId: $cardId) {
         message
       }
     }
@@ -56,8 +56,8 @@ export const updateCardMutation = graphql(
 
 export const deleteCardMutation = graphql(
   gql`
-    mutation deleteCard($cardId: String!, $countryCode: String!) {
-      deleteUserCard(cardId: $cardId, countryCode: $countryCode) {
+    mutation deleteCard($cardId: String!) {
+      deleteUserCard(cardId: $cardId) {
         message
       }
     }
