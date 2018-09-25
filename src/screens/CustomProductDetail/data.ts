@@ -62,12 +62,13 @@ export const GetDesignByIdQuery = gql`
         collections
         isTopProduct
         intendedUse: intended_use
-        images: pictures {
+        images: original_pictures {
           front: front_image
           back: back_image
           left: left_image
           right: right_image
           genderId: gender_id
+          colorId: color_id
         }
         priceRange {
           price
