@@ -50,6 +50,7 @@ interface Props {
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
+  contentTile: string
   sortByLabel: string
   data: Data
   history: any
@@ -285,6 +286,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 }
 
 type OwnProps = {
+  contentTile?: string
   collectionFilters?: string
   genderFilters?: string
   sportFilters?: string
@@ -301,6 +303,7 @@ type OwnProps = {
 const ThumbnailsListEnhance = compose(
   graphql<Data>(GetProductsQuery, {
     options: ({
+      contentTile,
       collectionFilters,
       genderFilters,
       categoryFilters,
@@ -315,6 +318,7 @@ const ThumbnailsListEnhance = compose(
       return {
         fetchPolicy: 'network-only',
         variables: {
+          contentTile: contentTile ? contentTile : null,
           collection: collectionFilters ? collectionFilters : null,
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,

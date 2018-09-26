@@ -1,26 +1,27 @@
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { WHITE, AUBERGINE, GRAY_SOFT } from '../../theme/colors'
 
 export const Container = styled.div``
 
 export const HomeHeader = styled.div`
-  padding: 20px;
+  color: ${WHITE};
   font-size: 24px;
-  color: white;
+  padding: 20px;
 `
 
 export const SearchBarContent = styled.div`
-  position: absolute;
-  top: 430px;
+  color: ${WHITE};
   left: 315px;
+  position: absolute;
   right: 300px;
-  color: #fff;
+  top: 430px;
 
   @media (min-width: 768px) and (max-width: 1024px) {
-    top: 30em;
-    width: 60%;
     left: 50%;
+    top: 30em;
     transform: translate(-50%, -50%);
+    width: 60%;
   }
 
   @media (min-width: 481px) and (max-width: 767px) and (orientation: landscape) {
@@ -33,13 +34,13 @@ export const SearchBarContent = styled.div`
 `
 
 export const SearchBackground = styled.img`
-  width: 100%;
   height: 40em;
   object-fit: cover;
+  width: 100%;
 
   @media (max-width: 425px) {
-    width: 100%;
     height: 15em;
+    width: 100%;
   }
 `
 export const SearchContainer = styled.div`
@@ -55,38 +56,41 @@ export const HelpContainer = styled.div`
 `
 
 export const NeedHelp = styled.div`
-  height: 19px;
-  color: #ffffff;
+  color: ${WHITE};
   font-size: 14px;
+  height: 19px;
   line-height: 19px;
   margin: 17px 0 5px 0;
 `
 
 export const GetStartedButton = styled(Button)`
-  width: 30%;
-  height: 51px;
   border-radius: 0;
-
   font-size: 16px;
+  height: 51px;
   line-height: 22px;
+  width: 30%;
 `
 export const PropositionTilesContainer = styled.div`
+  background-color: ${AUBERGINE};
+  color: ${WHITE};
   display: flex;
-  background-color: #231f20;
-  color: #fff;
-  padding: 21px 0 29px;
   justify-content: space-around;
+  padding: 21px 0 29px;
 
   @media (min-width: 320px) and (max-width: 767px) {
-    padding: 0;
     flex-direction: column;
     height: 401px;
+    padding: 0;
   }
 `
 export const PropositionTile = styled.div`
-  color: #ffffff;
+  color: ${WHITE};
   font-size: 20px;
   letter-spacing: 0.25px;
   line-height: 27px;
   text-align: center;
+`
+export const SubText = styled.div`
+  color: ${GRAY_SOFT};
+  font-size: 14px;
 `
