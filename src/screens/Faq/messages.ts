@@ -13,7 +13,7 @@ export default defineMessages({
   subtitle: {
     id: 'screens.Faq.subtitle',
     defaultMessage:
-      'If you can’t find an answer to your questions, please contact us <a href="mailto:customdesign@jakroousa.com">here</a>'
+      'If you can’t find an answer to your questions, please contact us <a href="mailto:express@jakroousa.com">here</a>'
   },
   artworkAndDesignTitle: {
     id: 'screens.Faq.artworkAndDesignTitle',
@@ -25,7 +25,7 @@ export default defineMessages({
   },
   chargeForDesignAnswer: {
     id: 'screens.Faq.chargeForDesignAnswer',
-    defaultMessage: `<p>At JAKROO, we provide 1 FREE initial design, and 2 free edit cycles to fine-tune your design just the way you want it.  For edit cycles requested beyond the 2 free provided, a small art fee ($25) per edit cycle applies. JAKROO's goal, is to have all our designs be free of charge.</p><p>Additional art fees that may apply</p><p>1. If you have logos that need to be redrawn, or if you have specific graphics that need to be created, there may be additional nominal design fees. </p><p>2. If you would like an additional Design Option, we ask for a $50 art fee per additional design option we create for you.  Each additional design option will also have 2 edit cycles included.</p><p>3. If we provide an initial free design, but you’d like to go in a completely different direction, we ask for a re-design art fee of $50 for this. Your redesign will also receive 2 edit cycles.</p><br/><p>We will always let you know before proceeding if any art fees apply to your request.'</p><br />`
+    defaultMessage: `<p>No, with Jakroo Express, you are the designer and there are no fees to use the service. We do, however, provide an optional Pro Review service at the time of order placement. For a small fee of $15.00, Jakroo’s Pro Designers will review each of the custom designs on your order and check for the following</p><p>Color consistency throughout design and ordered products</p><p>Center alignment and adjustment to graphics/text</p><p>Any other unforseen potential issues</p><p> <br />`
   },
   getStartedQuestion: {
     id: 'screens.Faq.getStartedQuestion',
@@ -51,7 +51,7 @@ export default defineMessages({
   colorLimitationsAnswer: {
     id: 'screens.Faq.colorLimitationsAnswer',
     defaultMessage:
-      '<p>No, with our dye sublimation process on orders less than 500 pieces, there are no limitations on the number of colors you can use in your design and price is not affected by the number of colors used.</p><br/>'
+      '<p>Yes, It’s important to understand that colors vary from device to device. The colors on YOUR screen may slightly vary from how those same colors display on another screen. Additionally, the digital RGB representation of colors may vary from how those colors print on physical materials such as fabrics. Our creative team, however, has tried to calibrate the colors to be as close as possible to the actual print colors but a perfect match is impossible. A printed JAKROO 91 color swatch guide is available upon request. Please <a href="mailto:express@jakroousa.com">contact</a>our team for details.</p><br/>'
   },
   predesignChangesQuestion: {
     id: 'screens.Faq.predesignChangesQuestion',
@@ -83,7 +83,7 @@ export default defineMessages({
   minimumRequirementsAnswer: {
     id: 'screens.Faq.minimumRequirementsAnswer',
     defaultMessage:
-      '<p>With JAKROO, there are NO minimums. In fact, JAKROO is the only Full-Custom manufacturer of technical cycling apparel that offers no minimums. Pricing is tiered based on your order volume and reordering is easy. You may even be eligible for discount pricing on your reorder.</p>'
+      '<p>With JAKROO, there are NO minimums. However, when ordering on Jakroo Express, the maximum quantity per item is 100 pieces. Pricing is tiered based on your order volume and reordering is easy. </p>'
   },
   comparedToOthersQuestion: {
     id: 'screens.Faq.comparedToOthersQuestion',
@@ -92,7 +92,7 @@ export default defineMessages({
   comparedToOthersAnswer: {
     id: 'screens.Faq.comparedToOthersAnswer',
     defaultMessage:
-      '<p>Since designs and patterns vary from company to company, and “fit” is subject to personal opinion, it is very difficult to make a general comparison. Our Customer feedback suggests that our products fit within the range indicated on our <a href="https://www.jakroo.com/sizing">size chart</a> and considered standard industry wide when compared to a variety of competitors. We recommend reviewing the size chart and matching at least 2 out of the three parameters. However, if you want to be absolutely sure, you can order a Fit Kit by contacting our Customer Service Dept at 1-800-485-7067 (ext. 2)</p>'
+      '<p>Since designs and patterns vary from company to company, and “fit” is subject to personal opinion, it is very difficult to make a general comparison. Our Customer feedback suggests that our products fit within the range indicated on our <a href="https://www.jakroo.com/sizing">size chart</a> and considered standard industry wide when compared to a variety of competitors. We recommend reviewing the size chart and matching at least 2 out of the three parameters. However, if you want to be absolutely sure, you can request a free Size Recommendation by <ahref="mailto:express@jakroousa.com">email</a> or through the online chat service on the website'
   },
   tieredPricingQuestion: {
     id: 'screens.Faq.tieredPricingQuestion',
@@ -101,7 +101,7 @@ export default defineMessages({
   tieredPricingAnswer: {
     id: 'screens.Faq.tieredPricingAnswer',
     defaultMessage:
-      '<p>Yes! You can add both men’s and women’s jerseys together to qualify for a higher tier discount providing that all pieces are on the same product and have the same design.</p>'
+      '<p>Yes! You can add both men’s and women’s jerseys together to qualify for a higher tier discount.</p>'
   },
   orderOnlineQuestion: {
     id: 'screens.Faq.orderOnlineQuestion',
@@ -119,7 +119,7 @@ export default defineMessages({
   paymentOptionsAnswer: {
     id: 'screens.Faq.paymentOptionsAnswer',
     defaultMessage:
-      '<p>Payment for orders is easy! We take Visa, MasterCard, American Express and Discover Card, bank wire-transfer and Certified check. For orders under $5,000, payment must be received in full before the order goes into production. For orders over $5,000, a 50% deposit is required before it goes into production and the balance must be paid before the product is shipped two weeks later.</p>'
+      '<p>Payment for orders is easy! We take Visa, MasterCard, American Express,Discover Card, and PayPal. Payment will be taken upon placement of your order.</p>'
   },
   shippingCostQuestion: {
     id: 'screens.Faq.shippingCostQuestion',
@@ -128,7 +128,7 @@ export default defineMessages({
   shippingCostAnswer: {
     id: 'screens.Faq.shippingCostAnswer',
     defaultMessage:
-      '<p>Custom Orders are shipped direct from our own manufacturing facility in China via FedEx-3 Day International Priority to your door. Tracking your shipment online is easy through your private JAKROO account. Shipping is based on weight and typically varies between $15-30 for orders under 20 pieces. For a detailed shipping cost schedule, please contact our Customer Service Department at 1-800-485-7067 (ext. 2)</p>'
+      '<p> Orders are shipped direct from our own manufacturing facility in China via FedEx/UPS/DHL International Priority to your door. A tracking number will be sent to you upon shipment. You can also look up your tracking number on the Order Detail section of “My Account” located at the top right of the site. Shipping is based on weight and typically varies between $12-30 for orders under 20 pieces. For a detailed shipping cost schedule, please contact our Customer Service Department at 1-800-485-7067 (ext. 2)</p>'
   },
   orderStatusQuestion: {
     id: 'screens.Faq.orderStatusQuestion',
@@ -136,7 +136,7 @@ export default defineMessages({
   },
   orderStatusAnswer: {
     id: 'screens.Faq.orderStatusAnswer',
-    defaultMessage: `<p>1. You will first need to log in to your account here: <a href="/faq?login=open">LOGIN HERE</a> <br />2. Username is email, password should be your name + jakroo, for instance John would be “johnjakroo”.<br /> 3. On the top bar click the heading “ORDERS”.<br /> 4. Select the Order by the last 4 numbers of the order number in the email you received.<br /> 5. Click on the order and look at the status in the upper right corner.<br /> 6. For further questions, call the general line at 1-800-485-7067</p>`
+    defaultMessage: `<p>All details of your order(s) are easily accessible via the My Account tab, located at the top right of the screen. Shortly after your order has been successfully placed, the status of Pending Approval will be displayed. During this stage, the Account Team will review the order for any potential concerns. Your will be contacted if we have any questions. Upon approval, the order is moved into production and the status of In Production will be displayed. At this point, your order is in one of the production stages of art review, printing or assembly and no cancellations or changes can be made. Once the production is complete, your order enters the fulfillment stage and goes through detailed quality inspection prior to packing and shipment</p>`
   },
   orderingPeriodEndedQuestion: {
     id: 'screens.Faq.orderingPeriodEndedQuestion',
@@ -158,7 +158,7 @@ export default defineMessages({
   receiveOrderAnswer: {
     id: 'screensFaq.receiveOrderAnswer',
     defaultMessage:
-      '<p>JAKROO has one of the fastest delivery times for technical apparel. Only 3-4 weeks from the day you place your order through the online store. If you are ordering a Personal Kit, you’ll get it 2 weeks after you place the order. You’ll be out riding in no time.</p>'
+      '<p>JAKROO has one of the fastest delivery times for technical apparel. Orders through Jakroo Express typically take only 2 weeks from the day you place your order til delivery at your door. In many cases, orders may be delivered in less than 14 days. We do not delivery on Federal holidays or weekends.</p>'
   },
   trackingShipmentQuestion: {
     id: 'screens.Faq.trackingShipmentQuestion',
@@ -167,7 +167,7 @@ export default defineMessages({
   trackingShipmentAnswer: {
     id: 'screens.Faq.trackingShipmentAnswer',
     defaultMessage:
-      '<p>Absolutely. At the time of shipment, you will receive a confirmation email with the details and tracking number of your shipment. By clicking the link in the email, you will be redirected to your Account page where you can track the shipment. You can also log into your account anytime to track the progress of your order from the moment you order to arrival. If you did not receive your confirmation email, please check your spam filters on your email client or contact us to resend the confirmation.</p>'
+      '<p>Absolutely. At the time of shipment, you will receive a confirmation email with the details and tracking number of your shipment. By clicking the link in the email, you will be redirected to the shipping carrier  page where you can track the shipment. You can also log into your account anytime to track the progress of your order from the moment you order to arrival. If you did not receive your confirmation email, please check your spam filters on your email client or contact us to resend the confirmation.</p>'
   },
   orderMistakeQuestion: {
     id: 'screens.Faq.orderMistakeQuestion',
@@ -176,7 +176,7 @@ export default defineMessages({
   orderMistakeAnswer: {
     id: 'screens.Faq.orderMistakeAnswer',
     defaultMessage:
-      '<p>We take extra special measures at all phases of the production and delivery process to ensure accuracy of your order. However, mistakes can happen and we’ll do our best to make everything right as fast as possible. If you discover an error, please contact JAKROO immediately and have your Order # and packing list available.</p>'
+      '<p>We take extra special measures at all phases of the production and delivery process to ensure accuracy of your order. However, mistakes can happen and we’ll do our best to make everything right as fast as possible. If you discover an error, please contact JAKROO immediately and have your Order # available.</p>'
   },
   whatsNextQuestion: {
     id: 'screens.Faq.whatsNextQuestion',
@@ -185,7 +185,7 @@ export default defineMessages({
   whatsNextAnswer: {
     id: 'screens.Faq.whatsNextAnswer',
     defaultMessage:
-      '<p>This is our favorite question! We love making you look good and knowing that we’ve done that makes us really happy as well. Your feedback is also valuable to other visitors and customers like yourself. <a href="https://www.jakroo.com/give-us-your-feedback">GIVE US YOUR FEEDBACK</a></p>'
+      '<p>This is our favorite question! We love making you look good and knowing that we’ve done that makes us really happy as well. Your feedback is also valuable to other visitors and customers like yourself. You will receive a request for feedback several days after receiving your order.</p>'
   },
   speedUpShippingQuestion: {
     id: 'screens.Faq.speedUpShippingQuestion',
@@ -212,7 +212,7 @@ export default defineMessages({
   shipToPOAPOBoxAnswer: {
     id: 'screens.Faq.shipToPOAPOBoxAnswer',
     defaultMessage:
-      '<p>Unfortunately no. We ship internationally via FedEx 3-day and don’t have any way of shipping items to these types of addresses. Please enter a residential address for your delivery.</p>'
+      '<p>Unfortunately no. We ship internationally via FedEx/UPS or DHL  and don’t have any way of shipping items to these types of addresses. Please enter a residential address for your delivery.</p>'
   },
   distruibutorsTitle: {
     id: 'screens.Faq.distruibutorsLabel',

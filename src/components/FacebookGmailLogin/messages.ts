@@ -22,8 +22,8 @@ export default defineMessages({
     defaultMessage: 'Hi {name}! Welcome to Jakroo'
   },
   userExistsError: {
-    id: 'components.FaceboomGmailLogin.userExistsError',
+    id: 'components.FacebookGmailLogin.userExistsError',
     defaultMessage:
-      'An email for this account already exists, please log in with your email'
+      'An account for this email already exists, please log in with your email'
   }
 })

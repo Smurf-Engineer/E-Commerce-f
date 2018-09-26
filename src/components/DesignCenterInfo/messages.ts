@@ -12,7 +12,7 @@ export default defineMessages({
   themeMessage: {
     id: 'components.DesignCenterInfo.themeMessage',
     defaultMessage:
-      'Select a theme that best matches the design that is in your head.'
+      'Select a design theme that best fits what you have in mind.'
   },
   style: {
     id: 'components.DesignCenterInfo.style',

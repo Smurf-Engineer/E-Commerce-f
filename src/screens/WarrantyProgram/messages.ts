@@ -22,7 +22,7 @@ export default defineMessages({
   },
   warrantySubtitle: {
     id: 'screens.WarrantyProgram.warrantySubtitle',
-    defaultMessage: 'Please read carefuly'
+    defaultMessage: 'Please read carefully'
   },
   warrantyText: {
     id: 'screens.WarrantyProgram.warrantyText',

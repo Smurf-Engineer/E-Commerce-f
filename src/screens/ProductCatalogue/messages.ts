@@ -23,6 +23,6 @@ export default defineMessages({
   },
   hightestPriceLabel: {
     id: 'components.ProductCatalogueThumbnailsList.hightestPriceLabel',
-    defaultMessage: 'Hightest Price'
+    defaultMessage: 'Highest Price'
   }
 })
