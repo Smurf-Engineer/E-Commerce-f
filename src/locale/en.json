@@ -63,7 +63,7 @@
   "components.DesignCenterInfo.theme": "SELECT A THEME",
   "components.DesignCenterInfo.themeMessage": "Select a design theme that best fits what you have in mind.",
   "components.DesignCenterInfo.style": "SELECT A DESIGN",
-  "components.DesignCenterInfo.styleMessage": "Select a base design to start as a canvas of your new gear. You can select a complexity that satisfies your taste.",
+  "components.DesignCenterInfo.styleMessage": "Select a base design as a starting point for your design. You can also view various levels of design complexity.",
   "components.DesignCenterInfo.customize": "CUSTOMIZE",
   "components.DesignCenterInfo.preview": "PREVIEW",
   "components.designCenterCustomize.Tab.color": "Color",

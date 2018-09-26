@@ -17,8 +17,9 @@ import {
   sectionTitles,
   artandDesignQuestions,
   orderingPaymentQuestions,
-  productionDeliveryQuestions,
-  distributorsQuestions
+  productionDeliveryQuestions
+  // TODO: commented code is for hiding this sections, delete when confirm they won't be needed anymore
+  // distributorsQuestions
 } from './staticData'
 import {
   Container,
@@ -115,7 +116,7 @@ export class Faq extends React.Component<Props, {}> {
               formatMessage={intl.formatMessage}
             />
           </ContentSection>
-          <ContentSection>
+          {/* <ContentSection>
             <SectionTitle>
               <div
                 ref={distributors => {
@@ -129,7 +130,7 @@ export class Faq extends React.Component<Props, {}> {
               questions={distributorsQuestions}
               formatMessage={intl.formatMessage}
             />
-          </ContentSection>
+          </ContentSection> */}
         </Container>
       </Layout>
     )
