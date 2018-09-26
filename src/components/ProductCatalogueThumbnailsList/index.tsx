@@ -61,6 +61,7 @@ interface Props {
   onPressDelete?: (id: string, name: string) => void
   withoutPadding?: boolean
   currentCurrency: string
+  genderFilters: string
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -77,7 +78,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       onPressPrivate = () => {},
       onPressDelete = () => {},
       withoutPadding,
-      currentCurrency
+      currentCurrency,
+      genderFilters
     } = this.props
 
     let thumbnailsList
@@ -180,8 +182,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             colors
           } = product
 
-          // TODO: filter by gender
-          const productImages = images ? images[0] : {}
+          const imgsByGender = images.find(
+            item => item.genderId === parseInt(genderFilters, 10)
+          )
+
+          const productImages = images ? imgsByGender || images[0] : {}
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
