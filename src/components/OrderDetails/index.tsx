@@ -19,8 +19,9 @@ import {
   ViewContainer,
   Div,
   ScreenTitle,
-  ButtonWrapper,
-  Button,
+  // TODO: Commented to hide the receipt button until green light to continue with this implementation
+  // ButtonWrapper,
+  // Button,
   OrderInfo,
   OrderDelivery,
   DeliveryDate,
@@ -213,11 +214,12 @@ export class OrderDetails extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
-          <ButtonWrapper>
+          {/* TODO: Hide receipt button until green light to continue with the development of the pdf receipt
+           <ButtonWrapper>
             <Button type="primary" onClick={this.handleOnClickReceipt}>
               {formatMessage(messages.receipt)}
             </Button>
-          </ButtonWrapper>
+          </ButtonWrapper> */}
         </Div>
         <OrderInfo>
           <OrderDelivery>
