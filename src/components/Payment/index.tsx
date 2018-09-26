@@ -1,9 +1,11 @@
 /**
- * Payment Component - Created by miguelcanobbio on 16/05/18.
+ * Payment Component    Created by miguelcanobbio on 16/05/18.
  */
 import * as React from 'react'
 import upperFirst from 'lodash/upperFirst'
 import messages from './messages'
+import { StripeProvider, Elements } from 'react-stripe-elements'
+import config from '../../config'
 import {
   Container,
   Title,
@@ -18,7 +20,6 @@ const { CREDITCARD, PAYPAL } = PaymentOptions
 
 interface Props {
   billingAddress: AddressType
-  billingCountry: string
   hasError: boolean
   cardHolderName: string
   sameBillingAndShipping: boolean
@@ -30,7 +31,7 @@ interface Props {
   paymentMethod: string
   skip: number
   currentPage: number
-  billingAddressSelected: number
+  indexAddressSelected: number
   limit: number
   showBillingForm: boolean
   showBillingAddressFormAction: (show: boolean) => void
@@ -57,7 +58,29 @@ interface Props {
 }
 
 class Payment extends React.PureComponent<Props, {}> {
-  state = { openConfirm: false }
+  state = {
+    stripe: null,
+    openConfirm: false
+  }
+
+  componentDidMount() {
+    if (window.Stripe) {
+      this.setState({ stripe: window.Stripe(config.pkStripeUS) })
+    } else {
+      // this code is safe to server-side render.
+      const stripeJs = document.createElement('script')
+      stripeJs.id = 'stripe-js'
+      stripeJs.async = true
+      stripeJs.src = 'https://js.stripe.com/v3/'
+      stripeJs.onload = () => {
+        this.setState({
+          stripe: window.Stripe(config.pkStripeUS)
+        })
+      }
+      // tslint:disable-next-line:no-unused-expression
+      document.body && document.body.appendChild(stripeJs)
+    }
+  }
 
   handleCancelConfirm = () => {
     this.setState({
@@ -92,7 +115,6 @@ class Payment extends React.PureComponent<Props, {}> {
     const {
       formatMessage,
       billingAddress,
-      billingCountry,
       hasError,
       cardHolderName,
       sameBillingAndShipping,
@@ -114,18 +136,17 @@ class Payment extends React.PureComponent<Props, {}> {
       skip,
       currentPage,
       setSelectedAddress,
-      billingAddressSelected,
+      indexAddressSelected,
       limit,
       setSkipValueAction,
       showBillingForm,
       showBillingAddressFormAction
     } = this.props
-    const { openConfirm } = this.state
+    const { stripe, openConfirm } = this.state
 
     if (!showContent) {
       return <div />
     }
-
     return (
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
@@ -148,39 +169,43 @@ class Payment extends React.PureComponent<Props, {}> {
           </MethodButton> */}
           {/* TODO: uncomment MethodButtons when paypal, alipay and bank transfer are able */}
         </ContainerMethods>
-        <CreditCardForm
-          {...{
-            formatMessage,
-            cardHolderName,
-            billingAddress,
-            billingCountry,
-            hasError,
-            stripeError,
-            loadingBilling,
-            setLoadingBillingAction,
-            setStripeErrorAction,
-            sameBillingAndShipping,
-            sameBillingAndAddressCheckedAction,
-            sameBillingAndAddressUncheckedAction,
-            invalidBillingFormAction,
-            setStripeCardDataAction,
-            nextStep,
-            showCardForm,
-            selectedCard,
-            showCardFormAction,
-            selectCardToPayAction,
-            skip,
-            currentPage,
-            setSelectedAddress,
-            limit,
-            setSkipValueAction,
-            showBillingForm,
-            showBillingAddressFormAction
-          }}
-          indexAddressSelected={billingAddressSelected}
-          selectDropdownAction={this.handleOnDropdownAction}
-          inputChangeAction={this.handleOnChangeInput}
-        />
+        <StripeProvider {...{ stripe }}>
+          <Elements>
+            <CreditCardForm
+              {...{
+                stripe,
+                formatMessage,
+                cardHolderName,
+                billingAddress,
+                hasError,
+                stripeError,
+                loadingBilling,
+                setLoadingBillingAction,
+                setStripeErrorAction,
+                sameBillingAndShipping,
+                sameBillingAndAddressCheckedAction,
+                sameBillingAndAddressUncheckedAction,
+                invalidBillingFormAction,
+                setStripeCardDataAction,
+                nextStep,
+                showCardForm,
+                selectedCard,
+                showCardFormAction,
+                selectCardToPayAction,
+                skip,
+                currentPage,
+                setSelectedAddress,
+                indexAddressSelected,
+                limit,
+                setSkipValueAction,
+                showBillingForm,
+                showBillingAddressFormAction
+              }}
+              selectDropdownAction={this.handleOnDropdownAction}
+              inputChangeAction={this.handleOnChangeInput}
+            />
+          </Elements>
+        </StripeProvider>
         <Modal
           {...{ formatMessage }}
           open={openConfirm}

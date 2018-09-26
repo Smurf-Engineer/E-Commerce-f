@@ -129,7 +129,9 @@ export class DesignSearch extends React.Component<Props, {}> {
       setOrderAction(data.data.order)
     } catch (error) {
       const errorMessage =
-        error.graphQLErrors.map((x: any) => x.message) || error.message
+        (error.graphQLErrors &&
+          error.graphQLErrors.map((x: any) => x.message)) ||
+        error.message
 
       const unauthorizedExp = /\bunauthorized\b/
       const unauthorized = unauthorizedExp.test(errorMessage)

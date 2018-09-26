@@ -50,6 +50,7 @@ interface Props {
   handleChangePage: (page: number) => void
   handleOrderBy?: (evt: ClickParam) => void
   sortOptions?: Element | null
+  contentTile: string
   sortByLabel: string
   data: Data
   history: any
@@ -60,6 +61,7 @@ interface Props {
   onPressDelete?: (id: string, name: string) => void
   withoutPadding?: boolean
   currentCurrency: string
+  genderFilters: string
 }
 
 export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
@@ -76,7 +78,8 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       onPressPrivate = () => {},
       onPressDelete = () => {},
       withoutPadding,
-      currentCurrency
+      currentCurrency,
+      genderFilters
     } = this.props
 
     let thumbnailsList
@@ -179,8 +182,11 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
             colors
           } = product
 
-          // TODO: filter by gender
-          const productImages = images ? images[0] : {}
+          const imgsByGender = images.find(
+            item => item.genderId === parseInt(genderFilters, 10)
+          )
+
+          const productImages = images ? imgsByGender || images[0] : {}
           return (
             <ThumbnailListItem key={index}>
               <ProductThumbnail
@@ -285,6 +291,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
 }
 
 type OwnProps = {
+  contentTile?: string
   collectionFilters?: string
   genderFilters?: string
   sportFilters?: string
@@ -301,6 +308,7 @@ type OwnProps = {
 const ThumbnailsListEnhance = compose(
   graphql<Data>(GetProductsQuery, {
     options: ({
+      contentTile,
       collectionFilters,
       genderFilters,
       categoryFilters,
@@ -315,6 +323,7 @@ const ThumbnailsListEnhance = compose(
       return {
         fetchPolicy: 'network-only',
         variables: {
+          contentTile: contentTile ? contentTile : null,
           collection: collectionFilters ? collectionFilters : null,
           gender: genderFilters ? genderFilters : null,
           category: categoryFilters ? categoryFilters : null,

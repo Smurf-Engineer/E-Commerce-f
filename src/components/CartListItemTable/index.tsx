@@ -252,12 +252,11 @@ class CartListItemTable extends React.Component<Props, State> {
                   {genderOptions}
                 </StyledSelect>
               </Cell>
-              {withColorColumn &&
-                !!colorObject && (
-                  <Cell>
-                    <ProductColor src={colorObject.image} />
-                  </Cell>
-                )}
+              {((withColorColumn && !!colorObject) || colorImage) && (
+                <Cell>
+                  <ProductColor src={colorImage || colorObject.image} />
+                </Cell>
+              )}
               <Cell>
                 <StyledSelect
                   onChange={e => this.handleSizeChange(e, index)}

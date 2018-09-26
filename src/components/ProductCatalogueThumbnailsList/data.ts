@@ -2,6 +2,7 @@ import gql from 'graphql-tag'
 
 export const GetProductsQuery = gql`
   query getProducts(
+    $contentTile: String
     $collection: String
     $gender: String
     $category: String
@@ -13,6 +14,7 @@ export const GetProductsQuery = gql`
     $offset: Int
   ) {
     products(
+      contentTile: $contentTile
       collection: $collection
       gender: $gender
       category: $category
@@ -62,6 +64,7 @@ export const GetProductsQuery = gql`
           back: back_image
           left: left_image
           right: right_image
+          genderId: gender_id
         }
         colors {
           name

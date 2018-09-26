@@ -4,7 +4,7 @@ import CustomProductDetail from '../screens/CustomProductDetail'
 import FitAndSizing from '../screens/FitAndSizing'
 import WorkAtJakroo from '../screens/WorkAtJakroo'
 import AboutUsPage from '../screens/AboutUsPage'
-import TemplateDownload from '../screens/TemplateDownload'
+// import TemplateDownload from '../screens/TemplateDownload' // TODO: hide template download route
 import JerseyComparison from '../screens/JerseyComparison'
 import WarrantyProgram from '../screens/WarrantyProgram'
 import Technology from '../screens/Technology'
@@ -59,11 +59,12 @@ const routes = [
     name: 'aboutUsPage',
     component: AboutUsPage
   },
-  {
-    path: '/template-download',
-    name: 'templateDownload',
-    component: TemplateDownload
-  },
+  // TODO: uncomment this route when be needed
+  // {
+  //   path: '/template-download',
+  //   name: 'templateDownload',
+  //   component: TemplateDownload
+  // },
   {
     path: '/jersey-comparison',
     name: 'jerseyComparison',

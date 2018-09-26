@@ -5,6 +5,7 @@ import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
 import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
+import shortid from 'shortid'
 import { graphql, compose } from 'react-apollo'
 import { BLACK, WHITE } from '../../theme/colors'
 import { designQuery } from './data'
@@ -457,8 +458,12 @@ class Render3D extends PureComponent {
       const imagesPromises = []
       const fonts = []
       const { objects } = JSON.parse(object)
-      for (const el of objects) {
+      const indexes = {}
+      objects.forEach((el, index) => {
+        const elId = shortid.generate()
+        el.id = elId
         el.hasRotatingPoint = false
+        indexes[elId] = index
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
@@ -481,7 +486,7 @@ class Render3D extends PureComponent {
           default:
             break
         }
-      }
+      })
       elements = [...elements, ...paths]
       let images = []
       if (!!imagesElements.length) {
@@ -499,11 +504,14 @@ class Render3D extends PureComponent {
       await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
+      this.canvasTexture.getObjects().forEach(el => {
+        el.moveTo(indexes[el.id])
+      })
       this.canvasTexture.renderAll()
       return true
     } catch (e) {
-      return false
       console.error('Error loading canvas object: ', e.message)
+      return false
     }
   }
 

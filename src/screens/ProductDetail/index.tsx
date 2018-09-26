@@ -6,7 +6,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
-import Responsive from 'react-responsive'
+// import Responsive from 'react-responsive'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
@@ -42,11 +42,11 @@ import {
   QuestionSpan,
   RelatedProductsContainer,
   ReviewsHeader,
-  Downloadtemplate,
-  DownloadTemplateContainer,
-  DownloadAnchor,
+  // Downloadtemplate,
+  // DownloadTemplateContainer,
+  // DownloadAnchor,
   AvailableLabel,
-  DownloadImg,
+  // DownloadImg,
   DetailsList,
   DetailsListItem,
   ProductAvailableColor,
@@ -74,10 +74,10 @@ import {
   ProductColors
 } from '../../types/common'
 import { ProductGenders } from './constants'
-import DownloadIcon from '../../assets/download.svg'
+// import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
 
-const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
+// const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
 const WHITENAME = 'White'
 const { Men, Women, Unisex } = ProductGenders
@@ -189,7 +189,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       get(product, 'retailMen', false) || get(product, 'retailWomen', false)
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
-    const template = get(product, 'template', '')
+    // const template = get(product, 'template', '')
     const products = get(product, 'relatedProducts', [] as Product[])
 
     const mpnCode = get(product, 'mpn')
@@ -490,7 +490,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     />
                   )}
                 </Spin>
-                {!isRetail &&
+                {/* {!isRetail &&
                   template && (
                     <Desktop>
                       <DownloadTemplateContainer>
@@ -502,7 +502,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                         </DownloadAnchor>
                       </DownloadTemplateContainer>
                     </Desktop>
-                  )}
+                  )} */}
               </ImagePreview>
               <ProductData>
                 <TitleRow>
