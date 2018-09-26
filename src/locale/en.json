@@ -117,6 +117,7 @@
   "components.Render3D.modalResetMessage": "Resetting the design will revert it back to the original selected design.",
   "components.Render3D.modalConfirmText": "Confirm",
   "components.Render3D.modalCancelText": "Cancel",
+  "components.Render3D.turOffHint": "Please don't show this again at start of design application",
   "components.forgotPassword.forgotPassWordLabel": "Forgot your password?",
   "components.forgotPassword.enterEmailLabel": "Enter your email to receive instructions on how to reset your password.",
   "components.forgotPassword.emailLabel": "Email",

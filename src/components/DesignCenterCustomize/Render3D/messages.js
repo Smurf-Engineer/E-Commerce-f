@@ -63,5 +63,9 @@ export default defineMessages({
   saveButton: {
     id: 'components.Render3D.saveButton',
     defaultMessage: 'Save'
+  },
+  turOffHint: {
+    id: 'components.Render3D.turOffHint',
+    defaultMessage: `Please don't show this again at start of design application`
   }
 })

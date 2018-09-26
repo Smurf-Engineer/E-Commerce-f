@@ -184,3 +184,19 @@ export const Size = styled.div`
   letter-spacing: 0.15px;
   line-height: 16px;
 `
+
+export const HintModalImage = styled.img`
+  width: 100%;
+`
+export const HintIcon = styled.img`
+  height: 90%;
+  position: absolute;
+  left: 0;
+  top: 30px;
+  cursor: pointer;
+`
+
+export const TurnOffHintRow = styled.div`
+  display: flex;
+  justify-content: center;
+`
