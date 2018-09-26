@@ -11,6 +11,6 @@ export default defineMessages({
   },
   select: {
     id: 'components.RegionSelect.title',
-    defaultMessage: 'Select state/province'
+    defaultMessage: 'Select State/Province'
   }
 })

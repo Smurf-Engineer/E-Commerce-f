@@ -11,12 +11,12 @@ export default defineMessages({
   },
   imageSizeError: {
     id: 'components.UploadTab.imageSizeError',
-    defaultMessage: 'Oh no! Your image has to be Max. 20mb'
+    defaultMessage: 'Oh no! Max file size is limited to 20MB'
   },
   imageExtensionError: {
     id: 'components.UploadTab.imageExtensionError',
     defaultMessage:
-      'Oh no! Your file has to be in eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd'
+      'Oh no! Your file has to be an eps, pdf, ai, svg, jpg, jpeg, png, gif, tif, tiff, bmp or psd'
   },
   recommendationTitle: {
     id: 'components.UploadTab.recommendationTitle',

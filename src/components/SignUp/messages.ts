@@ -8,7 +8,7 @@ export default defineMessages({
   saveAndAccessLegend: {
     id: 'components.signUp.saveAndAccessLegend',
     defaultMessage:
-      'Save and acess all your customized designs and preferences for a better shopping experience.'
+      'Save and access all your customized designs and preferences for a better shopping experience.'
   },
   orLabel: {
     id: 'components.signUp.orLabel',
@@ -68,6 +68,6 @@ export default defineMessages({
   },
   createAccountError: {
     id: 'components.signUp.createAccountError',
-    defaultMessage: 'Something wrong happened. Please try again!'
+    defaultMessage: 'Yikes, something went wrong. Please try again!'
   }
 })

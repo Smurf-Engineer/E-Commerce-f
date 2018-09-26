@@ -27,6 +27,6 @@ export default defineMessages({
   },
   notFoundSymbol: {
     id: 'components.SymbolTab.notFoundSymbol',
-    defaultMessage: 'Your search did not match with any symbol'
+    defaultMessage: 'Your search did not match with any available symbol'
   }
 })
