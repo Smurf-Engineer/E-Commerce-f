@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { Container, Title, Text } from './styledComponents'
+import config from '../../config'
 import messages from './messages'
 import Span from '../Common/UnderlinedLink'
 
@@ -20,7 +21,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
       <Text>
         <Span
           link={`${
-            process.env.STORAGE_URL
+            config.storageUrl
           }/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`}
         >
           {formatMessage(messages.pricing)}

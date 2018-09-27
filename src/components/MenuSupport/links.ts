@@ -1,7 +1,7 @@
 /**
  * Links info
  */
-
+import config from '../../config'
 const links = [
   {
     label: 'faq',
@@ -13,9 +13,7 @@ const links = [
   },
   {
     label: 'pricing',
-    url: `${
-      process.env.STORAGE_URL
-    }/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`
+    url: `${config.storageUrl}/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`
   },
   {
     label: 'warranty',
