@@ -18,7 +18,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
         <Span link="/faq">{formatMessage(messages.faq)}</Span>
       </Text>
       <Text>
-        <Span link="http://www.jakroo.com/price-sheets/2018Q1-USD_RETAIL_COND-2.pdf">
+        <Span link="https://storage.googleapis.com/jakroo/screens/pricingChart/JAKROO-JV2-PRICESHEET.pdf">
           {formatMessage(messages.pricing)}
         </Span>
       </Text>
