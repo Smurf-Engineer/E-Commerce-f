@@ -1,8 +1,9 @@
+// TODO: commented code is for hidding those sections, delete after confirm they won't be needed anymore
 export const sectionTitles = [
   'Artwork & Design',
   'Order & Payment',
-  'Production & Delivery',
-  'Distributors'
+  'Production & Delivery'
+  // 'Distributors'
 ]
 
 export const artandDesignQuestions = [
@@ -11,26 +12,26 @@ export const artandDesignQuestions = [
     question: 'chargeForDesignQuestion',
     answer: 'chargeForDesignAnswer'
   },
-  {
-    id: 'getstarted',
-    question: 'getStartedQuestion',
-    answer: 'getStartedAnswer'
-  },
-  {
-    id: 'canyouhelp',
-    question: 'canYouHelpQuestion',
-    answer: 'canYouHelpAnswer'
-  },
+  // {
+  //   id: 'getstarted',
+  //   question: 'getStartedQuestion',
+  //   answer: 'getStartedAnswer'
+  // },
+  // {
+  //   id: 'canyouhelp',
+  //   question: 'canYouHelpQuestion',
+  //   answer: 'canYouHelpAnswer'
+  // },
   {
     id: 'colorlimitations',
     question: 'colorLimitationsQuestion',
     answer: 'colorLimitationsAnswer'
   },
-  {
-    id: 'predesignchanges',
-    question: 'predesignChangesQuestion',
-    answer: 'predesignChangesAnswer'
-  },
+  // {
+  //   id: 'predesignchanges',
+  //   question: 'predesignChangesQuestion',
+  //   answer: 'predesignChangesAnswer'
+  // },
   {
     id: 'matchcolors',
     question: 'matchColorsQuestion',
@@ -54,11 +55,11 @@ export const orderingPaymentQuestions = [
     question: 'tieredPricingQuestion',
     answer: 'tieredPricingAnswer'
   },
-  {
-    id: 'orderOnline',
-    question: 'orderOnlineQuestion',
-    answer: 'orderOnlineAnswer'
-  },
+  // {
+  //   id: 'orderOnline',
+  //   question: 'orderOnlineQuestion',
+  //   answer: 'orderOnlineAnswer'
+  // },
   {
     id: 'paymentOptions',
     question: 'paymentOptionsQuestion',
@@ -73,12 +74,12 @@ export const orderingPaymentQuestions = [
     id: 'orderStatus',
     question: 'orderStatusQuestion',
     answer: 'orderStatusAnswer'
-  },
-  {
-    id: 'orderingPeriodEnded',
-    question: 'orderingPeriodEndedQuestion',
-    answer: 'orderingPeriodEndedAnswer'
   }
+  // {
+  //   id: 'orderingPeriodEnded',
+  //   question: 'orderingPeriodEndedQuestion',
+  //   answer: 'orderingPeriodEndedAnswer'
+  // }
 ]
 
 export const productionDeliveryQuestions = [
@@ -102,20 +103,25 @@ export const productionDeliveryQuestions = [
     question: 'whatsNextQuestion',
     answer: 'whatsNextAnswer'
   },
-  {
-    id: 'speedUpShipping',
-    question: 'speedUpShippingQuestion',
-    answer: 'speedUpShippingAnswer'
-  },
-  {
-    id: 'reduceShippingCost',
-    question: 'reduceShippingCostQuestion',
-    answer: 'reduceShippingCostAnswer'
-  },
+  // {
+  //   id: 'speedUpShipping',
+  //   question: 'speedUpShippingQuestion',
+  //   answer: 'speedUpShippingAnswer'
+  // },
+  // {
+  //   id: 'reduceShippingCost',
+  //   question: 'reduceShippingCostQuestion',
+  //   answer: 'reduceShippingCostAnswer'
+  // },
   {
     id: 'shipToPOAPOBox',
     question: 'shipToPOAPOBoxQuestion',
     answer: 'shipToPOAPOBoxAnswer'
+  },
+  {
+    id: 'orederInThreeWeeks',
+    question: 'orederInThreeWeeksQuestion',
+    answer: 'orederInThreeWeeksAnswer'
   }
 ]
 
