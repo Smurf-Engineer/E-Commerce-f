@@ -33,10 +33,7 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
       content = featuredContent.map(({ image, link }, key) => {
         return (
           <a {...{ key }} href={link}>
-            <StyledImg
-              src={image}
-              // onClick={this.handleGoTo(link)} TODO: uncomment later
-            />
+            <StyledImg src={image} />
           </a>
         )
       })
