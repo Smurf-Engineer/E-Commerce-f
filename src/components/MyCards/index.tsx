@@ -100,7 +100,7 @@ class MyCards extends React.Component<Props, {}> {
     }
   }
   componentDidMount() {
-    const { showCardFormAction = () => { }, data } = this.props
+    const { showCardFormAction = () => {}, data } = this.props
     if (window.Stripe) {
       this.setState({ stripe: window.Stripe(config.pkStripeUS) })
     } else {
@@ -168,7 +168,7 @@ class MyCards extends React.Component<Props, {}> {
     }
 
     const userCards = get(data, 'userCards', {})
-    const cards = get(userCards, 'cards', [] as CreditCardData[])
+    const cards = get(userCards, 'cards', [] as CreditCardData[]) || []
     const idDefaultCard = get(userCards, 'default', '')
 
     return (
@@ -310,7 +310,7 @@ class MyCards extends React.Component<Props, {}> {
     await addNewCard({
       variables: {
         token: stripeToken,
-        defaultValue: cardAsDefaultPayment,
+        defaultValue: cardAsDefaultPayment
       },
       refetchQueries: [{ query: cardsQuery }]
     })
