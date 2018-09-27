@@ -13,8 +13,9 @@ const links = [
   },
   {
     label: 'pricing',
-    url:
-      'https://storage.googleapis.com/jakroo-storage/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf'
+    url: `${
+      process.env.STORAGE_URL
+    }/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`
   },
   {
     label: 'warranty',
