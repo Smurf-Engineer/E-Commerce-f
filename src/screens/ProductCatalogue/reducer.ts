@@ -12,6 +12,9 @@ import {
   OPEN_SIDEBAR_MOBILE,
   RESET_REDUCER_DATA,
   CLEAR_FILTERS,
+  SET_SELECTED_HOME_FILTERS,
+  INLINE_FILTER,
+  CATEGORY_FILTER,
   cyclingGroup
 } from './constants'
 import { Reducer } from '../../types/common'
@@ -81,6 +84,12 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         genderFilters: {},
         sportFilters: {},
         categoryFilters: {}
+      })
+    case SET_SELECTED_HOME_FILTERS:
+      return state.merge({
+        sportFilters: { [ROADBIKE]: true },
+        categoryFilters: { [CATEGORY_FILTER]: true },
+        collectionFilters: { [INLINE_FILTER]: true }
       })
     default:
       return state
