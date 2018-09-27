@@ -14,17 +14,21 @@ import SizesTable from '../SizesTable'
 import { Chart } from '../../types/common'
 
 interface Props {
-  boxHeaders?: string[]
+  boxHeaders: string[]
   chart: Chart
   units: string
+  id?: string
   formatMessage: (messageDescriptor: any) => string
+  onBoxHeaderClick: (evt: React.MouseEvent<HTMLDivElement>) => void
 }
 
 class SizingChart extends React.Component<Props, {}> {
   render() {
     const {
+      id,
       boxHeaders,
       units,
+      onBoxHeaderClick,
       chart: { title, tables }
     } = this.props
 
@@ -34,18 +38,23 @@ class SizingChart extends React.Component<Props, {}> {
         const checked = title === boxHeader
 
         return (
-          <BoxHeader key={index} {...{ checked }}>
+          <BoxHeader
+            id={boxHeader}
+            key={index}
+            {...{ checked }}
+            onClick={onBoxHeaderClick}
+          >
             <FormattedMessage {...messages[boxHeader]} />
           </BoxHeader>
         )
       })
 
-    const renderTableList = tables.map((table, index) => (
-      <SizesTable key={index} {...{ units, table }} />
-    ))
+    const renderTableList = tables.map((table, index) => {
+      return <SizesTable key={index} {...{ units, table }} />
+    })
 
     return (
-      <Container>
+      <Container {...{ id }}>
         {boxHeaders && <BoxHeaderRow>{renderBoxHeaderList}</BoxHeaderRow>}
         <TableList multiple={tables.length > 1}>{renderTableList}</TableList>
       </Container>
