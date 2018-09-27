@@ -79,6 +79,7 @@ interface Props extends RouteComponentProps<any> {
   sortBySelected: (sortBy: string) => void
   setSkipValue: (skip: number, page: number) => void
   openSidebarMobile: (open: boolean) => void
+  setHomeSelectedFilters: () => void
   resetReducerAction: () => void
 }
 
@@ -101,15 +102,24 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
     const {
       location: { search, state },
       setSelectedFilters,
-      clearFiltersAction
+      clearFiltersAction,
+      setHomeSelectedFilters
     } = this.props
 
-    const { gender, category, sport } = queryString.parse(search)
-
+    const { gender, category, sport, filter } = queryString.parse(search)
     clearFiltersAction()
 
-    if (gender) {
-      this.setState({ ['showgenderFilters']: true } as any)
+    if (filter) {
+      this.setState({
+        showcollectionFilters: true,
+        showsportFilters: true,
+        showcategoryFilters: true
+      } as any)
+      setHomeSelectedFilters()
+    }
+
+    if (gender && !filter) {
+      this.setState({ showgenderFilters: true } as any)
       const filterObject = {
         type: 'genderFilters',
         name: upperFirst(gender),
@@ -118,7 +128,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       setSelectedFilters(filterObject)
     }
 
-    if (category) {
+    if (category && !filter) {
       const categoryName = this.getFormattedFilterName(category, '&')
 
       const filterObject = {
@@ -129,7 +139,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       setSelectedFilters(filterObject)
     }
 
-    if (sport) {
+    if (sport && !filter) {
       const sportName = this.getFormattedFilterName(sport)
 
       let filterObject = {
@@ -175,10 +185,8 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
       location: { search, state }
     } = history
 
-    let contentTile = ''
-    if (search.includes('contentTile')) {
-      contentTile = search.replace('?contentTile=', '')
-    }
+    const queryParams = queryString.parse(search)
+    const { contentTile } = queryParams
 
     const forced = get(state, 'forced', false)
 
