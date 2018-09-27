@@ -13,6 +13,7 @@ import find from 'lodash/find'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
+import Checkbox from 'antd/lib/checkbox'
 import {
   Container,
   Render,
@@ -30,7 +31,10 @@ import {
   SizeBox,
   SizeLabel,
   BottomControls,
-  TopButton
+  TopButton,
+  HintModalImage,
+  HintIcon,
+  TurnOffHintRow
 } from './styledComponents'
 import {
   viewPositions,
@@ -90,6 +94,7 @@ import {
   getClipArtCanvasElement,
   getImageCanvas
 } from './utils'
+import HelpModal from '../../Common/JakrooModal'
 import quickView from '../../../assets/quickview.svg'
 import left from '../../../assets/leftarrow.svg'
 import right from '../../../assets/arrow.svg'
@@ -99,6 +104,8 @@ import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 import topIcon from '../../../assets/Cube-Top.svg'
+import hintImg from '../../../assets/designCenterhelpHint.jpg'
+import helpTooltip from '../../../assets/tooltip.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 
@@ -118,7 +125,8 @@ class Render3D extends PureComponent {
     scaleFactor: 1,
     scaleFactorX: 1,
     scaleFactorY: 1,
-    isFirstAdd: true
+    isFirstAdd: true,
+    showHelpModal: true
   }
 
   dragComponent = null
@@ -183,12 +191,16 @@ class Render3D extends PureComponent {
     }
   }
 
+  componentWillMount() {
+    const hideHint = this.getHelpModalValueFromLocal()
+    this.setState({ showHelpModal: !hideHint })
+  }
+
   componentDidMount() {
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
     const { isMobile } = this.props
     const { clientWidth, clientHeight } = this.container
-
     const devicePixelRatio = window.devicePixelRatio || 1
 
     const precision = 'highp'
@@ -1108,7 +1120,7 @@ class Render3D extends PureComponent {
   }
 
   render() {
-    const { showDragmessage, currentView, progress } = this.state
+    const { showDragmessage, currentView, progress, showHelpModal } = this.state
     const {
       onPressQuickView,
       undoEnabled,
@@ -1121,6 +1133,8 @@ class Render3D extends PureComponent {
       canvas,
       selectedElement
     } = this.props
+
+    const showHint = this.getHelpModalValueFromLocal()
 
     {
       /*
@@ -1154,6 +1168,7 @@ class Render3D extends PureComponent {
         <Row>
           <Model>{productName}</Model>
           <QuickView onClick={onPressQuickView} src={quickView} />
+          <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </Row>
         <ButtonWrapper>
           <Button type="primary" onClick={this.takeDesignPicture}>
@@ -1225,8 +1240,42 @@ class Render3D extends PureComponent {
             {formatMessage(messages.modalResetMessage)}
           </ModalMessage>
         </Modal>
+        <HelpModal
+          open={showHelpModal}
+          withLogo={false}
+          requestClose={this.handleHelpModal}
+        >
+          <HintModalImage src={hintImg} alt="" />
+          {!showHint && (
+            <TurnOffHintRow>
+              <Checkbox onChange={this.disableHelpModal}>
+                {formatMessage(messages.turOffHint)}
+              </Checkbox>
+            </TurnOffHintRow>
+          )}
+        </HelpModal>
       </Container>
     )
+  }
+
+  disableHelpModal = evt => {
+    const {
+      target: { checked }
+    } = evt
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('disableDesignCenterHint', checked)
+    }
+  }
+
+  handleHelpModal = () => {
+    const { showHelpModal } = this.state
+    this.setState({ showHelpModal: !showHelpModal })
+  }
+
+  getHelpModalValueFromLocal = () => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('disableDesignCenterHint')
+    }
   }
 
   applyCanvasEl = canvasEl => {

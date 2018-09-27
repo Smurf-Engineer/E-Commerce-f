@@ -19,7 +19,7 @@ export default defineMessages({
   },
   priceDropTitle: {
     id: 'screens.StoreFrontContent.priceDropTitle',
-    defaultMessage: 'DYANMIC PRICE DROP'
+    defaultMessage: 'DYNAMIC PRICE DROP'
   },
   priceDropSubTitle: {
     id: 'screens.StoreFrontContent.priceDropSubTitle',

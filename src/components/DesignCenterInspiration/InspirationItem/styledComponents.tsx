@@ -13,6 +13,7 @@ export const Image = styled.img`
   width: 221px;
   height: 221px;
   background-color: #f1f4f5;
+  object-fit: cover;
 `
 
 export const Title = styled.div`
@@ -23,5 +24,4 @@ export const Title = styled.div`
   letter-spacing: 0.11px;
   line-height: 22px;
   text-align: center;
-  margin-top 12px;
 `

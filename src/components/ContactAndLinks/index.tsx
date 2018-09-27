@@ -7,7 +7,8 @@ import CustomerSupport from '../CustomerSupport'
 import DesignSupport from '../DesignSupport'
 import MediaQuery from 'react-responsive'
 import AboutUs from '../AboutUs'
-import Teams from '../Teams'
+// TODO: commented code is for hiding the teams section in the footer, delete when confirm it woun'd be needed anymore
+// import Teams from '../Teams'
 import {
   Container,
   ComplianceLogos,
@@ -38,7 +39,7 @@ const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
               <CustomerSupport {...{ history, formatMessage }} />
               <DesignSupport {...{ history, formatMessage }} />
               <AboutUs {...{ history, formatMessage }} />
-              <Teams {...{ history, formatMessage }} />
+              {/* <Teams {...{ history, formatMessage }} /> */}
               <ComplianceLogos>
                 <a href="/compliance">
                   <StyledImg alt="logo" src={BSCILogo} />
@@ -60,7 +61,7 @@ const ContactAndLinks = ({ formatMessage, fakeWidth, history }: Props) => {
                 </div>
                 <div>
                   <AboutUs {...{ history, formatMessage }} />
-                  <Teams {...{ history, formatMessage }} />
+                  {/* <Teams {...{ history, formatMessage }} /> */}
                 </div>
               </Row>
               <ComplianceLogos>

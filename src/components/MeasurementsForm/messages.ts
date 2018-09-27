@@ -15,11 +15,11 @@ export default defineMessages({
   },
   man: {
     id: 'components.MeasurementsForm.man',
-    defaultMessage: 'Man'
+    defaultMessage: 'Men'
   },
   woman: {
     id: 'components.MeasurementsForm.woman',
-    defaultMessage: 'Woman'
+    defaultMessage: 'Women'
   },
   lbs: {
     id: 'components.MeasurementsForm.lbs',

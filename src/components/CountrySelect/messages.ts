@@ -11,6 +11,6 @@ export default defineMessages({
   },
   select: {
     id: 'components.CountrySelect.tittle',
-    defaultMessage: 'Select country'
+    defaultMessage: 'Select Country'
   }
 })

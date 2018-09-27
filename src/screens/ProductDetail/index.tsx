@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 // import Responsive from 'react-responsive'
+import zenscroll from 'zenscroll'
 import queryString from 'query-string'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
@@ -141,6 +142,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       setSelectedFitAction,
       setSelectedColorAction
     } = this.props
+    zenscroll.toY(0, 0)
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
     const colors = get(product, 'colors', [] as ProductColors[])
     if (!fitStyles.length || !fitStyles[0].id) {
@@ -175,6 +177,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       currentCurrency,
       data: { product, error }
     } = this.props
+
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
     const name = get(product, 'name', '')

@@ -88,6 +88,6 @@ export default defineMessages({
   annotation: {
     id: 'components.OrderDetails.annotation',
     defaultMessage:
-      '* For any cancelations or refunds inquiry, please contact Customer Service.'
+      '* For order cancellations or information on refunds, please contact Customer Service.'
   }
 })

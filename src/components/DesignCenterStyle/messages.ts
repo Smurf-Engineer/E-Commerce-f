@@ -32,7 +32,7 @@ export default defineMessages({
   },
   emptyMessage: {
     id: 'components.DesignCenterStyle.emptyMessage',
-    defaultMessage: 'Seems there is no designs of this complexity, yet.'
+    defaultMessage: 'Seems there are no designs of this complexity, yet.'
   },
   errorMessage: {
     id: 'app.error.message',

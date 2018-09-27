@@ -39,6 +39,6 @@ export default defineMessages({
   },
   loginError: {
     id: 'components.login.createAccountError',
-    defaultMessage: 'Something wrong happened. Please try again!'
+    defaultMessage: 'Something went wrong. Please try again!'
   }
 })

@@ -28,7 +28,7 @@ export default defineMessages({
   modalResetMessage: {
     id: 'components.Render3D.modalResetMessage',
     defaultMessage:
-      'Resetting the design will revert back to the original selected design.'
+      'Resetting the design will revert back it to the original selected design.'
   },
   modalConfirmText: {
     id: 'components.Render3D.modalConfirmText',
@@ -49,12 +49,12 @@ export default defineMessages({
   modalFontMessage: {
     id: 'components.Render3D.modalFontMessage',
     defaultMessage:
-      'Your file contains fonts, which will cause your text to look wrong. Please convert the font to outlined paths, you can add text using the designer text option. If none of this options work for you please e-mail or give us a call at 1.800.485.7067 ext 109'
+      'Your file contains fonts, which will cause your text to incorrectly print. Please convert the font to outline paths. You can also add text by using the designer text tool. If neither of these options work for you, please e-mail, message us in chat, or give us a call at 1.800.485.7067 ext 109'
   },
   modalResolutionMessage: {
     id: 'components.Render3D.modalResolutionMessage',
     defaultMessage:
-      'The resolution of your graphic in its current size is too poor'
+      'The resolution of your graphic in its current size is too low'
   },
   sizeMessage: {
     id: 'components.Render3D.sizeMessage',
@@ -63,5 +63,9 @@ export default defineMessages({
   saveButton: {
     id: 'components.Render3D.saveButton',
     defaultMessage: 'Save'
+  },
+  turOffHint: {
+    id: 'components.Render3D.turOffHint',
+    defaultMessage: `Please don't show this again at start of design application`
   }
 })

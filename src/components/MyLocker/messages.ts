@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   message: {
     id: 'components.MyLocker.message',
-    defaultMessage: 'These are the designs that you have created and saved.'
+    defaultMessage: 'These are your saved designs'
   },
   titleError: {
     id: 'components.MyLocker.titleError',
@@ -19,7 +19,8 @@ export default defineMessages({
   },
   messageEmpty: {
     id: 'components.MyLocker.messageEmpty',
-    defaultMessage: 'Your Locker is empty. Go to the design app and start an awesome design!'
+    defaultMessage:
+      'Your Locker is empty. Go to the design app and start an awesome design!'
   },
   deleteDesign: {
     id: 'components.MyLocker.deleteDesign',
