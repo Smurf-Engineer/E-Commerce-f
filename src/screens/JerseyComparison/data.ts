@@ -1,8 +1,8 @@
 import gql from 'graphql-tag'
 
-export const GetProductsByIdQuery = gql`
-  query GetProductByID($id: Int!) {
-    product(id: $id) {
+export const GetProductsToCompareQuery = gql`
+  query ProductsToCompare {
+    product: getProductsToCompare {
       id
       name
       priceRange {
