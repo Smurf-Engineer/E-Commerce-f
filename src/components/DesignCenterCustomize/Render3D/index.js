@@ -520,7 +520,9 @@ class Render3D extends PureComponent {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
+      colors: areaColors,
+      designHasChanges
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -640,7 +642,7 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set(DEFAULT_COLOR)
           }
-
+          const svgColors = designHasChanges ? areaColors : colors
           areas.forEach(
             (map, index) =>
               (children[
@@ -648,7 +650,7 @@ class Render3D extends PureComponent {
               ].material = new THREE.MeshPhongMaterial({
                 map,
                 side: THREE.FrontSide,
-                color: colors[index],
+                color: svgColors[index],
                 bumpMap,
                 transparent: true
               }))

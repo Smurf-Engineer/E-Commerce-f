@@ -23,7 +23,7 @@ export const setSearchParam = (param: string): AnyAction => ({
 export const openQuickViewAction = (
   id: number,
   yotpoId: string | null,
-  gender: number
+  gender?: number
 ): AnyAction => ({
   type: OPEN_QUICKVIEW_ACTION,
   id,
