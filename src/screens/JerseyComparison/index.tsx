@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { injectIntl, InjectedIntl } from 'react-intl'
 import MediaQuery from 'react-responsive'
-import get from 'lodash/get'
 import filter from 'lodash/filter'
 import messages from './messages'
 import {
@@ -26,19 +25,26 @@ import {
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import config from '../../config/index'
-import { GetProductsByIdQuery } from './data'
+import { GetProductsToCompareQuery } from './data'
 import jerseysInfo from './jerseysInfo'
+import { QueryProps, ProductType, PriceRange } from '../../types/common'
 
 interface Jersey {
   id: number
   name: string
 }
 
+interface ProductToCompareType extends ProductType {
+  priceRange: PriceRange[]
+  name: string
+}
+interface Data extends QueryProps {
+  product: ProductToCompareType[]
+}
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
-  fondoData: any
-  tourData: any
-  novaData: any
+  data: Data
+  productsData: ProductToCompareType[]
   currentCurrency: string
 }
 
@@ -46,13 +52,20 @@ const MAX_LIMIT_PRICES = 4
 
 const jerseys: Jersey[] = [
   { name: 'FONDO', id: 7 },
-  { name: 'TOUR', id: 17 },
-  { name: 'NOVA', id: 11 }
+  { name: 'TOUR', id: 13 },
+  { name: 'NOVA', id: 5 }
 ]
 
 export class JerseyComparison extends React.Component<Props, {}> {
   render() {
-    const { intl, history } = this.props
+    const {
+      intl,
+      history,
+      data: { loading, error }
+    } = this.props
+    if (loading || error) {
+      return null
+    }
     const { formatMessage } = intl
 
     const pricesT = [
@@ -122,7 +135,7 @@ export class JerseyComparison extends React.Component<Props, {}> {
           <PriceTitlesContainer>{pricesTitles}</PriceTitlesContainer>
           <div>
             {this.getPricesArray(msg).map(
-              ({ price, shortName: symbol }, key: number) => (
+              ({ shortName: symbol, price }, key: number) => (
                 <InfoText {...{ key }}>
                   {key < MAX_LIMIT_PRICES
                     ? `${symbol} ${price}`
@@ -208,21 +221,18 @@ export class JerseyComparison extends React.Component<Props, {}> {
   }
 
   getPricesArray = (title: string) => {
-    const { fondoData, tourData, novaData, currentCurrency } = this.props
+    const {
+      currentCurrency,
+      data: { product: productsArray }
+    } = this.props
 
-    const arr = [
-      get(fondoData, 'product'),
-      get(tourData, 'product'),
-      get(novaData, 'product')
-    ]
-
-    let priceArray = arr.find(
+    let priceArray = productsArray.find(
       product => product && product.name.toLowerCase() === title.toLowerCase()
     )
 
-    priceArray = priceArray && priceArray.priceRange
+    const currency = priceArray && priceArray.priceRange
 
-    const currencyPrices = filter(priceArray, {
+    const currencyPrices = filter(currency, {
       abbreviation: currentCurrency || config.defaultCurrency
     })
 
@@ -247,33 +257,7 @@ const mapStateToProps = (state: any) => state.get('languageProvider').toJS()
 
 const JerseyComparisonEnhanced = compose(
   injectIntl,
-  graphql<any>(GetProductsByIdQuery, {
-    options: {
-      variables: {
-        id: 7
-      },
-      fetchPolicy: 'network-only'
-    },
-    name: 'fondoData'
-  }),
-  graphql<any>(GetProductsByIdQuery, {
-    options: {
-      variables: {
-        id: 17
-      },
-      fetchPolicy: 'network-only'
-    },
-    name: 'tourData'
-  }),
-  graphql<any>(GetProductsByIdQuery, {
-    options: {
-      variables: {
-        id: 11
-      },
-      fetchPolicy: 'network-only'
-    },
-    name: 'novaData'
-  }),
+  graphql(GetProductsToCompareQuery),
   connect(mapStateToProps)
 )(JerseyComparison)
 

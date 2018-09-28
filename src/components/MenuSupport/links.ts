@@ -1,7 +1,7 @@
 /**
  * Links info
  */
-
+import config from '../../config'
 const links = [
   {
     label: 'faq',
@@ -13,8 +13,7 @@ const links = [
   },
   {
     label: 'pricing',
-    url:
-      'https://storage.googleapis.com/jakroo/screens/pricingChart/JAKROO-JV2-PRICESHEET.pdf'
+    url: `${config.storageUrl}/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`
   },
   {
     label: 'warranty',

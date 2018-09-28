@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import zenscroll from 'zenscroll'
 import messages from './messages'
 import {
   Container,
@@ -64,6 +65,7 @@ export class RelatedProducts extends React.Component<Props, {}> {
           images={productImages}
           onPressQuickView={this.handleOnQuickView}
           onPressCustomize={this.handleOnCustomize}
+          onPressThumbnail={this.handlePressThumbnail(id, yotpoId)}
           customizableLabel={formatMessage(messages.customizableLabel)}
           disableSlider={phone}
           labelButton={
@@ -82,6 +84,11 @@ export class RelatedProducts extends React.Component<Props, {}> {
         <ProductsContainer>{renderProductList}</ProductsContainer>
       </Container>
     )
+  }
+  handlePressThumbnail = (id: number, yotpoId: string) => () => {
+    const { history } = this.props
+    zenscroll.toY(0)
+    history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
   }
 
   handleOnCustomize = (id: string) => {
