@@ -619,7 +619,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       data: { product }
     } = this.props
     const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
-    if (fitStyles.length) {
+    if (fitStyles.length && fitStyles[0].id) {
       return (
         selectedSize.id >= 0 &&
         selectedFit &&
