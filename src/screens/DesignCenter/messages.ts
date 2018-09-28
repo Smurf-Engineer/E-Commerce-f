@@ -50,7 +50,7 @@ export default defineMessages({
     id: 'screens.DesignCenter.unsupportedDeviceContent',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'To start customizing this product, you have to be on a device with a larger screen such as tablet or a desktop computer.'
+      'For the best 3D design experience, please return on a device with a larger screen such as a laptop or desktop computer.'
   },
   unsupportedDeviceButton: {
     id: 'screens.DesignCenter.unsupportedDeviceButton',
