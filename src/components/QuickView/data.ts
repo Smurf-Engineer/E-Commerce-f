@@ -36,7 +36,7 @@ export const QuickViewQuery = gql`
         total: total_reviews
         averageScore: average_score
       }
-      images: pictures {
+      images: original_pictures {
         front: front_image
         back: back_image
         left: left_image

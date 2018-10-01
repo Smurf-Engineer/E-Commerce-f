@@ -139,15 +139,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   componentDidMount() {
     const {
       data: { product },
-      setSelectedFitAction,
+      // setSelectedFitAction, // TODO: refactor if needed
       setSelectedColorAction
     } = this.props
     zenscroll.toY(0, 0)
-    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    // const fitStyles = get(product, 'fitStyles', []) as SelectedType[] // TODO: refactor if needed
     const colors = get(product, 'colors', [] as ProductColors[])
-    if (!fitStyles.length || !fitStyles[0].id) {
-      setSelectedFitAction({ id: 1, name: 'Standard' })
-    }
+    // TODO: refactor if needed
+    // if (!fitStyles.length || !fitStyles[0].id) {
+    //   setSelectedFitAction({ id: 1, name: 'Standard' })
+    // }
     if (colors && colors.length === 1 && colors[0].id) {
       const { id, name } = colors[0]
       setSelectedColorAction({ id, name })
@@ -614,8 +615,22 @@ export class ProductDetail extends React.Component<Props, StateProps> {
   }
 
   validateAddtoCart = () => {
-    const { selectedSize, selectedFit, selectedColor } = this.props
-    return selectedSize.id >= 0 && selectedFit.id && selectedColor.id
+    const {
+      selectedSize,
+      selectedColor,
+      selectedFit,
+      data: { product }
+    } = this.props
+    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
+    if (fitStyles.length && fitStyles[0].id) {
+      return (
+        selectedSize.id >= 0 &&
+        selectedFit &&
+        selectedFit.id &&
+        selectedColor.id
+      )
+    }
+    return selectedSize.id >= 0 && selectedColor.id
   }
 
   handleSelectColor = (color: SelectedType) => () => {
