@@ -175,11 +175,12 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       loadingImage,
       setLoadingImageAction,
       currentCurrency,
-      data: { product, error }
+      data: { product, error, loading }
     } = this.props
 
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
+
     const name = get(product, 'name', '')
     // TODO: commented until MNP code gets implemented in all retail products
     // const code = get(product, 'code', '')
@@ -479,20 +480,22 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           {product && (
             <Content>
               <ImagePreview>
-                <Spin spinning={loadingImage}>
-                  {!loadingImage && (
-                    <ImagesSlider
-                      onLoadModel={setLoadingModel}
-                      squareArrows={true}
-                      {...{
-                        images,
-                        moreImages,
-                        loadingImage,
-                        setLoadingImageAction
-                      }}
-                    />
-                  )}
-                </Spin>
+                {loading ? (
+                  <Loading>
+                    <Spin />
+                  </Loading>
+                ) : (
+                  <ImagesSlider
+                    onLoadModel={setLoadingModel}
+                    squareArrows={true}
+                    {...{
+                      images,
+                      moreImages,
+                      loadingImage,
+                      setLoadingImageAction
+                    }}
+                  />
+                )}
                 {/* {!isRetail &&
                   template && (
                     <Desktop>
@@ -651,7 +654,8 @@ const ProductDetailEnhance = compose(
       return {
         variables: {
           id: queryParams ? queryParams.id : null
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     }
   }),
