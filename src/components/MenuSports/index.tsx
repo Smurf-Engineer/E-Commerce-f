@@ -70,7 +70,7 @@ export class MenuSports extends React.PureComponent<Props, {}> {
 
   onPressThumbnail = () => {
     const { visible, type, onPressThumbnail } = this.props
-    onPressThumbnail(visible, type)
+    onPressThumbnail(!visible, type)
   }
 
   getFilter = (array: any[], index: number) =>
@@ -147,7 +147,7 @@ type OwnProps = {
   sports?: Filter[]
 }
 
-const MenuGenderEnhance = compose(
+const MenuSportsEnhanced = compose(
   graphql<Data>(categoriesQuery, {
     options: ({ type, sports }: OwnProps) => {
       const sportId =
@@ -165,4 +165,4 @@ const MenuGenderEnhance = compose(
   )
 )(MenuSports)
 
-export default MenuGenderEnhance
+export default MenuSportsEnhanced
