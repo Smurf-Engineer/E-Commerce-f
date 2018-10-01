@@ -83,7 +83,7 @@ export class MenuGender extends React.Component<Props, {}> {
 
   onPressThumbnail = () => {
     const { visible, type, onPressThumbnail } = this.props
-    onPressThumbnail(visible, type)
+    onPressThumbnail(!visible, type)
   }
 
   getFilter = (array: any[], index: number) =>
