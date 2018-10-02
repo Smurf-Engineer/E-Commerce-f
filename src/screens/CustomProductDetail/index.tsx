@@ -92,7 +92,6 @@ interface Props extends RouteComponentProps<any> {
   showSpecs: boolean
   currentCurrency: string
   phone: boolean
-  mobile: boolean
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
