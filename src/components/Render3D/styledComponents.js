@@ -9,11 +9,19 @@ import AntdButton from 'antd/lib/button'
 export const Container = styled.div`
   position: relative;
   width: 100%;
+
+  @media (max-width: 375px) {
+    height: 25em;
+  }
 `
 
 export const Render = styled.div`
   height: ${({ customProduct }) => (customProduct ? '536px' : '90vh')};
   width: 100%;
+
+  @media (max-width: 375px) {
+    height: 25em;
+  }
 `
 
 export const Model = styled.div`
@@ -77,6 +85,10 @@ export const DragText = styled.div`
   bottom: 19%;
   left: 50%;
   transform: translate(-50%, -50%);
+
+  @media (max-width: 375px) {
+    bottom: 5%;
+  }
 `
 
 export const ModelType = styled.div`
