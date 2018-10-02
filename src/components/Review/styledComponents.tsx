@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { GRAY_DARK } from '../../theme/colors'
 
 export const Container = styled.div`
   width: 100%;
@@ -13,13 +14,21 @@ export const CartContent = styled.div`
   width: 100%;
 `
 
+export const Text = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 23px;
+  margin: 6px 0;
+`
+
 export const CartList = styled.ul`
   padding: 0;
   height: 100%;
 `
 
 export const Title = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   line-height: 22px;
@@ -51,7 +60,7 @@ export const InfoContainer = styled.div`
 `
 
 export const PaymentText = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.11px;
   line-height: 23px;
