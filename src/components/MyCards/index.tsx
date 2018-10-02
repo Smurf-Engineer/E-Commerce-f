@@ -14,7 +14,6 @@ import * as MyCardsActions from './actions'
 import MyCardsList from '../MyCardsList'
 import ModalCreditCard from '../ModalCreditCard'
 import messages from './messages'
-import config from '../../config'
 import withError from '../../components/WithError'
 import withLoading from '../../components/WithLoading'
 import {
