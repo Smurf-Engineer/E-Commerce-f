@@ -85,7 +85,7 @@ export const initialState = fromJS({
   selectedCard: {},
   // Review
   loadingPlaceOrder: false,
-  paymentMethod: 'credit card',
+  paymentMethod: PaymentOptions.CREDITCARD,
   countryId: null,
   openAddressesModal: false,
   couponCode: null,

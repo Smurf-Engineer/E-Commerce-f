@@ -17,7 +17,7 @@ import * as checkoutActions from './actions'
 import { getTotalItemsIncart } from '../../components/MainLayout/actions'
 import messages from './messages'
 import { AddAddressMutation, PlaceOrderMutation, CurrencyQuery } from './data'
-import { CheckoutTabs } from './constants'
+import { CheckoutTabs, PaymentOptions } from './constants'
 
 import { isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
 
@@ -685,7 +685,7 @@ class Checkout extends React.Component<Props, {}> {
     if (indexAddressSelected === -1) {
       this.saveAddress(shippingAddress)
     }
-    if (paymentMethod === 'credit card' && !sameBillingAndShipping) {
+    if (paymentMethod === PaymentOptions.CREDITCARD && !sameBillingAndShipping) {
       this.saveAddress(billingAddress)
     }
 
