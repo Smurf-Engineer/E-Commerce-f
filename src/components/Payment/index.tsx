@@ -57,6 +57,12 @@ interface Props {
   saveCountryAction: (countryCode: string | null) => void
 }
 
+interface MyWindow extends Window {
+  Stripe: any
+}
+
+declare var window: MyWindow
+
 class Payment extends React.PureComponent<Props, {}> {
   state = {
     stripe: null,
