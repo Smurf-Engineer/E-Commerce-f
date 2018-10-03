@@ -11,6 +11,7 @@ export const Text = styled.div`
 
 export const ColorButtons = styled.div`
   display: flex;
+  flex-direction: row-reverse;
   justify-content: space-between;
 `
 
