@@ -39,7 +39,7 @@ interface Props {
   logoutAction: () => void
   currentRegion: string
   currentLanguage: number
-  currentCurrency: string
+  currentCurrency?: string
   intl: InjectedIntl
   hideTop?: boolean
   hideBottom?: boolean
@@ -73,8 +73,16 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   handleOnGoHome = () => {
-    const { history } = this.props
-    history.replace('/us?lang=en&currency=usd')
+    const {
+      history,
+      currentCurrency,
+      currentRegion,
+      currentLanguage
+    } = this.props
+    history.replace(
+      `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency ||
+        'usd'}`
+    )
   }
 
   handleGoTo = (path: string) => {
