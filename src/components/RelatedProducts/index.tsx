@@ -87,8 +87,8 @@ export class RelatedProducts extends React.Component<Props, {}> {
   }
   handlePressThumbnail = (id: number, yotpoId: string) => () => {
     const { history } = this.props
-    zenscroll.toY(0)
     history.push(`/product?id=${id}&yotpoId=${yotpoId}`)
+    zenscroll.toY(0, 0)
   }
 
   handleOnCustomize = (id: string) => {
