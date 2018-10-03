@@ -2,7 +2,6 @@
  * ShoppingCartPage Reducer - Created by gustavomedina on 02/05/18.
  */
 import { fromJS } from 'immutable'
-import get from 'lodash/get'
 import {
   DEFAULT_ACTION,
   SET_ITEMS_ACTION,
@@ -44,8 +43,7 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.set('cart', fromJS(action.items))
     case ADD_ITEM_DETAIL_ACTION: {
       const { index } = action
-      const cart = state.get('cart').toJS()
-      const color = get(cart, `[${index}].itemDetails[0].color`, {})
+      const color = state.getIn(['cart', index, 'itemDetails', 0, 'color'])
       return state.updateIn(
         ['cart', index, 'itemDetails'],
         (itemDetails: any) => itemDetails.push(fromJS({ color, quantity: 1 }))
