@@ -80,8 +80,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       currentLanguage
     } = this.props
     history.replace(
-      `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency ||
-        'usd'}`
+      `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency}`
     )
   }
 
