@@ -49,6 +49,7 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
+    const { phoneView } = this.props
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -63,7 +64,7 @@ class Render3D extends PureComponent {
       0.1,
       1000
     )
-    camera.position.z = 250
+    camera.position.z = phoneView ? 150 : 250
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
 
