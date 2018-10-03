@@ -91,6 +91,7 @@ interface Props extends RouteComponentProps<any> {
   showDetails: boolean
   showSpecs: boolean
   currentCurrency: string
+  phone: boolean
   setLoadingModel: (loading: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -122,9 +123,9 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       openFitInfo,
       showDetails,
       showSpecs,
-      currentCurrency
+      currentCurrency,
+      phone
     } = this.props
-
     const { formatMessage } = intl
 
     const queryParams = queryString.parse(search)
@@ -378,7 +379,11 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 <ImagesSlider
                   onLoadModel={setLoadingModel}
                   threeDmodel={
-                    <Render3D customProduct={true} {...{ designId }} />
+                    <Render3D
+                      customProduct={true}
+                      {...{ designId }}
+                      phoneView={phone}
+                    />
                   }
                   customProduct={true}
                   customImage={designImage}
@@ -484,7 +489,8 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => {
   const productDetail = state.get('customProductDetail').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...productDetail, ...langProps }
+  const app = state.get('responsive').toJS()
+  return { ...productDetail, ...langProps, ...app }
 }
 
 type OwnProps = {

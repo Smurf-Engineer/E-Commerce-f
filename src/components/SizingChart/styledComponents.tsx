@@ -32,6 +32,7 @@ export const BoxHeader = styled.div`
   padding: 14px 0px;
   text-align: center;
   width: 100px;
+  cursor: pointer;
 
   @media (min-width: 320px) and (max-width: 480px) {
     font-size: 12px;
