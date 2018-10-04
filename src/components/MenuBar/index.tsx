@@ -37,8 +37,8 @@ interface Props {
   onChangeLocation: (payload: RegionConfig) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
-  currentRegion: string
-  currentLanguage: number
+  currentRegion?: string
+  currentLanguage?: string
   currentCurrency?: string
   intl: InjectedIntl
   hideTop?: boolean
@@ -79,7 +79,7 @@ class MenuBar extends React.Component<Props, StateProps> {
       currentRegion,
       currentLanguage
     } = this.props
-    history.replace(
+    history.push(
       `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency}`
     )
   }

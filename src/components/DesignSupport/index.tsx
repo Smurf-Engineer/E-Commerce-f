@@ -10,12 +10,13 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   history?: any
 }
-const DesignSupport = ({ formatMessage }: Props) => {
+
+const DesignSupport = ({ formatMessage, history }: Props) => {
   return (
     <Container>
       <Title>{formatMessage(messages.title)}</Title>
       <Text>
-        <UnderlinedLink link="/artwork-specs">
+        <UnderlinedLink link={'/artwork-specs'}>
           {formatMessage(messages.artwork)}
         </UnderlinedLink>
       </Text>

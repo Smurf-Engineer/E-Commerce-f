@@ -45,6 +45,10 @@ export class Faq extends React.Component<Props, {}> {
   private productiondelivery: any
   private distributors: any
 
+  componentWillMount() {
+    zenscroll.toY(0, 0)
+  }
+
   render() {
     const { history, intl } = this.props
 

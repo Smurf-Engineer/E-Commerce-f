@@ -21,13 +21,32 @@ import Layout from '../../components/MainLayout'
 
 interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
+  privacyPolicy: boolean
 }
 
 export class TermsOfUse extends React.Component<Props, {}> {
   private termsAndConditions: any
   private privacyPolicy: any
+
+  componentDidMount() {
+    const { history } = this.props
+    this.scrollTo(history.location.hash, true)
+  }
+  componentDidUpdate() {
+    const { history } = this.props
+    this.scrollTo(history.location.hash, false)
+  }
+
+  scrollTo = (hash: string, firstmount: boolean) => {
+    if (hash) {
+      zenscroll.to(this.privacyPolicy, firstmount ? 0 : 600)
+    } else {
+      zenscroll.toY(0, firstmount ? 0 : 600)
+    }
+  }
   render() {
     const { history, intl } = this.props
+
     return (
       <Layout {...{ intl, history }}>
         <Container>
@@ -89,7 +108,6 @@ export class TermsOfUse extends React.Component<Props, {}> {
     const {
       currentTarget: { id }
     } = evt
-
     switch (id) {
       case 'terms':
         zenscroll.to(this.termsAndConditions)
