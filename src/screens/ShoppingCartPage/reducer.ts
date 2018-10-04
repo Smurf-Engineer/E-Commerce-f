@@ -41,11 +41,14 @@ const shoppingCartPageReducer: Reducer<any> = (
       return state.set('someKey', action.someValue)
     case SET_ITEMS_ACTION:
       return state.set('cart', fromJS(action.items))
-    case ADD_ITEM_DETAIL_ACTION:
+    case ADD_ITEM_DETAIL_ACTION: {
+      const { index } = action
+      const color = state.getIn(['cart', index, 'itemDetails', 0, 'color'])
       return state.updateIn(
-        ['cart', action.index, 'itemDetails'],
-        (itemDetails: any) => itemDetails.push(fromJS({ quantity: 1 }))
+        ['cart', index, 'itemDetails'],
+        (itemDetails: any) => itemDetails.push(fromJS({ color, quantity: 1 }))
       )
+    }
     case DELETE_ITEM_DETAIL_ACTION:
       return state.updateIn(
         ['cart', action.index, 'itemDetails'],

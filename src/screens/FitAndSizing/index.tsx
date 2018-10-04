@@ -61,7 +61,6 @@ export class FitAndSizing extends React.Component<Props, {}> {
     const { intl, history, msrmntSystemSelected } = this.props
 
     const { formatMessage } = intl
-
     const buttons = sectionTitles.map((title, key) => (
       <AnchorButton
         id={key.toString()}
@@ -74,9 +73,11 @@ export class FitAndSizing extends React.Component<Props, {}> {
 
     const sizingChartList = charts.map((chart, index) => (
       <SizingChart
+        id={`${chart.title}-table`}
         key={index}
         units={msrmntSystemSelected}
-        {...{ boxHeaders, chart, formatMessage }}
+        onBoxHeaderClick={this.handleHeaderClick}
+        {...{ boxHeaders, chart, formatMessage, history }}
       />
     ))
 
@@ -157,6 +158,13 @@ export class FitAndSizing extends React.Component<Props, {}> {
         </Container>
       </Layout>
     )
+  }
+
+  handleHeaderClick = ({
+    currentTarget: { id }
+  }: React.MouseEvent<HTMLDivElement>) => {
+    const element = document.getElementById(`${id}-table`) as HTMLElement
+    zenscroll.to(element)
   }
 
   handleOnButtonClick = (event: React.MouseEvent<HTMLDivElement>) => {

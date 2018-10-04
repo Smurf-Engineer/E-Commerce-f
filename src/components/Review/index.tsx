@@ -11,7 +11,8 @@ import {
   InfoContainer,
   EditInfoButton,
   CartList,
-  CartContent
+  CartContent,
+  Text
 } from './styledComponents'
 import {
   AddressType,
@@ -133,19 +134,25 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.billingAddress)}</Title>
-            <MyAddress
-              hideBottomButtons={true}
-              name={`${billingFirstName} ${billingLastName}`}
-              street={billingStreet}
-              city={`${billingCity} ${billingStateProvince}`}
-              zipCode={billingZipCode}
-              country={billingCountry.toUpperCase()}
-              apartment={billingApartment}
-              {...{ formatMessage }}
-            />
-            <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-              {formatMessage(messages.edit)}
-            </EditInfoButton>
+            {paymentMethod === 'paypal' ? (
+              <Text>{billingCountry.toUpperCase()}</Text>
+            ) : (
+              <div>
+                <MyAddress
+                  hideBottomButtons={true}
+                  name={`${billingFirstName} ${billingLastName}`}
+                  street={billingStreet}
+                  city={`${billingCity} ${billingStateProvince}`}
+                  zipCode={billingZipCode}
+                  country={billingCountry.toUpperCase()}
+                  apartment={billingApartment}
+                  {...{ formatMessage }}
+                />
+                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                  {formatMessage(messages.edit)}
+                </EditInfoButton>
+              </div>
+            )}
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
