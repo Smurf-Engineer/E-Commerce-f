@@ -3,17 +3,25 @@
  */
 import styled from 'styled-components'
 
+interface StyleProps {
+  src?: string
+}
+
 export const Container = styled.div`
   list-style: none;
   display: inline-block;
   text-align: center;
 `
 
-export const Image = styled.img`
+export const Image = styled.div`
+  height: 324px;
+  max-width: 302px;
   cursor: pointer;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  background-image: url(${({ src }: StyleProps) =>
+    src ? src : ''});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
 `
 
 export const Text = styled.div`
