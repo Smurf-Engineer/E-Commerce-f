@@ -7,6 +7,7 @@ import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import GoogleMapReact from 'google-map-react'
+import zenscroll from 'zenscroll'
 import messages from './messages'
 import Divider from 'antd/lib/divider'
 import {
@@ -153,6 +154,9 @@ const peopleArray = [
 ]
 
 export class AboutUsPage extends React.Component<Props, {}> {
+  componentWillMount() {
+    zenscroll.toY(0, 0)
+  }
   render() {
     const { intl, history } = this.props
 
