@@ -20,7 +20,9 @@ export const initialState = fromJS({
   hideQuickViewSliderButtons: false,
   openLogin: false,
   itemsInCart: 0,
-  openLogoutModal: false
+  openLogoutModal: false,
+  currentRegion: 'us',
+  currentLanguage: 'en'
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {

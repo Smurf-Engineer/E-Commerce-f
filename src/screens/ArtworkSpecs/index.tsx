@@ -5,6 +5,7 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
+import zenscroll from 'zenscroll'
 import messages from './messages'
 import {
   Container,
@@ -35,6 +36,9 @@ interface Props extends RouteComponentProps<any> {
 }
 
 export class ArtworkSpecs extends React.Component<Props, {}> {
+  componentWillMount() {
+    zenscroll.toY(0, 0)
+  }
   render() {
     const { intl, history } = this.props
     return (

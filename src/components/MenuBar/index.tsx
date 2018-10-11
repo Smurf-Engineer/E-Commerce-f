@@ -37,9 +37,9 @@ interface Props {
   onChangeLocation: (payload: RegionConfig) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
-  currentRegion: string
-  currentLanguage: number
-  currentCurrency: string
+  currentRegion?: string
+  currentLanguage?: string
+  currentCurrency?: string
   intl: InjectedIntl
   hideTop?: boolean
   hideBottom?: boolean
@@ -73,8 +73,15 @@ class MenuBar extends React.Component<Props, StateProps> {
   }
 
   handleOnGoHome = () => {
-    const { history } = this.props
-    history.replace('/us?lang=en&currency=usd')
+    const {
+      history,
+      currentCurrency,
+      currentRegion,
+      currentLanguage
+    } = this.props
+    history.push(
+      `/${currentRegion}?lang=${currentLanguage}&currency=${currentCurrency}`
+    )
   }
 
   handleGoTo = (path: string) => {

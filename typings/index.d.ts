@@ -146,7 +146,7 @@ declare module 'react-paypal-express-checkout-authorize' {
 
 declare module 'react-intercom' {
   interface Props {
-    appID: string
+    appID?: string
     user_id?: string
     email?: string
     name?: string

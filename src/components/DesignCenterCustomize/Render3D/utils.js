@@ -10,6 +10,7 @@ import {
   ROTATE_ACTION,
   CANVAS_SIZE
 } from './config'
+import { BLACK } from '../../../theme/colors'
 
 const actionButtons = {
   br: SCALE_ACTION,
@@ -80,8 +81,13 @@ export const getTextCanvasElement = el => {
 }
 
 export const getClipArtCanvasElement = el => {
-  const { id, fill, stroke, strokeWidth, scaleX, scaleY } = el
-  const element = { id, fill, stroke, strokeWidth, scaleX, scaleY }
+  const { id, fill, stroke, strokeWidth } = el
+  const element = {
+    id,
+    fill: fill || BLACK,
+    stroke: stroke || BLACK,
+    strokeWidth: strokeWidth || 0
+  }
   return element
 }
 

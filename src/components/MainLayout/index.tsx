@@ -49,7 +49,7 @@ interface Props extends RouteComponentProps<any> {
   productId: boolean
   openLogin: boolean
   currentRegion: string
-  currentLanguage: number
+  currentLanguage: string
   currentCurrency: string
   yotpoId: string
   productGender: number
@@ -232,14 +232,14 @@ class MainLayout extends React.Component<Props, {}> {
               intl,
               showSearchResults,
               searchParam,
-              currentRegion,
-              currentLanguage,
               openLogin,
               openLoginAction,
               teamStoresHeader,
               designHasChanges,
               openWithoutSaveModalAction,
-              initialCountryCode
+              initialCountryCode,
+              currentRegion,
+              currentLanguage
             }}
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}

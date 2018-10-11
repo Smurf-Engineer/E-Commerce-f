@@ -7,6 +7,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { RouteComponentProps } from 'react-router-dom'
 import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
+import zenscroll from 'zenscroll'
 import Radio from 'antd/lib/radio'
 import CheckboxGroup from 'antd/lib/checkbox/Group'
 import { CheckboxValueType } from 'antd/lib/checkbox/Group'
@@ -113,6 +114,10 @@ export class WarrantyProgram extends React.Component<Props, StateProps> {
     openForm: true,
     file: null,
     fileName: ''
+  }
+
+  componentWillMount() {
+    zenscroll.toY(0, 0)
   }
 
   beforeUpload = (file: any) => {

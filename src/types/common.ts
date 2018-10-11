@@ -964,8 +964,22 @@ export type CanvasDragged = {
 
 export type CanvasRotated = {
   id: string
-  oldRotation?: number[]
-  newRotation: number[]
+  oldRotation: Rotation
+  newRotation: Rotation
+  currentTransform: CurrentTransform
+}
+
+type Rotation = {
+  x: number
+  y: number
+}
+
+type CurrentTransform = {
+  originX: 'center'
+  originY: 'center'
+  ex: number
+  ey: number
+  theta: number
 }
 
 export type Responsive = {

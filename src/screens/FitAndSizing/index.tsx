@@ -53,6 +53,10 @@ export class FitAndSizing extends React.Component<Props, {}> {
   private bodySize: any
   private fitStyles: any
 
+  componentWillMount() {
+    zenscroll.toY(0, 0)
+  }
+
   render() {
     const { intl, history, msrmntSystemSelected } = this.props
 
