@@ -468,8 +468,22 @@ export class CustomProductDetail extends React.Component<Props, {}> {
   }
 
   validateAddtoCart = () => {
-    const { selectedSize, selectedFit, selectedGender } = this.props
-    return selectedSize.id && selectedFit.id && selectedGender.id
+    const {
+      selectedSize,
+      selectedGender,
+      selectedFit,
+      data: { design }
+    } = this.props
+    const fitStyles = get(design.product, 'fitStyles', []) as SelectedType[]
+    if (fitStyles.length && fitStyles[0].id) {
+      return (
+        selectedSize.id >= 0 &&
+        selectedFit &&
+        selectedFit.id &&
+        selectedGender.id
+      )
+    }
+    return selectedSize.id >= 0 && selectedGender.id
   }
 
   toggleProductInfo = (id: string) => {

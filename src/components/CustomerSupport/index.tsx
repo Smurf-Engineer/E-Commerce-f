@@ -20,7 +20,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
       </Text>
       <Text>
         <Span
-          link={`${
+          url={`${
             config.storageUrl
           }/screens/pricingChart/JAKROO-JV2-PRICESHEETV2.pdf`}
         >
@@ -34,7 +34,7 @@ const CustomerSupport = ({ formatMessage }: Props) => {
         <Span link="/warranty-program">{formatMessage(messages.warranty)}</Span>
       </Text>
       <Text>
-        <Span link="/terms-of-use#PrivacyPolicy">
+        <Span link="/terms-of-use#privacyPolicy">
           {formatMessage(messages.privacyPolicy)}
         </Span>
       </Text>

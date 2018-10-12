@@ -2,15 +2,35 @@
  * UnderlinedLink Component - Created by cazarez on 02/03/18.
  */
 import * as React from 'react'
-import { Span } from './styledComponents'
+import { compose } from 'react-apollo'
+import { withRouter } from 'react-router'
+import { StyledSpan, StyledA } from './styledComponents'
 
 interface Props {
+  url: string
   link?: string
+  history: any
   children?: any
 }
 
-const UnderlinedLink = ({ children, link }: Props) => {
-  return <Span href={link}>{children}</Span>
+class UnderlinedLink extends React.Component<Props, {}> {
+  render() {
+    const { children, url } = this.props
+
+    const renderComponent = url ? (
+      <StyledA href={url}>{children}</StyledA>
+    ) : (
+      <StyledSpan onClick={this.handleClick}>{children}</StyledSpan>
+    )
+
+    return renderComponent
+  }
+
+  handleClick = () => {
+    const { link, history } = this.props
+    history.push(link)
+  }
 }
 
-export default UnderlinedLink
+const EnhancedUnderlinedLink = compose(withRouter)(UnderlinedLink)
+export default EnhancedUnderlinedLink
