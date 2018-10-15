@@ -17,8 +17,6 @@ interface Props {
 }
 
 export class MenuSupport extends React.PureComponent<Props, {}> {
-  // = (props: Props) => {
-
   handleGoTo = (link: string, type: string) => () => {
     const { history } = this.props
 
