@@ -13,6 +13,12 @@ export const Text = styled.div`
   font-size: 14px;
 `
 
+export const TextOption = styled.div`
+  color: #5f6062;
+  font-size: 16px;
+  line-height: 25px;
+`
+
 export const Link = styled.a`
   color: #5f6062;
   font-size: 16px;

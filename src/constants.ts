@@ -28,3 +28,7 @@ export const ACCESSORY_BLACK = 'black'
 
 /* Routes  */
 export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
+
+/* Link Types */
+export const LINK_TYPE_ROUTE = 'route'
+export const LINK_TYPE_URL = 'url'

@@ -190,6 +190,7 @@ class MenuBar extends React.Component<Props, StateProps> {
                     <Row>
                       <MenuSupport
                         {...{
+                          history,
                           designHasChanges,
                           openWithoutSaveModalAction
                         }}
