@@ -285,13 +285,15 @@ class OrderData extends React.Component<Props, {}> {
   }
 }
 
-type OwnProps = {
-  orderId?: string
-}
+// TODO: REFACTOR TYPE
+// type OwnProps = {
+//   orderId?: string
+// }
 
 const OrderDataEnhanced = compose(
   graphql<Data>(getOrderQuery, {
-    options: ({ orderId }: OwnProps) => {
+    // TODO: REFACTOR TYPE
+    options: ({ orderId }: any) => {
       return {
         fetchPolicy: 'network-only',
         variables: {

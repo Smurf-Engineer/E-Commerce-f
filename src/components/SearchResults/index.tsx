@@ -131,13 +131,15 @@ export class SearchResults extends React.Component<Props, {}> {
   }
 }
 
-type OwnProps = {
-  searchParam?: string
-}
+// TODO: REFACTOR TYPE
+// type OwnProps = {
+//   searchParam?: string
+// }
 
 const searchEnhance = compose(
   graphql<Data>(searchResultsQuery, {
-    options: ({ searchParam }: OwnProps) => ({
+    // TODO: REFACTOR TYPE
+    options: ({ searchParam }: any) => ({
       fetchPolicy: 'network-only',
       variables: { search: searchParam }
     })

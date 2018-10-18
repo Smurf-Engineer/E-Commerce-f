@@ -208,7 +208,7 @@ class UploadTab extends React.PureComponent<Props, State> {
 }
 
 const UploadTabEnhance = compose(
-  graphql<Data, Props>(userfilesQuery, {
+  graphql<Props>(userfilesQuery, {
     options: ({ isUserAuthenticated }) => ({
       skip: !isUserAuthenticated,
       notifyOnNetworkStatusChange: true

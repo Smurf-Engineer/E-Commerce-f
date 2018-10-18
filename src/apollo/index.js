@@ -15,18 +15,6 @@ import fetch from 'node-fetch'
  */
 const errorLink = onError(
   ({ response, operation, networkError, graphQLErrors }) => {
-    console.log('--------------response---------------')
-    console.log(JSON.stringify(networkError))
-    console.log('------------------------------------')
-    console.log('--------------response---------------')
-    console.log(JSON.stringify(graphQLErrors))
-    console.log('------------------------------------')
-    console.log('--------------response---------------')
-    console.log(JSON.stringify(response))
-    console.log('------------------------------------')
-    console.log('------------------------------------')
-    console.log(JSON.stringify(operation))
-    console.log('------------------------------------')
     if (operation.operationName === 'GetProductFromCode' && !!response) {
       response.errors = null
     }

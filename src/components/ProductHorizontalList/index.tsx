@@ -116,15 +116,17 @@ export const ProductHorizontalList = ({
   )
 }
 
-type OwnProps = {
-  genderFilter?: Filter
-  categoryFilter?: Filter
-  sportFilter?: Filter
-}
+// TODO: REFACTOR TYPE
+// type OwnProps = {
+//   genderFilter?: Filter
+//   categoryFilter?: Filter
+//   sportFilter?: Filter
+// }
 
 const ListEnhance = compose(
   graphql<Data>(productsQuery, {
-    options: ({ genderFilter, categoryFilter, sportFilter }: OwnProps) => {
+    // TODO: REFACTOR TYPE
+    options: ({ genderFilter, categoryFilter, sportFilter }: any) => {
       const sportName = sportFilter && sportFilter.name.toLowerCase()
       return {
         variables: {

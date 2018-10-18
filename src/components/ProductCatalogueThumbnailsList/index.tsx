@@ -290,20 +290,21 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   handleOnPressAddToCart = (id: number) => {}
 }
 
-type OwnProps = {
-  contentTile?: string
-  collectionFilters?: string
-  genderFilters?: string
-  sportFilters?: string
-  categoryFilters?: string
-  seasonFilters?: string
-  fitFilters?: string
-  temperatureFilters?: string
-  limit?: number
-  orderBy?: string
-  skip?: number
-  designs?: DesignType[]
-}
+// TODO: REFACTOR TYPE
+// type OwnProps = {
+//   contentTile?: string
+//   collectionFilters?: string
+//   genderFilters?: string
+//   sportFilters?: string
+//   categoryFilters?: string
+//   seasonFilters?: string
+//   fitFilters?: string
+//   temperatureFilters?: string
+//   limit?: number
+//   orderBy?: string
+//   skip?: number
+//   designs?: DesignType[]
+// }
 
 const ThumbnailsListEnhance = compose(
   graphql<Data>(GetProductsQuery, {
@@ -319,7 +320,8 @@ const ThumbnailsListEnhance = compose(
       orderBy,
       skip,
       designs
-    }: OwnProps) => {
+    }: any) => {
+      // TODO: REFACTOR TYPE
       return {
         fetchPolicy: 'network-only',
         variables: {
