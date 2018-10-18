@@ -94,7 +94,7 @@ export const DesignCenterGrid = ({
 }
 
 const DesignCenterGridWithData = compose(
-  graphql<Data, Props>(themesQuery, {
+  graphql<Props>(themesQuery, {
     options: ({ productId }) => ({
       variables: { id: productId }
     })
