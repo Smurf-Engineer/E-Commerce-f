@@ -11,14 +11,13 @@ import './App.css'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-let testVar
 // LogRocket.init(config.logRocketKey || '')
-for (let index = 0; index < Number.MAX_SAFE_INTEGER; index++) {
-  // TODO: TEST
-  testVar = index * 2
-}
-
-console.log(testVar)
+setTimeout(() => {
+  console.log('---------------------------')
+  console.log('Hi!!!')
+  console.log('---------------------------')
+  // tslint:disable-next-line:align
+}, 1000)
 
 const App = (props: any) => (
   <LanguageProvider messages={translationMessages}>
