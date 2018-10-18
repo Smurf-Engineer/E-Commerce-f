@@ -1,9 +1,10 @@
 import { ApolloClient } from 'apollo-client'
-import { split, ApolloLink } from 'apollo-link'
+import { ApolloLink } from 'apollo-link'
 import { createHttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
-import { WebSocketLink } from 'apollo-link-ws'
-import { getMainDefinition } from 'apollo-utilities'
+// TODO: ENABLE LATER
+// import { WebSocketLink } from 'apollo-link-ws'
+// import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '../config'
 import fetch from 'node-fetch'
@@ -27,30 +28,35 @@ const authLink = new ApolloLink((operation, forward) => {
   return forward(operation)
 })
 
-const hasSubscriptionOperation = ({ query }) => {
-  const { kind, operation } = getMainDefinition(query)
-  return kind === 'OperationDefinition' && operation === 'subscription'
-}
+// TODO: ENABLE LATER
+// const hasSubscriptionOperation = ({ query }) => {
+//   const { kind, operation } = getMainDefinition(query)
+//   return kind === 'OperationDefinition' && operation === 'subscription'
+// }
 
 const httpLink = createHttpLink({
   uri: `${config.graphqlUriBase}graphql`,
   fetch
 })
 
-const wsLink = process.browser
-  ? new WebSocketLink({
-      uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
-      options: {
-        reconnect: false // TODO: CHANGE TO TRUE LATER
-      }
-    })
-  : null
+// TODO: ENABLE LATER
+// const wsLink = process.browser
+//   ? new WebSocketLink({
+//       uri: `wss://api.jakroo.tailrecursive.co/api/subscriptions`,
+//       options: {
+//         reconnect: false // TODO: CHANGE TO TRUE LATER
+//       }
+//     })
+//   : null
 
 const apolloLink = ApolloLink.from([authLink, errorLink, httpLink])
 
-const link = process.browser
-  ? split(hasSubscriptionOperation, wsLink, apolloLink)
-  : apolloLink
+// TODO: ENABLE LATER
+// const link = process.browser
+//   ? split(hasSubscriptionOperation, wsLink, apolloLink)
+//   : apolloLink
+
+const link = apolloLink
 
 export const configureServerClient = () => {
   const client = new ApolloClient({
