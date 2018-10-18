@@ -61,10 +61,6 @@ export class Home extends React.Component<Props, {}> {
   }
   private stepInput: any
 
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error('ERROOOOR --->', error, errorInfo)
-  }
-
   componentDidMount() {
     const {
       dispatch,
