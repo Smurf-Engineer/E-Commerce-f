@@ -62,6 +62,7 @@
     "less": "^2.7.3",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.5",
+    "logrocket": "^0.6.17",
     "moment": "^2.22.0",
     "node-fetch": "1.6",
     "node-noop": "^1.0.0",
