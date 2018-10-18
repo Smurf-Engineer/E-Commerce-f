@@ -28,6 +28,14 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
       data: { featuredContent }
     } = this.props
 
+    // TODO: REMOVE IT LATER
+    if (this.props.data && this.props.data.error) {
+      console.log('---------FEATURE----------')
+      console.log(this.props.data)
+      console.log('---------------------------')
+      return <div>ERROR</div>
+    }
+
     let content
     if (featuredContent) {
       content = featuredContent.map(({ image, link }, key) => {
