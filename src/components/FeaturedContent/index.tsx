@@ -30,9 +30,6 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
 
     // TODO: REMOVE IT LATER
     if (this.props.data && this.props.data.error) {
-      console.log('---------FEATURE----------')
-      console.log(this.props.data)
-      console.log('---------------------------')
       return <div>ERROR</div>
     }
 

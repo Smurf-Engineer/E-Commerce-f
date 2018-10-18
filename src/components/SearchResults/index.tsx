@@ -53,9 +53,6 @@ export class SearchResults extends React.Component<Props, {}> {
 
     // TODO: REMOVE IT LATER
     if (this.props.data && this.props.data.error) {
-      console.log('----------SEARCH-----------')
-      console.log(this.props.data)
-      console.log('---------------------------')
       return <div>ERROR</div>
     }
 

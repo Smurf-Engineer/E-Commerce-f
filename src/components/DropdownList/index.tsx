@@ -178,9 +178,6 @@ export class DropdownList extends React.PureComponent<Props> {
 
     // TODO: REMOVE IT LATER
     if (data && data.error) {
-      console.log('---------DROPDOWN----------')
-      console.log(data)
-      console.log('---------------------------')
       return <div>ERROR</div>
     }
 
