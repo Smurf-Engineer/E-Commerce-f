@@ -79,10 +79,6 @@ class MainLayout extends React.Component<Props, {}> {
 
   state = {}
 
-  componentDidCatch(error: any, errorInfo: any) {
-    console.error('ERROOOOR --->', error, errorInfo)
-  }
-
   componentWillMount() {
     const { user } = this.props
     if (typeof window !== 'undefined' && !user) {
