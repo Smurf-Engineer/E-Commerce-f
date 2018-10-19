@@ -276,15 +276,13 @@ export class QuickView extends React.Component<Props, State> {
   }
 }
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   productId?: number
-// }
+type OwnProps = {
+  productId?: number
+}
 
 const QuickViewEnhance = compose(
   graphql<Data>(QuickViewQuery, {
-    // TODO: REFACTOR TYPE
-    options: ({ productId }: any) => {
+    options: ({ productId }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: { id: productId },

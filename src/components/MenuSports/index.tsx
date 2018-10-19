@@ -142,16 +142,14 @@ export class MenuSports extends React.PureComponent<Props, {}> {
 
 const mapStateToProps = (state: any) => state.get('menuSports').toJS()
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   type?: number
-//   sports?: Filter[]
-// }
+type OwnProps = {
+  type?: number
+  sports?: Filter[]
+}
 
 const MenuSportsEnhanced = compose(
   graphql<Data>(categoriesQuery, {
-    // TODO: REFACTOR TYPE
-    options: ({ type, sports }: any) => {
+    options: ({ type, sports }: OwnProps) => {
       const sportId =
         sports !== undefined && type !== undefined ? sports[type].id : undefined
       return {

@@ -254,8 +254,7 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         label: (
           <p>
             {priceRange.name}
-            <br />
-            10% OFF
+            <br />10% OFF
             {priceRange.id === teamSizeId ? (
               <div>
                 <StyledSliderTitle>
@@ -456,16 +455,14 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
   }
 }
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   teamStoreId?: string
-//   passCode?: string
-// }
+type OwnProps = {
+  teamStoreId?: string
+  passCode?: string
+}
 
 const StoreFrontContentEnhance = compose(
   graphql<Data>(getSingleTeamStore, {
-    // TODO: REFACTOR TYPE
-    options: ({ teamStoreId, passCode }: any) => {
+    options: ({ teamStoreId, passCode }: OwnProps) => {
       return {
         fetchPolicy: 'network-only',
         variables: {

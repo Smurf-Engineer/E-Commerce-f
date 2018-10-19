@@ -53,9 +53,13 @@ export const DesignCenterInspiration = ({
   return <Container>{list}</Container>
 }
 
+type OwnProps = {
+  styleId?: number
+}
+
 const DesignCenterInspirationEnhance = compose(
-  graphql<Props>(desginsQuery, {
-    options: ({ styleId }) => ({
+  graphql<Data>(desginsQuery, {
+    options: ({ styleId }: OwnProps) => ({
       variables: { styleId }
     })
   }),

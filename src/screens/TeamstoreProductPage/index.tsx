@@ -606,8 +606,7 @@ type OwnProps = {
 const TeamstoreProductPageEnhance = compose(
   injectIntl,
   graphql<Data>(GetDesignQuery, {
-    // TODO: REFACTOR TYPE
-    options: (ownprops: any) => {
+    options: (ownprops: OwnProps) => {
       const {
         location: { search }
       } = ownprops

@@ -16,8 +16,7 @@ import FooterThumbnailTeamStore from '../FooterThumbnailTeamStore'
 import {
   QueryProps,
   ProductType,
-  // TODO: REFACTOR TYPE
-  // DesignType,
+  DesignType,
   TeamStoreItemtype,
   Filter,
   ClickParam
@@ -258,20 +257,19 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
   handleOnPressAddToCart = (id: number) => {}
 }
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   genderFilters?: string
-//   sportFilters?: string
-//   categoryFilters?: string
-//   seasonFilters?: string
-//   fitFilters?: string
-//   temperatureFilters?: string
-//   limit?: number
-//   orderBy?: string
-//   skip?: number
-//   teamStoreShortId?: string
-//   designs?: DesignType[]
-// }
+type OwnProps = {
+  genderFilters?: string
+  sportFilters?: string
+  categoryFilters?: string
+  seasonFilters?: string
+  fitFilters?: string
+  temperatureFilters?: string
+  limit?: number
+  orderBy?: string
+  skip?: number
+  teamStoreShortId?: string
+  designs?: DesignType[]
+}
 
 const DesignsThumbnailsListEnhance = compose(
   graphql<Data>(GetProductsQuery, {
@@ -284,8 +282,7 @@ const DesignsThumbnailsListEnhance = compose(
       orderBy,
       skip,
       designs
-    }: any) => {
-      // TODO: REFACTOR TYPE
+    }: OwnProps) => {
       return {
         variables: {
           gender: genderFilters ? genderFilters : null,
