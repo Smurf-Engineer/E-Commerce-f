@@ -165,13 +165,12 @@ export class MenuGender extends React.Component<Props, {}> {
   }
 }
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   sportSelected?: number
-//   sports?: Filter[]
-//   genders?: Filter[]
-//   type?: number
-// }
+type OwnProps = {
+  sportSelected?: number
+  sports?: Filter[]
+  genders?: Filter[]
+  type?: number
+}
 
 const mapStateToProps = (state: any) => state.get('menuGender').toJS()
 
@@ -182,8 +181,7 @@ const MenuGenderEnhance = compose(
       sports,
       genders,
       type: genderSelected
-    }: any) => {
-      // TODO: REFACTOR TYPE
+    }: OwnProps) => {
       const sportId =
         sports !== undefined && sportSelected !== undefined
           ? sports[sportSelected].id

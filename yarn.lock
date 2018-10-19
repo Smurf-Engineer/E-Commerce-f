@@ -49,9 +49,9 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
 
-"@types/async@2.0.49":
-  version "2.0.49"
-  resolved "http://registry.npmjs.org/@types/async/-/async-2.0.49.tgz#92e33d13f74c895cb9a7f38ba97db8431ed14bc0"
+"@types/async@2.0.47":
+  version "2.0.47"
+  resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.47.tgz#f49ba1dd1f189486beb6e1d070a850f6ab4bd521"
 
 "@types/body-parser@*":
   version "1.16.8"
@@ -264,13 +264,9 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/zen-observable@0.5.3":
+"@types/zen-observable@0.5.3", "@types/zen-observable@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.5.3.tgz#91b728599544efbb7386d8b6633693a3c2e7ade5"
-
-"@types/zen-observable@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@types/zen-observable/-/zen-observable-0.8.0.tgz#8b63ab7f1aa5321248aad5ac890a485656dcea4d"
 
 "@types/zenscroll@^4.0.0":
   version "4.0.0"
@@ -497,31 +493,25 @@ apollo-cache-inmemory@^1.1.5:
     apollo-utilities "^1.0.4"
     graphql-anywhere "^4.1.1"
 
-apollo-cache@1.1.17:
-  version "1.1.17"
-  resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.17.tgz#1fcca8423125223723b97fd72808be91a1a76490"
-  dependencies:
-    apollo-utilities "^1.0.21"
-
-apollo-cache@^1.1.0:
+apollo-cache@^1.1.0, apollo-cache@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/apollo-cache/-/apollo-cache-1.1.1.tgz#bfe9b718ebc94774fbf1981a1ef4f1391bdfc7ae"
   dependencies:
     apollo-utilities "^1.0.5"
 
-apollo-client@^2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.4.2.tgz#d2f044d8740723bf98a6d8d8b9684ee8c36150e6"
+apollo-client@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-2.2.1.tgz#9402ea5aa71d49c668c5a8451025001e135b0beb"
   dependencies:
-    "@types/zen-observable" "^0.8.0"
-    apollo-cache "1.1.17"
+    "@types/zen-observable" "^0.5.3"
+    apollo-cache "^1.1.1"
     apollo-link "^1.0.0"
     apollo-link-dedup "^1.0.0"
-    apollo-utilities "1.0.21"
+    apollo-utilities "^1.0.5"
     symbol-observable "^1.0.2"
-    zen-observable "^0.8.0"
+    zen-observable "^0.7.0"
   optionalDependencies:
-    "@types/async" "2.0.49"
+    "@types/async" "2.0.47"
 
 apollo-link-context@^1.0.3:
   version "1.0.3"
@@ -530,16 +520,16 @@ apollo-link-context@^1.0.3:
     apollo-link "^1.0.6"
 
 apollo-link-dedup@^1.0.0:
-  version "1.0.10"
-  resolved "https://registry.yarnpkg.com/apollo-link-dedup/-/apollo-link-dedup-1.0.10.tgz#7b94589fe7f969777efd18a129043c78430800ae"
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/apollo-link-dedup/-/apollo-link-dedup-1.0.5.tgz#1c213d7ebbe48e74b016fffacd7e6a53dc309e32"
   dependencies:
-    apollo-link "^1.2.3"
+    apollo-link "^1.0.7"
 
-apollo-link-error@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/apollo-link-error/-/apollo-link-error-1.1.1.tgz#69d7124d4dc11ce60f505c940f05d4f1aa0945fb"
+apollo-link-error@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/apollo-link-error/-/apollo-link-error-1.1.0.tgz#ef8a64411361314364db40c1d4023b987a84860f"
   dependencies:
-    apollo-link "^1.2.3"
+    apollo-link "^1.2.2"
 
 apollo-link-http-common@^0.2.3:
   version "0.2.4"
@@ -547,18 +537,11 @@ apollo-link-http-common@^0.2.3:
   dependencies:
     apollo-link "^1.2.2"
 
-apollo-link-http-common@^0.2.5:
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/apollo-link-http-common/-/apollo-link-http-common-0.2.5.tgz#d094beb7971523203359bf830bfbfa7b4e7c30ed"
+apollo-link-http@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-1.3.2.tgz#63537ee5ecf9c004efb0317f1222b7dbc6f21559"
   dependencies:
-    apollo-link "^1.2.3"
-
-apollo-link-http@^1.5.5:
-  version "1.5.5"
-  resolved "https://registry.yarnpkg.com/apollo-link-http/-/apollo-link-http-1.5.5.tgz#7dbe851821771ad67fa29e3900c57f38cbd80da8"
-  dependencies:
-    apollo-link "^1.2.3"
-    apollo-link-http-common "^0.2.5"
+    apollo-link "^1.0.7"
 
 apollo-link-ws@^1.0.7:
   version "1.0.7"
@@ -566,14 +549,7 @@ apollo-link-ws@^1.0.7:
   dependencies:
     apollo-link "^1.2.1"
 
-apollo-link@^1.0.0, apollo-link@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.2.3.tgz#9bd8d5fe1d88d31dc91dae9ecc22474d451fb70d"
-  dependencies:
-    apollo-utilities "^1.0.0"
-    zen-observable-ts "^0.8.10"
-
-apollo-link@^1.0.6:
+apollo-link@^1.0.0, apollo-link@^1.0.6, apollo-link@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/apollo-link/-/apollo-link-1.0.7.tgz#42cd38a7378332fc3e41a214ff6a6e5e703a556f"
   dependencies:
@@ -604,13 +580,6 @@ apollo-upload-client@^8.0.0:
     "@babel/runtime" "^7.0.0-beta.40"
     apollo-link-http-common "^0.2.3"
     extract-files "^3.1.0"
-
-apollo-utilities@1.0.21, apollo-utilities@^1.0.21:
-  version "1.0.21"
-  resolved "https://registry.yarnpkg.com/apollo-utilities/-/apollo-utilities-1.0.21.tgz#cb8b5779fe275850b16046ff8373f4af2de90765"
-  dependencies:
-    fast-json-stable-stringify "^2.0.0"
-    fclone "^1.0.11"
 
 apollo-utilities@^1.0.0, apollo-utilities@^1.0.4, apollo-utilities@^1.0.5:
   version "1.0.5"
@@ -3522,10 +3491,6 @@ fb-watchman@^2.0.0:
   dependencies:
     bser "^2.0.0"
 
-fbjs-css-vars@^1.0.0:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/fbjs-css-vars/-/fbjs-css-vars-1.0.1.tgz#836d876e887d702f45610f5ebd2fbeef649527fc"
-
 fbjs@^0.8.1, fbjs@^0.8.15, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.9:
   version "0.8.16"
   resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-0.8.16.tgz#5e67432f550dc41b572bf55847b8aca64e5337db"
@@ -3537,23 +3502,6 @@ fbjs@^0.8.1, fbjs@^0.8.15, fbjs@^0.8.16, fbjs@^0.8.4, fbjs@^0.8.5, fbjs@^0.8.9:
     promise "^7.1.1"
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.9"
-
-fbjs@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/fbjs/-/fbjs-1.0.0.tgz#52c215e0883a3c86af2a7a776ed51525ae8e0a5a"
-  dependencies:
-    core-js "^2.4.1"
-    fbjs-css-vars "^1.0.0"
-    isomorphic-fetch "^2.1.1"
-    loose-envify "^1.0.0"
-    object-assign "^4.1.0"
-    promise "^7.1.1"
-    setimmediate "^1.0.5"
-    ua-parser-js "^0.7.18"
-
-fclone@^1.0.11:
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/fclone/-/fclone-1.0.11.tgz#10e85da38bfea7fc599341c296ee1d77266ee640"
 
 figures@^2.0.0:
   version "2.0.0"
@@ -3998,15 +3946,15 @@ graphql-anywhere@^4.1.1:
   dependencies:
     apollo-utilities "^1.0.5"
 
-graphql-tag@^2.10.0:
-  version "2.10.0"
-  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.0.tgz#87da024be863e357551b2b8700e496ee2d4353ae"
+graphql-tag@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.6.1.tgz#4788d509f6e29607d947fc47a40c4e18f736d34a"
 
-graphql@^14.0.2:
-  version "14.0.2"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.0.2.tgz#7dded337a4c3fd2d075692323384034b357f5650"
+graphql@^0.12.3:
+  version "0.12.3"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.12.3.tgz#11668458bbe28261c0dcb6e265f515ba79f6ce07"
   dependencies:
-    iterall "^1.2.2"
+    iterall "1.1.3"
 
 growly@^1.3.0:
   version "1.3.0"
@@ -4174,15 +4122,9 @@ hoist-non-react-statics@^2.1.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
-hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.3.1:
+hoist-non-react-statics@^2.2.0, hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
-
-hoist-non-react-statics@^3.0.0:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-3.0.1.tgz#fba3e7df0210eb9447757ca1a7cb607162f0a364"
-  dependencies:
-    react-is "^16.3.2"
 
 home-or-tmp@^2.0.0:
   version "2.0.0"
@@ -4856,7 +4798,11 @@ istanbul-reports@^1.1.3:
   dependencies:
     handlebars "^4.0.3"
 
-iterall@^1.2.1, iterall@^1.2.2:
+iterall@1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.1.3.tgz#1cbbff96204056dde6656e2ed2e2226d0e6d72c9"
+
+iterall@^1.2.1:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/iterall/-/iterall-1.2.2.tgz#92d70deb8028e0c39ff3164fdbf4d8b088130cd7"
 
@@ -5593,10 +5539,6 @@ lodash.isarray@^3.0.0:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/lodash.isarray/-/lodash.isarray-3.0.4.tgz#79e4eb88c36a8122af86f844aa9bcd851b5fbb55"
 
-lodash.isequal@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/lodash.isequal/-/lodash.isequal-4.5.0.tgz#415c4478f2bcc30120c22ce10ed3226f7d3e18e0"
-
 lodash.isobject@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/lodash.isobject/-/lodash.isobject-3.0.2.tgz#3c8fb8d5b5bf4bf90ae06e14f2a530a4ed935e1d"
@@ -5655,6 +5597,10 @@ lodash.merge@^3.3.2:
 lodash.merge@^4.6.0:
   version "4.6.0"
   resolved "https://registry.yarnpkg.com/lodash.merge/-/lodash.merge-4.6.0.tgz#69884ba144ac33fe699737a6086deffadd0f89c5"
+
+lodash.pick@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.pick/-/lodash.pick-4.4.0.tgz#52f05610fff9ded422611441ed1fc123a03001b3"
 
 lodash.restparam@^3.0.0:
   version "3.6.1"
@@ -7538,16 +7484,16 @@ react-animate-height@^0.10.9:
   optionalDependencies:
     "@types/react" ">=15"
 
-react-apollo@^2.2.4:
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.2.4.tgz#05b2a91deb4d5f30d2511fc663abc465b219435e"
+react-apollo@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.0.4.tgz#01dd32a8e388672f5d7385b21cdd0b94009ee9ee"
   dependencies:
-    fbjs "^1.0.0"
-    hoist-non-react-statics "^3.0.0"
-    invariant "^2.2.2"
+    apollo-link "^1.0.0"
+    hoist-non-react-statics "^2.2.0"
+    invariant "^2.2.1"
     lodash.flowright "^3.5.0"
-    lodash.isequal "^4.5.0"
-    prop-types "^15.6.0"
+    lodash.pick "^4.4.0"
+    prop-types "^15.5.8"
 
 react-async-script-loader@^0.3.0:
   version "0.3.0"
@@ -7693,10 +7639,6 @@ react-intl@^2.4.0:
     intl-messageformat "^2.1.0"
     intl-relativeformat "^2.0.0"
     invariant "^2.1.1"
-
-react-is@^16.3.2:
-  version "16.5.2"
-  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.5.2.tgz#e2a7b7c3f5d48062eb769fcb123505eb928722e3"
 
 react-lazy-load@^3.0.12:
   version "3.0.13"
@@ -9875,12 +9817,6 @@ yargs@~3.10.0:
     cliui "^2.1.0"
     decamelize "^1.0.0"
     window-size "0.1.0"
-
-zen-observable-ts@^0.8.10:
-  version "0.8.10"
-  resolved "https://registry.yarnpkg.com/zen-observable-ts/-/zen-observable-ts-0.8.10.tgz#18e2ce1c89fe026e9621fd83cc05168228fce829"
-  dependencies:
-    zen-observable "^0.8.0"
 
 zen-observable-ts@^0.8.6:
   version "0.8.8"

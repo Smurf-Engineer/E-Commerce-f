@@ -94,7 +94,7 @@ export class ConfirmCountryDialog extends React.Component<Props, {}> {
 }
 
 const ConfirmCountryDialogEnhance = compose(
-  graphql<Props>(subsidiaryQuery, {
+  graphql<Data>(subsidiaryQuery, {
     options: () => ({
       fetchPolicy: 'network-only'
     })

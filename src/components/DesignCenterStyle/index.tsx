@@ -175,7 +175,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 }
 
 const DesignCenterStyleWithData = compose(
-  graphql<Props>(stylesQuery, {
+  graphql<Data, Props>(stylesQuery, {
     options: ({ productId, themeId, complexity }) => ({
       variables: { productId, themeId, complexity }
     })

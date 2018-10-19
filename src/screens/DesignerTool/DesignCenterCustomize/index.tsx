@@ -200,15 +200,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   }
 }
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   productCode?: string
-// }
+type OwnProps = {
+  productCode?: string
+}
 
 const EnhanceDesignCenterCustomize = compose(
   graphql<Data>(getProductFromCode, {
-    // TODO: REFACTOR TYPE
-    options: ({ productCode }: any) => ({
+    options: ({ productCode }: OwnProps) => ({
       skip: !productCode,
       fetchPolicy: 'network-only',
       variables: { code: productCode },

@@ -928,10 +928,9 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 }
 
-// TODO: REFACTOR TYPE
-// interface OwnProps {
-//   location?: any
-// }
+interface OwnProps {
+  location?: any
+}
 
 const mapStateToProps = (state: any) => {
   const designCenter = state.get('designCenter').toJS()
@@ -953,34 +952,25 @@ const DesignCenterEnhance = compose(
     }
   ),
   graphql<DataProduct>(getProductQuery, {
-    // TODO: REFACTOR TYPE
-    skip: ({ location }: any) => {
-      const search = location ? location.search : ''
-      const queryParams = queryString.parse(search)
-      return !queryParams.id
-    },
-    options: ({ location }: any) => {
+    options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
       return {
+        skip: !queryParams.id,
         variables: { id: queryParams.id }
       }
     },
     name: 'dataProduct'
   }),
   graphql<DataDesign>(getDesignQuery, {
-    options: ({ location }: any) => {
+    options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
       return {
+        skip: !queryParams.designId,
         variables: { designId: queryParams.designId },
         fetchPolicy: 'network-only'
       }
-    },
-    skip: ({ location }: any) => {
-      const search = location ? location.search : ''
-      const queryParams = queryString.parse(search)
-      return !queryParams.designId
     },
     name: 'dataDesign'
   })

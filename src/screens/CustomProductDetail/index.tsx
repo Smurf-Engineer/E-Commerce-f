@@ -507,15 +507,13 @@ const mapStateToProps = (state: any) => {
   return { ...productDetail, ...langProps, ...app }
 }
 
-// TODO: REFACTOR TYPE
-// type OwnProps = {
-//   location?: any
-// }
+type OwnProps = {
+  location?: any
+}
 
 const CustomProductDetailEnhance = compose(
   injectIntl,
   graphql<any>(designsQuery, {
-    // TODO: REFACTOR TYPE
     options: () => {
       return {
         variables: {
@@ -528,8 +526,7 @@ const CustomProductDetailEnhance = compose(
     name: 'designsData'
   }),
   graphql<Data>(GetDesignByIdQuery, {
-    // TODO: REFACTOR TYPE
-    options: (ownprops: any) => {
+    options: (ownprops: OwnProps) => {
       const {
         location: { search }
       } = ownprops
