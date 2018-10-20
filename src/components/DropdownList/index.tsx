@@ -176,6 +176,11 @@ export class DropdownList extends React.PureComponent<Props> {
     } = this.props
     const { genders, sports } = data
 
+    // TODO: REMOVE IT LATER
+    if (data && data.error) {
+      return <div>ERROR</div>
+    }
+
     const genderMenus = genderOptions.map(({ label, visible }, index) => (
       <Menu.Item key={label}>
         <Popover

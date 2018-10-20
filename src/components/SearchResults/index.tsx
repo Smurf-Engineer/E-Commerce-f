@@ -51,6 +51,11 @@ export class SearchResults extends React.Component<Props, {}> {
       data: { productSearch, loading }
     } = this.props
 
+    // TODO: REMOVE IT LATER
+    if (this.props.data && this.props.data.error) {
+      return <div>ERROR</div>
+    }
+
     let list: JSX.Element[] = []
     let totalProducts = 0
 

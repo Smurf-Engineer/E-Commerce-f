@@ -28,12 +28,17 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
       data: { featuredContent }
     } = this.props
 
+    // TODO: REMOVE IT LATER
+    if (this.props.data && this.props.data.error) {
+      return <div>ERROR</div>
+    }
+
     let content
     if (featuredContent) {
       content = featuredContent.map(({ image, link }, key) => {
         return (
-          <a {...{ key }} href={link}>
-            <StyledImg src={image} />
+          <a {...{ key }}>
+            <StyledImg src={image} onClick={this.handleGoTo(link)} />
           </a>
         )
       })
@@ -41,10 +46,9 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
     return <Container>{content}</Container>
   }
 
-  // TODO: use this function when service returns route not full url
   handleGoTo = (link: string) => () => {
     const { history } = this.props
-    history.push(`/${link}`)
+    history.push(link)
   }
 }
 
