@@ -13,25 +13,11 @@ import fetch from 'node-fetch'
  * https://github.com/apollographql/react-apollo/issues/1321
  * Apollo current version doesn't use new variables after catch an error.
  */
-const errorLink = onError(
-  ({ response, operation, networkError, graphQLErrors }) => {
-    console.log('--------------response---------------')
-    console.log(JSON.stringify(networkError))
-    console.log('------------------------------------')
-    console.log('--------------response---------------')
-    console.log(JSON.stringify(graphQLErrors))
-    console.log('------------------------------------')
-    console.log('--------------response---------------')
-    console.log(JSON.stringify(response))
-    console.log('------------------------------------')
-    console.log('------------------------------------')
-    console.log(JSON.stringify(operation))
-    console.log('------------------------------------')
-    if (operation.operationName === 'GetProductFromCode' && !!response) {
-      response.errors = null
-    }
+const errorLink = onError(({ response, operation }) => {
+  if (operation.operationName === 'GetProductFromCode' && !!response) {
+    response.errors = null
   }
-)
+})
 
 const authLink = new ApolloLink((operation, forward) => {
   const user = JSON.parse(localStorage.getItem('user'))
