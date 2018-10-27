@@ -40,7 +40,7 @@ const renderHtml = (styleTags: any, html: any) => {
            </script>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
-          <title>JAKROO.COM - Customized Cycling, Triathlon &amp; MTB Wear</title>
+          <title>JAKROO.COM - Design your own Cycling, Triathlon and MTB Wear</title>
           <meta name="viewport" content="width=device-width, initial-scale=1">
           ${
             assets.client.css
