@@ -106,9 +106,6 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
-    let scripts = Array.from(document.querySelectorAll('script')).map(
-      scr => scr.src
-    )
   }
 
   onSearch = (value: string) => {
