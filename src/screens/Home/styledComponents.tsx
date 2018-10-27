@@ -39,7 +39,7 @@ export const SearchBackground = styled.img`
   width: 100%;
 
   @media (max-width: 425px) {
-    height: 15em;
+    height: 100%;
     width: 100%;
   }
 `
