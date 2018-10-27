@@ -109,6 +109,11 @@ export class Home extends React.Component<Props, {}> {
     history.push('/fit-widget')
   }
 
+  handleGoTo = () => {
+    const { history } = this.props
+    history.push('/design-center?id=13')
+  }
+
   render() {
     const {
       history,
@@ -139,7 +144,7 @@ export class Home extends React.Component<Props, {}> {
       <Layout {...{ history, intl }}>
         <Container>
           <SearchContainer>
-            <SearchBackground src={BackgroundImg} />
+            <SearchBackground src={BackgroundImg} onClick={this.handleGoTo} />
             <SearchBarContent>
               <SearchBar search={this.onSearch} {...{ formatMessage }} />
               {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2
