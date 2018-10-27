@@ -38,6 +38,13 @@ const Html = ({ content, state, reduxState }: Props) => (
       type="text/javascript"
       src="//staticw2.yotpo.com/Rnb6ShWsqfzkqYmFM5RuNHtDJvKIcsexNP7yvpUO/widget.js"
     />
+    <script
+      id="Cookiebot"
+      src="https://consent.cookiebot.com/uc.js"
+      data-cbid="1b3f0d8b-c158-4fbd-a58b-3f42fb058a43"
+      type="text/javascript"
+      async={true}
+    />
     <link
       type="text/css"
       rel="stylesheet"
