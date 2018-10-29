@@ -15,33 +15,20 @@ export const SearchBarContent = styled.div`
   left: 315px;
   position: absolute;
   right: 300px;
-  top: 430px;
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-    left: 50%;
-    top: 30em;
-    transform: translate(-50%, -50%);
-    width: 60%;
-  }
+  bottom: 24px;
 
   @media (min-width: 481px) and (max-width: 767px) and (orientation: landscape) {
     position: unset;
   }
 
-  @media (min-width: 320px) and (max-width: 480px) {
+  @media (min-width: 320px) and (max-width: 767px) {
     position: unset;
   }
 `
 
 export const SearchBackground = styled.img`
-  height: 40em;
   object-fit: cover;
   width: 100%;
-
-  @media (max-width: 425px) {
-    height: 100%;
-    width: 100%;
-  }
 `
 export const SearchContainer = styled.div`
   position: relative;
