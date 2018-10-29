@@ -17,6 +17,12 @@ export const SearchBarContent = styled.div`
   right: 300px;
   bottom: 24px;
 
+  @media (min-width: 768px) and (max-width: 1024px) {
+    width: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
   @media (min-width: 481px) and (max-width: 767px) and (orientation: landscape) {
     position: unset;
   }
