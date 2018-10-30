@@ -6,6 +6,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
@@ -122,12 +123,10 @@ export class Home extends React.Component<Props, {}> {
       intl,
       fakeWidth,
       currentCurrency,
-      clientInfo: {
-        browser: { name: browserName }
-      }
+      clientInfo
     } = this.props
-
     const { formatMessage } = intl
+    const browserName = get(clientInfo, 'browser.name', '')
 
     const searchResults = searchString ? (
       <SearchResults
