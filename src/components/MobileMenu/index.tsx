@@ -49,6 +49,7 @@ export class MobileMenu extends React.PureComponent<Props, {}> {
           <Menu
             {...{ data, history, loginButton, regionButton, formatMessage }}
             menuOpen={visible}
+            hideMenu={this.hide}
           />
         }
         trigger="click"
