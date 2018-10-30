@@ -33,6 +33,7 @@ interface Props {
   client: any
   data?: any
   history: any
+  hideMenu: () => void
   loginButton: React.ReactNode
   regionButton: React.ReactNode
   menuOpen: boolean
@@ -64,15 +65,15 @@ class Menu extends React.PureComponent<Props, {}> {
     item: {
       props: { children }
     },
-    key,
-    selectedKeys
+    key
   }: any) => {
     const {
       history: {
         push,
         replace,
         location: { search, pathname }
-      }
+      },
+      hideMenu
     } = this.props
 
     const { genderSelected, sportSelected } = this.state
@@ -102,6 +103,7 @@ class Menu extends React.PureComponent<Props, {}> {
       isChangingGender || isChangingCategory || isChangingSport
 
     if ((atProductCatalogue && isMissingFilter) || isChangingFilter) {
+      hideMenu()
       replace(route, { forced: true })
       return
     }

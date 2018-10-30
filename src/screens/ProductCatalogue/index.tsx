@@ -130,7 +130,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     if (category && !filter) {
       const categoryName = this.getFormattedFilterName(category, '&')
-
+      this.setState({ showcategoryFilters: true } as any)
       const filterObject = {
         type: 'categoryFilters',
         name: categoryName,
@@ -141,7 +141,7 @@ export class ProductCatalog extends React.Component<Props, StateProps> {
 
     if (sport && !filter) {
       const sportName = this.getFormattedFilterName(sport)
-
+      this.setState({ showsportFilters: true } as any)
       let filterObject = {
         type: 'sportFilters',
         name: sportName

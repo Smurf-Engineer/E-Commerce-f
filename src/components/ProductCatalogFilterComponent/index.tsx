@@ -53,6 +53,7 @@ const ProductCatalogFilterComponent = ({
       </Checkbox>
     </ItemRow>
   ))
+
   return (
     <Container>
       <TitleContainer>
