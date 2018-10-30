@@ -1717,7 +1717,7 @@ class Render3D extends PureComponent {
 
     if (CHANGE_ACTIONS.includes(action)) {
       const activeEl = this.canvasTexture.getActiveObject()
-      const { id } = activeEl
+      const { id } = activeEl || {}
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl

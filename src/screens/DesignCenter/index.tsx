@@ -659,8 +659,9 @@ export class DesignCenter extends React.Component<Props, {}> {
             {...{ designHasChanges, styleIndex }}
           />
           <SwipeableViews
-            onTransitionEnd={this.handleOnTransictionEnd}
+            disabled={true}
             index={tabSelected}
+            onTransitionEnd={this.handleOnTransictionEnd}
           >
             <div key="theme">
               <Info
