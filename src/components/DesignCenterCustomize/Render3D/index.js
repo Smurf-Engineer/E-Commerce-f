@@ -668,18 +668,15 @@ class Render3D extends PureComponent {
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
+          const canvasConfig = {
+            width: CANVAS_SIZE,
+            height: CANVAS_SIZE,
+            crossOrigin: 'Anonymous'
+          }
           if (isMobile) {
-            this.canvasTexture = new fabric.StaticCanvas(canvas, {
-              width: CANVAS_SIZE,
-              height: CANVAS_SIZE,
-              crossOrigin: 'Anonymous'
-            })
+            this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
           } else {
-            this.canvasTexture = new fabric.Canvas(canvas, {
-              width: CANVAS_SIZE,
-              height: CANVAS_SIZE,
-              crossOrigin: 'Anonymous'
-            })
+            this.canvasTexture = new fabric.Canvas(canvas, canvasConfig)
           }
 
           const canvasTexture = new THREE.CanvasTexture(canvas)
