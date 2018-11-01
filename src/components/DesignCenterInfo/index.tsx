@@ -19,6 +19,7 @@ interface Props {
   label: string
   model: string
   message?: string
+  isMobile?: boolean
   onPressQuickView: () => void
 }
 
@@ -26,14 +27,17 @@ const DesignCenterInfo = ({
   label,
   model,
   onPressQuickView,
-  message
+  message,
+  isMobile = false
 }: Props) => {
   return (
-    <Container>
-      <Row>
-        <Model>{model}</Model>
-        <QuickView src={quickView} onClick={onPressQuickView} />
-      </Row>
+    <Container {...{ isMobile }}>
+      {!isMobile && (
+        <Row>
+          <Model>{model}</Model>
+          <QuickView src={quickView} onClick={onPressQuickView} />
+        </Row>
+      )}
       <CenterDiv>
         <Title>
           <FormattedMessage {...messages[label]} />

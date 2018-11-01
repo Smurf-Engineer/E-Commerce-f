@@ -35,6 +35,7 @@ export const Header = styled.div`
   height: ${HEADER_HEIGHT}px;
   line-height: 0px;
   padding: 0px;
+  z-index: 10;
 `
 
 export const Footer = styled.div`
