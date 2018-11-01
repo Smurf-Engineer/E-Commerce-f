@@ -284,7 +284,7 @@ class Render3D extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { onUnmountTab } = this.props
+    const { onUnmountTab, isMobile } = this.props
     if (this.canvasTexture) {
       const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
       const canvasJson = JSON.stringify(designCanvas)
@@ -293,6 +293,11 @@ class Render3D extends PureComponent {
     }
     if (this.renderer) {
       this.stop()
+      if (!isMobile) {
+        this.container.removeEventListener('mousedown', this.onMouseDown, false)
+        this.container.removeEventListener('mouseup', this.onMouseUp, false)
+        this.container.removeEventListener('mousemove', this.onMouseMove, false)
+      }
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
     }
