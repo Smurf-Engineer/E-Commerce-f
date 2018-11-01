@@ -23,6 +23,7 @@ export const Container = styled.div`
 export const MobileContainer = styled.div`
   position: relative;
   width: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -40,6 +41,11 @@ export const Render = styled.div`
   width: 800px;
   height: 600px;
   cursor: grab;
+
+  @media (max-width: 426px) {
+    width: 100%;
+    height: 100%;
+  }
 `
 
 export const Model = styled.div`
@@ -93,7 +99,7 @@ export const DragText = styled.div`
   }
 
   @media (max-width: 426px) {
-    bottom: 8%;
+    bottom: 20%;
   }
 `
 
@@ -166,7 +172,7 @@ export const ButtonWrapper = styled.div`
 
 export const StyledGhostButton = styled(AntdButton)`
   position: absolute;
-  bottom: 8px;
+  bottom: 10%;
   width: 50%;
   height: 40px;
 `
