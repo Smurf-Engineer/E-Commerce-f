@@ -4,6 +4,7 @@
 import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
+import { BLUE, WHITE, GRAY_LIGHT } from '../../../theme/colors'
 
 export const fadeIn = keyframes`
   to {
@@ -14,6 +15,14 @@ export const fadeIn = keyframes`
 export const Container = styled.div`
   position: relative;
   width: 74.6%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`
+
+export const MobileContainer = styled.div`
+  position: relative;
+  width: 100%;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -82,6 +91,10 @@ export const DragText = styled.div`
   @media (min-height: 951px) {
     bottom: 30%;
   }
+
+  @media (max-width: 426px) {
+    bottom: 8%;
+  }
 `
 
 export const ModelType = styled.div`
@@ -149,6 +162,13 @@ export const ButtonWrapper = styled.div`
     background-color: #4a90e2;
     border-color: #4a90e2;
   }
+`
+
+export const StyledGhostButton = styled(AntdButton)`
+  position: absolute;
+  bottom: 8px;
+  width: 50%;
+  height: 40px;
 `
 
 export const ModalMessage = styled.div`

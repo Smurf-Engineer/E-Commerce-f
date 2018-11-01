@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by david on 23/02/18.
  */
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 import Button from 'antd/lib/button/button'
 
 export const Container = styled.div`
@@ -10,6 +10,35 @@ export const Container = styled.div`
 
 export const Text = styled.div`
   color: #fff;
+`
+
+export const fadeIn = keyframes`
+  to {
+    opacity: 1;
+  }
+`
+
+export const BackCircle = styled.div`
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 16px;
+  border-color: #5f6062;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 50%;
+  z-index: 1;
+  top: 86px;
+  opacity: 0;
+  animation: ${fadeIn} 0.5s cubic-bezier(0.67, 0.35, 0.565, 1) both;
+`
+
+export const BackIcon = styled.img`
+  width: 12px;
+  height: 12px;
 `
 
 export const StyledTitle = styled.div`

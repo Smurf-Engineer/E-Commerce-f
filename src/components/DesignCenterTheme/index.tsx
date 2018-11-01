@@ -24,6 +24,7 @@ interface Props {
   loadingModel: boolean
   designHasChanges: boolean
   productId: number
+  isMobile: boolean
   onSelectTheme: (id: number) => void
   formatMessage: (messageDescriptor: any) => string
   openNewThemeModalAction: (open: boolean, themeId?: number) => void

@@ -8,3 +8,7 @@ body {
 .ant-modal-body {
   line-height: normal;
 }
+
+.rc-drawer-sidebar {
+  z-index: 11;
+}
