@@ -3,7 +3,8 @@ import gql from 'graphql-tag'
 export const GetFeaturedContent = gql`
   query homepageimages {
     featuredContent: getHomePageImages {
-      image
+      desktop: image
+      mobile: image_mobile
       link
     }
   }
