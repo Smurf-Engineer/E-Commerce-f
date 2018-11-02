@@ -132,17 +132,26 @@ export const ButtonsRow = styled.div`
   margin: 20px 0 25px;
 
   .ant-btn {
-    color: #e61737;
     font-size: 16px;
     line-height: 22px;
     text-align: center;
   }
 `
 
+export const StyledButtonWrapper = styled.div`
+  .ant-btn-primary  {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+`
+
 export const StyledButton = styled(Button)`
   height: 50px;
   width: 221px;
-  border: 2px solid #e61737;
   border-radius: 2px;
 
   @media (min-width: 320px) and (max-width: 480px) {

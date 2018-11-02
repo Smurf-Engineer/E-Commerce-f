@@ -55,7 +55,8 @@ import {
   TitleSubtitleContainer,
   Loading,
   MobileButton,
-  MobileButtonWrapper
+  MobileButtonWrapper,
+  StyledButtonWrapper
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -541,9 +542,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
                 <ButtonsRow>
                   {!isRetail && (
-                    <StyledButton onClick={this.gotoCustomize}>
-                      {formatMessage(messages.customizeLabel)}
-                    </StyledButton>
+                    <StyledButtonWrapper>
+                      <StyledButton type="primary" onClick={this.gotoCustomize}>
+                        {formatMessage(messages.customizeLabel)}
+                      </StyledButton>
+                    </StyledButtonWrapper>
                   )}
                 </ButtonsRow>
                 {isRetail && collectionSelection}
