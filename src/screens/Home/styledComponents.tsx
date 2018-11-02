@@ -12,23 +12,9 @@ export const HomeHeader = styled.div`
 
 export const SearchBarContent = styled.div`
   color: ${WHITE};
-  left: 315px;
-  position: absolute;
-  right: 300px;
-  bottom: 24px;
-
-  @media (min-width: 768px) and (max-width: 1024px) {
-    width: 60%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  @media (min-width: 481px) and (max-width: 767px) and (orientation: landscape) {
-    position: unset;
-  }
-
-  @media (min-width: 320px) and (max-width: 767px) {
-    position: unset;
+  position: unset;
+  @media (min-width: 992px) {
+    display: none;
   }
 `
 
