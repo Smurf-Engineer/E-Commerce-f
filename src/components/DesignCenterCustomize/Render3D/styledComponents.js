@@ -23,7 +23,7 @@ export const Container = styled.div`
 export const MobileContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 80vh;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
