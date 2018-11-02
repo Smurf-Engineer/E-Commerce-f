@@ -37,7 +37,8 @@ import {
   HintIcon,
   TurnOffHintRow,
   MobileContainer,
-  StyledGhostButton
+  MobileButton,
+  MobileButtonWrapper
 } from './styledComponents'
 import {
   viewPositions,
@@ -1183,11 +1184,13 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.drag} />
             </DragText>
           )}
-          <StyledGhostButton onClick={this.handleOnPressCustomize}>
-            {formatMessage(
-              isEditing ? messages.editButton : messages.customizeButton
-            )}
-          </StyledGhostButton>
+          <MobileButtonWrapper>
+            <MobileButton type="primary" onClick={this.handleOnPressCustomize}>
+              {formatMessage(
+                isEditing ? messages.editButton : messages.customizeButton
+              )}
+            </MobileButton>
+          </MobileButtonWrapper>
         </MobileContainer>
       )
     }

@@ -3,16 +3,12 @@
  */
 import styled from 'styled-components'
 
-type ContainerProps = {
-  isMobile: boolean
-}
-
 export const Container = styled.div`
   position: relative;
   padding-left: 32px;
   padding-right: 32px;
   padding-bottom: 16px;
-  padding-top: ${({ isMobile }: ContainerProps) => (isMobile ? 48 : 16)}px;
+  padding-top: 16px;
   display: flex;
   justify-content: center;
   background-color: #fff;
