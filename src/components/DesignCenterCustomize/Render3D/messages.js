@@ -67,5 +67,27 @@ export default defineMessages({
   turOffHint: {
     id: 'components.Render3D.turOffHint',
     defaultMessage: `Please don't show this again at start of design application`
+  },
+  customizeButton: {
+    id: 'components.Render3D.customizeButton',
+    defaultMessage: 'CUSTOMIZE'
+  },
+  editButton: {
+    id: 'components.Render3D.editButton',
+    defaultMessage: 'EDIT'
+  },
+  unsupportedDeviceTitle: {
+    id: 'screens.DesignCenter.unsupportedDeviceTitle',
+    defaultMessage: 'TO CONTINUE…'
+  },
+  unsupportedDeviceContent: {
+    id: 'screens.DesignCenter.unsupportedDeviceContent',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'For the best 3D design experience changing colors and adding logos, please return on a device with a larger screen such as a laptop or desktop computer.'
+  },
+  unsupportedDeviceButton: {
+    id: 'screens.DesignCenter.unsupportedDeviceButton',
+    defaultMessage: 'Got it!'
   }
 })

@@ -19,6 +19,11 @@ export const Row = styled.div`
   @media (max-width: 1020px) {
     grid-template-columns: 302px 302px;
   }
+
+  @media (max-width: 724px) {
+    grid-template-columns: 150px 150px;
+    grid-gap: 8px 16px;
+  }
 `
 
 export const ModalMessage = styled.div`

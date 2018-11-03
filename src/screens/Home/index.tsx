@@ -6,6 +6,7 @@ import * as React from 'react'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import isEmpty from 'lodash/isEmpty'
+import get from 'lodash/get'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
@@ -35,9 +36,11 @@ import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
+import MediaQuery from 'react-responsive'
 
-const BackgroundImg =
-  'https://storage.googleapis.com/jakroo/slider/unlimited_posibilities.jpg'
+const backgroundImg = 'homepage_header_desktop.jpg'
+const backgroundImgMobile = 'homepage_header_mobile.jpg'
+
 interface Props extends RouteComponentProps<any> {
   someKey?: string
   productId: number
@@ -122,12 +125,10 @@ export class Home extends React.Component<Props, {}> {
       intl,
       fakeWidth,
       currentCurrency,
-      clientInfo: {
-        browser: { name: browserName }
-      }
+      clientInfo
     } = this.props
-
     const { formatMessage } = intl
+    const browserName = get(clientInfo, 'browser.name', '')
 
     const searchResults = searchString ? (
       <SearchResults
@@ -144,7 +145,26 @@ export class Home extends React.Component<Props, {}> {
       <Layout {...{ history, intl }}>
         <Container>
           <SearchContainer>
-            <SearchBackground src={BackgroundImg} onClick={this.handleGoTo} />
+            <MediaQuery maxWidth={640}>
+              {matches => {
+                if (matches) {
+                  return (
+                    <SearchBackground
+                      src={`${
+                        config.storageUrl
+                      }/homepage/${backgroundImgMobile}`}
+                      onClick={this.handleGoTo}
+                    />
+                  )
+                }
+                return (
+                  <SearchBackground
+                    src={`${config.storageUrl}/homepage/${backgroundImg}`}
+                    onClick={this.handleGoTo}
+                  />
+                )
+              }}
+            </MediaQuery>
             <SearchBarContent>
               <SearchBar search={this.onSearch} {...{ formatMessage }} />
               {/* TODO: Commented for phase 1, will be implemented in Jakroo phase 2

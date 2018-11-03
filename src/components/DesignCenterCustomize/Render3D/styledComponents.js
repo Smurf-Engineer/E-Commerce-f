@@ -4,6 +4,13 @@
 import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
 import AntdButton from 'antd/lib/button'
+import {
+  BLUE,
+  WHITE,
+  GRAY_LIGHT,
+  GRAY_DARK,
+  BLUE_DARK
+} from '../../../theme/colors'
 
 export const fadeIn = keyframes`
   to {
@@ -14,6 +21,15 @@ export const fadeIn = keyframes`
 export const Container = styled.div`
   position: relative;
   width: 74.6%;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+`
+
+export const MobileContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: 80vh;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -31,10 +47,15 @@ export const Render = styled.div`
   width: 800px;
   height: 600px;
   cursor: grab;
+
+  @media (max-width: 426px) {
+    width: 100%;
+    height: 100%;
+  }
 `
 
 export const Model = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   user-select: none;
   font-size: 16px;
   font-weight: 600;
@@ -66,7 +87,7 @@ export const Button = styled(AntdButton)`
   width: 138px;
 `
 export const DragText = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   user-select: none;
   font-size: 14px;
   line-height: 23px;
@@ -82,6 +103,10 @@ export const DragText = styled.div`
   @media (min-height: 951px) {
     bottom: 30%;
   }
+
+  @media (max-width: 426px) {
+    bottom: 18%;
+  }
 `
 
 export const ModelType = styled.div`
@@ -94,7 +119,7 @@ export const ModelType = styled.div`
 `
 
 export const ModelText = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   user-select: none;
   font-size: 16px;
   line-height: 22px;
@@ -141,18 +166,37 @@ export const ButtonWrapper = styled.div`
   top: 10px;
 
   .ant-btn-primary  {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
     width: 138px;
   }
   .ant-btn-primary:hover {
-    background-color: #4a90e2;
-    border-color: #4a90e2;
+    background-color: ${BLUE};
+    border-color: ${BLUE};
   }
 `
 
+export const MobileButtonWrapper = styled.div`
+  position: absolute;
+  bottom: 10%;
+  width: 50%;
+  .ant-btn-primary  {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+`
+
+export const MobileButton = styled(AntdButton)`
+  height: 40px;
+  width: 100%;
+`
+
 export const ModalMessage = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   letter-spacing: 0.2px;
   line-height: 22px;
@@ -164,21 +208,21 @@ export const SizeBox = styled.div`
   padding: 8px;
   top: 52px;
   left: 26px;
-  border: 0.5px solid #dcdcdc;
+  border: 0.5px solid ${GRAY_LIGHT};
   border-radius: 2px;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
 `
 
 export const SizeLabel = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
 `
 
 export const Size = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.15px;

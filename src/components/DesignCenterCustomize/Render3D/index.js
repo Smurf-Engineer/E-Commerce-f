@@ -35,7 +35,10 @@ import {
   TopButton,
   HintModalImage,
   HintIcon,
-  TurnOffHintRow
+  TurnOffHintRow,
+  MobileContainer,
+  MobileButton,
+  MobileButtonWrapper
 } from './styledComponents'
 import {
   viewPositions,
@@ -61,6 +64,7 @@ import {
   LEFT_VIEW,
   EXTRA_FIELDS,
   INITIAL_ZOOM,
+  INITIAL_ZOOM_MOBILE,
   THUMBNAIL_ZOOM,
   CAMERA_MIN_ZOOM,
   CAMERA_MAX_ZOOM
@@ -109,6 +113,7 @@ import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import helpTooltip from '../../../assets/tooltip.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
+const { info } = Modal
 
 /* eslint-disable */
 class Render3D extends PureComponent {
@@ -254,7 +259,7 @@ class Render3D extends PureComponent {
     this.objLoader = objLoader
     this.textureLoader = textureLoader
 
-    this.camera.zoom = INITIAL_ZOOM
+    this.camera.zoom = isMobile ? INITIAL_ZOOM_MOBILE : INITIAL_ZOOM
     this.camera.updateProjectionMatrix()
 
     this.render3DModel()
@@ -269,26 +274,33 @@ class Render3D extends PureComponent {
     controls.maxDistance = CAMERA_MAX_ZOOM
     // controls.enableZoom = isMobile TODO: Pan zoom
 
-    this.container.addEventListener('mousedown', this.onMouseDown, false)
-    this.container.addEventListener('mouseup', this.onMouseUp, false)
-    this.container.addEventListener('mousemove', this.onMouseMove, false)
+    if (!isMobile) {
+      this.container.addEventListener('mousedown', this.onMouseDown, false)
+      this.container.addEventListener('mouseup', this.onMouseUp, false)
+      this.container.addEventListener('mousemove', this.onMouseMove, false)
+    }
 
     this.controls = controls
     this.start()
   }
 
   componentWillUnmount() {
-    const { onUnmountTab } = this.props
-    const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
-    const canvasJson = JSON.stringify(designCanvas)
-    onUnmountTab(canvasJson)
+    const { onUnmountTab, isMobile } = this.props
+    if (this.canvasTexture) {
+      const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
+      const canvasJson = JSON.stringify(designCanvas)
+      onUnmountTab(canvasJson)
+      this.canvasTexture.dispose()
+    }
     if (this.renderer) {
       this.stop()
+      if (!isMobile) {
+        this.container.removeEventListener('mousedown', this.onMouseDown, false)
+        this.container.removeEventListener('mouseup', this.onMouseUp, false)
+        this.container.removeEventListener('mousemove', this.onMouseMove, false)
+      }
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
-    }
-    if (this.canvasTexture) {
-      this.canvasTexture.dispose()
     }
   }
 
@@ -523,7 +535,8 @@ class Render3D extends PureComponent {
       zipperColor,
       bibColor,
       colors: areaColors,
-      designHasChanges
+      designHasChanges,
+      isMobile
     } = this.props
 
     const loadedTextures = await this.loadTextures(
@@ -661,11 +674,17 @@ class Render3D extends PureComponent {
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
-          this.canvasTexture = new fabric.Canvas(canvas, {
+          const canvasConfig = {
             width: CANVAS_SIZE,
             height: CANVAS_SIZE,
             crossOrigin: 'Anonymous'
-          })
+          }
+          if (isMobile) {
+            this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
+          } else {
+            this.canvasTexture = new fabric.Canvas(canvas, canvasConfig)
+          }
+
           const canvasTexture = new THREE.CanvasTexture(canvas)
           canvasTexture.minFilter = THREE.LinearFilter
           this.canvasTexture.on(
@@ -1095,6 +1114,16 @@ class Render3D extends PureComponent {
 
   handleOnChange3DModel = () => {}
 
+  handleOnPressCustomize = () => {
+    const { formatMessage } = this.props
+    info({
+      title: formatMessage(messages.unsupportedDeviceTitle),
+      maskClosable: true,
+      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
+      okText: formatMessage(messages.unsupportedDeviceButton)
+    })
+  }
+
   takeDesignPicture = () => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {
@@ -1136,8 +1165,35 @@ class Render3D extends PureComponent {
       openResetDesignModal,
       designHasChanges,
       canvas,
-      selectedElement
+      selectedElement,
+      isMobile,
+      isEditing
     } = this.props
+
+    if (isMobile) {
+      return (
+        <MobileContainer>
+          <Render
+            id="render-3d"
+            innerRef={container => (this.container = container)}
+          >
+            {loadingModel && <Progress type="circle" percent={progress + 1} />}
+          </Render>
+          {showDragmessage && (
+            <DragText>
+              <FormattedMessage {...messages.drag} />
+            </DragText>
+          )}
+          <MobileButtonWrapper>
+            <MobileButton type="primary" onClick={this.handleOnPressCustomize}>
+              {formatMessage(
+                isEditing ? messages.editButton : messages.customizeButton
+              )}
+            </MobileButton>
+          </MobileButtonWrapper>
+        </MobileContainer>
+      )
+    }
 
     const showHint = this.getHelpModalValueFromLocal()
 
@@ -1717,7 +1773,7 @@ class Render3D extends PureComponent {
 
     if (CHANGE_ACTIONS.includes(action)) {
       const activeEl = this.canvasTexture.getActiveObject()
-      const { id } = activeEl
+      const { id } = activeEl || {}
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl

@@ -40,7 +40,9 @@ import {
   LoadingContainer,
   Error,
   Title,
-  ErrorMessage
+  ErrorMessage,
+  BackCircle,
+  BackIcon
 } from './styledComponents'
 import {
   Palette,
@@ -77,13 +79,12 @@ import {
   addTeamStoreItemMutation,
   getDesignQuery
 } from './data'
+import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
 import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
-
-const { info } = Modal
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -255,26 +256,12 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   componentDidMount() {
-    const {
-      designHasChanges,
-      responsive,
-      intl: { formatMessage },
-      history
-    } = this.props
+    const { designHasChanges } = this.props
     window.onbeforeunload = () => {
       if (designHasChanges) {
         return 'Changes you made may not be saved.'
       }
       return null
-    }
-    if (!!responsive && responsive.phone) {
-      info({
-        title: formatMessage(messages.unsupportedDeviceTitle),
-        maskClosable: false,
-        onOk: () => history.goBack(),
-        content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
-        okText: formatMessage(messages.unsupportedDeviceButton)
-      })
     }
   }
 
@@ -521,21 +508,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       ThemeTab: ThemeTabIndex,
       StyleTab: StyleTabIndex
     } = DesignTabs
-
+    const isMobile = !!responsive && responsive.phone
     const redirect = <Redirect to={DEFAULT_ROUTE} />
-
-    /**
-     * Redirect for mobile
-     */
-    if (!!responsive && responsive.phone) {
-      return (
-        <Layout
-          {...{ history, intl }}
-          hideBottomHeader={true}
-          hideFooter={true}
-        />
-      )
-    }
 
     /**
      * Redirect for missing params
@@ -650,22 +624,32 @@ export class DesignCenter extends React.Component<Props, {}> {
         hideFooter={true}
       >
         <Container>
-          <Header onPressBack={this.handleOnPressBack} />
-          <Tabs
-            currentTheme={themeId}
-            onSelectTab={this.handleOnSelectTab}
-            currentTab={tabSelected}
-            isEditing={isEditing || loadingData}
-            {...{ designHasChanges, styleIndex }}
-          />
+          {isMobile &&
+            currentTab > DesignTabs.ThemeTab && (
+              <BackCircle onClick={this.handleOnGoBack}>
+                <BackIcon src={backIcon} />
+              </BackCircle>
+            )}
+          {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
+          {!isMobile && (
+            <Tabs
+              currentTheme={themeId}
+              onSelectTab={this.handleOnSelectTab}
+              currentTab={tabSelected}
+              isEditing={isEditing || loadingData}
+              {...{ designHasChanges, styleIndex }}
+            />
+          )}
           <SwipeableViews
-            onTransitionEnd={this.handleOnTransictionEnd}
+            disabled={true}
             index={tabSelected}
+            onTransitionEnd={this.handleOnTransictionEnd}
           >
             <div key="theme">
               <Info
                 label="theme"
-                message="themeMessage"
+                {...{ isMobile }}
+                message={isMobile ? '' : 'themeMessage'}
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -679,7 +663,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                     openNewThemeModalAction,
                     designHasChanges,
                     formatMessage,
-                    productId
+                    productId,
+                    isMobile
                   }}
                 />
               )}
@@ -687,7 +672,8 @@ export class DesignCenter extends React.Component<Props, {}> {
             <div key="style">
               <Info
                 label="style"
-                message="styleMessage"
+                {...{ isMobile }}
+                message={isMobile ? '' : 'styleMessage'}
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -753,7 +739,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isEditing,
                   originalPaths,
                   selectedItem,
-                  openLoginModalAction
+                  openLoginModalAction,
+                  isMobile
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
@@ -792,7 +779,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
                 onSelectedItem={setSelectedItemAction}
-                isMobile={!!responsive && responsive.mobile}
               />
             )}
             <PreviewTab
@@ -859,7 +845,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             saveDesignChangesLoading={saveDesignChangesLoading}
             goToCustomProductPage={this.goToCustomProductPage}
           />
-          {tabSelected === CustomizeTabIndex && !loadingData ? (
+          {tabSelected === CustomizeTabIndex && !loadingData && !isMobile ? (
             <BottomSheetWrapper>
               <SwipeableBottomSheet
                 overflowHeight={64}
@@ -924,6 +910,13 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { setThemeAction, dataProduct } = this.props
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
+    }
+  }
+
+  handleOnGoBack = () => {
+    const { setCurrentTabAction, currentTab, loadingModel } = this.props
+    if (!loadingModel) {
+      setCurrentTabAction(currentTab - 1)
     }
   }
 }

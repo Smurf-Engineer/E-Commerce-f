@@ -5,7 +5,10 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   position: relative;
-  padding 16px 32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 16px;
+  padding-top: 16px;
   display: flex;
   justify-content: center;
   background-color: #fff;
@@ -13,7 +16,7 @@ export const Container = styled.div`
 
 export const Row = styled.div`
   display: flex;
-  align-items center;
+  align-items: center;
   position: absolute;
   left: 32px;
 `

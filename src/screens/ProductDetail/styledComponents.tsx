@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Breadcrumb from 'antd/lib/breadcrumb'
 import Button from 'antd/lib/button'
 import InputNumber from 'antd/lib/input-number'
-import { RED, BLACK } from '../../theme/colors'
+import { RED, BLACK, BLUE_DARK } from '../../theme/colors'
 
 interface StyledProps {
   selected?: boolean
@@ -54,6 +54,7 @@ export const ProductData = styled.div`
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 480px) {
+    padding-top: 16px;
     width: 100%;
   }
 `
@@ -131,21 +132,54 @@ export const ButtonsRow = styled.div`
   margin: 20px 0 25px;
 
   .ant-btn {
-    color: #e61737;
     font-size: 16px;
     line-height: 22px;
     text-align: center;
   }
 `
 
+export const StyledButtonWrapper = styled.div`
+  .ant-btn-primary  {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+`
+
 export const StyledButton = styled(Button)`
   height: 50px;
   width: 221px;
+  border-radius: 2px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    display: none;
+  }
+`
+
+export const MobileButtonWrapper = styled.div`
+  padding-top: 8px;
+  .ant-btn-primary  {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+  .ant-btn-primary:hover {
+    background-color: ${BLUE_DARK};
+    border-color: ${BLUE_DARK};
+  }
+`
+
+export const MobileButton = styled(Button)`
+  display: none;
+  height: 50px;
+  width: 100%;
   border: 2px solid #e61737;
   border-radius: 2px;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;
+    display: block;
   }
 `
 

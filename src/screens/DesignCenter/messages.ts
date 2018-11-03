@@ -44,13 +44,13 @@ export default defineMessages({
   },
   unsupportedDeviceTitle: {
     id: 'screens.DesignCenter.unsupportedDeviceTitle',
-    defaultMessage: 'UNSUPPORTED DEVICE'
+    defaultMessage: 'TO CONTINUE…'
   },
   unsupportedDeviceContent: {
     id: 'screens.DesignCenter.unsupportedDeviceContent',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'For the best 3D design experience, please return on a device with a larger screen such as a laptop or desktop computer.'
+      'For the best 3D design experience changing colors and adding logos, please return on a device with a larger screen such as a laptop or desktop computer.'
   },
   unsupportedDeviceButton: {
     id: 'screens.DesignCenter.unsupportedDeviceButton',

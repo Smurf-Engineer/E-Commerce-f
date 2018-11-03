@@ -16,6 +16,7 @@ export const EXTRA_FIELDS = [
   'isImageGroup'
 ]
 export const INITIAL_ZOOM = 1.85
+export const INITIAL_ZOOM_MOBILE = 1.2
 export const THUMBNAIL_ZOOM = 150
 export const CAMERA_MIN_ZOOM = 100
 export const CAMERA_MAX_ZOOM = 350

@@ -32,9 +32,14 @@ const HEADER_HEIGHT = ({ hideTopHeader, hideBottomHeader }: HeaderProps) => {
 
 export const Header = styled.div`
   background: ${WHITE};
-  height: ${HEADER_HEIGHT}px;
+  height: 70px;
   line-height: 0px;
   padding: 0px;
+  z-index: 10;
+
+  @media (min-width: 992px) {
+    height: ${HEADER_HEIGHT}px;
+  }
 `
 
 export const Footer = styled.div`

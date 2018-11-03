@@ -23,7 +23,7 @@ interface Props {
 }
 
 const getDeliveryDate = (): string => {
-  const currentDate = moment().add(14, 'days')
+  const currentDate = moment().add(10, 'days')
   return currentDate.format('MMMM DD')
 }
 

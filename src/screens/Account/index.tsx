@@ -210,10 +210,10 @@ export class Account extends React.Component<Props, {}> {
             ))}
           </SubMenu>
         ) : (
-            <Menu.Item className="ant-menu-item-custom" key={title}>
-              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-            </Menu.Item>
-          )
+          <Menu.Item className="ant-menu-item-custom" key={title}>
+            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+          </Menu.Item>
+        )
     )
 
     const logoutButton = (

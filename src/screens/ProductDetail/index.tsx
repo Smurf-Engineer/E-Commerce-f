@@ -53,7 +53,10 @@ import {
   ProductAvailableColor,
   ColorWrapper,
   TitleSubtitleContainer,
-  Loading
+  Loading,
+  MobileButton,
+  MobileButtonWrapper,
+  StyledButtonWrapper
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -511,6 +514,13 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     </Desktop>
                   )} */}
               </ImagePreview>
+              {!isRetail && (
+                <MobileButtonWrapper>
+                  <MobileButton type="primary" onClick={this.gotoCustomize}>
+                    {formatMessage(messages.customizeLabel)}
+                  </MobileButton>
+                </MobileButtonWrapper>
+              )}
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
@@ -532,9 +542,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
                 <ButtonsRow>
                   {!isRetail && (
-                    <StyledButton onClick={this.gotoCustomize}>
-                      {formatMessage(messages.customizeLabel)}
-                    </StyledButton>
+                    <StyledButtonWrapper>
+                      <StyledButton type="primary" onClick={this.gotoCustomize}>
+                        {formatMessage(messages.customizeLabel)}
+                      </StyledButton>
+                    </StyledButtonWrapper>
                   )}
                 </ButtonsRow>
                 {isRetail && collectionSelection}
