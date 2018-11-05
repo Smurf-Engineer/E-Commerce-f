@@ -24,6 +24,14 @@ export const Container = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    width: 65%;
+  }
+
+  @media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) {
+    width: 72%;
+  }
 `
 
 export const MobileContainer = styled.div`
@@ -47,6 +55,11 @@ export const Render = styled.div`
   width: 800px;
   height: 600px;
   cursor: grab;
+
+  @media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
+    width: 100%;
+    height: 100%;
+  }
 
   @media (max-width: 426px) {
     width: 100%;
@@ -92,21 +105,9 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 5%;
+  bottom: 16px;
   left: 50%;
   transform: translate(-50%, -50%);
-
-  @media (min-height: 800px) and (max-height: 950px) {
-    bottom: 14%;
-  }
-
-  @media (min-height: 951px) {
-    bottom: 30%;
-  }
-
-  @media (max-width: 426px) {
-    bottom: 18%;
-  }
 `
 
 export const ModelType = styled.div`

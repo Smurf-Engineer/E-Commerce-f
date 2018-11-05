@@ -8,8 +8,16 @@ export const Container = styled.div`
   height: 60vh;
   overflow: auto;
 
-  @media (min-height: 800px) {
+  @media (min-height: 800px) and (orientation: portrait) {
     height: 85vh;
+  }
+
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    height: 70vh;
+  }
+
+  @media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) {
+    height: 78vh;
   }
 `
 
