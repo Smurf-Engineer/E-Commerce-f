@@ -32,7 +32,6 @@ const HEADER_HEIGHT = ({ hideTopHeader, hideBottomHeader }: HeaderProps) => {
 
 export const Header = styled.div`
   background: ${WHITE};
-  height: 70px;
   line-height: 0px;
   padding: 0px;
   z-index: 10;

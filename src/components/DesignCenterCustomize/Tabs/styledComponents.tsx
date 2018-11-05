@@ -8,10 +8,18 @@ export const Container = styled.div`
   background-color: ${WHITE};
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12), 0 0px 2px rgba(0, 0, 0, 0.24);
   height: 80vh;
-  max-width: 400px;
+  /* max-width: 400px; */
   padding-bottom: 32px;
   width: 25.4%;
   z-index: 1;
+
+  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
+    width: 35%;
+  }
+
+  @media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) {
+    width: 28%;
+  }
 
   @media (min-height: 800px) {
     height: 85vh;

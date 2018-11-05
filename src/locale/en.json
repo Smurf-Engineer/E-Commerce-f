@@ -659,6 +659,7 @@
   "components.DesignCenterGrid.modalNewStyleConfirm": "Confirm",
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
   "screens.DesignCenter.title": "DesignCenter",
+  "screens.DesignCenter.landscapeMessage": "Our design center is optimized for landscape mode, please rotate your device.",
   "screens.DesignCenter.inspirationTtitle": "Color Ideas",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
   "screens.DesignCenter.addedToStore": "\"{designName}\" added to \"{storeName}\"",
