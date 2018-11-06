@@ -286,7 +286,7 @@ class Render3D extends PureComponent {
   }
 
   componentWillUnmount() {
-    const { onUnmountTab, isMobile, responsive } = this.props
+    const { onUnmountTab, isMobile } = this.props
     if (this.canvasTexture) {
       const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
       const canvasJson = JSON.stringify(designCanvas)
@@ -313,9 +313,9 @@ class Render3D extends PureComponent {
     // TODO: Configure SAFARI EVENTS
     if (tablet) {
       return {
-        down: 'pointerdown',
-        up: 'pointerup',
-        move: 'pointermove'
+        down: 'touchstart',
+        up: 'touchend',
+        move: 'touchmove'
       }
     }
     return {
@@ -1870,15 +1870,24 @@ class Render3D extends PureComponent {
 
   onMouseDown = evt => {
     evt.preventDefault()
+    document.getElementById('render-3d').style.cursor = 'grabbing'
     if (!this.canvasTexture) {
       return
     }
-    document.getElementById('render-3d').style.cursor = 'grabbing'
-    const array = this.getMousePosition(
-      this.container,
-      evt.clientX,
-      evt.clientY
-    )
+    const {
+      responsive: { tablet }
+    } = this.props
+    let clientX = evt.clientX
+    let clientY = evt.clientY
+    if (tablet) {
+      clientX = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageX
+        : evt.changedTouches[evt.changedTouches.length - 1].pageX
+      clientY = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageY
+        : evt.changedTouches[evt.changedTouches.length - 1].pageY
+    }
+    const array = this.getMousePosition(this.container, clientX, clientY)
     this.onClickPosition.fromArray(array)
 
     const intersects = this.getIntersects(
@@ -2044,12 +2053,21 @@ class Render3D extends PureComponent {
 
   onMouseMove = evt => {
     evt.preventDefault()
+    const {
+      responsive: { tablet }
+    } = this.props
+    let clientX = evt.clientX
+    let clientY = evt.clientY
+    if (tablet) {
+      clientX = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageX
+        : evt.changedTouches[evt.changedTouches.length - 1].pageX
+      clientY = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageY
+        : evt.changedTouches[evt.changedTouches.length - 1].pageY
+    }
 
-    const array = this.getMousePosition(
-      this.container,
-      evt.clientX,
-      evt.clientY
-    )
+    const array = this.getMousePosition(this.container, clientX, clientY)
     this.onClickPosition.fromArray(array)
 
     const intersects = this.getIntersects(
