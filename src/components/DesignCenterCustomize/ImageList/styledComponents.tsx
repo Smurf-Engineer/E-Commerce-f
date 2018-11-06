@@ -37,10 +37,6 @@ export const Row = styled.div`
   display: flex;
   flex: 1;
   padding: 4px;
-
-  /* @media (min-width: 768px) and (max-width: 1024px) {
-    flex-wrap: wrap;
-  } */
 `
 
 export const Col = styled.li`
@@ -58,10 +54,6 @@ export const Image = styled.img`
   height: 88px;
   object-fit: contain;
   width: 88px;
-
-  /* @media (min-width: 768px) and (max-width: 1024px) {
-    width: 100%;
-  } */
 `
 
 export const Text = styled.div`
@@ -74,11 +66,6 @@ export const Info = styled.div`
   justify-content: space-between;
   padding-left: 16px;
   width: 70%;
-
-  /* @media (min-width: 768px) and (max-width: 1024px) {
-    padding-left: 0px;
-    width: 100%;
-  } */
 `
 
 export const Name = styled.div`
