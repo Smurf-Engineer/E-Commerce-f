@@ -46,6 +46,7 @@ interface Props {
   styleColors: string[]
   myPaletteModals: MyPaletteDesignCenterModals
   product?: Product
+  disableTooltip: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -106,7 +107,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
       zipperColor,
       bibColor,
       onAccessoryColorSelected,
-      product
+      product,
+      disableTooltip
     } = this.props
     const { index, names } = this.state
 
@@ -148,7 +150,7 @@ class ColorsTab extends React.PureComponent<Props, State> {
             </Row>
           ) : null}
         </Top>
-        <SwipeableViews {...{ index }}>
+        <SwipeableViews disabled={true} {...{ index }}>
           <SelectColors
             showContent={isFirstTab}
             goToBaseColors={this.goToBaseColors}
@@ -182,7 +184,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
               colors,
               names,
               styleColors,
-              formatMessage
+              formatMessage,
+              disableTooltip
             }}
           />
           <MyPalette
@@ -202,8 +205,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
           {stitchingTab ? (
             <StitchingList>
               <ColorList
-                {...{ onSelectStitchingColor, stitchingColor }}
                 stitching={true}
+                {...{ onSelectStitchingColor, stitchingColor, disableTooltip }}
               />
             </StitchingList>
           ) : (

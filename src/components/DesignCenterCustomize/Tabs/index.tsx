@@ -54,6 +54,7 @@ interface Props {
   onUploadFile: (file: any) => void
   searchClipParam: string
   isUserAuthenticated: boolean
+  disableTooltip: boolean
   selectedItem: SelectedAsset
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -115,7 +116,8 @@ const Tabs = ({
   searchClipParam,
   setSearchClipParamAction,
   isUserAuthenticated,
-  selectedItem
+  selectedItem,
+  disableTooltip = false
 }: Props) => {
   return (
     <Container>
@@ -123,6 +125,7 @@ const Tabs = ({
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
           <ColorsTab
             {...{
+              disableTooltip,
               onSelectColorBlock,
               onHoverColorBlock,
               colorBlock,
@@ -152,6 +155,7 @@ const Tabs = ({
           <TextTab
             elements={canvas.text}
             {...{
+              disableTooltip,
               text,
               onUpdateText,
               onApplyText,
@@ -166,6 +170,7 @@ const Tabs = ({
         <TabPane tab={<Tab label="symbol" icon={imageIcon} />} key="3">
           <SymbolTab
             {...{
+              disableTooltip,
               onApplyArt,
               formatMessage,
               onSelectArtFormat,

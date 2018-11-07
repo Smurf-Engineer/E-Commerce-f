@@ -13,6 +13,7 @@ interface Props {
   colors: string[]
   names: string[]
   showContent: boolean
+  disableTooltip: boolean
   onSelectColor: (color: string, name: string) => void
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
@@ -30,7 +31,8 @@ class ColorTab extends React.PureComponent<Props, {}> {
       colors,
       showContent,
       formatMessage,
-      names
+      names,
+      disableTooltip
     } = this.props
     if (!showContent) {
       return null
@@ -49,7 +51,7 @@ class ColorTab extends React.PureComponent<Props, {}> {
           }}
         />
         <Divider />
-        <ColorList {...{ onSelectColor }} />
+        <ColorList {...{ onSelectColor, disableTooltip }} />
       </Container>
     )
   }

@@ -205,7 +205,7 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
-    const { isMobile, responsive } = this.props
+    const { isMobile } = this.props
     const { clientWidth, clientHeight } = this.container
     const devicePixelRatio = window.devicePixelRatio || 1
 
@@ -698,7 +698,9 @@ class Render3D extends PureComponent {
           const canvasConfig = {
             width: CANVAS_SIZE,
             height: CANVAS_SIZE,
-            crossOrigin: 'Anonymous'
+            crossOrigin: 'Anonymous',
+            selection: false,
+            skipTargetFind: true
           }
           if (isMobile) {
             this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)

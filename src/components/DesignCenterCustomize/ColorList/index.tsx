@@ -2,7 +2,6 @@
  * ColorList Component - Created by david on 26/02/18.
  */
 import * as React from 'react'
-import Tooltip from 'antd/lib/tooltip'
 import { Container, Color, Row, Col } from './styledComponents'
 import colors from './colors'
 import stitchingColors from './stitchingColors'
@@ -14,6 +13,7 @@ interface Props {
   height?: number
   stitching?: boolean
   stitchingColor?: StitchingColor
+  disableTooltip?: boolean
 }
 
 const ColorList = ({
@@ -31,19 +31,18 @@ const ColorList = ({
   }
   const arrayColors = !stitching ? colors : stitchingColors
   const colorsList = arrayColors.map(({ value, name }, index) => (
-    <Tooltip key={index} title={name}>
-      <Col>
-        <Color
-          selected={value === stitchingColor.value}
-          color={value}
-          onClick={
-            stitching
-              ? setStitchingColor({ name, value })
-              : setColor(value, name, index)
-          }
-        />
-      </Col>
-    </Tooltip>
+    <Col key={index} className="custom-tooltip">
+      <Color
+        selected={value === stitchingColor.value}
+        color={value}
+        onClick={
+          stitching
+            ? setStitchingColor({ name, value })
+            : setColor(value, name, index)
+        }
+      />
+      {!!name && <div className="tooltip-content">{name}</div>}
+    </Col>
   ))
   return (
     <Container {...{ height }}>
