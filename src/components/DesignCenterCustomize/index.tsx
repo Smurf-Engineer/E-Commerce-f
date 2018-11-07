@@ -273,6 +273,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onApplyText={this.handleOnApplyText}
             onApplyImage={this.handleOnApplyImage}
             onApplyArt={this.handleOnApplyArt}
+            disableTooltip={responsive.tablet}
           />
         )}
         {showRender3d && !loadingData ? (
