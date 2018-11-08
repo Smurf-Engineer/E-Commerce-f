@@ -105,7 +105,7 @@ export const DragText = styled.div`
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 16px;
+  bottom: 16%;
   left: 50%;
   transform: translate(-50%, -50%);
 `
