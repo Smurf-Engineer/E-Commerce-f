@@ -40,6 +40,7 @@ interface Props {
   data: Data
   selectedElement: CanvasElement
   selectedItem: number
+  disableTooltip: boolean
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
@@ -101,7 +102,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           </Row>
         </Header>
         {selectedElement ? (
-          <SwipeableViews index={page}>
+          <SwipeableViews disabled={true} index={page}>
             <div>
               <OptionText
                 onClick={this.changePage(1, 1)}

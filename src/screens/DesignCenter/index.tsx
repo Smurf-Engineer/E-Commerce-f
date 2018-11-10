@@ -256,7 +256,17 @@ export class DesignCenter extends React.Component<Props, {}> {
   }
 
   componentDidMount() {
-    const { designHasChanges } = this.props
+    const {
+      designHasChanges,
+      responsive,
+      intl: { formatMessage }
+    } = this.props
+    if (
+      responsive.tablet &&
+      window.matchMedia('(orientation: portrait)').matches
+    ) {
+      Message.warning(formatMessage(messages.landscapeMessage))
+    }
     window.onbeforeunload = () => {
       if (designHasChanges) {
         return 'Changes you made may not be saved.'
@@ -740,7 +750,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   originalPaths,
                   selectedItem,
                   openLoginModalAction,
-                  isMobile
+                  isMobile,
+                  responsive
                 }}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}

@@ -30,6 +30,7 @@ interface Props {
   productName: string
   selectedElement: string
   textFormat: TextFormat
+  disableTooltip: boolean
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
@@ -66,7 +67,7 @@ export class TextTab extends React.PureComponent<Props, State> {
             </Title>
           </Row>
         </Header>
-        <SwipeableViews index={page}>
+        <SwipeableViews disabled={true} index={page}>
           <div>
             <InputWrapper disabled={!text}>
               <Input

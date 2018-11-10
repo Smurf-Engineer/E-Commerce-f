@@ -59,5 +59,10 @@ export default defineMessages({
   errorMessage: {
     id: 'components.withError.error',
     defaultMessage: 'Something went wrong'
+  },
+  landscapeMessage: {
+    id: 'screens.DesignCenter.landscapeMessage',
+    defaultMessage:
+      'Our design center is optimized for landscape mode, please rotate your device.'
   }
 })

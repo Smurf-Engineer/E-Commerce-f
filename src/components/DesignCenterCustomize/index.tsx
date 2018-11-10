@@ -26,7 +26,8 @@ import {
   CanvasRotated,
   AccessoriesColor,
   CanvasObjects,
-  SelectedAsset
+  SelectedAsset,
+  Responsive
 } from '../../types/common'
 import { Container, LoadingContainer } from './styledComponents'
 import {
@@ -77,6 +78,7 @@ interface Props {
   originalPaths: any[]
   selectedItem: SelectedAsset
   isMobile: boolean
+  responsive: Responsive
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -213,7 +215,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onResetEditing,
       onSelectedItem,
       selectedItem,
-      isMobile
+      isMobile,
+      responsive
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -270,6 +273,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onApplyText={this.handleOnApplyText}
             onApplyImage={this.handleOnApplyImage}
             onApplyArt={this.handleOnApplyArt}
+            disableTooltip={responsive.tablet}
           />
         )}
         {showRender3d && !loadingData ? (
@@ -326,7 +330,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onResetEditing,
               onSelectedItem,
               isMobile,
-              isUserAuthenticated
+              isUserAuthenticated,
+              responsive
             }}
           />
         ) : (

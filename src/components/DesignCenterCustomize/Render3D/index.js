@@ -275,9 +275,10 @@ class Render3D extends PureComponent {
     // controls.enableZoom = isMobile TODO: Pan zoom
 
     if (!isMobile) {
-      this.container.addEventListener('mousedown', this.onMouseDown, false)
-      this.container.addEventListener('mouseup', this.onMouseUp, false)
-      this.container.addEventListener('mousemove', this.onMouseMove, false)
+      const { down, up, move } = this.configureEventListeners()
+      this.container.addEventListener(down, this.onMouseDown, false)
+      this.container.addEventListener(up, this.onMouseUp, false)
+      this.container.addEventListener(move, this.onMouseMove, false)
     }
 
     this.controls = controls
@@ -295,12 +296,32 @@ class Render3D extends PureComponent {
     if (this.renderer) {
       this.stop()
       if (!isMobile) {
-        this.container.removeEventListener('mousedown', this.onMouseDown, false)
-        this.container.removeEventListener('mouseup', this.onMouseUp, false)
-        this.container.removeEventListener('mousemove', this.onMouseMove, false)
+        const { down, up, move } = this.configureEventListeners()
+        this.container.removeEventListener(down, this.onMouseDown, false)
+        this.container.removeEventListener(up, this.onMouseUp, false)
+        this.container.removeEventListener(move, this.onMouseMove, false)
       }
       this.container.removeChild(this.renderer.domElement)
       this.clearScene()
+    }
+  }
+
+  configureEventListeners = () => {
+    const {
+      responsive: { tablet }
+    } = this.props
+    // TODO: Configure SAFARI EVENTS
+    if (tablet) {
+      return {
+        down: 'touchstart',
+        up: 'touchend',
+        move: 'touchmove'
+      }
+    }
+    return {
+      down: 'mousedown',
+      up: 'mouseup',
+      move: 'mousemove'
     }
   }
 
@@ -677,7 +698,9 @@ class Render3D extends PureComponent {
           const canvasConfig = {
             width: CANVAS_SIZE,
             height: CANVAS_SIZE,
-            crossOrigin: 'Anonymous'
+            crossOrigin: 'Anonymous',
+            selection: false,
+            skipTargetFind: true
           }
           if (isMobile) {
             this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
@@ -1772,8 +1795,8 @@ class Render3D extends PureComponent {
     const action = this.dragComponent && this.dragComponent.action
 
     if (CHANGE_ACTIONS.includes(action)) {
-      const activeEl = this.canvasTexture.getActiveObject()
-      const { id } = activeEl || {}
+      const activeEl = this.canvasTexture.getActiveObject() || {}
+      const { id } = activeEl
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl
@@ -1849,15 +1872,24 @@ class Render3D extends PureComponent {
 
   onMouseDown = evt => {
     evt.preventDefault()
+    document.getElementById('render-3d').style.cursor = 'grabbing'
     if (!this.canvasTexture) {
       return
     }
-    document.getElementById('render-3d').style.cursor = 'grabbing'
-    const array = this.getMousePosition(
-      this.container,
-      evt.clientX,
-      evt.clientY
-    )
+    const {
+      responsive: { tablet }
+    } = this.props
+    let clientX = evt.clientX
+    let clientY = evt.clientY
+    if (tablet) {
+      clientX = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageX
+        : evt.changedTouches[evt.changedTouches.length - 1].pageX
+      clientY = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageY
+        : evt.changedTouches[evt.changedTouches.length - 1].pageY
+    }
+    const array = this.getMousePosition(this.container, clientX, clientY)
     this.onClickPosition.fromArray(array)
 
     const intersects = this.getIntersects(
@@ -2023,12 +2055,21 @@ class Render3D extends PureComponent {
 
   onMouseMove = evt => {
     evt.preventDefault()
+    const {
+      responsive: { tablet }
+    } = this.props
+    let clientX = evt.clientX
+    let clientY = evt.clientY
+    if (tablet) {
+      clientX = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageX
+        : evt.changedTouches[evt.changedTouches.length - 1].pageX
+      clientY = evt.targetTouches[0]
+        ? evt.targetTouches[0].pageY
+        : evt.changedTouches[evt.changedTouches.length - 1].pageY
+    }
 
-    const array = this.getMousePosition(
-      this.container,
-      evt.clientX,
-      evt.clientY
-    )
+    const array = this.getMousePosition(this.container, clientX, clientY)
     this.onClickPosition.fromArray(array)
 
     const intersects = this.getIntersects(
