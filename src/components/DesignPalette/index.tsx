@@ -11,7 +11,9 @@ import {
   Name,
   Info,
   Image,
-  InfoContainer
+  InfoContainer,
+  Buttons,
+  SaveButton
 } from './styledComponents'
 
 interface Props {
@@ -22,6 +24,7 @@ interface Props {
   buttonLabel?: string
   loading?: boolean
   onSelectPalette: (id: number) => void
+  onEditColorIdea: (id: number) => void
 }
 
 const PaletteCard = ({
@@ -31,9 +34,11 @@ const PaletteCard = ({
   onSelectPalette,
   buttonLabel,
   loading = false,
-  image
+  image,
+  onEditColorIdea
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
+  const handleOnEditIdea = () => onEditColorIdea(id)
   const colorButtons = colors.map((color, index) => (
     <Oval key={index} currentColor={color} />
   ))
@@ -44,9 +49,12 @@ const PaletteCard = ({
         <Info>
           <Name>{name}</Name>
           <ColorButtons>{colorButtons}</ColorButtons>
-          <Button disabled={loading} onClick={handleOnSelectPalette}>
-            {buttonLabel}
-          </Button>
+          <Buttons>
+            <Button onClick={handleOnEditIdea}>EDIT</Button>
+            <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
+              {buttonLabel}
+            </SaveButton>
+          </Buttons>
         </Info>
       </InfoContainer>
       <Divider />

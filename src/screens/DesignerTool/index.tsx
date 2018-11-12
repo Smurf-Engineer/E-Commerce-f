@@ -80,6 +80,7 @@ interface Props {
   bibBrace: boolean
   zipper: boolean
   binding: boolean
+  colorIdeaItem: number
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -106,6 +107,7 @@ interface Props {
   removeExtraFileAction: (index: number) => void
   toggleExtraColorAction: (color: string) => void
   saveDesignSuccessAction: () => void
+  setColorIdeaItemAction: (item: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -150,6 +152,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       bibBrace,
       zipper,
       binding,
+      colorIdeaItem,
       setThemeNameAction,
       setStyleNameAction,
       setComplexityAction,
@@ -157,7 +160,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       setUploadingSuccess,
       addExtraFileAction,
       removeExtraFileAction,
-      toggleExtraColorAction
+      toggleExtraColorAction,
+      setColorIdeaItemAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -181,9 +185,11 @@ export class DesignerTool extends React.Component<Props, {}> {
           formatMessage,
           bibBrace,
           zipper,
-          binding
+          binding,
+          colorIdeaItem
         }}
         files={modelConfig}
+        onEditColorIdea={setColorIdeaItemAction}
         onSaveDesign={this.handleSaveDesign}
         onSelectTheme={setSelectedThemeAction}
         onSelectStyle={setSelectedStyleAction}

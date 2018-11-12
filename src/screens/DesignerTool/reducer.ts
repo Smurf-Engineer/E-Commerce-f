@@ -28,12 +28,13 @@ import {
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
   TOGGLE_EXTRA_COLOR_ACTION,
-  SAVE_DESIGN_SUCCESS_ACTION
+  SAVE_DESIGN_SUCCESS_ACTION,
+  EDIT_COLOR_IDEA_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
-const NONE = -1
-const NONE_ID = 0
+export const NONE = -1
+export const NONE_ID = 0
 const DESIGN_THUMBNAIL = -1
 
 export const initialState = fromJS({
@@ -58,7 +59,8 @@ export const initialState = fromJS({
   extraFiles: [],
   bibBrace: true,
   zipper: true,
-  binding: true
+  binding: true,
+  colorIdeaItem: NONE
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -185,6 +187,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SAVE_DESIGN_SUCCESS_ACTION:
       return state.set('designConfig', state.get('designConfig').clear())
+    case EDIT_COLOR_IDEA_ACTION:
+      return state.set('colorIdeaItem', action.item)
     default:
       return state
   }

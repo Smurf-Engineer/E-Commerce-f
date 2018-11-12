@@ -3,9 +3,11 @@
  */
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
-import Tab from '../Tab'
+import find from 'lodash/find'
+import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
+import Tab from '../Tab'
 import Settings from '../../DesignSettings'
 import InpirationTab from '../Settings'
 import colorIcon from '../../../../assets/color_white.svg'
@@ -13,13 +15,21 @@ import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
 import { Container } from './styledComponents'
-import { DesignConfig, UploadFile, ModelConfig } from '../../../../types/common'
+import {
+  DesignConfig,
+  UploadFile,
+  ModelConfig,
+  DesignObject
+} from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
+import { NONE_ID, NONE } from '../../reducer'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const SETTINGS_TAB = 'SETTINGS_TAB'
+const LIST_TAB = 0
+const EDIT_TAB = 1
 
 const { TabPane } = AntdTabs
 
@@ -42,6 +52,7 @@ interface Props {
   bibBrace: boolean
   zipper: boolean
   binding: boolean
+  colorIdeaItem: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -66,6 +77,7 @@ interface Props {
   onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
   onToggleColor: (color: string) => void
+  onEditColorIdea: (item: number) => void
 }
 
 const Tabs = ({
@@ -110,8 +122,26 @@ const Tabs = ({
   onToggleColor,
   bibBrace,
   zipper,
-  binding
+  binding,
+  colorIdeaItem,
+  onEditColorIdea
 }: Props) => {
+  let colorIdeas: DesignObject[] = []
+  const areSelectedThemeAndStyle =
+    selectedTheme !== NONE_ID && selectedStyle !== NONE_ID
+  if (productData && productData.product && areSelectedThemeAndStyle) {
+    const {
+      product: { themes }
+    } = productData || []
+    const theme = find(themes, themeItem => themeItem.id === selectedTheme)
+    if (theme) {
+      const style = find(
+        theme.styles,
+        styleItem => styleItem.id === selectedStyle
+      )
+      colorIdeas = style ? style.colorIdeas : []
+    }
+  }
   return (
     <Container>
       <AntdTabs defaultActiveKey={SETTINGS_TAB} size="large">
@@ -180,18 +210,23 @@ const Tabs = ({
           key={INSPIRATION_TAB}
           tab={<Tab label="config" icon={settingsIcon} />}
         >
-          <InpirationTab
-            designs={designConfig || []}
-            onSelectPalette={onSelectInspirationColor}
-            {...{
-              onSelectComplexity,
-              onUpdateStyleName,
-              onSaveThumbnail,
-              uploadingThumbnail,
-              formatMessage,
-              onSelectConfig
-            }}
-          />
+          <SwipeableViews index={colorIdeaItem > NONE ? EDIT_TAB : LIST_TAB}>
+            <InpirationTab
+              designs={designConfig || []}
+              onSelectPalette={onSelectInspirationColor}
+              {...{
+                onSelectComplexity,
+                onUpdateStyleName,
+                onSaveThumbnail,
+                uploadingThumbnail,
+                formatMessage,
+                onSelectConfig,
+                colorIdeas,
+                onEditColorIdea
+              }}
+            />
+            <div>EDIT COLOR IDEA</div>
+          </SwipeableViews>
         </TabPane>
       </AntdTabs>
     </Container>

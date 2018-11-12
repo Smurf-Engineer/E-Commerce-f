@@ -13,3 +13,7 @@ export const UploadWrapper = styled.div`
   margin-top: 16px;
   margin-left: 16px;
 `
+
+export const List = styled.div`
+  padding-top: 24px;
+`

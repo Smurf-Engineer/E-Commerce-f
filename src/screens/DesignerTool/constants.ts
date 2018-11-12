@@ -27,6 +27,7 @@ export const ADD_EXTRA_FILE_ACTION = `${namespace}/ADD_EXTRA_FILE_ACTION`
 export const REMOVE_EXTRA_FILE_ACTION = `${namespace}/REMOVE_EXTRA_FILE_ACTION`
 export const TOGGLE_EXTRA_COLOR_ACTION = `${namespace}/TOGGLE_EXTRA_COLOR_ACTION`
 export const SAVE_DESIGN_SUCCESS_ACTION = `${namespace}/SAVE_DESIGN_SUCCESS_ACTION`
+export const EDIT_COLOR_IDEA_ACTION = `${namespace}/EDIT_COLOR_IDEA_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

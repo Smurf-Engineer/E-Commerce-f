@@ -41,6 +41,11 @@ export const getProductFromCode = gql`
           colorblock3
           colorblock4
           colorblock5
+          colorIdeas: inspiration {
+            name
+            thumbnail: image
+            colors
+          }
           colors: colorsBlocks {
             id
             color

@@ -293,6 +293,7 @@ export interface Style {
   name: string
   image: string
   colorBlocks: ColorBlock[]
+  colorIdeas: DesignObject[]
   accessoriesColor?: EditDesign
   designId?: string
   styleId?: number

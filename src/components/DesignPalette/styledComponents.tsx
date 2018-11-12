@@ -2,6 +2,11 @@
  * Styled Components - Created by david on 28/02/18.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
+
+export const SaveButton = styled(Button)`
+  margin-left: 8px;
+`
 
 export const Container = styled.div``
 
@@ -62,5 +67,12 @@ export const Info = styled.div`
 
 export const InfoContainer = styled.div`
   display: flex;
+  flex-direction: row;
+`
+
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: row;
 `

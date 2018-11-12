@@ -40,6 +40,7 @@ interface Props {
   bibBrace: boolean
   zipper: boolean
   binding: boolean
+  colorIdeaItem: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -66,6 +67,7 @@ interface Props {
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   onToggleColor: (color: string) => void
+  onEditColorIdea: (item: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -117,7 +119,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onToggleColor,
       bibBrace,
       zipper,
-      binding
+      binding,
+      colorIdeaItem,
+      onEditColorIdea
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -164,7 +168,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onToggleColor,
             bibBrace,
             zipper,
-            binding
+            binding,
+            colorIdeaItem,
+            onEditColorIdea
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

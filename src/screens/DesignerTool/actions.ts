@@ -25,7 +25,8 @@ import {
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
   TOGGLE_EXTRA_COLOR_ACTION,
-  SAVE_DESIGN_SUCCESS_ACTION
+  SAVE_DESIGN_SUCCESS_ACTION,
+  EDIT_COLOR_IDEA_ACTION
 } from './constants'
 import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
 
@@ -162,4 +163,9 @@ export const toggleExtraColorAction = (color: string) => ({
 
 export const saveDesignSuccessAction = () => ({
   type: SAVE_DESIGN_SUCCESS_ACTION
+})
+
+export const setColorIdeaItemAction = (item: number) => ({
+  type: EDIT_COLOR_IDEA_ACTION,
+  item
 })
