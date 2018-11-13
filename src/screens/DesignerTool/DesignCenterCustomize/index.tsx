@@ -12,7 +12,8 @@ import {
   DesignConfig,
   UploadFile,
   QueryProps,
-  Product
+  Product,
+  DesignObject
 } from '../../../types/common'
 
 export interface Data extends QueryProps {
@@ -41,6 +42,7 @@ interface Props {
   zipper: boolean
   binding: boolean
   colorIdeaItem: number
+  colorIdeas: DesignObject[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -63,7 +65,7 @@ interface Props {
   onSaveThumbnail: (design: number, item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
   formatMessage: (messageDescriptor: any) => string
-  onLoadDesign: (config: ModelConfig) => void
+  onLoadDesign: (config: ModelConfig, colorIdeas: DesignObject[]) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   onToggleColor: (color: string) => void
@@ -121,7 +123,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       zipper,
       binding,
       colorIdeaItem,
-      onEditColorIdea
+      onEditColorIdea,
+      colorIdeas
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -170,7 +173,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             zipper,
             binding,
             colorIdeaItem,
-            onEditColorIdea
+            onEditColorIdea,
+            colorIdeas
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

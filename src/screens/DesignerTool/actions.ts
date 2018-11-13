@@ -26,9 +26,15 @@ import {
   REMOVE_EXTRA_FILE_ACTION,
   TOGGLE_EXTRA_COLOR_ACTION,
   SAVE_DESIGN_SUCCESS_ACTION,
-  EDIT_COLOR_IDEA_ACTION
+  EDIT_COLOR_IDEA_ACTION,
+  SET_MODEL_ACTION
 } from './constants'
-import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
+import {
+  AnyAction,
+  ModelConfig,
+  DesignConfig,
+  DesignObject
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -168,4 +174,13 @@ export const saveDesignSuccessAction = () => ({
 export const setColorIdeaItemAction = (item: number) => ({
   type: EDIT_COLOR_IDEA_ACTION,
   item
+})
+
+export const setModelAction = (
+  modelConfig: ModelConfig,
+  colorIdeas: DesignObject[]
+): AnyAction => ({
+  type: SET_MODEL_ACTION,
+  modelConfig,
+  colorIdeas
 })

@@ -24,7 +24,7 @@ interface Props {
   buttonLabel?: string
   loading?: boolean
   onSelectPalette: (id: number) => void
-  onEditColorIdea: (id: number) => void
+  onEditColorIdea?: (id: number) => void
 }
 
 const PaletteCard = ({
@@ -38,7 +38,11 @@ const PaletteCard = ({
   onEditColorIdea
 }: Props) => {
   const handleOnSelectPalette = () => onSelectPalette(id)
-  const handleOnEditIdea = () => onEditColorIdea(id)
+  const handleOnEditIdea = () => {
+    if (onEditColorIdea) {
+      onEditColorIdea(id)
+    }
+  }
   const colorButtons = colors.map((color, index) => (
     <Oval key={index} currentColor={color} />
   ))

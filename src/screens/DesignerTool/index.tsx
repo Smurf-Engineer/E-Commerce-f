@@ -27,7 +27,8 @@ import {
   ModelConfig,
   UploadFile,
   DesignConfig,
-  MessagePayload
+  MessagePayload,
+  DesignObject
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -81,6 +82,7 @@ interface Props {
   zipper: boolean
   binding: boolean
   colorIdeaItem: number
+  colorIdeas: DesignObject[]
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -102,6 +104,7 @@ interface Props {
   setThumbnailAction: (design: number, item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
+  setModelAction: (config: ModelConfig, colorIdeas: DesignObject[]) => void
   uploadThemeImage: (file: any) => void
   addExtraFileAction: (file: string) => void
   removeExtraFileAction: (index: number) => void
@@ -157,11 +160,12 @@ export class DesignerTool extends React.Component<Props, {}> {
       setStyleNameAction,
       setComplexityAction,
       setUploadingThumbnailAction,
-      setUploadingSuccess,
+      setModelAction,
       addExtraFileAction,
       removeExtraFileAction,
       toggleExtraColorAction,
-      setColorIdeaItemAction
+      setColorIdeaItemAction,
+      colorIdeas
     } = this.props
     const { themeImage } = this.state
     return (
@@ -186,7 +190,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           bibBrace,
           zipper,
           binding,
-          colorIdeaItem
+          colorIdeaItem,
+          colorIdeas
         }}
         files={modelConfig}
         onEditColorIdea={setColorIdeaItemAction}
@@ -211,7 +216,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectComplexity={setComplexityAction}
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
-        onLoadDesign={setUploadingSuccess}
+        onLoadDesign={setModelAction}
         onAddExtraFile={addExtraFileAction}
         onRemoveExtraFile={removeExtraFileAction}
         onToggleColor={toggleExtraColorAction}

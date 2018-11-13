@@ -23,6 +23,7 @@ import {
 } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
 import { NONE_ID, NONE } from '../../reducer'
+import EditInspiration from '../EditInspiration'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
@@ -53,6 +54,7 @@ interface Props {
   zipper: boolean
   binding: boolean
   colorIdeaItem: number
+  colorIdeas: DesignObject[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -72,7 +74,7 @@ interface Props {
   onUpdateStyleName: (design: number, name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
-  onLoadDesign: (config: ModelConfig) => void
+  onLoadDesign: (config: ModelConfig, colorIdeas: DesignObject[]) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -124,23 +126,12 @@ const Tabs = ({
   zipper,
   binding,
   colorIdeaItem,
-  onEditColorIdea
+  onEditColorIdea,
+  colorIdeas
 }: Props) => {
-  let colorIdeas: DesignObject[] = []
-  const areSelectedThemeAndStyle =
-    selectedTheme !== NONE_ID && selectedStyle !== NONE_ID
-  if (productData && productData.product && areSelectedThemeAndStyle) {
-    const {
-      product: { themes }
-    } = productData || []
-    const theme = find(themes, themeItem => themeItem.id === selectedTheme)
-    if (theme) {
-      const style = find(
-        theme.styles,
-        styleItem => styleItem.id === selectedStyle
-      )
-      colorIdeas = style ? style.colorIdeas : []
-    }
+  let colorIdea: DesignObject | null = null
+  if (colorIdeaItem > NONE) {
+    colorIdea = colorIdeas[colorIdeaItem]
   }
   return (
     <Container>
@@ -224,8 +215,12 @@ const Tabs = ({
                 colorIdeas,
                 onEditColorIdea
               }}
+              render={colorIdeaItem === NONE}
             />
-            <div>EDIT COLOR IDEA</div>
+            <EditInspiration
+              {...{ onEditColorIdea, colorIdea }}
+              render={colorIdeaItem > NONE}
+            />
           </SwipeableViews>
         </TabPane>
       </AntdTabs>

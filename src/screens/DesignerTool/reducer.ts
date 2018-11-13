@@ -29,7 +29,8 @@ import {
   REMOVE_EXTRA_FILE_ACTION,
   TOGGLE_EXTRA_COLOR_ACTION,
   SAVE_DESIGN_SUCCESS_ACTION,
-  EDIT_COLOR_IDEA_ACTION
+  EDIT_COLOR_IDEA_ACTION,
+  SET_MODEL_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -60,7 +61,8 @@ export const initialState = fromJS({
   bibBrace: true,
   zipper: true,
   binding: true,
-  colorIdeaItem: NONE
+  colorIdeaItem: NONE,
+  colorIdeas: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -88,6 +90,16 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         uploadingFiles: false,
         modelConfig: action.modelConfig,
+        colors: List.of(...colors)
+      })
+    }
+    case SET_MODEL_ACTION: {
+      const { modelConfig, colorIdeas } = action
+      const colors = reverse(modelConfig.design.colors)
+      return state.merge({
+        uploadingFiles: false,
+        modelConfig: action.modelConfig,
+        colorIdeas: List.of(...colorIdeas),
         colors: List.of(...colors)
       })
     }

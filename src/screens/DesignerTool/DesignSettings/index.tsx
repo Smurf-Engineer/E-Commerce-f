@@ -14,7 +14,12 @@ import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
 import Button from 'antd/lib/button'
 import DesignForm from '../../../components/DesignForm'
-import { UploadFile, DesignItem, ModelConfig } from '../../../types/common'
+import {
+  UploadFile,
+  DesignItem,
+  ModelConfig,
+  DesignObject
+} from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
 
 const extraFiles = ['bibBrace', 'binding', 'zipper']
@@ -44,7 +49,7 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateStyleName: (design: number, name: string) => void
-  onLoadDesign: (config: ModelConfig) => void
+  onLoadDesign: (config: ModelConfig, colorIdeas: DesignObject[]) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -92,13 +97,11 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         <Form>
           <Row>
             <Title>SEARCH PRODUCT</Title>
-            {productHasAllFiles &&
-              !!selectedTheme &&
-              !!selectedStyle && (
-                <Button onClick={this.handleOnLoadDesign} type="primary">
-                  LOAD DESIGN
-                </Button>
-              )}
+            {productHasAllFiles && !!selectedTheme && !!selectedStyle && (
+              <Button onClick={this.handleOnLoadDesign} type="primary">
+                LOAD DESIGN
+              </Button>
+            )}
           </Row>
           <InputContainer>
             <Input
@@ -167,7 +170,14 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         ({ id }) => id === selectedStyle
       )
       const currentStyle = currentTheme.styles[styleIndex]
-      const { name, branding = '', brandingPng, colors, size } = currentStyle
+      const {
+        name,
+        branding = '',
+        brandingPng,
+        colors,
+        size,
+        colorIdeas
+      } = currentStyle
       const areaColors: string[] = []
       const areasPng: string[] = []
       const areasSvg: string[] = []
@@ -190,6 +200,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         design,
         size
       }
+
       extraFiles.forEach(key => {
         const file = product[key]
         if (file) {
@@ -197,7 +208,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           modelConfig[`${key}Black`] = file.black
         }
       })
-      onLoadDesign(modelConfig)
+      onLoadDesign(modelConfig, colorIdeas)
     }
   }
 

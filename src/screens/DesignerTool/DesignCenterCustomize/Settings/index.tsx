@@ -18,6 +18,7 @@ interface Props {
   designs: DesignConfig[]
   uploadingThumbnail: boolean
   colorIdeas: DesignObject[]
+  render: boolean
   onSelectConfig: (config: DesignConfig) => void
   onSelectPalette: (index: number) => void
   onSelectComplexity: (design: number, complexity: number) => void
@@ -37,8 +38,12 @@ const Settings = ({
   onSelectConfig,
   formatMessage,
   colorIdeas,
-  onEditColorIdea
+  onEditColorIdea,
+  render
 }: Props) => {
+  if (!render) {
+    return <div />
+  }
   const beforeUpload = (file: any) => {
     const { type } = file
     if (type === JSON_FILE) {
@@ -87,7 +92,7 @@ const Settings = ({
         id={key}
         {...{ key, name, colors, image, formatMessage, onEditColorIdea }}
         loading={uploadingThumbnail}
-        buttonLabel="Save Thumbnail"
+        buttonLabel="SaveThumbnail"
         onSelectPalette={handleOnPressSave}
       />
     )

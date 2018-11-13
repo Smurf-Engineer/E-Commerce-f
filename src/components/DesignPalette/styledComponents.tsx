@@ -53,6 +53,7 @@ export const Oval = styled.div`
 
 export const Image = styled.img`
   margin: 0 8px;
+  padding: 2px;
   width: 120px;
   height: 120px;
   object-fit: cover;
