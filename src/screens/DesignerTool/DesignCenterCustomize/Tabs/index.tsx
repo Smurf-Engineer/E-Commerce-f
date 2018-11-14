@@ -19,7 +19,8 @@ import {
   DesignConfig,
   UploadFile,
   ModelConfig,
-  DesignObject
+  DesignObject,
+  ModelDesign
 } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
 import { NONE_ID, NONE } from '../../reducer'
@@ -55,10 +56,12 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  design: ModelDesign
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
   onDeleteStyle: (id: number) => void
+  onDeleteInspiration: (id: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onSaveDesign: () => void
@@ -106,6 +109,7 @@ const Tabs = ({
   onSelectStyle,
   onDeleteTheme,
   onDeleteStyle,
+  onDeleteInspiration,
   onSelectImage,
   onDeleteImage,
   onUpdateProductCode,
@@ -127,7 +131,8 @@ const Tabs = ({
   binding,
   colorIdeaItem,
   onEditColorIdea,
-  colorIdeas
+  colorIdeas,
+  design
 }: Props) => {
   let colorIdea: DesignObject | null = null
   if (colorIdeaItem > NONE) {
@@ -213,7 +218,9 @@ const Tabs = ({
                 formatMessage,
                 onSelectConfig,
                 colorIdeas,
-                onEditColorIdea
+                onEditColorIdea,
+                onDeleteInspiration,
+                design
               }}
               render={colorIdeaItem === NONE}
             />

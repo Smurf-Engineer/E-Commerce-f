@@ -30,9 +30,10 @@ import {
   TOGGLE_EXTRA_COLOR_ACTION,
   SAVE_DESIGN_SUCCESS_ACTION,
   EDIT_COLOR_IDEA_ACTION,
-  SET_MODEL_ACTION
+  SET_MODEL_ACTION,
+  DELETE_COLOR_IDEA_ACTION
 } from './constants'
-import { Reducer } from '../../types/common'
+import { Reducer, DesignObject } from '../../types/common'
 
 export const NONE = -1
 export const NONE_ID = 0
@@ -201,6 +202,13 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('designConfig', state.get('designConfig').clear())
     case EDIT_COLOR_IDEA_ACTION:
       return state.set('colorIdeaItem', action.item)
+    case DELETE_COLOR_IDEA_ACTION: {
+      const { id } = action
+      const colorsIdeas = state.get('colorIdeas')
+      const key = colorsIdeas.findKey((item: DesignObject) => id === item.id)
+      const colorIdeasUpdated = colorsIdeas.remove(key)
+      return state.set('colorIdeas', colorIdeasUpdated)
+    }
     default:
       return state
   }

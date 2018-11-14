@@ -13,18 +13,23 @@ import {
   Image,
   InfoContainer,
   Buttons,
-  SaveButton
+  SaveButton,
+  Delete,
+  DeleteButton
 } from './styledComponents'
 
 interface Props {
   id: number
+  inspirationId?: number
   colors: string[]
   image?: string
   name: string
   buttonLabel?: string
   loading?: boolean
+  showDelete?: boolean
   onSelectPalette: (id: number) => void
   onEditColorIdea?: (id: number) => void
+  onDeleteInspiration?: (id: number) => void
 }
 
 const PaletteCard = ({
@@ -35,8 +40,16 @@ const PaletteCard = ({
   buttonLabel,
   loading = false,
   image,
-  onEditColorIdea
+  onEditColorIdea,
+  onDeleteInspiration,
+  inspirationId = -1,
+  showDelete = true
 }: Props) => {
+  const handleOnDelete = () => {
+    if (onDeleteInspiration) {
+      onDeleteInspiration(inspirationId)
+    }
+  }
   const handleOnSelectPalette = () => onSelectPalette(id)
   const handleOnEditIdea = () => {
     if (onEditColorIdea) {
@@ -62,6 +75,11 @@ const PaletteCard = ({
         </Info>
       </InfoContainer>
       <Divider />
+      {showDelete && (
+        <DeleteButton onClick={handleOnDelete}>
+          <Delete type="delete" />
+        </DeleteButton>
+      )}
     </Container>
   )
 }

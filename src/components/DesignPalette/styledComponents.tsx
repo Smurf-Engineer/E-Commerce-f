@@ -3,12 +3,15 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import Icon from 'antd/lib/icon'
 
 export const SaveButton = styled(Button)`
   margin-left: 8px;
 `
 
-export const Container = styled.div``
+export const Container = styled.div`
+  position: relative;
+`
 
 export const Text = styled.div`
   color: #fff;
@@ -76,4 +79,15 @@ export const Buttons = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
+`
+
+export const DeleteButton = styled.div`
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  cursor: pointer;
+`
+
+export const Delete = styled(Icon)`
+  font-size: 18px;
 `

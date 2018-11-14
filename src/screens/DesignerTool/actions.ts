@@ -27,7 +27,8 @@ import {
   TOGGLE_EXTRA_COLOR_ACTION,
   SAVE_DESIGN_SUCCESS_ACTION,
   EDIT_COLOR_IDEA_ACTION,
-  SET_MODEL_ACTION
+  SET_MODEL_ACTION,
+  DELETE_COLOR_IDEA_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -174,6 +175,11 @@ export const saveDesignSuccessAction = () => ({
 export const setColorIdeaItemAction = (item: number) => ({
   type: EDIT_COLOR_IDEA_ACTION,
   item
+})
+
+export const deleteColorIdeaAction = (id: number) => ({
+  type: DELETE_COLOR_IDEA_ACTION,
+  id
 })
 
 export const setModelAction = (

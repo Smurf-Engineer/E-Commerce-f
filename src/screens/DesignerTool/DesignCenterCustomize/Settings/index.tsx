@@ -2,25 +2,35 @@
  * Settings Component - Created by david on 26/07/18.
  */
 import * as React from 'react'
-import InspirationItem from '../InspirationColors'
-import Upload from 'antd/lib/upload'
-import Button from 'antd/lib/button'
 import Icon from 'antd/lib/icon'
-import message from 'antd/lib/message'
-import { Container, UploadWrapper, List } from './styledComponents'
+import Divider from 'antd/lib/divider'
+import {
+  Container,
+  List,
+  Button,
+  Row,
+  Column,
+  Label,
+  Input,
+  InputNumber,
+  DesignInfo
+} from './styledComponents'
 import Palette from '../../../../components/DesignPalette'
-import { DesignConfig, DesignObject } from '../../../../types/common'
-
-const JSON_FILE = 'application/json'
-const VALIDATION_MESSAGE = 'Please select a valid JSON file'
+import {
+  DesignConfig,
+  DesignObject,
+  ModelDesign
+} from '../../../../types/common'
 
 interface Props {
   designs: DesignConfig[]
   uploadingThumbnail: boolean
   colorIdeas: DesignObject[]
   render: boolean
+  design: ModelDesign
   onSelectConfig: (config: DesignConfig) => void
   onSelectPalette: (index: number) => void
+  onDeleteInspiration: (id: number) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onUpdateStyleName: (design: number, name: string) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
@@ -39,29 +49,12 @@ const Settings = ({
   formatMessage,
   colorIdeas,
   onEditColorIdea,
-  render
+  render,
+  onDeleteInspiration,
+  design
 }: Props) => {
   if (!render) {
     return <div />
-  }
-  const beforeUpload = (file: any) => {
-    const { type } = file
-    if (type === JSON_FILE) {
-      const reader = new FileReader()
-      reader.onload = () => {
-        try {
-          const obj = JSON.parse(reader.result) || {}
-          onSelectConfig(obj)
-        } catch (error) {
-          message.error(VALIDATION_MESSAGE)
-          return
-        }
-      }
-      reader.readAsText(file)
-    } else {
-      message.error(VALIDATION_MESSAGE)
-    }
-    return false
   }
 
   const handleOnPressSave = (item: number) => {
@@ -70,44 +63,74 @@ const Settings = ({
     // onSaveThumbnail(item, item, colorIdea.colors)
   }
 
-  const items = designs.map((design, index) => (
-    <InspirationItem
-      key={index}
-      {...{
-        index,
-        design,
-        onSelectPalette,
-        onSelectComplexity,
-        onUpdateStyleName,
-        onSaveThumbnail,
-        uploadingThumbnail,
-        formatMessage
-      }}
+  // const items = designs.map((design, index) => (
+  //   <InspirationItem
+  //     key={index}
+  //     {...{
+  //       index,
+  //       design,
+  //       onSelectPalette,
+  //       onSelectComplexity,
+  //       onUpdateStyleName,
+  //       onSaveThumbnail,
+  //       uploadingThumbnail,
+  //       formatMessage
+  //     }}
+  //   />
+  // ))
+
+  const styleColors = (
+    <Palette
+      {...{ formatMessage }}
+      showDelete={false}
+      name="Design Colors"
+      colors={design ? design.colors : []}
+      id={colorIdeas.length}
+      image={design && design.image}
+      loading={uploadingThumbnail}
+      buttonLabel="Save Thumbnail"
+      onSelectPalette={() => {}}
     />
-  ))
+  )
 
   const colorIdeasList = colorIdeas.map(
-    ({ name, colors, thumbnail: image }, key) => (
+    ({ id, name, colors, thumbnail: image }, key) => (
       <Palette
         id={key}
-        {...{ key, name, colors, image, formatMessage, onEditColorIdea }}
+        inspirationId={id}
+        {...{
+          key,
+          name,
+          colors,
+          image,
+          formatMessage,
+          onEditColorIdea,
+          onDeleteInspiration
+        }}
         loading={uploadingThumbnail}
-        buttonLabel="SaveThumbnail"
+        buttonLabel="Save Thumbnail"
         onSelectPalette={handleOnPressSave}
       />
     )
   )
   return (
     <Container>
-      <UploadWrapper>
-        <Upload {...{ beforeUpload }}>
-          <Button>
-            <Icon type="plus" />
-            ADD NEW JSON
-          </Button>
-        </Upload>
-      </UploadWrapper>
-      {items}
+      <Button>
+        <Icon type="plus" />
+        ADD NEW COLOR IDEA
+      </Button>
+      <Divider>Design Info</Divider>
+      <DesignInfo>
+        <Label>Name</Label>
+        <Input
+          placeholder="Design name"
+          value={design && design.name}
+          onChange={() => {}}
+        />
+      </DesignInfo>
+      <Divider>Colors</Divider>
+      {styleColors}
+      <Divider>Inspiration</Divider>
       <List>{colorIdeasList}</List>
     </Container>
   )

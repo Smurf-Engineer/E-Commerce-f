@@ -432,6 +432,12 @@ export interface StripeCardData {
   stripeToken?: string
 }
 
+export interface ModelDesign {
+  name: string
+  image: string
+  colors: string[]
+}
+
 export interface ModelConfig {
   obj: string
   mtl: string
@@ -444,10 +450,7 @@ export interface ModelConfig {
     width: number
     height: number
   }
-  design: {
-    name: string
-    colors: string[]
-  }
+  design: ModelDesign
   areasSvg: string[]
   areasPng: string[]
   bibBraceBlack?: string
@@ -815,6 +818,7 @@ export interface UploadFile {
 
 export type sorts = 'asc' | 'desc' | 'none'
 export interface DesignObject {
+  id: number
   code: string
   thumbnail: string
   complexity: number

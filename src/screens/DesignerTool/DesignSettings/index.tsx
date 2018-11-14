@@ -172,6 +172,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const currentStyle = currentTheme.styles[styleIndex]
       const {
         name,
+        image: styleImage,
         branding = '',
         brandingPng,
         colors,
@@ -186,7 +187,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         areaColors.push(color)
         areasPng.push(image)
       })
-      const design = { name, colors: areaColors }
+      const design = { name, colors: areaColors, image: styleImage }
       const modelConfig: ModelConfig = {
         obj,
         mtl,

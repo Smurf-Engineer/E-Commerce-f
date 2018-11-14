@@ -18,7 +18,8 @@ import {
   uploadThumbnailMutation,
   createThemeMutation,
   deleteThemeMutation,
-  deleteStyleMutation
+  deleteStyleMutation,
+  deleteInspirationMutation
 } from './data'
 import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
@@ -111,12 +112,14 @@ interface Props {
   toggleExtraColorAction: (color: string) => void
   saveDesignSuccessAction: () => void
   setColorIdeaItemAction: (item: number) => void
+  deleteColorIdeaAction: (id: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
   createTheme: (variables: {}) => Promise<DataTheme>
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   deleteStyle: (variables: {}) => Promise<MessagePayload>
+  deleteInspiration: (variables: {}) => Promise<MessagePayload>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -200,6 +203,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectStyle={setSelectedStyleAction}
         onDeleteTheme={this.handleOnDeleteTheme}
         onDeleteStyle={this.handleOnDeleteStyle}
+        onDeleteInspiration={this.handleOnDeleteInspiration}
         onSelectImage={this.handleOnSelectThemeImage}
         onDeleteImage={this.handleOnDeleteThemeImage}
         onLoadModel={setLoadingAction}
@@ -294,7 +298,61 @@ export class DesignerTool extends React.Component<Props, {}> {
                 ({ id: styleId }) => styleId !== id
               )
               set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
-              data.product.themes[themeIndex].styles = updatedStyles
+              store.writeQuery({
+                query: getProductFromCode,
+                data,
+                variables: { code: productCode }
+              })
+            }
+          })
+        } catch (e) {
+          message.error(e.message)
+        }
+      }
+    })
+  }
+
+  handleOnDeleteInspiration = (id: number) => {
+    confirm({
+      title: 'Are you sure?',
+      content: 'Color idea will be deleted.',
+      onOk: async () => {
+        try {
+          const {
+            deleteInspiration,
+            productCode,
+            selectedTheme,
+            selectedStyle,
+            deleteColorIdeaAction
+          } = this.props
+          await deleteInspiration({
+            variables: { id },
+            update: (store: any) => {
+              const data = store.readQuery({
+                query: getProductFromCode,
+                variables: { code: productCode }
+              })
+              const themes = get(data, 'product.themes', [])
+              const themeIndex = findIndex(
+                themes,
+                ({ id: themeId }) => themeId === selectedTheme
+              )
+              const { styles } = themes[themeIndex]
+              const styleIndex = findIndex(
+                styles,
+                ({ id: styleId }) => styleId === selectedStyle
+              )
+              const { colorIdeas } = styles[styleIndex]
+              const updatedInspiration = remove(
+                colorIdeas,
+                ({ id: inspirationId }) => inspirationId !== id
+              )
+              deleteColorIdeaAction(id)
+              set(
+                data,
+                `product.themes[${themeIndex}].styles[${styleIndex}].colorIdeas`,
+                updatedInspiration
+              )
               store.writeQuery({
                 query: getProductFromCode,
                 data,
@@ -482,6 +540,7 @@ const DesignerToolEnhance = compose(
   graphql(createThemeMutation, { name: 'createTheme' }),
   graphql(deleteThemeMutation, { name: 'deleteTheme' }),
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
+  graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi }

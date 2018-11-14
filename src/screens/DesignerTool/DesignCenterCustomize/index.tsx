@@ -47,6 +47,7 @@ interface Props {
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
   onDeleteStyle: (id: number) => void
+  onDeleteInspiration: (id: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onSelectColorBlock: (index: number) => void
@@ -100,6 +101,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectStyle,
       onDeleteTheme,
       onDeleteStyle,
+      onDeleteInspiration,
       onSelectImage,
       onDeleteImage,
       onUpdateProductCode,
@@ -151,6 +153,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onSaveDesign,
             onSelectTheme,
             onSelectStyle,
+            onDeleteInspiration,
             onDeleteTheme,
             onDeleteStyle,
             onSelectImage,
@@ -176,6 +179,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditColorIdea,
             colorIdeas
           }}
+          design={files && files.design}
           productData={data}
           uploadNewModel={uploadNewModel}
           onSaveThumbnail={this.handleOnSaveThumbnail}
