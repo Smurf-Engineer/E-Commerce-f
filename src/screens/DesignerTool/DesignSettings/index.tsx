@@ -18,7 +18,8 @@ import {
   UploadFile,
   DesignItem,
   ModelConfig,
-  DesignObject
+  DesignObject,
+  ModelDesign
 } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
 
@@ -38,7 +39,7 @@ interface Props {
   selectedStyle: number
   productCode: string
   themeName: string
-  styleName: string
+  designName: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -48,8 +49,12 @@ interface Props {
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (design: number, name: string) => void
-  onLoadDesign: (config: ModelConfig, colorIdeas: DesignObject[]) => void
+  onUpdateDesignName: (name: string) => void
+  onLoadDesign: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -62,7 +67,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
     const {
       themeImage,
       themeName,
-      styleName,
+      designName,
       productData,
       selectedTheme,
       selectedStyle,
@@ -135,7 +140,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 title="THEME DESIGNS"
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
-                itemName={styleName}
+                itemName={designName}
                 onUpdateName={() => {}} // TODO: temp until we enable editing
                 items={styleItems}
               />
@@ -198,7 +203,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         brandingPng,
         areasSvg,
         areasPng,
-        design,
         size
       }
 
@@ -209,7 +213,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           modelConfig[`${key}Black`] = file.black
         }
       })
-      onLoadDesign(modelConfig, colorIdeas)
+      onLoadDesign(modelConfig, colorIdeas, design)
     }
   }
 

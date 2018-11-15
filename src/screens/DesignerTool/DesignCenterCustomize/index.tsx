@@ -13,7 +13,8 @@ import {
   UploadFile,
   QueryProps,
   Product,
-  DesignObject
+  DesignObject,
+  ModelDesign
 } from '../../../types/common'
 
 export interface Data extends QueryProps {
@@ -35,7 +36,7 @@ interface Props {
   selectedStyle: number
   productCode: string
   themeName: string
-  styleName: string
+  design: ModelDesign
   uploadingThumbnail: boolean
   extraFiles: string[]
   bibBrace: boolean
@@ -61,12 +62,16 @@ interface Props {
   onSaveDesign: () => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (design: number, name: string) => void
+  onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
   formatMessage: (messageDescriptor: any) => string
-  onLoadDesign: (config: ModelConfig, colorIdeas: DesignObject[]) => void
+  onLoadDesign: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   onToggleColor: (color: string) => void
@@ -108,10 +113,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       productCode,
       data,
       themeName,
-      styleName,
+      design,
       uploadingThumbnail,
       onUpdateThemeName,
-      onUpdateStyleName,
+      onUpdateDesignName,
       onSelectComplexity,
       onSaveThumbnail,
       onUploadingThumbnail,
@@ -161,9 +166,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUpdateProductCode,
             productCode,
             themeName,
-            styleName,
+            design,
             onUpdateThemeName,
-            onUpdateStyleName,
+            onUpdateDesignName,
             onSelectComplexity,
             uploadingThumbnail,
             onLoadDesign,
@@ -179,7 +184,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditColorIdea,
             colorIdeas
           }}
-          design={files && files.design}
           productData={data}
           uploadNewModel={uploadNewModel}
           onSaveThumbnail={this.handleOnSaveThumbnail}
@@ -199,7 +203,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             uploadingThumbnail,
             bibBrace,
             zipper,
-            binding
+            binding,
+            design
           }}
           ref={render3D => (this.render3D = render3D)}
         />

@@ -21,7 +21,7 @@ import {
   SET_INSPIRATION_COLOR_ACTION,
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
-  SET_STYLE_NAME_ACTION,
+  SET_DESIGN_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
@@ -52,7 +52,9 @@ export const initialState = fromJS({
   swipingView: false,
   currentTab: Tabs.RenderTab,
   themeName: '',
-  styleName: '',
+  design: {
+    name: ''
+  },
   selectedTheme: NONE_ID,
   selectedStyle: NONE_ID,
   designConfig: [],
@@ -95,12 +97,13 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_MODEL_ACTION: {
-      const { modelConfig, colorIdeas } = action
-      const colors = reverse(modelConfig.design.colors)
+      const { modelConfig, colorIdeas, design } = action
+      const colors = reverse(design.colors)
       return state.merge({
         uploadingFiles: false,
-        modelConfig: action.modelConfig,
+        modelConfig,
         colorIdeas: List.of(...colorIdeas),
+        design,
         colors: List.of(...colors)
       })
     }
@@ -163,8 +166,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_THEME_NAME_ACTION:
       return state.set('themeName', action.name)
-    case SET_STYLE_NAME_ACTION:
-      return state.setIn(['designConfig', action.design, 'name'], action.name)
+    case SET_DESIGN_NAME_ACTION:
+      return state.setIn(['design', 'name'], action.name)
     case SET_THUMBNAIL_ACTION: {
       const { item, thumbnail } = action
       if (item === DESIGN_THUMBNAIL) {

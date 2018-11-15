@@ -29,7 +29,8 @@ import {
   UploadFile,
   DesignConfig,
   MessagePayload,
-  DesignObject
+  DesignObject,
+  ModelDesign
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -77,7 +78,7 @@ interface Props {
   selectedStyle: number
   productCode: string
   themeName: string
-  styleName: string
+  design: ModelDesign
   uploadingThumbnail: boolean
   bibBrace: boolean
   zipper: boolean
@@ -100,12 +101,16 @@ interface Props {
   setInspirationColorAction: (index: number) => void
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
-  setStyleNameAction: (design: number, name: string) => void
+  setDesignNameAction: (name: string) => void
   setComplexityAction: (design: number, complexity: number) => void
   setThumbnailAction: (design: number, item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
-  setModelAction: (config: ModelConfig, colorIdeas: DesignObject[]) => void
+  setModelAction: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
   uploadThemeImage: (file: any) => void
   addExtraFileAction: (file: string) => void
   removeExtraFileAction: (index: number) => void
@@ -153,14 +158,14 @@ export class DesignerTool extends React.Component<Props, {}> {
       setProductCodeAction,
       productCode,
       themeName,
-      styleName,
+      design,
       extraFiles,
       bibBrace,
       zipper,
       binding,
       colorIdeaItem,
       setThemeNameAction,
-      setStyleNameAction,
+      setDesignNameAction,
       setComplexityAction,
       setUploadingThumbnailAction,
       setModelAction,
@@ -171,6 +176,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       colorIdeas
     } = this.props
     const { themeImage } = this.state
+
     return (
       <CustomizeTab
         {...{
@@ -186,7 +192,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           selectedStyle,
           productCode,
           themeName,
-          styleName,
+          design,
           uploadingThumbnail,
           extraFiles,
           formatMessage,
@@ -216,7 +222,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectInspirationColor={setInspirationColorAction}
         onUpdateProductCode={setProductCodeAction}
         onUpdateThemeName={setThemeNameAction}
-        onUpdateStyleName={setStyleNameAction}
+        onUpdateDesignName={setDesignNameAction}
         onSelectComplexity={setComplexityAction}
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}

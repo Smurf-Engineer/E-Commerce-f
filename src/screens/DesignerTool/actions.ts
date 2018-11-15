@@ -18,7 +18,6 @@ import {
   SET_INSPIRATION_COLOR_ACTION,
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
-  SET_STYLE_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
@@ -28,13 +27,15 @@ import {
   SAVE_DESIGN_SUCCESS_ACTION,
   EDIT_COLOR_IDEA_ACTION,
   SET_MODEL_ACTION,
-  DELETE_COLOR_IDEA_ACTION
+  DELETE_COLOR_IDEA_ACTION,
+  SET_DESIGN_NAME_ACTION
 } from './constants'
 import {
   AnyAction,
   ModelConfig,
   DesignConfig,
-  DesignObject
+  DesignObject,
+  ModelDesign
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -117,12 +118,8 @@ export const setThemeNameAction = (name: string): AnyAction => ({
   name
 })
 
-export const setStyleNameAction = (
-  design: number,
-  name: string
-): AnyAction => ({
-  type: SET_STYLE_NAME_ACTION,
-  design,
+export const setDesignNameAction = (name: string): AnyAction => ({
+  type: SET_DESIGN_NAME_ACTION,
   name
 })
 
@@ -184,9 +181,11 @@ export const deleteColorIdeaAction = (id: number) => ({
 
 export const setModelAction = (
   modelConfig: ModelConfig,
-  colorIdeas: DesignObject[]
+  colorIdeas: DesignObject[],
+  design: ModelDesign
 ): AnyAction => ({
   type: SET_MODEL_ACTION,
   modelConfig,
-  colorIdeas
+  colorIdeas,
+  design
 })

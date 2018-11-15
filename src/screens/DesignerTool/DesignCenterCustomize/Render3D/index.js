@@ -56,6 +56,7 @@ class Render3D extends PureComponent {
     const {
       colors: nextColors,
       areas: nextAreas,
+      design,
       colorBlockHovered,
       files,
       bibBrace,
@@ -86,7 +87,7 @@ class Render3D extends PureComponent {
 
     const filesHasChange = isEqual(files, oldFiles)
     if (!filesHasChange) {
-      this.loadObject(files)
+      this.loadObject(files, design)
       return
     }
 
@@ -257,7 +258,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  loadObject = async files => {
+  loadObject = async (files, design) => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
     this.clearScene()
@@ -355,24 +356,10 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set('#ffffff')
           }
-          // TODO: WIP
-          // const solarBibBraceIndex = findIndex(
-          //   children,
-          //   ({ name }) => name === SOLAR_BIB_BRACE
-          // )
-          // if (
-          //   solarBibBraceIndex >= 0 &&
-          //   !!object.children[solarBibBraceIndex].material.length
-          // ) {
-          //   object.children[solarBibBraceIndex].material.forEach(material =>
-          //     material.color.set('#ffffff')
-          //   )
-          // }
 
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
-
-          const { colors = [] } = files.design || {}
+          const { colors = [] } = design || {}
           const reversedAreas = reverse(areas)
 
           reversedAreas.forEach(

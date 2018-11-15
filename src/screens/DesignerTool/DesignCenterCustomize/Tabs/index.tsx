@@ -48,7 +48,7 @@ interface Props {
   selectedStyle: number
   productCode: string
   themeName: string
-  styleName: string
+  design: ModelDesign
   uploadingThumbnail: boolean
   extraFiles: string[]
   bibBrace: boolean
@@ -56,7 +56,6 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
-  design: ModelDesign
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -74,10 +73,14 @@ interface Props {
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (design: number, name: string) => void
+  onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (design: number, item: number, colors: string[]) => void
-  onLoadDesign: (config: ModelConfig, colorIdeas: DesignObject[]) => void
+  onLoadDesign: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -114,9 +117,8 @@ const Tabs = ({
   onDeleteImage,
   onUpdateProductCode,
   themeName,
-  styleName,
   onUpdateThemeName,
-  onUpdateStyleName,
+  onUpdateDesignName,
   onSelectComplexity,
   onSaveThumbnail,
   uploadingThumbnail,
@@ -161,12 +163,12 @@ const Tabs = ({
               productCode,
               productData,
               themeName,
-              styleName,
               onUpdateThemeName,
-              onUpdateStyleName,
+              onUpdateDesignName,
               onLoadDesign,
               formatMessage
             }}
+            designName={design && design.name}
           />
         </TabPane>
         <TabPane
@@ -212,7 +214,7 @@ const Tabs = ({
               onSelectPalette={onSelectInspirationColor}
               {...{
                 onSelectComplexity,
-                onUpdateStyleName,
+                onUpdateDesignName,
                 onSaveThumbnail,
                 uploadingThumbnail,
                 formatMessage,

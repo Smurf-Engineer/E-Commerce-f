@@ -450,7 +450,6 @@ export interface ModelConfig {
     width: number
     height: number
   }
-  design: ModelDesign
   areasSvg: string[]
   areasPng: string[]
   bibBraceBlack?: string

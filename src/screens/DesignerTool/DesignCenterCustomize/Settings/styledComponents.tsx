@@ -47,6 +47,7 @@ export const Label = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+  padding-bottom: 8px;
 `
 export const DesignInfo = styled.div`
   padding: 0 8px;
