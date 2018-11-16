@@ -103,7 +103,7 @@ interface Props {
   setThemeNameAction: (name: string) => void
   setDesignNameAction: (name: string) => void
   setComplexityAction: (design: number, complexity: number) => void
-  setThumbnailAction: (design: number, item: number, thumbnail: string) => void
+  setThumbnailAction: (item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
   setModelAction: (
@@ -381,11 +381,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
-  handleUploadThumbnail = async (
-    design: number,
-    item: number,
-    image: string
-  ) => {
+  handleUploadThumbnail = async (item: number, image: string) => {
     const {
       uploadThumbnail,
       setThumbnailAction,
@@ -394,7 +390,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     try {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
-      setThumbnailAction(design, item, thumbnailUrl)
+      setThumbnailAction(item, thumbnailUrl)
       setUploadingThumbnailAction(false)
     } catch (e) {
       setUploadingThumbnailAction(false)

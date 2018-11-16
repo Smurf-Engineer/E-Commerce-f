@@ -64,7 +64,7 @@ interface Props {
   onUpdateThemeName: (name: string) => void
   onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
-  onSaveThumbnail: (design: number, item: number, image: string) => void
+  onSaveThumbnail: (item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
   formatMessage: (messageDescriptor: any) => string
   onLoadDesign: (
@@ -212,9 +212,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
   }
 
-  handleOnSaveThumbnail = (design: number, item: number, colors: string[]) => {
+  handleOnSaveThumbnail = (item: number, colors: string[]) => {
     if (this.render3D) {
-      this.render3D.saveThumbnail(design, item, colors)
+      this.render3D.saveThumbnail(item, colors)
     }
   }
 }

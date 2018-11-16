@@ -165,7 +165,6 @@ class Render3D extends PureComponent {
 
     if (this.scene) {
       this.clearScene()
-      this.scene.dispose()
     }
   }
 
@@ -526,15 +525,15 @@ class Render3D extends PureComponent {
       }, 800)
     })
 
-  saveThumbnail = async (design, item, colors) => {
+  saveThumbnail = async (item, colors = []) => {
     this.setFrontFaceModel()
-    const reverseColors = reverse(colors)
-    this.setupColors(reverseColors)
+    const clonedColors = [...colors]
+    this.setupColors(clonedColors.reverse())
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
       onUploadingThumbnail(true)
       const thumbnail = await this.takeScreenshot()
-      onSaveThumbnail(design, item, thumbnail)
+      onSaveThumbnail(item, thumbnail)
     } catch (error) {
       console.error(error)
       onUploadingThumbnail(false)

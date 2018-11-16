@@ -37,7 +37,8 @@ import { Reducer, DesignObject } from '../../types/common'
 
 export const NONE = -1
 export const NONE_ID = 0
-const DESIGN_THUMBNAIL = -1
+export const DESIGN_THUMBNAIL = -1
+export const DESIGN_COLORS = -2
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
@@ -53,7 +54,8 @@ export const initialState = fromJS({
   currentTab: Tabs.RenderTab,
   themeName: '',
   design: {
-    name: ''
+    name: '',
+    image: ''
   },
   selectedTheme: NONE_ID,
   selectedStyle: NONE_ID,
@@ -102,7 +104,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         uploadingFiles: false,
         modelConfig,
-        colorIdeas: List.of(...colorIdeas),
+        colorIdeas: fromJS(colorIdeas),
         design,
         colors: List.of(...colors)
       })
@@ -171,16 +173,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_THUMBNAIL_ACTION: {
       const { item, thumbnail } = action
       if (item === DESIGN_THUMBNAIL) {
-        return state.setIn(
-          ['designConfig', action.design, 'thumbnail'],
-          thumbnail
-        )
+        return state.setIn(['design', 'name'], thumbnail)
       }
 
-      return state.setIn(
-        ['designConfig', action.design, 'inspiration', item, 'thumbnail'],
-        thumbnail
-      )
+      return state.setIn(['colorIdeas', item, 'thumbnail'], thumbnail)
     }
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploadingItem)
@@ -203,8 +199,22 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SAVE_DESIGN_SUCCESS_ACTION:
       return state.set('designConfig', state.get('designConfig').clear())
-    case EDIT_COLOR_IDEA_ACTION:
-      return state.set('colorIdeaItem', action.item)
+    case EDIT_COLOR_IDEA_ACTION: {
+      const { item } = action
+      if (item !== NONE) {
+        const keyPath =
+          item !== DESIGN_COLORS
+            ? ['colorIdeas', item, 'colors']
+            : ['design', 'colors']
+        const colors = state.getIn(keyPath)
+        return state.merge({
+          colors: colors.reverse(),
+          colorIdeaItem: item
+        })
+      }
+
+      return state.set('colorIdeaItem', item)
+    }
     case DELETE_COLOR_IDEA_ACTION: {
       const { id } = action
       const colorsIdeas = state.get('colorIdeas')

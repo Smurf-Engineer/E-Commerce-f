@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
-import find from 'lodash/find'
 import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
@@ -23,7 +22,7 @@ import {
   ModelDesign
 } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
-import { NONE_ID, NONE } from '../../reducer'
+import { NONE } from '../../reducer'
 import EditInspiration from '../EditInspiration'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
@@ -75,7 +74,7 @@ interface Props {
   onUpdateThemeName: (name: string) => void
   onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
-  onSaveThumbnail: (design: number, item: number, colors: string[]) => void
+  onSaveThumbnail: (item: number, colors: string[]) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],

@@ -18,6 +18,7 @@ import {
   DesignObject,
   ModelDesign
 } from '../../../../types/common'
+import { DESIGN_THUMBNAIL, DESIGN_COLORS } from '../../reducer'
 
 interface Props {
   designs: DesignConfig[]
@@ -30,19 +31,15 @@ interface Props {
   onDeleteInspiration: (id: number) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onUpdateDesignName: (name: string) => void
-  onSaveThumbnail: (design: number, item: number, colors: string[]) => void
+  onSaveThumbnail: (item: number, colors: string[]) => void
   formatMessage: (messageDescriptor: any) => string
   onEditColorIdea: (item: number) => void
 }
 
 const Settings = ({
-  designs,
-  onSelectPalette,
-  onSelectComplexity,
   onUpdateDesignName,
   onSaveThumbnail,
   uploadingThumbnail,
-  onSelectConfig,
   formatMessage,
   colorIdeas,
   onEditColorIdea,
@@ -62,10 +59,18 @@ const Settings = ({
     onUpdateDesignName(value)
   }
 
-  const handleOnPressSave = (id: number) => {
-    // TODO: HANDLE ON CHANGE COLOR
-    // const colorIdea = colorIdeas[item]
-    // onSaveThumbnail(item, item, colorIdea.colors)
+  const handleOnEditDesignColors = () => {
+    onEditColorIdea(DESIGN_COLORS)
+  }
+
+  const handleOnPressSave = (item: number) => {
+    let { colors: modelColors } = design
+    if (item !== DESIGN_THUMBNAIL) {
+      const colorIdea = colorIdeas[item]
+      modelColors = colorIdea.colors
+    }
+
+    onSaveThumbnail(item, modelColors)
   }
 
   const colorIdeasList = colorIdeas.map(
@@ -108,8 +113,9 @@ const Settings = ({
         showDelete={false}
         colors={colors || []}
         name="Design Colors"
-        id={colorIdeas.length}
-        onSelectPalette={() => {}}
+        id={DESIGN_THUMBNAIL}
+        onEditColorIdea={handleOnEditDesignColors}
+        onSelectPalette={handleOnPressSave}
         {...{ formatMessage, image }}
         buttonLabel="Save Thumbnail"
         loading={uploadingThumbnail}

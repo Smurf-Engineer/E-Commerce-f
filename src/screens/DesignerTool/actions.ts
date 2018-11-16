@@ -133,12 +133,10 @@ export const setComplexityAction = (
 })
 
 export const setThumbnailAction = (
-  design: number,
   item: number,
   thumbnail: string
 ): AnyAction => ({
   type: SET_THUMBNAIL_ACTION,
-  design,
   item,
   thumbnail
 })
