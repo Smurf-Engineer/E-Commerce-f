@@ -645,7 +645,7 @@
   "components.MyPalette.deletePaletteMessage": "You're about to delete this palette",
   "components.MyPalette.applyPalette": "Apply {paletteNameToApply}",
   "components.MyPalette.applyPaletteMessage": "Using this palette will replace the colors currently in use.",
-  "components.DesignCenterStyle.title": "Choose the complexity of the design",
+  "components.DesignCenterStyle.title": "Choose a Kickstart Design below as a starting point for your design.",
   "components.DesignCenterStyle.modalNewStyleTitle": "NEW DESIGN?",
   "components.DesignCenterStyle.modalNewStyleMessage": "By selecting a different design you have to restart the customization.",
   "components.DesignCenterStyle.modalNewStyleConfirm": "Confirm",

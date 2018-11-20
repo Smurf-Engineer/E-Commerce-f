@@ -15,6 +15,7 @@ import StyleItem from '../Theme'
 import { DesignStyle } from '../../types/common'
 import {
   Container,
+  Title,
   Row,
   List,
   ModalMessage,
@@ -90,6 +91,9 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     if (!styles.length) {
       return (
         <Container>
+          <Title>
+            <FormattedMessage {...messages.title} />
+          </Title>
           <Empty>
             <EmptyTitle>
               <FormattedMessage {...messages.emptyTitle} />
@@ -112,6 +116,9 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
+        <Title>
+          <FormattedMessage {...messages.title} />
+        </Title>
         <List>
           <Row>{list}</Row>
         </List>
