@@ -396,7 +396,6 @@
   "screens.Faq.shippingCostAnswer": "<p> Orders are shipped direct from our own manufacturing facility in China via FedEx/UPS/DHL International Priority to your door. A tracking number will be sent to you upon shipment. You can also look up your tracking number on the Order Detail section of “My Account” located at the top right of the site. Shipping is based on weight and typically varies between $12-30 for orders under 20 pieces. For a detailed shipping cost schedule, please contact our Customer Service Department at 1-800-485-7067 (ext. 2)</p>",
   "screens.Faq.orderStatusQuestion": "How do I check the status of my order?",
   "screens.Faq.orderStatusAnswer": "<p>All details of your order(s) are easily accessible via the My Account tab, located at the top right of the screen. Shortly after your order has been successfully placed, the status of Pending Approval will be displayed. During this stage, the Account Team will review the order for any potential concerns. Your will be contacted if we have any questions. Upon approval, the order is moved into production and the status of In Production will be displayed. At this point, your order is in one of the production stages of art review, printing or assembly and no cancellations or changes can be made. Once the production is complete, your order enters the fulfillment stage and goes through detailed quality inspection prior to packing and shipment</p>",
-
   "screens.Faq.productionAndDeliveryTitle": "PRODUCTION & DELIVERY",
   "screensFaq.receiveOrderQuestion": "How long will it take to receive my order?",
   "screensFaq.receiveOrderAnswer": "<p>JAKROO has one of the fastest delivery times for technical apparel. Orders for customized products through Jakroo Express typically take between 10 to 12 days from the day you place your order til delivery to your door. We do not delivery on Federal holidays or weekends.</p>",
@@ -660,7 +659,7 @@
   "components.DesignCenterGrid.modalNewStyleCancel": "Cancel",
   "screens.DesignCenter.title": "DesignCenter",
   "screens.DesignCenter.landscapeMessage": "Our design center is optimized for landscape mode, please rotate your device.",
-  "screens.DesignCenter.inspirationTtitle": "Color Ideas",
+  "screens.DesignCenter.inspirationTtitle": "VIEW MORE COLOR COMBOS",
   "screens.DesignCenter.addedToCart": "\"{designName}\" added to cart",
   "screens.DesignCenter.addedToStore": "\"{designName}\" added to \"{storeName}\"",
   "screens.DesignCenter.outWithoutSaveModalTitle": "SAVE CURRENT DESIGN",

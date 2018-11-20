@@ -11,7 +11,7 @@ export default defineMessages({
   },
   inspirationTtitle: {
     id: 'screens.DesignCenter.inspirationTtitle',
-    defaultMessage: 'Color Ideas'
+    defaultMessage: 'VIEW MORE COLOR COMBOS'
   },
   addedToCart: {
     id: 'screens.DesignCenter.addedToCart',
