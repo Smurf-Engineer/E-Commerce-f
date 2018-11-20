@@ -391,7 +391,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
       setThumbnailAction(item, thumbnailUrl)
-      setUploadingThumbnailAction(false)
+      // setUploadingThumbnailAction(false)
     } catch (e) {
       setUploadingThumbnailAction(false)
       message.error(e.message)
@@ -445,11 +445,11 @@ export class DesignerTool extends React.Component<Props, {}> {
       } = modelConfig
 
       const designs = designConfig.map(
-        ({ name, complexity, thumbnail, colors, inspiration }) => {
+        ({ name, complexity, image: thumbnail, colors, inspiration }) => {
           const inspirationItems = inspiration.map(item => ({
             name: item.name,
             colors: item.colors,
-            image: item.thumbnail
+            image: item.image
           }))
 
           const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')

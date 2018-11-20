@@ -22,7 +22,7 @@ import {
   ModelDesign
 } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
-import { NONE } from '../../reducer'
+import { NONE, DESIGN_COLORS } from '../../reducer'
 import EditInspiration from '../EditInspiration'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
@@ -135,9 +135,12 @@ const Tabs = ({
   colorIdeas,
   design
 }: Props) => {
-  let colorIdea: DesignObject | null = null
-  if (colorIdeaItem > NONE) {
-    colorIdea = colorIdeas[colorIdeaItem]
+  let colorIdea: DesignObject | ModelDesign | null = null
+  let renderList = true
+  if (colorIdeaItem !== NONE) {
+    colorIdea =
+      colorIdeaItem === DESIGN_COLORS ? design : colorIdeas[colorIdeaItem]
+    renderList = false
   }
   return (
     <Container>
@@ -207,7 +210,7 @@ const Tabs = ({
           key={INSPIRATION_TAB}
           tab={<Tab label="config" icon={settingsIcon} />}
         >
-          <SwipeableViews index={colorIdeaItem > NONE ? EDIT_TAB : LIST_TAB}>
+          <SwipeableViews index={renderList ? LIST_TAB : EDIT_TAB}>
             <InpirationTab
               designs={designConfig || []}
               onSelectPalette={onSelectInspirationColor}
@@ -223,11 +226,11 @@ const Tabs = ({
                 onDeleteInspiration,
                 design
               }}
-              render={colorIdeaItem === NONE}
+              render={renderList}
             />
             <EditInspiration
               {...{ onEditColorIdea, colorIdea }}
-              render={colorIdeaItem > NONE}
+              render={!renderList}
             />
           </SwipeableViews>
         </TabPane>

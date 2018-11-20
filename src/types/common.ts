@@ -819,7 +819,7 @@ export type sorts = 'asc' | 'desc' | 'none'
 export interface DesignObject {
   id: number
   code: string
-  thumbnail: string
+  image: string
   complexity: number
   colors: string[]
   name: string

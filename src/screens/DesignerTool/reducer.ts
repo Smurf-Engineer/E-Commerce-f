@@ -100,13 +100,13 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_MODEL_ACTION: {
       const { modelConfig, colorIdeas, design } = action
-      const colors = reverse(design.colors)
+      const colors = [...design.colors]
       return state.merge({
         uploadingFiles: false,
         modelConfig,
-        colorIdeas: fromJS(colorIdeas),
         design,
-        colors: List.of(...colors)
+        colorIdeas: fromJS(colorIdeas),
+        colors: List.of(...reverse(colors))
       })
     }
     case SET_UPLOADING_DESIGN_SUCCESS: {
@@ -173,10 +173,16 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_THUMBNAIL_ACTION: {
       const { item, thumbnail } = action
       if (item === DESIGN_THUMBNAIL) {
-        return state.setIn(['design', 'name'], thumbnail)
+        return state.withMutations((map: any) => {
+          map.setIn(['design', 'image'], thumbnail)
+          map.set('uploadingThumbnail', false)
+        })
       }
 
-      return state.setIn(['colorIdeas', item, 'thumbnail'], thumbnail)
+      return state.withMutations((map: any) => {
+        map.setIn(['colorIdeas', item, 'image'], thumbnail)
+        map.set('uploadingThumbnail', false)
+      })
     }
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploadingItem)
@@ -206,7 +212,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
           item !== DESIGN_COLORS
             ? ['colorIdeas', item, 'colors']
             : ['design', 'colors']
-        const colors = state.getIn(keyPath)
+        const colors = state.getIn(keyPath) || []
         return state.merge({
           colors: colors.reverse(),
           colorIdeaItem: item

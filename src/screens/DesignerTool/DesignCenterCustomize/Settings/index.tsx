@@ -59,22 +59,20 @@ const Settings = ({
     onUpdateDesignName(value)
   }
 
-  const handleOnEditDesignColors = () => {
-    onEditColorIdea(DESIGN_COLORS)
-  }
+  const handleOnEditDesignColors = () => onEditColorIdea(DESIGN_COLORS)
 
   const handleOnPressSave = (item: number) => {
     let { colors: modelColors } = design
     if (item !== DESIGN_THUMBNAIL) {
       const colorIdea = colorIdeas[item]
-      modelColors = colorIdea.colors
+      modelColors = colorIdea.colors || []
     }
 
     onSaveThumbnail(item, modelColors)
   }
 
   const colorIdeasList = colorIdeas.map(
-    ({ id, name: ideaName, colors: ideaColors, thumbnail }, key) => (
+    ({ id, name: ideaName, colors: ideaColors, image: thumbnail }, key) => (
       <Palette
         id={key}
         inspirationId={id}

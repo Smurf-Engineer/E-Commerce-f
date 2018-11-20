@@ -18,10 +18,10 @@ import {
 import { NONE } from '../../reducer'
 import ColorButton from '../ColorButton'
 import ColorList from '../ColorList'
-import { DesignObject } from '../../../../types/common'
+import { DesignObject, ModelDesign } from '../../../../types/common'
 
 interface Props {
-  colorIdea: DesignObject | null
+  colorIdea: DesignObject | ModelDesign | null
   render: boolean
   onEditColorIdea: (item: number) => void
 }
@@ -33,7 +33,7 @@ class EditInspiration extends React.PureComponent<Props, {}> {
       return <div />
     }
     const { colors, name } = colorIdea
-    const colorButtons = colors.map((label, index) => (
+    const colorButtons = colors.map((_, index) => (
       <ColorButton
         key={index}
         {...{ index }}

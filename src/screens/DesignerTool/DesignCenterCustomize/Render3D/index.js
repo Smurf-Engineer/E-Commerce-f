@@ -18,8 +18,7 @@ import {
   BINDING,
   BIB_BRACE,
   PROPEL_PALMS,
-  GRIP_TAPE,
-  SOLAR_BIB_BRACE
+  GRIP_TAPE
 } from '../../../../constants'
 import {
   Container,
@@ -81,18 +80,27 @@ class Render3D extends PureComponent {
 
     const areasHasChange = isEqual(areas, nextAreas)
     if (!areasHasChange) {
+      console.log('------------------------------------')
+      console.log('LOAD DESIGN')
+      console.log('------------------------------------')
       this.loadDesign(nextAreas, nextColors)
       return
     }
 
     const filesHasChange = isEqual(files, oldFiles)
     if (!filesHasChange) {
+      console.log('------------------------------------')
+      console.log('LOAD OBJECT')
+      console.log('------------------------------------')
       this.loadObject(files, design)
       return
     }
 
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
+      console.log('------------------------------------')
+      console.log('LOAD COLORS')
+      console.log('------------------------------------')
       this.setupColors(nextColors)
       return
     }
@@ -359,6 +367,7 @@ class Render3D extends PureComponent {
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
           const { colors = [] } = design || {}
+          const reverseColors = colors.reverse()
           const reversedAreas = reverse(areas)
 
           reversedAreas.forEach(
@@ -369,7 +378,7 @@ class Render3D extends PureComponent {
                 map,
                 bumpMap,
                 side: THREE.FrontSide,
-                color: colors[index],
+                color: reverseColors[index],
                 transparent: true
               }))
           )
