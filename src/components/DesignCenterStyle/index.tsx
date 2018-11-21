@@ -16,7 +16,6 @@ import { DesignStyle } from '../../types/common'
 import {
   Container,
   Title,
-  Slider,
   Row,
   List,
   ModalMessage,
@@ -47,12 +46,6 @@ interface Props {
     indexStyle?: any,
     idStyle?: number
   ) => void
-}
-
-const marks = {
-  1: 'Classic',
-  2: 'Edgy',
-  3: 'Extreme'
 }
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
@@ -88,30 +81,12 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     openNewStyleModalAction(false)
   }
 
-  handleOnSelectComplexity = (value: any) => {
-    const { onSelectStyleComplexity } = this.props
-    const currentStyle = value - 1
-    onSelectStyleComplexity(currentStyle)
-  }
-
   render() {
     const {
       data: { styles = [] },
       formatMessage,
-      complexity,
       styleModalData: { openNewStyleModal }
     } = this.props
-
-    const slider = (
-      <Slider
-        {...{ marks }}
-        onChange={this.handleOnSelectComplexity}
-        defaultValue={1}
-        value={complexity}
-        min={1}
-        max={3}
-      />
-    )
 
     if (!styles.length) {
       return (
@@ -119,7 +94,6 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
           <Title>
             <FormattedMessage {...messages.title} />
           </Title>
-          {slider}
           <Empty>
             <EmptyTitle>
               <FormattedMessage {...messages.emptyTitle} />
@@ -145,7 +119,6 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
         <Title>
           <FormattedMessage {...messages.title} />
         </Title>
-        {slider}
         <List>
           <Row>{list}</Row>
         </List>
