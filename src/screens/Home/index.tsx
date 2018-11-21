@@ -38,8 +38,8 @@ import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
 
-const backgroundImg = 'homepage_header_desktop.jpg'
-const backgroundImgMobile = 'homepage_header_mobile.jpg'
+const backgroundImg = 'homepage_banners_max3.jpg'
+const backgroundImgMobile = 'homepage_banners_square_max3.jpg'
 
 interface Props extends RouteComponentProps<any> {
   someKey?: string
@@ -152,7 +152,7 @@ export class Home extends React.Component<Props, {}> {
                     <SearchBackground
                       src={`${
                         config.storageUrl
-                      }/homepage/${backgroundImgMobile}`}
+                        }/homepage/${backgroundImgMobile}`}
                       onClick={this.handleGoTo}
                     />
                   )
