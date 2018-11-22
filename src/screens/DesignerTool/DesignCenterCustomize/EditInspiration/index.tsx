@@ -23,26 +23,47 @@ import { DesignObject, ModelDesign } from '../../../../types/common'
 interface Props {
   colorIdea: DesignObject | ModelDesign | null
   render: boolean
+  colors: string[]
+  colorBlock: number
+  colorBlockHovered: number
+  onSelectColor: (color: string) => void
   onEditColorIdea: (item: number) => void
+  onHoverColorBlock: (index: number) => void
+  onSelectColorBlock: (index: number) => void
+  onUpdateColorIdeaName: (name: string, item?: number) => void
 }
 
-class EditInspiration extends React.PureComponent<Props, {}> {
+interface State {
+  name: string | null
+}
+
+class EditInspiration extends React.PureComponent<Props, State> {
+  state = {
+    name: null
+  }
   render() {
-    const { colorIdea, render } = this.props
+    const { name: temporalName } = this.state
+    const {
+      colorIdea,
+      render,
+      colors,
+      colorBlockHovered,
+      onHoverColorBlock,
+      onSelectColor,
+      onSelectColorBlock,
+      colorBlock
+    } = this.props
     if (!colorIdea || !render) {
       return <div />
     }
-    const { colors, name } = colorIdea
+    const { name } = colorIdea
     const colorButtons = colors.map((_, index) => (
       <ColorButton
         key={index}
-        {...{ index }}
+        {...{ index, colorBlockHovered, onHoverColorBlock, onSelectColorBlock }}
         label={`Area ${index + 1}`}
-        // colorBlockHovered={() => }
-        onSelectColorBlock={() => {}}
-        // onHoverColorBloc={() => {}}
         currentColor={colors[index]}
-        selected={false}
+        selected={colorBlock === index}
       />
     ))
 
@@ -62,13 +83,23 @@ class EditInspiration extends React.PureComponent<Props, {}> {
           </Buttons>
         </Top>
         <InputContainer>
-          <Input value={name} onChange={() => {}} />
+          <Input
+            value={temporalName || name}
+            onChange={this.handleOnUpdateName}
+          />
         </InputContainer>
         <ColorButtons>{colorButtons}</ColorButtons>
         <Divider />
-        <ColorList onSelectColor={() => {}} />
+        <ColorList onSelectColor={onSelectColor} />
       </Container>
     )
+  }
+
+  handleOnUpdateName = (evt: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value }
+    } = evt
+    this.setState({ name: value })
   }
 
   handleOnClickCancel = () => {
@@ -77,7 +108,13 @@ class EditInspiration extends React.PureComponent<Props, {}> {
   }
 
   handleOnClickDone = () => {
-    // TODO: HANDLE TODO
+    const { onUpdateColorIdeaName, colorIdea } = this.props
+    this.setState(({ name: temporalName }) => {
+      onUpdateColorIdeaName(temporalName || colorIdea!.name)
+      return {
+        name: ''
+      }
+    })
   }
 }
 

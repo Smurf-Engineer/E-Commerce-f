@@ -92,21 +92,6 @@ class UploadTab extends React.PureComponent<Props, State> {
     if (selectedFileExtension !== extension) {
       message.error(`Please select a valid ${extension} file`)
     } else {
-      if (fileName === File.Config) {
-        const reader = new FileReader()
-        const { onSelectConfig } = this.props
-        reader.onload = () => {
-          try {
-            const obj = JSON.parse(reader.result) || {}
-            onSelectConfig(obj)
-          } catch (error) {
-            message.error('Please select a valid JSON file')
-            return
-          }
-        }
-        reader.readAsText(file)
-      }
-
       this.setState(({ files }) => {
         const updatedFiles = Object.assign({ [fileName]: file }, files)
         return { files: updatedFiles }

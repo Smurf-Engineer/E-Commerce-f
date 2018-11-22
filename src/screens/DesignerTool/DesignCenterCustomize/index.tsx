@@ -66,6 +66,7 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
+  onUpdateColorIdeaName: (name: string, item?: number) => void
   formatMessage: (messageDescriptor: any) => string
   onLoadDesign: (
     config: ModelConfig,
@@ -131,7 +132,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       binding,
       colorIdeaItem,
       onEditColorIdea,
-      colorIdeas
+      colorIdeas,
+      onUpdateColorIdeaName
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -182,7 +184,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             binding,
             colorIdeaItem,
             onEditColorIdea,
-            colorIdeas
+            colorIdeas,
+            onUpdateColorIdeaName
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

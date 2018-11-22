@@ -118,6 +118,7 @@ interface Props {
   saveDesignSuccessAction: () => void
   setColorIdeaItemAction: (item: number) => void
   deleteColorIdeaAction: (id: number) => void
+  setColorIdeaNameAction: (name: string, item?: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -173,7 +174,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       removeExtraFileAction,
       toggleExtraColorAction,
       setColorIdeaItemAction,
-      colorIdeas
+      colorIdeas,
+      setColorIdeaNameAction
     } = this.props
     const { themeImage } = this.state
 
@@ -230,6 +232,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onAddExtraFile={addExtraFileAction}
         onRemoveExtraFile={removeExtraFileAction}
         onToggleColor={toggleExtraColorAction}
+        onUpdateColorIdeaName={setColorIdeaNameAction}
       />
     )
   }
@@ -391,7 +394,6 @@ export class DesignerTool extends React.Component<Props, {}> {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
       setThumbnailAction(item, thumbnailUrl)
-      // setUploadingThumbnailAction(false)
     } catch (e) {
       setUploadingThumbnailAction(false)
       message.error(e.message)
@@ -399,6 +401,7 @@ export class DesignerTool extends React.Component<Props, {}> {
   }
 
   handleSaveDesign = async () => {
+    // TODO: GET NAME AND COLORS FROM DESIGN PROP IN THE REDUCER
     try {
       const {
         productCode,

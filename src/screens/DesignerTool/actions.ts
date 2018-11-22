@@ -28,7 +28,8 @@ import {
   EDIT_COLOR_IDEA_ACTION,
   SET_MODEL_ACTION,
   DELETE_COLOR_IDEA_ACTION,
-  SET_DESIGN_NAME_ACTION
+  SET_DESIGN_NAME_ACTION,
+  UPDATE_COLOR_IDEA_NAME_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -175,6 +176,12 @@ export const setColorIdeaItemAction = (item: number) => ({
 export const deleteColorIdeaAction = (id: number) => ({
   type: DELETE_COLOR_IDEA_ACTION,
   id
+})
+
+export const setColorIdeaNameAction = (name: string, item?: number) => ({
+  type: UPDATE_COLOR_IDEA_NAME_ACTION,
+  name,
+  item
 })
 
 export const setModelAction = (

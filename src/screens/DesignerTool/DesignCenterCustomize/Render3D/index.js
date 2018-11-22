@@ -80,27 +80,18 @@ class Render3D extends PureComponent {
 
     const areasHasChange = isEqual(areas, nextAreas)
     if (!areasHasChange) {
-      console.log('------------------------------------')
-      console.log('LOAD DESIGN')
-      console.log('------------------------------------')
       this.loadDesign(nextAreas, nextColors)
       return
     }
 
     const filesHasChange = isEqual(files, oldFiles)
     if (!filesHasChange) {
-      console.log('------------------------------------')
-      console.log('LOAD OBJECT')
-      console.log('------------------------------------')
       this.loadObject(files, design)
       return
     }
 
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
-      console.log('------------------------------------')
-      console.log('LOAD COLORS')
-      console.log('------------------------------------')
       this.setupColors(nextColors)
       return
     }

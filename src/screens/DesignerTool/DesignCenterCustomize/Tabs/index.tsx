@@ -75,6 +75,7 @@ interface Props {
   onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (item: number, colors: string[]) => void
+  onUpdateColorIdeaName: (name: string, item?: number) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -133,7 +134,8 @@ const Tabs = ({
   colorIdeaItem,
   onEditColorIdea,
   colorIdeas,
-  design
+  design,
+  onUpdateColorIdeaName
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -229,8 +231,18 @@ const Tabs = ({
               render={renderList}
             />
             <EditInspiration
-              {...{ onEditColorIdea, colorIdea }}
               render={!renderList}
+              {...{
+                colors,
+                colorIdea,
+                colorBlock,
+                onSelectColor,
+                onEditColorIdea,
+                colorBlockHovered,
+                onHoverColorBlock,
+                onSelectColorBlock,
+                onUpdateColorIdeaName
+              }}
             />
           </SwipeableViews>
         </TabPane>
