@@ -16,7 +16,7 @@ import CreditCardForm from '../CreditCardFormBilling'
 import IbanForm from '../IbanForm'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
-import { PaymentOptions, COUNTRY_CODE_DE } from '../../screens/Checkout/constants'
+import { PaymentOptions, EU_SUBSIDIARY_COUNTRIES } from '../../screens/Checkout/constants'
 const { CREDITCARD, PAYPAL, IBAN } = PaymentOptions
 
 interface Props {
@@ -26,6 +26,7 @@ interface Props {
   email: string
   sameBillingAndShipping: boolean
   stripeError: string
+  ibanError: boolean
   loadingBilling: boolean
   showContent: boolean
   showCardForm: boolean
@@ -42,6 +43,7 @@ interface Props {
   setStripeCardDataAction: (card: CreditCardData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
+  setIbanErrorAction: (isError: boolean) => void
   selectDropdownAction: (id: string, value: string) => void
   inputChangeAction: (id: string, value: string) => void
   sameBillingAndAddressCheckedAction: () => void
@@ -68,8 +70,7 @@ declare var window: MyWindow
 class Payment extends React.PureComponent<Props, {}> {
   state = {
     stripe: null,
-    openConfirm: false,
-    ibanError: true
+    openConfirm: false
   }
 
   componentDidMount() {
@@ -98,16 +99,15 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   handleConfirmSave = (countryCode: string | null) => {
-    const { nextStep, saveCountryAction, paymentMethod } = this.props
+    const { nextStep, saveCountryAction, paymentMethod, setIbanErrorAction } = this.props
     this.setState({
       openConfirm: false
     })
     saveCountryAction(countryCode)
     if (paymentMethod === IBAN) {
-      const notEU = countryCode !== COUNTRY_CODE_DE
-      this.setState({
-        ibanError: notEU
-      })
+      const sepaCountry = !!countryCode && EU_SUBSIDIARY_COUNTRIES.includes(countryCode)
+      const isError = countryCode == null || !sepaCountry
+      setIbanErrorAction(isError)
     } else {
       nextStep()
     }
@@ -117,14 +117,14 @@ class Payment extends React.PureComponent<Props, {}> {
     const { setPaymentMethodAction } = this.props
     setPaymentMethodAction(PAYPAL)
     this.setState({
-      openConfirm: true,
-      ibanError: false
+      openConfirm: true
     })
   }
 
   handleIbanClick = () => {
-    const { setPaymentMethodAction } = this.props
+    const { setPaymentMethodAction, setIbanErrorAction } = this.props
     setPaymentMethodAction(IBAN)
+    setIbanErrorAction(true)
     this.setState({
       openConfirm: true
     })
@@ -133,9 +133,7 @@ class Payment extends React.PureComponent<Props, {}> {
   handleCreditCardClick = () => {
     const { setPaymentMethodAction } = this.props
     setPaymentMethodAction(CREDITCARD)
-    this.setState({
-      ibanError: false
-    })
+
   }
 
   render() {
@@ -147,7 +145,9 @@ class Payment extends React.PureComponent<Props, {}> {
       email,
       sameBillingAndShipping,
       stripeError,
+      ibanError,
       setStripeErrorAction,
+      // setIbanErrorAction,
       loadingBilling,
       setLoadingBillingAction,
       sameBillingAndAddressCheckedAction,
@@ -170,7 +170,7 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingForm,
       showBillingAddressFormAction
     } = this.props
-    const { stripe, openConfirm, ibanError } = this.state
+    const { stripe, openConfirm } = this.state
 
     if (!showContent) {
       return <div />

@@ -18,6 +18,7 @@ import {
   SAME_BILLING_AND_SHIPPING_UNCHECKED,
   SET_SELECTED_ADDRESS,
   SET_STRIPE_ERROR,
+  SET_IBAN_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
   SET_STRIPE_CARD_DATA,
@@ -78,6 +79,7 @@ export const initialState = fromJS({
   cardExpDate: '',
   cardBrand: '',
   stripeError: '',
+  ibanError: false,
   loadingBilling: false,
   stripeToken: '',
   showCardForm: false,
@@ -105,6 +107,8 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('hasError', action.hasError)
     case SET_STRIPE_ERROR:
       return state.merge({ stripeError: action.error, loadingBilling: false })
+    case SET_IBAN_ERROR:
+      return state.merge({ ibanError: action.error, loadingBilling: false })
     case VALID_BILLING_FORM:
       return state.set('billingHasError', action.hasError)
     case CHANGE_INPUT:

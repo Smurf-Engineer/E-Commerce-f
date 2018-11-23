@@ -113,6 +113,7 @@ interface Props extends RouteComponentProps<any> {
   placeOrder: any
   cardHolderName: string
   stripeError: string
+  ibanError: boolean
   cardNumber: string
   cardExpDate: string
   cardBrand: string
@@ -139,6 +140,7 @@ interface Props extends RouteComponentProps<any> {
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
+  setIbanErrorAction: (isError: boolean) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
   invalidBillingFormAction: (hasError: boolean) => void
@@ -219,6 +221,7 @@ class Checkout extends React.Component<Props, {}> {
       ibanData,
       sameBillingAndShipping,
       stripeError,
+      ibanError,
       loadingBilling,
       loadingPlaceOrder,
       smsCheckAction,
@@ -231,6 +234,7 @@ class Checkout extends React.Component<Props, {}> {
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
       setStripeErrorAction,
+      setIbanErrorAction,
       setLoadingBillingAction,
       setStripeCardDataAction,
       setStripeIbanDataAction,
@@ -386,7 +390,9 @@ class Checkout extends React.Component<Props, {}> {
                     billingAddress,
                     cardHolderName,
                     stripeError,
+                    ibanError,
                     setStripeErrorAction,
+                    setIbanErrorAction,
                     inputChangeAction,
                     selectDropdownAction,
                     sameBillingAndShipping,
