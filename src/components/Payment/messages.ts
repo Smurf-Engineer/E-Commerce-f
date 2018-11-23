@@ -17,9 +17,9 @@ export default defineMessages({
     id: 'components.Payment.methodPaypal',
     defaultMessage: 'Paypal'
   },
-  methodAlipay: {
-    id: 'components.Payment.methodAlipay',
-    defaultMessage: 'Alipay'
+  methodIban: {
+    id: 'components.Payment.methodIban',
+    defaultMessage: 'IBAN'
   },
   methodBankTransfer: {
     id: 'components.Payment.methodBankTransfer',

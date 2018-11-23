@@ -13,15 +13,17 @@ import {
   MethodButton
 } from './styledComponents'
 import CreditCardForm from '../CreditCardFormBilling'
+import IbanForm from '../IbanForm'
 import { AddressType, StripeCardData, CreditCardData } from '../../types/common'
 import Modal from '../../components/ConfirmCountryDialog'
-import { PaymentOptions } from '../../screens/Checkout/constants'
-const { CREDITCARD, PAYPAL } = PaymentOptions
+import { PaymentOptions, COUNTRY_CODE_DE } from '../../screens/Checkout/constants'
+const { CREDITCARD, PAYPAL, IBAN } = PaymentOptions
 
 interface Props {
   billingAddress: AddressType
   hasError: boolean
   cardHolderName: string
+  email: string
   sameBillingAndShipping: boolean
   stripeError: string
   loadingBilling: boolean
@@ -66,7 +68,8 @@ declare var window: MyWindow
 class Payment extends React.PureComponent<Props, {}> {
   state = {
     stripe: null,
-    openConfirm: false
+    openConfirm: false,
+    ibanError: true
   }
 
   componentDidMount() {
@@ -95,18 +98,33 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   handleConfirmSave = (countryCode: string | null) => {
-    const { nextStep, saveCountryAction } = this.props
+    const { nextStep, saveCountryAction, paymentMethod } = this.props
     this.setState({
       openConfirm: false
     })
     saveCountryAction(countryCode)
-
-    nextStep()
+    if (paymentMethod === IBAN) {
+      const notEU = countryCode !== COUNTRY_CODE_DE
+      this.setState({
+        ibanError: notEU
+      })
+    } else {
+      nextStep()
+    }
   }
 
   handlePaypalClick = () => {
     const { setPaymentMethodAction } = this.props
     setPaymentMethodAction(PAYPAL)
+    this.setState({
+      openConfirm: true,
+      ibanError: false
+    })
+  }
+
+  handleIbanClick = () => {
+    const { setPaymentMethodAction } = this.props
+    setPaymentMethodAction(IBAN)
     this.setState({
       openConfirm: true
     })
@@ -115,6 +133,9 @@ class Payment extends React.PureComponent<Props, {}> {
   handleCreditCardClick = () => {
     const { setPaymentMethodAction } = this.props
     setPaymentMethodAction(CREDITCARD)
+    this.setState({
+      ibanError: false
+    })
   }
 
   render() {
@@ -123,6 +144,7 @@ class Payment extends React.PureComponent<Props, {}> {
       billingAddress,
       hasError,
       cardHolderName,
+      email,
       sameBillingAndShipping,
       stripeError,
       setStripeErrorAction,
@@ -148,11 +170,65 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingForm,
       showBillingAddressFormAction
     } = this.props
-    const { stripe, openConfirm } = this.state
+    const { stripe, openConfirm, ibanError } = this.state
 
     if (!showContent) {
       return <div />
     }
+
+    const paymentForm = (paymentMethod === CREDITCARD) ? (
+      <CreditCardForm
+        {...{
+          stripe,
+          formatMessage,
+          cardHolderName,
+          billingAddress,
+          hasError,
+          stripeError,
+          loadingBilling,
+          setLoadingBillingAction,
+          setStripeErrorAction,
+          sameBillingAndShipping,
+          sameBillingAndAddressCheckedAction,
+          sameBillingAndAddressUncheckedAction,
+          invalidBillingFormAction,
+          setStripeCardDataAction,
+          nextStep,
+          showCardForm,
+          selectedCard,
+          showCardFormAction,
+          selectCardToPayAction,
+          skip,
+          currentPage,
+          setSelectedAddress,
+          indexAddressSelected,
+          limit,
+          setSkipValueAction,
+          showBillingForm,
+          showBillingAddressFormAction
+        }}
+        selectDropdownAction={this.handleOnDropdownAction}
+        inputChangeAction={this.handleOnChangeInput}
+      />
+    ) : (
+        <IbanForm
+          disabled={ibanError}
+          {...{
+            stripe,
+            cardHolderName,
+            email,
+            formatMessage,
+            hasError,
+            stripeError,
+            nextStep,
+            setLoadingBillingAction,
+            invalidBillingFormAction,
+            setStripeErrorAction,
+          }}
+          inputChangeAction={this.handleOnChangeInput}
+        />
+      )
+
     return (
       <Container>
         <Title>{formatMessage(messages.paymentMethod)}</Title>
@@ -164,52 +240,21 @@ class Payment extends React.PureComponent<Props, {}> {
             {formatMessage(messages.methodCreditCard)}
           </MethodButton>
           <MethodButton
+            selected={paymentMethod === IBAN}
+            onClick={this.handleIbanClick}
+          >
+            {formatMessage(messages.methodIban)}
+          </MethodButton>
+          <MethodButton
             selected={paymentMethod === PAYPAL}
             onClick={this.handlePaypalClick}
           >
             {formatMessage(messages.methodPaypal)}
           </MethodButton>
-          {/* <MethodButton>{formatMessage(messages.methodAlipay)}</MethodButton>
-          <MethodButton>
-            {formatMessage(messages.methodBankTransfer)}
-          </MethodButton> */}
-          {/* TODO: uncomment MethodButtons when paypal, alipay and bank transfer are able */}
         </ContainerMethods>
         <StripeProvider {...{ stripe }}>
           <Elements>
-            <CreditCardForm
-              {...{
-                stripe,
-                formatMessage,
-                cardHolderName,
-                billingAddress,
-                hasError,
-                stripeError,
-                loadingBilling,
-                setLoadingBillingAction,
-                setStripeErrorAction,
-                sameBillingAndShipping,
-                sameBillingAndAddressCheckedAction,
-                sameBillingAndAddressUncheckedAction,
-                invalidBillingFormAction,
-                setStripeCardDataAction,
-                nextStep,
-                showCardForm,
-                selectedCard,
-                showCardFormAction,
-                selectCardToPayAction,
-                skip,
-                currentPage,
-                setSelectedAddress,
-                indexAddressSelected,
-                limit,
-                setSkipValueAction,
-                showBillingForm,
-                showBillingAddressFormAction
-              }}
-              selectDropdownAction={this.handleOnDropdownAction}
-              inputChangeAction={this.handleOnChangeInput}
-            />
+            {paymentForm}
           </Elements>
         </StripeProvider>
         <Modal
@@ -223,12 +268,14 @@ class Payment extends React.PureComponent<Props, {}> {
   }
   handleOnChangeInput = (id: string, value: string) => {
     const { inputChangeAction } = this.props
-    if (id !== 'cardHolderName') {
+    if (id === 'cardHolderName' || id === 'email') {
+      inputChangeAction(id, value)
+    } else {
       const customId = 'billing' + upperFirst(id)
       inputChangeAction(customId, value)
       return
     }
-    inputChangeAction(id, value)
+
   }
   handleOnDropdownAction = (id: string, value: string) => {
     const { selectDropdownAction } = this.props
