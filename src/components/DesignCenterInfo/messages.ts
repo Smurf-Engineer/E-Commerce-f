@@ -22,7 +22,7 @@ export default defineMessages({
     id: 'components.DesignCenterInfo.styleMessage',
     defaultMessage:
       // tslint:disable-next-line:max-line-length
-      'Select a base design as a starting point for your design. You can also view various levels of design complexity.'
+      'Choose a Kickstart Design below as a starting point for your design.'
   },
   customize: {
     id: 'components.DesignCenterInfo.customize',
