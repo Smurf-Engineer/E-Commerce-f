@@ -43,6 +43,7 @@ import {
   CartItemDetail,
   Product,
   StripeCardData,
+  IbanData,
   CreditCardData,
   TaxAddressObj,
   ItemDetailType,
@@ -83,6 +84,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   firstName: string
   lastName: string
+  email: string
   street: string
   apartment: string
   country: string
@@ -116,7 +118,9 @@ interface Props extends RouteComponentProps<any> {
   cardBrand: string
   cardExpMonth: string
   cardExpYear: string
+  ibanData: IbanData
   stripeToken: string
+  stripeSource: string
   loadingBilling: boolean
   loadingPlaceOrder: boolean
   paymentMethod: string
@@ -131,6 +135,7 @@ interface Props extends RouteComponentProps<any> {
   openCurrencyWarning: boolean
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeIbanDataAction: (iban: IbanData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
@@ -185,6 +190,7 @@ class Checkout extends React.Component<Props, {}> {
       hasError,
       firstName,
       lastName,
+      email,
       street,
       apartment,
       country,
@@ -210,6 +216,7 @@ class Checkout extends React.Component<Props, {}> {
       cardNumber,
       cardExpDate,
       cardBrand,
+      ibanData,
       sameBillingAndShipping,
       stripeError,
       loadingBilling,
@@ -226,6 +233,7 @@ class Checkout extends React.Component<Props, {}> {
       setStripeErrorAction,
       setLoadingBillingAction,
       setStripeCardDataAction,
+      setStripeIbanDataAction,
       setPaymentMethodAction,
       paymentMethod,
       saveCountryAction,
@@ -275,6 +283,12 @@ class Checkout extends React.Component<Props, {}> {
       cardExpDate,
       cardBrand
     }
+
+    // const IbanData: StripeCardData = {
+    //   cardNumber,
+    //   cardExpDate,
+    //   cardBrand
+    // }
 
     const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
@@ -368,6 +382,7 @@ class Checkout extends React.Component<Props, {}> {
                 />
                 <Payment
                   {...{
+                    email,
                     billingAddress,
                     cardHolderName,
                     stripeError,
@@ -381,6 +396,7 @@ class Checkout extends React.Component<Props, {}> {
                     loadingBilling,
                     setLoadingBillingAction,
                     setStripeCardDataAction,
+                    setStripeIbanDataAction,
                     setPaymentMethodAction,
                     saveCountryAction,
                     showCardForm,
@@ -407,6 +423,7 @@ class Checkout extends React.Component<Props, {}> {
                     shippingAddress,
                     billingAddress,
                     cardData,
+                    ibanData,
                     cardHolderName,
                     paymentMethod,
                     selectedCard
@@ -652,6 +669,7 @@ class Checkout extends React.Component<Props, {}> {
       paymentMethod,
       stripeToken,
       selectedCard,
+      stripeSource,
       client: { query },
       currentCurrency,
       couponCode: couponObject
@@ -767,6 +785,7 @@ class Checkout extends React.Component<Props, {}> {
         paymentMethod,
         cardId,
         tokenId: stripeToken,
+        sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
         billingAddress,

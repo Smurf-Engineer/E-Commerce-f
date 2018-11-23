@@ -18,7 +18,8 @@ import {
   AddressType,
   StripeCardData,
   CreditCardData,
-  CartItems
+  CartItems,
+  IbanData
 } from '../../types/common'
 import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
@@ -35,6 +36,7 @@ interface Props {
   cardData: StripeCardData
   cardHolderName: string
   paymentMethod: string
+  ibanData: IbanData
   selectedCard: CreditCardData
   currency: string
   formatMessage: (messageDescriptor: any) => string
@@ -69,6 +71,7 @@ class Review extends React.PureComponent<Props, {}> {
       cart,
       paymentMethod,
       selectedCard,
+      ibanData,
       currency
     } = this.props
 
@@ -81,38 +84,40 @@ class Review extends React.PureComponent<Props, {}> {
 
     const renderList = cart
       ? cart.map((cartItem, index) => {
-          const {
-            designId,
-            designImage,
-            designName,
-            product: { images, name, shortDescription, priceRange }
-          } = cartItem
+        const {
+          designId,
+          designImage,
+          designName,
+          product: { images, name, shortDescription, priceRange }
+        } = cartItem
 
-          const currencyPrices = filter(priceRange, { abbreviation: currency })
+        const currencyPrices = filter(priceRange, { abbreviation: currency })
 
-          const itemImage = designId ? designImage || '' : images[0].front
-          const itemTitle = designId ? designName || '' : name
-          const itemDescription = designId
-            ? `${name} ${shortDescription}`
-            : shortDescription
-          return (
-            <CartListItem
-              currentCurrency={currency}
-              formatMessage={formatMessage}
-              key={index}
-              title={itemTitle}
-              image={itemImage}
-              description={itemDescription}
-              price={currencyPrices[priceRangeToApply]}
-              itemIndex={index}
-              onlyRead={true}
-              currencySymbol={currencyPrices[0].shortName}
-              {...{ cartItem }}
-            />
-          )
-        })
+        const itemImage = designId ? designImage || '' : images[0].front
+        const itemTitle = designId ? designName || '' : name
+        const itemDescription = designId
+          ? `${name} ${shortDescription}`
+          : shortDescription
+        return (
+          <CartListItem
+            currentCurrency={currency}
+            formatMessage={formatMessage}
+            key={index}
+            title={itemTitle}
+            image={itemImage}
+            description={itemDescription}
+            price={currencyPrices[priceRangeToApply]}
+            itemIndex={index}
+            onlyRead={true}
+            currencySymbol={currencyPrices[0].shortName}
+            {...{ cartItem }}
+          />
+        )
+      })
       : null
-
+    const isPaypalPayment = paymentMethod === PaymentOptions.PAYPAL
+    const isIbanPayment = paymentMethod === PaymentOptions.IBAN
+    const isCCPayment = paymentMethod === PaymentOptions.CREDITCARD
     return (
       <Container>
         <CartContent>
@@ -134,38 +139,45 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.billingAddress)}</Title>
-            {paymentMethod === 'paypal' ? (
+            {(isPaypalPayment || isIbanPayment) ? (
               <Text>{billingCountry.toUpperCase()}</Text>
             ) : (
-              <div>
-                <MyAddress
-                  hideBottomButtons={true}
-                  name={`${billingFirstName} ${billingLastName}`}
-                  street={billingStreet}
-                  city={`${billingCity} ${billingStateProvince}`}
-                  zipCode={billingZipCode}
-                  country={billingCountry.toUpperCase()}
-                  apartment={billingApartment}
-                  {...{ formatMessage }}
-                />
-                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
-                  {formatMessage(messages.edit)}
-                </EditInfoButton>
-              </div>
-            )}
+                <div>
+                  <MyAddress
+                    hideBottomButtons={true}
+                    name={`${billingFirstName} ${billingLastName}`}
+                    street={billingStreet}
+                    city={`${billingCity} ${billingStateProvince}`}
+                    zipCode={billingZipCode}
+                    country={billingCountry.toUpperCase()}
+                    apartment={billingApartment}
+                    {...{ formatMessage }}
+                  />
+                  <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                    {formatMessage(messages.edit)}
+                  </EditInfoButton>
+                </div>
+              )}
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
-            {paymentMethod === PaymentOptions.CREDITCARD ? (
+            {isCCPayment ? (
               <div>
                 <PaymentData card={selectedCard} />
                 <EditInfoButton onClick={this.handleOnGoToStepTwo}>
                   {formatMessage(messages.edit)}
                 </EditInfoButton>
               </div>
+            ) : isIbanPayment ? (
+              <div>
+                <PaymentData iban={ibanData} />
+                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                  {formatMessage(messages.edit)}
+                </EditInfoButton>
+              </div>
             ) : (
-              <img src={iconPaypal} />
-            )}
+                  <img src={iconPaypal} />
+                )}
           </InfoContainer>
         </BottomContainer>
       </Container>

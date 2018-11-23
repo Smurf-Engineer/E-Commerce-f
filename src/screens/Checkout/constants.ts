@@ -46,7 +46,8 @@ export enum CheckoutTabs {
 
 export enum PaymentOptions {
   PAYPAL = 'paypal',
-  CREDITCARD = 'creditcard'
+  CREDITCARD = 'creditcard',
+  IBAN = 'iban'
 }
 
 // PROMO TYPES
