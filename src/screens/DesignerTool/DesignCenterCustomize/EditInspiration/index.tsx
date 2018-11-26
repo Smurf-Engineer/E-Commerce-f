@@ -84,6 +84,7 @@ class EditInspiration extends React.PureComponent<Props, State> {
         </Top>
         <InputContainer>
           <Input
+            placeholder="Name"
             value={temporalName || name}
             onChange={this.handleOnUpdateName}
           />

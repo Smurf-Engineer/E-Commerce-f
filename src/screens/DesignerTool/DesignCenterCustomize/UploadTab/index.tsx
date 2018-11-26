@@ -146,7 +146,6 @@ class UploadTab extends React.PureComponent<Props, State> {
     )
 
     if (uploadNewModel) {
-      const uploadEnabled = !!config && areas.length
       return (
         <DesignContainer>
           <ButtonWrapper>
@@ -154,7 +153,7 @@ class UploadTab extends React.PureComponent<Props, State> {
               size="large"
               type="primary"
               onClick={this.handleUpload}
-              disabled={!uploadEnabled}
+              disabled={!areas.length}
               loading={uploadingFiles}
             >
               {'Upload Design'}

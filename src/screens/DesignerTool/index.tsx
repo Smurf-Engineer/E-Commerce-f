@@ -401,16 +401,16 @@ export class DesignerTool extends React.Component<Props, {}> {
   }
 
   handleSaveDesign = async () => {
-    // TODO: GET NAME AND COLORS FROM DESIGN PROP IN THE REDUCER
     try {
       const {
-        productCode,
-        modelConfig,
-        selectedTheme,
-        designConfig,
+        design,
         saveDesign,
         themeName,
+        productCode,
         createTheme,
+        modelConfig,
+        colorIdeas,
+        selectedTheme,
         saveDesignSuccessAction
       } = this.props
 
@@ -419,15 +419,27 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
-      if (!designConfig.length) {
-        message.error('Missing config file')
-        return
-      }
-
       if (!modelConfig) {
         message.error('Upload model files first')
         return
       }
+
+      if (!design.name) {
+        message.error('To proceed, enter design name first')
+        return
+      }
+
+      if (!design.image) {
+        message.error('To proceed, save design thumbnail first')
+        return
+      }
+
+      const hasAllInspirationThumbnail = every(colorIdeas, 'image')
+      if (!hasAllInspirationThumbnail) {
+        message.error('Unable to find one or more color idea thumbnails')
+        return
+      }
+
       const {
         obj,
         mtl,
@@ -446,43 +458,60 @@ export class DesignerTool extends React.Component<Props, {}> {
         bindingBlack,
         size
       } = modelConfig
-
-      const designs = designConfig.map(
-        ({ name, complexity, image: thumbnail, colors, inspiration }) => {
-          const inspirationItems = inspiration.map(item => ({
-            name: item.name,
-            colors: item.colors,
-            image: item.image
-          }))
-
-          const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
-
-          if (!hasAllInspirationThumbnail) {
-            message.error('Unable to find one or more Inspiration Thumbnails')
-            return
-          }
-
-          return {
-            name,
-            image: thumbnail,
-            complexity: complexity || 1,
-            branding: brandingSvg,
-            brandingPng,
-            svgs: areasSvg,
-            pngs: areasPng,
-            colors,
-            inspiration: inspirationItems,
-            width: size.width,
-            height: size.height
-          }
-        }
-      )
-
-      const hasAllDesignThumbnail = every(designs, 'image')
-      if (!hasAllDesignThumbnail) {
-        message.error('To proceed, save design thumbnail first')
-        return
+      const inspiration = colorIdeas.map(item => ({
+        name: item.name,
+        colors: item.colors,
+        image: item.image
+      }))
+      const designs: any = []
+      const style = {
+        ...design,
+        branding: brandingSvg,
+        brandingPng,
+        svgs: areasSvg,
+        pngs: areasPng,
+        inspiration,
+        width: size.width,
+        height: size.height
       }
+      designs.push(style)
+
+      // designConfig.map(
+      //   ({ name, complexity, image: thumbnail, colors, inspiration }) => {
+      //     const inspirationItems = inspiration.map(item => ({
+      //       name: item.name,
+      //       colors: item.colors,
+      //       image: item.image
+      //     }))
+
+      //     const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
+
+      //     if (!hasAllInspirationThumbnail) {
+      //       message.error('Unable to find one or more Inspiration Thumbnails')
+      //       return
+      //     }
+
+      //     return {
+      //       name,
+      //       image: thumbnail,
+      //       complexity: complexity || 1,
+      //       branding: brandingSvg,
+      //       brandingPng,
+      //       svgs: areasSvg,
+      //       pngs: areasPng,
+      //       colors,
+      //       inspiration: inspirationItems,
+      //       width: size.width,
+      //       height: size.height
+      //     }
+      //   }
+      // )
+
+      // const hasAllDesignThumbnail = every(designs, 'image')
+      // if (!hasAllDesignThumbnail) {
+      //   message.error('To proceed, save design thumbnail first')
+      //   return
+      // }
 
       const { themeImage } = this.state
       let themeResponse = null
@@ -506,7 +535,7 @@ export class DesignerTool extends React.Component<Props, {}> {
 
       const themeId = get(themeResponse, 'data.theme.id', selectedTheme)
 
-      const design = {
+      const model = {
         productCode,
         label,
         bumpMap,
@@ -522,8 +551,13 @@ export class DesignerTool extends React.Component<Props, {}> {
         theme_id: themeId,
         styles: designs
       }
+
+      console.log('---------------------------')
+      console.log(model)
+      console.log('---------------------------')
+
       await saveDesign({
-        variables: { design },
+        variables: { design: model },
         refetchQueries: [
           { query: getProductFromCode, variables: { code: productCode } }
         ]

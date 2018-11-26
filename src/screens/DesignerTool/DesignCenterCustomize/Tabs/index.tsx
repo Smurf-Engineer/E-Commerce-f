@@ -192,22 +192,6 @@ const Tabs = ({
             }}
           />
         </TabPane>
-        <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
-          <ColorTab
-            {...{
-              onSelectColorBlock,
-              onHoverColorBlock,
-              colorBlock,
-              colorBlockHovered,
-              onSelectColor,
-              colors,
-              onToggleColor,
-              bibBrace,
-              zipper,
-              binding
-            }}
-          />
-        </TabPane>
         <TabPane
           key={INSPIRATION_TAB}
           tab={<Tab label="config" icon={settingsIcon} />}
@@ -245,6 +229,22 @@ const Tabs = ({
               }}
             />
           </SwipeableViews>
+        </TabPane>
+        <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
+          <ColorTab
+            {...{
+              onSelectColorBlock,
+              onHoverColorBlock,
+              colorBlock,
+              colorBlockHovered,
+              onSelectColor,
+              colors,
+              onToggleColor,
+              bibBrace,
+              zipper,
+              binding
+            }}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

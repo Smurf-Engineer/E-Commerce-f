@@ -4,14 +4,8 @@
 import * as React from 'react'
 import Icon from 'antd/lib/icon'
 import Divider from 'antd/lib/divider'
-import {
-  Container,
-  List,
-  Button,
-  Label,
-  Input,
-  DesignInfo
-} from './styledComponents'
+import isEmpty from 'lodash/isEmpty'
+import { Container, List, Button, EmptyLabel } from './styledComponents'
 import Palette from '../../../../components/DesignPalette'
 import {
   DesignConfig,
@@ -51,13 +45,22 @@ const Settings = ({
     return <div />
   }
 
-  const { name, colors, image } = design
-  const handleOnChangeName = (evt: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget: { value }
-    } = evt
-    onUpdateDesignName(value)
+  if (isEmpty(design)) {
+    return (
+      <EmptyLabel>
+        Load a design from the product tab or upload a new one in the upload
+        tab.
+      </EmptyLabel>
+    )
   }
+
+  const { name, colors, image } = design
+  // const handleOnChangeName = (evt: React.FormEvent<HTMLInputElement>) => {
+  //   const {
+  //     currentTarget: { value }
+  //   } = evt
+  //   onUpdateDesignName(value)
+  // }
 
   const handleOnEditDesignColors = () => onEditColorIdea(DESIGN_COLORS)
 
@@ -82,8 +85,9 @@ const Settings = ({
           onEditColorIdea,
           onDeleteInspiration
         }}
-        image={thumbnail}
+        showDelete={!!id}
         name={ideaName}
+        image={thumbnail}
         colors={ideaColors}
         loading={uploadingThumbnail}
         buttonLabel="Save Thumbnail"
@@ -98,27 +102,28 @@ const Settings = ({
         ADD NEW COLOR IDEA
       </Button>
       <Divider>Design Info</Divider>
-      <DesignInfo>
-        <Label>Design Name</Label>
-        <Input
-          placeholder="Design name"
-          value={name}
-          onChange={handleOnChangeName}
-        />
-      </DesignInfo>
-      <Divider>Colors</Divider>
+      {/* // TODO: DELETE AFTER THE CLIENT, TEST THE NEW PUBLISHING TOOL
+        <DesignInfo>
+          <Label>Design Name</Label>
+          <Input
+            placeholder="Design name"
+            value={name}
+            onChange={handleOnChangeName}
+          />
+        </DesignInfo>
+        <Divider>Colors</Divider>
+      */}
       <Palette
         showDelete={false}
         colors={colors || []}
-        name="Design Colors"
         id={DESIGN_THUMBNAIL}
         onEditColorIdea={handleOnEditDesignColors}
         onSelectPalette={handleOnPressSave}
-        {...{ formatMessage, image }}
+        {...{ formatMessage, image, name }}
         buttonLabel="Save Thumbnail"
         loading={uploadingThumbnail}
       />
-      <Divider>Inspiration</Divider>
+      <Divider>Color Combos</Divider>
       <List>{colorIdeasList}</List>
     </Container>
   )

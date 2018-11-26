@@ -3,6 +3,8 @@
  */
 import { fromJS, List } from 'immutable'
 import reverse from 'lodash/reverse'
+import fill from 'lodash/fill'
+import isEmpty from 'lodash/isEmpty'
 import {
   Tabs,
   DEFAULT_ACTION,
@@ -54,11 +56,7 @@ export const initialState = fromJS({
   swipingView: false,
   currentTab: Tabs.RenderTab,
   themeName: '',
-  design: {
-    name: '',
-    image: '',
-    colors: []
-  },
+  design: {},
   selectedTheme: NONE_ID,
   selectedStyle: NONE_ID,
   designConfig: [],
@@ -94,6 +92,17 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_UPLOADING_SUCCESS: {
       const { modelConfig } = action
       const { config, design, colorIdeas } = modelConfig
+      if (isEmpty(design)) {
+        const defaultColors = fill(Array(config.areasPng.length), 'black')
+        const defaultDesign = { name: '', colors: defaultColors }
+        return state.merge({
+          design: defaultDesign,
+          modelConfig: config,
+          uploadingFiles: false,
+          colors: List.of(...defaultColors)
+        })
+      }
+
       const colors = [...design.colors]
       return state.merge({
         design,
@@ -118,9 +127,29 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       const { design } = action
       const { colorIdeas, config, design: updatedDesign } = design
       const { areasPng, areasSvg, size } = config
+
+      const modelConfig = state.get('modelConfig')
+      if (isEmpty(updatedDesign)) {
+        const defaultColors = fill(Array(config.areasPng.length), 'black')
+        const defaultDesign = { name: '', colors: defaultColors }
+        const updatedConfig = modelConfig.merge({
+          size,
+          colors: List.of(...defaultColors),
+          areasSvg: List.of(...areasSvg),
+          areasPng: List.of(...areasPng)
+        })
+        return state.merge({
+          uploadingFiles: false,
+          design: defaultDesign,
+          areas: List.of(...areasPng),
+          colorIdeas: [],
+          colors: List.of(...defaultColors),
+          modelConfig: updatedConfig
+        })
+      }
+
       const colors = [...updatedDesign.colors]
       const reverseColors = reverse(colors)
-      const modelConfig = state.get('modelConfig')
       const updatedModelConfig = modelConfig.merge({
         size,
         colors: List.of(...colors),
