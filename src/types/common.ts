@@ -293,6 +293,7 @@ export interface Style {
   name: string
   image: string
   colorBlocks: ColorBlock[]
+  colorIdeas: DesignObject[]
   accessoriesColor?: EditDesign
   designId?: string
   styleId?: number
@@ -327,6 +328,8 @@ export interface Style {
   colorblock3: string
   colorblock4: string
   colorblock5: string
+  width: number
+  height: number
   colors: ColorBlock[]
   size: {
     width: number
@@ -431,6 +434,12 @@ export interface StripeCardData {
   stripeToken?: string
 }
 
+export interface ModelDesign {
+  name: string
+  image: string
+  colors: string[]
+}
+
 export interface ModelConfig {
   obj: string
   mtl: string
@@ -442,10 +451,6 @@ export interface ModelConfig {
   size: {
     width: number
     height: number
-  }
-  design: {
-    name: string
-    colors: string[]
   }
   areasSvg: string[]
   areasPng: string[]
@@ -814,8 +819,9 @@ export interface UploadFile {
 
 export type sorts = 'asc' | 'desc' | 'none'
 export interface DesignObject {
+  id: number
   code: string
-  thumbnail: string
+  image: string
   complexity: number
   colors: string[]
   name: string

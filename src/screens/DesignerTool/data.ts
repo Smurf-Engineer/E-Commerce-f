@@ -45,3 +45,11 @@ export const deleteStyleMutation = gql`
     }
   }
 `
+
+export const deleteInspirationMutation = gql`
+  mutation deleteInspiration($id: Int!) {
+    deleteInspiration(id: $id) {
+      message
+    }
+  }
+`
