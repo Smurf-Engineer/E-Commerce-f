@@ -29,7 +29,7 @@ interface Props {
   showDelete?: boolean
   onSelectPalette: (id: number) => void
   onEditColorIdea?: (id: number) => void
-  onDeleteInspiration?: (id: number) => void
+  onDeleteInspiration?: (id: number, index: number) => void
 }
 
 const PaletteCard = ({
@@ -42,12 +42,12 @@ const PaletteCard = ({
   image,
   onEditColorIdea,
   onDeleteInspiration,
-  inspirationId = -1,
+  inspirationId = 0,
   showDelete = true
 }: Props) => {
   const handleOnDelete = () => {
     if (onDeleteInspiration) {
-      onDeleteInspiration(inspirationId)
+      onDeleteInspiration(inspirationId, id)
     }
   }
   const handleOnSelectPalette = () => onSelectPalette(id)

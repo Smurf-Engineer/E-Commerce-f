@@ -34,9 +34,10 @@ import {
   EDIT_COLOR_IDEA_ACTION,
   SET_MODEL_ACTION,
   DELETE_COLOR_IDEA_ACTION,
-  UPDATE_COLOR_IDEA_NAME_ACTION
+  UPDATE_COLOR_IDEA_NAME_ACTION,
+  ADD_COLOR_IDEA_ACTION
 } from './constants'
-import { Reducer, DesignObject } from '../../types/common'
+import { Reducer } from '../../types/common'
 
 export const NONE = -1
 export const NONE_ID = 0
@@ -259,20 +260,36 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case DELETE_COLOR_IDEA_ACTION: {
-      const { id } = action
+      const { index } = action
       const colorsIdeas = state.get('colorIdeas')
-      const key = colorsIdeas.findKey((item: DesignObject) => id === item.id)
-      const colorIdeasUpdated = colorsIdeas.remove(key)
+      const colorIdeasUpdated = colorsIdeas.remove(index)
       return state.set('colorIdeas', colorIdeasUpdated)
     }
+    case ADD_COLOR_IDEA_ACTION: {
+      const colorsIdeas = state.get('colorIdeas')
+      const areasPng = state.getIn(['modelConfig', 'areasPng']) || []
+      const colors = fill(Array(areasPng.count()), 'black')
+      const updatedColorIdeas = colorsIdeas.push(
+        fromJS({
+          name: '',
+          colors,
+          image: null
+        })
+      )
+      return state.set('colorIdeas', updatedColorIdeas)
+    }
     case UPDATE_COLOR_IDEA_NAME_ACTION: {
-      const { name } = action
+      const { name, updateColors } = action
       const colors = state.get('colors')
       const colorIdeaItem = state.get('colorIdeaItem')
       const namePath =
         colorIdeaItem === DESIGN_COLORS
           ? ['design', 'name']
           : ['colorIdeas', colorIdeaItem, 'name']
+      const imagePath =
+        colorIdeaItem === DESIGN_COLORS
+          ? ['design', 'image']
+          : ['colorIdeas', colorIdeaItem, 'image']
       const colorPath =
         colorIdeaItem === DESIGN_COLORS
           ? ['design', 'colors']
@@ -280,7 +297,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
 
       return state.withMutations((map: any) => {
         map.setIn(namePath, name)
-        map.setIn(colorPath, colors.reverse())
+        if (updateColors) {
+          map.setIn(colorPath, colors.reverse())
+          map.setIn(imagePath, null)
+        }
         map.merge({
           colorBlock: NONE,
           colorIdeaItem: NONE,

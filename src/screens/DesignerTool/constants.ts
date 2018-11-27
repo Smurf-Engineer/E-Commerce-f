@@ -31,6 +31,7 @@ export const EDIT_COLOR_IDEA_ACTION = `${namespace}/EDIT_COLOR_IDEA_ACTION`
 export const SET_MODEL_ACTION = `${namespace}/SET_MODEL_ACTION`
 export const DELETE_COLOR_IDEA_ACTION = `${namespace}/DELETE_COLOR_IDEA_ACTION`
 export const UPDATE_COLOR_IDEA_NAME_ACTION = `${namespace}/UPDATE_COLOR_IDEA_NAME_ACTION`
+export const ADD_COLOR_IDEA_ACTION = `${namespace}/ADD_COLOR_IDEA_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

@@ -48,7 +48,7 @@ interface Props {
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
   onDeleteStyle: (id: number) => void
-  onDeleteInspiration: (id: number) => void
+  onDeleteInspiration: (id: number, index: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onSelectColorBlock: (index: number) => void
@@ -66,7 +66,11 @@ interface Props {
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (item: number, image: string) => void
   onUploadingThumbnail: (uploading: boolean) => void
-  onUpdateColorIdeaName: (name: string, item?: number) => void
+  onUpdateColorIdeaName: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
   formatMessage: (messageDescriptor: any) => string
   onLoadDesign: (
     config: ModelConfig,
@@ -77,6 +81,7 @@ interface Props {
   onRemoveExtraFile: (index: number) => void
   onToggleColor: (color: string) => void
   onEditColorIdea: (item: number) => void
+  onAddColorIdea: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -133,7 +138,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorIdeaItem,
       onEditColorIdea,
       colorIdeas,
-      onUpdateColorIdeaName
+      onUpdateColorIdeaName,
+      onAddColorIdea
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -185,7 +191,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             colorIdeaItem,
             onEditColorIdea,
             colorIdeas,
-            onUpdateColorIdeaName
+            onUpdateColorIdeaName,
+            onAddColorIdea
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

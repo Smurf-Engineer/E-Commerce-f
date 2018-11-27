@@ -328,6 +328,8 @@ export interface Style {
   colorblock3: string
   colorblock4: string
   colorblock5: string
+  width: number
+  height: number
   colors: ColorBlock[]
   size: {
     width: number

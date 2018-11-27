@@ -22,16 +22,16 @@ interface Props {
   design: ModelDesign
   onSelectConfig: (config: DesignConfig) => void
   onSelectPalette: (index: number) => void
-  onDeleteInspiration: (id: number) => void
+  onDeleteInspiration: (id: number, index: number) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onUpdateDesignName: (name: string) => void
   onSaveThumbnail: (item: number, colors: string[]) => void
   formatMessage: (messageDescriptor: any) => string
   onEditColorIdea: (item: number) => void
+  onAddColorIdea: () => void
 }
 
 const Settings = ({
-  onUpdateDesignName,
   onSaveThumbnail,
   uploadingThumbnail,
   formatMessage,
@@ -39,7 +39,8 @@ const Settings = ({
   onEditColorIdea,
   render,
   onDeleteInspiration,
-  design
+  design,
+  onAddColorIdea
 }: Props) => {
   if (!render) {
     return <div />
@@ -55,13 +56,6 @@ const Settings = ({
   }
 
   const { name, colors, image } = design
-  // const handleOnChangeName = (evt: React.FormEvent<HTMLInputElement>) => {
-  //   const {
-  //     currentTarget: { value }
-  //   } = evt
-  //   onUpdateDesignName(value)
-  // }
-
   const handleOnEditDesignColors = () => onEditColorIdea(DESIGN_COLORS)
 
   const handleOnPressSave = (item: number) => {
@@ -85,7 +79,6 @@ const Settings = ({
           onEditColorIdea,
           onDeleteInspiration
         }}
-        showDelete={!!id}
         name={ideaName}
         image={thumbnail}
         colors={ideaColors}
@@ -97,22 +90,11 @@ const Settings = ({
   )
   return (
     <Container>
-      <Button>
+      <Button onClick={onAddColorIdea}>
         <Icon type="plus" />
         ADD NEW COLOR IDEA
       </Button>
       <Divider>Design Info</Divider>
-      {/* // TODO: DELETE AFTER THE CLIENT, TEST THE NEW PUBLISHING TOOL
-        <DesignInfo>
-          <Label>Design Name</Label>
-          <Input
-            placeholder="Design name"
-            value={name}
-            onChange={handleOnChangeName}
-          />
-        </DesignInfo>
-        <Divider>Colors</Divider>
-      */}
       <Palette
         showDelete={false}
         colors={colors || []}

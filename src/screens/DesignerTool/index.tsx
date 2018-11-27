@@ -117,8 +117,13 @@ interface Props {
   toggleExtraColorAction: (color: string) => void
   saveDesignSuccessAction: () => void
   setColorIdeaItemAction: (item: number) => void
-  deleteColorIdeaAction: (id: number) => void
-  setColorIdeaNameAction: (name: string, item?: number) => void
+  deleteColorIdeaAction: (index: number) => void
+  setColorIdeaNameAction: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
+  addColorIdeaAction: () => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -175,7 +180,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       toggleExtraColorAction,
       setColorIdeaItemAction,
       colorIdeas,
-      setColorIdeaNameAction
+      setColorIdeaNameAction,
+      addColorIdeaAction
     } = this.props
     const { themeImage } = this.state
 
@@ -233,6 +239,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         onRemoveExtraFile={removeExtraFileAction}
         onToggleColor={toggleExtraColorAction}
         onUpdateColorIdeaName={setColorIdeaNameAction}
+        onAddColorIdea={addColorIdeaAction}
       />
     )
   }
@@ -321,57 +328,59 @@ export class DesignerTool extends React.Component<Props, {}> {
     })
   }
 
-  handleOnDeleteInspiration = (id: number) => {
+  handleOnDeleteInspiration = (id: number, index: number) => {
     confirm({
       title: 'Are you sure?',
       content: 'Color idea will be deleted.',
       onOk: async () => {
-        try {
-          const {
-            deleteInspiration,
-            productCode,
-            selectedTheme,
-            selectedStyle,
-            deleteColorIdeaAction
-          } = this.props
-          await deleteInspiration({
-            variables: { id },
-            update: (store: any) => {
-              const data = store.readQuery({
-                query: getProductFromCode,
-                variables: { code: productCode }
-              })
-              const themes = get(data, 'product.themes', [])
-              const themeIndex = findIndex(
-                themes,
-                ({ id: themeId }) => themeId === selectedTheme
-              )
-              const { styles } = themes[themeIndex]
-              const styleIndex = findIndex(
-                styles,
-                ({ id: styleId }) => styleId === selectedStyle
-              )
-              const { colorIdeas } = styles[styleIndex]
-              const updatedInspiration = remove(
-                colorIdeas,
-                ({ id: inspirationId }) => inspirationId !== id
-              )
-              deleteColorIdeaAction(id)
-              set(
-                data,
-                `product.themes[${themeIndex}].styles[${styleIndex}].colorIdeas`,
-                updatedInspiration
-              )
-              store.writeQuery({
-                query: getProductFromCode,
-                data,
-                variables: { code: productCode }
-              })
-            }
-          })
-        } catch (e) {
-          message.error(e.message)
+        const {
+          deleteInspiration,
+          productCode,
+          selectedTheme,
+          selectedStyle,
+          deleteColorIdeaAction
+        } = this.props
+        if (!!id) {
+          try {
+            await deleteInspiration({
+              variables: { id },
+              update: (store: any) => {
+                const data = store.readQuery({
+                  query: getProductFromCode,
+                  variables: { code: productCode }
+                })
+                const themes = get(data, 'product.themes', [])
+                const themeIndex = findIndex(
+                  themes,
+                  ({ id: themeId }) => themeId === selectedTheme
+                )
+                const { styles } = themes[themeIndex]
+                const styleIndex = findIndex(
+                  styles,
+                  ({ id: styleId }) => styleId === selectedStyle
+                )
+                const { colorIdeas } = styles[styleIndex]
+                const updatedInspiration = remove(
+                  colorIdeas,
+                  ({ id: inspirationId }) => inspirationId !== id
+                )
+                set(
+                  data,
+                  `product.themes[${themeIndex}].styles[${styleIndex}].colorIdeas`,
+                  updatedInspiration
+                )
+                store.writeQuery({
+                  query: getProductFromCode,
+                  data,
+                  variables: { code: productCode }
+                })
+              }
+            })
+          } catch (e) {
+            message.error(e.message)
+          }
         }
+        deleteColorIdeaAction(index)
       }
     })
   }
@@ -440,6 +449,12 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
+      const hasAllInspirationName = every(colorIdeas, 'name')
+      if (!hasAllInspirationName) {
+        message.error('To proceed, enter all the color idea name')
+        return
+      }
+
       const {
         obj,
         mtl,
@@ -459,6 +474,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         size
       } = modelConfig
       const inspiration = colorIdeas.map(item => ({
+        id: item.id,
         name: item.name,
         colors: item.colors,
         image: item.image
@@ -475,43 +491,6 @@ export class DesignerTool extends React.Component<Props, {}> {
         height: size.height
       }
       designs.push(style)
-
-      // designConfig.map(
-      //   ({ name, complexity, image: thumbnail, colors, inspiration }) => {
-      //     const inspirationItems = inspiration.map(item => ({
-      //       name: item.name,
-      //       colors: item.colors,
-      //       image: item.image
-      //     }))
-
-      //     const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
-
-      //     if (!hasAllInspirationThumbnail) {
-      //       message.error('Unable to find one or more Inspiration Thumbnails')
-      //       return
-      //     }
-
-      //     return {
-      //       name,
-      //       image: thumbnail,
-      //       complexity: complexity || 1,
-      //       branding: brandingSvg,
-      //       brandingPng,
-      //       svgs: areasSvg,
-      //       pngs: areasPng,
-      //       colors,
-      //       inspiration: inspirationItems,
-      //       width: size.width,
-      //       height: size.height
-      //     }
-      //   }
-      // )
-
-      // const hasAllDesignThumbnail = every(designs, 'image')
-      // if (!hasAllDesignThumbnail) {
-      //   message.error('To proceed, save design thumbnail first')
-      //   return
-      // }
 
       const { themeImage } = this.state
       let themeResponse = null
@@ -552,18 +531,16 @@ export class DesignerTool extends React.Component<Props, {}> {
         styles: designs
       }
 
-      console.log('---------------------------')
-      console.log(model)
-      console.log('---------------------------')
-
-      await saveDesign({
+      const saveResponse = await saveDesign({
         variables: { design: model },
         refetchQueries: [
           { query: getProductFromCode, variables: { code: productCode } }
         ]
       })
+
       saveDesignSuccessAction()
-      message.success('Your design is now saved')
+      const successMessage = get(saveResponse, 'data.design.message')
+      message.success(successMessage)
     } catch (e) {
       message.error(e.message)
     }

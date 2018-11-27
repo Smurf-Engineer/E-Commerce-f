@@ -29,7 +29,8 @@ import {
   SET_MODEL_ACTION,
   DELETE_COLOR_IDEA_ACTION,
   SET_DESIGN_NAME_ACTION,
-  UPDATE_COLOR_IDEA_NAME_ACTION
+  UPDATE_COLOR_IDEA_NAME_ACTION,
+  ADD_COLOR_IDEA_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -173,14 +174,23 @@ export const setColorIdeaItemAction = (item: number) => ({
   item
 })
 
-export const deleteColorIdeaAction = (id: number) => ({
+export const deleteColorIdeaAction = (index: number) => ({
   type: DELETE_COLOR_IDEA_ACTION,
-  id
+  index
 })
 
-export const setColorIdeaNameAction = (name: string, item?: number) => ({
+export const addColorIdeaAction = () => ({
+  type: ADD_COLOR_IDEA_ACTION
+})
+
+export const setColorIdeaNameAction = (
+  name: string,
+  updateColors: boolean,
+  item?: number
+) => ({
   type: UPDATE_COLOR_IDEA_NAME_ACTION,
   name,
+  updateColors,
   item
 })
 

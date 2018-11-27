@@ -34,6 +34,8 @@ export const getProductFromCode = gql`
           id
           name
           image
+          width
+          height
           branding
           brandingPng: branding_png
           colorblock1

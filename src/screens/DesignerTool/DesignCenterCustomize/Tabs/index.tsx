@@ -7,7 +7,7 @@ import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
 import Tab from '../Tab'
-import Settings from '../../DesignSettings'
+import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
@@ -59,7 +59,7 @@ interface Props {
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
   onDeleteStyle: (id: number) => void
-  onDeleteInspiration: (id: number) => void
+  onDeleteInspiration: (id: number, index: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onSaveDesign: () => void
@@ -75,7 +75,11 @@ interface Props {
   onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
   onSaveThumbnail: (item: number, colors: string[]) => void
-  onUpdateColorIdeaName: (name: string, item?: number) => void
+  onUpdateColorIdeaName: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -86,6 +90,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   onToggleColor: (color: string) => void
   onEditColorIdea: (item: number) => void
+  onAddColorIdea: () => void
 }
 
 const Tabs = ({
@@ -135,7 +140,8 @@ const Tabs = ({
   onEditColorIdea,
   colorIdeas,
   design,
-  onUpdateColorIdeaName
+  onUpdateColorIdeaName,
+  onAddColorIdea
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -151,7 +157,7 @@ const Tabs = ({
           key={SETTINGS_TAB}
           tab={<Tab label="product" icon={designIcon} />}
         >
-          <Settings
+          <Product
             {...{
               themeImage,
               selectedTheme,
@@ -201,6 +207,7 @@ const Tabs = ({
               designs={designConfig || []}
               onSelectPalette={onSelectInspirationColor}
               {...{
+                onAddColorIdea,
                 onSelectComplexity,
                 onUpdateDesignName,
                 onSaveThumbnail,
@@ -222,6 +229,7 @@ const Tabs = ({
                 colorBlock,
                 onSelectColor,
                 onEditColorIdea,
+                onSaveThumbnail,
                 colorBlockHovered,
                 onHoverColorBlock,
                 onSelectColorBlock,

@@ -206,6 +206,13 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         size
       }
 
+      if (!size) {
+        modelConfig.size = {
+          width: currentStyle.width,
+          height: currentStyle.height
+        }
+      }
+
       extraFiles.forEach(key => {
         const file = product[key]
         if (file) {

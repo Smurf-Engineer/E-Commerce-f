@@ -30,26 +30,33 @@ interface Props {
   onEditColorIdea: (item: number) => void
   onHoverColorBlock: (index: number) => void
   onSelectColorBlock: (index: number) => void
-  onUpdateColorIdeaName: (name: string, item?: number) => void
+  onUpdateColorIdeaName: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
 }
 
 interface State {
   name: string | null
+  updateName: boolean
+  updateColors: boolean
 }
 
 class EditInspiration extends React.PureComponent<Props, State> {
   state = {
-    name: null
+    name: null,
+    updateName: false,
+    updateColors: false
   }
   render() {
-    const { name: temporalName } = this.state
+    const { name: temporalName, updateName, updateColors } = this.state
     const {
       colorIdea,
       render,
       colors,
       colorBlockHovered,
       onHoverColorBlock,
-      onSelectColor,
       onSelectColorBlock,
       colorBlock
     } = this.props
@@ -77,7 +84,11 @@ class EditInspiration extends React.PureComponent<Props, State> {
             <Button onClick={this.handleOnClickCancel}>
               <FormattedMessage {...messages.cancelButton} />
             </Button>
-            <Button type="primary" onClick={this.handleOnClickDone}>
+            <Button
+              type="primary"
+              onClick={this.handleOnClickDone}
+              disabled={!updateName && !updateColors}
+            >
               <FormattedMessage {...messages.doneButton} />
             </Button>
           </Buttons>
@@ -91,29 +102,43 @@ class EditInspiration extends React.PureComponent<Props, State> {
         </InputContainer>
         <ColorButtons>{colorButtons}</ColorButtons>
         <Divider />
-        <ColorList onSelectColor={onSelectColor} />
+        <ColorList onSelectColor={this.handleOnSelectColor} />
       </Container>
     )
+  }
+
+  handleOnSelectColor = (color: string) => {
+    const { updateColors } = this.state
+    const { onSelectColor } = this.props
+    if (!updateColors) {
+      this.setState({ updateColors: true }, () => {
+        onSelectColor(color)
+      })
+    } else {
+      onSelectColor(color)
+    }
   }
 
   handleOnUpdateName = (evt: React.FormEvent<HTMLInputElement>) => {
     const {
       currentTarget: { value }
     } = evt
-    this.setState({ name: value })
+    this.setState({ name: value, updateName: true })
   }
 
   handleOnClickCancel = () => {
     const { onEditColorIdea } = this.props
+    this.setState({ name: '', updateName: false })
     onEditColorIdea(NONE)
   }
 
   handleOnClickDone = () => {
     const { onUpdateColorIdeaName, colorIdea } = this.props
-    this.setState(({ name: temporalName }) => {
-      onUpdateColorIdeaName(temporalName || colorIdea!.name)
+    this.setState(({ name: temporalName, updateColors }) => {
+      onUpdateColorIdeaName(temporalName || colorIdea!.name, updateColors)
       return {
-        name: ''
+        name: '',
+        updateName: false
       }
     })
   }
