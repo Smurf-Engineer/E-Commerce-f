@@ -7,6 +7,7 @@ import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
 import FacebookGmailLogin from '../FacebookGmailLogin'
+import { NEW_USER } from '../../constants'
 import { createUser } from './data'
 import {
   Container,
@@ -224,6 +225,7 @@ class SignUp extends React.Component<Props, StateProps> {
             name: get(data, 'user.name', '')
           })
         )
+        window.dataLayer.push({ event: NEW_USER, label: 'Form Sign Up' })
         login(userData)
       }
       closeSignUp()

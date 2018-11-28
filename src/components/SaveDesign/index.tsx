@@ -26,6 +26,7 @@ import {
   DesignFiles,
   SaveDesignData
 } from '../../types/common'
+import { NEW_DESIGN_SAVED } from '../../constants'
 import { saveDesignName, saveDesignChanges } from './data'
 import { getDesignQuery } from '../../screens/DesignCenter/data'
 import { BLUE, GRAY_DISABLE } from '../../theme/colors'
@@ -171,6 +172,7 @@ export class SaveDesign extends React.Component<Props, {}> {
           const { shortId, svg } = savedDesign
           message.success(formatMessage(messages.saveSuccess, { designName }))
           if (!isEditing && !savedDesignId) {
+            window.dataLayer.push({ event: NEW_DESIGN_SAVED, label: designName })
             afterSaveDesign(shortId, svg, savedDesign, true)
           } else {
             goToCustomProductPage(shortId)
@@ -322,10 +324,10 @@ export class SaveDesign extends React.Component<Props, {}> {
               </Text>
             </StyledSaveAs>
           ) : (
-            <Text>
-              <FormattedMessage {...messages.modalText} />
-            </Text>
-          )}
+              <Text>
+                <FormattedMessage {...messages.modalText} />
+              </Text>
+            )}
           <InputWrapper>
             <StyledInput
               id="saveDesignName"

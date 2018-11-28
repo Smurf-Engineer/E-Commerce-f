@@ -13,9 +13,11 @@ import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
-import get from 'lodash/get'
+import { get, find } from 'lodash'
+import colorList from '../DesignerTool/DesignCenterCustomize/ColorList/colors'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
+import { COLOR_COMBO_SELECTED, SELECTED_THEME, SELECTED_FONT, SELECTED_COLOR, SELECTED_SYMBOL } from '../../constants'
 import {
   openQuickViewAction,
   openLoginAction
@@ -402,6 +404,37 @@ export class DesignCenter extends React.Component<Props, {}> {
     history.push(`/custom-product?id=${designId}`)
   }
 
+  setPaletteEvent = (colors: string[], name: string) => {
+    const { setPaletteAction, style } = this.props
+    window.dataLayer.push({ event: COLOR_COMBO_SELECTED, label: name, design: get(style, 'name', '') })
+    setPaletteAction(colors)
+  }
+
+  setColorEvent = (color: string) => {
+    const { setColorAction, style } = this.props
+    const colorName = get(find(colorList, (colorObject) => colorObject.value === color), 'name', '')
+    window.dataLayer.push({ event: SELECTED_COLOR, label: colorName, design: get(style, 'name', '') })
+    setColorAction(color)
+  }
+
+  setTextEvent = (key: string, value: string | number) => {
+    const { setTextFormatAction, style } = this.props
+    window.dataLayer.push({ event: SELECTED_FONT, label: value, design: get(style, 'name', '') })
+    setTextFormatAction(key, value)
+  }
+
+  setSelectedItemEvent = (item: SelectedAsset, name?: string) => {
+    const { setSelectedItemAction, style } = this.props
+    if (name) {
+      window.dataLayer.push({
+        event: SELECTED_SYMBOL,
+        label: name,
+        design: get(style, 'name', '')
+      })
+    }
+    setSelectedItemAction(item)
+  }
+
   render() {
     const {
       intl,
@@ -411,7 +444,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       tabChanged,
       setColorBlockAction,
       setHoverColorBlockAction,
-      setColorAction,
       setPaletteAction,
       colorBlock,
       colorBlockHovered,
@@ -463,7 +495,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectedElement,
       textFormat,
       artFormat,
-      setTextFormatAction,
       setArtFormatAction,
       openPaletteModalAction,
       myPaletteModals,
@@ -507,7 +538,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       setLoadedCanvasAction,
       onResetEditingAction,
       originalPaths,
-      setSelectedItemAction,
       selectedItem,
       openLoginAction: openLoginModalAction
     } = this.props
@@ -707,91 +737,91 @@ export class DesignCenter extends React.Component<Props, {}> {
             {loadingData ? (
               loadingView
             ) : (
-              <CustomizeTab
-                {...{
-                  colorBlock,
-                  colorBlockHovered,
-                  colors,
-                  loadingModel,
-                  swipingView,
-                  styleColors,
-                  paletteName,
-                  palettes,
-                  text,
-                  productName,
-                  canvas,
-                  selectedElement,
-                  textFormat,
-                  artFormat,
-                  openPaletteModalAction,
-                  myPaletteModals,
-                  openResetDesignModal,
-                  openResetDesignModalAction,
-                  designName,
-                  formatMessage,
-                  customize3dMounted,
-                  setCustomize3dMountedAction,
-                  loadingData,
-                  currentStyle,
-                  undoChanges,
-                  redoChanges,
-                  setStitchingColorAction,
-                  stitchingColor,
-                  bindingColor,
-                  zipperColor,
-                  bibColor,
-                  images,
-                  uploadingFile,
-                  searchClipParam,
-                  setSearchClipParamAction,
-                  designHasChanges,
-                  isUserAuthenticated,
-                  isEditing,
-                  originalPaths,
-                  selectedItem,
-                  openLoginModalAction,
-                  isMobile,
-                  responsive
-                }}
-                onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
-                product={productConfig}
-                onUploadFile={uploadFileAction}
-                onAccessoryColorSelected={setAccessoryColorAction}
-                currentTab={tabSelected}
-                design={designObject}
-                onUpdateText={setTextAction}
-                undoEnabled={undoChanges.length > 0}
-                redoEnabled={redoChanges.length > 0}
-                onSelectColorBlock={setColorBlockAction}
-                onHoverColorBlock={setHoverColorBlockAction}
-                onSelectColor={setColorAction}
-                onSelectPalette={setPaletteAction}
-                onChangePaletteName={setPaletteNameAction}
-                onSetPalettes={setPalettesAction}
-                onLoadModel={setLoadingModel}
-                onUndoAction={designUndoAction}
-                onRedoAction={designRedoAction}
-                onResetAction={designResetAction}
-                onClearAction={designClearAction}
-                onPressQuickView={this.handleOpenQuickView}
-                onOpenSaveDesign={openSaveDesignAction}
-                onApplyCanvasEl={setCanvasElement}
-                onSelectEl={setSelectedElement}
-                onRemoveEl={removeCanvasElement}
-                onSelectTextFormat={setTextFormatAction}
-                onSelectArtFormat={setArtFormatAction}
-                onUnmountTab={setCanvasJsonAction}
-                onCanvasElementResized={onCanvasElementResizedAction}
-                onCanvasElementDragged={onCanvasElementDraggedAction}
-                onCanvasElementRotated={onCanvasElementRotatedAction}
-                onCanvasElementTextChanged={onCanvasElementTextChangedAction}
-                onReApplyImageEl={onReApplyImageElementAction}
-                onSetEditConfig={setEditConfigAction}
-                onSetCanvasObject={setLoadedCanvasAction}
-                onResetEditing={onResetEditingAction}
-                onSelectedItem={setSelectedItemAction}
-              />
-            )}
+                <CustomizeTab
+                  {...{
+                    colorBlock,
+                    colorBlockHovered,
+                    colors,
+                    loadingModel,
+                    swipingView,
+                    styleColors,
+                    paletteName,
+                    palettes,
+                    text,
+                    productName,
+                    canvas,
+                    selectedElement,
+                    textFormat,
+                    artFormat,
+                    openPaletteModalAction,
+                    myPaletteModals,
+                    openResetDesignModal,
+                    openResetDesignModalAction,
+                    designName,
+                    formatMessage,
+                    customize3dMounted,
+                    setCustomize3dMountedAction,
+                    loadingData,
+                    currentStyle,
+                    undoChanges,
+                    redoChanges,
+                    setStitchingColorAction,
+                    stitchingColor,
+                    bindingColor,
+                    zipperColor,
+                    bibColor,
+                    images,
+                    uploadingFile,
+                    searchClipParam,
+                    setSearchClipParamAction,
+                    designHasChanges,
+                    isUserAuthenticated,
+                    isEditing,
+                    originalPaths,
+                    selectedItem,
+                    openLoginModalAction,
+                    isMobile,
+                    responsive
+                  }}
+                  onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
+                  product={productConfig}
+                  onUploadFile={uploadFileAction}
+                  onAccessoryColorSelected={setAccessoryColorAction}
+                  currentTab={tabSelected}
+                  design={designObject}
+                  onUpdateText={setTextAction}
+                  undoEnabled={undoChanges.length > 0}
+                  redoEnabled={redoChanges.length > 0}
+                  onSelectColorBlock={setColorBlockAction}
+                  onHoverColorBlock={setHoverColorBlockAction}
+                  onSelectColor={this.setColorEvent}
+                  onSelectPalette={setPaletteAction}
+                  onChangePaletteName={setPaletteNameAction}
+                  onSetPalettes={setPalettesAction}
+                  onLoadModel={setLoadingModel}
+                  onUndoAction={designUndoAction}
+                  onRedoAction={designRedoAction}
+                  onResetAction={designResetAction}
+                  onClearAction={designClearAction}
+                  onPressQuickView={this.handleOpenQuickView}
+                  onOpenSaveDesign={openSaveDesignAction}
+                  onApplyCanvasEl={setCanvasElement}
+                  onSelectEl={setSelectedElement}
+                  onRemoveEl={removeCanvasElement}
+                  onSelectTextFormat={this.setTextEvent}
+                  onSelectArtFormat={setArtFormatAction}
+                  onUnmountTab={setCanvasJsonAction}
+                  onCanvasElementResized={onCanvasElementResizedAction}
+                  onCanvasElementDragged={onCanvasElementDraggedAction}
+                  onCanvasElementRotated={onCanvasElementRotatedAction}
+                  onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+                  onReApplyImageEl={onReApplyImageElementAction}
+                  onSetEditConfig={setEditConfigAction}
+                  onSetCanvasObject={setLoadedCanvasAction}
+                  onResetEditing={onResetEditingAction}
+                  onSelectedItem={this.setSelectedItemEvent}
+                />
+              )}
             <PreviewTab
               {...{
                 history,
@@ -868,14 +898,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                 </StyledTitle>
                 <DesignCenterInspiration
                   styleId={currentStyle.id}
-                  {...{ setPaletteAction, formatMessage }}
+                  {...{ setPaletteAction: this.setPaletteEvent, formatMessage }}
                   hideBottomSheet={this.toggleBottomSheet}
                 />
               </SwipeableBottomSheet>
             </BottomSheetWrapper>
           ) : (
-            <div />
-          )}
+              <div />
+            )}
         </Container>
         <Modal
           visible={openOutWithoutSaveModal}
@@ -921,6 +951,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { setThemeAction, dataProduct } = this.props
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
+      window.dataLayer.push({ event: SELECTED_THEME, label: dataProduct.product.name })
     }
   }
 

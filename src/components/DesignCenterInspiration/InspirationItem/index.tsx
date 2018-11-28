@@ -7,7 +7,7 @@ import { Inspiration } from '../../../types/common'
 
 interface Props {
   inspiration: Inspiration
-  setColors: (colors: string[]) => void
+  setColors: (colors: string[], name: string) => void
   hideBottomSheet: () => void
 }
 
@@ -18,7 +18,7 @@ const InspirationItem = ({
 }: Props) => {
   const onInspirationClicked = () => {
     hideBottomSheet()
-    setColors([...colors].reverse())
+    setColors([...colors].reverse(), name)
   }
   return (
     <Container onClick={onInspirationClicked}>
