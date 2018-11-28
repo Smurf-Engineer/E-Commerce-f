@@ -116,7 +116,7 @@ const routes = [
     component: Checkout
   },
   {
-    path: '/designer-tool',
+    path: '/publishing-tool',
     name: 'designerTool',
     component: DesignerTool
   },

@@ -3,23 +3,34 @@
  */
 import * as React from 'react'
 import AntdTabs from 'antd/lib/tabs'
-import Tab from '../Tab'
+import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
-import Settings from '../../DesignSettings'
+import Tab from '../Tab'
+import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
 import { Container } from './styledComponents'
-import { DesignConfig, UploadFile, ModelConfig } from '../../../../types/common'
+import {
+  DesignConfig,
+  UploadFile,
+  ModelConfig,
+  DesignObject,
+  ModelDesign
+} from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
+import { NONE, DESIGN_COLORS } from '../../reducer'
+import EditInspiration from '../EditInspiration'
 
 const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const SETTINGS_TAB = 'SETTINGS_TAB'
+const LIST_TAB = 0
+const EDIT_TAB = 1
 
 const { TabPane } = AntdTabs
 
@@ -36,16 +47,19 @@ interface Props {
   selectedStyle: number
   productCode: string
   themeName: string
-  styleName: string
+  design: ModelDesign
   uploadingThumbnail: boolean
   extraFiles: string[]
   bibBrace: boolean
   zipper: boolean
   binding: boolean
+  colorIdeaItem: number
+  colorIdeas: DesignObject[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
   onDeleteStyle: (id: number) => void
+  onDeleteInspiration: (id: number, index: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onSaveDesign: () => void
@@ -58,14 +72,25 @@ interface Props {
   onSelectInspirationColor: (index: number) => void
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
-  onUpdateStyleName: (design: number, name: string) => void
+  onUpdateDesignName: (name: string) => void
   onSelectComplexity: (design: number, complexity: number) => void
-  onSaveThumbnail: (design: number, item: number, colors: string[]) => void
-  onLoadDesign: (config: ModelConfig) => void
+  onSaveThumbnail: (item: number, colors: string[]) => void
+  onUpdateColorIdeaName: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
+  onLoadDesign: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
   onAddExtraFile: (file: string) => void
   onRemoveExtraFile: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
   onToggleColor: (color: string) => void
+  onEditColorIdea: (item: number) => void
+  onAddColorIdea: () => void
 }
 
 const Tabs = ({
@@ -92,13 +117,13 @@ const Tabs = ({
   onSelectStyle,
   onDeleteTheme,
   onDeleteStyle,
+  onDeleteInspiration,
   onSelectImage,
   onDeleteImage,
   onUpdateProductCode,
   themeName,
-  styleName,
   onUpdateThemeName,
-  onUpdateStyleName,
+  onUpdateDesignName,
   onSelectComplexity,
   onSaveThumbnail,
   uploadingThumbnail,
@@ -110,8 +135,21 @@ const Tabs = ({
   onToggleColor,
   bibBrace,
   zipper,
-  binding
+  binding,
+  colorIdeaItem,
+  onEditColorIdea,
+  colorIdeas,
+  design,
+  onUpdateColorIdeaName,
+  onAddColorIdea
 }: Props) => {
+  let colorIdea: DesignObject | ModelDesign | null = null
+  let renderList = true
+  if (colorIdeaItem !== NONE) {
+    colorIdea =
+      colorIdeaItem === DESIGN_COLORS ? design : colorIdeas[colorIdeaItem]
+    renderList = false
+  }
   return (
     <Container>
       <AntdTabs defaultActiveKey={SETTINGS_TAB} size="large">
@@ -119,7 +157,7 @@ const Tabs = ({
           key={SETTINGS_TAB}
           tab={<Tab label="product" icon={designIcon} />}
         >
-          <Settings
+          <Product
             {...{
               themeImage,
               selectedTheme,
@@ -135,12 +173,12 @@ const Tabs = ({
               productCode,
               productData,
               themeName,
-              styleName,
               onUpdateThemeName,
-              onUpdateStyleName,
+              onUpdateDesignName,
               onLoadDesign,
               formatMessage
             }}
+            designName={design && design.name}
           />
         </TabPane>
         <TabPane
@@ -160,6 +198,46 @@ const Tabs = ({
             }}
           />
         </TabPane>
+        <TabPane
+          key={INSPIRATION_TAB}
+          tab={<Tab label="config" icon={settingsIcon} />}
+        >
+          <SwipeableViews index={renderList ? LIST_TAB : EDIT_TAB}>
+            <InpirationTab
+              designs={designConfig || []}
+              onSelectPalette={onSelectInspirationColor}
+              {...{
+                onAddColorIdea,
+                onSelectComplexity,
+                onUpdateDesignName,
+                onSaveThumbnail,
+                uploadingThumbnail,
+                formatMessage,
+                onSelectConfig,
+                colorIdeas,
+                onEditColorIdea,
+                onDeleteInspiration,
+                design
+              }}
+              render={renderList}
+            />
+            <EditInspiration
+              render={!renderList}
+              {...{
+                colors,
+                colorIdea,
+                colorBlock,
+                onSelectColor,
+                onEditColorIdea,
+                onSaveThumbnail,
+                colorBlockHovered,
+                onHoverColorBlock,
+                onSelectColorBlock,
+                onUpdateColorIdeaName
+              }}
+            />
+          </SwipeableViews>
+        </TabPane>
         <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
           <ColorTab
             {...{
@@ -173,23 +251,6 @@ const Tabs = ({
               bibBrace,
               zipper,
               binding
-            }}
-          />
-        </TabPane>
-        <TabPane
-          key={INSPIRATION_TAB}
-          tab={<Tab label="config" icon={settingsIcon} />}
-        >
-          <InpirationTab
-            designs={designConfig || []}
-            onSelectPalette={onSelectInspirationColor}
-            {...{
-              onSelectComplexity,
-              onUpdateStyleName,
-              onSaveThumbnail,
-              uploadingThumbnail,
-              formatMessage,
-              onSelectConfig
             }}
           />
         </TabPane>

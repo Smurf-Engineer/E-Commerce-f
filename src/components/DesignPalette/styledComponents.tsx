@@ -2,8 +2,16 @@
  * Styled Components - Created by david on 28/02/18.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
+import Icon from 'antd/lib/icon'
 
-export const Container = styled.div``
+export const SaveButton = styled(Button)`
+  margin-left: 8px;
+`
+
+export const Container = styled.div`
+  position: relative;
+`
 
 export const Text = styled.div`
   color: #fff;
@@ -48,6 +56,7 @@ export const Oval = styled.div`
 
 export const Image = styled.img`
   margin: 0 8px;
+  padding: 2px;
   width: 120px;
   height: 120px;
   object-fit: cover;
@@ -63,4 +72,22 @@ export const Info = styled.div`
 export const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
+`
+
+export const Buttons = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+`
+
+export const DeleteButton = styled.div`
+  position: absolute;
+  top: 4px;
+  right: 12px;
+  cursor: pointer;
+`
+
+export const Delete = styled(Icon)`
+  font-size: 18px;
 `

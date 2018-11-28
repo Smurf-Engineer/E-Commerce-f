@@ -34,6 +34,8 @@ export const getProductFromCode = gql`
           id
           name
           image
+          width
+          height
           branding
           brandingPng: branding_png
           colorblock1
@@ -41,6 +43,12 @@ export const getProductFromCode = gql`
           colorblock3
           colorblock4
           colorblock5
+          colorIdeas: inspiration {
+            id
+            name
+            image
+            colors
+          }
           colors: colorsBlocks {
             id
             color

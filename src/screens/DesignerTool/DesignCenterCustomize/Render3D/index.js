@@ -18,8 +18,7 @@ import {
   BINDING,
   BIB_BRACE,
   PROPEL_PALMS,
-  GRIP_TAPE,
-  SOLAR_BIB_BRACE
+  GRIP_TAPE
 } from '../../../../constants'
 import {
   Container,
@@ -56,6 +55,7 @@ class Render3D extends PureComponent {
     const {
       colors: nextColors,
       areas: nextAreas,
+      design,
       colorBlockHovered,
       files,
       bibBrace,
@@ -86,7 +86,7 @@ class Render3D extends PureComponent {
 
     const filesHasChange = isEqual(files, oldFiles)
     if (!filesHasChange) {
-      this.loadObject(files)
+      this.loadObject(files, design)
       return
     }
 
@@ -164,7 +164,6 @@ class Render3D extends PureComponent {
 
     if (this.scene) {
       this.clearScene()
-      this.scene.dispose()
     }
   }
 
@@ -257,7 +256,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  loadObject = async files => {
+  loadObject = async (files, design) => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
     this.clearScene()
@@ -355,24 +354,11 @@ class Render3D extends PureComponent {
           if (gripTapeIndex >= 0) {
             object.children[gripTapeIndex].material.color.set('#ffffff')
           }
-          // TODO: WIP
-          // const solarBibBraceIndex = findIndex(
-          //   children,
-          //   ({ name }) => name === SOLAR_BIB_BRACE
-          // )
-          // if (
-          //   solarBibBraceIndex >= 0 &&
-          //   !!object.children[solarBibBraceIndex].material.length
-          // ) {
-          //   object.children[solarBibBraceIndex].material.forEach(material =>
-          //     material.color.set('#ffffff')
-          //   )
-          // }
 
           /* Model materials */
           object.children[meshIndex].material = insideMaterial
-
-          const { colors = [] } = files.design || {}
+          const { colors = [] } = design || {}
+          const reverseColors = colors.reverse()
           const reversedAreas = reverse(areas)
 
           reversedAreas.forEach(
@@ -383,7 +369,7 @@ class Render3D extends PureComponent {
                 map,
                 bumpMap,
                 side: THREE.FrontSide,
-                color: colors[index],
+                color: reverseColors[index],
                 transparent: true
               }))
           )
@@ -539,15 +525,15 @@ class Render3D extends PureComponent {
       }, 800)
     })
 
-  saveThumbnail = async (design, item, colors) => {
+  saveThumbnail = async (item, colors = []) => {
     this.setFrontFaceModel()
-    const reverseColors = reverse(colors)
-    this.setupColors(reverseColors)
+    const clonedColors = [...colors]
+    this.setupColors(clonedColors.reverse())
     try {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
       onUploadingThumbnail(true)
       const thumbnail = await this.takeScreenshot()
-      onSaveThumbnail(design, item, thumbnail)
+      onSaveThumbnail(item, thumbnail)
     } catch (error) {
       console.error(error)
       onUploadingThumbnail(false)
