@@ -90,6 +90,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       if (data) {
         const user = this.createUserObject(data)
         handleLogin(user)
+        this.welcomeMessage(get(user, 'name'))
         if (data.newUser) { window.dataLayer.push({ event: NEW_USER, label: 'Facebook' }) }
         requestClose()
       }
