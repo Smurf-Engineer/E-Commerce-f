@@ -83,6 +83,22 @@ class Render3D extends PureComponent {
     scene.add(ambient)
     scene.add(directionalLight)
 
+    try {
+      if (!!canvas) {
+        const { objects } = JSON.parse(canvas)
+        const fontsPromises = []
+        objects.forEach(o => {
+          if (o.type === CanvasElements.Text) {
+            const fontObserver = new FontFaceObserver(o.fontFamily)
+            fontsPromises.push(fontObserver.load())
+          }
+        })
+        await Promise.all(fontsPromises)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+
     this.scene = scene
     this.camera = camera
     this.renderer = renderer
@@ -246,12 +262,11 @@ class Render3D extends PureComponent {
           {loading && <Loading indicator={circleIcon} />}
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
-        {showDragmessage &&
-          !loading && (
-            <DragText>
-              <FormattedMessage {...messages.drag} />
-            </DragText>
-          )}
+        {showDragmessage && !loading && (
+          <DragText>
+            <FormattedMessage {...messages.drag} />
+          </DragText>
+        )}
       </Container>
     )
   }

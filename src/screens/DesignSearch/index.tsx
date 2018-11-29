@@ -2,7 +2,6 @@
  * DesignSearch Screen - Created by miguelcanobbio on 15/08/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 import { withApollo, compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import Search from 'antd/lib/input/Search'
@@ -10,6 +9,8 @@ import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
 import { restoreUserSession } from '../../components/MainLayout/api'
 import messages from './messages'
+import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
+import { uploadProDesign } from './api'
 import {
   Container,
   Header,
@@ -36,8 +37,13 @@ interface Props {
   notFound: boolean
   noAdmin?: boolean
   user: UserType
+  intl: InjectedIntl
   // redux actions
+  uploadFileSuccessAction: (url: string) => void
+  uploadFileSuccessFailure: () => void
   restoreUserSessionAction: () => void
+  formatMessage: (messageDescriptor: any) => string
+  uploadProDesignAction: (file: any, code: string) => void
   resetDataAction: () => void
   setLoadingAction: () => void
   setNotFoundAction: (admin?: boolean) => void
@@ -59,7 +65,14 @@ export class DesignSearch extends React.Component<Props, {}> {
   }
 
   render() {
-    const { loading, notFound, order, noAdmin } = this.props
+    const {
+      loading,
+      notFound,
+      order,
+      noAdmin,
+      uploadProDesignAction,
+      intl: { formatMessage }
+    } = this.props
 
     let loadErrContent = <Spin />
     if (notFound) {
@@ -68,7 +81,12 @@ export class DesignSearch extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const orderContent = order && (
-      <OrderFiles {...{ order }} downloadFile={this.downloadAllFiles} />
+      <OrderFiles
+        {...{ order }}
+        formatMessage={formatMessage}
+        downloadFile={this.downloadAllFiles}
+        onUploadFile={uploadProDesignAction}
+      />
     )
     const content =
       loading || notFound || noAdmin ? (
@@ -162,9 +180,14 @@ const mapStateToProps = (state: any) => {
 }
 
 const DesignSearchEnhance = compose(
+  injectIntl,
   connect(
     mapStateToProps,
-    { ...designSearchActions, restoreUserSessionAction: restoreUserSession }
+    {
+      ...designSearchActions,
+      uploadProDesignAction: uploadProDesign,
+      restoreUserSessionAction: restoreUserSession
+    }
   ),
   withApollo
 )(DesignSearch)

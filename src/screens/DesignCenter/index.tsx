@@ -600,7 +600,14 @@ export class DesignCenter extends React.Component<Props, {}> {
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
         zipperColor: zipperAccesoryColor,
-        product: designProduct
+        product: designProduct,
+        createdAt,
+        code,
+        name,
+        shared,
+        id,
+        image: designImage
+        // output_svg: outputSvg
       } = designData
       const designConfig = {
         flatlockCode,
@@ -616,6 +623,27 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
+      const proDesign = get(designData, 'proDesign', false)
+      if (proDesign) {
+        const designToShow = {
+          createdAt,
+          designCode: code,
+          designId: id,
+          designImage,
+          designName: name,
+          product: designProduct,
+          shared,
+          shortId: designId,
+          // svg: outputSvg,
+          canvas,
+          bibBraceColor: bibBraceAccesoryColor,
+          bindingColor: bindingAccesoryColor,
+          flatlockCode,
+          flatlockColor,
+          zipperColor: zipperAccesoryColor
+        }
+        console.log(designToShow)
+      }
     }
 
     const loadingView = (
@@ -634,12 +662,11 @@ export class DesignCenter extends React.Component<Props, {}> {
         hideFooter={true}
       >
         <Container>
-          {isMobile &&
-            currentTab > DesignTabs.ThemeTab && (
-              <BackCircle onClick={this.handleOnGoBack}>
-                <BackIcon src={backIcon} />
-              </BackCircle>
-            )}
+          {isMobile && currentTab > DesignTabs.ThemeTab && (
+            <BackCircle onClick={this.handleOnGoBack}>
+              <BackIcon src={backIcon} />
+            </BackCircle>
+          )}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs

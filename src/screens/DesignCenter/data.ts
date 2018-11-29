@@ -60,6 +60,12 @@ export const getDesignQuery = gql`
       bibBraceColor: bib_brace_color
       zipperColor: zipper_color
       canEdit: can_edit
+      proDesign: pro_design
+      output_svg
+      shared
+      image
+      createdAt: created_at
+      code
       colors {
         id
         color

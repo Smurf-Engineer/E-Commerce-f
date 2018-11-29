@@ -12,13 +12,14 @@ import { DragMessage, DragTypes, Icon, Container } from './styledComponents'
 interface Props {
   loading: boolean
   onSelectImage: (file: any) => boolean
+  className?: string
 }
 
 const { Dragger } = Upload
 
 class TeamDragger extends React.PureComponent<Props, {}> {
   render() {
-    const { onSelectImage, loading } = this.props
+    const { onSelectImage, loading, className } = this.props
     return (
       <Dragger
         beforeUpload={onSelectImage}
@@ -26,6 +27,7 @@ class TeamDragger extends React.PureComponent<Props, {}> {
         disabled={loading}
         showUploadList={false}
         supportServerRender={true}
+        className={className}
       >
         {loading ? (
           <Container>
