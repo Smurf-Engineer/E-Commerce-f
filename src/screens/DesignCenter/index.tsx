@@ -14,8 +14,17 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
+import find from 'lodash/find'
+import colorList from '../DesignerTool/DesignCenterCustomize/ColorList/colors'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
+import {
+  COLOR_COMBO_SELECTED,
+  SELECTED_THEME,
+  SELECTED_FONT,
+  SELECTED_COLOR,
+  SELECTED_SYMBOL
+} from '../../constants'
 import {
   openQuickViewAction,
   openLoginAction
@@ -402,6 +411,53 @@ export class DesignCenter extends React.Component<Props, {}> {
     history.push(`/custom-product?id=${designId}`)
   }
 
+  setPaletteEvent = (colors: string[], name: string) => {
+    const { setPaletteAction, style } = this.props
+    window.dataLayer.push({
+      event: COLOR_COMBO_SELECTED,
+      label: name,
+      design: get(style, 'name', '')
+    })
+    setPaletteAction(colors)
+  }
+
+  setColorEvent = (color: string) => {
+    const { setColorAction, style } = this.props
+    const colorName = get(
+      find(colorList, colorObject => colorObject.value === color),
+      'name',
+      ''
+    )
+    window.dataLayer.push({
+      event: SELECTED_COLOR,
+      label: colorName,
+      design: get(style, 'name', '')
+    })
+    setColorAction(color)
+  }
+
+  setTextEvent = (key: string, value: string | number) => {
+    const { setTextFormatAction, style } = this.props
+    window.dataLayer.push({
+      event: SELECTED_FONT,
+      label: value,
+      design: get(style, 'name', '')
+    })
+    setTextFormatAction(key, value)
+  }
+
+  setSelectedItemEvent = (item: SelectedAsset, name?: string) => {
+    const { setSelectedItemAction, style } = this.props
+    if (name) {
+      window.dataLayer.push({
+        event: SELECTED_SYMBOL,
+        label: name,
+        design: get(style, 'name', '')
+      })
+    }
+    setSelectedItemAction(item)
+  }
+
   render() {
     const {
       intl,
@@ -411,7 +467,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       tabChanged,
       setColorBlockAction,
       setHoverColorBlockAction,
-      setColorAction,
       setPaletteAction,
       colorBlock,
       colorBlockHovered,
@@ -463,7 +518,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectedElement,
       textFormat,
       artFormat,
-      setTextFormatAction,
       setArtFormatAction,
       openPaletteModalAction,
       myPaletteModals,
@@ -507,7 +561,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       setLoadedCanvasAction,
       onResetEditingAction,
       originalPaths,
-      setSelectedItemAction,
       selectedItem,
       openLoginAction: openLoginModalAction
     } = this.props
@@ -634,12 +687,11 @@ export class DesignCenter extends React.Component<Props, {}> {
         hideFooter={true}
       >
         <Container>
-          {isMobile &&
-            currentTab > DesignTabs.ThemeTab && (
-              <BackCircle onClick={this.handleOnGoBack}>
-                <BackIcon src={backIcon} />
-              </BackCircle>
-            )}
+          {isMobile && currentTab > DesignTabs.ThemeTab && (
+            <BackCircle onClick={this.handleOnGoBack}>
+              <BackIcon src={backIcon} />
+            </BackCircle>
+          )}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -764,7 +816,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 redoEnabled={redoChanges.length > 0}
                 onSelectColorBlock={setColorBlockAction}
                 onHoverColorBlock={setHoverColorBlockAction}
-                onSelectColor={setColorAction}
+                onSelectColor={this.setColorEvent}
                 onSelectPalette={setPaletteAction}
                 onChangePaletteName={setPaletteNameAction}
                 onSetPalettes={setPalettesAction}
@@ -778,7 +830,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onApplyCanvasEl={setCanvasElement}
                 onSelectEl={setSelectedElement}
                 onRemoveEl={removeCanvasElement}
-                onSelectTextFormat={setTextFormatAction}
+                onSelectTextFormat={this.setTextEvent}
                 onSelectArtFormat={setArtFormatAction}
                 onUnmountTab={setCanvasJsonAction}
                 onCanvasElementResized={onCanvasElementResizedAction}
@@ -789,7 +841,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetEditConfig={setEditConfigAction}
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
-                onSelectedItem={setSelectedItemAction}
+                onSelectedItem={this.setSelectedItemEvent}
               />
             )}
             <PreviewTab
@@ -868,7 +920,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 </StyledTitle>
                 <DesignCenterInspiration
                   styleId={currentStyle.id}
-                  {...{ setPaletteAction, formatMessage }}
+                  {...{ setPaletteAction: this.setPaletteEvent, formatMessage }}
                   hideBottomSheet={this.toggleBottomSheet}
                 />
               </SwipeableBottomSheet>
@@ -921,6 +973,10 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { setThemeAction, dataProduct } = this.props
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
+      window.dataLayer.push({
+        event: SELECTED_THEME,
+        label: dataProduct.product.name
+      })
     }
   }
 

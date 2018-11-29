@@ -11,6 +11,7 @@ import App from './screens/App'
 declare global {
   interface Window {
     __PRELOADED_STATE__: any
+    dataLayer: any
   }
 }
 
