@@ -35,7 +35,8 @@ import {
   SET_MODEL_ACTION,
   DELETE_COLOR_IDEA_ACTION,
   UPDATE_COLOR_IDEA_NAME_ACTION,
-  ADD_COLOR_IDEA_ACTION
+  ADD_COLOR_IDEA_ACTION,
+  SET_THEME_TO_EDIT_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -68,7 +69,8 @@ export const initialState = fromJS({
   zipper: true,
   binding: true,
   colorIdeaItem: NONE,
-  colorIdeas: []
+  colorIdeas: [],
+  editableTheme: null
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -308,6 +310,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
         })
       })
     }
+    case SET_THEME_TO_EDIT_ACTION:
+      return state.set('editableTheme', action.theme)
     default:
       return state
   }

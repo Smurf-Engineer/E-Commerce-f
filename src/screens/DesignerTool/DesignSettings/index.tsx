@@ -19,7 +19,8 @@ import {
   DesignItem,
   ModelConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme
 } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
 
@@ -50,6 +51,7 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateDesignName: (name: string) => void
+  onEditTheme: (theme: Theme | null) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
@@ -121,6 +123,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           {!!product && (
             <div>
               <DesignForm
+                editable={true}
+                onEditItem={this.handleOnEditTheme}
                 withImageInput={true}
                 selectedItem={selectedTheme}
                 onSelectItem={onSelectTheme}
@@ -141,7 +145,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={designName}
-                onUpdateName={() => {}} // TODO: temp until we enable editing
                 items={styleItems}
               />
             </div>
@@ -237,6 +240,17 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       currentTarget: { value }
     } = evt
     this.setState({ code: value })
+  }
+
+  handleOnEditTheme = (index: number) => {
+    const { productData, onEditTheme } = this.props
+    if (productData) {
+      const {
+        product: { themes = [] }
+      } = productData
+      const theme = themes[index]
+      onEditTheme(theme)
+    }
   }
 }
 

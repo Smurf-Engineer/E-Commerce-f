@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 13/07/18.
  */
 import styled from 'styled-components'
+import Button from 'antd/lib/button'
 
 export const Container = styled.div`
   display: flex;
@@ -32,4 +33,12 @@ export const DeleteButton = styled.div`
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
+`
+export const Buttons = styled.div`
+  display: flex;
+  flex-direction: row;
+`
+
+export const EditButton = styled(Button)`
+  margin-left: 8px;
 `

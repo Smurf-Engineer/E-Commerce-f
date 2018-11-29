@@ -21,6 +21,7 @@ import {
   deleteStyleMutation,
   deleteInspirationMutation
 } from './data'
+import EditTheme from '../../components/ThemeModal'
 import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
@@ -85,6 +86,7 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  editableTheme: Theme | null
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -124,6 +126,7 @@ interface Props {
     item?: number
   ) => void
   addColorIdeaAction: () => void
+  setThemeToEditAction: (theme: Theme | null) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -181,67 +184,78 @@ export class DesignerTool extends React.Component<Props, {}> {
       setColorIdeaItemAction,
       colorIdeas,
       setColorIdeaNameAction,
-      addColorIdeaAction
+      addColorIdeaAction,
+      setThemeToEditAction,
+      editableTheme
     } = this.props
     const { themeImage } = this.state
 
     return (
-      <CustomizeTab
-        {...{
-          colors,
-          colorBlock,
-          colorBlockHovered,
-          loadingModel,
-          uploadingFiles,
-          areas,
-          designConfig,
-          themeImage,
-          selectedTheme,
-          selectedStyle,
-          productCode,
-          themeName,
-          design,
-          uploadingThumbnail,
-          extraFiles,
-          formatMessage,
-          bibBrace,
-          zipper,
-          binding,
-          colorIdeaItem,
-          colorIdeas
-        }}
-        files={modelConfig}
-        onEditColorIdea={setColorIdeaItemAction}
-        onSaveDesign={this.handleSaveDesign}
-        onSelectTheme={setSelectedThemeAction}
-        onSelectStyle={setSelectedStyleAction}
-        onDeleteTheme={this.handleOnDeleteTheme}
-        onDeleteStyle={this.handleOnDeleteStyle}
-        onDeleteInspiration={this.handleOnDeleteInspiration}
-        onSelectImage={this.handleOnSelectThemeImage}
-        onDeleteImage={this.handleOnDeleteThemeImage}
-        onLoadModel={setLoadingAction}
-        onSelectColorBlock={setColorBlockAction}
-        onHoverColorBlock={setHoverColorBlockAction}
-        onSelectColor={setColorAction}
-        onUploadFiles={uploadFilesAction}
-        onUploadDesign={uploadDesignAction}
-        onSelectConfig={setDesignConfigAction}
-        onSelectInspirationColor={setInspirationColorAction}
-        onUpdateProductCode={setProductCodeAction}
-        onUpdateThemeName={setThemeNameAction}
-        onUpdateDesignName={setDesignNameAction}
-        onSelectComplexity={setComplexityAction}
-        onSaveThumbnail={this.handleUploadThumbnail}
-        onUploadingThumbnail={setUploadingThumbnailAction}
-        onLoadDesign={setModelAction}
-        onAddExtraFile={addExtraFileAction}
-        onRemoveExtraFile={removeExtraFileAction}
-        onToggleColor={toggleExtraColorAction}
-        onUpdateColorIdeaName={setColorIdeaNameAction}
-        onAddColorIdea={addColorIdeaAction}
-      />
+      <div>
+        <CustomizeTab
+          {...{
+            colors,
+            colorBlock,
+            colorBlockHovered,
+            loadingModel,
+            uploadingFiles,
+            areas,
+            designConfig,
+            themeImage,
+            selectedTheme,
+            selectedStyle,
+            productCode,
+            themeName,
+            design,
+            uploadingThumbnail,
+            extraFiles,
+            formatMessage,
+            bibBrace,
+            zipper,
+            binding,
+            colorIdeaItem,
+            colorIdeas
+          }}
+          files={modelConfig}
+          onEditColorIdea={setColorIdeaItemAction}
+          onSaveDesign={this.handleSaveDesign}
+          onSelectTheme={setSelectedThemeAction}
+          onSelectStyle={setSelectedStyleAction}
+          onDeleteTheme={this.handleOnDeleteTheme}
+          onDeleteStyle={this.handleOnDeleteStyle}
+          onDeleteInspiration={this.handleOnDeleteInspiration}
+          onSelectImage={this.handleOnSelectThemeImage}
+          onDeleteImage={this.handleOnDeleteThemeImage}
+          onLoadModel={setLoadingAction}
+          onSelectColorBlock={setColorBlockAction}
+          onHoverColorBlock={setHoverColorBlockAction}
+          onSelectColor={setColorAction}
+          onUploadFiles={uploadFilesAction}
+          onUploadDesign={uploadDesignAction}
+          onSelectConfig={setDesignConfigAction}
+          onSelectInspirationColor={setInspirationColorAction}
+          onUpdateProductCode={setProductCodeAction}
+          onUpdateThemeName={setThemeNameAction}
+          onUpdateDesignName={setDesignNameAction}
+          onSelectComplexity={setComplexityAction}
+          onSaveThumbnail={this.handleUploadThumbnail}
+          onUploadingThumbnail={setUploadingThumbnailAction}
+          onLoadDesign={setModelAction}
+          onAddExtraFile={addExtraFileAction}
+          onRemoveExtraFile={removeExtraFileAction}
+          onToggleColor={toggleExtraColorAction}
+          onUpdateColorIdeaName={setColorIdeaNameAction}
+          onAddColorIdea={addColorIdeaAction}
+          onEditTheme={setThemeToEditAction}
+        />
+        <EditTheme theme={editableTheme} onCancel={this.handleOnCancel} />
+      </div>
     )
+  }
+
+  handleOnCancel = () => {
+    const { setThemeToEditAction } = this.props
+    setThemeToEditAction(null)
   }
 
   handleOnTransitionEnd = () => {

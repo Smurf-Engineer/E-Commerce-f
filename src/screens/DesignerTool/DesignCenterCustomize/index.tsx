@@ -14,7 +14,8 @@ import {
   QueryProps,
   Product,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme
 } from '../../../types/common'
 
 export interface Data extends QueryProps {
@@ -82,6 +83,7 @@ interface Props {
   onToggleColor: (color: string) => void
   onEditColorIdea: (item: number) => void
   onAddColorIdea: () => void
+  onEditTheme: (theme: Theme | null) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -139,7 +141,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onEditColorIdea,
       colorIdeas,
       onUpdateColorIdeaName,
-      onAddColorIdea
+      onAddColorIdea,
+      onEditTheme
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -192,7 +195,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditColorIdea,
             colorIdeas,
             onUpdateColorIdeaName,
-            onAddColorIdea
+            onAddColorIdea,
+            onEditTheme
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

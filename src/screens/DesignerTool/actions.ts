@@ -30,14 +30,16 @@ import {
   DELETE_COLOR_IDEA_ACTION,
   SET_DESIGN_NAME_ACTION,
   UPDATE_COLOR_IDEA_NAME_ACTION,
-  ADD_COLOR_IDEA_ACTION
+  ADD_COLOR_IDEA_ACTION,
+  SET_THEME_TO_EDIT_ACTION
 } from './constants'
 import {
   AnyAction,
   ModelConfig,
   DesignConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -203,4 +205,9 @@ export const setModelAction = (
   modelConfig,
   colorIdeas,
   design
+})
+
+export const setThemeToEditAction = (theme: Theme | null): AnyAction => ({
+  type: SET_THEME_TO_EDIT_ACTION,
+  theme
 })
