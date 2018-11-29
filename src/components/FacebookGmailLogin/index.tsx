@@ -69,7 +69,7 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       </Container>
     )
   }
-  componentClicked = (evt: any) => { }
+  componentClicked = (evt: any) => {}
 
   responseFacebook = async (facebookResp: {}) => {
     const {
@@ -91,7 +91,9 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         const user = this.createUserObject(data)
         handleLogin(user)
         this.welcomeMessage(get(user, 'name'))
-        if (data.newUser) { window.dataLayer.push({ event: NEW_USER, label: 'Facebook' }) }
+        if (data.newUser) {
+          window.dataLayer.push({ event: NEW_USER, label: 'Facebook' })
+        }
         requestClose()
       }
     } catch (error) {
@@ -125,7 +127,9 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         const user = this.createUserObject(data)
         handleLogin(user)
         this.welcomeMessage(get(user, 'name'))
-        if (data.newUser) { window.dataLayer.push({ event: NEW_USER, label: 'Google' }) }
+        if (data.newUser) {
+          window.dataLayer.push({ event: NEW_USER, label: 'Google' })
+        }
         requestClose()
       }
     } catch (error) {

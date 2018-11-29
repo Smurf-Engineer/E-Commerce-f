@@ -17,8 +17,8 @@ interface Props {
 }
 
 const ColorList = ({
-  onSelectColor = () => { },
-  onSelectStitchingColor = () => { },
+  onSelectColor = () => {},
+  onSelectStitchingColor = () => {},
   height = 40,
   stitching = false,
   stitchingColor = { value: '', name: '' }

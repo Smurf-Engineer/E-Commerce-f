@@ -172,7 +172,10 @@ export class SaveDesign extends React.Component<Props, {}> {
           const { shortId, svg } = savedDesign
           message.success(formatMessage(messages.saveSuccess, { designName }))
           if (!isEditing && !savedDesignId) {
-            window.dataLayer.push({ event: NEW_DESIGN_SAVED, label: designName })
+            window.dataLayer.push({
+              event: NEW_DESIGN_SAVED,
+              label: designName
+            })
             afterSaveDesign(shortId, svg, savedDesign, true)
           } else {
             goToCustomProductPage(shortId)
@@ -324,10 +327,10 @@ export class SaveDesign extends React.Component<Props, {}> {
               </Text>
             </StyledSaveAs>
           ) : (
-              <Text>
-                <FormattedMessage {...messages.modalText} />
-              </Text>
-            )}
+            <Text>
+              <FormattedMessage {...messages.modalText} />
+            </Text>
+          )}
           <InputWrapper>
             <StyledInput
               id="saveDesignName"

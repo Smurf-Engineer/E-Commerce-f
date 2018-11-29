@@ -43,7 +43,12 @@ interface Props {
   selectedItem: number
   disableTooltip: boolean
   formatMessage: (messageDescriptor: any) => string
-  onApplyArt: (url: string, style?: CanvasElement, fileId?: number, name?: string) => void
+  onApplyArt: (
+    url: string,
+    style?: CanvasElement,
+    fileId?: number,
+    name?: string
+  ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   setSearchClipParamAction: (searchParam: string) => void
 }
@@ -79,16 +84,16 @@ class SymbolTab extends React.PureComponent<Props, {}> {
           </Col>
         ))
       ) : (
-          <NotFound>{formatMessage(messages.notFoundSymbol)}</NotFound>
-        )
+        <NotFound>{formatMessage(messages.notFoundSymbol)}</NotFound>
+      )
 
     const symbolsList = !loading ? (
       <RowList>{artList}</RowList>
     ) : (
-        <Loading>
-          <Spin />
-        </Loading>
-      )
+      <Loading>
+        <Spin />
+      </Loading>
+    )
 
     return (
       <Container>
@@ -125,17 +130,17 @@ class SymbolTab extends React.PureComponent<Props, {}> {
             />
           </SwipeableViews>
         ) : (
-            <div>
-              <InputWrapper>
-                <Input
-                  onChange={this.handleOnUpdateText}
-                  placeholder={formatMessage(messages.searchInputPlaceholder)}
-                  addonAfter={<Button onClick={() => { }}>Search</Button>}
-                />
-              </InputWrapper>
-              <List height={50}>{symbolsList}</List>
-            </div>
-          )}
+          <div>
+            <InputWrapper>
+              <Input
+                onChange={this.handleOnUpdateText}
+                placeholder={formatMessage(messages.searchInputPlaceholder)}
+                addonAfter={<Button onClick={() => {}}>Search</Button>}
+              />
+            </InputWrapper>
+            <List height={50}>{symbolsList}</List>
+          </div>
+        )}
       </Container>
     )
   }
@@ -173,8 +178,13 @@ class SymbolTab extends React.PureComponent<Props, {}> {
   }
 
   handleOnApplyArt = (url: string, fileId: number) => {
-    const { onApplyArt, data: { clipArts } } = this.props
-    const artName = last(get(find(clipArts, (clip) => clip.id === fileId), 'url', '').split('/'))
+    const {
+      onApplyArt,
+      data: { clipArts }
+    } = this.props
+    const artName = last(
+      get(find(clipArts, clip => clip.id === fileId), 'url', '').split('/')
+    )
     onApplyArt(url, undefined, fileId, artName)
   }
 }
