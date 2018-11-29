@@ -61,7 +61,7 @@ export const getDesignQuery = gql`
       zipperColor: zipper_color
       canEdit: can_edit
       proDesign: pro_design
-      output_svg
+      outputSvg: output_svg
       shared
       image
       createdAt: created_at

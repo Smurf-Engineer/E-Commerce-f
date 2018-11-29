@@ -49,7 +49,7 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
-    const { phoneView } = this.props
+    const { phoneView, canvas } = this.props
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
     const renderer = new THREE.WebGLRenderer({ antialias: true })
@@ -137,7 +137,9 @@ class Render3D extends PureComponent {
           bindingColor,
           zipperColor,
           colors,
-          style: { brandingPng }
+          style: { brandingPng },
+          proDesign,
+          outputSvg
         } = design
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
@@ -177,18 +179,23 @@ class Render3D extends PureComponent {
         }))
         const reversedAreas = reverse(sanitizedColors)
         const images = []
+
         loadedTextures.colors = []
-        reversedAreas.forEach(({ color, image }) => {
-          loadedTextures.colors.push(color)
-          images.push(image)
-        })
+        if (proDesign && outputSvg) {
+          const imageCanvas = document.createElement('canvas')
+          canvg(imageCanvas, outputSvg)
+        } else {
+          reversedAreas.forEach(({ color, image }) => {
+            loadedTextures.colors.push(color)
+            images.push(image)
+          })
+        }
         const loadedAreas = images.map(image => {
           const areaTexture = textureLoader.load(image)
           areaTexture.minFilter = THREE.LinearFilter
           return areaTexture
         })
         loadedTextures.areas = loadedAreas
-
         resolve(loadedTextures)
       } catch (e) {
         reject(e)
@@ -272,7 +279,7 @@ class Render3D extends PureComponent {
   }
 
   renderModel = async design => {
-    const { product = {}, flatlockColor } = design
+    const { product = {}, flatlockColor, proDesign } = design
 
     const loadedTextures = await this.loadTextures(design)
 
@@ -430,7 +437,7 @@ class Render3D extends PureComponent {
             children[brandingIndex].material = brandingMaterial
           }
 
-          if (design.canvas) {
+          if (design.canvas && !proDesign) {
             await this.loadCanvasTexture(design.canvas)
           }
 

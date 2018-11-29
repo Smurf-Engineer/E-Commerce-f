@@ -589,6 +589,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = product
     let currentStyle = style
+    let proDesignModel
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       const {
@@ -606,8 +607,9 @@ export class DesignCenter extends React.Component<Props, {}> {
         name,
         shared,
         id,
-        image: designImage
-        // output_svg: outputSvg
+        image: designImage,
+        canvas: designCanvas,
+        outputSvg
       } = designData
       const designConfig = {
         flatlockCode,
@@ -623,9 +625,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
+
       const proDesign = get(designData, 'proDesign', false)
       if (proDesign) {
-        const designToShow = {
+        proDesignModel = {
           createdAt,
           designCode: code,
           designId: id,
@@ -633,16 +636,16 @@ export class DesignCenter extends React.Component<Props, {}> {
           designName: name,
           product: designProduct,
           shared,
-          shortId: designId,
-          // svg: outputSvg,
-          canvas,
+          shortId: designId!,
+          svg: outputSvg,
+          canvas: designCanvas,
           bibBraceColor: bibBraceAccesoryColor,
           bindingColor: bindingAccesoryColor,
           flatlockCode,
           flatlockColor,
           zipperColor: zipperAccesoryColor
         }
-        console.log(designToShow)
+        this.handleOnSelectTab(DesignTabs.PreviewTab)
       }
     }
 
@@ -824,10 +827,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                 history,
                 colors,
                 loadingModel,
-                swipingView,
+                swipingView:
+                  proDesignModel && !loadingModel ? false : swipingView,
                 openShareModal,
                 openShareModalAction,
-                savedDesignId,
+                savedDesignId:
+                  proDesignModel && !loadingModel
+                    ? proDesignModel.shortId
+                    : savedDesignId,
                 productName,
                 openAddToTeamStoreModalAction,
                 openAddToStoreModal,
@@ -836,7 +843,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 editDesignAction,
                 formatMessage,
                 svgOutputUrl,
-                savedDesign,
+                savedDesign:
+                  proDesignModel && !loadingModel
+                    ? proDesignModel
+                    : savedDesign,
                 stitchingColor,
                 bindingColor,
                 zipperColor,
