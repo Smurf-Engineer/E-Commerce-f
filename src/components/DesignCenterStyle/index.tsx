@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
-import { find, get } from 'lodash'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import reverse from 'lodash/reverse'
 import withLoading from '../WithLoadingData'
@@ -51,8 +51,13 @@ interface Props {
 
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
-    const { styleIndex, openNewStyleModalAction, designHasChanges, data: { styles } } = this.props
-    const label = get(find(styles, (style) => style.id === id), 'name')
+    const {
+      styleIndex,
+      openNewStyleModalAction,
+      designHasChanges,
+      data: { styles }
+    } = this.props
+    const label = get(styles[index], 'name', '')
     window.dataLayer.push({ event: SELECTED_DESIGN, label })
     if (styleIndex !== -1 && designHasChanges) {
       openNewStyleModalAction(true, index, id)

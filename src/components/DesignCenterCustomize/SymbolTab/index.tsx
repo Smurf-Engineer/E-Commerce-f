@@ -6,7 +6,7 @@ import { graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
-import { find, get, last } from 'lodash'
+import last from 'lodash/last'
 import { compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import WithError from '../../WithError'
@@ -178,13 +178,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
   }
 
   handleOnApplyArt = (url: string, fileId: number) => {
-    const {
-      onApplyArt,
-      data: { clipArts }
-    } = this.props
-    const artName = last(
-      get(find(clipArts, clip => clip.id === fileId), 'url', '').split('/')
-    )
+    const { onApplyArt } = this.props
+    const artName = last(url.split('/'))
     onApplyArt(url, undefined, fileId, artName)
   }
 }
