@@ -162,7 +162,7 @@ class Render3D extends PureComponent {
           color,
           image
         }))
-        const reversedAreas = reverse(sanitizedColors)
+
         const images = []
 
         loadedTextures.colors = []
@@ -173,17 +173,18 @@ class Render3D extends PureComponent {
           loadedTextures.texture = new THREE.Texture(imageCanvas)
           loadedTextures.texture.needsUpdate = true
         } else {
+          const reversedAreas = reverse(sanitizedColors)
           reversedAreas.forEach(({ color, image }) => {
             loadedTextures.colors.push(color)
             images.push(image)
           })
+          const loadedAreas = images.map(image => {
+            const areaTexture = textureLoader.load(image)
+            areaTexture.minFilter = THREE.LinearFilter
+            return areaTexture
+          })
+          loadedTextures.areas = loadedAreas
         }
-        const loadedAreas = images.map(image => {
-          const areaTexture = textureLoader.load(image)
-          areaTexture.minFilter = THREE.LinearFilter
-          return areaTexture
-        })
-        loadedTextures.areas = loadedAreas
         resolve(loadedTextures)
       } catch (e) {
         reject(e)
@@ -267,7 +268,7 @@ class Render3D extends PureComponent {
   }
 
   renderModel = async design => {
-    const { product = {}, flatlockColor, proDesign, canvas, outputSvg } = design
+    const { product = {}, flatlockColor, proDesign, canvas } = design
     try {
       if (!!canvas) {
         const { objects } = JSON.parse(canvas)
@@ -283,6 +284,7 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error(e)
     }
+
     const loadedTextures = await this.loadTextures(design)
 
     /* Object and MTL load */

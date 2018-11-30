@@ -568,6 +568,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { openBottomSheet } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
+      PreviewTab: PreviewTabIndex,
       ThemeTab: ThemeTabIndex,
       StyleTab: StyleTabIndex
     } = DesignTabs
@@ -698,7 +699,7 @@ export class DesignCenter extends React.Component<Props, {}> {
           flatlockColor,
           zipperColor: zipperAccesoryColor
         }
-        this.handleOnSelectTab(DesignTabs.PreviewTab)
+        tabSelected = PreviewTabIndex
       }
     }
 
