@@ -418,6 +418,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       label: name,
       design: get(style, 'name', '')
     })
+    console.log(colors)
     setPaletteAction(colors)
   }
 

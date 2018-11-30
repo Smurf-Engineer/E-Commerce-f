@@ -183,6 +183,7 @@ class UploadTab extends React.PureComponent<Props, State> {
     }
 
     const filesCount = Object.keys(files).length
+    console.log(files)
     const uploadDisabled =
       filesCount < TOTAL_OF_FILES || areas.length < MINIMUM_OF_AREAS
     const fileButtons = filesInfo.map(({ file, label, extension }, index) => {
