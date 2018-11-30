@@ -20,6 +20,7 @@ interface ConfigType {
   intercomKey?: string
   defaultCurrency?: string
   googleTagManagerId?: string
+  logrocketId?: string
 }
 
 const config: ConfigType = {
@@ -37,7 +38,8 @@ const config: ConfigType = {
   googleMapKey: process.env.GOOGLE_MAP_KEY,
   intercomKey: process.env.INTERCOM_KEY,
   defaultCurrency: process.env.DEFAULT_CURRENCY,
-  googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID
+  googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID,
+  logrocketId: process.env.LOG_ROCKET_KEY
 }
 
 export default config
