@@ -97,7 +97,6 @@ const OrderFiles = ({
         />
         <Image src={image} />
       </div>
-      <p>{JSON.stringify(uploadingFile)}</p>
       <Data>
         <Code>{code}</Code>
         <StatusContainer>
