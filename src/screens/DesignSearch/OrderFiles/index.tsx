@@ -5,7 +5,9 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import Button from 'antd/lib/button'
 import messages from './messages'
-import { isEmpty, last, indexOf } from 'lodash'
+import isEmpty from 'lodash/isEmpty'
+import last from 'lodash/last'
+import indexOf from 'lodash/indexOf'
 import message from 'antd/lib/message'
 import {
   Container,

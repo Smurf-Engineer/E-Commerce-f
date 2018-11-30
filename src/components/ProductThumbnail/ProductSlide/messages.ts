@@ -1,5 +1,5 @@
 /**
- * ProductCatalogueThumbnailsList -  Messages
+ * ProductSlide -  Messages
  */
 
 import { defineMessages } from 'react-intl'
