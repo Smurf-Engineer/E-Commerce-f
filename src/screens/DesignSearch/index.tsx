@@ -38,6 +38,7 @@ interface Props {
   noAdmin?: boolean
   user: UserType
   intl: InjectedIntl
+  uploadingFile: boolean
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -71,6 +72,7 @@ export class DesignSearch extends React.Component<Props, {}> {
       order,
       noAdmin,
       uploadProDesignAction,
+      uploadingFile,
       intl: { formatMessage }
     } = this.props
 
@@ -82,7 +84,7 @@ export class DesignSearch extends React.Component<Props, {}> {
     }
     const orderContent = order && (
       <OrderFiles
-        {...{ order }}
+        {...{ order, uploadingFile }}
         formatMessage={formatMessage}
         downloadFile={this.downloadAllFiles}
         onUploadFile={uploadProDesignAction}

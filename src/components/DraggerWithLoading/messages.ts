@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.TeamDragger.files',
     defaultMessage: 'Files in .eps .ai .svg .tiff .pdf .jpg'
   },
+  files2: {
+    id: 'components.TeamDragger.files',
+    defaultMessage: 'Files in {extensions}'
+  },
   size: {
     id: 'components.TeamDragger.size',
     defaultMessage: '20 MB max'

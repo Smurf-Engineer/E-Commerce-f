@@ -26,7 +26,6 @@ export const downloadFile = async (user: UserType, code: string) => {
 }
 
 export const uploadProDesign = (file: any, code: string) => {
-  console.log(code)
   return async (dispatch: any) => {
     try {
       dispatch(setUploadingAction(true))
@@ -47,6 +46,7 @@ export const uploadProDesign = (file: any, code: string) => {
       )
       const data = await response.json()
       dispatch(uploadFileSuccessAction(data))
+      dispatch(setUploadingAction(false))
     } catch (e) {
       dispatch(setUploadingAction(false))
       message.error(e.message)

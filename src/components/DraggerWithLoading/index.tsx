@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+import map from 'lodash/map'
 import Upload from 'antd/lib/upload'
 import Spin from 'antd/lib/spin'
 import uploadIcon from '../../assets/upload_white.svg'
@@ -11,15 +12,26 @@ import { DragMessage, DragTypes, Icon, Container } from './styledComponents'
 
 interface Props {
   loading: boolean
+  extensions?: string[]
   onSelectImage: (file: any) => boolean
   className?: string
+  formatMessage: (messageDescriptor: any, extensions: any) => string
 }
 
 const { Dragger } = Upload
 
 class TeamDragger extends React.PureComponent<Props, {}> {
+  static defaultProps = {
+    extensions: ['.eps', '.ai', '.svg', '.tiff', '.pdf', '.jpg']
+  }
   render() {
-    const { onSelectImage, loading, className } = this.props
+    const {
+      onSelectImage,
+      loading,
+      className,
+      formatMessage,
+      extensions
+    } = this.props
     return (
       <Dragger
         beforeUpload={onSelectImage}
@@ -43,7 +55,9 @@ class TeamDragger extends React.PureComponent<Props, {}> {
               <FormattedMessage {...messages.size} />
             </DragMessage>
             <DragTypes>
-              <FormattedMessage {...messages.files} />
+              {formatMessage(messages.files2, {
+                extensions: map(extensions).join(' ')
+              })}
             </DragTypes>
           </div>
         )}

@@ -90,7 +90,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     let renderLoading = null
     if (designs) {
       thumbnailsList = designs.map(
-        ({ name, product, image, createdAt, shortId, shared, code }, index) => {
+        (
+          { name, product, image, createdAt, shortId, shared, code, proDesign },
+          index
+        ) => {
           const addToCartButton = (
             <AddToCartButton
               label={formatMessage(messages.addToCart)}
@@ -131,11 +134,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 labelButton={
                   <ButtonsContainer>
                     {addToCartButton}
-                    <EditButtonContainer>
-                      <EditButton onClick={this.gotToEditDesign(shortId || '')}>
-                        {formatMessage(messages.edit)}
-                      </EditButton>
-                    </EditButtonContainer>
+                    {!proDesign && (
+                      <EditButtonContainer>
+                        <EditButton
+                          onClick={this.gotToEditDesign(shortId || '')}
+                        >
+                          {formatMessage(messages.edit)}
+                        </EditButton>
+                      </EditButtonContainer>
+                    )}
                   </ButtonsContainer>
                 }
                 myLockerList={true}
@@ -143,6 +150,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 onPressCustomize={this.handleOnPressAddToCart}
                 onPressQuickView={this.handlePressQuickView}
                 image={image}
+                proDesign={proDesign}
               />
             </ThumbnailListItem>
           )

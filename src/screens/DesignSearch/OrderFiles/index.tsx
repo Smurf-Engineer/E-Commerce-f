@@ -28,6 +28,7 @@ import AccessoryColors from '../AccessoryColors'
 
 interface Props {
   order: OrderSearchResult
+  uploadingFile: boolean
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -46,6 +47,7 @@ const OrderFiles = ({
     zipperColor,
     bindingColor
   },
+  uploadingFile,
   downloadFile,
   onUploadFile,
   formatMessage
@@ -93,6 +95,7 @@ const OrderFiles = ({
         />
         <Image src={image} />
       </div>
+      <p>{JSON.stringify(uploadingFile)}</p>
       <Data>
         <Code>{code}</Code>
         <StatusContainer>
@@ -103,15 +106,16 @@ const OrderFiles = ({
         </StatusContainer>
         <Button onClick={onDownload}>
           <ButtonContainer>
-            >
             <Icon type="download" />
             <FormattedMessage {...messages.downloadAll} />
           </ButtonContainer>
         </Button>
         <DraggerWithLoading
           className="upload"
-          loading={false}
+          loading={uploadingFile}
           onSelectImage={beforeUpload}
+          formatMessage={formatMessage}
+          extensions={['.svg']}
         >
           <Button className="uploadButton">
             <ButtonContainer>

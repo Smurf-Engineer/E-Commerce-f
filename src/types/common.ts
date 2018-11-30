@@ -158,6 +158,7 @@ export type DesignType = {
   styleId: number
   outputSvg: string
   canvas: string
+  proDesign?: boolean
 }
 
 export type SaveDesignType = {
