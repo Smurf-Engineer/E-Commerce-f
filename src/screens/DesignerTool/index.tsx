@@ -31,7 +31,8 @@ import {
   DesignConfig,
   MessagePayload,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme as ThemeInput
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -86,7 +87,7 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
-  editableTheme: Theme | null
+  editableTheme: ThemeInput | null
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -127,6 +128,7 @@ interface Props {
   ) => void
   addColorIdeaAction: () => void
   setThemeToEditAction: (theme: Theme | null) => void
+  updateThemeNameAction: (name: string) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -186,7 +188,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       setColorIdeaNameAction,
       addColorIdeaAction,
       setThemeToEditAction,
-      editableTheme
+      editableTheme,
+      updateThemeNameAction
     } = this.props
     const { themeImage } = this.state
 
@@ -248,7 +251,12 @@ export class DesignerTool extends React.Component<Props, {}> {
           onAddColorIdea={addColorIdeaAction}
           onEditTheme={setThemeToEditAction}
         />
-        <EditTheme theme={editableTheme} onCancel={this.handleOnCancel} />
+        <EditTheme
+          {...{ productCode }}
+          theme={editableTheme}
+          onCancel={this.handleOnCancel}
+          onUpdateName={updateThemeNameAction}
+        />
       </div>
     )
   }

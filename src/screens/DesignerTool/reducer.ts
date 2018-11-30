@@ -36,7 +36,8 @@ import {
   DELETE_COLOR_IDEA_ACTION,
   UPDATE_COLOR_IDEA_NAME_ACTION,
   ADD_COLOR_IDEA_ACTION,
-  SET_THEME_TO_EDIT_ACTION
+  SET_THEME_TO_EDIT_ACTION,
+  UPDATE_THEME_NAME_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -311,7 +312,9 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_THEME_TO_EDIT_ACTION:
-      return state.set('editableTheme', action.theme)
+      return state.set('editableTheme', fromJS(action.theme))
+    case UPDATE_THEME_NAME_ACTION:
+      return state.setIn(['editableTheme', 'name'], action.name)
     default:
       return state
   }

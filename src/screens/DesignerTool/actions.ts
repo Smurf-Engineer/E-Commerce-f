@@ -31,7 +31,8 @@ import {
   SET_DESIGN_NAME_ACTION,
   UPDATE_COLOR_IDEA_NAME_ACTION,
   ADD_COLOR_IDEA_ACTION,
-  SET_THEME_TO_EDIT_ACTION
+  SET_THEME_TO_EDIT_ACTION,
+  UPDATE_THEME_NAME_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -210,4 +211,9 @@ export const setModelAction = (
 export const setThemeToEditAction = (theme: Theme | null): AnyAction => ({
   type: SET_THEME_TO_EDIT_ACTION,
   theme
+})
+
+export const updateThemeNameAction = (name: string): AnyAction => ({
+  type: UPDATE_THEME_NAME_ACTION,
+  name
 })
