@@ -55,7 +55,7 @@ class TeamDragger extends React.PureComponent<Props, {}> {
               <FormattedMessage {...messages.size} />
             </DragMessage>
             <DragTypes>
-              {formatMessage(messages.files2, {
+              {formatMessage(messages.files, {
                 extensions: map(extensions).join(' ')
               })}
             </DragTypes>
