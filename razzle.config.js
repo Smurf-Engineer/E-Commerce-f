@@ -132,7 +132,8 @@ module.exports = {
         'GOOGLE_MAP_KEY',
         'INTERCOM_KEY',
         'DEFAULT_CURRENCY',
-        'GOOGLE_TAG_MANAGER_ID'
+        'GOOGLE_TAG_MANAGER_ID',
+        'LOG_ROCKET_KEY'
       ])
     )
 
