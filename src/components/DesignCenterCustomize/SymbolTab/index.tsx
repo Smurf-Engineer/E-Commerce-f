@@ -6,6 +6,7 @@ import { graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
 import debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
+import last from 'lodash/last'
 import { compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import WithError from '../../WithError'
@@ -42,7 +43,12 @@ interface Props {
   selectedItem: number
   disableTooltip: boolean
   formatMessage: (messageDescriptor: any) => string
-  onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
+  onApplyArt: (
+    url: string,
+    style?: CanvasElement,
+    fileId?: number,
+    name?: string
+  ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   setSearchClipParamAction: (searchParam: string) => void
 }
@@ -173,7 +179,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
 
   handleOnApplyArt = (url: string, fileId: number) => {
     const { onApplyArt } = this.props
-    onApplyArt(url, undefined, fileId)
+    const artName = last(url.split('/'))
+    onApplyArt(url, undefined, fileId, artName)
   }
 }
 type OwnProps = {
