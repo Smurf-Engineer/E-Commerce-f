@@ -134,14 +134,14 @@ export const ButtonsContainer = styled.div`
   align-items: center;
 `
 
-export const EditButtonContainer = styled.div`
+export const ButtonContainer = styled.div`
   user-select: none;
   display: flex !important;
   align-items: center;
   margin: 8px;
 `
 
-export const EditButton = styled.div`
+export const ActionButton = styled.div`
   user-select: none;
   background-color: #ffffffb3;
   color: #5f6062;

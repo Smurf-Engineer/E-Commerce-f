@@ -30,5 +30,9 @@ export default defineMessages({
     id: 'screens.DesignSearch.notFound',
     defaultMessage:
       'An unknown error has occurred while trying to download this file, try again later.'
+  },
+  successfullyUploaded: {
+    id: 'screens.DesignSearch.successfullyUploaded',
+    defaultMessage: 'Your file has been successfully uploaded!'
   }
 })

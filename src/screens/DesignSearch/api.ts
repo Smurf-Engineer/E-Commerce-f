@@ -46,6 +46,7 @@ export const uploadProDesign = (file: any, code: string) => {
       )
       const data = await response.json()
       dispatch(uploadFileSuccessAction(data))
+      message.success('Your file has been successfully uploaded!')
       dispatch(setUploadingAction(false))
     } catch (e) {
       dispatch(setUploadingAction(false))
