@@ -156,6 +156,9 @@ export type DesignType = {
   zipperColor: string
   canEdit: boolean
   styleId: number
+  outputSvg: string
+  canvas: string
+  proDesign?: boolean
 }
 
 export type SaveDesignType = {

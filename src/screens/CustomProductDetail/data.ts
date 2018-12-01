@@ -114,6 +114,7 @@ export const GetDesignByIdQuery = gql`
       canvas
       code
       createdAt: created_at
+      proDesign: pro_design
     }
   }
 `
