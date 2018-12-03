@@ -9,7 +9,14 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-top: 16px;
+  padding: 10px 5px;
+  border: 2px dashed transparent;
+  transition: background-color 0.3s ease;
+  border-radius: 5px;
+  &.over {
+    border-color: #d3d3d3;
+    background-color: #f7f7f7;
+  }
 `
 
 export const Row = styled.div`

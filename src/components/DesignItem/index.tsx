@@ -22,6 +22,7 @@ interface Props {
   editable?: boolean
   connectDragSource: ConnectDragSource
   connectDropTarget: ConnectDropTarget
+  isOver: boolean
   onEditItem?: (id: number) => void
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
@@ -61,7 +62,15 @@ const rowTarget = {
 
     props.onMoveRow(dragIndex, hoverIndex)
 
-    monitor.getItem().index = hoverIndex
+    // monitor.getItem().index = hoverIndex
+  },
+  drop(props: Props, monitor: any, component: any) {
+    const dragIndex = monitor.getItem().index
+    const dropIndex = props.index
+
+    if (dragIndex === dropIndex) {
+      return
+    }
   }
 }
 
@@ -72,10 +81,11 @@ class DesignItem extends React.PureComponent<Props> {
       selected,
       editable = false,
       connectDragSource,
-      connectDropTarget
+      connectDropTarget,
+      isOver
     } = this.props
     const renderView = (
-      <Container>
+      <Container className={isOver ? 'over' : ''}>
         <Row>
           <Checkbox checked={selected} onChange={this.handleOnChange} />
           <Name>{name}</Name>
@@ -113,8 +123,10 @@ const DragSourceHOC = DragSource('item', rowSource, (connect, monitor) => ({
   connectDragSource: connect.dragSource(),
   isDragging: monitor.isDragging()
 }))
-const DropTargetHOC = DropTarget('item', rowTarget, connect => ({
-  connectDropTarget: connect.dropTarget()
+
+const DropTargetHOC = DropTarget('item', rowTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver()
 }))
 
 const DesignItemDraggable = compose(
