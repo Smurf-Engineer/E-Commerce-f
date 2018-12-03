@@ -439,6 +439,19 @@ class Render3D extends PureComponent {
             if (design.canvas) {
               await this.loadCanvasTexture(design.canvas)
             }
+            /* Branding  */
+            if (!!branding) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                map: branding,
+                side: THREE.FrontSide,
+                bumpMap,
+                transparent: true
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
           } else {
             // /* Assign materials */
             const cloneObject = children[meshIndex].clone()
@@ -446,20 +459,6 @@ class Render3D extends PureComponent {
 
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
-          }
-
-          /* Branding  */
-          if (!!branding) {
-            const brandingObj = children[meshIndex].clone()
-            object.add(brandingObj)
-            const brandingIndex = children.length - 1
-            const brandingMaterial = new THREE.MeshPhongMaterial({
-              map: branding,
-              side: THREE.FrontSide,
-              bumpMap,
-              transparent: true
-            })
-            children[brandingIndex].material = brandingMaterial
           }
 
           /* Object Conig */
