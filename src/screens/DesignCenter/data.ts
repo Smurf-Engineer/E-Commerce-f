@@ -92,6 +92,24 @@ export const getDesignQuery = gql`
           white
           black
         }
+        genders {
+          id
+          name: gender
+        }
+        fitStyles {
+          id
+          name: description
+        }
+        sizeRange: size_range {
+          id
+          name
+        }
+        priceRange {
+          quantity
+          price
+          abbreviation
+          shortName: short_name
+        }
       }
       styleId: style_id
       style {
