@@ -16,7 +16,9 @@ import {
   ImageInput,
   Types
 } from './styledComponents'
+import { DragDropContext } from 'react-dnd'
 import { UploadFile, DesignItem as DesignItemType } from '../../types/common'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 const NONE = -1
 
@@ -68,6 +70,7 @@ class DesignForm extends React.PureComponent<Props, State> {
       <DesignItem
         key={index}
         selected={id === selectedItem}
+        onMoveRow={this.handleOnMoveRow}
         onSelectItem={this.handleOnSelectItem}
         {...{ id, name, onDeleteItem, editable, onEditItem, index }}
       />
@@ -161,6 +164,12 @@ class DesignForm extends React.PureComponent<Props, State> {
     onSelectImage(file)
     return false
   }
+
+  handleOnMoveRow = (dragIndex: number, hoverIndex: number) => {
+    console.log('---------------------------')
+    console.log(dragIndex, hoverIndex)
+    console.log('---------------------------')
+  }
 }
 
-export default DesignForm
+export default DragDropContext(HTML5Backend)(DesignForm)
