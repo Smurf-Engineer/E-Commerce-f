@@ -36,7 +36,9 @@ const renderHtml = (styleTags: any, html: any) => {
               new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
               j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-              })(window,document,'script','dataLayer','GTM-WRGVRP9');
+              })(window,document,'script','dataLayer','GTM-${
+                config.googleTagManagerId
+              }');
            </script>
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />

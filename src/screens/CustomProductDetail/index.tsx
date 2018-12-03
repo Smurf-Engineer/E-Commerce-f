@@ -43,7 +43,9 @@ import {
   DetailsListItem,
   PrivateContainer,
   PrivateTitle,
-  PrivateSubtitle
+  PrivateSubtitle,
+  ProApproved,
+  ProApprovedLabel
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import ImagesSlider from '../../components/ImageSlider'
@@ -156,6 +158,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designName = get(design, 'name', '')
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
+    const proDesign = get(design, 'proDesign', false)
     const product = get(design, 'product', null)
 
     const images = get(product, 'images', [])
@@ -289,16 +292,15 @@ export class CustomProductDetail extends React.Component<Props, {}> {
       </SectionRow>
     )
 
-    const fitSection = !isEmpty(fitStyles) &&
-      fitStyles[0].id && (
-        <SectionRow>
-          <SectionTitleContainer>
-            <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
-            <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
-          </SectionTitleContainer>
-          <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
-        </SectionRow>
-      )
+    const fitSection = !isEmpty(fitStyles) && fitStyles[0].id && (
+      <SectionRow>
+        <SectionTitleContainer>
+          <SectionTitle>{formatMessage(messages.fit)}</SectionTitle>
+          <QuestionSpan onClick={this.handleOpenFitInfo}>?</QuestionSpan>
+        </SectionTitleContainer>
+        <SectionButtonsContainer>{availableFits}</SectionButtonsContainer>
+      </SectionRow>
+    )
 
     const itemDetails = [] as CartItemDetail[]
 
@@ -397,9 +399,17 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                     <Subtitle>{type.toLocaleUpperCase()}</Subtitle>
                     {designCode && <Subtitle>{`MPN: ${designCode}`}</Subtitle>}
                   </TitleSubtitleContainer>
-                  <EditDesignButton onClick={this.gotToEditDesign(designId)}>
-                    {formatMessage(messages.editDesign)}
-                  </EditDesignButton>
+                  {!proDesign ? (
+                    <EditDesignButton onClick={this.gotToEditDesign(designId)}>
+                      {formatMessage(messages.editDesign)}
+                    </EditDesignButton>
+                  ) : (
+                    <ProApproved>
+                      <ProApprovedLabel>
+                        {formatMessage(messages.approved)}
+                      </ProApprovedLabel>
+                    </ProApproved>
+                  )}
                 </TitleRow>
                 <PricesRow>{renderPrices}</PricesRow>
                 <Ratings
@@ -419,15 +429,14 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               />
             </Content>
           )}
-          {product &&
-            !!products.length && (
-              <RelatedProductsContainer>
-                <RelatedProducts
-                  currentCurrency={currentCurrency || config.defaultCurrency}
-                  {...{ products, history, formatMessage }}
-                />
-              </RelatedProductsContainer>
-            )}
+          {product && !!products.length && (
+            <RelatedProductsContainer>
+              <RelatedProducts
+                currentCurrency={currentCurrency || config.defaultCurrency}
+                {...{ products, history, formatMessage }}
+              />
+            </RelatedProductsContainer>
+          )}
           <ReviewsHeader>
             <FormattedMessage {...messages.reviews} />
           </ReviewsHeader>

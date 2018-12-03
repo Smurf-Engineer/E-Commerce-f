@@ -3,7 +3,9 @@ FROM davidglez/alpine-pm2
 # create app directory in container
 RUN mkdir -p /app
 
+ARG LOG_ROCKET_KEY
 ARG GOOGLE_ID
+ARG GOOGLE_TAG_MANAGER_ID
 ARG FACEBOOK_ID
 ARG GRAPHQL_URI_BASE
 ARG BASE_URL

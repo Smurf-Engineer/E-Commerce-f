@@ -90,6 +90,7 @@ class Render3D extends PureComponent {
     this.directionalLight = directionalLight
 
     this.container.appendChild(this.renderer.domElement)
+
     this.start()
   }
 
@@ -121,7 +122,9 @@ class Render3D extends PureComponent {
           bindingColor,
           zipperColor,
           colors,
-          style: { brandingPng }
+          style: { brandingPng },
+          proDesign,
+          outputSvg
         } = design
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
@@ -159,20 +162,29 @@ class Render3D extends PureComponent {
           color,
           image
         }))
-        const reversedAreas = reverse(sanitizedColors)
-        const images = []
-        loadedTextures.colors = []
-        reversedAreas.forEach(({ color, image }) => {
-          loadedTextures.colors.push(color)
-          images.push(image)
-        })
-        const loadedAreas = images.map(image => {
-          const areaTexture = textureLoader.load(image)
-          areaTexture.minFilter = THREE.LinearFilter
-          return areaTexture
-        })
-        loadedTextures.areas = loadedAreas
 
+        const images = []
+
+        loadedTextures.colors = []
+
+        if (proDesign && outputSvg) {
+          const imageCanvas = document.createElement('canvas')
+          canvg(imageCanvas, outputSvg)
+          loadedTextures.texture = new THREE.Texture(imageCanvas)
+          loadedTextures.texture.needsUpdate = true
+        } else {
+          const reversedAreas = reverse(sanitizedColors)
+          reversedAreas.forEach(({ color, image }) => {
+            loadedTextures.colors.push(color)
+            images.push(image)
+          })
+          const loadedAreas = images.map(image => {
+            const areaTexture = textureLoader.load(image)
+            areaTexture.minFilter = THREE.LinearFilter
+            return areaTexture
+          })
+          loadedTextures.areas = loadedAreas
+        }
         resolve(loadedTextures)
       } catch (e) {
         reject(e)
@@ -246,18 +258,32 @@ class Render3D extends PureComponent {
           {loading && <Loading indicator={circleIcon} />}
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
         </Render>
-        {showDragmessage &&
-          !loading && (
-            <DragText>
-              <FormattedMessage {...messages.drag} />
-            </DragText>
-          )}
+        {showDragmessage && !loading && (
+          <DragText>
+            <FormattedMessage {...messages.drag} />
+          </DragText>
+        )}
       </Container>
     )
   }
 
   renderModel = async design => {
-    const { product = {}, flatlockColor } = design
+    const { product = {}, flatlockColor, proDesign, canvas } = design
+    try {
+      if (!!canvas) {
+        const { objects } = JSON.parse(canvas)
+        const fontsPromises = []
+        objects.forEach(o => {
+          if (o.type === CanvasElements.Text) {
+            const fontObserver = new FontFaceObserver(o.fontFamily)
+            fontsPromises.push(fontObserver.load())
+          }
+        })
+        await Promise.all(fontsPromises)
+      }
+    } catch (e) {
+      console.error(e)
+    }
 
     const loadedTextures = await this.loadTextures(design)
 
@@ -272,14 +298,15 @@ class Render3D extends PureComponent {
         product.obj,
         async object => {
           const {
-            areas,
+            areas = [],
             colors,
             flatlock,
             zipper,
             bumpMap,
             binding,
             bibBrace,
-            branding
+            branding,
+            texture
           } = loadedTextures
           const { children } = object
           const objectChildCount = children.length
@@ -370,53 +397,66 @@ class Render3D extends PureComponent {
                 transparent: true
               }))
           )
-
-          /* Canvas */
-          const canvas = document.createElement('canvas')
-          canvas.width = CANVAS_SIZE
-          canvas.height = CANVAS_SIZE
-          this.canvasTexture = new fabric.StaticCanvas(canvas, {
-            width: CANVAS_SIZE,
-            height: CANVAS_SIZE,
-            selection: false,
-            renderOnAddRemove: false,
-            crossOrigin: 'Anonymous'
-          })
-          const canvasTexture = new THREE.CanvasTexture(canvas)
-          canvasTexture.minFilter = THREE.LinearFilter
-          this.canvasTexture.on(
-            'after:render',
-            () => (canvasTexture.needsUpdate = true)
-          )
-          const canvasMaterial = new THREE.MeshPhongMaterial({
-            map: canvasTexture,
-            side: THREE.FrontSide,
-            bumpMap,
-            transparent: true
-          })
-          const canvasObj = children[meshIndex].clone()
-          object.add(canvasObj)
-
-          const childrenLength = children.length
-          const canvasIndex = childrenLength - 1
-          children[canvasIndex].material = canvasMaterial
-
-          /* Branding  */
-          if (!!branding) {
-            const brandingObj = children[meshIndex].clone()
-            object.add(brandingObj)
-            const brandingIndex = children.length - 1
-            const brandingMaterial = new THREE.MeshPhongMaterial({
-              map: branding,
+          if (!proDesign) {
+            /* Canvas */
+            const canvas = document.createElement('canvas')
+            canvas.width = CANVAS_SIZE
+            canvas.height = CANVAS_SIZE
+            this.canvasTexture = new fabric.StaticCanvas(canvas, {
+              width: CANVAS_SIZE,
+              height: CANVAS_SIZE,
+              selection: false,
+              renderOnAddRemove: false,
+              crossOrigin: 'Anonymous'
+            })
+            const canvasTexture = new THREE.CanvasTexture(canvas)
+            canvasTexture.minFilter = THREE.LinearFilter
+            this.canvasTexture.on(
+              'after:render',
+              () => (canvasTexture.needsUpdate = true)
+            )
+            const canvasMaterial = new THREE.MeshPhongMaterial({
+              map: canvasTexture,
               side: THREE.FrontSide,
               bumpMap,
               transparent: true
             })
-            children[brandingIndex].material = brandingMaterial
-          }
+            const canvasObj = children[meshIndex].clone()
+            object.add(canvasObj)
 
-          if (design.canvas) {
-            await this.loadCanvasTexture(design.canvas)
+            const childrenLength = children.length
+            const canvasIndex = childrenLength - 1
+            children[canvasIndex].material = canvasMaterial
+
+            /* Branding  */
+            if (!!branding) {
+              const brandingObj = children[meshIndex].clone()
+              object.add(brandingObj)
+              const brandingIndex = children.length - 1
+              const brandingMaterial = new THREE.MeshPhongMaterial({
+                map: branding,
+                side: THREE.FrontSide,
+                bumpMap,
+                transparent: true
+              })
+              children[brandingIndex].material = brandingMaterial
+            }
+
+            if (design.canvas) {
+              await this.loadCanvasTexture(design.canvas)
+            }
+          } else {
+            const frontMaterial = new THREE.MeshPhongMaterial({
+              map: texture,
+              side: THREE.FrontSide,
+              bumpMap: bumpMap
+            })
+            // /* Assign materials */
+            const cloneObject = children[meshIndex].clone()
+            object.add(cloneObject)
+
+            children[meshIndex].material = insideMaterial
+            children[objectChildCount].material = frontMaterial
           }
 
           /* Object Conig */

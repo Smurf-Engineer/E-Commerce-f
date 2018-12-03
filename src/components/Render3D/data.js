@@ -13,6 +13,8 @@ export const designQuery = gql`
       bindingColor: binding_color
       bibBraceColor: bib_brace_color
       zipperColor: zipper_color
+      proDesign: pro_design
+      outputSvg: output_svg
       colors {
         id
         color

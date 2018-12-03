@@ -20,7 +20,7 @@ interface Props {
   width?: string
   category: Filter
   styleId?: number
-  setPaletteAction: (colors: string[]) => void
+  setPaletteAction: (colors: string[], name: string) => void
   hideBottomSheet: () => void
   formatMessage: (messageDescriptor: any) => string
 }
