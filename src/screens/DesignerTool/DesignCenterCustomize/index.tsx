@@ -86,6 +86,7 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeDesignsPosition: (dragIndex: number, dropIndex: number) => void
+  changeThemesTest: (variables: {}) => Promise<any>
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -235,6 +236,25 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   handleOnSaveThumbnail = (item: number, colors: string[]) => {
     if (this.render3D) {
       this.render3D.saveThumbnail(item, colors)
+    }
+  }
+  changeThemesPosition = async (dragIndex: number, dropIndex: number) => {
+    try {
+      const { changeThemesTest, productCode } = this.props
+      await changeThemesTest({
+        variables: { productCode },
+        update: (store: any) => {
+          const data = store.readQuery({ query: getProductFromCode })
+          /* const updatedImages = remove(
+            data.images,
+            (image: ImageFile) => image.id !== fileId
+          ) 
+          data.images = updatedImages */
+          store.writeQuery({ query: getProductFromCode, data })
+        }
+      })
+    } catch (e) {
+      // message.error(e.message)
     }
   }
 }

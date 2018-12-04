@@ -73,7 +73,8 @@ export const initialState = fromJS({
   binding: true,
   colorIdeaItem: NONE,
   colorIdeas: [],
-  editableTheme: null
+  editableTheme: null,
+  themes: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -319,12 +320,9 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.setIn(['editableTheme', 'name'], action.name)
     case CHANGE_THEMES_POSITION: {
       console.log(action)
-      console.log('temas cambiados')
-      console.log(state.get('designs').toJS())
       return state
     }
     case CHANGE_DESIGNS_POSITION:
-      console.log('diseños cambiados')
       return state
     default:
       return state

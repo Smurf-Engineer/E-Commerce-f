@@ -307,6 +307,7 @@ export interface Theme {
   name: string
   image: string
   styles: Style[]
+  order: number
 }
 
 export interface ThemeResult {

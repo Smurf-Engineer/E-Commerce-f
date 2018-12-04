@@ -3,6 +3,7 @@
  */
 
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const getProductFromCode = gql`
   query GetProductFromCode($code: String!) {
@@ -59,3 +60,18 @@ export const getProductFromCode = gql`
     }
   }
 `
+
+export const updateThemesMutation = graphql(
+  gql`
+    mutation updateThemes($themes: ThemeResult!) {
+      updateUserAddress(themeList: $themes) {
+        id
+        name
+        order
+      }
+    }
+  `,
+  {
+    name: 'updateAddress'
+  }
+)
