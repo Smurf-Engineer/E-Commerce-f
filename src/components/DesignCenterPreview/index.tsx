@@ -102,7 +102,6 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
     })
 
     const { shortId, designName, designImage } = savedDesign
-
     return (
       <Container>
         <ButtonsContainer>
@@ -121,35 +120,34 @@ class DesignCenterPreview extends React.PureComponent<Props, {}> {
             </Button>
           </ButtonWrapper>
         </ButtonsContainer>
-        {currentTab === DesignTabs.PreviewTab &&
-          !swipingView && (
-            <Render>
-              <Render3D designId={shortId} />
-              <BottomButtons>
-                {/* TODO: Hide TeamStore Flow
+        {currentTab === DesignTabs.PreviewTab && !swipingView && (
+          <Render>
+            <Render3D designId={shortId} />
+            <BottomButtons>
+              {/* TODO: Hide TeamStore Flow
                 <ButtonWrapper>
                   <Button onClick={this.openAddToStoreModal}>
                     <FormattedMessage {...messages.addToTeam} />
                   </Button>
                 </ButtonWrapper> */}
-                <ButtonWrapper>
-                  <AddToCartButton
-                    orderDetails={true}
-                    label={formatMessage(messages.addToCart)}
-                    onClick={this.handleAddToCart}
-                    item={itemToAdd}
-                    designId={shortId}
-                    {...{ designName, designImage }}
-                  />
-                </ButtonWrapper>
-              </BottomButtons>
-              <ButtonWrapperRight>
-                <ButtonRight onClick={this.handleOnKeepShoping} type="primary">
-                  <FormattedMessage {...messages.keepShoping} />
-                </ButtonRight>
-              </ButtonWrapperRight>
-            </Render>
-          )}
+              <ButtonWrapper>
+                <AddToCartButton
+                  orderDetails={true}
+                  label={formatMessage(messages.addToCart)}
+                  onClick={this.handleAddToCart}
+                  item={itemToAdd}
+                  designId={shortId}
+                  {...{ designName, designImage }}
+                />
+              </ButtonWrapper>
+            </BottomButtons>
+            <ButtonWrapperRight>
+              <ButtonRight onClick={this.handleOnKeepShoping} type="primary">
+                <FormattedMessage {...messages.keepShoping} />
+              </ButtonRight>
+            </ButtonWrapperRight>
+          </Render>
+        )}
         <ShareDesignModal
           open={openShareModal}
           requestClose={this.handleRequestCloseShare}

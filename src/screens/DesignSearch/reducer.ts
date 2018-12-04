@@ -7,7 +7,8 @@ import {
   SET_LOADING,
   SET_ORDER,
   SET_NOT_FOUND,
-  RESET_DATA
+  RESET_DATA,
+  SET_UPLOADING_FILE_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -16,7 +17,8 @@ export const initialState = fromJS({
   loading: false,
   order: null,
   notFound: false,
-  noAdmin: false
+  noAdmin: false,
+  uploadingFile: false
 })
 
 const designSearchReducer: Reducer<any> = (state = initialState, action) => {
@@ -49,6 +51,8 @@ const designSearchReducer: Reducer<any> = (state = initialState, action) => {
         loading: false
       })
     }
+    case SET_UPLOADING_FILE_ACTION:
+      return state.set('uploadingFile', action.isUploading)
     case RESET_DATA:
       return initialState
     default:

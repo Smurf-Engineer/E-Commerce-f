@@ -6,7 +6,9 @@ import {
   SET_LOADING,
   SET_ORDER,
   SET_NOT_FOUND,
-  RESET_DATA
+  RESET_DATA,
+  UPLOAD_FILE_ACTION_SUCCESS,
+  SET_UPLOADING_FILE_ACTION
 } from './constants'
 import { AnyAction, OrderSearchResult } from '../../types/common'
 
@@ -31,4 +33,14 @@ export const setNotFoundAction = (noAdmin?: boolean): AnyAction => ({
 
 export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
+})
+
+export const uploadFileSuccessAction = (url: string) => ({
+  type: UPLOAD_FILE_ACTION_SUCCESS,
+  url
+})
+
+export const setUploadingAction = (isUploading: boolean) => ({
+  type: SET_UPLOADING_FILE_ACTION,
+  isUploading
 })

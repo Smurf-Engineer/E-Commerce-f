@@ -4,7 +4,7 @@
 import { UploadFile } from '../../../../types/common'
 
 export const TOTAL_OF_FILES = 5
-export const MINIMUM_OF_AREAS = 4
+export const MINIMUM_OF_AREAS = 1
 
 export const enum Extension {
   Obj = 'obj',

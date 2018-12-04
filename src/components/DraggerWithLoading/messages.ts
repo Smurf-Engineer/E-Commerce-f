@@ -11,7 +11,7 @@ export default defineMessages({
   },
   files: {
     id: 'components.TeamDragger.files',
-    defaultMessage: 'Files in .eps .ai .svg .tiff .pdf .jpg'
+    defaultMessage: 'Files in {extensions}'
   },
   size: {
     id: 'components.TeamDragger.size',

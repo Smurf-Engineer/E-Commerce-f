@@ -4,6 +4,7 @@
 import * as React from 'react'
 import Responsive from 'react-responsive'
 import SwipeableViews from 'react-swipeable-views'
+import { FormattedMessage } from 'react-intl'
 import {
   ImageContainer,
   ImageTop,
@@ -15,8 +16,10 @@ import {
   ButtonContainer,
   CustomizeButton,
   Page,
-  QuickView
+  QuickView,
+  ProApproved
 } from './styledComponents'
+import messages from './messages'
 import backIcon from '../../../assets/leftarrow.svg'
 import nextIcon from '../../../assets/rightarrow.svg'
 import quickViewIcon from '../../../assets/quickview.svg'
@@ -41,6 +44,7 @@ interface Props {
   disableSlider?: boolean
   customizable?: boolean
   backgroundColor?: string
+  proDesign: boolean
   onPressBack: () => void
   onPressNext: () => void
   onPressQuickView: () => void
@@ -70,7 +74,8 @@ const ProductSlide = ({
   myLockerList,
   disableSlider = false,
   customizable,
-  backgroundColor
+  backgroundColor,
+  proDesign
 }: Props) => {
   if (image) {
     return (
@@ -83,6 +88,11 @@ const ProductSlide = ({
           backgroundColor
         }}
       >
+        {proDesign && (
+          <ProApproved>
+            {<FormattedMessage {...messages.approved} />}
+          </ProApproved>
+        )}
         <ImageTop>
           <AboveTablet>
             {!hideQuickView && (

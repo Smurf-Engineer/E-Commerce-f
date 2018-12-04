@@ -13,11 +13,10 @@ interface Props {
   names: string[]
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, params: any) => string
 }
 
-const { area1, area2, area3, area4, area5 } = messages
-const colorsBlocks = [area1, area2, area3, area4, area5]
+const { area } = messages
 
 class ColorButtons extends React.Component<Props, {}> {
   render() {
@@ -30,12 +29,12 @@ class ColorButtons extends React.Component<Props, {}> {
       colorBlock = -1,
       names
     } = this.props
-    const colorButtons = colorsBlocks.map((label, index) => {
+    const colorButtons = colors.map((label, index) => {
       const name = names[index]
       return (
         <ColorButton
           key={index}
-          label={formatMessage(label)}
+          label={formatMessage(area, { index: index + 1 })}
           {...{
             name,
             index,

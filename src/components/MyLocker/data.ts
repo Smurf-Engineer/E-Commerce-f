@@ -13,6 +13,7 @@ export const desginsQuery = gql`
         name
         image
         shared
+        proDesign: pro_design
         shortId: short_id
         createdAt: created_at
         product {

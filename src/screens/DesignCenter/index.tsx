@@ -568,6 +568,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { openBottomSheet } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
+      PreviewTab: PreviewTabIndex,
       ThemeTab: ThemeTabIndex,
       StyleTab: StyleTabIndex
     } = DesignTabs
@@ -642,6 +643,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = product
     let currentStyle = style
+    let proDesignModel
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       const {
@@ -653,7 +655,15 @@ export class DesignCenter extends React.Component<Props, {}> {
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
         zipperColor: zipperAccesoryColor,
-        product: designProduct
+        product: designProduct,
+        createdAt,
+        code,
+        name,
+        shared,
+        id,
+        image: designImage,
+        canvas: designCanvas,
+        outputSvg
       } = designData
       const designConfig = {
         flatlockCode,
@@ -669,6 +679,28 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
+
+      const proDesign = get(designData, 'proDesign', false)
+      if (proDesign) {
+        proDesignModel = {
+          createdAt,
+          designCode: code,
+          designId: id,
+          designImage,
+          designName: name,
+          product: designProduct,
+          shared,
+          shortId: designId!,
+          svg: outputSvg,
+          canvas: designCanvas,
+          bibBraceColor: bibBraceAccesoryColor,
+          bindingColor: bindingAccesoryColor,
+          flatlockCode,
+          flatlockColor,
+          zipperColor: zipperAccesoryColor
+        }
+        tabSelected = PreviewTabIndex
+      }
     }
 
     const loadingView = (
@@ -849,10 +881,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                 history,
                 colors,
                 loadingModel,
-                swipingView,
+                swipingView:
+                  proDesignModel && !loadingModel ? false : swipingView,
                 openShareModal,
                 openShareModalAction,
-                savedDesignId,
+                savedDesignId:
+                  proDesignModel && !loadingModel
+                    ? proDesignModel.shortId
+                    : savedDesignId,
                 productName,
                 openAddToTeamStoreModalAction,
                 openAddToStoreModal,
@@ -861,7 +897,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 editDesignAction,
                 formatMessage,
                 svgOutputUrl,
-                savedDesign,
+                savedDesign:
+                  proDesignModel && !loadingModel
+                    ? proDesignModel
+                    : savedDesign,
                 stitchingColor,
                 bindingColor,
                 zipperColor,
