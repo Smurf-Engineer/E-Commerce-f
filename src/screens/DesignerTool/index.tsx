@@ -196,7 +196,6 @@ export class DesignerTool extends React.Component<Props, {}> {
       changeDesignsPositionAction
     } = this.props
     const { themeImage } = this.state
-
     return (
       <div>
         <CustomizeTab

@@ -49,6 +49,7 @@ export const Status = styled.div`
 export const Data = styled.div`
   display: flex;
   flex-direction: column;
+  width: 325px;
   margin-left: 32px;
   min-height: 320px;
   & > .upload > div:first-child {

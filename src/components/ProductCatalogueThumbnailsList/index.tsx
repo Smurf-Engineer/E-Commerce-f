@@ -34,8 +34,8 @@ import {
   PaginationRow,
   MenuStyle,
   NoResultsFound,
-  EditButtonContainer,
-  EditButton,
+  ButtonContainer,
+  ActionButton,
   ButtonsContainer
 } from './styledComponents'
 import downArrowIcon from '../../assets/downarrow.svg'
@@ -134,15 +134,15 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 labelButton={
                   <ButtonsContainer>
                     {addToCartButton}
-                    {!proDesign && (
-                      <EditButtonContainer>
-                        <EditButton
-                          onClick={this.gotToEditDesign(shortId || '')}
-                        >
-                          {formatMessage(messages.edit)}
-                        </EditButton>
-                      </EditButtonContainer>
-                    )}
+                    <ButtonContainer>
+                      <ActionButton
+                        onClick={this.gotToEditDesign(shortId || '')}
+                      >
+                        {formatMessage(
+                          !proDesign ? messages.edit : messages.preview
+                        )}
+                      </ActionButton>
+                    </ButtonContainer>
                   </ButtonsContainer>
                 }
                 myLockerList={true}

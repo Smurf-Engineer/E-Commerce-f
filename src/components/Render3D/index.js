@@ -360,10 +360,18 @@ class Render3D extends PureComponent {
             color: BLACK
           })
 
+          const frontMaterial = new THREE.MeshPhongMaterial({
+            map: texture,
+            side: THREE.FrontSide,
+            bumpMap: bumpMap
+          })
+
           /* Assign materials */
-          children[meshIndex].material = insideMaterial
-          const areasLayers = areas.map(() => children[meshIndex].clone())
-          object.add(...areasLayers)
+          if (!proDesign) {
+            children[meshIndex].material = insideMaterial
+            const areasLayers = areas.map(() => children[meshIndex].clone())
+            object.add(...areasLayers)
+          }
 
           /* Extra files loaded by MTL file */
           const labelIndex = findIndex(children, ({ name }) => name === RED_TAG)
@@ -385,19 +393,19 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
 
-          areas.forEach(
-            (map, index) =>
-              (children[
-                objectChildCount + index
-              ].material = new THREE.MeshPhongMaterial({
-                map,
-                side: THREE.FrontSide,
-                color: colors[index],
-                bumpMap,
-                transparent: true
-              }))
-          )
           if (!proDesign) {
+            areas.forEach(
+              (map, index) =>
+                (children[
+                  objectChildCount + index
+                ].material = new THREE.MeshPhongMaterial({
+                  map,
+                  side: THREE.FrontSide,
+                  color: colors[index],
+                  bumpMap,
+                  transparent: true
+                }))
+            )
             /* Canvas */
             const canvas = document.createElement('canvas')
             canvas.width = CANVAS_SIZE
@@ -428,6 +436,9 @@ class Render3D extends PureComponent {
             const canvasIndex = childrenLength - 1
             children[canvasIndex].material = canvasMaterial
 
+            if (design.canvas) {
+              await this.loadCanvasTexture(design.canvas)
+            }
             /* Branding  */
             if (!!branding) {
               const brandingObj = children[meshIndex].clone()
@@ -441,16 +452,7 @@ class Render3D extends PureComponent {
               })
               children[brandingIndex].material = brandingMaterial
             }
-
-            if (design.canvas) {
-              await this.loadCanvasTexture(design.canvas)
-            }
           } else {
-            const frontMaterial = new THREE.MeshPhongMaterial({
-              map: texture,
-              side: THREE.FrontSide,
-              bumpMap: bumpMap
-            })
             // /* Assign materials */
             const cloneObject = children[meshIndex].clone()
             object.add(cloneObject)
