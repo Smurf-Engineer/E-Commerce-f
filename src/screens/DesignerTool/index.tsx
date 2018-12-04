@@ -184,7 +184,6 @@ export class DesignerTool extends React.Component<Props, {}> {
       addColorIdeaAction
     } = this.props
     const { themeImage } = this.state
-
     return (
       <CustomizeTab
         {...{

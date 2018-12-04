@@ -67,7 +67,6 @@ export const uploadDesignAction = (files: any, json: any) => {
         const formData = new FormData()
 
         formData.append('config', json)
-
         files.forEach((file: any, index: number) =>
           formData.append(`colorBlock${index + 1}`, file)
         )
