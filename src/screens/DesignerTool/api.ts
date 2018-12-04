@@ -60,7 +60,7 @@ export const uploadFilesAction = (files: any, areas: any, extras: any) => {
 export const uploadDesignAction = (files: any, json: any) => {
   return async (dispatch: any) => {
     try {
-      if (files.length > 3) {
+      if (files.length > 0) {
         dispatch(setUploadingAction(true))
 
         const user = JSON.parse(localStorage.getItem('user') || '')
