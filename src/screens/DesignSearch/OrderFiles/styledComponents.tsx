@@ -49,8 +49,16 @@ export const Status = styled.div`
 export const Data = styled.div`
   display: flex;
   flex-direction: column;
+  width: 325px;
   margin-left: 32px;
   min-height: 320px;
+  & > .upload > div:first-child {
+    margin-top: 10px;
+    width: 100%;
+    & button {
+      width: 100%;
+    }
+  }
 `
 
 export const FinalSvg = styled.div`
@@ -65,7 +73,7 @@ export const AssetsLabel = styled.div`
   line-height: 22px;
 `
 
-export const DownloadAll = styled.div`
+export const ButtonContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

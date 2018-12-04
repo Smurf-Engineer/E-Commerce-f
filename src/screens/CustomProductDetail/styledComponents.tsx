@@ -73,6 +73,24 @@ export const EditDesignButton = styled(Button)`
   height: 40px;
   width: 120.79px;
 `
+
+export const ProApproved = styled.div`
+  border: 2px solid #4a90e2;
+  background-color: #4a90e2;
+  border-radius: 2px;
+  color: #fff;
+  height: 40px;
+  width: 120.79px;
+  display: flex;
+  align-items: center;
+`
+
+export const ProApprovedLabel = styled.p`
+  margin: 0;
+  width: 100%;
+  text-align: center;
+`
+
 export const PricesRow = styled.div`
   display: flex;
   margin-top: 20px;

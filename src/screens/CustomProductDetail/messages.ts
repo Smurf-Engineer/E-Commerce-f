@@ -76,5 +76,9 @@ export default defineMessages({
   reviews: {
     id: 'screens.CustomProductDetail.reviews',
     defaultMessage: 'Reviews'
+  },
+  approved: {
+    id: 'screens.CustomProductDetail.approved',
+    defaultMessage: 'PRO-APPROVED'
   }
 })
