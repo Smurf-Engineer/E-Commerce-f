@@ -129,6 +129,8 @@ interface Props {
   addColorIdeaAction: () => void
   setThemeToEditAction: (theme: Theme | null) => void
   updateThemeNameAction: (name: string) => void
+  changeThemesPositionAction: (dragIndex: number, dropIndex: number) => void
+  changeDesignsPositionAction: (dragIndex: number, dropIndex: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -189,7 +191,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       addColorIdeaAction,
       setThemeToEditAction,
       editableTheme,
-      updateThemeNameAction
+      updateThemeNameAction,
+      changeThemesPositionAction,
+      changeDesignsPositionAction
     } = this.props
     const { themeImage } = this.state
 
@@ -250,6 +254,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           onUpdateColorIdeaName={setColorIdeaNameAction}
           onAddColorIdea={addColorIdeaAction}
           onEditTheme={setThemeToEditAction}
+          changeThemesPosition={changeThemesPositionAction}
+          changeDesignsPosition={changeDesignsPositionAction}
         />
         <EditTheme
           {...{ productCode }}

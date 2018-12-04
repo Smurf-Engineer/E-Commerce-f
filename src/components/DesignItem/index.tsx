@@ -27,6 +27,7 @@ interface Props {
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
   onMoveRow: (dragIndex: number, hoverIndex: number) => void
+  onDropRow: (dragIndex: number, dropIndex: number) => void
 }
 
 const rowSource = {
@@ -71,6 +72,8 @@ const rowTarget = {
     if (dragIndex === dropIndex) {
       return
     }
+
+    props.onDropRow(dragIndex, dropIndex)
   }
 }
 

@@ -84,6 +84,8 @@ interface Props {
   onEditColorIdea: (item: number) => void
   onAddColorIdea: () => void
   onEditTheme: (theme: Theme | null) => void
+  changeThemesPosition: (dragIndex: number, dropIndex: number) => void
+  changeDesignsPosition: (dragIndex: number, dropIndex: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -142,7 +144,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorIdeas,
       onUpdateColorIdeaName,
       onAddColorIdea,
-      onEditTheme
+      onEditTheme,
+      changeThemesPosition,
+      changeDesignsPosition
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -196,7 +200,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             colorIdeas,
             onUpdateColorIdeaName,
             onAddColorIdea,
-            onEditTheme
+            onEditTheme,
+            changeThemesPosition,
+            changeDesignsPosition
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

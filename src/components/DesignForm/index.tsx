@@ -40,6 +40,7 @@ interface Props {
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
   onUpdateName?: (name: string) => void
+  onDropRow: (dragIndex: number, dropIndex: number) => void
 }
 
 interface State {
@@ -62,7 +63,8 @@ class DesignForm extends React.PureComponent<Props, State> {
       withImageInput = false,
       themeImage,
       onDeleteImage,
-      editable
+      editable,
+      onDropRow
     } = this.props
     const { isEditing } = this.state
 
@@ -71,6 +73,7 @@ class DesignForm extends React.PureComponent<Props, State> {
         key={index}
         selected={id === selectedItem}
         onMoveRow={this.handleOnMoveRow}
+        onDropRow={onDropRow}
         onSelectItem={this.handleOnSelectItem}
         {...{ id, name, onDeleteItem, editable, onEditItem, index }}
       />
@@ -166,8 +169,15 @@ class DesignForm extends React.PureComponent<Props, State> {
   }
 
   handleOnMoveRow = (dragIndex: number, hoverIndex: number) => {
-    console.log('---------------------------')
+    /* console.log('---------------------------')
     console.log(dragIndex, hoverIndex)
+    console.log('---------------------------') */
+  }
+  handleOnDropRow = (dragIndex: number, dropIndex: number) => {
+    const { onDropRow } = this.props
+    onDropRow(dragIndex, dropIndex)
+    console.log('---------------------------')
+    console.log(dragIndex, dropIndex)
     console.log('---------------------------')
   }
 }

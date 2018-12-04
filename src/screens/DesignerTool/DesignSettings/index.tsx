@@ -58,6 +58,8 @@ interface Props {
     design: ModelDesign
   ) => void
   formatMessage: (messageDescriptor: any) => string
+  changeThemesPosition: (dragIndex: number, dropIndex: number) => void
+  changeDesignsPosition: (dragIndex: number, dropIndex: number) => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
@@ -79,7 +81,9 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteStyle,
       onSelectImage,
       onDeleteImage,
-      onUpdateThemeName
+      onUpdateThemeName,
+      changeThemesPosition,
+      changeDesignsPosition
     } = this.props
     const { code } = this.state
 
@@ -135,6 +139,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 items={themeItems}
                 itemName={themeName}
                 onUpdateName={onUpdateThemeName}
+                onDropRow={changeThemesPosition}
                 {...{ onSelectImage, themeImage, onDeleteImage }}
               />
               <DesignForm
@@ -145,6 +150,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={designName}
+                onDropRow={changeDesignsPosition}
                 items={styleItems}
               />
             </div>
