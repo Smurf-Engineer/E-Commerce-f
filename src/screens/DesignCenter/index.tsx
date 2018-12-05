@@ -1008,13 +1008,13 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSelectTheme = (id: number) => {
+  handleOnSelectTheme = (id: number, name?: string) => {
     const { setThemeAction, dataProduct } = this.props
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
       window.dataLayer.push({
         event: SELECTED_THEME,
-        label: dataProduct.product.name
+        label: name
       })
     }
   }
