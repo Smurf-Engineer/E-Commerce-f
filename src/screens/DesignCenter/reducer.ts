@@ -199,9 +199,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       }
 
       const lastStep = { type: Changes.Colors, state: prevColors }
-
+      const colorsToSave = colors.filter((color: string) => color)
       return state.merge({
-        colors: List.of(...colors),
+        colors: List.of(...colorsToSave),
         undoChanges: undoChanges.unshift(lastStep),
         redoChanges: redoChanges.clear(),
         designHasChanges: true

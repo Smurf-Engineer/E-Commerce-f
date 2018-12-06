@@ -60,14 +60,13 @@ export const uploadFilesAction = (files: any, areas: any, extras: any) => {
 export const uploadDesignAction = (files: any, json: any) => {
   return async (dispatch: any) => {
     try {
-      if (files.length > 3) {
+      if (files.length) {
         dispatch(setUploadingAction(true))
 
         const user = JSON.parse(localStorage.getItem('user') || '')
         const formData = new FormData()
 
         formData.append('config', json)
-
         files.forEach((file: any, index: number) =>
           formData.append(`colorBlock${index + 1}`, file)
         )
