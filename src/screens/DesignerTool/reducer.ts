@@ -68,7 +68,9 @@ export const initialState = fromJS({
   zipper: true,
   binding: true,
   colorIdeaItem: NONE,
-  colorIdeas: []
+  colorIdeas: [],
+  editableTheme: null,
+  themes: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -148,8 +150,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
           modelConfig: updatedConfig
         })
       }
-
       const colors = [...updatedDesign.colors]
+      while (areasPng.length < 5) {
+        areasPng.unshift('black')
+      }
       const reverseColors = reverse(colors)
       const updatedModelConfig = modelConfig.merge({
         size,
