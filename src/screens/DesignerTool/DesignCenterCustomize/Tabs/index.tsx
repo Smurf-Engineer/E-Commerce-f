@@ -94,7 +94,7 @@ interface Props {
   onAddColorIdea: () => void
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
-  changeDesignsPosition: (dragIndex: number, dropIndex: number) => void
+  changeStylesPosition: (dragIndex: number, dropIndex: number) => void
 }
 
 const Tabs = ({
@@ -148,7 +148,7 @@ const Tabs = ({
   onAddColorIdea,
   onEditTheme,
   changeThemesPosition,
-  changeDesignsPosition
+  changeStylesPosition
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -186,7 +186,7 @@ const Tabs = ({
               formatMessage,
               onEditTheme,
               changeThemesPosition,
-              changeDesignsPosition
+              changeStylesPosition
             }}
             designName={design && design.name}
           />

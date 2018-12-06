@@ -306,6 +306,7 @@ export interface Theme {
   id: number
   name: string
   image: string
+  item_order: number
   styles: Style[]
 }
 
@@ -338,6 +339,7 @@ export interface Style {
     width: number
     height: number
   }
+  item_order: number
 }
 
 export interface DesignStyle {
@@ -837,6 +839,7 @@ export interface DesignConfig extends DesignObject {
 export interface DesignItem {
   id: number
   name: string
+  item_order: number
 }
 
 export interface Country {

@@ -68,7 +68,7 @@ class DesignForm extends React.PureComponent<Props, State> {
     } = this.props
     const { isEditing } = this.state
 
-    const list = items.map(({ id, name }, index) => (
+    const list = items.map(({ id, name, item_order }, index) => (
       <DesignItem
         key={index}
         selected={id === selectedItem}

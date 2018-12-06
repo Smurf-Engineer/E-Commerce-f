@@ -12,6 +12,7 @@ import {
 } from './styledComponents'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import orderBy from 'lodash/orderBy'
 import Button from 'antd/lib/button'
 import DesignForm from '../../../components/DesignForm'
 import {
@@ -59,7 +60,7 @@ interface Props {
   ) => void
   formatMessage: (messageDescriptor: any) => string
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
-  changeDesignsPosition: (dragIndex: number, dropIndex: number) => void
+  changeStylesPosition: (dragIndex: number, dropIndex: number) => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
@@ -83,7 +84,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteImage,
       onUpdateThemeName,
       changeThemesPosition,
-      changeDesignsPosition
+      changeStylesPosition
     } = this.props
     const { code } = this.state
 
@@ -99,8 +100,31 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const themeStyles = currentTheme.styles || []
       const { obj, mtl, label, bumpMap } = product
       productHasAllFiles = !!obj && !!mtl && !!label && !!bumpMap
-      themeItems = themes.map(({ id, name }) => ({ id, name }))
-      styleItems = themeStyles.map(({ id, name }) => ({ id, name }))
+      themeItems = orderBy(
+        themes.map(({ id, name, item_order }) => ({ id, name, item_order })),
+        'item_order',
+        'ASC'
+      )
+      styleItems = orderBy(
+        themeStyles.map(({ id, name, item_order }) => ({
+          id,
+          name,
+          item_order
+        })),
+        'item_order',
+        'ASC'
+      )
+      styleItems.map(({ item_order }, index) => {
+        if (!item_order) {
+          styleItems[index].item_order = 1
+        }
+        if (
+          styleItems[index - 1] &&
+          styleItems[index - 1].item_order !== item_order - 1
+        ) {
+          styleItems[index].item_order = styleItems[index - 1].item_order + 1
+        }
+      })
     }
 
     return (
@@ -150,7 +174,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={designName}
-                onDropRow={changeDesignsPosition}
+                onDropRow={changeStylesPosition}
                 items={styleItems}
               />
             </div>

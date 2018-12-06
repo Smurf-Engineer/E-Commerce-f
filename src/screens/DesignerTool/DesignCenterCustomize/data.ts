@@ -31,6 +31,7 @@ export const getProductFromCode = gql`
         id
         name
         image
+        item_order
         styles {
           id
           name
@@ -55,6 +56,7 @@ export const getProductFromCode = gql`
             color
             image
           }
+          item_order
         }
       }
     }
@@ -70,11 +72,51 @@ export const updateThemesOrderMutation = graphql(
           id
           name
           image
+          item_order
         }
       }
     }
   `,
   {
     name: 'updateThemesOrder'
+  }
+)
+
+export const updateStylesOrderMutation = graphql(
+  gql`
+    mutation updateStyles($styles: [StyleToOrderInput]) {
+      updateStylesOrder(styles: $styles) {
+        fullCount
+        styles {
+          id
+          name
+          image
+          width
+          height
+          branding
+          brandingPng: branding_png
+          colorblock1
+          colorblock2
+          colorblock3
+          colorblock4
+          colorblock5
+          colorIdeas: inspiration {
+            id
+            name
+            image
+            colors
+          }
+          colors: colorsBlocks {
+            id
+            color
+            image
+          }
+          item_order
+        }
+      }
+    }
+  `,
+  {
+    name: 'updateStylesOrder'
   }
 )

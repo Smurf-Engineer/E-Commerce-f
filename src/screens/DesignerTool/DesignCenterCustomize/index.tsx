@@ -7,9 +7,15 @@ import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
 import map from 'lodash/map'
+import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import Tabs from './Tabs'
 import message from 'antd/lib/message'
-import { getProductFromCode, updateThemesOrderMutation } from './data'
+import {
+  getProductFromCode,
+  updateThemesOrderMutation,
+  updateStylesOrderMutation
+} from './data'
 import Render3D from './Render3D'
 import { Container } from './styledComponents'
 import {
@@ -20,7 +26,8 @@ import {
   Product,
   DesignObject,
   ModelDesign,
-  Theme
+  Theme,
+  DesignItem
 } from '../../../types/common'
 
 export interface Data extends QueryProps {
@@ -90,6 +97,7 @@ interface Props {
   onAddColorIdea: () => void
   onEditTheme: (theme: Theme | null) => void
   updateThemesOrder: (variables: {}) => Promise<any>
+  updateStylesOrder: (variables: {}) => Promise<any>
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -204,7 +212,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onAddColorIdea,
             onEditTheme,
             changeThemesPosition: this.changeThemesPosition,
-            changeDesignsPosition: this.changeDesignsPosition
+            changeStylesPosition: this.changeStylesPosition
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -241,7 +249,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   }
   changeThemesPosition = async (dragIndex: number, dropIndex: number) => {
     try {
-      const { updateThemesOrder, data } = this.props
+      const { updateThemesOrder, data, productCode } = this.props
       const themes = orderBy(
         get(cloneDeep(data), 'product.themes', []),
         'item_order',
@@ -258,7 +266,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         variables: { themes: themesToSend },
         update: (store: any) => {
           const storeData = store.readQuery({
-            query: getProductFromCode
+            query: getProductFromCode,
+            variables: { code: productCode }
           })
           storeData.product.themes = themes
           store.writeQuery({
@@ -271,7 +280,63 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       message.error(e.message)
     }
   }
-  changeDesignsPosition = (dragIndex: number, dropIndex: number) => {}
+  changeStylesPosition = async (dragIndex: number, dropIndex: number) => {
+    try {
+      const { selectedTheme, data, updateStylesOrder, productCode } = this.props
+      let currentTheme: DesignItem[] = []
+
+      currentTheme = find(
+        get(data, 'product.themes', []),
+        ({ id }) => id === selectedTheme
+      )
+
+      const styles = orderBy(
+        get(cloneDeep(currentTheme), 'styles', []),
+        'item_order',
+        'ASC'
+      )
+
+      styles.map((style: any, index: number) => {
+        if (!style.item_order) {
+          styles[index].item_order = 1
+        }
+        if (
+          styles[index - 1] &&
+          styles[index - 1].item_order !== style.item_order - 1
+        ) {
+          styles[index].item_order = styles[index - 1].item_order + 1
+        }
+      })
+      const temporalStyle = cloneDeep(styles[dragIndex])
+      styles[dragIndex].item_order = styles[dropIndex].item_order
+      styles[dropIndex].item_order = temporalStyle.item_order
+      const stylesToSend = map(styles, ({ id, item_order }) => ({
+        id,
+        item_order
+      }))
+
+      await updateStylesOrder({
+        variables: { styles: stylesToSend },
+        update: (store: any) => {
+          const storeData = store.readQuery({
+            query: getProductFromCode,
+            variables: { code: productCode }
+          })
+          const indexToUpdate = findIndex(storeData.product.themes, {
+            id: selectedTheme
+          })
+
+          storeData.product.themes[indexToUpdate].styles = styles
+          store.writeQuery({
+            query: getProductFromCode,
+            data: storeData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
 }
 
 type OwnProps = {
@@ -287,7 +352,8 @@ const EnhanceDesignCenterCustomize = compose(
       notifyOnNetworkStatusChange: true
     })
   }),
-  updateThemesOrderMutation
+  updateThemesOrderMutation,
+  updateStylesOrderMutation
 )(DesignCenterCustomize)
 
 export default EnhanceDesignCenterCustomize
