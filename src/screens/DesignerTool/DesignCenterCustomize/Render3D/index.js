@@ -80,6 +80,7 @@ class Render3D extends PureComponent {
 
     const areasHasChange = isEqual(areas, nextAreas)
     if (!areasHasChange) {
+      // this.loadObject(files, design)
       this.loadDesign(nextAreas, nextColors)
       return
     }
@@ -576,8 +577,10 @@ class Render3D extends PureComponent {
     if (!!object) {
       object.children.forEach(({ material }) => {
         if (!!material) {
-          const { map } = material
-          if (map && map.dispose) map.dispose()
+          let { map } = material
+          if (map && map.dispose) {
+            map.dispose()
+          }
         }
       })
     }

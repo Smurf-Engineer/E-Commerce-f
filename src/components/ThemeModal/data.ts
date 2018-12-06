@@ -9,7 +9,6 @@ export const updateThemeMutation = gql`
       id
       name
       image
-      order
     }
   }
 `

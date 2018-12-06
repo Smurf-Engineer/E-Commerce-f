@@ -32,9 +32,7 @@ import {
   UPDATE_COLOR_IDEA_NAME_ACTION,
   ADD_COLOR_IDEA_ACTION,
   SET_THEME_TO_EDIT_ACTION,
-  UPDATE_THEME_NAME_ACTION,
-  CHANGE_THEMES_POSITION,
-  CHANGE_DESIGNS_POSITION
+  UPDATE_THEME_NAME_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -218,22 +216,4 @@ export const setThemeToEditAction = (theme: Theme | null): AnyAction => ({
 export const updateThemeNameAction = (name: string): AnyAction => ({
   type: UPDATE_THEME_NAME_ACTION,
   name
-})
-
-export const changeThemesPositionAction = (
-  dragIndex: number,
-  dropIndex: number
-) => ({
-  type: CHANGE_THEMES_POSITION,
-  dragIndex,
-  dropIndex
-})
-
-export const changeDesignsPositionAction = (
-  dragIndex: number,
-  dropIndex: number
-) => ({
-  type: CHANGE_DESIGNS_POSITION,
-  dragIndex,
-  dropIndex
 })

@@ -34,8 +34,6 @@ export const UPDATE_COLOR_IDEA_NAME_ACTION = `${namespace}/UPDATE_COLOR_IDEA_NAM
 export const ADD_COLOR_IDEA_ACTION = `${namespace}/ADD_COLOR_IDEA_ACTION`
 export const SET_THEME_TO_EDIT_ACTION = `${namespace}/SET_THEME_TO_EDIT_ACTION`
 export const UPDATE_THEME_NAME_ACTION = `${namespace}/UPDATE_THEME_NAME_ACTION`
-export const CHANGE_THEMES_POSITION = `${namespace}/CHANGE_THEMES_POSITION`
-export const CHANGE_DESIGNS_POSITION = `${namespace}/CHANGE_DESIGNS_POSITION`
 export enum Tabs {
   RenderTab = 0,
   SettingsTab = 0

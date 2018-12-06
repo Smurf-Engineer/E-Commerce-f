@@ -3,8 +3,13 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
+import orderBy from 'lodash/orderBy'
+import map from 'lodash/map'
 import Tabs from './Tabs'
-import { getProductFromCode } from './data'
+import message from 'antd/lib/message'
+import { getProductFromCode, updateThemesOrderMutation } from './data'
 import Render3D from './Render3D'
 import { Container } from './styledComponents'
 import {
@@ -84,9 +89,7 @@ interface Props {
   onEditColorIdea: (item: number) => void
   onAddColorIdea: () => void
   onEditTheme: (theme: Theme | null) => void
-  changeThemesPosition: (dragIndex: number, dropIndex: number) => void
-  changeDesignsPosition: (dragIndex: number, dropIndex: number) => void
-  changeThemesTest: (variables: {}) => Promise<any>
+  updateThemesOrder: (variables: {}) => Promise<any>
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -145,9 +148,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorIdeas,
       onUpdateColorIdeaName,
       onAddColorIdea,
-      onEditTheme,
-      changeThemesPosition,
-      changeDesignsPosition
+      onEditTheme
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -202,8 +203,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUpdateColorIdeaName,
             onAddColorIdea,
             onEditTheme,
-            changeThemesPosition,
-            changeDesignsPosition
+            changeThemesPosition: this.changeThemesPosition,
+            changeDesignsPosition: this.changeDesignsPosition
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -240,23 +241,37 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   }
   changeThemesPosition = async (dragIndex: number, dropIndex: number) => {
     try {
-      const { changeThemesTest, productCode } = this.props
-      await changeThemesTest({
-        variables: { productCode },
+      const { updateThemesOrder, data } = this.props
+      const themes = orderBy(
+        get(cloneDeep(data), 'product.themes', []),
+        'item_order',
+        'ASC'
+      )
+      const temporalTheme = cloneDeep(themes[dragIndex])
+      themes[dragIndex].item_order = themes[dropIndex].item_order
+      themes[dropIndex].item_order = temporalTheme.item_order
+      const themesToSend = map(themes, ({ id, item_order }) => ({
+        id,
+        item_order
+      }))
+      await updateThemesOrder({
+        variables: { themes: themesToSend },
         update: (store: any) => {
-          const data = store.readQuery({ query: getProductFromCode })
-          /* const updatedImages = remove(
-            data.images,
-            (image: ImageFile) => image.id !== fileId
-          ) 
-          data.images = updatedImages */
-          store.writeQuery({ query: getProductFromCode, data })
+          const storeData = store.readQuery({
+            query: getProductFromCode
+          })
+          storeData.product.themes = themes
+          store.writeQuery({
+            query: getProductFromCode,
+            data: storeData
+          })
         }
       })
     } catch (e) {
-      // message.error(e.message)
+      message.error(e.message)
     }
   }
+  changeDesignsPosition = (dragIndex: number, dropIndex: number) => {}
 }
 
 type OwnProps = {
@@ -271,7 +286,8 @@ const EnhanceDesignCenterCustomize = compose(
       variables: { code: productCode },
       notifyOnNetworkStatusChange: true
     })
-  })
+  }),
+  updateThemesOrderMutation
 )(DesignCenterCustomize)
 
 export default EnhanceDesignCenterCustomize

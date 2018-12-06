@@ -61,17 +61,20 @@ export const getProductFromCode = gql`
   }
 `
 
-export const updateThemesMutation = graphql(
+export const updateThemesOrderMutation = graphql(
   gql`
-    mutation updateThemes($themes: ThemeResult!) {
-      updateUserAddress(themeList: $themes) {
-        id
-        name
-        order
+    mutation updateThemes($themes: [InputTheme]) {
+      updateThemesOrder(themes: $themes) {
+        fullCount
+        themes {
+          id
+          name
+          image
+        }
       }
     }
   `,
   {
-    name: 'updateAddress'
+    name: 'updateThemesOrder'
   }
 )
