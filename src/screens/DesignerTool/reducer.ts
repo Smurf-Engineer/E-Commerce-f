@@ -68,9 +68,7 @@ export const initialState = fromJS({
   zipper: true,
   binding: true,
   colorIdeaItem: NONE,
-  colorIdeas: [],
-  editableTheme: null,
-  themes: []
+  colorIdeas: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
