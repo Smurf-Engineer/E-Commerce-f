@@ -79,6 +79,6 @@ export default defineMessages({
   },
   approved: {
     id: 'screens.CustomProductDetail.approved',
-    defaultMessage: 'PRO-APPROVED'
+    defaultMessage: 'UPDATED'
   }
 })

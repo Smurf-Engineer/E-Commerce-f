@@ -139,7 +139,7 @@ export const CustomizeButton = styled.div`
 `
 
 export const ProApproved = styled.div`
-  background-color: #4a90e2;
+  background-color: #555555;
   color: #fff;
   padding: 5px;
   position: absolute;
