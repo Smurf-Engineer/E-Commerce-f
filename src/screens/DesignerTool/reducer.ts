@@ -152,8 +152,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
           modelConfig: updatedConfig
         })
       }
-
       const colors = [...updatedDesign.colors]
+      while (areasPng.length < 5) {
+        areasPng.unshift('black')
+      }
       const reverseColors = reverse(colors)
       const updatedModelConfig = modelConfig.merge({
         size,
