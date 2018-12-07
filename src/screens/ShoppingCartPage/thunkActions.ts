@@ -16,9 +16,9 @@ export const setInitialData = () => {
   return async (dispatch: any) => {
     try {
       if (typeof window !== 'undefined') {
-        const cartListFromLS = JSON.parse(localStorage.getItem(
-          'cart'
-        ) as string) as CartItems[]
+        const cartListFromLS =
+          (JSON.parse(localStorage.getItem('cart') as string) as CartItems[]) ||
+          []
         let cartList: CartItems[] = []
         for (let i = 0; i < cartListFromLS.length; i++) {
           const item = setItemDetails(cartListFromLS[i])

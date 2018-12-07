@@ -117,7 +117,7 @@ interface Props {
   onCanvasElementRotated: (element: CanvasRotated) => void
   onCanvasElementTextChanged: (oldText: string, newText: string) => void
   onReApplyImageEl: (el: CanvasElement) => void
-  onSelectedItem: (item: SelectedAsset) => void
+  onSelectedItem: (item: SelectedAsset, name?: string) => void
   onCanvasElementDuplicated: (
     canvasEl: any,
     elementType: CanvasObjects,
@@ -370,12 +370,17 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     onSelectedItem({ id: file.id, type: CanvasElements.Image })
   }
 
-  handleOnApplyArt = (url: string, style?: CanvasElement, fileId?: number) => {
+  handleOnApplyArt = (
+    url: string,
+    style?: CanvasElement,
+    fileId?: number,
+    name?: string
+  ) => {
     const { selectedElement, canvas, onSelectedItem } = this.props
     if (!!canvas.path[selectedElement]) {
       this.render3D.applyClipArt(url, style)
     } else {
-      onSelectedItem({ id: fileId, type: CanvasElements.Path })
+      onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
       this.render3D.applyCanvasEl({
         url,
         style,

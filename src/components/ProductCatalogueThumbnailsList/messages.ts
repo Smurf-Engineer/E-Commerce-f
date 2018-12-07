@@ -48,5 +48,9 @@ export default defineMessages({
   retailLabel: {
     id: 'components.ProductCatalogueThumbnailsList.retailLabel',
     defaultMessage: 'FULL DETAILS'
+  },
+  preview: {
+    id: 'components.ProductCatalogueThumbnailsList.preview',
+    defaultMessage: 'PREVIEW'
   }
 })

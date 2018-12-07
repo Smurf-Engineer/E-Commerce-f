@@ -67,7 +67,6 @@ export const ImageTop = styled.div`
   position: absolute;
   width: 100%;
   justify-content: space-between;
-  padding: 5px 5px 0;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100px;
@@ -137,4 +136,13 @@ export const CustomizeButton = styled.div`
   align-items: center;
   border-radius: 2px;
   padding: 6px 16px;
+`
+
+export const ProApproved = styled.div`
+  background-color: #555555;
+  color: #fff;
+  padding: 5px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
 `

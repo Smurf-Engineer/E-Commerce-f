@@ -24,7 +24,6 @@ interface Props {
   onToggleColor: (color: string) => void
 }
 
-const colorsBlocks = ['Area 1', 'Area 2', 'Area 3', 'Area 4', 'Area 5']
 const extraBlocks = [
   {
     key: 'bibBrace',
@@ -50,17 +49,17 @@ class ColorTab extends React.PureComponent<Props> {
       onSelectColor,
       colors
     } = this.props
-    const colorButtons = colorsBlocks.map((label, index) => (
+    const colorButtons = colors.map((color, index) => (
       <ColorButton
         key={index}
         {...{
           index,
-          label,
+          label: `Area ${index + 1}`,
           colorBlockHovered,
           onSelectColorBlock,
           onHoverColorBlock
         }}
-        currentColor={colors[index]}
+        currentColor={color}
         selected={colorBlock === index}
       />
     ))

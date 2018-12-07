@@ -12,7 +12,8 @@ import ThemeItem from '../Theme'
 import { Container, Row, ModalMessage } from './styledComponents'
 import ModalTitle from '../ModalTitle'
 import ModalFooter from '../ModalFooter'
-
+import find from 'lodash/find'
+import get from 'lodash/get'
 interface Data extends QueryProps {
   themes: Theme[]
 }
@@ -25,7 +26,7 @@ interface Props {
   designHasChanges: boolean
   productId: number
   isMobile: boolean
-  onSelectTheme: (id: number) => void
+  onSelectTheme: (id: number, name?: string) => void
   formatMessage: (messageDescriptor: any) => string
   openNewThemeModalAction: (open: boolean, themeId?: number) => void
 }
@@ -54,7 +55,12 @@ export const DesignCenterGrid = ({
       openNewThemeModalAction(true, id)
       return
     }
-    onSelectTheme(id)
+    const themeName = get(
+      find(data.themes, theme => theme.id === id),
+      'name',
+      ''
+    )
+    onSelectTheme(id, themeName)
   }
 
   const cancelReselectTheme = () => {
