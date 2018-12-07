@@ -34,6 +34,7 @@ interface Props {
   withImageInput?: boolean
   itemName: string
   editable?: boolean
+  section: string
   onEditItem?: (id: number) => void
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
@@ -64,7 +65,8 @@ class DesignForm extends React.PureComponent<Props, State> {
       themeImage,
       onDeleteImage,
       editable,
-      onDropRow
+      onDropRow,
+      section
     } = this.props
     const { isEditing } = this.state
 
@@ -75,7 +77,7 @@ class DesignForm extends React.PureComponent<Props, State> {
         onMoveRow={this.handleOnMoveRow}
         onDropRow={onDropRow}
         onSelectItem={this.handleOnSelectItem}
-        {...{ id, name, onDeleteItem, editable, onEditItem, index }}
+        {...{ id, name, onDeleteItem, editable, onEditItem, index, section }}
       />
     ))
 
@@ -176,9 +178,6 @@ class DesignForm extends React.PureComponent<Props, State> {
   handleOnDropRow = (dragIndex: number, dropIndex: number) => {
     const { onDropRow } = this.props
     onDropRow(dragIndex, dropIndex)
-    console.log('---------------------------')
-    console.log(dragIndex, dropIndex)
-    console.log('---------------------------')
   }
 }
 

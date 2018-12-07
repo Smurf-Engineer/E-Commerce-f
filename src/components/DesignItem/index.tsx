@@ -23,6 +23,7 @@ interface Props {
   connectDragSource: ConnectDragSource
   connectDropTarget: ConnectDropTarget
   isOver: boolean
+  section: string
   onEditItem?: (id: number) => void
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
@@ -31,10 +32,11 @@ interface Props {
 }
 
 const rowSource = {
-  beginDrag({ id, index }: Props) {
+  beginDrag({ id, index, section }: Props) {
     return {
       id,
-      index
+      index,
+      section
     }
   }
 }
@@ -42,9 +44,11 @@ const rowSource = {
 const rowTarget = {
   hover(props: Props, monitor: any, component: any) {
     const dragIndex = monitor.getItem().index
+    const dragSection = monitor.getItem().section
     const hoverIndex = props.index
+    const hoverSection = props.section
 
-    if (dragIndex === hoverIndex) {
+    if (dragIndex === hoverIndex || hoverSection !== dragSection) {
       return
     }
 
@@ -62,14 +66,14 @@ const rowTarget = {
     }
 
     props.onMoveRow(dragIndex, hoverIndex)
-
-    // monitor.getItem().index = hoverIndex
   },
   drop(props: Props, monitor: any, component: any) {
     const dragIndex = monitor.getItem().index
+    const dragSection = monitor.getItem().section
     const dropIndex = props.index
+    const hoverSection = props.section
 
-    if (dragIndex === dropIndex) {
+    if (dragIndex === dropIndex || hoverSection !== dragSection) {
       return
     }
 

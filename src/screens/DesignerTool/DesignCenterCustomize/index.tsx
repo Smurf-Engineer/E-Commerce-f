@@ -316,7 +316,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       }))
 
       await updateStylesOrder({
-        variables: { styles: stylesToSend },
+        variables: { styles: stylesToSend, themeId: selectedTheme },
         update: (store: any) => {
           const storeData = store.readQuery({
             query: getProductFromCode,

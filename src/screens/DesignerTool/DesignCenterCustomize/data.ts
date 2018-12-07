@@ -84,35 +84,9 @@ export const updateThemesOrderMutation = graphql(
 
 export const updateStylesOrderMutation = graphql(
   gql`
-    mutation updateStyles($styles: [StyleToOrderInput]) {
-      updateStylesOrder(styles: $styles) {
-        fullCount
-        styles {
-          id
-          name
-          image
-          width
-          height
-          branding
-          brandingPng: branding_png
-          colorblock1
-          colorblock2
-          colorblock3
-          colorblock4
-          colorblock5
-          colorIdeas: inspiration {
-            id
-            name
-            image
-            colors
-          }
-          colors: colorsBlocks {
-            id
-            color
-            image
-          }
-          item_order
-        }
+    mutation updateStyles($styles: [StyleToOrderInput]!, $themeId: Int) {
+      updateStylesOrder(styles: $styles, themeId: $themeId) {
+        message
       }
     }
   `,

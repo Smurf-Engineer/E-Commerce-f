@@ -18,6 +18,7 @@ export const stylesQuery = gql`
         color
         image
       }
+      item_order
     }
   }
 `

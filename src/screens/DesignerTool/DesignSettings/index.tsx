@@ -125,6 +125,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           styleItems[index].item_order = styleItems[index - 1].item_order + 1
         }
       })
+      console.log(styleItems)
     }
 
     return (
@@ -164,6 +165,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 itemName={themeName}
                 onUpdateName={onUpdateThemeName}
                 onDropRow={changeThemesPosition}
+                section={'theme'}
                 {...{ onSelectImage, themeImage, onDeleteImage }}
               />
               <DesignForm
@@ -175,6 +177,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 buttonLabel="ADD NEW DESIGN"
                 itemName={designName}
                 onDropRow={changeStylesPosition}
+                section={'style'}
                 items={styleItems}
               />
             </div>
