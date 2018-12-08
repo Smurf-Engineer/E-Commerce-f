@@ -27,7 +27,6 @@ interface Props {
   onEditItem?: (id: number) => void
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
-  onMoveRow: (dragIndex: number, hoverIndex: number) => void
   onDropRow: (dragIndex: number, dropIndex: number) => void
 }
 
@@ -64,8 +63,6 @@ const rowTarget = {
     if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
       return
     }
-
-    props.onMoveRow(dragIndex, hoverIndex)
   },
   drop(props: Props, monitor: any, component: any) {
     const dragIndex = monitor.getItem().index

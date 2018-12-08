@@ -17,6 +17,7 @@ import {
   updateStylesOrderMutation
 } from './data'
 import Render3D from './Render3D'
+import SaveModal from './SaveModal'
 import { Container } from './styledComponents'
 import {
   ModelConfig,
@@ -56,7 +57,10 @@ interface Props {
   zipper: boolean
   binding: boolean
   colorIdeaItem: number
+  designName: string
   colorIdeas: DesignObject[]
+  openSaveDesign: boolean
+  saveDesignLoading: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -98,6 +102,9 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   updateThemesOrder: (variables: {}) => Promise<any>
   updateStylesOrder: (variables: {}) => Promise<any>
+  onDesignName: (name: string) => void
+  openSaveDesignAction: (open: boolean) => void
+  onConfirmDesignToSave: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -156,11 +163,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colorIdeas,
       onUpdateColorIdeaName,
       onAddColorIdea,
-      onEditTheme
+      onEditTheme,
+      onConfirmDesignToSave,
+      saveDesignLoading,
+      openSaveDesign
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
-
     return (
       <Container>
         <Tabs
@@ -211,6 +220,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUpdateColorIdeaName,
             onAddColorIdea,
             onEditTheme,
+            openSaveDesign,
             changeThemesPosition: this.changeThemesPosition,
             changeStylesPosition: this.changeStylesPosition
           }}
@@ -238,6 +248,16 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           }}
           ref={render3D => (this.render3D = render3D)}
         />
+        <SaveModal
+          visible={openSaveDesign}
+          designName={design.name}
+          requestClose={this.closeSaveDesignModal}
+          onDesignName={onUpdateDesignName}
+          formatMessage={formatMessage}
+          saveDesign={onConfirmDesignToSave}
+          uploadingThumbnail={false}
+          saveDesignLoading={saveDesignLoading}
+        />
       </Container>
     )
   }
@@ -246,6 +266,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     if (this.render3D) {
       this.render3D.saveThumbnail(item, colors)
     }
+  }
+  closeSaveDesignModal = () => {
+    const { openSaveDesignAction } = this.props
+    openSaveDesignAction(false)
   }
   changeThemesPosition = async (dragIndex: number, dropIndex: number) => {
     try {

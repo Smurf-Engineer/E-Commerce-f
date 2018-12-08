@@ -88,6 +88,8 @@ interface Props {
   colorIdeaItem: number
   colorIdeas: DesignObject[]
   editableTheme: ThemeInput | null
+  saveDesignLoading: boolean
+  openSaveDesign: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -138,6 +140,8 @@ interface Props {
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   deleteStyle: (variables: {}) => Promise<MessagePayload>
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
+  openSaveDesignAction: (open: boolean) => void
+  setSavingDesign: (saving: boolean) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -193,7 +197,11 @@ export class DesignerTool extends React.Component<Props, {}> {
       editableTheme,
       updateThemeNameAction,
       changeThemesPositionAction,
-      changeDesignsPositionAction
+      changeDesignsPositionAction,
+      openSaveDesign,
+      openSaveDesignAction,
+      saveDesignLoading,
+      setSavingDesign
     } = this.props
     const { themeImage } = this.state
     return (
@@ -220,11 +228,16 @@ export class DesignerTool extends React.Component<Props, {}> {
             zipper,
             binding,
             colorIdeaItem,
-            colorIdeas
+            colorIdeas,
+            openSaveDesignAction,
+            saveDesignLoading,
+            openSaveDesign
           }}
           files={modelConfig}
           onEditColorIdea={setColorIdeaItemAction}
-          onSaveDesign={this.handleSaveDesign}
+          onSaveDesign={this.handleOpenModal}
+          setSavingDesign={setSavingDesign}
+          onConfirmDesignToSave={this.handleSaveDesign}
           onSelectTheme={setSelectedThemeAction}
           onSelectStyle={setSelectedStyleAction}
           onDeleteTheme={this.handleOnDeleteTheme}
@@ -435,8 +448,21 @@ export class DesignerTool extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  handleOpenModal = () => {
+    const { openSaveDesignAction, productCode, modelConfig } = this.props
+    if (!productCode) {
+      message.error('Please enter a product code')
+      return
+    }
+    if (!modelConfig) {
+      message.error('Upload model files first')
+      return
+    }
 
+    openSaveDesignAction(true)
+  }
   handleSaveDesign = async () => {
+    const { setSavingDesign } = this.props
     try {
       const {
         design,
@@ -447,7 +473,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         modelConfig,
         colorIdeas,
         selectedTheme,
-        saveDesignSuccessAction
+        saveDesignSuccessAction,
+        openSaveDesignAction
       } = this.props
 
       if (!productCode) {
@@ -470,6 +497,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
+      setSavingDesign(true)
       const hasAllInspirationThumbnail = every(colorIdeas, 'image')
       if (!hasAllInspirationThumbnail) {
         message.error('Unable to find one or more color idea thumbnails')
@@ -566,9 +594,12 @@ export class DesignerTool extends React.Component<Props, {}> {
       })
 
       saveDesignSuccessAction()
+      openSaveDesignAction(false)
+      setSavingDesign(false)
       const successMessage = get(saveResponse, 'data.design.message')
       message.success(successMessage)
     } catch (e) {
+      setSavingDesign(false)
       message.error(e.message)
     }
   }

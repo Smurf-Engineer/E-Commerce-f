@@ -125,7 +125,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           styleItems[index].item_order = styleItems[index - 1].item_order + 1
         }
       })
-      console.log(styleItems)
     }
 
     return (

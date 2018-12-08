@@ -70,11 +70,10 @@ class DesignForm extends React.PureComponent<Props, State> {
     } = this.props
     const { isEditing } = this.state
 
-    const list = items.map(({ id, name, item_order }, index) => (
+    const list = items.map(({ id, name }, index) => (
       <DesignItem
         key={index}
         selected={id === selectedItem}
-        onMoveRow={this.handleOnMoveRow}
         onDropRow={onDropRow}
         onSelectItem={this.handleOnSelectItem}
         {...{ id, name, onDeleteItem, editable, onEditItem, index, section }}
@@ -170,11 +169,6 @@ class DesignForm extends React.PureComponent<Props, State> {
     return false
   }
 
-  handleOnMoveRow = (dragIndex: number, hoverIndex: number) => {
-    /* console.log('---------------------------')
-    console.log(dragIndex, hoverIndex)
-    console.log('---------------------------') */
-  }
   handleOnDropRow = (dragIndex: number, dropIndex: number) => {
     const { onDropRow } = this.props
     onDropRow(dragIndex, dropIndex)

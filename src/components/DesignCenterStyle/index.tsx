@@ -119,8 +119,6 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       />
     ))
 
-    console.log(list)
-
     return (
       <Container>
         <List>
