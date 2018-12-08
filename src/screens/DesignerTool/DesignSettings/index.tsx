@@ -280,7 +280,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const {
         product: { themes = [] }
       } = productData
-      const theme = themes[index]
+      const orderedThemes = orderBy(themes, 'item_order', 'ASC')
+      const theme = orderedThemes[index]
       onEditTheme(theme)
     }
   }
