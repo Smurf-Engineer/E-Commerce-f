@@ -12,7 +12,11 @@ export const Container = styled.div`
   padding-top: 48px;
   margin-bottom: 10vh;
 `
-
+export const RenderContainer = styled.div`
+  width: 420px;
+  height: 320px;
+  position: relative;
+`
 export const Image = styled.img`
   width: 320px;
   height: 320px;
@@ -82,3 +86,5 @@ export const ButtonContainer = styled.div`
 export const Icon = styled(icon)`
   margin-right: 8px;
 `
+
+export const RenderLayout = styled.div``

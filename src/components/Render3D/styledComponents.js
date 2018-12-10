@@ -7,18 +7,17 @@ import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
-  position: relative;
-  width: 100%;
-
+  width: 375px;
   @media (max-width: 375px) {
     height: 25em;
   }
 `
 
 export const Render = styled.div`
-  height: ${({ customProduct }) => (customProduct ? '536px' : '90vh')};
+  height: ${({ customProduct, designSearch }) =>
+    customProduct || designSearch ? '535px' : '90vh'};
   width: 100%;
-
+  cursor: grab;
   @media (max-width: 375px) {
     height: 25em;
   }
@@ -76,6 +75,15 @@ export const ButtonRight = styled(AntdButton)`
   height: 40px;
   width: 200px;
 `
+
+export const ThumbnailButton = styled(AntdButton)`
+  margin-top: 8px;
+  width: 200px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+`
+
 export const DragText = styled.div`
   color: #5f6062;
   user-select: none;

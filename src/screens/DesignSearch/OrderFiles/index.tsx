@@ -9,9 +9,9 @@ import isEmpty from 'lodash/isEmpty'
 import last from 'lodash/last'
 import indexOf from 'lodash/indexOf'
 import message from 'antd/lib/message'
+import Render3D from '../../../components/Render3D'
 import {
   Container,
-  Image,
   Code,
   Data,
   Status,
@@ -20,7 +20,9 @@ import {
   FinalSvg,
   AssetsLabel,
   Icon,
-  ButtonContainer
+  ButtonContainer,
+  RenderContainer,
+  RenderLayout
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import { OrderSearchResult } from '../../../types/common'
@@ -31,34 +33,108 @@ import AccessoryColors from '../AccessoryColors'
 interface Props {
   order: OrderSearchResult
   uploadingFile: boolean
+  actualSvg: string
+  uploadingThumbnail: boolean
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any) => string
+  onUploadingThumbnail: (uploading: boolean) => void
+  onSaveThumbnail: (thumbnail: string, designId: string) => void
 }
-
-const OrderFiles = ({
-  order: {
-    code,
-    image,
-    status,
-    svgUrl,
-    assets,
-    stitchingName,
-    stitchingValue,
-    bibColor,
-    zipperColor,
-    bindingColor
-  },
-  uploadingFile,
-  downloadFile,
-  onUploadFile,
-  formatMessage
-}: Props) => {
-  const statusOrder = status.replace(/_/g, ' ')
-  const onDownload = () => {
+class OrderFiles extends React.PureComponent<Props> {
+  render3D: any
+  render() {
+    const {
+      order: {
+        code,
+        status,
+        svgUrl,
+        assets,
+        stitchingName,
+        stitchingValue,
+        bibColor,
+        zipperColor,
+        bindingColor
+      },
+      uploadingFile,
+      formatMessage,
+      actualSvg,
+      onSaveThumbnail,
+      uploadingThumbnail
+    } = this.props
+    const statusOrder = status.replace(/_/g, ' ')
+    return (
+      <Container>
+        <RenderLayout>
+          <AccessoryColors
+            {...{
+              stitchingName,
+              stitchingValue,
+              bibColor,
+              zipperColor,
+              bindingColor
+            }}
+          />
+          <RenderContainer>
+            <Render3D
+              designSearch={true}
+              loading={uploadingFile}
+              actualSvg={actualSvg}
+              designId={'rJI3QRV0X'}
+              uploadingThumbnail={uploadingThumbnail}
+              onSaveThumbnail={onSaveThumbnail}
+              onUploadingThumbnail={() => console.log('on uploading')}
+            />
+          </RenderContainer>
+          {/* <Image src={image} /> */}
+        </RenderLayout>
+        <Data>
+          <Code>{code}</Code>
+          <StatusContainer>
+            <Label>
+              <FormattedMessage {...messages.status} />
+            </Label>
+            <Status>{statusOrder}</Status>
+          </StatusContainer>
+          <Button onClick={this.onDownload}>
+            <ButtonContainer>
+              <Icon type="download" />
+              <FormattedMessage {...messages.downloadAll} />
+            </ButtonContainer>
+          </Button>
+          <DraggerWithLoading
+            className="upload"
+            loading={uploadingFile}
+            onSelectImage={this.beforeUpload}
+            formatMessage={formatMessage}
+            extensions={['.svg']}
+          >
+            <Button className="uploadButton">
+              <ButtonContainer>
+                <Icon type="upload" />
+                <FormattedMessage {...messages.uploadDesign} />
+              </ButtonContainer>
+            </Button>
+          </DraggerWithLoading>
+          <FinalSvg>
+            <DownloadItem url={svgUrl} name="Final SVG" />
+          </FinalSvg>
+          <AssetsLabel>
+            <FormattedMessage {...messages.assets} />
+          </AssetsLabel>
+          <FilesList {...{ assets }} />
+        </Data>
+      </Container>
+    )
+  }
+  onDownload = () => {
+    const {
+      downloadFile,
+      order: { code }
+    } = this.props
     downloadFile(code)
   }
-  const getFileExtension = (fileName: string) => {
+  getFileExtension = (fileName: string) => {
     const extensionPattern = /\.[a-zA-Z]+/g
     let extension = fileName.match(extensionPattern)
     if (!isEmpty(extension)) {
@@ -66,7 +142,12 @@ const OrderFiles = ({
     }
     return ''
   }
-  const beforeUpload = (file: any) => {
+  beforeUpload = (file: any) => {
+    const {
+      formatMessage,
+      onUploadFile,
+      order: { code }
+    } = this.props
     if (file) {
       const { size, name } = file
       // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
@@ -74,7 +155,7 @@ const OrderFiles = ({
         message.error(formatMessage(messages.imageSizeError))
         return false
       }
-      const fileExtension = getFileExtension(name)
+      const fileExtension = this.getFileExtension(name)
       if (indexOf(['.svg'], (fileExtension as String).toLowerCase()) === -1) {
         message.error(formatMessage(messages.imageExtensionError))
         return false
@@ -83,58 +164,6 @@ const OrderFiles = ({
     }
     return false
   }
-  return (
-    <Container>
-      <div>
-        <AccessoryColors
-          {...{
-            stitchingName,
-            stitchingValue,
-            bibColor,
-            zipperColor,
-            bindingColor
-          }}
-        />
-        <Image src={image} />
-      </div>
-      <Data>
-        <Code>{code}</Code>
-        <StatusContainer>
-          <Label>
-            <FormattedMessage {...messages.status} />
-          </Label>
-          <Status>{statusOrder}</Status>
-        </StatusContainer>
-        <Button onClick={onDownload}>
-          <ButtonContainer>
-            <Icon type="download" />
-            <FormattedMessage {...messages.downloadAll} />
-          </ButtonContainer>
-        </Button>
-        <DraggerWithLoading
-          className="upload"
-          loading={uploadingFile}
-          onSelectImage={beforeUpload}
-          formatMessage={formatMessage}
-          extensions={['.svg']}
-        >
-          <Button className="uploadButton">
-            <ButtonContainer>
-              <Icon type="upload" />
-              <FormattedMessage {...messages.uploadDesign} />
-            </ButtonContainer>
-          </Button>
-        </DraggerWithLoading>
-        <FinalSvg>
-          <DownloadItem url={svgUrl} name="Final SVG" />
-        </FinalSvg>
-        <AssetsLabel>
-          <FormattedMessage {...messages.assets} />
-        </AssetsLabel>
-        <FilesList {...{ assets }} />
-      </Data>
-    </Container>
-  )
 }
 
 export default OrderFiles
