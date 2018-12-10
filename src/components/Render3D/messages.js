@@ -41,8 +41,8 @@ export default defineMessages({
     id: 'screens.Designs.errorMessage',
     defaultMessage: 'Seems like the design was deleted or is not available'
   },
-  saveThumbnail: {
-    id: 'components.OrderFiles.saveThumbnail',
-    defaultMessage: 'Save Thumbnail'
+  updateThumbnail: {
+    id: 'components.OrderFiles.updateThumbnail',
+    defaultMessage: 'Update Thumbnail'
   }
 })

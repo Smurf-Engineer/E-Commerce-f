@@ -39,7 +39,7 @@ export const DesignerLink = styled.div`
 
 export const Content = styled.div`
   width: 50%;
-  max-width: 800px;
+  max-width: 900px;
   align-self: center;
   display: flex;
   flex: 1;

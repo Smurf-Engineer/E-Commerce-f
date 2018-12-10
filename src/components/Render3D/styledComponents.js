@@ -7,7 +7,8 @@ import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
 
 export const Container = styled.div`
-  width: 375px;
+  width: ${({ designSearch }) => (designSearch ? '600px' : '100%')};
+  height: ${({ designSearch }) => (designSearch ? '800px' : 'auto')};
   @media (max-width: 375px) {
     height: 25em;
   }
@@ -21,6 +22,7 @@ export const Render = styled.div`
   @media (max-width: 375px) {
     height: 25em;
   }
+  text-align: center;
 `
 
 export const Model = styled.div`

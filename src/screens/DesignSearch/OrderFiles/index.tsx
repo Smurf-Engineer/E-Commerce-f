@@ -38,8 +38,8 @@ interface Props {
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any) => string
-  onUploadingThumbnail: (uploading: boolean) => void
   onSaveThumbnail: (thumbnail: string, designId: string) => void
+  setUploadingThumbnailAction: (uploading: boolean) => void
 }
 class OrderFiles extends React.PureComponent<Props> {
   render3D: any
@@ -54,13 +54,15 @@ class OrderFiles extends React.PureComponent<Props> {
         stitchingValue,
         bibColor,
         zipperColor,
-        bindingColor
+        bindingColor,
+        shortId
       },
       uploadingFile,
       formatMessage,
       actualSvg,
       onSaveThumbnail,
-      uploadingThumbnail
+      uploadingThumbnail,
+      setUploadingThumbnailAction
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     return (
@@ -80,13 +82,12 @@ class OrderFiles extends React.PureComponent<Props> {
               designSearch={true}
               loading={uploadingFile}
               actualSvg={actualSvg}
-              designId={'rJI3QRV0X'}
+              designId={shortId}
               uploadingThumbnail={uploadingThumbnail}
               onSaveThumbnail={onSaveThumbnail}
-              onUploadingThumbnail={() => console.log('on uploading')}
+              onUploadingThumbnail={setUploadingThumbnailAction}
             />
           </RenderContainer>
-          {/* <Image src={image} /> */}
         </RenderLayout>
         <Data>
           <Code>{code}</Code>
@@ -109,7 +110,7 @@ class OrderFiles extends React.PureComponent<Props> {
             formatMessage={formatMessage}
             extensions={['.svg']}
           >
-            <Button className="uploadButton">
+            <Button>
               <ButtonContainer>
                 <Icon type="upload" />
                 <FormattedMessage {...messages.uploadDesign} />

@@ -18,6 +18,7 @@ export const orderSearchQuery = gql`
           fileUrl: url
         }
       }
+      shortId: short_id
       svgUrl: output_svg
       stitchingValue: flatlock
       stitchingName: flatlock_code

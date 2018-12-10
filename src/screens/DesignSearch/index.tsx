@@ -48,6 +48,7 @@ interface Props {
   uploadingFile: boolean
   actualSvg: string
   uploadingThumbnail: boolean
+  data: any
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -86,7 +87,8 @@ export class DesignSearch extends React.Component<Props, {}> {
       uploadingFile,
       intl: { formatMessage },
       actualSvg,
-      uploadingThumbnail
+      uploadingThumbnail,
+      setUploadingThumbnailAction
     } = this.props
 
     let loadErrContent = <Spin />
@@ -95,9 +97,16 @@ export class DesignSearch extends React.Component<Props, {}> {
     } else if (noAdmin) {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
+    console.log(order)
     const orderContent = order && (
       <OrderFiles
-        {...{ order, uploadingFile, actualSvg, uploadingThumbnail }}
+        {...{
+          order,
+          uploadingFile,
+          actualSvg,
+          uploadingThumbnail,
+          setUploadingThumbnailAction
+        }}
         formatMessage={formatMessage}
         downloadFile={this.downloadAllFiles}
         onUploadFile={uploadProDesignAction}
@@ -189,7 +198,6 @@ export class DesignSearch extends React.Component<Props, {}> {
   }
   handleUploadThumbnail = async (image: string, designId: string) => {
     const { uploadThumbnail, setUploadingThumbnailAction } = this.props
-    setUploadingThumbnailAction(true)
     try {
       await uploadThumbnail({ variables: { image, designId } })
       message.success('Your thumbnail has been successfully saved!')

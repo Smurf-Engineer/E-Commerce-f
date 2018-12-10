@@ -265,14 +265,14 @@ class Render3D extends PureComponent {
     const circleIcon = <Icon type="loading" style={{ fontSize: 64 }} spin />
 
     return (
-      <Container onKeyDown={this.handleOnKeyDown}>
+      <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
         {designSearch && (
           <ThumbnailButton
             loading={uploadingThumbnail}
-            disabled={uploadingThumbnail}
+            disabled={uploadingThumbnail || loading}
             onClick={this.saveThumbnail}
           >
-            <FormattedMessage {...messages.saveThumbnail} />
+            <FormattedMessage {...messages.updateThumbnail} />
           </ThumbnailButton>
         )}
         <Render
@@ -627,7 +627,6 @@ class Render3D extends PureComponent {
       const { onSaveThumbnail, onUploadingThumbnail } = this.props
       onUploadingThumbnail(true)
       const thumbnail = await this.takeScreenshot()
-      console.log(thumbnail)
       onSaveThumbnail(thumbnail, designId)
     } catch (error) {
       console.error(error)

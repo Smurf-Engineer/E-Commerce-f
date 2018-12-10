@@ -13,8 +13,7 @@ export const Container = styled.div`
   margin-bottom: 10vh;
 `
 export const RenderContainer = styled.div`
-  width: 420px;
-  height: 320px;
+  width: 600px;
   position: relative;
 `
 export const Image = styled.img`
