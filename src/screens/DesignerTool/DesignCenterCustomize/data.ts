@@ -31,7 +31,7 @@ export const getProductFromCode = gql`
         id
         name
         image
-        item_order
+        itemOrder: item_order
         styles {
           id
           name
@@ -56,7 +56,7 @@ export const getProductFromCode = gql`
             color
             image
           }
-          item_order
+          itemOrder: item_order
         }
       }
     }
@@ -72,7 +72,7 @@ export const updateThemesOrderMutation = graphql(
           id
           name
           image
-          item_order
+          itemOrder: item_order
         }
       }
     }

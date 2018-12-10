@@ -276,15 +276,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       const { updateThemesOrder, data, productCode } = this.props
       const themes = orderBy(
         get(cloneDeep(data), 'product.themes', []),
-        'item_order',
+        'itemOrder',
         'ASC'
       )
       const temporalTheme = cloneDeep(themes[dragIndex])
-      themes[dragIndex].item_order = themes[dropIndex].item_order
-      themes[dropIndex].item_order = temporalTheme.item_order
-      const themesToSend = map(themes, ({ id, item_order }) => ({
+      themes[dragIndex].itemOrder = themes[dropIndex].itemOrder
+      themes[dropIndex].itemOrder = temporalTheme.itemOrder
+      const themesToSend = map(themes, ({ id, itemOrder }) => ({
         id,
-        item_order
+        item_order: itemOrder
       }))
       await updateThemesOrder({
         variables: { themes: themesToSend },
@@ -316,27 +316,27 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
 
       const styles = orderBy(
         get(cloneDeep(currentTheme), 'styles', []),
-        'item_order',
+        'itemOrder',
         'ASC'
       )
 
       styles.map((style: any, index: number) => {
-        if (!style.item_order) {
-          styles[index].item_order = 1
+        if (!style.itemOrder) {
+          styles[index].itemOrder = 1
         }
         if (
           styles[index - 1] &&
-          styles[index - 1].item_order !== style.item_order - 1
+          styles[index - 1].itemOrder !== style.itemOrder - 1
         ) {
-          styles[index].item_order = styles[index - 1].item_order + 1
+          styles[index].itemOrder = styles[index - 1].itemOrder + 1
         }
       })
       const temporalStyle = cloneDeep(styles[dragIndex])
-      styles[dragIndex].item_order = styles[dropIndex].item_order
-      styles[dropIndex].item_order = temporalStyle.item_order
-      const stylesToSend = map(styles, ({ id, item_order }) => ({
+      styles[dragIndex].itemOrder = styles[dropIndex].itemOrder
+      styles[dropIndex].itemOrder = temporalStyle.itemOrder
+      const stylesToSend = map(styles, ({ id, itemOrder }) => ({
         id,
-        item_order
+        item_order: itemOrder
       }))
 
       await updateStylesOrder({

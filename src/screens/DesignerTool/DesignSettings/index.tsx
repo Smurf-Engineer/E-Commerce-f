@@ -101,28 +101,28 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const { obj, mtl, label, bumpMap } = product
       productHasAllFiles = !!obj && !!mtl && !!label && !!bumpMap
       themeItems = orderBy(
-        themes.map(({ id, name, item_order }) => ({ id, name, item_order })),
-        'item_order',
+        themes.map(({ id, name, itemOrder }) => ({ id, name, itemOrder })),
+        'itemOrder',
         'ASC'
       )
       styleItems = orderBy(
-        themeStyles.map(({ id, name, item_order }) => ({
+        themeStyles.map(({ id, name, itemOrder }) => ({
           id,
           name,
-          item_order
+          itemOrder
         })),
-        'item_order',
+        'itemOrder',
         'ASC'
       )
-      styleItems.map(({ item_order }, index) => {
-        if (!item_order) {
-          styleItems[index].item_order = 1
+      styleItems.map(({ itemOrder }, index) => {
+        if (!itemOrder) {
+          styleItems[index].itemOrder = 1
         }
         if (
           styleItems[index - 1] &&
-          styleItems[index - 1].item_order !== item_order - 1
+          styleItems[index - 1].itemOrder !== itemOrder - 1
         ) {
-          styleItems[index].item_order = styleItems[index - 1].item_order + 1
+          styleItems[index].itemOrder = styleItems[index - 1].itemOrder + 1
         }
       })
     }
@@ -280,7 +280,7 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const {
         product: { themes = [] }
       } = productData
-      const orderedThemes = orderBy(themes, 'item_order', 'ASC')
+      const orderedThemes = orderBy(themes, 'itemOrder', 'ASC')
       const theme = orderedThemes[index]
       onEditTheme(theme)
     }

@@ -5,7 +5,6 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
-import orderBy from 'lodash/orderBy'
 import Modal from 'antd/lib/modal'
 import reverse from 'lodash/reverse'
 import withLoading from '../WithLoadingData'
@@ -110,8 +109,8 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
         </Container>
       )
     }
-    const orderedStyles = orderBy(styles, 'item_order', 'ASC')
-    const list = orderedStyles.map(({ id, image, name }, index) => (
+
+    const list = styles.map(({ id, image, name }, index) => (
       <StyleItem
         key={index}
         {...{ index, id, name, image }}

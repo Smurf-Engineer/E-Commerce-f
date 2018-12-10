@@ -80,7 +80,6 @@ class Render3D extends PureComponent {
 
     const areasHasChange = isEqual(areas, nextAreas)
     if (!areasHasChange) {
-      // this.loadObject(files, design)
       this.loadDesign(nextAreas, nextColors)
       return
     }
