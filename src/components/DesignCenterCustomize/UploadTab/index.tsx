@@ -108,7 +108,12 @@ class UploadTab extends React.PureComponent<Props, State> {
     const { images: imagesData } = data
 
     const dragger = (
-      <Dragger loading={uploadingFile} onSelectImage={this.beforeUpload} />
+      <Dragger
+        extensions={['.eps', '.ai', '.svg', '.tiff', '.pdf', '.jpg']}
+        formatMessage={formatMessage}
+        loading={uploadingFile}
+        onSelectImage={this.beforeUpload}
+      />
     )
     return (
       <Container>
