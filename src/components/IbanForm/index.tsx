@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { injectStripe, IbanElement } from 'react-stripe-elements'
-import AnimateHeight from 'react-animate-height'
 import messages from './messages'
 import {
   Container,
@@ -15,7 +14,6 @@ import {
   InputTitleContainer,
   Label,
   ErrorMsg,
-  StripeCardElement
 } from './styledComponents'
 import { IbanData } from '../../types/common'
 
@@ -100,7 +98,6 @@ class IbanForm extends React.Component<Props, {}> {
               <IbanElement
                 supportedCountries={['SEPA']}
                 {...{ disabled }}
-              // onChange={this.handleInputChange}
               />
             </ContainerInput>
             {disabled && <ErrorMsg>{formatMessage(messages.error)}</ErrorMsg>}
@@ -139,7 +136,6 @@ class IbanForm extends React.Component<Props, {}> {
       setStripeErrorAction,
       setStripeIbanDataAction,
       setLoadingBillingAction,
-      // setStripeCardDataAction,
       nextStep,
       stripe
     } = this.props
@@ -162,62 +158,32 @@ class IbanForm extends React.Component<Props, {}> {
         notification_method: 'email',
       },
     }
-    // setLoadingBillingAction(true)
+    setLoadingBillingAction(true)
 
-    // const stripeResponse = await stripe.createSource(stripeSourceData)
-    // if (stripeResponse && stripeResponse.error) {
-    //   setStripeErrorAction(stripeResponse.error.message)
-    // } else {
-    //   console.log(stripeResponse)
-    const stripeResponse = {
-      'id': 'src_18HgGjHNCLa1Vra6Y9TIP6tU',
-      'object': 'source',
-      'amount': null,
-      'client_secret': 'src_client_secret_XcBmS94nTg5o0xc9MSliSlDW',
-      'created': 1464803577,
-      'currency': 'eur',
-      'flow': 'none',
-      'livemode': false,
-      'owner': {
-        'address': null,
-        'email': 'fer@mail.com',
-        'name': 'Jenny Rosen',
-        'phone': null,
-        'verified_address': null,
-        'verified_email': null,
-        'verified_name': null,
-        'verified_phone': null
-      },
-      'status': 'chargeable',
-      'type': 'sepa_debit',
-      'usage': 'reusable',
-      'sepa_debit': {
-        'bank_code': '37040044',
-        'country': 'DE',
-        'fingerprint': 'NxdSyRegc9PsMkWy',
-        'last4': '3001',
-        'mandate_reference': 'NXDSYREGC9PSMKWY',
-        'mandate_url': 'mkmk'
+    const stripeResponse = await stripe.createSource(stripeSourceData)
+    if (stripeResponse && stripeResponse.error) {
+      setStripeErrorAction(stripeResponse.error.message)
+    } else {
+      console.log(stripeResponse)
+
+      const {
+        id,
+        owner,
+        sepa_debit
+      } = stripeResponse
+
+      const ibanData: IbanData = {
+        id,
+        name: owner.name,
+        email: owner.email,
+        last4: sepa_debit.last4,
       }
+
+      setStripeIbanDataAction(ibanData)
+      nextStep()
     }
 
-    const {
-      id,
-      owner,
-      sepa_debit
-    } = stripeResponse
-
-    const ibanData: IbanData = {
-      id,
-      name: owner.name,
-      email: owner.email,
-      last4: sepa_debit.last4,
-    }
-
-    // setStripeIbanDataAction(ibanData)
-    nextStep()
   }
-
 }
 
 export default injectStripe(IbanForm)
