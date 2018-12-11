@@ -88,7 +88,6 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     const { openNewStyleModalAction } = this.props
     openNewStyleModalAction(false)
   }
-
   render() {
     const {
       data: { styles = [] },

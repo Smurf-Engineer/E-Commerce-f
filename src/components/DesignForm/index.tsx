@@ -9,7 +9,6 @@ import Icon from 'antd/lib/icon'
 import {
   Container,
   Title,
-  Subtitle,
   Button,
   List,
   Input,
@@ -17,7 +16,9 @@ import {
   ImageInput,
   Types
 } from './styledComponents'
+import { DragDropContext } from 'react-dnd'
 import { UploadFile, DesignItem as DesignItemType } from '../../types/common'
+import HTML5Backend from 'react-dnd-html5-backend'
 
 const NONE = -1
 
@@ -32,11 +33,15 @@ interface Props {
   isNewItem?: boolean
   withImageInput?: boolean
   itemName: string
+  editable?: boolean
+  section: string
+  onEditItem?: (id: number) => void
   onSelectItem: (id: number) => void
   onDeleteItem: (id: number) => void
   onSelectImage?: (file: UploadFile) => void
   onDeleteImage?: () => void
-  onUpdateName: (name: string) => void
+  onUpdateName?: (name: string) => void
+  onDropRow: (dragIndex: number, dropIndex: number) => void
 }
 
 interface State {
@@ -49,16 +54,19 @@ class DesignForm extends React.PureComponent<Props, State> {
   }
   render() {
     const {
-      title,
       itemName,
       subtitle,
       buttonLabel,
       items,
       selectedItem,
+      onEditItem,
       onDeleteItem,
       withImageInput = false,
       themeImage,
-      onDeleteImage
+      onDeleteImage,
+      editable,
+      onDropRow,
+      section
     } = this.props
     const { isEditing } = this.state
 
@@ -66,8 +74,9 @@ class DesignForm extends React.PureComponent<Props, State> {
       <DesignItem
         key={index}
         selected={id === selectedItem}
+        onDropRow={onDropRow}
         onSelectItem={this.handleOnSelectItem}
-        {...{ id, name, onDeleteItem }}
+        {...{ id, name, onDeleteItem, editable, onEditItem, index, section }}
       />
     ))
 
@@ -92,33 +101,26 @@ class DesignForm extends React.PureComponent<Props, State> {
 
     const itemList = !!list.length && (
       <div>
-        <Subtitle>{subtitle}</Subtitle>
+        <Title>{subtitle}</Title>
         <List>{list}</List>
       </div>
     )
 
-    // TODO: This will be temporary
     if (!withImageInput) {
-      return (
-        <Container>
-          {!!list.length && <Title>{title}</Title>}
-          {itemList}
-        </Container>
-      )
+      return <Container>{itemList}</Container>
     }
 
     return (
       <Container>
-        <Title>{title}</Title>
         <Button onClick={this.toogleIsEditing} type="ghost">
           <Icon type="plus" />
           {buttonLabel}
         </Button>
         {isEditing && (
           <div>
-            <Subtitle>
+            <Title>
               New {label} <TextRed>*</TextRed>
-            </Subtitle>
+            </Title>
             <Input
               value={itemName}
               onChange={this.handleOnUpdateName}
@@ -156,7 +158,9 @@ class DesignForm extends React.PureComponent<Props, State> {
     const {
       currentTarget: { value }
     } = evt
-    onUpdateName(value)
+    if (onUpdateName) {
+      onUpdateName(value)
+    }
   }
 
   beforeUpload = (file: UploadFile) => {
@@ -164,6 +168,11 @@ class DesignForm extends React.PureComponent<Props, State> {
     onSelectImage(file)
     return false
   }
+
+  handleOnDropRow = (dragIndex: number, dropIndex: number) => {
+    const { onDropRow } = this.props
+    onDropRow(dragIndex, dropIndex)
+  }
 }
 
-export default DesignForm
+export default DragDropContext(HTML5Backend)(DesignForm)
