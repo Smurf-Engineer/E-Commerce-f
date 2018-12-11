@@ -22,6 +22,7 @@ import {
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
   SET_STRIPE_CARD_DATA,
+  SET_STRIPE_IBAN_DATA,
   SET_LOADING_PLACE_ORDER,
   RESET_DATA,
   SET_PAYMENT_METHOD,
@@ -301,6 +302,12 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         stripeToken: action.stripeToken,
         selectedCard: action.card,
+        loadingBilling: false,
+        stripeError: false
+      })
+    case SET_STRIPE_IBAN_DATA:
+      return state.merge({
+        stripeIban: action.iban,
         loadingBilling: false,
         stripeError: false
       })

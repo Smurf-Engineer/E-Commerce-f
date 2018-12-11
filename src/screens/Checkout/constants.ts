@@ -24,6 +24,7 @@ export const SET_IBAN_ERROR = `${namespace}/SET_IBAN_ERROR`
 export const SET_LOADING_BILLING = `${namespace}/SET_LOADING_BILLING`
 export const SET_STRIPE_TOKEN = `${namespace}/SET_STRIPE_TOKEN`
 export const SET_STRIPE_CARD_DATA = `${namespace}/SET_STRIPE_CARD_DATA`
+export const SET_STRIPE_IBAN_DATA = `${namespace}/SET_STRIPE_IBAN_DATA`
 export const SHOW_CARD_FORM = `${namespace}/SHOW_CARD_FORM`
 export const SET_SELECTED_CARD_TO_PAY = `${namespace}/SET_SELECTED_CARD_TO_PAY`
 export const SHOW_BILLING_ADDRESS_FORM = `${namespace}/SHOW_BILLING_ADDRESS_FORM`
