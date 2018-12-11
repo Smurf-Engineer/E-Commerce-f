@@ -75,8 +75,8 @@ export const EditDesignButton = styled(Button)`
 `
 
 export const ProApproved = styled.div`
-  border: 2px solid #4a90e2;
-  background-color: #4a90e2;
+  border: 2px solid #555555;
+  background-color: #555555;
   border-radius: 2px;
   color: #fff;
   height: 40px;
