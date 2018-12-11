@@ -13,6 +13,7 @@ export const facebooklLogin = graphql(
           email
         }
         token
+        newUser
       }
     }
   `,
@@ -33,6 +34,7 @@ export const googleLogin = graphql(
           email
         }
         token
+        newUser
       }
     }
   `,

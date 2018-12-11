@@ -1,4 +1,5 @@
 import React from 'react'
+import config from '../config'
 
 interface Props {
   content: any
@@ -9,7 +10,9 @@ const Html = ({ content, state, reduxState }: Props) => (
   <body>
     <noscript>
       <iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-WRGVRP9"
+        src={`https://www.googletagmanager.com/ns.html?id=GTM-${
+          config.googleTagManagerId
+        }`}
         height="0"
         width="0"
         style={{ display: 'none', visibility: 'hidden' }}

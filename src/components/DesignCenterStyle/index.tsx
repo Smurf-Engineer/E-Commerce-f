@@ -4,10 +4,12 @@
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import { graphql, compose } from 'react-apollo'
+import get from 'lodash/get'
 import Modal from 'antd/lib/modal'
 import reverse from 'lodash/reverse'
 import withLoading from '../WithLoadingData'
 import withError from '../WithError'
+import { SELECTED_DESIGN } from '../../constants'
 import { QueryProps, StyleModalType, Style } from '../../types/common'
 import { stylesQuery } from './data'
 import messages from './messages'
@@ -15,8 +17,6 @@ import StyleItem from '../Theme'
 import { DesignStyle } from '../../types/common'
 import {
   Container,
-  Title,
-  Slider,
   Row,
   List,
   ModalMessage,
@@ -49,15 +49,16 @@ interface Props {
   ) => void
 }
 
-const marks = {
-  1: 'Classic',
-  2: 'Edgy',
-  3: 'Extreme'
-}
-
 export class DesignCenterStyle extends React.PureComponent<Props, {}> {
   handleOnSelectStyle = (id: number, index: any) => {
-    const { styleIndex, openNewStyleModalAction, designHasChanges } = this.props
+    const {
+      styleIndex,
+      openNewStyleModalAction,
+      designHasChanges,
+      data: { styles }
+    } = this.props
+    const label = get(styles[index], 'name', '')
+    window.dataLayer.push({ event: SELECTED_DESIGN, label })
     if (styleIndex !== -1 && designHasChanges) {
       openNewStyleModalAction(true, index, id)
       return
@@ -88,38 +89,16 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     openNewStyleModalAction(false)
   }
 
-  handleOnSelectComplexity = (value: any) => {
-    const { onSelectStyleComplexity } = this.props
-    const currentStyle = value - 1
-    onSelectStyleComplexity(currentStyle)
-  }
-
   render() {
     const {
       data: { styles = [] },
       formatMessage,
-      complexity,
       styleModalData: { openNewStyleModal }
     } = this.props
-
-    const slider = (
-      <Slider
-        {...{ marks }}
-        onChange={this.handleOnSelectComplexity}
-        defaultValue={1}
-        value={complexity}
-        min={1}
-        max={3}
-      />
-    )
 
     if (!styles.length) {
       return (
         <Container>
-          <Title>
-            <FormattedMessage {...messages.title} />
-          </Title>
-          {slider}
           <Empty>
             <EmptyTitle>
               <FormattedMessage {...messages.emptyTitle} />
@@ -142,10 +121,6 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 
     return (
       <Container>
-        <Title>
-          <FormattedMessage {...messages.title} />
-        </Title>
-        {slider}
         <List>
           <Row>{list}</Row>
         </List>
@@ -176,8 +151,8 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 
 const DesignCenterStyleWithData = compose(
   graphql<Data, Props>(stylesQuery, {
-    options: ({ productId, themeId, complexity }) => ({
-      variables: { productId, themeId, complexity }
+    options: ({ productId, themeId }) => ({
+      variables: { productId, themeId }
     })
   }),
   withError,

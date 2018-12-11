@@ -11,17 +11,25 @@ import {
   Name,
   Info,
   Image,
-  InfoContainer
+  InfoContainer,
+  Buttons,
+  SaveButton,
+  Delete,
+  DeleteButton
 } from './styledComponents'
 
 interface Props {
   id: number
+  inspirationId?: number
   colors: string[]
   image?: string
   name: string
   buttonLabel?: string
   loading?: boolean
+  showDelete?: boolean
   onSelectPalette: (id: number) => void
+  onEditColorIdea?: (id: number) => void
+  onDeleteInspiration?: (id: number, index: number) => void
 }
 
 const PaletteCard = ({
@@ -31,9 +39,23 @@ const PaletteCard = ({
   onSelectPalette,
   buttonLabel,
   loading = false,
-  image
+  image,
+  onEditColorIdea,
+  onDeleteInspiration,
+  inspirationId = 0,
+  showDelete = true
 }: Props) => {
+  const handleOnDelete = () => {
+    if (onDeleteInspiration) {
+      onDeleteInspiration(inspirationId, id)
+    }
+  }
   const handleOnSelectPalette = () => onSelectPalette(id)
+  const handleOnEditIdea = () => {
+    if (onEditColorIdea) {
+      onEditColorIdea(id)
+    }
+  }
   const colorButtons = colors.map((color, index) => (
     <Oval key={index} currentColor={color} />
   ))
@@ -44,12 +66,20 @@ const PaletteCard = ({
         <Info>
           <Name>{name}</Name>
           <ColorButtons>{colorButtons}</ColorButtons>
-          <Button disabled={loading} onClick={handleOnSelectPalette}>
-            {buttonLabel}
-          </Button>
+          <Buttons>
+            <Button onClick={handleOnEditIdea}>EDIT</Button>
+            <SaveButton disabled={loading} onClick={handleOnSelectPalette}>
+              {buttonLabel}
+            </SaveButton>
+          </Buttons>
         </Info>
       </InfoContainer>
       <Divider />
+      {showDelete && (
+        <DeleteButton onClick={handleOnDelete}>
+          <Delete type="delete" />
+        </DeleteButton>
+      )}
     </Container>
   )
 }

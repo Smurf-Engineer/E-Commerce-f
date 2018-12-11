@@ -128,7 +128,9 @@ module.exports = {
         'PAYPAL_ENV',
         'GOOGLE_MAP_KEY',
         'INTERCOM_KEY',
-        'DEFAULT_CURRENCY'
+        'DEFAULT_CURRENCY',
+        'GOOGLE_TAG_MANAGER_ID',
+        'LOG_ROCKET_KEY'
       ])
     )
 

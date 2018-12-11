@@ -18,7 +18,8 @@ import {
   uploadThumbnailMutation,
   createThemeMutation,
   deleteThemeMutation,
-  deleteStyleMutation
+  deleteStyleMutation,
+  deleteInspirationMutation
 } from './data'
 import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
@@ -27,7 +28,9 @@ import {
   ModelConfig,
   UploadFile,
   DesignConfig,
-  MessagePayload
+  MessagePayload,
+  DesignObject,
+  ModelDesign
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -75,11 +78,13 @@ interface Props {
   selectedStyle: number
   productCode: string
   themeName: string
-  styleName: string
+  design: ModelDesign
   uploadingThumbnail: boolean
   bibBrace: boolean
   zipper: boolean
   binding: boolean
+  colorIdeaItem: number
+  colorIdeas: DesignObject[]
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -96,22 +101,36 @@ interface Props {
   setInspirationColorAction: (index: number) => void
   setProductCodeAction: (code: string) => void
   setThemeNameAction: (name: string) => void
-  setStyleNameAction: (design: number, name: string) => void
+  setDesignNameAction: (name: string) => void
   setComplexityAction: (design: number, complexity: number) => void
-  setThumbnailAction: (design: number, item: number, thumbnail: string) => void
+  setThumbnailAction: (item: number, thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   setUploadingSuccess: (config: ModelConfig) => void
+  setModelAction: (
+    config: ModelConfig,
+    colorIdeas: DesignObject[],
+    design: ModelDesign
+  ) => void
   uploadThemeImage: (file: any) => void
   addExtraFileAction: (file: string) => void
   removeExtraFileAction: (index: number) => void
   toggleExtraColorAction: (color: string) => void
   saveDesignSuccessAction: () => void
+  setColorIdeaItemAction: (item: number) => void
+  deleteColorIdeaAction: (index: number) => void
+  setColorIdeaNameAction: (
+    name: string,
+    updateColors: boolean,
+    item?: number
+  ) => void
+  addColorIdeaAction: () => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
   createTheme: (variables: {}) => Promise<DataTheme>
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   deleteStyle: (variables: {}) => Promise<MessagePayload>
+  deleteInspiration: (variables: {}) => Promise<MessagePayload>
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -145,19 +164,24 @@ export class DesignerTool extends React.Component<Props, {}> {
       setProductCodeAction,
       productCode,
       themeName,
-      styleName,
+      design,
       extraFiles,
       bibBrace,
       zipper,
       binding,
+      colorIdeaItem,
       setThemeNameAction,
-      setStyleNameAction,
+      setDesignNameAction,
       setComplexityAction,
       setUploadingThumbnailAction,
-      setUploadingSuccess,
+      setModelAction,
       addExtraFileAction,
       removeExtraFileAction,
-      toggleExtraColorAction
+      toggleExtraColorAction,
+      setColorIdeaItemAction,
+      colorIdeas,
+      setColorIdeaNameAction,
+      addColorIdeaAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -175,20 +199,24 @@ export class DesignerTool extends React.Component<Props, {}> {
           selectedStyle,
           productCode,
           themeName,
-          styleName,
+          design,
           uploadingThumbnail,
           extraFiles,
           formatMessage,
           bibBrace,
           zipper,
-          binding
+          binding,
+          colorIdeaItem,
+          colorIdeas
         }}
         files={modelConfig}
+        onEditColorIdea={setColorIdeaItemAction}
         onSaveDesign={this.handleSaveDesign}
         onSelectTheme={setSelectedThemeAction}
         onSelectStyle={setSelectedStyleAction}
         onDeleteTheme={this.handleOnDeleteTheme}
         onDeleteStyle={this.handleOnDeleteStyle}
+        onDeleteInspiration={this.handleOnDeleteInspiration}
         onSelectImage={this.handleOnSelectThemeImage}
         onDeleteImage={this.handleOnDeleteThemeImage}
         onLoadModel={setLoadingAction}
@@ -201,14 +229,16 @@ export class DesignerTool extends React.Component<Props, {}> {
         onSelectInspirationColor={setInspirationColorAction}
         onUpdateProductCode={setProductCodeAction}
         onUpdateThemeName={setThemeNameAction}
-        onUpdateStyleName={setStyleNameAction}
+        onUpdateDesignName={setDesignNameAction}
         onSelectComplexity={setComplexityAction}
         onSaveThumbnail={this.handleUploadThumbnail}
         onUploadingThumbnail={setUploadingThumbnailAction}
-        onLoadDesign={setUploadingSuccess}
+        onLoadDesign={setModelAction}
         onAddExtraFile={addExtraFileAction}
         onRemoveExtraFile={removeExtraFileAction}
         onToggleColor={toggleExtraColorAction}
+        onUpdateColorIdeaName={setColorIdeaNameAction}
+        onAddColorIdea={addColorIdeaAction}
       />
     )
   }
@@ -283,7 +313,6 @@ export class DesignerTool extends React.Component<Props, {}> {
                 ({ id: styleId }) => styleId !== id
               )
               set(data, `product.themes[${themeIndex}].styles`, updatedStyles)
-              data.product.themes[themeIndex].styles = updatedStyles
               store.writeQuery({
                 query: getProductFromCode,
                 data,
@@ -298,6 +327,63 @@ export class DesignerTool extends React.Component<Props, {}> {
     })
   }
 
+  handleOnDeleteInspiration = (id: number, index: number) => {
+    confirm({
+      title: 'Are you sure?',
+      content: 'Color idea will be deleted.',
+      onOk: async () => {
+        const {
+          deleteInspiration,
+          productCode,
+          selectedTheme,
+          selectedStyle,
+          deleteColorIdeaAction
+        } = this.props
+        if (!!id) {
+          try {
+            await deleteInspiration({
+              variables: { id },
+              update: (store: any) => {
+                const data = store.readQuery({
+                  query: getProductFromCode,
+                  variables: { code: productCode }
+                })
+                const themes = get(data, 'product.themes', [])
+                const themeIndex = findIndex(
+                  themes,
+                  ({ id: themeId }) => themeId === selectedTheme
+                )
+                const { styles } = themes[themeIndex]
+                const styleIndex = findIndex(
+                  styles,
+                  ({ id: styleId }) => styleId === selectedStyle
+                )
+                const { colorIdeas } = styles[styleIndex]
+                const updatedInspiration = remove(
+                  colorIdeas,
+                  ({ id: inspirationId }) => inspirationId !== id
+                )
+                set(
+                  data,
+                  `product.themes[${themeIndex}].styles[${styleIndex}].colorIdeas`,
+                  updatedInspiration
+                )
+                store.writeQuery({
+                  query: getProductFromCode,
+                  data,
+                  variables: { code: productCode }
+                })
+              }
+            })
+          } catch (e) {
+            message.error(e.message)
+          }
+        }
+        deleteColorIdeaAction(index)
+      }
+    })
+  }
+
   handleOnSelectThemeImage = (file: UploadFile) => {
     this.setState({ themeImage: [file] })
   }
@@ -306,11 +392,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     this.setState({ themeImage: [] })
   }
 
-  handleUploadThumbnail = async (
-    design: number,
-    item: number,
-    image: string
-  ) => {
+  handleUploadThumbnail = async (item: number, image: string) => {
     const {
       uploadThumbnail,
       setThumbnailAction,
@@ -319,8 +401,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     try {
       const response = await uploadThumbnail({ variables: { image } })
       const thumbnailUrl = get(response, 'data.style.image', '')
-      setThumbnailAction(design, item, thumbnailUrl)
-      setUploadingThumbnailAction(false)
+      setThumbnailAction(item, thumbnailUrl)
     } catch (e) {
       setUploadingThumbnailAction(false)
       message.error(e.message)
@@ -330,13 +411,14 @@ export class DesignerTool extends React.Component<Props, {}> {
   handleSaveDesign = async () => {
     try {
       const {
-        productCode,
-        modelConfig,
-        selectedTheme,
-        designConfig,
+        design,
         saveDesign,
         themeName,
+        productCode,
         createTheme,
+        modelConfig,
+        colorIdeas,
+        selectedTheme,
         saveDesignSuccessAction
       } = this.props
 
@@ -345,15 +427,33 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
-      if (!designConfig.length) {
-        message.error('Missing config file')
-        return
-      }
-
       if (!modelConfig) {
         message.error('Upload model files first')
         return
       }
+
+      if (!design.name) {
+        message.error('To proceed, enter design name first')
+        return
+      }
+
+      if (!design.image) {
+        message.error('To proceed, save design thumbnail first')
+        return
+      }
+
+      const hasAllInspirationThumbnail = every(colorIdeas, 'image')
+      if (!hasAllInspirationThumbnail) {
+        message.error('Unable to find one or more color idea thumbnails')
+        return
+      }
+
+      const hasAllInspirationName = every(colorIdeas, 'name')
+      if (!hasAllInspirationName) {
+        message.error('To proceed, enter all the color idea name')
+        return
+      }
+
       const {
         obj,
         mtl,
@@ -372,43 +472,24 @@ export class DesignerTool extends React.Component<Props, {}> {
         bindingBlack,
         size
       } = modelConfig
-
-      const designs = designConfig.map(
-        ({ name, complexity, thumbnail, colors, inspiration }) => {
-          const inspirationItems = inspiration.map(item => ({
-            name: item.name,
-            colors: item.colors,
-            image: item.thumbnail
-          }))
-
-          const hasAllInspirationThumbnail = every(inspiration, 'thumbnail')
-
-          if (!hasAllInspirationThumbnail) {
-            message.error('Unable to find one or more Inspiration Thumbnails')
-            return
-          }
-
-          return {
-            name,
-            image: thumbnail,
-            complexity: complexity || 1,
-            branding: brandingSvg,
-            brandingPng,
-            svgs: areasSvg,
-            pngs: areasPng,
-            colors,
-            inspiration: inspirationItems,
-            width: size.width,
-            height: size.height
-          }
-        }
-      )
-
-      const hasAllDesignThumbnail = every(designs, 'image')
-      if (!hasAllDesignThumbnail) {
-        message.error('To proceed, save design thumbnail first')
-        return
+      const inspiration = colorIdeas.map(item => ({
+        id: item.id,
+        name: item.name,
+        colors: item.colors,
+        image: item.image
+      }))
+      const designs: any = []
+      const style = {
+        ...design,
+        branding: brandingSvg,
+        brandingPng,
+        svgs: areasSvg,
+        pngs: areasPng,
+        inspiration,
+        width: size.width,
+        height: size.height
       }
+      designs.push(style)
 
       const { themeImage } = this.state
       let themeResponse = null
@@ -432,7 +513,7 @@ export class DesignerTool extends React.Component<Props, {}> {
 
       const themeId = get(themeResponse, 'data.theme.id', selectedTheme)
 
-      const design = {
+      const model = {
         productCode,
         label,
         bumpMap,
@@ -448,14 +529,17 @@ export class DesignerTool extends React.Component<Props, {}> {
         theme_id: themeId,
         styles: designs
       }
-      await saveDesign({
-        variables: { design },
+
+      const saveResponse = await saveDesign({
+        variables: { design: model },
         refetchQueries: [
           { query: getProductFromCode, variables: { code: productCode } }
         ]
       })
+
       saveDesignSuccessAction()
-      message.success('Your design is now saved')
+      const successMessage = get(saveResponse, 'data.design.message')
+      message.success(successMessage)
     } catch (e) {
       message.error(e.message)
     }
@@ -471,6 +555,7 @@ const DesignerToolEnhance = compose(
   graphql(createThemeMutation, { name: 'createTheme' }),
   graphql(deleteThemeMutation, { name: 'deleteTheme' }),
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
+  graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi }

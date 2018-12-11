@@ -3,6 +3,8 @@
  */
 import { fromJS, List } from 'immutable'
 import reverse from 'lodash/reverse'
+import fill from 'lodash/fill'
+import isEmpty from 'lodash/isEmpty'
 import {
   Tabs,
   DEFAULT_ACTION,
@@ -21,20 +23,26 @@ import {
   SET_INSPIRATION_COLOR_ACTION,
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
-  SET_STYLE_NAME_ACTION,
+  SET_DESIGN_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
   TOGGLE_EXTRA_COLOR_ACTION,
-  SAVE_DESIGN_SUCCESS_ACTION
+  SAVE_DESIGN_SUCCESS_ACTION,
+  EDIT_COLOR_IDEA_ACTION,
+  SET_MODEL_ACTION,
+  DELETE_COLOR_IDEA_ACTION,
+  UPDATE_COLOR_IDEA_NAME_ACTION,
+  ADD_COLOR_IDEA_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
-const NONE = -1
-const NONE_ID = 0
-const DESIGN_THUMBNAIL = -1
+export const NONE = -1
+export const NONE_ID = 0
+export const DESIGN_THUMBNAIL = -1
+export const DESIGN_COLORS = -2
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
@@ -49,7 +57,7 @@ export const initialState = fromJS({
   swipingView: false,
   currentTab: Tabs.RenderTab,
   themeName: '',
-  styleName: '',
+  design: {},
   selectedTheme: NONE_ID,
   selectedStyle: NONE_ID,
   designConfig: [],
@@ -58,7 +66,9 @@ export const initialState = fromJS({
   extraFiles: [],
   bibBrace: true,
   zipper: true,
-  binding: true
+  binding: true,
+  colorIdeaItem: NONE,
+  colorIdeas: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -82,34 +92,80 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingFiles', action.isLoading)
     case SET_UPLOADING_SUCCESS: {
       const { modelConfig } = action
-      const colors = reverse(modelConfig.design.colors)
+      const { config, design, colorIdeas } = modelConfig
+      if (isEmpty(design)) {
+        const defaultColors = fill(Array(config.areasPng.length), 'black')
+        const defaultDesign = { name: '', colors: defaultColors }
+        return state.merge({
+          design: defaultDesign,
+          modelConfig: config,
+          uploadingFiles: false,
+          colors: List.of(...defaultColors)
+        })
+      }
+
+      const colors = [...design.colors]
       return state.merge({
+        design,
+        modelConfig: config,
         uploadingFiles: false,
-        modelConfig: action.modelConfig,
-        colors: List.of(...colors)
+        colorIdeas: fromJS(colorIdeas),
+        colors: List.of(...reverse(colors))
+      })
+    }
+    case SET_MODEL_ACTION: {
+      const { modelConfig, colorIdeas, design } = action
+      const colors = [...design.colors]
+      return state.merge({
+        design,
+        modelConfig,
+        uploadingFiles: false,
+        colorIdeas: fromJS(colorIdeas),
+        colors: List.of(...reverse(colors))
       })
     }
     case SET_UPLOADING_DESIGN_SUCCESS: {
-      const { design: config } = action
-      const {
-        areasPng,
-        areasSvg,
-        design: { colors },
-        size
-      } = config
-      const reverseColors = reverse(colors)
+      const { design } = action
+      const { colorIdeas, config, design: updatedDesign } = design
+      const { areasPng, areasSvg, size } = config
+
       const modelConfig = state.get('modelConfig')
+      if (isEmpty(updatedDesign)) {
+        const defaultColors = fill(Array(config.areasPng.length), 'black')
+        const defaultDesign = { name: '', colors: defaultColors }
+        const updatedConfig = modelConfig.merge({
+          size,
+          colors: List.of(...defaultColors),
+          areasSvg: List.of(...areasSvg),
+          areasPng: List.of(...areasPng)
+        })
+        return state.merge({
+          uploadingFiles: false,
+          design: defaultDesign,
+          areas: List.of(...areasPng),
+          colorIdeas: [],
+          colors: List.of(...defaultColors),
+          modelConfig: updatedConfig
+        })
+      }
+      const colors = [...updatedDesign.colors]
+      while (areasPng.length < 5) {
+        areasPng.unshift('black')
+      }
+      const reverseColors = reverse(colors)
       const updatedModelConfig = modelConfig.merge({
-        areasPng: List.of(...areasPng),
-        areasSvg: List.of(...areasSvg),
+        size,
         colors: List.of(...colors),
-        size
+        areasSvg: List.of(...areasSvg),
+        areasPng: List.of(...areasPng)
       })
       return state.merge({
-        modelConfig: updatedModelConfig,
         uploadingFiles: false,
+        design: updatedDesign,
         areas: List.of(...areasPng),
-        colors: List.of(...reverseColors)
+        colorIdeas: fromJS(colorIdeas),
+        colors: List.of(...reverseColors),
+        modelConfig: updatedModelConfig
       })
     }
     case SET_CURRENT_TAB_ACTION:
@@ -128,10 +184,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_INSPIRATION_COLOR_ACTION: {
       const colors = state.getIn([
-        'designConfig',
+        'colors',
         'inspiration',
         action.index,
-        'colors'
+        'designConfig'
       ])
       return state.set('colors', colors)
     }
@@ -148,21 +204,21 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_THEME_NAME_ACTION:
       return state.set('themeName', action.name)
-    case SET_STYLE_NAME_ACTION:
-      return state.setIn(['designConfig', action.design, 'name'], action.name)
+    case SET_DESIGN_NAME_ACTION:
+      return state.setIn(['design', 'name'], action.name)
     case SET_THUMBNAIL_ACTION: {
       const { item, thumbnail } = action
       if (item === DESIGN_THUMBNAIL) {
-        return state.setIn(
-          ['designConfig', action.design, 'thumbnail'],
-          thumbnail
-        )
+        return state.withMutations((map: any) => {
+          map.setIn(['design', 'image'], thumbnail)
+          map.set('uploadingThumbnail', false)
+        })
       }
 
-      return state.setIn(
-        ['designConfig', action.design, 'inspiration', item, 'thumbnail'],
-        thumbnail
-      )
+      return state.withMutations((map: any) => {
+        map.setIn(['colorIdeas', item, 'image'], thumbnail)
+        map.set('uploadingThumbnail', false)
+      })
     }
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploadingItem)
@@ -185,6 +241,75 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SAVE_DESIGN_SUCCESS_ACTION:
       return state.set('designConfig', state.get('designConfig').clear())
+    case EDIT_COLOR_IDEA_ACTION: {
+      const { item } = action
+      if (item !== NONE) {
+        const keyPath =
+          item !== DESIGN_COLORS
+            ? ['colorIdeas', item, 'colors']
+            : ['design', 'colors']
+        const colors = state.getIn(keyPath) || []
+        return state.merge({
+          colors: colors.reverse(),
+          colorIdeaItem: item
+        })
+      }
+
+      return state.merge({
+        colorBlock: NONE,
+        colorIdeaItem: item,
+        colorBlockHovered: NONE
+      })
+    }
+    case DELETE_COLOR_IDEA_ACTION: {
+      const { index } = action
+      const colorsIdeas = state.get('colorIdeas')
+      const colorIdeasUpdated = colorsIdeas.remove(index)
+      return state.set('colorIdeas', colorIdeasUpdated)
+    }
+    case ADD_COLOR_IDEA_ACTION: {
+      const colorsIdeas = state.get('colorIdeas')
+      const areasPng = state.getIn(['modelConfig', 'areasPng']) || []
+      const colors = fill(Array(areasPng.count()), 'black')
+      const updatedColorIdeas = colorsIdeas.push(
+        fromJS({
+          name: '',
+          colors,
+          image: null
+        })
+      )
+      return state.set('colorIdeas', updatedColorIdeas)
+    }
+    case UPDATE_COLOR_IDEA_NAME_ACTION: {
+      const { name, updateColors } = action
+      const colors = state.get('colors')
+      const colorIdeaItem = state.get('colorIdeaItem')
+      const namePath =
+        colorIdeaItem === DESIGN_COLORS
+          ? ['design', 'name']
+          : ['colorIdeas', colorIdeaItem, 'name']
+      const imagePath =
+        colorIdeaItem === DESIGN_COLORS
+          ? ['design', 'image']
+          : ['colorIdeas', colorIdeaItem, 'image']
+      const colorPath =
+        colorIdeaItem === DESIGN_COLORS
+          ? ['design', 'colors']
+          : ['colorIdeas', colorIdeaItem, 'colors']
+
+      return state.withMutations((map: any) => {
+        map.setIn(namePath, name)
+        if (updateColors) {
+          map.setIn(colorPath, colors.reverse())
+          map.setIn(imagePath, null)
+        }
+        map.merge({
+          colorBlock: NONE,
+          colorIdeaItem: NONE,
+          colorBlockHovered: NONE
+        })
+      })
+    }
     default:
       return state
   }

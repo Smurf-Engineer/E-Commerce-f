@@ -57,6 +57,7 @@ export const StyledTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.23px;
   line-height: 25px;
+  text-align: center;
 `
 
 export const BottomSheetWrapper = styled.div`

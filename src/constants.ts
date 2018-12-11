@@ -32,3 +32,13 @@ export const DEFAULT_ROUTE = '/us?lang=en&currency=usd'
 /* Link Types */
 export const LINK_TYPE_ROUTE = 'route'
 export const LINK_TYPE_URL = 'url'
+
+/* Tag Manager Events */
+export const SELECTED_COLOR = 'selectedColor'
+export const SELECTED_SYMBOL = 'symbolAdded'
+export const SELECTED_FONT = 'selectedFont'
+export const SELECTED_DESIGN = 'selectedDesign'
+export const NEW_USER = 'newUser'
+export const NEW_DESIGN_SAVED = 'newDesignSaved'
+export const COLOR_COMBO_SELECTED = 'colorComboSelected'
+export const SELECTED_THEME = 'themeSelected'

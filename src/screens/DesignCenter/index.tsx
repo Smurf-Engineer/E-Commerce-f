@@ -14,8 +14,17 @@ import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
+import find from 'lodash/find'
+import colorList from '../DesignerTool/DesignCenterCustomize/ColorList/colors'
 import unset from 'lodash/unset'
 import Layout from '../../components/MainLayout'
+import {
+  COLOR_COMBO_SELECTED,
+  SELECTED_THEME,
+  SELECTED_FONT,
+  SELECTED_COLOR,
+  SELECTED_SYMBOL
+} from '../../constants'
 import {
   openQuickViewAction,
   openLoginAction
@@ -402,6 +411,53 @@ export class DesignCenter extends React.Component<Props, {}> {
     history.push(`/custom-product?id=${designId}`)
   }
 
+  setPaletteEvent = (colors: string[], name: string) => {
+    const { setPaletteAction, style } = this.props
+    window.dataLayer.push({
+      event: COLOR_COMBO_SELECTED,
+      label: name,
+      design: get(style, 'name', '')
+    })
+    setPaletteAction(colors)
+  }
+
+  setColorEvent = (color: string) => {
+    const { setColorAction, style } = this.props
+    const colorName = get(
+      find(colorList, colorObject => colorObject.value === color),
+      'name',
+      ''
+    )
+    window.dataLayer.push({
+      event: SELECTED_COLOR,
+      label: colorName,
+      design: get(style, 'name', '')
+    })
+    setColorAction(color)
+  }
+
+  setTextEvent = (key: string, value: string | number) => {
+    const { setTextFormatAction, style } = this.props
+    window.dataLayer.push({
+      event: SELECTED_FONT,
+      label: value,
+      design: get(style, 'name', '')
+    })
+    setTextFormatAction(key, value)
+  }
+
+  setSelectedItemEvent = (item: SelectedAsset, name?: string) => {
+    const { setSelectedItemAction, style } = this.props
+    if (name) {
+      window.dataLayer.push({
+        event: SELECTED_SYMBOL,
+        label: name,
+        design: get(style, 'name', '')
+      })
+    }
+    setSelectedItemAction(item)
+  }
+
   render() {
     const {
       intl,
@@ -411,7 +467,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       tabChanged,
       setColorBlockAction,
       setHoverColorBlockAction,
-      setColorAction,
       setPaletteAction,
       colorBlock,
       colorBlockHovered,
@@ -463,7 +518,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectedElement,
       textFormat,
       artFormat,
-      setTextFormatAction,
       setArtFormatAction,
       openPaletteModalAction,
       myPaletteModals,
@@ -507,7 +561,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       setLoadedCanvasAction,
       onResetEditingAction,
       originalPaths,
-      setSelectedItemAction,
       selectedItem,
       openLoginAction: openLoginModalAction
     } = this.props
@@ -515,6 +568,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     const { openBottomSheet } = this.state
     const {
       CustomizeTab: CustomizeTabIndex,
+      PreviewTab: PreviewTabIndex,
       ThemeTab: ThemeTabIndex,
       StyleTab: StyleTabIndex
     } = DesignTabs
@@ -589,6 +643,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     let isEditing = !!dataDesign
     let productConfig = product
     let currentStyle = style
+    let proDesignModel
     if (dataDesign && dataDesign.designData) {
       const { designData } = dataDesign
       const {
@@ -600,7 +655,15 @@ export class DesignCenter extends React.Component<Props, {}> {
         bibBraceColor: bibBraceAccesoryColor,
         bindingColor: bindingAccesoryColor,
         zipperColor: zipperAccesoryColor,
-        product: designProduct
+        product: designProduct,
+        createdAt,
+        code,
+        name,
+        shared,
+        id,
+        image: designImage,
+        canvas: designCanvas,
+        outputSvg
       } = designData
       const designConfig = {
         flatlockCode,
@@ -616,6 +679,28 @@ export class DesignCenter extends React.Component<Props, {}> {
       currentStyle.colors = designColors
       currentStyle.accessoriesColor = designConfig
       currentStyle.designId = designId
+
+      const proDesign = get(designData, 'proDesign', false)
+      if (proDesign) {
+        proDesignModel = {
+          createdAt,
+          designCode: code,
+          designId: id,
+          designImage,
+          designName: name,
+          product: designProduct,
+          shared,
+          shortId: designId!,
+          svg: outputSvg,
+          canvas: designCanvas,
+          bibBraceColor: bibBraceAccesoryColor,
+          bindingColor: bindingAccesoryColor,
+          flatlockCode,
+          flatlockColor,
+          zipperColor: zipperAccesoryColor
+        }
+        tabSelected = PreviewTabIndex
+      }
     }
 
     const loadingView = (
@@ -634,12 +719,11 @@ export class DesignCenter extends React.Component<Props, {}> {
         hideFooter={true}
       >
         <Container>
-          {isMobile &&
-            currentTab > DesignTabs.ThemeTab && (
-              <BackCircle onClick={this.handleOnGoBack}>
-                <BackIcon src={backIcon} />
-              </BackCircle>
-            )}
+          {isMobile && currentTab > DesignTabs.ThemeTab && (
+            <BackCircle onClick={this.handleOnGoBack}>
+              <BackIcon src={backIcon} />
+            </BackCircle>
+          )}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -764,7 +848,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 redoEnabled={redoChanges.length > 0}
                 onSelectColorBlock={setColorBlockAction}
                 onHoverColorBlock={setHoverColorBlockAction}
-                onSelectColor={setColorAction}
+                onSelectColor={this.setColorEvent}
                 onSelectPalette={setPaletteAction}
                 onChangePaletteName={setPaletteNameAction}
                 onSetPalettes={setPalettesAction}
@@ -778,7 +862,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onApplyCanvasEl={setCanvasElement}
                 onSelectEl={setSelectedElement}
                 onRemoveEl={removeCanvasElement}
-                onSelectTextFormat={setTextFormatAction}
+                onSelectTextFormat={this.setTextEvent}
                 onSelectArtFormat={setArtFormatAction}
                 onUnmountTab={setCanvasJsonAction}
                 onCanvasElementResized={onCanvasElementResizedAction}
@@ -789,7 +873,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetEditConfig={setEditConfigAction}
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
-                onSelectedItem={setSelectedItemAction}
+                onSelectedItem={this.setSelectedItemEvent}
               />
             )}
             <PreviewTab
@@ -797,10 +881,14 @@ export class DesignCenter extends React.Component<Props, {}> {
                 history,
                 colors,
                 loadingModel,
-                swipingView,
+                swipingView:
+                  proDesignModel && !loadingModel ? false : swipingView,
                 openShareModal,
                 openShareModalAction,
-                savedDesignId,
+                savedDesignId:
+                  proDesignModel && !loadingModel
+                    ? proDesignModel.shortId
+                    : savedDesignId,
                 productName,
                 openAddToTeamStoreModalAction,
                 openAddToStoreModal,
@@ -809,7 +897,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                 editDesignAction,
                 formatMessage,
                 svgOutputUrl,
-                savedDesign,
+                savedDesign:
+                  proDesignModel && !loadingModel
+                    ? proDesignModel
+                    : savedDesign,
                 stitchingColor,
                 bindingColor,
                 zipperColor,
@@ -868,7 +959,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 </StyledTitle>
                 <DesignCenterInspiration
                   styleId={currentStyle.id}
-                  {...{ setPaletteAction, formatMessage }}
+                  {...{ setPaletteAction: this.setPaletteEvent, formatMessage }}
                   hideBottomSheet={this.toggleBottomSheet}
                 />
               </SwipeableBottomSheet>
@@ -917,10 +1008,14 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
   }
 
-  handleOnSelectTheme = (id: number) => {
+  handleOnSelectTheme = (id: number, name?: string) => {
     const { setThemeAction, dataProduct } = this.props
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
+      window.dataLayer.push({
+        event: SELECTED_THEME,
+        label: name
+      })
     }
   }
 

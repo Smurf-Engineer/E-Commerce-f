@@ -18,16 +18,27 @@ import {
   SET_INSPIRATION_COLOR_ACTION,
   SET_PRODCUT_CODE_ACTION,
   SET_THEME_NAME_ACTION,
-  SET_STYLE_NAME_ACTION,
   SET_COMPLEXITY_ACTION,
   SET_THUMBNAIL_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
   ADD_EXTRA_FILE_ACTION,
   REMOVE_EXTRA_FILE_ACTION,
   TOGGLE_EXTRA_COLOR_ACTION,
-  SAVE_DESIGN_SUCCESS_ACTION
+  SAVE_DESIGN_SUCCESS_ACTION,
+  EDIT_COLOR_IDEA_ACTION,
+  SET_MODEL_ACTION,
+  DELETE_COLOR_IDEA_ACTION,
+  SET_DESIGN_NAME_ACTION,
+  UPDATE_COLOR_IDEA_NAME_ACTION,
+  ADD_COLOR_IDEA_ACTION
 } from './constants'
-import { AnyAction, ModelConfig, DesignConfig } from '../../types/common'
+import {
+  AnyAction,
+  ModelConfig,
+  DesignConfig,
+  DesignObject,
+  ModelDesign
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -109,12 +120,8 @@ export const setThemeNameAction = (name: string): AnyAction => ({
   name
 })
 
-export const setStyleNameAction = (
-  design: number,
-  name: string
-): AnyAction => ({
-  type: SET_STYLE_NAME_ACTION,
-  design,
+export const setDesignNameAction = (name: string): AnyAction => ({
+  type: SET_DESIGN_NAME_ACTION,
   name
 })
 
@@ -128,12 +135,10 @@ export const setComplexityAction = (
 })
 
 export const setThumbnailAction = (
-  design: number,
   item: number,
   thumbnail: string
 ): AnyAction => ({
   type: SET_THUMBNAIL_ACTION,
-  design,
   item,
   thumbnail
 })
@@ -162,4 +167,40 @@ export const toggleExtraColorAction = (color: string) => ({
 
 export const saveDesignSuccessAction = () => ({
   type: SAVE_DESIGN_SUCCESS_ACTION
+})
+
+export const setColorIdeaItemAction = (item: number) => ({
+  type: EDIT_COLOR_IDEA_ACTION,
+  item
+})
+
+export const deleteColorIdeaAction = (index: number) => ({
+  type: DELETE_COLOR_IDEA_ACTION,
+  index
+})
+
+export const addColorIdeaAction = () => ({
+  type: ADD_COLOR_IDEA_ACTION
+})
+
+export const setColorIdeaNameAction = (
+  name: string,
+  updateColors: boolean,
+  item?: number
+) => ({
+  type: UPDATE_COLOR_IDEA_NAME_ACTION,
+  name,
+  updateColors,
+  item
+})
+
+export const setModelAction = (
+  modelConfig: ModelConfig,
+  colorIdeas: DesignObject[],
+  design: ModelDesign
+): AnyAction => ({
+  type: SET_MODEL_ACTION,
+  modelConfig,
+  colorIdeas,
+  design
 })
