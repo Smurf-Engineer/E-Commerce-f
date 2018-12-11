@@ -23,7 +23,8 @@ import {
   SELECTED_THEME,
   SELECTED_FONT,
   SELECTED_COLOR,
-  SELECTED_SYMBOL
+  SELECTED_SYMBOL,
+  SELECTED_PRODUCT
 } from '../../constants'
 import {
   openQuickViewAction,
@@ -1010,8 +1011,14 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   handleOnSelectTheme = (id: number, name?: string) => {
     const { setThemeAction, dataProduct } = this.props
+    console.log(dataProduct)
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
+      const productSelected = get(dataProduct, 'product.name', '')
+      window.dataLayer.push({
+        event: SELECTED_PRODUCT,
+        label: productSelected
+      })
       window.dataLayer.push({
         event: SELECTED_THEME,
         label: name
