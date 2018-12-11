@@ -30,14 +30,19 @@ import {
   DELETE_COLOR_IDEA_ACTION,
   SET_DESIGN_NAME_ACTION,
   UPDATE_COLOR_IDEA_NAME_ACTION,
-  ADD_COLOR_IDEA_ACTION
+  ADD_COLOR_IDEA_ACTION,
+  SET_THEME_TO_EDIT_ACTION,
+  UPDATE_THEME_NAME_ACTION,
+  OPEN_SAVE_DESIGN_ACTION,
+  SET_SAVING_DESIGN
 } from './constants'
 import {
   AnyAction,
   ModelConfig,
   DesignConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -203,4 +208,24 @@ export const setModelAction = (
   modelConfig,
   colorIdeas,
   design
+})
+
+export const setThemeToEditAction = (theme: Theme | null): AnyAction => ({
+  type: SET_THEME_TO_EDIT_ACTION,
+  theme
+})
+
+export const updateThemeNameAction = (name: string): AnyAction => ({
+  type: UPDATE_THEME_NAME_ACTION,
+  name
+})
+
+export const openSaveDesignAction = (open: boolean) => ({
+  type: OPEN_SAVE_DESIGN_ACTION,
+  open
+})
+
+export const setSavingDesign = (saving: boolean) => ({
+  type: SET_SAVING_DESIGN,
+  saving
 })

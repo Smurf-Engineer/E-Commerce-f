@@ -21,6 +21,7 @@ import {
   deleteStyleMutation,
   deleteInspirationMutation
 } from './data'
+import EditTheme from '../../components/ThemeModal'
 import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
@@ -30,7 +31,8 @@ import {
   DesignConfig,
   MessagePayload,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme as ThemeInput
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -85,6 +87,9 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  editableTheme: ThemeInput | null
+  saveDesignLoading: boolean
+  openSaveDesign: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -124,6 +129,10 @@ interface Props {
     item?: number
   ) => void
   addColorIdeaAction: () => void
+  setThemeToEditAction: (theme: Theme | null) => void
+  updateThemeNameAction: (name: string) => void
+  changeThemesPositionAction: (dragIndex: number, dropIndex: number) => void
+  changeDesignsPositionAction: (dragIndex: number, dropIndex: number) => void
   // Apollo Mutations
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   saveDesign: (variables: {}) => Promise<Design>
@@ -131,6 +140,8 @@ interface Props {
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   deleteStyle: (variables: {}) => Promise<MessagePayload>
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
+  openSaveDesignAction: (open: boolean) => void
+  setSavingDesign: (saving: boolean) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -181,66 +192,96 @@ export class DesignerTool extends React.Component<Props, {}> {
       setColorIdeaItemAction,
       colorIdeas,
       setColorIdeaNameAction,
-      addColorIdeaAction
+      addColorIdeaAction,
+      setThemeToEditAction,
+      editableTheme,
+      updateThemeNameAction,
+      changeThemesPositionAction,
+      changeDesignsPositionAction,
+      openSaveDesign,
+      openSaveDesignAction,
+      saveDesignLoading,
+      setSavingDesign
     } = this.props
     const { themeImage } = this.state
     return (
-      <CustomizeTab
-        {...{
-          colors,
-          colorBlock,
-          colorBlockHovered,
-          loadingModel,
-          uploadingFiles,
-          areas,
-          designConfig,
-          themeImage,
-          selectedTheme,
-          selectedStyle,
-          productCode,
-          themeName,
-          design,
-          uploadingThumbnail,
-          extraFiles,
-          formatMessage,
-          bibBrace,
-          zipper,
-          binding,
-          colorIdeaItem,
-          colorIdeas
-        }}
-        files={modelConfig}
-        onEditColorIdea={setColorIdeaItemAction}
-        onSaveDesign={this.handleSaveDesign}
-        onSelectTheme={setSelectedThemeAction}
-        onSelectStyle={setSelectedStyleAction}
-        onDeleteTheme={this.handleOnDeleteTheme}
-        onDeleteStyle={this.handleOnDeleteStyle}
-        onDeleteInspiration={this.handleOnDeleteInspiration}
-        onSelectImage={this.handleOnSelectThemeImage}
-        onDeleteImage={this.handleOnDeleteThemeImage}
-        onLoadModel={setLoadingAction}
-        onSelectColorBlock={setColorBlockAction}
-        onHoverColorBlock={setHoverColorBlockAction}
-        onSelectColor={setColorAction}
-        onUploadFiles={uploadFilesAction}
-        onUploadDesign={uploadDesignAction}
-        onSelectConfig={setDesignConfigAction}
-        onSelectInspirationColor={setInspirationColorAction}
-        onUpdateProductCode={setProductCodeAction}
-        onUpdateThemeName={setThemeNameAction}
-        onUpdateDesignName={setDesignNameAction}
-        onSelectComplexity={setComplexityAction}
-        onSaveThumbnail={this.handleUploadThumbnail}
-        onUploadingThumbnail={setUploadingThumbnailAction}
-        onLoadDesign={setModelAction}
-        onAddExtraFile={addExtraFileAction}
-        onRemoveExtraFile={removeExtraFileAction}
-        onToggleColor={toggleExtraColorAction}
-        onUpdateColorIdeaName={setColorIdeaNameAction}
-        onAddColorIdea={addColorIdeaAction}
-      />
+      <div>
+        <CustomizeTab
+          {...{
+            colors,
+            colorBlock,
+            colorBlockHovered,
+            loadingModel,
+            uploadingFiles,
+            areas,
+            designConfig,
+            themeImage,
+            selectedTheme,
+            selectedStyle,
+            productCode,
+            themeName,
+            design,
+            uploadingThumbnail,
+            extraFiles,
+            formatMessage,
+            bibBrace,
+            zipper,
+            binding,
+            colorIdeaItem,
+            colorIdeas,
+            openSaveDesignAction,
+            saveDesignLoading,
+            openSaveDesign
+          }}
+          files={modelConfig}
+          onEditColorIdea={setColorIdeaItemAction}
+          onSaveDesign={this.handleOpenModal}
+          setSavingDesign={setSavingDesign}
+          onConfirmDesignToSave={this.handleSaveDesign}
+          onSelectTheme={setSelectedThemeAction}
+          onSelectStyle={setSelectedStyleAction}
+          onDeleteTheme={this.handleOnDeleteTheme}
+          onDeleteStyle={this.handleOnDeleteStyle}
+          onDeleteInspiration={this.handleOnDeleteInspiration}
+          onSelectImage={this.handleOnSelectThemeImage}
+          onDeleteImage={this.handleOnDeleteThemeImage}
+          onLoadModel={setLoadingAction}
+          onSelectColorBlock={setColorBlockAction}
+          onHoverColorBlock={setHoverColorBlockAction}
+          onSelectColor={setColorAction}
+          onUploadFiles={uploadFilesAction}
+          onUploadDesign={uploadDesignAction}
+          onSelectConfig={setDesignConfigAction}
+          onSelectInspirationColor={setInspirationColorAction}
+          onUpdateProductCode={setProductCodeAction}
+          onUpdateThemeName={setThemeNameAction}
+          onUpdateDesignName={setDesignNameAction}
+          onSelectComplexity={setComplexityAction}
+          onSaveThumbnail={this.handleUploadThumbnail}
+          onUploadingThumbnail={setUploadingThumbnailAction}
+          onLoadDesign={setModelAction}
+          onAddExtraFile={addExtraFileAction}
+          onRemoveExtraFile={removeExtraFileAction}
+          onToggleColor={toggleExtraColorAction}
+          onUpdateColorIdeaName={setColorIdeaNameAction}
+          onAddColorIdea={addColorIdeaAction}
+          onEditTheme={setThemeToEditAction}
+          changeThemesPosition={changeThemesPositionAction}
+          changeDesignsPosition={changeDesignsPositionAction}
+        />
+        <EditTheme
+          {...{ productCode }}
+          theme={editableTheme}
+          onCancel={this.handleOnCancel}
+          onUpdateName={updateThemeNameAction}
+        />
+      </div>
     )
+  }
+
+  handleOnCancel = () => {
+    const { setThemeToEditAction } = this.props
+    setThemeToEditAction(null)
   }
 
   handleOnTransitionEnd = () => {
@@ -407,8 +448,21 @@ export class DesignerTool extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  handleOpenModal = () => {
+    const { openSaveDesignAction, productCode, modelConfig } = this.props
+    if (!productCode) {
+      message.error('Please enter a product code')
+      return
+    }
+    if (!modelConfig) {
+      message.error('Upload model files first')
+      return
+    }
 
+    openSaveDesignAction(true)
+  }
   handleSaveDesign = async () => {
+    const { setSavingDesign } = this.props
     try {
       const {
         design,
@@ -419,7 +473,8 @@ export class DesignerTool extends React.Component<Props, {}> {
         modelConfig,
         colorIdeas,
         selectedTheme,
-        saveDesignSuccessAction
+        saveDesignSuccessAction,
+        openSaveDesignAction
       } = this.props
 
       if (!productCode) {
@@ -442,6 +497,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         return
       }
 
+      setSavingDesign(true)
       const hasAllInspirationThumbnail = every(colorIdeas, 'image')
       if (!hasAllInspirationThumbnail) {
         message.error('Unable to find one or more color idea thumbnails')
@@ -538,9 +594,12 @@ export class DesignerTool extends React.Component<Props, {}> {
       })
 
       saveDesignSuccessAction()
+      openSaveDesignAction(false)
+      setSavingDesign(false)
       const successMessage = get(saveResponse, 'data.design.message')
       message.success(successMessage)
     } catch (e) {
+      setSavingDesign(false)
       message.error(e.message)
     }
   }

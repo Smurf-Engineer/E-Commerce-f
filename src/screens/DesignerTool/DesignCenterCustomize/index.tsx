@@ -3,9 +3,21 @@
  */
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
+import get from 'lodash/get'
+import cloneDeep from 'lodash/cloneDeep'
+import orderBy from 'lodash/orderBy'
+import map from 'lodash/map'
+import findIndex from 'lodash/findIndex'
+import find from 'lodash/find'
 import Tabs from './Tabs'
-import { getProductFromCode } from './data'
+import message from 'antd/lib/message'
+import {
+  getProductFromCode,
+  updateThemesOrderMutation,
+  updateStylesOrderMutation
+} from './data'
 import Render3D from './Render3D'
+import SaveModal from './SaveModal'
 import { Container } from './styledComponents'
 import {
   ModelConfig,
@@ -14,7 +26,9 @@ import {
   QueryProps,
   Product,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme,
+  DesignItem
 } from '../../../types/common'
 
 export interface Data extends QueryProps {
@@ -43,7 +57,10 @@ interface Props {
   zipper: boolean
   binding: boolean
   colorIdeaItem: number
+  designName: string
   colorIdeas: DesignObject[]
+  openSaveDesign: boolean
+  saveDesignLoading: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -82,6 +99,12 @@ interface Props {
   onToggleColor: (color: string) => void
   onEditColorIdea: (item: number) => void
   onAddColorIdea: () => void
+  onEditTheme: (theme: Theme | null) => void
+  updateThemesOrder: (variables: {}) => Promise<any>
+  updateStylesOrder: (variables: {}) => Promise<any>
+  onDesignName: (name: string) => void
+  openSaveDesignAction: (open: boolean) => void
+  onConfirmDesignToSave: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -139,11 +162,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onEditColorIdea,
       colorIdeas,
       onUpdateColorIdeaName,
-      onAddColorIdea
+      onAddColorIdea,
+      onEditTheme,
+      onConfirmDesignToSave,
+      saveDesignLoading,
+      openSaveDesign
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
-
     return (
       <Container>
         <Tabs
@@ -192,7 +218,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditColorIdea,
             colorIdeas,
             onUpdateColorIdeaName,
-            onAddColorIdea
+            onAddColorIdea,
+            onEditTheme,
+            openSaveDesign,
+            changeThemesPosition: this.changeThemesPosition,
+            changeStylesPosition: this.changeStylesPosition
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -218,6 +248,16 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           }}
           ref={render3D => (this.render3D = render3D)}
         />
+        <SaveModal
+          visible={openSaveDesign}
+          designName={design.name}
+          requestClose={this.closeSaveDesignModal}
+          onDesignName={onUpdateDesignName}
+          formatMessage={formatMessage}
+          saveDesign={onConfirmDesignToSave}
+          uploadingThumbnail={false}
+          saveDesignLoading={saveDesignLoading}
+        />
       </Container>
     )
   }
@@ -225,6 +265,100 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   handleOnSaveThumbnail = (item: number, colors: string[]) => {
     if (this.render3D) {
       this.render3D.saveThumbnail(item, colors)
+    }
+  }
+  closeSaveDesignModal = () => {
+    const { openSaveDesignAction } = this.props
+    openSaveDesignAction(false)
+  }
+  changeThemesPosition = async (dragIndex: number, dropIndex: number) => {
+    try {
+      const { updateThemesOrder, data, productCode } = this.props
+      const themes = orderBy(
+        get(cloneDeep(data), 'product.themes', []),
+        'itemOrder',
+        'ASC'
+      )
+      const temporalTheme = cloneDeep(themes[dragIndex])
+      themes[dragIndex].itemOrder = themes[dropIndex].itemOrder
+      themes[dropIndex].itemOrder = temporalTheme.itemOrder
+      const themesToSend = map(themes, ({ id, itemOrder }) => ({
+        id,
+        item_order: itemOrder
+      }))
+      await updateThemesOrder({
+        variables: { themes: themesToSend },
+        update: (store: any) => {
+          const storeData = store.readQuery({
+            query: getProductFromCode,
+            variables: { code: productCode }
+          })
+          storeData.product.themes = themes
+          store.writeQuery({
+            query: getProductFromCode,
+            data: storeData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+  changeStylesPosition = async (dragIndex: number, dropIndex: number) => {
+    try {
+      const { selectedTheme, data, updateStylesOrder, productCode } = this.props
+      let currentTheme: DesignItem[] = []
+
+      currentTheme = find(
+        get(data, 'product.themes', []),
+        ({ id }) => id === selectedTheme
+      )
+
+      const styles = orderBy(
+        get(cloneDeep(currentTheme), 'styles', []),
+        'itemOrder',
+        'ASC'
+      )
+
+      styles.map((style: any, index: number) => {
+        if (!style.itemOrder) {
+          styles[index].itemOrder = 1
+        }
+        if (
+          styles[index - 1] &&
+          styles[index - 1].itemOrder !== style.itemOrder - 1
+        ) {
+          styles[index].itemOrder = styles[index - 1].itemOrder + 1
+        }
+      })
+      const temporalStyle = cloneDeep(styles[dragIndex])
+      styles[dragIndex].itemOrder = styles[dropIndex].itemOrder
+      styles[dropIndex].itemOrder = temporalStyle.itemOrder
+      const stylesToSend = map(styles, ({ id, itemOrder }) => ({
+        id,
+        item_order: itemOrder
+      }))
+
+      await updateStylesOrder({
+        variables: { styles: stylesToSend, themeId: selectedTheme },
+        update: (store: any) => {
+          const storeData = store.readQuery({
+            query: getProductFromCode,
+            variables: { code: productCode }
+          })
+          const indexToUpdate = findIndex(storeData.product.themes, {
+            id: selectedTheme
+          })
+
+          storeData.product.themes[indexToUpdate].styles = styles
+          store.writeQuery({
+            query: getProductFromCode,
+            data: storeData
+          })
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
     }
   }
 }
@@ -241,7 +375,9 @@ const EnhanceDesignCenterCustomize = compose(
       variables: { code: productCode },
       notifyOnNetworkStatusChange: true
     })
-  })
+  }),
+  updateThemesOrderMutation,
+  updateStylesOrderMutation
 )(DesignCenterCustomize)
 
 export default EnhanceDesignCenterCustomize

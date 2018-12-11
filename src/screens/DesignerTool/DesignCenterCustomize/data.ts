@@ -3,6 +3,7 @@
  */
 
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const getProductFromCode = gql`
   query GetProductFromCode($code: String!) {
@@ -30,6 +31,7 @@ export const getProductFromCode = gql`
         id
         name
         image
+        itemOrder: item_order
         styles {
           id
           name
@@ -54,8 +56,41 @@ export const getProductFromCode = gql`
             color
             image
           }
+          itemOrder: item_order
         }
       }
     }
   }
 `
+
+export const updateThemesOrderMutation = graphql(
+  gql`
+    mutation updateThemes($themes: [InputTheme]) {
+      updateThemesOrder(themes: $themes) {
+        fullCount
+        themes {
+          id
+          name
+          image
+          itemOrder: item_order
+        }
+      }
+    }
+  `,
+  {
+    name: 'updateThemesOrder'
+  }
+)
+
+export const updateStylesOrderMutation = graphql(
+  gql`
+    mutation updateStyles($styles: [StyleToOrderInput]!, $themeId: Int) {
+      updateStylesOrder(styles: $styles, themeId: $themeId) {
+        message
+      }
+    }
+  `,
+  {
+    name: 'updateStylesOrder'
+  }
+)
