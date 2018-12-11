@@ -1011,7 +1011,6 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   handleOnSelectTheme = (id: number, name?: string) => {
     const { setThemeAction, dataProduct } = this.props
-    console.log(dataProduct)
     if (dataProduct && dataProduct.product) {
       setThemeAction(id, dataProduct.product)
       const productSelected = get(dataProduct, 'product.name', '')
