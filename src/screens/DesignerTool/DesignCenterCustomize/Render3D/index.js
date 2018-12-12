@@ -576,8 +576,10 @@ class Render3D extends PureComponent {
     if (!!object) {
       object.children.forEach(({ material }) => {
         if (!!material) {
-          const { map } = material
-          if (map && map.dispose) map.dispose()
+          let { map } = material
+          if (map && map.dispose) {
+            map.dispose()
+          }
         }
       })
     }
