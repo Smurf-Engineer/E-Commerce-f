@@ -13,7 +13,7 @@ import {
   RequiredSpan,
   InputTitleContainer,
   Label,
-  ErrorMsg,
+  ErrorMsg
 } from './styledComponents'
 import { IbanData } from '../../types/common'
 
@@ -22,12 +22,12 @@ interface Props {
   hasError: boolean
   stripeError: string
   disabled: boolean
-  cardHolderName: string,
-  email: string,
-  setLoadingBillingAction: (loading: boolean) => void,
-  invalidBillingFormAction: (hasError: boolean) => void,
-  setStripeErrorAction: (error: string) => void,
-  inputChangeAction: (id: string, value: string) => void,
+  cardHolderName: string
+  email: string
+  setLoadingBillingAction: (loading: boolean) => void
+  invalidBillingFormAction: (hasError: boolean) => void
+  setStripeErrorAction: (error: string) => void
+  inputChangeAction: (id: string, value: string) => void
   // loadingBilling: boolean
   // showIbanForm: boolean
   // showBillingForm: boolean
@@ -45,7 +45,7 @@ class IbanForm extends React.Component<Props, {}> {
       formatMessage,
       disabled,
       stripeError,
-      hasError,
+      hasError
     } = this.props
     return (
       <Container>
@@ -61,12 +61,9 @@ class IbanForm extends React.Component<Props, {}> {
               value={cardHolderName}
               onChange={this.handleInputChange}
             />
-            {!cardHolderName &&
-              hasError && (
-                <ErrorMsg>
-                  {formatMessage(messages.requiredField)}
-                </ErrorMsg>
-              )}
+            {!cardHolderName && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+            )}
           </Column>
         </Row>
         <Row>
@@ -80,12 +77,9 @@ class IbanForm extends React.Component<Props, {}> {
               value={email}
               onChange={this.handleInputChange}
             />
-            {!email &&
-              hasError && (
-                <ErrorMsg>
-                  {formatMessage(messages.requiredField)}
-                </ErrorMsg>
-              )}
+            {!email && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredField)}</ErrorMsg>
+            )}
           </Column>
         </Row>
         <Row>
@@ -95,18 +89,13 @@ class IbanForm extends React.Component<Props, {}> {
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <ContainerInput>
-              <IbanElement
-                supportedCountries={['SEPA']}
-                {...{ disabled }}
-              />
+              <IbanElement supportedCountries={['SEPA']} {...{ disabled }} />
             </ContainerInput>
             {disabled && <ErrorMsg>{formatMessage(messages.error)}</ErrorMsg>}
             {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
           </Column>
         </Row>
-        <ContinueButton
-          onClick={this.handleOnContinue}
-        >
+        <ContinueButton onClick={this.handleOnContinue}>
           {formatMessage(messages.continue)}
         </ContinueButton>
         <Row>
@@ -140,49 +129,41 @@ class IbanForm extends React.Component<Props, {}> {
       stripe
     } = this.props
 
-    const emptyForm =
-      !cardHolderName && !email
+    const emptyForm = !cardHolderName && !email
 
     if (emptyForm) {
       invalidBillingFormAction(true)
       return
     }
+
     const stripeSourceData = {
       type: 'sepa_debit',
       currency: 'eur',
       owner: {
         name: cardHolderName,
-        email: email,
+        email: email
       },
       mandate: {
-        notification_method: 'email',
-      },
+        notification_method: 'email'
+      }
     }
     setLoadingBillingAction(true)
-
     const stripeResponse = await stripe.createSource(stripeSourceData)
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)
     } else {
-      console.log(stripeResponse)
-
-      const {
-        id,
-        owner,
-        sepa_debit
-      } = stripeResponse
+      const { id, owner, sepa_debit } = stripeResponse.source
 
       const ibanData: IbanData = {
         id,
         name: owner.name,
         email: owner.email,
-        last4: sepa_debit.last4,
+        last4: sepa_debit.last4
       }
 
       setStripeIbanDataAction(ibanData)
       nextStep()
     }
-
   }
 }
 

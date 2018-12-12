@@ -709,7 +709,10 @@ class Checkout extends React.Component<Props, {}> {
     if (indexAddressSelected === -1) {
       this.saveAddress(shippingAddress)
     }
-    if (paymentMethod === PaymentOptions.CREDITCARD && !sameBillingAndShipping) {
+    if (
+      paymentMethod === PaymentOptions.CREDITCARD &&
+      !sameBillingAndShipping
+    ) {
       this.saveAddress(billingAddress)
     }
 
@@ -783,7 +786,6 @@ class Checkout extends React.Component<Props, {}> {
           return item
         }
       )
-
       const couponCode = couponObject && couponObject.code
 
       const orderObj = {

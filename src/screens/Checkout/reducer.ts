@@ -307,7 +307,7 @@ const checkoutReducer: Reducer<any> = (state = initialState, action) => {
       })
     case SET_STRIPE_IBAN_DATA:
       return state.merge({
-        stripeIban: action.iban,
+        ibanData: action.iban,
         loadingBilling: false,
         stripeError: false
       })

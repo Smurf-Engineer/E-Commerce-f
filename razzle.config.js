@@ -121,6 +121,7 @@ module.exports = {
         'BASE_URL',
         'STORAGE_URL',
         'PK_STRIPE_US',
+        'PK_STRIPE_EU',
         'PAYPAL_CLIENT_ID',
         'PAYPAL_CLIENT_ID_US',
         'PAYPAL_CLIENT_ID_CA',
