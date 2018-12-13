@@ -139,6 +139,7 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
+        const { designSearch } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -180,7 +181,7 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign && outputSvg) {
+        if ((proDesign || designSearch) && outputSvg) {
           const imageCanvas = document.createElement('canvas')
           canvg(imageCanvas, outputSvg)
           loadedTextures.texture = new THREE.Texture(imageCanvas)
@@ -293,6 +294,7 @@ class Render3D extends PureComponent {
 
   renderModel = async design => {
     const { product = {}, flatlockColor, proDesign, canvas } = design
+    const { designSearch } = this.props
     try {
       if (!!canvas) {
         const { objects } = JSON.parse(canvas)
@@ -391,7 +393,7 @@ class Render3D extends PureComponent {
           })
 
           /* Assign materials */
-          if (!proDesign) {
+          if (!proDesign && !designSearch) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -417,7 +419,7 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
 
-          if (!proDesign) {
+          if (!proDesign && !designSearch) {
             areas.forEach(
               (map, index) =>
                 (children[
