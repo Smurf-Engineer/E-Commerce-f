@@ -10,7 +10,8 @@ import {
   RESET_DATA,
   SET_UPLOADING_FILE_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
-  SET_UPLOADING_THUMBNAIL_ACTION
+  SET_UPLOADING_THUMBNAIL_ACTION,
+  UPDATE_THUMBNAIL_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -63,6 +64,8 @@ const designSearchReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('actualSvg', action.url.fileUrl)
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploading)
+    case UPDATE_THUMBNAIL_ACTION:
+      return state.setIn(['order', 'image'], action.thumbnail)
     default:
       return state
   }

@@ -87,3 +87,12 @@ export const Icon = styled(icon)`
 `
 
 export const RenderLayout = styled.div``
+
+export const ThumbnailLabel = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.18px;
+  line-height: 22px;
+  margin-top: 10px;
+`

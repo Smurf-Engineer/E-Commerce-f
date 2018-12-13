@@ -9,7 +9,8 @@ import {
   RESET_DATA,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
-  SET_UPLOADING_THUMBNAIL_ACTION
+  SET_UPLOADING_THUMBNAIL_ACTION,
+  UPDATE_THUMBNAIL_ACTION
 } from './constants'
 import { AnyAction, OrderSearchResult } from '../../types/common'
 
@@ -49,4 +50,9 @@ export const setUploadingAction = (isUploading: boolean) => ({
 export const setUploadingThumbnailAction = (uploading: boolean) => ({
   type: SET_UPLOADING_THUMBNAIL_ACTION,
   uploading
+})
+
+export const updateThumbnailAction = (thumbnail: string) => ({
+  type: UPDATE_THUMBNAIL_ACTION,
+  thumbnail
 })

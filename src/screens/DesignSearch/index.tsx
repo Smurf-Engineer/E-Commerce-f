@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { withApollo, compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
 import message from 'antd/lib/message'
 import Search from 'antd/lib/input/Search'
 import Spin from 'antd/lib/spin'
@@ -61,6 +62,7 @@ interface Props {
   setOrderAction: (order: OrderSearchResult) => void
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   setUploadingThumbnailAction: (uploading: boolean) => void
+  updateThumbnailAction: (thumbnail: string) => void
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
@@ -197,9 +199,17 @@ export class DesignSearch extends React.Component<Props, {}> {
     }
   }
   handleUploadThumbnail = async (image: string, designId: string) => {
-    const { uploadThumbnail, setUploadingThumbnailAction } = this.props
+    const {
+      uploadThumbnail,
+      setUploadingThumbnailAction,
+      updateThumbnailAction
+    } = this.props
     try {
-      await uploadThumbnail({ variables: { image, designId } })
+      const thumbnailResponse = await uploadThumbnail({
+        variables: { image, designId }
+      })
+      const thumbnail = get(thumbnailResponse, 'data.style.image', '')
+      updateThumbnailAction(thumbnail)
       message.success('Your thumbnail has been successfully saved!')
       setUploadingThumbnailAction(false)
     } catch (e) {
