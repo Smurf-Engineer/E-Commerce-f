@@ -22,7 +22,8 @@ import {
   Icon,
   ButtonContainer,
   RenderContainer,
-  RenderLayout
+  RenderLayout,
+  ThumbnailLabel
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import { OrderSearchResult } from '../../../types/common'
@@ -55,7 +56,8 @@ class OrderFiles extends React.PureComponent<Props> {
         bibColor,
         zipperColor,
         bindingColor,
-        shortId
+        shortId,
+        image
       },
       uploadingFile,
       formatMessage,
@@ -118,12 +120,16 @@ class OrderFiles extends React.PureComponent<Props> {
             </Button>
           </DraggerWithLoading>
           <FinalSvg>
-            <DownloadItem url={svgUrl} name="Final SVG" />
+            <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
           </FinalSvg>
           <AssetsLabel>
             <FormattedMessage {...messages.assets} />
           </AssetsLabel>
           <FilesList {...{ assets }} />
+          <ThumbnailLabel>
+            <FormattedMessage {...messages.thumbnail} />
+          </ThumbnailLabel>
+          <DownloadItem url={image} />
         </Data>
       </Container>
     )
