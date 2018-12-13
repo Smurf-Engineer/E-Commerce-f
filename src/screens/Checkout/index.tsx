@@ -676,6 +676,7 @@ class Checkout extends React.Component<Props, {}> {
       stripeToken,
       selectedCard,
       stripeSource,
+      ibanData = {},
       client: { query },
       currentCurrency,
       couponCode: couponObject
@@ -787,7 +788,6 @@ class Checkout extends React.Component<Props, {}> {
         }
       )
       const couponCode = couponObject && couponObject.code
-
       const orderObj = {
         proDesign,
         paymentMethod,
@@ -798,6 +798,7 @@ class Checkout extends React.Component<Props, {}> {
         shippingAddress,
         billingAddress,
         paymentData: paypalObj || null,
+        ibanSource: get(ibanData, 'id', null),
         countrySubsidiary: billingCountry,
         taxId,
         taxAmount,
@@ -812,6 +813,7 @@ class Checkout extends React.Component<Props, {}> {
       const response = await placeOrder({
         variables: { orderObj }
       })
+      console.log(response)
       const orderId = get(response, 'data.charge.short_id', '')
       localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
