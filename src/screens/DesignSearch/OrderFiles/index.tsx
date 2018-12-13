@@ -120,7 +120,7 @@ class OrderFiles extends React.PureComponent<Props> {
             </Button>
           </DraggerWithLoading>
           <FinalSvg>
-            <DownloadItem url={svgUrl} name="Final SVG" />
+            <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
           </FinalSvg>
           <AssetsLabel>
             <FormattedMessage {...messages.assets} />
