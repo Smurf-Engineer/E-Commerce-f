@@ -1027,6 +1027,7 @@ export interface OrderSearchResult {
   zipperColor?: AccesoryColor
   stitchingValue?: string
   stitchingName?: string
+  shortId: string
 }
 
 export interface FilesDownload {
