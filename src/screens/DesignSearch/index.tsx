@@ -99,7 +99,6 @@ export class DesignSearch extends React.Component<Props, {}> {
     } else if (noAdmin) {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
-    console.log(order)
     const orderContent = order && (
       <OrderFiles
         {...{

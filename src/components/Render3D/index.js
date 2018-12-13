@@ -182,13 +182,11 @@ class Render3D extends PureComponent {
         loadedTextures.colors = []
 
         if ((proDesign || designSearch) && outputSvg) {
-          console.log(outputSvg)
           const imageCanvas = document.createElement('canvas')
           canvg(imageCanvas, outputSvg)
           loadedTextures.texture = new THREE.Texture(imageCanvas)
           loadedTextures.texture.needsUpdate = true
         } else {
-          console.log('o entramos aca')
           const reversedAreas = reverse(sanitizedColors)
           reversedAreas.forEach(({ color, image }) => {
             loadedTextures.colors.push(color)
