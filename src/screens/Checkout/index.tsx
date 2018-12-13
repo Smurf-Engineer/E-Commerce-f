@@ -813,7 +813,6 @@ class Checkout extends React.Component<Props, {}> {
       const response = await placeOrder({
         variables: { orderObj }
       })
-      console.log(response)
       const orderId = get(response, 'data.charge.short_id', '')
       localStorage.removeItem('cart')
       setLoadingPlaceOrderAction(false)
