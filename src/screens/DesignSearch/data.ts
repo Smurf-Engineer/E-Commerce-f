@@ -18,12 +18,21 @@ export const orderSearchQuery = gql`
           fileUrl: url
         }
       }
+      shortId: short_id
       svgUrl: output_svg
       stitchingValue: flatlock
       stitchingName: flatlock_code
       zipperColor: zipper_color
       bindingColor: binding_color
       bibColor: bib_brace_color
+    }
+  }
+`
+
+export const uploadThumbnailMutation = gql`
+  mutation SaveAndUpdateStyleImage($image: String!, $designId: String) {
+    style: saveAndUpdateStyleImage(image: $image, designId: $designId) {
+      image
     }
   }
 `
