@@ -31,8 +31,7 @@ export const uploadProDesign = (file: any, code: string) => {
       dispatch(setUploadingAction(true))
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
-
-      formData.append('file', file)
+      formData.append('file', file, `${code}-output.svg`)
       const response = await fetch(
         `${config.graphqlUriBase}upload/pro-design/file/${code}`,
         {
