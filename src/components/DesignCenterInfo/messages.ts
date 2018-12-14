@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   theme: {
     id: 'components.DesignCenterInfo.theme',
-    defaultMessage: 'SELECT A THEME'
+    defaultMessage: 'SELECT A COLLECTION'
   },
   themeMessage: {
     id: 'components.DesignCenterInfo.themeMessage',

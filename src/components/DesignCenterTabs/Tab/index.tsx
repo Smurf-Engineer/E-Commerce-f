@@ -6,7 +6,9 @@ import {
   Container,
   Text,
   Tab as TabContainer,
-  Divider
+  Divider,
+  OpeningShape,
+  ShapeContainer
 } from './styledComponents'
 
 interface Props {
@@ -36,8 +38,13 @@ const Tab = ({
         <Text {...{ selected, activeOnClick }}>
           {React.Children.only(children)}
         </Text>
+        {index < 3 && (
+          <ShapeContainer>
+            <OpeningShape {...{ selected }} />
+          </ShapeContainer>
+        )}
       </TabContainer>
-      <Divider type="vertical" />
+      {index === 3 && <Divider type="vertical" />}
     </Container>
   )
 }
