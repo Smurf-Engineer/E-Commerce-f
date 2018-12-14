@@ -16,6 +16,7 @@ interface Props {
   selected?: boolean
   activeOnClick: boolean
   index: number
+  totalItems: number
   onSelectTab: () => void
 }
 
@@ -24,7 +25,8 @@ const Tab = ({
   children,
   selected = false,
   onSelectTab,
-  activeOnClick
+  activeOnClick,
+  totalItems
 }: Props) => {
   const handleOnSelectTab = () => {
     if (activeOnClick) {
@@ -44,7 +46,7 @@ const Tab = ({
           </ShapeContainer>
         )}
       </TabContainer>
-      {index === 3 && <Divider type="vertical" />}
+      {index === totalItems - 1 && <Divider type="vertical" />}
     </Container>
   )
 }
