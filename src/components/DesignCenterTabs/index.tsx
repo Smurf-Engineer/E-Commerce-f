@@ -42,6 +42,7 @@ const DesignCenterTabs = ({
         activeOnClick={isEditing ? false : activeOnClick}
         selected={currentTab === index}
         onSelectTab={handleOnSelectTab(index)}
+        totalItems={steps.length}
       >
         <FormattedMessage {...messages[step]} />
       </Tab>

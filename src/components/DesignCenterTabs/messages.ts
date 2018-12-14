@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   theme: {
     id: 'components.DesignCenterTabs.theme',
-    defaultMessage: 'Theme'
+    defaultMessage: 'Collections'
   },
   style: {
     id: 'components.DesignCenterTabs.style',
@@ -19,6 +19,6 @@ export default defineMessages({
   },
   preview: {
     id: 'components.DesignCenterTabs.preview',
-    defaultMessage: 'Preview'
+    defaultMessage: 'Ready to Buy'
   }
 })
