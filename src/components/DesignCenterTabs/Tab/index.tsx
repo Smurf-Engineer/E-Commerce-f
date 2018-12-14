@@ -40,7 +40,7 @@ const Tab = ({
         <Text {...{ selected, activeOnClick }}>
           {React.Children.only(children)}
         </Text>
-        {index < 3 && (
+        {index < totalItems - 1 && (
           <ShapeContainer>
             <OpeningShape {...{ selected }} />
           </ShapeContainer>
