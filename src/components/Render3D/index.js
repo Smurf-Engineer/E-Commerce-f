@@ -17,8 +17,10 @@ import {
   Title,
   Message,
   ContainerError,
-  Loading
+  Loading,
+  ThumbnailButton
 } from './styledComponents'
+import { modelPositions } from './config'
 import {
   MESH,
   BIB_BRACE,
@@ -49,12 +51,18 @@ class Render3D extends PureComponent {
   }
 
   async componentDidMount() {
-    const { phoneView } = this.props
+    const { phoneView, designSearch } = this.props
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
-    const renderer = new THREE.WebGLRenderer({ antialias: true })
+    const precision = 'highp'
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      precision,
+      preserveDrawingBuffer: true
+    })
     renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor(WHITE)
+    renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
 
     /* Camera */
@@ -65,6 +73,9 @@ class Render3D extends PureComponent {
       1000
     )
     camera.position.z = phoneView ? 150 : 250
+    if (designSearch) {
+      camera.position.z = 150
+    }
     const controls = new THREE.OrbitControls(camera, renderer.domElement)
     controls.addEventListener('change', this.lightUpdate)
 
@@ -96,12 +107,14 @@ class Render3D extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     const {
-      data: { loading, error, design = {} }
+      data: { loading, error, design = {} },
+      actualSvg = ''
     } = nextProps
     const {
-      data: { design: oldDesign = {} }
+      data: { design: oldDesign = {} },
+      actualSvg: oldSvg = ''
     } = this.props
-    const notEqual = !isEqual(design, oldDesign)
+    const notEqual = !isEqual(design, oldDesign) || !isEqual(actualSvg, oldSvg)
     const { firstLoad } = this.state
     if (!loading && !error && (notEqual || firstLoad)) {
       this.renderModel(design)
@@ -126,6 +139,7 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
+        const { designSearch } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -167,9 +181,14 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign && outputSvg) {
+        if ((proDesign || designSearch) && outputSvg) {
           const imageCanvas = document.createElement('canvas')
-          canvg(imageCanvas, outputSvg)
+          canvg(
+            imageCanvas,
+            `${outputSvg}?p=${Math.random()
+              .toString(36)
+              .substr(2, 5)}`
+          )
           loadedTextures.texture = new THREE.Texture(imageCanvas)
           loadedTextures.texture.needsUpdate = true
         } else {
@@ -231,6 +250,8 @@ class Render3D extends PureComponent {
     const { showDragmessage, progress, loadingModel } = this.state
     const {
       customProduct,
+      designSearch,
+      uploadingThumbnail,
       data: { loading, error }
     } = this.props
 
@@ -250,9 +271,18 @@ class Render3D extends PureComponent {
     const circleIcon = <Icon type="loading" style={{ fontSize: 64 }} spin />
 
     return (
-      <Container onKeyDown={this.handleOnKeyDown}>
+      <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
+        {designSearch && (
+          <ThumbnailButton
+            loading={uploadingThumbnail}
+            disabled={uploadingThumbnail || loading}
+            onClick={this.saveThumbnail}
+          >
+            <FormattedMessage {...messages.updateThumbnail} />
+          </ThumbnailButton>
+        )}
         <Render
-          {...{ customProduct }}
+          {...{ customProduct, designSearch }}
           innerRef={container => (this.container = container)}
         >
           {loading && <Loading indicator={circleIcon} />}
@@ -269,6 +299,7 @@ class Render3D extends PureComponent {
 
   renderModel = async design => {
     const { product = {}, flatlockColor, proDesign, canvas } = design
+    const { designSearch } = this.props
     try {
       if (!!canvas) {
         const { objects } = JSON.parse(canvas)
@@ -284,9 +315,7 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error(e)
     }
-
     const loadedTextures = await this.loadTextures(design)
-
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.load(product.mtl, materials => {
@@ -367,7 +396,7 @@ class Render3D extends PureComponent {
           })
 
           /* Assign materials */
-          if (!proDesign) {
+          if (!proDesign && !designSearch) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -393,7 +422,7 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
 
-          if (!proDesign) {
+          if (!proDesign && !designSearch) {
             areas.forEach(
               (map, index) =>
                 (children[
@@ -579,12 +608,42 @@ class Render3D extends PureComponent {
       this.container.removeChild(this.renderer.domElement)
     }
   }
+  setFrontFaceModel = () => {
+    if (this.camera) {
+      const {
+        front: { x, y, z }
+      } = modelPositions
+      this.camera.position.set(x, y, z)
+      this.controls.update()
+    }
+  }
+
+  takeScreenshot = () =>
+    new Promise(resolve => {
+      setTimeout(() => {
+        const thumbnail = this.renderer.domElement.toDataURL('image/webp', 0.3)
+        resolve(thumbnail)
+      }, 800)
+    })
+  saveThumbnail = async () => {
+    const { designId } = this.props
+    this.setFrontFaceModel()
+    try {
+      const { onSaveThumbnail, onUploadingThumbnail } = this.props
+      onUploadingThumbnail(true)
+      const thumbnail = await this.takeScreenshot()
+      onSaveThumbnail(thumbnail, designId)
+    } catch (error) {
+      console.error(error)
+      onUploadingThumbnail(false)
+    }
+  }
 }
 
 const Render3DWithData = compose(
   graphql(designQuery, {
-    options: ({ designId }) => ({
-      variables: { designId },
+    options: ({ designId, actualSvg }) => ({
+      variables: { designId, actualSvg },
       fetchPolicy: 'network-only'
     })
   })

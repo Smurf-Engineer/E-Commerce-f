@@ -2,8 +2,10 @@
  * DesignSearch Screen - Created by miguelcanobbio on 15/08/18.
  */
 import * as React from 'react'
-import { withApollo, compose } from 'react-apollo'
+import { withApollo, compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
+import message from 'antd/lib/message'
 import Search from 'antd/lib/input/Search'
 import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
@@ -25,9 +27,15 @@ import {
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
 import { OrderSearchResult, UserType } from '../../types/common'
-import { orderSearchQuery } from './data'
+import { orderSearchQuery, uploadThumbnailMutation } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
+
+type Thumbnail = {
+  style: {
+    image: string
+  }
+}
 
 interface Props {
   history: any
@@ -39,6 +47,9 @@ interface Props {
   user: UserType
   intl: InjectedIntl
   uploadingFile: boolean
+  actualSvg: string
+  uploadingThumbnail: boolean
+  data: any
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -49,6 +60,9 @@ interface Props {
   setLoadingAction: () => void
   setNotFoundAction: (admin?: boolean) => void
   setOrderAction: (order: OrderSearchResult) => void
+  uploadThumbnail: (variables: {}) => Promise<Thumbnail>
+  setUploadingThumbnailAction: (uploading: boolean) => void
+  updateThumbnailAction: (thumbnail: string) => void
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
@@ -73,7 +87,10 @@ export class DesignSearch extends React.Component<Props, {}> {
       noAdmin,
       uploadProDesignAction,
       uploadingFile,
-      intl: { formatMessage }
+      intl: { formatMessage },
+      actualSvg,
+      uploadingThumbnail,
+      setUploadingThumbnailAction
     } = this.props
 
     let loadErrContent = <Spin />
@@ -84,10 +101,17 @@ export class DesignSearch extends React.Component<Props, {}> {
     }
     const orderContent = order && (
       <OrderFiles
-        {...{ order, uploadingFile }}
+        {...{
+          order,
+          uploadingFile,
+          actualSvg,
+          uploadingThumbnail,
+          setUploadingThumbnailAction
+        }}
         formatMessage={formatMessage}
         downloadFile={this.downloadAllFiles}
         onUploadFile={uploadProDesignAction}
+        onSaveThumbnail={this.handleUploadThumbnail}
       />
     )
     const content =
@@ -173,6 +197,25 @@ export class DesignSearch extends React.Component<Props, {}> {
       Message.error(messages.errorDownload.defaultMessage)
     }
   }
+  handleUploadThumbnail = async (image: string, designId: string) => {
+    const {
+      uploadThumbnail,
+      setUploadingThumbnailAction,
+      updateThumbnailAction
+    } = this.props
+    try {
+      const thumbnailResponse = await uploadThumbnail({
+        variables: { image, designId }
+      })
+      const thumbnail = get(thumbnailResponse, 'data.style.image', '')
+      updateThumbnailAction(thumbnail)
+      message.success('Your thumbnail has been successfully saved!')
+      setUploadingThumbnailAction(false)
+    } catch (e) {
+      setUploadingThumbnailAction(false)
+      message.error(e.message)
+    }
+  }
 }
 
 const mapStateToProps = (state: any) => {
@@ -183,6 +226,7 @@ const mapStateToProps = (state: any) => {
 
 const DesignSearchEnhance = compose(
   injectIntl,
+  graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
   connect(
     mapStateToProps,
     {

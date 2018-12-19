@@ -13,7 +13,7 @@ export const Title = styled.div`
   font-weight: 600;
   letter-spacing: 0.18px;
   line-height: 22px;
-  padding-bottom: 20px;
+  padding: 16px 0px;
 `
 
 export const Subtitle = styled.div`
@@ -30,7 +30,7 @@ export const Button = styled(AntdButton)`
 
 export const List = styled.div`
   border: 1px solid #f1f4f5;
-  padding: 0px 30px 16px 19px;
+  padding: 4px 16px;
 `
 
 export const Row = styled.div`

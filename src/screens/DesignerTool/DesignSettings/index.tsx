@@ -12,6 +12,7 @@ import {
 } from './styledComponents'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import orderBy from 'lodash/orderBy'
 import Button from 'antd/lib/button'
 import DesignForm from '../../../components/DesignForm'
 import {
@@ -19,7 +20,8 @@ import {
   DesignItem,
   ModelConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme
 } from '../../../types/common'
 import { Data } from '../DesignCenterCustomize'
 
@@ -50,12 +52,15 @@ interface Props {
   onUpdateProductCode: (code: string) => void
   onUpdateThemeName: (name: string) => void
   onUpdateDesignName: (name: string) => void
+  onEditTheme: (theme: Theme | null) => void
   onLoadDesign: (
     config: ModelConfig,
     colorIdeas: DesignObject[],
     design: ModelDesign
   ) => void
   formatMessage: (messageDescriptor: any) => string
+  changeThemesPosition: (dragIndex: number, dropIndex: number) => void
+  changeStylesPosition: (dragIndex: number, dropIndex: number) => void
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
@@ -77,7 +82,9 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       onDeleteStyle,
       onSelectImage,
       onDeleteImage,
-      onUpdateThemeName
+      onUpdateThemeName,
+      changeThemesPosition,
+      changeStylesPosition
     } = this.props
     const { code } = this.state
 
@@ -93,8 +100,31 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       const themeStyles = currentTheme.styles || []
       const { obj, mtl, label, bumpMap } = product
       productHasAllFiles = !!obj && !!mtl && !!label && !!bumpMap
-      themeItems = themes.map(({ id, name }) => ({ id, name }))
-      styleItems = themeStyles.map(({ id, name }) => ({ id, name }))
+      themeItems = orderBy(
+        themes.map(({ id, name, itemOrder }) => ({ id, name, itemOrder })),
+        'itemOrder',
+        'ASC'
+      )
+      styleItems = orderBy(
+        themeStyles.map(({ id, name, itemOrder }) => ({
+          id,
+          name,
+          itemOrder
+        })),
+        'itemOrder',
+        'ASC'
+      )
+      styleItems.map(({ itemOrder }, index) => {
+        if (!itemOrder) {
+          styleItems[index].itemOrder = 1
+        }
+        if (
+          styleItems[index - 1] &&
+          styleItems[index - 1].itemOrder !== itemOrder - 1
+        ) {
+          styleItems[index].itemOrder = styleItems[index - 1].itemOrder + 1
+        }
+      })
     }
 
     return (
@@ -121,6 +151,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
           {!!product && (
             <div>
               <DesignForm
+                editable={true}
+                onEditItem={this.handleOnEditTheme}
                 withImageInput={true}
                 selectedItem={selectedTheme}
                 onSelectItem={onSelectTheme}
@@ -131,6 +163,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 items={themeItems}
                 itemName={themeName}
                 onUpdateName={onUpdateThemeName}
+                onDropRow={changeThemesPosition}
+                section={'theme'}
                 {...{ onSelectImage, themeImage, onDeleteImage }}
               />
               <DesignForm
@@ -141,7 +175,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
                 subtitle="Designs"
                 buttonLabel="ADD NEW DESIGN"
                 itemName={designName}
-                onUpdateName={() => {}} // TODO: temp until we enable editing
+                onDropRow={changeStylesPosition}
+                section={'style'}
                 items={styleItems}
               />
             </div>
@@ -237,6 +272,18 @@ class DesignSettings extends React.PureComponent<Props, {}> {
       currentTarget: { value }
     } = evt
     this.setState({ code: value })
+  }
+
+  handleOnEditTheme = (index: number) => {
+    const { productData, onEditTheme } = this.props
+    if (productData) {
+      const {
+        product: { themes = [] }
+      } = productData
+      const orderedThemes = orderBy(themes, 'itemOrder', 'ASC')
+      const theme = orderedThemes[index]
+      onEditTheme(theme)
+    }
   }
 }
 

@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.OrderFiles.assets',
     defaultMessage: 'Assets'
   },
+  thumbnail: {
+    id: 'components.OrderFiles.thumbnail',
+    defaultMessage: 'Thumbnail'
+  },
   downloadAll: {
     id: 'components.OrderFiles.downloadAll',
     defaultMessage: 'Download All Files'

@@ -19,7 +19,8 @@ import {
   UploadFile,
   ModelConfig,
   DesignObject,
-  ModelDesign
+  ModelDesign,
+  Theme
 } from '../../../../types/common'
 import { Data } from '../../DesignCenterCustomize'
 import { NONE, DESIGN_COLORS } from '../../reducer'
@@ -91,6 +92,9 @@ interface Props {
   onToggleColor: (color: string) => void
   onEditColorIdea: (item: number) => void
   onAddColorIdea: () => void
+  onEditTheme: (theme: Theme | null) => void
+  changeThemesPosition: (dragIndex: number, dropIndex: number) => void
+  changeStylesPosition: (dragIndex: number, dropIndex: number) => void
 }
 
 const Tabs = ({
@@ -141,7 +145,10 @@ const Tabs = ({
   colorIdeas,
   design,
   onUpdateColorIdeaName,
-  onAddColorIdea
+  onAddColorIdea,
+  onEditTheme,
+  changeThemesPosition,
+  changeStylesPosition
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -176,7 +183,10 @@ const Tabs = ({
               onUpdateThemeName,
               onUpdateDesignName,
               onLoadDesign,
-              formatMessage
+              formatMessage,
+              onEditTheme,
+              changeThemesPosition,
+              changeStylesPosition
             }}
             designName={design && design.name}
           />
