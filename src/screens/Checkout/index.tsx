@@ -622,6 +622,27 @@ class Checkout extends React.Component<Props, {}> {
     this.placeOrder(event)
   }
 
+  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
+    const { price } = this.props
+    let markslider = { quantity: '0', price: 0 }
+    if (price.quantity !== 'Personal') {
+      markslider = price
+    } else {
+      for (const priceRangeItem of priceRanges) {
+        if (!totalItems) {
+          break
+        }
+        const val = this.getQuantity(priceRangeItem)
+
+        if (val >= totalItems) {
+          markslider = priceRangeItem
+          break
+        }
+      }
+    }
+    return markslider
+  }
+
   placeOrder = async (event: any, paypalObj?: object) => {
     const {
       location,
@@ -685,7 +706,10 @@ class Checkout extends React.Component<Props, {}> {
     if (indexAddressSelected === -1) {
       this.saveAddress(shippingAddress)
     }
-    if (paymentMethod === PaymentOptions.CREDITCARD && !sameBillingAndShipping) {
+    if (
+      paymentMethod === PaymentOptions.CREDITCARD &&
+      !sameBillingAndShipping
+    ) {
       this.saveAddress(billingAddress)
     }
 
@@ -730,7 +754,6 @@ class Checkout extends React.Component<Props, {}> {
       const shippingId = get(shipping, 'internalId', null)
       const shippingCarrier = get(shipping, 'carrier', null)
       const shippingAmount = get(shipping, 'total', '0')
-
       const sanitizedCart = shoppingCart.map(
         ({ designCode, designId, product, itemDetails }: CartItems) => {
           const item = { designCode, designId } as CartItem
@@ -756,6 +779,7 @@ class Checkout extends React.Component<Props, {}> {
               return { gender, quantity, size, fit: fitObj, color }
             }
           )
+
           return item
         }
       )
