@@ -156,7 +156,6 @@ class OrderData extends React.Component<Props, {}> {
       : messages.messageRetail
 
     let subtotal = 0
-    const items = []
     const renderList = cart
       ? cart.map((cartItem, index) => {
           const {
@@ -164,19 +163,12 @@ class OrderData extends React.Component<Props, {}> {
             designImage,
             designName,
             product: { images, name, shortDescription },
-            product,
             productTotal,
-            unitPrice,
-            itemDetails
+            unitPrice
           } = cartItem
 
           subtotal += productTotal || 0
-          items.push({
-            sku: get(product, 'mpn', ''),
-            name,
-            price: unitPrice,
-            quantity: get(head(itemDetails), 'quantity', 1)
-          })
+
           const priceRange = {
             quantity: '0',
             price: 0,

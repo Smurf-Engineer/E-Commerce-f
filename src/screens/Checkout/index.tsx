@@ -622,27 +622,6 @@ class Checkout extends React.Component<Props, {}> {
     this.placeOrder(event)
   }
 
-  getPriceRange(priceRanges: PriceRange[], totalItems: number) {
-    const { price } = this.props
-    let markslider = { quantity: '0', price: 0 }
-    if (price.quantity !== 'Personal') {
-      markslider = price
-    } else {
-      for (const priceRangeItem of priceRanges) {
-        if (!totalItems) {
-          break
-        }
-        const val = this.getQuantity(priceRangeItem)
-
-        if (val >= totalItems) {
-          markslider = priceRangeItem
-          break
-        }
-      }
-    }
-    return markslider
-  }
-
   placeOrder = async (event: any, paypalObj?: object) => {
     const {
       location,
