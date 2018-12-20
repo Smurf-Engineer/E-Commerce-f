@@ -48,8 +48,6 @@ export const getSingleTeamStore = gql`
             priceRange {
               quantity
               price
-              abbreviation
-              shortName: short_name
             }
             genders {
               id
@@ -116,8 +114,6 @@ export const getTeamStoreMutation = graphql(
               priceRange {
                 quantity
                 price
-                abbreviation
-                shortName: short_name
               }
               genders {
                 id
