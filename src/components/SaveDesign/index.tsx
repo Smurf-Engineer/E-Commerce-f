@@ -139,7 +139,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       message.error(formatMessage(messages.invalidUser))
       return
     }
-
+    console.log('design', design)
     const { designBase64, canvasJson, styleId } = design
     try {
       const designObj: DesignInput = {
@@ -223,7 +223,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       canvas: canvasJson,
       styleId
     }
-
+    console.log(design)
     try {
       /* Accessory colors  */
       if (hasFlatlock) {
