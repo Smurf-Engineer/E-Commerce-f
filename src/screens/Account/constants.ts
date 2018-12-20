@@ -36,10 +36,10 @@ export const options = [
     options: []
   },
   // TODO: hide teamstores for phase I
-  // {
-  //   title: TEAMSTORES,
-  //   options: []
-  // },
+  {
+    title: TEAMSTORES,
+    options: []
+  },
   {
     title: CREATIONS,
     options: [SCREEN_LOCKER, MY_FILES]
