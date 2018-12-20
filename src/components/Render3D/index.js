@@ -183,7 +183,12 @@ class Render3D extends PureComponent {
 
         if ((proDesign || designSearch) && outputSvg) {
           const imageCanvas = document.createElement('canvas')
-          canvg(imageCanvas, outputSvg)
+          canvg(
+            imageCanvas,
+            `${outputSvg}?p=${Math.random()
+              .toString(36)
+              .substr(2, 5)}`
+          )
           loadedTextures.texture = new THREE.Texture(imageCanvas)
           loadedTextures.texture.needsUpdate = true
         } else {
@@ -310,9 +315,7 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error(e)
     }
-
     const loadedTextures = await this.loadTextures(design)
-
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.load(product.mtl, materials => {

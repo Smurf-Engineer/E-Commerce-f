@@ -6,7 +6,9 @@ import {
   Container,
   Text,
   Tab as TabContainer,
-  Divider
+  Divider,
+  OpeningShape,
+  ShapeContainer
 } from './styledComponents'
 
 interface Props {
@@ -14,6 +16,7 @@ interface Props {
   selected?: boolean
   activeOnClick: boolean
   index: number
+  totalItems: number
   onSelectTab: () => void
 }
 
@@ -22,7 +25,8 @@ const Tab = ({
   children,
   selected = false,
   onSelectTab,
-  activeOnClick
+  activeOnClick,
+  totalItems
 }: Props) => {
   const handleOnSelectTab = () => {
     if (activeOnClick) {
@@ -36,8 +40,13 @@ const Tab = ({
         <Text {...{ selected, activeOnClick }}>
           {React.Children.only(children)}
         </Text>
+        {index < totalItems - 1 && (
+          <ShapeContainer>
+            <OpeningShape {...{ selected }} />
+          </ShapeContainer>
+        )}
       </TabContainer>
-      <Divider type="vertical" />
+      {index === totalItems - 1 && <Divider type="vertical" />}
     </Container>
   )
 }
