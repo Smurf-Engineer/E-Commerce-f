@@ -118,6 +118,7 @@ declare module 'react-swipeable-clickeable-bottom-sheet' {
     swipeableViewsProps?: object
     topShadow?: boolean
     open?: boolean
+    style?: any
     onChange?: () => void
     overlayClicked?: (evt: any) => void
   }

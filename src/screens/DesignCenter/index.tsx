@@ -992,6 +992,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 overflowHeight={64}
                 open={openBottomSheet}
                 overlayClicked={this.toggleBottomSheet}
+                style={{ zIndex: 3 }}
               >
                 <StyledTitle onClick={this.toggleBottomSheet}>
                   <FormattedMessage {...messages.inspirationTtitle} />

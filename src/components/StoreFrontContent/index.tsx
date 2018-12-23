@@ -254,7 +254,8 @@ export class StoreFrontContent extends React.Component<Props, StateProps> {
         label: (
           <p>
             {priceRange.name}
-            <br />10% OFF
+            <br />
+            10% OFF
             {priceRange.id === teamSizeId ? (
               <div>
                 <StyledSliderTitle>
