@@ -48,6 +48,7 @@ interface Props {
   itemsInCart: number
   designHasChanges: boolean
   initialCountryCode: string
+  buyNowHeader: boolean
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
 }
 
@@ -124,7 +125,8 @@ class MenuBar extends React.Component<Props, StateProps> {
       itemsInCart,
       designHasChanges,
       openWithoutSaveModalAction,
-      initialCountryCode
+      initialCountryCode,
+      buyNowHeader
     } = this.props
     let user: any
     if (typeof window !== 'undefined') {
@@ -221,7 +223,8 @@ class MenuBar extends React.Component<Props, StateProps> {
                       history,
                       designHasChanges,
                       openWithoutSaveModalAction,
-                      formatMessage
+                      formatMessage,
+                      buyNowHeader
                     }}
                     totalItems={itemsInCart}
                     hide={hideTop}
