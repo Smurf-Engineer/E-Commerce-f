@@ -973,7 +973,9 @@ export class DesignCenter extends React.Component<Props, {}> {
           {tabSelected === CustomizeTabIndex && !loadingData && isMobile ? (
             <MobileDesignCenterInspiration
               styleId={currentStyle.id}
+              open={openBottomSheet}
               {...{ setPaletteAction: this.setPaletteEvent, formatMessage }}
+              hideList={this.toggleBottomSheet}
             />
           ) : null}
         </Container>

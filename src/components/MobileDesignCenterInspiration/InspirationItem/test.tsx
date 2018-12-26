@@ -1,5 +1,5 @@
 /**
- * InspirationItem Test - Created by miguelcanobbio on 14/08/18.
+ * InspirationItem Test - Created by eduardo on 24/12/18.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
