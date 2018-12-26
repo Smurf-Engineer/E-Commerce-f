@@ -25,7 +25,7 @@ class MobileColorList extends React.PureComponent<Props> {
   componentDidMount() {
     const { selectedColor } = this.props
     if (selectedColor) {
-      setTimeout(() => this.scrollColorList(selectedColor), 1000)
+      this.scrollColorList(selectedColor)
     }
   }
 
