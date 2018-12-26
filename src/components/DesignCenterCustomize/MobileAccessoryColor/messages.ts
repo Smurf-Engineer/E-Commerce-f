@@ -1,5 +1,5 @@
 /**
- * AccessoryColor -  Messages
+ * MobileAccessoryColor -  Messages
  */
 
 import { defineMessages } from 'react-intl'

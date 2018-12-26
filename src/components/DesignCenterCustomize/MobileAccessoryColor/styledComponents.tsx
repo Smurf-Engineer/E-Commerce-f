@@ -1,8 +1,7 @@
 /**
- * Styled Components - Created by miguelcanobbio on 01/08/18.
+ * Styled Components - Created by eduardo on 21/12/18.
  */
 import styled from 'styled-components'
-import Icon from 'antd/lib/icon'
 
 export const Container = styled.div`
   padding: 4px 7px;
@@ -10,21 +9,6 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-`
-
-export const ColorLabel = styled.div`
-  color: #5f6062;
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  text-align: right;
-  margin-right: 8px;
-`
-
-export const Stitching = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
 `
 
 export const Colors = styled.div`
@@ -66,10 +50,4 @@ export const OvalSelected = styled.div`
   margin-left: ${({ marginLeft }: OvalSelected) =>
     marginLeft ? marginLeft : '0'};
   align-self: center;
-`
-
-export const Arrow = styled(Icon)`
-  color: #5f6062;
-  font-size: 16px;
-  margin-left: 4px;
 `
