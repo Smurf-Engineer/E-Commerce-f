@@ -3,13 +3,14 @@
  */
 import styled, { keyframes } from 'styled-components'
 import Button from 'antd/lib/button/button'
+import { WHITE } from '../../theme/colors'
 
 export const Container = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
 `
 
 export const Text = styled.div`
-  color: #fff;
+  color: ${WHITE};
 `
 
 export const fadeIn = keyframes`
@@ -45,7 +46,7 @@ export const BackIcon = styled.img`
 `
 
 export const StyledTitle = styled.div`
-  background-color: #fff;
+  background-color: ${WHITE};
   padding: 16px 0;
   box-sizing: border-box;
   color: black;
@@ -81,7 +82,7 @@ export const StyledButton = styled(Button)`
   border-radius: 5px;
   background-color: #4a90e2;
   border-color: #4a90e2;
-  color: #fff;
+  color: ${WHITE};
 
   &:hover {
     background-color: #6ea6e7;
@@ -93,7 +94,7 @@ export const StyledGhostButton = styled(Button)`
   height: 40px;
   border: 1px solid #dcdcdc;
   border-radius: 5px;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   margin-right: 8px;
 
@@ -137,7 +138,7 @@ export const ErrorMessage = styled.div`
 
 export const MobileToolBar = styled.div`
   display: flex;
-  background-color: #ffffff;
+  background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
   height: 50px;
   position: absolute;
