@@ -31,6 +31,8 @@ import {
   openQuickViewAction,
   openLoginAction
 } from '../../components/MainLayout/actions'
+import artIcon from '../../assets/art-icon.svg'
+import saveIcon from '../../assets/save-icon.svg'
 import * as designCenterActions from './actions'
 import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
@@ -53,7 +55,13 @@ import {
   Title,
   ErrorMessage,
   BackCircle,
-  BackIcon
+  BackIcon,
+  MobileToolBar,
+  MobileTitle,
+  MobileItem,
+  ActionMobileItems,
+  ButtonText,
+  ButtonImg
 } from './styledComponents'
 import {
   Palette,
@@ -719,13 +727,39 @@ export class DesignCenter extends React.Component<Props, {}> {
         hideTopHeader={responsive.tablet}
         hideBottomHeader={true}
         hideFooter={true}
+        buyNowHeader={isMobile && tabSelected > DesignTabs.StyleTab}
       >
         <Container>
-          {isMobile && currentTab > DesignTabs.ThemeTab && (
-            <BackCircle onClick={this.handleOnGoBack}>
-              <BackIcon src={backIcon} />
-            </BackCircle>
-          )}
+          {isMobile &&
+            tabSelected > DesignTabs.ThemeTab &&
+            tabSelected !== DesignTabs.CustomizeTab && (
+              <BackCircle onClick={this.handleOnGoBack}>
+                <BackIcon src={backIcon} />
+              </BackCircle>
+            )}
+          {isMobile && tabSelected === DesignTabs.CustomizeTab ? (
+            <MobileToolBar>
+              <BackCircle
+                className={'customizeTab'}
+                onClick={this.handleOnGoBack}
+              >
+                <BackIcon src={backIcon} />
+              </BackCircle>
+              <MobileTitle>{productName}</MobileTitle>
+              <ActionMobileItems>
+                <MobileItem>
+                  <ButtonImg src={artIcon} />
+                  <ButtonText>
+                    {formatMessage({ ...messages.addArt })}
+                  </ButtonText>
+                </MobileItem>
+                <MobileItem>
+                  <ButtonImg src={saveIcon} />
+                  <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
+                </MobileItem>
+              </ActionMobileItems>
+            </MobileToolBar>
+          ) : null}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -878,44 +912,48 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSelectedItem={this.setSelectedItemEvent}
               />
             )}
-            <PreviewTab
-              {...{
-                history,
-                colors,
-                loadingModel,
-                swipingView:
-                  proDesignModel && !loadingModel ? false : swipingView,
-                openShareModal,
-                openShareModalAction,
-                savedDesignId:
-                  proDesignModel && !loadingModel
-                    ? proDesignModel.shortId
-                    : savedDesignId,
-                productName,
-                openAddToTeamStoreModalAction,
-                openAddToStoreModal,
-                setItemToAddAction,
-                teamStoreId,
-                editDesignAction,
-                formatMessage,
-                svgOutputUrl,
-                savedDesign:
-                  proDesignModel && !loadingModel
-                    ? proDesignModel
-                    : savedDesign,
-                stitchingColor,
-                bindingColor,
-                zipperColor,
-                bibColor
-              }}
-              canvas={designObject.canvasJson}
-              product={productConfig}
-              currentTab={tabSelected}
-              onAddToCart={this.handleOnAddToCart}
-              onLoadModel={setLoadingModel}
-              onPressQuickView={this.handleOpenQuickView}
-              addItemToStore={this.saveItemToStore}
-            />
+            {!isMobile ? (
+              <PreviewTab
+                {...{
+                  history,
+                  colors,
+                  loadingModel,
+                  swipingView:
+                    proDesignModel && !loadingModel ? false : swipingView,
+                  openShareModal,
+                  openShareModalAction,
+                  savedDesignId:
+                    proDesignModel && !loadingModel
+                      ? proDesignModel.shortId
+                      : savedDesignId,
+                  productName,
+                  openAddToTeamStoreModalAction,
+                  openAddToStoreModal,
+                  setItemToAddAction,
+                  teamStoreId,
+                  editDesignAction,
+                  formatMessage,
+                  svgOutputUrl,
+                  savedDesign:
+                    proDesignModel && !loadingModel
+                      ? proDesignModel
+                      : savedDesign,
+                  stitchingColor,
+                  bindingColor,
+                  zipperColor,
+                  bibColor
+                }}
+                canvas={designObject.canvasJson}
+                product={productConfig}
+                currentTab={tabSelected}
+                onAddToCart={this.handleOnAddToCart}
+                onLoadModel={setLoadingModel}
+                onPressQuickView={this.handleOpenQuickView}
+                addItemToStore={this.saveItemToStore}
+              />
+            ) : (
+              <div />
+            )}
           </SwipeableViews>
           <SaveDesign
             {...{

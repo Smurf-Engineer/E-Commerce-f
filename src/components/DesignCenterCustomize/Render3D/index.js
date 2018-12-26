@@ -1207,13 +1207,6 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.drag} />
             </DragText>
           )}
-          <MobileButtonWrapper>
-            <MobileButton type="primary" onClick={this.handleOnPressCustomize}>
-              {formatMessage(
-                isEditing ? messages.editButton : messages.customizeButton
-              )}
-            </MobileButton>
-          </MobileButtonWrapper>
         </MobileContainer>
       )
     }
