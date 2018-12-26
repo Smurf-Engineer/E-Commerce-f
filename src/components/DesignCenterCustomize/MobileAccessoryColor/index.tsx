@@ -32,12 +32,11 @@ const MobileAccessoryColor = ({
             onClick={onSelectBlack}
             selected={colorSelected === BLACK}
           >
-            <Oval color={'#000'} />
+            <Oval color={BLACK} />
           </OvalSelected>
           <OvalSelected
             onClick={onSelectWhite}
             selected={colorSelected === WHITE}
-            marginLeft={'8px'}
           >
             <Oval />
           </OvalSelected>

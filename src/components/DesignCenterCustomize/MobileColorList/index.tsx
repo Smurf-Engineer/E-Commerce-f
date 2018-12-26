@@ -91,7 +91,6 @@ class MobileColorList extends React.PureComponent<Props> {
           ref={(color: any) => {
             this.myRef = color
           }}
-          className={'aaa'}
           totalColors={arrayColors.length}
         >
           {colorsList}

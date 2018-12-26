@@ -2,7 +2,7 @@
  * Styled Components - Created by eduardo on 21/12/18.
  */
 import styled from 'styled-components'
-import { WHITE, RED } from '../../../theme/colors'
+import { WHITE, RED, GRAY } from '../../../theme/colors'
 
 export const Container = styled.div`
   overflow: auto;
@@ -28,9 +28,9 @@ export const Color = styled.div`
     ${({ color, selected }: ColorProps) =>
       selected
         ? RED
-        : color && color.toLowerCase() !== '#ffffff'
+        : color && color.toUpperCase() !== WHITE
         ? 'transparent'
-        : '#bebebe'};
+        : GRAY};
   cursor: pointer;
   width: 32px;
   height: 32px;

@@ -18,6 +18,7 @@ export const Colors = styled.div`
 
 interface OvalProps {
   color?: string
+  selected?: boolean
 }
 
 export const Oval = styled.div`
@@ -32,11 +33,6 @@ export const Oval = styled.div`
   cursor: pointer;
 `
 
-interface OvalSelected {
-  selected: boolean
-  marginLeft?: string
-}
-
 export const OvalSelected = styled.div`
   height: 34px;
   width: 34px;
@@ -46,8 +42,7 @@ export const OvalSelected = styled.div`
   align-items: center;
   border-radius: 50%;
   border: 1px solid
-    ${({ selected }: OvalSelected) => (selected ? '#E61737' : '#fff')};
-  margin-left: ${({ marginLeft }: OvalSelected) =>
-    marginLeft ? marginLeft : '0'};
+    ${({ selected }: OvalProps) => (selected ? '#E61737' : '#fff')};
+  margin-left: 8px;
   align-self: center;
 `

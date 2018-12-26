@@ -950,9 +950,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onPressQuickView={this.handleOpenQuickView}
                 addItemToStore={this.saveItemToStore}
               />
-            ) : (
-              <div />
-            )}
+            ) : null}
           </SwipeableViews>
           <SaveDesign
             {...{
