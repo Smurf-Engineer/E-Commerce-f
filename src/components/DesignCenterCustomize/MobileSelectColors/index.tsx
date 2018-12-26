@@ -16,7 +16,12 @@ import {
   Divider
 } from './styledComponents'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
-import { StitchingColor, AccesoryColor, Product } from '../../../types/common'
+import {
+  StitchingColor,
+  AccesoryColor,
+  Product,
+  Message
+} from '../../../types/common'
 
 interface Props {
   colors: string[]
@@ -29,7 +34,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
-  formatMessage: (messageDescriptor: any, params?: any) => string
+  formatMessage: (messageDescriptor: Message, params?: number) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 const TabPane = Tabs.TabPane

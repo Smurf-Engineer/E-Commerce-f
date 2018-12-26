@@ -1056,4 +1056,8 @@ export interface CouponCode {
   rate?: string
 }
 
+export interface Message {
+  id: string
+  defaultMessage: string
+}
 type couponType = '%' | 'flat'
