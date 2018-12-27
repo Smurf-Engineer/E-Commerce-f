@@ -49,6 +49,7 @@ export const ColorSlider = styled.div`
   margin-top: 10px;
   overflow-x: scroll;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
   white-space: nowrap;
   width: calc(
     (${({ totalColors }: ColorSliderProps) => totalColors} * 44px) + 12px
