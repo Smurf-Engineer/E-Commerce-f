@@ -104,6 +104,7 @@ import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
+import BlueButton from '../../components/BlueButton'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -1059,6 +1060,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             {formatMessage(messages.outWithoutSaveDesignModalMessage)}
           </ModalMessage>
         </Modal>
+        <BlueButton label={'Hola'} onClick={() => console.log('clicked')} />
       </Layout>
     )
   }
