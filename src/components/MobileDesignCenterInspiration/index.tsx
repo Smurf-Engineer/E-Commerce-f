@@ -5,8 +5,8 @@ import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
 import messages from './messages'
 import Arrow from '../../assets/down-arrow.svg'
-import { Container, StyledButton, CombosList } from './styledComponents'
-import { QueryProps, Filter, Inspiration } from '../../types/common'
+import { Container, StyledButton, CombosList, Image } from './styledComponents'
+import { QueryProps, Filter, Inspiration, Message } from '../../types/common'
 import { desginsQuery } from './data'
 import InspirationItem from './InspirationItem'
 import WithLoading from '../WithLoading'
@@ -24,7 +24,7 @@ interface Props {
   open: boolean
   setPaletteAction: (colors: string[], name: string) => void
   hideList: () => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
 }
 
 export const MobileDesignCenterInspiration = ({
@@ -53,7 +53,7 @@ export const MobileDesignCenterInspiration = ({
     <Container className={open ? 'open' : ''}>
       <StyledButton type="primary" onClick={hideList}>
         {formatMessage(messages.moreColorCombos)}
-        <img src={Arrow} />
+        <Image src={Arrow} className={open ? 'hide' : ''} />
       </StyledButton>
       <CombosList className={open ? 'open' : ''}>{list}</CombosList>
       <StyledButton type="primary" className={'small'} onClick={hideList}>

@@ -3,16 +3,17 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
+import { WHITE, GRAY_DARK } from '../../theme/colors'
 
 export const Container = styled.div`
   width: 115px;
   display: flex;
   flex-direction: row;
   white-space: nowrap;
-  background-color: #fff;
+  background-color: ${WHITE};
   align-items: center;
   position: absolute;
-  top: 125px;
+  top: 120px;
   flex-wrap: wrap;
   max-height: 70px;
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.2);
@@ -32,25 +33,22 @@ export const StyledButton = styled(Button)`
   white-space: normal;
   font-size: 12px;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
-  background-color: #fff;
-  color: #5f6062;
+  background-color: ${WHITE};
+  color: ${GRAY_DARK};
   font-weight: bold;
-  &.ant-btn-clicked {
-    background-color: #fff;
-    border: none;
-  }
+  &.ant-btn-clicked,
   &.ant-btn-clicked::after,
   &:active,
   &:focus,
   &:hover {
-    border-color: #fff;
-    background: #fff;
-    color: #5f6062;
+    border-color: ${WHITE};
+    background: ${WHITE};
+    color: ${GRAY_DARK};
   }
   &.small {
-    height: 40px;
+    height: 26px;
   }
 `
 
@@ -60,6 +58,16 @@ export const CombosList = styled.div`
   max-height: 0;
   transition: max-height 0.3s ease;
   &.open {
-    max-height: 35vh;
+    max-height: 32vh;
+  }
+`
+
+export const Image = styled.img`
+  transition: max-height, margin-top 0.3s ease;
+  max-height: 20px;
+  margin-top: 8px;
+  &.hide {
+    margin-top: 0;
+    max-height: 0;
   }
 `
