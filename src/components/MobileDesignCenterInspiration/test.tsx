@@ -1,9 +1,9 @@
 /**
- * DesignCenterInspiration Test - Created by gustavomedina on 23/04/18.
+ * DesignCenterInspiration Test - Created by eduardo on 24/12/18.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
-import { DesignCenterInspiration } from './index'
+import { MobileDesignCenterInspiration } from './index'
 import { DesignResultType, Filter } from '../../types/common'
 
 describe('<DesignCenterInspiration />', () => {
@@ -26,11 +26,10 @@ describe('<DesignCenterInspiration />', () => {
       fetchMore: () => {}
     }
     ReactDOM.render(
-      <DesignCenterInspiration
-        {...{ designs, category, data, sportFilter }}
-        onPressSeeAll={() => {}}
-        onPressCustomize={() => {}}
-        onPressQuickView={() => {}}
+      <MobileDesignCenterInspiration
+        {...{ designs, category, data, sportFilter, open }}
+        setPaletteAction={() => {}}
+        hideList={() => {}}
       />,
       div
     )

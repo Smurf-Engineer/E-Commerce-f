@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by gustavomedina on 23/04/18.
+ * Styled Components - Created by eduardo on 24/12/18.
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
