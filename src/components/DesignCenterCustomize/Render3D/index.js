@@ -695,7 +695,6 @@ class Render3D extends PureComponent {
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
-
           const canvasConfig = {
             width: CANVAS_SIZE,
             height: CANVAS_SIZE,
