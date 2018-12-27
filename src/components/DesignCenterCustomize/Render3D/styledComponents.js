@@ -41,6 +41,7 @@ export const MobileContainer = styled.div`
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
+  overflow: hidden;
 `
 
 export const CanvasContainer = styled.div`
