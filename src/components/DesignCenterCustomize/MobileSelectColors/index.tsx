@@ -20,7 +20,8 @@ import {
   StitchingColor,
   AccesoryColor,
   Product,
-  Message
+  Message,
+  Index
 } from '../../../types/common'
 
 interface Props {
@@ -34,7 +35,7 @@ interface Props {
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
-  formatMessage: (messageDescriptor: Message, params?: number) => string
+  formatMessage: (messageDescriptor: Message, params?: Index) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
 }
 const TabPane = Tabs.TabPane
