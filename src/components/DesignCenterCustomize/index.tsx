@@ -6,6 +6,7 @@ import Tabs from './Tabs'
 import Render3D from './Render3D'
 import Spin from 'antd/lib/spin'
 import Message from 'antd/lib/message'
+import MobileSelectColors from './MobileSelectColors'
 import {
   Palette,
   CanvasElement,
@@ -227,7 +228,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     )
 
     return (
-      <Container>
+      <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
           <Tabs
             {...{
@@ -336,6 +337,25 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           />
         ) : (
           loadingView
+        )}
+        {isMobile && !loadingData && showRender3d && !loadingModel && (
+          <MobileSelectColors
+            onSelectStitchingColor={setStitchingColorAction}
+            {...{
+              formatMessage,
+              onSelectColorBlock,
+              colorBlock,
+              onSelectColor,
+              colors,
+              styleColors,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bibColor,
+              onAccessoryColorSelected,
+              product
+            }}
+          />
         )}
       </Container>
     )
