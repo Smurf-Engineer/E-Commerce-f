@@ -90,7 +90,8 @@ import {
   AccessoriesColor,
   CanvasObjects,
   SelectedAsset,
-  SaveDesignData
+  SaveDesignData,
+  Message as MessageType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -243,7 +244,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   setSelectedItemAction: (item: SelectedAsset) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: MessageType) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
   onCanvasElementDuplicatedAction: (
     canvasEl: any,
@@ -263,6 +264,7 @@ interface Props extends RouteComponentProps<any> {
   openLoginAction: (open: boolean) => void
 }
 
+const { info } = Modal
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
     openBottomSheet: false
@@ -465,6 +467,19 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
     }
     setSelectedItemAction(item)
+  }
+
+  handleOnAddArt = () => {
+    const {
+      intl: { formatMessage }
+    } = this.props
+    info({
+      title: formatMessage(messages.unsupportedDeviceTitle),
+      okType: 'secundary',
+      maskClosable: true,
+      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
+      okText: formatMessage(messages.unsupportedDeviceButton)
+    })
   }
 
   render() {
@@ -746,7 +761,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               </BackCircle>
               <MobileTitle>{productName}</MobileTitle>
               <ActionMobileItems>
-                <MobileItem>
+                <MobileItem onClick={this.handleOnAddArt}>
                   <ButtonImg src={artIcon} />
                   <ButtonText>
                     {formatMessage({ ...messages.addArt })}
