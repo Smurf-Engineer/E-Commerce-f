@@ -582,7 +582,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       openLoginAction: openLoginModalAction,
       layout
     } = this.props
-    console.log(user)
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
     const {

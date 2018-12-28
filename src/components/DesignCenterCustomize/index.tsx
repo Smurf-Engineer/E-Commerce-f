@@ -160,10 +160,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
   componentWillReceiveProps(nextProps: any) {
     const { callbackToSave, loggedUserId } = nextProps
-    console.log(loggedUserId)
     if (callbackToSave && loggedUserId !== this.props.loggedUserId) {
-      console.log(callbackToSave)
-      console.log('yeah bitch')
     }
   }
   render() {
