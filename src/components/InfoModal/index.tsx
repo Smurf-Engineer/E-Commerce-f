@@ -19,7 +19,7 @@ interface Props {
   text: Message
   buttonText: Message
   requestClose: () => void
-  formatMessage: (messageDescriptor: any, values?: {}) => string
+  formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
 
 export class InfoModal extends React.Component<Props, {}> {

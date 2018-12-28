@@ -298,7 +298,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             disableTooltip={responsive.tablet}
           />
         )}
-        {isMobile ? (
+        {isMobile && (
           <MobileToolBar>
             <BackCircle className={'customizeTab'} onClick={handleOnGoBack}>
               <BackIcon src={backIcon} />
@@ -315,7 +315,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               </MobileItem>
             </ActionMobileItems>
           </MobileToolBar>
-        ) : null}
+        )}
         {showRender3d && !loadingData ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
