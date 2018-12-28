@@ -1140,13 +1140,15 @@ class Render3D extends PureComponent {
   takeDesignPicture = () => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {
-      openLoginAction()
+      openLoginAction(true)
       return
     }
     if (this.renderer) {
-      const { onOpenSaveDesign, currentStyle } = this.props
-      this.canvasTexture.discardActiveObject()
-      this.canvasTexture.renderAll()
+      const { onOpenSaveDesign, currentStyle, isMobile } = this.props
+      if (!isMobile) {
+        this.canvasTexture.discardActiveObject()
+        this.canvasTexture.renderAll()
+      }
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)

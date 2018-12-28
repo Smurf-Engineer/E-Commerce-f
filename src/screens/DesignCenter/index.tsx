@@ -30,8 +30,6 @@ import {
   openQuickViewAction,
   openLoginAction
 } from '../../components/MainLayout/actions'
-import artIcon from '../../assets/art-icon.svg'
-import saveIcon from '../../assets/save-icon.svg'
 import * as designCenterActions from './actions'
 import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
@@ -54,13 +52,7 @@ import {
   Title,
   ErrorMessage,
   BackCircle,
-  BackIcon,
-  MobileToolBar,
-  MobileTitle,
-  MobileItem,
-  ActionMobileItems,
-  ButtonText,
-  ButtonImg
+  BackIcon
 } from './styledComponents'
 import {
   Palette,
@@ -104,7 +96,6 @@ import messages from './messages'
 import ModalTitle from '../../components/ModalTitle'
 import { DesignTabs } from './constants'
 import { DEFAULT_ROUTE } from '../../constants'
-import BlueButton from '../../components/BlueButton'
 
 interface DataProduct extends QueryProps {
   product?: Product
@@ -173,6 +164,7 @@ interface Props extends RouteComponentProps<any> {
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
+  infoModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -263,9 +255,9 @@ interface Props extends RouteComponentProps<any> {
     savedDesignId: string
   ) => void
   openLoginAction: (open: boolean) => void
+  handleOnCloseInfo: () => void
 }
 
-const { info } = Modal
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
     openBottomSheet: false
@@ -469,20 +461,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
     setSelectedItemAction(item)
   }
-
-  handleOnAddArt = () => {
-    const {
-      intl: { formatMessage }
-    } = this.props
-    info({
-      title: formatMessage(messages.unsupportedDeviceTitle),
-      okType: 'secundary',
-      maskClosable: true,
-      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
-      okText: formatMessage(messages.unsupportedDeviceButton)
-    })
-  }
-
   render() {
     const {
       intl,
@@ -587,7 +565,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       onResetEditingAction,
       originalPaths,
       selectedItem,
-      openLoginAction: openLoginModalAction
+      openLoginAction: openLoginModalAction,
+      handleOnCloseInfo,
+      infoModalOpen
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -752,29 +732,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <BackIcon src={backIcon} />
               </BackCircle>
             )}
-          {isMobile && tabSelected === DesignTabs.CustomizeTab ? (
-            <MobileToolBar>
-              <BackCircle
-                className={'customizeTab'}
-                onClick={this.handleOnGoBack}
-              >
-                <BackIcon src={backIcon} />
-              </BackCircle>
-              <MobileTitle>{productName}</MobileTitle>
-              <ActionMobileItems>
-                <MobileItem onClick={this.handleOnAddArt}>
-                  <ButtonImg src={artIcon} />
-                  <ButtonText>
-                    {formatMessage({ ...messages.addArt })}
-                  </ButtonText>
-                </MobileItem>
-                <MobileItem>
-                  <ButtonImg src={saveIcon} />
-                  <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
-                </MobileItem>
-              </ActionMobileItems>
-            </MobileToolBar>
-          ) : null}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -886,8 +843,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedItem,
                   openLoginModalAction,
                   isMobile,
-                  responsive
+                  responsive,
+                  handleOnCloseInfo,
+                  infoModalOpen
                 }}
+                handleOnGoBack={this.handleOnGoBack}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
                 onUploadFile={uploadFileAction}
@@ -1060,7 +1020,6 @@ export class DesignCenter extends React.Component<Props, {}> {
             {formatMessage(messages.outWithoutSaveDesignModalMessage)}
           </ModalMessage>
         </Modal>
-        <BlueButton label={'Hola'} onClick={() => console.log('clicked')} />
       </Layout>
     )
   }
