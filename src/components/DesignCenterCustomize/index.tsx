@@ -1,3 +1,5 @@
+// Design Center Customize
+
 /**
  * DesignCenterCustomize Component - Created by david on 26/02/18.
  */
@@ -30,7 +32,21 @@ import {
   SelectedAsset,
   Responsive
 } from '../../types/common'
-import { Container, LoadingContainer } from './styledComponents'
+import backIcon from '../../assets/leftarrow.svg'
+import artIcon from '../../assets/art-icon.svg'
+import saveIcon from '../../assets/save-icon.svg'
+import {
+  Container,
+  LoadingContainer,
+  MobileToolBar,
+  MobileTitle,
+  MobileItem,
+  ActionMobileItems,
+  ButtonText,
+  ButtonImg,
+  BackCircle,
+  BackIcon
+} from './styledComponents'
 import {
   DesignTabs,
   CanvasElements
@@ -80,6 +96,8 @@ interface Props {
   selectedItem: SelectedAsset
   isMobile: boolean
   responsive: Responsive
+  callbackToSave: boolean
+  loggedUserId: string
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -134,11 +152,20 @@ interface Props {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
-  openLoginModalAction: (open: boolean) => void
+  openLoginModalAction: (open: boolean, callback?: boolean) => void
+  handleOnGoBack: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
+  componentWillReceiveProps(nextProps: any) {
+    const { callbackToSave, loggedUserId } = nextProps
+    console.log(loggedUserId)
+    if (callbackToSave && loggedUserId !== this.props.loggedUserId) {
+      console.log(callbackToSave)
+      console.log('yeah bitch')
+    }
+  }
   render() {
     const {
       onSelectColorBlock,
@@ -217,7 +244,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectedItem,
       selectedItem,
       isMobile,
-      responsive
+      responsive,
+      handleOnGoBack
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -226,7 +254,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         <Spin />
       </LoadingContainer>
     )
-
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
@@ -277,6 +304,24 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             disableTooltip={responsive.tablet}
           />
         )}
+        {isMobile ? (
+          <MobileToolBar>
+            <BackCircle className={'customizeTab'} onClick={handleOnGoBack}>
+              <BackIcon src={backIcon} />
+            </BackCircle>
+            <MobileTitle>{productName}</MobileTitle>
+            <ActionMobileItems>
+              <MobileItem>
+                <ButtonImg src={artIcon} />
+                <ButtonText>{formatMessage({ ...messages.addArt })}</ButtonText>
+              </MobileItem>
+              <MobileItem onClick={this.handleOnSave}>
+                <ButtonImg src={saveIcon} />
+                <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
+              </MobileItem>
+            </ActionMobileItems>
+          </MobileToolBar>
+        ) : null}
         {showRender3d && !loadingData ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
@@ -360,11 +405,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       </Container>
     )
   }
-
-  handleOnOpenLogin = () => {
+  handleOnSave = () => {
+    this.render3D.takeDesignPicture()
+  }
+  handleOnOpenLogin = (callback?: boolean) => {
     const { openLoginModalAction, formatMessage } = this.props
     Message.warning(formatMessage(messages.invalidUser))
-    openLoginModalAction(true)
+    openLoginModalAction(true, callback)
   }
 
   handleOnApplyText = (text: string, style: TextFormat) => {

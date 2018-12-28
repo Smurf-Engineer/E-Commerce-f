@@ -41,7 +41,7 @@ interface Props extends RouteComponentProps<any> {
     yotpoId: string | null,
     gender: number
   ) => void
-  openLoginAction: (open: boolean) => void
+  openLoginAction: (open: boolean, callback?: boolean) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
   showSearchResults: boolean

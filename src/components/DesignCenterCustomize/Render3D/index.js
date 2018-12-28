@@ -1,3 +1,5 @@
+// DesignCenter Custodios RENDER3d
+
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
@@ -1137,26 +1139,18 @@ class Render3D extends PureComponent {
 
   handleOnChange3DModel = () => {}
 
-  handleOnPressCustomize = () => {
-    const { formatMessage } = this.props
-    info({
-      title: formatMessage(messages.unsupportedDeviceTitle),
-      maskClosable: true,
-      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
-      okText: formatMessage(messages.unsupportedDeviceButton)
-    })
-  }
-
   takeDesignPicture = () => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {
-      openLoginAction()
+      openLoginAction(true)
       return
     }
     if (this.renderer) {
-      const { onOpenSaveDesign, currentStyle } = this.props
-      this.canvasTexture.discardActiveObject()
-      this.canvasTexture.renderAll()
+      const { onOpenSaveDesign, currentStyle, isMobile } = this.props
+      if (!isMobile) {
+        this.canvasTexture.discardActiveObject()
+        this.canvasTexture.renderAll()
+      }
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)

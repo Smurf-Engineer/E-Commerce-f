@@ -30,8 +30,6 @@ import {
   openQuickViewAction,
   openLoginAction
 } from '../../components/MainLayout/actions'
-import artIcon from '../../assets/art-icon.svg'
-import saveIcon from '../../assets/save-icon.svg'
 import * as designCenterActions from './actions'
 import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
@@ -54,13 +52,7 @@ import {
   Title,
   ErrorMessage,
   BackCircle,
-  BackIcon,
-  MobileToolBar,
-  MobileTitle,
-  MobileItem,
-  ActionMobileItems,
-  ButtonText,
-  ButtonImg
+  BackIcon
 } from './styledComponents'
 import {
   Palette,
@@ -90,7 +82,8 @@ import {
   AccessoriesColor,
   CanvasObjects,
   SelectedAsset,
-  SaveDesignData
+  SaveDesignData,
+  Message as MessageType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -171,6 +164,7 @@ interface Props extends RouteComponentProps<any> {
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
+  layout: any
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -243,7 +237,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   setSelectedItemAction: (item: SelectedAsset) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: MessageType) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
   onCanvasElementDuplicatedAction: (
     canvasEl: any,
@@ -260,9 +254,10 @@ interface Props extends RouteComponentProps<any> {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
-  openLoginAction: (open: boolean) => void
+  openLoginAction: (open: boolean, callback?: boolean) => void
 }
 
+const { info } = Modal
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
     openBottomSheet: false
@@ -467,6 +462,19 @@ export class DesignCenter extends React.Component<Props, {}> {
     setSelectedItemAction(item)
   }
 
+  handleOnAddArt = () => {
+    const {
+      intl: { formatMessage }
+    } = this.props
+    info({
+      title: formatMessage(messages.unsupportedDeviceTitle),
+      okType: 'secundary',
+      maskClosable: true,
+      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
+      okText: formatMessage(messages.unsupportedDeviceButton)
+    })
+  }
+
   render() {
     const {
       intl,
@@ -571,8 +579,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       onResetEditingAction,
       originalPaths,
       selectedItem,
-      openLoginAction: openLoginModalAction
+      openLoginAction: openLoginModalAction,
+      layout
     } = this.props
+    console.log(user)
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
     const {
@@ -736,29 +746,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <BackIcon src={backIcon} />
               </BackCircle>
             )}
-          {isMobile && tabSelected === DesignTabs.CustomizeTab ? (
-            <MobileToolBar>
-              <BackCircle
-                className={'customizeTab'}
-                onClick={this.handleOnGoBack}
-              >
-                <BackIcon src={backIcon} />
-              </BackCircle>
-              <MobileTitle>{productName}</MobileTitle>
-              <ActionMobileItems>
-                <MobileItem>
-                  <ButtonImg src={artIcon} />
-                  <ButtonText>
-                    {formatMessage({ ...messages.addArt })}
-                  </ButtonText>
-                </MobileItem>
-                <MobileItem>
-                  <ButtonImg src={saveIcon} />
-                  <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
-                </MobileItem>
-              </ActionMobileItems>
-            </MobileToolBar>
-          ) : null}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -872,6 +859,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isMobile,
                   responsive
                 }}
+                callbackToSave={get(layout, 'callback', false)}
+                loggedUserId={get(user, 'id', '')}
+                handleOnGoBack={this.handleOnGoBack}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
                 onUploadFile={uploadFileAction}
@@ -966,7 +956,8 @@ export class DesignCenter extends React.Component<Props, {}> {
               canvas,
               designName,
               isUserAuthenticated,
-              isEditing
+              isEditing,
+              isMobile
             }}
             design={!!design.canvasJson ? design : designObject}
             hasFlatlock={!!productConfig && !!productConfig.flatlock}
@@ -1077,10 +1068,11 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: any) => {
+  const layout = state.get('layout').toJS()
   const designCenter = state.get('designCenter').toJS()
   const app = state.get('app').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...designCenter, ...app, responsive }
+  return { ...designCenter, ...app, responsive, layout }
 }
 
 const DesignCenterEnhance = compose(

@@ -73,6 +73,7 @@ interface Props {
   isUserAuthenticated: boolean
   isEditing: boolean
   canvas: CanvasType
+  isMobile?: boolean
   requestClose: () => void
   onDesignName: (name: string) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
@@ -298,11 +299,12 @@ export class SaveDesign extends React.Component<Props, {}> {
       savedDesignId,
       checkedTerms,
       saveDesignLoading,
-      saveDesignChangesLoading
+      saveDesignChangesLoading,
+      isMobile
     } = this.props
 
     const disabledSaveButton =
-      !checkedTerms || !designName || saveDesignChangesLoading
+      (!isMobile && !checkedTerms) || !designName || saveDesignChangesLoading
 
     return (
       <Container>
@@ -316,7 +318,11 @@ export class SaveDesign extends React.Component<Props, {}> {
           onCancel={this.handleCancel}
         >
           <Title>
-            <FormattedMessage {...messages.modalTitle} />
+            {!isMobile ? (
+              <FormattedMessage {...messages.modalTitle} />
+            ) : (
+              <FormattedMessage {...messages.mobileModalTitle} />
+            )}
           </Title>
           {!!savedDesignId ? (
             <StyledSaveAs>
@@ -338,11 +344,13 @@ export class SaveDesign extends React.Component<Props, {}> {
               maxLength="15"
             />
           </InputWrapper>
-          <CheckWrapper>
-            <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
-              {formatMessage(messages.checkCopyright)}
-            </Checkbox>
-          </CheckWrapper>
+          {!isMobile && (
+            <CheckWrapper>
+              <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
+                {formatMessage(messages.checkCopyright)}
+              </Checkbox>
+            </CheckWrapper>
+          )}
           {!!savedDesignId && (
             <ButtonWrapper color="">
               <Button

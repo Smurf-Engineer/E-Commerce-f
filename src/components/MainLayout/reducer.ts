@@ -22,7 +22,8 @@ export const initialState = fromJS({
   itemsInCart: 0,
   openLogoutModal: false,
   currentRegion: 'us',
-  currentLanguage: 'en'
+  currentLanguage: 'en',
+  callback: false
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -39,7 +40,9 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
         hideQuickViewSliderButtons: action.hideSliderButtons
       })
     case OPEN_LOGIN_MODAL:
-      return state.set('openLogin', action.open)
+      return state
+        .set('openLogin', action.open)
+        .set('callback', action.callback)
     case SAVE_USER_TO_LOCAL: {
       return state.set('user', action.user)
     }

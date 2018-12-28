@@ -31,9 +31,13 @@ export const openQuickViewAction = (
   gender
 })
 
-export const openLoginAction = (open: boolean): AnyAction => ({
+export const openLoginAction = (
+  open: boolean,
+  callback: boolean = false
+): AnyAction => ({
   type: OPEN_LOGIN_MODAL,
-  open
+  open,
+  callback
 })
 
 export const saveUserToLocal = (user: object): AnyAction => ({
