@@ -135,6 +135,7 @@ export interface Product {
   relatedProducts: Product[]
   isCustom?: boolean
   colors?: ProductColors[]
+  mpn?: string
 }
 
 export type DesignType = {

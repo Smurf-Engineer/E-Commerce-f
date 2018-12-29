@@ -5,6 +5,7 @@ import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import Spin from 'antd/lib/spin'
+import InfoModal from '../../components/InfoModal'
 import Message from 'antd/lib/message'
 import MobileSelectColors from './MobileSelectColors'
 import {
@@ -30,7 +31,21 @@ import {
   SelectedAsset,
   Responsive
 } from '../../types/common'
-import { Container, LoadingContainer } from './styledComponents'
+import backIcon from '../../assets/leftarrow.svg'
+import artIcon from '../../assets/art-icon.svg'
+import saveIcon from '../../assets/save-icon.svg'
+import {
+  Container,
+  LoadingContainer,
+  MobileToolBar,
+  MobileTitle,
+  MobileItem,
+  ActionMobileItems,
+  ButtonText,
+  ButtonImg,
+  BackCircle,
+  BackIcon
+} from './styledComponents'
 import {
   DesignTabs,
   CanvasElements
@@ -80,6 +95,8 @@ interface Props {
   selectedItem: SelectedAsset
   isMobile: boolean
   responsive: Responsive
+  infoModalOpen: boolean
+  saveAndBuy: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -94,7 +111,11 @@ interface Props {
   onResetAction: () => void
   onClearAction: () => void
   onPressQuickView: () => void
-  onOpenSaveDesign: (open: boolean, imageBase64: string) => void
+  onOpenSaveDesign: (
+    open: boolean,
+    imageBase64: string,
+    automaticSave?: boolean
+  ) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
   onUpdateText: (text: string) => void
@@ -135,10 +156,22 @@ interface Props {
     savedDesignId: string
   ) => void
   openLoginModalAction: (open: boolean) => void
+  handleOnGoBack: () => void
+  handleOnCloseInfo: () => void
+  handleOnSaveAndBuy: (buy: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
+  componentWillReceiveProps(nextProps: any) {
+    const { handleOnSaveAndBuy } = this.props
+    const { saveAndBuy } = nextProps
+    if (saveAndBuy) {
+      handleOnSaveAndBuy(false)
+      this.render3D.takeDesignPicture(true)
+    }
+  }
+
   render() {
     const {
       onSelectColorBlock,
@@ -217,7 +250,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onSelectedItem,
       selectedItem,
       isMobile,
-      responsive
+      responsive,
+      handleOnGoBack,
+      handleOnCloseInfo,
+      infoModalOpen
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -276,6 +312,24 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onApplyArt={this.handleOnApplyArt}
             disableTooltip={responsive.tablet}
           />
+        )}
+        {isMobile && (
+          <MobileToolBar>
+            <BackCircle className={'customizeTab'} onClick={handleOnGoBack}>
+              <BackIcon src={backIcon} />
+            </BackCircle>
+            <MobileTitle>{productName}</MobileTitle>
+            <ActionMobileItems>
+              <MobileItem onClick={this.handleOnAddArt}>
+                <ButtonImg src={artIcon} />
+                <ButtonText>{formatMessage({ ...messages.addArt })}</ButtonText>
+              </MobileItem>
+              <MobileItem>
+                <ButtonImg src={saveIcon} />
+                <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
+              </MobileItem>
+            </ActionMobileItems>
+          </MobileToolBar>
         )}
         {showRender3d && !loadingData ? (
           <Render3D
@@ -357,8 +411,21 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             }}
           />
         )}
+        <InfoModal
+          open={infoModalOpen}
+          formatMessage={formatMessage}
+          title={messages.unsupportedDeviceTitle}
+          text={messages.unsupportedDeviceContent}
+          buttonText={messages.unsupportedDeviceButton}
+          requestClose={handleOnCloseInfo}
+        />
       </Container>
     )
+  }
+
+  handleOnAddArt = () => {
+    const { handleOnCloseInfo } = this.props
+    handleOnCloseInfo()
   }
 
   handleOnOpenLogin = () => {

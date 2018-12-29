@@ -60,7 +60,9 @@ import {
   CANVAS_ELEMENT_DUPLICATED_ACTION,
   CanvasElements,
   DESIGN_RESET_EDITING_ACTION,
-  SET_SELECTED_ITEM_ACTION
+  SET_SELECTED_ITEM_ACTION,
+  ON_CLOSE_INFO,
+  SET_AUTOMATIC_SAVE
 } from './constants'
 import {
   AnyAction,
@@ -159,11 +161,13 @@ export const setThemeAction = (id: number, product: Product): AnyAction => ({
 
 export const openSaveDesignAction = (
   open: boolean,
-  design: SaveDesignType
+  design: SaveDesignType,
+  automaticSave?: boolean
 ) => ({
   type: OPEN_SAVE_DESIGN_ACTION,
   open,
-  design
+  design,
+  automaticSave
 })
 
 export const setDesignNameAction = (param: string): AnyAction => {
@@ -464,4 +468,13 @@ export const onResetEditingAction = (
 export const setSelectedItemAction = (item: SelectedAsset): AnyAction => ({
   type: SET_SELECTED_ITEM_ACTION,
   item
+})
+
+export const handleOnCloseInfo = () => ({
+  type: ON_CLOSE_INFO
+})
+
+export const setAutomaticSave = (automaticSave: boolean) => ({
+  type: SET_AUTOMATIC_SAVE,
+  automaticSave
 })

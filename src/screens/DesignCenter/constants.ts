@@ -69,6 +69,10 @@ export const SET_LOADED_CANVAS_ACTION = `${namespace}/SET_LOADED_CANVAS_ACTION`
 export const DESIGN_RESET_EDITING_ACTION = `${namespace}/DESIGN_RESET_EDITING_ACTION`
 export const SET_SELECTED_ITEM_ACTION = `${namespace}/SET_SELECTED_ITEM_ACTION`
 
+export const SET_AUTOMATIC_SAVE = `${namespace}/SET_AUTOMATIC_SAVE`
+
+export const ON_CLOSE_INFO = `${namespace}/ON_CLOSE_INFO`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,

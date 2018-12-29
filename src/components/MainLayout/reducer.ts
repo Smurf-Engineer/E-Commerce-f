@@ -69,7 +69,6 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('openLogoutModal', action.open)
     }
     case SAVE_AND_BUY: {
-      console.log('aa')
       return state.set('saveAndBuy', action.buy)
     }
     default:
