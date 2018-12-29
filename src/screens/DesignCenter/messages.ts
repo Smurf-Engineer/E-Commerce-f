@@ -72,5 +72,9 @@ export default defineMessages({
   save: {
     id: 'screens.DesignCenter.save',
     defaultMessage: 'Save'
+  },
+  buyNow: {
+    id: 'components.MenuBarMobile.tittle',
+    defaultMessage: 'BUY NOW'
   }
 })
