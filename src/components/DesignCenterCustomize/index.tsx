@@ -7,6 +7,7 @@ import * as React from 'react'
 import Tabs from './Tabs'
 import Render3D from './Render3D'
 import Spin from 'antd/lib/spin'
+import InfoModal from '../../components/InfoModal'
 import Message from 'antd/lib/message'
 import MobileSelectColors from './MobileSelectColors'
 import {
@@ -98,6 +99,7 @@ interface Props {
   responsive: Responsive
   callbackToSave: boolean
   loggedUserId: string
+  infoModalOpen: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -154,13 +156,20 @@ interface Props {
   ) => void
   openLoginModalAction: (open: boolean, callback?: boolean) => void
   handleOnGoBack: () => void
+  handleOnCloseInfo: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
   componentWillReceiveProps(nextProps: any) {
-    const { callbackToSave, loggedUserId } = nextProps
-    if (callbackToSave && loggedUserId !== this.props.loggedUserId) {
+    const { callbackToSave, loggedUserId, isUserAuthenticated } = nextProps
+    if (
+      callbackToSave &&
+      loggedUserId.length &&
+      loggedUserId !== this.props.loggedUserId &&
+      isUserAuthenticated
+    ) {
+      setTimeout(() => this.handleOnSave, 500)
     }
   }
   render() {
@@ -242,7 +251,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       selectedItem,
       isMobile,
       responsive,
-      handleOnGoBack
+      handleOnGoBack,
+      handleOnCloseInfo,
+      infoModalOpen
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -301,14 +312,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             disableTooltip={responsive.tablet}
           />
         )}
-        {isMobile ? (
+        {isMobile && (
           <MobileToolBar>
             <BackCircle className={'customizeTab'} onClick={handleOnGoBack}>
               <BackIcon src={backIcon} />
             </BackCircle>
             <MobileTitle>{productName}</MobileTitle>
             <ActionMobileItems>
-              <MobileItem>
+              <MobileItem onClick={this.handleOnAddArt}>
                 <ButtonImg src={artIcon} />
                 <ButtonText>{formatMessage({ ...messages.addArt })}</ButtonText>
               </MobileItem>
@@ -318,7 +329,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               </MobileItem>
             </ActionMobileItems>
           </MobileToolBar>
-        ) : null}
+        )}
         {showRender3d && !loadingData ? (
           <Render3D
             ref={render3D => (this.render3D = render3D)}
@@ -399,16 +410,29 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             }}
           />
         )}
+        <InfoModal
+          open={infoModalOpen}
+          formatMessage={formatMessage}
+          title={messages.unsupportedDeviceTitle}
+          text={messages.unsupportedDeviceContent}
+          buttonText={messages.unsupportedDeviceButton}
+          requestClose={handleOnCloseInfo}
+        />
       </Container>
     )
   }
   handleOnSave = () => {
     this.render3D.takeDesignPicture()
   }
-  handleOnOpenLogin = (callback?: boolean) => {
+  handleOnAddArt = () => {
+    const { handleOnCloseInfo } = this.props
+    handleOnCloseInfo()
+  }
+
+  handleOnOpenLogin = () => {
     const { openLoginModalAction, formatMessage } = this.props
     Message.warning(formatMessage(messages.invalidUser))
-    openLoginModalAction(true, callback)
+    openLoginModalAction(true, true)
   }
 
   handleOnApplyText = (text: string, style: TextFormat) => {

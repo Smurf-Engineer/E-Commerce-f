@@ -165,6 +165,7 @@ interface Props extends RouteComponentProps<any> {
   originalPaths: any[]
   selectedItem: SelectedAsset
   layout: any
+  infoModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -255,9 +256,9 @@ interface Props extends RouteComponentProps<any> {
     savedDesignId: string
   ) => void
   openLoginAction: (open: boolean, callback?: boolean) => void
+  handleOnCloseInfo: () => void
 }
 
-const { info } = Modal
 export class DesignCenter extends React.Component<Props, {}> {
   state = {
     openBottomSheet: false
@@ -462,19 +463,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     setSelectedItemAction(item)
   }
 
-  handleOnAddArt = () => {
-    const {
-      intl: { formatMessage }
-    } = this.props
-    info({
-      title: formatMessage(messages.unsupportedDeviceTitle),
-      okType: 'secundary',
-      maskClosable: true,
-      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
-      okText: formatMessage(messages.unsupportedDeviceButton)
-    })
-  }
-
   render() {
     const {
       intl,
@@ -580,7 +568,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       originalPaths,
       selectedItem,
       openLoginAction: openLoginModalAction,
-      layout
+      layout,
+      handleOnCloseInfo,
+      infoModalOpen
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -856,7 +846,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedItem,
                   openLoginModalAction,
                   isMobile,
-                  responsive
+                  responsive,
+                  handleOnCloseInfo,
+                  infoModalOpen
                 }}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}

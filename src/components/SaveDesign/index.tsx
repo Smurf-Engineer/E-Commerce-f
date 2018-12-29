@@ -128,14 +128,14 @@ export class SaveDesign extends React.Component<Props, {}> {
       isUserAuthenticated,
       isEditing,
       savedDesignId,
-      goToCustomProductPage
+      goToCustomProductPage,
+      isMobile
     } = this.props
 
     if (!designName) {
       message.error(formatMessage(messages.invalidNameMessage))
       return
     }
-
     if (!isUserAuthenticated) {
       message.error(formatMessage(messages.invalidUser))
       return
@@ -176,7 +176,9 @@ export class SaveDesign extends React.Component<Props, {}> {
               event: NEW_DESIGN_SAVED,
               label: designName
             })
-            afterSaveDesign(shortId, svg, savedDesign, true)
+            if (!isMobile) {
+              afterSaveDesign(shortId, svg, savedDesign, true)
+            }
           } else {
             goToCustomProductPage(shortId)
           }
