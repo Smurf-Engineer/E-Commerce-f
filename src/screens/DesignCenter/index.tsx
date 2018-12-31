@@ -84,7 +84,8 @@ import {
   CanvasObjects,
   SelectedAsset,
   SaveDesignData,
-  Message as MessageType
+  Message as MessageType,
+  CartItemDetail
 } from '../../types/common'
 import {
   getProductQuery,
@@ -314,9 +315,48 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (!goToCart) {
       this.handleOnSelectTab(DesignTabs.PreviewTab)
     } else {
-      this.handleOnAddToCart()
+      this.save(design)
       history.push('/shopping-cart')
     }
+  }
+  save = (item: DesignSaved) => {
+    const { intl } = this.props
+    const productName = get(item, 'product.name')
+    const itemToAdd = this.getItemWithDetails(item)
+    if (typeof window !== 'undefined') {
+      const cartList = JSON.parse(localStorage.getItem('cart') as any)
+      if (cartList) {
+        cartList.push(itemToAdd)
+        localStorage.setItem('cart', JSON.stringify(cartList))
+      } else {
+        const myItems = []
+        myItems.push(itemToAdd)
+        localStorage.setItem('cart', JSON.stringify(myItems))
+      }
+      Message.success(
+        intl.formatMessage(messages.addedToCart, { productName: productName })
+      )
+    }
+  }
+
+  getItemWithDetails = (item: DesignSaved) => {
+    const details = [] as CartItemDetail[]
+    const detail = {
+      quantity: 1
+    }
+    details.push(detail)
+    const itemToAdd = Object.assign(
+      {},
+      { product: item.product },
+      {
+        itemDetails: details
+      },
+      { designId: get(item, 'designId') },
+      { designName: get(item, 'designName') },
+      { designImage: get(item, 'designImage') },
+      { designCode: get(item, 'designCode') }
+    )
+    return itemToAdd
   }
 
   handleOpenQuickView = () => {
@@ -421,7 +461,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = this.props
     const name = get(dataDesign, 'designData.product.name', '')
     Message.success(
-      formatMessage(messages.addedToCart, { designName: designName || name })
+      formatMessage(messages.addedToCart, { productName: designName || name })
     )
   }
 
@@ -588,7 +628,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       saveAndBuyAction: handleOnSaveAndBuy,
       setAutomaticSave
     } = this.props
-    console.log(product)
+
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
     const {
@@ -735,7 +775,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
 
     const isUserAuthenticated = !!user
-    console.log(layout)
     return (
       <Layout
         {...{ history, intl }}

@@ -1136,6 +1136,7 @@ class Render3D extends PureComponent {
   handleOnClickClear = () => this.props.onClearAction()
 
   handleOnChange3DModel = () => {}
+  handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
     const { isUserAuthenticated, openLoginAction } = this.props
@@ -1240,7 +1241,7 @@ class Render3D extends PureComponent {
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </Row>
         <ButtonWrapper>
-          <Button type="primary" onClick={this.takeDesignPicture}>
+          <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>

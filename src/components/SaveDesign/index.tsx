@@ -17,14 +17,17 @@ import {
   Button,
   StyledSaveAs,
   CheckWrapper,
-  InputWrapper
+  InputWrapper,
+  SpinWrapper,
+  StyledSpin
 } from './styledComponents'
 import {
   SaveDesignType,
   StitchingColor,
   CanvasType,
   DesignFiles,
-  SaveDesignData
+  SaveDesignData,
+  Message
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
 import { saveDesignName, saveDesignChanges } from './data'
@@ -77,7 +80,7 @@ interface Props {
   productMpn?: string
   requestClose: () => void
   onDesignName: (name: string) => void
-  formatMessage: (messageDescriptor: any, values?: {}) => string
+  formatMessage: (messageDescriptor: Message, values?: any) => string
   saveDesign: (variables: {}) => void
   saveDesignAs: (variables: {}) => void
   afterSaveDesign: (
@@ -152,7 +155,6 @@ export class SaveDesign extends React.Component<Props, State> {
       productMpn
     } = this.props
     const { automaticSave } = this.state
-
     if (!designName && !automaticSave) {
       message.error(formatMessage(messages.invalidNameMessage))
       return
@@ -192,14 +194,14 @@ export class SaveDesign extends React.Component<Props, State> {
       await saveDesign({
         variables: { design: designObj, colors },
         update: (store: any, { data: { savedDesign } }: Data) => {
-          const { shortId, svg } = savedDesign
+          const { shortId, svg, designName: savedDesignName } = savedDesign
           message.success(
-            formatMessage(messages.saveSuccess, { finalDesignName })
+            formatMessage(messages.saveSuccess, { designName: savedDesignName })
           )
           if (!isEditing && !savedDesignId) {
             window.dataLayer.push({
               event: NEW_DESIGN_SAVED,
-              label: finalDesignName
+              label: savedDesignName
             })
             afterSaveDesign(shortId, svg, savedDesign, true, automaticSave)
           } else {
@@ -331,7 +333,7 @@ export class SaveDesign extends React.Component<Props, State> {
 
     return (
       <Container>
-        {!automaticSave && (
+        {!automaticSave ? (
           <Modal
             visible={open}
             footer={null}
@@ -394,6 +396,10 @@ export class SaveDesign extends React.Component<Props, State> {
               </Button>
             </ButtonWrapper>
           </Modal>
+        ) : (
+          <SpinWrapper>
+            <StyledSpin />
+          </SpinWrapper>
         )}
       </Container>
     )

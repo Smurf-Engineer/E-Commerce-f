@@ -162,7 +162,7 @@ export const setThemeAction = (id: number, product: Product): AnyAction => ({
 export const openSaveDesignAction = (
   open: boolean,
   design: SaveDesignType,
-  automaticSave?: boolean
+  automaticSave = false
 ) => ({
   type: OPEN_SAVE_DESIGN_ACTION,
   open,
