@@ -64,5 +64,13 @@ export default defineMessages({
     id: 'screens.DesignCenter.landscapeMessage',
     defaultMessage:
       'Our design center is optimized for landscape mode, please rotate your device.'
+  },
+  addArt: {
+    id: 'screens.DesignCenter.addArt',
+    defaultMessage: 'Add art'
+  },
+  save: {
+    id: 'screens.DesignCenter.save',
+    defaultMessage: 'Save'
   }
 })

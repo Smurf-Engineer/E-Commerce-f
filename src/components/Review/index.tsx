@@ -139,7 +139,7 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.billingAddress)}</Title>
-            {isPaypalPayment || isIbanPayment ? (
+            {isPaypalPayment ? (
               <Text>{billingCountry.toUpperCase()}</Text>
             ) : (
               <div>

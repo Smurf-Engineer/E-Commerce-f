@@ -118,6 +118,7 @@ declare module 'react-swipeable-clickeable-bottom-sheet' {
     swipeableViewsProps?: object
     topShadow?: boolean
     open?: boolean
+    style?: any
     onChange?: () => void
     overlayClicked?: (evt: any) => void
   }
@@ -156,4 +157,36 @@ declare module 'react-intercom' {
   export function IntercomAPI(method: string): void
 
   export default Intercom
+}
+
+declare module __ScrollIntoView {
+  interface Settings {
+    time?: number
+    ease?: (value: number) => number
+    validTarget?: (target: HTMLElement, parentsScrolled: number) => boolean
+    align?: Alignment
+  }
+
+  interface Alignment {
+    top?: number
+    left?: number
+    leftOffset?: number
+  }
+
+  type callbackParameterType = 'complete' | 'canceled'
+  type Callback = (type: callbackParameterType) => void
+
+  interface ScrollIntoView {
+    (target: HTMLElement, callback?: __ScrollIntoView.Callback): void
+    (
+      target: HTMLElement,
+      settings: __ScrollIntoView.Settings,
+      callback?: __ScrollIntoView.Callback
+    ): void
+  }
+}
+
+declare module 'scroll-into-view' {
+  var scrollIntoView: __ScrollIntoView.ScrollIntoView
+  export = scrollIntoView
 }

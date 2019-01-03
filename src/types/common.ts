@@ -1064,4 +1064,12 @@ export interface CouponCode {
   rate?: string
 }
 
+export interface Message {
+  id: string
+  defaultMessage: string
+}
+
+export interface Index {
+  index: number
+}
 type couponType = '%' | 'flat'
