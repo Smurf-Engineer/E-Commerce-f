@@ -34,7 +34,6 @@ export const getOrderQuery = gql`
         stripeCharge {
           cardData: source {
             name
-            email
             last4
             brand
             expMonth: exp_month

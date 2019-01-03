@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { injectStripe, IbanElement } from 'react-stripe-elements'
 import messages from './messages'
+import get from 'lodash/get'
 import {
   Container,
   DisclaimerContainer,
@@ -21,7 +22,7 @@ interface Props {
   stripe: any
   hasError: boolean
   stripeError: string
-  disabled: boolean
+  countryError: boolean
   cardHolderName: string
   email: string
   setLoadingBillingAction: (loading: boolean) => void
@@ -35,6 +36,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   // inputChangeAction: (id: string, value: string) => void
   nextStep: () => void
+  handleConfirmSave: (countryCode: string) => void
 }
 
 class IbanForm extends React.Component<Props, {}> {
@@ -43,7 +45,7 @@ class IbanForm extends React.Component<Props, {}> {
       cardHolderName,
       email,
       formatMessage,
-      disabled,
+      countryError,
       stripeError,
       hasError
     } = this.props
@@ -89,9 +91,14 @@ class IbanForm extends React.Component<Props, {}> {
               <RequiredSpan>*</RequiredSpan>
             </InputTitleContainer>
             <ContainerInput>
-              <IbanElement supportedCountries={['SEPA']} {...{ disabled }} />
+              <IbanElement
+                supportedCountries={['SEPA']}
+                onChange={this.handleOnChangeSepa}
+              />
             </ContainerInput>
-            {disabled && <ErrorMsg>{formatMessage(messages.error)}</ErrorMsg>}
+            {countryError && (
+              <ErrorMsg>{formatMessage(messages.error)}</ErrorMsg>
+            )}
             {stripeError && <ErrorMsg>{stripeError}</ErrorMsg>}
           </Column>
         </Row>
@@ -107,6 +114,11 @@ class IbanForm extends React.Component<Props, {}> {
         </Row>
       </Container>
     )
+  }
+  handleOnChangeSepa = (evt: any) => {
+    const { handleConfirmSave } = this.props
+    const country = get(evt, 'country', '').toLowerCase()
+    handleConfirmSave(country)
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
@@ -126,12 +138,13 @@ class IbanForm extends React.Component<Props, {}> {
       setStripeIbanDataAction,
       setLoadingBillingAction,
       nextStep,
-      stripe
+      stripe,
+      countryError
     } = this.props
 
     const emptyForm = !cardHolderName && !email
 
-    if (emptyForm) {
+    if (emptyForm || countryError) {
       invalidBillingFormAction(true)
       return
     }
@@ -147,7 +160,9 @@ class IbanForm extends React.Component<Props, {}> {
         notification_method: 'email'
       }
     }
+
     setLoadingBillingAction(true)
+
     const stripeResponse = await stripe.createSource(stripeSourceData)
     if (stripeResponse && stripeResponse.error) {
       setStripeErrorAction(stripeResponse.error.message)

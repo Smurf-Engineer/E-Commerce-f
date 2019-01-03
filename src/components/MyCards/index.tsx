@@ -101,7 +101,9 @@ class MyCards extends React.Component<Props, {}> {
   componentDidMount() {
     const { showCardFormAction = () => {}, data } = this.props
     if (window.Stripe) {
-      this.setState({ stripe: window.Stripe(config.pkStripeEU) })
+      this.setState({
+        stripe: window.Stripe(config.pkStripeUS)
+      })
     } else {
       // this code is safe to server-side render.
       const stripeJs = document.createElement('script')
@@ -110,7 +112,7 @@ class MyCards extends React.Component<Props, {}> {
       stripeJs.src = 'https://js.stripe.com/v3/'
       stripeJs.onload = () => {
         this.setState({
-          stripe: window.Stripe(config.pkStripeEU)
+          stripe: window.Stripe(config.pkStripeUS)
         })
       }
       // tslint:disable-next-line:no-unused-expression

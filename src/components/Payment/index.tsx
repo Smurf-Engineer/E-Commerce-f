@@ -76,12 +76,16 @@ declare var window: MyWindow
 class Payment extends React.PureComponent<Props, {}> {
   state = {
     stripe: null,
-    openConfirm: false
+    openConfirm: false,
+    euStripe: null
   }
 
   componentDidMount() {
     if (window.Stripe) {
-      this.setState({ stripe: window.Stripe(config.pkStripeEU) })
+      this.setState({
+        stripe: window.Stripe(config.pkStripeUS),
+        euStripe: window.Stripe(config.pkStripeEU)
+      })
     } else {
       // this code is safe to server-side render.
       const stripeJs = document.createElement('script')
@@ -90,7 +94,8 @@ class Payment extends React.PureComponent<Props, {}> {
       stripeJs.src = 'https://js.stripe.com/v3/'
       stripeJs.onload = () => {
         this.setState({
-          stripe: window.Stripe(config.pkStripeEU)
+          stripe: window.Stripe(config.pkStripeUS),
+          euStripe: window.Stripe(config.pkStripeEU)
         })
       }
       // tslint:disable-next-line:no-unused-expression
@@ -134,12 +139,8 @@ class Payment extends React.PureComponent<Props, {}> {
   }
 
   handleIbanClick = () => {
-    const { setPaymentMethodAction, setIbanErrorAction } = this.props
+    const { setPaymentMethodAction } = this.props
     setPaymentMethodAction(IBAN)
-    setIbanErrorAction(true)
-    this.setState({
-      openConfirm: true
-    })
   }
 
   handleCreditCardClick = () => {
@@ -158,7 +159,6 @@ class Payment extends React.PureComponent<Props, {}> {
       stripeError,
       ibanError,
       setStripeErrorAction,
-      // setIbanErrorAction,
       loadingBilling,
       setLoadingBillingAction,
       sameBillingAndAddressCheckedAction,
@@ -182,7 +182,7 @@ class Payment extends React.PureComponent<Props, {}> {
       showBillingAddressFormAction,
       setStripeIbanDataAction
     } = this.props
-    const { stripe, openConfirm } = this.state
+    const { stripe, openConfirm, euStripe } = this.state
 
     if (!showContent) {
       return <div />
@@ -225,9 +225,9 @@ class Payment extends React.PureComponent<Props, {}> {
         />
       ) : (
         <IbanForm
-          disabled={ibanError}
+          countryError={ibanError}
+          stripe={euStripe}
           {...{
-            stripe,
             cardHolderName,
             email,
             formatMessage,
@@ -239,6 +239,7 @@ class Payment extends React.PureComponent<Props, {}> {
             setStripeErrorAction,
             setStripeIbanDataAction
           }}
+          handleConfirmSave={this.handleConfirmSave}
           inputChangeAction={this.handleOnChangeInput}
         />
       )
@@ -266,9 +267,17 @@ class Payment extends React.PureComponent<Props, {}> {
             {formatMessage(messages.methodPaypal)}
           </MethodButton>
         </ContainerMethods>
-        <StripeProvider {...{ stripe }}>
-          <Elements>{paymentForm}</Elements>
-        </StripeProvider>
+
+        {paymentMethod === CREDITCARD && (
+          <StripeProvider stripe={stripe}>
+            <Elements>{paymentForm}</Elements>
+          </StripeProvider>
+        )}
+        {paymentMethod !== CREDITCARD && (
+          <StripeProvider stripe={euStripe}>
+            <Elements>{paymentForm}</Elements>
+          </StripeProvider>
+        )}
         <Modal
           {...{ formatMessage }}
           open={openConfirm}
