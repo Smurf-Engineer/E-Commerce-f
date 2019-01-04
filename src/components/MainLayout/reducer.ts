@@ -40,9 +40,10 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
         hideQuickViewSliderButtons: action.hideSliderButtons
       })
     case OPEN_LOGIN_MODAL:
-      return state
-        .set('openLogin', action.open)
-        .set('callback', action.callback)
+      return state.merge({
+        openLogin: action.open,
+        callback: action.callback
+      })
     case SAVE_USER_TO_LOCAL: {
       return state.set('user', action.user)
     }
