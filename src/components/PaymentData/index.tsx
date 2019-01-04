@@ -34,22 +34,20 @@ const PaymentData = ({ card, iban }: Props) => {
         <PaymentText>{`EXP ${month}/${expYear}`}</PaymentText>
       </Container>
     )
-  } else {
-    if (iban) {
-      const { name, last4, email } = iban
-      return (
-        <Container>
-          <PaymentText>{name}</PaymentText>
-          <PaymentText>{email}</PaymentText>
-          <CardNumber>
-            <PaymentText>{`X-${last4}`}</PaymentText>
-          </CardNumber>
-        </Container>
-      )
-    } else {
-      return <Container />
-    }
   }
+  if (iban) {
+    const { name, last4, email } = iban
+    return (
+      <Container>
+        <PaymentText>{name}</PaymentText>
+        <PaymentText>{email}</PaymentText>
+        <CardNumber>
+          <PaymentText>{`X-${last4}`}</PaymentText>
+        </CardNumber>
+      </Container>
+    )
+  }
+  return <Container />
 }
 
 const getCardIcon = (brand: string) => {

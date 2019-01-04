@@ -135,11 +135,11 @@ class IbanForm extends React.Component<Props, {}> {
       setLoadingBillingAction,
       nextStep,
       stripe,
-      countryError
+      countryError,
+      formatMessage
     } = this.props
 
     const emptyForm = !cardHolderName && !email
-
     if (emptyForm || countryError) {
       invalidBillingFormAction(true)
       return
@@ -156,24 +156,26 @@ class IbanForm extends React.Component<Props, {}> {
         notification_method: 'email'
       }
     }
-
     setLoadingBillingAction(true)
+    try {
+      const stripeResponse = await stripe.createSource(stripeSourceData)
+      if (stripeResponse.error) {
+        setStripeErrorAction(stripeResponse.error.message)
+      } else {
+        const { id, owner, sepa_debit } = stripeResponse.source
 
-    const stripeResponse = await stripe.createSource(stripeSourceData)
-    if (stripeResponse && stripeResponse.error) {
-      setStripeErrorAction(stripeResponse.error.message)
-    } else {
-      const { id, owner, sepa_debit } = stripeResponse.source
+        const ibanData: IbanData = {
+          id,
+          name: owner.name,
+          email: owner.email,
+          last4: sepa_debit.last4
+        }
 
-      const ibanData: IbanData = {
-        id,
-        name: owner.name,
-        email: owner.email,
-        last4: sepa_debit.last4
+        setStripeIbanDataAction(ibanData)
+        nextStep()
       }
-
-      setStripeIbanDataAction(ibanData)
-      nextStep()
+    } catch (err) {
+      setStripeErrorAction(formatMessage(messages.unknowError))
     }
   }
 }

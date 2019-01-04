@@ -15,7 +15,8 @@ export default defineMessages({
   },
   error: {
     id: 'components.IbanForm.error',
-    defaultMessage: 'IBAN payments only allowed for Austria, France, Germany, Italy, Spain and Switzerland'
+    defaultMessage:
+      'IBAN payments only allowed for Austria, France, Germany, Italy, Spain and Switzerland'
   },
   continue: {
     id: 'components.IbanForm.continue',
@@ -34,4 +35,8 @@ export default defineMessages({
       the terms and conditions of your agreement with your bank. A refund must be claimed within 8 weeks \
       starting from the date on which your account was debited.'
   },
+  unknowError: {
+    id: 'components.IbanForm.unknowError',
+    defaultMessage: 'Oops! Something went wrong'
+  }
 })
