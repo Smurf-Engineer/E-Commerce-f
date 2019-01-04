@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
+import head from 'lodash/head'
 import messages from './messages'
 import { FormattedHTMLMessage } from 'react-intl'
 import {
@@ -26,6 +27,7 @@ import {
 } from './styledComponents'
 import { getOrderQuery } from './data'
 
+import { PURCHASE } from '../../constants'
 import MyAddress from '../MyAddress'
 import OrderSummary from '../OrderSummary'
 import withError from '..//WithError'
@@ -57,6 +59,44 @@ interface Props {
 }
 
 class OrderData extends React.Component<Props, {}> {
+  componentDidMount() {
+    const {
+      orderId,
+      data: {
+        orderData: { cart, taxFee, shippingAmount }
+      }
+    } = this.props
+
+    if (cart) {
+      let subtotal = 0
+      const items: any = []
+      cart.map((cartItem, index) => {
+        const {
+          product: { name },
+          product,
+          productTotal,
+          unitPrice,
+          itemDetails
+        } = cartItem
+
+        subtotal += productTotal || 0
+        items.push({
+          sku: get(product, 'mpn', ''),
+          name,
+          price: unitPrice,
+          quantity: get(head(itemDetails), 'quantity', 1)
+        })
+      })
+      window.dataLayer.push({
+        event: PURCHASE,
+        transactionId: orderId,
+        transactionTotal: subtotal,
+        transactionTax: taxFee,
+        transactionShipping: shippingAmount,
+        transactionProducts: items
+      })
+    }
+  }
   render() {
     const {
       formatMessage,
