@@ -2,6 +2,8 @@
  * Styled Components - Created by eduardo on 20/12/18.
  */
 import styled from 'styled-components'
+import Tabs, { TabsProps } from 'antd/lib/tabs'
+import React from 'react'
 
 interface ColorSliderProps {
   totalColors: number
@@ -91,4 +93,17 @@ export const Row = styled.div`
 export const Divider = styled.div`
   height: 1px;
   background-color: #dcdcdc;
+`
+
+export const StyledTabs = styled(Tabs as React.ComponentClass<TabsProps>)`
+  & .ant-tabs-nav-scroll {
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+  }
+  & .ant-tabs-tab-arrow-show  {
+    display: none;
+  }
+  & .ant-tabs-nav-container {
+    padding: 0;
+  }
 `

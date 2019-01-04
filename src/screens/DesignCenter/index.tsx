@@ -9,6 +9,7 @@ import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
+import MobileDesignCenterInspiration from '../../components/MobileDesignCenterInspiration'
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
@@ -1047,6 +1048,19 @@ export class DesignCenter extends React.Component<Props, {}> {
           ) : (
             <div />
           )}
+          {tabSelected === CustomizeTabIndex &&
+          !loadingData &&
+          isMobile &&
+          !swipingView &&
+          !loadingModel ? (
+            <MobileDesignCenterInspiration
+              styleId={currentStyle.id}
+              open={openBottomSheet}
+              setPaletteAction={this.setPaletteEvent}
+              {...{ formatMessage }}
+              hideList={this.toggleBottomSheet}
+            />
+          ) : null}
         </Container>
         <Modal
           visible={openOutWithoutSaveModal}
