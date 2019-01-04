@@ -4,7 +4,7 @@
 import * as React from 'react'
 import ReactDOM from 'react-dom'
 import findIndex from 'lodash/findIndex'
-import scrollIntoView from 'scroll-into-view'
+
 import { Container, Color, Col, ColorSlider, Border } from './styledComponents'
 import colors from './colors'
 import stitchingColors from './stitchingColors'
@@ -20,7 +20,7 @@ interface Props {
 }
 
 class MobileColorList extends React.PureComponent<Props> {
-  private myRef: any
+  private colorRef: any
 
   componentDidMount() {
     const { selectedColor } = this.props
@@ -32,18 +32,9 @@ class MobileColorList extends React.PureComponent<Props> {
   scrollColorList(selectedColor: string) {
     const { stitching } = this.props
     const arrayColors = !stitching ? colors : stitchingColors
-
     const index = findIndex(arrayColors, ['value', selectedColor])
-
-    const node = ReactDOM.findDOMNode(this.myRef) as HTMLElement
-
-    scrollIntoView(node, {
-      time: 0,
-      align: {
-        left: 0,
-        leftOffset: -(index * 48)
-      }
-    })
+    const node = ReactDOM.findDOMNode(this.colorRef) as HTMLElement
+    ReactDOM.findDOMNode(node).scrollLeft = index * 48
   }
   componentWillReceiveProps(nextProps: any) {
     const { selectedColor, stitching, stitchingColor } = this.props
@@ -93,9 +84,9 @@ class MobileColorList extends React.PureComponent<Props> {
       <Container>
         <ColorSlider
           ref={(color: any) => {
-            this.myRef = color
+            this.colorRef = color
           }}
-          totalColors={arrayColors.length}
+          totalWidth={arrayColors.length * 44 + 12}
         >
           {colorsList}
         </ColorSlider>
