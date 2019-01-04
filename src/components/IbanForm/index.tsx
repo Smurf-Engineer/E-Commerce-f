@@ -29,12 +29,8 @@ interface Props {
   invalidBillingFormAction: (hasError: boolean) => void
   setStripeErrorAction: (error: string) => void
   inputChangeAction: (id: string, value: string) => void
-  // loadingBilling: boolean
-  // showIbanForm: boolean
-  // showBillingForm: boolean
   setStripeIbanDataAction: (iban: IbanData) => void
   formatMessage: (messageDescriptor: any) => string
-  // inputChangeAction: (id: string, value: string) => void
   nextStep: () => void
   handleConfirmSave: (countryCode: string) => void
 }
