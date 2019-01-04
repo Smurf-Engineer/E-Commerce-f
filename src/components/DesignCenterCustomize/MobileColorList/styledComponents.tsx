@@ -15,7 +15,7 @@ export const Dot = styled.div`
 `
 
 interface ColorProps {
-  color: string
+  color?: string
   selected?: boolean
 }
 
@@ -25,16 +25,23 @@ interface ColorSliderProps {
 export const Color = styled.div`
   background-color: ${({ color }: ColorProps) => color};
   border: 1px solid
-    ${({ color, selected }: ColorProps) =>
-      selected
-        ? RED
-        : color && color.toUpperCase() !== WHITE
-        ? 'transparent'
-        : GRAY};
+    ${({ color }: ColorProps) =>
+      color && color.toUpperCase() !== WHITE ? 'transparent' : GRAY};
   cursor: pointer;
   width: 32px;
   height: 32px;
+  transform: scale(${({ selected }: ColorProps) => (selected ? '0.8' : '1')});
+  transition: transform 0.3s ease;
+`
+
+export const Border = styled.div`
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  border: 2px solid
+    ${({ selected }: ColorProps) => (selected ? RED : 'transparent')};
   margin-left: 12px;
+  transition: all 0.3s ease;
 `
 
 export const Col = styled.div`
@@ -49,6 +56,8 @@ export const ColorSlider = styled.div`
   margin-top: 10px;
   overflow-x: scroll;
   scroll-behavior: smooth;
+  display: flex;
+  -webkit-overflow-scrolling: touch;
   white-space: nowrap;
   width: calc(
     (${({ totalColors }: ColorSliderProps) => totalColors} * 44px) + 12px
