@@ -15,9 +15,6 @@ import iconDiscover from '../../assets/card-discover.svg'
 import iconCreditCard from '../../assets/card-default.svg'
 import { CreditCardData, IbanData } from '../../types/common'
 
-// const defaultCard = { name: '', last4: '', brand: '', expMonth: 0, expYear: 0 }
-// const defaultIban = { name: '', last4: '', email: '' }
-
 interface Props {
   card?: CreditCardData
   iban?: IbanData

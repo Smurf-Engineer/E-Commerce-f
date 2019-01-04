@@ -288,12 +288,6 @@ class Checkout extends React.Component<Props, {}> {
       cardBrand
     }
 
-    // const IbanData: StripeCardData = {
-    //   cardNumber,
-    //   cardExpDate,
-    //   cardBrand
-    // }
-
     const taxAddress: TaxAddressObj = shippingAddress.country &&
       shippingAddress.stateProvince &&
       shippingAddress.zipCode && {
