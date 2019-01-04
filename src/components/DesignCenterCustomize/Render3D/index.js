@@ -1137,16 +1137,6 @@ class Render3D extends PureComponent {
 
   handleOnChange3DModel = () => {}
 
-  handleOnPressCustomize = () => {
-    const { formatMessage } = this.props
-    info({
-      title: formatMessage(messages.unsupportedDeviceTitle),
-      maskClosable: true,
-      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
-      okText: formatMessage(messages.unsupportedDeviceButton)
-    })
-  }
-
   takeDesignPicture = () => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {

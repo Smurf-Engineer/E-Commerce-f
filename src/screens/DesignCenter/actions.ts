@@ -60,7 +60,8 @@ import {
   CANVAS_ELEMENT_DUPLICATED_ACTION,
   CanvasElements,
   DESIGN_RESET_EDITING_ACTION,
-  SET_SELECTED_ITEM_ACTION
+  SET_SELECTED_ITEM_ACTION,
+  ON_CLOSE_INFO
 } from './constants'
 import {
   AnyAction,
@@ -464,4 +465,8 @@ export const onResetEditingAction = (
 export const setSelectedItemAction = (item: SelectedAsset): AnyAction => ({
   type: SET_SELECTED_ITEM_ACTION,
   item
+})
+
+export const handleOnCloseInfo = () => ({
+  type: ON_CLOSE_INFO
 })
