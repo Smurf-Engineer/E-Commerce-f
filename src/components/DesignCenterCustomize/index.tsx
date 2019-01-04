@@ -1,5 +1,3 @@
-// Design Center Customize
-
 /**
  * DesignCenterCustomize Component - Created by david on 26/02/18.
  */

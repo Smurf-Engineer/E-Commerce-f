@@ -1,5 +1,3 @@
-// DesignCenter Custodios RENDER3d
-
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
