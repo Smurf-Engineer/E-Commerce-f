@@ -85,8 +85,7 @@ import {
   CanvasObjects,
   SelectedAsset,
   SaveDesignData,
-  Message as MessageType,
-  CartItemDetail
+  Message as MessageType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -267,6 +266,7 @@ interface Props extends RouteComponentProps<any> {
   handleOnCloseInfo: () => void
   saveAndBuyAction: (buy: boolean) => void
   setAutomaticSave: (automaticSave: boolean) => void
+  saveToCartAction: (item: DesignSaved) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -304,60 +304,21 @@ export class DesignCenter extends React.Component<Props, {}> {
     this.setState({ openBottomSheet: open })
   }
 
-  handleAfterSaveDesign = (
+  handleAfterSaveDesign = async (
     id: string,
     svgUrl: string,
     design: DesignSaved,
     updateColors = false,
     goToCart?: boolean
   ) => {
-    const { saveDesignIdAction, history } = this.props
+    const { saveDesignIdAction, history, saveToCartAction } = this.props
     saveDesignIdAction(id, svgUrl, design, updateColors)
     if (!goToCart) {
       this.handleOnSelectTab(DesignTabs.PreviewTab)
     } else {
-      this.save(design)
+      await saveToCartAction(design)
       history.push('/shopping-cart')
     }
-  }
-  save = (item: DesignSaved) => {
-    const { intl } = this.props
-    const productName = get(item, 'product.name')
-    const itemToAdd = this.getItemWithDetails(item)
-    if (typeof window !== 'undefined') {
-      const cartList = JSON.parse(localStorage.getItem('cart') as any)
-      if (cartList) {
-        cartList.push(itemToAdd)
-        localStorage.setItem('cart', JSON.stringify(cartList))
-      } else {
-        const myItems = []
-        myItems.push(itemToAdd)
-        localStorage.setItem('cart', JSON.stringify(myItems))
-      }
-      Message.success(
-        intl.formatMessage(messages.addedToCart, { productName: productName })
-      )
-    }
-  }
-
-  getItemWithDetails = (item: DesignSaved) => {
-    const details = [] as CartItemDetail[]
-    const detail = {
-      quantity: 1
-    }
-    details.push(detail)
-    const itemToAdd = Object.assign(
-      {},
-      { product: item.product },
-      {
-        itemDetails: details
-      },
-      { designId: get(item, 'designId') },
-      { designName: get(item, 'designName') },
-      { designImage: get(item, 'designImage') },
-      { designCode: get(item, 'designCode') }
-    )
-    return itemToAdd
   }
 
   handleOpenQuickView = () => {

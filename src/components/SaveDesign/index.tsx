@@ -101,10 +101,8 @@ interface State {
   automaticSave: boolean
 }
 export class SaveDesign extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = { automaticSave: false }
-  }
+  state = { automaticSave: false }
+
   componentWillReceiveProps(nextProps: any) {
     const { setAutomaticSave } = this.props
     const { automaticSave } = nextProps
