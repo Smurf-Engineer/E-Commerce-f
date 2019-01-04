@@ -3,7 +3,9 @@
  */
 import message from 'antd/lib/message'
 import config from '../../config/index'
+import get from 'lodash/get'
 import { uploadFileSuccessAction, setUploadingAction } from './actions'
+import { DesignSaved, CartItemDetail } from '../../types/common'
 
 export const uploadFileAction = (file: any) => {
   return async (dispatch: any) => {
@@ -29,6 +31,41 @@ export const uploadFileAction = (file: any) => {
     } catch (e) {
       dispatch(setUploadingAction(false))
       message.error(e.message)
+    }
+  }
+}
+
+export const saveToCartAction = (item: DesignSaved) => {
+  return async () => {
+    const productName = get(item, 'product.name')
+
+    const details = [] as CartItemDetail[]
+    const detail = {
+      quantity: 1
+    }
+    details.push(detail)
+    const itemToAdd = Object.assign(
+      {},
+      { product: item.product },
+      {
+        itemDetails: details
+      },
+      { designId: get(item, 'designId') },
+      { designName: get(item, 'designName') },
+      { designImage: get(item, 'designImage') },
+      { designCode: get(item, 'designCode') }
+    )
+    if (typeof window !== 'undefined') {
+      const cartList = JSON.parse(localStorage.getItem('cart') as any)
+      if (cartList) {
+        cartList.push(itemToAdd)
+        localStorage.setItem('cart', JSON.stringify(cartList))
+      } else {
+        const myItems = []
+        myItems.push(itemToAdd)
+        localStorage.setItem('cart', JSON.stringify(myItems))
+      }
+      message.success(`${productName} added to cart`)
     }
   }
 }

@@ -13,6 +13,7 @@ import MobileDesignCenterInspiration from '../../components/MobileDesignCenterIn
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
+import { saveAndBuyAction } from '../../components/MainLayout/actions'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import find from 'lodash/find'
@@ -166,6 +167,8 @@ interface Props extends RouteComponentProps<any> {
   originalPaths: any[]
   selectedItem: SelectedAsset
   infoModalOpen: boolean
+  layout: any
+  automaticSave: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -186,7 +189,11 @@ interface Props extends RouteComponentProps<any> {
   setThemeAction: (id: number, product: Product) => void
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
-  openSaveDesignAction: (open: boolean, imageBase64: string) => void
+  openSaveDesignAction: (
+    open: boolean,
+    imageBase64: string,
+    automaticSave?: boolean
+  ) => void
   saveDesignIdAction: (
     id: string,
     svgUrl: string,
@@ -257,6 +264,9 @@ interface Props extends RouteComponentProps<any> {
   ) => void
   openLoginAction: (open: boolean) => void
   handleOnCloseInfo: () => void
+  saveAndBuyAction: (buy: boolean) => void
+  setAutomaticSave: (automaticSave: boolean) => void
+  saveToCartAction: (item: DesignSaved) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -294,15 +304,21 @@ export class DesignCenter extends React.Component<Props, {}> {
     this.setState({ openBottomSheet: open })
   }
 
-  handleAfterSaveDesign = (
+  handleAfterSaveDesign = async (
     id: string,
     svgUrl: string,
     design: DesignSaved,
-    updateColors = false
+    updateColors = false,
+    goToCart?: boolean
   ) => {
-    const { saveDesignIdAction } = this.props
+    const { saveDesignIdAction, history, saveToCartAction } = this.props
     saveDesignIdAction(id, svgUrl, design, updateColors)
-    this.handleOnSelectTab(DesignTabs.PreviewTab)
+    if (!goToCart) {
+      this.handleOnSelectTab(DesignTabs.PreviewTab)
+    } else {
+      await saveToCartAction(design)
+      history.push('/shopping-cart')
+    }
   }
 
   handleOpenQuickView = () => {
@@ -365,7 +381,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   closeSaveDesignModal = () => {
     const { openSaveDesignAction } = this.props
-    openSaveDesignAction(false, '')
+    openSaveDesignAction(false, '', false)
   }
 
   saveItemToStore = async () => {
@@ -407,7 +423,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = this.props
     const name = get(dataDesign, 'designData.product.name', '')
     Message.success(
-      formatMessage(messages.addedToCart, { designName: designName || name })
+      formatMessage(messages.addedToCart, { productName: designName || name })
     )
   }
 
@@ -568,8 +584,13 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectedItem,
       openLoginAction: openLoginModalAction,
       handleOnCloseInfo,
-      infoModalOpen
+      infoModalOpen,
+      layout,
+      automaticSave,
+      saveAndBuyAction: handleOnSaveAndBuy,
+      setAutomaticSave
     } = this.props
+
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
     const {
@@ -716,7 +737,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
 
     const isUserAuthenticated = !!user
-
     return (
       <Layout
         {...{ history, intl }}
@@ -848,6 +868,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   handleOnCloseInfo,
                   infoModalOpen
                 }}
+                saveAndBuy={get(layout, 'saveAndBuy', false)}
+                handleOnSaveAndBuy={handleOnSaveAndBuy}
                 handleOnGoBack={this.handleOnGoBack}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
@@ -943,8 +965,11 @@ export class DesignCenter extends React.Component<Props, {}> {
               canvas,
               designName,
               isUserAuthenticated,
-              isEditing
+              isEditing,
+              automaticSave,
+              setAutomaticSave
             }}
+            productMpn={get(product, 'mpn', '')}
             design={!!design.canvasJson ? design : designObject}
             hasFlatlock={!!productConfig && !!productConfig.flatlock}
             hasZipper={!!productConfig && !!productConfig.zipper}
@@ -1070,7 +1095,8 @@ const mapStateToProps = (state: any) => {
   const designCenter = state.get('designCenter').toJS()
   const app = state.get('app').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...designCenter, ...app, responsive }
+  const layout = state.get('layout').toJS()
+  return { ...designCenter, ...app, responsive, layout }
 }
 
 const DesignCenterEnhance = compose(
@@ -1082,7 +1108,8 @@ const DesignCenterEnhance = compose(
       ...designCenterActions,
       ...designCenterApiActions,
       openQuickViewAction,
-      openLoginAction
+      openLoginAction,
+      saveAndBuyAction
     }
   ),
   graphql<DataProduct>(getProductQuery, {

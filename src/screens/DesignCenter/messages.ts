@@ -15,7 +15,7 @@ export default defineMessages({
   },
   addedToCart: {
     id: 'screens.DesignCenter.addedToCart',
-    defaultMessage: '"{designName}" added to cart'
+    defaultMessage: '"{productName}" added to cart'
   },
   addedToStore: {
     id: 'screens.DesignCenter.addedToStore',
