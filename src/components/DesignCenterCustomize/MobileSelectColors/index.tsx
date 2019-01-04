@@ -63,7 +63,6 @@ class MobileSelectColors extends React.PureComponent<Props> {
       bindingColor,
       zipperColor
     } = this.props
-
     const hasStitching = !!product && !!product.flatlock
     const hasZipper = !!product && !!product.zipper
     const hasBinding = !!product && !!product.binding

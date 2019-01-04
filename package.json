@@ -88,6 +88,7 @@
     "react-responsive": "^4.1.0",
     "react-responsive-redux": "^0.5.0",
     "react-router-dom": "^4.2.2",
+    "react-scroll-to": "^2.0.2",
     "react-slick": "^0.18.1",
     "react-star-ratings": "^2.2.0",
     "react-stripe-elements": "^1.6.0",

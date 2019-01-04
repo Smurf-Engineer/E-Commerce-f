@@ -20,7 +20,7 @@ interface ColorProps {
 }
 
 interface ColorSliderProps {
-  totalColors: number
+  totalWidth: number
 }
 export const Color = styled.div`
   background-color: ${({ color }: ColorProps) => color};
@@ -55,14 +55,8 @@ export const Col = styled.div`
 export const ColorSlider = styled.div`
   margin-top: 10px;
   overflow-x: scroll;
-  scroll-behavior: smooth;
   display: flex;
   -webkit-overflow-scrolling: touch;
-  white-space: nowrap;
-  width: calc(
-    (${({ totalColors }: ColorSliderProps) => totalColors} * 44px) + 12px
+  width: ${({ totalWidth }: ColorSliderProps) => totalWidth};
   );
-  &:-webkit-scrollbar {
-    display: none;
-  }
 `
