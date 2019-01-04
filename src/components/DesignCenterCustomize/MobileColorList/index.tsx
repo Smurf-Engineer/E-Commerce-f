@@ -5,7 +5,7 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import findIndex from 'lodash/findIndex'
 import scrollIntoView from 'scroll-into-view'
-import { Container, Color, Col, ColorSlider } from './styledComponents'
+import { Container, Color, Col, ColorSlider, Border } from './styledComponents'
 import colors from './colors'
 import stitchingColors from './stitchingColors'
 import { StitchingColor } from '../../../types/common'
@@ -41,7 +41,7 @@ class MobileColorList extends React.PureComponent<Props> {
       time: 0,
       align: {
         left: 0,
-        leftOffset: -(index * 44)
+        leftOffset: -(index * 48)
       }
     })
   }
@@ -72,16 +72,20 @@ class MobileColorList extends React.PureComponent<Props> {
     const arrayColors = !stitching ? colors : stitchingColors
     const colorsList = arrayColors.map(({ value, name }, index) => (
       <Col key={index}>
-        <Color
-          id={value}
+        <Border
           selected={value === stitchingColor.value || selectedColor === value}
-          color={value}
-          onClick={
-            stitching
-              ? setStitchingColor({ name, value })
-              : setColor(value, name, index)
-          }
-        />
+        >
+          <Color
+            id={value}
+            selected={value === stitchingColor.value || selectedColor === value}
+            color={value}
+            onClick={
+              stitching
+                ? setStitchingColor({ name, value })
+                : setColor(value, name, index)
+            }
+          />
+        </Border>
       </Col>
     ))
 

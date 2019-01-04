@@ -13,7 +13,8 @@ import {
   ColorOval,
   TabContainer,
   Row,
-  Divider
+  Divider,
+  StyledTabs
 } from './styledComponents'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import {
@@ -79,20 +80,20 @@ class MobileSelectColors extends React.PureComponent<Props> {
               </TabArea>
             </TabContainer>
           }
-          key={index}
+          key={`${index}`}
         />
       )
     })
     return (
       <Container>
         <Label>{formatMessage({ ...messages.selectColors })}</Label>
-        <Tabs
+        <StyledTabs
           size="small"
           onChange={this.handleOnTabChange}
           defaultActiveKey={`${colorBlock}` || '0'}
         >
           {colorButtons}
-        </Tabs>
+        </StyledTabs>
         <MobileColorList
           selectedColor={colorBlock !== -1 ? colors[colorBlock] : colors[0]}
           onSelectColor={onSelectColor}

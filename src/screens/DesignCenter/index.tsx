@@ -31,8 +31,6 @@ import {
   openQuickViewAction,
   openLoginAction
 } from '../../components/MainLayout/actions'
-import artIcon from '../../assets/art-icon.svg'
-import saveIcon from '../../assets/save-icon.svg'
 import * as designCenterActions from './actions'
 import * as designCenterApiActions from './api'
 import Header from '../../components/DesignCenterHeader'
@@ -55,13 +53,7 @@ import {
   Title,
   ErrorMessage,
   BackCircle,
-  BackIcon,
-  MobileToolBar,
-  MobileTitle,
-  MobileItem,
-  ActionMobileItems,
-  ButtonText,
-  ButtonImg
+  BackIcon
 } from './styledComponents'
 import {
   Palette,
@@ -91,7 +83,8 @@ import {
   AccessoriesColor,
   CanvasObjects,
   SelectedAsset,
-  SaveDesignData
+  SaveDesignData,
+  Message as MessageType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -172,6 +165,7 @@ interface Props extends RouteComponentProps<any> {
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
+  infoModalOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -244,7 +238,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   setSelectedItemAction: (item: SelectedAsset) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: MessageType) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
   onCanvasElementDuplicatedAction: (
     canvasEl: any,
@@ -262,6 +256,7 @@ interface Props extends RouteComponentProps<any> {
     savedDesignId: string
   ) => void
   openLoginAction: (open: boolean) => void
+  handleOnCloseInfo: () => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -467,7 +462,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
     setSelectedItemAction(item)
   }
-
   render() {
     const {
       intl,
@@ -572,7 +566,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       onResetEditingAction,
       originalPaths,
       selectedItem,
-      openLoginAction: openLoginModalAction
+      openLoginAction: openLoginModalAction,
+      handleOnCloseInfo,
+      infoModalOpen
     } = this.props
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
@@ -737,29 +733,6 @@ export class DesignCenter extends React.Component<Props, {}> {
                 <BackIcon src={backIcon} />
               </BackCircle>
             )}
-          {isMobile && tabSelected === DesignTabs.CustomizeTab ? (
-            <MobileToolBar>
-              <BackCircle
-                className={'customizeTab'}
-                onClick={this.handleOnGoBack}
-              >
-                <BackIcon src={backIcon} />
-              </BackCircle>
-              <MobileTitle>{productName}</MobileTitle>
-              <ActionMobileItems>
-                <MobileItem>
-                  <ButtonImg src={artIcon} />
-                  <ButtonText>
-                    {formatMessage({ ...messages.addArt })}
-                  </ButtonText>
-                </MobileItem>
-                <MobileItem>
-                  <ButtonImg src={saveIcon} />
-                  <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
-                </MobileItem>
-              </ActionMobileItems>
-            </MobileToolBar>
-          ) : null}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -871,8 +844,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedItem,
                   openLoginModalAction,
                   isMobile,
-                  responsive
+                  responsive,
+                  handleOnCloseInfo,
+                  infoModalOpen
                 }}
+                handleOnGoBack={this.handleOnGoBack}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
                 onUploadFile={uploadFileAction}
