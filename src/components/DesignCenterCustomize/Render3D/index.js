@@ -1141,7 +1141,7 @@ class Render3D extends PureComponent {
   takeDesignPicture = (automaticSave = false) => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {
-      openLoginAction()
+      openLoginAction(true)
       return
     }
     if (this.renderer) {

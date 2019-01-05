@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'components.SaveDesign.modalTitle',
     defaultMessage: 'SAVE YOUR DESIGN'
   },
+  mobileModalTitle: {
+    id: 'components.SaveDesign.modalTitle',
+    defaultMessage: 'NAME YOUR DESIGN'
+  },
   modalText: {
     id: 'components.SaveDesign.modalText',
     defaultMessage: 'Name it something that is simple and recognizable to you.'

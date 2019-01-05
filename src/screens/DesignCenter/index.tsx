@@ -166,8 +166,8 @@ interface Props extends RouteComponentProps<any> {
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
-  infoModalOpen: boolean
   layout: any
+  infoModalOpen: boolean
   automaticSave: boolean
   // Redux Actions
   clearStoreAction: () => void
@@ -262,7 +262,7 @@ interface Props extends RouteComponentProps<any> {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
-  openLoginAction: (open: boolean) => void
+  openLoginAction: (open: boolean, callback?: boolean) => void
   handleOnCloseInfo: () => void
   saveAndBuyAction: (buy: boolean) => void
   setAutomaticSave: (automaticSave: boolean) => void
@@ -311,10 +311,18 @@ export class DesignCenter extends React.Component<Props, {}> {
     updateColors = false,
     goToCart?: boolean
   ) => {
-    const { saveDesignIdAction, history, saveToCartAction } = this.props
+    const {
+      saveDesignIdAction,
+      history,
+      saveToCartAction,
+      responsive
+    } = this.props
     saveDesignIdAction(id, svgUrl, design, updateColors)
     if (!goToCart) {
-      this.handleOnSelectTab(DesignTabs.PreviewTab)
+      const isMobile = !!responsive && responsive.phone
+      if (!isMobile) {
+        this.handleOnSelectTab(DesignTabs.PreviewTab)
+      }
     } else {
       await saveToCartAction(design)
       history.push('/shopping-cart')
@@ -478,6 +486,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     }
     setSelectedItemAction(item)
   }
+
   render() {
     const {
       intl,
@@ -583,9 +592,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       originalPaths,
       selectedItem,
       openLoginAction: openLoginModalAction,
+      layout,
       handleOnCloseInfo,
       infoModalOpen,
-      layout,
       automaticSave,
       saveAndBuyAction: handleOnSaveAndBuy,
       setAutomaticSave
@@ -868,6 +877,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   handleOnCloseInfo,
                   infoModalOpen
                 }}
+                callbackToSave={get(layout, 'callback', false)}
+                loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
                 handleOnSaveAndBuy={handleOnSaveAndBuy}
                 handleOnGoBack={this.handleOnGoBack}
@@ -966,6 +977,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               designName,
               isUserAuthenticated,
               isEditing,
+              isMobile,
               automaticSave,
               setAutomaticSave
             }}
@@ -1092,10 +1104,10 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: any) => {
+  const layout = state.get('layout').toJS()
   const designCenter = state.get('designCenter').toJS()
   const app = state.get('app').toJS()
   const responsive = state.get('responsive').toJS()
-  const layout = state.get('layout').toJS()
   return { ...designCenter, ...app, responsive, layout }
 }
 

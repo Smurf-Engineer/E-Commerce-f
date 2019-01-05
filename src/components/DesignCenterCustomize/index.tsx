@@ -95,6 +95,8 @@ interface Props {
   selectedItem: SelectedAsset
   isMobile: boolean
   responsive: Responsive
+  callbackToSave: boolean
+  loggedUserId: string
   infoModalOpen: boolean
   saveAndBuy: boolean
   // Redux actions
@@ -155,7 +157,7 @@ interface Props {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
-  openLoginModalAction: (open: boolean) => void
+  openLoginModalAction: (open: boolean, callback?: boolean) => void
   handleOnGoBack: () => void
   handleOnCloseInfo: () => void
   handleOnSaveAndBuy: (buy: boolean) => void
@@ -164,6 +166,15 @@ interface Props {
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
   componentWillReceiveProps(nextProps: any) {
+    const { callbackToSave, loggedUserId, isUserAuthenticated } = nextProps
+    if (
+      callbackToSave &&
+      loggedUserId.length &&
+      loggedUserId !== this.props.loggedUserId &&
+      isUserAuthenticated
+    ) {
+      setTimeout(() => this.handleOnSave, 500)
+    }
     const { handleOnSaveAndBuy } = this.props
     const { saveAndBuy } = nextProps
     if (saveAndBuy) {
@@ -262,7 +273,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         <Spin />
       </LoadingContainer>
     )
-
     return (
       <Container className={isMobile ? 'column' : ''}>
         {!isMobile && (
@@ -324,7 +334,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
                 <ButtonImg src={artIcon} />
                 <ButtonText>{formatMessage({ ...messages.addArt })}</ButtonText>
               </MobileItem>
-              <MobileItem>
+              <MobileItem onClick={this.handleOnSave}>
                 <ButtonImg src={saveIcon} />
                 <ButtonText>{formatMessage({ ...messages.save })}</ButtonText>
               </MobileItem>
@@ -422,7 +432,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       </Container>
     )
   }
-
+  handleOnSave = () => {
+    this.render3D.takeDesignPicture()
+  }
   handleOnAddArt = () => {
     const { handleOnCloseInfo } = this.props
     handleOnCloseInfo()
@@ -431,7 +443,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   handleOnOpenLogin = () => {
     const { openLoginModalAction, formatMessage } = this.props
     Message.warning(formatMessage(messages.invalidUser))
-    openLoginModalAction(true)
+    openLoginModalAction(true, true)
   }
 
   handleOnApplyText = (text: string, style: TextFormat) => {
