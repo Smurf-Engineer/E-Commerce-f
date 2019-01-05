@@ -20,9 +20,11 @@ export const VALID_BILLING_FORM = `${namespace}/VALID_BILLING_FORM`
 export const SAME_BILLING_AND_SHIPPING_CHECKED = `${namespace}/SAME_BILLING_AND_SHIPPING_CHECKED`
 export const SAME_BILLING_AND_SHIPPING_UNCHECKED = `${namespace}/SAME_BILLING_AND_SHIPPING_UNCHECKED`
 export const SET_STRIPE_ERROR = `${namespace}/SET_STRIPE_ERROR`
+export const SET_IBAN_ERROR = `${namespace}/SET_IBAN_ERROR`
 export const SET_LOADING_BILLING = `${namespace}/SET_LOADING_BILLING`
 export const SET_STRIPE_TOKEN = `${namespace}/SET_STRIPE_TOKEN`
 export const SET_STRIPE_CARD_DATA = `${namespace}/SET_STRIPE_CARD_DATA`
+export const SET_STRIPE_IBAN_DATA = `${namespace}/SET_STRIPE_IBAN_DATA`
 export const SHOW_CARD_FORM = `${namespace}/SHOW_CARD_FORM`
 export const SET_SELECTED_CARD_TO_PAY = `${namespace}/SET_SELECTED_CARD_TO_PAY`
 export const SHOW_BILLING_ADDRESS_FORM = `${namespace}/SHOW_BILLING_ADDRESS_FORM`
@@ -46,7 +48,8 @@ export enum CheckoutTabs {
 
 export enum PaymentOptions {
   PAYPAL = 'paypal',
-  CREDITCARD = 'creditcard'
+  CREDITCARD = 'creditcard',
+  IBAN = 'iban'
 }
 
 // PROMO TYPES
@@ -63,3 +66,11 @@ export const COUNTRY_CODE_CH = 'ch'
 export const COUNTRY_CODE_ES = 'es'
 export const COUNTRY_CODE_IT = 'it'
 export const COUNTRY_CODE_FR = 'fr'
+export const EU_SUBSIDIARY_COUNTRIES = [
+  COUNTRY_CODE_AT,
+  COUNTRY_CODE_DE,
+  COUNTRY_CODE_CH,
+  COUNTRY_CODE_ES,
+  COUNTRY_CODE_IT,
+  COUNTRY_CODE_FR
+]

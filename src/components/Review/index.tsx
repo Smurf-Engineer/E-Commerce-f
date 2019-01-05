@@ -18,7 +18,8 @@ import {
   AddressType,
   StripeCardData,
   CreditCardData,
-  CartItems
+  CartItems,
+  IbanData
 } from '../../types/common'
 import MyAddress from '../MyAddress'
 import PaymentData from '../PaymentData'
@@ -35,6 +36,7 @@ interface Props {
   cardData: StripeCardData
   cardHolderName: string
   paymentMethod: string
+  ibanData: IbanData
   selectedCard: CreditCardData
   currency: string
   formatMessage: (messageDescriptor: any) => string
@@ -69,6 +71,7 @@ class Review extends React.PureComponent<Props, {}> {
       cart,
       paymentMethod,
       selectedCard,
+      ibanData,
       currency
     } = this.props
 
@@ -112,7 +115,9 @@ class Review extends React.PureComponent<Props, {}> {
           )
         })
       : null
-
+    const isPaypalPayment = paymentMethod === PaymentOptions.PAYPAL
+    const isIbanPayment = paymentMethod === PaymentOptions.IBAN
+    const isCCPayment = paymentMethod === PaymentOptions.CREDITCARD
     return (
       <Container>
         <CartContent>
@@ -134,7 +139,7 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.billingAddress)}</Title>
-            {paymentMethod === 'paypal' ? (
+            {isPaypalPayment ? (
               <Text>{billingCountry.toUpperCase()}</Text>
             ) : (
               <div>
@@ -156,9 +161,16 @@ class Review extends React.PureComponent<Props, {}> {
           </InfoContainer>
           <InfoContainer>
             <Title>{formatMessage(messages.payment)}</Title>
-            {paymentMethod === PaymentOptions.CREDITCARD ? (
+            {isCCPayment ? (
               <div>
                 <PaymentData card={selectedCard} />
+                <EditInfoButton onClick={this.handleOnGoToStepTwo}>
+                  {formatMessage(messages.edit)}
+                </EditInfoButton>
+              </div>
+            ) : isIbanPayment ? (
+              <div>
+                <PaymentData iban={ibanData} />
                 <EditInfoButton onClick={this.handleOnGoToStepTwo}>
                   {formatMessage(messages.edit)}
                 </EditInfoButton>

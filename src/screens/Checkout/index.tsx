@@ -43,6 +43,7 @@ import {
   CartItemDetail,
   Product,
   StripeCardData,
+  IbanData,
   CreditCardData,
   TaxAddressObj,
   ItemDetailType,
@@ -83,6 +84,7 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   firstName: string
   lastName: string
+  email: string
   street: string
   apartment: string
   country: string
@@ -111,12 +113,15 @@ interface Props extends RouteComponentProps<any> {
   placeOrder: any
   cardHolderName: string
   stripeError: string
+  ibanError: boolean
   cardNumber: string
   cardExpDate: string
   cardBrand: string
   cardExpMonth: string
   cardExpYear: string
+  ibanData: IbanData
   stripeToken: string
+  stripeSource: string
   loadingBilling: boolean
   loadingPlaceOrder: boolean
   paymentMethod: string
@@ -131,9 +136,11 @@ interface Props extends RouteComponentProps<any> {
   openCurrencyWarning: boolean
   // Redux actions
   setStripeCardDataAction: (card: CreditCardData) => void
+  setStripeIbanDataAction: (iban: IbanData) => void
   setLoadingBillingAction: (loading: boolean) => void
   setLoadingPlaceOrderAction: (loading: boolean) => void
   setStripeErrorAction: (error: string) => void
+  setIbanErrorAction: (isError: boolean) => void
   stepAdvanceAction: (step: number) => void
   validFormAction: (hasError: boolean) => void
   invalidBillingFormAction: (hasError: boolean) => void
@@ -185,6 +192,7 @@ class Checkout extends React.Component<Props, {}> {
       hasError,
       firstName,
       lastName,
+      email,
       street,
       apartment,
       country,
@@ -210,8 +218,10 @@ class Checkout extends React.Component<Props, {}> {
       cardNumber,
       cardExpDate,
       cardBrand,
+      ibanData,
       sameBillingAndShipping,
       stripeError,
+      ibanError,
       loadingBilling,
       loadingPlaceOrder,
       smsCheckAction,
@@ -224,8 +234,10 @@ class Checkout extends React.Component<Props, {}> {
       sameBillingAndAddressUncheckedAction,
       invalidBillingFormAction,
       setStripeErrorAction,
+      setIbanErrorAction,
       setLoadingBillingAction,
       setStripeCardDataAction,
+      setStripeIbanDataAction,
       setPaymentMethodAction,
       paymentMethod,
       saveCountryAction,
@@ -368,10 +380,13 @@ class Checkout extends React.Component<Props, {}> {
                 />
                 <Payment
                   {...{
+                    email,
                     billingAddress,
                     cardHolderName,
                     stripeError,
+                    ibanError,
                     setStripeErrorAction,
+                    setIbanErrorAction,
                     inputChangeAction,
                     selectDropdownAction,
                     sameBillingAndShipping,
@@ -381,6 +396,7 @@ class Checkout extends React.Component<Props, {}> {
                     loadingBilling,
                     setLoadingBillingAction,
                     setStripeCardDataAction,
+                    setStripeIbanDataAction,
                     setPaymentMethodAction,
                     saveCountryAction,
                     showCardForm,
@@ -407,6 +423,7 @@ class Checkout extends React.Component<Props, {}> {
                     shippingAddress,
                     billingAddress,
                     cardData,
+                    ibanData,
                     cardHolderName,
                     paymentMethod,
                     selectedCard
@@ -652,6 +669,8 @@ class Checkout extends React.Component<Props, {}> {
       paymentMethod,
       stripeToken,
       selectedCard,
+      stripeSource,
+      ibanData = {},
       client: { query },
       currentCurrency,
       couponCode: couponObject
@@ -762,18 +781,18 @@ class Checkout extends React.Component<Props, {}> {
           return item
         }
       )
-
       const couponCode = couponObject && couponObject.code
-
       const orderObj = {
         proDesign,
         paymentMethod,
         cardId,
         tokenId: stripeToken,
+        sourceId: stripeSource,
         cart: sanitizedCart,
         shippingAddress,
         billingAddress,
         paymentData: paypalObj || null,
+        ibanSource: get(ibanData, 'id', null),
         countrySubsidiary: billingCountry,
         taxId,
         taxAmount,

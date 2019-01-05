@@ -101,7 +101,9 @@ class MyCards extends React.Component<Props, {}> {
   componentDidMount() {
     const { showCardFormAction = () => {}, data } = this.props
     if (window.Stripe) {
-      this.setState({ stripe: window.Stripe(config.pkStripeUS) })
+      this.setState({
+        stripe: window.Stripe(config.pkStripeUS)
+      })
     } else {
       // this code is safe to server-side render.
       const stripeJs = document.createElement('script')
