@@ -311,10 +311,18 @@ export class DesignCenter extends React.Component<Props, {}> {
     updateColors = false,
     goToCart?: boolean
   ) => {
-    const { saveDesignIdAction, history, saveToCartAction } = this.props
+    const {
+      saveDesignIdAction,
+      history,
+      saveToCartAction,
+      responsive
+    } = this.props
     saveDesignIdAction(id, svgUrl, design, updateColors)
     if (!goToCart) {
-      this.handleOnSelectTab(DesignTabs.PreviewTab)
+      const isMobile = !!responsive && responsive.phone
+      if (!isMobile) {
+        this.handleOnSelectTab(DesignTabs.PreviewTab)
+      }
     } else {
       await saveToCartAction(design)
       history.push('/shopping-cart')

@@ -205,6 +205,7 @@ export class SaveDesign extends React.Component<Props, State> {
             if (!isMobile) {
               afterSaveDesign(shortId, svg, savedDesign, true)
             } else {
+              console.log(automaticSave)
               afterSaveDesign(shortId, svg, savedDesign, true, automaticSave)
             }
           } else {
