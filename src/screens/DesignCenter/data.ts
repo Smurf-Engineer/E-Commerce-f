@@ -15,6 +15,7 @@ export const getProductQuery = gql`
       bumpMap: bump_map
       isCustom: design_center
       flatlock
+      mpn
       binding {
         white
         black
@@ -80,6 +81,7 @@ export const getDesignQuery = gql`
         label
         bumpMap: bump_map
         flatlock
+        mpn
         binding {
           white
           black

@@ -16,6 +16,7 @@ interface Props {
   designHasChanges: boolean
   hide?: boolean
   buyNowHeader?: boolean
+  saveAndBuy: (buy: boolean) => void
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -29,10 +30,13 @@ export const MenuBarMobile = ({
   hide,
   openWithoutSaveModalAction,
   formatMessage,
-  buyNowHeader
+  buyNowHeader,
+  saveAndBuy
 }: Props) => {
   const handleGoHome = () => window.location.replace('/')
-
+  const handleOnSaveAndBuy = () => {
+    saveAndBuy(true)
+  }
   return (
     <Container {...{ hide }}>
       {!buyNowHeader && (
@@ -54,7 +58,9 @@ export const MenuBarMobile = ({
         />
       )}
       {buyNowHeader ? (
-        <Button type="primary">{formatMessage({ ...messages.buyNow })}</Button>
+        <Button onClick={handleOnSaveAndBuy} type="primary">
+          {formatMessage({ ...messages.buyNow })}
+        </Button>
       ) : null}
     </Container>
   )

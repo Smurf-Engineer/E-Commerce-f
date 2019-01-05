@@ -17,14 +17,17 @@ import {
   Button,
   StyledSaveAs,
   CheckWrapper,
-  InputWrapper
+  InputWrapper,
+  SpinWrapper,
+  StyledSpin
 } from './styledComponents'
 import {
   SaveDesignType,
   StitchingColor,
   CanvasType,
   DesignFiles,
-  SaveDesignData
+  SaveDesignData,
+  Message
 } from '../../types/common'
 import { NEW_DESIGN_SAVED } from '../../constants'
 import { saveDesignName, saveDesignChanges } from './data'
@@ -74,24 +77,43 @@ interface Props {
   isEditing: boolean
   canvas: CanvasType
   isMobile?: boolean
+  automaticSave?: boolean
+  productMpn?: string
   requestClose: () => void
   onDesignName: (name: string) => void
-  formatMessage: (messageDescriptor: any, values?: {}) => string
+  formatMessage: (messageDescriptor: Message, values?: any) => string
   saveDesign: (variables: {}) => void
   saveDesignAs: (variables: {}) => void
   afterSaveDesign: (
     id: string,
     svg: string,
     design: SaveDesignData,
-    updateColors?: boolean
+    updateColors?: boolean,
+    goToCart?: boolean
   ) => void | undefined
   setCheckedTerms: (checked: boolean) => void
   setSaveDesignLoading: (loading: boolean) => void
   setSaveDesignChangesLoading: (loading: boolean) => void
   goToCustomProductPage: (designId: string) => void
+  setAutomaticSave: (automaticSave: boolean) => void
 }
 
-export class SaveDesign extends React.Component<Props, {}> {
+interface State {
+  automaticSave: boolean
+}
+export class SaveDesign extends React.Component<Props, State> {
+  state = { automaticSave: false }
+
+  componentWillReceiveProps(nextProps: any) {
+    const { setAutomaticSave } = this.props
+    const { automaticSave } = nextProps
+    if (automaticSave) {
+      setAutomaticSave(false)
+      this.setState({ automaticSave: true }, () => {
+        this.handleSaveName()
+      })
+    }
+  }
   handleCancel = () => {
     const { requestClose } = this.props
     requestClose()
@@ -106,7 +128,7 @@ export class SaveDesign extends React.Component<Props, {}> {
     onDesignName(value)
   }
 
-  handleSaveName = async (evt: React.MouseEvent<EventTarget>) => {
+  handleSaveName = async () => {
     const {
       productId,
       designName,
@@ -129,10 +151,11 @@ export class SaveDesign extends React.Component<Props, {}> {
       isEditing,
       savedDesignId,
       goToCustomProductPage,
-      isMobile
+      isMobile,
+      productMpn
     } = this.props
-
-    if (!designName) {
+    const { automaticSave } = this.state
+    if (!designName && !automaticSave) {
       message.error(formatMessage(messages.invalidNameMessage))
       return
     }
@@ -142,8 +165,9 @@ export class SaveDesign extends React.Component<Props, {}> {
     }
     const { designBase64, canvasJson, styleId } = design
     try {
+      const finalDesignName = designName || productMpn
       const designObj: DesignInput = {
-        name: designName,
+        name: finalDesignName,
         product_id: productId,
         image: designBase64,
         styleId,
@@ -169,15 +193,19 @@ export class SaveDesign extends React.Component<Props, {}> {
       await saveDesign({
         variables: { design: designObj, colors },
         update: (store: any, { data: { savedDesign } }: Data) => {
-          const { shortId, svg } = savedDesign
-          message.success(formatMessage(messages.saveSuccess, { designName }))
+          const { shortId, svg, designName: savedDesignName } = savedDesign
+          message.success(
+            formatMessage(messages.saveSuccess, { designName: savedDesignName })
+          )
           if (!isEditing && !savedDesignId) {
             window.dataLayer.push({
               event: NEW_DESIGN_SAVED,
-              label: designName
+              label: savedDesignName
             })
             if (!isMobile) {
               afterSaveDesign(shortId, svg, savedDesign, true)
+            } else {
+              afterSaveDesign(shortId, svg, savedDesign, true, automaticSave)
             }
           } else {
             goToCustomProductPage(shortId)
@@ -191,7 +219,6 @@ export class SaveDesign extends React.Component<Props, {}> {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
-      console.error(error)
     }
   }
 
@@ -216,7 +243,6 @@ export class SaveDesign extends React.Component<Props, {}> {
       afterSaveDesign,
       isEditing
     } = this.props
-
     const { designBase64, canvasJson, styleId } = design
     const designObj: DesignInput = {
       name: '',
@@ -304,7 +330,7 @@ export class SaveDesign extends React.Component<Props, {}> {
       saveDesignChangesLoading,
       isMobile
     } = this.props
-
+    const { automaticSave } = this.state
     const disabledSaveButton =
       (!isMobile && !checkedTerms) || !designName || saveDesignChangesLoading
 
@@ -326,57 +352,77 @@ export class SaveDesign extends React.Component<Props, {}> {
               <FormattedMessage {...messages.mobileModalTitle} />
             )}
           </Title>
-          {!!savedDesignId ? (
-            <StyledSaveAs>
-              <Text>
-                <FormattedMessage {...messages.modalSaveAsNewDesign} />
-              </Text>
-            </StyledSaveAs>
-          ) : (
-            <Text>
-              <FormattedMessage {...messages.modalText} />
-            </Text>
-          )}
-          <InputWrapper>
-            <StyledInput
-              id="saveDesignName"
-              value={designName}
-              placeholder={formatMessage(messages.placeholder)}
-              onChange={this.handleInputChange}
-              maxLength="15"
-            />
-          </InputWrapper>
-          {!isMobile && (
-            <CheckWrapper>
-              <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
-                {formatMessage(messages.checkCopyright)}
-              </Checkbox>
-            </CheckWrapper>
-          )}
-          {!!savedDesignId && (
-            <ButtonWrapper color="">
-              <Button
-                type="ghost"
-                disabled={!checkedTerms || saveDesignLoading}
-                onClick={this.handleSaveChanges}
-                loading={saveDesignChangesLoading}
-              >
-                {formatMessage(messages.saveChanges)}
-              </Button>
-            </ButtonWrapper>
-          )}
-          <ButtonWrapper color={disabledSaveButton ? GRAY_DISABLE : BLUE}>
-            <Button
-              type="primary"
-              disabled={disabledSaveButton}
-              onClick={this.handleSaveName}
-              loading={saveDesignLoading}
+
+          {!automaticSave ? (
+            <Modal
+              visible={open}
+              footer={null}
+              closable={false}
+              maskClosable={true}
+              width={'25%'}
+              destroyOnClose={true}
+              onCancel={this.handleCancel}
             >
-              {savedDesignId !== ''
-                ? formatMessage(messages.modalSaveAsNewDesign)
-                : formatMessage(messages.save)}
-            </Button>
-          </ButtonWrapper>
+              <Title>
+                <FormattedMessage {...messages.modalTitle} />
+              </Title>
+              {!!savedDesignId ? (
+                <StyledSaveAs>
+                  <Text>
+                    <FormattedMessage {...messages.modalSaveAsNewDesign} />
+                  </Text>
+                </StyledSaveAs>
+              ) : (
+                <Text>
+                  <FormattedMessage {...messages.modalText} />
+                </Text>
+              )}
+              <InputWrapper>
+                <StyledInput
+                  id="saveDesignName"
+                  value={designName}
+                  placeholder={formatMessage(messages.placeholder)}
+                  onChange={this.handleInputChange}
+                  maxLength="15"
+                />
+              </InputWrapper>
+              {!isMobile && (
+                <CheckWrapper>
+                  <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
+                    {formatMessage(messages.checkCopyright)}
+                  </Checkbox>
+                </CheckWrapper>
+              )}
+              {!!savedDesignId && (
+                <ButtonWrapper color="">
+                  <Button
+                    type="ghost"
+                    disabled={!checkedTerms || saveDesignLoading}
+                    onClick={this.handleSaveChanges}
+                    loading={saveDesignChangesLoading}
+                  >
+                    {formatMessage(messages.saveChanges)}
+                  </Button>
+                </ButtonWrapper>
+              )}
+              <ButtonWrapper color={disabledSaveButton ? GRAY_DISABLE : BLUE}>
+                <Button
+                  type="primary"
+                  disabled={disabledSaveButton}
+                  onClick={this.handleSaveName}
+                  loading={saveDesignLoading}
+                >
+                  {savedDesignId !== ''
+                    ? formatMessage(messages.modalSaveAsNewDesign)
+                    : formatMessage(messages.save)}
+                </Button>
+              </ButtonWrapper>
+            </Modal>
+          ) : (
+            <SpinWrapper>
+              <StyledSpin />
+            </SpinWrapper>
+          )}
         </Modal>
       </Container>
     )

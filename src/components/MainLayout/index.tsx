@@ -70,6 +70,7 @@ interface Props extends RouteComponentProps<any> {
   deleteUserSession: () => void
   saveUserSession: (user: object) => void
   openLogoutModalAction: (open: boolean) => void
+  saveAndBuyAction: (buy: boolean) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -176,7 +177,8 @@ class MainLayout extends React.Component<Props, {}> {
       openLogoutModal,
       openLogoutModalAction,
       initialCountryCode,
-      buyNowHeader
+      buyNowHeader,
+      saveAndBuyAction
     } = this.props
 
     const { formatMessage } = intl
@@ -231,6 +233,7 @@ class MainLayout extends React.Component<Props, {}> {
               currentLanguage,
               buyNowHeader
             }}
+            saveAndBuy={saveAndBuyAction}
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.handleOnClickLogout}

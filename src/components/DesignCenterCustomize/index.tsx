@@ -98,6 +98,7 @@ interface Props {
   callbackToSave: boolean
   loggedUserId: string
   infoModalOpen: boolean
+  saveAndBuy: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -112,7 +113,11 @@ interface Props {
   onResetAction: () => void
   onClearAction: () => void
   onPressQuickView: () => void
-  onOpenSaveDesign: (open: boolean, imageBase64: string) => void
+  onOpenSaveDesign: (
+    open: boolean,
+    imageBase64: string,
+    automaticSave?: boolean
+  ) => void
   onHoverColorBlock: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
   onUpdateText: (text: string) => void
@@ -155,6 +160,7 @@ interface Props {
   openLoginModalAction: (open: boolean, callback?: boolean) => void
   handleOnGoBack: () => void
   handleOnCloseInfo: () => void
+  handleOnSaveAndBuy: (buy: boolean) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -169,7 +175,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     ) {
       setTimeout(() => this.handleOnSave, 500)
     }
+    const { handleOnSaveAndBuy } = this.props
+    const { saveAndBuy } = nextProps
+    if (saveAndBuy) {
+      handleOnSaveAndBuy(false)
+      this.render3D.takeDesignPicture(true)
+    }
   }
+
   render() {
     const {
       onSelectColorBlock,

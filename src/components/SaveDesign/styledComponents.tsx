@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import Input from 'antd/lib/input'
+import Spin from 'antd/lib/spin'
 import AntdButton from 'antd/lib/button'
 import { BLUE, BLUE_SHADOW } from '../../theme/colors'
 
@@ -88,4 +89,21 @@ export const InputWrapper = styled.div`
   .ant-input::selection {
     background: ${BLUE};
   }
+`
+
+export const SpinWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 10;
+`
+
+export const StyledSpin = styled(Spin)`
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 35%;
 `

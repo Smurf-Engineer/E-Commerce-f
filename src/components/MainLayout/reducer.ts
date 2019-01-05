@@ -7,7 +7,8 @@ import {
   SAVE_USER_TO_LOCAL,
   LOGOUT,
   GET_TOTAL_CART_ITEMS,
-  OPEN_LOGOUT_MODAL
+  OPEN_LOGOUT_MODAL,
+  SAVE_AND_BUY
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -23,7 +24,8 @@ export const initialState = fromJS({
   openLogoutModal: false,
   currentRegion: 'us',
   currentLanguage: 'en',
-  callback: false
+  callback: false,
+  saveAndBuy: false
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -69,6 +71,9 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     }
     case OPEN_LOGOUT_MODAL: {
       return state.set('openLogoutModal', action.open)
+    }
+    case SAVE_AND_BUY: {
+      return state.set('saveAndBuy', action.buy)
     }
     default:
       return state
