@@ -65,7 +65,8 @@ import {
   BLACK,
   AccessoryColors,
   ElementsToApplyScale,
-  ON_CLOSE_INFO
+  ON_CLOSE_INFO,
+  SET_AUTOMATIC_SAVE
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_COLOR, DEFAULT_FONT } from '../../constants'
@@ -141,7 +142,8 @@ export const initialState = fromJS({
   searchClipParam: '',
   savedDesign: {},
   selectedItem: {},
-  infoModalOpen: false
+  infoModalOpen: false,
+  automaticSave: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -480,12 +482,15 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       if (action.open) {
         return state.merge({
           openSaveDesign: action.open,
-          design: action.design
+          design: action.design,
+          automaticSave: action.automaticSave
         })
       }
 
       return state.set('openSaveDesign', action.open)
     }
+    case SET_AUTOMATIC_SAVE:
+      return state.set('automaticSave', action.automaticSave)
     case SET_DESIGN_NAME:
       return state.merge({ designName: action.param })
     case SAVE_DESIGN_ID: {

@@ -1136,17 +1136,20 @@ class Render3D extends PureComponent {
   handleOnClickClear = () => this.props.onClearAction()
 
   handleOnChange3DModel = () => {}
+  handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
-  takeDesignPicture = () => {
+  takeDesignPicture = (automaticSave = false) => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {
       openLoginAction()
       return
     }
     if (this.renderer) {
-      const { onOpenSaveDesign, currentStyle } = this.props
-      this.canvasTexture.discardActiveObject()
-      this.canvasTexture.renderAll()
+      const { onOpenSaveDesign, currentStyle, isMobile } = this.props
+      if (!isMobile) {
+        this.canvasTexture.discardActiveObject()
+        this.canvasTexture.renderAll()
+      }
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)
@@ -1160,7 +1163,7 @@ class Render3D extends PureComponent {
             designBase64,
             styleId: currentStyle.id
           }
-          onOpenSaveDesign(true, saveDesign)
+          onOpenSaveDesign(true, saveDesign, automaticSave)
         }, 200)
       )
     }
@@ -1238,7 +1241,7 @@ class Render3D extends PureComponent {
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </Row>
         <ButtonWrapper>
-          <Button type="primary" onClick={this.takeDesignPicture}>
+          <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>
