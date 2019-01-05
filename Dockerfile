@@ -2,7 +2,6 @@ FROM davidglez/alpine-pm2
 
 # create app directory in container
 RUN mkdir -p /app
-RUN apk add --no-cache git
 
 ARG LOG_ROCKET_KEY
 ARG GOOGLE_ID
