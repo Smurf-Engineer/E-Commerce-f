@@ -17,9 +17,11 @@ import {
   SET_SELECTED_ADDRESS,
   SET_SELECTED_ADDRESSES,
   SET_STRIPE_ERROR,
+  SET_IBAN_ERROR,
   SET_LOADING_BILLING,
   SET_STRIPE_TOKEN,
   SET_STRIPE_CARD_DATA,
+  SET_STRIPE_IBAN_DATA,
   SET_LOADING_PLACE_ORDER,
   RESET_DATA,
   SET_PAYMENT_METHOD,
@@ -36,6 +38,7 @@ import {
   AnyAction,
   AddressType,
   CreditCardData,
+  IbanData,
   CouponCode
 } from '../../types/common'
 
@@ -124,6 +127,11 @@ export const setStripeErrorAction = (error: string): AnyAction => ({
   error
 })
 
+export const setIbanErrorAction = (error: boolean): AnyAction => ({
+  type: SET_IBAN_ERROR,
+  error
+})
+
 export const setLoadingBillingAction = (loading: boolean): AnyAction => ({
   type: SET_LOADING_BILLING,
   loading
@@ -141,6 +149,13 @@ export const setStripeCardDataAction = (
   type: SET_STRIPE_CARD_DATA,
   card,
   stripeToken
+})
+
+export const setStripeIbanDataAction = (
+  iban: IbanData,
+): AnyAction => ({
+  type: SET_STRIPE_IBAN_DATA,
+  iban
 })
 
 export const setLoadingPlaceOrderAction = (loading: boolean): AnyAction => ({

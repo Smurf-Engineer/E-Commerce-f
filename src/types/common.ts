@@ -52,7 +52,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -490,6 +490,13 @@ export interface CreditCardData {
   defaultPayment?: boolean
 }
 
+export interface IbanData {
+  id?: string
+  name: string
+  email: string
+  last4: string
+}
+
 export interface OrderHistory {
   id: number
   shortId: string
@@ -514,7 +521,8 @@ export interface NetsuiteObject {
 
 export interface PaymentCharges {
   stripeCharge: {
-    cardData: CreditCardData
+    ibanData?: IbanData,
+    cardData?: CreditCardData
   }
 }
 
