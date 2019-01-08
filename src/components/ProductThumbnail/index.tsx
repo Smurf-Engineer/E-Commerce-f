@@ -124,7 +124,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
     }
     return `/product?id=${id}&yotpoId=${yotpoId}${
       gender ? `&gender=${gender}` : ''
-    }`
+      }`
   }
 
   handlePressThumbnail = () => {
@@ -203,8 +203,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
         {customizableLabel}
       </Label>
     ) : (
-      <RetailColors>{colorList}</RetailColors>
-    )
+        <RetailColors>{colorList}</RetailColors>
+      )
     return (
       <Container>
         <ImageSlide
@@ -236,15 +236,15 @@ class ProductThumbnail extends React.Component<Props, {}> {
         {footer ? (
           footer
         ) : (
-          <Footer>
-            <Type>{type}</Type>
-            <Description>{description}</Description>
-            <InfoContainer>
-              {colorOptions}
-              <Price>{price}</Price>
-            </InfoContainer>
-          </Footer>
-        )}
+            <Footer>
+              <Type>{type}</Type>
+              <Description>{description}</Description>
+              <InfoContainer>
+                {colorOptions}
+                <Price>{price}</Price>
+              </InfoContainer>
+            </Footer>
+          )}
       </Container>
     )
   }

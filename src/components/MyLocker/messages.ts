@@ -37,5 +37,33 @@ export default defineMessages({
   designOnCartError: {
     id: 'components.MyLocker.designOnCartError',
     defaultMessage: 'You cannot delete designs that are on your cart'
-  }
+  },
+  renameText: {
+    id: 'components.MyLocker.renameText',
+    defaultMessage: 'Name it something that is simple and recognizable to you.'
+  },
+  renamePlaceholder: {
+    id: 'components.MyLocker.renamePlaceholder',
+    defaultMessage: 'New name for {designName}'
+  },
+  titleRenameModal: {
+    id: 'components.MyLocker.titleRenameModal',
+    defaultMessage: 'Rename Design'
+  },
+  renameDesign: {
+    id: 'components.MyLocker.renameDesign',
+    defaultMessage: 'Rename'
+  },
+  invalidNameMessage: {
+    id: 'components.MyLocker.invalidNameMessage',
+    defaultMessage: 'Invalid design name'
+  },
+  invalidUser: {
+    id: 'components.MyLocker.invalidUser',
+    defaultMessage: 'You must be logged in to save designs.'
+  },
+  saveSuccess: {
+    id: 'components.MyLocker.saveSuccess',
+    defaultMessage: '"{designName}" has been renamed successfully'
+  },
 })

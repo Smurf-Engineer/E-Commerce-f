@@ -76,3 +76,11 @@ export const Private = styled.span`
   font-size: 12px;
   line-height: 16px;
 `
+
+export const Rename = styled.div`
+  line-height: 16px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  color: #4A90E2;
+`
