@@ -72,7 +72,7 @@ export default defineMessages({
   addOneMoreMessage: {
     id: 'screens.ShoppingCartPage.addOneMoreMessage',
     defaultMessage:
-      '*Add 1 more item to your cart to save 20% on your entire order'
+      'Add {any} aditional item on your cart and save {percent} on your {entireOrder}'
   },
   titleDeleteModal: {
     id: 'screens.ShoppingCartPage.titleDeleteModal',
@@ -121,5 +121,21 @@ export default defineMessages({
   dontReview: {
     id: 'screens.ShoppingCartPage.dontReview',
     defaultMessage: 'Continue without review'
+  },
+  any: {
+    id: 'screens.ShoppingCartPage.any',
+    defaultMessage: 'any'
+  },
+  percent: {
+    id: 'screens.ShoppingCartPage.percent',
+    defaultMessage: '20%'
+  },
+  entireOrder: {
+    id: 'screens.ShoppingCartPage.entireOrder',
+    defaultMessage: 'entire order'
+  },
+  saveMore: {
+    id: 'screens.ShoppingCartPage.saveMore',
+    defaultMessage: 'SAVE MORE ON YOUR ORDER'
   }
 })
