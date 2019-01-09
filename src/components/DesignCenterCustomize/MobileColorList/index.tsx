@@ -23,9 +23,12 @@ class MobileColorList extends React.PureComponent<Props> {
   private colorRef: any
 
   componentDidMount() {
-    const { selectedColor } = this.props
+    const { selectedColor, stitchingColor } = this.props
     if (selectedColor) {
       this.scrollColorList(selectedColor)
+    }
+    if (stitchingColor) {
+      this.scrollColorList(stitchingColor.value)
     }
   }
 
@@ -34,7 +37,7 @@ class MobileColorList extends React.PureComponent<Props> {
     const arrayColors = !stitching ? colors : stitchingColors
     const index = findIndex(arrayColors, ['value', selectedColor])
     const node = ReactDOM.findDOMNode(this.colorRef) as HTMLElement
-    ReactDOM.findDOMNode(node).scrollLeft = index * 48
+    node.scrollLeft = index * 48
   }
   componentWillReceiveProps(nextProps: any) {
     const { selectedColor, stitching, stitchingColor } = this.props
