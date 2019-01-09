@@ -5,6 +5,7 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
+import remove from 'lodash/remove'
 import { RouteComponentProps } from 'react-router-dom'
 import MediaQuery from 'react-responsive'
 import Drawer from 'rc-drawer'
@@ -63,6 +64,7 @@ interface Props extends RouteComponentProps<any> {
   openSidebar: boolean
   client: any
   currentCurrency: string
+  showTeamStores: boolean
   // Redux actions
   logoutAction: () => void
   setOpenKeysAction: (keys: string[]) => void
@@ -153,7 +155,8 @@ export class Account extends React.Component<Props, {}> {
       intl: { formatMessage },
       history,
       openQuickViewAction: openQuickView,
-      currentCurrency
+      currentCurrency,
+      showTeamStores
     } = this.props
     switch (screen) {
       case OVERVIEW:
@@ -173,7 +176,9 @@ export class Account extends React.Component<Props, {}> {
       case PROFILE_SETTINGS:
         return <ProfileSettings {...{ isMobile, formatMessage }} />
       case TEAMSTORES:
-        return <MyTeamStores {...{ history, formatMessage }} />
+        return (
+          showTeamStores && <MyTeamStores {...{ history, formatMessage }} />
+        )
       case SCREEN_LOCKER:
         return <MyLocker {...{ openQuickView, formatMessage, history }} />
       case MY_FILES:
@@ -191,29 +196,32 @@ export class Account extends React.Component<Props, {}> {
       screen,
       defaultScreen,
       fakeWidth,
-      openSidebar
+      openSidebar,
+      showTeamStores
     } = this.props
-
-    const menuOptions = options.map(
-      ({ title, options: submenus }) =>
-        submenus.length ? (
-          <SubMenu
-            key={title}
-            title={
-              <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-            }
-          >
-            {submenus.map(label => (
-              <Menu.Item key={label}>
-                <FormattedMessage {...messages[label]} />
-              </Menu.Item>
-            ))}
-          </SubMenu>
-        ) : (
-          <Menu.Item className="ant-menu-item-custom" key={title}>
-            <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
-          </Menu.Item>
-        )
+    console.log(showTeamStores)
+    remove(
+      options,
+      (option: any) => option.title === TEAMSTORES && showTeamStores === false
+    )
+    console.log(options)
+    const menuOptions = options.map(({ title, options: submenus }) =>
+      submenus.length ? (
+        <SubMenu
+          key={title}
+          title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
+        >
+          {submenus.map(label => (
+            <Menu.Item key={label}>
+              <FormattedMessage {...messages[label]} />
+            </Menu.Item>
+          ))}
+        </SubMenu>
+      ) : (
+        <Menu.Item className="ant-menu-item-custom" key={title}>
+          <OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>
+        </Menu.Item>
+      )
     )
 
     const logoutButton = (
@@ -330,7 +338,13 @@ const mapStateToProps = (state: any) => {
   const account = state.get('account').toJS()
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
-  return { ...account, ...responsive, ...langProps }
+  const mainLayout = state.get('layout').toJS()
+  return {
+    ...account,
+    ...responsive,
+    ...langProps,
+    ...mainLayout
+  }
 }
 
 const AccountEnhance = compose(
