@@ -9,7 +9,11 @@ import {
   SET_DESIGNS_DATA,
   SET_DELETE_MODAL_DATA,
   SET_MODAL_LOADING,
-  RESET_MODAL_DATA
+  RESET_MODAL_DATA,
+  SET_RENAME_MODAL_DATA,
+  RESET_RENAME_MODAL_DATA,
+  ON_CHANGE_DESIGN_NAME,
+  SET_RENAME_MODAL_LOADING
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -27,6 +31,13 @@ export const initialState = fromJS({
     currentDesignId: '',
     currentDesignName: '',
     modalLoading: false
+  },
+  renameModal: {
+    openRenameModal: false,
+    currentDesignId: '',
+    currentDesignName: '',
+    modalLoading: false,
+    newName: ''
   }
 })
 
@@ -67,10 +78,25 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         openDeleteModal: false,
         currentDesignId: '',
         currentDesignName: '',
-        modalLoading: false
+        modalLoading: false,
       }
       return state.set('deleteModal', deleteModal)
     }
+    case SET_RENAME_MODAL_DATA:
+      return state.set('renameModal', fromJS(action.payload))
+    case RESET_RENAME_MODAL_DATA:
+      const renameModal = {
+        openRenameModal: false,
+        currentDesignId: '',
+        currentDesignName: '',
+        modalLoading: false,
+        newName: ''
+      }
+      return state.set('renameModal', fromJS(renameModal))
+    case ON_CHANGE_DESIGN_NAME:
+      return state.setIn(['renameModal', 'newName'], action.name)
+    case SET_RENAME_MODAL_LOADING:
+      return state.setIn(['renameModal', 'modalLoading'], action.loading)
     default:
       return state
   }

@@ -14,7 +14,8 @@ import messages from './messages'
 import {
   desginsQuery,
   designAsPrivateMutation,
-  deleteDesignMutation
+  deleteDesignMutation,
+  changeNameMutation
 } from './data'
 import ProductList from '../../components/ProductCatalogueThumbnailsList'
 import ModalFooter from '../ModalFooter'
@@ -27,12 +28,15 @@ import {
   TitleError,
   MessageError,
   MessageText,
-  DeleteConfirmMessage
+  ConfirmMessage,
+  InputWrapper,
+  StyledInput
 } from './styledComponents'
 import {
   DesignResultType,
   DesignType,
-  DeleteDesignModal
+  DeleteDesignModal,
+  RenameDesignModal
 } from '../../types/common'
 import { designExistsOnCart } from '../../utils/utilsShoppingCart'
 
@@ -47,14 +51,20 @@ interface Props {
   loading: boolean
   error: boolean
   deleteModal: DeleteDesignModal
+  renameModal: RenameDesignModal
+  user: object
   openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
   setDesignsData: (data: DesignResultType, offset: number, page: number) => void
   setLoadingAction: (loading: boolean) => void
   setErrorAction: (error: boolean) => void
   setDeleteModalDataAction: (payload: DeleteDesignModal) => void
+  setRenameModalDataAction: (payload: RenameDesignModal) => void
   setDeleteModalLoadingAction: (loading: boolean) => void
   resetModalDataAction: () => void
+  resetRenameDataAction: () => void
+  onChangeDesignName: (name: string) => void
+  setRenameModalLoadingAction: (loading: boolean) => void
 }
 
 export class MyLocker extends React.PureComponent<Props, {}> {
@@ -90,6 +100,23 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     setDeleteModalDataAction(modalData)
   }
 
+  handleOnPressRename = (id: string, name: string) => {
+    if (designExistsOnCart(id)) {
+      const { formatMessage } = this.props
+      Message.error(formatMessage(messages.designOnCartError))
+      return
+    }
+    const { setRenameModalDataAction } = this.props
+    const modalData: RenameDesignModal = {
+      openRenameModal: true,
+      designId: id,
+      designName: name,
+      modalLoading: false,
+      newName: name
+    }
+    setRenameModalDataAction(modalData)
+  }
+
   handleOnDeleteDesign = async () => {
     const {
       setDeleteModalLoadingAction,
@@ -115,6 +142,19 @@ export class MyLocker extends React.PureComponent<Props, {}> {
   handleOnHideDeleteModal = () => {
     const { resetModalDataAction } = this.props
     resetModalDataAction()
+  }
+  handleOnHideRenameModal = () => {
+    const { resetRenameDataAction } = this.props
+    resetRenameDataAction()
+  }
+
+  handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
+    const { onChangeDesignName } = this.props
+    const {
+      currentTarget: { value }
+    } = evt
+    evt.persist()
+    onChangeDesignName(value)
   }
 
   fetchDesigns = async (offsetParam?: number, pageParam?: number) => {
@@ -166,6 +206,40 @@ export class MyLocker extends React.PureComponent<Props, {}> {
     openQuickView(id, yotpoId)
   }
 
+  handleOnSaveName = async () => {
+    const {
+      formatMessage,
+      user,
+      renameModal: { newName, designId },
+      setRenameModalLoadingAction,
+      resetRenameDataAction,
+      client: { mutate }
+    } = this.props
+    const isUserAuthenticated = !!user
+    if (!newName) {
+      Message.error(formatMessage(messages.invalidNameMessage))
+      return
+    }
+    if (!isUserAuthenticated) {
+      Message.error(formatMessage(messages.invalidUser))
+      return
+    }
+    try {
+      setRenameModalLoadingAction(true)
+      await mutate({
+        mutation: changeNameMutation,
+        variables: { designId, name: newName }
+      })
+      this.fetchDesigns()
+      resetRenameDataAction()
+    } catch (error) {
+      setRenameModalLoadingAction(false)
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      Message.error(errorMessage)
+    }
+  }
+
   async componentDidMount() {
     const { setErrorAction } = this.props
     try {
@@ -185,7 +259,8 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       limit,
       currentPage,
       fullCount,
-      deleteModal: { modalLoading, openDeleteModal, designName }
+      deleteModal: { modalLoading, openDeleteModal, designName },
+      renameModal: { modalLoading: renameModalLoading, openRenameModal, designName: designToRename, newName }
     } = this.props
 
     let alternativeContent = null
@@ -222,6 +297,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
             {...{ formatMessage, history, withoutPadding }}
             onPressPrivate={this.handleOnPressPrivate}
             onPressDelete={this.handleOnPressDelete}
+            onPressRename={this.handleOnPressRename}
             openQuickView={this.handleOnOpenQuickView}
             designs={designs}
           />
@@ -250,16 +326,49 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           maskClosable={false}
           closable={false}
         >
-          <DeleteConfirmMessage>
+          <ConfirmMessage>
             {formatMessage(messages.messageDeleteModal, { designName })}
-          </DeleteConfirmMessage>
+          </ConfirmMessage>
+        </Modal>
+        <Modal
+          visible={openRenameModal}
+          title={
+            <ModalTitle title={formatMessage(messages.titleRenameModal)} />
+          }
+          footer={
+            <ModalFooter
+              okText={formatMessage(messages.renameDesign)}
+              onOk={this.handleOnSaveName}
+              onCancel={this.handleOnHideRenameModal}
+              confirmLoading={renameModalLoading}
+              {...{ formatMessage }}
+            />
+          }
+          destroyOnClose={false}
+          maskClosable={false}
+          closable={false}>
+          <ConfirmMessage>
+            {formatMessage(messages.renameText)}
+          </ConfirmMessage>
+          <InputWrapper>
+            <StyledInput
+              value={newName}
+              placeholder={formatMessage(messages.renamePlaceholder, { designName: designToRename })}
+              onChange={this.handleInputChange}
+              maxLength={15}
+            />
+          </InputWrapper>
         </Modal>
       </Container>
     )
   }
 }
 
-const mapStateToProps = (state: any) => state.get('myLocker').toJS()
+const mapStateToProps = (state: any) => {
+  const myLocker = state.get('myLocker').toJS()
+  const app = state.get('app').toJS()
+  return { ...myLocker, ...app }
+}
 
 const MyLockerEnhance = compose(
   withApollo,
