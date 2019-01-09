@@ -53,5 +53,10 @@ export default defineMessages({
     id: 'components.SaveDesign.checkCopyright',
     defaultMessage:
       'I hereby agree that I have permission and the rights to  use all images I have uploaded to this design'
+  },
+  saving: {
+    id: 'components.SaveDesign.saving',
+    defaultMessage:
+      'Saving your design'
   }
 })

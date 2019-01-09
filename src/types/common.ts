@@ -813,6 +813,14 @@ export interface DeleteDesignModal {
   modalLoading: boolean
 }
 
+export interface RenameDesignModal {
+  openRenameModal: boolean
+  designId: string
+  designName: string
+  modalLoading: boolean
+  newName: string
+}
+
 export interface UploadFile {
   uid: number
   size: number

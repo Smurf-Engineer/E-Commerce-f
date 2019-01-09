@@ -12,7 +12,8 @@ import {
   Bottom,
   Label,
   Delete,
-  Private
+  Private,
+  Rename
 } from './styledComponents'
 
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
   onPressPrivate: (id: string, isPrivate: boolean) => void
   onPressDelete: (id: string, name: string) => void
   formatMessage: (messageDescriptor: any) => string
+  onPressRename: (id: string, name: string) => void
 }
 
 let showCartButton = false
@@ -41,7 +43,8 @@ const FooterThumbnailLocker = ({
   onPressDelete,
   formatMessage,
   isPrivate,
-  addToCartButton
+  addToCartButton,
+  onPressRename
 }: Props) => {
   const handleOnPressPrivate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -50,15 +53,21 @@ const FooterThumbnailLocker = ({
     onPressPrivate(id, checked)
   }
   const handleOnPressDelete = () => onPressDelete(id, name)
+  const handleOnPressRename = () => onPressRename(id, name)
   return (
     <Footer>
-      <Type>{name}</Type>
+      <Type>
+        {name}
+      </Type>
       <Description>{description}</Description>
       <Label>{date}</Label>
       <Bottom>
         <Checkbox checked={isPrivate} onChange={handleOnPressPrivate}>
           <Private>{formatMessage(messages.private)}</Private>
         </Checkbox>
+        <Rename onClick={handleOnPressRename}>
+          <FormattedMessage {...messages.rename} />
+        </Rename>
         <Delete onClick={handleOnPressDelete}>
           <FormattedMessage {...messages.delete} />
         </Delete>

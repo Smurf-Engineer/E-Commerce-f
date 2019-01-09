@@ -205,7 +205,6 @@ export class SaveDesign extends React.Component<Props, State> {
             if (!isMobile) {
               afterSaveDesign(shortId, svg, savedDesign, true)
             } else {
-              console.log(automaticSave)
               afterSaveDesign(shortId, svg, savedDesign, true, automaticSave)
             }
           } else {
@@ -337,94 +336,81 @@ export class SaveDesign extends React.Component<Props, State> {
 
     return (
       <Container>
-        <Modal
-          visible={open}
-          footer={null}
-          closable={false}
-          maskClosable={true}
-          width={'25%'}
-          destroyOnClose={true}
-          onCancel={this.handleCancel}
-        >
-          <Title>
-            {!isMobile ? (
-              <FormattedMessage {...messages.modalTitle} />
-            ) : (
-              <FormattedMessage {...messages.mobileModalTitle} />
-            )}
-          </Title>
 
-          {!automaticSave ? (
-            <Modal
-              visible={open}
-              footer={null}
-              closable={false}
-              maskClosable={true}
-              width={'25%'}
-              destroyOnClose={true}
-              onCancel={this.handleCancel}
-            >
-              <Title>
+        {!automaticSave ? (
+          <Modal
+            visible={open}
+            footer={null}
+            closable={false}
+            maskClosable={true}
+            width={'25%'}
+            destroyOnClose={true}
+            onCancel={this.handleCancel}
+          >
+            <Title>
+              {!isMobile ? (
                 <FormattedMessage {...messages.modalTitle} />
-              </Title>
-              {!!savedDesignId ? (
-                <StyledSaveAs>
-                  <Text>
-                    <FormattedMessage {...messages.modalSaveAsNewDesign} />
-                  </Text>
-                </StyledSaveAs>
               ) : (
+                  <FormattedMessage {...messages.mobileModalTitle} />
+                )}
+            </Title>
+            {!!savedDesignId ? (
+              <StyledSaveAs>
+                <Text>
+                  <FormattedMessage {...messages.modalSaveAsNewDesign} />
+                </Text>
+              </StyledSaveAs>
+            ) : (
                 <Text>
                   <FormattedMessage {...messages.modalText} />
                 </Text>
               )}
-              <InputWrapper>
-                <StyledInput
-                  id="saveDesignName"
-                  value={designName}
-                  placeholder={formatMessage(messages.placeholder)}
-                  onChange={this.handleInputChange}
-                  maxLength="15"
-                />
-              </InputWrapper>
-              {!isMobile && (
-                <CheckWrapper>
-                  <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
-                    {formatMessage(messages.checkCopyright)}
-                  </Checkbox>
-                </CheckWrapper>
-              )}
-              {!!savedDesignId && (
-                <ButtonWrapper color="">
-                  <Button
-                    type="ghost"
-                    disabled={!checkedTerms || saveDesignLoading}
-                    onClick={this.handleSaveChanges}
-                    loading={saveDesignChangesLoading}
-                  >
-                    {formatMessage(messages.saveChanges)}
-                  </Button>
-                </ButtonWrapper>
-              )}
-              <ButtonWrapper color={disabledSaveButton ? GRAY_DISABLE : BLUE}>
+            <InputWrapper>
+              <StyledInput
+                id="saveDesignName"
+                value={designName}
+                placeholder={formatMessage(messages.placeholder)}
+                onChange={this.handleInputChange}
+                maxLength="15"
+              />
+            </InputWrapper>
+            {!isMobile && (
+              <CheckWrapper>
+                <Checkbox value={checkedTerms} onChange={this.toggleChecked}>
+                  {formatMessage(messages.checkCopyright)}
+                </Checkbox>
+              </CheckWrapper>
+            )}
+            {!!savedDesignId && (
+              <ButtonWrapper color="">
                 <Button
-                  type="primary"
-                  disabled={disabledSaveButton}
-                  onClick={this.handleSaveName}
-                  loading={saveDesignLoading}
+                  type="ghost"
+                  disabled={!checkedTerms || saveDesignLoading}
+                  onClick={this.handleSaveChanges}
+                  loading={saveDesignChangesLoading}
                 >
-                  {savedDesignId !== ''
-                    ? formatMessage(messages.modalSaveAsNewDesign)
-                    : formatMessage(messages.save)}
+                  {formatMessage(messages.saveChanges)}
                 </Button>
               </ButtonWrapper>
-            </Modal>
-          ) : (
+            )}
+            <ButtonWrapper color={disabledSaveButton ? GRAY_DISABLE : BLUE}>
+              <Button
+                type="primary"
+                disabled={disabledSaveButton}
+                onClick={this.handleSaveName}
+                loading={saveDesignLoading}
+              >
+                {savedDesignId !== ''
+                  ? formatMessage(messages.modalSaveAsNewDesign)
+                  : formatMessage(messages.save)}
+              </Button>
+            </ButtonWrapper>
+          </Modal>
+        ) : (
             <SpinWrapper>
-              <StyledSpin />
+              <StyledSpin tip={formatMessage(messages.saving)} />
             </SpinWrapper>
           )}
-        </Modal>
       </Container>
     )
   }
