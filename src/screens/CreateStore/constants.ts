@@ -23,3 +23,5 @@ export const DELETE_BANNER_ON_EDIT = `${namespace}/DELETE_BANNER_ON_EDIT`
 export const CLEAR_DATA = `${namespace}/CLEAR_DATA`
 
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
+
+export const SET_TEAM_STORE_STATUS = `${namespace}/SET_TEAM_STORE_STATUS`

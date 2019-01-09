@@ -20,3 +20,5 @@ export const REDIRECT_ROUTES = [ACCOUNT, CHECKOUT]
 export const CONFIRM_LOGOUT = [DESIGN_CENTER]
 
 export const SAVE_AND_BUY = `${namespace}/SAVE_AND_BUY`
+
+export const SET_TEAM_STORE_STATUS = `${namespace}/SET_TEAM_STORE_STATUS`

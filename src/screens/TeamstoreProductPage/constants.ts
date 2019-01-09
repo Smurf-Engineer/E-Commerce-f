@@ -12,3 +12,5 @@ export const SET_SELECTED_FIT = `${namespace}/SET_SELECTED_FIT`
 
 export const LOADING_3D_MODEL = `${namespace}/LOADING_3D_MODEL`
 export const OPEN_DYNAMIC_PRICE_MODAL = `${namespace}/OPEN_DYNAMIC_PRICE_MODAL`
+
+export const SET_TEAM_STORE_STATUS = `${namespace}/SET_TEAM_STORE_STATUS`

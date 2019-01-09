@@ -143,3 +143,14 @@ export const getTeamStoreMutation = graphql(
     name: 'teamStoreQuery'
   }
 )
+
+export const getTeamStoreStatus = graphql(
+  gql`
+    mutation getTeamStoreStatus {
+      getTeamStoreStatus {
+        showTeamStores: show_team_stores
+      }
+    }
+  `,
+  { name: 'teamStoreStatus' }
+)

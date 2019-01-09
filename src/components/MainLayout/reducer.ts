@@ -8,7 +8,8 @@ import {
   LOGOUT,
   GET_TOTAL_CART_ITEMS,
   OPEN_LOGOUT_MODAL,
-  SAVE_AND_BUY
+  SAVE_AND_BUY,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -25,7 +26,8 @@ export const initialState = fromJS({
   currentRegion: 'us',
   currentLanguage: 'en',
   callback: false,
-  saveAndBuy: false
+  saveAndBuy: false,
+  showTeamStores: false
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -75,6 +77,8 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case SAVE_AND_BUY: {
       return state.set('saveAndBuy', action.buy)
     }
+    case SET_TEAM_STORE_STATUS:
+      return state.set('showTeamStores', action.show)
     default:
       return state
   }
