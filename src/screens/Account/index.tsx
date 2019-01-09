@@ -199,12 +199,10 @@ export class Account extends React.Component<Props, {}> {
       openSidebar,
       showTeamStores
     } = this.props
-    console.log(showTeamStores)
     remove(
       options,
       (option: any) => option.title === TEAMSTORES && showTeamStores === false
     )
-    console.log(options)
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length ? (
         <SubMenu
