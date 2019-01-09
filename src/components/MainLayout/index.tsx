@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
+import get from 'lodash/get'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
@@ -21,6 +22,7 @@ import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
 import Intercom from 'react-intercom'
 import { IntercomAPI } from 'react-intercom'
+import { getTeamStoreStatus } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
@@ -41,7 +43,7 @@ interface Props extends RouteComponentProps<any> {
     yotpoId: string | null,
     gender: number
   ) => void
-  openLoginAction: (open: boolean) => void
+  openLoginAction: (open: boolean, callback?: boolean) => void
   saveUserToLocal: (user: object) => void
   logoutAction: () => void
   showSearchResults: boolean
@@ -64,11 +66,16 @@ interface Props extends RouteComponentProps<any> {
   designCenter: any
   openLogoutModal: boolean
   initialCountryCode: string
+  buyNowHeader: boolean
+  showTeamStores: boolean
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
   saveUserSession: (user: object) => void
   openLogoutModalAction: (open: boolean) => void
+  saveAndBuyAction: (buy: boolean) => void
+  teamStoreStatus: () => Promise<any>
+  setTeamStoreStatusAction: (show: boolean) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -87,13 +94,15 @@ class MainLayout extends React.Component<Props, {}> {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       openLoginAction,
       history: {
         location: { search, pathname }
       },
-      user
+      user,
+      teamStoreStatus,
+      setTeamStoreStatusAction
     } = this.props
 
     const { login } = queryString.parse(search)
@@ -106,6 +115,10 @@ class MainLayout extends React.Component<Props, {}> {
     ) {
       openLoginAction(true)
     }
+    const response = await teamStoreStatus()
+    setTeamStoreStatusAction(
+      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
+    )
   }
 
   onSearch = (value: string) => {
@@ -174,11 +187,12 @@ class MainLayout extends React.Component<Props, {}> {
       user,
       openLogoutModal,
       openLogoutModalAction,
-      initialCountryCode
+      initialCountryCode,
+      buyNowHeader,
+      saveAndBuyAction,
+      showTeamStores
     } = this.props
-
     const { formatMessage } = intl
-
     let numberOfProducts = 0
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
@@ -226,8 +240,10 @@ class MainLayout extends React.Component<Props, {}> {
               openWithoutSaveModalAction,
               initialCountryCode,
               currentRegion,
-              currentLanguage
+              currentLanguage,
+              buyNowHeader
             }}
+            saveAndBuy={saveAndBuyAction}
             saveUserToLocal={this.handleOnLogin}
             currentCurrency={currentCurrency || config.defaultCurrency}
             logoutAction={this.handleOnClickLogout}
@@ -247,7 +263,9 @@ class MainLayout extends React.Component<Props, {}> {
         <Content>{children}</Content>
         {!hideFooter && (
           <Footer>
-            <ContactAndLinks {...{ history, formatMessage, fakeWidth }} />
+            <ContactAndLinks
+              {...{ history, formatMessage, fakeWidth, showTeamStores }}
+            />
             <SocialMedia formatMessage={intl.formatMessage} />
           </Footer>
         )}
@@ -314,6 +332,7 @@ const mapStateToProps = (state: any) => {
 
 const LayoutEnhance = compose(
   withApollo,
+  getTeamStoreStatus,
   connect(
     mapStateToProps,
     {

@@ -12,5 +12,9 @@ export default defineMessages({
   delete: {
     id: 'components.FooterThumbnailLocker.delete',
     defaultMessage: 'Delete'
+  },
+  rename: {
+    id: 'component.FooterFooterThumbnailLocker.rename',
+    defaultMessage: 'Rename'
   }
 })

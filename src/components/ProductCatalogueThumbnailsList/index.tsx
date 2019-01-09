@@ -59,6 +59,7 @@ interface Props {
   designs?: DesignType[]
   onPressPrivate?: (id: string, isPrivate: boolean) => void
   onPressDelete?: (id: string, name: string) => void
+  onPressRename?: (id: string, name: string) => void
   withoutPadding?: boolean
   currentCurrency: string
   genderFilters: string
@@ -75,8 +76,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       handleOrderBy,
       data,
       designs,
-      onPressPrivate = () => {},
-      onPressDelete = () => {},
+      onPressPrivate = () => { },
+      onPressDelete = () => { },
+      onPressRename = () => { },
       withoutPadding,
       currentCurrency,
       genderFilters
@@ -122,6 +124,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                       name,
                       onPressPrivate,
                       onPressDelete,
+                      onPressRename,
                       formatMessage,
                       addToCartButton
                     }}
@@ -229,10 +232,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-          <NoResultsFound>
-            {formatMessage(messages.emptyResults)}
-          </NoResultsFound>
-        )
+            <NoResultsFound>
+              {formatMessage(messages.emptyResults)}
+            </NoResultsFound>
+          )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -295,7 +298,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => {}
+  handleOnPressAddToCart = (id: number) => { }
 }
 
 type OwnProps = {

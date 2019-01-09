@@ -20,7 +20,8 @@ import {
   MOVE_ROW,
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
-  CLEAR_DATA
+  CLEAR_DATA,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
@@ -146,4 +147,9 @@ export const deleteBannerOnEditAction = () => ({
 
 export const clearDataAction = () => ({
   type: CLEAR_DATA
+})
+
+export const setTeamStoreStatusAction = (show: boolean) => ({
+  type: SET_TEAM_STORE_STATUS,
+  show
 })

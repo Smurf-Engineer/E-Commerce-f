@@ -3,11 +3,13 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Redirect } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import get from 'lodash/get'
+import { getTeamStoreStatus } from './data'
+import { DEFAULT_ROUTE } from '../../constants'
 import * as storeFrontActions from './actions'
 import { QueryProps } from '../../types/common'
 import { Container } from './styledComponents'
@@ -30,6 +32,7 @@ interface Props extends RouteComponentProps<any> {
   emailContact: string
   emailMessage: string
   sendMessageLoading: boolean
+  showTeamStores: boolean
   teamStoreQuery: (variables: {}) => void
   openShareModalAction: (open: boolean, id?: string) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
@@ -39,12 +42,21 @@ interface Props extends RouteComponentProps<any> {
   setEmailContactAction: (email: string) => void
   setEmailMessageAction: (message: string) => void
   sendMessageLoadingAction: (loading: boolean) => void
+  teamStoreStatus: () => Promise<any>
+  setTeamStoreStatusAction: (show: boolean) => void
 }
 
 export class StoreFront extends React.Component<Props, {}> {
   state = {
     showDetails: true,
     showSpecs: true
+  }
+  async componentDidMount() {
+    const { teamStoreStatus, setTeamStoreStatusAction } = this.props
+    const response = await teamStoreStatus()
+    setTeamStoreStatusAction(
+      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
+    )
   }
 
   getData = async (params: Params) => {
@@ -89,7 +101,8 @@ export class StoreFront extends React.Component<Props, {}> {
       sendMessageLoadingAction,
       openEmailContactDialogAction,
       openShareModalAction,
-      openPassCodeDialogAction
+      openPassCodeDialogAction,
+      showTeamStores
     } = this.props
 
     const {
@@ -98,6 +111,10 @@ export class StoreFront extends React.Component<Props, {}> {
     const queryParams = queryString.parse(search)
 
     const storeId = queryParams ? queryParams.storeId || '' : ''
+
+    if (showTeamStores === false) {
+      return <Redirect to={DEFAULT_ROUTE} />
+    }
 
     return (
       <TeamsLayout teamStoresHeader={true} {...{ intl, history }}>
@@ -131,7 +148,11 @@ const mapStateToProps = (state: any) => state.get('storeFront').toJS()
 
 const StoreFrontEnhance = compose(
   injectIntl,
-  connect(mapStateToProps, { ...storeFrontActions, openQuickViewAction })
+  getTeamStoreStatus,
+  connect(
+    mapStateToProps,
+    { ...storeFrontActions, openQuickViewAction }
+  )
 )(StoreFront)
 
 export default StoreFrontEnhance

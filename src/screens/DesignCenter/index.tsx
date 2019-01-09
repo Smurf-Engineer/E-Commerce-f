@@ -9,9 +9,11 @@ import queryString from 'query-string'
 import { Redirect } from 'react-router-dom'
 import SwipeableViews from 'react-swipeable-views'
 import { RouteComponentProps } from 'react-router-dom'
+import MobileDesignCenterInspiration from '../../components/MobileDesignCenterInspiration'
 import SwipeableBottomSheet from 'react-swipeable-clickeable-bottom-sheet'
 import Message from 'antd/lib/message'
 import Modal from 'antd/lib/modal/Modal'
+import { saveAndBuyAction } from '../../components/MainLayout/actions'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import find from 'lodash/find'
@@ -82,7 +84,8 @@ import {
   AccessoriesColor,
   CanvasObjects,
   SelectedAsset,
-  SaveDesignData
+  SaveDesignData,
+  Message as MessageType
 } from '../../types/common'
 import {
   getProductQuery,
@@ -163,6 +166,9 @@ interface Props extends RouteComponentProps<any> {
   responsive: Responsive
   originalPaths: any[]
   selectedItem: SelectedAsset
+  layout: any
+  infoModalOpen: boolean
+  automaticSave: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -183,7 +189,11 @@ interface Props extends RouteComponentProps<any> {
   setThemeAction: (id: number, product: Product) => void
   setStyleAction: (style: any, id: number, index: any, colors: string[]) => void
   openShareModalAction: (open: boolean) => void
-  openSaveDesignAction: (open: boolean, imageBase64: string) => void
+  openSaveDesignAction: (
+    open: boolean,
+    imageBase64: string,
+    automaticSave?: boolean
+  ) => void
   saveDesignIdAction: (
     id: string,
     svgUrl: string,
@@ -235,7 +245,7 @@ interface Props extends RouteComponentProps<any> {
   onCanvasElementRotatedAction: (element: CanvasRotated) => void
   onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
   setSelectedItemAction: (item: SelectedAsset) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: MessageType) => string
   onReApplyImageElementAction: (el: CanvasElement) => void
   onCanvasElementDuplicatedAction: (
     canvasEl: any,
@@ -252,7 +262,11 @@ interface Props extends RouteComponentProps<any> {
     accessoriesColor: AccessoriesColor,
     savedDesignId: string
   ) => void
-  openLoginAction: (open: boolean) => void
+  openLoginAction: (open: boolean, callback?: boolean) => void
+  handleOnCloseInfo: () => void
+  saveAndBuyAction: (buy: boolean) => void
+  setAutomaticSave: (automaticSave: boolean) => void
+  saveToCartAction: (item: DesignSaved) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -290,15 +304,29 @@ export class DesignCenter extends React.Component<Props, {}> {
     this.setState({ openBottomSheet: open })
   }
 
-  handleAfterSaveDesign = (
+  handleAfterSaveDesign = async (
     id: string,
     svgUrl: string,
     design: DesignSaved,
-    updateColors = false
+    updateColors = false,
+    goToCart?: boolean
   ) => {
-    const { saveDesignIdAction } = this.props
+    const {
+      saveDesignIdAction,
+      history,
+      saveToCartAction,
+      responsive
+    } = this.props
     saveDesignIdAction(id, svgUrl, design, updateColors)
-    this.handleOnSelectTab(DesignTabs.PreviewTab)
+    if (!goToCart) {
+      const isMobile = !!responsive && responsive.phone
+      if (!isMobile) {
+        this.handleOnSelectTab(DesignTabs.PreviewTab)
+      }
+    } else {
+      await saveToCartAction(design)
+      history.push('/shopping-cart')
+    }
   }
 
   handleOpenQuickView = () => {
@@ -361,7 +389,7 @@ export class DesignCenter extends React.Component<Props, {}> {
 
   closeSaveDesignModal = () => {
     const { openSaveDesignAction } = this.props
-    openSaveDesignAction(false, '')
+    openSaveDesignAction(false, '', false)
   }
 
   saveItemToStore = async () => {
@@ -403,7 +431,7 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = this.props
     const name = get(dataDesign, 'designData.product.name', '')
     Message.success(
-      formatMessage(messages.addedToCart, { designName: designName || name })
+      formatMessage(messages.addedToCart, { productName: designName || name })
     )
   }
 
@@ -563,8 +591,15 @@ export class DesignCenter extends React.Component<Props, {}> {
       onResetEditingAction,
       originalPaths,
       selectedItem,
-      openLoginAction: openLoginModalAction
+      openLoginAction: openLoginModalAction,
+      layout,
+      handleOnCloseInfo,
+      infoModalOpen,
+      automaticSave,
+      saveAndBuyAction: handleOnSaveAndBuy,
+      setAutomaticSave
     } = this.props
+
     const { formatMessage } = intl
     const { openBottomSheet } = this.state
     const {
@@ -711,20 +746,22 @@ export class DesignCenter extends React.Component<Props, {}> {
     )
 
     const isUserAuthenticated = !!user
-
     return (
       <Layout
         {...{ history, intl }}
         hideTopHeader={responsive.tablet}
         hideBottomHeader={true}
         hideFooter={true}
+        buyNowHeader={isMobile && tabSelected > DesignTabs.StyleTab}
       >
         <Container>
-          {isMobile && currentTab > DesignTabs.ThemeTab && (
-            <BackCircle onClick={this.handleOnGoBack}>
-              <BackIcon src={backIcon} />
-            </BackCircle>
-          )}
+          {isMobile &&
+            tabSelected > DesignTabs.ThemeTab &&
+            tabSelected !== DesignTabs.CustomizeTab && (
+              <BackCircle onClick={this.handleOnGoBack}>
+                <BackIcon src={backIcon} />
+              </BackCircle>
+            )}
           {!isMobile && <Header onPressBack={this.handleOnPressBack} />}
           {!isMobile && (
             <Tabs
@@ -836,8 +873,15 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedItem,
                   openLoginModalAction,
                   isMobile,
-                  responsive
+                  responsive,
+                  handleOnCloseInfo,
+                  infoModalOpen
                 }}
+                callbackToSave={get(layout, 'callback', false)}
+                loggedUserId={get(user, 'id', '')}
+                saveAndBuy={get(layout, 'saveAndBuy', false)}
+                handleOnSaveAndBuy={handleOnSaveAndBuy}
+                handleOnGoBack={this.handleOnGoBack}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
                 product={productConfig}
                 onUploadFile={uploadFileAction}
@@ -877,44 +921,48 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSelectedItem={this.setSelectedItemEvent}
               />
             )}
-            <PreviewTab
-              {...{
-                history,
-                colors,
-                loadingModel,
-                swipingView:
-                  proDesignModel && !loadingModel ? false : swipingView,
-                openShareModal,
-                openShareModalAction,
-                savedDesignId:
-                  proDesignModel && !loadingModel
-                    ? proDesignModel.shortId
-                    : savedDesignId,
-                productName,
-                openAddToTeamStoreModalAction,
-                openAddToStoreModal,
-                setItemToAddAction,
-                teamStoreId,
-                editDesignAction,
-                formatMessage,
-                svgOutputUrl,
-                savedDesign:
-                  proDesignModel && !loadingModel
-                    ? proDesignModel
-                    : savedDesign,
-                stitchingColor,
-                bindingColor,
-                zipperColor,
-                bibColor
-              }}
-              canvas={designObject.canvasJson}
-              product={productConfig}
-              currentTab={tabSelected}
-              onAddToCart={this.handleOnAddToCart}
-              onLoadModel={setLoadingModel}
-              onPressQuickView={this.handleOpenQuickView}
-              addItemToStore={this.saveItemToStore}
-            />
+            {!isMobile ? (
+              <PreviewTab
+                {...{
+                  history,
+                  colors,
+                  loadingModel,
+                  swipingView:
+                    proDesignModel && !loadingModel ? false : swipingView,
+                  openShareModal,
+                  openShareModalAction,
+                  savedDesignId:
+                    proDesignModel && !loadingModel
+                      ? proDesignModel.shortId
+                      : savedDesignId,
+                  productName,
+                  openAddToTeamStoreModalAction,
+                  openAddToStoreModal,
+                  setItemToAddAction,
+                  teamStoreId,
+                  editDesignAction,
+                  formatMessage,
+                  svgOutputUrl,
+                  savedDesign:
+                    proDesignModel && !loadingModel
+                      ? proDesignModel
+                      : savedDesign,
+                  stitchingColor,
+                  bindingColor,
+                  zipperColor,
+                  bibColor
+                }}
+                canvas={designObject.canvasJson}
+                product={productConfig}
+                currentTab={tabSelected}
+                onAddToCart={this.handleOnAddToCart}
+                onLoadModel={setLoadingModel}
+                onPressQuickView={this.handleOpenQuickView}
+                addItemToStore={this.saveItemToStore}
+              />
+            ) : (
+              <div />
+            )}
           </SwipeableViews>
           <SaveDesign
             {...{
@@ -928,8 +976,12 @@ export class DesignCenter extends React.Component<Props, {}> {
               canvas,
               designName,
               isUserAuthenticated,
-              isEditing
+              isEditing,
+              isMobile,
+              automaticSave,
+              setAutomaticSave
             }}
+            productMpn={get(product, 'mpn', '')}
             design={!!design.canvasJson ? design : designObject}
             hasFlatlock={!!productConfig && !!productConfig.flatlock}
             hasZipper={!!productConfig && !!productConfig.zipper}
@@ -954,6 +1006,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 overflowHeight={64}
                 open={openBottomSheet}
                 overlayClicked={this.toggleBottomSheet}
+                style={{ zIndex: 3 }}
               >
                 <StyledTitle onClick={this.toggleBottomSheet}>
                   <FormattedMessage {...messages.inspirationTtitle} />
@@ -968,6 +1021,19 @@ export class DesignCenter extends React.Component<Props, {}> {
           ) : (
             <div />
           )}
+          {tabSelected === CustomizeTabIndex &&
+          !loadingData &&
+          isMobile &&
+          !swipingView &&
+          !loadingModel ? (
+            <MobileDesignCenterInspiration
+              styleId={currentStyle.id}
+              open={openBottomSheet}
+              setPaletteAction={this.setPaletteEvent}
+              {...{ formatMessage }}
+              hideList={this.toggleBottomSheet}
+            />
+          ) : null}
         </Container>
         <Modal
           visible={openOutWithoutSaveModal}
@@ -1038,10 +1104,11 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: any) => {
+  const layout = state.get('layout').toJS()
   const designCenter = state.get('designCenter').toJS()
   const app = state.get('app').toJS()
   const responsive = state.get('responsive').toJS()
-  return { ...designCenter, ...app, responsive }
+  return { ...designCenter, ...app, responsive, layout }
 }
 
 const DesignCenterEnhance = compose(
@@ -1053,7 +1120,8 @@ const DesignCenterEnhance = compose(
       ...designCenterActions,
       ...designCenterApiActions,
       openQuickViewAction,
-      openLoginAction
+      openLoginAction,
+      saveAndBuyAction
     }
   ),
   graphql<DataProduct>(getProductQuery, {

@@ -2,6 +2,8 @@
  * Styled Components - Created by david on 06/04/18.
  */
 import styled, { keyframes } from 'styled-components'
+import Input from 'antd/lib/input'
+import { BLUE, BLUE_SHADOW } from '../../theme/colors'
 
 export const fadeIn = keyframes`
   to {
@@ -52,7 +54,7 @@ export const MessageError = styled.div`
   text-align: center;
 `
 
-export const DeleteConfirmMessage = styled.div`
+export const ConfirmMessage = styled.div`
   color: #5f6062;
   font-size: 16px;
   letter-spacing: 0.2px;
@@ -66,4 +68,29 @@ export const MessageText = styled.div`
   letter-spacing: 0.11px;
   line-height: 23px;
   margin-bottom: 36px;
+`
+
+export const InputWrapper = styled.div`
+  padding: 4px 0px;
+  .ant-input:hover {
+    border-color: ${BLUE};
+  }
+
+  .ant-input:focus {
+    border-color: ${BLUE};
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 2px ${BLUE_SHADOW};
+    box-shadow: 0 0 0 2px ${BLUE_SHADOW};
+  }
+
+  .ant-input::selection {
+    background: ${BLUE};
+  }
+`
+
+export const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+  margin-top: 0px;
+  border-radius: 0px;
+  width: 100%;
 `

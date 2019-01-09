@@ -7,7 +7,9 @@ import {
   SAVE_USER_TO_LOCAL,
   LOGOUT,
   GET_TOTAL_CART_ITEMS,
-  OPEN_LOGOUT_MODAL
+  OPEN_LOGOUT_MODAL,
+  SAVE_AND_BUY,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -22,7 +24,10 @@ export const initialState = fromJS({
   itemsInCart: 0,
   openLogoutModal: false,
   currentRegion: 'us',
-  currentLanguage: 'en'
+  currentLanguage: 'en',
+  callback: false,
+  saveAndBuy: false,
+  showTeamStores: false
 })
 
 const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
@@ -39,7 +44,10 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
         hideQuickViewSliderButtons: action.hideSliderButtons
       })
     case OPEN_LOGIN_MODAL:
-      return state.set('openLogin', action.open)
+      return state.merge({
+        openLogin: action.open,
+        callback: action.callback
+      })
     case SAVE_USER_TO_LOCAL: {
       return state.set('user', action.user)
     }
@@ -66,6 +74,11 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_LOGOUT_MODAL: {
       return state.set('openLogoutModal', action.open)
     }
+    case SAVE_AND_BUY: {
+      return state.set('saveAndBuy', action.buy)
+    }
+    case SET_TEAM_STORE_STATUS:
+      return state.set('showTeamStores', action.show)
     default:
       return state
   }

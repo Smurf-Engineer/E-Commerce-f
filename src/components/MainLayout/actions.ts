@@ -6,7 +6,9 @@ import {
   LOGOUT,
   SAVE_USER_TO_LOCAL,
   GET_TOTAL_CART_ITEMS,
-  OPEN_LOGOUT_MODAL
+  OPEN_LOGOUT_MODAL,
+  SAVE_AND_BUY,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -31,9 +33,13 @@ export const openQuickViewAction = (
   gender
 })
 
-export const openLoginAction = (open: boolean): AnyAction => ({
+export const openLoginAction = (
+  open: boolean,
+  callback: boolean = false
+): AnyAction => ({
   type: OPEN_LOGIN_MODAL,
-  open
+  open,
+  callback
 })
 
 export const saveUserToLocal = (user: object): AnyAction => ({
@@ -52,4 +58,14 @@ export const getTotalItemsIncart = (): AnyAction => ({
 export const openLogoutModalAction = (open: boolean): AnyAction => ({
   type: OPEN_LOGOUT_MODAL,
   open
+})
+
+export const saveAndBuyAction = (buy: boolean) => ({
+  type: SAVE_AND_BUY,
+  buy
+})
+
+export const setTeamStoreStatusAction = (show: boolean) => ({
+  type: SET_TEAM_STORE_STATUS,
+  show
 })

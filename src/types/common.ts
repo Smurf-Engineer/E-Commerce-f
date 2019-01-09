@@ -52,7 +52,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter {}
+export interface SelectedType extends Filter { }
 
 export interface FitStyle {
   id: number
@@ -135,6 +135,7 @@ export interface Product {
   relatedProducts: Product[]
   isCustom?: boolean
   colors?: ProductColors[]
+  mpn?: string
 }
 
 export type DesignType = {
@@ -489,6 +490,13 @@ export interface CreditCardData {
   defaultPayment?: boolean
 }
 
+export interface IbanData {
+  id?: string
+  name: string
+  email: string
+  last4: string
+}
+
 export interface OrderHistory {
   id: number
   shortId: string
@@ -513,7 +521,8 @@ export interface NetsuiteObject {
 
 export interface PaymentCharges {
   stripeCharge: {
-    cardData: CreditCardData
+    ibanData?: IbanData,
+    cardData?: CreditCardData
   }
 }
 
@@ -804,6 +813,14 @@ export interface DeleteDesignModal {
   modalLoading: boolean
 }
 
+export interface RenameDesignModal {
+  openRenameModal: boolean
+  designId: string
+  designName: string
+  modalLoading: boolean
+  newName: string
+}
+
 export interface UploadFile {
   uid: number
   size: number
@@ -1056,4 +1073,12 @@ export interface CouponCode {
   rate?: string
 }
 
+export interface Message {
+  id: string
+  defaultMessage: string
+}
+
+export interface Index {
+  index: number
+}
 type couponType = '%' | 'flat'

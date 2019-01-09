@@ -1135,28 +1135,21 @@ class Render3D extends PureComponent {
 
   handleOnClickClear = () => this.props.onClearAction()
 
-  handleOnChange3DModel = () => {}
+  handleOnChange3DModel = () => { }
+  handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
-  handleOnPressCustomize = () => {
-    const { formatMessage } = this.props
-    info({
-      title: formatMessage(messages.unsupportedDeviceTitle),
-      maskClosable: true,
-      content: <div>{formatMessage(messages.unsupportedDeviceContent)}</div>,
-      okText: formatMessage(messages.unsupportedDeviceButton)
-    })
-  }
-
-  takeDesignPicture = () => {
+  takeDesignPicture = (automaticSave = false) => {
     const { isUserAuthenticated, openLoginAction } = this.props
     if (!isUserAuthenticated) {
-      openLoginAction()
+      openLoginAction(true)
       return
     }
     if (this.renderer) {
-      const { onOpenSaveDesign, currentStyle } = this.props
-      this.canvasTexture.discardActiveObject()
-      this.canvasTexture.renderAll()
+      const { onOpenSaveDesign, currentStyle, isMobile } = this.props
+      if (!isMobile) {
+        this.canvasTexture.discardActiveObject()
+        this.canvasTexture.renderAll()
+      }
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)
@@ -1170,7 +1163,7 @@ class Render3D extends PureComponent {
             designBase64,
             styleId: currentStyle.id
           }
-          onOpenSaveDesign(true, saveDesign)
+          onOpenSaveDesign(true, saveDesign, automaticSave)
         }, 200)
       )
     }
@@ -1207,13 +1200,6 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.drag} />
             </DragText>
           )}
-          <MobileButtonWrapper>
-            <MobileButton type="primary" onClick={this.handleOnPressCustomize}>
-              {formatMessage(
-                isEditing ? messages.editButton : messages.customizeButton
-              )}
-            </MobileButton>
-          </MobileButtonWrapper>
         </MobileContainer>
       )
     }
@@ -1255,7 +1241,7 @@ class Render3D extends PureComponent {
           <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </Row>
         <ButtonWrapper>
-          <Button type="primary" onClick={this.takeDesignPicture}>
+          <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
             {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>

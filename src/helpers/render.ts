@@ -43,7 +43,7 @@ const renderHtml = (styleTags: any, html: any) => {
           <meta http-equiv="X-UA-Compatible" content="IE=edge" />
           <meta charSet='utf-8' />
           <title>JAKROO.COM - Design your own Cycling, Triathlon and MTB Wear</title>
-          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
           ${
             assets.client.css
               ? `<link rel="stylesheet" type="text/css" href="${

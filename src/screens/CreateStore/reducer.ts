@@ -22,7 +22,8 @@ import {
   MOVE_ROW,
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
-  CLEAR_DATA
+  CLEAR_DATA,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -41,7 +42,8 @@ export const initialState = fromJS({
   selectedItems: {},
   items: [],
   loading: false,
-  banner: ''
+  banner: '',
+  showTeamStores: null
 })
 
 const createStoreReducer: Reducer<any> = (state = initialState, action) => {
@@ -160,6 +162,8 @@ const createStoreReducer: Reducer<any> = (state = initialState, action) => {
         loading: false,
         banner: ''
       })
+    case SET_TEAM_STORE_STATUS:
+      return state.set('showTeamStores', action.show)
     default:
       return state
   }
