@@ -86,6 +86,12 @@ class SignUp extends React.Component<Props, StateProps> {
             {...{ requestClose, formatMessage, initialCountryCode }}
           />
         </SocialMediaContainer>
+        <HaveAnAccountRow>
+          {formatMessage(messages.haveAccount)}
+          <LogInLabel onClick={closeSignUp}>
+            {formatMessage(messages.loginLabel)}
+          </LogInLabel>
+        </HaveAnAccountRow>
         <DividerRow>
           <LeftDivider />
           <OrLabel>{formatMessage(messages.orLabel)}</OrLabel>
@@ -141,12 +147,6 @@ class SignUp extends React.Component<Props, StateProps> {
             >
               {formatMessage(messages.createAccountButtonLabel)}
             </StyledButton>
-            <HaveAnAccountRow>
-              {formatMessage(messages.haveAccount)}
-              <LogInLabel onClick={closeSignUp}>
-                {formatMessage(messages.loginLabel)}
-              </LogInLabel>
-            </HaveAnAccountRow>
           </CreateAccountContainer>
         </FormContainer>
       </Container>
