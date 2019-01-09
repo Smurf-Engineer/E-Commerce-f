@@ -422,7 +422,6 @@ export class CreateStore extends React.Component<Props, StateProps> {
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
-    console.log(showTeamStores)
     if (showTeamStores === false) {
       return <Redirect to={DEFAULT_ROUTE} />
     }
