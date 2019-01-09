@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Modal from 'antd/lib/modal'
+import { FormattedMessage } from 'react-intl'
 import {
   Container,
   Title,
@@ -18,6 +19,7 @@ interface Props {
   title: Message
   text: Message
   buttonText: Message
+  extraContent?: Message
   requestClose: () => void
   formatMessage: (messageDescriptor: Message, values?: {}) => string
 }
@@ -29,7 +31,14 @@ export class InfoModal extends React.Component<Props, {}> {
   }
 
   render() {
-    const { open, formatMessage, title, text, buttonText } = this.props
+    const {
+      open,
+      formatMessage,
+      title,
+      text,
+      buttonText,
+      extraContent
+    } = this.props
 
     return (
       <Container>
@@ -43,8 +52,20 @@ export class InfoModal extends React.Component<Props, {}> {
           onCancel={this.handleCancel}
         >
           <Title>{formatMessage(title)}</Title>
-
           <Text>{formatMessage(text)}</Text>
+          {extraContent && (
+            <div>
+              <Text>
+                <FormattedMessage
+                  id={extraContent.id}
+                  defaultMessage={extraContent.defaultMessage}
+                  values={{
+                    myLocker: <strong>{'My Locker'}</strong>
+                  }}
+                />
+              </Text>
+            </div>
+          )}
           <ButtonWrapper color={BLUE}>
             <Button size="small" type="primary" onClick={this.handleCancel}>
               {formatMessage(buttonText)}
