@@ -8,7 +8,8 @@ import {
   SET_SELECTED_FIT,
   SET_SELECTED_SIZE,
   LOADING_3D_MODEL,
-  OPEN_DYNAMIC_PRICE_MODAL
+  OPEN_DYNAMIC_PRICE_MODAL,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { AnyAction, SelectedType } from '../../types/common'
 
@@ -45,4 +46,9 @@ export const setLoadingModel = (loading: boolean): AnyAction => ({
 export const openDynamicPriceModalAction = (open: boolean): AnyAction => ({
   type: OPEN_DYNAMIC_PRICE_MODAL,
   open
+})
+
+export const setTeamStoreStatusAction = (show: boolean) => ({
+  type: SET_TEAM_STORE_STATUS,
+  show
 })

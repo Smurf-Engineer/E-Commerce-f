@@ -10,7 +10,8 @@ import {
   OPEN_EMAIL_CONTACT,
   SET_EMAIL_CONTACT,
   SET_EMAIL_MESSAGE,
-  SEND_MESSAGE_LOADING
+  SEND_MESSAGE_LOADING,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -22,7 +23,8 @@ export const initialState = fromJS({
   openEmailContact: false,
   sendMessageLoading: false,
   emailContact: '',
-  emailMessage: ''
+  emailMessage: '',
+  showTeamStores: null
 })
 
 const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
@@ -46,6 +48,8 @@ const storeFrontReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('emailMessage', action.param)
     case SEND_MESSAGE_LOADING:
       return state.set('sendMessageLoading', action.loading)
+    case SET_TEAM_STORE_STATUS:
+      return state.set('showTeamStores', action.show)
     default:
       return state
   }

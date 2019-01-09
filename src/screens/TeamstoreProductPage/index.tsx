@@ -3,10 +3,11 @@
  */
 import * as React from 'react'
 import { injectIntl, InjectedIntl } from 'react-intl'
-import { RouteComponentProps, Link } from 'react-router-dom'
+import { RouteComponentProps, Link, Redirect } from 'react-router-dom'
 import { compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import { getTeamStoreStatus } from './data'
 import filter from 'lodash/filter'
 import findIndex from 'lodash/findIndex'
 import capitalize from 'lodash/capitalize'
@@ -70,6 +71,7 @@ import YotpoReviews from '../../components/YotpoReviews'
 import ProductThumbnail from '../../components/ProductThumbnail'
 import AddtoCartButton from '../../components/AddToCartButton'
 import ThreeDRender from './Product3D'
+import { DEFAULT_ROUTE } from '../../constants'
 
 import {
   QueryProps,
@@ -99,6 +101,7 @@ interface Props extends RouteComponentProps<any> {
   loadingModel: boolean
   showDynamicPrice: boolean
   teamStoreItems: Data
+  showTeamStores: boolean
   showBuyNowOptionsAction: (show: boolean) => void
   openFitInfoAction: (open: boolean) => void
   setSelectedGenderAction: (selected: SelectedType) => void
@@ -106,6 +109,8 @@ interface Props extends RouteComponentProps<any> {
   setSelectedFitAction: (selected: SelectedType) => void
   setLoadingModel: (loading: boolean) => void
   openDynamicPriceModalAction: (open: boolean) => void
+  teamStoreStatus: () => Promise<any>
+  setTeamStoreStatusAction: (show: boolean) => void
 }
 
 interface StateProps {
@@ -118,6 +123,13 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
     showDetails: true,
     showSpecs: true
   }
+  async componentDidMount() {
+    const { teamStoreStatus, setTeamStoreStatusAction } = this.props
+    const response = await teamStoreStatus()
+    setTeamStoreStatusAction(
+      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
+    )
+  }
   render() {
     const {
       intl,
@@ -128,8 +140,13 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       openFitInfo,
       showDynamicPrice,
       data: { design },
-      teamStoreItems: { relatedItems }
+      teamStoreItems: { relatedItems },
+      showTeamStores
     } = this.props
+
+    if (showTeamStores === false) {
+      return <Redirect to={DEFAULT_ROUTE} />
+    }
 
     const { formatMessage } = intl
     const { showDetails, showSpecs } = this.state
@@ -605,6 +622,7 @@ type OwnProps = {
 
 const TeamstoreProductPageEnhance = compose(
   injectIntl,
+  getTeamStoreStatus,
   graphql<Data>(GetDesignQuery, {
     options: (ownprops: OwnProps) => {
       const {

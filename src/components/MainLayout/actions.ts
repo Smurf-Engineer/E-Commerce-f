@@ -7,7 +7,8 @@ import {
   SAVE_USER_TO_LOCAL,
   GET_TOTAL_CART_ITEMS,
   OPEN_LOGOUT_MODAL,
-  SAVE_AND_BUY
+  SAVE_AND_BUY,
+  SET_TEAM_STORE_STATUS
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -62,4 +63,9 @@ export const openLogoutModalAction = (open: boolean): AnyAction => ({
 export const saveAndBuyAction = (buy: boolean) => ({
   type: SAVE_AND_BUY,
   buy
+})
+
+export const setTeamStoreStatusAction = (show: boolean) => ({
+  type: SET_TEAM_STORE_STATUS,
+  show
 })

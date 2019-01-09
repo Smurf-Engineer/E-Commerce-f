@@ -7,8 +7,10 @@ import { compose, withApollo } from 'react-apollo'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
+import { getTeamStoreStatus } from './data'
 import get from 'lodash/get'
 import Button from 'antd/lib/button'
+import { DEFAULT_ROUTE } from '../../constants'
 import Upload from 'antd/lib/upload'
 import { Moment } from 'moment'
 import message from 'antd/lib/message'
@@ -83,6 +85,7 @@ interface Props extends RouteComponentProps<any> {
   client: any
   banner: string
   storeId: number
+  showTeamStores: boolean
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -107,6 +110,8 @@ interface Props extends RouteComponentProps<any> {
   setDataToEditAction: (data: TeamstoreType) => void
   deleteBannerOnEditAction: () => void
   clearDataAction: () => void
+  teamStoreStatus: () => Promise<any>
+  setTeamStoreStatusAction: (show: boolean) => void
 }
 
 interface StateProps {
@@ -349,9 +354,16 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const {
       setDataToEditAction,
       location: { search },
-      client: { query }
+      client: { query },
+      teamStoreStatus,
+      setTeamStoreStatusAction
     } = this.props
     const { storeId } = queryString.parse(search)
+
+    const response = await teamStoreStatus()
+    setTeamStoreStatusAction(
+      get(response, 'data.getTeamStoreStatus.showTeamStores', false)
+    )
 
     if (storeId) {
       query({
@@ -405,10 +417,15 @@ export class CreateStore extends React.Component<Props, StateProps> {
       teamSizeRange,
       loading,
       banner,
-      location: { search }
+      location: { search },
+      showTeamStores
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
+    console.log(showTeamStores)
+    if (showTeamStores === false) {
+      return <Redirect to={DEFAULT_ROUTE} />
+    }
 
     if (
       typeof window !== 'undefined' &&
@@ -590,6 +607,7 @@ const CreateStoreEnhance = compose(
   withApollo,
   createStoreMutation,
   updateStoreMutation,
+  getTeamStoreStatus,
   connect(
     mapStateToProps,
     { ...createStoreActions }
