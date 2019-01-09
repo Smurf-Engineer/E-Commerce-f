@@ -1,6 +1,6 @@
 {
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "tslint.run": "onSave",
   "prettier.semi": false,
-  "prettier.singleQuote": false
+  "prettier.singleQuote": true
 }
