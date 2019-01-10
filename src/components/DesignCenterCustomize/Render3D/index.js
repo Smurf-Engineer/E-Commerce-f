@@ -1251,6 +1251,10 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.sizeMessage} />
             </SizeLabel>
             <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
+            <SizeLabel>
+              dude
+            </SizeLabel>
+            <Size>{`10 x 10 cm`}</Size>
           </SizeBox>
         )}
         <Render
