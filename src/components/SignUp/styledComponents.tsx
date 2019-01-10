@@ -92,7 +92,8 @@ export const StyledButton = styled(Button)`
 `
 
 export const HaveAnAccountRow = styled.div`
-  padding: 15px 0 60px;
+  padding: 10px 0 10px;
+  text-align: center;
 `
 
 export const LogInLabel = styled.span`
