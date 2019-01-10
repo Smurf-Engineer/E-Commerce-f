@@ -29,6 +29,11 @@ export const DividerRow = styled.div`
   display: flex;
   align-items: center;
   margin-bottom: 16px;
+  width: 42%;
+  @media (min-width: 320px) and (max-width: 480px) {
+    width: 35%;
+    margin: 0px 52px;
+  }
 `
 export const RightDivider = styled(Divider)``
 export const LeftDivider = styled(Divider)``
@@ -87,7 +92,8 @@ export const StyledButton = styled(Button)`
 `
 
 export const HaveAnAccountRow = styled.div`
-  padding: 15px 0 60px;
+  padding: 10px 0 10px;
+  text-align: center;
 `
 
 export const LogInLabel = styled.span`

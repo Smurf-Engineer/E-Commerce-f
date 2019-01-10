@@ -426,6 +426,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           formatMessage={formatMessage}
           title={messages.unsupportedDeviceTitle}
           text={messages.unsupportedDeviceContent}
+          extraContent={messages.unsupportedDeviceExtraContent}
           buttonText={messages.unsupportedDeviceButton}
           requestClose={handleOnCloseInfo}
         />

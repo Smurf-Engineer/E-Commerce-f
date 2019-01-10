@@ -35,7 +35,8 @@ import {
   ProDesignReviewContent,
   ModalButtonsWrapper,
   ReviewButton,
-  ContinueButton
+  ContinueButton,
+  Bold
 } from './styledComponents'
 import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
@@ -335,7 +336,16 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
     const sideHeaderMessage = show25PercentMessage ? (
       <AddOneMoreMessage>
-        {formatMessage(messages.addOneMoreMessage)}
+        <Bold>{formatMessage(messages.saveMore)}</Bold>
+        <FormattedMessage
+          id={messages.addOneMoreMessage.id}
+          defaultMessage={messages.addOneMoreMessage.defaultMessage}
+          values={{
+            any: <Bold>{formatMessage(messages.any)}</Bold>,
+            percent: <Bold>{formatMessage(messages.percent)}</Bold>,
+            entireOrder: <Bold>{formatMessage(messages.entireOrder)}</Bold>
+          }}
+        />
       </AddOneMoreMessage>
     ) : null
 
