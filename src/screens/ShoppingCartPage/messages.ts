@@ -72,7 +72,7 @@ export default defineMessages({
   addOneMoreMessage: {
     id: 'screens.ShoppingCartPage.addOneMoreMessage',
     defaultMessage:
-      'Add {any} aditional item on your cart and save {percent} on your {entireOrder}'
+      'Add {any} additional item on your cart and save {percent} on your {entireOrder}'
   },
   titleDeleteModal: {
     id: 'screens.ShoppingCartPage.titleDeleteModal',
