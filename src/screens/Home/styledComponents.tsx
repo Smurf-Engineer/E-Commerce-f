@@ -21,6 +21,7 @@ export const SearchBarContent = styled.div`
 export const SearchBackground = styled.img`
   object-fit: cover;
   width: 100%;
+  cursor: pointer;
 `
 export const SearchContainer = styled.div`
   position: relative;

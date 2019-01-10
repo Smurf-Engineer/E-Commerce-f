@@ -3,7 +3,14 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-import { GREEN, RED, GRAY_DARK, GRAY_LIGHT, BLUE } from '../../theme/colors'
+import {
+  GREEN_LIGHT,
+  RED,
+  GRAY_DARK,
+  GRAY_LIGHT,
+  BLUE,
+  BLACK
+} from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -46,11 +53,24 @@ export const SideBar = styled.div`
 `
 
 export const AddOneMoreMessage = styled.div`
-  color: ${GREEN};
+  color: ${BLACK};
+  background-color: ${GREEN_LIGHT};
   font-size: 12px;
   letter-spacing: 0.15px;
-  line-height: 16px;
   margin-bottom: 8px;
+  padding: 15px;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    font-size: 19px;
+  }
+`
+
+export const Bold = styled.div`
+  font-weight: 600;
+  display: inline-block;
 `
 
 export const EmptyTitle = styled.div`
@@ -184,15 +204,15 @@ export const ButtonWrapper = styled.div`
   margin-bottom: 10px;
   .ant-btn-primary {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? disabledBackground : BLUE};
+      disabled ? disabledBackground : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? disabledBorder : BLUE};
+      disabled ? disabledBorder : BLUE};
   }
   .ant-btn-primary:hover {
     background-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? disabledBackground : BLUE};
+      disabled ? disabledBackground : BLUE};
     border-color: ${({ disabled }: ButtonWrapperProps) =>
-    disabled ? disabledBorder : BLUE};
+      disabled ? disabledBorder : BLUE};
   }
 `
 

@@ -27,6 +27,11 @@ export default defineMessages({
       // tslint:disable-next-line:max-line-length
       'For the best 3D design experience adding text and logos, please return on a device with a larger screen such as a laptop or desktop computer.'
   },
+  unsupportedDeviceExtraContent: {
+    id: 'screens.DesignCenter.unsupportedDeviceExtraContent',
+    defaultMessage:
+      'You can save your design and access it later from the "{myLocker}" tab on your account.'
+  },
   unsupportedDeviceButton: {
     id: 'screens.DesignCenter.unsupportedDeviceButton',
     defaultMessage: 'Got it!'

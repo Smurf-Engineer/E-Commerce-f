@@ -69,7 +69,8 @@ import {
   SET_AUTOMATIC_SAVE
 } from './constants'
 import { Reducer, Change } from '../../types/common'
-import { DEFAULT_COLOR, DEFAULT_FONT } from '../../constants'
+import { DEFAULT_FONT } from '../../constants'
+import { BLACK as BLACK_COLOR } from '../../theme/colors'
 
 export const initialState = fromJS({
   currentTab: 0,
@@ -77,9 +78,9 @@ export const initialState = fromJS({
   colorBlock: -1,
   colorBlockHovered: -1,
   colors: [],
-  stitchingColor: { name: 'FSC-17', value: DEFAULT_COLOR },
-  bindingColor: WHITE,
-  zipperColor: WHITE,
+  stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
+  bindingColor: BLACK,
+  zipperColor: BLACK,
   bibColor: WHITE,
   styleColors: [],
   palettes: [],
@@ -421,9 +422,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     case DESIGN_RESET_ACTION:
       return state.merge({
         colors: state.get('styleColors'),
-        stitchingColor: { name: 'FSC-17', value: '#FFFFFF' },
-        bindingColor: WHITE,
-        zipperColor: WHITE,
+        stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
+        bindingColor: BLACK,
+        zipperColor: BLACK,
         bibColor: WHITE,
         canvas: {
           text: {},
