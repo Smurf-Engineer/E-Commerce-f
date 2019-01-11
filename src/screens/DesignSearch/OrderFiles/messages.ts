@@ -32,5 +32,13 @@ export default defineMessages({
   imageExtensionError: {
     id: 'components.OrderFiles.imageExtensionError',
     defaultMessage: 'Oh no! Your file has to be an svg'
+  },
+  changesMessage: {
+    id: 'screens.DesignSearch.changesMessage',
+    defaultMessage: 'Design has been updated'
+  },
+  saveChanges: {
+    id: 'screens.DesignSearch.saveChanges',
+    defaultMessage: 'Save changes'
   }
 })

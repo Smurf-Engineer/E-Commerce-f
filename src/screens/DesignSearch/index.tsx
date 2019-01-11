@@ -50,6 +50,7 @@ interface Props {
   actualSvg: string
   uploadingThumbnail: boolean
   data: any
+  changes: boolean
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -90,7 +91,8 @@ export class DesignSearch extends React.Component<Props, {}> {
       intl: { formatMessage },
       actualSvg,
       uploadingThumbnail,
-      setUploadingThumbnailAction
+      setUploadingThumbnailAction,
+      changes
     } = this.props
 
     let loadErrContent = <Spin />
@@ -106,7 +108,8 @@ export class DesignSearch extends React.Component<Props, {}> {
           uploadingFile,
           actualSvg,
           uploadingThumbnail,
-          setUploadingThumbnailAction
+          setUploadingThumbnailAction,
+          changes
         }}
         formatMessage={formatMessage}
         downloadFile={this.downloadAllFiles}
@@ -197,7 +200,7 @@ export class DesignSearch extends React.Component<Props, {}> {
       Message.error(messages.errorDownload.defaultMessage)
     }
   }
-  handleUploadThumbnail = async (image: string, designId: string) => {
+  handleUploadThumbnail = async (image: string) => {
     const {
       uploadThumbnail,
       setUploadingThumbnailAction,
@@ -205,7 +208,7 @@ export class DesignSearch extends React.Component<Props, {}> {
     } = this.props
     try {
       const thumbnailResponse = await uploadThumbnail({
-        variables: { image, designId }
+        variables: { image }
       })
       const thumbnail = get(thumbnailResponse, 'data.style.image', '')
       updateThumbnailAction(thumbnail)

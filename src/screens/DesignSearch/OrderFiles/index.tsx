@@ -23,7 +23,9 @@ import {
   ButtonContainer,
   RenderContainer,
   RenderLayout,
-  ThumbnailLabel
+  ThumbnailLabel,
+  ChangesContainer,
+  MessageContainer
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import { OrderSearchResult } from '../../../types/common'
@@ -36,10 +38,11 @@ interface Props {
   uploadingFile: boolean
   actualSvg: string
   uploadingThumbnail: boolean
+  changes: boolean
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any) => string
-  onSaveThumbnail: (thumbnail: string, designId: string) => void
+  onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
 }
 class OrderFiles extends React.PureComponent<Props> {
@@ -64,7 +67,8 @@ class OrderFiles extends React.PureComponent<Props> {
       actualSvg,
       onSaveThumbnail,
       uploadingThumbnail,
-      setUploadingThumbnailAction
+      setUploadingThumbnailAction,
+      changes
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     return (
@@ -88,6 +92,7 @@ class OrderFiles extends React.PureComponent<Props> {
               uploadingThumbnail={uploadingThumbnail}
               onSaveThumbnail={onSaveThumbnail}
               onUploadingThumbnail={setUploadingThumbnailAction}
+              ref={(render3D: any) => (this.render3D = render3D)}
             />
           </RenderContainer>
         </RenderLayout>
@@ -131,6 +136,17 @@ class OrderFiles extends React.PureComponent<Props> {
           </ThumbnailLabel>
           <DownloadItem url={image} />
         </Data>
+        <ChangesContainer className={changes ? 'show' : ''}>
+          <MessageContainer>
+            <FormattedMessage {...messages.changesMessage} />
+          </MessageContainer>
+          <Button onClick={this.onSaveChanges} type="primary">
+            <ButtonContainer>
+              <Icon type="save" />
+              <FormattedMessage {...messages.saveChanges} />
+            </ButtonContainer>
+          </Button>
+        </ChangesContainer>
       </Container>
     )
   }
@@ -148,6 +164,10 @@ class OrderFiles extends React.PureComponent<Props> {
       return last(extension as RegExpMatchArray)
     }
     return ''
+  }
+  onSaveChanges = () => {
+    console.log(this.render3D.getWrappedInstance())
+    this.render3D.getWrappedInstance().saveThumbnail()
   }
   beforeUpload = (file: any) => {
     const {

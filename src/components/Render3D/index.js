@@ -80,7 +80,7 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
-    controls.minDistance = 150
+    controls.minDistance = 100
     controls.maxDistance = 350
     controls.enableZoom = true
 
@@ -114,10 +114,12 @@ class Render3D extends PureComponent {
       data: { design: oldDesign = {} },
       actualSvg: oldSvg = ''
     } = this.props
+
     const notEqual = !isEqual(design, oldDesign) || !isEqual(actualSvg, oldSvg)
     const { firstLoad } = this.state
-    if (!loading && !error && (notEqual || firstLoad)) {
-      this.renderModel(design)
+
+    if (!error && (notEqual || (firstLoad && !loading))) {
+      this.renderModel(design, actualSvg)
     }
   }
 
@@ -126,7 +128,7 @@ class Render3D extends PureComponent {
     this.clearScene()
   }
 
-  loadTextures = design =>
+  loadTextures = (design, actualSvg) =>
     new Promise((resolve, reject) => {
       try {
         const {
@@ -185,7 +187,7 @@ class Render3D extends PureComponent {
           const imageCanvas = document.createElement('canvas')
           canvg(
             imageCanvas,
-            `${outputSvg}?p=${Math.random()
+            `${actualSvg || outputSvg}?p=${Math.random()
               .toString(36)
               .substr(2, 5)}`
           )
@@ -283,6 +285,7 @@ class Render3D extends PureComponent {
         )}
         <Render
           {...{ customProduct, designSearch }}
+          id="render-3d"
           innerRef={container => (this.container = container)}
         >
           {loading && <Loading indicator={circleIcon} />}
@@ -297,8 +300,9 @@ class Render3D extends PureComponent {
     )
   }
 
-  renderModel = async design => {
+  renderModel = async (design, actualSvg) => {
     const { product = {}, flatlockColor, proDesign, canvas } = design
+
     const { designSearch } = this.props
     try {
       if (!!canvas) {
@@ -315,7 +319,7 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error(e)
     }
-    const loadedTextures = await this.loadTextures(design)
+    const loadedTextures = await this.loadTextures(design, actualSvg)
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.load(product.mtl, materials => {
@@ -645,7 +649,8 @@ const Render3DWithData = compose(
     options: ({ designId, actualSvg }) => ({
       variables: { designId, actualSvg },
       fetchPolicy: 'network-only'
-    })
+    }),
+    withRef: true
   })
 )(Render3D)
 

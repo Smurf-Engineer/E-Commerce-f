@@ -23,7 +23,8 @@ export const initialState = fromJS({
   noAdmin: false,
   uploadingFile: false,
   actualSvg: '',
-  uploadingThumbnail: false
+  uploadingThumbnail: false,
+  changes: false
 })
 
 const designSearchReducer: Reducer<any> = (state = initialState, action) => {
@@ -61,7 +62,10 @@ const designSearchReducer: Reducer<any> = (state = initialState, action) => {
     case RESET_DATA:
       return initialState
     case UPLOAD_FILE_ACTION_SUCCESS:
-      return state.set('actualSvg', action.url.fileUrl)
+      return state.merge({
+        actualSvg: action.url.fileUrl,
+        changes: true
+      })
     case SET_UPLOADING_THUMBNAIL_ACTION:
       return state.set('uploadingThumbnail', action.uploading)
     case UPDATE_THUMBNAIL_ACTION:

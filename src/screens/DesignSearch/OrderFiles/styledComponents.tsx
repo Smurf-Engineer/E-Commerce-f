@@ -2,7 +2,7 @@
  * Styled Components - Created by miguelcanobbio on 16/08/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_LIGHTEST } from '../../../theme/colors'
+import { GRAY_DARK, GRAY_LIGHTEST, WHITE } from '../../../theme/colors'
 import icon from 'antd/lib/icon'
 
 export const Container = styled.div`
@@ -95,4 +95,27 @@ export const ThumbnailLabel = styled.div`
   letter-spacing: 0.18px;
   line-height: 22px;
   margin-top: 10px;
+`
+
+export const ChangesContainer = styled.div`
+  background-color: ${WHITE};
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 30px;
+  width: 100%;
+  z-index: 2;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+  transform: translate(0, 100px);
+  box-shadow: 0px -2px 15px rgba(179, 179, 179, 0.3);
+  &.show {
+    transform: translate(0, 0);
+  }
+`
+export const MessageContainer = styled.div`
+  margin-right: 40px;
 `

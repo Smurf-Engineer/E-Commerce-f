@@ -30,8 +30,8 @@ export const orderSearchQuery = gql`
 `
 
 export const uploadThumbnailMutation = gql`
-  mutation SaveAndUpdateStyleImage($image: String!, $designId: String) {
-    style: saveAndUpdateStyleImage(image: $image, designId: $designId) {
+  mutation saveStyleImage($image: String!) {
+    style: saveStyleImage(image: $image) {
       image
     }
   }
