@@ -28,7 +28,7 @@ import {
   MessageContainer
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
-import { OrderSearchResult } from '../../../types/common'
+import { OrderSearchResult, StitchingColor } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
@@ -39,11 +39,13 @@ interface Props {
   actualSvg: string
   uploadingThumbnail: boolean
   changes: boolean
+  colorAccessories: any
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any) => string
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
+  onSelectStitchingColor: (stitchingColor: StitchingColor) => void
 }
 class OrderFiles extends React.PureComponent<Props> {
   render3D: any
@@ -68,7 +70,9 @@ class OrderFiles extends React.PureComponent<Props> {
       onSaveThumbnail,
       uploadingThumbnail,
       setUploadingThumbnailAction,
-      changes
+      changes,
+      onSelectStitchingColor,
+      colorAccessories
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     return (
@@ -77,11 +81,16 @@ class OrderFiles extends React.PureComponent<Props> {
           <AccessoryColors
             {...{
               stitchingName,
-              stitchingValue,
               bibColor,
               zipperColor,
-              bindingColor
+              bindingColor,
+              onSelectStitchingColor
             }}
+            stitchingValue={
+              !isEmpty(colorAccessories.stitching)
+                ? colorAccessories.stitching
+                : stitchingValue
+            }
           />
           <RenderContainer>
             <Render3D
@@ -92,6 +101,7 @@ class OrderFiles extends React.PureComponent<Props> {
               uploadingThumbnail={uploadingThumbnail}
               onSaveThumbnail={onSaveThumbnail}
               onUploadingThumbnail={setUploadingThumbnailAction}
+              colorAccessories={colorAccessories}
               ref={(render3D: any) => (this.render3D = render3D)}
             />
           </RenderContainer>

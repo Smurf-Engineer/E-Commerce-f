@@ -26,7 +26,7 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
-import { OrderSearchResult, UserType } from '../../types/common'
+import { OrderSearchResult, UserType, StitchingColor } from '../../types/common'
 import { orderSearchQuery, uploadThumbnailMutation } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -51,6 +51,8 @@ interface Props {
   uploadingThumbnail: boolean
   data: any
   changes: boolean
+  colorAccessories: any
+  stitchingValue: string
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -64,6 +66,7 @@ interface Props {
   uploadThumbnail: (variables: {}) => Promise<Thumbnail>
   setUploadingThumbnailAction: (uploading: boolean) => void
   updateThumbnailAction: (thumbnail: string) => void
+  setStitchingColorAction: (stitchingColor: StitchingColor) => void
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
@@ -92,7 +95,9 @@ export class DesignSearch extends React.Component<Props, {}> {
       actualSvg,
       uploadingThumbnail,
       setUploadingThumbnailAction,
-      changes
+      changes,
+      setStitchingColorAction,
+      colorAccessories
     } = this.props
 
     let loadErrContent = <Spin />
@@ -109,8 +114,10 @@ export class DesignSearch extends React.Component<Props, {}> {
           actualSvg,
           uploadingThumbnail,
           setUploadingThumbnailAction,
-          changes
+          changes,
+          colorAccessories
         }}
+        onSelectStitchingColor={setStitchingColorAction}
         formatMessage={formatMessage}
         downloadFile={this.downloadAllFiles}
         onUploadFile={uploadProDesignAction}

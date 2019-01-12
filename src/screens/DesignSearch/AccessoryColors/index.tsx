@@ -2,7 +2,7 @@
  * AccessoryColors Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import { AccesoryColor } from '../../../types/common'
+import { AccesoryColor, StitchingColor } from '../../../types/common'
 import AccessoryColor from '../AccessoryColor'
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   bibColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bindingColor?: AccesoryColor
+  onSelectStitchingColor: (stitchingColor: StitchingColor) => void
 }
 
 const AccessoryColors = ({
@@ -18,7 +19,8 @@ const AccessoryColors = ({
   stitchingValue,
   bibColor,
   zipperColor,
-  bindingColor
+  bindingColor,
+  onSelectStitchingColor
 }: Props) => {
   return (
     <div>
@@ -29,13 +31,13 @@ const AccessoryColors = ({
       {bindingColor && (
         <AccessoryColor name="Binding Color" color={bindingColor} />
       )}
-      {stitchingName &&
-        stitchingValue && (
-          <AccessoryColor
-            name="Stitching"
-            stitchingColor={{ name: stitchingName, value: stitchingValue }}
-          />
-        )}
+      {stitchingName && stitchingValue && (
+        <AccessoryColor
+          {...{ onSelectStitchingColor }}
+          name="Stitching"
+          stitchingColor={{ name: stitchingName, value: stitchingValue }}
+        />
+      )}
     </div>
   )
 }

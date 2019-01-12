@@ -11,7 +11,8 @@ import {
   SET_UPLOADING_FILE_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_THUMBNAIL_ACTION,
-  UPDATE_THUMBNAIL_ACTION
+  UPDATE_THUMBNAIL_ACTION,
+  SET_STITCHING_COLOR_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -24,7 +25,13 @@ export const initialState = fromJS({
   uploadingFile: false,
   actualSvg: '',
   uploadingThumbnail: false,
-  changes: false
+  changes: false,
+  colorAccessories: {
+    stitching: '#FFFFFF',
+    zipper: '',
+    bibBrace: '',
+    Binding: ''
+  }
 })
 
 const designSearchReducer: Reducer<any> = (state = initialState, action) => {
@@ -70,6 +77,11 @@ const designSearchReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingThumbnail', action.uploading)
     case UPDATE_THUMBNAIL_ACTION:
       return state.setIn(['order', 'image'], action.thumbnail)
+    case SET_STITCHING_COLOR_ACTION: {
+      return state
+        .setIn(['colorAccessories', 'stitching'], action.stitchingColor.value)
+        .set('changes', true)
+    }
     default:
       return state
   }

@@ -4,6 +4,7 @@ import findIndex from 'lodash/findIndex'
 import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
 import isEqual from 'lodash/isEqual'
+import has from 'lodash/has'
 import reverse from 'lodash/reverse'
 import shortid from 'shortid'
 import { graphql, compose } from 'react-apollo'
@@ -108,18 +109,25 @@ class Render3D extends PureComponent {
   componentWillReceiveProps(nextProps) {
     const {
       data: { loading, error, design = {} },
-      actualSvg = ''
+      actualSvg = '',
+      colorAccessories
     } = nextProps
     const {
       data: { design: oldDesign = {} },
-      actualSvg: oldSvg = ''
+      actualSvg: oldSvg = '',
+      colorAccessories: oldColorAccessories
     } = this.props
 
-    const notEqual = !isEqual(design, oldDesign) || !isEqual(actualSvg, oldSvg)
+    const notEqual =
+      !isEqual(design, oldDesign) ||
+      !isEqual(actualSvg, oldSvg) ||
+      !isEqual(colorAccessories, oldColorAccessories)
     const { firstLoad } = this.state
 
     if (!error && (notEqual || (firstLoad && !loading))) {
-      this.renderModel(design, actualSvg)
+      setTimeout(() => {
+        this.renderModel(design, actualSvg, colorAccessories)
+      }, 100)
     }
   }
 
@@ -300,7 +308,7 @@ class Render3D extends PureComponent {
     )
   }
 
-  renderModel = async (design, actualSvg) => {
+  renderModel = async (design, actualSvg, colorAccessories) => {
     const { product = {}, flatlockColor, proDesign, canvas } = design
 
     const { designSearch } = this.props
@@ -350,11 +358,15 @@ class Render3D extends PureComponent {
 
           const meshIndex = getMeshIndex(MESH)
           /* Stitching */
-          if (!!flatlock) {
+          if (!!flatlock || has(colorAccessories, 'stitching')) {
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color: flatlockColor || WHITE
+              color:
+                (has(colorAccessories, 'stitching') &&
+                colorAccessories.stitching.length
+                  ? colorAccessories.stitching
+                  : flatlockColor) || WHITE
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping

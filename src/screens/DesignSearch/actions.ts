@@ -10,9 +10,14 @@ import {
   UPLOAD_FILE_ACTION_SUCCESS,
   SET_UPLOADING_FILE_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
-  UPDATE_THUMBNAIL_ACTION
+  UPDATE_THUMBNAIL_ACTION,
+  SET_STITCHING_COLOR_ACTION
 } from './constants'
-import { AnyAction, OrderSearchResult } from '../../types/common'
+import {
+  AnyAction,
+  OrderSearchResult,
+  StitchingColor
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -55,4 +60,9 @@ export const setUploadingThumbnailAction = (uploading: boolean) => ({
 export const updateThumbnailAction = (thumbnail: string) => ({
   type: UPDATE_THUMBNAIL_ACTION,
   thumbnail
+})
+
+export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
+  type: SET_STITCHING_COLOR_ACTION,
+  stitchingColor
 })
