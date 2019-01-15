@@ -5,6 +5,7 @@ import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
 import isEqual from 'lodash/isEqual'
 import has from 'lodash/has'
+import get from 'lodash/get'
 import reverse from 'lodash/reverse'
 import shortid from 'shortid'
 import { graphql, compose } from 'react-apollo'
@@ -18,8 +19,7 @@ import {
   Title,
   Message,
   ContainerError,
-  Loading,
-  ThumbnailButton
+  Loading
 } from './styledComponents'
 import { modelPositions } from './config'
 import {
@@ -31,7 +31,6 @@ import {
   FLATLOCK,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE,
   CANVAS_SIZE,
   MESH_NAME
 } from '../../constants'
@@ -153,59 +152,38 @@ class Render3D extends PureComponent {
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
-        if (
-          !!zipper ||
-          (has(colorAccessories, 'zipperColor') &&
-            colorAccessories.zipperColor.length)
-        ) {
-          const texture = !!zipper[
+        if (!!zipper) {
+          const hasZipperColor =
             has(colorAccessories, 'zipperColor') &&
             colorAccessories.zipperColor.length
-              ? colorAccessories.zipperColor
-              : zipperColor
-          ]
-            ? zipper[
-                has(colorAccessories, 'zipperColor') &&
-                colorAccessories.zipperColor.length
-                  ? colorAccessories.zipperColor
-                  : zipperColor
-              ]
-            : ACCESSORY_WHITE
+
+          const texture =
+            zipper[hasZipperColor ? colorAccessories.zipperColor : zipperColor]
           loadedTextures.zipper = textureLoader.load(texture)
           loadedTextures.zipper.minFilter = THREE.LinearFilter
         }
         if (!!binding) {
-          const texture = !!binding[
+          const hasBindingColor =
             has(colorAccessories, 'bindingColor') &&
             colorAccessories.bindingColor.length
-              ? colorAccessories.bindingColor
-              : bindingColor
-          ]
-            ? binding[
-                has(colorAccessories, 'bindingColor') &&
-                colorAccessories.bindingColor.length
-                  ? colorAccessories.bindingColor
-                  : bindingColor
-              ]
-            : ACCESSORY_WHITE
+
+          const texture =
+            binding[
+              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+            ]
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
         }
         if (!!bibBrace) {
-          const texture = !!bibBrace[
-            has(colorAccessories, 'bibColor') && colorAccessories.bibColor
-              ? colorAccessories.bibColor
-              : bibBraceColor
-          ]
-            ? bibBrace[
-                has(colorAccessories, 'bibColor') && colorAccessories.bibColor
-                  ? colorAccessories.bibColor
-                  : bibBraceColor
-              ]
-            : ACCESSORY_WHITE
+          const hasBibColor =
+            has(colorAccessories, 'bibColor') &&
+            colorAccessories.bibColor.length
+          const texture =
+            bibBrace[hasBibColor ? colorAccessories.bibColor : bibBraceColor]
           loadedTextures.bibBrace = textureLoader.load(texture)
           loadedTextures.bibBrace.minFilter = THREE.LinearFilter
         }
+
         if (!!flatlock) {
           loadedTextures.flatlock = textureLoader.load(flatlock)
         }
@@ -384,11 +362,7 @@ class Render3D extends PureComponent {
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color:
-                (has(colorAccessories, 'stitching') &&
-                colorAccessories.stitching.length
-                  ? colorAccessories.stitching
-                  : flatlockColor) || WHITE
+              color: get(colorAccessories, 'stitching', flatlockColor) || WHITE
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping

@@ -87,31 +87,11 @@ class OrderFiles extends React.PureComponent<Props> {
               onSelectStitchingColor,
               onSelectColor
             }}
-            stitchingValue={
-              !isEmpty(colorAccessories.stitching)
-                ? colorAccessories.stitching
-                : stitchingValue
-            }
-            stitchingName={
-              !isEmpty(colorAccessories.stitchingName)
-                ? colorAccessories.stitchingName
-                : stitchingName
-            }
-            zipperColor={
-              !isEmpty(colorAccessories.zipperColor)
-                ? colorAccessories.zipperColor
-                : zipperColor
-            }
-            bibColor={
-              !isEmpty(colorAccessories.bibColor)
-                ? colorAccessories.bibColor
-                : bibColor
-            }
-            bindingColor={
-              !isEmpty(colorAccessories.bindingColor)
-                ? colorAccessories.bindingColor
-                : bindingColor
-            }
+            stitchingValue={colorAccessories.stitching || stitchingValue}
+            stitchingName={colorAccessories.stitchingName || stitchingName}
+            zipperColor={colorAccessories.zipperColor || zipperColor}
+            bibColor={colorAccessories.bibColor || bibColor}
+            bindingColor={colorAccessories.bindingColor || bindingColor}
           />
           <RenderContainer>
             <Render3D
