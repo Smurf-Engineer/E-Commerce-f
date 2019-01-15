@@ -208,7 +208,7 @@ export const MeasurementBox = styled.div`
   animation: ${fadeIn} 0.5s cubic-bezier(0.67, 0.35, 0.565, 1) both;
   position: absolute;
   padding: 8px;
-  top: 52px;
+  top: 75px;
   left: 26px;
   border: 0.5px solid ${GRAY_LIGHT};
   border-radius: 2px;
