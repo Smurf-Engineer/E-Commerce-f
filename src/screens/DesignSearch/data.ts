@@ -36,3 +36,21 @@ export const uploadThumbnailMutation = gql`
     }
   }
 `
+
+export const updateDesignMutation = gql`
+  mutation updateDesign(
+    $code: String!
+    $accessories: DesignAccessories
+    $svg: String!
+    $thumbnail: String!
+  ) {
+    updateDesign(
+      code: $code
+      accessories: $accessories
+      svg: $svg
+      thumbnail: $thumbnail
+    ) {
+      message
+    }
+  }
+`

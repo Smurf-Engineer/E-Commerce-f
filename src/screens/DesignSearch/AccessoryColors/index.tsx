@@ -4,6 +4,9 @@
 import * as React from 'react'
 import { AccesoryColor, StitchingColor } from '../../../types/common'
 import AccessoryColor from '../AccessoryColor'
+import StitchingColorComponent from '../StitchingColor'
+
+import { AccessoryColors as AccessoryColorsConstants } from '../../../screens/DesignCenter/constants'
 
 interface Props {
   stitchingName?: string
@@ -12,6 +15,7 @@ interface Props {
   zipperColor?: AccesoryColor
   bindingColor?: AccesoryColor
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
+  onSelectColor: (color: string, id: string) => void
 }
 
 const AccessoryColors = ({
@@ -20,19 +24,37 @@ const AccessoryColors = ({
   bibColor,
   zipperColor,
   bindingColor,
-  onSelectStitchingColor
+  onSelectStitchingColor,
+  onSelectColor
 }: Props) => {
   return (
     <div>
-      {bibColor && <AccessoryColor name="Bib Brace Color" color={bibColor} />}
+      {bibColor && (
+        <AccessoryColor
+          id={AccessoryColorsConstants.Bib}
+          name="Bib Brace Color"
+          color={bibColor}
+          {...{ onSelectColor }}
+        />
+      )}
       {zipperColor && (
-        <AccessoryColor name="Zipper Color" color={zipperColor} />
+        <AccessoryColor
+          id={AccessoryColorsConstants.Zipper}
+          name="Zipper Color"
+          color={zipperColor}
+          {...{ onSelectColor }}
+        />
       )}
       {bindingColor && (
-        <AccessoryColor name="Binding Color" color={bindingColor} />
+        <AccessoryColor
+          id={AccessoryColorsConstants.Binding}
+          name="Binding Color"
+          color={bindingColor}
+          {...{ onSelectColor }}
+        />
       )}
       {stitchingName && stitchingValue && (
-        <AccessoryColor
+        <StitchingColorComponent
           {...{ onSelectStitchingColor }}
           name="Stitching"
           stitchingColor={{ name: stitchingName, value: stitchingValue }}

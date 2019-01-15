@@ -27,7 +27,11 @@ import {
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
 import { OrderSearchResult, UserType, StitchingColor } from '../../types/common'
-import { orderSearchQuery, uploadThumbnailMutation } from './data'
+import {
+  orderSearchQuery,
+  uploadThumbnailMutation,
+  updateDesignMutation
+} from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
 
@@ -67,6 +71,9 @@ interface Props {
   setUploadingThumbnailAction: (uploading: boolean) => void
   updateThumbnailAction: (thumbnail: string) => void
   setStitchingColorAction: (stitchingColor: StitchingColor) => void
+  setColorAction: (color: string, id: string) => void
+  updateDesign: (variables: {}) => Promise<Thumbnail>
+  resetChangesAction: () => void
 }
 
 export class DesignSearch extends React.Component<Props, {}> {
@@ -97,7 +104,8 @@ export class DesignSearch extends React.Component<Props, {}> {
       setUploadingThumbnailAction,
       changes,
       setStitchingColorAction,
-      colorAccessories
+      colorAccessories,
+      setColorAction
     } = this.props
 
     let loadErrContent = <Spin />
@@ -118,10 +126,11 @@ export class DesignSearch extends React.Component<Props, {}> {
           colorAccessories
         }}
         onSelectStitchingColor={setStitchingColorAction}
+        onSelectColor={setColorAction}
         formatMessage={formatMessage}
         downloadFile={this.downloadAllFiles}
         onUploadFile={uploadProDesignAction}
-        onSaveThumbnail={this.handleUploadThumbnail}
+        onSaveThumbnail={this.saveDesign}
       />
     )
     const content =
@@ -170,9 +179,10 @@ export class DesignSearch extends React.Component<Props, {}> {
       client: { query },
       setLoadingAction,
       setNotFoundAction,
-      setOrderAction
+      setOrderAction,
+      resetDataAction
     } = this.props
-
+    resetDataAction()
     setLoadingAction()
     try {
       const data = await query({
@@ -207,20 +217,33 @@ export class DesignSearch extends React.Component<Props, {}> {
       Message.error(messages.errorDownload.defaultMessage)
     }
   }
-  handleUploadThumbnail = async (image: string) => {
+  saveDesign = async (image: string) => {
     const {
       uploadThumbnail,
       setUploadingThumbnailAction,
-      updateThumbnailAction
+      order,
+      actualSvg,
+      colorAccessories,
+      updateDesign,
+      resetChangesAction
     } = this.props
     try {
       const thumbnailResponse = await uploadThumbnail({
         variables: { image }
       })
       const thumbnail = get(thumbnailResponse, 'data.style.image', '')
-      updateThumbnailAction(thumbnail)
-      message.success('Your thumbnail has been successfully saved!')
       setUploadingThumbnailAction(false)
+
+      await updateDesign({
+        variables: {
+          code: get(order, 'code'),
+          accessories: colorAccessories,
+          svg: actualSvg,
+          thumbnail
+        }
+      })
+      resetChangesAction()
+      message.success('Design has been successfully saved!')
     } catch (e) {
       setUploadingThumbnailAction(false)
       message.error(e.message)
@@ -237,6 +260,7 @@ const mapStateToProps = (state: any) => {
 const DesignSearchEnhance = compose(
   injectIntl,
   graphql(uploadThumbnailMutation, { name: 'uploadThumbnail' }),
+  graphql(updateDesignMutation, { name: 'updateDesign' }),
   connect(
     mapStateToProps,
     {

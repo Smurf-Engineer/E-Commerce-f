@@ -11,7 +11,9 @@ import {
   SET_UPLOADING_FILE_ACTION,
   SET_UPLOADING_THUMBNAIL_ACTION,
   UPDATE_THUMBNAIL_ACTION,
-  SET_STITCHING_COLOR_ACTION
+  SET_STITCHING_COLOR_ACTION,
+  SET_COLOR_ACTION,
+  RESET_CHANGES_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -65,4 +67,14 @@ export const updateThumbnailAction = (thumbnail: string) => ({
 export const setStitchingColorAction = (stitchingColor: StitchingColor) => ({
   type: SET_STITCHING_COLOR_ACTION,
   stitchingColor
+})
+
+export const setColorAction = (color: string, id: string) => ({
+  type: SET_COLOR_ACTION,
+  color,
+  id
+})
+
+export const resetChangesAction = () => ({
+  type: RESET_CHANGES_ACTION
 })

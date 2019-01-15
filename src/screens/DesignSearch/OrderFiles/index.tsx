@@ -46,6 +46,7 @@ interface Props {
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
+  onSelectColor: (color: string, id: string) => void
 }
 class OrderFiles extends React.PureComponent<Props> {
   render3D: any
@@ -72,7 +73,8 @@ class OrderFiles extends React.PureComponent<Props> {
       setUploadingThumbnailAction,
       changes,
       onSelectStitchingColor,
-      colorAccessories
+      colorAccessories,
+      onSelectColor
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     return (
@@ -80,16 +82,35 @@ class OrderFiles extends React.PureComponent<Props> {
         <RenderLayout>
           <AccessoryColors
             {...{
-              stitchingName,
               bibColor,
-              zipperColor,
               bindingColor,
-              onSelectStitchingColor
+              onSelectStitchingColor,
+              onSelectColor
             }}
             stitchingValue={
               !isEmpty(colorAccessories.stitching)
                 ? colorAccessories.stitching
                 : stitchingValue
+            }
+            stitchingName={
+              !isEmpty(colorAccessories.stitchingName)
+                ? colorAccessories.stitchingName
+                : stitchingName
+            }
+            zipperColor={
+              !isEmpty(colorAccessories.zipperColor)
+                ? colorAccessories.zipperColor
+                : zipperColor
+            }
+            bibColor={
+              !isEmpty(colorAccessories.bibColor)
+                ? colorAccessories.bibColor
+                : bibColor
+            }
+            bindingColor={
+              !isEmpty(colorAccessories.bindingColor)
+                ? colorAccessories.bindingColor
+                : bindingColor
             }
           />
           <RenderContainer>
@@ -114,9 +135,8 @@ class OrderFiles extends React.PureComponent<Props> {
             </Label>
             <Status>{statusOrder}</Status>
           </StatusContainer>
-          <Button onClick={this.onDownload}>
+          <Button onClick={this.onDownload} icon="download">
             <ButtonContainer>
-              <Icon type="download" />
               <FormattedMessage {...messages.downloadAll} />
             </ButtonContainer>
           </Button>
@@ -150,9 +170,14 @@ class OrderFiles extends React.PureComponent<Props> {
           <MessageContainer>
             <FormattedMessage {...messages.changesMessage} />
           </MessageContainer>
-          <Button onClick={this.onSaveChanges} type="primary">
+          <Button
+            onClick={this.onSaveChanges}
+            type="primary"
+            loading={uploadingThumbnail}
+            disabled={uploadingThumbnail}
+            icon="save"
+          >
             <ButtonContainer>
-              <Icon type="save" />
               <FormattedMessage {...messages.saveChanges} />
             </ButtonContainer>
           </Button>
@@ -176,7 +201,6 @@ class OrderFiles extends React.PureComponent<Props> {
     return ''
   }
   onSaveChanges = () => {
-    console.log(this.render3D.getWrappedInstance())
     this.render3D.getWrappedInstance().saveThumbnail()
   }
   beforeUpload = (file: any) => {

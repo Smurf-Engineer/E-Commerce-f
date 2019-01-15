@@ -149,27 +149,61 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
-        const { designSearch } = this.props
+        const { designSearch, colorAccessories } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
-        if (!!zipper) {
-          const texture = !!zipper[zipperColor]
-            ? zipper[zipperColor]
+        console.log(colorAccessories)
+        if (
+          !!zipper ||
+          (has(colorAccessories, 'zipperColor') &&
+            colorAccessories.zipperColor.length)
+        ) {
+          const texture = !!zipper[
+            has(colorAccessories, 'zipperColor') &&
+            colorAccessories.zipperColor.length
+              ? colorAccessories.zipperColor
+              : zipperColor
+          ]
+            ? zipper[
+                has(colorAccessories, 'zipperColor') &&
+                colorAccessories.zipperColor.length
+                  ? colorAccessories.zipperColor
+                  : zipperColor
+              ]
             : ACCESSORY_WHITE
+          console.log(texture)
           loadedTextures.zipper = textureLoader.load(texture)
           loadedTextures.zipper.minFilter = THREE.LinearFilter
         }
         if (!!binding) {
-          const texture = !!binding[bindingColor]
-            ? binding[bindingColor]
+          const texture = !!binding[
+            has(colorAccessories, 'bindingColor') &&
+            colorAccessories.bindingColor.length
+              ? colorAccessories.bindingColor
+              : bindingColor
+          ]
+            ? binding[
+                has(colorAccessories, 'bindingColor') &&
+                colorAccessories.bindingColor.length
+                  ? colorAccessories.bindingColor
+                  : bindingColor
+              ]
             : ACCESSORY_WHITE
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
         }
         if (!!bibBrace) {
-          const texture = !!bibBrace[bibBraceColor]
-            ? bibBrace[bibBraceColor]
+          const texture = !!bibBrace[
+            has(colorAccessories, 'bibColor') && colorAccessories.bibColor
+              ? colorAccessories.bibColor
+              : bibBraceColor
+          ]
+            ? bibBrace[
+                has(colorAccessories, 'bibColor') && colorAccessories.bibColor
+                  ? colorAccessories.bibColor
+                  : bibBraceColor
+              ]
             : ACCESSORY_WHITE
           loadedTextures.bibBrace = textureLoader.load(texture)
           loadedTextures.bibBrace.minFilter = THREE.LinearFilter
@@ -261,7 +295,6 @@ class Render3D extends PureComponent {
     const {
       customProduct,
       designSearch,
-      uploadingThumbnail,
       data: { loading, error }
     } = this.props
 
@@ -282,15 +315,6 @@ class Render3D extends PureComponent {
 
     return (
       <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
-        {designSearch && (
-          <ThumbnailButton
-            loading={uploadingThumbnail}
-            disabled={uploadingThumbnail || loading}
-            onClick={this.saveThumbnail}
-          >
-            <FormattedMessage {...messages.updateThumbnail} />
-          </ThumbnailButton>
-        )}
         <Render
           {...{ customProduct, designSearch }}
           id="render-3d"
@@ -358,7 +382,7 @@ class Render3D extends PureComponent {
 
           const meshIndex = getMeshIndex(MESH)
           /* Stitching */
-          if (!!flatlock || has(colorAccessories, 'stitching')) {
+          if (!!flatlock) {
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,

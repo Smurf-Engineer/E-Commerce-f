@@ -2,56 +2,47 @@
  * AccessoryColor Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import get from 'lodash/get'
-import {
-  Container,
-  Name,
-  Stitching,
-  ColorLabel,
-  Oval
-} from './styledComponents'
+import { Container, Name, Oval, Row } from './styledComponents'
 import Popover from 'antd/lib/popover'
 import ColorPicker from '../ColorPicker'
-import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { AccesoryColor } from '../../../types/common'
 import { BLACK } from '../../DesignCenter/constants'
 import * as Colors from '../../../theme/colors'
 
 interface Props {
+  id: string
   name: string
-  stitchingColor?: StitchingColor
-  color?: AccesoryColor
-  onSelectStitchingColor?: (stitchingColor: StitchingColor) => void
+  color: AccesoryColor
+  onSelectColor: (color: string, id: string) => void
 }
 
-const AccessoryColor = ({
-  name,
-  stitchingColor,
-  color,
-  onSelectStitchingColor
-}: Props) => {
-  const stitchingName = get(stitchingColor, 'name', '')
-  const stitchingValue = get(stitchingColor, 'value', '')
+const AccessoryColor = ({ name, color, onSelectColor, id }: Props) => {
   const accessColor = color === BLACK ? Colors.BLACK : Colors.WHITE
+  const handleOnSelectColor = (selectedColor: string) => {
+    onSelectColor(selectedColor, id)
+  }
   return (
     <Container>
       <Popover
         content={
           <div>
-            <ColorPicker {...{ stitchingColor, onSelectStitchingColor }} />
+            {
+              <ColorPicker
+                {...{ color }}
+                onSelectColor={selectedColor =>
+                  handleOnSelectColor(selectedColor)
+                }
+              />
+            }
           </div>
         }
         trigger="hover"
         placement="right"
       >
-        <Name>{name}</Name>
-        {stitchingColor ? (
-          <Stitching>
-            <ColorLabel>{stitchingName}</ColorLabel>
-            <Oval color={stitchingValue} />
-          </Stitching>
-        ) : (
+        <Row>
+          <Name>{name}</Name>
           <Oval color={accessColor} />
-        )}
+        </Row>
       </Popover>
     </Container>
   )

@@ -77,9 +77,8 @@ export const AssetsLabel = styled.div`
 `
 
 export const ButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  margin-left: 8px;
 `
 
 export const Icon = styled(icon)`

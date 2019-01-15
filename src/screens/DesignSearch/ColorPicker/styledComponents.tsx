@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import { WHITE, RED, GRAY } from '../../../theme/colors'
+import { WHITE as WHITE_TEXT } from '../../DesignCenter/constants'
 
 export const Container = styled.div`
   width: 400px;
@@ -23,7 +24,9 @@ export const Color = styled.div`
   background-color: ${({ color }: ColorProps) => color};
   border: 1px solid
     ${({ color }: ColorProps) =>
-      color && color.toUpperCase() !== WHITE ? 'transparent' : GRAY};
+      color && (color.toUpperCase() !== WHITE && color !== WHITE_TEXT)
+        ? 'transparent'
+        : GRAY};
   cursor: pointer;
   width: 32px;
   height: 32px;
