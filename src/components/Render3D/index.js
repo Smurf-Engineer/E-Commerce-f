@@ -153,7 +153,6 @@ class Render3D extends PureComponent {
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
-        console.log(colorAccessories)
         if (
           !!zipper ||
           (has(colorAccessories, 'zipperColor') &&
@@ -172,7 +171,6 @@ class Render3D extends PureComponent {
                   : zipperColor
               ]
             : ACCESSORY_WHITE
-          console.log(texture)
           loadedTextures.zipper = textureLoader.load(texture)
           loadedTextures.zipper.minFilter = THREE.LinearFilter
         }
