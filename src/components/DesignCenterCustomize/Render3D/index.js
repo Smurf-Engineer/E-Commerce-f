@@ -136,7 +136,6 @@ class Render3D extends PureComponent {
   }
 
   dragComponent = null
-
   componentWillReceiveProps(nextProps) {
     const {
       colors,
@@ -2117,6 +2116,7 @@ class Render3D extends PureComponent {
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
             this.scaleObject(cX, cY, currentTransform)
+            this.forceUpdate()
             this.canvasTexture.renderAll()
             break
           }
@@ -2124,6 +2124,7 @@ class Render3D extends PureComponent {
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
             this.rotateObject(cX, cY, currentTransform)
+            this.forceUpdate()
             this.canvasTexture.renderAll()
             break
           }
