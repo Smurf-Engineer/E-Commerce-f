@@ -7,7 +7,7 @@ import findIndex from 'lodash/findIndex'
 
 import { Container, Color, Col, ColorSlider, Border } from './styledComponents'
 import colors from './colors'
-import stitchingColors from './stitchingColors'
+import stitchingColors from '../../../colorList/stitchingColors'
 import { StitchingColor } from '../../../types/common'
 
 interface Props {

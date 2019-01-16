@@ -23,10 +23,12 @@ import {
   ButtonContainer,
   RenderContainer,
   RenderLayout,
-  ThumbnailLabel
+  ThumbnailLabel,
+  ChangesContainer,
+  MessageContainer
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
-import { OrderSearchResult } from '../../../types/common'
+import { OrderSearchResult, StitchingColor } from '../../../types/common'
 import DownloadItem from '../DownloadItem'
 import FilesList from '../FilesList'
 import AccessoryColors from '../AccessoryColors'
@@ -36,11 +38,15 @@ interface Props {
   uploadingFile: boolean
   actualSvg: string
   uploadingThumbnail: boolean
+  changes: boolean
+  colorAccessories: any
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
   formatMessage: (messageDescriptor: any) => string
-  onSaveThumbnail: (thumbnail: string, designId: string) => void
+  onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
+  onSelectStitchingColor: (stitchingColor: StitchingColor) => void
+  onSelectColor: (color: string, id: string) => void
 }
 class OrderFiles extends React.PureComponent<Props> {
   render3D: any
@@ -64,7 +70,11 @@ class OrderFiles extends React.PureComponent<Props> {
       actualSvg,
       onSaveThumbnail,
       uploadingThumbnail,
-      setUploadingThumbnailAction
+      setUploadingThumbnailAction,
+      changes,
+      onSelectStitchingColor,
+      colorAccessories,
+      onSelectColor
     } = this.props
     const statusOrder = status.replace(/_/g, ' ')
     return (
@@ -72,12 +82,16 @@ class OrderFiles extends React.PureComponent<Props> {
         <RenderLayout>
           <AccessoryColors
             {...{
-              stitchingName,
-              stitchingValue,
               bibColor,
-              zipperColor,
-              bindingColor
+              bindingColor,
+              onSelectStitchingColor,
+              onSelectColor
             }}
+            stitchingValue={colorAccessories.stitching || stitchingValue}
+            stitchingName={colorAccessories.stitchingName || stitchingName}
+            zipperColor={colorAccessories.zipperColor || zipperColor}
+            bibColor={colorAccessories.bibColor || bibColor}
+            bindingColor={colorAccessories.bindingColor || bindingColor}
           />
           <RenderContainer>
             <Render3D
@@ -88,6 +102,8 @@ class OrderFiles extends React.PureComponent<Props> {
               uploadingThumbnail={uploadingThumbnail}
               onSaveThumbnail={onSaveThumbnail}
               onUploadingThumbnail={setUploadingThumbnailAction}
+              colorAccessories={colorAccessories}
+              ref={(render3D: any) => (this.render3D = render3D)}
             />
           </RenderContainer>
         </RenderLayout>
@@ -99,9 +115,8 @@ class OrderFiles extends React.PureComponent<Props> {
             </Label>
             <Status>{statusOrder}</Status>
           </StatusContainer>
-          <Button onClick={this.onDownload}>
+          <Button onClick={this.onDownload} icon="download">
             <ButtonContainer>
-              <Icon type="download" />
               <FormattedMessage {...messages.downloadAll} />
             </ButtonContainer>
           </Button>
@@ -131,6 +146,22 @@ class OrderFiles extends React.PureComponent<Props> {
           </ThumbnailLabel>
           <DownloadItem url={image} />
         </Data>
+        <ChangesContainer className={changes ? 'show' : ''}>
+          <MessageContainer>
+            <FormattedMessage {...messages.changesMessage} />
+          </MessageContainer>
+          <Button
+            onClick={this.onSaveChanges}
+            type="primary"
+            loading={uploadingThumbnail}
+            disabled={uploadingThumbnail}
+            icon="save"
+          >
+            <ButtonContainer>
+              <FormattedMessage {...messages.saveChanges} />
+            </ButtonContainer>
+          </Button>
+        </ChangesContainer>
       </Container>
     )
   }
@@ -148,6 +179,9 @@ class OrderFiles extends React.PureComponent<Props> {
       return last(extension as RegExpMatchArray)
     }
     return ''
+  }
+  onSaveChanges = () => {
+    this.render3D.getWrappedInstance().saveThumbnail()
   }
   beforeUpload = (file: any) => {
     const {

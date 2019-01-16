@@ -2,39 +2,48 @@
  * AccessoryColor Component - Created by miguelcanobbio on 17/08/18.
  */
 import * as React from 'react'
-import get from 'lodash/get'
-import {
-  Container,
-  Name,
-  Stitching,
-  ColorLabel,
-  Oval
-} from './styledComponents'
-import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { Container, Name, Oval, Row } from './styledComponents'
+import Popover from 'antd/lib/popover'
+import ColorPicker from '../ColorPicker'
+import { AccesoryColor } from '../../../types/common'
 import { BLACK } from '../../DesignCenter/constants'
 import * as Colors from '../../../theme/colors'
 
 interface Props {
+  id: string
   name: string
-  stitchingColor?: StitchingColor
-  color?: AccesoryColor
+  color: AccesoryColor
+  onSelectColor: (color: string, id: string) => void
 }
 
-const AccessoryColor = ({ name, stitchingColor, color }: Props) => {
-  const stitchingName = get(stitchingColor, 'name', '')
-  const stitchingValue = get(stitchingColor, 'value', '')
+const AccessoryColor = ({ name, color, onSelectColor, id }: Props) => {
   const accessColor = color === BLACK ? Colors.BLACK : Colors.WHITE
+  const handleOnSelectColor = (selectedColor: string) => {
+    onSelectColor(selectedColor, id)
+  }
   return (
     <Container>
-      <Name>{name}</Name>
-      {stitchingColor ? (
-        <Stitching>
-          <ColorLabel>{stitchingName}</ColorLabel>
-          <Oval color={stitchingValue} />
-        </Stitching>
-      ) : (
-        <Oval color={accessColor} />
-      )}
+      <Popover
+        content={
+          <div>
+            {
+              <ColorPicker
+                {...{ color }}
+                onSelectColor={selectedColor =>
+                  handleOnSelectColor(selectedColor)
+                }
+              />
+            }
+          </div>
+        }
+        trigger="hover"
+        placement="right"
+      >
+        <Row>
+          <Name>{name}</Name>
+          <Oval color={accessColor} />
+        </Row>
+      </Popover>
     </Container>
   )
 }
