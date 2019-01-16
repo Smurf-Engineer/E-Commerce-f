@@ -214,6 +214,8 @@ export const MeasurementBox = styled.div`
   border-radius: 2px;
   background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  min-width: 130px;
+  text-align: center;
 `
 
 export const MeasurementLabel = styled.div`
