@@ -20,6 +20,21 @@ export const Name = styled.div`
   margin-right: 16px;
 `
 
+export const ColorLabel = styled.div`
+  color: ${GRAY_DARK};
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  text-align: right;
+  margin-right: 8px;
+`
+
+export const Stitching = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`
+
 interface OvalProps {
   color?: string
 }
@@ -38,5 +53,4 @@ export const Oval = styled.div`
 export const Row = styled.div`
   display: flex;
   align-items: center;
-  cursor: pointer;
 `

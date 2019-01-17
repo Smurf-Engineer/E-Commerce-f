@@ -28,9 +28,9 @@ import {
   ViewButton,
   ButtonWrapper,
   ModalMessage,
-  Size,
-  SizeBox,
-  SizeLabel,
+  MeasurementBox,
+  MeasurementLabel,
+  Measurement,
   BottomControls,
   TopButton,
   HintModalImage,
@@ -136,7 +136,6 @@ class Render3D extends PureComponent {
   }
 
   dragComponent = null
-
   componentWillReceiveProps(nextProps) {
     const {
       colors,
@@ -1226,11 +1225,33 @@ class Render3D extends PureComponent {
 
     let widthInCm = 0
     let heightInCm = 0
-    const selectedImageElement = canvas.image[selectedElement]
-    if (!!selectedImageElement && !!selectedImageElement.imageSize) {
-      const { width, height } = this.getSizeInCentimeters(selectedImageElement)
-      widthInCm = width
-      heightInCm = height
+    let rotation = 0
+    const selectedGraphicElement =
+      canvas.image[selectedElement] ||
+      canvas.path[selectedElement] ||
+      canvas.text[selectedElement]
+    if (!!selectedGraphicElement) {
+      const activeEl = this.getElementById(selectedElement)
+      if (selectedGraphicElement.imageSize) {
+        const { width, height } = this.getSizeInCentimeters(
+          selectedGraphicElement
+        )
+        widthInCm = width
+        heightInCm = height
+      } else {
+        const { width, height } = this.getSizeInCentimeters({
+          imageSize: { width: activeEl.width, height: activeEl.height },
+          scaleX: activeEl.scaleX,
+          scaleY: activeEl.scaleY
+        })
+        widthInCm = width
+        heightInCm = height
+      }
+      if (activeEl.angle > 180) {
+        rotation = Math.round(activeEl.angle - 360)
+      } else {
+        rotation = Math.round(activeEl.angle)
+      }
     }
 
     return (
@@ -1245,13 +1266,17 @@ class Render3D extends PureComponent {
             {formatMessage(messages.saveButton)}
           </Button>
         </ButtonWrapper>
-        {!!selectedImageElement && (
-          <SizeBox>
-            <SizeLabel>
+        {!!selectedGraphicElement && (
+          <MeasurementBox>
+            <MeasurementLabel>
               <FormattedMessage {...messages.sizeMessage} />
-            </SizeLabel>
-            <Size>{`${widthInCm} x ${heightInCm} cm`}</Size>
-          </SizeBox>
+            </MeasurementLabel>
+            <Measurement>{`${widthInCm} x ${heightInCm} cm`}</Measurement>
+            <MeasurementLabel>
+              <FormattedMessage {...messages.rotationMessage} />
+            </MeasurementLabel>
+            <Measurement>{`${rotation}º`}</Measurement>
+          </MeasurementBox>
         )}
         <Render
           id="render-3d"
@@ -2091,6 +2116,7 @@ class Render3D extends PureComponent {
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
             this.scaleObject(cX, cY, currentTransform)
+            this.forceUpdate()
             this.canvasTexture.renderAll()
             break
           }
@@ -2098,6 +2124,7 @@ class Render3D extends PureComponent {
             const cX = uv.x * CANVAS_SIZE
             const cY = (1 - uv.y) * CANVAS_SIZE
             this.rotateObject(cX, cY, currentTransform)
+            this.forceUpdate()
             this.canvasTexture.renderAll()
             break
           }

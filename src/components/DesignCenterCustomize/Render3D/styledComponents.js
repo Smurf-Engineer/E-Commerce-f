@@ -203,27 +203,29 @@ export const ModalMessage = styled.div`
   letter-spacing: 0.2px;
   line-height: 22px;
 `
-export const SizeBox = styled.div`
+export const MeasurementBox = styled.div`
   opacity: 0;
   animation: ${fadeIn} 0.5s cubic-bezier(0.67, 0.35, 0.565, 1) both;
   position: absolute;
   padding: 8px;
-  top: 52px;
+  top: 75px;
   left: 26px;
   border: 0.5px solid ${GRAY_LIGHT};
   border-radius: 2px;
   background-color: ${WHITE};
   box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  min-width: 130px;
+  text-align: center;
 `
 
-export const SizeLabel = styled.div`
+export const MeasurementLabel = styled.div`
   color: ${GRAY_DARK};
   font-size: 12px;
   letter-spacing: 0.15px;
   line-height: 16px;
 `
 
-export const Size = styled.div`
+export const Measurement = styled.div`
   color: ${GRAY_DARK};
   font-size: 12px;
   font-weight: 600;

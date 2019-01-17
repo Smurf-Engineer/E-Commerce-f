@@ -58,7 +58,11 @@ export default defineMessages({
   },
   sizeMessage: {
     id: 'components.Render3D.sizeMessage',
-    defaultMessage: 'Aprox image size'
+    defaultMessage: 'Approx size'
+  },
+  rotationMessage: {
+    id: 'components.Render3D.rotationMessage',
+    defaultMessage: 'Rotation'
   },
   saveButton: {
     id: 'components.Render3D.saveButton',

@@ -4,6 +4,8 @@ import findIndex from 'lodash/findIndex'
 import Icon from 'antd/lib/icon'
 import FontFaceObserver from 'fontfaceobserver'
 import isEqual from 'lodash/isEqual'
+import has from 'lodash/has'
+import get from 'lodash/get'
 import reverse from 'lodash/reverse'
 import shortid from 'shortid'
 import { graphql, compose } from 'react-apollo'
@@ -17,8 +19,7 @@ import {
   Title,
   Message,
   ContainerError,
-  Loading,
-  ThumbnailButton
+  Loading
 } from './styledComponents'
 import { modelPositions } from './config'
 import {
@@ -30,7 +31,6 @@ import {
   FLATLOCK,
   PROPEL_PALMS,
   GRIP_TAPE,
-  ACCESSORY_WHITE,
   CANVAS_SIZE,
   MESH_NAME
 } from '../../constants'
@@ -80,7 +80,7 @@ class Render3D extends PureComponent {
     controls.addEventListener('change', this.lightUpdate)
 
     controls.enableKeys = false
-    controls.minDistance = 150
+    controls.minDistance = 100
     controls.maxDistance = 350
     controls.enableZoom = true
 
@@ -108,16 +108,25 @@ class Render3D extends PureComponent {
   componentWillReceiveProps(nextProps) {
     const {
       data: { loading, error, design = {} },
-      actualSvg = ''
+      actualSvg = '',
+      colorAccessories
     } = nextProps
     const {
       data: { design: oldDesign = {} },
-      actualSvg: oldSvg = ''
+      actualSvg: oldSvg = '',
+      colorAccessories: oldColorAccessories
     } = this.props
-    const notEqual = !isEqual(design, oldDesign) || !isEqual(actualSvg, oldSvg)
+
+    const notEqual =
+      !isEqual(design, oldDesign) ||
+      !isEqual(actualSvg, oldSvg) ||
+      !isEqual(colorAccessories, oldColorAccessories)
     const { firstLoad } = this.state
-    if (!loading && !error && (notEqual || firstLoad)) {
-      this.renderModel(design)
+
+    if (!error && (notEqual || (firstLoad && !loading))) {
+      setTimeout(() => {
+        this.renderModel(design, actualSvg, colorAccessories)
+      }, 100)
     }
   }
 
@@ -126,7 +135,7 @@ class Render3D extends PureComponent {
     this.clearScene()
   }
 
-  loadTextures = design =>
+  loadTextures = (design, actualSvg) =>
     new Promise((resolve, reject) => {
       try {
         const {
@@ -139,31 +148,42 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
-        const { designSearch } = this.props
+        const { designSearch, colorAccessories } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
         if (!!zipper) {
-          const texture = !!zipper[zipperColor]
-            ? zipper[zipperColor]
-            : ACCESSORY_WHITE
+          const hasZipperColor =
+            has(colorAccessories, 'zipperColor') &&
+            colorAccessories.zipperColor.length
+
+          const texture =
+            zipper[hasZipperColor ? colorAccessories.zipperColor : zipperColor]
           loadedTextures.zipper = textureLoader.load(texture)
           loadedTextures.zipper.minFilter = THREE.LinearFilter
         }
         if (!!binding) {
-          const texture = !!binding[bindingColor]
-            ? binding[bindingColor]
-            : ACCESSORY_WHITE
+          const hasBindingColor =
+            has(colorAccessories, 'bindingColor') &&
+            colorAccessories.bindingColor.length
+
+          const texture =
+            binding[
+              hasBindingColor ? colorAccessories.bindingColor : bindingColor
+            ]
           loadedTextures.binding = textureLoader.load(texture)
           loadedTextures.binding.minFilter = THREE.LinearFilter
         }
         if (!!bibBrace) {
-          const texture = !!bibBrace[bibBraceColor]
-            ? bibBrace[bibBraceColor]
-            : ACCESSORY_WHITE
+          const hasBibColor =
+            has(colorAccessories, 'bibColor') &&
+            colorAccessories.bibColor.length
+          const texture =
+            bibBrace[hasBibColor ? colorAccessories.bibColor : bibBraceColor]
           loadedTextures.bibBrace = textureLoader.load(texture)
           loadedTextures.bibBrace.minFilter = THREE.LinearFilter
         }
+
         if (!!flatlock) {
           loadedTextures.flatlock = textureLoader.load(flatlock)
         }
@@ -185,7 +205,7 @@ class Render3D extends PureComponent {
           const imageCanvas = document.createElement('canvas')
           canvg(
             imageCanvas,
-            `${outputSvg}?p=${Math.random()
+            `${actualSvg || outputSvg}?p=${Math.random()
               .toString(36)
               .substr(2, 5)}`
           )
@@ -251,7 +271,6 @@ class Render3D extends PureComponent {
     const {
       customProduct,
       designSearch,
-      uploadingThumbnail,
       data: { loading, error }
     } = this.props
 
@@ -272,17 +291,9 @@ class Render3D extends PureComponent {
 
     return (
       <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
-        {designSearch && (
-          <ThumbnailButton
-            loading={uploadingThumbnail}
-            disabled={uploadingThumbnail || loading}
-            onClick={this.saveThumbnail}
-          >
-            <FormattedMessage {...messages.updateThumbnail} />
-          </ThumbnailButton>
-        )}
         <Render
           {...{ customProduct, designSearch }}
+          id="render-3d"
           innerRef={container => (this.container = container)}
         >
           {loading && <Loading indicator={circleIcon} />}
@@ -297,8 +308,9 @@ class Render3D extends PureComponent {
     )
   }
 
-  renderModel = async design => {
+  renderModel = async (design, actualSvg, colorAccessories) => {
     const { product = {}, flatlockColor, proDesign, canvas } = design
+
     const { designSearch } = this.props
     try {
       if (!!canvas) {
@@ -315,7 +327,7 @@ class Render3D extends PureComponent {
     } catch (e) {
       console.error(e)
     }
-    const loadedTextures = await this.loadTextures(design)
+    const loadedTextures = await this.loadTextures(design, actualSvg)
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.load(product.mtl, materials => {
@@ -350,7 +362,7 @@ class Render3D extends PureComponent {
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color: flatlockColor || WHITE
+              color: get(colorAccessories, 'stitching', flatlockColor) || WHITE
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
@@ -645,7 +657,8 @@ const Render3DWithData = compose(
     options: ({ designId, actualSvg }) => ({
       variables: { designId, actualSvg },
       fetchPolicy: 'network-only'
-    })
+    }),
+    withRef: true
   })
 )(Render3D)
 
