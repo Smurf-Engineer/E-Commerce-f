@@ -55,7 +55,6 @@ export class SaveModal extends React.Component<Props, {}> {
           visible={visible}
           maskClosable={true}
           footer={null}
-          width={'25%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
         >
