@@ -343,6 +343,7 @@ export class SaveDesign extends React.Component<Props, State> {
             closable={false}
             maskClosable={true}
             destroyOnClose={true}
+            width={isMobile ? 'auto' : '25%'}
             onCancel={this.handleCancel}
           >
             <Title>

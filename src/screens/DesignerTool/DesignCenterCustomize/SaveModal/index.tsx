@@ -59,6 +59,7 @@ export class SaveModal extends React.Component<Props, {}> {
           onCancel={this.handleCancel}
         >
           <Title>
+            <p>Hola</p>
             <FormattedMessage {...messages.title} />
           </Title>
           <StyledSaveAs>
