@@ -31,8 +31,8 @@ export const DividerRow = styled.div`
   margin-bottom: 16px;
   width: 42%;
   @media (min-width: 320px) and (max-width: 480px) {
-    width: 35%;
-    margin: 0px 52px;
+    width: 25%;
+    margin: 0px 72px;
   }
 `
 export const RightDivider = styled(Divider)``
