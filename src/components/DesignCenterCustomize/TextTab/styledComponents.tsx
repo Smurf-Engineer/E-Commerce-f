@@ -3,7 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdInput from 'antd/lib/input'
-import AntdButton, { ButtonProps } from 'antd/lib/button'
+import AntdButton, { ButtonProps as AntdButtonProps } from 'antd/lib/button'
 import {
   WHITE_SMOKE,
   BLUE,
@@ -81,7 +81,9 @@ interface ButtonProps {
   disabled: boolean
 }
 
-export const Button = styled(AntdButton as React.ComponentClass<ButtonProps>)`
+export const Button = styled(AntdButton as React.ComponentClass<
+  AntdButtonProps
+>)`
   color: ${({ disabled }: ButtonProps) => (disabled ? GRAY_SOFT : WHITE)};
   cursor: ${({ disabled }: ButtonProps) =>
     disabled ? 'not-allowed' : 'pointer'};
