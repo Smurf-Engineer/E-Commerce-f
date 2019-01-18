@@ -336,23 +336,22 @@ export class SaveDesign extends React.Component<Props, State> {
 
     return (
       <Container>
-
         {!automaticSave ? (
           <Modal
             visible={open}
             footer={null}
             closable={false}
             maskClosable={true}
-            width={'25%'}
             destroyOnClose={true}
+            width={isMobile ? 'auto' : '25%'}
             onCancel={this.handleCancel}
           >
             <Title>
               {!isMobile ? (
                 <FormattedMessage {...messages.modalTitle} />
               ) : (
-                  <FormattedMessage {...messages.mobileModalTitle} />
-                )}
+                <FormattedMessage {...messages.mobileModalTitle} />
+              )}
             </Title>
             {!!savedDesignId ? (
               <StyledSaveAs>
@@ -361,10 +360,10 @@ export class SaveDesign extends React.Component<Props, State> {
                 </Text>
               </StyledSaveAs>
             ) : (
-                <Text>
-                  <FormattedMessage {...messages.modalText} />
-                </Text>
-              )}
+              <Text>
+                <FormattedMessage {...messages.modalText} />
+              </Text>
+            )}
             <InputWrapper>
               <StyledInput
                 id="saveDesignName"
@@ -407,10 +406,10 @@ export class SaveDesign extends React.Component<Props, State> {
             </ButtonWrapper>
           </Modal>
         ) : (
-            <SpinWrapper>
-              <StyledSpin tip={formatMessage(messages.saving)} />
-            </SpinWrapper>
-          )}
+          <SpinWrapper>
+            <StyledSpin tip={formatMessage(messages.saving)} />
+          </SpinWrapper>
+        )}
       </Container>
     )
   }

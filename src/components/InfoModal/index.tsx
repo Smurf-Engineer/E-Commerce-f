@@ -47,7 +47,6 @@ export class InfoModal extends React.Component<Props, {}> {
           footer={null}
           closable={false}
           maskClosable={true}
-          width={'25%'}
           destroyOnClose={true}
           onCancel={this.handleCancel}
         >
