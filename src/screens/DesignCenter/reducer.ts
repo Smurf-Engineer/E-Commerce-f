@@ -66,7 +66,8 @@ import {
   AccessoryColors,
   ElementsToApplyScale,
   ON_CLOSE_INFO,
-  SET_AUTOMATIC_SAVE
+  SET_AUTOMATIC_SAVE,
+  ON_TAB_CLICK_ACTION
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -144,7 +145,8 @@ export const initialState = fromJS({
   savedDesign: {},
   selectedItem: {},
   infoModalOpen: false,
-  automaticSave: false
+  automaticSave: false,
+  selectedTab: null
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -594,7 +596,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           selectedElement: id,
           textFormat: canvasElement.textFormat,
-          text: canvasElement.text
+          text: canvasElement.text,
+          selectedTab: 2
         })
       }
 
@@ -608,7 +611,11 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         })
       }
 
-      return state.merge({ selectedElement: id, searchClipParam: '' })
+      return state.merge({
+        selectedElement: id,
+        searchClipParam: '',
+        selectedTab: 3
+      })
     }
     case SET_TEXT_FORMAT_ACTION: {
       const { key, value } = action
@@ -923,6 +930,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('selectedItem', action.item)
     case ON_CLOSE_INFO:
       return state.set('infoModalOpen', !state.get('infoModalOpen'))
+    case ON_TAB_CLICK_ACTION:
+      return state.set('selectedTab', action.selectedIndex)
     default:
       return state
   }

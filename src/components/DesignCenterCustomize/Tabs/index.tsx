@@ -56,6 +56,7 @@ interface Props {
   isUserAuthenticated: boolean
   disableTooltip: boolean
   selectedItem: SelectedAsset
+  selectedTab: number
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -73,6 +74,7 @@ interface Props {
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
+  onTabClick: (selectedIndex: number) => void
 }
 
 const Tabs = ({
@@ -117,11 +119,17 @@ const Tabs = ({
   setSearchClipParamAction,
   isUserAuthenticated,
   selectedItem,
-  disableTooltip = false
+  disableTooltip = false,
+  selectedTab,
+  onTabClick
 }: Props) => {
   return (
     <Container>
-      <AntdTabs defaultActiveKey="1">
+      <AntdTabs
+        defaultActiveKey="1"
+        activeKey={selectedTab ? `${selectedTab}` : '2'}
+        onTabClick={onTabClick}
+      >
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
           <ColorsTab
             {...{
