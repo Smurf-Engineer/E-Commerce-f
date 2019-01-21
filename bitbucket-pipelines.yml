@@ -37,7 +37,6 @@ pipelines:
             - gcloud components install kubectl -q
             # Authentication
             - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
-            - echo $GCLOUD_API_KEYFILE | openssl enc -base64 -d ./gcloud-api-key.json
             - cat gcloud-api-key.json
             - gcloud auth activate-service-account --key-file gcloud-api-key.json
             - gcloud projects list
