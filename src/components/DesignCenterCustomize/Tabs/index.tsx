@@ -67,7 +67,11 @@ interface Props {
   onApplyImage: (file: ImageFile) => void
   onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   formatMessage: (messageDescriptor: any) => string
-  onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void

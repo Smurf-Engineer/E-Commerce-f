@@ -128,7 +128,11 @@ interface Props {
   ) => void
   onRemoveEl: (id: string, typeEl: string, canvasObj: ConfigCanvasObj) => void
   onSelectEl: (id: string, typeEl: string) => void
-  onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void

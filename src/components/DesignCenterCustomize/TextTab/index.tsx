@@ -35,7 +35,11 @@ interface Props {
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
-  onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
   elements: {
     [id: string]: CanvasElement
   }
@@ -161,7 +165,7 @@ export class TextTab extends React.PureComponent<Props, State> {
     } else {
       this.setState({ page: 0 })
     }
-    onSelectTextFormat('fontFamily', fontFamily)
+    onSelectTextFormat('fontFamily', fontFamily, true)
   }
 
   handleOnSelectFill = (fill: string) => {
@@ -179,7 +183,7 @@ export class TextTab extends React.PureComponent<Props, State> {
     } else {
       this.setState({ page: 0 })
     }
-    onSelectTextFormat('fill', fill)
+    onSelectTextFormat('fill', fill, false)
   }
 
   handleOnSelectStrokeWidth = (strokeWidth: number) => {
@@ -195,7 +199,7 @@ export class TextTab extends React.PureComponent<Props, State> {
       updatedTextFormat.strokeWidth = strokeWidth
       onApplyText(text, updatedTextFormat)
     }
-    onSelectTextFormat('strokeWidth', strokeWidth)
+    onSelectTextFormat('strokeWidth', strokeWidth, false)
   }
 
   handleOnSelectStrokeColor = (stroke: string) => {
@@ -213,7 +217,7 @@ export class TextTab extends React.PureComponent<Props, State> {
     } else {
       this.setState({ page: 0 })
     }
-    onSelectTextFormat('stroke', stroke)
+    onSelectTextFormat('stroke', stroke, false)
   }
 
   changePage = (page: number, option: number) => () =>

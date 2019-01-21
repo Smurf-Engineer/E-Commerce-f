@@ -465,13 +465,15 @@ export class DesignCenter extends React.Component<Props, {}> {
     setColorAction(color)
   }
 
-  setTextEvent = (key: string, value: string | number) => {
+  setTextEvent = (key: string, value: string | number, fontStyle: boolean) => {
     const { setTextFormatAction, style } = this.props
-    window.dataLayer.push({
-      event: SELECTED_FONT,
-      label: value,
-      design: get(style, 'name', '')
-    })
+    if (fontStyle) {
+      window.dataLayer.push({
+        event: SELECTED_FONT,
+        label: value,
+        design: get(style, 'name', '')
+      })
+    }
     setTextFormatAction(key, value)
   }
 
