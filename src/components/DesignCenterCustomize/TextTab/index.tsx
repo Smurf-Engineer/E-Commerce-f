@@ -17,7 +17,8 @@ import {
   InputWrapper,
   Button,
   Row,
-  ArrowIcon
+  ArrowIcon,
+  ButtonWrapper
 } from './styledComponents'
 
 const SELECT_FONT = 0
@@ -71,15 +72,16 @@ export class TextTab extends React.PureComponent<Props, State> {
           <div>
             <InputWrapper disabled={!text}>
               <Input
+                autosize={true}
                 value={text}
                 onChange={this.handleOnUpdateText}
                 placeholder={formatMessage(messages.enterTextPlaceholder)}
-                addonAfter={
-                  <Button disabled={!text} onClick={this.handleOnApplyText}>
-                    {formatMessage(messages.applyButton)}
-                  </Button>
-                }
               />
+              <ButtonWrapper>
+                <Button disabled={!text} onClick={this.handleOnApplyText}>
+                  {formatMessage(messages.applyButton)}
+                </Button>
+              </ButtonWrapper>
             </InputWrapper>
             <OptionText
               onClick={this.changePage(1, 0)}
@@ -130,7 +132,7 @@ export class TextTab extends React.PureComponent<Props, State> {
     }
   }
 
-  handleOnUpdateText = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleOnUpdateText = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value: text } = e.target
     const { onUpdateText } = this.props
     onUpdateText(text)
