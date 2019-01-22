@@ -169,6 +169,7 @@ interface Props extends RouteComponentProps<any> {
   layout: any
   infoModalOpen: boolean
   automaticSave: boolean
+  selectedTab: number
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -267,6 +268,7 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   setAutomaticSave: (automaticSave: boolean) => void
   saveToCartAction: (item: DesignSaved) => void
+  onTabClickAction: (selectedIndex: number) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -599,7 +601,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       infoModalOpen,
       automaticSave,
       saveAndBuyAction: handleOnSaveAndBuy,
-      setAutomaticSave
+      setAutomaticSave,
+      selectedTab,
+      onTabClickAction
     } = this.props
 
     const { formatMessage } = intl
@@ -877,7 +881,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                   isMobile,
                   responsive,
                   handleOnCloseInfo,
-                  infoModalOpen
+                  infoModalOpen,
+                  selectedTab
                 }}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
@@ -921,6 +926,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSetCanvasObject={setLoadedCanvasAction}
                 onResetEditing={onResetEditingAction}
                 onSelectedItem={this.setSelectedItemEvent}
+                onTabClick={onTabClickAction}
               />
             )}
             {!isMobile ? (

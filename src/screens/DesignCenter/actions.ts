@@ -62,7 +62,8 @@ import {
   DESIGN_RESET_EDITING_ACTION,
   SET_SELECTED_ITEM_ACTION,
   ON_CLOSE_INFO,
-  SET_AUTOMATIC_SAVE
+  SET_AUTOMATIC_SAVE,
+  ON_TAB_CLICK_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -477,4 +478,9 @@ export const handleOnCloseInfo = () => ({
 export const setAutomaticSave = (automaticSave: boolean) => ({
   type: SET_AUTOMATIC_SAVE,
   automaticSave
+})
+
+export const onTabClickAction = (selectedIndex: number) => ({
+  type: ON_TAB_CLICK_ACTION,
+  selectedIndex
 })
