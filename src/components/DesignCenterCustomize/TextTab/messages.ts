@@ -48,5 +48,13 @@ export default defineMessages({
   applyButton: {
     id: 'components.TextTab.applyButton',
     defaultMessage: 'Apply'
+  },
+  alignment: {
+    id: 'components.TextTab.alignment',
+    defaultMessage: 'Alignment'
+  },
+  spacing: {
+    id: 'components.TextTab.spacing',
+    defaultMessage: 'Spacing'
   }
 })
