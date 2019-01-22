@@ -73,11 +73,19 @@ export const SET_AUTOMATIC_SAVE = `${namespace}/SET_AUTOMATIC_SAVE`
 
 export const ON_CLOSE_INFO = `${namespace}/ON_CLOSE_INFO`
 
+export const ON_TAB_CLICK_ACTION = `${namespace}/ON_TAB_CLICK_ACTION`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,
   CustomizeTab = 2,
   PreviewTab = 3
+}
+
+export enum CustomizeTabs {
+  ColorsTab = 1,
+  TextTab = 2,
+  SymbolsTab = 3
 }
 
 export const BLACK = 'black'
