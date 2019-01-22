@@ -67,12 +67,12 @@ import {
   ElementsToApplyScale,
   ON_CLOSE_INFO,
   SET_AUTOMATIC_SAVE,
-  ON_TAB_CLICK_ACTION
+  ON_TAB_CLICK_ACTION,
+  CustomizeTabs
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
 import { BLACK as BLACK_COLOR } from '../../theme/colors'
-
 export const initialState = fromJS({
   currentTab: 0,
   tabChanged: false,
@@ -146,7 +146,7 @@ export const initialState = fromJS({
   selectedItem: {},
   infoModalOpen: false,
   automaticSave: false,
-  selectedTab: null
+  selectedTab: CustomizeTabs.ColorsTab
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -597,7 +597,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
           selectedElement: id,
           textFormat: canvasElement.textFormat,
           text: canvasElement.text,
-          selectedTab: 2
+          selectedTab: CustomizeTabs.TextTab
         })
       }
 
@@ -614,7 +614,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         selectedElement: id,
         searchClipParam: '',
-        selectedTab: 3
+        selectedTab: CustomizeTabs.SymbolsTab
       })
     }
     case SET_TEXT_FORMAT_ACTION: {

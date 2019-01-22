@@ -125,11 +125,7 @@ const Tabs = ({
 }: Props) => {
   return (
     <Container>
-      <AntdTabs
-        defaultActiveKey="1"
-        activeKey={selectedTab ? `${selectedTab}` : '2'}
-        onTabClick={onTabClick}
-      >
+      <AntdTabs activeKey={`${selectedTab}`} onTabClick={onTabClick}>
         <TabPane tab={<Tab label="color" icon={colorIcon} />} key="1">
           <ColorsTab
             {...{
