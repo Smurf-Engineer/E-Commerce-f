@@ -3,6 +3,7 @@
  */
 import styled from 'styled-components'
 import AntdInput from 'antd/lib/input'
+import AntdButton, { ButtonProps as AntdButtonProps } from 'antd/lib/button'
 import {
   WHITE_SMOKE,
   BLUE,
@@ -14,7 +15,8 @@ import {
 
 export const Container = styled.div``
 
-export const Input = styled(AntdInput)`
+const { TextArea } = AntdInput
+export const Input = styled(TextArea)`
   border-radius: 0px;
   height: 32px;
 `
@@ -79,11 +81,33 @@ interface ButtonProps {
   disabled: boolean
 }
 
-export const Button = styled.div`
+export const Button = styled(AntdButton as React.ComponentClass<
+  AntdButtonProps
+>)`
   color: ${({ disabled }: ButtonProps) => (disabled ? GRAY_SOFT : WHITE)};
   cursor: ${({ disabled }: ButtonProps) =>
     disabled ? 'not-allowed' : 'pointer'};
   font-size: 14px;
   line-height: 19px;
   user-select: none;
+  background-color: ${BLUE};
+  &.ant-btn-clicked,
+  &.ant-btn-clicked::after,
+  &:active,
+  &:focus,
+  &:hover {
+    background: ${BLUE};
+    background-color: ${BLUE};
+    color: ${WHITE};
+    border-color: ${WHITE};
+  }
+  &::after {
+    border-color: ${BLUE};
+  }
+`
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  margin-top: 10px;
+  justify-content: flex-end;
 `
