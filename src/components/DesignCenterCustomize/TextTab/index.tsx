@@ -135,7 +135,7 @@ export class TextTab extends React.PureComponent<Props, State> {
                     textFormat.charSpacing &&
                     textFormat.charSpacing / 10
                   }
-                  min={-20}
+                  min={0}
                   max={100}
                   step={1}
                   onChange={this.handleOnSelectSeparation}
