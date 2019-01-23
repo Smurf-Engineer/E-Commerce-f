@@ -64,6 +64,8 @@ export const Row = styled.div`
 export const Header = styled.div`
   background-color: ${GRAY_LIGHTEST};
   padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
 `
 
 export const Title = styled.div`

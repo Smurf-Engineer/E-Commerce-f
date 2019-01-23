@@ -9,6 +9,8 @@ import OptionText from '../../OptionText'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
 import { TextFormat, CanvasElement } from '../../../types/common'
+import { default as AntdButton } from 'antd/lib/button'
+import Icon from 'antd/lib/icon'
 import {
   Container,
   Header,
@@ -54,10 +56,16 @@ export class TextTab extends React.PureComponent<Props, State> {
 
   render() {
     const { page, option } = this.state
-    const { text, formatMessage, productName, textFormat } = this.props
+    const {
+      text,
+      formatMessage,
+      productName,
+      textFormat,
+      selectedElement
+    } = this.props
 
     const headerTitle = this.getHeaderTitle(option, page)
-
+    console.log(selectedElement)
     return (
       <Container>
         <Header>
@@ -67,6 +75,11 @@ export class TextTab extends React.PureComponent<Props, State> {
               <FormattedMessage {...messages[headerTitle]} />
             </Title>
           </Row>
+          {selectedElement && !!textFormat && (
+            <AntdButton>
+              <Icon type="lock" />
+            </AntdButton>
+          )}
         </Header>
         <SwipeableViews disabled={true} index={page}>
           <div>

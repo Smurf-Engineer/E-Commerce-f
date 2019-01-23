@@ -1230,6 +1230,7 @@ class Render3D extends PureComponent {
       canvas.image[selectedElement] ||
       canvas.path[selectedElement] ||
       canvas.text[selectedElement]
+    console.log(selectedGraphicElement)
     if (!!selectedGraphicElement) {
       const activeEl = this.getElementById(selectedElement)
       if (selectedGraphicElement.imageSize) {
@@ -1538,7 +1539,8 @@ class Render3D extends PureComponent {
         const el = {
           id: activeEl ? activeEl.id : txtEl.id,
           text,
-          textFormat: style
+          textFormat: style,
+          lock: false
         }
         onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
           src: text,
