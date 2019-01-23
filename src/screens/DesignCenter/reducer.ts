@@ -116,7 +116,9 @@ export const initialState = fromJS({
     fontFamily: DEFAULT_FONT,
     stroke: BLACK,
     fill: BLACK,
-    strokeWidth: 0
+    strokeWidth: 0,
+    textAlign: 'left',
+    charSpacing: 0
   },
   selectedElement: '',
   myPaletteModals: {
@@ -547,7 +549,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       const selectedElement = state.get('selectedElement')
       const updatedCanvas = canvas.setIn([typeEl, el.id], el)
-
       if (selectedElement) {
         return state.merge({
           selectedElement: el.id,
@@ -607,10 +608,17 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           text: '',
           selectedElement: id,
-          searchClipParam: ''
+          searchClipParam: '',
+          textFormat: {
+            fontFamily: DEFAULT_FONT,
+            stroke: BLACK,
+            fill: BLACK,
+            strokeWidth: 0,
+            textAlign: 'left',
+            charSpacing: 0
+          }
         })
       }
-
       return state.merge({
         selectedElement: id,
         searchClipParam: '',

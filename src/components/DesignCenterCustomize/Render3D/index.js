@@ -1699,13 +1699,23 @@ class Render3D extends PureComponent {
     switch (type) {
       case CanvasElements.Text:
         {
-          const { text, fill, fontFamily, stroke, strokeWidth } = el
+          const {
+            text,
+            fill,
+            fontFamily,
+            stroke,
+            strokeWidth,
+            textAlign,
+            charSpacing
+          } = el
           canvasObject.src = text
           canvasObject.style = {
             fill,
             fontFamily,
             stroke,
-            strokeWidth
+            strokeWidth,
+            textAlign,
+            charSpacing
           }
         }
         break

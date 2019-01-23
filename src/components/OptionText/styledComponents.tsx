@@ -60,3 +60,6 @@ export const Icon = styled.img`
   user-select: none;
   padding-left: 12px;
 `
+export const RowContent = styled.span`
+  display: inline-flex;
+`

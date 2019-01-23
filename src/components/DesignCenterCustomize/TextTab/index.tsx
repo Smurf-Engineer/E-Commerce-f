@@ -6,6 +6,9 @@ import { FormattedMessage } from 'react-intl'
 import SwipeableViews from 'react-swipeable-views'
 import messages from './messages'
 import OptionText from '../../OptionText'
+import Radio from 'antd/lib/radio'
+import Icon from 'antd/lib/icon'
+import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
 import { TextFormat, CanvasElement } from '../../../types/common'
@@ -25,6 +28,8 @@ const SELECT_FONT = 0
 const SELECT_FILL = 1
 const SELECT_OUTLINE = 2
 const ADD_EFFECT = 3
+const SELECT_ALIGNMENT = 4
+const CHANGE_SEPARATION = 5
 
 interface Props {
   text: string
@@ -57,6 +62,9 @@ export class TextTab extends React.PureComponent<Props, State> {
     const { text, formatMessage, productName, textFormat } = this.props
 
     const headerTitle = this.getHeaderTitle(option, page)
+
+    const RadioButton = Radio.Button
+    const RadioGroup = Radio.Group
 
     return (
       <Container>
@@ -98,6 +106,42 @@ export class TextTab extends React.PureComponent<Props, State> {
               title={formatMessage(messages.outline)}
               color={!!textFormat && textFormat.stroke}
             />
+            <OptionText
+              title={formatMessage(messages.alignment)}
+              content={
+                <RadioGroup
+                  onChange={this.handleOnSelectAlignment}
+                  value={!!textFormat && textFormat.textAlign}
+                  defaultValue={'left'}
+                >
+                  <RadioButton value="left">
+                    <Icon type="align-left" />
+                  </RadioButton>
+                  <RadioButton value="center">
+                    <Icon type="align-center" />
+                  </RadioButton>
+                  <RadioButton value="right">
+                    <Icon type="align-right" />
+                  </RadioButton>
+                </RadioGroup>
+              }
+            />
+            <OptionText
+              title={formatMessage(messages.spacing)}
+              content={
+                <InputNumber
+                  value={
+                    !!textFormat &&
+                    textFormat.charSpacing &&
+                    textFormat.charSpacing / 10
+                  }
+                  min={-20}
+                  max={100}
+                  step={1}
+                  onChange={this.handleOnSelectSeparation}
+                />
+              }
+            />
           </div>
           <TextEditor
             {...{ option, formatMessage }}
@@ -127,6 +171,10 @@ export class TextTab extends React.PureComponent<Props, State> {
         return 'selectOutline'
       case ADD_EFFECT:
         return 'addEffect'
+      case SELECT_ALIGNMENT:
+        return 'selectAlignment'
+      case CHANGE_SEPARATION:
+        return 'changeSeparation'
       default:
         return 'title'
     }
@@ -214,6 +262,47 @@ export class TextTab extends React.PureComponent<Props, State> {
       this.setState({ page: 0 })
     }
     onSelectTextFormat('stroke', stroke)
+  }
+
+  handleOnSelectAlignment = (event: any) => {
+    const {
+      target: { value: alignment }
+    } = event
+    const {
+      onSelectTextFormat,
+      textFormat,
+      onApplyText,
+      text,
+      selectedElement
+    } = this.props
+    if (selectedElement) {
+      const updatedTextFormat = Object.assign({}, textFormat)
+      updatedTextFormat.textAlign = alignment
+      onApplyText(text, updatedTextFormat)
+    } else {
+      this.setState({ page: 0 })
+    }
+    onSelectTextFormat('textAlign', alignment)
+  }
+
+  handleOnSelectSeparation = (spacing: number | undefined) => {
+    if (spacing) {
+      const {
+        onSelectTextFormat,
+        textFormat,
+        onApplyText,
+        text,
+        selectedElement
+      } = this.props
+      if (selectedElement) {
+        const updatedTextFormat = Object.assign({}, textFormat)
+        updatedTextFormat.charSpacing = spacing * 10
+        onApplyText(text, updatedTextFormat)
+      } else {
+        this.setState({ page: 0 })
+      }
+      onSelectTextFormat('charSpacing', `${spacing * 10}`)
+    }
   }
 
   changePage = (page: number, option: number) => () =>
