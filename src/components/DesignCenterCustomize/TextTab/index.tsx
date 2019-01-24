@@ -127,7 +127,39 @@ export class TextTab extends React.PureComponent<Props, State> {
               }
             />
             <OptionText
-              title={formatMessage(messages.spacing)}
+              title={formatMessage(messages.fontSize)}
+              content={
+                <InputNumber
+                  value={
+                    !!textFormat &&
+                    textFormat.charSpacing &&
+                    textFormat.charSpacing / 10
+                  }
+                  min={-20}
+                  max={100}
+                  step={1}
+                  onChange={this.handleOnSelectSeparation}
+                />
+              }
+            />
+            <OptionText
+              title={formatMessage(messages.letterSpacing)}
+              content={
+                <InputNumber
+                  value={
+                    !!textFormat &&
+                    textFormat.charSpacing &&
+                    textFormat.charSpacing / 10
+                  }
+                  min={-20}
+                  max={100}
+                  step={1}
+                  onChange={this.handleOnSelectSeparation}
+                />
+              }
+            />
+            <OptionText
+              title={formatMessage(messages.leadingSpacing)}
               content={
                 <InputNumber
                   value={
