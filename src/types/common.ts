@@ -52,7 +52,7 @@ export interface Filter {
   name: string
 }
 
-export interface SelectedType extends Filter { }
+export interface SelectedType extends Filter {}
 
 export interface FitStyle {
   id: number
@@ -521,7 +521,7 @@ export interface NetsuiteObject {
 
 export interface PaymentCharges {
   stripeCharge: {
-    ibanData?: IbanData,
+    ibanData?: IbanData
     cardData?: CreditCardData
   }
 }
@@ -604,6 +604,8 @@ export interface TextFormat {
   stroke: string
   fill: string
   strokeWidth: number
+  textAlign: string
+  charSpacing: number | undefined
 }
 
 export interface ArtFormat {
