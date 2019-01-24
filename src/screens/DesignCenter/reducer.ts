@@ -118,7 +118,9 @@ export const initialState = fromJS({
     fill: BLACK,
     strokeWidth: 0,
     textAlign: 'left',
-    charSpacing: 0
+    charSpacing: 0,
+    fontSize: 70,
+    lineHeight: 1
   },
   selectedElement: '',
   myPaletteModals: {
@@ -615,7 +617,9 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             fill: BLACK,
             strokeWidth: 0,
             textAlign: 'left',
-            charSpacing: 0
+            charSpacing: 0,
+            fontSize: 70,
+            lineHeight: 1
           }
         })
       }

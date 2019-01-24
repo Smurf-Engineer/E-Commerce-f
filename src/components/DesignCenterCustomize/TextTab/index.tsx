@@ -130,15 +130,14 @@ export class TextTab extends React.PureComponent<Props, State> {
               title={formatMessage(messages.fontSize)}
               content={
                 <InputNumber
-                  value={
-                    !!textFormat &&
-                    textFormat.charSpacing &&
-                    textFormat.charSpacing / 10
-                  }
-                  min={-20}
-                  max={100}
+                  value={!!textFormat && textFormat.fontSize}
+                  min={1}
+                  max={200}
                   step={1}
-                  onChange={this.handleOnSelectSeparation}
+                  defaultValue={1}
+                  formatter={value => `${value} px`}
+                  parser={value => value.replace(' px', '')}
+                  onChange={this.handleOnChangeFontSize}
                 />
               }
             />
@@ -151,6 +150,7 @@ export class TextTab extends React.PureComponent<Props, State> {
                     textFormat.charSpacing &&
                     textFormat.charSpacing / 10
                   }
+                  parser={value => value && value.replace('-', '-0')}
                   min={-20}
                   max={100}
                   step={1}
@@ -162,15 +162,11 @@ export class TextTab extends React.PureComponent<Props, State> {
               title={formatMessage(messages.leadingSpacing)}
               content={
                 <InputNumber
-                  value={
-                    !!textFormat &&
-                    textFormat.charSpacing &&
-                    textFormat.charSpacing / 10
-                  }
-                  min={-20}
-                  max={100}
-                  step={1}
-                  onChange={this.handleOnSelectSeparation}
+                  value={!!textFormat && textFormat.lineHeight}
+                  min={0}
+                  max={50}
+                  step={0.1}
+                  onChange={this.handleOnChangeLineSeparation}
                 />
               }
             />
@@ -333,7 +329,47 @@ export class TextTab extends React.PureComponent<Props, State> {
       } else {
         this.setState({ page: 0 })
       }
-      onSelectTextFormat('charSpacing', `${spacing * 10}`)
+      onSelectTextFormat('charSpacing', spacing * 10)
+    }
+  }
+
+  handleOnChangeFontSize = (size: number | undefined) => {
+    if (size) {
+      const {
+        onSelectTextFormat,
+        textFormat,
+        onApplyText,
+        text,
+        selectedElement
+      } = this.props
+      if (selectedElement) {
+        const updatedTextFormat = Object.assign({}, textFormat)
+        updatedTextFormat.fontSize = size
+        onApplyText(text, updatedTextFormat)
+      } else {
+        this.setState({ page: 0 })
+      }
+      onSelectTextFormat('fontSize', size)
+    }
+  }
+
+  handleOnChangeLineSeparation = (spacing: number | undefined) => {
+    if (spacing) {
+      const {
+        onSelectTextFormat,
+        textFormat,
+        onApplyText,
+        text,
+        selectedElement
+      } = this.props
+      if (selectedElement) {
+        const updatedTextFormat = Object.assign({}, textFormat)
+        updatedTextFormat.lineHeight = spacing
+        onApplyText(text, updatedTextFormat)
+      } else {
+        this.setState({ page: 0 })
+      }
+      onSelectTextFormat('lineHeight', spacing)
     }
   }
 
