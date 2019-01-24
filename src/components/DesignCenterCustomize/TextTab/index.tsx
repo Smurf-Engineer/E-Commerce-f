@@ -127,7 +127,7 @@ export class TextTab extends React.PureComponent<Props, State> {
               }
             />
             <OptionText
-              title={formatMessage(messages.spacing)}
+              title={formatMessage(messages.letterSpacing)}
               content={
                 <InputNumber
                   value={
