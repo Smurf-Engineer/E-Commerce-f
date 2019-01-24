@@ -63,7 +63,8 @@ import {
   SET_SELECTED_ITEM_ACTION,
   ON_CLOSE_INFO,
   SET_AUTOMATIC_SAVE,
-  ON_TAB_CLICK_ACTION
+  ON_TAB_CLICK_ACTION,
+  ON_LOCK_ELEMENT_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -483,4 +484,10 @@ export const setAutomaticSave = (automaticSave: boolean) => ({
 export const onTabClickAction = (selectedIndex: number) => ({
   type: ON_TAB_CLICK_ACTION,
   selectedIndex
+})
+
+export const onLockElementAction = (id: string, elementType: string) => ({
+  type: ON_LOCK_ELEMENT_ACTION,
+  id,
+  elementType
 })

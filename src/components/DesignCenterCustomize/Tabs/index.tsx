@@ -75,6 +75,7 @@ interface Props {
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
   onTabClick: (selectedIndex: number) => void
+  onLockElement: (id: string, type: string) => void
 }
 
 const Tabs = ({
@@ -121,7 +122,8 @@ const Tabs = ({
   selectedItem,
   disableTooltip = false,
   selectedTab,
-  onTabClick
+  onTabClick,
+  onLockElement
 }: Props) => {
   return (
     <Container>
@@ -167,7 +169,8 @@ const Tabs = ({
               productName,
               selectedElement,
               textFormat,
-              onSelectTextFormat
+              onSelectTextFormat,
+              onLockElement
             }}
           />
         </TabPane>
@@ -179,7 +182,8 @@ const Tabs = ({
               formatMessage,
               onSelectArtFormat,
               searchClipParam,
-              setSearchClipParamAction
+              setSearchClipParamAction,
+              onLockElement
             }}
             selectedElement={canvas.path[selectedElement]}
             selectedItem={
@@ -195,8 +199,10 @@ const Tabs = ({
               onUploadFile,
               images,
               uploadingFile,
-              isUserAuthenticated
+              isUserAuthenticated,
+              onLockElement
             }}
+            selectedElement={canvas.image[selectedElement]}
             selectedItem={
               selectedItem.type === CanvasElements.Image && selectedItem.id
             }

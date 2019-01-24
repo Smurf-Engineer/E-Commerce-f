@@ -604,6 +604,8 @@ export interface TextFormat {
   stroke: string
   fill: string
   strokeWidth: number
+  textAlign: string
+  charSpacing: number | undefined
 }
 
 export interface ArtFormat {

@@ -9,14 +9,16 @@ import remove from 'lodash/remove'
 import isEmpty from 'lodash/isEmpty'
 import indexOf from 'lodash/indexOf'
 import last from 'lodash/last'
+import Icon from 'antd/lib/icon'
 import Spin from 'antd/lib/spin'
 import withError from '../../WithError'
 import { compose, graphql } from 'react-apollo'
+import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import { userfilesQuery, deleteFileMutation } from './data'
 import Dragger from '../../DraggerWithLoading'
 import ImageList from '../ImageList'
 import messages from './messages'
-import { ImageFile, QueryProps } from '../../../types/common'
+import { ImageFile, QueryProps, CanvasElement } from '../../../types/common'
 import {
   Container,
   Header,
@@ -24,7 +26,8 @@ import {
   DraggerBottom,
   Recommendation,
   EmptyContainer,
-  LoginMessage
+  LoginMessage,
+  LockContainer
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 
@@ -55,10 +58,12 @@ interface Props {
   uploadingFile: boolean
   isUserAuthenticated: boolean
   selectedItem: number
+  selectedElement: CanvasElement
   onApplyImage: (file: ImageFile) => void
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any) => void
   deleteFile: (variables: {}) => Promise<any>
+  onLockElement: (id: string, type: string) => void
 }
 
 interface State {
@@ -79,9 +84,9 @@ class UploadTab extends React.PureComponent<Props, State> {
       uploadingFile,
       isUserAuthenticated,
       selectedItem,
-      formatMessage
+      formatMessage,
+      selectedElement
     } = this.props
-
     if (!isUserAuthenticated) {
       return (
         <Container>
@@ -121,6 +126,11 @@ class UploadTab extends React.PureComponent<Props, State> {
           <Title>
             <FormattedMessage {...messages.title} />
           </Title>
+          {selectedElement && (
+            <LockContainer onClick={this.handleOnLockElement}>
+              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
+            </LockContainer>
+          )}
         </Header>
         <ImageList
           onClickImage={this.handleOnAddImage}
@@ -205,6 +215,11 @@ class UploadTab extends React.PureComponent<Props, State> {
         }
       }
     })
+  }
+  handleOnLockElement = () => {
+    const { selectedElement, onLockElement } = this.props
+    onLockElement(selectedElement.id, CanvasElements.Image)
+    this.forceUpdate()
   }
 
   clearState = () => {

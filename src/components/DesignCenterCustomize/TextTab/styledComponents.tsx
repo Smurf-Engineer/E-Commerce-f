@@ -66,6 +66,7 @@ export const Header = styled.div`
   padding: 10px 30px;
   display: flex;
   justify-content: space-between;
+  min-height: 55px;
 `
 
 export const Title = styled.div`
@@ -112,4 +113,11 @@ export const ButtonWrapper = styled.div`
   display: flex;
   margin-top: 10px;
   justify-content: flex-end;
+`
+
+export const LockContainer = styled.div`
+  cursor: pointer;
+  padding: 2px;
+  display: inline-block;
+  font-size: 20px;
 `

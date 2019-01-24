@@ -75,6 +75,8 @@ export const ON_CLOSE_INFO = `${namespace}/ON_CLOSE_INFO`
 
 export const ON_TAB_CLICK_ACTION = `${namespace}/ON_TAB_CLICK_ACTION`
 
+export const ON_LOCK_ELEMENT_ACTION = `${namespace}/ON_LOCK_ELEMENT_ACTION`
+
 export enum DesignTabs {
   ThemeTab = 0,
   StyleTab = 1,
@@ -85,7 +87,8 @@ export enum DesignTabs {
 export enum CustomizeTabs {
   ColorsTab = 1,
   TextTab = 2,
-  SymbolsTab = 3
+  SymbolsTab = 3,
+  ImagesTab = 4
 }
 
 export const BLACK = 'black'

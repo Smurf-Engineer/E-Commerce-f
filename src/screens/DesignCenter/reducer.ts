@@ -68,7 +68,8 @@ import {
   ON_CLOSE_INFO,
   SET_AUTOMATIC_SAVE,
   ON_TAB_CLICK_ACTION,
-  CustomizeTabs
+  CustomizeTabs,
+  ON_LOCK_ELEMENT_ACTION
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -116,7 +117,9 @@ export const initialState = fromJS({
     fontFamily: DEFAULT_FONT,
     stroke: BLACK,
     fill: BLACK,
-    strokeWidth: 0
+    strokeWidth: 0,
+    textAlign: 'left',
+    charSpacing: 0
   },
   selectedElement: '',
   myPaletteModals: {
@@ -547,7 +550,6 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
 
       const selectedElement = state.get('selectedElement')
       const updatedCanvas = canvas.setIn([typeEl, el.id], el)
-
       if (selectedElement) {
         return state.merge({
           selectedElement: el.id,
@@ -607,14 +609,24 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         return state.merge({
           text: '',
           selectedElement: id,
-          searchClipParam: ''
+          searchClipParam: '',
+          textFormat: {
+            fontFamily: DEFAULT_FONT,
+            stroke: BLACK,
+            fill: BLACK,
+            strokeWidth: 0,
+            textAlign: 'left',
+            charSpacing: 0
+          }
         })
       }
-
       return state.merge({
         selectedElement: id,
         searchClipParam: '',
-        selectedTab: CustomizeTabs.SymbolsTab
+        selectedTab:
+          action.typeEl === 'image'
+            ? CustomizeTabs.ImagesTab
+            : CustomizeTabs.SymbolsTab
       })
     }
     case SET_TEXT_FORMAT_ACTION: {
@@ -932,6 +944,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('infoModalOpen', !state.get('infoModalOpen'))
     case ON_TAB_CLICK_ACTION:
       return state.set('selectedTab', action.selectedIndex)
+    case ON_LOCK_ELEMENT_ACTION: {
+      const { elementType, id } = action
+      const element = state.getIn(['canvas', elementType]).toJS()
+      element[id].lock = !element[id].lock
+      return state.setIn(['canvas', elementType, id], element[id])
+    }
     default:
       return state
   }
