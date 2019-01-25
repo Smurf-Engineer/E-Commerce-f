@@ -627,6 +627,7 @@ export interface CanvasElement {
   fileId?: number
   src?: string
   canvasPath?: string
+  lock: boolean
 }
 
 export interface SelectedAsset {

@@ -163,6 +163,7 @@ interface Props {
   handleOnCloseInfo: () => void
   handleOnSaveAndBuy: (buy: boolean) => void
   onTabClick: (selectedIndex: number) => void
+  onLockElement: (id: string, type: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -268,7 +269,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       handleOnCloseInfo,
       infoModalOpen,
       selectedTab,
-      onTabClick
+      onTabClick,
+      onLockElement
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -320,7 +322,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               isUserAuthenticated,
               selectedItem,
               selectedTab,
-              onTabClick
+              onTabClick,
+              onLockElement
             }}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
