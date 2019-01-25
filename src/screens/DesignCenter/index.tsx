@@ -616,7 +616,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = DesignTabs
     const isMobile = !!responsive && responsive.phone
     const redirect = <Redirect to={DEFAULT_ROUTE} />
-
     /**
      * Redirect for missing params
      */

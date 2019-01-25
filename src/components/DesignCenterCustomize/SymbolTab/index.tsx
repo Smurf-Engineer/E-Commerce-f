@@ -75,7 +75,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       formatMessage,
       selectedItem
     } = this.props
-    // const element = elements[selectedElement]
 
     const artList =
       clipArts && !!clipArts.length ? (
