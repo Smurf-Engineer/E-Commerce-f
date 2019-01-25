@@ -38,7 +38,8 @@ import {
   TurnOffHintRow,
   MobileContainer,
   MobileButton,
-  MobileButtonWrapper
+  MobileButtonWrapper,
+  MobileHintIcon
 } from './styledComponents'
 import {
   viewPositions,
@@ -110,6 +111,7 @@ import rightIcon from '../../../assets/Cube_right.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 import topIcon from '../../../assets/Cube-Top.svg'
 import hintImg from '../../../assets/designCenterhelpHint.jpg'
+import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
@@ -1199,6 +1201,21 @@ class Render3D extends PureComponent {
               <FormattedMessage {...messages.drag} />
             </DragText>
           )}
+          <HelpModal
+          open={showHelpModal}
+          withLogo={false}
+          requestClose={this.handleHelpModal}
+        >
+          <HintModalImage src={mobileHintImg} alt="" />
+          {!showHint && (
+            <TurnOffHintRow>
+              <Checkbox onChange={this.disableHelpModal}>
+                {formatMessage(messages.turOffHint)}
+              </Checkbox>
+            </TurnOffHintRow>
+          )}
+        </HelpModal>
+          <MobileHintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </MobileContainer>
       )
     }
