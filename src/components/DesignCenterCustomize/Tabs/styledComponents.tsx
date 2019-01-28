@@ -8,6 +8,7 @@ export const Container = styled.div`
   background-color: ${WHITE};
   box-shadow: 0 1px 0px rgba(0, 0, 0, 0.12), 0 0px 2px rgba(0, 0, 0, 0.24);
   height: 80vh;
+  overflow-y: scroll;
   /* max-width: 400px; */
   padding-bottom: 32px;
   width: 25.4%;
