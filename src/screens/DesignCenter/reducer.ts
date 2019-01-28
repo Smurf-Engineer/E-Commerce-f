@@ -119,7 +119,7 @@ export const initialState = fromJS({
     strokeWidth: 0,
     textAlign: 'left',
     charSpacing: 0,
-    fontSize: 70,
+    fontSize: 30,
     lineHeight: 1
   },
   selectedElement: '',
@@ -618,7 +618,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
             strokeWidth: 0,
             textAlign: 'left',
             charSpacing: 0,
-            fontSize: 70,
+            fontSize: 30,
             lineHeight: 1
           }
         })
