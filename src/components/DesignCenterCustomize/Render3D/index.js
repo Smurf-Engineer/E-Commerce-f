@@ -1714,7 +1714,9 @@ class Render3D extends PureComponent {
             stroke,
             strokeWidth,
             textAlign,
-            charSpacing
+            charSpacing,
+            fontSize,
+            lineHeight
           } = el
           canvasObject.src = text
           canvasObject.style = {
@@ -1723,7 +1725,9 @@ class Render3D extends PureComponent {
             stroke,
             strokeWidth,
             textAlign,
-            charSpacing
+            charSpacing,
+            fontSize,
+            lineHeight
           }
         }
         break

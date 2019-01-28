@@ -606,6 +606,8 @@ export interface TextFormat {
   strokeWidth: number
   textAlign: string
   charSpacing: number | undefined
+  fontSize: number
+  lineHeight: number
 }
 
 export interface ArtFormat {
