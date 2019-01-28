@@ -1469,7 +1469,8 @@ class Render3D extends PureComponent {
           fileId,
           src: fileUrl,
           scaleX,
-          scaleY
+          scaleY,
+          lock: false
         }
         position.scaleX = scaleX
         position.scaleY = scaleY
@@ -1511,6 +1512,7 @@ class Render3D extends PureComponent {
     } else {
       const { onApplyCanvasEl } = this.props
       const id = idElement || shortid.generate()
+
       txtEl = new fabric.Text(text, {
         id,
         hasRotatingPoint: false,
@@ -1533,12 +1535,17 @@ class Render3D extends PureComponent {
         this.canvasTexture.setActiveObject(txtEl)
       }
       this.canvasTexture.renderAll()
+      let activeElementId
+      if (activeEl && activeEl.type === CanvasElements.Text) {
+        activeElementId = activeEl.id
+      }
 
       if (!idElement) {
         const el = {
-          id: activeEl ? activeEl.id : txtEl.id,
+          id: activeElementId || txtEl.id,
           text,
-          textFormat: style
+          textFormat: style,
+          lock: false
         }
         onApplyCanvasEl(el, CanvasElements.Text, !!activeEl, {
           src: text,
@@ -1613,7 +1620,8 @@ class Render3D extends PureComponent {
           fill: BLACK,
           stroke: BLACK,
           strokeWidth: 0,
-          ...style
+          ...style,
+          lock: false
         }
         position.scaleX = scaleX
         position.scaleY = scaleY
@@ -1902,7 +1910,9 @@ class Render3D extends PureComponent {
       return
     }
     const {
-      responsive: { tablet }
+      responsive: { tablet },
+      selectedElement,
+      canvas
     } = this.props
     let clientX = evt.clientX
     let clientY = evt.clientY
@@ -1965,8 +1975,16 @@ class Render3D extends PureComponent {
         })
       } else {
         if (activeEl && !this.dragComponent) {
+          const selectedGraphicElement =
+            canvas.image[selectedElement] ||
+            canvas.path[selectedElement] ||
+            canvas.text[selectedElement]
           const action = clickOnCorner(activeEl.oCoords, uv)
-          if (action) {
+          if (
+            action &&
+            selectedGraphicElement &&
+            !selectedGraphicElement.lock
+          ) {
             switch (action) {
               case DELETE_ACTION:
                 this.deleteElement(activeEl)
@@ -2081,7 +2099,9 @@ class Render3D extends PureComponent {
   onMouseMove = evt => {
     evt.preventDefault()
     const {
-      responsive: { tablet }
+      responsive: { tablet },
+      canvas,
+      selectedElement
     } = this.props
     let clientX = evt.clientX
     let clientY = evt.clientY
@@ -2118,32 +2138,38 @@ class Render3D extends PureComponent {
           currentTransform
         } = this.dragComponent
         const uv = intersects[0].uv
-        switch (action) {
-          case DRAG_ACTION: {
-            const left = uv.x * CANVAS_SIZE - differenceX
-            const top = (1 - uv.y) * CANVAS_SIZE - differenceY
-            activeEl.set({ left, top }).setCoords()
-            this.canvasTexture.renderAll()
-            break
+        const selectedGraphicElement =
+          canvas.image[selectedElement] ||
+          canvas.path[selectedElement] ||
+          canvas.text[selectedElement]
+        if (selectedGraphicElement && !selectedGraphicElement.lock) {
+          switch (action) {
+            case DRAG_ACTION: {
+              const left = uv.x * CANVAS_SIZE - differenceX
+              const top = (1 - uv.y) * CANVAS_SIZE - differenceY
+              activeEl.set({ left, top }).setCoords()
+              this.canvasTexture.renderAll()
+              break
+            }
+            case SCALE_ACTION: {
+              const cX = uv.x * CANVAS_SIZE
+              const cY = (1 - uv.y) * CANVAS_SIZE
+              this.scaleObject(cX, cY, currentTransform)
+              this.forceUpdate()
+              this.canvasTexture.renderAll()
+              break
+            }
+            case ROTATE_ACTION: {
+              const cX = uv.x * CANVAS_SIZE
+              const cY = (1 - uv.y) * CANVAS_SIZE
+              this.rotateObject(cX, cY, currentTransform)
+              this.forceUpdate()
+              this.canvasTexture.renderAll()
+              break
+            }
+            default:
+              break
           }
-          case SCALE_ACTION: {
-            const cX = uv.x * CANVAS_SIZE
-            const cY = (1 - uv.y) * CANVAS_SIZE
-            this.scaleObject(cX, cY, currentTransform)
-            this.forceUpdate()
-            this.canvasTexture.renderAll()
-            break
-          }
-          case ROTATE_ACTION: {
-            const cX = uv.x * CANVAS_SIZE
-            const cY = (1 - uv.y) * CANVAS_SIZE
-            this.rotateObject(cX, cY, currentTransform)
-            this.forceUpdate()
-            this.canvasTexture.renderAll()
-            break
-          }
-          default:
-            break
         }
       }
     } else if (!!intersects.length && !!this.state.canvasEl) {

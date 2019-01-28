@@ -5,12 +5,14 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import SwipeableViews from 'react-swipeable-views'
 import messages from './messages'
+import isEmpty from 'lodash/isEmpty'
 import OptionText from '../../OptionText'
 import Radio from 'antd/lib/radio'
 import Icon from 'antd/lib/icon'
 import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
+import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import { TextFormat, CanvasElement } from '../../../types/common'
 import {
   Container,
@@ -21,7 +23,8 @@ import {
   Button,
   Row,
   ArrowIcon,
-  ButtonWrapper
+  ButtonWrapper,
+  LockContainer
 } from './styledComponents'
 
 const SELECT_FONT = 0
@@ -41,6 +44,7 @@ interface Props {
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectTextFormat: (key: string, value: string | number) => void
+  onLockElement: (id: string, type: string) => void
   elements: {
     [id: string]: CanvasElement
   }
@@ -59,12 +63,19 @@ export class TextTab extends React.PureComponent<Props, State> {
 
   render() {
     const { page, option } = this.state
-    const { text, formatMessage, productName, textFormat } = this.props
-
+    const {
+      text,
+      formatMessage,
+      productName,
+      textFormat,
+      selectedElement,
+      elements
+    } = this.props
     const headerTitle = this.getHeaderTitle(option, page)
 
     const RadioButton = Radio.Button
     const RadioGroup = Radio.Group
+    const element = elements[selectedElement]
 
     return (
       <Container>
@@ -75,6 +86,11 @@ export class TextTab extends React.PureComponent<Props, State> {
               <FormattedMessage {...messages[headerTitle]} />
             </Title>
           </Row>
+          {selectedElement && !isEmpty(element) && !!textFormat && (
+            <LockContainer onClick={this.handleOnLockElement}>
+              <Icon type={element.lock ? 'lock' : 'unlock'} />
+            </LockContainer>
+          )}
         </Header>
         <SwipeableViews disabled={true} index={page}>
           <div>
@@ -371,6 +387,12 @@ export class TextTab extends React.PureComponent<Props, State> {
       }
       onSelectTextFormat('lineHeight', spacing)
     }
+  }
+
+  handleOnLockElement = () => {
+    const { selectedElement, onLockElement } = this.props
+    onLockElement(selectedElement, CanvasElements.Text)
+    this.forceUpdate()
   }
 
   changePage = (page: number, option: number) => () =>
