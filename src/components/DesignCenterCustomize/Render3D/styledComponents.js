@@ -248,3 +248,11 @@ export const TurnOffHintRow = styled.div`
   display: flex;
   justify-content: center;
 `
+
+export const MobileHintIcon = styled.img`
+  height: 20px;
+  position: absolute;
+  right: 10px;
+  top: 62px;
+  cursor: pointer;
+`
