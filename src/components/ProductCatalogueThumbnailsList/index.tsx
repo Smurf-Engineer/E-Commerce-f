@@ -57,7 +57,7 @@ interface Props {
   currentPage: number
   limit?: number
   designs?: DesignType[]
-  setCurrentShare?: (savedDesignId: string, openShareModal: boolean) => void
+  setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
   onPressDelete?: (id: string, name: string) => void
   onPressRename?: (id: string, name: string) => void
@@ -80,7 +80,6 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       onPressPrivate = () => {},
       onPressDelete = () => {},
       onPressRename = () => {},
-      setCurrentShare = () => {},
       withoutPadding,
       currentCurrency,
       genderFilters
@@ -150,7 +149,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                     </ButtonContainer>
                     <ButtonContainer>
                       <ActionButton
-                        onClick={() => setCurrentShare(shortId as string, true)}
+                        onClick={this.setShare(shortId as string, true)}
                       >
                         {formatMessage(messages.share)}
                       </ActionButton>
@@ -300,7 +299,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     const { history } = this.props
     history.push(`/design-center?designId=${designId}`)
   }
-
+  setShare = (shortId: string, openModal: boolean) => () => {
+    const { setCurrentShare } = this.props
+    setCurrentShare(shortId, openModal)
+  }
   handlePressQuickView = (id: number, yotpoId: string) => {
     const { openQuickView } = this.props
     openQuickView(id, yotpoId)
