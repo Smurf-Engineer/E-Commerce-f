@@ -120,7 +120,7 @@ export const ButtonContainer = styled.div`
   left: 0;
   position: absolute;
   top: ${({ myLockerList }: ButtonContainerProps) =>
-    myLockerList ? '140px' : '170px'};
+    myLockerList ? '100px' : '170px'};
   user-select: none;
   width: 100%;
 `

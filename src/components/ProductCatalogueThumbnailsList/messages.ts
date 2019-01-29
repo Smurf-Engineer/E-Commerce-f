@@ -41,6 +41,10 @@ export default defineMessages({
     id: 'components.ProductCatalogueThumbnailsList.edit',
     defaultMessage: 'EDIT'
   },
+  share: {
+    id: 'components.ProductCatalogueThumbnailsList.share',
+    defaultMessage: 'SHARE'
+  },
   customizable: {
     id: 'components.ProductCatalogueThumbnailsList.customizable',
     defaultMessage: 'Customize'
