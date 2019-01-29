@@ -269,6 +269,7 @@ interface Props extends RouteComponentProps<any> {
   setAutomaticSave: (automaticSave: boolean) => void
   saveToCartAction: (item: DesignSaved) => void
   onTabClickAction: (selectedIndex: number) => void
+  onLockElementAction: (id: string, type: string) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -603,7 +604,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       saveAndBuyAction: handleOnSaveAndBuy,
       setAutomaticSave,
       selectedTab,
-      onTabClickAction
+      onTabClickAction,
+      onLockElementAction
     } = this.props
 
     const { formatMessage } = intl
@@ -616,7 +618,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     } = DesignTabs
     const isMobile = !!responsive && responsive.phone
     const redirect = <Redirect to={DEFAULT_ROUTE} />
-
     /**
      * Redirect for missing params
      */
@@ -927,6 +928,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onResetEditing={onResetEditingAction}
                 onSelectedItem={this.setSelectedItemEvent}
                 onTabClick={onTabClickAction}
+                onLockElement={onLockElementAction}
               />
             )}
             {!isMobile ? (

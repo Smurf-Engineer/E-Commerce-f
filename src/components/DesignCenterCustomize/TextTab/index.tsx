@@ -5,9 +5,14 @@ import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
 import SwipeableViews from 'react-swipeable-views'
 import messages from './messages'
+import isEmpty from 'lodash/isEmpty'
 import OptionText from '../../OptionText'
+import Radio from 'antd/lib/radio'
+import Icon from 'antd/lib/icon'
+import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
+import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import { TextFormat, CanvasElement } from '../../../types/common'
 import {
   Container,
@@ -18,13 +23,16 @@ import {
   Button,
   Row,
   ArrowIcon,
-  ButtonWrapper
+  ButtonWrapper,
+  LockContainer
 } from './styledComponents'
 
 const SELECT_FONT = 0
 const SELECT_FILL = 1
 const SELECT_OUTLINE = 2
 const ADD_EFFECT = 3
+const SELECT_ALIGNMENT = 4
+const CHANGE_SEPARATION = 5
 
 interface Props {
   text: string
@@ -40,6 +48,7 @@ interface Props {
     value: string | number,
     fontStyle: boolean
   ) => void
+  onLockElement: (id: string, type: string) => void
   elements: {
     [id: string]: CanvasElement
   }
@@ -58,9 +67,19 @@ export class TextTab extends React.PureComponent<Props, State> {
 
   render() {
     const { page, option } = this.state
-    const { text, formatMessage, productName, textFormat } = this.props
-
+    const {
+      text,
+      formatMessage,
+      productName,
+      textFormat,
+      selectedElement,
+      elements
+    } = this.props
     const headerTitle = this.getHeaderTitle(option, page)
+
+    const RadioButton = Radio.Button
+    const RadioGroup = Radio.Group
+    const element = elements[selectedElement]
 
     return (
       <Container>
@@ -71,6 +90,11 @@ export class TextTab extends React.PureComponent<Props, State> {
               <FormattedMessage {...messages[headerTitle]} />
             </Title>
           </Row>
+          {selectedElement && !isEmpty(element) && !!textFormat && (
+            <LockContainer onClick={this.handleOnLockElement}>
+              <Icon type={element.lock ? 'lock' : 'unlock'} />
+            </LockContainer>
+          )}
         </Header>
         <SwipeableViews disabled={true} index={page}>
           <div>
@@ -102,6 +126,70 @@ export class TextTab extends React.PureComponent<Props, State> {
               title={formatMessage(messages.outline)}
               color={!!textFormat && textFormat.stroke}
             />
+            <OptionText
+              title={formatMessage(messages.alignment)}
+              content={
+                <RadioGroup
+                  onChange={this.handleOnSelectAlignment}
+                  value={!!textFormat && textFormat.textAlign}
+                  defaultValue={'left'}
+                >
+                  <RadioButton value="left">
+                    <Icon type="align-left" />
+                  </RadioButton>
+                  <RadioButton value="center">
+                    <Icon type="align-center" />
+                  </RadioButton>
+                  <RadioButton value="right">
+                    <Icon type="align-right" />
+                  </RadioButton>
+                </RadioGroup>
+              }
+            />
+            <OptionText
+              title={formatMessage(messages.fontSize)}
+              content={
+                <InputNumber
+                  value={!!textFormat && textFormat.fontSize}
+                  min={1}
+                  max={200}
+                  step={1}
+                  defaultValue={1}
+                  formatter={value => `${value} px`}
+                  parser={value => value.replace(' px', '')}
+                  onChange={this.handleOnChangeFontSize}
+                />
+              }
+            />
+            <OptionText
+              title={formatMessage(messages.letterSpacing)}
+              content={
+                <InputNumber
+                  value={
+                    !!textFormat &&
+                    textFormat.charSpacing &&
+                    textFormat.charSpacing / 10
+                  }
+                  parser={value => value && value.replace('-', '-0')}
+                  min={-20}
+                  max={100}
+                  step={1}
+                  onChange={this.handleOnSelectSeparation}
+                />
+              }
+            />
+            <OptionText
+              title={formatMessage(messages.leadingSpacing)}
+              content={
+                <InputNumber
+                  value={!!textFormat && textFormat.lineHeight}
+                  min={0}
+                  max={50}
+                  step={0.1}
+                  onChange={this.handleOnChangeLineSeparation}
+                />
+              }
+            />
           </div>
           <TextEditor
             {...{ option, formatMessage }}
@@ -131,6 +219,10 @@ export class TextTab extends React.PureComponent<Props, State> {
         return 'selectOutline'
       case ADD_EFFECT:
         return 'addEffect'
+      case SELECT_ALIGNMENT:
+        return 'selectAlignment'
+      case CHANGE_SEPARATION:
+        return 'changeSeparation'
       default:
         return 'title'
     }
@@ -218,6 +310,93 @@ export class TextTab extends React.PureComponent<Props, State> {
       this.setState({ page: 0 })
     }
     onSelectTextFormat('stroke', stroke, false)
+  }
+
+  handleOnSelectAlignment = (event: any) => {
+    const {
+      target: { value: alignment }
+    } = event
+    const {
+      onSelectTextFormat,
+      textFormat,
+      onApplyText,
+      text,
+      selectedElement
+    } = this.props
+    if (selectedElement) {
+      const updatedTextFormat = Object.assign({}, textFormat)
+      updatedTextFormat.textAlign = alignment
+      onApplyText(text, updatedTextFormat)
+    } else {
+      this.setState({ page: 0 })
+    }
+    onSelectTextFormat('textAlign', alignment, false)
+  }
+
+  handleOnSelectSeparation = (spacing: number | undefined) => {
+    if (spacing) {
+      const {
+        onSelectTextFormat,
+        textFormat,
+        onApplyText,
+        text,
+        selectedElement
+      } = this.props
+      if (selectedElement) {
+        const updatedTextFormat = Object.assign({}, textFormat)
+        updatedTextFormat.charSpacing = spacing * 10
+        onApplyText(text, updatedTextFormat)
+      } else {
+        this.setState({ page: 0 })
+      }
+      onSelectTextFormat('charSpacing', spacing * 10, false)
+    }
+  }
+
+  handleOnChangeFontSize = (size: number | undefined) => {
+    if (size) {
+      const {
+        onSelectTextFormat,
+        textFormat,
+        onApplyText,
+        text,
+        selectedElement
+      } = this.props
+      if (selectedElement) {
+        const updatedTextFormat = Object.assign({}, textFormat)
+        updatedTextFormat.fontSize = size
+        onApplyText(text, updatedTextFormat)
+      } else {
+        this.setState({ page: 0 })
+      }
+      onSelectTextFormat('fontSize', size, false)
+    }
+  }
+
+  handleOnChangeLineSeparation = (spacing: number | undefined) => {
+    if (spacing) {
+      const {
+        onSelectTextFormat,
+        textFormat,
+        onApplyText,
+        text,
+        selectedElement
+      } = this.props
+      if (selectedElement) {
+        const updatedTextFormat = Object.assign({}, textFormat)
+        updatedTextFormat.lineHeight = spacing
+        onApplyText(text, updatedTextFormat)
+      } else {
+        this.setState({ page: 0 })
+      }
+      onSelectTextFormat('lineHeight', spacing, false)
+    }
+  }
+
+  handleOnLockElement = () => {
+    const { selectedElement, onLockElement } = this.props
+    onLockElement(selectedElement, CanvasElements.Text)
+    this.forceUpdate()
   }
 
   changePage = (page: number, option: number) => () =>
