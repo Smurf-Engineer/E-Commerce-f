@@ -118,6 +118,7 @@
   "components.Render3D.modalConfirmText": "Confirm",
   "components.Render3D.modalCancelText": "Cancel",
   "components.Render3D.turOffHint": "Please don't show this again at start of design application",
+  "components.Render3D.turnOffHintMobile": "Do not show this message upon startup",
   "components.Render3D.customizeButton": "CUSTOMIZE",
   "components.Render3D.editButton": "EDIT",
   "components.forgotPassword.forgotPassWordLabel": "Forgot your password?",

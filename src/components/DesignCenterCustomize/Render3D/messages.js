@@ -72,6 +72,10 @@ export default defineMessages({
     id: 'components.Render3D.turOffHint',
     defaultMessage: `Please don't show this again at start of design application`
   },
+  turOffHintMobile: {
+    id: 'components.Render3D.turOffHintMobile',
+    defaultMessage: `Do not show this message upon startup`
+  },
   customizeButton: {
     id: 'components.Render3D.customizeButton',
     defaultMessage: 'CUSTOMIZE'
