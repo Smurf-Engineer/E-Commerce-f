@@ -39,14 +39,13 @@ export const MenuBarMobile = ({
   }
   return (
     <Container {...{ hide }}>
-      {!buyNowHeader && (
-        <Menu {...{ history, loginButton, regionButton, formatMessage }} />
-      )}
+      {!buyNowHeader && <Menu {...{ history, loginButton, formatMessage }} />}
       <Logo
         src={logo}
         onClick={handleGoHome}
         className={buyNowHeader ? 'alignLeft' : ''}
       />
+      {regionButton}
       {!buyNowHeader && (
         <Cart
           {...{
