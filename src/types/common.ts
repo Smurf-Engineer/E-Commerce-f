@@ -606,6 +606,8 @@ export interface TextFormat {
   strokeWidth: number
   textAlign: string
   charSpacing: number | undefined
+  fontSize: number
+  lineHeight: number
 }
 
 export interface ArtFormat {
@@ -627,6 +629,7 @@ export interface CanvasElement {
   fileId?: number
   src?: string
   canvasPath?: string
+  lock: boolean
 }
 
 export interface SelectedAsset {

@@ -48,6 +48,9 @@ export const Text = styled.div`
 export const Header = styled.div`
   background-color: ${GRAY_LIGHTEST};
   padding: 10px 30px;
+  display: flex;
+  justify-content: space-between;
+  min-height: 55px;
 `
 
 export const Title = styled.div`
@@ -79,4 +82,11 @@ export const EmptyContainer = styled.div`
   flex: 1;
   height: 60vh;
   justify-content: center;
+`
+
+export const LockContainer = styled.div`
+  cursor: pointer;
+  padding: 2px;
+  display: inline-block;
+  font-size: 20px;
 `

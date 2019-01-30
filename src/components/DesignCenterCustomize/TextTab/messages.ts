@@ -56,5 +56,13 @@ export default defineMessages({
   letterSpacing: {
     id: 'components.TextTab.letterSpacing',
     defaultMessage: 'Letter Spacing'
+  },
+  fontSize: {
+    id: 'components.TextTab.fontSize',
+    defaultMessage: 'Font Size'
+  },
+  leadingSpacing: {
+    id: 'components.TextTab.leadingSpacing',
+    defaultMessage: 'Line Spacing'
   }
 })

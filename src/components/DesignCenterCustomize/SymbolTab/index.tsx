@@ -7,10 +7,12 @@ import { FormattedMessage } from 'react-intl'
 import debounce from 'lodash/debounce'
 import SwipeableViews from 'react-swipeable-views'
 import last from 'lodash/last'
+import Icon from 'antd/lib/icon'
 import { compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
 import WithError from '../../WithError'
 import OptionText from '../../OptionText'
+import { CanvasElements } from '../../../screens/DesignCenter/constants'
 import TextEditor from '../TextEditor'
 import Symbol from '../ClipArt'
 import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
@@ -30,7 +32,8 @@ import {
   Col,
   List,
   Loading,
-  NotFound
+  NotFound,
+  LockContainer
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -51,6 +54,7 @@ interface Props {
   ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   setSearchClipParamAction: (searchParam: string) => void
+  onLockElement: (id: string, type: string) => void
 }
 
 class SymbolTab extends React.PureComponent<Props, {}> {
@@ -106,6 +110,11 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               />
             </Title>
           </Row>
+          {selectedElement && (
+            <LockContainer onClick={this.handleOnLockElement}>
+              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
+            </LockContainer>
+          )}
         </Header>
         {selectedElement ? (
           <SwipeableViews disabled={true} index={page}>
@@ -181,6 +190,11 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     const { onApplyArt } = this.props
     const artName = last(url.split('/'))
     onApplyArt(url, undefined, fileId, artName)
+  }
+  handleOnLockElement = () => {
+    const { selectedElement, onLockElement } = this.props
+    onLockElement(selectedElement.id, CanvasElements.Path)
+    this.forceUpdate()
   }
 }
 type OwnProps = {

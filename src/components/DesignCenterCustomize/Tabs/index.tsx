@@ -68,13 +68,18 @@ interface Props {
   onApplyImage: (file: ImageFile) => void
   onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   formatMessage: (messageDescriptor: any) => string
-  onSelectTextFormat: (key: string, value: string | number) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
   setSearchClipParamAction: (searchParam: string) => void
   onTabClick: (selectedIndex: number) => void
+  onLockElement: (id: string, type: string) => void
 }
 
 const Tabs = ({
@@ -121,7 +126,8 @@ const Tabs = ({
   selectedItem,
   disableTooltip = false,
   selectedTab,
-  onTabClick
+  onTabClick,
+  onLockElement
 }: Props) => {
   return (
     <Container>
@@ -167,7 +173,8 @@ const Tabs = ({
               productName,
               selectedElement,
               textFormat,
-              onSelectTextFormat
+              onSelectTextFormat,
+              onLockElement
             }}
           />
         </TabPane>
@@ -179,7 +186,8 @@ const Tabs = ({
               formatMessage,
               onSelectArtFormat,
               searchClipParam,
-              setSearchClipParamAction
+              setSearchClipParamAction,
+              onLockElement
             }}
             selectedElement={canvas.path[selectedElement]}
             selectedItem={
@@ -195,8 +203,10 @@ const Tabs = ({
               onUploadFile,
               images,
               uploadingFile,
-              isUserAuthenticated
+              isUserAuthenticated,
+              onLockElement
             }}
+            selectedElement={canvas.image[selectedElement]}
             selectedItem={
               selectedItem.type === CanvasElements.Image && selectedItem.id
             }
