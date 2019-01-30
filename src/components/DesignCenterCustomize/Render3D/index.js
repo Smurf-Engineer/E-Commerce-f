@@ -1202,19 +1202,19 @@ class Render3D extends PureComponent {
             </DragText>
           )}
           <HelpModal
-          open={showHelpModal}
-          withLogo={false}
-          requestClose={this.handleHelpModal}
-        >
-          <HintModalImage src={mobileHintImg} alt="" />
-          {!showHint && (
-            <TurnOffHintRow>
-              <Checkbox onChange={this.disableHelpModal}>
-                {formatMessage(messages.turOffHint)}
-              </Checkbox>
-            </TurnOffHintRow>
-          )}
-        </HelpModal>
+            open={showHelpModal}
+            withLogo={false}
+            requestClose={this.handleHelpModal}
+          >
+            <HintModalImage src={mobileHintImg} alt="" />
+            {!showHint && (
+              <TurnOffHintRow>
+                <Checkbox onChange={this.disableHelpModal}>
+                  {formatMessage(messages.turOffHintMobile)}
+                </Checkbox>
+              </TurnOffHintRow>
+            )}
+          </HelpModal>
           <MobileHintIcon src={helpTooltip} onClick={this.handleHelpModal} />
         </MobileContainer>
       )
