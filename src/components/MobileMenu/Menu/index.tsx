@@ -35,7 +35,6 @@ interface Props {
   history: any
   hideMenu: () => void
   loginButton: React.ReactNode
-  regionButton: React.ReactNode
   menuOpen: boolean
   formatMessage: (messageDescriptor: any) => string
 }
@@ -175,7 +174,6 @@ class Menu extends React.PureComponent<Props, {}> {
     const {
       data: { loading, error },
       loginButton,
-      regionButton,
       formatMessage
     } = this.props
 
@@ -271,10 +269,7 @@ class Menu extends React.PureComponent<Props, {}> {
         <SeeAll onClick={this.handleOnSeeAll}>
           {formatMessage(messages.seeAll)}
         </SeeAll>
-        <Bottom>
-          {loginButton}
-          {regionButton}
-        </Bottom>
+        <Bottom>{loginButton}</Bottom>
       </Container>
     )
   }

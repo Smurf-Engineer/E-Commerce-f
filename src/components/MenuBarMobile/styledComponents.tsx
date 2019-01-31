@@ -21,15 +21,7 @@ export const Container = styled.div`
   position: relative;
 `
 
-export const Logo = styled.img`
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  &.alignLeft {
-    left: 25%;
-  }
-`
+export const Logo = styled.img``
 
 export const Icon = styled.img``
 
