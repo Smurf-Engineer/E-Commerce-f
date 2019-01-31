@@ -274,7 +274,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       infoModalOpen,
       selectedTab,
       onTabClick,
-      onLockElement
+      onLockElement,
+      openLoginModalAction
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -327,7 +328,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               selectedItem,
               selectedTab,
               onTabClick,
-              onLockElement
+              onLockElement,
+              openLoginModalAction
             }}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}

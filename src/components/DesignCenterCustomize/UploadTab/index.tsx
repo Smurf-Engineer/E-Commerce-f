@@ -27,7 +27,8 @@ import {
   Recommendation,
   EmptyContainer,
   LoginMessage,
-  LockContainer
+  LockContainer,
+  CustomButton
 } from './styledComponents'
 import { RED } from '../../../theme/colors'
 
@@ -64,6 +65,7 @@ interface Props {
   onUploadFile: (file: any) => void
   deleteFile: (variables: {}) => Promise<any>
   onLockElement: (id: string, type: string) => void
+  openLoginModalAction: (open: boolean, callback?: boolean) => void
 }
 
 interface State {
@@ -97,6 +99,9 @@ class UploadTab extends React.PureComponent<Props, State> {
           </Header>
           <LoginMessage>
             <FormattedMessage {...messages.loginMessage} />
+            <CustomButton onClick={this.handleOnLogin}>
+              <FormattedMessage {...messages.login} />
+            </CustomButton>
           </LoginMessage>
         </Container>
       )
@@ -150,6 +155,10 @@ class UploadTab extends React.PureComponent<Props, State> {
     )
   }
 
+  handleOnLogin = () => {
+    const { openLoginModalAction } = this.props
+    openLoginModalAction(true)
+  }
   handleOnAddImage = (file: ImageFile) => {
     const { onApplyImage } = this.props
     onApplyImage(file)
