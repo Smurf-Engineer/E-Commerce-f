@@ -1210,7 +1210,7 @@ class Render3D extends PureComponent {
             {!showHint && (
               <TurnOffHintRow>
                 <Checkbox onChange={this.disableHelpModal}>
-                  {formatMessage(messages.turOffHint)}
+                  {formatMessage(messages.turOffHintMobile)}
                 </Checkbox>
               </TurnOffHintRow>
             )}

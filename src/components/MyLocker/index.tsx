@@ -53,6 +53,7 @@ interface Props {
   deleteModal: DeleteDesignModal
   renameModal: RenameDesignModal
   user: object
+  setCurrentShare?: (savedDesignId: string, openShareModal: boolean) => void
   openQuickView: (id: number, yotpoId: string | null) => void
   formatMessage: (messageDescriptor: any, values?: {}) => string
   setDesignsData: (data: DesignResultType, offset: number, page: number) => void
@@ -258,9 +259,15 @@ export class MyLocker extends React.PureComponent<Props, {}> {
       designs,
       limit,
       currentPage,
+      setCurrentShare,
       fullCount,
       deleteModal: { modalLoading, openDeleteModal, designName },
-      renameModal: { modalLoading: renameModalLoading, openRenameModal, designName: designToRename, newName }
+      renameModal: {
+        modalLoading: renameModalLoading,
+        openRenameModal,
+        designName: designToRename,
+        newName
+      }
     } = this.props
 
     let alternativeContent = null
@@ -294,7 +301,7 @@ export class MyLocker extends React.PureComponent<Props, {}> {
         {alternativeContent}
         <PaginationRow>
           <ProductList
-            {...{ formatMessage, history, withoutPadding }}
+            {...{ setCurrentShare, formatMessage, history, withoutPadding }}
             onPressPrivate={this.handleOnPressPrivate}
             onPressDelete={this.handleOnPressDelete}
             onPressRename={this.handleOnPressRename}
@@ -346,14 +353,15 @@ export class MyLocker extends React.PureComponent<Props, {}> {
           }
           destroyOnClose={false}
           maskClosable={false}
-          closable={false}>
-          <ConfirmMessage>
-            {formatMessage(messages.renameText)}
-          </ConfirmMessage>
+          closable={false}
+        >
+          <ConfirmMessage>{formatMessage(messages.renameText)}</ConfirmMessage>
           <InputWrapper>
             <StyledInput
               value={newName}
-              placeholder={formatMessage(messages.renamePlaceholder, { designName: designToRename })}
+              placeholder={formatMessage(messages.renamePlaceholder, {
+                designName: designToRename
+              })}
               onChange={this.handleInputChange}
               maxLength={15}
             />
