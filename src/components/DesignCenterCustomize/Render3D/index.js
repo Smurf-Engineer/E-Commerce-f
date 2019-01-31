@@ -1890,7 +1890,6 @@ class Render3D extends PureComponent {
           }
           break
         case ROTATE_ACTION:
-          activeEl.setCoords()
           const intersects = this.getIntersects(
             this.onClickPosition,
             this.scene.children
