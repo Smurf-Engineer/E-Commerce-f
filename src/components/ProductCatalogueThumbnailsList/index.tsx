@@ -57,6 +57,7 @@ interface Props {
   currentPage: number
   limit?: number
   designs?: DesignType[]
+  setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   onPressPrivate?: (id: string, isPrivate: boolean) => void
   onPressDelete?: (id: string, name: string) => void
   onPressRename?: (id: string, name: string) => void
@@ -76,9 +77,9 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
       handleOrderBy,
       data,
       designs,
-      onPressPrivate = () => { },
-      onPressDelete = () => { },
-      onPressRename = () => { },
+      onPressPrivate = () => {},
+      onPressDelete = () => {},
+      onPressRename = () => {},
       withoutPadding,
       currentCurrency,
       genderFilters
@@ -144,6 +145,13 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                         {formatMessage(
                           !proDesign ? messages.edit : messages.preview
                         )}
+                      </ActionButton>
+                    </ButtonContainer>
+                    <ButtonContainer>
+                      <ActionButton
+                        onClick={this.setShare(shortId as string, true)}
+                      >
+                        {formatMessage(messages.share)}
                       </ActionButton>
                     </ButtonContainer>
                   </ButtonsContainer>
@@ -232,10 +240,10 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
         catalogue.length > 0 ? (
           <ThumbnailsList>{thumbnailsList}</ThumbnailsList>
         ) : (
-            <NoResultsFound>
-              {formatMessage(messages.emptyResults)}
-            </NoResultsFound>
-          )
+          <NoResultsFound>
+            {formatMessage(messages.emptyResults)}
+          </NoResultsFound>
+        )
 
       sortOptions = (
         <Menu style={MenuStyle} onClick={handleOrderBy}>
@@ -291,14 +299,17 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
     const { history } = this.props
     history.push(`/design-center?designId=${designId}`)
   }
-
+  setShare = (shortId: string, openModal: boolean) => () => {
+    const { setCurrentShare } = this.props
+    setCurrentShare(shortId, openModal)
+  }
   handlePressQuickView = (id: number, yotpoId: string) => {
     const { openQuickView } = this.props
     openQuickView(id, yotpoId)
   }
 
   // TODO: Handle add to cart
-  handleOnPressAddToCart = (id: number) => { }
+  handleOnPressAddToCart = (id: number) => {}
 }
 
 type OwnProps = {

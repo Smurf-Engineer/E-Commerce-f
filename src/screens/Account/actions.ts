@@ -8,7 +8,8 @@ import {
   SET_DEFAULT_SCREEN,
   CLEAR_REDUCER,
   SET_IS_MOBILE,
-  OPEN_SIDEBAR_MOBILE
+  OPEN_SIDEBAR_MOBILE,
+  SET_CURRENT_SHARE
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -34,6 +35,15 @@ export const setDefaultScreenAction = (
 export const setCurrentScreenAction = (screen: string) => ({
   type: SET_CURRENT_SCREEN,
   screen
+})
+
+export const setCurrentShare = (
+  savedDesignId: string,
+  openShareModal: boolean
+) => ({
+  type: SET_CURRENT_SHARE,
+  savedDesignId,
+  openShareModal
 })
 
 export const clearReducerAction = (): AnyAction => ({
