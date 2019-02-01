@@ -696,14 +696,12 @@ class Render3D extends PureComponent {
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
-          console.log('yes')
           const canvasConfig = {
             width: CANVAS_SIZE,
             height: CANVAS_SIZE,
             crossOrigin: 'Anonymous',
             selection: false,
-            skipTargetFind: true,
-            imageSmoothingEnabled: true
+            skipTargetFind: true
           }
           if (isMobile) {
             this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
@@ -1856,7 +1854,6 @@ class Render3D extends PureComponent {
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl
-          console.log(activeEl.scaleX)
           const {
             oldScale: { oldScaleX = 1, oldScaleY = 1 }
           } = this.state
