@@ -54,7 +54,6 @@ export const isMouseOver = (bb, uv) => {
 
 export const clickOnCorner = (corners = {}, uv = {}) => {
   const point = { x: uv.x * CANVAS_SIZE, y: (1 - uv.y) * CANVAS_SIZE }
-
   for (let corner in actionButtons) {
     const isOnCorner = isPointInsideOfIcon(corners[corner].corner, point)
     if (isOnCorner) {
