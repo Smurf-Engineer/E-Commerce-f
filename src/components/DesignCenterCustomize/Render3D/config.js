@@ -1,7 +1,7 @@
 /**
  * ThreeJs config
  */
-export const CANVAS_SIZE = 1024
+export const CANVAS_SIZE = 2048
 export const WARNING_FACTOR = 0.2
 export const NUMBER_OF_DECIMALS = 3
 export const CENTER_ORIGIN = 'center'
@@ -56,7 +56,7 @@ export const viewPositions = {
 export const fabricJsConfig = {
   settings: {
     borderColor: 'black',
-    cornerSize: 30
+    cornerSize: 40
   },
   tl: {
     icon: 'delete.svg'
