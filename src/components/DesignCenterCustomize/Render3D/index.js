@@ -696,12 +696,14 @@ class Render3D extends PureComponent {
           const canvas = document.createElement('canvas')
           canvas.width = CANVAS_SIZE
           canvas.height = CANVAS_SIZE
+          console.log('yes')
           const canvasConfig = {
             width: CANVAS_SIZE,
             height: CANVAS_SIZE,
             crossOrigin: 'Anonymous',
             selection: false,
-            skipTargetFind: true
+            skipTargetFind: true,
+            imageSmoothingEnabled: true
           }
           if (isMobile) {
             this.canvasTexture = new fabric.StaticCanvas(canvas, canvasConfig)
@@ -1534,7 +1536,6 @@ class Render3D extends PureComponent {
       txtEl = new fabric.Text(text, {
         id,
         hasRotatingPoint: false,
-        centeredScaling: this.showResolutionWarningModal,
         fontSize: 50,
         scaleX: 1.0,
         scaleY: 1.0,
@@ -1554,6 +1555,7 @@ class Render3D extends PureComponent {
       if (!idElement) {
         this.canvasTexture.setActiveObject(txtEl)
       }
+
       this.canvasTexture.renderAll()
       let activeElementId
       if (activeEl && activeEl.type === CanvasElements.Text) {
@@ -1854,6 +1856,7 @@ class Render3D extends PureComponent {
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl
+          console.log(activeEl.scaleX)
           const {
             oldScale: { oldScaleX = 1, oldScaleY = 1 }
           } = this.state
