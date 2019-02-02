@@ -90,3 +90,19 @@ export const LockContainer = styled.div`
   display: inline-block;
   font-size: 20px;
 `
+
+export const CustomButton = styled.div`
+  padding: 5px;
+  border: 1px solid ${GRAY_DARK};
+  border-radius: 4px;
+  justify-content: center;
+  width: 200px;
+  margin-top: 22px;
+  display: inline-flex;
+  cursor: pointer;
+  transition: background 0.4s ease, color 0.3s ease;
+  &:hover {
+    background: ${GRAY_DARK}
+    color: ${WHITE}
+  }
+`

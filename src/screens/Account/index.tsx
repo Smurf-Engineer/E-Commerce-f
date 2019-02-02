@@ -31,6 +31,7 @@ import {
 } from './constants'
 import Layout from '../../components/MainLayout'
 import Overview from '../../components/Overview'
+import ShareDesignModal from '../../components/ShareDesignModal'
 import OrderHistory from '../../components/OrderHistory'
 import MyAddresses from '../../components/MyAddresses'
 import MyCards from '../../components/MyCards'
@@ -58,11 +59,13 @@ interface Props extends RouteComponentProps<any> {
   intl: InjectedIntl
   openKeys: string[]
   screen: string
+  savedDesignId: string
   defaultScreen: string
   isMobile: boolean
   fakeWidth: number
   openSidebar: boolean
   client: any
+  openShareModal: boolean
   currentCurrency: string
   showTeamStores: boolean
   // Redux actions
@@ -70,6 +73,7 @@ interface Props extends RouteComponentProps<any> {
   setOpenKeysAction: (keys: string[]) => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
+  setCurrentShare: (savedDesignId: string, openShareModal: boolean) => void
   openQuickViewAction: (id: number, yotpoId: string | null) => void
   clearReducerAction: () => void
   setIsMobileAction: (isMobile: boolean) => void
@@ -138,7 +142,10 @@ export class Account extends React.Component<Props, {}> {
     const { openSidebar, openSidebarMobile } = this.props
     openSidebarMobile(!openSidebar)
   }
-
+  handleRequestCloseShare = () => {
+    const { setCurrentShare } = this.props
+    setCurrentShare('', false)
+  }
   onLogout = () => {
     const {
       logoutAction: logout,
@@ -156,7 +163,8 @@ export class Account extends React.Component<Props, {}> {
       history,
       openQuickViewAction: openQuickView,
       currentCurrency,
-      showTeamStores
+      showTeamStores,
+      setCurrentShare
     } = this.props
     switch (screen) {
       case OVERVIEW:
@@ -180,7 +188,11 @@ export class Account extends React.Component<Props, {}> {
           showTeamStores && <MyTeamStores {...{ history, formatMessage }} />
         )
       case SCREEN_LOCKER:
-        return <MyLocker {...{ openQuickView, formatMessage, history }} />
+        return (
+          <MyLocker
+            {...{ setCurrentShare, openQuickView, formatMessage, history }}
+          />
+        )
       case MY_FILES:
         return <MyFiles {...{ history, formatMessage }} />
       default:
@@ -197,7 +209,9 @@ export class Account extends React.Component<Props, {}> {
       defaultScreen,
       fakeWidth,
       openSidebar,
-      showTeamStores
+      showTeamStores,
+      openShareModal,
+      savedDesignId
     } = this.props
     remove(
       options,
@@ -320,6 +334,11 @@ export class Account extends React.Component<Props, {}> {
                     </ScreenTitle>
                     {currentScreen}
                   </Content>
+                  <ShareDesignModal
+                    open={openShareModal}
+                    requestClose={this.handleRequestCloseShare}
+                    {...{ formatMessage: intl.formatMessage, savedDesignId }}
+                  />
                 </Container>
               </Layout>
             )

@@ -80,6 +80,7 @@ interface Props {
   setSearchClipParamAction: (searchParam: string) => void
   onTabClick: (selectedIndex: number) => void
   onLockElement: (id: string, type: string) => void
+  openLoginModalAction: (open: boolean, callback?: boolean) => void
 }
 
 const Tabs = ({
@@ -127,7 +128,8 @@ const Tabs = ({
   disableTooltip = false,
   selectedTab,
   onTabClick,
-  onLockElement
+  onLockElement,
+  openLoginModalAction
 }: Props) => {
   return (
     <Container>
@@ -204,7 +206,8 @@ const Tabs = ({
               images,
               uploadingFile,
               isUserAuthenticated,
-              onLockElement
+              onLockElement,
+              openLoginModalAction
             }}
             selectedElement={canvas.image[selectedElement]}
             selectedItem={
