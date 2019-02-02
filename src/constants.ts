@@ -18,7 +18,7 @@ export const GRIP_TAPE = 'FINAL Grip_Tape'
 export const SOLAR_BIB_BRACE = 'FINAL Solar_Bib_Brace'
 export const DPI = 96
 export const CM_PER_INCH = 2.54
-export const CANVAS_SIZE = 2024
+export const CANVAS_SIZE = 1024
 
 export const PHONE_FIELD = 'phone'
 
