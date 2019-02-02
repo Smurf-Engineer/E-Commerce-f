@@ -20,6 +20,22 @@ export const Container = styled.section`
 export const Text = styled.div`
   color: #fff;
 `
+export const BuyNow = styled.div`
+  font-size: 10px;
+  border: 1px solid #51ce04;
+  color: #51ce04;
+  padding: 2px 4px;
+  margin-left: 2px;
+  letter-spacing: 1px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    background: #51ce04;
+    color: white;
+    transition: all 0.2s ease;
+  }
+`
 export const ImageContainer = styled.div`
   user-select: none;
   cursor: pointer;
@@ -152,4 +168,5 @@ export const Arrow = styled.img`
 
 export const RetailColors = styled.div`
   display: flex;
+  align-items: center;
 `

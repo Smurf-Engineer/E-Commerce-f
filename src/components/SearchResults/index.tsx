@@ -94,6 +94,7 @@ export class SearchResults extends React.Component<Props, {}> {
               onPressCustomize={this.gotoCustomize}
               onPressThumbnail={closeResults}
               images={productImages}
+              product={product}
               onPressQuickView={quickViewAction}
               reversePriceRange={true}
               customizableLabel={
@@ -116,8 +117,7 @@ export class SearchResults extends React.Component<Props, {}> {
       <AnimateHeight duration={500} height={showResults ? 'auto' : 0}>
         <Container>
           <TitleContainer>
-            <Text
-            >{`We Found ${totalProducts} Items with "${searchParam}"`}</Text>
+            <Text>{`We Found ${totalProducts} Items with "${searchParam}"`}</Text>
             <CloseImg src={CloseIcon} alt="close" onClick={closeResults} />
           </TitleContainer>
           <Results>{list}</Results>

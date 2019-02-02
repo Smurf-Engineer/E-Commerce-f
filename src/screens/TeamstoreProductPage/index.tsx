@@ -442,6 +442,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
         yotpoId={item.design.product.yotpoId}
         teamStoreShortId={storeId}
         key={index}
+        product={item}
         image={item.design.image}
         hideCustomButton={true}
         hideQuickView={true}

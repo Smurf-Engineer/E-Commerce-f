@@ -6,7 +6,7 @@ import find from 'lodash/find'
 import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
-
+import ColorPicker from './ColorPicker'
 import messages from './messages'
 import {
   Table,
@@ -26,7 +26,8 @@ import {
   FitStyle,
   Filter,
   SizeFilter,
-  CartItems
+  CartItems,
+  ProductColors
 } from '../../types/common'
 
 const Option = Select.Option
@@ -58,6 +59,11 @@ interface Props {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setDetailColor: (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
   ) => void
   setDetailSize: (
     index: number,
@@ -178,7 +184,10 @@ class CartListItemTable extends React.Component<Props, State> {
       handledeleteItemDetail(event, itemIndex, index)
     }
   }
-
+  handleColorChange = (color: ProductColors, detail: number) => {
+    const { setDetailColor, itemIndex } = this.props
+    setDetailColor(itemIndex, detail, color)
+  }
   render() {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
@@ -252,9 +261,15 @@ class CartListItemTable extends React.Component<Props, State> {
                   {genderOptions}
                 </StyledSelect>
               </Cell>
-              {((withColorColumn && !!colorObject) || colorImage) && (
+              {((withColorColumn && !!colorObject) ||
+                colorImage ||
+                color === 'unset') && (
                 <Cell>
-                  <ProductColor src={colorImage || colorObject.image} />
+                  <ColorPicker
+                    selectedColor={colorObject.id}
+                    onSelectColor={e => this.handleColorChange(e, index)}
+                    productColors={colors}
+                  />
                 </Cell>
               )}
               <Cell>

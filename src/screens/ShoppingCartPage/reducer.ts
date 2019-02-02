@@ -16,6 +16,7 @@ import {
   SET_TOTAL_ACTION,
   SET_SUBTOTAL_ACTION,
   SET_SHIPPING_ACTION,
+  SET_COLOR_ITEM_DETAIL_ACTION,
   SHOW_DELETE_LAST_ITEM_MODAL,
   RESET_REDUCER_DATA,
   SHOW_REVIEW_DESIGN_MODAL
@@ -76,6 +77,14 @@ const shoppingCartPageReducer: Reducer<any> = (
         ['cart', action.index, 'itemDetails', action.detailIndex],
         (detailItem: any) => {
           const updateItem = detailItem.set('gender', action.gender)
+          return updateItem
+        }
+      )
+    case SET_COLOR_ITEM_DETAIL_ACTION:
+      return state.updateIn(
+        ['cart', action.index, 'itemDetails', action.detailIndex],
+        (detailItem: any) => {
+          const updateItem = detailItem.set('color', action.color)
           return updateItem
         }
       )
