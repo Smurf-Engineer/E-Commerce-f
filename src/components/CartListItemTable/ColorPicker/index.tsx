@@ -43,7 +43,7 @@ class ColorPicker extends React.PureComponent<Props> {
         <Color
           id={selected.name}
           src={selected.image}
-          onClick={this.openColors(true)}
+          onClick={this.openColors(!opened)}
         />
         <ColorModal selected={opened}>{colorsList}</ColorModal>
       </Container>

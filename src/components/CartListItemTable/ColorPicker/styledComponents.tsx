@@ -42,14 +42,14 @@ export const ColorModal = styled.div`
   text-align: center;
   overflow: overlay;
   display: flex;
-  position: absolute;
+  position: relative;
   transition: all 0.25s ease;
   flex-flow: row;
   background: white;
   padding: 8px;
   box-shadow: 0px 2px 6px -2px black;
   border-radius: 8px;
-  bottom: 72px;
+  margin-bottom: -70px;
   z-index: 2;
   opacity: ${({ selected }: ColorProps) => (selected ? '1' : '0')};
 `
