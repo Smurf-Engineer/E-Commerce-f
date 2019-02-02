@@ -1487,7 +1487,8 @@ class Render3D extends PureComponent {
           src: fileUrl,
           scaleX,
           scaleY,
-          lock: false
+          lock: false,
+          cornerOutside: true
         }
         position.scaleX = scaleX
         position.scaleY = scaleY
@@ -1537,7 +1538,8 @@ class Render3D extends PureComponent {
         scaleX: 1.0,
         scaleY: 1.0,
         ...position,
-        ...style
+        ...style,
+        cornerOutside: true
       })
       if (rotation) {
         const { constraintPosition, angle } = rotation
@@ -1551,6 +1553,7 @@ class Render3D extends PureComponent {
       if (!idElement) {
         this.canvasTexture.setActiveObject(txtEl)
       }
+
       this.canvasTexture.renderAll()
       let activeElementId
       if (activeEl && activeEl.type === CanvasElements.Text) {
@@ -1608,7 +1611,8 @@ class Render3D extends PureComponent {
           fileUrl: src,
           hasRotatingPoint: false,
           ...position,
-          ...style
+          ...style,
+          cornerOutside: true
         }
 
         const scaleX = position.scaleX || scaleFactorX
@@ -2213,11 +2217,9 @@ class Render3D extends PureComponent {
     const lastDist =
       (dim.y * original.scaleY) / el.scaleY +
       (dim.x * original.scaleX) / el.scaleX
-    const signX = localMouse.x < 0 ? -1 : 1
-    const signY = localMouse.y < 0 ? -1 : 1
 
-    const scaleX = signX * Math.abs((currentTransform.scaleX * dist) / lastDist)
-    const scaleY = signY * Math.abs((currentTransform.scaleY * dist) / lastDist)
+    const scaleX = Math.abs((currentTransform.scaleX * dist) / lastDist)
+    const scaleY = Math.abs((currentTransform.scaleY * dist) / lastDist)
     el.set({ scaleX, scaleY })
     el.setPositionByOrigin(
       constraintPosition,
