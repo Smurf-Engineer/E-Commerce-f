@@ -53,7 +53,7 @@ import {
   MESH_NAME,
   CANVAS_MESH,
   BRANDING_MESH,
-  CANVAS_SIZE,
+  REGULAR_CANVAS,
   BIB_BRACE_NAME,
   ZIPPER_NAME,
   BINDING_NAME,
@@ -68,7 +68,8 @@ import {
   INITIAL_ZOOM_MOBILE,
   THUMBNAIL_ZOOM,
   CAMERA_MIN_ZOOM,
-  CAMERA_MAX_ZOOM
+  CAMERA_MAX_ZOOM,
+  HIGH_RESOLUTION_CANVAS
 } from './config'
 import {
   MESH,
@@ -583,6 +584,10 @@ class Render3D extends PureComponent {
           const { children } = object
           const objectChildCount = children.length
           const { width, height } = currentStyle
+          const CANVAS_SIZE =
+            isEditing && !design.highResolution
+              ? REGULAR_CANVAS
+              : HIGH_RESOLUTION_CANVAS
           const scaleFactorX = CANVAS_SIZE / width
           const scaleFactorY = CANVAS_SIZE / height
           this.setState({ scaleFactorX, scaleFactorY, objectChildCount })
@@ -1840,6 +1845,7 @@ class Render3D extends PureComponent {
   }
 
   onMouseUp = evt => {
+    const { isEditing, design } = this.props
     evt.preventDefault()
     document.getElementById('render-3d').style.cursor = 'grab'
     const action = this.dragComponent && this.dragComponent.action
@@ -1847,6 +1853,12 @@ class Render3D extends PureComponent {
     if (CHANGE_ACTIONS.includes(action)) {
       const activeEl = this.canvasTexture.getActiveObject() || {}
       const { id } = activeEl
+
+      const CANVAS_SIZE =
+        isEditing && !design.highResolution
+          ? REGULAR_CANVAS
+          : HIGH_RESOLUTION_CANVAS
+
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl
@@ -1923,14 +1935,23 @@ class Render3D extends PureComponent {
   onMouseDown = evt => {
     evt.preventDefault()
     document.getElementById('render-3d').style.cursor = 'grabbing'
+
     if (!this.canvasTexture) {
       return
     }
     const {
       responsive: { tablet },
       selectedElement,
-      canvas
+      canvas,
+      isEditing,
+      design
     } = this.props
+
+    const CANVAS_SIZE =
+      isEditing && !design.highResolution
+        ? REGULAR_CANVAS
+        : HIGH_RESOLUTION_CANVAS
+
     let clientX = evt.clientX
     let clientY = evt.clientY
     if (tablet) {
@@ -1996,7 +2017,7 @@ class Render3D extends PureComponent {
             canvas.image[selectedElement] ||
             canvas.path[selectedElement] ||
             canvas.text[selectedElement]
-          const action = clickOnCorner(activeEl.oCoords, uv)
+          const action = clickOnCorner(activeEl.oCoords, uv, CANVAS_SIZE)
           if (
             action &&
             selectedGraphicElement &&
@@ -2067,7 +2088,7 @@ class Render3D extends PureComponent {
         let allDeactive = true
         this.canvasTexture.forEachObject(el => {
           const boundingBox = el.getBoundingRect()
-          const isInside = isMouseOver(boundingBox, uv)
+          const isInside = isMouseOver(boundingBox, uv, CANVAS_SIZE)
           if (isInside) {
             allDeactive = false
             onSelectEl(el.id, el.get('type'))
@@ -2118,10 +2139,18 @@ class Render3D extends PureComponent {
     const {
       responsive: { tablet },
       canvas,
-      selectedElement
+      selectedElement,
+      isEditing,
+      design
     } = this.props
     let clientX = evt.clientX
     let clientY = evt.clientY
+
+    const CANVAS_SIZE =
+      isEditing && !design.highResolution
+        ? REGULAR_CANVAS
+        : HIGH_RESOLUTION_CANVAS
+
     if (tablet) {
       clientX = evt.targetTouches[0]
         ? evt.targetTouches[0].pageX

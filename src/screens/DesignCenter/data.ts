@@ -67,6 +67,7 @@ export const getDesignQuery = gql`
       image
       createdAt: created_at
       code
+      highResolution: high_resolution
       colors {
         id
         color
