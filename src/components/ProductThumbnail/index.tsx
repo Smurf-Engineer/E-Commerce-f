@@ -163,7 +163,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       { designCode: '' },
       { teamStoreId: '' }
     )
-    await saveInLocalStorage(itemToAdd, history)()
+    await saveInLocalStorage(itemToAdd, history)
   }
   render() {
     const {
