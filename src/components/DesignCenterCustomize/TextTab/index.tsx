@@ -125,6 +125,7 @@ export class TextTab extends React.PureComponent<Props, State> {
               onClick={this.changePage(1, 2)}
               title={formatMessage(messages.outline)}
               color={!!textFormat && textFormat.stroke}
+              selected={!!textFormat.strokeWidth}
             />
             <OptionText
               title={formatMessage(messages.alignment)}
