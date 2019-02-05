@@ -20,8 +20,9 @@ import {
   RetailColors
 } from './styledComponents'
 import messages from './messages'
-import { Product, CartItems } from '../../types/common'
+import { Product } from '../../types/common'
 import ImageSlide from './ProductSlide'
+import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
@@ -139,24 +140,8 @@ class ProductThumbnail extends React.Component<Props, {}> {
     }
     history.push(this.getUrlProduct())
   }
-  saveInLocalStorage = (item: CartItems) => {
-    const { history } = this.props
-    if (typeof window !== 'undefined') {
-      const cartList = JSON.parse(localStorage.getItem('cart') as any)
-
-      if (cartList) {
-        cartList.push(item)
-        localStorage.setItem('cart', JSON.stringify(cartList))
-      } else {
-        const myItems = []
-        myItems.push(item)
-        localStorage.setItem('cart', JSON.stringify(myItems))
-      }
-      history.push('/shopping-cart')
-    }
-  }
   handleOnBuyNow = async () => {
-    const { product } = this.props
+    const { product, history } = this.props
     const details = [
       {
         fit: get(product, 'fitStyles[0]', ''),
@@ -178,7 +163,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       { designCode: '' },
       { teamStoreId: '' }
     )
-    this.saveInLocalStorage(itemToAdd)
+    await saveInLocalStorage(itemToAdd, history)()
   }
   render() {
     const {
