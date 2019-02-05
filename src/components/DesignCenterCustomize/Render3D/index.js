@@ -69,7 +69,9 @@ import {
   THUMBNAIL_ZOOM,
   CAMERA_MIN_ZOOM,
   CAMERA_MAX_ZOOM,
-  HIGH_RESOLUTION_CANVAS
+  HIGH_RESOLUTION_CANVAS,
+  REGULAR_CORNER_SIZE,
+  HIGH_RESOLUTION_CORNER_SIZE
 } from './config'
 import {
   MESH,
@@ -205,6 +207,10 @@ class Render3D extends PureComponent {
   }
 
   componentDidMount() {
+    const { isEditing, design } = this.props
+    isEditing && !design.highResolution
+      ? (fabricJsConfig.settings.cornerSize = REGULAR_CORNER_SIZE)
+      : (fabricJsConfig.settings.cornerSize = HIGH_RESOLUTION_CORNER_SIZE)
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
     const { isMobile } = this.props
@@ -1146,16 +1152,25 @@ class Render3D extends PureComponent {
 
   takeDesignPicture = (automaticSave = false) => {
     const { isUserAuthenticated, openLoginAction } = this.props
+
     if (!isUserAuthenticated) {
       openLoginAction(true)
       return
     }
     if (this.renderer) {
-      const { onOpenSaveDesign, currentStyle, isMobile } = this.props
+      const {
+        onOpenSaveDesign,
+        currentStyle,
+        isMobile,
+        isEditing,
+        design
+      } = this.props
       if (!isMobile) {
         this.canvasTexture.discardActiveObject()
         this.canvasTexture.renderAll()
       }
+      const highResolution = !isEditing && design.hasHighResolution
+
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
       this.cameraUpdate(viewPosition)
@@ -1167,7 +1182,8 @@ class Render3D extends PureComponent {
           const saveDesign = {
             canvasJson,
             designBase64,
-            styleId: currentStyle.id
+            styleId: currentStyle.id,
+            highResolution
           }
           onOpenSaveDesign(true, saveDesign, automaticSave)
         }, 200)
@@ -1556,6 +1572,7 @@ class Render3D extends PureComponent {
       if (!idElement) {
         this.canvasTexture.setActiveObject(txtEl)
       }
+
       this.canvasTexture.renderAll()
       let activeElementId
       if (activeEl && activeEl.type === CanvasElements.Text) {
@@ -1858,7 +1875,6 @@ class Render3D extends PureComponent {
         isEditing && !design.highResolution
           ? REGULAR_CANVAS
           : HIGH_RESOLUTION_CANVAS
-
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl
@@ -2242,11 +2258,9 @@ class Render3D extends PureComponent {
     const lastDist =
       (dim.y * original.scaleY) / el.scaleY +
       (dim.x * original.scaleX) / el.scaleX
-    const signX = localMouse.x < 0 ? -1 : 1
-    const signY = localMouse.y < 0 ? -1 : 1
 
-    const scaleX = signX * Math.abs((currentTransform.scaleX * dist) / lastDist)
-    const scaleY = signY * Math.abs((currentTransform.scaleY * dist) / lastDist)
+    const scaleX = Math.abs((currentTransform.scaleX * dist) / lastDist)
+    const scaleY = Math.abs((currentTransform.scaleY * dist) / lastDist)
     el.set({ scaleX, scaleY })
     el.setPositionByOrigin(
       constraintPosition,
