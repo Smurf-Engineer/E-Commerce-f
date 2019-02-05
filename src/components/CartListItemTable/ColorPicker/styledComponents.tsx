@@ -42,6 +42,8 @@ export const ColorModal = styled.div`
   text-align: center;
   overflow: overlay;
   display: flex;
+  visibility: ${({ selected }: ColorProps) =>
+    selected ? 'visible' : 'hidden'};
   position: relative;
   transition: all 0.25s ease;
   flex-flow: row;

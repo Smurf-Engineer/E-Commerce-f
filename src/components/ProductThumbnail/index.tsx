@@ -159,10 +159,10 @@ class ProductThumbnail extends React.Component<Props, {}> {
     const { product } = this.props
     const details = [
       {
-        fit: get(product, 'fitStyles[0]'),
-        size: get(product, 'sizeRange[0]'),
-        gender: get(product, 'genders[0]'),
-        color: get(product, 'colors[0]'),
+        fit: get(product, 'fitStyles[0]', ''),
+        size: get(product, 'sizeRange[0]', ''),
+        gender: get(product, 'genders[0]', ''),
+        color: get(product, 'colors[0]', ''),
         quantity: 1
       }
     ]

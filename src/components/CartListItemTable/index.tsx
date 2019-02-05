@@ -261,9 +261,7 @@ class CartListItemTable extends React.Component<Props, State> {
                   {genderOptions}
                 </StyledSelect>
               </Cell>
-              {((withColorColumn && !!colorObject) ||
-                colorImage ||
-                color === 'unset') && (
+              {((withColorColumn && !!colorObject) || colorImage) && (
                 <Cell>
                   <ColorPicker
                     selectedColor={colorObject.id}

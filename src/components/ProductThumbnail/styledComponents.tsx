@@ -33,7 +33,6 @@ export const BuyNow = styled.div`
   &:hover {
     background: #51ce04;
     color: white;
-    transition: all 0.2s ease;
   }
 `
 export const ImageContainer = styled.div`
