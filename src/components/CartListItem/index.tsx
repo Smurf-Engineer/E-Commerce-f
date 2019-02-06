@@ -24,7 +24,12 @@ import {
 import get from 'lodash/get'
 import filter from 'lodash/filter'
 import CartListItemTable from '../../components/CartListItemTable'
-import { PriceRange, ItemDetailType, CartItems } from '../../types/common'
+import {
+  PriceRange,
+  ItemDetailType,
+  CartItems,
+  ProductColors
+} from '../../types/common'
 import messages from '../ProductInfo/messages'
 import cartListItemMsgs from './messages'
 import { FormattedMessage } from 'react-intl'
@@ -63,6 +68,11 @@ interface Props {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setDetailColor?: (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
   ) => void
   setDetailSize?: (
     index: number,
@@ -196,6 +206,7 @@ class CartListItem extends React.Component<Props, {}> {
       setDetailQuantity = () => {},
       setDetailFit = () => {},
       setDetailGender = () => {},
+      setDetailColor = () => {},
       setDetailSize = () => {},
       removeItem = () => {}
     } = this.props
@@ -243,6 +254,7 @@ class CartListItem extends React.Component<Props, {}> {
           formatMessage,
           handledeleteItemDetail,
           itemIndex,
+          setDetailColor,
           setLabelItemDetail,
           setDetailQuantity,
           setDetailFit,

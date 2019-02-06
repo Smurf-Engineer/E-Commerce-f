@@ -118,6 +118,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 id={product.id}
                 yotpoId={product.yotpoId}
                 designId={shortId}
+                product={product}
                 backgroundColor={GRAY_LIGHTEST}
                 footer={
                   <FooterThumbnailLocker
@@ -212,6 +213,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                 onPressCustomize={this.gotoDesignCenter}
                 onPressQuickView={this.handlePressQuickView}
                 images={productImages}
+                product={product}
                 customizableLabel={formatMessage(messages.customizable)}
                 {...{
                   currentCurrency,

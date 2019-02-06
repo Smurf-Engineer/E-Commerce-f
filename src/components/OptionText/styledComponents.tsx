@@ -63,3 +63,11 @@ export const Icon = styled.img`
 export const RowContent = styled.span`
   display: inline-flex;
 `
+export const CrossLine = styled.div`
+  display: block;
+  background: red;
+  width: 2px;
+  height: 100%;
+  margin: 0 auto;
+  transform: rotate(45deg);
+`

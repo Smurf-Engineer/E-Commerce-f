@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { withRouter } from 'react-router'
 import { compose } from 'react-apollo'
+import { FormattedMessage } from 'react-intl'
 import filter from 'lodash/filter'
 import get from 'lodash/get'
 import {
@@ -14,10 +15,14 @@ import {
   InfoContainer,
   Label,
   Price,
+  BuyNow,
   ImgIcon,
   RetailColors
 } from './styledComponents'
+import messages from './messages'
+import { Product } from '../../types/common'
 import ImageSlide from './ProductSlide'
+import { saveInLocalStorage } from './api'
 import { ImageType, PriceRange, ProductColors } from '../../types/common'
 import colorWheelIcon from '../../assets/Colorwheel.svg'
 
@@ -27,6 +32,7 @@ const WHITENAME = 'White'
 interface Props {
   id: number
   type?: string
+  product: Product
   images?: ImageType
   image?: string
   description?: string
@@ -134,7 +140,31 @@ class ProductThumbnail extends React.Component<Props, {}> {
     }
     history.push(this.getUrlProduct())
   }
-
+  handleOnBuyNow = async () => {
+    const { product, history } = this.props
+    const details = [
+      {
+        fit: get(product, 'fitStyles[0]', ''),
+        size: get(product, 'sizeRange[0]', ''),
+        gender: get(product, 'genders[0]', ''),
+        color: get(product, 'colors[0]', ''),
+        quantity: 1
+      }
+    ]
+    const itemToAdd = Object.assign(
+      {},
+      { product },
+      {
+        itemDetails: details
+      },
+      { designId: '' },
+      { designName: '' },
+      { designImage: '' },
+      { designCode: '' },
+      { teamStoreId: '' }
+    )
+    await saveInLocalStorage(itemToAdd, history)
+  }
   render() {
     const {
       type,
@@ -203,7 +233,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
         {customizableLabel}
       </Label>
     ) : (
-      <RetailColors>{colorList}</RetailColors>
+      <RetailColors>
+        {colorList}
+        <BuyNow onClick={this.handleOnBuyNow}>
+          <FormattedMessage {...messages.buyNow} />
+        </BuyNow>
+      </RetailColors>
     )
     return (
       <Container>

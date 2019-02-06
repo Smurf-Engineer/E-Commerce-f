@@ -63,6 +63,7 @@ export class RelatedProducts extends React.Component<Props, {}> {
             colors
           }}
           images={productImages}
+          product={product}
           onPressQuickView={this.handleOnQuickView}
           onPressCustomize={this.handleOnCustomize}
           onPressThumbnail={this.handlePressThumbnail(id, yotpoId)}
