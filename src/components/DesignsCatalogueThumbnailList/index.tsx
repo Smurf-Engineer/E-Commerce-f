@@ -111,6 +111,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
             <ThumbnailListItem key={index}>
               <ProductThumbnail
                 id={shortId}
+                product={product}
                 yotpoId={product.yotpoId}
                 footer={
                   <FooterThumbnailTeamStore
@@ -176,6 +177,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
                 id={product.id}
                 yotpoId={product.yotpoId}
                 type={product.type}
+                product={product}
                 description={product.description}
                 isTopProduct={product.isTopProduct}
                 onPressCustomize={this.gotoDesignCenter}

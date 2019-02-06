@@ -10,6 +10,7 @@ import {
   Circle,
   Row,
   Icon,
+  CrossLine,
   RowContent
 } from './styledComponents'
 
@@ -18,10 +19,18 @@ interface Props {
   option?: string
   color?: string | null
   onClick?: () => void
+  selected?: boolean
   content?: JSX.Element
 }
 
-const OptionText = ({ title, option, color, onClick, content }: Props) => {
+const OptionText = ({
+  title,
+  selected = true,
+  option,
+  color,
+  onClick,
+  content
+}: Props) => {
   return (
     <Container {...{ onClick }}>
       <Title>{title}</Title>
@@ -29,7 +38,12 @@ const OptionText = ({ title, option, color, onClick, content }: Props) => {
         {content || (
           <RowContent>
             {!color && <Option>{option}</Option>}
-            {color && <Circle {...{ color }} />}
+            {color && selected && <Circle {...{ color }} />}
+            {color && !selected && (
+              <Circle color="white">
+                <CrossLine />
+              </Circle>
+            )}
             <Icon src={rightArrow} />
           </RowContent>
         )}

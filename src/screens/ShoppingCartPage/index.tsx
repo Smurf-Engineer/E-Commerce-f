@@ -42,7 +42,12 @@ import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
 
 import Ordersummary from '../../components/OrderSummary'
-import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
+import {
+  Product,
+  CartItemDetail,
+  ItemDetailType,
+  ProductColors
+} from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
 import CustomModal from '../../components/Common/JakrooModal'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -80,6 +85,11 @@ interface Props extends RouteComponentProps<any> {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setColorItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
   ) => void
   setSizeItemDetailAction: (
     index: number,
@@ -207,6 +217,14 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { setGenderItemDetailAction } = this.props
     setGenderItemDetailAction(index, detailIndex, gender)
   }
+  handleSetDetailColor = (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
+  ) => {
+    const { setColorItemDetailAction } = this.props
+    setColorItemDetailAction(index, detailIndex, color)
+  }
 
   handleSetDetailSize = (
     index: number,
@@ -326,6 +344,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setLabelItemDetail={this.handleSetDetailLabel}
           setDetailQuantity={this.handleSetDetailQuantity}
           setDetailFit={this.handleSetDetailFit}
+          setDetailColor={this.handleSetDetailColor}
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}

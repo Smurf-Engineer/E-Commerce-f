@@ -96,6 +96,7 @@ export const ProductHorizontalList = ({
           colors
         }}
         images={productImages}
+        product={product}
         gender={genderId}
         customizableLabel={formatMessage(messages.customizable)}
         labelButton={

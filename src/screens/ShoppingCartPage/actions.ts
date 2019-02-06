@@ -16,10 +16,16 @@ import {
   SET_SUBTOTAL_ACTION,
   SET_SHIPPING_ACTION,
   SHOW_DELETE_LAST_ITEM_MODAL,
+  SET_COLOR_ITEM_DETAIL_ACTION,
   RESET_REDUCER_DATA,
   SHOW_REVIEW_DESIGN_MODAL
 } from './constants'
-import { AnyAction, ItemDetailType, CartItems } from '../../types/common'
+import {
+  AnyAction,
+  ItemDetailType,
+  CartItems,
+  ProductColors
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -65,6 +71,17 @@ export const setGenderItemDetailAction = (
   index,
   detailIndex,
   gender
+})
+
+export const setColorItemDetailAction = (
+  index: number,
+  detailIndex: number,
+  color: ProductColors
+): AnyAction => ({
+  type: SET_COLOR_ITEM_DETAIL_ACTION,
+  index,
+  detailIndex,
+  color
 })
 
 export const setSizeItemDetailAction = (
