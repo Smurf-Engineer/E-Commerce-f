@@ -15,6 +15,7 @@ export const designQuery = gql`
       zipperColor: zipper_color
       proDesign: pro_design
       outputSvg: output_svg
+      highResolution: high_resolution
       colors {
         id
         color

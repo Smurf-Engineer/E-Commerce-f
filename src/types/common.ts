@@ -167,6 +167,7 @@ export type SaveDesignType = {
   canvasSvg: string
   canvasJson: string
   styleId: number
+  highResolution: boolean
 }
 
 export interface SaveDesignData {
