@@ -165,7 +165,6 @@ export class SaveDesign extends React.Component<Props, State> {
       return
     }
     const { designBase64, canvasJson, styleId, highResolution } = design
-
     try {
       const finalDesignName = designName || productMpn
       const designObj: DesignInput = {
@@ -174,7 +173,7 @@ export class SaveDesign extends React.Component<Props, State> {
         image: designBase64,
         styleId,
         canvas: canvasJson,
-        high_resolution: highResolution === null ? true : highResolution
+        high_resolution: highResolution === void 0 ? true : highResolution
       }
 
       /* Accessory colors */
@@ -374,7 +373,7 @@ export class SaveDesign extends React.Component<Props, State> {
                 value={designName}
                 placeholder={formatMessage(messages.placeholder)}
                 onChange={this.handleInputChange}
-                maxLength="15"
+                maxLength={15}
               />
             </InputWrapper>
             {!isMobile && (
