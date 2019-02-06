@@ -208,9 +208,11 @@ class Render3D extends PureComponent {
 
   componentDidMount() {
     const { isEditing, design } = this.props
-    ;(isEditing && design.highResolution) || !isEditing
-      ? (fabricJsConfig.settings.cornerSize = HIGH_RESOLUTION_CORNER_SIZE)
-      : (fabricJsConfig.settings.cornerSize = REGULAR_CORNER_SIZE)
+    const cornerSize =
+      (isEditing && design.highResolution) || !isEditing
+        ? HIGH_RESOLUTION_CORNER_SIZE
+        : REGULAR_CORNER_SIZE
+    fabricJsConfig.settings.cornerSize = cornerSize
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
     const { isMobile } = this.props
