@@ -160,6 +160,7 @@ export type DesignType = {
   outputSvg: string
   canvas: string
   proDesign?: boolean
+  highResolution?: boolean
 }
 
 export type SaveDesignType = {

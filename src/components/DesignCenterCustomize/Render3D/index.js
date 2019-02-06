@@ -208,9 +208,11 @@ class Render3D extends PureComponent {
 
   componentDidMount() {
     const { isEditing, design } = this.props
-    isEditing && !design.highResolution
-      ? (fabricJsConfig.settings.cornerSize = REGULAR_CORNER_SIZE)
-      : (fabricJsConfig.settings.cornerSize = HIGH_RESOLUTION_CORNER_SIZE)
+    const cornerSize =
+      (isEditing && design.highResolution) || !isEditing
+        ? HIGH_RESOLUTION_CORNER_SIZE
+        : REGULAR_CORNER_SIZE
+    fabricJsConfig.settings.cornerSize = cornerSize
     /* Renderer config */
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
     const { isMobile } = this.props
@@ -591,9 +593,9 @@ class Render3D extends PureComponent {
           const objectChildCount = children.length
           const { width, height } = currentStyle
           const CANVAS_SIZE =
-            isEditing && !design.highResolution
-              ? REGULAR_CANVAS
-              : HIGH_RESOLUTION_CANVAS
+            (isEditing && design.hasHighResolution) || !isEditing
+              ? HIGH_RESOLUTION_CANVAS
+              : REGULAR_CANVAS
           const scaleFactorX = CANVAS_SIZE / width
           const scaleFactorY = CANVAS_SIZE / height
           this.setState({ scaleFactorX, scaleFactorY, objectChildCount })
@@ -1169,7 +1171,8 @@ class Render3D extends PureComponent {
         this.canvasTexture.discardActiveObject()
         this.canvasTexture.renderAll()
       }
-      const highResolution = !isEditing && design.hasHighResolution
+      const highResolution =
+        (isEditing && design.hasHighResolution) || !isEditing
 
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
@@ -1872,9 +1875,9 @@ class Render3D extends PureComponent {
       const { id } = activeEl
 
       const CANVAS_SIZE =
-        isEditing && !design.highResolution
-          ? REGULAR_CANVAS
-          : HIGH_RESOLUTION_CANVAS
+        (isEditing && design.hasHighResolution) || !isEditing
+          ? HIGH_RESOLUTION_CANVAS
+          : REGULAR_CANVAS
       switch (action) {
         case SCALE_ACTION:
           const { scaleX, scaleY, type, isClipArtGroup } = activeEl
@@ -1964,9 +1967,9 @@ class Render3D extends PureComponent {
     } = this.props
 
     const CANVAS_SIZE =
-      isEditing && !design.highResolution
-        ? REGULAR_CANVAS
-        : HIGH_RESOLUTION_CANVAS
+      (isEditing && design.hasHighResolution) || !isEditing
+        ? HIGH_RESOLUTION_CANVAS
+        : REGULAR_CANVAS
 
     let clientX = evt.clientX
     let clientY = evt.clientY
@@ -2163,9 +2166,9 @@ class Render3D extends PureComponent {
     let clientY = evt.clientY
 
     const CANVAS_SIZE =
-      isEditing && !design.highResolution
-        ? REGULAR_CANVAS
-        : HIGH_RESOLUTION_CANVAS
+      (isEditing && design.hasHighResolution) || !isEditing
+        ? HIGH_RESOLUTION_CANVAS
+        : REGULAR_CANVAS
 
     if (tablet) {
       clientX = evt.targetTouches[0]

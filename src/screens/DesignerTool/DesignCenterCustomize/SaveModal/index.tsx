@@ -72,7 +72,7 @@ export class SaveModal extends React.Component<Props, {}> {
               value={designName}
               placeholder={formatMessage(messages.placeholder)}
               onChange={this.handleInputChange}
-              maxLength="15"
+              maxLength={15}
             />
           </InputWrapper>
           <ButtonWrapper color="">
