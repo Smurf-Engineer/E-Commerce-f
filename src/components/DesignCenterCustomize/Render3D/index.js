@@ -593,7 +593,7 @@ class Render3D extends PureComponent {
           const objectChildCount = children.length
           const { width, height } = currentStyle
           const CANVAS_SIZE =
-            (isEditing && design.hasHighResolution) || !isEditing
+            (isEditing && design.highResolution) || !isEditing
               ? HIGH_RESOLUTION_CANVAS
               : REGULAR_CANVAS
           const scaleFactorX = CANVAS_SIZE / width
@@ -1171,8 +1171,7 @@ class Render3D extends PureComponent {
         this.canvasTexture.discardActiveObject()
         this.canvasTexture.renderAll()
       }
-      const highResolution =
-        (isEditing && design.hasHighResolution) || !isEditing
+      const highResolution = (isEditing && design.highResolution) || !isEditing
 
       const viewPosition = viewPositions[2]
       this.handleOnChangeZoom(THUMBNAIL_ZOOM)
@@ -1875,7 +1874,7 @@ class Render3D extends PureComponent {
       const { id } = activeEl
 
       const CANVAS_SIZE =
-        (isEditing && design.hasHighResolution) || !isEditing
+        (isEditing && design.highResolution) || !isEditing
           ? HIGH_RESOLUTION_CANVAS
           : REGULAR_CANVAS
       switch (action) {
@@ -1967,7 +1966,7 @@ class Render3D extends PureComponent {
     } = this.props
 
     const CANVAS_SIZE =
-      (isEditing && design.hasHighResolution) || !isEditing
+      (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CANVAS
         : REGULAR_CANVAS
 
@@ -2166,7 +2165,7 @@ class Render3D extends PureComponent {
     let clientY = evt.clientY
 
     const CANVAS_SIZE =
-      (isEditing && design.hasHighResolution) || !isEditing
+      (isEditing && design.highResolution) || !isEditing
         ? HIGH_RESOLUTION_CANVAS
         : REGULAR_CANVAS
 
