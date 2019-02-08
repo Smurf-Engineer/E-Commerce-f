@@ -5,8 +5,6 @@ import { CartItems } from '../../types/common'
 
 export const saveInLocalStorage = async (item: CartItems, history: any) => {
   if (typeof window !== 'undefined') {
-    console.log('enters api')
-
     const cartList = JSON.parse(localStorage.getItem('cart') as any)
 
     if (cartList) {
