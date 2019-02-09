@@ -1154,7 +1154,6 @@ class Render3D extends PureComponent {
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
-    const object = this.scene.getObjectByName(MESH_NAME)
     const { isUserAuthenticated, openLoginAction } = this.props
 
     if (!isUserAuthenticated) {
