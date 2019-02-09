@@ -811,6 +811,7 @@ class Render3D extends PureComponent {
   cameraUpdate = ({ x, y, z }) => {
     if (this.camera) {
       this.camera.position.set(x, y, z)
+      this.controls.target.set(0, 0, 0);
       this.controls.update()
     }
   }
@@ -1153,6 +1154,7 @@ class Render3D extends PureComponent {
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
   takeDesignPicture = (automaticSave = false) => {
+    const object = this.scene.getObjectByName(MESH_NAME)
     const { isUserAuthenticated, openLoginAction } = this.props
 
     if (!isUserAuthenticated) {
