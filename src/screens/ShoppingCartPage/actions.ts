@@ -18,7 +18,8 @@ import {
   SHOW_DELETE_LAST_ITEM_MODAL,
   SET_COLOR_ITEM_DETAIL_ACTION,
   RESET_REDUCER_DATA,
-  SHOW_REVIEW_DESIGN_MODAL
+  SHOW_REVIEW_DESIGN_MODAL,
+  OPEN_FITINFO
 } from './constants'
 import {
   AnyAction,
@@ -149,4 +150,9 @@ export const showDeleteLastItemModalAction = (show: boolean): AnyAction => ({
 export const showReviewDesignModalAction = (show: boolean): AnyAction => ({
   type: SHOW_REVIEW_DESIGN_MODAL,
   show
+})
+
+export const openFitInfoAction = (open: boolean) => ({
+  type: OPEN_FITINFO,
+  open
 })

@@ -21,3 +21,4 @@ export const SHOW_DELETE_LAST_ITEM_MODAL = `${namespace}/SHOW_DELETE_LAST_ITEM_M
 export const RESET_REDUCER_DATA = `${namespace}/RESET_REDUCER_DATA`
 export const SHOW_REVIEW_DESIGN_MODAL = `${namespace}/SHOW_REVIEW_DESIGN_MODAL`
 export const SET_COLOR_ITEM_DETAIL_ACTION = `${namespace}/SET_COLOR_ITEM_DETAIL_ACTION`
+export const OPEN_FITINFO = `${namespace}/OPEN_FITINFO`

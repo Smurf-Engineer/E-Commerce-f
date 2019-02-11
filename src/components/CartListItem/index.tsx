@@ -80,6 +80,7 @@ interface Props {
     size: ItemDetailType
   ) => void
   onClickReorder?: () => void
+  openFitInfoAction: (open: boolean) => void
 
   title: string
   description: string
@@ -94,6 +95,7 @@ interface Props {
   currentCurrency: string
   currencySymbol?: string
   history?: any
+  openFitInfo: boolean
 }
 
 class CartListItem extends React.Component<Props, {}> {
@@ -208,7 +210,9 @@ class CartListItem extends React.Component<Props, {}> {
       setDetailGender = () => {},
       setDetailColor = () => {},
       setDetailSize = () => {},
-      removeItem = () => {}
+      removeItem = () => {},
+      openFitInfoAction,
+      openFitInfo
     } = this.props
 
     const { designId, designName, designImage, designCode } = cartItem
@@ -259,7 +263,9 @@ class CartListItem extends React.Component<Props, {}> {
           setDetailQuantity,
           setDetailFit,
           setDetailGender,
-          setDetailSize
+          setDetailSize,
+          openFitInfoAction,
+          openFitInfo
         }}
       />
     )
