@@ -69,6 +69,8 @@ interface Props extends RouteComponentProps<any> {
   cart: CartItems[]
   showDeleteLastItemModal: boolean
   showReviewDesignModal: boolean
+  currentCurrency: string
+  openFitInfo: boolean
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -111,7 +113,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
   showReviewDesignModalAction: (open: boolean) => void
-  currentCurrency: string
+  openFitInfoAction: (open: boolean) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -282,7 +284,9 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       showDeleteLastItemModal,
       showReviewDesignModal,
-      currentCurrency
+      currentCurrency,
+      openFitInfoAction,
+      openFitInfo
     } = this.props
     const { formatMessage } = intl
 
@@ -348,7 +352,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}
-          {...{ history }}
+          {...{ history, openFitInfoAction, openFitInfo }}
         />
       )
     })

@@ -7,6 +7,7 @@ import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
 import ColorPicker from './ColorPicker'
+import FitInfo from '../../components/FitInfo'
 import messages from './messages'
 import {
   Table,
@@ -19,7 +20,9 @@ import {
   DeleteItem,
   StyledSelect,
   StyledInputNumber,
-  ProductColor
+  ProductColor,
+  QuestionSpan,
+  CellContainer
 } from './styledComponents'
 import {
   ItemDetailType,
@@ -72,6 +75,8 @@ interface Props {
   ) => void
   cartItem: CartItems
   itemIndex: number
+  openFitInfo: boolean
+  openFitInfoAction: (open: boolean) => void
 }
 
 interface State {
@@ -188,8 +193,22 @@ class CartListItemTable extends React.Component<Props, State> {
     const { setDetailColor, itemIndex } = this.props
     setDetailColor(itemIndex, detail, color)
   }
+  handleOpenFitInfo = () => {
+    const { openFitInfoAction } = this.props
+    openFitInfoAction(true)
+  }
+  handleCloseFitInfo = () => {
+    const { openFitInfoAction } = this.props
+    openFitInfoAction(false)
+  }
   render() {
-    const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
+    const {
+      formatMessage,
+      cartItem,
+      itemIndex,
+      onlyRead,
+      openFitInfo
+    } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
     const isRetailProduct = !cartItem.designId
@@ -203,12 +222,19 @@ class CartListItemTable extends React.Component<Props, State> {
       if (index === 1 && !withColorColumn) return
       return (
         <HeaderCell key={index} {...{ width }}>
-          <Title
-            titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
-            align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
-          >
-            {message ? formatMessage(messages[message]) : ''}
-          </Title>
+          <CellContainer>
+            <Title
+              titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
+              align={
+                index === headers.length - 1 && onlyRead ? 'center' : 'left'
+              }
+            >
+              {message ? formatMessage(messages[message]) : ''}
+            </Title>
+            {message === 'size' && (
+              <QuestionSpan onClick={this.handleOpenFitInfo} />
+            )}
+          </CellContainer>
         </HeaderCell>
       )
     })
@@ -344,6 +370,12 @@ class CartListItemTable extends React.Component<Props, State> {
           {header}
         </HeaderRow>
         {renderList}
+        <FitInfo
+          open={openFitInfo}
+          requestClose={this.handleCloseFitInfo}
+          product={cartItem.product}
+          {...{ history, formatMessage }}
+        />
       </Table>
     )
   }

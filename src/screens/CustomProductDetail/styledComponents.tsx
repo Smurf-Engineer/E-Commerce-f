@@ -185,18 +185,26 @@ export const SizeRowTitleRow = styled.div`
   display: flex;
   justify-content: space-between;
 `
+
 export const QuestionSpan = styled.span`
   color: #5f6062;
   font-size: 16px;
-  height: 23px;
-  line-height: 23px;
   margin-left: 5px;
-  width: 8.06px;
+  border: 0.5px solid #dcdcdc;
+  padding: 10px;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
 
   &:hover {
     cursor: pointer;
   }
 `
+
 export const RelatedProductsContainer = styled.div`
   margin-bottom: 80px;
   padding: 0px 32px;
