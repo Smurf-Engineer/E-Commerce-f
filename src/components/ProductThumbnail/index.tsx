@@ -32,7 +32,7 @@ const WHITENAME = 'White'
 interface Props {
   id: number
   type?: string
-  product: Product
+  product?: Product
   images?: ImageType
   image?: string
   description?: string

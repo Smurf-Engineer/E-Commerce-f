@@ -152,7 +152,8 @@ export const showReviewDesignModalAction = (show: boolean): AnyAction => ({
   show
 })
 
-export const openFitInfoAction = (open: boolean) => ({
+export const openFitInfoAction = (open: boolean, selectedIndex: number) => ({
   type: OPEN_FITINFO,
-  open
+  open,
+  selectedIndex
 })
