@@ -30,6 +30,7 @@ const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const SETTINGS_TAB = 'SETTINGS_TAB'
+const SYMBOLS_TAB = 'SYMBOLS_TAB'
 const LIST_TAB = 0
 const EDIT_TAB = 1
 
@@ -249,6 +250,25 @@ const Tabs = ({
           </SwipeableViews>
         </TabPane>
         <TabPane key={COLOR_TAB} tab={<Tab label="color" icon={colorIcon} />}>
+          <ColorTab
+            {...{
+              onSelectColorBlock,
+              onHoverColorBlock,
+              colorBlock,
+              colorBlockHovered,
+              onSelectColor,
+              colors,
+              onToggleColor,
+              bibBrace,
+              zipper,
+              binding
+            }}
+          />
+        </TabPane>
+        <TabPane
+          key={SYMBOLS_TAB}
+          tab={<Tab label="color" icon={designIcon} />}
+        >
           <ColorTab
             {...{
               onSelectColorBlock,
