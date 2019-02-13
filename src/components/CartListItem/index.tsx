@@ -80,7 +80,7 @@ interface Props {
     size: ItemDetailType
   ) => void
   onClickReorder?: () => void
-  openFitInfoAction: (open: boolean) => void
+  openFitInfoAction: (open: boolean, selectedIndex: number) => void
 
   title: string
   description: string
@@ -211,7 +211,7 @@ class CartListItem extends React.Component<Props, {}> {
       setDetailColor = () => {},
       setDetailSize = () => {},
       removeItem = () => {},
-      openFitInfoAction,
+      openFitInfoAction = () => {},
       openFitInfo
     } = this.props
 

@@ -7,7 +7,6 @@ import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
 import ColorPicker from './ColorPicker'
-import FitInfo from '../../components/FitInfo'
 import messages from './messages'
 import {
   Table,
@@ -76,7 +75,7 @@ interface Props {
   cartItem: CartItems
   itemIndex: number
   openFitInfo: boolean
-  openFitInfoAction: (open: boolean) => void
+  openFitInfoAction: (open: boolean, selectedIndex: number) => void
 }
 
 interface State {
@@ -170,7 +169,6 @@ class CartListItemTable extends React.Component<Props, State> {
 
   handleFitChange = (value: any, detail: number) => {
     const { setDetailFit, itemIndex, cartItem } = this.props
-
     const selectedfit = find(cartItem.product.fitStyles, {
       name: value
     }) as ItemDetailType
@@ -194,21 +192,12 @@ class CartListItemTable extends React.Component<Props, State> {
     setDetailColor(itemIndex, detail, color)
   }
   handleOpenFitInfo = () => {
-    const { openFitInfoAction } = this.props
-    openFitInfoAction(true)
+    const { openFitInfoAction, itemIndex } = this.props
+    openFitInfoAction(true, itemIndex)
   }
-  handleCloseFitInfo = () => {
-    const { openFitInfoAction } = this.props
-    openFitInfoAction(false)
-  }
+
   render() {
-    const {
-      formatMessage,
-      cartItem,
-      itemIndex,
-      onlyRead,
-      openFitInfo
-    } = this.props
+    const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
     const isRetailProduct = !cartItem.designId
@@ -232,7 +221,7 @@ class CartListItemTable extends React.Component<Props, State> {
               {message ? formatMessage(messages[message]) : ''}
             </Title>
             {message === 'size' && (
-              <QuestionSpan onClick={this.handleOpenFitInfo} />
+              <QuestionSpan key={index} onClick={this.handleOpenFitInfo} />
             )}
           </CellContainer>
         </HeaderCell>
@@ -370,12 +359,6 @@ class CartListItemTable extends React.Component<Props, State> {
           {header}
         </HeaderRow>
         {renderList}
-        <FitInfo
-          open={openFitInfo}
-          requestClose={this.handleCloseFitInfo}
-          product={cartItem.product}
-          {...{ history, formatMessage }}
-        />
       </Table>
     )
   }
