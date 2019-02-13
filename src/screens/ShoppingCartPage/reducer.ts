@@ -32,7 +32,8 @@ export const initialState = fromJS({
   shipping: 0,
   showDeleteLastItemModal: false,
   showReviewDesignModal: false,
-  openFitInfo: false
+  openFitInfo: false,
+  selectedIndex: 0
 })
 
 const shoppingCartPageReducer: Reducer<any> = (
@@ -123,7 +124,10 @@ const shoppingCartPageReducer: Reducer<any> = (
     case SHOW_REVIEW_DESIGN_MODAL:
       return state.set('showReviewDesignModal', action.show)
     case OPEN_FITINFO:
-      return state.set('openFitInfo', action.open)
+      return state.merge({
+        openFitInfo: action.open,
+        selectedIndex: action.selectedIndex || 0
+      })
     default:
       return state
   }
