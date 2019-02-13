@@ -6,6 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
+import SymbolTab from '../SymbolTab'
 import Tab from '../Tab'
 import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
@@ -13,6 +14,7 @@ import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
+import clipartsIcon from '../../../../assets/image_white.svg'
 import { Container } from './styledComponents'
 import {
   DesignConfig,
@@ -57,6 +59,8 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  uploadingSymbol: boolean
+  searchClipParam: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -96,6 +100,8 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeStylesPosition: (dragIndex: number, dropIndex: number) => void
+  onUploadFile: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
 }
 
 const Tabs = ({
@@ -149,7 +155,11 @@ const Tabs = ({
   onAddColorIdea,
   onEditTheme,
   changeThemesPosition,
-  changeStylesPosition
+  changeStylesPosition,
+  onUploadFile,
+  uploadingSymbol,
+  searchClipParam,
+  setSearchClipParamAction
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -267,21 +277,22 @@ const Tabs = ({
         </TabPane>
         <TabPane
           key={SYMBOLS_TAB}
-          tab={<Tab label="color" icon={designIcon} />}
+          tab={<Tab label="symbol" icon={clipartsIcon} />}
         >
-          <ColorTab
+          <SymbolTab
             {...{
-              onSelectColorBlock,
-              onHoverColorBlock,
-              colorBlock,
-              colorBlockHovered,
-              onSelectColor,
-              colors,
-              onToggleColor,
-              bibBrace,
-              zipper,
-              binding
+              formatMessage,
+              onUploadFile,
+              uploadingSymbol,
+              searchClipParam,
+              setSearchClipParamAction
             }}
+            disableTooltip={false}
+            onApplyArt={() => console.log('---')}
+            onSelectArtFormat={() => console.log('---')}
+            onLockElement={() => console.log('---')}
+            selectedElement={0}
+            selectedItem={false}
           />
         </TabPane>
       </AntdTabs>

@@ -6,7 +6,9 @@ import config from '../../config/index'
 import {
   setUploadingAction,
   setUploadingSuccess,
-  setUploadingDesignSuccess
+  setUploadingDesignSuccess,
+  setUploadSymbolSuccessAction,
+  setUploadingSymbolAction
 } from './actions'
 
 const modelFiles = ['obj', 'mtl', 'bumpMap', 'label', 'config', 'branding']
@@ -108,5 +110,31 @@ export const uploadThemeImage = async (file: any) => {
   } catch (e) {
     message.error(e.message)
     return false
+  }
+}
+
+export const uploadSymbolAction = (file: any) => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(setUploadingSymbolAction(true))
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const formData = new FormData()
+      formData.append('file', file)
+      const response = await fetch(`${config.graphqlUriBase}upload/symbol`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${user.token}`
+        },
+        body: formData
+      })
+      const data = await response.json()
+      dispatch(setUploadSymbolSuccessAction(data))
+      message.success('Your file has been successfully uploaded!')
+      dispatch(setUploadingSymbolAction(false))
+    } catch (e) {
+      dispatch(setUploadingSymbolAction(false))
+      message.error(e.message)
+    }
   }
 }

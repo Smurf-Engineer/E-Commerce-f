@@ -61,6 +61,8 @@ interface Props {
   colorIdeas: DesignObject[]
   openSaveDesign: boolean
   saveDesignLoading: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -105,6 +107,8 @@ interface Props {
   onDesignName: (name: string) => void
   openSaveDesignAction: (open: boolean) => void
   onConfirmDesignToSave: () => void
+  onUploadFile: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -166,7 +170,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onEditTheme,
       onConfirmDesignToSave,
       saveDesignLoading,
-      openSaveDesign
+      openSaveDesign,
+      onUploadFile,
+      uploadingSymbol,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -222,7 +230,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditTheme,
             openSaveDesign,
             changeThemesPosition: this.changeThemesPosition,
-            changeStylesPosition: this.changeStylesPosition
+            changeStylesPosition: this.changeStylesPosition,
+            onUploadFile,
+            uploadingSymbol,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
