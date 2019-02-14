@@ -10,6 +10,7 @@ import has from 'lodash/has'
 import find from 'lodash/find'
 import filter from 'lodash/filter'
 import Layout from '../../components/MainLayout'
+import FitInfo from '../../components/FitInfo'
 import * as shoppingCartPageActions from './actions'
 import * as thunkActions from './thunkActions'
 import messages from './messages'
@@ -42,7 +43,12 @@ import CartItem from '../../components/CartListItem'
 import config from '../../config/index'
 
 import Ordersummary from '../../components/OrderSummary'
-import { Product, CartItemDetail, ItemDetailType } from '../../types/common'
+import {
+  Product,
+  CartItemDetail,
+  ItemDetailType,
+  ProductColors
+} from '../../types/common'
 import Modal from 'antd/lib/modal/Modal'
 import CustomModal from '../../components/Common/JakrooModal'
 import { getShoppingCartData } from '../../utils/utilsShoppingCart'
@@ -64,6 +70,9 @@ interface Props extends RouteComponentProps<any> {
   cart: CartItems[]
   showDeleteLastItemModal: boolean
   showReviewDesignModal: boolean
+  currentCurrency: string
+  openFitInfo: boolean
+  selectedIndex: number
   setItemsAction: (items: Product[]) => void
   addItemDetailAction: (index: number) => void
   deleteItemDetailAction: (index: number, detailIndex: number) => void
@@ -80,6 +89,11 @@ interface Props extends RouteComponentProps<any> {
     index: number,
     detailIndex: number,
     gender: ItemDetailType
+  ) => void
+  setColorItemDetailAction: (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
   ) => void
   setSizeItemDetailAction: (
     index: number,
@@ -101,7 +115,7 @@ interface Props extends RouteComponentProps<any> {
   resetReducerData: () => void
   saveToStorage: (cart: CartItems[]) => void
   showReviewDesignModalAction: (open: boolean) => void
-  currentCurrency: string
+  openFitInfoAction: (open: boolean, selectedIndex?: number) => void
 }
 
 export class ShoppingCartPage extends React.Component<Props, {}> {
@@ -146,7 +160,6 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
 
   componentWillUnmount() {
     const { cart, saveToStorage } = this.props
-
     saveToStorage(cart)
   }
 
@@ -207,6 +220,14 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
     const { setGenderItemDetailAction } = this.props
     setGenderItemDetailAction(index, detailIndex, gender)
   }
+  handleSetDetailColor = (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
+  ) => {
+    const { setColorItemDetailAction } = this.props
+    setColorItemDetailAction(index, detailIndex, color)
+  }
 
   handleSetDetailSize = (
     index: number,
@@ -233,6 +254,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
   ) => {
     const { setQuantityItemDetailAction } = this.props
     setQuantityItemDetailAction(index, detailIndex, quantity)
+  }
+  handleCloseFitInfo = () => {
+    const { openFitInfoAction } = this.props
+    openFitInfoAction(false)
   }
 
   isAllSetInProduct = (cartItem: CartItems) => {
@@ -264,7 +289,10 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
       cart,
       showDeleteLastItemModal,
       showReviewDesignModal,
-      currentCurrency
+      currentCurrency,
+      openFitInfoAction,
+      openFitInfo,
+      selectedIndex
     } = this.props
     const { formatMessage } = intl
 
@@ -326,10 +354,11 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           setLabelItemDetail={this.handleSetDetailLabel}
           setDetailQuantity={this.handleSetDetailQuantity}
           setDetailFit={this.handleSetDetailFit}
+          setDetailColor={this.handleSetDetailColor}
           setDetailGender={this.handleSetDetailGender}
           setDetailSize={this.handleSetDetailSize}
           removeItem={this.handleRemoveItem}
-          {...{ history }}
+          {...{ history, openFitInfoAction, openFitInfo }}
         />
       )
     })
@@ -452,6 +481,14 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           </Modal>
         </PageContent>
         {designReviewModal}
+        {cart && (
+          <FitInfo
+            open={openFitInfo}
+            product={cart[selectedIndex].product}
+            requestClose={this.handleCloseFitInfo}
+            {...{ history, formatMessage }}
+          />
+        )}
       </Layout>
     )
   }

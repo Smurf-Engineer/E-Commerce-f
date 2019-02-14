@@ -67,6 +67,7 @@ export const GetProductsQuery = gql`
           genderId: gender_id
         }
         colors {
+          id
           name
           image
         }

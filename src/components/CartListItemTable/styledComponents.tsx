@@ -178,3 +178,30 @@ export const ProductColor = styled.img`
   border: 1px solid ${GRAY};
   width: 30px;
 `
+
+export const QuestionSpan = styled.span`
+  color: #5f6062;
+  font-size: 16px;
+  margin-left: 5px;
+  border: 0.5px solid #dcdcdc;
+  padding: 10px;
+  line-height: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+
+  &::after {
+    content: '?';
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+export const CellContainer = styled.div`
+  display: flex;
+  align-items: center;
+`

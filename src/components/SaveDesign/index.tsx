@@ -47,6 +47,7 @@ type DesignInput = {
   bib_brace_color?: string
   designFiles?: DesignFiles
   canvas_files?: string
+  high_resolution?: boolean
 }
 
 interface Data {
@@ -163,7 +164,7 @@ export class SaveDesign extends React.Component<Props, State> {
       message.error(formatMessage(messages.invalidUser))
       return
     }
-    const { designBase64, canvasJson, styleId } = design
+    const { designBase64, canvasJson, styleId, highResolution } = design
     try {
       const finalDesignName = designName || productMpn
       const designObj: DesignInput = {
@@ -171,7 +172,8 @@ export class SaveDesign extends React.Component<Props, State> {
         product_id: productId,
         image: designBase64,
         styleId,
-        canvas: canvasJson
+        canvas: canvasJson,
+        high_resolution: highResolution === void 0 ? true : highResolution
       }
 
       /* Accessory colors */
@@ -244,6 +246,7 @@ export class SaveDesign extends React.Component<Props, State> {
       isEditing
     } = this.props
     const { designBase64, canvasJson, styleId } = design
+
     const designObj: DesignInput = {
       name: '',
       product_id: productId,
@@ -370,7 +373,7 @@ export class SaveDesign extends React.Component<Props, State> {
                 value={designName}
                 placeholder={formatMessage(messages.placeholder)}
                 onChange={this.handleInputChange}
-                maxLength="15"
+                maxLength={15}
               />
             </InputWrapper>
             {!isMobile && (

@@ -71,7 +71,8 @@ export class LockerModal extends React.PureComponent<Props, {}> {
           name,
           image,
           createdAt,
-          product: { id: productId, description, type }
+          product: { id: productId, description, type },
+          product
         }: DesignType,
         index
       ) => (
@@ -80,6 +81,7 @@ export class LockerModal extends React.PureComponent<Props, {}> {
           checked={selectedItems[index] || tableItems[id]}
           disabled={tableItems[id]}
           id={index}
+          product={product}
           onSelectItem={this.handleOnItemSelect}
           {...{ name, image, productId, description, type }}
           date={createdAt}

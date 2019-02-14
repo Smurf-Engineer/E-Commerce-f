@@ -7,8 +7,7 @@ import {
   DUPLICATE_ACTION,
   BRING_TO_FRONT_ACTION,
   SCALE_ACTION,
-  ROTATE_ACTION,
-  CANVAS_SIZE
+  ROTATE_ACTION
 } from './config'
 import { BLACK } from '../../../theme/colors'
 
@@ -39,8 +38,8 @@ const isPointInsideOfIcon = (coords, point) =>
     calculateTriangleArea(coords.bl, coords.tl, point) > 0
   )
 
-export const isMouseOver = (bb, uv) => {
-  const point = { x: uv.x * CANVAS_SIZE, y: (1 - uv.y) * CANVAS_SIZE }
+export const isMouseOver = (bb, uv, canvasSize) => {
+  const point = { x: uv.x * canvasSize, y: (1 - uv.y) * canvasSize }
 
   const rect = {
     a: { x: bb.left, y: bb.top },
@@ -52,8 +51,9 @@ export const isMouseOver = (bb, uv) => {
   return isPointInsideOfTriangle(rect, point)
 }
 
-export const clickOnCorner = (corners = {}, uv = {}) => {
-  const point = { x: uv.x * CANVAS_SIZE, y: (1 - uv.y) * CANVAS_SIZE }
+export const clickOnCorner = (corners = {}, uv = {}, canvasSize) => {
+  const point = { x: uv.x * canvasSize, y: (1 - uv.y) * canvasSize }
+
   for (let corner in actionButtons) {
     const isOnCorner = isPointInsideOfIcon(corners[corner].corner, point)
     if (isOnCorner) {

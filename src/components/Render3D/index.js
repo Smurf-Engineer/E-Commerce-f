@@ -31,7 +31,8 @@ import {
   FLATLOCK,
   PROPEL_PALMS,
   GRIP_TAPE,
-  CANVAS_SIZE,
+  REGULAR_CANVAS,
+  HIGH_RESOLUTION_CANVAS,
   MESH_NAME
 } from '../../constants'
 import { CanvasElements } from '../../screens/DesignCenter/constants'
@@ -309,7 +310,13 @@ class Render3D extends PureComponent {
   }
 
   renderModel = async (design, actualSvg, colorAccessories) => {
-    const { product = {}, flatlockColor, proDesign, canvas } = design
+    const {
+      product = {},
+      flatlockColor,
+      proDesign,
+      canvas,
+      highResolution
+    } = design
 
     const { designSearch } = this.props
     try {
@@ -449,6 +456,9 @@ class Render3D extends PureComponent {
             )
             /* Canvas */
             const canvas = document.createElement('canvas')
+            const CANVAS_SIZE = highResolution
+              ? HIGH_RESOLUTION_CANVAS
+              : REGULAR_CANVAS
             canvas.width = CANVAS_SIZE
             canvas.height = CANVAS_SIZE
             this.canvasTexture = new fabric.StaticCanvas(canvas, {

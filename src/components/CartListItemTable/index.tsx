@@ -6,7 +6,7 @@ import find from 'lodash/find'
 import dropRight from 'lodash/dropRight'
 import get from 'lodash/get'
 import Select from 'antd/lib/select'
-
+import ColorPicker from './ColorPicker'
 import messages from './messages'
 import {
   Table,
@@ -19,14 +19,17 @@ import {
   DeleteItem,
   StyledSelect,
   StyledInputNumber,
-  ProductColor
+  ProductColor,
+  QuestionSpan,
+  CellContainer
 } from './styledComponents'
 import {
   ItemDetailType,
   FitStyle,
   Filter,
   SizeFilter,
-  CartItems
+  CartItems,
+  ProductColors
 } from '../../types/common'
 
 const Option = Select.Option
@@ -59,6 +62,11 @@ interface Props {
     detailIndex: number,
     gender: ItemDetailType
   ) => void
+  setDetailColor: (
+    index: number,
+    detailIndex: number,
+    color: ProductColors
+  ) => void
   setDetailSize: (
     index: number,
     detailIndex: number,
@@ -66,6 +74,8 @@ interface Props {
   ) => void
   cartItem: CartItems
   itemIndex: number
+  openFitInfo: boolean
+  openFitInfoAction: (open: boolean, selectedIndex: number) => void
 }
 
 interface State {
@@ -159,7 +169,6 @@ class CartListItemTable extends React.Component<Props, State> {
 
   handleFitChange = (value: any, detail: number) => {
     const { setDetailFit, itemIndex, cartItem } = this.props
-
     const selectedfit = find(cartItem.product.fitStyles, {
       name: value
     }) as ItemDetailType
@@ -178,6 +187,14 @@ class CartListItemTable extends React.Component<Props, State> {
       handledeleteItemDetail(event, itemIndex, index)
     }
   }
+  handleColorChange = (color: ProductColors, detail: number) => {
+    const { setDetailColor, itemIndex } = this.props
+    setDetailColor(itemIndex, detail, color)
+  }
+  handleOpenFitInfo = () => {
+    const { openFitInfoAction, itemIndex } = this.props
+    openFitInfoAction(true, itemIndex)
+  }
 
   render() {
     const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
@@ -194,12 +211,19 @@ class CartListItemTable extends React.Component<Props, State> {
       if (index === 1 && !withColorColumn) return
       return (
         <HeaderCell key={index} {...{ width }}>
-          <Title
-            titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
-            align={index === headers.length - 1 && onlyRead ? 'center' : 'left'}
-          >
-            {message ? formatMessage(messages[message]) : ''}
-          </Title>
+          <CellContainer>
+            <Title
+              titleWidth={index === 0 && !onlyRead ? genderSelectWidth : ''}
+              align={
+                index === headers.length - 1 && onlyRead ? 'center' : 'left'
+              }
+            >
+              {message ? formatMessage(messages[message]) : ''}
+            </Title>
+            {message === 'size' && (
+              <QuestionSpan key={index} onClick={this.handleOpenFitInfo} />
+            )}
+          </CellContainer>
         </HeaderCell>
       )
     })
@@ -254,7 +278,11 @@ class CartListItemTable extends React.Component<Props, State> {
               </Cell>
               {((withColorColumn && !!colorObject) || colorImage) && (
                 <Cell>
-                  <ProductColor src={colorImage || colorObject.image} />
+                  <ColorPicker
+                    selectedColor={colorObject.id}
+                    onSelectColor={e => this.handleColorChange(e, index)}
+                    productColors={colors}
+                  />
                 </Cell>
               )}
               <Cell>

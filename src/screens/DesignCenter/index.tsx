@@ -675,9 +675,11 @@ export class DesignCenter extends React.Component<Props, {}> {
 
     const canvasJson = get(dataDesign, 'designData.canvas')
     const styleId = get(dataDesign, 'designData.styleId')
+    const highResolution = get(dataDesign, 'designData.highResolution')
+
     let designObject = design
     if (canvasJson) {
-      designObject = { ...designObject, canvasJson, styleId }
+      designObject = { ...designObject, canvasJson, styleId, highResolution }
     }
 
     let tabSelected =
