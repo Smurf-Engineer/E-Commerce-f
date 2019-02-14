@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 26/02/18.
  */
 import styled from 'styled-components'
+import icon from 'antd/lib/icon'
 
 interface PageProps {
   isFirstPage: boolean
@@ -44,4 +45,13 @@ export const ColorButtons = styled.div`
   display: flex;
   justify-content: space-around;
   padding: 4px;
+`
+
+export const ButtonContainer = styled.div`
+  display: inline-block;
+  margin-left: 8px;
+`
+
+export const Icon = styled(icon)`
+  margin-right: 8px;
 `

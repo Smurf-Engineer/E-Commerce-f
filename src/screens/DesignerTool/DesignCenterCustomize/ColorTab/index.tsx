@@ -3,13 +3,25 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
+// import message from 'antd/lib/message'
+// import indexOf from 'lodash/indexOf'
+import Button from 'antd/lib/button'
 import Divider from 'antd/lib/divider'
+import DraggerWithLoading from '../../../../components/DraggerWithLoading'
 import ColorButton from '../ColorButton'
 import ColorList from '../ColorList'
 
 import messages from './messages'
 
-import { Container, TextColors, Top, ColorButtons } from './styledComponents'
+import {
+  Container,
+  TextColors,
+  Top,
+  ColorButtons,
+  ButtonContainer,
+  Icon
+} from './styledComponents'
+import { Message } from '../../../../types/common'
 
 interface Props {
   colorBlock: number
@@ -18,10 +30,13 @@ interface Props {
   bibBrace: boolean
   zipper: boolean
   binding: boolean
+  uploadingFile: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onHoverColorBlock: (index: number) => void
   onToggleColor: (color: string) => void
+  formatMessage: (messageDescriptor: Message) => string
+  onUploadFile: (file: any, code: string) => void
 }
 
 const extraBlocks = [
@@ -47,7 +62,9 @@ class ColorTab extends React.PureComponent<Props> {
       colorBlock,
       colorBlockHovered,
       onSelectColor,
-      colors
+      colors,
+      formatMessage,
+      uploadingFile
     } = this.props
     const colorButtons = colors.map((color, index) => (
       <ColorButton
@@ -82,6 +99,19 @@ class ColorTab extends React.PureComponent<Props> {
         <ColorButtons>{extraButtons}</ColorButtons>
         <ColorButtons>{colorButtons}</ColorButtons>
         <Divider />
+        <DraggerWithLoading
+          className="upload"
+          loading={uploadingFile}
+          onSelectImage={this.beforeUpload}
+          formatMessage={formatMessage}
+          extensions={['.svg']}
+        >
+          <Button>
+            <ButtonContainer>
+              <Icon type="upload" />
+            </ButtonContainer>
+          </Button>
+        </DraggerWithLoading>
         <ColorList {...{ onSelectColor }} />
       </Container>
     )
@@ -90,6 +120,27 @@ class ColorTab extends React.PureComponent<Props> {
   handleOnToggleColor = (color: string) => () => {
     const { onToggleColor } = this.props
     onToggleColor(color)
+  }
+  beforeUpload = (file: any) => {
+    /* const {
+      formatMessage,
+      onUploadFile
+    } = this.props
+    if (file) {
+      const { size, name } = file
+      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
+      if (size / 1000000 > 20) {
+        message.error(formatMessage(messages.fileSizeError))
+        return false
+      }
+      const fileExtension = this.getFileExtension(name)
+      if (indexOf(['.json'], (fileExtension as String).toLowerCase()) === -1) {
+        message.error(formatMessage(messages.fileExtensionError))
+        return false
+      }
+      onUploadFile(file, code)
+    } */
+    return false
   }
 }
 

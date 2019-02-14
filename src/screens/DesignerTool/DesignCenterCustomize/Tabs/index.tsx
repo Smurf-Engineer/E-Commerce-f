@@ -260,7 +260,8 @@ const Tabs = ({
               onToggleColor,
               bibBrace,
               zipper,
-              binding
+              binding,
+              formatMessage
             }}
           />
         </TabPane>

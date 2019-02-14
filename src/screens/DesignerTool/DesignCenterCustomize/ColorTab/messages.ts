@@ -20,5 +20,13 @@ export default defineMessages({
   color: {
     id: 'components.designCenterCustomize.ColorTab.color',
     defaultMessage: 'Color {name}'
+  },
+  fileSizeError: {
+    id: 'components.designCenterCustomize.fileSizeError',
+    defaultMessage: 'Oh no! Max file size is limited to 20MB'
+  },
+  fileExtensionError: {
+    id: 'components.designCenterCustomize.fileSizeError',
+    defaultMessage: 'Oh no! Your file has to be an json'
   }
 })
