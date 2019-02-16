@@ -56,6 +56,9 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -95,6 +98,7 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeStylesPosition: (dragIndex: number, dropIndex: number) => void
+  onUploadColorsList: (file: any, type: string) => void
 }
 
 const Tabs = ({
@@ -148,7 +152,11 @@ const Tabs = ({
   onAddColorIdea,
   onEditTheme,
   changeThemesPosition,
-  changeStylesPosition
+  changeStylesPosition,
+  onUploadColorsList,
+  colorsList,
+  uploadingColors,
+  uploadingStitchingColors
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -261,8 +269,12 @@ const Tabs = ({
               bibBrace,
               zipper,
               binding,
-              formatMessage
+              formatMessage,
+              colorsList,
+              uploadingColors,
+              uploadingStitchingColors
             }}
+            onUploadFile={onUploadColorsList}
           />
         </TabPane>
       </AntdTabs>

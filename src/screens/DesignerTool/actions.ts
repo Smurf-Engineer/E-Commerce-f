@@ -34,7 +34,8 @@ import {
   SET_THEME_TO_EDIT_ACTION,
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  SET_UPLOADING_COLORS_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -228,4 +229,13 @@ export const openSaveDesignAction = (open: boolean) => ({
 export const setSavingDesign = (saving: boolean) => ({
   type: SET_SAVING_DESIGN,
   saving
+})
+
+export const setUploadingColorsAction = (
+  listType: string,
+  isUploading: boolean
+) => ({
+  type: SET_UPLOADING_COLORS_ACTION,
+  listType,
+  isUploading
 })

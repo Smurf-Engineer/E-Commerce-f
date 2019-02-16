@@ -55,3 +55,14 @@ export const ButtonContainer = styled.div`
 export const Icon = styled(icon)`
   margin-right: 8px;
 `
+
+export const DraggerContainer = styled.div`
+  margin: 10px 32px;
+`
+
+export const SectionTitle = styled.p`
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  padding-left: 32px;
+`

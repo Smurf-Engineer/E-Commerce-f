@@ -90,6 +90,8 @@ interface Props {
   editableTheme: ThemeInput | null
   saveDesignLoading: boolean
   openSaveDesign: boolean
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -142,6 +144,7 @@ interface Props {
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
+  onUploadColorsListAction: (file: any, type: string) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -201,7 +204,10 @@ export class DesignerTool extends React.Component<Props, {}> {
       openSaveDesign,
       openSaveDesignAction,
       saveDesignLoading,
-      setSavingDesign
+      setSavingDesign,
+      onUploadColorsListAction,
+      uploadingColors,
+      uploadingStitchingColors
     } = this.props
     const { themeImage } = this.state
     return (
@@ -231,7 +237,9 @@ export class DesignerTool extends React.Component<Props, {}> {
             colorIdeas,
             openSaveDesignAction,
             saveDesignLoading,
-            openSaveDesign
+            openSaveDesign,
+            uploadingColors,
+            uploadingStitchingColors
           }}
           files={modelConfig}
           onEditColorIdea={setColorIdeaItemAction}
@@ -268,6 +276,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           onEditTheme={setThemeToEditAction}
           changeThemesPosition={changeThemesPositionAction}
           changeDesignsPosition={changeDesignsPositionAction}
+          onUploadColorsList={onUploadColorsListAction}
         />
         <EditTheme
           {...{ productCode }}

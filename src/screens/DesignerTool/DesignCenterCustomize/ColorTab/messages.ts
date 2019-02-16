@@ -28,5 +28,13 @@ export default defineMessages({
   fileExtensionError: {
     id: 'components.designCenterCustomize.fileSizeError',
     defaultMessage: 'Oh no! Your file has to be an json'
+  },
+  baseColors: {
+    id: 'components.designCenterCustomize.baseColors',
+    defaultMessage: 'Base Colors'
+  },
+  stitchingColors: {
+    id: 'components.designCenterCustomize.baseColors',
+    defaultMessage: 'Stitching Colors'
   }
 })

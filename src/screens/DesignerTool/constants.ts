@@ -36,6 +36,7 @@ export const SET_THEME_TO_EDIT_ACTION = `${namespace}/SET_THEME_TO_EDIT_ACTION`
 export const UPDATE_THEME_NAME_ACTION = `${namespace}/UPDATE_THEME_NAME_ACTION`
 export const OPEN_SAVE_DESIGN_ACTION = `${namespace}/OPEN_SAVE_DESIGN_ACTION`
 export const SET_SAVING_DESIGN = `${namespace}/SET_SAVING_DESIGN`
+export const SET_UPLOADING_COLORS_ACTION = `${namespace}/SET_UPLOADING_COLORS_ACTION`
 export enum Tabs {
   RenderTab = 0,
   SettingsTab = 0

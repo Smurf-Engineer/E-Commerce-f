@@ -45,6 +45,7 @@ interface Props {
   selectedElement: CanvasElement
   selectedItem: number
   disableTooltip: boolean
+  colorsList: any
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (
     url: string,
@@ -73,7 +74,8 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       data: { loading, clipArts },
       selectedElement,
       formatMessage,
-      selectedItem
+      selectedItem,
+      colorsList
     } = this.props
 
     const artList =
@@ -131,7 +133,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               />
             </div>
             <TextEditor
-              {...{ option, formatMessage }}
+              {...{ option, formatMessage, colorsList }}
               strokeWidth={selectedElement.strokeWidth}
               onSelectFill={this.handleOnSelectFill}
               onSelectStrokeWidth={this.handleOnSelectStrokeWidth}

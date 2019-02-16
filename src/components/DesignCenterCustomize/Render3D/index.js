@@ -1511,7 +1511,7 @@ class Render3D extends PureComponent {
           src: fileUrl,
           scaleX,
           scaleY,
-          lock: false
+          lock: falsez
         }
         position.scaleX = scaleX
         position.scaleY = scaleY

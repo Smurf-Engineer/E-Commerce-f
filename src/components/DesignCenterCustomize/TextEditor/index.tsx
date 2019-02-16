@@ -15,6 +15,7 @@ interface Props {
   text?: string
   option: number
   strokeWidth?: number
+  colorsList: any
   onSelectFont?: (font: string) => void
   onSelectFill: (color: string) => void
   onSelectStrokeWidth: (width: number) => void
@@ -31,13 +32,14 @@ class TextEditor extends React.Component<Props, {}> {
       onSelectFill,
       onSelectStrokeWidth,
       onSelectStrokeColor,
-      strokeWidth = 0
+      strokeWidth = 0,
+      colorsList
     } = this.props
     switch (component) {
       case FONT_LIST:
         return <FontList text={text || ''} {...{ onSelectFont }} />
       case FILL_COLOR:
-        return <FillColor {...{ onSelectFill }} />
+        return <FillColor {...{ onSelectFill, colorsList }} />
       case OUTLINE_COLOR:
         return (
           <OutlineColor
@@ -45,7 +47,8 @@ class TextEditor extends React.Component<Props, {}> {
               formatMessage,
               onSelectStrokeWidth,
               onSelectStrokeColor,
-              strokeWidth
+              strokeWidth,
+              colorsList
             }}
           />
         )

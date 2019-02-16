@@ -14,7 +14,8 @@ import message from 'antd/lib/message'
 import {
   getProductFromCode,
   updateThemesOrderMutation,
-  updateStylesOrderMutation
+  updateStylesOrderMutation,
+  getColorsQuery
 } from './data'
 import Render3D from './Render3D'
 import SaveModal from './SaveModal'
@@ -61,6 +62,9 @@ interface Props {
   colorIdeas: DesignObject[]
   openSaveDesign: boolean
   saveDesignLoading: boolean
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -105,6 +109,7 @@ interface Props {
   onDesignName: (name: string) => void
   openSaveDesignAction: (open: boolean) => void
   onConfirmDesignToSave: () => void
+  onUploadColorsList: (file: any, type: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -166,7 +171,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onEditTheme,
       onConfirmDesignToSave,
       saveDesignLoading,
-      openSaveDesign
+      openSaveDesign,
+      onUploadColorsList,
+      colorsList,
+      uploadingColors,
+      uploadingStitchingColors
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -222,7 +231,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditTheme,
             openSaveDesign,
             changeThemesPosition: this.changeThemesPosition,
-            changeStylesPosition: this.changeStylesPosition
+            changeStylesPosition: this.changeStylesPosition,
+            onUploadColorsList,
+            colorsList,
+            uploadingColors,
+            uploadingStitchingColors
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -260,6 +273,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         />
       </Container>
     )
+  }
+  componentWillReceiveProps(nextProps: any) {
+    const { colorsList } = this.props
+    if (
+      (!nextProps.uploadingColors || !nextProps.uploadingStitchingColors) &&
+      colorsList
+    ) {
+      colorsList.refetch()
+    }
   }
 
   handleOnSaveThumbnail = (item: number, colors: string[]) => {
@@ -376,6 +398,7 @@ const EnhanceDesignCenterCustomize = compose(
       notifyOnNetworkStatusChange: true
     })
   }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
   updateThemesOrderMutation,
   updateStylesOrderMutation
 )(DesignCenterCustomize)
