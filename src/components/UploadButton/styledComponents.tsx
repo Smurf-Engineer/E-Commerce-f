@@ -10,6 +10,12 @@ export const Container = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+  & > span {
+    width: 100%;
+    & > div {
+      width: 100%;
+    }
+  }
 `
 
 export const Text = styled.div`
