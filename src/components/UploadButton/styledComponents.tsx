@@ -9,6 +9,7 @@ export const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
 `
 
 export const Text = styled.div`
@@ -21,7 +22,6 @@ export const ButtonUpload = styled.div`
   font-size: 14px;
   line-height: 22px;
   padding: 8px;
-  cursor: pointer;
 `
 
 type IconProps = {
