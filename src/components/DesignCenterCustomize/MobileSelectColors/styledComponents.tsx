@@ -45,7 +45,6 @@ export const ColorSlider = styled.div`
     width: calc(
       100% / ${({ totalColors }: ColorSliderProps) => totalColors} - 10px
     );
-    background: red;
     content: '';
     position: absolute;
     left: calc(

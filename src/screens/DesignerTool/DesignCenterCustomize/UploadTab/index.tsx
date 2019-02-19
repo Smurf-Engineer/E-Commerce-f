@@ -123,7 +123,7 @@ class UploadTab extends React.PureComponent<Props, State> {
     })
   }
 
-  handleReset = () => window.location.replace('/designer-tool')
+  handleReset = () => window.location.replace('/publishing-tool')
 
   render() {
     const { files, areas, extra, config } = this.state
@@ -147,38 +147,42 @@ class UploadTab extends React.PureComponent<Props, State> {
 
     if (uploadNewModel) {
       return (
-        <DesignContainer>
-          <ButtonWrapper>
-            <Button
-              size="large"
-              type="primary"
-              onClick={this.handleUpload}
-              disabled={!areas.length}
-              loading={uploadingFiles}
-            >
-              {'Upload Design'}
-            </Button>
-          </ButtonWrapper>
-          <ButtonWrapper>
-            <Button
-              ghost={true}
-              size="large"
-              type="primary"
-              onClick={this.handleReset}
-            >
-              Upload new model
-            </Button>
-          </ButtonWrapper>
-          <UploadButton
-            hasFile={!!config}
-            fileName={File.Config}
-            extension={Extension.Config}
-            onSelectFile={this.handleOnAddDesignConfig}
-            onRemoveFile={this.handleOnRemoveDesignConfig}
-            label={'Config'}
-          />
-          {dragger}
-        </DesignContainer>
+        <Container>
+          <DesignContainer>
+            <ButtonWrapper>
+              <Button
+                size="large"
+                type="primary"
+                onClick={this.handleUpload}
+                disabled={!areas.length}
+                loading={uploadingFiles}
+              >
+                {'Upload Design'}
+              </Button>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <Button
+                ghost={true}
+                size="large"
+                type="primary"
+                onClick={this.handleReset}
+              >
+                Upload new model
+              </Button>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <UploadButton
+                hasFile={!!config}
+                fileName={File.Config}
+                extension={Extension.Config}
+                onSelectFile={this.handleOnAddDesignConfig}
+                onRemoveFile={this.handleOnRemoveDesignConfig}
+                label={'Config'}
+              />
+            </ButtonWrapper>
+            {dragger}
+          </DesignContainer>
+        </Container>
       )
     }
 
