@@ -28,6 +28,7 @@ export const ButtonUpload = styled.div`
   font-size: 14px;
   line-height: 22px;
   padding: 8px;
+  cursor: pointer;
 `
 
 type IconProps = {
