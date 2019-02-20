@@ -1089,3 +1089,8 @@ export interface Index {
   index: number
 }
 type couponType = '%' | 'flat'
+
+export interface Font {
+  id: number
+  family: string
+}

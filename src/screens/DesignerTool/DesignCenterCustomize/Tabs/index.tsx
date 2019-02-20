@@ -9,10 +9,12 @@ import ColorTab from '../ColorTab'
 import Tab from '../Tab'
 import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
+import FontTab from '../FontTab'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
+import fontIcon from '../../../../assets/text_white.svg'
 import { Container } from './styledComponents'
 import {
   DesignConfig,
@@ -30,6 +32,7 @@ const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const SETTINGS_TAB = 'SETTINGS_TAB'
+const FONT_TAB = 'FONT_TAB'
 const LIST_TAB = 0
 const EDIT_TAB = 1
 
@@ -263,6 +266,9 @@ const Tabs = ({
               binding
             }}
           />
+        </TabPane>
+        <TabPane key={FONT_TAB} tab={<Tab label="fonts" icon={fontIcon} />}>
+          <FontTab />
         </TabPane>
       </AntdTabs>
     </Container>

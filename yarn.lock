@@ -8681,6 +8681,13 @@ react-facebook-login@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
   integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
 
+react-google-font-loader@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-google-font-loader/-/react-google-font-loader-1.0.5.tgz#83b3c6c01a97acbf4da0752a2fb2c21c1c413778"
+  integrity sha512-Cpr3C96lBIQoXgmVwSo52Uc9oMnLOYuqArmPw63CuttBc27R0YpTeDINR39jPM/d5WofIbGpQFi66K4ts9G6Lg==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-google-login@^3.0.4:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-3.2.1.tgz#9ab6ac3694d0e6e2974f1e588c53cf7b903a36e6"
@@ -8889,6 +8896,13 @@ react-twitter-widgets@^1.7.1:
     lodash "^4.17.4"
     prop-types "^15.3.0"
     scriptjs "^2.5.8"
+
+react-visibility-sensor@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/react-visibility-sensor/-/react-visibility-sensor-5.0.2.tgz#e360fff81572cb3a2a9fd680484447a9da09a55d"
+  integrity sha512-7+1lr7oQOO2vKr5u/uxoDGFWAAy7lsDy2aJU3Zy1/OymI+TRqOBk8m2L8YE1B0UyfCDWxVAWO+aifVGqNOvqeQ==
+  dependencies:
+    prop-types "^15.6.2"
 
 "react@^15 || ^16", react@^16.1.0, react@^16.2.0:
   version "16.7.0"
