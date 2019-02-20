@@ -134,6 +134,7 @@ export class ProductCatalogueThumbnailsList extends React.Component<Props, {}> {
                     isPrivate={!shared}
                     description={`${product.type} ${product.description}`}
                     date={createdAt}
+                    setShare={this.setShare(shortId as string, true)}
                   />
                 }
                 labelButton={

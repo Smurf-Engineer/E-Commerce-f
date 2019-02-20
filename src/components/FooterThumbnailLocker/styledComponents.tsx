@@ -16,6 +16,9 @@ export const Type = styled.div`
   text-overflow: ellipsis;
   width: 220px;
   text-align: start;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -77,10 +80,14 @@ export const Private = styled.span`
   line-height: 16px;
 `
 
-export const Rename = styled.div`
+export const ActionButton = styled.div`
   line-height: 16px;
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
-  color: #4A90E2;
+  color: #4a90e2;
+`
+
+export const ShareContainer = styled.div`
+  text-align: right;
 `
