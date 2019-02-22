@@ -13,7 +13,8 @@ import {
   Label,
   Delete,
   Private,
-  Rename
+  ActionButton,
+  ShareContainer
 } from './styledComponents'
 
 interface Props {
@@ -27,6 +28,7 @@ interface Props {
   onPressDelete: (id: string, name: string) => void
   formatMessage: (messageDescriptor: any) => string
   onPressRename: (id: string, name: string) => void
+  setShare: () => void
 }
 
 let showCartButton = false
@@ -44,7 +46,8 @@ const FooterThumbnailLocker = ({
   formatMessage,
   isPrivate,
   addToCartButton,
-  onPressRename
+  onPressRename,
+  setShare
 }: Props) => {
   const handleOnPressPrivate = (event: React.ChangeEvent<HTMLInputElement>) => {
     const {
@@ -58,16 +61,22 @@ const FooterThumbnailLocker = ({
     <Footer>
       <Type>
         {name}
+        <ShareContainer>
+          <ActionButton onClick={setShare}>
+            <FormattedMessage {...messages.share} />
+          </ActionButton>
+        </ShareContainer>
       </Type>
+
       <Description>{description}</Description>
       <Label>{date}</Label>
       <Bottom>
         <Checkbox checked={isPrivate} onChange={handleOnPressPrivate}>
           <Private>{formatMessage(messages.private)}</Private>
         </Checkbox>
-        <Rename onClick={handleOnPressRename}>
+        <ActionButton onClick={handleOnPressRename}>
           <FormattedMessage {...messages.rename} />
-        </Rename>
+        </ActionButton>
         <Delete onClick={handleOnPressDelete}>
           <FormattedMessage {...messages.delete} />
         </Delete>

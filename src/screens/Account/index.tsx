@@ -303,6 +303,11 @@ export class Account extends React.Component<Props, {}> {
                     </Container>
                   </Layout>
                 </Drawer>
+                <ShareDesignModal
+                  open={openShareModal}
+                  requestClose={this.handleRequestCloseShare}
+                  {...{ formatMessage: intl.formatMessage, savedDesignId }}
+                />
               </div>
             )
           } else {

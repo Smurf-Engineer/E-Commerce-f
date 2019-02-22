@@ -16,5 +16,9 @@ export default defineMessages({
   rename: {
     id: 'component.FooterFooterThumbnailLocker.rename',
     defaultMessage: 'Rename'
+  },
+  share: {
+    id: 'component.FooterFooterThumbnailLocker.rename',
+    defaultMessage: 'Share'
   }
 })
