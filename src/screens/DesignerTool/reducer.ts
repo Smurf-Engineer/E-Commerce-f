@@ -39,7 +39,9 @@ import {
   SET_THEME_TO_EDIT_ACTION,
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  UPLOADING_SYMBOL_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -76,7 +78,9 @@ export const initialState = fromJS({
   editableTheme: null,
   themes: [],
   openSaveDesign: false,
-  saveDesignLoading: false
+  saveDesignLoading: false,
+  uploadingSymbol: false,
+  searchClipParam: ''
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -327,6 +331,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SAVING_DESIGN: {
       return state.set('saveDesignLoading', action.saving)
     }
+    case UPLOADING_SYMBOL_ACTION:
+      return state.set('uploadingSymbol', action.isLoading)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     default:
       return state
   }
