@@ -7,8 +7,23 @@ export const getFonts = graphql(
       fonts: getFonts {
         id
         family
+        active
       }
     }
   `,
   { name: 'fontsData' }
+)
+
+export const addNewFont = graphql(
+  gql`
+    mutation AddFont($font: String!) {
+      addFont(font: $font) {
+        family
+        active
+      }
+    }
+  `,
+  {
+    name: 'installFont'
+  }
 )

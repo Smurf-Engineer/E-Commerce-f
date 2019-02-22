@@ -6,6 +6,7 @@ import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
 import GoogleFontLoader from 'react-google-font-loader'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
@@ -70,6 +71,7 @@ interface Props extends RouteComponentProps<any> {
   buyNowHeader: boolean
   showTeamStores: boolean
   fontsData: any
+  fonts: []
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
@@ -78,6 +80,8 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
+  getFontsData: () => Promise<any>
+  setInstalledFontsAction: (fonts: any) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -104,7 +108,9 @@ class MainLayout extends React.Component<Props, {}> {
       },
       user,
       teamStoreStatus,
-      setTeamStoreStatusAction
+      setTeamStoreStatusAction,
+      getFontsData,
+      setInstalledFontsAction
     } = this.props
 
     const { login } = queryString.parse(search)
@@ -118,9 +124,16 @@ class MainLayout extends React.Component<Props, {}> {
       openLoginAction(true)
     }
     const response = await teamStoreStatus()
+
     setTeamStoreStatusAction(
       get(response, 'data.getTeamStoreStatus.showTeamStores', false)
     )
+
+    const fontsResponse = await getFontsData()
+    const fonts: any = []
+    const fontsList = get(fontsResponse, 'data.fontsData', {})
+    fontsList.map((font: Font) => fonts.push({ font: font.family }))
+    setInstalledFontsAction(fonts)
   }
 
   onSearch = (value: string) => {
@@ -193,13 +206,10 @@ class MainLayout extends React.Component<Props, {}> {
       buyNowHeader,
       saveAndBuyAction,
       showTeamStores,
-      fontsData
+      fonts
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
-    const fontList = get(fontsData, 'fonts', [])
-    const fonts: any = []
-    fontList.map((font: Font) => fonts.push({ font: font.family }))
 
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
@@ -229,7 +239,7 @@ class MainLayout extends React.Component<Props, {}> {
 
     return (
       <Layout>
-        {fonts.length && <GoogleFontLoader {...{ fonts }} />}
+        {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}

@@ -34,7 +34,10 @@ import {
   SET_THEME_TO_EDIT_ACTION,
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  SET_GOOGLE_FONTS,
+  ADD_FONT_ACTION,
+  UPDATE_SEARCH_TEXT_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -228,4 +231,19 @@ export const openSaveDesignAction = (open: boolean) => ({
 export const setSavingDesign = (saving: boolean) => ({
   type: SET_SAVING_DESIGN,
   saving
+})
+
+export const setGoogleFontsListAction = (data: any) => ({
+  type: SET_GOOGLE_FONTS,
+  data
+})
+
+export const addFontAction = (font: string) => ({
+  type: ADD_FONT_ACTION,
+  font
+})
+
+export const onUpdateSearchTextAction = (text: string) => ({
+  type: UPDATE_SEARCH_TEXT_ACTION,
+  text
 })

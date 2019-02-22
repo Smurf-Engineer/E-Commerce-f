@@ -61,6 +61,9 @@ interface Props {
   colorIdeas: DesignObject[]
   openSaveDesign: boolean
   saveDesignLoading: boolean
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -105,6 +108,9 @@ interface Props {
   onDesignName: (name: string) => void
   openSaveDesignAction: (open: boolean) => void
   onConfirmDesignToSave: () => void
+  setGoogleFontsList: (data: any) => void
+  addFont: (font: string) => void
+  onUpdateSearchText: (text: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -166,7 +172,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onEditTheme,
       onConfirmDesignToSave,
       saveDesignLoading,
-      openSaveDesign
+      openSaveDesign,
+      setGoogleFontsList,
+      fonts,
+      addFont,
+      visibleFonts,
+      onUpdateSearchText,
+      searchText
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -222,7 +234,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onEditTheme,
             openSaveDesign,
             changeThemesPosition: this.changeThemesPosition,
-            changeStylesPosition: this.changeStylesPosition
+            changeStylesPosition: this.changeStylesPosition,
+            setGoogleFontsList,
+            fonts,
+            visibleFonts,
+            addFont,
+            onUpdateSearchText,
+            searchText
           }}
           productData={data}
           uploadNewModel={uploadNewModel}

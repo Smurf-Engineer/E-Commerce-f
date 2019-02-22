@@ -59,6 +59,9 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -98,6 +101,9 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeStylesPosition: (dragIndex: number, dropIndex: number) => void
+  setGoogleFontsList: (data: any) => void
+  addFont: (font: string) => void
+  onUpdateSearchText: (text: string) => void
 }
 
 const Tabs = ({
@@ -151,7 +157,13 @@ const Tabs = ({
   onAddColorIdea,
   onEditTheme,
   changeThemesPosition,
-  changeStylesPosition
+  changeStylesPosition,
+  setGoogleFontsList,
+  fonts,
+  addFont,
+  visibleFonts,
+  onUpdateSearchText,
+  searchText
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -268,7 +280,17 @@ const Tabs = ({
           />
         </TabPane>
         <TabPane key={FONT_TAB} tab={<Tab label="fonts" icon={fontIcon} />}>
-          <FontTab />
+          <FontTab
+            {...{
+              setGoogleFontsList,
+              fonts,
+              addFont,
+              visibleFonts,
+              onUpdateSearchText,
+              searchText,
+              formatMessage
+            }}
+          />
         </TabPane>
       </AntdTabs>
     </Container>

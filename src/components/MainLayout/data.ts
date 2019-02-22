@@ -14,12 +14,13 @@ export const getTeamStoreStatus = graphql(
 
 export const getFonts = graphql(
   gql`
-    query GetFonts {
-      fonts: getFonts {
+    mutation GetFonts {
+      fontsData: getFonts {
         id
         family
+        active
       }
     }
   `,
-  { name: 'fontsData' }
+  { name: 'getFontsData' }
 )

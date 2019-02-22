@@ -39,7 +39,10 @@ import {
   SET_THEME_TO_EDIT_ACTION,
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
-  SET_SAVING_DESIGN
+  SET_SAVING_DESIGN,
+  SET_GOOGLE_FONTS,
+  ADD_FONT_ACTION,
+  UPDATE_SEARCH_TEXT_ACTION
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -76,7 +79,10 @@ export const initialState = fromJS({
   editableTheme: null,
   themes: [],
   openSaveDesign: false,
-  saveDesignLoading: false
+  saveDesignLoading: false,
+  fonts: [],
+  visibleFonts: [],
+  searchText: ''
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -327,6 +333,21 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SAVING_DESIGN: {
       return state.set('saveDesignLoading', action.saving)
     }
+    case SET_GOOGLE_FONTS: {
+      const {
+        data: { items }
+      } = action
+      const fonts = items.map((item: any) => item.family)
+      return state.set('fonts', fromJS(fonts))
+    }
+    case ADD_FONT_ACTION: {
+      return state.set(
+        'visibleFonts',
+        state.get('visibleFonts').push({ font: action.font })
+      )
+    }
+    case UPDATE_SEARCH_TEXT_ACTION:
+      return state.set('searchText', action.text)
     default:
       return state
   }

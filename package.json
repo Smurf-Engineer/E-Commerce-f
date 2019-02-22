@@ -96,7 +96,7 @@
     "react-swipeable-clickeable-bottom-sheet": "^1.1.1",
     "react-swipeable-views": "^0.12.12",
     "react-twitter-widgets": "^1.7.1",
-    "react-visibility-sensor": "^5.0.2",
+    "react-waypoint": "^9.0.0",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",

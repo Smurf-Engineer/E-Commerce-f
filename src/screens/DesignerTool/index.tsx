@@ -90,6 +90,9 @@ interface Props {
   editableTheme: ThemeInput | null
   saveDesignLoading: boolean
   openSaveDesign: boolean
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -142,6 +145,9 @@ interface Props {
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
+  setGoogleFontsListAction: (data: any) => void
+  addFontAction: (font: string) => void
+  onUpdateSearchTextAction: (text: string) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -201,7 +207,13 @@ export class DesignerTool extends React.Component<Props, {}> {
       openSaveDesign,
       openSaveDesignAction,
       saveDesignLoading,
-      setSavingDesign
+      setSavingDesign,
+      setGoogleFontsListAction,
+      fonts,
+      addFontAction,
+      visibleFonts,
+      searchText,
+      onUpdateSearchTextAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -231,8 +243,14 @@ export class DesignerTool extends React.Component<Props, {}> {
             colorIdeas,
             openSaveDesignAction,
             saveDesignLoading,
-            openSaveDesign
+            openSaveDesign,
+            fonts,
+            visibleFonts,
+            searchText
           }}
+          onUpdateSearchText={onUpdateSearchTextAction}
+          addFont={addFontAction}
+          setGoogleFontsList={setGoogleFontsListAction}
           files={modelConfig}
           onEditColorIdea={setColorIdeaItemAction}
           onSaveDesign={this.handleOpenModal}

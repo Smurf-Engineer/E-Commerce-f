@@ -1093,4 +1093,9 @@ type couponType = '%' | 'flat'
 export interface Font {
   id: number
   family: string
+  active: boolean
+}
+
+export interface SimpleFont {
+  font: string
 }

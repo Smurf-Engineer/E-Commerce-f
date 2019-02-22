@@ -132,7 +132,8 @@ module.exports = {
         'DEFAULT_CURRENCY',
         'GOOGLE_TAG_MANAGER_ID',
         'LOG_ROCKET_KEY',
-        'GOOGLE_FONTS_KEY'
+        'GOOGLE_FONTS_KEY',
+        'GOOGLE_FONTS_URL'
       ])
     )
 

@@ -6,6 +6,7 @@ import FontList from '../FontsList'
 import FillColor from '../FillColor'
 import OutlineColor from '../OutlineColor'
 import { Container } from './styledComponents'
+import { SimpleFont } from '../../../types/common'
 
 const FONT_LIST = 0
 const FILL_COLOR = 1
@@ -15,6 +16,7 @@ interface Props {
   text?: string
   option: number
   strokeWidth?: number
+  fonts: SimpleFont[]
   onSelectFont?: (font: string) => void
   onSelectFill: (color: string) => void
   onSelectStrokeWidth: (width: number) => void
@@ -31,11 +33,12 @@ class TextEditor extends React.Component<Props, {}> {
       onSelectFill,
       onSelectStrokeWidth,
       onSelectStrokeColor,
-      strokeWidth = 0
+      strokeWidth = 0,
+      fonts
     } = this.props
     switch (component) {
       case FONT_LIST:
-        return <FontList text={text || ''} {...{ onSelectFont }} />
+        return <FontList text={text || ''} {...{ onSelectFont, fonts }} />
       case FILL_COLOR:
         return <FillColor {...{ onSelectFill }} />
       case OUTLINE_COLOR:

@@ -13,7 +13,7 @@ import InputNumber from 'antd/lib/input-number'
 import backIcon from '../../../assets/leftarrow.svg'
 import TextEditor from '../TextEditor'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
-import { TextFormat, CanvasElement } from '../../../types/common'
+import { TextFormat, CanvasElement, SimpleFont } from '../../../types/common'
 import {
   Container,
   Header,
@@ -40,6 +40,7 @@ interface Props {
   selectedElement: string
   textFormat: TextFormat
   disableTooltip: boolean
+  fonts: SimpleFont[]
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
@@ -73,7 +74,8 @@ export class TextTab extends React.PureComponent<Props, State> {
       productName,
       textFormat,
       selectedElement,
-      elements
+      elements,
+      fonts
     } = this.props
     const headerTitle = this.getHeaderTitle(option, page)
 
@@ -193,7 +195,7 @@ export class TextTab extends React.PureComponent<Props, State> {
             />
           </div>
           <TextEditor
-            {...{ option, formatMessage }}
+            {...{ option, formatMessage, fonts }}
             text={text || productName}
             strokeWidth={textFormat && textFormat.strokeWidth}
             onSelectFont={this.handleOnSelectFont}

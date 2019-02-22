@@ -3,14 +3,23 @@
  */
 import * as React from 'react'
 import { FormattedMessage } from 'react-intl'
-import FontList from '../../../../components/FontsList'
+import FontsList from '../../../../components/FontsList'
 import AntdTabs from 'antd/lib/tabs'
 
 import messages from './messages'
 
 import { Container, Top, TabsContainer } from './styledComponents'
+import { Message } from '../../../../types/common'
 
-interface Props {}
+interface Props {
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
+  setGoogleFontsList: (data: any) => void
+  addFont: (font: string) => void
+  onUpdateSearchText: (text: string) => void
+  formatMessage: (messageDescriptor: Message) => void
+}
 
 const { TabPane } = AntdTabs
 
@@ -19,6 +28,15 @@ const ALL_FONTS = 'ALL_FONTS'
 
 class FontTab extends React.PureComponent<Props> {
   render() {
+    const {
+      setGoogleFontsList,
+      fonts,
+      visibleFonts,
+      addFont,
+      onUpdateSearchText,
+      searchText,
+      formatMessage
+    } = this.props
     return (
       <Container>
         <Top>
@@ -27,15 +45,30 @@ class FontTab extends React.PureComponent<Props> {
         <TabsContainer>
           <AntdTabs defaultActiveKey={INSTALLED_FONTS} size="small">
             <TabPane key={INSTALLED_FONTS} tab={'Installed'}>
-              <FontList
-                text={'NOVA' || ''}
-                onSelectFont={() => console.log('sel')}
+              <FontsList
+                googleList={false}
+                {...{
+                  setGoogleFontsList,
+                  fonts,
+                  visibleFonts,
+                  onUpdateSearchText,
+                  searchText,
+                  formatMessage
+                }}
               />
             </TabPane>
             <TabPane key={ALL_FONTS} tab={'Collection'}>
-              <FontList
-                text={'NOVA' || ''}
-                onSelectFont={() => console.log('sel')}
+              <FontsList
+                googleList={true}
+                {...{
+                  setGoogleFontsList,
+                  fonts,
+                  visibleFonts,
+                  addFont,
+                  onUpdateSearchText,
+                  searchText,
+                  formatMessage
+                }}
               />
             </TabPane>
           </AntdTabs>
