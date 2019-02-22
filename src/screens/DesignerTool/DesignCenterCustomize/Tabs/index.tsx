@@ -288,9 +288,6 @@ const Tabs = ({
               setSearchClipParamAction
             }}
             disableTooltip={false}
-            onApplyArt={() => console.log('---')}
-            onSelectArtFormat={() => console.log('---')}
-            onLockElement={() => console.log('---')}
             selectedElement={0}
             selectedItem={false}
           />
