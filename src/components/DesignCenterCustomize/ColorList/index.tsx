@@ -5,7 +5,7 @@ import * as React from 'react'
 import get from 'lodash/get'
 import { Container, Color, Row, Col } from './styledComponents'
 import { StitchingColor } from '../../../types/common'
-
+import Message from 'antd/lib/message'
 interface Color {
   value: string
   name: string
@@ -34,10 +34,20 @@ const ColorList = ({
     // tslint:disable-next-line:curly
     if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
   }
+  let arrayColors: any
 
-  const arrayColors: any = !stitching
-    ? JSON.parse(get(colorsList, 'colorsResult.colors', []))
-    : JSON.parse(get(colorsList, 'colorsResult.stitchingColors', []))
+  try {
+    arrayColors = JSON.parse(
+      get(
+        colorsList,
+        !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+        []
+      )
+    )
+  } catch (e) {
+    Message.error(e)
+  }
+
   const colorList = arrayColors.map(({ value, name }: Color, index: number) => (
     <Col key={index} className="custom-tooltip">
       <Color
@@ -54,7 +64,7 @@ const ColorList = ({
   ))
   return (
     <Container {...{ height }}>
-      <Row>{colorList}</Row>
+      <Row>{arrayColors.length && colorList}</Row>
     </Container>
   )
 }

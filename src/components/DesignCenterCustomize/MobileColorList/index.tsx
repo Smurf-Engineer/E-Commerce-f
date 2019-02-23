@@ -5,6 +5,7 @@ import * as React from 'react'
 import ReactDOM from 'react-dom'
 import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import Message from 'antd/lib/message'
 
 import { Container, Color, Col, ColorSlider, Border } from './styledComponents'
 import { StitchingColor } from '../../../types/common'
@@ -38,9 +39,20 @@ class MobileColorList extends React.PureComponent<Props> {
 
   scrollColorList(selectedColor: string) {
     const { stitching, colorsList } = this.props
-    const arrayColors: any = !stitching
-      ? JSON.parse(get(colorsList, 'colorsResult.colors', []))
-      : JSON.parse(get(colorsList, 'colorsResult.stitchingColors', []))
+    let arrayColors: any = !stitching
+
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
+      )
+    } catch (e) {
+      Message.error(e)
+    }
+
     const index = findIndex(arrayColors, ['value', selectedColor])
     const node = ReactDOM.findDOMNode(this.colorRef) as HTMLElement
     node.scrollLeft = index * 48
@@ -70,9 +82,19 @@ class MobileColorList extends React.PureComponent<Props> {
       // tslint:disable-next-line:curly
       if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
     }
-    const arrayColors: any = !stitching
-      ? JSON.parse(get(colorsList, 'colorsResult.colors', []))
-      : JSON.parse(get(colorsList, 'colorsResult.stitchingColors', []))
+    let arrayColors: any
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
+      )
+    } catch (e) {
+      Message.error(e)
+    }
+
     const colorList = arrayColors.map(
       ({ value, name }: Color, index: number) => (
         <Col key={index}>
@@ -104,7 +126,7 @@ class MobileColorList extends React.PureComponent<Props> {
           }}
           totalWidth={arrayColors.length * 44 + 12}
         >
-          {colorList}
+          {arrayColors.length && colorList}
         </ColorSlider>
       </Container>
     )

@@ -41,7 +41,6 @@ import {
   List,
   Loading,
   NotFound,
-  LockContainer,
   ButtonContainer,
   DraggerContainer
 } from './styledComponents'
@@ -131,11 +130,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               />
             </Title>
           </Row>
-          {selectedElement && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
         </Header>
         {selectedElement ? (
           <SwipeableViews disabled={true} index={page}>
