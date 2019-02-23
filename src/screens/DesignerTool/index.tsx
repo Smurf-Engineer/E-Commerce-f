@@ -92,6 +92,8 @@ interface Props {
   openSaveDesign: boolean
   uploadingColors: boolean
   uploadingStitchingColors: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -145,6 +147,8 @@ interface Props {
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
   onUploadColorsListAction: (file: any, type: string) => void
+  uploadSymbolAction: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -207,7 +211,11 @@ export class DesignerTool extends React.Component<Props, {}> {
       setSavingDesign,
       onUploadColorsListAction,
       uploadingColors,
-      uploadingStitchingColors
+      uploadingStitchingColors,
+      uploadSymbolAction,
+      uploadingSymbol,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -239,7 +247,10 @@ export class DesignerTool extends React.Component<Props, {}> {
             saveDesignLoading,
             openSaveDesign,
             uploadingColors,
-            uploadingStitchingColors
+            uploadingStitchingColors,
+            uploadingSymbol,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           files={modelConfig}
           onEditColorIdea={setColorIdeaItemAction}
@@ -277,6 +288,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           changeThemesPosition={changeThemesPositionAction}
           changeDesignsPosition={changeDesignsPositionAction}
           onUploadColorsList={onUploadColorsListAction}
+          onUploadFile={uploadSymbolAction}
         />
         <EditTheme
           {...{ productCode }}

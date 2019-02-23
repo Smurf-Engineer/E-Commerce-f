@@ -35,7 +35,10 @@ import {
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
   SET_SAVING_DESIGN,
-  SET_UPLOADING_COLORS_ACTION
+  SET_UPLOADING_COLORS_ACTION,
+  UPLOAD_SYMBOL_ACTION_SUCCESS,
+  UPLOADING_SYMBOL_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import {
   AnyAction,
@@ -43,7 +46,8 @@ import {
   DesignConfig,
   DesignObject,
   ModelDesign,
-  Theme
+  Theme,
+  ClipArt
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -238,4 +242,19 @@ export const setUploadingColorsAction = (
   type: SET_UPLOADING_COLORS_ACTION,
   listType,
   isUploading
+})
+
+export const setUploadSymbolSuccessAction = (clipart: ClipArt) => ({
+  type: UPLOAD_SYMBOL_ACTION_SUCCESS,
+  clipart
+})
+
+export const setUploadingSymbolAction = (isLoading: boolean) => ({
+  type: UPLOADING_SYMBOL_ACTION,
+  isLoading
+})
+
+export const setSearchClipParamAction = (param: string) => ({
+  type: SET_SEARCH_CLIPARTPARAM,
+  param
 })

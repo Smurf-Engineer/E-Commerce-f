@@ -28,5 +28,9 @@ export default defineMessages({
   colors: {
     id: 'components.designCenterTool.Tab.colors',
     defaultMessage: 'Colors'
+  },
+  symbol: {
+    id: 'components.designCenterTool.Tab.symbol',
+    defaultMessage: 'Symbol'
   }
 })

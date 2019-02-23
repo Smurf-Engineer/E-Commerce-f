@@ -40,7 +40,9 @@ import {
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
   SET_SAVING_DESIGN,
-  SET_UPLOADING_COLORS_ACTION
+  SET_UPLOADING_COLORS_ACTION,
+  UPLOADING_SYMBOL_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -79,7 +81,9 @@ export const initialState = fromJS({
   openSaveDesign: false,
   saveDesignLoading: false,
   uploadingColors: false,
-  uploadingStitchingColors: false
+  uploadingStitchingColors: false,
+  uploadingSymbol: false,
+  searchClipParam: ''
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -337,6 +341,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
           : 'uploadingStitchingColors'
       return state.set(keyName, action.isUploading)
     }
+    case UPLOADING_SYMBOL_ACTION:
+      return state.set('uploadingSymbol', action.isLoading)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     default:
       return state
   }
