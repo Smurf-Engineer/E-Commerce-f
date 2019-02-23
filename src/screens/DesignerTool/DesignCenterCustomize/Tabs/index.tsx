@@ -59,6 +59,9 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
   onSelectTheme: (id: number) => void
@@ -100,6 +103,7 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeStylesPosition: (dragIndex: number, dropIndex: number) => void
+  onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
 }
@@ -156,6 +160,10 @@ const Tabs = ({
   onEditTheme,
   changeThemesPosition,
   changeStylesPosition,
+  onUploadColorsList,
+  colorsList,
+  uploadingColors,
+  uploadingStitchingColors,
   onUploadFile,
   uploadingSymbol,
   searchClipParam,
@@ -271,8 +279,13 @@ const Tabs = ({
               onToggleColor,
               bibBrace,
               zipper,
-              binding
+              binding,
+              formatMessage,
+              colorsList,
+              uploadingColors,
+              uploadingStitchingColors
             }}
+            onUploadFile={onUploadColorsList}
           />
         </TabPane>
         <TabPane

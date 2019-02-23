@@ -35,6 +35,7 @@ import {
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
   SET_SAVING_DESIGN,
+  SET_UPLOADING_COLORS_ACTION,
   UPLOAD_SYMBOL_ACTION_SUCCESS,
   UPLOADING_SYMBOL_ACTION,
   SET_SEARCH_CLIPARTPARAM
@@ -232,6 +233,15 @@ export const openSaveDesignAction = (open: boolean) => ({
 export const setSavingDesign = (saving: boolean) => ({
   type: SET_SAVING_DESIGN,
   saving
+})
+
+export const setUploadingColorsAction = (
+  listType: string,
+  isUploading: boolean
+) => ({
+  type: SET_UPLOADING_COLORS_ACTION,
+  listType,
+  isUploading
 })
 
 export const setUploadSymbolSuccessAction = (clipart: ClipArt) => ({

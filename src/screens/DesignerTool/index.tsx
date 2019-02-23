@@ -90,6 +90,8 @@ interface Props {
   editableTheme: ThemeInput | null
   saveDesignLoading: boolean
   openSaveDesign: boolean
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
   // Redux Actions
@@ -144,6 +146,7 @@ interface Props {
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
+  onUploadColorsListAction: (file: any, type: string) => void
   uploadSymbolAction: (file: any) => void
   setSearchClipParamAction: (param: string) => void
 }
@@ -206,6 +209,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       openSaveDesignAction,
       saveDesignLoading,
       setSavingDesign,
+      onUploadColorsListAction,
+      uploadingColors,
+      uploadingStitchingColors,
       uploadSymbolAction,
       uploadingSymbol,
       searchClipParam,
@@ -240,6 +246,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             openSaveDesignAction,
             saveDesignLoading,
             openSaveDesign,
+            uploadingColors,
+            uploadingStitchingColors,
             uploadingSymbol,
             searchClipParam,
             setSearchClipParamAction
@@ -279,6 +287,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           onEditTheme={setThemeToEditAction}
           changeThemesPosition={changeThemesPositionAction}
           changeDesignsPosition={changeDesignsPositionAction}
+          onUploadColorsList={onUploadColorsListAction}
           onUploadFile={uploadSymbolAction}
         />
         <EditTheme

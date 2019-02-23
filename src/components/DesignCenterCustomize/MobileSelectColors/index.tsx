@@ -33,6 +33,7 @@ interface Props {
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
   product?: Product
+  colorsList: any
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string, name: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -61,7 +62,8 @@ class MobileSelectColors extends React.PureComponent<Props> {
       bibColor,
       onAccessoryColorSelected,
       bindingColor,
-      zipperColor
+      zipperColor,
+      colorsList
     } = this.props
     const hasStitching = !!product && !!product.flatlock
     const hasZipper = !!product && !!product.zipper
@@ -95,15 +97,14 @@ class MobileSelectColors extends React.PureComponent<Props> {
         </StyledTabs>
         <MobileColorList
           selectedColor={colorBlock !== -1 ? colors[colorBlock] : colors[0]}
-          onSelectColor={onSelectColor}
+          {...{ onSelectColor, colorsList }}
         />
         <Divider />
         {hasStitching && (
           <Row>
             <Label>{formatMessage({ ...messages.stitching })}</Label>
             <MobileColorList
-              {...{ stitchingColor }}
-              onSelectStitchingColor={onSelectStitchingColor}
+              {...{ stitchingColor, onSelectStitchingColor, colorsList }}
               stitching={true}
             />
           </Row>

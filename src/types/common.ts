@@ -1074,6 +1074,10 @@ export interface ProductColors {
   image: string
 }
 
+export interface Colors {
+  colors: string
+  stitchingColors: string
+}
 export interface CouponCode {
   code: string
   type: couponType

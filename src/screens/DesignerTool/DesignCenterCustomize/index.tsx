@@ -14,7 +14,8 @@ import message from 'antd/lib/message'
 import {
   getProductFromCode,
   updateThemesOrderMutation,
-  updateStylesOrderMutation
+  updateStylesOrderMutation,
+  getColorsQuery
 } from './data'
 import Render3D from './Render3D'
 import SaveModal from './SaveModal'
@@ -61,6 +62,9 @@ interface Props {
   colorIdeas: DesignObject[]
   openSaveDesign: boolean
   saveDesignLoading: boolean
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
   onSelectTheme: (id: number) => void
@@ -107,6 +111,7 @@ interface Props {
   onDesignName: (name: string) => void
   openSaveDesignAction: (open: boolean) => void
   onConfirmDesignToSave: () => void
+  onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
 }
@@ -171,6 +176,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onConfirmDesignToSave,
       saveDesignLoading,
       openSaveDesign,
+      onUploadColorsList,
+      colorsList,
+      uploadingColors,
+      uploadingStitchingColors,
       onUploadFile,
       uploadingSymbol,
       searchClipParam,
@@ -231,6 +240,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             openSaveDesign,
             changeThemesPosition: this.changeThemesPosition,
             changeStylesPosition: this.changeStylesPosition,
+            onUploadColorsList,
+            colorsList,
+            uploadingColors,
+            uploadingStitchingColors,
             onUploadFile,
             uploadingSymbol,
             searchClipParam,
@@ -272,6 +285,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         />
       </Container>
     )
+  }
+  componentWillReceiveProps(nextProps: any) {
+    const { colorsList } = this.props
+    if (
+      (!nextProps.uploadingColors || !nextProps.uploadingStitchingColors) &&
+      colorsList
+    ) {
+      colorsList.refetch()
+    }
   }
 
   handleOnSaveThumbnail = (item: number, colors: string[]) => {
@@ -388,6 +410,7 @@ const EnhanceDesignCenterCustomize = compose(
       notifyOnNetworkStatusChange: true
     })
   }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
   updateThemesOrderMutation,
   updateStylesOrderMutation
 )(DesignCenterCustomize)

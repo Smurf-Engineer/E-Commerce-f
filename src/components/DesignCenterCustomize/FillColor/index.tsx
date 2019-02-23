@@ -6,13 +6,14 @@ import ColorList from '../ColorList'
 import { Container } from './styledComponents'
 
 interface Props {
+  colorsList: any
   onSelectFill: (color: string) => void
 }
 
-const FillColor = ({ onSelectFill }: Props) => {
+const FillColor = ({ onSelectFill, colorsList }: Props) => {
   return (
     <Container>
-      <ColorList onSelectColor={onSelectFill} height={52} />
+      <ColorList onSelectColor={onSelectFill} height={52} {...{ colorsList }} />
     </Container>
   )
 }

@@ -7,6 +7,7 @@ import {
   setUploadingAction,
   setUploadingSuccess,
   setUploadingDesignSuccess,
+  setUploadingColorsAction,
   setUploadSymbolSuccessAction,
   setUploadingSymbolAction
 } from './actions'
@@ -110,6 +111,38 @@ export const uploadThemeImage = async (file: any) => {
   } catch (e) {
     message.error(e.message)
     return false
+  }
+}
+
+export const onUploadColorsListAction = (file: any, type: string) => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(setUploadingColorsAction(type, true))
+
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const formData = new FormData()
+
+      formData.append(type, file)
+
+      const response = await fetch(`${config.graphqlUriBase}upload/colorList`, {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          Authorization: `Bearer ${user.token}`
+        },
+        body: formData
+      })
+      const responseObject = await response.json()
+      if (response.status !== 200) {
+        throw responseObject
+      }
+      message.success('File uploaded')
+      dispatch(setUploadingColorsAction(type, false))
+    } catch (e) {
+      dispatch(setUploadingColorsAction(type, false))
+      message.error(e.message)
+      return false
+    }
   }
 }
 
