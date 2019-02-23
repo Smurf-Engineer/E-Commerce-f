@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
 import Spin from 'antd/lib/spin'
+import Radio from 'antd/lib/radio'
 import findIndex from 'lodash/findIndex'
 import {
   modelPositions,
@@ -27,7 +28,8 @@ import {
   Logo,
   Button,
   Loading,
-  Icon
+  Icon,
+  Modes
 } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
 
@@ -503,6 +505,12 @@ class Render3D extends PureComponent {
             <Spin tip="Uploading..." indicator={<Icon type="loading" />} />
           </Loading>
         )}
+        <Modes>
+          <Radio.Group value={'large'} onChange={this.handleSizeChange}>
+            <Radio.Button value="large">Style Mode</Radio.Button>
+            <Radio.Button value="default">Placeholder Mode</Radio.Button>
+          </Radio.Group>
+        </Modes>
       </Container>
     )
   }

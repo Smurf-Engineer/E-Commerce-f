@@ -59,3 +59,10 @@ export const ButtonWrapper = styled.div`
 export const Icon = styled(AntdIcon)`
   font-size: 64px;
 `
+
+export const Modes = styled.div`
+  display: flex;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+`
