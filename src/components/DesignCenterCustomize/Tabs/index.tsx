@@ -59,6 +59,7 @@ interface Props {
   selectedItem: SelectedAsset
   selectedTab: number
   fonts: SimpleFont[]
+  colorsList: any
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -132,7 +133,8 @@ const Tabs = ({
   onTabClick,
   onLockElement,
   openLoginModalAction,
-  fonts
+  fonts,
+  colorsList
 }: Props) => {
   return (
     <Container>
@@ -162,7 +164,8 @@ const Tabs = ({
               bibColor,
               onSelectStitchingColor,
               onAccessoryColorSelected,
-              product
+              product,
+              colorsList
             }}
           />
         </TabPane>
@@ -180,7 +183,8 @@ const Tabs = ({
               textFormat,
               onSelectTextFormat,
               onLockElement,
-              fonts
+              fonts,
+              colorsList
             }}
           />
         </TabPane>
@@ -193,7 +197,8 @@ const Tabs = ({
               onSelectArtFormat,
               searchClipParam,
               setSearchClipParamAction,
-              onLockElement
+              onLockElement,
+              colorsList
             }}
             selectedElement={canvas.path[selectedElement]}
             selectedItem={

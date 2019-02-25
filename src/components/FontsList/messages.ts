@@ -12,5 +12,9 @@ export default defineMessages({
   searchPlaceholder: {
     id: 'components.FontsList.searchPlaceholder',
     defaultMessage: 'Font name'
+  },
+  googleFontsError: {
+    id: 'components.FontsList.googleFontsError',
+    defaultMessage: 'Error loading fonts'
   }
 })

@@ -14,7 +14,8 @@ import message from 'antd/lib/message'
 import {
   getProductFromCode,
   updateThemesOrderMutation,
-  updateStylesOrderMutation
+  updateStylesOrderMutation,
+  getColorsQuery
 } from './data'
 import Render3D from './Render3D'
 import SaveModal from './SaveModal'
@@ -64,6 +65,11 @@ interface Props {
   fonts: string[]
   visibleFonts: any[]
   searchText: string
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -111,6 +117,9 @@ interface Props {
   setGoogleFontsList: (data: any) => void
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
+  onUploadColorsList: (file: any, type: string) => void
+  onUploadFile: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -178,7 +187,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       addFont,
       visibleFonts,
       onUpdateSearchText,
-      searchText
+      searchText,
+      onUploadColorsList,
+      colorsList,
+      uploadingColors,
+      uploadingStitchingColors,
+      onUploadFile,
+      uploadingSymbol,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -240,7 +257,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             visibleFonts,
             addFont,
             onUpdateSearchText,
-            searchText
+            searchText,
+            onUploadColorsList,
+            colorsList,
+            uploadingColors,
+            uploadingStitchingColors,
+            onUploadFile,
+            uploadingSymbol,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -278,6 +303,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         />
       </Container>
     )
+  }
+  componentWillReceiveProps(nextProps: any) {
+    const { colorsList } = this.props
+    if (
+      (!nextProps.uploadingColors || !nextProps.uploadingStitchingColors) &&
+      colorsList
+    ) {
+      colorsList.refetch()
+    }
   }
 
   handleOnSaveThumbnail = (item: number, colors: string[]) => {
@@ -394,6 +428,7 @@ const EnhanceDesignCenterCustomize = compose(
       notifyOnNetworkStatusChange: true
     })
   }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
   updateThemesOrderMutation,
   updateStylesOrderMutation
 )(DesignCenterCustomize)

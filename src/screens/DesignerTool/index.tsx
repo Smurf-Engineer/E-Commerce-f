@@ -93,6 +93,10 @@ interface Props {
   fonts: string[]
   visibleFonts: any[]
   searchText: string
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -148,6 +152,9 @@ interface Props {
   setGoogleFontsListAction: (data: any) => void
   addFontAction: (font: string) => void
   onUpdateSearchTextAction: (text: string) => void
+  onUploadColorsListAction: (file: any, type: string) => void
+  uploadSymbolAction: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -213,7 +220,14 @@ export class DesignerTool extends React.Component<Props, {}> {
       addFontAction,
       visibleFonts,
       searchText,
-      onUpdateSearchTextAction
+      onUpdateSearchTextAction,
+      onUploadColorsListAction,
+      uploadingColors,
+      uploadingStitchingColors,
+      uploadSymbolAction,
+      uploadingSymbol,
+      searchClipParam,
+      setSearchClipParamAction
     } = this.props
     const { themeImage } = this.state
     return (
@@ -246,7 +260,12 @@ export class DesignerTool extends React.Component<Props, {}> {
             openSaveDesign,
             fonts,
             visibleFonts,
-            searchText
+            searchText,
+            uploadingColors,
+            uploadingStitchingColors,
+            uploadingSymbol,
+            searchClipParam,
+            setSearchClipParamAction
           }}
           onUpdateSearchText={onUpdateSearchTextAction}
           addFont={addFontAction}
@@ -286,6 +305,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           onEditTheme={setThemeToEditAction}
           changeThemesPosition={changeThemesPositionAction}
           changeDesignsPosition={changeDesignsPositionAction}
+          onUploadColorsList={onUploadColorsListAction}
+          onUploadFile={uploadSymbolAction}
         />
         <EditTheme
           {...{ productCode }}

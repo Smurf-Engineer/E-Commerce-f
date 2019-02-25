@@ -5,6 +5,7 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
+import message from 'antd/lib/message'
 import Input from 'antd/lib/input'
 import includes from 'lodash/includes'
 import find from 'lodash/find'
@@ -41,18 +42,22 @@ class FontsList extends React.PureComponent<Props> {
     }
   }
   getGoogleFonts = async () => {
-    const { setGoogleFontsList } = this.props
-    const response = await fetch(
-      `${config.googleFontsUrl}key=${config.googleFontsKey}`,
-      {
-        method: 'GET',
-        headers: {
-          Accept: 'application/json'
+    const { setGoogleFontsList, formatMessage } = this.props
+    try {
+      const response = await fetch(
+        `${config.googleFontsUrl}key=${config.googleFontsKey}`,
+        {
+          method: 'GET',
+          headers: {
+            Accept: 'application/json'
+          }
         }
-      }
-    )
-    const responseJson = await response.json()
-    setGoogleFontsList(responseJson)
+      )
+      const responseJson = await response.json()
+      setGoogleFontsList(responseJson)
+    } catch (e) {
+      message.error(formatMessage(messages.googleFontsError))
+    }
   }
   installFont = (font: string) => async () => {
     const { installFont, fontsData } = this.props
@@ -91,7 +96,6 @@ class FontsList extends React.PureComponent<Props> {
     const installedFonts: any = []
     const activeFonts: string[] = []
     fontList.map((font: Font) => {
-      console.log(font.family, font.active)
       if (font.active) {
         activeFonts.push(font.family)
       }
@@ -103,7 +107,6 @@ class FontsList extends React.PureComponent<Props> {
         }
       })
       list = fontList.map((font: Font, index: number) => {
-        console.log(font)
         if (
           font.active &&
           (!searchText.length ||

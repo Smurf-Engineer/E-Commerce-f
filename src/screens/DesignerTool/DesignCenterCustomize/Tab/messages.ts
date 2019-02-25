@@ -28,5 +28,13 @@ export default defineMessages({
   fonts: {
     id: 'components.designCenterTool.Tab.product',
     defaultMessage: 'Fonts'
+  },
+  colors: {
+    id: 'components.designCenterTool.Tab.colors',
+    defaultMessage: 'Colors'
+  },
+  symbol: {
+    id: 'components.designCenterTool.Tab.symbol',
+    defaultMessage: 'Symbol'
   }
 })

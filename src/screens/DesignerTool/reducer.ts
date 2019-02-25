@@ -42,7 +42,10 @@ import {
   SET_SAVING_DESIGN,
   SET_GOOGLE_FONTS,
   ADD_FONT_ACTION,
-  UPDATE_SEARCH_TEXT_ACTION
+  UPDATE_SEARCH_TEXT_ACTION,
+  SET_UPLOADING_COLORS_ACTION,
+  UPLOADING_SYMBOL_ACTION,
+  SET_SEARCH_CLIPARTPARAM
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -82,7 +85,11 @@ export const initialState = fromJS({
   saveDesignLoading: false,
   fonts: [],
   visibleFonts: [],
-  searchText: ''
+  searchText: '',
+  uploadingColors: false,
+  uploadingStitchingColors: false,
+  uploadingSymbol: false,
+  searchClipParam: ''
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -348,6 +355,17 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case UPDATE_SEARCH_TEXT_ACTION:
       return state.set('searchText', action.text)
+    case SET_UPLOADING_COLORS_ACTION: {
+      const keyName =
+        action.listType === 'colors'
+          ? 'uploadingColors'
+          : 'uploadingStitchingColors'
+      return state.set(keyName, action.isUploading)
+    }
+    case UPLOADING_SYMBOL_ACTION:
+      return state.set('uploadingSymbol', action.isLoading)
+    case SET_SEARCH_CLIPARTPARAM:
+      return state.set('searchClipParam', action.param)
     default:
       return state
   }

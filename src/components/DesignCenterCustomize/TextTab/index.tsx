@@ -41,6 +41,7 @@ interface Props {
   textFormat: TextFormat
   disableTooltip: boolean
   fonts: SimpleFont[]
+  colorsList: any
   onUpdateText: (text: string) => void
   onApplyText: (text: string, style: TextFormat) => void
   formatMessage: (messageDescriptor: any) => string
@@ -75,7 +76,8 @@ export class TextTab extends React.PureComponent<Props, State> {
       textFormat,
       selectedElement,
       elements,
-      fonts
+      fonts,
+      colorsList
     } = this.props
     const headerTitle = this.getHeaderTitle(option, page)
 
@@ -195,7 +197,7 @@ export class TextTab extends React.PureComponent<Props, State> {
             />
           </div>
           <TextEditor
-            {...{ option, formatMessage, fonts }}
+            {...{ option, formatMessage, colorsList, fonts }}
             text={text || productName}
             strokeWidth={textFormat && textFormat.strokeWidth}
             onSelectFont={this.handleOnSelectFont}

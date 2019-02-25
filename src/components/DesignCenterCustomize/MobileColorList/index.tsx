@@ -3,13 +3,17 @@
  */
 import * as React from 'react'
 import ReactDOM from 'react-dom'
+import get from 'lodash/get'
 import findIndex from 'lodash/findIndex'
+import Message from 'antd/lib/message'
 
 import { Container, Color, Col, ColorSlider, Border } from './styledComponents'
-import colors from './colors'
-import stitchingColors from '../../../colorList/stitchingColors'
 import { StitchingColor } from '../../../types/common'
 
+interface Color {
+  value: string
+  name: string
+}
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
@@ -17,6 +21,7 @@ interface Props {
   selectedColor?: string
   stitchingColor?: StitchingColor
   disableTooltip?: boolean
+  colorsList: any
 }
 
 class MobileColorList extends React.PureComponent<Props> {
@@ -33,8 +38,21 @@ class MobileColorList extends React.PureComponent<Props> {
   }
 
   scrollColorList(selectedColor: string) {
-    const { stitching } = this.props
-    const arrayColors = !stitching ? colors : stitchingColors
+    const { stitching, colorsList } = this.props
+    let arrayColors: any = !stitching
+
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
+      )
+    } catch (e) {
+      Message.error(e)
+    }
+
     const index = findIndex(arrayColors, ['value', selectedColor])
     const node = ReactDOM.findDOMNode(this.colorRef) as HTMLElement
     node.scrollLeft = index * 48
@@ -55,7 +73,8 @@ class MobileColorList extends React.PureComponent<Props> {
       onSelectStitchingColor = () => {},
       stitching = false,
       stitchingColor = { value: '', name: '' },
-      selectedColor
+      selectedColor,
+      colorsList
     } = this.props
     const setColor = (color: string, name: string, index: number) => () =>
       onSelectColor(color, name, index)
@@ -63,25 +82,41 @@ class MobileColorList extends React.PureComponent<Props> {
       // tslint:disable-next-line:curly
       if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
     }
-    const arrayColors = !stitching ? colors : stitchingColors
-    const colorsList = arrayColors.map(({ value, name }, index) => (
-      <Col key={index}>
-        <Border
-          selected={value === stitchingColor.value || selectedColor === value}
-        >
-          <Color
-            id={value}
+    let arrayColors: any
+    try {
+      arrayColors = JSON.parse(
+        get(
+          colorsList,
+          !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+          []
+        )
+      )
+    } catch (e) {
+      Message.error(e)
+    }
+
+    const colorList = arrayColors.map(
+      ({ value, name }: Color, index: number) => (
+        <Col key={index}>
+          <Border
             selected={value === stitchingColor.value || selectedColor === value}
-            color={value}
-            onClick={
-              stitching
-                ? setStitchingColor({ name, value })
-                : setColor(value, name, index)
-            }
-          />
-        </Border>
-      </Col>
-    ))
+          >
+            <Color
+              id={value}
+              selected={
+                value === stitchingColor.value || selectedColor === value
+              }
+              color={value}
+              onClick={
+                stitching
+                  ? setStitchingColor({ name, value })
+                  : setColor(value, name, index)
+              }
+            />
+          </Border>
+        </Col>
+      )
+    )
 
     return (
       <Container>
@@ -91,7 +126,7 @@ class MobileColorList extends React.PureComponent<Props> {
           }}
           totalWidth={arrayColors.length * 44 + 12}
         >
-          {colorsList}
+          {arrayColors.length && colorList}
         </ColorSlider>
       </Container>
     )
