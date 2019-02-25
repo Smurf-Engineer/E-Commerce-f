@@ -6,6 +6,7 @@ import AntdTabs from 'antd/lib/tabs'
 import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
+import SymbolTab from '../SymbolTab'
 import Tab from '../Tab'
 import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
@@ -13,6 +14,7 @@ import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
+import clipartsIcon from '../../../../assets/image_white.svg'
 import { Container } from './styledComponents'
 import {
   DesignConfig,
@@ -30,6 +32,7 @@ const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const SETTINGS_TAB = 'SETTINGS_TAB'
+const SYMBOLS_TAB = 'SYMBOLS_TAB'
 const LIST_TAB = 0
 const EDIT_TAB = 1
 
@@ -56,6 +59,11 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  colorsList: any
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -95,6 +103,9 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeStylesPosition: (dragIndex: number, dropIndex: number) => void
+  onUploadColorsList: (file: any, type: string) => void
+  onUploadFile: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
 }
 
 const Tabs = ({
@@ -148,7 +159,15 @@ const Tabs = ({
   onAddColorIdea,
   onEditTheme,
   changeThemesPosition,
-  changeStylesPosition
+  changeStylesPosition,
+  onUploadColorsList,
+  colorsList,
+  uploadingColors,
+  uploadingStitchingColors,
+  onUploadFile,
+  uploadingSymbol,
+  searchClipParam,
+  setSearchClipParamAction
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -260,8 +279,30 @@ const Tabs = ({
               onToggleColor,
               bibBrace,
               zipper,
-              binding
+              binding,
+              formatMessage,
+              colorsList,
+              uploadingColors,
+              uploadingStitchingColors
             }}
+            onUploadFile={onUploadColorsList}
+          />
+        </TabPane>
+        <TabPane
+          key={SYMBOLS_TAB}
+          tab={<Tab label="symbol" icon={clipartsIcon} />}
+        >
+          <SymbolTab
+            {...{
+              formatMessage,
+              onUploadFile,
+              uploadingSymbol,
+              searchClipParam,
+              setSearchClipParamAction
+            }}
+            disableTooltip={false}
+            selectedElement={0}
+            selectedItem={false}
           />
         </TabPane>
       </AntdTabs>

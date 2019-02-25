@@ -100,6 +100,7 @@ interface Props {
   infoModalOpen: boolean
   saveAndBuy: boolean
   selectedTab: number
+  colorsList: any
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -275,7 +276,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       selectedTab,
       onTabClick,
       onLockElement,
-      openLoginModalAction
+      openLoginModalAction,
+      colorsList
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -329,7 +331,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               selectedTab,
               onTabClick,
               onLockElement,
-              openLoginModalAction
+              openLoginModalAction,
+              colorsList
             }}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
@@ -432,7 +435,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               zipperColor,
               bibColor,
               onAccessoryColorSelected,
-              product
+              product,
+              colorsList
             }}
           />
         )}

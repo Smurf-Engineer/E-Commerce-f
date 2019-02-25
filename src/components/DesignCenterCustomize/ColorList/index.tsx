@@ -2,11 +2,14 @@
  * ColorList Component - Created by david on 26/02/18.
  */
 import * as React from 'react'
+import get from 'lodash/get'
 import { Container, Color, Row, Col } from './styledComponents'
-import colors from './colors'
-import stitchingColors from '../../../colorList/stitchingColors'
 import { StitchingColor } from '../../../types/common'
-
+import Message from 'antd/lib/message'
+interface Color {
+  value: string
+  name: string
+}
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
@@ -14,6 +17,7 @@ interface Props {
   stitching?: boolean
   stitchingColor?: StitchingColor
   disableTooltip?: boolean
+  colorsList: any
 }
 
 const ColorList = ({
@@ -21,7 +25,8 @@ const ColorList = ({
   onSelectStitchingColor = () => {},
   height = 40,
   stitching = false,
-  stitchingColor = { value: '', name: '' }
+  stitchingColor = { value: '', name: '' },
+  colorsList
 }: Props) => {
   const setColor = (color: string, name: string, index: number) => () =>
     onSelectColor(color, name, index)
@@ -29,8 +34,21 @@ const ColorList = ({
     // tslint:disable-next-line:curly
     if (color.value !== stitchingColor.value) onSelectStitchingColor(color)
   }
-  const arrayColors = !stitching ? colors : stitchingColors
-  const colorsList = arrayColors.map(({ value, name }, index) => (
+  let arrayColors: any
+
+  try {
+    arrayColors = JSON.parse(
+      get(
+        colorsList,
+        !stitching ? 'colorsResult.colors' : 'colorsResult.stitchingColors',
+        []
+      )
+    )
+  } catch (e) {
+    Message.error(e)
+  }
+
+  const colorList = arrayColors.map(({ value, name }: Color, index: number) => (
     <Col key={index} className="custom-tooltip">
       <Color
         selected={value === stitchingColor.value}
@@ -46,7 +64,7 @@ const ColorList = ({
   ))
   return (
     <Container {...{ height }}>
-      <Row>{colorsList}</Row>
+      <Row>{arrayColors.length && colorList}</Row>
     </Container>
   )
 }

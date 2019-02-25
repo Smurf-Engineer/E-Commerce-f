@@ -57,6 +57,7 @@ interface Props {
   disableTooltip: boolean
   selectedItem: SelectedAsset
   selectedTab: number
+  colorsList: any
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -129,7 +130,8 @@ const Tabs = ({
   selectedTab,
   onTabClick,
   onLockElement,
-  openLoginModalAction
+  openLoginModalAction,
+  colorsList
 }: Props) => {
   return (
     <Container>
@@ -159,7 +161,8 @@ const Tabs = ({
               bibColor,
               onSelectStitchingColor,
               onAccessoryColorSelected,
-              product
+              product,
+              colorsList
             }}
           />
         </TabPane>
@@ -176,7 +179,8 @@ const Tabs = ({
               selectedElement,
               textFormat,
               onSelectTextFormat,
-              onLockElement
+              onLockElement,
+              colorsList
             }}
           />
         </TabPane>
@@ -189,7 +193,8 @@ const Tabs = ({
               onSelectArtFormat,
               searchClipParam,
               setSearchClipParamAction,
-              onLockElement
+              onLockElement,
+              colorsList
             }}
             selectedElement={canvas.path[selectedElement]}
             selectedItem={

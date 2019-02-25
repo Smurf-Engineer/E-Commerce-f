@@ -4,21 +4,29 @@
 import * as React from 'react'
 import { graphql } from 'react-apollo'
 import { FormattedMessage } from 'react-intl'
+import indexOf from 'lodash/indexOf'
 import debounce from 'lodash/debounce'
+import message from 'antd/lib/message'
+import { getFileExtension } from '../../../../utils/utilsFiles'
 import SwipeableViews from 'react-swipeable-views'
-import last from 'lodash/last'
+import DraggerWithLoading from '../../../../components/DraggerWithLoading'
 import Icon from 'antd/lib/icon'
 import { compose } from 'react-apollo'
 import Spin from 'antd/lib/spin'
-import WithError from '../../WithError'
-import OptionText from '../../OptionText'
-import { CanvasElements } from '../../../screens/DesignCenter/constants'
+import WithError from '../../../../components/WithError'
+import OptionText from '../../../../components/OptionText'
+import { CanvasElements } from '../../../../screens/DesignCenter/constants'
 import TextEditor from '../TextEditor'
 import Symbol from '../ClipArt'
-import { QueryProps, ClipArt, CanvasElement } from '../../../types/common'
-import { clipArtsQuery } from './data'
+import {
+  QueryProps,
+  ClipArt,
+  CanvasElement,
+  MessagePayload
+} from '../../../../types/common'
+import { clipArtsQuery, updateClipartMutation } from './data'
 import messages from './messages'
-import backIcon from '../../../assets/leftarrow.svg'
+import backIcon from '../../../../assets/leftarrow.svg'
 import {
   Container,
   Header,
@@ -33,7 +41,8 @@ import {
   List,
   Loading,
   NotFound,
-  LockContainer
+  ButtonContainer,
+  DraggerContainer
 } from './styledComponents'
 
 interface Data extends QueryProps {
@@ -45,7 +54,8 @@ interface Props {
   selectedElement: CanvasElement
   selectedItem: number
   disableTooltip: boolean
-  colorsList: any
+  uploadingSymbol: boolean
+  searchClipParam: string
   formatMessage: (messageDescriptor: any) => string
   onApplyArt: (
     url: string,
@@ -56,6 +66,8 @@ interface Props {
   onSelectArtFormat: (key: string, value: string | number) => void
   setSearchClipParamAction: (searchParam: string) => void
   onLockElement: (id: string, type: string) => void
+  onUploadFile: (file: any) => void
+  updateClipart: (variables: {}) => Promise<MessagePayload>
 }
 
 class SymbolTab extends React.PureComponent<Props, {}> {
@@ -67,6 +79,12 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     option: 0,
     page: 0
   }
+  async componentWillReceiveProps(nextProps: any) {
+    if (!nextProps.uploadingSymbol) {
+      const { data } = this.props
+      data.refetch()
+    }
+  }
 
   render() {
     const { page, option } = this.state
@@ -75,15 +93,15 @@ class SymbolTab extends React.PureComponent<Props, {}> {
       selectedElement,
       formatMessage,
       selectedItem,
-      colorsList
+      uploadingSymbol
     } = this.props
 
     const artList =
       clipArts && !!clipArts.length ? (
-        clipArts.map(({ id, url }) => (
+        clipArts.map(({ id, url, hidden }) => (
           <Col key={id}>
             <Symbol
-              {...{ url, id }}
+              {...{ url, id, hidden }}
               selected={selectedItem === id}
               onClickApply={this.handleOnApplyArt}
             />
@@ -112,11 +130,6 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               />
             </Title>
           </Row>
-          {selectedElement && (
-            <LockContainer onClick={this.handleOnLockElement}>
-              <Icon type={selectedElement.lock ? 'lock' : 'unlock'} />
-            </LockContainer>
-          )}
         </Header>
         {selectedElement ? (
           <SwipeableViews disabled={true} index={page}>
@@ -133,7 +146,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
               />
             </div>
             <TextEditor
-              {...{ option, formatMessage, colorsList }}
+              {...{ option, formatMessage }}
               strokeWidth={selectedElement.strokeWidth}
               onSelectFill={this.handleOnSelectFill}
               onSelectStrokeWidth={this.handleOnSelectStrokeWidth}
@@ -149,6 +162,21 @@ class SymbolTab extends React.PureComponent<Props, {}> {
                 addonAfter={<Button onClick={() => {}}>Search</Button>}
               />
             </InputWrapper>
+            <DraggerContainer>
+              <DraggerWithLoading
+                className="upload"
+                loading={uploadingSymbol}
+                onSelectImage={this.beforeUpload}
+                formatMessage={formatMessage}
+                extensions={['.svg']}
+              >
+                <Button>
+                  <ButtonContainer>
+                    <Icon type="upload" />
+                  </ButtonContainer>
+                </Button>
+              </DraggerWithLoading>
+            </DraggerContainer>
             <List height={50}>{symbolsList}</List>
           </div>
         )}
@@ -188,15 +216,34 @@ class SymbolTab extends React.PureComponent<Props, {}> {
     onApplyArt('', selectedElement)
   }
 
-  handleOnApplyArt = (url: string, fileId: number) => {
-    const { onApplyArt } = this.props
-    const artName = last(url.split('/'))
-    onApplyArt(url, undefined, fileId, artName)
+  handleOnApplyArt = async (url: string, fileId: number) => {
+    const { updateClipart } = this.props
+    await updateClipart({
+      variables: { id: fileId }
+    })
   }
   handleOnLockElement = () => {
     const { selectedElement, onLockElement } = this.props
     onLockElement(selectedElement.id, CanvasElements.Path)
     this.forceUpdate()
+  }
+  beforeUpload = async (file: any) => {
+    const { formatMessage, onUploadFile } = this.props
+    if (file) {
+      const { size, name } = file
+      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
+      if (size / 1000000 > 20) {
+        message.error(formatMessage(messages.imageSizeError))
+        return false
+      }
+      const fileExtension = getFileExtension(name)
+      if (indexOf(['.svg'], (fileExtension as String).toLowerCase()) === -1) {
+        message.error(formatMessage(messages.imageExtensionError))
+        return false
+      }
+      onUploadFile(file)
+    }
+    return false
   }
 }
 type OwnProps = {
@@ -208,6 +255,7 @@ const SymbolTabEnhance = compose(
       variables: { query: searchClipParam }
     })
   }),
+  graphql(updateClipartMutation, { name: 'updateClipart' }),
   WithError
 )(SymbolTab)
 
