@@ -40,13 +40,9 @@ class FontsList extends React.PureComponent<Props> {
       getGoogleFonts
     } = this.props
     if (googleList) {
-
       setTimeout(
         async () => {
           await getGoogleFonts()
-          /* if (list) {
-            setGoogleFontsList(list)
-          } */
         },
         200
       )
