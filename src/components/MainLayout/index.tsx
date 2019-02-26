@@ -14,7 +14,7 @@ import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
-import { RegionConfig, CartItems, UserType, Font } from '../../types/common'
+import { RegionConfig, CartItems, UserType, Font, SimpleFont } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -80,7 +80,7 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
-  getFontsData: () => Promise<any>
+  getFontsData: () => Promise<Font>
   setInstalledFontsAction: (fonts: any) => void
 }
 
@@ -130,8 +130,8 @@ class MainLayout extends React.Component<Props, {}> {
     )
 
     const fontsResponse = await getFontsData()
-    const fonts: any = []
     const fontsList = get(fontsResponse, 'data.fontsData', {})
+    const fonts: SimpleFont[] = []
     fontsList.map((font: Font) => fonts.push({ font: font.family }))
     setInstalledFontsAction(fonts)
   }

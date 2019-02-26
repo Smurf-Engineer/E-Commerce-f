@@ -1096,9 +1096,9 @@ export interface Index {
 type couponType = '%' | 'flat'
 
 export interface Font {
-  id: number
+  id?: number
   family: string
-  active: boolean
+  active?: boolean
 }
 
 export interface SimpleFont {
