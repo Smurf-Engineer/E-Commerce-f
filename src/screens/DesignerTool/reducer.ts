@@ -40,6 +40,9 @@ import {
   UPDATE_THEME_NAME_ACTION,
   OPEN_SAVE_DESIGN_ACTION,
   SET_SAVING_DESIGN,
+  SET_GOOGLE_FONTS,
+  ADD_FONT_ACTION,
+  UPDATE_SEARCH_TEXT_ACTION,
   SET_UPLOADING_COLORS_ACTION,
   UPLOADING_SYMBOL_ACTION,
   SET_SEARCH_CLIPARTPARAM
@@ -80,6 +83,9 @@ export const initialState = fromJS({
   themes: [],
   openSaveDesign: false,
   saveDesignLoading: false,
+  fonts: [],
+  visibleFonts: [],
+  searchText: '',
   uploadingColors: false,
   uploadingStitchingColors: false,
   uploadingSymbol: false,
@@ -334,6 +340,21 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SAVING_DESIGN: {
       return state.set('saveDesignLoading', action.saving)
     }
+    case SET_GOOGLE_FONTS: {
+      const {
+        data: { items }
+      } = action
+      const fonts = items.map((item: any) => item.family)
+      return state.set('fonts', fromJS(fonts))
+    }
+    case ADD_FONT_ACTION: {
+      return state.set(
+        'visibleFonts',
+        state.get('visibleFonts').push({ font: action.font })
+      )
+    }
+    case UPDATE_SEARCH_TEXT_ACTION:
+      return state.set('searchText', action.text)
     case SET_UPLOADING_COLORS_ACTION: {
       const keyName =
         action.listType === 'colors'

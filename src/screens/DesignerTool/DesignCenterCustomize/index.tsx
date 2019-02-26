@@ -62,6 +62,9 @@ interface Props {
   colorIdeas: DesignObject[]
   openSaveDesign: boolean
   saveDesignLoading: boolean
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
   colorsList: any
   uploadingColors: boolean
   uploadingStitchingColors: boolean
@@ -111,9 +114,13 @@ interface Props {
   onDesignName: (name: string) => void
   openSaveDesignAction: (open: boolean) => void
   onConfirmDesignToSave: () => void
+  setGoogleFontsList: (data: any) => void
+  addFont: (font: string) => void
+  onUpdateSearchText: (text: string) => void
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -176,6 +183,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onConfirmDesignToSave,
       saveDesignLoading,
       openSaveDesign,
+      setGoogleFontsList,
+      fonts,
+      addFont,
+      visibleFonts,
+      onUpdateSearchText,
+      searchText,
       onUploadColorsList,
       colorsList,
       uploadingColors,
@@ -183,7 +196,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUploadFile,
       uploadingSymbol,
       searchClipParam,
-      setSearchClipParamAction
+      setSearchClipParamAction,
+      getGoogleFonts
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -240,6 +254,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             openSaveDesign,
             changeThemesPosition: this.changeThemesPosition,
             changeStylesPosition: this.changeStylesPosition,
+            setGoogleFontsList,
+            fonts,
+            visibleFonts,
+            addFont,
+            onUpdateSearchText,
+            searchText,
             onUploadColorsList,
             colorsList,
             uploadingColors,
@@ -247,7 +267,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUploadFile,
             uploadingSymbol,
             searchClipParam,
-            setSearchClipParamAction
+            setSearchClipParamAction,
+            getGoogleFonts
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
