@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import { compose } from 'react-apollo'
-import { connect } from 'react-redux'
 import get from 'lodash/get'
 import messages from './messages'
 import Input from 'antd/lib/input'
@@ -11,7 +10,6 @@ import includes from 'lodash/includes'
 import find from 'lodash/find'
 import GoogleFontLoader from 'react-google-font-loader'
 import { Waypoint } from 'react-waypoint'
-import * as thunkActions from './thunkActions'
 import { Font, Message } from '../../types/common'
 import { Container, Text, Item, ScrollView } from './styledComponents'
 import { getFonts, addNewFont } from './data'
@@ -30,7 +28,7 @@ interface Props {
   selectFont: (font: string) => void
   installFont: (variables: {}) => void
   formatMessage: (messageDescriptor: Message) => string
-  getGoogleFonts: (formatMessage: any) => any
+  getGoogleFonts: () => void
 }
 
 const Search = Input.Search
@@ -39,18 +37,16 @@ class FontsList extends React.PureComponent<Props> {
   async componentDidMount() {
     const {
       googleList,
-      setGoogleFontsList,
-      formatMessage,
       getGoogleFonts
     } = this.props
     if (googleList) {
 
       setTimeout(
         async () => {
-          const list = await getGoogleFonts(formatMessage)
-          if (list) {
+          await getGoogleFonts()
+          /* if (list) {
             setGoogleFontsList(list)
-          }
+          } */
         },
         200
       )
@@ -191,12 +187,6 @@ class FontsList extends React.PureComponent<Props> {
 
 const FontsListEnhance = compose(
   addNewFont,
-  getFonts,
-  connect(
-    null,
-    {
-      ...thunkActions
-    }
-  )
+  getFonts
 )(FontsList)
 export default FontsListEnhance

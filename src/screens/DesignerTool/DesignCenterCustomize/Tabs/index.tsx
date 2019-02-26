@@ -115,6 +115,7 @@ interface Props {
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
 }
 
 const Tabs = ({
@@ -182,7 +183,8 @@ const Tabs = ({
   onUploadFile,
   uploadingSymbol,
   searchClipParam,
-  setSearchClipParamAction
+  setSearchClipParamAction,
+  getGoogleFonts
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -329,7 +331,8 @@ const Tabs = ({
               visibleFonts,
               onUpdateSearchText,
               searchText,
-              formatMessage
+              formatMessage,
+              getGoogleFonts
             }}
           />
         </TabPane>

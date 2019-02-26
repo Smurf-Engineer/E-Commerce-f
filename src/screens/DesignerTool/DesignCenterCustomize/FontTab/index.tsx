@@ -19,6 +19,7 @@ interface Props {
   addFont: (font: string) => void
   onUpdateSearchText: (text: string) => void
   formatMessage: (messageDescriptor: Message) => void
+  getGoogleFonts: () => void
 }
 
 const { TabPane } = AntdTabs
@@ -35,7 +36,8 @@ class FontTab extends React.PureComponent<Props> {
       addFont,
       onUpdateSearchText,
       searchText,
-      formatMessage
+      formatMessage,
+      getGoogleFonts
     } = this.props
     return (
       <Container>
@@ -67,7 +69,8 @@ class FontTab extends React.PureComponent<Props> {
                   addFont,
                   onUpdateSearchText,
                   searchText,
-                  formatMessage
+                  formatMessage,
+                  getGoogleFonts
                 }}
               />
             </TabPane>

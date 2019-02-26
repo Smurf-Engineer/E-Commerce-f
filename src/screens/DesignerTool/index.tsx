@@ -22,6 +22,7 @@ import {
   deleteInspirationMutation
 } from './data'
 import EditTheme from '../../components/ThemeModal'
+import * as thunkActions from './thunkActions'
 import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
@@ -155,6 +156,7 @@ interface Props {
   onUploadColorsListAction: (file: any, type: string) => void
   uploadSymbolAction: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -227,7 +229,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadSymbolAction,
       uploadingSymbol,
       searchClipParam,
-      setSearchClipParamAction
+      setSearchClipParamAction,
+      getGoogleFonts
     } = this.props
     const { themeImage } = this.state
     return (
@@ -265,7 +268,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             uploadingStitchingColors,
             uploadingSymbol,
             searchClipParam,
-            setSearchClipParamAction
+            setSearchClipParamAction,
+            getGoogleFonts
           }}
           onUpdateSearchText={onUpdateSearchTextAction}
           addFont={addFontAction}
@@ -656,7 +660,7 @@ const DesignerToolEnhance = compose(
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   connect(
     mapStateToProps,
-    { ...designerToolActions, ...designerToolApi }
+    { ...designerToolActions, ...designerToolApi, ...thunkActions }
   )
 )(DesignerTool)
 

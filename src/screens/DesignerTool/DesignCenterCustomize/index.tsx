@@ -120,6 +120,7 @@ interface Props {
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -195,7 +196,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUploadFile,
       uploadingSymbol,
       searchClipParam,
-      setSearchClipParamAction
+      setSearchClipParamAction,
+      getGoogleFonts
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -265,7 +267,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onUploadFile,
             uploadingSymbol,
             searchClipParam,
-            setSearchClipParamAction
+            setSearchClipParamAction,
+            getGoogleFonts
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
