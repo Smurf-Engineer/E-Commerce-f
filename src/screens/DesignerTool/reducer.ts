@@ -42,7 +42,9 @@ import {
   SET_SAVING_DESIGN,
   SET_UPLOADING_COLORS_ACTION,
   UPLOADING_SYMBOL_ACTION,
-  SET_SEARCH_CLIPARTPARAM
+  SET_SEARCH_CLIPARTPARAM,
+  SET_LOADED_CANVAS_ACTION,
+  CanvasElements
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -131,6 +133,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_MODEL_ACTION: {
       const { modelConfig, colorIdeas, design } = action
       const colors = [...design.colors]
+      console.log(' action ', action)
       return state.merge({
         design,
         modelConfig,
@@ -345,9 +348,31 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('uploadingSymbol', action.isLoading)
     case SET_SEARCH_CLIPARTPARAM:
       return state.set('searchClipParam', action.param)
+    case SET_LOADED_CANVAS_ACTION: {
+        const { paths, canvas } = action
+        const updatedCanvas = getCanvas(canvas)
+        return state.merge({
+          canvas: updatedCanvas,
+          originalPaths: paths
+        })
+      }
     default:
       return state
   }
 }
 
 export default designerToolReducer
+
+const getCanvas = (canvasToSet: any) => {
+  const { text, path, image } = canvasToSet
+  const textIds = Object.keys(text)
+  const pathIds = Object.keys(path)
+  const imageds = Object.keys(image)
+  const canvas = fromJS({ text: {}, image: {}, path: {} })
+  const updatedCanvas = canvas.withMutations((map: any) => {
+    textIds.forEach(id => map.setIn([CanvasElements.Text, id], text[id]))
+    pathIds.forEach(id => map.setIn([CanvasElements.Path, id], path[id]))
+    imageds.forEach(id => map.setIn([CanvasElements.Image, id], image[id]))
+  })
+  return updatedCanvas
+}

@@ -38,7 +38,8 @@ import {
   SET_UPLOADING_COLORS_ACTION,
   UPLOAD_SYMBOL_ACTION_SUCCESS,
   UPLOADING_SYMBOL_ACTION,
-  SET_SEARCH_CLIPARTPARAM
+  SET_SEARCH_CLIPARTPARAM,
+  SET_LOADED_CANVAS_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -257,4 +258,13 @@ export const setUploadingSymbolAction = (isLoading: boolean) => ({
 export const setSearchClipParamAction = (param: string) => ({
   type: SET_SEARCH_CLIPARTPARAM,
   param
+})
+
+export const setLoadedCanvasAction = (
+  canvas: CanvasType,
+  paths: any[]
+): AnyAction => ({
+  type: SET_LOADED_CANVAS_ACTION,
+  canvas,
+  paths
 })

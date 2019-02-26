@@ -343,6 +343,7 @@ export interface Style {
     height: number
   }
   itemOrder: number
+  canvas: string
 }
 
 export interface DesignStyle {

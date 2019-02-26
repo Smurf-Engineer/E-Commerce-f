@@ -20,5 +20,13 @@ export default defineMessages({
   onBike: {
     id: 'components.Render3D.onBike',
     defaultMessage: 'On Bike'
+  },
+  styleMode: {
+    id: 'components.Render3D.onBike',
+    defaultMessage: 'Style Mode'
+  },
+  placeholderMode: {
+    id: 'components.Render3D.onBike',
+    defaultMessage: 'Placeholder Mode'
   }
 })

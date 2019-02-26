@@ -114,6 +114,7 @@ interface Props {
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  onSetCanvasObject: (el: CanvasType, paths: any[]) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -183,7 +184,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onUploadFile,
       uploadingSymbol,
       searchClipParam,
-      setSearchClipParamAction
+      setSearchClipParamAction,
+      onSetCanvasObject
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -269,7 +271,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             bibBrace,
             zipper,
             binding,
-            design
+            design,
+            onSetCanvasObject
           }}
           ref={render3D => (this.render3D = render3D)}
         />
