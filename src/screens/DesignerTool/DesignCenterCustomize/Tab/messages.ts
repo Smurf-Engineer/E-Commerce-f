@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.designCenterTool.Tab.product',
     defaultMessage: 'Product'
   },
+  fonts: {
+    id: 'components.designCenterTool.Tab.product',
+    defaultMessage: 'Fonts'
+  },
   colors: {
     id: 'components.designCenterTool.Tab.colors',
     defaultMessage: 'Colors'

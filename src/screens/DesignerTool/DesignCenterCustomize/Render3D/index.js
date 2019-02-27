@@ -23,7 +23,8 @@ import {
   CANVAS_SIZE,
   CANVAS_MESH,
   CORNER_SIZE,
-  fabricJsConfig
+  fabricJsConfig,
+  Mode
 } from './config'
 import {
   Changes,
@@ -210,7 +211,6 @@ class Render3D extends PureComponent {
         el.id = elId
         el.hasRotatingPoint = false
         indexes[elId] = index
-        console.log(el.type)
         switch (el.type) {
           case CanvasElements.Text: {
             elements.push(el)
@@ -262,10 +262,9 @@ class Render3D extends PureComponent {
         const fontObserver = new FontFaceObserver(font)
         return fontObserver.load()
       })
-      const j = await Promise.all(fontsPromises)
+      await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
-
       if (reseting) {
         const {
           currentStyle: { accessoriesColor },
@@ -673,8 +672,8 @@ class Render3D extends PureComponent {
               value={this.state.mode}
               onChange={this.handleChangeMode}
             >
-              <RadioButton value="style">Style Mode</RadioButton>
-              <RadioButton value="placeholder">Placeholder Mode</RadioButton>
+              <RadioButton value={Mode.Style}>Style Mode</RadioButton>
+              <RadioButton value={Mode.Placeholder}>Placeholder Mode</RadioButton>
             </RadioGroup>
           </Modes>
         )}
@@ -775,10 +774,20 @@ class Render3D extends PureComponent {
     const {
       target: { value: mode }
     } = event
+    const { design } = this.props
+    console.log(design)
     this.setState({
       mode
     })
-    console.log(mode)
+
+    switch(mode){
+      case Mode.Style:
+        break
+      case Mode.Placeholder:
+        // this.loadCanvasTexture(design.canvas, true)
+        this.clearScene()
+        break
+    }
   }
 }
 

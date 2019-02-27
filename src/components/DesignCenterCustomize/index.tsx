@@ -29,7 +29,8 @@ import {
   AccessoriesColor,
   CanvasObjects,
   SelectedAsset,
-  Responsive
+  Responsive,
+  SimpleFont
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -100,6 +101,7 @@ interface Props {
   infoModalOpen: boolean
   saveAndBuy: boolean
   selectedTab: number
+  fonts: SimpleFont[]
   colorsList: any
   // Redux actions
   onUploadFile: (file: any) => void
@@ -277,6 +279,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onTabClick,
       onLockElement,
       openLoginModalAction,
+      fonts,
       colorsList
     } = this.props
 
@@ -332,6 +335,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onTabClick,
               onLockElement,
               openLoginModalAction,
+              fonts,
               colorsList
             }}
             onSelectStitchingColor={setStitchingColorAction}

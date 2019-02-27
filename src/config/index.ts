@@ -22,6 +22,8 @@ interface ConfigType {
   defaultCurrency?: string
   googleTagManagerId?: string
   logrocketId?: string
+  googleFontsKey?: string
+  googleFontsUrl?: string
 }
 
 const config: ConfigType = {
@@ -41,7 +43,9 @@ const config: ConfigType = {
   intercomKey: process.env.INTERCOM_KEY,
   defaultCurrency: process.env.DEFAULT_CURRENCY,
   googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID,
-  logrocketId: process.env.LOG_ROCKET_KEY
+  logrocketId: process.env.LOG_ROCKET_KEY,
+  googleFontsKey: process.env.GOOGLE_FONTS_KEY,
+  googleFontsUrl: process.env.GOOGLE_FONTS_URL
 }
 
 export default config

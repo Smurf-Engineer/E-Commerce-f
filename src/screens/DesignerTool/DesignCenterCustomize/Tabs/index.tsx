@@ -10,10 +10,12 @@ import SymbolTab from '../SymbolTab'
 import Tab from '../Tab'
 import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
+import FontTab from '../FontTab'
 import colorIcon from '../../../../assets/color_white.svg'
 import uploadIcon from '../../../../assets/upload_white.svg'
 import settingsIcon from '../../../../assets/settings.svg'
 import designIcon from '../../../../assets/styles.svg'
+import fontIcon from '../../../../assets/text_white.svg'
 import clipartsIcon from '../../../../assets/image_white.svg'
 import { Container } from './styledComponents'
 import {
@@ -32,6 +34,7 @@ const UPLOAD_TAB = 'UPLOAD_TAB'
 const COLOR_TAB = 'COLOR_TAB'
 const INSPIRATION_TAB = 'INSPIRATION_TAB'
 const SETTINGS_TAB = 'SETTINGS_TAB'
+const FONT_TAB = 'FONT_TAB'
 const SYMBOLS_TAB = 'SYMBOLS_TAB'
 const LIST_TAB = 0
 const EDIT_TAB = 1
@@ -59,6 +62,9 @@ interface Props {
   binding: boolean
   colorIdeaItem: number
   colorIdeas: DesignObject[]
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
   colorsList: any
   uploadingColors: boolean
   uploadingStitchingColors: boolean
@@ -103,9 +109,13 @@ interface Props {
   onEditTheme: (theme: Theme | null) => void
   changeThemesPosition: (dragIndex: number, dropIndex: number) => void
   changeStylesPosition: (dragIndex: number, dropIndex: number) => void
+  setGoogleFontsList: (data: any) => void
+  addFont: (font: string) => void
+  onUpdateSearchText: (text: string) => void
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
 }
 
 const Tabs = ({
@@ -160,6 +170,12 @@ const Tabs = ({
   onEditTheme,
   changeThemesPosition,
   changeStylesPosition,
+  setGoogleFontsList,
+  fonts,
+  addFont,
+  visibleFonts,
+  onUpdateSearchText,
+  searchText,
   onUploadColorsList,
   colorsList,
   uploadingColors,
@@ -167,7 +183,8 @@ const Tabs = ({
   onUploadFile,
   uploadingSymbol,
   searchClipParam,
-  setSearchClipParamAction
+  setSearchClipParamAction,
+  getGoogleFonts
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -303,6 +320,20 @@ const Tabs = ({
             disableTooltip={false}
             selectedElement={0}
             selectedItem={false}
+          />
+        </TabPane>
+        <TabPane key={FONT_TAB} tab={<Tab label="fonts" icon={fontIcon} />}>
+          <FontTab
+            {...{
+              setGoogleFontsList,
+              fonts,
+              addFont,
+              visibleFonts,
+              onUpdateSearchText,
+              searchText,
+              formatMessage,
+              getGoogleFonts
+            }}
           />
         </TabPane>
       </AntdTabs>

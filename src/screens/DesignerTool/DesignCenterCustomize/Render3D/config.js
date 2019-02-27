@@ -1,5 +1,9 @@
 export const CANVAS_SIZE = 2048
 export const CORNER_SIZE = 40
+export const Mode = {
+  Style: 'style',
+  Placeholder: 'placeholder'
+}
 
 /**
  * ThreeJs config

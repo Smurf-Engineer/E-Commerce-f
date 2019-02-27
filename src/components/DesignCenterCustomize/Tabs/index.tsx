@@ -23,7 +23,8 @@ import {
   Product,
   ImageFile,
   CanvasElement,
-  SelectedAsset
+  SelectedAsset,
+  SimpleFont
 } from '../../../types/common'
 import { Container } from './styledComponents'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
@@ -57,6 +58,7 @@ interface Props {
   disableTooltip: boolean
   selectedItem: SelectedAsset
   selectedTab: number
+  fonts: SimpleFont[]
   colorsList: any
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
@@ -131,6 +133,7 @@ const Tabs = ({
   onTabClick,
   onLockElement,
   openLoginModalAction,
+  fonts,
   colorsList
 }: Props) => {
   return (
@@ -180,6 +183,7 @@ const Tabs = ({
               textFormat,
               onSelectTextFormat,
               onLockElement,
+              fonts,
               colorsList
             }}
           />

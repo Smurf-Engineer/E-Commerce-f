@@ -2550,6 +2550,11 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
+"consolidated-events@^1.1.0 || ^2.0.0":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/consolidated-events/-/consolidated-events-2.0.2.tgz#da8d8f8c2b232831413d9e190dc11669c79f4a91"
+  integrity sha512-2/uRVMdRypf5z/TW/ncD/66l75P5hH2vM/GR8Jf8HLc2xnfJtmina6F6du8+v4Z2vTrMo7jC+W1tmEEuuELgkQ==
+
 constant-case@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/constant-case/-/constant-case-2.0.0.tgz#4175764d389d3fa9c8ecd29186ed6005243b6a46"
@@ -7886,6 +7891,15 @@ prop-types@15.x, prop-types@^15.3.0, prop-types@^15.5.0, prop-types@^15.5.10, pr
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
+prop-types@^15.0.0:
+  version "15.7.2"
+  resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
+  integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
+  dependencies:
+    loose-envify "^1.4.0"
+    object-assign "^4.1.1"
+    react-is "^16.8.1"
+
 proxy-addr@~2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.4.tgz#ecfc733bf22ff8c6f407fa275327b9ab67e48b93"
@@ -8681,6 +8695,13 @@ react-facebook-login@^4.0.0:
   resolved "https://registry.yarnpkg.com/react-facebook-login/-/react-facebook-login-4.1.1.tgz#005121236a6ac0dee02099976fb1a3265f9d633e"
   integrity sha512-COnHEHlYGTKipz4963safFAK9PaNTcCiXfPXMS/yxo8El+/AJL5ye8kMJf23lKSSGGPgqFQuInskIHVqGqTvSw==
 
+react-google-font-loader@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/react-google-font-loader/-/react-google-font-loader-1.0.5.tgz#83b3c6c01a97acbf4da0752a2fb2c21c1c413778"
+  integrity sha512-Cpr3C96lBIQoXgmVwSo52Uc9oMnLOYuqArmPw63CuttBc27R0YpTeDINR39jPM/d5WofIbGpQFi66K4ts9G6Lg==
+  dependencies:
+    prop-types "^15.6.2"
+
 react-google-login@^3.0.4:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-3.2.1.tgz#9ab6ac3694d0e6e2974f1e588c53cf7b903a36e6"
@@ -8711,6 +8732,11 @@ react-is@^16.3.1, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0:
   version "16.7.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.7.0.tgz#c1bd21c64f1f1364c6f70695ec02d69392f41bfa"
   integrity sha512-Z0VRQdF4NPDoI0tsXVMLkJLiwEBa+RP66g0xDHxgxysxSoCUccSten4RTF/UFvZF1dZvZ9Zu1sx+MDXwcOR34g==
+
+react-is@^16.6.3, react-is@^16.8.1:
+  version "16.8.2"
+  resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.2.tgz#09891d324cad1cb0c1f2d91f70a71a4bee34df0f"
+  integrity sha512-D+NxhSR2HUCjYky1q1DwpNUD44cDpUXzSmmFyC3ug1bClcU/iDNy0YNn1iwme28fn+NFhpA13IndOd42CrFb+Q==
 
 react-lazy-load@^3.0.13:
   version "3.0.13"
@@ -8889,6 +8915,15 @@ react-twitter-widgets@^1.7.1:
     lodash "^4.17.4"
     prop-types "^15.3.0"
     scriptjs "^2.5.8"
+
+react-waypoint@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/react-waypoint/-/react-waypoint-9.0.0.tgz#a027deaafa60e3c2c998e78aa3542fa5ffc98afb"
+  integrity sha512-pp1hi1iJ1UjE9KFNyL7TDRYBNRaiCbDNU7XbKpQsA5DRTv7rpP5F7KLfKxCVxagoTQvS6oTycdEvJl0cMgnDZQ==
+  dependencies:
+    consolidated-events "^1.1.0 || ^2.0.0"
+    prop-types "^15.0.0"
+    react-is "^16.6.3"
 
 "react@^15 || ^16", react@^16.1.0, react@^16.2.0:
   version "16.7.0"
