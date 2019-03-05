@@ -318,7 +318,7 @@ class Render3D extends PureComponent {
       highResolution
     } = design
 
-    const { designSearch } = this.props
+    const { designSearch, stitchingValue } = this.props
     try {
       if (!!canvas) {
         const { objects } = JSON.parse(canvas)
@@ -369,7 +369,9 @@ class Render3D extends PureComponent {
             const flatlockIndex = getMeshIndex(FLATLOCK)
             const flatlockMaterial = new THREE.MeshLambertMaterial({
               alphaMap: flatlock,
-              color: get(colorAccessories, 'stitching', flatlockColor) || WHITE
+              color:
+                get(colorAccessories, 'stitching', flatlockColor) ||
+                stitchingValue
             })
             flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
             flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
