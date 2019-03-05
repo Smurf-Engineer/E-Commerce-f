@@ -800,6 +800,7 @@ export interface MyPaletteDesignCenterModals {
 export interface ClipArt {
   id: number
   url: string
+  hidden?: boolean
 }
 
 export interface StyleModalType {
@@ -1073,6 +1074,10 @@ export interface ProductColors {
   image: string
 }
 
+export interface Colors {
+  colors: string
+  stitchingColors: string
+}
 export interface CouponCode {
   code: string
   type: couponType
@@ -1089,3 +1094,13 @@ export interface Index {
   index: number
 }
 type couponType = '%' | 'flat'
+
+export interface Font {
+  id?: number
+  family: string
+  active?: boolean
+}
+
+export interface SimpleFont {
+  font: string
+}

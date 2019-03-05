@@ -104,6 +104,7 @@ class OrderFiles extends React.PureComponent<Props> {
               onUploadingThumbnail={setUploadingThumbnailAction}
               colorAccessories={colorAccessories}
               ref={(render3D: any) => (this.render3D = render3D)}
+              {...{ stitchingValue }}
             />
           </RenderContainer>
         </RenderLayout>

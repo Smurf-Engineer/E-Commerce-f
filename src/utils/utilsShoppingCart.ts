@@ -25,7 +25,6 @@ export const getShoppingCartData = (
       const quantitySum = quantities.reduce((a, b) => a + b, 0)
 
       weightSum += get(cartItem, 'product.weight', 0) * quantitySum
-
       // increase number of products in cart
       numberOfProducts = numberOfProducts + quantitySum
       // change flag to show/hide 25 percentMessage
@@ -124,8 +123,8 @@ const getPriceRange = (priceRanges: PriceRange[], totalItems: number) => {
       priceRangeItem.quantity && priceRangeItem.quantity === 'Personal'
         ? 1
         : priceRangeItem.quantity
-          ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
-          : 0
+        ? parseInt(priceRangeItem.quantity.split('-')[1], 10)
+        : 0
 
     if (val >= totalItems) {
       markslider = priceRangeItem

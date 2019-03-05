@@ -11,3 +11,16 @@ export const getTeamStoreStatus = graphql(
   `,
   { name: 'teamStoreStatus' }
 )
+
+export const getFonts = graphql(
+  gql`
+    mutation GetFonts {
+      fontsData: getFonts {
+        id
+        family
+        active
+      }
+    }
+  `,
+  { name: 'getFontsData' }
+)

@@ -4,7 +4,9 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 import { compose, withApollo } from 'react-apollo'
+import GoogleFontLoader from 'react-google-font-loader'
 import get from 'lodash/get'
+import isEmpty from 'lodash/isEmpty'
 import { connect } from 'react-redux'
 import { InjectedIntl } from 'react-intl'
 import Layout from 'antd/lib/layout'
@@ -12,7 +14,7 @@ import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
-import { RegionConfig, CartItems, UserType } from '../../types/common'
+import { RegionConfig, CartItems, UserType, Font, SimpleFont } from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -22,7 +24,7 @@ import SearchResults from '../SearchResults'
 import { REDIRECT_ROUTES, CONFIRM_LOGOUT } from './constants'
 import Intercom from 'react-intercom'
 import { IntercomAPI } from 'react-intercom'
-import { getTeamStoreStatus } from './data'
+import { getTeamStoreStatus, getFonts } from './data'
 import * as mainLayoutActions from './api'
 import config from '../../config/index'
 import LogoutModal from '../LogoutModal'
@@ -68,6 +70,8 @@ interface Props extends RouteComponentProps<any> {
   initialCountryCode: string
   buyNowHeader: boolean
   showTeamStores: boolean
+  fontsData: any
+  fonts: []
   openWithoutSaveModalAction: (open: boolean, route?: string) => void
   restoreUserSession: () => void
   deleteUserSession: () => void
@@ -76,6 +80,8 @@ interface Props extends RouteComponentProps<any> {
   saveAndBuyAction: (buy: boolean) => void
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
+  getFontsData: () => Promise<Font>
+  setInstalledFontsAction: (fonts: any) => void
 }
 
 class MainLayout extends React.Component<Props, {}> {
@@ -102,7 +108,9 @@ class MainLayout extends React.Component<Props, {}> {
       },
       user,
       teamStoreStatus,
-      setTeamStoreStatusAction
+      setTeamStoreStatusAction,
+      getFontsData,
+      setInstalledFontsAction
     } = this.props
 
     const { login } = queryString.parse(search)
@@ -116,9 +124,16 @@ class MainLayout extends React.Component<Props, {}> {
       openLoginAction(true)
     }
     const response = await teamStoreStatus()
+
     setTeamStoreStatusAction(
       get(response, 'data.getTeamStoreStatus.showTeamStores', false)
     )
+
+    const fontsResponse = await getFontsData()
+    const fontsList = get(fontsResponse, 'data.fontsData', {})
+    const fonts: SimpleFont[] = []
+    fontsList.map((font: Font) => fonts.push({ font: font.family }))
+    setInstalledFontsAction(fonts)
   }
 
   onSearch = (value: string) => {
@@ -190,10 +205,12 @@ class MainLayout extends React.Component<Props, {}> {
       initialCountryCode,
       buyNowHeader,
       saveAndBuyAction,
-      showTeamStores
+      showTeamStores,
+      fonts
     } = this.props
     const { formatMessage } = intl
     let numberOfProducts = 0
+
     if (shoppingCart.cart) {
       const cart = shoppingCart.cart as CartItems[]
       cart.map(cartItem => {
@@ -222,6 +239,7 @@ class MainLayout extends React.Component<Props, {}> {
 
     return (
       <Layout>
+        {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <Header {...{ hideTopHeader, hideBottomHeader }}>
           <MenuBar
             searchFunc={this.onSearch}
@@ -333,6 +351,7 @@ const mapStateToProps = (state: any) => {
 const LayoutEnhance = compose(
   withApollo,
   getTeamStoreStatus,
+  getFonts,
   connect(
     mapStateToProps,
     {

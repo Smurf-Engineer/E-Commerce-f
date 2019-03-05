@@ -29,7 +29,8 @@ import {
   AccessoriesColor,
   CanvasObjects,
   SelectedAsset,
-  Responsive
+  Responsive,
+  SimpleFont
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -100,6 +101,8 @@ interface Props {
   infoModalOpen: boolean
   saveAndBuy: boolean
   selectedTab: number
+  fonts: SimpleFont[]
+  colorsList: any
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -275,7 +278,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       selectedTab,
       onTabClick,
       onLockElement,
-      openLoginModalAction
+      openLoginModalAction,
+      fonts,
+      colorsList
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -329,7 +334,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               selectedTab,
               onTabClick,
               onLockElement,
-              openLoginModalAction
+              openLoginModalAction,
+              fonts,
+              colorsList
             }}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}
@@ -432,7 +439,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               zipperColor,
               bibColor,
               onAccessoryColorSelected,
-              product
+              product,
+              colorsList
             }}
           />
         )}

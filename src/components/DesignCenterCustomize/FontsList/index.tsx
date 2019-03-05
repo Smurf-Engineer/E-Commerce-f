@@ -3,55 +3,24 @@
  */
 import * as React from 'react'
 import { Container, Text, Item, Font } from './styledComponents'
-
-const fonts = [
-  'Advent Pro',
-  'Alfa Slab One',
-  'Archivo Black',
-  'Bangers',
-  'Baumans',
-  'Black Ops One',
-  'Ceviche One',
-  'Clicker Script',
-  'Creepster',
-  'Dancing Script',
-  'Fontdiner Swanky',
-  'Goudy Bookletter 1911',
-  'Great Vibes',
-  'Luckiest Guy',
-  'Maven Pro',
-  'Metal Mania',
-  'Oswald',
-  'Pacifico',
-  'Permanent Marker',
-  'Pinyon Script',
-  'Racing Sans One',
-  'Rancho',
-  'Righteous',
-  'Rock Salt',
-  'Russo One',
-  'Sanchez',
-  'Satisfy',
-  'Slackey',
-  'Stardos Stencil',
-  'UnifrakturMaguntia',
-  'Yellowtail',
-  'Yesteryear'
-]
+import { SimpleFont } from '../../../types/common'
 
 interface Props {
   text: string
+  fonts: SimpleFont[]
   onSelectFont?: (font: string) => void
 }
 
-const FontsList = ({ text, onSelectFont = () => {} }: Props) => {
+const FontsList = ({ text, onSelectFont = () => {}, fonts }: Props) => {
   const handleOnSelect = (font: string) => () => onSelectFont(font)
-  const list = fonts.map((font, index) => (
-    <Item key={index} onClick={handleOnSelect(font)}>
-      <Text {...{ font }}>{text}</Text>
-      <Font>{font}</Font>
-    </Item>
-  ))
+  const list = fonts.map((fontObject: SimpleFont, index: number) => {
+    return (
+      <Item key={index} onClick={handleOnSelect(fontObject.font)}>
+        <Text font={fontObject.font}>{text}</Text>
+        <Font>{fontObject.font}</Font>
+      </Item>
+    )
+  })
   return <Container>{list}</Container>
 }
 

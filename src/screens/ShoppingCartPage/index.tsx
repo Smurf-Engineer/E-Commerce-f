@@ -481,7 +481,7 @@ export class ShoppingCartPage extends React.Component<Props, {}> {
           </Modal>
         </PageContent>
         {designReviewModal}
-        {cart && (
+        {cart && cart.length && (
           <FitInfo
             open={openFitInfo}
             product={cart[selectedIndex].product}

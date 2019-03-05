@@ -9,6 +9,7 @@ import { Container, Title, Slider, Header } from './styledComponents'
 
 interface Props {
   strokeWidth: number
+  colorsList: any
   onSelectStrokeWidth: (width: number) => void
   onSelectStrokeColor: (color: string) => void
   formatMessage: (messageDescriptor: any) => string
@@ -18,7 +19,8 @@ const OutlineColor = ({
   formatMessage,
   onSelectStrokeWidth,
   onSelectStrokeColor,
-  strokeWidth
+  strokeWidth,
+  colorsList
 }: Props) => {
   const marks = {
     0: formatMessage(messages.thin),
@@ -44,7 +46,7 @@ const OutlineColor = ({
           max={5}
         />
       </Header>
-      <ColorList onSelectColor={onSelectStrokeColor} />
+      <ColorList onSelectColor={onSelectStrokeColor} {...{ colorsList }} />
     </Container>
   )
 }

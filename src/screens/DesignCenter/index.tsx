@@ -90,7 +90,8 @@ import {
 import {
   getProductQuery,
   addTeamStoreItemMutation,
-  getDesignQuery
+  getDesignQuery,
+  getColorsQuery
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -170,6 +171,7 @@ interface Props extends RouteComponentProps<any> {
   infoModalOpen: boolean
   automaticSave: boolean
   selectedTab: number
+  colorsList: any
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -605,7 +607,8 @@ export class DesignCenter extends React.Component<Props, {}> {
       setAutomaticSave,
       selectedTab,
       onTabClickAction,
-      onLockElementAction
+      onLockElementAction,
+      colorsList
     } = this.props
 
     const { formatMessage } = intl
@@ -885,11 +888,13 @@ export class DesignCenter extends React.Component<Props, {}> {
                   responsive,
                   handleOnCloseInfo,
                   infoModalOpen,
-                  selectedTab
+                  selectedTab,
+                  colorsList
                 }}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
                 saveAndBuy={get(layout, 'saveAndBuy', false)}
+                fonts={get(layout, 'fonts', {})}
                 handleOnSaveAndBuy={handleOnSaveAndBuy}
                 handleOnGoBack={this.handleOnGoBack}
                 onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
@@ -1120,6 +1125,7 @@ const mapStateToProps = (state: any) => {
   const designCenter = state.get('designCenter').toJS()
   const app = state.get('app').toJS()
   const responsive = state.get('responsive').toJS()
+
   return { ...designCenter, ...app, responsive, layout }
 }
 
@@ -1158,7 +1164,8 @@ const DesignCenterEnhance = compose(
       }
     },
     name: 'dataDesign'
-  })
+  }),
+  graphql(getColorsQuery, { name: 'colorsList' })
 )(DesignCenter)
 
 export default DesignCenterEnhance

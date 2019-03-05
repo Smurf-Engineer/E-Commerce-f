@@ -22,6 +22,7 @@ import {
   deleteInspirationMutation
 } from './data'
 import EditTheme from '../../components/ThemeModal'
+import * as thunkActions from './thunkActions'
 import { getProductFromCode } from './DesignCenterCustomize/data'
 import * as designerToolActions from './actions'
 import * as designerToolApi from './api'
@@ -90,6 +91,13 @@ interface Props {
   editableTheme: ThemeInput | null
   saveDesignLoading: boolean
   openSaveDesign: boolean
+  fonts: string[]
+  visibleFonts: any[]
+  searchText: string
+  uploadingColors: boolean
+  uploadingStitchingColors: boolean
+  uploadingSymbol: boolean
+  searchClipParam: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -142,6 +150,13 @@ interface Props {
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
+  setGoogleFontsListAction: (data: any) => void
+  addFontAction: (font: string) => void
+  onUpdateSearchTextAction: (text: string) => void
+  onUploadColorsListAction: (file: any, type: string) => void
+  uploadSymbolAction: (file: any) => void
+  setSearchClipParamAction: (param: string) => void
+  getGoogleFonts: () => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -201,7 +216,21 @@ export class DesignerTool extends React.Component<Props, {}> {
       openSaveDesign,
       openSaveDesignAction,
       saveDesignLoading,
-      setSavingDesign
+      setSavingDesign,
+      setGoogleFontsListAction,
+      fonts,
+      addFontAction,
+      visibleFonts,
+      searchText,
+      onUpdateSearchTextAction,
+      onUploadColorsListAction,
+      uploadingColors,
+      uploadingStitchingColors,
+      uploadSymbolAction,
+      uploadingSymbol,
+      searchClipParam,
+      setSearchClipParamAction,
+      getGoogleFonts
     } = this.props
     const { themeImage } = this.state
     return (
@@ -231,8 +260,20 @@ export class DesignerTool extends React.Component<Props, {}> {
             colorIdeas,
             openSaveDesignAction,
             saveDesignLoading,
-            openSaveDesign
+            openSaveDesign,
+            fonts,
+            visibleFonts,
+            searchText,
+            uploadingColors,
+            uploadingStitchingColors,
+            uploadingSymbol,
+            searchClipParam,
+            setSearchClipParamAction,
+            getGoogleFonts
           }}
+          onUpdateSearchText={onUpdateSearchTextAction}
+          addFont={addFontAction}
+          setGoogleFontsList={setGoogleFontsListAction}
           files={modelConfig}
           onEditColorIdea={setColorIdeaItemAction}
           onSaveDesign={this.handleOpenModal}
@@ -268,6 +309,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           onEditTheme={setThemeToEditAction}
           changeThemesPosition={changeThemesPositionAction}
           changeDesignsPosition={changeDesignsPositionAction}
+          onUploadColorsList={onUploadColorsListAction}
+          onUploadFile={uploadSymbolAction}
         />
         <EditTheme
           {...{ productCode }}
@@ -617,7 +660,7 @@ const DesignerToolEnhance = compose(
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   connect(
     mapStateToProps,
-    { ...designerToolActions, ...designerToolApi }
+    { ...designerToolActions, ...designerToolApi, ...thunkActions }
   )
 )(DesignerTool)
 
