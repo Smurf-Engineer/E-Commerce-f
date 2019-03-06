@@ -258,11 +258,11 @@ class Render3D extends PureComponent {
         const imageEl = new fabric.Image(img, { ...config })
         this.canvasTexture.add(imageEl)
       })
-      const fontsPromises = fonts.map(font => {
+      /* const fontsPromises = fonts.map(font => {
         const fontObserver = new FontFaceObserver(font)
         return fontObserver.load()
       })
-      await Promise.all(fontsPromises)
+      await Promise.all(fontsPromises) */
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       if (reseting) {
@@ -784,8 +784,8 @@ class Render3D extends PureComponent {
       case Mode.Style:
         break
       case Mode.Placeholder:
-        // this.loadCanvasTexture(design.canvas, true)
-        this.clearScene()
+        // this.clearScene()
+        /// this.loadCanvasTexture(design.canvas, true)
         break
     }
   }
