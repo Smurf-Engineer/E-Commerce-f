@@ -6,6 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
+import GoogleFontLoader from 'react-google-font-loader'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
 import findIndex from 'lodash/findIndex'
@@ -238,6 +239,7 @@ export class DesignerTool extends React.Component<Props, {}> {
     const { themeImage } = this.state
     return (
       <div>
+        <GoogleFontLoader fonts={[{ font: 'Avenir' }]} />
         <CustomizeTab
           {...{
             colors,
@@ -272,7 +274,7 @@ export class DesignerTool extends React.Component<Props, {}> {
             uploadingSymbol,
             searchClipParam,
             setSearchClipParamAction,
-            getGoogleFonts,
+            getGoogleFonts
           }}
           onSetCanvasObject={setLoadedCanvasAction}
           onUpdateSearchText={onUpdateSearchTextAction}

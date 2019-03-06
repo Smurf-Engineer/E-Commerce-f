@@ -104,11 +104,6 @@ class FontsList extends React.PureComponent<Props> {
         },
         []
       )
-      fontList.map((font: Font) => {
-        if (font.active) {
-          installedFonts.push({ font: font.family })
-        }
-      })
       list = fontList.map((font: Font, index: number) => {
         if (
           font.active &&
