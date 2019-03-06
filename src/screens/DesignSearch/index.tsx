@@ -124,8 +124,14 @@ export class DesignSearch extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
-    const fonts: any = []
-    fontList.map((font: Font) => fonts.push({ font: font.family }))
+
+    const fonts = fontList.reduce(
+      (fontObject: any, { family }: Font) => {
+        fontObject.push({ font: family })
+        return fontObject
+      },
+      []
+    )
     const orderContent = order && (
       <OrderFiles
         {...{
