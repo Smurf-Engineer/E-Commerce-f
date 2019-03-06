@@ -27,7 +27,12 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
-import { OrderSearchResult, UserType, StitchingColor, Font } from '../../types/common'
+import {
+  OrderSearchResult,
+  UserType,
+  StitchingColor,
+  Font
+} from '../../types/common'
 import {
   orderSearchQuery,
   uploadThumbnailMutation,
