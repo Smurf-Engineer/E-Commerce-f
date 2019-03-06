@@ -27,12 +27,7 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
-import {
-  OrderSearchResult,
-  UserType,
-  StitchingColor,
-  Font
-} from '../../types/common'
+import { OrderSearchResult, UserType, StitchingColor } from '../../types/common'
 import {
   orderSearchQuery,
   uploadThumbnailMutation,
@@ -124,8 +119,14 @@ export class DesignSearch extends React.Component<Props, {}> {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
     const fontList = get(fontsData, 'fonts', [])
-    const fonts: any = []
-    fontList.map((font: Font) => fonts.push({ font: font.family }))
+
+    const fonts = fontList.reduce(
+      (fontObject: any, { family }: any) => {
+        fontObject.push({ font: family })
+        return fontObject
+      },
+      []
+    )
     const orderContent = order && (
       <OrderFiles
         {...{
