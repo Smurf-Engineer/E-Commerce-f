@@ -5,6 +5,7 @@ import * as React from 'react'
 import { withApollo, compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import GoogleFontLoader from 'react-google-font-loader'
 import message from 'antd/lib/message'
 import Search from 'antd/lib/input/Search'
 import Spin from 'antd/lib/spin'
@@ -26,11 +27,17 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
-import { OrderSearchResult, UserType, StitchingColor } from '../../types/common'
+import {
+  OrderSearchResult,
+  UserType,
+  StitchingColor,
+  Font
+} from '../../types/common'
 import {
   orderSearchQuery,
   uploadThumbnailMutation,
-  updateDesignMutation
+  updateDesignMutation,
+  getFonts
 } from './data'
 import { downloadFile } from './api'
 import Message from 'antd/lib/message'
@@ -57,6 +64,7 @@ interface Props {
   changes: boolean
   colorAccessories: any
   stitchingValue: string
+  fontsData: any
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -105,7 +113,8 @@ export class DesignSearch extends React.Component<Props, {}> {
       changes,
       setStitchingColorAction,
       colorAccessories,
-      setColorAction
+      setColorAction,
+      fontsData
     } = this.props
 
     let loadErrContent = <Spin />
@@ -114,6 +123,9 @@ export class DesignSearch extends React.Component<Props, {}> {
     } else if (noAdmin) {
       loadErrContent = <FormattedMessage {...messages.unauthorized} />
     }
+    const fontList = get(fontsData, 'fonts', [])
+    const fonts: any = []
+    fontList.map((font: Font) => fonts.push({ font: font.family }))
     const orderContent = order && (
       <OrderFiles
         {...{
@@ -139,8 +151,10 @@ export class DesignSearch extends React.Component<Props, {}> {
       ) : (
         orderContent
       )
+
     return (
       <Container>
+        {fonts.length ? <GoogleFontLoader {...{ fonts }} /> : null}
         <Header>
           <ContentHeader>
             <LogoIcon src={logo} />
@@ -269,6 +283,7 @@ const DesignSearchEnhance = compose(
       restoreUserSessionAction: restoreUserSession
     }
   ),
+  getFonts,
   withApollo
 )(DesignSearch)
 

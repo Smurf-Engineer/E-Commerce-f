@@ -123,7 +123,6 @@ class Render3D extends PureComponent {
       !isEqual(actualSvg, oldSvg) ||
       !isEqual(colorAccessories, oldColorAccessories)
     const { firstLoad } = this.state
-
     if (!error && (notEqual || (firstLoad && !loading))) {
       setTimeout(() => {
         this.renderModel(design, actualSvg, colorAccessories)
@@ -319,21 +318,7 @@ class Render3D extends PureComponent {
     } = design
 
     const { designSearch, stitchingValue } = this.props
-    try {
-      if (!!canvas) {
-        const { objects } = JSON.parse(canvas)
-        const fontsPromises = []
-        objects.forEach(o => {
-          if (o.type === CanvasElements.Text) {
-            const fontObserver = new FontFaceObserver(o.fontFamily)
-            fontsPromises.push(fontObserver.load())
-          }
-        })
-        await Promise.all(fontsPromises)
-      }
-    } catch (e) {
-      console.error(e)
-    }
+
     const loadedTextures = await this.loadTextures(design, actualSvg)
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
@@ -362,7 +347,6 @@ class Render3D extends PureComponent {
             const index = findIndex(children, mesh => mesh.name === meshName)
             return index < 0 ? 0 : index
           }
-
           const meshIndex = getMeshIndex(MESH)
           /* Stitching */
           if (!!flatlock) {
@@ -415,7 +399,6 @@ class Render3D extends PureComponent {
             side: THREE.FrontSide,
             bumpMap: bumpMap
           })
-
           /* Assign materials */
           if (!proDesign && !designSearch) {
             children[meshIndex].material = insideMaterial
@@ -463,6 +446,7 @@ class Render3D extends PureComponent {
               : REGULAR_CANVAS
             canvas.width = CANVAS_SIZE
             canvas.height = CANVAS_SIZE
+
             this.canvasTexture = new fabric.StaticCanvas(canvas, {
               width: CANVAS_SIZE,
               height: CANVAS_SIZE,
