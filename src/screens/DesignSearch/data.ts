@@ -2,6 +2,7 @@
  * DesignSearch Queries
  */
 import gql from 'graphql-tag'
+import { graphql } from 'react-apollo'
 
 export const orderSearchQuery = gql`
   query getOrderFiles($code: String!) {
@@ -54,3 +55,16 @@ export const updateDesignMutation = gql`
     }
   }
 `
+
+export const getFonts = graphql(
+  gql`
+    query GetFonts {
+      fonts: getFonts {
+        id
+        family
+        active
+      }
+    }
+  `,
+  { name: 'fontsData' }
+)

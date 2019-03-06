@@ -127,7 +127,7 @@ class FontsList extends React.PureComponent<Props> {
         return
       })
     } else {
-      list = fonts.map((font: string, index: number) => {
+      list = fonts && fonts.map((font: string, index: number) => {
         const active = includes(activeFonts, font)
         if (
           !searchText.length ||
