@@ -13,7 +13,7 @@ interface Props {
 
 const FontsList = ({ text, onSelectFont = () => {}, fonts }: Props) => {
   const handleOnSelect = (font: string) => () => onSelectFont(font)
-  const list = fonts.map((fontObject: SimpleFont, index: number) => {
+  const list = fonts && fonts.map((fontObject: SimpleFont, index: number) => {
     return (
       <Item key={index} onClick={handleOnSelect(fontObject.font)}>
         <Text font={fontObject.font}>{text}</Text>
