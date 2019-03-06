@@ -27,7 +27,7 @@ import {
 } from './styledComponents'
 import logo from '../../assets/jakroo_logo.svg'
 import OrderFiles from './OrderFiles'
-import { OrderSearchResult, UserType, StitchingColor } from '../../types/common'
+import { OrderSearchResult, UserType, StitchingColor, Font } from '../../types/common'
 import {
   orderSearchQuery,
   uploadThumbnailMutation,
@@ -121,7 +121,7 @@ export class DesignSearch extends React.Component<Props, {}> {
     const fontList = get(fontsData, 'fonts', [])
 
     const fonts = fontList.reduce(
-      (fontObject: any, { family }: any) => {
+      (fontObject: any, { family }: Font) => {
         fontObject.push({ font: family })
         return fontObject
       },
