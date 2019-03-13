@@ -42,7 +42,25 @@ import {
   UPLOAD_SYMBOL_ACTION_SUCCESS,
   UPLOADING_SYMBOL_ACTION,
   SET_SEARCH_CLIPARTPARAM,
-  SET_LOADED_CANVAS_ACTION
+  SET_LOADED_CANVAS_ACTION,
+  SET_STYLE_MODE_ACTION,
+  SET_EDIT_DESIGN_CONFIG_ACTION,
+  SET_SELECTED_ELEMENT_ACTION,
+  CANVAS_ELEMENT_DRAGGED_ACTION,
+  CANVAS_ELEMENT_RESIZED_ACTION,
+  CANVAS_ELEMENT_ROTATED_ACTION,
+  CANVAS_ELEMENT_DUPLICATED_ACTION,
+  CanvasElements,
+  REMOVE_CANVAS_ELEMENT_ACTION,
+  SET_TEXT_ACTION,
+  SET_CANVAS_ELEMENT_ACTION,
+  SET_SELECTED_ITEM_ACTION,
+  CANVAS_ELEMENT_TEXT_CHANGED,
+  SET_TEXT_FORMAT_ACTION,
+  SET_CANVAS_JSON_ACTION,
+  SET_CUSTOMIZE_3D_MOUNTED,
+  DESIGN_RESET_EDITING_ACTION,
+  REAPPLY_CANVAS_IMAGE_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -52,7 +70,14 @@ import {
   ModelDesign,
   Theme,
   ClipArt,
-  CanvasType
+  CanvasType,
+  AccessoriesColor,
+  CanvasDragged,
+  CanvasResized,
+  CanvasRotated,
+  ConfigCanvasObj,
+  CanvasElement,
+  SelectedAsset
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -286,4 +311,134 @@ export const setLoadedCanvasAction = (
   type: SET_LOADED_CANVAS_ACTION,
   canvas,
   paths
+})
+
+export const setStyleModeAction = (mode: string) => ({
+  type: SET_STYLE_MODE_ACTION,
+  mode
+})
+
+export const setEditConfigAction = (
+  colors: string[],
+  accessoriesColor: AccessoriesColor,
+  savedDesignId: string
+): AnyAction => ({
+  type: SET_EDIT_DESIGN_CONFIG_ACTION,
+  colors,
+  accessoriesColor,
+  savedDesignId
+})
+
+export const setSelectedElement = (id: string, typeEl: string): AnyAction => ({
+  type: SET_SELECTED_ELEMENT_ACTION,
+  id,
+  typeEl
+})
+
+export const onCanvasElementDraggedAction = (
+  element: CanvasDragged
+): AnyAction => ({
+  type: CANVAS_ELEMENT_DRAGGED_ACTION,
+  element
+})
+
+export const onCanvasElementResizedAction = (
+  element: CanvasResized
+): AnyAction => ({
+  type: CANVAS_ELEMENT_RESIZED_ACTION,
+  element
+})
+
+export const onCanvasElementRotatedAction = (
+  element: CanvasRotated
+): AnyAction => ({
+  type: CANVAS_ELEMENT_ROTATED_ACTION,
+  element
+})
+
+export const onCanvasElementDuplicatedAction = (
+  canvasEl: any,
+  elementType: CanvasElements,
+  oldId?: string
+): AnyAction => ({
+  type: CANVAS_ELEMENT_DUPLICATED_ACTION,
+  canvasEl,
+  elementType,
+  oldId
+})
+
+export const removeCanvasElement = (
+  id: string,
+  typeEl: string,
+  canvasObj: ConfigCanvasObj
+): AnyAction => ({
+  type: REMOVE_CANVAS_ELEMENT_ACTION,
+  id,
+  typeEl,
+  canvasObj
+})
+
+export const setTextAction = (text: string): AnyAction => ({
+  type: SET_TEXT_ACTION,
+  text
+})
+
+export const setCanvasElement = (
+  el: CanvasElement,
+  typeEl: string,
+  update = false,
+  canvasObj: ConfigCanvasObj
+): AnyAction => ({
+  type: SET_CANVAS_ELEMENT_ACTION,
+  el,
+  typeEl,
+  update,
+  canvasObj
+})
+
+export const setSelectedItemAction = (item: SelectedAsset): AnyAction => ({
+  type: SET_SELECTED_ITEM_ACTION,
+  item
+})
+
+export const onCanvasElementTextChangedAction = (
+  oldText: string,
+  newText: string
+): AnyAction => ({
+  type: CANVAS_ELEMENT_TEXT_CHANGED,
+  oldText,
+  newText
+})
+
+export const setTextFormatAction = (
+  key: string,
+  value: string | number
+): AnyAction => ({
+  type: SET_TEXT_FORMAT_ACTION,
+  key,
+  value
+})
+
+export const setCanvasJsonAction = (canvas: string) => ({
+  type: SET_CANVAS_JSON_ACTION,
+  canvas
+})
+
+export const setCustomize3dMountedAction = (mounted: boolean) => ({
+  type: SET_CUSTOMIZE_3D_MOUNTED,
+  mounted
+})
+
+export const onResetEditingAction = (
+  canvas: CanvasType,
+  accessoriesColor?: AccessoriesColor
+): AnyAction => ({
+  type: DESIGN_RESET_EDITING_ACTION,
+  canvas,
+  accessoriesColor
+})
+
+export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
+  type: REAPPLY_CANVAS_IMAGE_ACTION,
+  el
 })

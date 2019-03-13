@@ -44,6 +44,24 @@ export const UPLOAD_SYMBOL_ACTION_SUCCESS = `${namespace}/UPLOAD_SYMBOL_ACTION_S
 export const UPLOADING_SYMBOL_ACTION = `${namespace}/UPLOADING_SYMBOL_ACTION`
 export const SET_SEARCH_CLIPARTPARAM = `${namespace}/SET_SEARCH_CLIPARTPARAM`
 export const SET_LOADED_CANVAS_ACTION = `${namespace}/SET_LOADED_CANVAS_ACTION`
+export const SET_STYLE_MODE_ACTION = `${namespace}/SET_STYlE_MODE_ACTION`
+export const SET_EDIT_DESIGN_CONFIG_ACTION = `${namespace}/SET_EDIT_DESIGN_CONFIG_ACTION`
+export const SET_SELECTED_ELEMENT_ACTION = `${namespace}/SET_SELECTED_ELEMENT_ACTION`
+export const CANVAS_ELEMENT_DRAGGED_ACTION = `${namespace}/CANVAS_ELEMENT_DRAGGED_ACTION`
+export const CANVAS_ELEMENT_RESIZED_ACTION = `${namespace}/CANVAS_ELEMENT_RESIZED_ACTION`
+export const CANVAS_ELEMENT_ROTATED_ACTION = `${namespace}/CANVAS_ELEMENT_ROTATED_ACTION`
+export const CANVAS_ELEMENT_DUPLICATED_ACTION = `${namespace}/CANVAS_ELEMENT_DUPLICATED_ACTION`
+export const REMOVE_CANVAS_ELEMENT_ACTION = `${namespace}/REMOVE_CANVAS_ELEMENT_ACTION`
+export const SET_TEXT_ACTION = `${namespace}/SET_TEXT_ACTION`
+export const SET_CANVAS_ELEMENT_ACTION = `${namespace}/SET_CANVAS_ELEMENT_ACTION`
+export const SET_SELECTED_ITEM_ACTION = `${namespace}/SET_SELECTED_ITEM_ACTION`
+export const CANVAS_ELEMENT_TEXT_CHANGED = `${namespace}/CANVAS_ELEMENT_TEXT_CHANGED`
+export const SET_TEXT_FORMAT_ACTION = `${namespace}/SET_TEXT_FORMAT_ACTION`
+export const SET_CANVAS_JSON_ACTION = `${namespace}/SET_CANVAS_JSON_ACTION`
+export const SET_CUSTOMIZE_3D_MOUNTED = `${namespace}/SET_CUSTOMIZE_3D_MOUNTED`
+export const DESIGN_RESET_EDITING_ACTION = `${namespace}/DESIGN_RESET_EDITING_ACTION`
+export const REAPPLY_CANVAS_IMAGE_ACTION = `${namespace}/REAPPLY_CANVAS_IMAGE_ACTION`
+
 export enum Tabs {
   RenderTab = 0,
   SettingsTab = 0
@@ -55,3 +73,32 @@ export enum CanvasElements {
   Image = 'image',
   Group = 'group'
 }
+
+export const Mode = {
+  Style: 'style',
+  Placeholder: 'placeholder'
+}
+
+export enum CustomizeTabs {
+  ColorsTab = 1,
+  TextTab = 2,
+  SymbolsTab = 3
+}
+
+export enum Changes {
+  Colors = 'colors',
+  Add = 'add',
+  Delete = 'delete',
+  Drag = 'drag',
+  Rotate = 'rotate',
+  Resize = 'resize',
+  Duplicate = 'duplicate',
+  AccessoryColors = 'accessoryColor',
+  CanvasStyle = 'canvasStyle',
+  ChangeText = 'changeText'
+}
+
+export const BLACK = 'black'
+export const WHITE = 'white'
+
+export const ElementsToApplyScale = [CanvasElements.Image]

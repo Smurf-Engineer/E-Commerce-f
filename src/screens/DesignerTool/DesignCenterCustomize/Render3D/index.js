@@ -60,8 +60,7 @@ class Render3D extends PureComponent {
     objectChilds: 0,
     bibBraceIndex: NONE,
     zipperIndex: NONE,
-    bindingIndex: NONE,
-    mode: 'style'
+    bindingIndex: NONE
   }
 
   componentWillReceiveProps(nextProps) {
@@ -72,7 +71,8 @@ class Render3D extends PureComponent {
       areas,
       bibBrace: oldBibBrace,
       zipper: oldZipper,
-      binding: oldBinding
+      binding: oldBinding,
+      styleMode: oldStyleMode
     } = this.props
     const {
       colors: nextColors,
@@ -82,7 +82,8 @@ class Render3D extends PureComponent {
       files,
       bibBrace,
       zipper,
-      binding
+      binding,
+      styleMode
     } = nextProps
 
     if (oldBibBrace !== bibBrace && !!this.bibBrace) {
@@ -123,6 +124,11 @@ class Render3D extends PureComponent {
       this.setupHoverColor(colorBlockHovered)
       return
     }
+
+    if (styleMode !== oldStyleMode) {
+      this.loadObject(files, design, styleMode)
+    }
+
   }
 
   componentDidMount() {
@@ -258,11 +264,11 @@ class Render3D extends PureComponent {
         const imageEl = new fabric.Image(img, { ...config })
         this.canvasTexture.add(imageEl)
       })
-      /* const fontsPromises = fonts.map(font => {
+      const fontsPromises = fonts.map(font => {
         const fontObserver = new FontFaceObserver(font)
         return fontObserver.load()
       })
-      await Promise.all(fontsPromises) */
+      await Promise.all(fontsPromises)
       const fabricObjects = await this.convertToFabricObjects(elements)
       fabricObjects.forEach(o => this.canvasTexture.add(o))
       if (reseting) {
@@ -372,7 +378,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  loadObject = async (files, design) => {
+  loadObject = async (files, design, styleMode = Mode.Style) => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
     this.clearScene()
@@ -542,7 +548,8 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
-          if (design && design.canvas) {
+
+          if (design && design.canvas && styleMode === Mode.Placeholder) {
             this.loadCanvasTexture(design.canvas)
           }
 
@@ -649,7 +656,8 @@ class Render3D extends PureComponent {
       files,
       onSaveDesign,
       uploadingThumbnail,
-      design
+      design,
+      styleMode
     } = this.props
 
     return (
@@ -669,7 +677,7 @@ class Render3D extends PureComponent {
         {!loadingModel && !isEmpty(design) && (
           <Modes>
             <RadioGroup
-              value={this.state.mode}
+              value={styleMode}
               onChange={this.handleChangeMode}
             >
               <RadioButton value={Mode.Style}>Style Mode</RadioButton>
@@ -774,20 +782,9 @@ class Render3D extends PureComponent {
     const {
       target: { value: mode }
     } = event
-    const { design } = this.props
-    console.log(design)
-    this.setState({
-      mode
-    })
+    const { setStyleMode } = this.props
 
-    switch(mode){
-      case Mode.Style:
-        break
-      case Mode.Placeholder:
-        // this.clearScene()
-        /// this.loadCanvasTexture(design.canvas, true)
-        break
-    }
+    setStyleMode(mode)
   }
 }
 

@@ -1,7 +1,7 @@
 /**
  * DesignerTool queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const saveDesignMutation = gql`
@@ -53,3 +53,16 @@ export const deleteInspirationMutation = gql`
     }
   }
 `
+
+export const getFonts = graphql(
+  gql`
+    query GetFonts {
+      fonts: getFonts {
+        id
+        family
+        active
+      }
+    }
+  `,
+  { name: 'fontsData' }
+)

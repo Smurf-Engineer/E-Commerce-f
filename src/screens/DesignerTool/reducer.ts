@@ -47,7 +47,27 @@ import {
   UPLOADING_SYMBOL_ACTION,
   SET_SEARCH_CLIPARTPARAM,
   SET_LOADED_CANVAS_ACTION,
-  CanvasElements
+  CanvasElements,
+  SET_STYLE_MODE_ACTION,
+  Mode,
+  SET_SELECTED_ELEMENT_ACTION,
+  CustomizeTabs,
+  BLACK,
+  CANVAS_ELEMENT_DRAGGED_ACTION,
+  CANVAS_ELEMENT_RESIZED_ACTION,
+  CANVAS_ELEMENT_DUPLICATED_ACTION,
+  ElementsToApplyScale,
+  SET_TEXT_ACTION,
+  SET_CANVAS_ELEMENT_ACTION,
+  SET_SELECTED_ITEM_ACTION,
+  CANVAS_ELEMENT_TEXT_CHANGED,
+  SET_TEXT_FORMAT_ACTION,
+  SET_CANVAS_JSON_ACTION,
+  SET_CUSTOMIZE_3D_MOUNTED,
+  SET_EDIT_DESIGN_CONFIG_ACTION,
+  DESIGN_RESET_EDITING_ACTION,
+  REAPPLY_CANVAS_IMAGE_ACTION,
+  Changes
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -55,6 +75,7 @@ export const NONE = -1
 export const NONE_ID = 0
 export const DESIGN_THUMBNAIL = -1
 export const DESIGN_COLORS = -2
+import { DEFAULT_FONT } from '../../constants'
 
 export const initialState = fromJS({
   someKey: 'This is a value in the reducer',
@@ -91,7 +112,31 @@ export const initialState = fromJS({
   uploadingColors: false,
   uploadingStitchingColors: false,
   uploadingSymbol: false,
-  searchClipParam: ''
+  searchClipParam: '',
+  styleMode: Mode.Style,
+  selectedElement: '',
+  text: '',
+  textFormat: {
+    fontFamily: DEFAULT_FONT,
+    stroke: BLACK,
+    fill: BLACK,
+    strokeWidth: 0,
+    textAlign: 'left',
+    charSpacing: 0,
+    fontSize: 30,
+    lineHeight: 1
+  },
+  selectedTab: CustomizeTabs.ColorsTab,
+  designHasChanges: false,
+  canvas: {
+    text: {},
+    image: {},
+    path: {}
+  },
+  selectedItem: {},
+  customize3dMounted: false,
+  undoChanges: [],
+  redoChanges: []
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -139,7 +184,6 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_MODEL_ACTION: {
       const { modelConfig, colorIdeas, design } = action
       const colors = [...design.colors]
-      console.log(' action ', action)
       return state.merge({
         design,
         modelConfig,
@@ -376,6 +420,228 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
           canvas: updatedCanvas,
           originalPaths: paths
         })
+      }
+    case SET_STYLE_MODE_ACTION:
+      return state.set('styleMode', action.mode)
+    case SET_SELECTED_ELEMENT_ACTION: {
+      const { id, typeEl } = action
+      const canvasElement = state.getIn(['canvas', typeEl, id])
+      if (canvasElement && typeEl === CanvasElements.Text) {
+        return state.merge({
+          selectedElement: id,
+          textFormat: canvasElement.textFormat,
+          text: canvasElement.text,
+          selectedTab: CustomizeTabs.TextTab
+        })
+      }
+
+      const selectedElement = state.get('selectedElement')
+
+      if (!id && selectedElement) {
+        return state.merge({
+          text: '',
+          selectedElement: id,
+          searchClipParam: '',
+          textFormat: {
+            fontFamily: DEFAULT_FONT,
+            stroke: BLACK,
+            fill: BLACK,
+            strokeWidth: 0,
+            textAlign: 'left',
+            charSpacing: 0,
+            fontSize: 30,
+            lineHeight: 1
+          }
+        })
+      }
+      return state.merge({
+        selectedElement: id,
+        searchClipParam: '',
+        selectedTab: CustomizeTabs.SymbolsTab
+      })
+    }
+    case CANVAS_ELEMENT_DRAGGED_ACTION: {
+      return state.merge({
+        designHasChanges: true
+      })
+    }
+    case CANVAS_ELEMENT_RESIZED_ACTION: {
+      const { element } = action
+      if (ElementsToApplyScale.includes(element.elementType)) {
+        const { id: idElement, scaleY, scaleX } = element
+        const canvas = state.get('canvas')
+        const updatedCanvas = canvas.updateIn(
+          [element.elementType, idElement],
+          (canvasEl: any) => {
+            const updatedCanvasEl = Object.assign({ scaleX, scaleY }, canvasEl)
+            updatedCanvasEl.scaleX = scaleX
+            updatedCanvasEl.scaleY = scaleY
+            return updatedCanvasEl
+          }
+        )
+        return state.merge({
+          canvas: updatedCanvas,
+          designHasChanges: true
+        })
+      }
+      return state
+    }
+    case CANVAS_ELEMENT_DUPLICATED_ACTION: {
+      const { canvasEl, elementType, oldId } = action
+      const { id: idElement, originalId } = canvasEl
+      const canvas = state.get('canvas')
+      const canvasToClone = canvas.getIn([elementType, originalId])
+      const updatedCanvas = canvas.setIn([elementType, idElement], {
+        ...canvasToClone,
+        idElement
+      })
+      if (oldId) {
+        return state.merge({
+          canvas: updatedCanvas,
+          selectedElement: '',
+          designHasChanges: true
+        })
+      }
+      return state.merge({
+        canvas: updatedCanvas,
+        selectedElement: '',
+        designHasChanges: true
+      })
+    }
+    case SET_TEXT_ACTION:
+      return state.set('text', action.text)
+    case SET_CANVAS_ELEMENT_ACTION: {
+        const { el, typeEl, canvasObj } = action
+        const canvas = state.get('canvas')
+        const undoChanges = state.get('undoChanges')
+        const redoChanges = state.get('redoChanges')
+  
+        const lastStep = {
+          type: Changes.Add,
+          state: { id: el.id, type: typeEl, ...canvasObj }
+        }
+  
+        const selectedElement = state.get('selectedElement')
+        const updatedCanvas = canvas.setIn([typeEl, el.id], el)
+        if (selectedElement) {
+          return state.merge({
+            selectedElement: el.id,
+            canvas: updatedCanvas,
+            undoChanges: undoChanges.unshift(lastStep),
+            redoChanges: redoChanges.clear()
+          })
+        }
+  
+        return state.merge({
+          selectedElement: el.id,
+          canvas: updatedCanvas,
+          designHasChanges: true,
+          undoChanges: undoChanges.unshift(lastStep),
+          redoChanges: redoChanges.clear()
+        })
+      }
+    case SET_SELECTED_ITEM_ACTION:
+      return state.set('selectedItem', action.item)
+    case CANVAS_ELEMENT_TEXT_CHANGED: {
+        const { newText } = action
+        const selectedElement = state.get('selectedElement')
+        if (selectedElement) {
+          const canvas = state.get('canvas')
+          const element = canvas.getIn(['text', selectedElement])
+          if (element) {
+            const updatedCanvas = canvas.setIn(['text', selectedElement], {
+              ...element,
+              text: newText
+            })
+  
+            return state.merge({
+              canvas: updatedCanvas,
+              designHasChanges: true
+            })
+          }
+        }
+        return state
+      }
+      case SET_TEXT_FORMAT_ACTION: {
+        const { key, value } = action
+        const selectedElement = state.get('selectedElement')
+        if (selectedElement) {
+          const canvas = state.get('canvas')
+          const element = canvas.getIn(['text', selectedElement])
+          if (element) {
+            const newFormat = {
+              ...element.textFormat,
+              [key]: value
+            }
+
+            const updatedCanvas = canvas.setIn(['text', selectedElement], {
+              ...element,
+              textFormat: newFormat
+            })
+  
+            return state.merge({
+              canvas: updatedCanvas,
+              textFormat: newFormat,
+              designHasChanges: true
+            })
+          }
+          return state
+        }
+        return state.setIn(['textFormat', key], value)
+      }
+    case SET_CANVAS_JSON_ACTION:
+      return state.setIn(['design', 'canvasJson'], action.canvas)
+    case SET_CUSTOMIZE_3D_MOUNTED:
+      return state.set('customize3dMounted', action.mounted)
+    case SET_EDIT_DESIGN_CONFIG_ACTION: {
+        const { colors, accessoriesColor, savedDesignId } = action
+        const {
+          bindingColor,
+          zipperColor,
+          bibBraceColor,
+          flatlockColor,
+          flatlockCode
+        } = accessoriesColor
+        const stitchingColor = { name: flatlockCode, value: flatlockColor }
+        return state.merge({
+          loadingModel: true,
+          colors: colors,
+          styleColors: colors,
+          stitchingColor: fromJS(stitchingColor),
+          bindingColor,
+          zipperColor,
+          bibColor: bibBraceColor,
+          savedDesignId
+        })
+      }
+    case DESIGN_RESET_EDITING_ACTION: {
+        const { canvas, accessoriesColor } = action
+        const updatedCanvas = getCanvas(canvas)
+        const colors = state.get('styleColors')
+        const {
+          bindingColor,
+          zipperColor,
+          bibBraceColor: bibColor,
+          flatlockColor,
+          flatlockCode
+        } = accessoriesColor
+        const stitchingColor = { name: flatlockCode, value: flatlockColor }
+        return state.merge({
+          canvas: updatedCanvas,
+          colors,
+          undoChanges: [],
+          redoChanges: [],
+          openResetDesignModal: false,
+          designHasChanges: false,
+          stitchingColor: fromJS(stitchingColor),
+          bindingColor,
+          zipperColor,
+          bibColor
+        })
+      }
+    case REAPPLY_CANVAS_IMAGE_ACTION: {
+        const { el } = action
+        return state.setIn(['canvas', CanvasElements.Image, el.id], el)
       }
     default:
       return state

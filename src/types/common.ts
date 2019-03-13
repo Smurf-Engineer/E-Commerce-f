@@ -447,6 +447,7 @@ export interface ModelDesign {
   name: string
   image: string
   colors: string[]
+  canvas?: string
 }
 
 export interface ModelConfig {

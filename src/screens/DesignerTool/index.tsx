@@ -6,7 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
-import GoogleFontLoader from 'react-google-font-loader'
+import GoogleFontLoader, { Font } from 'react-google-font-loader'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
 import findIndex from 'lodash/findIndex'
@@ -20,7 +20,8 @@ import {
   createThemeMutation,
   deleteThemeMutation,
   deleteStyleMutation,
-  deleteInspirationMutation
+  deleteInspirationMutation,
+  getFonts
 } from './data'
 import EditTheme from '../../components/ThemeModal'
 import * as thunkActions from './thunkActions'
@@ -35,7 +36,18 @@ import {
   DesignObject,
   ModelDesign,
   Theme as ThemeInput,
-  CanvasType
+  CanvasType,
+  SelectedAsset,
+  CanvasDragged,
+  CanvasResized,
+  CanvasRotated,
+  CanvasObjects,
+  ConfigCanvasObj,
+  CanvasElement,
+  Style,
+  TextFormat,
+  AccessoriesColor,
+  Change
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -100,6 +112,18 @@ interface Props {
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
+  fontsData: any
+  styleMode: string
+  selectedItem: SelectedAsset
+  selectedElement: string
+  designHasChanges: boolean
+  canvas: CanvasType
+  text: string
+  style: Style
+  textFormat: TextFormat
+  originalPaths: any[]
+  undoChanges: Change[]
+  redoChanges: Change[]
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -160,6 +184,42 @@ interface Props {
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
   setLoadedCanvasAction: (canvas: CanvasType, paths: any[]) => void
+  setStyleModeAction: (mode: string) => void
+  setSelectedElement: (id: string, typeEl: string) => void
+  onCanvasElementDraggedAction: (element: CanvasDragged) => void
+  onCanvasElementResizedAction: (element: CanvasResized) => void
+  onCanvasElementRotatedAction: (element: CanvasRotated) => void
+  onCanvasElementDuplicatedAction: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
+  removeCanvasElement: (
+    id: string,
+    typeEl: string,
+    canvasObj: ConfigCanvasObj
+  ) => void
+  setTextAction: (text: string) => void
+  setCanvasElement: (
+    text: CanvasElement,
+    typeEl: string,
+    update?: boolean,
+    canvasObj?: ConfigCanvasObj
+  ) => void
+  setSelectedItemAction: (item: SelectedAsset) => void
+  onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
+  setTextFormatAction: (key: string, value: string | number) => void
+  setCanvasJsonAction: (canvas: string) => void
+  setEditConfigAction: (
+    colors: string[],
+    accessoriesColor: AccessoriesColor,
+    savedDesignId: string
+  ) => void
+  onResetEditingAction: (
+    canvas: CanvasType,
+    accessoriesColor?: AccessoriesColor
+  ) => void
+  onReApplyImageElementAction: (el: CanvasElement) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -234,12 +294,51 @@ export class DesignerTool extends React.Component<Props, {}> {
       searchClipParam,
       setSearchClipParamAction,
       getGoogleFonts,
-      setLoadedCanvasAction
+      setLoadedCanvasAction,
+      fontsData,
+      setStyleModeAction,
+      styleMode,
+      styleColors,
+      setSelectedElement,
+      selectedItem,
+      selectedElement,
+      onCanvasElementDraggedAction,
+      designHasChanges,
+      canvas,
+      onCanvasElementResizedAction,
+      onCanvasElementRotatedAction,
+      onCanvasElementDuplicatedAction,
+      removeCanvasElement,
+      setTextAction,
+      text,
+      setCanvasElement,
+      onCanvasElementTextChangedAction,
+      textFormat,
+      setTextFormatAction,
+      setSelectedItemAction,
+      setCanvasJsonAction,
+      originalPaths,
+      setEditConfigAction,
+      onResetEditingAction,
+      onReApplyImageElementAction,
+      undoChanges,
+      redoChanges
     } = this.props
     const { themeImage } = this.state
+    const fontList: Font[] = get(fontsData, 'fonts', [])
+
+    const installedFonts = fontList.reduce<{font: string}[]>(
+      (fontObject, { active, family }: any) => {
+        if (active) {
+          fontObject.push({ font: family })
+        }
+        return fontObject
+      },
+      []
+    )
     return (
       <div>
-        <GoogleFontLoader fonts={[{ font: 'Avenir' }]} />
+        {installedFonts.length ? <GoogleFontLoader fonts={installedFonts} /> : null}
         <CustomizeTab
           {...{
             colors,
@@ -274,7 +373,19 @@ export class DesignerTool extends React.Component<Props, {}> {
             uploadingSymbol,
             searchClipParam,
             setSearchClipParamAction,
-            getGoogleFonts
+            getGoogleFonts,
+            styleMode,
+            styleColors,
+            selectedItem,
+            selectedElement,
+            designHasChanges,
+            canvas,
+            text,
+            textFormat,
+            installedFonts,
+            originalPaths,
+            undoChanges,
+            redoChanges
           }}
           onSetCanvasObject={setLoadedCanvasAction}
           onUpdateSearchText={onUpdateSearchTextAction}
@@ -317,6 +428,22 @@ export class DesignerTool extends React.Component<Props, {}> {
           changeDesignsPosition={changeDesignsPositionAction}
           onUploadColorsList={onUploadColorsListAction}
           onUploadFile={uploadSymbolAction}
+          setStyleMode={setStyleModeAction}
+          onSelectEl={setSelectedElement}
+          onCanvasElementDragged={onCanvasElementDraggedAction}
+          onCanvasElementResized={onCanvasElementResizedAction}
+          onCanvasElementRotated={onCanvasElementRotatedAction}
+          onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
+          onRemoveEl={removeCanvasElement}
+          onUpdateText={setTextAction}
+          onApplyCanvasEl={setCanvasElement}
+          onSelectedItem={setSelectedItemAction}
+          onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+          onSelectTextFormat={setTextFormatAction}
+          onUnmountTab={setCanvasJsonAction}
+          onSetEditConfig={setEditConfigAction}
+          onResetEditing={onResetEditingAction}
+          onReApplyImageEl={onReApplyImageElementAction}
         />
         <EditTheme
           {...{ productCode }}
@@ -667,7 +794,8 @@ const DesignerToolEnhance = compose(
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi, ...thunkActions }
-  )
+  ),
+  getFonts
 )(DesignerTool)
 
 export default DesignerToolEnhance

@@ -11,6 +11,7 @@ import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import Tabs from './Tabs'
 import message from 'antd/lib/message'
+import PlaceholdersRender3D from '../../../components/PlaceholdersRender3D'
 import {
   getProductFromCode,
   updateThemesOrderMutation,
@@ -30,8 +31,20 @@ import {
   ModelDesign,
   Theme,
   DesignItem,
-  CanvasType
+  CanvasType,
+  SelectedAsset,
+  CanvasDragged,
+  CanvasResized,
+  CanvasRotated,
+  CanvasObjects,
+  ConfigCanvasObj,
+  TextFormat,
+  CanvasElement,
+  AccessoriesColor,
+  Change
 } from '../../../types/common'
+
+import { CanvasElements } from '../../DesignCenter/constants'
 
 export interface Data extends QueryProps {
   product: Product
@@ -71,6 +84,18 @@ interface Props {
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
+  styleMode: string
+  styleColors: string[]
+  selectedItem: SelectedAsset
+  selectedElement: string
+  designHasChanges: boolean
+  canvas: CanvasType
+  text: string
+  textFormat: TextFormat
+  installedFonts: any
+  originalPaths: any[]
+  undoChanges: Change[]
+  redoChanges: Change[]
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -123,6 +148,41 @@ interface Props {
   setSearchClipParamAction: (param: string) => void
   onSetCanvasObject: (el: CanvasType, paths: any[]) => void
   getGoogleFonts: () => void
+  setStyleMode: (mode: string) => void
+  onSelectEl: (id: string, typeEl: string) => void
+  onCanvasElementDragged: (element: CanvasDragged) => void
+  onCanvasElementResized: (element: CanvasResized) => void
+  onCanvasElementRotated: (element: CanvasRotated) => void
+  onCanvasElementDuplicated: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
+  onRemoveEl: (id: string, typeEl: string, canvasObj: ConfigCanvasObj) => void
+  onUpdateText: (text: string) => void
+  onSelectedItem: (item: SelectedAsset, name?: string) => void
+  onApplyCanvasEl: (
+    text: CanvasElement,
+    typeEl: string,
+    update?: boolean
+  ) => void
+  onCanvasElementTextChanged: (oldText: string, newText: string) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
+  onUnmountTab: (mounted: string) => void
+  onSetEditConfig: (
+    colors: string[],
+    accessoriesColor: AccessoriesColor,
+    savedDesignId: string
+  ) => void
+  onResetEditing: (
+    canvas: CanvasType,
+    accessoriesColor?: AccessoriesColor
+  ) => void
+  onReApplyImageEl: (el: CanvasElement) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -200,7 +260,35 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       searchClipParam,
       setSearchClipParamAction,
       onSetCanvasObject,
-      getGoogleFonts
+      getGoogleFonts,
+      setStyleMode,
+      styleMode,
+      styleColors,
+      onSelectEl,
+      selectedItem,
+      selectedElement,
+      onCanvasElementDragged,
+      designHasChanges,
+      canvas,
+      onCanvasElementResized,
+      onCanvasElementRotated,
+      onCanvasElementDuplicated,
+      onRemoveEl,
+      onUpdateText,
+      text,
+      onSelectedItem,
+      onApplyCanvasEl,
+      onCanvasElementTextChanged,
+      textFormat,
+      onSelectTextFormat,
+      installedFonts,
+      onUnmountTab,
+      originalPaths,
+      onSetEditConfig,
+      onResetEditing,
+      onReApplyImageEl,
+      undoChanges,
+      redoChanges
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -271,13 +359,24 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             uploadingSymbol,
             searchClipParam,
             setSearchClipParamAction,
-            getGoogleFonts
+            getGoogleFonts,
+            styleMode,
+            canvas,
+            selectedElement,
+            onUpdateText,
+            text,
+            textFormat,
+            onSelectTextFormat,
+            installedFonts,
+            selectedItem
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
           onSaveThumbnail={this.handleOnSaveThumbnail}
+          onApplyText={this.handleOnApplyText}
+          onApplyArt={this.handleOnApplyArt}
         />
-        <Render3D
+        {styleMode === 'style' ? <Render3D
           {...{
             files,
             areas,
@@ -294,10 +393,61 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             zipper,
             binding,
             design,
-            onSetCanvasObject
+            onSetCanvasObject,
+            setStyleMode,
+            styleMode
           }}
           ref={render3D => (this.render3D = render3D)}
-        />
+        /> :
+        <PlaceholdersRender3D
+          ref={render3D => (this.render3D = render3D)}
+          {...{
+            colors,
+            design,
+            colorBlockHovered,
+            styleColors,
+            onLoadModel,
+            loadingModel,
+            undoEnabled: false,
+            redoEnabled: false,
+            formatMessage,
+            currentStyle: design,
+            onApplyCanvasEl,
+            onSelectEl,
+            onRemoveEl,
+            openResetDesignModal: null,
+            openResetDesignModalAction: null,
+            setCustomize3dMountedAction: null,
+            onUnmountTab,
+            product: files,
+            stitchingColor: '#FFFFFF',
+            bindingColor: 'black',
+            zipperColor: 'black',
+            bibColor: 'black',
+            onCanvasElementResized,
+            onCanvasElementDragged,
+            onCanvasElementRotated,
+            onCanvasElementTextChanged,
+            onReApplyImageEl,
+            onCanvasElementDuplicated,
+            designHasChanges,
+            canvas,
+            selectedElement,
+            isEditing: false,
+            onSelectPalette: null,
+            onSetEditConfig,
+            onSetCanvasObject,
+            originalPaths,
+            onResetEditing,
+            onSelectedItem,
+            selectedItem,
+            redoChanges,
+            undoChanges
+          }}
+          isMobile={false}
+          isUserAuthenticated={true}
+          responsive={false}
+        />}
         <SaveModal
           visible={openSaveDesign}
           designName={design.name}
@@ -418,6 +568,33 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       })
     } catch (e) {
       message.error(e.message)
+    }
+  }
+  handleOnApplyText = (text: string, style: TextFormat) => {
+    const { selectedElement, canvas } = this.props
+    if (!!canvas.text[selectedElement]) {
+      this.render3D.applyText(text, style)
+    } else {
+      this.render3D.applyCanvasEl({ text, style, type: CanvasElements.Text })
+    }
+  }
+  handleOnApplyArt = (
+    url: string,
+    style?: CanvasElement,
+    fileId?: number,
+    name?: string
+  ) => {
+    const { selectedElement, canvas, onSelectedItem } = this.props
+    if (!!canvas.path[selectedElement]) {
+      this.render3D.applyClipArt(url, style)
+    } else {
+      onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
+      this.render3D.applyCanvasEl({
+        url,
+        style,
+        type: CanvasElements.Path,
+        fileId
+      })
     }
   }
 }

@@ -210,7 +210,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         ({ id }) => id === selectedStyle
       )
       const currentStyle = currentTheme.styles[styleIndex]
-      console.log('current style', currentStyle)
       const {
         name,
         image: styleImage,
@@ -229,7 +228,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         areaColors.push(color)
         areasPng.push(image)
       })
-      const design = { name, colors: areaColors, image: styleImage, canvas }
       const modelConfig: ModelConfig = {
         obj,
         mtl,
@@ -241,6 +239,14 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         areasSvg,
         areasPng,
         size
+      }
+      const design = {
+        name, colors: areaColors,
+        image: styleImage,
+        canvas,
+        fullColors: colors,
+        width: currentStyle.width,
+        height: currentStyle.height
       }
 
       if (!size) {

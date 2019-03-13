@@ -684,7 +684,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId, highResolution }
     }
-
     let tabSelected =
       !tabChanged && !dataProduct ? CustomizeTabIndex : currentTab
     let loadingData = true && !dataProduct

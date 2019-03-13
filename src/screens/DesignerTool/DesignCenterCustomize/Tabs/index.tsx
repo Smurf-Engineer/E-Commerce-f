@@ -7,6 +7,8 @@ import SwipeableViews from 'react-swipeable-views'
 import UploadTab from '../UploadTab'
 import ColorTab from '../ColorTab'
 import SymbolTab from '../SymbolTab'
+import SymbolTabCustomize from '../../../../components/DesignCenterCustomize/SymbolTab'
+import TextTab from '../../../../components/DesignCenterCustomize/TextTab'
 import Tab from '../Tab'
 import Product from '../../DesignSettings'
 import InpirationTab from '../Settings'
@@ -24,8 +26,13 @@ import {
   ModelConfig,
   DesignObject,
   ModelDesign,
-  Theme
+  Theme,
+  CanvasType,
+  TextFormat,
+  SelectedAsset,
+  CanvasElement
 } from '../../../../types/common'
+import { CanvasElements } from '../../../DesignCenter/constants'
 import { Data } from '../../DesignCenterCustomize'
 import { NONE, DESIGN_COLORS } from '../../reducer'
 import EditInspiration from '../EditInspiration'
@@ -38,6 +45,11 @@ const FONT_TAB = 'FONT_TAB'
 const SYMBOLS_TAB = 'SYMBOLS_TAB'
 const LIST_TAB = 0
 const EDIT_TAB = 1
+
+export const Mode = {
+  Style: 'style',
+  Placeholder: 'placeholder'
+}
 
 const { TabPane } = AntdTabs
 
@@ -70,6 +82,13 @@ interface Props {
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
+  styleMode: string
+  canvas: CanvasType
+  selectedElement: string
+  text: string
+  textFormat: TextFormat
+  installedFonts: any
+  selectedItem: SelectedAsset
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -116,6 +135,14 @@ interface Props {
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
+  onUpdateText: (text: string) => void
+  onApplyText: (text: string, style: TextFormat) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
+  onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
 }
 
 const Tabs = ({
@@ -184,7 +211,18 @@ const Tabs = ({
   uploadingSymbol,
   searchClipParam,
   setSearchClipParamAction,
-  getGoogleFonts
+  getGoogleFonts,
+  styleMode,
+  canvas,
+  selectedElement,
+  onUpdateText,
+  text,
+  onApplyText,
+  textFormat,
+  onSelectTextFormat,
+  installedFonts,
+  selectedItem,
+  onApplyArt
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -309,7 +347,7 @@ const Tabs = ({
           key={SYMBOLS_TAB}
           tab={<Tab label="symbol" icon={clipartsIcon} />}
         >
-          <SymbolTab
+          {styleMode === Mode.Style ? <SymbolTab
             {...{
               formatMessage,
               onUploadFile,
@@ -321,9 +359,26 @@ const Tabs = ({
             selectedElement={0}
             selectedItem={false}
           />
+          :
+          <SymbolTabCustomize
+            {...{
+              disableTooltip: false,
+              onApplyArt,
+              formatMessage,
+              onSelectArtFormat: null,
+              searchClipParam,
+              setSearchClipParamAction,
+              onLockElement: null,
+              colorsList
+            }}
+            selectedElement={canvas.path[selectedElement]}
+            selectedItem={
+              selectedItem.type === CanvasElements.Path && selectedItem.id
+            }
+          />}
         </TabPane>
         <TabPane key={FONT_TAB} tab={<Tab label="fonts" icon={fontIcon} />}>
-          <FontTab
+          {styleMode === Mode.Style ? <FontTab
             {...{
               setGoogleFontsList,
               fonts,
@@ -335,6 +390,25 @@ const Tabs = ({
               getGoogleFonts
             }}
           />
+          :
+          <TextTab
+            elements={canvas.text}
+            disableTooltip={false}
+            {...{
+              text,
+              onUpdateText,
+              onApplyText,
+              formatMessage,
+              productName: design.name,
+              selectedElement,
+              textFormat,
+              onSelectTextFormat,
+              onLockElement: null,
+              fonts: installedFonts,
+              colorsList
+            }}
+          />
+          }
         </TabPane>
       </AntdTabs>
     </Container>
