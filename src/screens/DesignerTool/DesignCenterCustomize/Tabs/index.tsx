@@ -143,6 +143,7 @@ interface Props {
     fontStyle: boolean
   ) => void
   onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
 }
 
 const Tabs = ({
@@ -222,7 +223,8 @@ const Tabs = ({
   onSelectTextFormat,
   installedFonts,
   selectedItem,
-  onApplyArt
+  onApplyArt,
+  onSelectArtFormat
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -347,68 +349,71 @@ const Tabs = ({
           key={SYMBOLS_TAB}
           tab={<Tab label="symbol" icon={clipartsIcon} />}
         >
-          {styleMode === Mode.Style ? <SymbolTab
-            {...{
-              formatMessage,
-              onUploadFile,
-              uploadingSymbol,
-              searchClipParam,
-              setSearchClipParamAction
-            }}
-            disableTooltip={false}
-            selectedElement={0}
-            selectedItem={false}
-          />
-          :
-          <SymbolTabCustomize
-            {...{
-              disableTooltip: false,
-              onApplyArt,
-              formatMessage,
-              onSelectArtFormat: null,
-              searchClipParam,
-              setSearchClipParamAction,
-              onLockElement: null,
-              colorsList
-            }}
-            selectedElement={canvas.path[selectedElement]}
-            selectedItem={
-              selectedItem.type === CanvasElements.Path && selectedItem.id
-            }
-          />}
+          {styleMode === Mode.Style ? (
+            <SymbolTab
+              {...{
+                formatMessage,
+                onUploadFile,
+                uploadingSymbol,
+                searchClipParam,
+                setSearchClipParamAction
+              }}
+              disableTooltip={false}
+              selectedElement={0}
+              selectedItem={false}
+            />
+          ) : (
+            <SymbolTabCustomize
+              {...{
+                disableTooltip: false,
+                onApplyArt,
+                formatMessage,
+                onSelectArtFormat,
+                searchClipParam,
+                setSearchClipParamAction,
+                onLockElement: null,
+                colorsList
+              }}
+              selectedElement={canvas.path[selectedElement]}
+              selectedItem={
+                selectedItem.type === CanvasElements.Path && selectedItem.id
+              }
+            />
+          )}
         </TabPane>
         <TabPane key={FONT_TAB} tab={<Tab label="fonts" icon={fontIcon} />}>
-          {styleMode === Mode.Style ? <FontTab
-            {...{
-              setGoogleFontsList,
-              fonts,
-              addFont,
-              visibleFonts,
-              onUpdateSearchText,
-              searchText,
-              formatMessage,
-              getGoogleFonts
-            }}
-          />
-          :
-          <TextTab
-            elements={canvas.text}
-            disableTooltip={false}
-            {...{
-              text,
-              onUpdateText,
-              onApplyText,
-              formatMessage,
-              productName: design.name,
-              selectedElement,
-              textFormat,
-              onSelectTextFormat,
-              onLockElement: null,
-              fonts: installedFonts,
-              colorsList
-            }}
-          />
-          }
+          {styleMode === Mode.Style ? (
+            <FontTab
+              {...{
+                setGoogleFontsList,
+                fonts,
+                addFont,
+                visibleFonts,
+                onUpdateSearchText,
+                searchText,
+                formatMessage,
+                getGoogleFonts
+              }}
+            />
+          ) : (
+            <TextTab
+              elements={canvas.text}
+              disableTooltip={false}
+              {...{
+                text,
+                onUpdateText,
+                onApplyText,
+                formatMessage,
+                productName: design.name,
+                selectedElement,
+                textFormat,
+                onSelectTextFormat,
+                onLockElement: null,
+                fonts: installedFonts,
+                colorsList
+              }}
+            />
+          )}
         </TabPane>
       </AntdTabs>
     </Container>

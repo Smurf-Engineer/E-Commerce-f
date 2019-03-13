@@ -79,6 +79,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       targetRange,
       currentRange
     } = this.props
+
     let thumbnailsList
     let total = ''
     let sortOptions = null
@@ -92,6 +93,8 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
           { design: { id, shortId, name, product, image, code }, totalOrders },
           index
         ) => {
+          console.log('products ', product)
+
           const targetPriceValue: any = targetRange
             ? find(product.priceRange, { quantity: targetRange.name }) || {
                 price: 0

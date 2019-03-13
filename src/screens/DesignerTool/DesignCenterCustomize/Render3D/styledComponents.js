@@ -13,7 +13,6 @@ export const Container = styled.div`
   position: relative;
   justify-content: center;
   width: calc(100% - 400px);
-  background-color: #fff;
 `
 
 export const Render = styled.div`
@@ -58,11 +57,4 @@ export const ButtonWrapper = styled.div`
 
 export const Icon = styled(AntdIcon)`
   font-size: 64px;
-`
-
-export const Modes = styled.div`
-  display: flex;
-  position: absolute;
-  left: 10px;
-  top: 10px;
 `

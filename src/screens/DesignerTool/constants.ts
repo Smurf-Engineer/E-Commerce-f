@@ -61,6 +61,7 @@ export const SET_CANVAS_JSON_ACTION = `${namespace}/SET_CANVAS_JSON_ACTION`
 export const SET_CUSTOMIZE_3D_MOUNTED = `${namespace}/SET_CUSTOMIZE_3D_MOUNTED`
 export const DESIGN_RESET_EDITING_ACTION = `${namespace}/DESIGN_RESET_EDITING_ACTION`
 export const REAPPLY_CANVAS_IMAGE_ACTION = `${namespace}/REAPPLY_CANVAS_IMAGE_ACTION`
+export const SET_ART_FORMAT_ACTION = `${namespace}/SET_ART_FORMAT_ACTION`
 
 export enum Tabs {
   RenderTab = 0,

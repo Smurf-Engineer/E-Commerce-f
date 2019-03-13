@@ -60,7 +60,8 @@ import {
   SET_CANVAS_JSON_ACTION,
   SET_CUSTOMIZE_3D_MOUNTED,
   DESIGN_RESET_EDITING_ACTION,
-  REAPPLY_CANVAS_IMAGE_ACTION
+  REAPPLY_CANVAS_IMAGE_ACTION,
+  SET_ART_FORMAT_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -441,4 +442,13 @@ export const onResetEditingAction = (
 export const onReApplyImageElementAction = (el: CanvasElement): AnyAction => ({
   type: REAPPLY_CANVAS_IMAGE_ACTION,
   el
+})
+
+export const setArtFormatAction = (
+  key: string,
+  value: string | number
+): AnyAction => ({
+  type: SET_ART_FORMAT_ACTION,
+  key,
+  value
 })

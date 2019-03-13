@@ -220,6 +220,7 @@ interface Props {
     accessoriesColor?: AccessoriesColor
   ) => void
   onReApplyImageElementAction: (el: CanvasElement) => void
+  setArtFormatAction: (key: string, value: string | number) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -322,12 +323,13 @@ export class DesignerTool extends React.Component<Props, {}> {
       onResetEditingAction,
       onReApplyImageElementAction,
       undoChanges,
-      redoChanges
+      redoChanges,
+      setArtFormatAction
     } = this.props
     const { themeImage } = this.state
     const fontList: Font[] = get(fontsData, 'fonts', [])
 
-    const installedFonts = fontList.reduce<{font: string}[]>(
+    const installedFonts = fontList.reduce<{ font: string }[]>(
       (fontObject, { active, family }: any) => {
         if (active) {
           fontObject.push({ font: family })
@@ -338,7 +340,9 @@ export class DesignerTool extends React.Component<Props, {}> {
     )
     return (
       <div>
-        {installedFonts.length ? <GoogleFontLoader fonts={installedFonts} /> : null}
+        {installedFonts.length ? (
+          <GoogleFontLoader fonts={installedFonts} />
+        ) : null}
         <CustomizeTab
           {...{
             colors,
@@ -444,6 +448,7 @@ export class DesignerTool extends React.Component<Props, {}> {
           onSetEditConfig={setEditConfigAction}
           onResetEditing={onResetEditingAction}
           onReApplyImageEl={onReApplyImageElementAction}
+          onSelectArtFormat={setArtFormatAction}
         />
         <EditTheme
           {...{ productCode }}

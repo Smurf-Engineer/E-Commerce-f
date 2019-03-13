@@ -6,6 +6,7 @@ import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
 import orderBy from 'lodash/orderBy'
+import Radio from 'antd/lib/radio'
 import map from 'lodash/map'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
@@ -20,7 +21,7 @@ import {
 } from './data'
 import Render3D from './Render3D'
 import SaveModal from './SaveModal'
-import { Container } from './styledComponents'
+import { Container, Modes } from './styledComponents'
 import {
   ModelConfig,
   DesignConfig,
@@ -46,9 +47,17 @@ import {
 
 import { CanvasElements } from '../../DesignCenter/constants'
 
+export const Mode = {
+  Style: 'style',
+  Placeholder: 'placeholder'
+}
+
 export interface Data extends QueryProps {
   product: Product
 }
+
+const RadioGroup = Radio.Group
+const RadioButton = Radio.Button
 
 interface Props {
   data?: Data
@@ -183,6 +192,7 @@ interface Props {
     accessoriesColor?: AccessoriesColor
   ) => void
   onReApplyImageEl: (el: CanvasElement) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -288,7 +298,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onResetEditing,
       onReApplyImageEl,
       undoChanges,
-      redoChanges
+      redoChanges,
+      onSelectArtFormat
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -368,7 +379,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             textFormat,
             onSelectTextFormat,
             installedFonts,
-            selectedItem
+            selectedItem,
+            onSelectArtFormat
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -376,78 +388,87 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           onApplyText={this.handleOnApplyText}
           onApplyArt={this.handleOnApplyArt}
         />
-        {styleMode === 'style' ? <Render3D
-          {...{
-            files,
-            areas,
-            colors,
-            onSaveDesign,
-            onLoadModel,
-            designConfig,
-            loadingModel,
-            colorBlockHovered,
-            onSaveThumbnail,
-            onUploadingThumbnail,
-            uploadingThumbnail,
-            bibBrace,
-            zipper,
-            binding,
-            design,
-            onSetCanvasObject,
-            setStyleMode,
-            styleMode
-          }}
-          ref={render3D => (this.render3D = render3D)}
-        /> :
-        <PlaceholdersRender3D
-          ref={render3D => (this.render3D = render3D)}
-          {...{
-            colors,
-            design,
-            colorBlockHovered,
-            styleColors,
-            onLoadModel,
-            loadingModel,
-            undoEnabled: false,
-            redoEnabled: false,
-            formatMessage,
-            currentStyle: design,
-            onApplyCanvasEl,
-            onSelectEl,
-            onRemoveEl,
-            openResetDesignModal: null,
-            openResetDesignModalAction: null,
-            setCustomize3dMountedAction: null,
-            onUnmountTab,
-            product: files,
-            stitchingColor: '#FFFFFF',
-            bindingColor: 'black',
-            zipperColor: 'black',
-            bibColor: 'black',
-            onCanvasElementResized,
-            onCanvasElementDragged,
-            onCanvasElementRotated,
-            onCanvasElementTextChanged,
-            onReApplyImageEl,
-            onCanvasElementDuplicated,
-            designHasChanges,
-            canvas,
-            selectedElement,
-            isEditing: false,
-            onSelectPalette: null,
-            onSetEditConfig,
-            onSetCanvasObject,
-            originalPaths,
-            onResetEditing,
-            onSelectedItem,
-            selectedItem,
-            redoChanges,
-            undoChanges
-          }}
-          isMobile={false}
-          isUserAuthenticated={true}
-          responsive={false}
-        />}
+        {styleMode === 'style' ? (
+          <Render3D
+            {...{
+              files,
+              areas,
+              colors,
+              onSaveDesign,
+              onLoadModel,
+              designConfig,
+              loadingModel,
+              colorBlockHovered,
+              onSaveThumbnail,
+              onUploadingThumbnail,
+              uploadingThumbnail,
+              bibBrace,
+              zipper,
+              binding,
+              design,
+              onSetCanvasObject,
+              setStyleMode,
+              styleMode
+            }}
+            ref={render3D => (this.render3D = render3D)}
+          />
+        ) : (
+          <PlaceholdersRender3D
+            ref={render3D => (this.render3D = render3D)}
+            {...{
+              colors,
+              design,
+              colorBlockHovered,
+              styleColors,
+              onLoadModel,
+              loadingModel,
+              undoEnabled: false,
+              redoEnabled: false,
+              formatMessage,
+              currentStyle: design,
+              onApplyCanvasEl,
+              onSelectEl,
+              onRemoveEl,
+              openResetDesignModal: null,
+              openResetDesignModalAction: null,
+              setCustomize3dMountedAction: null,
+              onUnmountTab,
+              product: files,
+              stitchingColor: '#FFFFFF',
+              bindingColor: 'black',
+              zipperColor: 'black',
+              bibColor: 'black',
+              onCanvasElementResized,
+              onCanvasElementDragged,
+              onCanvasElementRotated,
+              onCanvasElementTextChanged,
+              onReApplyImageEl,
+              onCanvasElementDuplicated,
+              designHasChanges,
+              canvas,
+              selectedElement,
+              isEditing: false,
+              onSelectPalette: null,
+              onSetEditConfig,
+              onSetCanvasObject,
+              originalPaths,
+              onResetEditing,
+              onSelectedItem,
+              selectedItem,
+              redoChanges,
+              undoChanges
+            }}
+            isMobile={false}
+            isUserAuthenticated={true}
+            responsive={false}
+          />
+        )}
+        <Modes>
+          <RadioGroup value={styleMode} onChange={this.handleChangeMode}>
+            <RadioButton value={Mode.Style}>Style Mode</RadioButton>
+            <RadioButton value={Mode.Placeholder}>Placeholder Mode</RadioButton>
+          </RadioGroup>
+        </Modes>
         <SaveModal
           visible={openSaveDesign}
           designName={design.name}
@@ -596,6 +617,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
         fileId
       })
     }
+  }
+  handleChangeMode = (event: any) => {
+    const {
+      target: { value: mode }
+    } = event
+    const { setStyleMode } = this.props
+
+    setStyleMode(mode)
   }
 }
 

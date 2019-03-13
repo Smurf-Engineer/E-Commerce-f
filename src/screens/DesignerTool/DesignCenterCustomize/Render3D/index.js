@@ -4,7 +4,6 @@ import reverse from 'lodash/reverse'
 import isEmpty from 'lodash/isEmpty'
 import Spin from 'antd/lib/spin'
 import FontFaceObserver from 'fontfaceobserver'
-import Radio from 'antd/lib/radio'
 import shortid from 'shortid'
 import findIndex from 'lodash/findIndex'
 import {
@@ -47,8 +46,7 @@ import {
   Logo,
   Button,
   Loading,
-  Icon,
-  Modes
+  Icon
 } from './styledComponents'
 import logo from '../../../../assets/jakroo_logo.svg'
 
@@ -128,7 +126,6 @@ class Render3D extends PureComponent {
     if (styleMode !== oldStyleMode) {
       this.loadObject(files, design, styleMode)
     }
-
   }
 
   componentDidMount() {
@@ -647,9 +644,6 @@ class Render3D extends PureComponent {
   }
 
   render() {
-    const RadioGroup = Radio.Group
-    const RadioButton = Radio.Button
-
     const { progress } = this.state
     const {
       loadingModel,
@@ -659,7 +653,6 @@ class Render3D extends PureComponent {
       design,
       styleMode
     } = this.props
-
     return (
       <Container>
         <Render innerRef={container => (this.container = container)}>
@@ -673,17 +666,6 @@ class Render3D extends PureComponent {
           <Loading>
             <Spin tip="Uploading..." indicator={<Icon type="loading" />} />
           </Loading>
-        )}
-        {!loadingModel && !isEmpty(design) && (
-          <Modes>
-            <RadioGroup
-              value={styleMode}
-              onChange={this.handleChangeMode}
-            >
-              <RadioButton value={Mode.Style}>Style Mode</RadioButton>
-              <RadioButton value={Mode.Placeholder}>Placeholder Mode</RadioButton>
-            </RadioGroup>
-          </Modes>
         )}
       </Container>
     )
