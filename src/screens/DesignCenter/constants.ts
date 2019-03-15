@@ -76,6 +76,7 @@ export const ON_CLOSE_INFO = `${namespace}/ON_CLOSE_INFO`
 export const ON_TAB_CLICK_ACTION = `${namespace}/ON_TAB_CLICK_ACTION`
 
 export const ON_LOCK_ELEMENT_ACTION = `${namespace}/ON_LOCK_ELEMENT_ACTION`
+export const OPEN_RESET_PLACEHOLDER_MODAL = `${namespace}/OPEN_RESET_PLACEHOLDER_MODAL`
 
 export enum DesignTabs {
   ThemeTab = 0,

@@ -217,7 +217,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         brandingPng,
         colors,
         size,
-        colorIdeas
+        colorIdeas,
+        canvas
       } = currentStyle
       const areaColors: string[] = []
       const areasPng: string[] = []
@@ -227,7 +228,6 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         areaColors.push(color)
         areasPng.push(image)
       })
-      const design = { name, colors: areaColors, image: styleImage }
       const modelConfig: ModelConfig = {
         obj,
         mtl,
@@ -239,6 +239,14 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         areasSvg,
         areasPng,
         size
+      }
+      const design = {
+        name, colors: areaColors,
+        image: styleImage,
+        canvas,
+        fullColors: colors,
+        width: currentStyle.width,
+        height: currentStyle.height
       }
 
       if (!size) {

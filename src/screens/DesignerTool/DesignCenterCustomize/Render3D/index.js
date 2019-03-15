@@ -1,15 +1,34 @@
 import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import reverse from 'lodash/reverse'
+import isEmpty from 'lodash/isEmpty'
 import Spin from 'antd/lib/spin'
+import FontFaceObserver from 'fontfaceobserver'
+import shortid from 'shortid'
 import findIndex from 'lodash/findIndex'
+import {
+  isMouseOver,
+  clickOnCorner,
+  getTextCanvasElement,
+  getClipArtCanvasElement,
+  getImageCanvas
+} from './utils'
 import {
   modelPositions,
   MESH_NAME,
   BIB_BRACE_NAME,
   BINDING_NAME,
-  ZIPPER_NAME
+  ZIPPER_NAME,
+  CANVAS_SIZE,
+  CANVAS_MESH,
+  CORNER_SIZE,
+  fabricJsConfig,
+  Mode
 } from './config'
+import {
+  Changes,
+  CanvasElements
+} from '../../../../screens/DesignCenter/constants'
 import {
   MESH,
   RED_TAG,
@@ -50,7 +69,8 @@ class Render3D extends PureComponent {
       areas,
       bibBrace: oldBibBrace,
       zipper: oldZipper,
-      binding: oldBinding
+      binding: oldBinding,
+      styleMode: oldStyleMode
     } = this.props
     const {
       colors: nextColors,
@@ -60,7 +80,8 @@ class Render3D extends PureComponent {
       files,
       bibBrace,
       zipper,
-      binding
+      binding,
+      styleMode
     } = nextProps
 
     if (oldBibBrace !== bibBrace && !!this.bibBrace) {
@@ -106,14 +127,21 @@ class Render3D extends PureComponent {
   componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
+    const { files, design } = this.props
 
+    fabricJsConfig.settings.cornerSize = CORNER_SIZE
+    fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
+    const devicePixelRatio = window.devicePixelRatio || 1
+
+    const precision = 'highp'
     const renderer = new THREE.WebGLRenderer({
-      antialias: true,
       alpha: true,
+      antialias: true,
+      precision,
       preserveDrawingBuffer: true
     })
 
-    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setPixelRatio(devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
 
@@ -156,6 +184,10 @@ class Render3D extends PureComponent {
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
+
+    if (files && design) {
+      this.loadObject(files, design)
+    }
   }
 
   componentWillUnmount() {
@@ -164,6 +196,94 @@ class Render3D extends PureComponent {
 
     if (this.scene) {
       this.clearScene()
+    }
+  }
+
+  loadCanvasTexture = async (object, reseting) => {
+    try {
+      const { onSetCanvasObject } = this.props
+      const canvas = { text: {}, image: {}, path: {} }
+      let elements = []
+      const paths = []
+      const imagesElements = []
+      const imagesPromises = []
+      const fonts = []
+      const indexes = {}
+      const { objects } = JSON.parse(object)
+      objects.forEach((el, index) => {
+        const elId = shortid.generate()
+        el.id = elId
+        el.hasRotatingPoint = false
+        indexes[elId] = index
+        switch (el.type) {
+          case CanvasElements.Text: {
+            elements.push(el)
+            fonts.push(el.fontFamily)
+            const element = getTextCanvasElement(el)
+            canvas.text[elId] = element
+            break
+          }
+          case CanvasElements.Group: {
+            if (el.isClipArtGroup) {
+              const element = getClipArtCanvasElement(el)
+              canvas.path[elId] = element
+              paths.push(el)
+            } else {
+              const element = getImageCanvas(el)
+              canvas.image[elId] = element
+              paths.push(el)
+            }
+            break
+          }
+          case CanvasElements.Path: {
+            const element = getClipArtCanvasElement(el)
+            canvas.path[elId] = element
+            paths.push(el)
+            break
+          }
+          case CanvasElements.Image: {
+            const element = getImageCanvas(el)
+            canvas.image[elId] = element
+            imagesElements.push(el)
+            imagesPromises.push(this.loadFabricImage(el.src))
+            break
+          }
+          default:
+            break
+        }
+      })
+      elements = [...elements, ...paths]
+      let images = []
+      if (!!imagesElements.length) {
+        images = await Promise.all(imagesPromises)
+      }
+      images.forEach((img, index) => {
+        const config = imagesElements[index] || {}
+        const imageEl = new fabric.Image(img, { ...config })
+        this.canvasTexture.add(imageEl)
+      })
+      const fontsPromises = fonts.map(font => {
+        const fontObserver = new FontFaceObserver(font)
+        return fontObserver.load()
+      })
+      await Promise.all(fontsPromises)
+      const fabricObjects = await this.convertToFabricObjects(elements)
+      fabricObjects.forEach(o => this.canvasTexture.add(o))
+      if (reseting) {
+        const {
+          currentStyle: { accessoriesColor },
+          onResetEditing
+        } = this.props
+        onResetEditing(canvas, accessoriesColor)
+      } else {
+        onSetCanvasObject(canvas, paths)
+      }
+      this.canvasTexture.getObjects().forEach(el => {
+        el.moveTo(indexes[el.id])
+      })
+      this.canvasTexture.renderAll()
+    } catch (e) {
+      console.error('Error loading canvas object: ', e.message)
     }
   }
 
@@ -256,7 +376,7 @@ class Render3D extends PureComponent {
     }
   }
 
-  loadObject = async (files, design) => {
+  loadObject = async (files, design, styleMode = Mode.Style) => {
     /* Object and MTL load */
     const { onLoadModel } = this.props
     this.clearScene()
@@ -374,6 +494,40 @@ class Render3D extends PureComponent {
               }))
           )
 
+          /* Canvas */
+          const canvas = document.createElement('canvas')
+          canvas.width = CANVAS_SIZE
+          canvas.height = CANVAS_SIZE
+          const canvasConfig = {
+            width: CANVAS_SIZE,
+            height: CANVAS_SIZE,
+            crossOrigin: 'Anonymous',
+            selection: false,
+            skipTargetFind: true
+          }
+
+          this.canvasTexture = new fabric.Canvas(canvas, canvasConfig)
+
+          const canvasTexture = new THREE.CanvasTexture(canvas)
+          canvasTexture.minFilter = THREE.LinearFilter
+          this.canvasTexture.on(
+            'after:render',
+            () => (canvasTexture.needsUpdate = true)
+          )
+          const canvasMaterial = new THREE.MeshPhongMaterial({
+            map: canvasTexture,
+            side: THREE.FrontSide,
+            bumpMap,
+            transparent: true
+          })
+          const canvasObj = children[meshIndex].clone()
+          object.add(canvasObj)
+
+          const childrenLength = children.length
+          const canvasIndex = childrenLength - 1
+          children[canvasIndex].material = canvasMaterial
+          children[canvasIndex].name = CANVAS_MESH
+
           /* Branding  */
           if (!!branding) {
             const brandingObj = object.children[meshIndex].clone()
@@ -392,6 +546,11 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
+
+          if (design && design.canvas && styleMode === Mode.Placeholder) {
+            this.loadCanvasTexture(design.canvas)
+          }
+
           onLoadModel(false)
         },
         this.onProgress,
@@ -487,8 +646,14 @@ class Render3D extends PureComponent {
 
   render() {
     const { progress } = this.state
-    const { loadingModel, files, onSaveDesign, uploadingThumbnail } = this.props
-
+    const {
+      loadingModel,
+      files,
+      onSaveDesign,
+      uploadingThumbnail,
+      design,
+      styleMode
+    } = this.props
     return (
       <Container>
         <Render innerRef={container => (this.container = container)}>
@@ -584,6 +749,17 @@ class Render3D extends PureComponent {
       })
     }
   }
+
+  convertToFabricObjects = elements =>
+    new Promise((resolve, reject) => {
+      try {
+        fabric.util.enlivenObjects(elements, objects => {
+          resolve(objects)
+        })
+      } catch (e) {
+        reject(e)
+      }
+    })
 }
 
 export default Render3D

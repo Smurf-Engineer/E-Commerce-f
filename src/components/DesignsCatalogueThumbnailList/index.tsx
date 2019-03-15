@@ -79,6 +79,7 @@ export class DesignsCatalogueThumbnailList extends React.Component<Props, {}> {
       targetRange,
       currentRange
     } = this.props
+
     let thumbnailsList
     let total = ''
     let sortOptions = null

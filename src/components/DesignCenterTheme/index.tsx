@@ -26,6 +26,7 @@ interface Props {
   designHasChanges: boolean
   productId: number
   isMobile: boolean
+  placeholders?: boolean
   onSelectTheme: (id: number, name?: string) => void
   formatMessage: (messageDescriptor: any) => string
   openNewThemeModalAction: (open: boolean, themeId?: number) => void
@@ -102,8 +103,8 @@ export const DesignCenterGrid = ({
 
 const DesignCenterGridWithData = compose(
   graphql<Data, Props>(themesQuery, {
-    options: ({ productId }) => ({
-      variables: { id: productId }
+    options: ({ productId, placeholders }) => ({
+      variables: { id: productId, placeholders }
     })
   }),
   withLoading

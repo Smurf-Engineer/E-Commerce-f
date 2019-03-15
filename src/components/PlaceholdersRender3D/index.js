@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
+import Spin from 'antd/lib/spin'
 import filter from 'lodash/filter'
 import FontFaceObserver from 'fontfaceobserver'
 import { FormattedMessage } from 'react-intl'
@@ -14,32 +15,22 @@ import isEmpty from 'lodash/isEmpty'
 import shortid from 'shortid'
 import Modal from 'antd/lib/modal'
 import notification from 'antd/lib/notification'
-import Checkbox from 'antd/lib/checkbox'
 import {
   Container,
   Render,
   Progress,
-  Model,
-  Row,
-  QuickView,
   Button,
   DragText,
   ViewControls,
   ViewButton,
   ButtonWrapper,
-  ModalMessage,
   MeasurementBox,
   MeasurementLabel,
   Measurement,
   BottomControls,
   TopButton,
-  HintModalImage,
-  HintIcon,
-  TurnOffHintRow,
-  MobileContainer,
-  MobileButton,
-  MobileButtonWrapper,
-  MobileHintIcon
+  Loading,
+  Icon
 } from './styledComponents'
 import {
   viewPositions,
@@ -85,16 +76,10 @@ import {
   PROPEL_PALMS,
   GRIP_TAPE,
   DEFAULT_COLOR
-} from '../../../constants'
-import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
-import {
-  Changes,
-  CanvasElements
-} from '../../../screens/DesignCenter/constants'
-import ModalFooter from '../../ModalFooter'
-import ModalTitle from '../../ModalTitle'
-import Slider from '../../ZoomSlider'
-import OptionsController from '../OptionsController'
+} from '../../constants'
+import { BLACK, SELECTION_3D_AREA } from '../../theme/colors'
+import { Changes, CanvasElements } from '../../screens/DesignCenter/constants'
+
 import messages from './messages'
 import {
   isMouseOver,
@@ -103,19 +88,14 @@ import {
   getClipArtCanvasElement,
   getImageCanvas
 } from './utils'
-import HelpModal from '../../Common/JakrooModal'
-import quickView from '../../../assets/quickview.svg'
-import left from '../../../assets/leftarrow.svg'
-import right from '../../../assets/arrow.svg'
-import top from '../../../assets/uparrow.svg'
-import frontIcon from '../../../assets/Cube-Front.svg'
-import leftIcon from '../../../assets/Cube_Left.svg'
-import rightIcon from '../../../assets/Cube_right.svg'
-import backIcon from '../../../assets/Cube_back.svg'
-import topIcon from '../../../assets/Cube-Top.svg'
-import hintImg from '../../../assets/designCenterhelpHint.jpg'
-import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
-import helpTooltip from '../../../assets/tooltip.svg'
+import left from '../../assets/leftarrow.svg'
+import right from '../../assets/arrow.svg'
+import top from '../../assets/uparrow.svg'
+import frontIcon from '../../assets/Cube-Front.svg'
+import leftIcon from '../../assets/Cube_Left.svg'
+import rightIcon from '../../assets/Cube_right.svg'
+import backIcon from '../../assets/Cube_back.svg'
+import topIcon from '../../assets/Cube-Top.svg'
 
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
@@ -458,7 +438,7 @@ class Render3D extends PureComponent {
     new Promise((resolve, reject) => {
       try {
         const loadedTextures = {}
-        const { brandingPng, colors } = design
+        const { brandingPng, fullColors: colors } = design
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         if (!!zipper) {
           const { white, black } = zipper
@@ -760,9 +740,9 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
-          const { placeholders } = this.props
-          if ((design && design.canvasJson) || placeholders) {
-            this.loadCanvasTexture(design.canvasJson || currentStyle.canvas)
+
+          if (design && design.canvas) {
+            this.loadCanvasTexture(design.canvas)
           }
 
           onLoadModel(false)
@@ -1130,41 +1110,20 @@ class Render3D extends PureComponent {
     openResetDesignModalAction(true)
   }
 
-  handleOnOpenPlaceholderModal = () => {
-    const { openResetPlaceholderModalAction } = this.props
-    openResetPlaceholderModalAction(true)
-  }
-
   onCloseResetModal = () => {
     const { openResetDesignModalAction } = this.props
     openResetDesignModalAction(false)
   }
 
-  onCloseResetPlaceholderModal = () => {
-    const { openResetPlaceholderModalAction } = this.props
-    openResetPlaceholderModalAction(false)
-  }
-
   onReset = () => {
-    const {
-      isEditing,
-      design,
-      onResetAction,
-      currentStyle,
-      placeholders,
-      openResetPlaceholderModal
-    } = this.props
+    const { isEditing, design, onResetAction, currentStyle } = this.props
     this.canvasTexture.clear()
-    if (openResetPlaceholderModal || (!isEditing && !placeholders)) {
+    if (!isEditing) {
       onResetAction()
       return
     }
     if (design && design.canvasJson) {
       this.loadCanvasTexture(design.canvasJson, true)
-    }
-    if (placeholders) {
-      onResetAction()
-      this.loadCanvasTexture(currentStyle.canvas)
     }
   }
 
@@ -1173,7 +1132,7 @@ class Render3D extends PureComponent {
   handleOnChange3DModel = () => {}
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
-  takeDesignPicture = (automaticSave = false) => {
+  takeDesignPicture = () => {
     const { isUserAuthenticated, openLoginAction } = this.props
 
     if (!isUserAuthenticated) {
@@ -1182,7 +1141,7 @@ class Render3D extends PureComponent {
     }
     if (this.renderer) {
       const {
-        onOpenSaveDesign,
+        saveStyleCanvas,
         currentStyle,
         isMobile,
         isEditing,
@@ -1199,7 +1158,10 @@ class Render3D extends PureComponent {
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
-          const designBase64 = this.renderer.domElement.toDataURL('image/png')
+          const designBase64 = this.renderer.domElement.toDataURL(
+            'image/webp',
+            0.3
+          )
           const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
           const canvasJson = JSON.stringify(designCanvas)
           const saveDesign = {
@@ -1208,82 +1170,21 @@ class Render3D extends PureComponent {
             styleId: currentStyle.id,
             highResolution
           }
-          onOpenSaveDesign(true, saveDesign, automaticSave)
+          saveStyleCanvas(saveDesign)
         }, 200)
       )
     }
   }
 
   render() {
-    const { showDragmessage, currentView, progress, showHelpModal } = this.state
+    const { showDragmessage, currentView, progress } = this.state
     const {
-      onPressQuickView,
-      undoEnabled,
-      redoEnabled,
       loadingModel,
       formatMessage,
-      productName,
-      openResetDesignModal,
-      designHasChanges,
       canvas,
       selectedElement,
-      isMobile,
-      placeholders,
-      openResetPlaceholderModal
+      saveDesignLoading
     } = this.props
-
-    if (isMobile) {
-      return (
-        <MobileContainer>
-          <Render
-            id="render-3d"
-            innerRef={container => (this.container = container)}
-          >
-            {loadingModel && <Progress type="circle" percent={progress + 1} />}
-          </Render>
-          {showDragmessage && (
-            <DragText>
-              <FormattedMessage {...messages.drag} />
-            </DragText>
-          )}
-          <HelpModal
-            open={showHelpModal}
-            withLogo={false}
-            requestClose={this.handleHelpModal}
-          >
-            <HintModalImage src={mobileHintImg} alt="" />
-            {!showHint && (
-              <TurnOffHintRow>
-                <Checkbox onChange={this.disableHelpModal}>
-                  {formatMessage(messages.turOffHintMobile)}
-                </Checkbox>
-              </TurnOffHintRow>
-            )}
-          </HelpModal>
-          <MobileHintIcon src={helpTooltip} onClick={this.handleHelpModal} />
-        </MobileContainer>
-      )
-    }
-
-    const showHint = this.getHelpModalValueFromLocal()
-
-    {
-      /*
-      // TODO: JV2 - Phase II
-      const menu = (
-      <Menu onClick={this.handleOnChange3DModel}>
-        <Menu.Item key="1">
-          <FormattedMessage {...messages.productOnly} />
-        </Menu.Item>
-        <Menu.Item key="2">
-          <FormattedMessage {...messages.withAvatar} />
-        </Menu.Item>
-        <Menu.Item key="3">
-          <FormattedMessage {...messages.onBike} />
-        </Menu.Item>
-      </Menu>
-    )*/
-    }
 
     let widthInCm = 0
     let heightInCm = 0
@@ -1318,16 +1219,10 @@ class Render3D extends PureComponent {
 
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
-        <Row>
-          <Model>{productName}</Model>
-          <QuickView onClick={onPressQuickView} src={quickView} />
-          <HintIcon src={helpTooltip} onClick={this.handleHelpModal} />
-        </Row>
-        <ButtonWrapper>
-          <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
-            {formatMessage(messages.saveButton)}
-          </Button>
-        </ButtonWrapper>
+        <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
+          {formatMessage(messages.saveButton)}
+        </Button>
+        <ButtonWrapper />
         {!!selectedGraphicElement && (
           <MeasurementBox>
             <MeasurementLabel>
@@ -1341,7 +1236,7 @@ class Render3D extends PureComponent {
           </MeasurementBox>
         )}
         <Render
-          id="render-3d"
+          id="render-3d-custom"
           innerRef={container => (this.container = container)}
         >
           {loadingModel && <Progress type="circle" percent={progress + 1} />}
@@ -1360,73 +1255,13 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         */}
-        <OptionsController
-          {...{ undoEnabled, redoEnabled, formatMessage, placeholders }}
-          resetEnabled={designHasChanges}
-          onClickUndo={this.handleOnClickUndo}
-          onClickRedo={this.handleOnClickRedo}
-          onClickReset={this.handleOnOpenResetModal}
-          onClickClear={this.handleOnClickClear}
-          onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
-        />
-        <Slider onChangeZoom={this.handleOnChangeZoom} />
-        <ViewControls>
-          <TopButton onClick={this.handleOnPressTop} src={top} />
-          <BottomControls>
-            <ViewButton onClick={this.handleOnPressLeft} src={left} />
-            <img src={cubeViews[currentView]} />
-            <ViewButton onClick={this.handleOnPressRight} src={right} />
-          </BottomControls>
-        </ViewControls>
-        {/* Reset Modal */}
-        <Modal
-          visible={openResetDesignModal || openResetPlaceholderModal}
-          title={<ModalTitle title={formatMessage(messages.modalResetTitle)} />}
-          footer={
-            <ModalFooter
-              onOk={this.onReset}
-              onCancel={openResetPlaceholderModal ? this.onCloseResetPlaceholderModal : this.onCloseResetModal}
-              {...{ formatMessage }}
-            />
-          }
-          closable={false}
-          maskClosable={false}
-          destroyOnClose={true}
-        >
-          <ModalMessage>
-            {formatMessage(openResetPlaceholderModal ? messages.modalResetPlaceholderMessage : messages.modalResetMessage)}
-          </ModalMessage>
-        </Modal>
-        <HelpModal
-          open={showHelpModal}
-          withLogo={false}
-          requestClose={this.handleHelpModal}
-        >
-          <HintModalImage src={hintImg} alt="" />
-          {!showHint && (
-            <TurnOffHintRow>
-              <Checkbox onChange={this.disableHelpModal}>
-                {formatMessage(messages.turOffHint)}
-              </Checkbox>
-            </TurnOffHintRow>
-          )}
-        </HelpModal>
+        {saveDesignLoading && (
+          <Loading>
+            <Spin tip="Saving..." indicator={<Icon type="loading" />} />
+          </Loading>
+        )}
       </Container>
     )
-  }
-
-  disableHelpModal = evt => {
-    const {
-      target: { checked }
-    } = evt
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('disableDesignCenterHint', checked)
-    }
-  }
-
-  handleHelpModal = () => {
-    const { showHelpModal } = this.state
-    this.setState({ showHelpModal: !showHelpModal })
   }
 
   getHelpModalValueFromLocal = () => {
@@ -1451,10 +1286,10 @@ class Render3D extends PureComponent {
           okType: 'default'
         })
         setTimeout(() => modal.destroy(), 10000)
-        document.getElementById('render-3d').style.cursor = 'no-drop'
+        document.getElementById('render-3d-custom').style.cursor = 'no-drop'
         this.setState({ canvasEl, isFirstAdd: false })
       } else {
-        document.getElementById('render-3d').style.cursor = 'no-drop'
+        document.getElementById('render-3d-custom').style.cursor = 'no-drop'
         this.setState({ canvasEl })
       }
     }
@@ -1657,7 +1492,6 @@ class Render3D extends PureComponent {
           ...position,
           ...style
         }
-
         const scaleX = position.scaleX || scaleFactorX
         const scaleY = position.scaleY || scaleFactorY
         if (rotation) {
@@ -1683,12 +1517,13 @@ class Render3D extends PureComponent {
           id,
           fill: BLACK,
           stroke: BLACK,
-          strokeWidth: 0,
+          strokeWidth: 1,
           ...style,
           lock: false
         }
         position.scaleX = scaleX
         position.scaleY = scaleY
+
         if (!idElement) {
           onApplyCanvasEl(el, CanvasElements.Path, false, {
             src,
@@ -1889,7 +1724,7 @@ class Render3D extends PureComponent {
   onMouseUp = evt => {
     const { isEditing, design } = this.props
     evt.preventDefault()
-    document.getElementById('render-3d').style.cursor = 'grab'
+    document.getElementById('render-3d-custom').style.cursor = 'grab'
     const action = this.dragComponent && this.dragComponent.action
 
     if (CHANGE_ACTIONS.includes(action)) {
@@ -1975,7 +1810,7 @@ class Render3D extends PureComponent {
 
   onMouseDown = evt => {
     evt.preventDefault()
-    document.getElementById('render-3d').style.cursor = 'grabbing'
+    document.getElementById('render-3d-custom').style.cursor = 'grabbing'
 
     if (!this.canvasTexture) {
       return
@@ -2229,6 +2064,7 @@ class Render3D extends PureComponent {
           canvas.image[selectedElement] ||
           canvas.path[selectedElement] ||
           canvas.text[selectedElement]
+
         if (selectedGraphicElement && !selectedGraphicElement.lock) {
           switch (action) {
             case DRAG_ACTION: {
@@ -2260,9 +2096,9 @@ class Render3D extends PureComponent {
         }
       }
     } else if (!!intersects.length && !!this.state.canvasEl) {
-      document.getElementById('render-3d').style.cursor = 'crosshair'
+      document.getElementById('render-3d-custom').style.cursor = 'crosshair'
     } else if (!!this.state.canvasEl) {
-      document.getElementById('render-3d').style.cursor = 'no-drop'
+      document.getElementById('render-3d-custom').style.cursor = 'no-drop'
     }
   }
 

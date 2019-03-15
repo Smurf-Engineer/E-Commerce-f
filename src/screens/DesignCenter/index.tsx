@@ -172,6 +172,8 @@ interface Props extends RouteComponentProps<any> {
   automaticSave: boolean
   selectedTab: number
   colorsList: any
+  navigation: any
+  openResetPlaceholderModal: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -227,6 +229,7 @@ interface Props extends RouteComponentProps<any> {
   setArtFormatAction: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
+  openResetPlaceholderModalAction: (open: boolean) => void
   openNewThemeModalAction: (open: boolean, themeId: number) => void
   openNewStyleModalAction: (
     open: boolean,
@@ -558,6 +561,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       openPaletteModalAction,
       myPaletteModals,
       openResetDesignModalAction,
+      openResetPlaceholderModalAction,
       openResetDesignModal,
       editDesignAction,
       themeModalData,
@@ -608,7 +612,9 @@ export class DesignCenter extends React.Component<Props, {}> {
       selectedTab,
       onTabClickAction,
       onLockElementAction,
-      colorsList
+      colorsList,
+      location,
+      openResetPlaceholderModal
     } = this.props
 
     const { formatMessage } = intl
@@ -625,6 +631,8 @@ export class DesignCenter extends React.Component<Props, {}> {
      * Redirect for missing params
      */
     const queryParams = queryString.parse(search)
+    const placeholders = location && location.pathname === '/kickstart'
+
     if (!queryParams.id && !queryParams.designId) {
       return redirect
     }
@@ -684,7 +692,6 @@ export class DesignCenter extends React.Component<Props, {}> {
     if (canvasJson) {
       designObject = { ...designObject, canvasJson, styleId, highResolution }
     }
-
     let tabSelected =
       !tabChanged && !dataProduct ? CustomizeTabIndex : currentTab
     let loadingData = true && !dataProduct
@@ -808,7 +815,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                     designHasChanges,
                     formatMessage,
                     productId,
-                    isMobile
+                    isMobile,
+                    placeholders
                   }}
                 />
               )}
@@ -817,7 +825,13 @@ export class DesignCenter extends React.Component<Props, {}> {
               <Info
                 label="style"
                 {...{ isMobile }}
-                message={isMobile ? '' : 'styleMessage'}
+                message={
+                  isMobile
+                    ? ''
+                    : placeholders
+                    ? 'styleMessagePlaceholder'
+                    : 'styleMessage'
+                }
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />
@@ -832,7 +846,8 @@ export class DesignCenter extends React.Component<Props, {}> {
                     formatMessage,
                     styleIndex,
                     productId,
-                    themeId
+                    themeId,
+                    placeholders
                   }}
                   complexity={complexity + 1}
                 />
@@ -861,6 +876,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   myPaletteModals,
                   openResetDesignModal,
                   openResetDesignModalAction,
+                  openResetPlaceholderModalAction,
                   designName,
                   formatMessage,
                   customize3dMounted,
@@ -889,7 +905,9 @@ export class DesignCenter extends React.Component<Props, {}> {
                   handleOnCloseInfo,
                   infoModalOpen,
                   selectedTab,
-                  colorsList
+                  colorsList,
+                  placeholders,
+                  openResetPlaceholderModal
                 }}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
@@ -1157,6 +1175,7 @@ const DesignCenterEnhance = compose(
     options: ({ location }: OwnProps) => {
       const search = location ? location.search : ''
       const queryParams = queryString.parse(search)
+
       return {
         skip: !queryParams.designId,
         variables: { designId: queryParams.designId },

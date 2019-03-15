@@ -13,7 +13,6 @@ export const Container = styled.div`
   position: relative;
   justify-content: center;
   width: calc(100% - 400px);
-  background-color: #fff;
 `
 
 export const Render = styled.div`

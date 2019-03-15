@@ -138,6 +138,7 @@ export const onUploadColorsListAction = (file: any, type: string) => {
       }
       message.success('File uploaded')
       dispatch(setUploadingColorsAction(type, false))
+      return responseObject
     } catch (e) {
       dispatch(setUploadingColorsAction(type, false))
       message.error(e.message)

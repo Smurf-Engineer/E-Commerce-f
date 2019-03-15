@@ -24,3 +24,10 @@ export const StyledTitle = styled.div`
   flex: 1;
   margin-left: 15px;
 `
+
+export const Modes = styled.div`
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 410px;
+`
