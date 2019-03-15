@@ -54,6 +54,13 @@ export const deleteInspirationMutation = gql`
   }
 `
 
+export const saveStyleCanvas = gql`
+  mutation saveStyleCanvas($id: Int!, $data: StyleCanvasInput!) {
+    saveStyleCanvas(id: $id, styleData: $data) {
+      message
+    }
+  }
+`
 export const getFonts = graphql(
   gql`
     query GetFonts {

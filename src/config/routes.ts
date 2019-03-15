@@ -187,6 +187,11 @@ const routes = [
     component: DesignCenter
   },
   {
+    path: '/kickstart',
+    name: 'designCenter',
+    component: DesignCenter
+  },
+  {
     path: '/not-found',
     name: 'notFound',
     component: NotFound

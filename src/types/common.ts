@@ -303,6 +303,8 @@ export interface Style {
   accessoriesColor?: EditDesign
   designId?: string
   styleId?: number
+  thumbnail?: string
+  canvas: string
 }
 
 export interface Theme {

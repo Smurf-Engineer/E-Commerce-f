@@ -103,6 +103,8 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  placeholders: boolean
+  openResetPlaceholderModal: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -140,6 +142,7 @@ interface Props {
   onSelectArtFormat: (key: string, value: string | number) => void
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   openResetDesignModalAction: (open: boolean) => void
+  openResetPlaceholderModalAction: (open: boolean) => void
   setCustomize3dMountedAction: (mounted: boolean) => void
   onUnmountTab: (mounted: string) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
@@ -238,6 +241,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       myPaletteModals,
       openResetDesignModal,
       openResetDesignModalAction,
+      openResetPlaceholderModalAction,
       setCustomize3dMountedAction,
       onSelectArtFormat,
       onUnmountTab,
@@ -280,7 +284,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onLockElement,
       openLoginModalAction,
       fonts,
-      colorsList
+      colorsList,
+      placeholders,
+      openResetPlaceholderModal
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -391,6 +397,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onRemoveEl,
               openResetDesignModal,
               openResetDesignModalAction,
+              openResetPlaceholderModalAction,
               setCustomize3dMountedAction,
               onUnmountTab,
               undoChanges,
@@ -418,7 +425,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectedItem,
               isMobile,
               isUserAuthenticated,
-              responsive
+              responsive,
+              placeholders,
+              openResetPlaceholderModal
             }}
           />
         ) : (

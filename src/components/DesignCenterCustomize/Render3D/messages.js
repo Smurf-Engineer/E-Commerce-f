@@ -83,5 +83,9 @@ export default defineMessages({
   editButton: {
     id: 'components.Render3D.editButton',
     defaultMessage: 'EDIT'
+  },
+  modalResetPlaceholderMessage: {
+    id: 'components.Render3D.modalResetPlaceholderTitle',
+    defaultMessage: 'Are you sure? This will remove all text and symbol content from the current design.'
   }
 })

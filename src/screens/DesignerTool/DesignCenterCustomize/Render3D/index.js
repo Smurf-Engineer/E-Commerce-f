@@ -122,15 +122,12 @@ class Render3D extends PureComponent {
       this.setupHoverColor(colorBlockHovered)
       return
     }
-
-    if (styleMode !== oldStyleMode) {
-      this.loadObject(files, design, styleMode)
-    }
   }
 
   componentDidMount() {
     /* Renderer config */
     const { clientWidth, clientHeight } = this.container
+    const { files, design } = this.props
 
     fabricJsConfig.settings.cornerSize = CORNER_SIZE
     fabric.Object.prototype.customiseCornerIcons(fabricJsConfig)
@@ -187,6 +184,10 @@ class Render3D extends PureComponent {
 
     this.container.appendChild(this.renderer.domElement)
     this.start()
+
+    if (files && design) {
+      this.loadObject(files, design)
+    }
   }
 
   componentWillUnmount() {
@@ -759,15 +760,6 @@ class Render3D extends PureComponent {
         reject(e)
       }
     })
-
-  handleChangeMode = event => {
-    const {
-      target: { value: mode }
-    } = event
-    const { setStyleMode } = this.props
-
-    setStyleMode(mode)
-  }
 }
 
 export default Render3D

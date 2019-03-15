@@ -21,7 +21,8 @@ import {
   deleteThemeMutation,
   deleteStyleMutation,
   deleteInspirationMutation,
-  getFonts
+  getFonts,
+  saveStyleCanvas
 } from './data'
 import EditTheme from '../../components/ThemeModal'
 import * as thunkActions from './thunkActions'
@@ -124,6 +125,11 @@ interface Props {
   originalPaths: any[]
   undoChanges: Change[]
   redoChanges: Change[]
+  selectedTab: number
+  stitchingColor: string
+  bindingColor: string
+  zipperColor: string
+  bibColor: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -173,6 +179,7 @@ interface Props {
   createTheme: (variables: {}) => Promise<DataTheme>
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   deleteStyle: (variables: {}) => Promise<MessagePayload>
+  saveCanvas: (variables: {}) => Promise<MessagePayload>
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
@@ -221,6 +228,7 @@ interface Props {
   ) => void
   onReApplyImageElementAction: (el: CanvasElement) => void
   setArtFormatAction: (key: string, value: string | number) => void
+  onTabClickAction: (selectedIndex: number) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -324,7 +332,13 @@ export class DesignerTool extends React.Component<Props, {}> {
       onReApplyImageElementAction,
       undoChanges,
       redoChanges,
-      setArtFormatAction
+      setArtFormatAction,
+      selectedTab,
+      onTabClickAction,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
     } = this.props
     const { themeImage } = this.state
     const fontList: Font[] = get(fontsData, 'fonts', [])
@@ -389,7 +403,12 @@ export class DesignerTool extends React.Component<Props, {}> {
             installedFonts,
             originalPaths,
             undoChanges,
-            redoChanges
+            redoChanges,
+            selectedTab,
+            stitchingColor,
+            bindingColor,
+            zipperColor,
+            bibColor
           }}
           onSetCanvasObject={setLoadedCanvasAction}
           onUpdateSearchText={onUpdateSearchTextAction}
@@ -449,6 +468,8 @@ export class DesignerTool extends React.Component<Props, {}> {
           onResetEditing={onResetEditingAction}
           onReApplyImageEl={onReApplyImageElementAction}
           onSelectArtFormat={setArtFormatAction}
+          saveStyleCanvas={this.handleSaveStyleCanvas}
+          onTabClick={onTabClickAction}
         />
         <EditTheme
           {...{ productCode }}
@@ -642,6 +663,30 @@ export class DesignerTool extends React.Component<Props, {}> {
 
     openSaveDesignAction(true)
   }
+  handleSaveStyleCanvas = async (styleData: any) => {
+    const {
+      selectedStyle,
+      uploadThumbnail,
+      saveCanvas,
+      setSavingDesign
+    } = this.props
+    const { canvasJson, designBase64 } = styleData
+    setSavingDesign(true)
+    try {
+      const response = await uploadThumbnail({
+        variables: { image: designBase64 }
+      })
+      const thumbnail = get(response, 'data.style.image', '')
+      await saveCanvas({
+        variables: { id: selectedStyle, data: { canvasJson, thumbnail } }
+      })
+      setSavingDesign(false)
+      message.success('Placeholder design saved!')
+    } catch (e) {
+      setSavingDesign(false)
+      message.error(e.message)
+    }
+  }
   handleSaveDesign = async () => {
     const { setSavingDesign } = this.props
     try {
@@ -796,6 +841,7 @@ const DesignerToolEnhance = compose(
   graphql(deleteThemeMutation, { name: 'deleteTheme' }),
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
+  graphql(saveStyleCanvas, { name: 'saveCanvas' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi, ...thunkActions }

@@ -760,9 +760,9 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
-
-          if (design && design.canvasJson) {
-            this.loadCanvasTexture(design.canvasJson)
+          const { placeholders } = this.props
+          if ((design && design.canvasJson) || placeholders) {
+            this.loadCanvasTexture(design.canvasJson || currentStyle.canvas)
           }
 
           onLoadModel(false)
@@ -1130,20 +1130,41 @@ class Render3D extends PureComponent {
     openResetDesignModalAction(true)
   }
 
+  handleOnOpenPlaceholderModal = () => {
+    const { openResetPlaceholderModalAction } = this.props
+    openResetPlaceholderModalAction(true)
+  }
+
   onCloseResetModal = () => {
     const { openResetDesignModalAction } = this.props
     openResetDesignModalAction(false)
   }
 
+  onCloseResetPlaceholderModal = () => {
+    const { openResetPlaceholderModalAction } = this.props
+    openResetPlaceholderModalAction(false)
+  }
+
   onReset = () => {
-    const { isEditing, design, onResetAction, currentStyle } = this.props
+    const {
+      isEditing,
+      design,
+      onResetAction,
+      currentStyle,
+      placeholders,
+      openResetPlaceholderModal
+    } = this.props
     this.canvasTexture.clear()
-    if (!isEditing) {
+    if (openResetPlaceholderModal || (!isEditing && !placeholders)) {
       onResetAction()
       return
     }
     if (design && design.canvasJson) {
       this.loadCanvasTexture(design.canvasJson, true)
+    }
+    if (placeholders) {
+      onResetAction()
+      this.loadCanvasTexture(currentStyle.canvas)
     }
   }
 
@@ -1207,7 +1228,8 @@ class Render3D extends PureComponent {
       canvas,
       selectedElement,
       isMobile,
-      isEditing
+      placeholders,
+      openResetPlaceholderModal
     } = this.props
 
     if (isMobile) {
@@ -1339,12 +1361,13 @@ class Render3D extends PureComponent {
         </Dropdown>
         */}
         <OptionsController
-          {...{ undoEnabled, redoEnabled, formatMessage }}
+          {...{ undoEnabled, redoEnabled, formatMessage, placeholders }}
           resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
           onClickReset={this.handleOnOpenResetModal}
           onClickClear={this.handleOnClickClear}
+          onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
         <ViewControls>
@@ -1357,12 +1380,12 @@ class Render3D extends PureComponent {
         </ViewControls>
         {/* Reset Modal */}
         <Modal
-          visible={openResetDesignModal}
+          visible={openResetDesignModal || openResetPlaceholderModal}
           title={<ModalTitle title={formatMessage(messages.modalResetTitle)} />}
           footer={
             <ModalFooter
               onOk={this.onReset}
-              onCancel={this.onCloseResetModal}
+              onCancel={openResetPlaceholderModal ? this.onCloseResetPlaceholderModal : this.onCloseResetModal}
               {...{ formatMessage }}
             />
           }
@@ -1371,7 +1394,7 @@ class Render3D extends PureComponent {
           destroyOnClose={true}
         >
           <ModalMessage>
-            {formatMessage(messages.modalResetMessage)}
+            {formatMessage(openResetPlaceholderModal ? messages.modalResetPlaceholderMessage : messages.modalResetMessage)}
           </ModalMessage>
         </Modal>
         <HelpModal

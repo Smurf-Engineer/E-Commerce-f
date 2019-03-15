@@ -39,5 +39,11 @@ export default defineMessages({
   previewMessage: {
     id: 'components.DesignCenterInfo.previewMessage',
     defaultMessage: ''
+  },
+  styleMessagePlaceholder: {
+    id: 'components.DesignCenterInfo.placeholderInstruction',
+    defaultMessage:
+      // tslint:disable-next-line:max-line-length
+      'Choose a Kickstart Design below as a starting point for your design. Add, edit or delete text and art to personalize you design and make it one-of-a-kind.'
   }
 })

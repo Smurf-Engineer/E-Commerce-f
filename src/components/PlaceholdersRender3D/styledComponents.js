@@ -3,6 +3,7 @@
  */
 import styled, { keyframes } from 'styled-components'
 import AntdProgress from 'antd/lib/progress'
+import AntdIcon from 'antd/lib/icon'
 import AntdButton from 'antd/lib/button'
 import {
   BLUE,
@@ -19,19 +20,12 @@ export const fadeIn = keyframes`
 `
 
 export const Container = styled.div`
-  position: relative;
-  width: 74.6%;
   display: flex;
+  height: 100vh;
+  overflow: auto;
+  position: relative;
   justify-content: center;
-  flex-wrap: wrap;
-
-  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
-    width: 65%;
-  }
-
-  @media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) {
-    width: 72%;
-  }
+  width: calc(100% - 400px);
 `
 
 export const MobileContainer = styled.div`
@@ -54,18 +48,7 @@ export const CanvasContainer = styled.div`
 
 export const Render = styled.div`
   width: 800px;
-  height: 600px;
-  cursor: grab;
-
-  @media (min-width: 768px) and (max-width: 1366px) and (orientation: landscape) {
-    width: 100%;
-    height: 100%;
-  }
-
-  @media (max-width: 426px) {
-    width: 100%;
-    height: 100%;
-  }
+  height: 800px;
 `
 
 export const Model = styled.div`
@@ -84,11 +67,6 @@ export const Row = styled.div`
   left: 26px;
 `
 
-export const QuickView = styled.img`
-  cursor: pointer;
-  margin-left: 8px;
-`
-
 export const Progress = styled(AntdProgress)`
   position: absolute;
   top: 40%;
@@ -96,10 +74,6 @@ export const Progress = styled(AntdProgress)`
   transform: translate(-50%, -50%);
 `
 
-export const Button = styled(AntdButton)`
-  height: 40px;
-  width: 138px;
-`
 export const DragText = styled.div`
   color: ${GRAY_DARK};
   user-select: none;
@@ -233,26 +207,21 @@ export const Measurement = styled.div`
   line-height: 16px;
 `
 
-export const HintModalImage = styled.img`
-  width: 100%;
-`
-export const HintIcon = styled.img`
-  height: 90%;
+export const Button = styled(AntdButton)`
   position: absolute;
-  left: 0;
-  top: 30px;
-  cursor: pointer;
+  height: 40px;
+  bottom: 16px;
+  width: 138px;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `
 
-export const TurnOffHintRow = styled.div`
-  display: flex;
-  justify-content: center;
+export const Loading = styled.div`
+  position: absolute;
+  top: 16px;
+  right: 55px;
 `
 
-export const MobileHintIcon = styled.img`
-  height: 20px;
-  position: absolute;
-  right: 10px;
-  top: 62px;
-  cursor: pointer;
+export const Icon = styled(AntdIcon)`
+  font-size: 64px;
 `

@@ -61,7 +61,8 @@ import {
   SET_CUSTOMIZE_3D_MOUNTED,
   DESIGN_RESET_EDITING_ACTION,
   REAPPLY_CANVAS_IMAGE_ACTION,
-  SET_ART_FORMAT_ACTION
+  SET_ART_FORMAT_ACTION,
+  ON_TAB_CLICK_ACTION
 } from './constants'
 import {
   AnyAction,
@@ -451,4 +452,9 @@ export const setArtFormatAction = (
   type: SET_ART_FORMAT_ACTION,
   key,
   value
+})
+
+export const onTabClickAction = (selectedIndex: number) => ({
+  type: ON_TAB_CLICK_ACTION,
+  selectedIndex
 })

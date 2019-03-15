@@ -62,10 +62,20 @@ export const SET_CUSTOMIZE_3D_MOUNTED = `${namespace}/SET_CUSTOMIZE_3D_MOUNTED`
 export const DESIGN_RESET_EDITING_ACTION = `${namespace}/DESIGN_RESET_EDITING_ACTION`
 export const REAPPLY_CANVAS_IMAGE_ACTION = `${namespace}/REAPPLY_CANVAS_IMAGE_ACTION`
 export const SET_ART_FORMAT_ACTION = `${namespace}/SET_ART_FORMAT_ACTION`
+export const ON_TAB_CLICK_ACTION = `${namespace}/ON_TAB_CLICK_ACTION`
 
 export enum Tabs {
   RenderTab = 0,
   SettingsTab = 0
+}
+
+export enum CustomizeTabs {
+  ProductTab = 'SETTINGS_TAB',
+  UploadTab = 'UPLOAD_TAB',
+  ConfigTab = 'SETTINGS_TAB',
+  ColorTab = 'COLOR_TAB',
+  SymbolTab = 'SYMBOLS_TAB',
+  TextTab = 'FONT_TAB'
 }
 
 export enum CanvasElements {
@@ -78,12 +88,6 @@ export enum CanvasElements {
 export const Mode = {
   Style: 'style',
   Placeholder: 'placeholder'
-}
-
-export enum CustomizeTabs {
-  ColorsTab = 1,
-  TextTab = 2,
-  SymbolsTab = 3
 }
 
 export enum Changes {

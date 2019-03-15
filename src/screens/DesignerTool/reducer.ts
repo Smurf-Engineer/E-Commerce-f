@@ -53,6 +53,7 @@ import {
   SET_SELECTED_ELEMENT_ACTION,
   CustomizeTabs,
   BLACK,
+  WHITE,
   CANVAS_ELEMENT_DRAGGED_ACTION,
   CANVAS_ELEMENT_RESIZED_ACTION,
   CANVAS_ELEMENT_DUPLICATED_ACTION,
@@ -68,8 +69,10 @@ import {
   DESIGN_RESET_EDITING_ACTION,
   REAPPLY_CANVAS_IMAGE_ACTION,
   Changes,
-  SET_ART_FORMAT_ACTION
+  SET_ART_FORMAT_ACTION,
+  ON_TAB_CLICK_ACTION
 } from './constants'
+import { BLACK as BLACK_COLOR } from '../../theme/colors'
 import { Reducer } from '../../types/common'
 
 export const NONE = -1
@@ -127,7 +130,7 @@ export const initialState = fromJS({
     fontSize: 30,
     lineHeight: 1
   },
-  selectedTab: CustomizeTabs.ColorsTab,
+  selectedTab: CustomizeTabs.ProductTab,
   designHasChanges: false,
   canvas: {
     text: {},
@@ -137,7 +140,11 @@ export const initialState = fromJS({
   selectedItem: {},
   customize3dMounted: false,
   undoChanges: [],
-  redoChanges: []
+  redoChanges: [],
+  stitchingColor: { name: 'FSC-10', value: BLACK_COLOR },
+  bindingColor: BLACK,
+  zipperColor: BLACK,
+  bibColor: WHITE
 })
 
 const designerToolReducer: Reducer<any> = (state = initialState, action) => {
@@ -190,7 +197,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
         modelConfig,
         uploadingFiles: false,
         colorIdeas: fromJS(colorIdeas),
-        colors: List.of(...reverse(colors))
+        colors: List.of(...reverse(colors)),
+        styleMode: Mode.Style
       })
     }
     case SET_UPLOADING_DESIGN_SUCCESS: {
@@ -242,7 +250,10 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     case SET_SWIPING_TAB_ACTION:
       return state.set('swipingView', action.isSwiping)
     case SET_SELECTED_THEME_ACTION:
-      return state.set('selectedTheme', action.id)
+      return state.merge({
+        selectedTheme: action.id,
+        selectedStyle: 0
+      })
     case SET_SELECTED_STYLE_ACTION:
       return state.set('selectedStyle', action.id)
     case SET_DESIGN_CONFIG_ACTION: {
@@ -458,7 +469,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         selectedElement: id,
         searchClipParam: '',
-        selectedTab: CustomizeTabs.SymbolsTab
+        selectedTab: CustomizeTabs.SymbolTab
       })
     }
     case CANVAS_ELEMENT_DRAGGED_ACTION: {
@@ -660,6 +671,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
         designHasChanges: true
       })
     }
+    case ON_TAB_CLICK_ACTION:
+      return state.set('selectedTab', action.selectedIndex)
     default:
       return state
   }

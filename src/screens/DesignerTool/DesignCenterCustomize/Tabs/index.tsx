@@ -89,6 +89,7 @@ interface Props {
   textFormat: TextFormat
   installedFonts: any
   selectedItem: SelectedAsset
+  selectedTab: number
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -144,6 +145,7 @@ interface Props {
   ) => void
   onApplyArt: (url: string, style?: CanvasElement, fileId?: number) => void
   onSelectArtFormat: (key: string, value: string | number) => void
+  onTabClick: (selectedIndex: number) => void
 }
 
 const Tabs = ({
@@ -224,7 +226,9 @@ const Tabs = ({
   installedFonts,
   selectedItem,
   onApplyArt,
-  onSelectArtFormat
+  onSelectArtFormat,
+  selectedTab,
+  onTabClick
 }: Props) => {
   let colorIdea: DesignObject | ModelDesign | null = null
   let renderList = true
@@ -235,7 +239,11 @@ const Tabs = ({
   }
   return (
     <Container>
-      <AntdTabs defaultActiveKey={SETTINGS_TAB} size="large">
+      <AntdTabs
+        activeKey={`${selectedTab}`}
+        size="large"
+        onTabClick={onTabClick}
+      >
         <TabPane
           key={SETTINGS_TAB}
           tab={<Tab label="product" icon={designIcon} />}

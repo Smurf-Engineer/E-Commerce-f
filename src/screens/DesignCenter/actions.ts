@@ -64,7 +64,8 @@ import {
   ON_CLOSE_INFO,
   SET_AUTOMATIC_SAVE,
   ON_TAB_CLICK_ACTION,
-  ON_LOCK_ELEMENT_ACTION
+  ON_LOCK_ELEMENT_ACTION,
+  OPEN_RESET_PLACEHOLDER_MODAL
 } from './constants'
 import {
   AnyAction,
@@ -315,6 +316,11 @@ export const openPaletteModalAction = (
 
 export const openResetDesignModalAction = (open: boolean) => ({
   type: OPEN_RESET_DESIGN_MODAL,
+  open
+})
+
+export const openResetPlaceholderModalAction = (open: boolean) => ({
+  type: OPEN_RESET_PLACEHOLDER_MODAL,
   open
 })
 

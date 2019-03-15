@@ -5,6 +5,7 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
 import orderBy from 'lodash/orderBy'
 import Radio from 'antd/lib/radio'
 import map from 'lodash/map'
@@ -105,6 +106,11 @@ interface Props {
   originalPaths: any[]
   undoChanges: Change[]
   redoChanges: Change[]
+  selectedTab: number
+  stitchingColor: string
+  bindingColor: string
+  zipperColor: string
+  bibColor: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -193,10 +199,13 @@ interface Props {
   ) => void
   onReApplyImageEl: (el: CanvasElement) => void
   onSelectArtFormat: (key: string, value: string | number) => void
+  saveStyleCanvas: (design: any) => void
+  onTabClick: (selectedIndex: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
+  render3DPlaceholder: any
   render() {
     const {
       onSelectColorBlock,
@@ -271,7 +280,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       setSearchClipParamAction,
       onSetCanvasObject,
       getGoogleFonts,
-      setStyleMode,
       styleMode,
       styleColors,
       onSelectEl,
@@ -299,7 +307,14 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onReApplyImageEl,
       undoChanges,
       redoChanges,
-      onSelectArtFormat
+      onSelectArtFormat,
+      saveStyleCanvas,
+      selectedTab,
+      onTabClick,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -380,7 +395,9 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             onSelectTextFormat,
             installedFonts,
             selectedItem,
-            onSelectArtFormat
+            onSelectArtFormat,
+            selectedTab,
+            onTabClick
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
@@ -388,7 +405,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
           onApplyText={this.handleOnApplyText}
           onApplyArt={this.handleOnApplyArt}
         />
-        {styleMode === 'style' ? (
+
+        {styleMode === Mode.Style ? (
           <Render3D
             {...{
               files,
@@ -407,14 +425,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               binding,
               design,
               onSetCanvasObject,
-              setStyleMode,
               styleMode
             }}
             ref={render3D => (this.render3D = render3D)}
           />
         ) : (
           <PlaceholdersRender3D
-            ref={render3D => (this.render3D = render3D)}
+            ref={placeHolder => (this.render3DPlaceholder = placeHolder)}
             {...{
               colors,
               design,
@@ -429,15 +446,12 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onApplyCanvasEl,
               onSelectEl,
               onRemoveEl,
-              openResetDesignModal: null,
-              openResetDesignModalAction: null,
-              setCustomize3dMountedAction: null,
               onUnmountTab,
               product: files,
-              stitchingColor: '#FFFFFF',
-              bindingColor: 'black',
-              zipperColor: 'black',
-              bibColor: 'black',
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bibColor,
               onCanvasElementResized,
               onCanvasElementDragged,
               onCanvasElementRotated,
@@ -447,8 +461,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               designHasChanges,
               canvas,
               selectedElement,
-              isEditing: false,
-              onSelectPalette: null,
               onSetEditConfig,
               onSetCanvasObject,
               originalPaths,
@@ -456,19 +468,25 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onSelectedItem,
               selectedItem,
               redoChanges,
-              undoChanges
+              undoChanges,
+              saveStyleCanvas,
+              saveDesignLoading
             }}
             isMobile={false}
             isUserAuthenticated={true}
             responsive={false}
           />
         )}
-        <Modes>
-          <RadioGroup value={styleMode} onChange={this.handleChangeMode}>
-            <RadioButton value={Mode.Style}>Style Mode</RadioButton>
-            <RadioButton value={Mode.Placeholder}>Placeholder Mode</RadioButton>
-          </RadioGroup>
-        </Modes>
+        {!isEmpty(design) && (
+          <Modes>
+            <RadioGroup value={styleMode} onChange={this.handleChangeMode}>
+              <RadioButton value={Mode.Style}>Style Mode</RadioButton>
+              <RadioButton value={Mode.Placeholder}>
+                Placeholder Mode
+              </RadioButton>
+            </RadioGroup>
+          </Modes>
+        )}
         <SaveModal
           visible={openSaveDesign}
           designName={design.name}
@@ -594,9 +612,13 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   handleOnApplyText = (text: string, style: TextFormat) => {
     const { selectedElement, canvas } = this.props
     if (!!canvas.text[selectedElement]) {
-      this.render3D.applyText(text, style)
+      this.render3DPlaceholder.applyText(text, style)
     } else {
-      this.render3D.applyCanvasEl({ text, style, type: CanvasElements.Text })
+      this.render3DPlaceholder.applyCanvasEl({
+        text,
+        style,
+        type: CanvasElements.Text
+      })
     }
   }
   handleOnApplyArt = (
@@ -607,10 +629,10 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   ) => {
     const { selectedElement, canvas, onSelectedItem } = this.props
     if (!!canvas.path[selectedElement]) {
-      this.render3D.applyClipArt(url, style)
+      this.render3DPlaceholder.applyClipArt(url, style)
     } else {
       onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
-      this.render3D.applyCanvasEl({
+      this.render3DPlaceholder.applyCanvasEl({
         url,
         style,
         type: CanvasElements.Path,
@@ -623,7 +645,6 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       target: { value: mode }
     } = event
     const { setStyleMode } = this.props
-
     setStyleMode(mode)
   }
 }

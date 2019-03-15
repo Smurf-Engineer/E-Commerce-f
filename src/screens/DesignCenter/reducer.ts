@@ -69,7 +69,8 @@ import {
   SET_AUTOMATIC_SAVE,
   ON_TAB_CLICK_ACTION,
   CustomizeTabs,
-  ON_LOCK_ELEMENT_ACTION
+  ON_LOCK_ELEMENT_ACTION,
+  OPEN_RESET_PLACEHOLDER_MODAL
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -130,6 +131,7 @@ export const initialState = fromJS({
     idPaletteToExecuteAction: -1
   },
   openResetDesignModal: false,
+  openResetPlaceholderModal: false,
   themeModalData: {
     openNewThemeModal: false,
     themeId: -1
@@ -441,6 +443,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         undoChanges: [],
         redoChanges: [],
         openResetDesignModal: false,
+        openResetPlaceholderModal: false,
         designHasChanges: false
       })
     case EDIT_DESIGN_ACTION:
@@ -722,6 +725,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case OPEN_RESET_DESIGN_MODAL:
       return state.set('openResetDesignModal', action.open)
+    case OPEN_RESET_PLACEHOLDER_MODAL:
+      return state.set('openResetPlaceholderModal', action.open)
     case OPEN_NEW_THEME_MODAL: {
       const { open, themeId } = action
       const newThemeId =

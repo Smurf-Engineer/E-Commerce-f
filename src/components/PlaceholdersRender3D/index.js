@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
+import Spin from 'antd/lib/spin'
 import filter from 'lodash/filter'
 import FontFaceObserver from 'fontfaceobserver'
 import { FormattedMessage } from 'react-intl'
@@ -18,9 +19,6 @@ import {
   Container,
   Render,
   Progress,
-  Model,
-  Row,
-  QuickView,
   Button,
   DragText,
   ViewControls,
@@ -31,7 +29,8 @@ import {
   Measurement,
   BottomControls,
   TopButton,
-  HintIcon,
+  Loading,
+  Icon
 } from './styledComponents'
 import {
   viewPositions,
@@ -79,10 +78,7 @@ import {
   DEFAULT_COLOR
 } from '../../constants'
 import { BLACK, SELECTION_3D_AREA } from '../../theme/colors'
-import {
-  Changes,
-  CanvasElements
-} from '../../screens/DesignCenter/constants'
+import { Changes, CanvasElements } from '../../screens/DesignCenter/constants'
 
 import messages from './messages'
 import {
@@ -1136,7 +1132,7 @@ class Render3D extends PureComponent {
   handleOnChange3DModel = () => {}
   handleOnTakeDesignPicture = () => this.takeDesignPicture(false)
 
-  takeDesignPicture = (automaticSave = false) => {
+  takeDesignPicture = () => {
     const { isUserAuthenticated, openLoginAction } = this.props
 
     if (!isUserAuthenticated) {
@@ -1145,7 +1141,7 @@ class Render3D extends PureComponent {
     }
     if (this.renderer) {
       const {
-        onOpenSaveDesign,
+        saveStyleCanvas,
         currentStyle,
         isMobile,
         isEditing,
@@ -1162,7 +1158,10 @@ class Render3D extends PureComponent {
       this.cameraUpdate(viewPosition)
       this.setState({ currentView: 2 }, () =>
         setTimeout(() => {
-          const designBase64 = this.renderer.domElement.toDataURL('image/png')
+          const designBase64 = this.renderer.domElement.toDataURL(
+            'image/webp',
+            0.3
+          )
           const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
           const canvasJson = JSON.stringify(designCanvas)
           const saveDesign = {
@@ -1171,7 +1170,7 @@ class Render3D extends PureComponent {
             styleId: currentStyle.id,
             highResolution
           }
-          onOpenSaveDesign(true, saveDesign, automaticSave)
+          saveStyleCanvas(saveDesign)
         }, 200)
       )
     }
@@ -1184,6 +1183,7 @@ class Render3D extends PureComponent {
       formatMessage,
       canvas,
       selectedElement,
+      saveDesignLoading
     } = this.props
 
     let widthInCm = 0
@@ -1219,11 +1219,10 @@ class Render3D extends PureComponent {
 
     return (
       <Container onKeyDown={this.onKeyDown} tabIndex="0">
-        <ButtonWrapper>
-          <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
-            {formatMessage(messages.saveButton)}
-          </Button>
-        </ButtonWrapper>
+        <Button type="primary" onClick={this.handleOnTakeDesignPicture}>
+          {formatMessage(messages.saveButton)}
+        </Button>
+        <ButtonWrapper />
         {!!selectedGraphicElement && (
           <MeasurementBox>
             <MeasurementLabel>
@@ -1256,14 +1255,11 @@ class Render3D extends PureComponent {
           </ModelType>
         </Dropdown>
         */}
-        <ViewControls>
-          <TopButton onClick={this.handleOnPressTop} src={top} />
-          <BottomControls>
-            <ViewButton onClick={this.handleOnPressLeft} src={left} />
-            <img src={cubeViews[currentView]} />
-            <ViewButton onClick={this.handleOnPressRight} src={right} />
-          </BottomControls>
-        </ViewControls>
+        {saveDesignLoading && (
+          <Loading>
+            <Spin tip="Saving..." indicator={<Icon type="loading" />} />
+          </Loading>
+        )}
       </Container>
     )
   }
@@ -1468,7 +1464,7 @@ class Render3D extends PureComponent {
     rotation
   ) => {
     const activeEl = this.canvasTexture.getActiveObject()
-    const { scaleFactorX, scaleFactorY} = this.state
+    const { scaleFactorX, scaleFactorY } = this.state
     const type = activeEl && activeEl.get('type')
     const isGroup = type === CanvasElements.Group
     const isClipArtElement = type === CanvasElements.Path || isGroup
