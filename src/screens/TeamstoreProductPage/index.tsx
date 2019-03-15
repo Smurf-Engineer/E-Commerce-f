@@ -491,6 +491,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
                 open={openFitInfo}
                 requestClose={this.closeFitInfoModal}
                 productId={productId}
+                product={design.product}
                 history={history}
               />
             </Content>
