@@ -14,7 +14,8 @@ import {
   OptionsContainer,
   Options,
   OptionButton,
-  Divider
+  Divider,
+  ClearPlaceholderIcon
 } from './styledComponents'
 
 interface Props {
@@ -68,11 +69,8 @@ const OptionsController = ({
             placement="right"
             title={formatMessage(messages.clearContent)}
           >
-            <OptionButton
-              withMargin={true}
-              onClick={onClickResetPlaceholder}
-            >
-              <img style={{ width: '20px' }} src={clearContentIcon} />
+            <OptionButton withMargin={true} onClick={onClickResetPlaceholder}>
+              <ClearPlaceholderIcon src={clearContentIcon} />
             </OptionButton>
           </Tooltip>
         </Options>
