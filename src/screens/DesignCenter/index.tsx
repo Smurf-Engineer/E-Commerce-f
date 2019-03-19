@@ -847,7 +847,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                     styleIndex,
                     productId,
                     themeId,
-                    placeholders
+                    isMobile
                   }}
                   complexity={complexity + 1}
                 />

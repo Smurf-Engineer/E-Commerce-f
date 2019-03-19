@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const themesQuery = gql`
-  query GetThemesByProduct($id: Int!, $placeholders: Boolean) {
-    themes: getThemesByProduct(productId: $id, placeholders: $placeholders) {
+  query GetThemesByProduct($id: Int!) {
+    themes: getThemesByProduct(productId: $id) {
       id
       image
       name
