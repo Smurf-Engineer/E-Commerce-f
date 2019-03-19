@@ -186,7 +186,6 @@ class Render3D extends PureComponent {
       this.changeStitchingColor(value)
       return
     }
-
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
       const emptyColors = filter(nextColors, color => !!!color)
@@ -299,8 +298,6 @@ class Render3D extends PureComponent {
     const { onUnmountTab, isMobile } = this.props
     if (this.canvasTexture) {
       const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
-      const canvasJson = JSON.stringify(designCanvas)
-      onUnmountTab(canvasJson)
       this.canvasTexture.dispose()
     }
     if (this.renderer) {
@@ -760,7 +757,6 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
-
           if (
             (design && design.canvasJson) ||
             (currentStyle.canvas && !isMobile)
@@ -1294,7 +1290,7 @@ class Render3D extends PureComponent {
       canvas.image[selectedElement] ||
       canvas.path[selectedElement] ||
       canvas.text[selectedElement]
-    if (!!selectedGraphicElement) {
+    if (!!selectedGraphicElement && this.canvasTexture) {
       const activeEl = this.getElementById(selectedElement)
       if (selectedGraphicElement.imageSize) {
         const { width, height } = this.getSizeInCentimeters(
