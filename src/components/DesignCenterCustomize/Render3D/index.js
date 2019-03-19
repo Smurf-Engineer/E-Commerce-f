@@ -148,8 +148,7 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor,
-      currentStyle: oldStyle
+      bibColor: oldBibColor
     } = this.props
     const {
       colors: nextColors,
@@ -159,8 +158,7 @@ class Render3D extends PureComponent {
       bindingColor,
       zipperColor,
       bibColor,
-      loadingModel,
-      currentStyle
+      loadingModel
     } = nextProps
 
     if (loadingModel) {
@@ -192,7 +190,6 @@ class Render3D extends PureComponent {
     if (!colorsHasChange) {
       const emptyColors = filter(nextColors, color => !!!color)
       const isResetingColors = emptyColors.length >= colors.length
-      this.canvasTexture.clear()
       this.setupColors(isResetingColors ? styleColors : nextColors)
       return
     }

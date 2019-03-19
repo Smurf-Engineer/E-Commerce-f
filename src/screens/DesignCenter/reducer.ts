@@ -916,13 +916,7 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
     }
     case SET_LOADED_CANVAS_ACTION: {
       const { paths, canvas } = action
-      const updatedCanvas = canvas
-        ? getCanvas(canvas)
-        : {
-            text: {},
-            image: {},
-            path: {}
-          }
+      const updatedCanvas = getCanvas(canvas)
       return state.merge({
         canvas: updatedCanvas,
         originalPaths: paths
