@@ -41,5 +41,5 @@ export const Divider = styled(AntdDivider)`
 `
 
 export const ClearPlaceholderIcon = styled.img`
-  width: 20px;
+  width: 30px;
 `

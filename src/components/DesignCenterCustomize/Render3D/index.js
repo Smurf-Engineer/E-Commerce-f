@@ -760,8 +760,11 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
-          const { placeholders } = this.props
-          if ((design && design.canvasJson) || placeholders) {
+
+          if (
+            (design && design.canvasJson) ||
+            (currentStyle.canvas && !isMobile)
+          ) {
             this.loadCanvasTexture(design.canvasJson || currentStyle.canvas)
           }
 
@@ -1151,18 +1154,17 @@ class Render3D extends PureComponent {
       design,
       onResetAction,
       currentStyle,
-      placeholders,
       openResetPlaceholderModal
     } = this.props
     this.canvasTexture.clear()
-    if (openResetPlaceholderModal || (!isEditing && !placeholders)) {
+    if (openResetPlaceholderModal || (!isEditing && !currentStyle.canvas)) {
       onResetAction()
       return
     }
     if (design && design.canvasJson) {
       this.loadCanvasTexture(design.canvasJson, true)
     }
-    if (placeholders) {
+    if (currentStyle.canvas) {
       onResetAction()
       this.loadCanvasTexture(currentStyle.canvas)
     }
@@ -1228,8 +1230,8 @@ class Render3D extends PureComponent {
       canvas,
       selectedElement,
       isMobile,
-      placeholders,
-      openResetPlaceholderModal
+      openResetPlaceholderModal,
+      currentStyle
     } = this.props
 
     if (isMobile) {
@@ -1361,7 +1363,8 @@ class Render3D extends PureComponent {
         </Dropdown>
         */}
         <OptionsController
-          {...{ undoEnabled, redoEnabled, formatMessage, placeholders }}
+          {...{ undoEnabled, redoEnabled, formatMessage }}
+          placeholders={currentStyle.canvas}
           resetEnabled={designHasChanges}
           onClickUndo={this.handleOnClickUndo}
           onClickRedo={this.handleOnClickRedo}
@@ -1385,7 +1388,11 @@ class Render3D extends PureComponent {
           footer={
             <ModalFooter
               onOk={this.onReset}
-              onCancel={openResetPlaceholderModal ? this.onCloseResetPlaceholderModal : this.onCloseResetModal}
+              onCancel={
+                openResetPlaceholderModal
+                  ? this.onCloseResetPlaceholderModal
+                  : this.onCloseResetModal
+              }
               {...{ formatMessage }}
             />
           }
@@ -1394,7 +1401,11 @@ class Render3D extends PureComponent {
           destroyOnClose={true}
         >
           <ModalMessage>
-            {formatMessage(openResetPlaceholderModal ? messages.modalResetPlaceholderMessage : messages.modalResetMessage)}
+            {formatMessage(
+              openResetPlaceholderModal
+                ? messages.modalResetPlaceholderMessage
+                : messages.modalResetMessage
+            )}
           </ModalMessage>
         </Modal>
         <HelpModal

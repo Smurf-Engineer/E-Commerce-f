@@ -1,7 +1,7 @@
 /**
  * Designs queries
  */
-
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
 export const styleQuery = gql`
@@ -40,3 +40,16 @@ export const styleQuery = gql`
     }
   }
 `
+
+export const getFonts = graphql(
+  gql`
+    query GetFonts {
+      fonts: getFonts {
+        id
+        family
+        active
+      }
+    }
+  `,
+  { name: 'fontsData' }
+)
