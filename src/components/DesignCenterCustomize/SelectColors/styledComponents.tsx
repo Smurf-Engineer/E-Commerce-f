@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Icon from 'antd/lib/icon'
 import { GRAY_DARK, GRAY_LIGHT } from '../../../theme/colors'
+import Button from 'antd/lib/button'
 
 export const Container = styled.div``
 
@@ -34,4 +35,15 @@ export const Divider = styled.div`
   background-color: ${GRAY_LIGHT};
   height: 1px;
   margin: 0 32px 4px 32px;
+`
+
+export const ColorsIcon = styled.img`
+  width: 20px;
+  margin-right: 10px;
+`
+
+export const StyledButton = styled(Button)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `

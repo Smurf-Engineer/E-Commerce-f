@@ -9,12 +9,16 @@ import {
   BaseTitle,
   ColorLabel,
   Arrow,
-  Divider
+  Divider,
+  ColorsIcon
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
+import Button from 'antd/lib/button'
+import colorsIcon from '../.../../../../assets/color_squares.svg'
 import { StitchingColor, AccesoryColor } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
+import { FormattedMessage } from 'react-intl'
 
 interface Props {
   colors: string[]
@@ -111,6 +115,10 @@ class SelectColors extends React.PureComponent<Props, {}> {
             {...{ onAccessoryColorSelected }}
           />
         )}
+        <Button>
+          <ColorsIcon src={colorsIcon} />
+          <FormattedMessage {...messages.orderChart} />
+        </Button>
       </Container>
     )
   }
