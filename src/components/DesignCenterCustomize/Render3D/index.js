@@ -148,7 +148,8 @@ class Render3D extends PureComponent {
       stitchingColor: oldStitchingColor,
       bindingColor: oldBindingColor,
       zipperColor: oldZipperColor,
-      bibColor: oldBibColor
+      bibColor: oldBibColor,
+      currentStyle: oldStyle
     } = this.props
     const {
       colors: nextColors,
@@ -158,7 +159,8 @@ class Render3D extends PureComponent {
       bindingColor,
       zipperColor,
       bibColor,
-      loadingModel
+      loadingModel,
+      currentStyle
     } = nextProps
 
     if (loadingModel) {
@@ -186,11 +188,11 @@ class Render3D extends PureComponent {
       this.changeStitchingColor(value)
       return
     }
-
     const colorsHasChange = isEqual(colors, nextColors)
     if (!colorsHasChange) {
       const emptyColors = filter(nextColors, color => !!!color)
       const isResetingColors = emptyColors.length >= colors.length
+      this.canvasTexture.clear()
       this.setupColors(isResetingColors ? styleColors : nextColors)
       return
     }
@@ -299,8 +301,6 @@ class Render3D extends PureComponent {
     const { onUnmountTab, isMobile } = this.props
     if (this.canvasTexture) {
       const designCanvas = this.canvasTexture.toObject(EXTRA_FIELDS)
-      const canvasJson = JSON.stringify(designCanvas)
-      onUnmountTab(canvasJson)
       this.canvasTexture.dispose()
     }
     if (this.renderer) {
@@ -760,7 +760,6 @@ class Render3D extends PureComponent {
           object.position.y = 0
           object.name = MESH_NAME
           this.scene.add(object)
-
           if (
             (design && design.canvasJson) ||
             (currentStyle.canvas && !isMobile)
@@ -1294,7 +1293,7 @@ class Render3D extends PureComponent {
       canvas.image[selectedElement] ||
       canvas.path[selectedElement] ||
       canvas.text[selectedElement]
-    if (!!selectedGraphicElement) {
+    if (!!selectedGraphicElement && this.canvasTexture) {
       const activeEl = this.getElementById(selectedElement)
       if (selectedGraphicElement.imageSize) {
         const { width, height } = this.getSizeInCentimeters(
