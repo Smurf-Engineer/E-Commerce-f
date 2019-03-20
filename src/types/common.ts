@@ -303,6 +303,8 @@ export interface Style {
   accessoriesColor?: EditDesign
   designId?: string
   styleId?: number
+  thumbnail?: string
+  canvas: string
 }
 
 export interface Theme {
@@ -343,6 +345,7 @@ export interface Style {
     height: number
   }
   itemOrder: number
+  canvas: string
 }
 
 export interface DesignStyle {
@@ -446,6 +449,7 @@ export interface ModelDesign {
   name: string
   image: string
   colors: string[]
+  canvas?: string
 }
 
 export interface ModelConfig {

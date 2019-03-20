@@ -6,6 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
+import GoogleFontLoader, { Font } from 'react-google-font-loader'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
 import findIndex from 'lodash/findIndex'
@@ -19,7 +20,9 @@ import {
   createThemeMutation,
   deleteThemeMutation,
   deleteStyleMutation,
-  deleteInspirationMutation
+  deleteInspirationMutation,
+  getFonts,
+  saveStyleCanvas
 } from './data'
 import EditTheme from '../../components/ThemeModal'
 import * as thunkActions from './thunkActions'
@@ -33,7 +36,19 @@ import {
   MessagePayload,
   DesignObject,
   ModelDesign,
-  Theme as ThemeInput
+  Theme as ThemeInput,
+  CanvasType,
+  SelectedAsset,
+  CanvasDragged,
+  CanvasResized,
+  CanvasRotated,
+  CanvasObjects,
+  ConfigCanvasObj,
+  CanvasElement,
+  Style,
+  TextFormat,
+  AccessoriesColor,
+  Change
 } from '../../types/common'
 
 const { confirm } = Modal
@@ -98,6 +113,23 @@ interface Props {
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
+  fontsData: any
+  styleMode: string
+  selectedItem: SelectedAsset
+  selectedElement: string
+  designHasChanges: boolean
+  canvas: CanvasType
+  text: string
+  style: Style
+  textFormat: TextFormat
+  originalPaths: any[]
+  undoChanges: Change[]
+  redoChanges: Change[]
+  selectedTab: number
+  stitchingColor: string
+  bindingColor: string
+  zipperColor: string
+  bibColor: string
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -147,6 +179,7 @@ interface Props {
   createTheme: (variables: {}) => Promise<DataTheme>
   deleteTheme: (variables: {}) => Promise<MessagePayload>
   deleteStyle: (variables: {}) => Promise<MessagePayload>
+  saveCanvas: (variables: {}) => Promise<MessagePayload>
   deleteInspiration: (variables: {}) => Promise<MessagePayload>
   openSaveDesignAction: (open: boolean) => void
   setSavingDesign: (saving: boolean) => void
@@ -157,6 +190,45 @@ interface Props {
   uploadSymbolAction: (file: any) => void
   setSearchClipParamAction: (param: string) => void
   getGoogleFonts: () => void
+  setLoadedCanvasAction: (canvas: CanvasType, paths: any[]) => void
+  setStyleModeAction: (mode: string) => void
+  setSelectedElement: (id: string, typeEl: string) => void
+  onCanvasElementDraggedAction: (element: CanvasDragged) => void
+  onCanvasElementResizedAction: (element: CanvasResized) => void
+  onCanvasElementRotatedAction: (element: CanvasRotated) => void
+  onCanvasElementDuplicatedAction: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
+  removeCanvasElement: (
+    id: string,
+    typeEl: string,
+    canvasObj: ConfigCanvasObj
+  ) => void
+  setTextAction: (text: string) => void
+  setCanvasElement: (
+    text: CanvasElement,
+    typeEl: string,
+    update?: boolean,
+    canvasObj?: ConfigCanvasObj
+  ) => void
+  setSelectedItemAction: (item: SelectedAsset) => void
+  onCanvasElementTextChangedAction: (oldText: string, newText: string) => void
+  setTextFormatAction: (key: string, value: string | number) => void
+  setCanvasJsonAction: (canvas: string) => void
+  setEditConfigAction: (
+    colors: string[],
+    accessoriesColor: AccessoriesColor,
+    savedDesignId: string
+  ) => void
+  onResetEditingAction: (
+    canvas: CanvasType,
+    accessoriesColor?: AccessoriesColor
+  ) => void
+  onReApplyImageElementAction: (el: CanvasElement) => void
+  setArtFormatAction: (key: string, value: string | number) => void
+  onTabClickAction: (selectedIndex: number) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -230,11 +302,61 @@ export class DesignerTool extends React.Component<Props, {}> {
       uploadingSymbol,
       searchClipParam,
       setSearchClipParamAction,
-      getGoogleFonts
+      getGoogleFonts,
+      setLoadedCanvasAction,
+      fontsData,
+      setStyleModeAction,
+      styleMode,
+      styleColors,
+      setSelectedElement,
+      selectedItem,
+      selectedElement,
+      onCanvasElementDraggedAction,
+      designHasChanges,
+      canvas,
+      onCanvasElementResizedAction,
+      onCanvasElementRotatedAction,
+      onCanvasElementDuplicatedAction,
+      removeCanvasElement,
+      setTextAction,
+      text,
+      setCanvasElement,
+      onCanvasElementTextChangedAction,
+      textFormat,
+      setTextFormatAction,
+      setSelectedItemAction,
+      setCanvasJsonAction,
+      originalPaths,
+      setEditConfigAction,
+      onResetEditingAction,
+      onReApplyImageElementAction,
+      undoChanges,
+      redoChanges,
+      setArtFormatAction,
+      selectedTab,
+      onTabClickAction,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
     } = this.props
     const { themeImage } = this.state
+    const fontList: Font[] = get(fontsData, 'fonts', [])
+
+    const installedFonts = fontList.reduce<{ font: string }[]>(
+      (fontObject, { active, family }: any) => {
+        if (active) {
+          fontObject.push({ font: family })
+        }
+        return fontObject
+      },
+      []
+    )
     return (
       <div>
+        {installedFonts.length ? (
+          <GoogleFontLoader fonts={installedFonts} />
+        ) : null}
         <CustomizeTab
           {...{
             colors,
@@ -269,8 +391,26 @@ export class DesignerTool extends React.Component<Props, {}> {
             uploadingSymbol,
             searchClipParam,
             setSearchClipParamAction,
-            getGoogleFonts
+            getGoogleFonts,
+            styleMode,
+            styleColors,
+            selectedItem,
+            selectedElement,
+            designHasChanges,
+            canvas,
+            text,
+            textFormat,
+            installedFonts,
+            originalPaths,
+            undoChanges,
+            redoChanges,
+            selectedTab,
+            stitchingColor,
+            bindingColor,
+            zipperColor,
+            bibColor
           }}
+          onSetCanvasObject={setLoadedCanvasAction}
           onUpdateSearchText={onUpdateSearchTextAction}
           addFont={addFontAction}
           setGoogleFontsList={setGoogleFontsListAction}
@@ -311,6 +451,25 @@ export class DesignerTool extends React.Component<Props, {}> {
           changeDesignsPosition={changeDesignsPositionAction}
           onUploadColorsList={onUploadColorsListAction}
           onUploadFile={uploadSymbolAction}
+          setStyleMode={setStyleModeAction}
+          onSelectEl={setSelectedElement}
+          onCanvasElementDragged={onCanvasElementDraggedAction}
+          onCanvasElementResized={onCanvasElementResizedAction}
+          onCanvasElementRotated={onCanvasElementRotatedAction}
+          onCanvasElementDuplicated={onCanvasElementDuplicatedAction}
+          onRemoveEl={removeCanvasElement}
+          onUpdateText={setTextAction}
+          onApplyCanvasEl={setCanvasElement}
+          onSelectedItem={setSelectedItemAction}
+          onCanvasElementTextChanged={onCanvasElementTextChangedAction}
+          onSelectTextFormat={setTextFormatAction}
+          onUnmountTab={setCanvasJsonAction}
+          onSetEditConfig={setEditConfigAction}
+          onResetEditing={onResetEditingAction}
+          onReApplyImageEl={onReApplyImageElementAction}
+          onSelectArtFormat={setArtFormatAction}
+          saveStyleCanvas={this.handleSaveStyleCanvas}
+          onTabClick={onTabClickAction}
         />
         <EditTheme
           {...{ productCode }}
@@ -504,6 +663,30 @@ export class DesignerTool extends React.Component<Props, {}> {
 
     openSaveDesignAction(true)
   }
+  handleSaveStyleCanvas = async (styleData: any) => {
+    const {
+      selectedStyle,
+      uploadThumbnail,
+      saveCanvas,
+      setSavingDesign
+    } = this.props
+    const { canvasJson, designBase64 } = styleData
+    setSavingDesign(true)
+    try {
+      const response = await uploadThumbnail({
+        variables: { image: designBase64 }
+      })
+      const thumbnail = get(response, 'data.style.image', '')
+      await saveCanvas({
+        variables: { id: selectedStyle, data: { canvasJson, thumbnail } }
+      })
+      setSavingDesign(false)
+      message.success('Placeholder design saved!')
+    } catch (e) {
+      setSavingDesign(false)
+      message.error(e.message)
+    }
+  }
   handleSaveDesign = async () => {
     const { setSavingDesign } = this.props
     try {
@@ -658,10 +841,12 @@ const DesignerToolEnhance = compose(
   graphql(deleteThemeMutation, { name: 'deleteTheme' }),
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
+  graphql(saveStyleCanvas, { name: 'saveCanvas' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi, ...thunkActions }
-  )
+  ),
+  getFonts
 )(DesignerTool)
 
 export default DesignerToolEnhance

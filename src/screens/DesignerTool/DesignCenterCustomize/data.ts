@@ -57,6 +57,7 @@ export const getProductFromCode = gql`
             image
           }
           itemOrder: item_order
+          canvas
         }
       }
     }

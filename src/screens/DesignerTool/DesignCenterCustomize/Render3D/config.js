@@ -1,3 +1,10 @@
+export const CANVAS_SIZE = 2048
+export const CORNER_SIZE = 40
+export const Mode = {
+  Style: 'style',
+  Placeholder: 'placeholder'
+}
+
 /**
  * ThreeJs config
  */
@@ -25,7 +32,39 @@ export const modelPositions = {
   }
 }
 
+export const fabricJsConfig = {
+  settings: {
+    borderColor: 'black',
+    cornerSize: 40
+  },
+  tl: {
+    icon: 'delete.svg'
+  },
+  tr: {
+    icon: 'duplicate.svg'
+  },
+  bl: {
+    icon: 'rotate.svg'
+  },
+  br: {
+    icon: 'expand.svg'
+  },
+  mb: {
+    icon: 'layer.svg'
+  }
+}
+
 export const MESH_NAME = 'JV2_3D_MODEL'
 export const BIB_BRACE_NAME = 'bibBrace'
 export const ZIPPER_NAME = 'zipper'
 export const BINDING_NAME = 'binding'
+
+export const CANVAS_MESH = 'Canvas_Mesh'
+
+/* Canvas element actions  */
+export const DELETE_ACTION = 'DELETE_ACTION'
+export const DUPLICATE_ACTION = 'DUPLICATE_ACTION'
+export const BRING_TO_FRONT_ACTION = 'BRING_TO_FRONT_ACTION'
+export const ROTATE_ACTION = 'ROTATE_ACTION'
+export const SCALE_ACTION = 'SCALE_ACTION'
+export const DRAG_ACTION = 'DRAG_ACTION'

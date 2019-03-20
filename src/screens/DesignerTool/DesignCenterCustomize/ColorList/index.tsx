@@ -39,7 +39,7 @@ const ColorList = ({
     Message.error(e)
   }
 
-  const colorList = arrayColors.map(({ value, name }: Color, index: number) => (
+  const colorList =  arrayColors && arrayColors.map(({ value, name }: Color, index: number) => (
     <Tooltip key={index} title={name}>
       <Col>
         <Color color={value} onClick={handleOnSelectColor(value)} />
@@ -48,7 +48,7 @@ const ColorList = ({
   ))
   return (
     <Container height={height}>
-      <Row>{arrayColors.length && colorList}</Row>
+      <Row>{arrayColors && arrayColors.length && colorList}</Row>
     </Container>
   )
 }

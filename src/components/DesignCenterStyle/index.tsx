@@ -39,6 +39,7 @@ interface Props {
   productId: number
   themeId: number
   complexity: number
+  isMobile: boolean
   onSelectStyle: (style: DesignStyle, index: number, colors: string[]) => void
   onSelectStyleComplexity: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -72,6 +73,7 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       data: { styles }
     } = this.props
     const style = styles[index] || {}
+
     const styleAreas = style.colors || []
     const colors = styleAreas.map(({ color }: any) => color)
     onSelectStyle(style, index, reverse(colors))
@@ -92,9 +94,9 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     const {
       data: { styles = [] },
       formatMessage,
-      styleModalData: { openNewStyleModal }
+      styleModalData: { openNewStyleModal },
+      isMobile
     } = this.props
-
     if (!styles.length) {
       return (
         <Container>
@@ -110,10 +112,10 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       )
     }
 
-    const list = styles.map(({ id, image, name }, index) => (
+    const list = styles.map(({ id, image, name, thumbnail, canvas }, index) => (
       <StyleItem
         key={index}
-        {...{ index, id, name, image }}
+        {...{ index, id, name, image: canvas && !isMobile ? thumbnail : image }}
         onClick={this.handleOnSelectStyle}
       />
     ))

@@ -39,3 +39,7 @@ export const Divider = styled(AntdDivider)`
   margin: 0px;
   user-select: none;
 `
+
+export const ClearPlaceholderIcon = styled.img`
+  width: 30px;
+`

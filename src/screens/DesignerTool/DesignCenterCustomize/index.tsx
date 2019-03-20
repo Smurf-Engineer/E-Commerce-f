@@ -5,12 +5,15 @@ import * as React from 'react'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import cloneDeep from 'lodash/cloneDeep'
+import isEmpty from 'lodash/isEmpty'
 import orderBy from 'lodash/orderBy'
+import Radio from 'antd/lib/radio'
 import map from 'lodash/map'
 import findIndex from 'lodash/findIndex'
 import find from 'lodash/find'
 import Tabs from './Tabs'
 import message from 'antd/lib/message'
+import PlaceholdersRender3D from '../../../components/PlaceholdersRender3D'
 import {
   getProductFromCode,
   updateThemesOrderMutation,
@@ -19,7 +22,7 @@ import {
 } from './data'
 import Render3D from './Render3D'
 import SaveModal from './SaveModal'
-import { Container } from './styledComponents'
+import { Container, Modes } from './styledComponents'
 import {
   ModelConfig,
   DesignConfig,
@@ -29,12 +32,33 @@ import {
   DesignObject,
   ModelDesign,
   Theme,
-  DesignItem
+  DesignItem,
+  CanvasType,
+  SelectedAsset,
+  CanvasDragged,
+  CanvasResized,
+  CanvasRotated,
+  CanvasObjects,
+  ConfigCanvasObj,
+  TextFormat,
+  CanvasElement,
+  AccessoriesColor,
+  Change
 } from '../../../types/common'
+
+import { CanvasElements } from '../../DesignCenter/constants'
+
+export const Mode = {
+  Style: 'style',
+  Placeholder: 'placeholder'
+}
 
 export interface Data extends QueryProps {
   product: Product
 }
+
+const RadioGroup = Radio.Group
+const RadioButton = Radio.Button
 
 interface Props {
   data?: Data
@@ -70,6 +94,23 @@ interface Props {
   uploadingStitchingColors: boolean
   uploadingSymbol: boolean
   searchClipParam: string
+  styleMode: string
+  styleColors: string[]
+  selectedItem: SelectedAsset
+  selectedElement: string
+  designHasChanges: boolean
+  canvas: CanvasType
+  text: string
+  textFormat: TextFormat
+  installedFonts: any
+  originalPaths: any[]
+  undoChanges: Change[]
+  redoChanges: Change[]
+  selectedTab: number
+  stitchingColor: string
+  bindingColor: string
+  zipperColor: string
+  bibColor: string
   onSelectTheme: (id: number) => void
   onSelectStyle: (id: number) => void
   onDeleteTheme: (id: number) => void
@@ -120,11 +161,51 @@ interface Props {
   onUploadColorsList: (file: any, type: string) => void
   onUploadFile: (file: any) => void
   setSearchClipParamAction: (param: string) => void
+  onSetCanvasObject: (el: CanvasType, paths: any[]) => void
   getGoogleFonts: () => void
+  setStyleMode: (mode: string) => void
+  onSelectEl: (id: string, typeEl: string) => void
+  onCanvasElementDragged: (element: CanvasDragged) => void
+  onCanvasElementResized: (element: CanvasResized) => void
+  onCanvasElementRotated: (element: CanvasRotated) => void
+  onCanvasElementDuplicated: (
+    canvasEl: any,
+    elementType: CanvasObjects,
+    oldId?: string
+  ) => void
+  onRemoveEl: (id: string, typeEl: string, canvasObj: ConfigCanvasObj) => void
+  onUpdateText: (text: string) => void
+  onSelectedItem: (item: SelectedAsset, name?: string) => void
+  onApplyCanvasEl: (
+    text: CanvasElement,
+    typeEl: string,
+    update?: boolean
+  ) => void
+  onCanvasElementTextChanged: (oldText: string, newText: string) => void
+  onSelectTextFormat: (
+    key: string,
+    value: string | number,
+    fontStyle: boolean
+  ) => void
+  onUnmountTab: (mounted: string) => void
+  onSetEditConfig: (
+    colors: string[],
+    accessoriesColor: AccessoriesColor,
+    savedDesignId: string
+  ) => void
+  onResetEditing: (
+    canvas: CanvasType,
+    accessoriesColor?: AccessoriesColor
+  ) => void
+  onReApplyImageEl: (el: CanvasElement) => void
+  onSelectArtFormat: (key: string, value: string | number) => void
+  saveStyleCanvas: (design: any) => void
+  onTabClick: (selectedIndex: number) => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
   render3D: any
+  render3DPlaceholder: any
   render() {
     const {
       onSelectColorBlock,
@@ -197,7 +278,43 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       uploadingSymbol,
       searchClipParam,
       setSearchClipParamAction,
-      getGoogleFonts
+      onSetCanvasObject,
+      getGoogleFonts,
+      styleMode,
+      styleColors,
+      onSelectEl,
+      selectedItem,
+      selectedElement,
+      onCanvasElementDragged,
+      designHasChanges,
+      canvas,
+      onCanvasElementResized,
+      onCanvasElementRotated,
+      onCanvasElementDuplicated,
+      onRemoveEl,
+      onUpdateText,
+      text,
+      onSelectedItem,
+      onApplyCanvasEl,
+      onCanvasElementTextChanged,
+      textFormat,
+      onSelectTextFormat,
+      installedFonts,
+      onUnmountTab,
+      originalPaths,
+      onSetEditConfig,
+      onResetEditing,
+      onReApplyImageEl,
+      undoChanges,
+      redoChanges,
+      onSelectArtFormat,
+      saveStyleCanvas,
+      selectedTab,
+      onTabClick,
+      stitchingColor,
+      bindingColor,
+      zipperColor,
+      bibColor
     } = this.props
     const uploadNewModel =
       !!files && !!files.obj && !!files.mtl && !!files.label && !!files.bumpMap
@@ -268,32 +385,108 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
             uploadingSymbol,
             searchClipParam,
             setSearchClipParamAction,
-            getGoogleFonts
+            getGoogleFonts,
+            styleMode,
+            canvas,
+            selectedElement,
+            onUpdateText,
+            text,
+            textFormat,
+            onSelectTextFormat,
+            installedFonts,
+            selectedItem,
+            onSelectArtFormat,
+            selectedTab,
+            onTabClick
           }}
           productData={data}
           uploadNewModel={uploadNewModel}
           onSaveThumbnail={this.handleOnSaveThumbnail}
+          onApplyText={this.handleOnApplyText}
+          onApplyArt={this.handleOnApplyArt}
         />
-        <Render3D
-          {...{
-            files,
-            areas,
-            colors,
-            onSaveDesign,
-            onLoadModel,
-            designConfig,
-            loadingModel,
-            colorBlockHovered,
-            onSaveThumbnail,
-            onUploadingThumbnail,
-            uploadingThumbnail,
-            bibBrace,
-            zipper,
-            binding,
-            design
-          }}
-          ref={render3D => (this.render3D = render3D)}
-        />
+
+        {styleMode === Mode.Style ? (
+          <Render3D
+            {...{
+              files,
+              areas,
+              colors,
+              onSaveDesign,
+              onLoadModel,
+              designConfig,
+              loadingModel,
+              colorBlockHovered,
+              onSaveThumbnail,
+              onUploadingThumbnail,
+              uploadingThumbnail,
+              bibBrace,
+              zipper,
+              binding,
+              design,
+              onSetCanvasObject,
+              styleMode
+            }}
+            ref={render3D => (this.render3D = render3D)}
+          />
+        ) : (
+          <PlaceholdersRender3D
+            ref={placeHolder => (this.render3DPlaceholder = placeHolder)}
+            {...{
+              colors,
+              design,
+              colorBlockHovered,
+              styleColors,
+              onLoadModel,
+              loadingModel,
+              undoEnabled: false,
+              redoEnabled: false,
+              formatMessage,
+              currentStyle: design,
+              onApplyCanvasEl,
+              onSelectEl,
+              onRemoveEl,
+              onUnmountTab,
+              product: files,
+              stitchingColor,
+              bindingColor,
+              zipperColor,
+              bibColor,
+              onCanvasElementResized,
+              onCanvasElementDragged,
+              onCanvasElementRotated,
+              onCanvasElementTextChanged,
+              onReApplyImageEl,
+              onCanvasElementDuplicated,
+              designHasChanges,
+              canvas,
+              selectedElement,
+              onSetEditConfig,
+              onSetCanvasObject,
+              originalPaths,
+              onResetEditing,
+              onSelectedItem,
+              selectedItem,
+              redoChanges,
+              undoChanges,
+              saveStyleCanvas,
+              saveDesignLoading
+            }}
+            isMobile={false}
+            isUserAuthenticated={true}
+            responsive={false}
+          />
+        )}
+        {!isEmpty(design) && (
+          <Modes>
+            <RadioGroup value={styleMode} onChange={this.handleChangeMode}>
+              <RadioButton value={Mode.Style}>Style Mode</RadioButton>
+              <RadioButton value={Mode.Placeholder}>
+                Placeholder Mode
+              </RadioButton>
+            </RadioGroup>
+          </Modes>
+        )}
         <SaveModal
           visible={openSaveDesign}
           designName={design.name}
@@ -415,6 +608,44 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
     } catch (e) {
       message.error(e.message)
     }
+  }
+  handleOnApplyText = (text: string, style: TextFormat) => {
+    const { selectedElement, canvas } = this.props
+    if (!!canvas.text[selectedElement]) {
+      this.render3DPlaceholder.applyText(text, style)
+    } else {
+      this.render3DPlaceholder.applyCanvasEl({
+        text,
+        style,
+        type: CanvasElements.Text
+      })
+    }
+  }
+  handleOnApplyArt = (
+    url: string,
+    style?: CanvasElement,
+    fileId?: number,
+    name?: string
+  ) => {
+    const { selectedElement, canvas, onSelectedItem } = this.props
+    if (!!canvas.path[selectedElement]) {
+      this.render3DPlaceholder.applyClipArt(url, style)
+    } else {
+      onSelectedItem({ id: fileId, type: CanvasElements.Path }, name || '')
+      this.render3DPlaceholder.applyCanvasEl({
+        url,
+        style,
+        type: CanvasElements.Path,
+        fileId
+      })
+    }
+  }
+  handleChangeMode = (event: any) => {
+    const {
+      target: { value: mode }
+    } = event
+    const { setStyleMode } = this.props
+    setStyleMode(mode)
   }
 }
 
