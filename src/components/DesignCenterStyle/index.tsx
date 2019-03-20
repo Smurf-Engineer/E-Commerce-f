@@ -39,7 +39,7 @@ interface Props {
   productId: number
   themeId: number
   complexity: number
-  placeholders: boolean
+  isMobile: boolean
   onSelectStyle: (style: DesignStyle, index: number, colors: string[]) => void
   onSelectStyleComplexity: (index: number) => void
   formatMessage: (messageDescriptor: any) => string
@@ -94,8 +94,8 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
     const {
       data: { styles = [] },
       formatMessage,
-      placeholders,
-      styleModalData: { openNewStyleModal }
+      styleModalData: { openNewStyleModal },
+      isMobile
     } = this.props
     if (!styles.length) {
       return (
@@ -112,10 +112,10 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
       )
     }
 
-    const list = styles.map(({ id, image, name, thumbnail }, index) => (
+    const list = styles.map(({ id, image, name, thumbnail, canvas }, index) => (
       <StyleItem
         key={index}
-        {...{ index, id, name, image: placeholders ? thumbnail : image }}
+        {...{ index, id, name, image: canvas && !isMobile ? thumbnail : image }}
         onClick={this.handleOnSelectStyle}
       />
     ))
@@ -152,8 +152,8 @@ export class DesignCenterStyle extends React.PureComponent<Props, {}> {
 
 const DesignCenterStyleWithData = compose(
   graphql<Data, Props>(stylesQuery, {
-    options: ({ productId, themeId, placeholders }) => ({
-      variables: { productId, themeId, placeholders }
+    options: ({ productId, themeId }) => ({
+      variables: { productId, themeId }
     })
   }),
   withError,
