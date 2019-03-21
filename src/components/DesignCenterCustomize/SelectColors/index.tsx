@@ -125,12 +125,13 @@ class SelectColors extends React.PureComponent<Props, {}> {
         </ButtonContainer>
         <ColorChartForm
           open={true}
-          handleClose={() => console.log('a')}
+          handleClose={this.handleClose}
           formatMessage={formatMessage}
         />
       </Container>
     )
   }
+  handleClose = () => {}
 }
 
 export default SelectColors
