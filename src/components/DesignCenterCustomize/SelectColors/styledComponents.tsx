@@ -46,4 +46,11 @@ export const StyledButton = styled(Button)`
   display: flex;
   justify-content: center;
   align-items: center;
+  text-transform: uppercase;
+`
+
+export const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
 `
