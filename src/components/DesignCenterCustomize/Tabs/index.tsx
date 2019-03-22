@@ -24,7 +24,8 @@ import {
   ImageFile,
   CanvasElement,
   SelectedAsset,
-  SimpleFont
+  SimpleFont,
+  UserInfo
 } from '../../../types/common'
 import { Container } from './styledComponents'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
@@ -60,6 +61,9 @@ interface Props {
   selectedTab: number
   fonts: SimpleFont[]
   colorsList: any
+  colorChartSending: boolean
+  colorChartModalOpen: boolean
+  colorChartModalFormOpen: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -84,6 +88,11 @@ interface Props {
   onTabClick: (selectedIndex: number) => void
   onLockElement: (id: string, type: string) => void
   openLoginModalAction: (open: boolean, callback?: boolean) => void
+  onRequestColorChart: (userInfo: UserInfo) => void
+  onCloseColorChart: () => void
+  onCloseColorChartForm: () => void
+  onOpenFormChart: () => void
+  onOpenColorChart: () => void
 }
 
 const Tabs = ({
@@ -134,7 +143,15 @@ const Tabs = ({
   onLockElement,
   openLoginModalAction,
   fonts,
-  colorsList
+  colorsList,
+  onRequestColorChart,
+  colorChartSending,
+  colorChartModalOpen,
+  colorChartModalFormOpen,
+  onCloseColorChart,
+  onCloseColorChartForm,
+  onOpenFormChart,
+  onOpenColorChart
 }: Props) => {
   return (
     <Container>
@@ -165,7 +182,15 @@ const Tabs = ({
               onSelectStitchingColor,
               onAccessoryColorSelected,
               product,
-              colorsList
+              colorsList,
+              onRequestColorChart,
+              colorChartSending,
+              colorChartModalOpen,
+              colorChartModalFormOpen,
+              onCloseColorChart,
+              onCloseColorChartForm,
+              onOpenFormChart,
+              onOpenColorChart
             }}
           />
         </TabPane>

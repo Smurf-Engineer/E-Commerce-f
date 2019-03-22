@@ -16,11 +16,12 @@ import {
 } from './styledComponents'
 import AccessoryColor from '../AccessoryColor'
 import colorsIcon from '../.../../../../assets/color_squares.svg'
-import { StitchingColor, AccesoryColor } from '../../../types/common'
+import { StitchingColor, AccesoryColor, UserInfo } from '../../../types/common'
 import { AccessoryColors } from '../../../screens/DesignCenter/constants'
 import ColorButtons from '../ColorButtons'
 import { FormattedMessage } from 'react-intl'
 import { ColorChartForm } from '../../ColorChartForm'
+import { ColorChart } from '../../ColorChart'
 
 interface Props {
   colors: string[]
@@ -34,6 +35,9 @@ interface Props {
   hasBinding: boolean
   hasBibBrace: boolean
   colorBlockHovered: number
+  colorChartSending: boolean
+  colorChartModalOpen: boolean
+  colorChartModalFormOpen: boolean
   onSelectColorBlock: (index: number) => void
   onHoverColorBlock: (index: number) => void
   goToBaseColors: () => void
@@ -41,6 +45,11 @@ interface Props {
   showContent: boolean
   formatMessage: (messageDescriptor: any) => string
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  onRequestColorChart: (userInfo: UserInfo) => void
+  onCloseColorChart: () => void
+  onCloseColorChartForm: () => void
+  onOpenFormChart: () => void
+  onOpenColorChart: () => void
 }
 
 class SelectColors extends React.PureComponent<Props, {}> {
@@ -63,7 +72,15 @@ class SelectColors extends React.PureComponent<Props, {}> {
       colorBlockHovered,
       onSelectColorBlock,
       onHoverColorBlock,
-      names
+      names,
+      onRequestColorChart,
+      colorChartSending,
+      colorChartModalOpen,
+      colorChartModalFormOpen,
+      onCloseColorChart,
+      onCloseColorChartForm,
+      onOpenFormChart,
+      onOpenColorChart
     } = this.props
     if (!showContent) {
       return null
@@ -118,15 +135,23 @@ class SelectColors extends React.PureComponent<Props, {}> {
           />
         )}
         <ButtonContainer>
-          <StyledButton>
+          <StyledButton onClick={onOpenColorChart}>
             <ColorsIcon src={colorsIcon} />
             <FormattedMessage {...messages.orderChart} />
           </StyledButton>
         </ButtonContainer>
+        <ColorChart
+          {...{ formatMessage }}
+          open={colorChartModalOpen}
+          handleClose={onCloseColorChart}
+          handleOpenForm={onOpenFormChart}
+        />
         <ColorChartForm
-          open={true}
-          handleClose={this.handleClose}
+          open={colorChartModalFormOpen}
+          handleClose={onCloseColorChartForm}
           formatMessage={formatMessage}
+          loading={colorChartSending}
+          {...{ onRequestColorChart }}
         />
       </Container>
     )

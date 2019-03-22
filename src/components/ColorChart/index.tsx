@@ -27,11 +27,12 @@ interface Props {
   open: boolean
   handleClose: () => void
   formatMessage: (messageDescriptor: any) => string
+  handleOpenForm: () => void
 }
 
 export class ColorChart extends React.Component<Props> {
   render() {
-    const { open, handleClose } = this.props
+    const { open, handleClose, handleOpenForm } = this.props
 
     return (
       <Container>
@@ -55,11 +56,11 @@ export class ColorChart extends React.Component<Props> {
             </TopText>
             <ColorsImage src={ColorChartImg} />
             <ButtonsContainer>
-              <Button>
+              <Button onClick={this.handleDownloadLibrary}>
                 <FormattedMessage {...messages.downloadLibrary} />
               </Button>
               <LastButtonContainer>
-                <Button>
+                <Button onClick={handleOpenForm}>
                   <FormattedMessage {...messages.requestChart} />
                 </Button>
                 <Info>
@@ -74,6 +75,13 @@ export class ColorChart extends React.Component<Props> {
         </Modal>
       </Container>
     )
+  }
+  handleDownloadLibrary = () => {
+    const { handleClose } = this.props
+    window.open(
+      'https://jakroo.storage.googleapis.com/screens/JAKROO%20COLOR%20SWATCH%20LIBRARY.zip'
+    )
+    handleClose()
   }
 }
 

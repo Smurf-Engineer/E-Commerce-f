@@ -64,5 +64,9 @@ export default defineMessages({
     id: 'screens.DesignCenter.landscapeMessage',
     defaultMessage:
       'Our design center is optimized for landscape mode, please rotate your device.'
+  },
+  colorChartRequestFailed: {
+    id: 'screens.DesignCenter.colorChartRequestFailed',
+    defaultMessage: 'Error requesting chart, please try again.'
   }
 })

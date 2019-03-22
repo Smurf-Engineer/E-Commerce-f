@@ -84,5 +84,13 @@ export default defineMessages({
   countryPlaceholder: {
     id: 'components.ColorChartForm.countryPlaceholder',
     defaultMessage: 'Enter Country'
+  },
+  fillFields: {
+    id: 'components.ColorChartForm.fillFields',
+    defaultMessage: 'Please fill the required fields'
+  },
+  submit: {
+    id: 'components.ColorChartForm.submit',
+    defaultMessage: 'Submit'
   }
 })

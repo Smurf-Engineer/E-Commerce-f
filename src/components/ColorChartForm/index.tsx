@@ -3,7 +3,7 @@
  */
 import * as React from 'react'
 
-import { compose, graphql } from 'react-apollo'
+import message from 'antd/lib/message'
 import messages from './messages'
 import {
   Container,
@@ -20,32 +20,83 @@ import Modal from 'antd/lib/modal'
 import Input from 'antd/lib/input'
 import Button from 'antd/lib/button'
 import closeIcon from '../../assets/cancel-button.svg'
-import { QuickViewQuery } from './data'
 import { FormattedMessage } from 'react-intl'
+import formConfig from './formConfig'
+import { UserInfo } from '../../types/common'
 
 interface State {
-  showDescription: boolean
-  showDetails: boolean
-  showSpecs: boolean
+  name: string
+  email: string
+  phone: string
+  message: string
+  mailingAddress: string
+  city: string
+  state: string
+  zipCode: string
+  country: string
 }
 
 interface Props {
   open: boolean
+  loading: boolean
   handleClose: () => void
   formatMessage: (messageDescriptor: any) => string
+  onRequestColorChart: (userInfo: UserInfo) => void
 }
 const { TextArea } = Input
 
 export class ColorChartForm extends React.Component<Props, State> {
   state = {
-    showDescription: true,
-    showDetails: false,
-    showSpecs: false
+    name: '',
+    email: '',
+    phone: '',
+    message: '',
+    mailingAddress: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    country: ''
   }
 
   render() {
-    const { open, handleClose, formatMessage } = this.props
+    const { open, handleClose, formatMessage, loading } = this.props
 
+    const fields = formConfig.reduce<any[]>(
+      (
+        fieldsArray,
+        { id, placeholder, type, singleColumn, required },
+        index
+      ) => {
+        const elements = (
+          <div key={index}>
+            <Label>
+              <FormattedMessage {...messages[id]} />
+            </Label>
+            {type === 'input' ? (
+              <Input
+                id={id}
+                placeholder={formatMessage(messages[placeholder])}
+                onChange={this.setValue}
+                value={this.state[id]}
+                required={required}
+              />
+            ) : (
+              <TextArea
+                id={id}
+                placeholder={formatMessage(messages[placeholder])}
+                onChange={this.setValue}
+                value={this.state[id]}
+              />
+            )}
+          </div>
+        )
+        fieldsArray.push(
+          singleColumn ? <Field>{elements}</Field> : <Column>{elements}</Column>
+        )
+        return fieldsArray
+      },
+      []
+    )
     return (
       <Container>
         <Modal
@@ -64,73 +115,14 @@ export class ColorChartForm extends React.Component<Props, State> {
             </Title>
             <FormattedMessage {...messages.swatchesShip} />
             <FormContainer>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.name} />
-                </Label>
-                <Input placeholder={formatMessage(messages.namePlaceholder)} />
-              </Field>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.email} />
-                </Label>
-                <Input placeholder={formatMessage(messages.emailPlaceholder)} />
-              </Field>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.phone} />
-                </Label>
-                <Input placeholder={formatMessage(messages.phonePlaceholder)} />
-              </Field>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.message} />
-                </Label>
-                <TextArea placeholder={formatMessage(messages.optional)} />
-              </Field>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.mailingAddress} />
-                </Label>
-                <Input
-                  placeholder={formatMessage(
-                    messages.mailingAddressPlaceholder
-                  )}
-                />
-              </Field>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.city} />
-                </Label>
-                <Input placeholder={formatMessage(messages.cityPlaceholder)} />
-              </Field>
-              <Field>
-                <Label>
-                  <FormattedMessage {...messages.state} />
-                </Label>
-                <Input placeholder={formatMessage(messages.statePlaceholder)} />
-              </Field>
-              <Field>
-                <Column>
-                  <Label>
-                    <FormattedMessage {...messages.zipCode} />
-                  </Label>
-                  <Input
-                    placeholder={formatMessage(messages.zipCodePlaceholder)}
-                  />
-                </Column>
-                <Column>
-                  <Label>
-                    <FormattedMessage {...messages.country} />
-                  </Label>
-                  <Input
-                    placeholder={formatMessage(messages.countryPlaceholder)}
-                  />
-                </Column>
-              </Field>
+              {fields}
               <Submit>
-                <Button type={'primary'} loading={true}>
-                  Submit
+                <Button
+                  loading={loading}
+                  type={'primary'}
+                  onClick={this.sendRequest}
+                >
+                  {formatMessage(messages.submit)}
                 </Button>
               </Submit>
             </FormContainer>
@@ -140,29 +132,44 @@ export class ColorChartForm extends React.Component<Props, State> {
     )
   }
 
+  setValue = (e: any) => {
+    this.setState({ [e.target.id]: e.target.value })
+  }
+
   resetState = (all = false) => {
     this.setState({
-      showDescription: !all,
-      showDetails: false,
-      showSpecs: false
+      name: '',
+      email: '',
+      phone: '',
+      message: '',
+      mailingAddress: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      country: ''
     })
+  }
+  sendRequest = () => {
+    const { onRequestColorChart, formatMessage } = this.props
+    let invalidatedFields = 0
+    Object.entries(this.state).forEach(entry => {
+      let key = entry[0]
+      let value = entry[1]
+      if (key !== 'message' && !value.length) {
+        invalidatedFields += 1
+        return
+      }
+    })
+    if (invalidatedFields > 0) {
+      message.error(formatMessage(messages.fillFields))
+      return
+    }
+
+    const userInfo = {
+      ...this.state
+    }
+    onRequestColorChart(userInfo)
   }
 }
 
-type OwnProps = {
-  productId?: number
-}
-
-const ColorChartFormEnhance = compose(
-  graphql<any>(QuickViewQuery, {
-    options: ({ productId }: OwnProps) => {
-      return {
-        fetchPolicy: 'network-only',
-        variables: { id: productId },
-        skip: productId === 0
-      }
-    }
-  })
-)(ColorChartForm)
-
-export default ColorChartFormEnhance
+export default ColorChartForm

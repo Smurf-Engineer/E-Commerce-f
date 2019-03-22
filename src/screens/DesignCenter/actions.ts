@@ -65,7 +65,10 @@ import {
   SET_AUTOMATIC_SAVE,
   ON_TAB_CLICK_ACTION,
   ON_LOCK_ELEMENT_ACTION,
-  OPEN_RESET_PLACEHOLDER_MODAL
+  OPEN_RESET_PLACEHOLDER_MODAL,
+  SET_SENDING_CHART,
+  ON_OPEN_COLOR_CHART,
+  ON_OPEN_COLOR_CHART_FORM
 } from './constants'
 import {
   AnyAction,
@@ -496,4 +499,19 @@ export const onLockElementAction = (id: string, elementType: string) => ({
   type: ON_LOCK_ELEMENT_ACTION,
   id,
   elementType
+})
+
+export const setSendingColorChartAction = (sending: boolean) => ({
+  type: SET_SENDING_CHART,
+  sending
+})
+
+export const onOpenColorChartAction = (open: boolean) => ({
+  type: ON_OPEN_COLOR_CHART,
+  open
+})
+
+export const onOpenColorChartFormAction = (open: boolean) => ({
+  type: ON_OPEN_COLOR_CHART_FORM,
+  open
 })

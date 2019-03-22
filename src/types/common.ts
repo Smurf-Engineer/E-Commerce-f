@@ -1108,3 +1108,15 @@ export interface Font {
 export interface SimpleFont {
   font: string
 }
+
+export interface UserInfo {
+  name: string
+  email: string
+  phone: string
+  message: string
+  mailingAddress: string
+  city: string
+  state: string
+  zipCode: string
+  country: string
+}

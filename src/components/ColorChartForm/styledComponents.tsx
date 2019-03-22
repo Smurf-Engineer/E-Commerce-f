@@ -81,8 +81,6 @@ export const Title = styled.div`
 export const FormContainer = styled.div`
   text-align: left;
   width: 70%;
-  display: inline-flex;
-  flex-direction: column;
   margin: 14px auto 0 auto;
 `
 
@@ -97,14 +95,12 @@ export const Field = styled.div`
 export const Column = styled.div`
   display: inline-flex;
   flex-direction: column;
-  width: 50%;
-  &:first-child {
-    width: 49%;
-    margin-right: 1%;
-  }
+  width: 49%;
+  margin-right: 1%;
 `
 
 export const Submit = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-top: 10px;
 `
