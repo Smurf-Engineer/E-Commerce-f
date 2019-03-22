@@ -26,7 +26,6 @@ const ColorList = ({
 }: Props) => {
   const handleOnSelectColor = (color: string) => () => onSelectColor(color)
   let arrayColors: any
-
   try {
     arrayColors = JSON.parse(
       get(
@@ -36,16 +35,19 @@ const ColorList = ({
       )
     )
   } catch (e) {
+    console.log('Error ')
     Message.error(e)
   }
 
-  const colorList =  arrayColors && arrayColors.map(({ value, name }: Color, index: number) => (
-    <Tooltip key={index} title={name}>
-      <Col>
-        <Color color={value} onClick={handleOnSelectColor(value)} />
-      </Col>
-    </Tooltip>
-  ))
+  const colorList =
+    arrayColors &&
+    arrayColors.map(({ value, name }: Color, index: number) => (
+      <Tooltip key={index} title={name}>
+        <Col>
+          <Color color={value} onClick={handleOnSelectColor(value)} />
+        </Col>
+      </Tooltip>
+    ))
   return (
     <Container height={height}>
       <Row>{arrayColors && arrayColors.length && colorList}</Row>

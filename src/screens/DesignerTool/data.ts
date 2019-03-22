@@ -73,3 +73,12 @@ export const getFonts = graphql(
   `,
   { name: 'fontsData' }
 )
+
+export const getColorsQuery = gql`
+  query GetColors {
+    colorsResult: getColors {
+      colors
+      stitchingColors: stitching_colors
+    }
+  }
+`
