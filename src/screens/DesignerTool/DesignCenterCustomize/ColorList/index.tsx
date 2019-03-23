@@ -35,7 +35,6 @@ const ColorList = ({
       )
     )
   } catch (e) {
-    console.log('Error ')
     Message.error(e)
   }
 
