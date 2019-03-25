@@ -23,6 +23,7 @@ import closeIcon from '../../assets/cancel-button.svg'
 import { FormattedMessage } from 'react-intl'
 import formConfig from './formConfig'
 import { UserInfo } from '../../types/common'
+import { ReactNodeArray } from 'prop-types'
 
 interface State {
   name: string
@@ -61,7 +62,7 @@ export class ColorChartForm extends React.Component<Props, State> {
   render() {
     const { open, handleClose, formatMessage, loading } = this.props
 
-    const fields = formConfig.reduce<any[]>(
+    const fields = formConfig.reduce<ReactNodeArray[]>(
       (
         fieldsArray,
         { id, placeholder, type, singleColumn, required },
