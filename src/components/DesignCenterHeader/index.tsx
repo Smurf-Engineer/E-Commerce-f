@@ -16,7 +16,7 @@ import {
   Divider,
   BackIcon
 } from './styledComponents'
-import expressLogo from '../../assets/JakrooExpressLogo.svg'
+import expressLogo from '../../assets/JakrooDesignLogo.png'
 
 interface Props {
   onPressBack: () => void

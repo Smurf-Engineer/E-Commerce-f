@@ -324,6 +324,7 @@ const Tabs = ({
                 onSelectColor,
                 onEditColorIdea,
                 onSaveThumbnail,
+                colorsList,
                 colorBlockHovered,
                 onHoverColorBlock,
                 onSelectColorBlock,

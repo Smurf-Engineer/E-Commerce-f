@@ -26,6 +26,7 @@ interface Props {
   colors: string[]
   colorBlock: number
   colorBlockHovered: number
+  colorsList: any
   onSelectColor: (color: string) => void
   onEditColorIdea: (item: number) => void
   onHoverColorBlock: (index: number) => void
@@ -58,7 +59,8 @@ class EditInspiration extends React.PureComponent<Props, State> {
       colorBlockHovered,
       onHoverColorBlock,
       onSelectColorBlock,
-      colorBlock
+      colorBlock,
+      colorsList
     } = this.props
     if (!colorIdea || !render) {
       return <div />
@@ -102,7 +104,11 @@ class EditInspiration extends React.PureComponent<Props, State> {
         </InputContainer>
         <ColorButtons>{colorButtons}</ColorButtons>
         <Divider />
-        <ColorList onSelectColor={this.handleOnSelectColor} />
+        <ColorList
+          onSelectColor={this.handleOnSelectColor}
+          stitching={false}
+          {...{ colorsList }}
+        />
       </Container>
     )
   }

@@ -22,7 +22,8 @@ import {
   deleteStyleMutation,
   deleteInspirationMutation,
   getFonts,
-  saveStyleCanvas
+  saveStyleCanvas,
+  getColorsQuery
 } from './data'
 import EditTheme from '../../components/ThemeModal'
 import * as thunkActions from './thunkActions'
@@ -130,6 +131,7 @@ interface Props {
   bindingColor: string
   zipperColor: string
   bibColor: string
+  colorsList: any
   // Redux Actions
   setLoadingAction: (loading: boolean) => void
   setColorAction: (color: string) => void
@@ -338,7 +340,8 @@ export class DesignerTool extends React.Component<Props, {}> {
       stitchingColor,
       bindingColor,
       zipperColor,
-      bibColor
+      bibColor,
+      colorsList
     } = this.props
     const { themeImage } = this.state
     const fontList: Font[] = get(fontsData, 'fonts', [])
@@ -408,7 +411,8 @@ export class DesignerTool extends React.Component<Props, {}> {
             stitchingColor,
             bindingColor,
             zipperColor,
-            bibColor
+            bibColor,
+            colorsList
           }}
           onSetCanvasObject={setLoadedCanvasAction}
           onUpdateSearchText={onUpdateSearchTextAction}
@@ -842,6 +846,7 @@ const DesignerToolEnhance = compose(
   graphql(deleteStyleMutation, { name: 'deleteStyle' }),
   graphql(deleteInspirationMutation, { name: 'deleteInspiration' }),
   graphql(saveStyleCanvas, { name: 'saveCanvas' }),
+  graphql(getColorsQuery, { name: 'colorsList' }),
   connect(
     mapStateToProps,
     { ...designerToolActions, ...designerToolApi, ...thunkActions }
