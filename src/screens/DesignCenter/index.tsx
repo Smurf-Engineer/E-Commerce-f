@@ -838,13 +838,7 @@ export class DesignCenter extends React.Component<Props, {}> {
               <Info
                 label="style"
                 {...{ isMobile }}
-                message={
-                  isMobile
-                    ? ''
-                    : placeholders
-                    ? 'styleMessagePlaceholder'
-                    : 'styleMessage'
-                }
+                message={isMobile ? '' : 'styleMessagePlaceholder'}
                 model={productName}
                 onPressQuickView={this.handleOpenQuickView}
               />

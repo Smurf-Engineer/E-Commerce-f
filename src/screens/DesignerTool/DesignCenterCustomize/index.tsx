@@ -17,8 +17,7 @@ import PlaceholdersRender3D from '../../../components/PlaceholdersRender3D'
 import {
   getProductFromCode,
   updateThemesOrderMutation,
-  updateStylesOrderMutation,
-  getColorsQuery
+  updateStylesOrderMutation
 } from './data'
 import Render3D from './Render3D'
 import SaveModal from './SaveModal'
@@ -662,7 +661,6 @@ const EnhanceDesignCenterCustomize = compose(
       notifyOnNetworkStatusChange: true
     })
   }),
-  graphql(getColorsQuery, { name: 'colorsList' }),
   updateThemesOrderMutation,
   updateStylesOrderMutation
 )(DesignCenterCustomize)
