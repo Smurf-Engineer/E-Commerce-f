@@ -501,12 +501,12 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case CANVAS_ELEMENT_DUPLICATED_ACTION: {
       const { canvasEl, elementType, oldId } = action
-      const { id: idElement, originalId } = canvasEl
+      const { id, originalId } = canvasEl
       const canvas = state.get('canvas')
       const canvasToClone = canvas.getIn([elementType, originalId])
-      const updatedCanvas = canvas.setIn([elementType, idElement], {
+      const updatedCanvas = canvas.setIn([elementType, id], {
         ...canvasToClone,
-        idElement
+        id
       })
       if (oldId) {
         return state.merge({
