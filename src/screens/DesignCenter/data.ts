@@ -137,3 +137,11 @@ export const getColorsQuery = gql`
     }
   }
 `
+
+export const requestColorChartMutation = gql`
+  mutation RequestColorChart($userInfo: UserInfoInput) {
+    requestColorChart(userInfo: $userInfo) {
+      message
+    }
+  }
+`

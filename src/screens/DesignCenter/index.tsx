@@ -85,13 +85,16 @@ import {
   CanvasObjects,
   SelectedAsset,
   SaveDesignData,
-  Message as MessageType
+  Message as MessageType,
+  MessagePayload,
+  UserInfo
 } from '../../types/common'
 import {
   getProductQuery,
   addTeamStoreItemMutation,
   getDesignQuery,
-  getColorsQuery
+  getColorsQuery,
+  requestColorChartMutation
 } from './data'
 import backIcon from '../../assets/leftarrow.svg'
 import DesignCenterInspiration from '../../components/DesignCenterInspiration'
@@ -174,6 +177,9 @@ interface Props extends RouteComponentProps<any> {
   colorsList: any
   navigation: any
   openResetPlaceholderModal: boolean
+  colorChartSending: boolean
+  colorChartModalOpen: boolean
+  colorChartModalFormOpen: boolean
   // Redux Actions
   clearStoreAction: () => void
   setCurrentTabAction: (index: number) => void
@@ -275,6 +281,10 @@ interface Props extends RouteComponentProps<any> {
   saveToCartAction: (item: DesignSaved) => void
   onTabClickAction: (selectedIndex: number) => void
   onLockElementAction: (id: string, type: string) => void
+  requestColorChart: (variables: {}) => Promise<MessagePayload>
+  setSendingColorChartAction: (sending: boolean) => void
+  onOpenColorChartAction: (open: boolean) => void
+  onOpenColorChartFormAction: (open: boolean) => void
 }
 
 export class DesignCenter extends React.Component<Props, {}> {
@@ -614,7 +624,10 @@ export class DesignCenter extends React.Component<Props, {}> {
       onLockElementAction,
       colorsList,
       location,
-      openResetPlaceholderModal
+      openResetPlaceholderModal,
+      colorChartSending,
+      colorChartModalOpen,
+      colorChartModalFormOpen
     } = this.props
 
     const { formatMessage } = intl
@@ -901,7 +914,10 @@ export class DesignCenter extends React.Component<Props, {}> {
                   selectedTab,
                   colorsList,
                   placeholders,
-                  openResetPlaceholderModal
+                  openResetPlaceholderModal,
+                  colorChartSending,
+                  colorChartModalOpen,
+                  colorChartModalFormOpen
                 }}
                 callbackToSave={get(layout, 'callback', false)}
                 loggedUserId={get(user, 'id', '')}
@@ -948,6 +964,11 @@ export class DesignCenter extends React.Component<Props, {}> {
                 onSelectedItem={this.setSelectedItemEvent}
                 onTabClick={onTabClickAction}
                 onLockElement={onLockElementAction}
+                onRequestColorChart={this.sendColorChartRequest}
+                onCloseColorChart={this.handleOnCloseColorChart}
+                onCloseColorChartForm={this.handleOnCloseColorChartForm}
+                onOpenFormChart={this.handleOnOpenFormChart}
+                onOpenColorChart={this.handleOnOpenColorChart}
               />
             )}
             {!isMobile ? (
@@ -1126,6 +1147,44 @@ export class DesignCenter extends React.Component<Props, {}> {
       setCurrentTabAction(currentTab - 1)
     }
   }
+
+  sendColorChartRequest = async (userInfo: UserInfo) => {
+    const {
+      requestColorChart,
+      setSendingColorChartAction,
+      formatMessage,
+      onOpenColorChartFormAction
+    } = this.props
+    setSendingColorChartAction(true)
+    try {
+      const response = await requestColorChart({
+        variables: { userInfo }
+      })
+      setSendingColorChartAction(false)
+      onOpenColorChartFormAction(false)
+      Message.success(get(response, 'data.requestColorChart.message', ''))
+    } catch (e) {
+      setSendingColorChartAction(false)
+      Message.error(formatMessage(messages.colorChartRequestFailed))
+    }
+  }
+  handleOnCloseColorChart = () => {
+    const { onOpenColorChartAction } = this.props
+    onOpenColorChartAction(false)
+  }
+  handleOnCloseColorChartForm = () => {
+    const { onOpenColorChartFormAction } = this.props
+    onOpenColorChartFormAction(false)
+  }
+  handleOnOpenColorChart = () => {
+    const { onOpenColorChartAction } = this.props
+    onOpenColorChartAction(true)
+  }
+  handleOnOpenFormChart = () => {
+    const { onOpenColorChartAction, onOpenColorChartFormAction } = this.props
+    onOpenColorChartAction(false)
+    onOpenColorChartFormAction(true)
+  }
 }
 
 interface OwnProps {
@@ -1178,7 +1237,8 @@ const DesignCenterEnhance = compose(
     },
     name: 'dataDesign'
   }),
-  graphql(getColorsQuery, { name: 'colorsList' })
+  graphql(getColorsQuery, { name: 'colorsList' }),
+  graphql(requestColorChartMutation, { name: 'requestColorChart' })
 )(DesignCenter)
 
 export default DesignCenterEnhance

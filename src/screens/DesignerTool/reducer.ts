@@ -427,6 +427,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('searchClipParam', action.param)
     case SET_LOADED_CANVAS_ACTION: {
       const { paths, canvas } = action
+      console.log('canvas ', canvas)
       const updatedCanvas = getCanvas(canvas)
       return state.merge({
         canvas: updatedCanvas,
@@ -500,12 +501,12 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case CANVAS_ELEMENT_DUPLICATED_ACTION: {
       const { canvasEl, elementType, oldId } = action
-      const { id: idElement, originalId } = canvasEl
+      const { id, originalId } = canvasEl
       const canvas = state.get('canvas')
       const canvasToClone = canvas.getIn([elementType, originalId])
-      const updatedCanvas = canvas.setIn([elementType, idElement], {
+      const updatedCanvas = canvas.setIn([elementType, id], {
         ...canvasToClone,
-        idElement
+        id
       })
       if (oldId) {
         return state.merge({

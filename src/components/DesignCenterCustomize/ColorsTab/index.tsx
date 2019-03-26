@@ -23,7 +23,8 @@ import {
   MyPaletteDesignCenterModals,
   StitchingColor,
   AccesoryColor,
-  Product
+  Product,
+  UserInfo
 } from '../../../types/common'
 import MyPalette from '../MyPalette'
 import ColorList from '../ColorList'
@@ -48,6 +49,9 @@ interface Props {
   product?: Product
   disableTooltip: boolean
   colorsList: any
+  colorChartSending: boolean
+  colorChartModalOpen: boolean
+  colorChartModalFormOpen: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -58,6 +62,11 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   openPaletteModalAction: (key: string, open: boolean, value?: number) => void
   onAccessoryColorSelected?: (color: AccesoryColor, id: string) => void
+  onRequestColorChart: (userInfo: UserInfo) => void
+  onCloseColorChart: () => void
+  onCloseColorChartForm: () => void
+  onOpenFormChart: () => void
+  onOpenColorChart: () => void
 }
 
 const SELECT_COLORS_INDEX = 0
@@ -110,7 +119,15 @@ class ColorsTab extends React.PureComponent<Props, State> {
       onAccessoryColorSelected,
       product,
       disableTooltip,
-      colorsList
+      colorsList,
+      onRequestColorChart,
+      colorChartSending,
+      colorChartModalOpen,
+      colorChartModalFormOpen,
+      onCloseColorChart,
+      onCloseColorChartForm,
+      onOpenFormChart,
+      onOpenColorChart
     } = this.props
     const { index, names } = this.state
 
@@ -172,7 +189,15 @@ class ColorsTab extends React.PureComponent<Props, State> {
               hasBibBrace,
               onSelectColorBlock,
               onHoverColorBlock,
-              colorBlockHovered
+              colorBlockHovered,
+              onRequestColorChart,
+              colorChartSending,
+              colorChartModalOpen,
+              colorChartModalFormOpen,
+              onCloseColorChart,
+              onCloseColorChartForm,
+              onOpenFormChart,
+              onOpenColorChart
             }}
           />
           <BaseColors
