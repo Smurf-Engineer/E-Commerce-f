@@ -675,6 +675,7 @@ export class DesignerTool extends React.Component<Props, {}> {
       setSavingDesign
     } = this.props
     const { canvasJson, designBase64 } = styleData
+    console.log(canvasJson)
     setSavingDesign(true)
     try {
       const response = await uploadThumbnail({

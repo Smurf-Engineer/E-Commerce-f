@@ -427,6 +427,7 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('searchClipParam', action.param)
     case SET_LOADED_CANVAS_ACTION: {
       const { paths, canvas } = action
+      console.log('canvas ', canvas)
       const updatedCanvas = getCanvas(canvas)
       return state.merge({
         canvas: updatedCanvas,
