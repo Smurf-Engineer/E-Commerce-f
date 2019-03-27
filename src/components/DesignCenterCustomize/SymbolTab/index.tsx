@@ -130,6 +130,7 @@ class SymbolTab extends React.PureComponent<Props, {}> {
                 onClick={this.changePage(1, 2)}
                 title={formatMessage(messages.outline)}
                 color={selectedElement.stroke}
+                selected={!!selectedElement.strokeWidth}
               />
             </div>
             <TextEditor

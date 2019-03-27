@@ -25,7 +25,6 @@ export const Divider = styled.div`
 
 export const Logo = styled.img`
   align-self: center;
-  width: 146px;
   height: 34px;
 `
 

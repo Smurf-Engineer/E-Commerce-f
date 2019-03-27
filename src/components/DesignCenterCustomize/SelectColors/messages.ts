@@ -24,5 +24,9 @@ export default defineMessages({
   bibColor: {
     id: 'components.designCenterCustomize.SelectColors.bibColor',
     defaultMessage: 'Bib brace color'
+  },
+  orderChart: {
+    id: 'components.designCenterCustomize.SelectColors.orderChart',
+    defaultMessage: 'Order a color chart'
   }
 })

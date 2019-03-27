@@ -70,7 +70,10 @@ import {
   ON_TAB_CLICK_ACTION,
   CustomizeTabs,
   ON_LOCK_ELEMENT_ACTION,
-  OPEN_RESET_PLACEHOLDER_MODAL
+  OPEN_RESET_PLACEHOLDER_MODAL,
+  SET_SENDING_CHART,
+  ON_OPEN_COLOR_CHART,
+  ON_OPEN_COLOR_CHART_FORM
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -153,7 +156,10 @@ export const initialState = fromJS({
   selectedItem: {},
   infoModalOpen: false,
   automaticSave: false,
-  selectedTab: CustomizeTabs.ColorsTab
+  selectedTab: CustomizeTabs.ColorsTab,
+  colorChartSending: false,
+  colorChartModalOpen: false,
+  colorChartModalFormOpen: false
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -959,6 +965,12 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       element[id].lock = !element[id].lock
       return state.setIn(['canvas', elementType, id], element[id])
     }
+    case SET_SENDING_CHART:
+      return state.set('colorChartSending', action.sending)
+    case ON_OPEN_COLOR_CHART:
+      return state.set('colorChartModalOpen', action.open)
+    case ON_OPEN_COLOR_CHART_FORM:
+      return state.set('colorChartModalFormOpen', action.open)
     default:
       return state
   }

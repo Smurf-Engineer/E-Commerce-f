@@ -74,6 +74,7 @@ class ColorTab extends React.PureComponent<Props> {
       uploadingColors,
       uploadingStitchingColors
     } = this.props
+
     const colorButtons = colors.map((color, index) => (
       <ColorButton
         key={index}
@@ -125,7 +126,11 @@ class ColorTab extends React.PureComponent<Props> {
             </Button>
           </DraggerWithLoading>
         </DraggerContainer>
-        <ColorList stitching={false} {...{ onSelectColor, colorsList }} />
+        <ColorList
+          stitching={false}
+          {...{ onSelectColor }}
+          colorsList={colorsList}
+        />
         <SectionTitle>
           <FormattedMessage {...messages.stitchingColors} />
         </SectionTitle>

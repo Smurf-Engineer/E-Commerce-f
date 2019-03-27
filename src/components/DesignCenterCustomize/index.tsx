@@ -30,7 +30,8 @@ import {
   CanvasObjects,
   SelectedAsset,
   Responsive,
-  SimpleFont
+  SimpleFont,
+  UserInfo
 } from '../../types/common'
 import backIcon from '../../assets/leftarrow.svg'
 import artIcon from '../../assets/art-icon.svg'
@@ -105,6 +106,9 @@ interface Props {
   colorsList: any
   placeholders: boolean
   openResetPlaceholderModal: boolean
+  colorChartSending: boolean
+  colorChartModalOpen: boolean
+  colorChartModalFormOpen: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -174,6 +178,11 @@ interface Props {
   handleOnSaveAndBuy: (buy: boolean) => void
   onTabClick: (selectedIndex: number) => void
   onLockElement: (id: string, type: string) => void
+  onRequestColorChart: (userInfo: UserInfo) => void
+  onCloseColorChart: () => void
+  onCloseColorChartForm: () => void
+  onOpenFormChart: () => void
+  onOpenColorChart: () => void
 }
 
 class DesignCenterCustomize extends React.PureComponent<Props> {
@@ -286,7 +295,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       fonts,
       colorsList,
       placeholders,
-      openResetPlaceholderModal
+      openResetPlaceholderModal,
+      onRequestColorChart,
+      colorChartSending,
+      colorChartModalOpen,
+      colorChartModalFormOpen,
+      onCloseColorChart,
+      onCloseColorChartForm,
+      onOpenFormChart,
+      onOpenColorChart
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -342,7 +359,15 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onLockElement,
               openLoginModalAction,
               fonts,
-              colorsList
+              colorsList,
+              onRequestColorChart,
+              colorChartSending,
+              colorChartModalOpen,
+              colorChartModalFormOpen,
+              onCloseColorChart,
+              onCloseColorChartForm,
+              onOpenFormChart,
+              onOpenColorChart
             }}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}

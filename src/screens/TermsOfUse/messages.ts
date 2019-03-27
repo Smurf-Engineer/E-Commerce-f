@@ -58,14 +58,14 @@ export default defineMessages({
     id: 'screens.TermsOfUse.privacyAndPolicyText',
     defaultMessage: `
       <p>Effective date: September 24, 2018</p>
-      <p>Rider Sportsfashion L.L.C. (dba JAKROO) ("us", "we", or "our") operates the express.jakroo.com website (hereinafter referred to as the "Service").</p>
+      <p>Rider Sportsfashion L.L.C. (dba JAKROO) ("us", "we", or "our") operates the designlab.jakroo.com website (hereinafter referred to as the "Service").</p>
       <p>This page informs you of our policies regarding the collection, use and disclosure of personal data when you use our Service and the choices you have associated with that data.</p>
-      <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from express.jakroo.com</p>
+      <p>We use your data to provide and improve the Service. By using the Service, you agree to the collection and use of information in accordance with this policy. Unless otherwise defined in this Privacy Policy, the terms used in this Privacy Policy have the same meanings as in our Terms and Conditions, accessible from designlab.jakroo.com</p>
       <h2>Definitions</h2>
       <ul>
         <li>
           <p><strong>Service</strong></p>
-          <p>Service is the express.jakroo.com website operated by JAKROO</p>
+          <p>Service is the designlab.jakroo.com website operated by JAKROO</p>
         </li>
         <li>
           <p><strong>Personal Data</strong></p>
@@ -277,7 +277,7 @@ export default defineMessages({
       <p>If you have any questions about this Privacy Policy, please contact us:</p>
       <ul>
         <li>By email: privacy@jakroousa.com</li>
-        <li>By visiting this page on our website: https://express.jakroo.com/terms-of-use</li>
+        <li>By visiting this page on our website: https://designlab.jakroo.com/terms-of-use</li>
         <li>By phone number (USA): 1-800-485-7067, (EU): +49 711 18424480</li>
       </ul>
     `
