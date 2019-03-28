@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react'
 import isEqual from 'lodash/isEqual'
 import get from 'lodash/get'
 import reverse from 'lodash/reverse'
-import cloneDeep from 'lodash/cloneDeep'
+import forEach from 'lodash/forEach'
+import clone from 'lodash/clone'
 import Spin from 'antd/lib/spin'
 import filter from 'lodash/filter'
 import FontFaceObserver from 'fontfaceobserver'
@@ -426,11 +427,9 @@ class Render3D extends PureComponent {
       } else {
         onSetCanvasObject(canvas, paths)
       }
-      const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
+      const temporalCanvasTexture = clone(this.canvasTexture.getObjects())
       temporalCanvasTexture.forEach(el => {
-        find(this.canvasTexture.getObjects(), 'id', el.id).moveTo(
-          indexes[el.id]
-        )
+        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(indexes[el.id])
       })
       this.canvasTexture.renderAll()
     } catch (e) {

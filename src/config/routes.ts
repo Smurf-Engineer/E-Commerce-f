@@ -35,6 +35,11 @@ import ResetPassword from '../screens/ResetPassword'
 
 const routes = [
   {
+    path: '/admin',
+    name: 'admin',
+    component: DesignSearch
+  },
+  {
     path: '/design-search',
     name: 'designSearch',
     component: DesignSearch
