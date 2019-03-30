@@ -32,8 +32,14 @@ import DesignCenter from '../screens/DesignCenter'
 import NotFound from '../screens/NotFound'
 import Home from '../screens/Home'
 import ResetPassword from '../screens/ResetPassword'
+import Admin from '../screens/Admin'
 
 const routes = [
+  {
+    path: '/admin',
+    name: 'admin',
+    component: Admin
+  },
   {
     path: '/design-search',
     name: 'designSearch',

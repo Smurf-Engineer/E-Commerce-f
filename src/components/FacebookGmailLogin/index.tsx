@@ -151,7 +151,8 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       token: get(data, 'token', ''),
       name: get(data, 'user.name', ''),
       lastName: get(data, 'user.lastName'),
-      email: get(data, 'user.email')
+      email: get(data, 'user.email'),
+      administrator: get(data, 'user.administrator', false)
     }
 
     return userData

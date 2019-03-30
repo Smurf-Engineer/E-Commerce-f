@@ -11,6 +11,7 @@ export const facebooklLogin = graphql(
           name: first_name
           lastName: last_name
           email
+          administrator
         }
         token
         newUser
@@ -32,6 +33,7 @@ export const googleLogin = graphql(
           name: first_name
           lastName: last_name
           email
+          administrator
         }
         token
         newUser

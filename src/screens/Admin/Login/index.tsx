@@ -1,10 +1,8 @@
 /**
- * Login Component - Created by cazarez on 20/02/18.
+ * Login - Created by eduardoquintero on 29/03/19.
  */
 import * as React from 'react'
 import { compose } from 'react-apollo'
-// UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED
-// import Checkbox from 'antd/lib/checkbox'
 import message from 'antd/lib/message'
 import get from 'lodash/get'
 import { validate } from 'email-validator'
@@ -20,26 +18,19 @@ import {
   JoinNowLabel,
   ForgotPasswordLabel
 } from './styledComponents'
-import JakrooModal from '../Common/JakrooModal'
-import FacebookGmailLogin from '../FacebookGmailLogin'
-import SignUp from '../SignUp'
+// FacebookGmailLogin from '../../../components/FacebookGmailLogin'
 import { mailLogin } from './data'
 import messages from './messages'
 
 interface Props {
-  open: boolean
-  initialCountryCode: string
-  requestClose: () => void
   loginWithEmail: (variables: {}) => void
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
-  formatMessage: (messageDescriptor: any, values?: object) => string
-  login: (user: object) => void
+  formatMessage: (messageDescriptor: any, values?: object | undefined) => string
   handleForgotPassword?: () => void
 }
 
 interface StateProps {
-  isLoginIn: boolean
   email: string
   password: string
   validEmail: boolean
@@ -55,16 +46,9 @@ export class Login extends React.Component<Props, StateProps> {
     validPassword: false
   }
   render() {
-    const {
-      open,
-      requestClose,
-      formatMessage,
-      handleForgotPassword,
-      login,
-      initialCountryCode
-    } = this.props
-    const { isLoginIn, email, password } = this.state
-    const renderView = isLoginIn ? (
+    const { formatMessage, handleForgotPassword } = this.props
+    const { email, password } = this.state
+    const renderView = (
       <div>
         <LoginLabel>
           <FormattedMessage {...messages.login} />
@@ -84,8 +68,6 @@ export class Login extends React.Component<Props, StateProps> {
             onChange={this.handleInputChange}
           />
           <RememberMeRow>
-            {/* {UNCOMMENT WHEN REMMEBER ME OPTION GETS IMPLEMENTED} */}
-            {/* <Checkbox>{formatMessage(messages.rememberMe)}</Checkbox>*/}
             <ForgotPasswordLabel onClick={handleForgotPassword}>
               {formatMessage(messages.forgotPassword)}
             </ForgotPasswordLabel>
@@ -93,10 +75,10 @@ export class Login extends React.Component<Props, StateProps> {
           <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
             {formatMessage(messages.loginButtonLabel)}
           </StyledLoginButton>
-          <FacebookGmailLogin
+          {/*<FacebookGmailLogin
             handleLogin={login}
             {...{ requestClose, formatMessage, initialCountryCode }}
-          />
+          /> */}
         </FormContainer>
         <NotAMemberLabel>
           {formatMessage(messages.notAMember)}
@@ -105,22 +87,8 @@ export class Login extends React.Component<Props, StateProps> {
           </JoinNowLabel>
         </NotAMemberLabel>
       </div>
-    ) : (
-      <SignUp
-        closeSignUp={this.showLogin}
-        login={this.onSignedUp}
-        {...{ requestClose, formatMessage, initialCountryCode }}
-      />
     )
-    return (
-      <JakrooModal
-        open={open}
-        requestClose={this.onClosemodal}
-        style={{ top: 20 }}
-      >
-        <Container>{renderView}</Container>
-      </JakrooModal>
-    )
+    return <Container>{renderView}</Container>
   }
   handleJoinNow = () => {
     this.setState({ isLoginIn: false })

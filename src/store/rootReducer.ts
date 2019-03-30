@@ -39,6 +39,7 @@ import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearch from '../screens/DesignSearch/reducer'
+import admin from '../screens/Admin/reducer'
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
@@ -87,6 +88,7 @@ export interface ReducersObject {
   orderHistory: any
   overview: any
   fitAndSizing: any
+  admin: any
 }
 
 const appInitialState = fromJS({
@@ -188,7 +190,8 @@ const rootReducer = combineReducers({
   overview,
   fitAndSizing,
   responsive: responsiveReducer,
-  app: appReducer
+  app: appReducer,
+  admin
 })
 
 export default rootReducer

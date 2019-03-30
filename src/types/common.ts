@@ -372,6 +372,7 @@ export interface UserType {
   lastName: string
   token: string
   email: string
+  administrator: boolean
 }
 
 export interface AntColumns {
