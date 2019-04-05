@@ -428,7 +428,7 @@ class Render3D extends PureComponent {
       }
       const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
       temporalCanvasTexture.forEach(el => {
-        find(this.canvasTexture.getObjects(), 'id', el.id).moveTo(
+        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
           indexes[el.id]
         )
       })
