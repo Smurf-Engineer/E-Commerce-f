@@ -14,6 +14,7 @@ export const Text = styled.div`
 `
 
 export const FacebookButtonWrapper = styled.div`
+  position: relative;
   .login-facebook {
     background-color: ${FACEBOOKBLUE};
     color: ${WHITE};
@@ -26,6 +27,7 @@ export const FacebookButtonWrapper = styled.div`
 `
 
 export const GoogleButton = styled(GoogleLogin)`
+  position: relative;
   width: 100%;
   height: 50px;
   background-color: ${GOOGLERED};
@@ -36,8 +38,14 @@ export const GoogleButton = styled(GoogleLogin)`
     cursor: pointer;
   }
 `
-export const GoogleIcon = styled.i`
+export const SocialIcon = styled.i`
   font-size: 20px !important;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  & img {
+    width: 17px;
+  }
 `
 export const GoogleLabel = styled.span`
   margin-left: 10px;

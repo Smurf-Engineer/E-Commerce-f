@@ -5,13 +5,20 @@ import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
 import { RouteComponentProps } from 'react-router-dom'
-import { restoreUserSession } from '../../components/MainLayout/api'
+import {
+  restoreUserSession,
+  saveUserSession
+} from '../../components/MainLayout/api'
 import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
+
 // import Menu from 'antd/lib/menu'
+import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
+import { mailLogin } from './data'
 import { OVERVIEW } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -38,6 +45,9 @@ interface Props extends RouteComponentProps<any> {
   setCurrentScreenAction: (screen: string) => void
   clearReducerAction: () => void
   restoreUserSessionAction: () => void
+  saveUserSessionAction: (user: object) => void
+  requestClose: () => void
+  loginWithEmail: (variables: {}) => void
 }
 
 export class Admin extends React.Component<Props, {}> {
@@ -74,14 +84,24 @@ export class Admin extends React.Component<Props, {}> {
     logout()
     window.location.replace('/')
   }
+  login = async (user: any) => {
+    await saveUserSession(user)
+  }
 
   getScreenComponent = (screen: string) => {
     const {
       intl: { formatMessage },
-      user
+      user,
+      saveUserSessionAction
     } = this.props
     if (!user) {
-      return <Login formatMessage={formatMessage} />
+      return (
+        <Login
+          {...{ formatMessage }}
+          login={saveUserSessionAction}
+          loginWithEmail={this.handleMailLogin}
+        />
+      )
     }
     if (!user.administrator) {
       return null
@@ -91,6 +111,41 @@ export class Admin extends React.Component<Props, {}> {
         return <p>Hello</p>
       default:
         return null
+    }
+  }
+  handleMailLogin = async (email: string, password: string) => {
+    const {
+      loginWithEmail,
+      intl: { formatMessage },
+      saveUserSessionAction
+    } = this.props
+    try {
+      const loginData = await loginWithEmail({ variables: { email, password } })
+      const data = get(loginData, 'data.login', false)
+      if (data) {
+        console.log('entramos ', data)
+        const userData = {
+          id: get(data, 'user.shortId', ''),
+          token: get(data, 'token', ''),
+          name: get(data, 'user.name', ''),
+          lastName: get(data, 'user.lastName'),
+          email: get(data, 'user.email'),
+          administrator: get(data, 'user.administrator', false)
+        }
+        message.success(
+          formatMessage(messages.welcomeMessage, {
+            name: get(data, 'user.name', '')
+          }),
+          5
+        )
+        saveUserSessionAction(userData)
+      }
+    } catch (error) {
+      console.log('ERROR ', error)
+      const errorMessage =
+        error.graphQLErrors.map((x: any) => x.message) || error.message
+      message.error(errorMessage)
+      console.error(error)
     }
   }
 
@@ -127,9 +182,14 @@ const mapStateToProps = (state: any) => {
 const AdminEnhance = compose(
   withApollo,
   injectIntl,
+  mailLogin,
   connect(
     mapStateToProps,
-    { ...adminActions, restoreUserSessionAction: restoreUserSession }
+    {
+      ...adminActions,
+      restoreUserSessionAction: restoreUserSession,
+      saveUserSessionAction: saveUserSession
+    }
   )
 )(Admin)
 

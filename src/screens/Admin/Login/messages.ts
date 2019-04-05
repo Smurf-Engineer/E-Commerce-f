@@ -17,14 +17,6 @@ export default defineMessages({
     id: 'components.login.loginButtonLabel',
     defaultMessage: 'LOGIN'
   },
-  notAMember: {
-    id: 'components.login.notAMember',
-    defaultMessage: 'Not a member?'
-  },
-  joinNow: {
-    id: 'components.login.joinNow',
-    defaultMessage: 'JOIN NOW'
-  },
   emailLabel: {
     id: 'components.login.emailLabel',
     defaultMessage: 'E-Mail'

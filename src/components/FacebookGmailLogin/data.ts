@@ -25,8 +25,16 @@ export const facebooklLogin = graphql(
 
 export const googleLogin = graphql(
   gql`
-    mutation GoogleSignIn($token: String!, $countryCode: String!) {
-      googleSignIn(token: $token, countryCode: $countryCode) {
+    mutation GoogleSignIn(
+      $token: String!
+      $countryCode: String!
+      $isAdmin: Boolean!
+    ) {
+      googleSignIn(
+        token: $token
+        countryCode: $countryCode
+        isAdmin: $isAdmin
+      ) {
         user {
           id
           shortId: short_id

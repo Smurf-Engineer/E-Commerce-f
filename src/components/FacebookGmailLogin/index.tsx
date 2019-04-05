@@ -10,28 +10,31 @@ import {
   Container,
   FacebookButtonWrapper,
   GoogleButton,
-  GoogleIcon,
+  SocialIcon,
   GoogleLabel
 } from './styledComponents'
 import { NEW_USER } from '../../constants'
 import config from '../../config'
 import messages from './messages'
 import { facebooklLogin, googleLogin } from './data'
+import googleIcon from '../../assets/google.svg'
+import fbIcon from '../../assets/fb-icon.svg'
 const unauthorizedExp = /\balready an account\b/
 
 interface Props {
   formatMessage: (messageDescriptor: any, values?: object) => string
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
-  requestClose: () => void
+  requestClose?: () => void
   handleLogin: (user: object) => void
   initialCountryCode: string
   signUpView: boolean
+  adminLogin?: boolean
 }
 
 class FacebookGmailLogin extends React.Component<Props, {}> {
   render() {
-    const { formatMessage, signUpView } = this.props
+    const { formatMessage, signUpView, adminLogin } = this.props
     const googleLabel = signUpView
       ? formatMessage(messages.googleSignUpLabel)
       : formatMessage(messages.googleLoginLabel)
@@ -47,25 +50,32 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
           onSuccess={this.googleLoginSuccess}
           onFailure={this.googleLoginFailure}
         >
-          <GoogleIcon />
+          <SocialIcon>
+            <img src={googleIcon} />
+          </SocialIcon>
           <GoogleLabel>{googleLabel}</GoogleLabel>
         </GoogleButton>
-        <FacebookButtonWrapper>
-          <FacebookLogin
-            appId={config.facebookId || ''}
-            autoLoad={false}
-            fields="name,email,picture"
-            callback={this.responseFacebook}
-            scope="public_profile, email"
-            render={({ onClick }) => (
-              <button className="login-facebook" {...{ onClick }}>
-                {facebookLabel}
-              </button>
-            )}
-          >
-            {facebookLabel}
-          </FacebookLogin>
-        </FacebookButtonWrapper>
+        {!adminLogin && (
+          <FacebookButtonWrapper>
+            <SocialIcon>
+              <img src={fbIcon} />
+            </SocialIcon>
+            <FacebookLogin
+              appId={config.facebookId || ''}
+              autoLoad={false}
+              fields="name,email,picture"
+              callback={this.responseFacebook}
+              scope="public_profile, email"
+              render={({ onClick }) => (
+                <button className="login-facebook" {...{ onClick }}>
+                  {facebookLabel}
+                </button>
+              )}
+            >
+              {facebookLabel}
+            </FacebookLogin>
+          </FacebookButtonWrapper>
+        )}
       </Container>
     )
   }
@@ -94,7 +104,9 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         if (data.newUser) {
           window.dataLayer.push({ event: NEW_USER, label: 'Facebook' })
         }
-        requestClose()
+        if (requestClose) {
+          requestClose()
+        }
       }
     } catch (error) {
       const errorMessage =
@@ -113,13 +125,18 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       requestClose,
       handleLogin,
       initialCountryCode,
-      formatMessage
+      formatMessage,
+      adminLogin = false
     } = this.props
     const token = get(resp, 'tokenId', false)
 
     try {
       const response = await loginWithGoogle({
-        variables: { token, countryCode: initialCountryCode }
+        variables: {
+          token,
+          countryCode: initialCountryCode,
+          isAdmin: adminLogin
+        }
       })
       const data = get(response, 'data.googleSignIn', false)
 
@@ -130,9 +147,12 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         if (data.newUser) {
           window.dataLayer.push({ event: NEW_USER, label: 'Google' })
         }
-        requestClose()
+        if (!adminLogin && requestClose) {
+          requestClose()
+        }
       }
     } catch (error) {
+      console.log('Error ', error)
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
 
@@ -141,7 +161,6 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
       } else {
         message.error(errorMessage)
       }
-      console.error(error)
     }
   }
 

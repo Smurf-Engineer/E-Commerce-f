@@ -30,9 +30,11 @@ export const deleteUserSession = () => {
 }
 
 export const saveUserSession = (user: object) => {
+  console.log('Guardando usuario')
   return async (dispatch: any) => {
     try {
       if (typeof window !== 'undefined') {
+        console.log('seteando')
         localStorage.setItem('user', JSON.stringify(user))
       }
       dispatch({ type: SET_USER_ACTION, user })

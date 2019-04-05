@@ -4,7 +4,6 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import message from 'antd/lib/message'
-import get from 'lodash/get'
 import { validate } from 'email-validator'
 import { FormattedMessage } from 'react-intl'
 import {
@@ -14,16 +13,18 @@ import {
   StyledInput,
   RememberMeRow,
   StyledLoginButton,
-  NotAMemberLabel,
-  JoinNowLabel,
-  ForgotPasswordLabel
+  ForgotPasswordLabel,
+  LoginContainer,
+  JakrooLogo
 } from './styledComponents'
-// FacebookGmailLogin from '../../../components/FacebookGmailLogin'
+import FacebookGmailLogin from '../../../components/FacebookGmailLogin'
+import jakrooLogo from '../../../assets/Jackroologo.svg'
 import { mailLogin } from './data'
 import messages from './messages'
 
 interface Props {
-  loginWithEmail: (variables: {}) => void
+  login: (user: object) => void
+  loginWithEmail: (email: string, password: string) => void
   loginWithFacebook: (variables: {}) => void
   loginWithGoogle: (variables: {}) => void
   formatMessage: (messageDescriptor: any, values?: object | undefined) => string
@@ -46,10 +47,11 @@ export class Login extends React.Component<Props, StateProps> {
     validPassword: false
   }
   render() {
-    const { formatMessage, handleForgotPassword } = this.props
+    const { formatMessage, handleForgotPassword, login } = this.props
     const { email, password } = this.state
     const renderView = (
-      <div>
+      <LoginContainer>
+        <JakrooLogo src={jakrooLogo} />
         <LoginLabel>
           <FormattedMessage {...messages.login} />
         </LoginLabel>
@@ -75,34 +77,29 @@ export class Login extends React.Component<Props, StateProps> {
           <StyledLoginButton type="danger" onClick={this.handleMailLogin}>
             {formatMessage(messages.loginButtonLabel)}
           </StyledLoginButton>
-          {/*<FacebookGmailLogin
+          <FacebookGmailLogin
             handleLogin={login}
-            {...{ requestClose, formatMessage, initialCountryCode }}
-          /> */}
+            adminLogin={true}
+            {...{
+              formatMessage,
+              initialCountryCode: 'mx'
+            }}
+          />
         </FormContainer>
-        <NotAMemberLabel>
-          {formatMessage(messages.notAMember)}
-          <JoinNowLabel onClick={this.handleJoinNow}>
-            {formatMessage(messages.joinNow)}
-          </JoinNowLabel>
-        </NotAMemberLabel>
-      </div>
+      </LoginContainer>
     )
     return <Container>{renderView}</Container>
   }
+  login = (s: any) => {
+    console.log(s)
+  }
   handleJoinNow = () => {
     this.setState({ isLoginIn: false })
-  }
-  onClosemodal = () => {
-    const { requestClose } = this.props
-    requestClose()
-    this.setState({ isLoginIn: true })
   }
 
   onSignedUp = (data: any) => {
     const { login } = this.props
     login(data)
-    this.onClosemodal()
   }
 
   showLogin = () => {
@@ -125,40 +122,14 @@ export class Login extends React.Component<Props, StateProps> {
   handleMailLogin = async (evt: React.MouseEvent<EventTarget>) => {
     const { password } = this.state
     const email = this.state.email.toLowerCase()
-    const { loginWithEmail, requestClose, formatMessage, login } = this.props
+    const { loginWithEmail } = this.props
 
     if (!email || !password) {
       message.error('Invalid User or Password!')
       return
     }
 
-    try {
-      const loginData = await loginWithEmail({ variables: { email, password } })
-      const data = get(loginData, 'data.login', false)
-      if (data) {
-        const userData = {
-          id: get(data, 'user.shortId', ''),
-          token: get(data, 'token', ''),
-          name: get(data, 'user.name', ''),
-          lastName: get(data, 'user.lastName'),
-          email: get(data, 'user.email'),
-          administrator: get(data, 'user.administrator', false)
-        }
-        message.success(
-          formatMessage(messages.welcomeMessage, {
-            name: get(data, 'user.name', '')
-          }),
-          5
-        )
-        login(userData)
-        requestClose()
-      }
-    } catch (error) {
-      const errorMessage =
-        error.graphQLErrors.map((x: any) => x.message) || error.message
-      message.error(errorMessage)
-      console.error(error)
-    }
+    loginWithEmail(email, password)
   }
 }
 
