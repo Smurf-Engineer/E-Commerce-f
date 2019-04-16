@@ -25,7 +25,7 @@ export default defineMessages({
   },
   readme: {
     id: 'components.ColorChart.readme',
-    defaultMessage: `*Please note that any costumer uploaded images or graphics are subject to color \
+    defaultMessage: `*Please note that any customer uploaded images or graphics are subject to color \
     shifting when printed. This can be due to improper color modes being selected on the digital file. \
     If you are concerned about how your uploaded graphics might print please download the Swatch Library \
     or opt-in for the PRO REVIEW service upon checking out and ordering.`
