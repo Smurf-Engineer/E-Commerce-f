@@ -152,7 +152,6 @@ class FacebookGmailLogin extends React.Component<Props, {}> {
         }
       }
     } catch (error) {
-      console.log('Error ', error)
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
 

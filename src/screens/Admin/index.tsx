@@ -123,7 +123,6 @@ export class Admin extends React.Component<Props, {}> {
       const loginData = await loginWithEmail({ variables: { email, password } })
       const data = get(loginData, 'data.login', false)
       if (data) {
-        console.log('entramos ', data)
         const userData = {
           id: get(data, 'user.shortId', ''),
           token: get(data, 'token', ''),
@@ -141,7 +140,6 @@ export class Admin extends React.Component<Props, {}> {
         saveUserSessionAction(userData)
       }
     } catch (error) {
-      console.log('ERROR ', error)
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
