@@ -43,7 +43,6 @@ server
       currency: 'usd',
       realCountryCode: 'us'
     }
-
     try {
       const resultFetch = await fetch(
         `${config.graphqlUriBase}region?ip=${req.ip}`

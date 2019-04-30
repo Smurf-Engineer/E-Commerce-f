@@ -131,13 +131,17 @@ export class Admin extends React.Component<Props, {}> {
           email: get(data, 'user.email'),
           administrator: get(data, 'user.administrator', false)
         }
-        message.success(
-          formatMessage(messages.welcomeMessage, {
-            name: get(data, 'user.name', '')
-          }),
-          5
-        )
-        saveUserSessionAction(userData)
+        if (data.administrator) {
+          message.success(
+            formatMessage(messages.welcomeMessage, {
+              name: get(data, 'user.name', '')
+            }),
+            5
+          )
+          saveUserSessionAction(userData)
+        } else {
+          message.error(formatMessage(messages.forbidden))
+        }
       }
     } catch (error) {
       const errorMessage =

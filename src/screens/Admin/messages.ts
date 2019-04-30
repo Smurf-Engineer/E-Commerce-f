@@ -12,5 +12,10 @@ export default defineMessages({
   welcomeMessage: {
     id: 'screens.Admin.welcomeMessage',
     defaultMessage: 'Hi {name}! Welcome to Jakroo'
+  },
+  forbidden: {
+    id: 'screens.Admin.forbidden',
+    // tslint:disable-next-line:quotemark
+    defaultMessage: "You don't have permissions for this section"
   }
 })
