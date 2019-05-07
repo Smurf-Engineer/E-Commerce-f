@@ -25,8 +25,6 @@ import messages from './messages'
 interface Props {
   login: (user: object) => void
   loginWithEmail: (email: string, password: string) => void
-  loginWithFacebook: (variables: {}) => void
-  loginWithGoogle: (variables: {}) => void
   formatMessage: (messageDescriptor: any, values?: object | undefined) => string
   handleForgotPassword?: () => void
 }
@@ -90,23 +88,7 @@ export class Login extends React.Component<Props, StateProps> {
     )
     return <Container>{renderView}</Container>
   }
-  login = (s: any) => {
-    console.log(s)
-  }
-  handleJoinNow = () => {
-    this.setState({ isLoginIn: false })
-  }
 
-  onSignedUp = (data: any) => {
-    const { login } = this.props
-    login(data)
-  }
-
-  showLogin = () => {
-    this.setState({
-      isLoginIn: true
-    })
-  }
   validateMail = (mail: string) => {
     return validate(mail)
   }

@@ -2,15 +2,9 @@
  * Styled Components - Created by david on 05/04/18.
  */
 import styled from 'styled-components'
-import { GRAY_DARK, GRAY_HEADER, WHITE } from '../../theme/colors'
+import { GRAY_DARK, GRAY_HEADER } from '../../theme/colors'
 
-export const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: ${WHITE};
-`
+export const Container = styled.div``
 
 export const SideBar = styled.div`
   width: 20%;
@@ -76,7 +70,13 @@ export const Content = styled.div`
   max-width: 900px;
   align-self: center;
   display: flex;
-  flex: 1;
   flex-direction: column;
   margin-top: 10vh;
+`
+
+export const LayoutContent = styled.div`
+  width: 100%;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
 `

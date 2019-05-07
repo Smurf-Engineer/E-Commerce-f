@@ -2,12 +2,13 @@
  * Admin Reducer - Created by eduardoquintero on 28/03/19.
  */
 import { fromJS } from 'immutable'
-import { SET_DEFAULT_SCREEN } from './constants'
+import { SET_DEFAULT_SCREEN, CLEAR_REDUCER } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
   screen: '',
-  defaultScreen: ''
+  defaultScreen: '',
+  openKeys: ['']
 })
 
 const adminReducer: Reducer<any> = (state = initialState, action) => {
@@ -26,6 +27,8 @@ const adminReducer: Reducer<any> = (state = initialState, action) => {
         defaultScreen: action.screen
       })
     }
+    case CLEAR_REDUCER:
+      return state.merge(initialState)
     default:
       return state
   }

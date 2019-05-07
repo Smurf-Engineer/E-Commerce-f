@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
+import queryString from 'query-string'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import { RouteComponentProps } from 'react-router-dom'
@@ -13,13 +14,14 @@ import {
 } from '../../components/MainLayout/api'
 import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
-
+import AdminLayout from '../../components/AdminLayout'
+import OrderHistory from '../../components/OrderHistory'
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import { OVERVIEW } from './constants'
+import { ORDER_STATUS } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -28,7 +30,8 @@ import {
   ContentHeader,
   LogoIcon,
   DesignerLink,
-  Content
+  Content,
+  LayoutContent
 } from './styledComponents'
 import { UserType } from '../../types/common'
 
@@ -39,6 +42,7 @@ interface Props extends RouteComponentProps<any> {
   screen: string
   defaultScreen: string
   user: UserType
+  history: any
   // Redux actions
   logoutAction: () => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
@@ -57,12 +61,23 @@ export class Admin extends React.Component<Props, {}> {
   }
 
   componentWillMount() {
-    const { user, setDefaultScreenAction } = this.props
+    const {
+      user,
+      setDefaultScreenAction,
+      location: { search }
+    } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
       restoreUserSessionAction()
-      setDefaultScreenAction(OVERVIEW)
+      setDefaultScreenAction(ORDER_STATUS)
     }
+    const queryParams = queryString.parse(search)
+    const { option } = queryParams
+    if (option) {
+      setDefaultScreenAction(option)
+      return
+    }
+    setDefaultScreenAction(ORDER_STATUS)
   }
 
   handleOnGoToScreen = (screen: string) => {
@@ -92,26 +107,34 @@ export class Admin extends React.Component<Props, {}> {
     const {
       intl: { formatMessage },
       user,
-      saveUserSessionAction
+      saveUserSessionAction,
+      intl,
+      history
     } = this.props
-    if (!user) {
+    if (!user || !user.administrator) {
       return (
-        <Login
-          {...{ formatMessage }}
-          login={saveUserSessionAction}
-          loginWithEmail={this.handleMailLogin}
-        />
+        <Content>
+          <Login
+            {...{ formatMessage }}
+            login={saveUserSessionAction}
+            loginWithEmail={this.handleMailLogin}
+          />
+        </Content>
       )
     }
-    if (!user.administrator) {
-      return null
-    }
+    let currentScreen
     switch (screen) {
-      case OVERVIEW:
-        return <p>Hello</p>
+      case ORDER_STATUS:
+        currentScreen = <OrderHistory {...{ history, formatMessage }} />
+        break
       default:
-        return null
+        break
     }
+    return (
+      <LayoutContent>
+        <AdminLayout {...{ history, intl }}>{currentScreen}</AdminLayout>
+      </LayoutContent>
+    )
   }
   handleMailLogin = async (email: string, password: string) => {
     const {
@@ -131,7 +154,7 @@ export class Admin extends React.Component<Props, {}> {
           email: get(data, 'user.email'),
           administrator: get(data, 'user.administrator', false)
         }
-        if (data.administrator) {
+        if (data.user.administrator) {
           message.success(
             formatMessage(messages.welcomeMessage, {
               name: get(data, 'user.name', '')
@@ -155,7 +178,6 @@ export class Admin extends React.Component<Props, {}> {
     const { screen } = this.props
 
     const currentScreen = this.getScreenComponent(screen)
-
     return (
       <Container>
         <Header>
@@ -166,7 +188,7 @@ export class Admin extends React.Component<Props, {}> {
             </DesignerLink>
           </ContentHeader>
         </Header>
-        <Content>{currentScreen}</Content>
+        {currentScreen}
       </Container>
     )
   }
