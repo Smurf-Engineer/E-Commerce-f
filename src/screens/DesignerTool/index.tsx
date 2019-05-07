@@ -766,7 +766,9 @@ export class DesignerTool extends React.Component<Props, {}> {
       }))
       const designs: any = []
       const style = {
-        ...design,
+        colors: design.colors,
+        image: design.image,
+        name: design.name,
         branding: brandingSvg,
         brandingPng,
         svgs: areasSvg,
@@ -775,6 +777,7 @@ export class DesignerTool extends React.Component<Props, {}> {
         width: size.width,
         height: size.height
       }
+
       designs.push(style)
 
       const { themeImage } = this.state

@@ -55,6 +55,8 @@ import {
 import messages from './messages'
 
 const SVG_FILE = 'image/svg+xml'
+const POSCRIPT_FILE = 'application/postscript'
+const PDF_FILE = 'application/pdf'
 
 interface Props {
   colorBlock: number
@@ -516,7 +518,11 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
   handleOnApplyImage = (file: ImageFile) => {
     const { onSelectedItem } = this.props
 
-    if (file.type === SVG_FILE) {
+    if (
+      file.type === SVG_FILE ||
+      file.type === PDF_FILE ||
+      file.type === POSCRIPT_FILE
+    ) {
       this.render3D.applyCanvasEl({
         file,
         type: CanvasElements.Group
