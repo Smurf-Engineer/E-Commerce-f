@@ -10,7 +10,7 @@ import SymbolTab from '../SymbolTab'
 import UploadTab from '../UploadTab'
 import TutorialsTab from '../TutorialsTab'
 import colorIcon from '../../../assets/color_white.svg'
-import youtube_hover from '../../../assets/youtube_hover.svg'
+import tutorials from '../../../assets/tutorials.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
@@ -42,6 +42,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   stitchingColor?: StitchingColor
+  videos: object[]
   bindingColor?: AccesoryColor
   zipperColor?: AccesoryColor
   bibColor?: AccesoryColor
@@ -92,6 +93,7 @@ interface Props {
   openLoginModalAction: (open: boolean, callback?: boolean) => void
   onRequestColorChart: (userInfo: UserInfo) => void
   onCloseColorChart: () => void
+  setVideos: (videos: object[]) => void
   onCloseColorChartForm: () => void
   onOpenFormChart: () => void
   onOpenColorChart: () => void
@@ -116,6 +118,7 @@ const Tabs = ({
   onApplyImage,
   onApplyArt,
   formatMessage,
+  videos,
   productName,
   canvas,
   selectedElement,
@@ -142,6 +145,7 @@ const Tabs = ({
   disableTooltip = false,
   selectedTab,
   onTabClick,
+  setVideos,
   onLockElement,
   openLoginModalAction,
   fonts,
@@ -251,8 +255,8 @@ const Tabs = ({
             }
           />
         </TabPane>
-        <TabPane tab={<Tab label="tutorials" icon={youtube_hover} />} key="5">
-          <TutorialsTab />
+        <TabPane tab={<Tab label="tutorials" icon={tutorials} />} key="5">
+          <TutorialsTab {...{ formatMessage, videos, setVideos }} />
         </TabPane>
       </AntdTabs>
     </Container>

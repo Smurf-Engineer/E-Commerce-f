@@ -9,6 +9,7 @@ export const SET_CURRENT_TAB_ACTION = `${namespace}/SET_CURRENT_TAB_ACTION`
 export const SET_LOADING_MODEL = `${namespace}/SET_LOADING_MODEL`
 export const DESIGN_UNDO_ACTION = `${namespace}/DESIGN_UNDO_ACTION`
 export const DESIGN_REDO_ACTION = `${namespace}/DESIGN_REDO_ACTION`
+export const SET_VIDEOS = `${namespace}/SET_VIDEOS`
 export const EDIT_DESIGN_ACTION = `${namespace}/EDIT_DESIGN_ACTION`
 export const SET_SWIPING_TAB_ACTION = `${namespace}/SET_SWIPING_TAB_ACTION`
 
@@ -92,7 +93,8 @@ export enum CustomizeTabs {
   ColorsTab = 1,
   TextTab = 2,
   SymbolsTab = 3,
-  ImagesTab = 4
+  ImagesTab = 4,
+  TutorialsTab = 5
 }
 
 export const BLACK = 'black'

@@ -1,10 +1,10 @@
 /**
- * Upload Tools
+ * Tutorials Tools
  */
 
 import config from '../../../config/index'
 const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems'
-export const getVideos = async () => {
+export const getVideos = async (setVideos: (videos: object[]) => void) => {
   try {
     const response = await fetch(
       `${baseURL}?part=snippet%2CcontentDetails&playlistId=${
@@ -15,7 +15,7 @@ export const getVideos = async () => {
       }
     )
     const videos = await response.json()
-    return videos.items
+    setVideos(videos.items)
   } catch (e) {
     console.log(e.Message)
   }

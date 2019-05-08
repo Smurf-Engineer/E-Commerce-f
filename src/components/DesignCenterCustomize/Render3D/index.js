@@ -24,6 +24,8 @@ import {
   Row,
   QuickView,
   Button,
+  TutorialButton,
+  TutorialIcon,
   DragText,
   ViewControls,
   ViewButton,
@@ -112,6 +114,7 @@ import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
+import tutorials from '../../../assets/tutorials.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 import topIcon from '../../../assets/Cube-Top.svg'
 import hintImg from '../../../assets/designCenterhelpHint.jpg'
@@ -445,7 +448,9 @@ class Render3D extends PureComponent {
       }
       const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
       temporalCanvasTexture.forEach(el => {
-        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(indexes[el.id])
+        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
+          indexes[el.id]
+        )
       })
       this.canvasTexture.renderAll()
     } catch (e) {
@@ -1220,6 +1225,7 @@ class Render3D extends PureComponent {
       onPressQuickView,
       undoEnabled,
       redoEnabled,
+      onTabClick,
       loadingModel,
       formatMessage,
       productName,
@@ -1371,6 +1377,9 @@ class Render3D extends PureComponent {
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
+        <TutorialButton onClick={() => onTabClick(5)}>
+          <TutorialIcon src={tutorials} />
+        </TutorialButton>
         <ViewControls>
           <TopButton onClick={this.handleOnPressTop} src={top} />
           <BottomControls>

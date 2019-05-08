@@ -75,6 +75,7 @@ interface Props {
   redoEnabled: boolean
   currentTab: number
   swipingView: boolean
+  videos: object[]
   text: string
   productName: string
   canvas: CanvasType
@@ -121,6 +122,7 @@ interface Props {
   onSetPalettes: (palettes: Palette[]) => void
   onLoadModel: (loading: boolean) => void
   onUndoAction: () => void
+  setVideos: (videos: object[]) => void
   onRedoAction: () => void
   onResetAction: () => void
   onClearAction: () => void
@@ -223,6 +225,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       colors,
       styleColors,
       currentStyle,
+      videos,
       loadingModel,
       onLoadModel,
       onUndoAction,
@@ -292,6 +295,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       infoModalOpen,
       selectedTab,
       onTabClick,
+      setVideos,
       onLockElement,
       openLoginModalAction,
       fonts,
@@ -324,6 +328,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               colorBlockHovered,
               onSelectColorBlock,
               onHoverColorBlock,
+              videos,
+              setVideos,
               onSelectColor,
               colors,
               styleColors,
@@ -421,6 +427,7 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               productName,
               onApplyCanvasEl,
               onSelectEl,
+              onTabClick,
               onRemoveEl,
               openResetDesignModal,
               openResetDesignModalAction,

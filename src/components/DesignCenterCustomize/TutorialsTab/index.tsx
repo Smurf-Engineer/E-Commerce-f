@@ -1,9 +1,10 @@
 /**
- * UploadTab Component - Created by david on 08/06/18.
+ * TutorialsTab Component - Created by Apodaca on 05/07/19.
  */
 import * as React from 'react'
 import Modal from '../../Common/JakrooModal'
 import Spin from 'antd/lib/spin'
+import messages from './messages'
 import {
   Container,
   VideoContainer,
@@ -14,24 +15,30 @@ import {
 } from './styledComponents'
 import get from 'lodash/get'
 import { getVideos } from './api'
-interface State {
+interface Props {
+  formatMessage: (messageDescriptor: any) => string
   videos: object[]
+  setVideos: (videos: object[]) => void
+}
+interface State {
   videoId: string
   videoName: string
   open: boolean
   loading: boolean
 }
-class TutorialsTab extends React.PureComponent<{}, State> {
+class TutorialsTab extends React.PureComponent<Props, State> {
   state = {
     loading: true,
     open: false,
     videoId: '',
-    videoName: '',
-    videos: []
+    videoName: ''
   }
   async componentDidMount() {
-    const videos = await getVideos()
-    this.setState({ videos, loading: false })
+    const { setVideos } = this.props
+    getVideos(setVideos)
+  }
+  componentWillReceiveProps() {
+    this.setState({ loading: false })
   }
   handleClickClose = () => {
     this.setState({ open: false, videoId: '', videoName: '' })
@@ -40,7 +47,8 @@ class TutorialsTab extends React.PureComponent<{}, State> {
     this.setState({ open: true, videoId, videoName })
   }
   render() {
-    const { loading, videos, open, videoId, videoName } = this.state
+    const { formatMessage, videos } = this.props
+    const { loading, open, videoId, videoName } = this.state
     return (
       <Container>
         {loading && !videos.length ? (
@@ -72,7 +80,7 @@ class TutorialsTab extends React.PureComponent<{}, State> {
                   get(video, 'snippet.title', 'Default title')
                 )}
               >
-                Open in modal
+                {formatMessage(messages.expand)}
               </ModalSpan>
             </VideoContainer>
           ))

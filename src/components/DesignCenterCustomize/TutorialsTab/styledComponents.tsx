@@ -4,20 +4,7 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-  height: 60vh;
-  overflow: auto;
-
-  @media (min-height: 800px) and (orientation: portrait) {
-    height: 85vh;
-  }
-
-  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) and (orientation: landscape) {
-    height: 70vh;
-  }
-
-  @media only screen and (min-device-width: 1366px) and (max-device-width: 1366px) and (orientation: landscape) {
-    height: 78vh;
-  }
+  height: 97%;
 `
 
 export const VideoContainer = styled.div`
@@ -40,10 +27,14 @@ export const VideoFrame = styled.iframe`
 
 export const Title = styled.span`
   margin-left: 4px;
+  margin-bottom: 8px;
 `
 export const ModalSpan = styled.span`
-  margin: 0 auto;
-  font-weight: bold;
+  border: 1px solid red;
+  padding: 2px 8px;
+  border-radius: 3px;
   cursor: pointer;
-  text-decoration: underline;
+  color: red;
+  width: 106px;
+  margin: 0 auto;
 `
