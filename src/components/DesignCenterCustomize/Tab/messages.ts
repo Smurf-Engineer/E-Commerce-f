@@ -20,5 +20,9 @@ export default defineMessages({
   upload: {
     id: 'components.designCenterCustomize.Tab.upload',
     defaultMessage: 'Upload'
+  },
+  tutorials: {
+    id: 'components.designCenterCustomize.Tab.tutorials',
+    defaultMessage: 'Tutorials'
   }
 })

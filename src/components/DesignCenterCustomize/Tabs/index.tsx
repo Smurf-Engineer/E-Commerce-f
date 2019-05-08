@@ -8,7 +8,9 @@ import ColorsTab from '../ColorsTab'
 import TextTab from '../TextTab'
 import SymbolTab from '../SymbolTab'
 import UploadTab from '../UploadTab'
+import TutorialsTab from '../TutorialsTab'
 import colorIcon from '../../../assets/color_white.svg'
+import youtube_hover from '../../../assets/youtube_hover.svg'
 import textIcon from '../../../assets/text_white.svg'
 import imageIcon from '../../../assets/image_white.svg'
 import uploadIcon from '../../../assets/upload_white.svg'
@@ -248,6 +250,9 @@ const Tabs = ({
               selectedItem.type === CanvasElements.Image && selectedItem.id
             }
           />
+        </TabPane>
+        <TabPane tab={<Tab label="tutorials" icon={youtube_hover} />} key="5">
+          <TutorialsTab />
         </TabPane>
       </AntdTabs>
     </Container>
