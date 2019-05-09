@@ -1021,6 +1021,6 @@
   "components.ImageList.apply": "Apply",
   "components.ImageList.size": "Max. size {width} cm x {height} cm",
   "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
-  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2018",
+  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2019",
   "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email"
 }
