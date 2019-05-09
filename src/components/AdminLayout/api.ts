@@ -27,16 +27,3 @@ export const deleteUserSession = () => {
     }
   }
 }
-
-export const saveUserSession = (user: object) => {
-  return async (dispatch: any) => {
-    try {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('user', JSON.stringify(user))
-      }
-      dispatch({ type: SET_USER_ACTION, user })
-    } catch (e) {
-      console.error(e)
-    }
-  }
-}

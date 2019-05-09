@@ -4,7 +4,10 @@
 import styled from 'styled-components'
 import { GRAY_DARK, GRAY_HEADER } from '../../theme/colors'
 
-export const Container = styled.div``
+export const AdminContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 export const SideBar = styled.div`
   width: 20%;
@@ -67,16 +70,19 @@ export const DesignerLink = styled.div`
 
 export const Content = styled.div`
   width: 50%;
-  max-width: 900px;
   align-self: center;
   display: flex;
   flex-direction: column;
   margin-top: 10vh;
+  @media only screen and (max-width: 1000px) {
+    width: 100%;
+  }
 `
 
-export const LayoutContent = styled.div`
+export const LoadingContainer = styled.div`
   width: 100%;
-  align-self: center;
+  height: 60vh;
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `

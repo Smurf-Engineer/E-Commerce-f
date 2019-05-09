@@ -4,13 +4,8 @@
 const namespace = 'src/Admin'
 
 export const ORDER_STATUS = 'orderStatus'
-// USE UNIQUE KEYS
-export const options = [
-  {
-    title: ORDER_STATUS,
-    options: []
-  }
-]
 
 export const SET_DEFAULT_SCREEN = `${namespace}/SET_DEFAULT_SCREEN`
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
+export const SET_LOADING = `${namespace}/SET_LOADING`
+export const OPEN_FORGOT_PASSWORD = `${namespace}/OPEN_FORGOT_PASSWORD`

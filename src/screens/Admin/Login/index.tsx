@@ -18,15 +18,19 @@ import {
   JakrooLogo
 } from './styledComponents'
 import FacebookGmailLogin from '../../../components/FacebookGmailLogin'
+import ForgotPassword from '../../../components/ForgotPassword'
 import jakrooLogo from '../../../assets/Jackroologo.svg'
 import { mailLogin } from './data'
 import messages from './messages'
 
 interface Props {
+  forgotPasswordOpen: boolean
+  loading: boolean
   login: (user: object) => void
   loginWithEmail: (email: string, password: string) => void
   formatMessage: (messageDescriptor: any, values?: object | undefined) => string
   handleForgotPassword?: () => void
+  handleOpenForgotPassword: () => void
 }
 
 interface StateProps {
@@ -45,7 +49,13 @@ export class Login extends React.Component<Props, StateProps> {
     validPassword: false
   }
   render() {
-    const { formatMessage, handleForgotPassword, login } = this.props
+    const {
+      formatMessage,
+      login,
+      handleOpenForgotPassword,
+      forgotPasswordOpen,
+      loading
+    } = this.props
     const { email, password } = this.state
     const renderView = (
       <LoginContainer>
@@ -68,7 +78,7 @@ export class Login extends React.Component<Props, StateProps> {
             onChange={this.handleInputChange}
           />
           <RememberMeRow>
-            <ForgotPasswordLabel onClick={handleForgotPassword}>
+            <ForgotPasswordLabel onClick={handleOpenForgotPassword}>
               {formatMessage(messages.forgotPassword)}
             </ForgotPasswordLabel>
           </RememberMeRow>
@@ -86,7 +96,17 @@ export class Login extends React.Component<Props, StateProps> {
         </FormContainer>
       </LoginContainer>
     )
-    return <Container>{renderView}</Container>
+    return (
+      <Container className={loading ? 'transparent' : ''}>
+        {renderView}
+        <ForgotPassword
+          open={forgotPasswordOpen}
+          requestClose={handleOpenForgotPassword}
+          openLogin={handleOpenForgotPassword}
+          {...{ formatMessage }}
+        />
+      </Container>
+    )
   }
 
   validateMail = (mail: string) => {

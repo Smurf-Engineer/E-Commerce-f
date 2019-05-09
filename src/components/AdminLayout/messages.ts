@@ -12,5 +12,9 @@ export default defineMessages({
   orderStatus: {
     id: 'screens.AdminLayout.orderStatus',
     defaultMessage: 'Order Status'
+  },
+  logout: {
+    id: 'screens.AdminLayout.logout',
+    defaultMessage: 'LOGOUT'
   }
 })

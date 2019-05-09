@@ -18,9 +18,14 @@ export const OptionMenu = styled.div`
 
 export const Container = styled.div`
   display: flex;
+  justify-content: start;
 `
 
 export const Content = styled.div`
   padding: 15px 30px;
-  width: 100%;
+  width: 80%;
+`
+
+export const LogoutButton = styled.div`
+  padding-left: 24px !important;
 `

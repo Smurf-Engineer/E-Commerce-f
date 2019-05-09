@@ -7,6 +7,7 @@ import { compose, withApollo } from 'react-apollo'
 import queryString from 'query-string'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import Spin from 'antd/lib/spin'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   restoreUserSession,
@@ -15,7 +16,7 @@ import {
 import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
-import OrderHistory from '../../components/OrderHistory'
+import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
 import * as adminActions from './actions'
@@ -25,13 +26,13 @@ import { ORDER_STATUS } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
-  Container,
+  AdminContainer,
   Header,
   ContentHeader,
   LogoIcon,
   DesignerLink,
   Content,
-  LayoutContent
+  LoadingContainer
 } from './styledComponents'
 import { UserType } from '../../types/common'
 
@@ -43,6 +44,9 @@ interface Props extends RouteComponentProps<any> {
   defaultScreen: string
   user: UserType
   history: any
+  loading: boolean
+  client: any
+  forgotPasswordOpen: boolean
   // Redux actions
   logoutAction: () => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
@@ -52,9 +56,15 @@ interface Props extends RouteComponentProps<any> {
   saveUserSessionAction: (user: object) => void
   requestClose: () => void
   loginWithEmail: (variables: {}) => void
+  setLoadingAction: (loading: boolean) => void
+  openForgotPasswordAction: () => void
 }
 
 export class Admin extends React.Component<Props, {}> {
+  componentDidMount() {
+    const { setLoadingAction } = this.props
+    setLoadingAction(false)
+  }
   componentWillUnmount() {
     const { clearReducerAction } = this.props
     clearReducerAction()
@@ -80,16 +90,6 @@ export class Admin extends React.Component<Props, {}> {
     setDefaultScreenAction(ORDER_STATUS)
   }
 
-  handleOnGoToScreen = (screen: string) => {
-    const { setCurrentScreenAction } = this.props
-    setCurrentScreenAction(screen)
-  }
-
-  handleOpenSidebar = () => {
-    const { openSidebar, openSidebarMobile } = this.props
-    openSidebarMobile(!openSidebar)
-  }
-
   onLogout = () => {
     const {
       logoutAction: logout,
@@ -107,17 +107,27 @@ export class Admin extends React.Component<Props, {}> {
     const {
       intl: { formatMessage },
       user,
-      saveUserSessionAction,
+      openForgotPasswordAction,
       intl,
-      history
+      history,
+      loading,
+      forgotPasswordOpen
     } = this.props
+    if (loading) {
+      return (
+        <LoadingContainer>
+          <Spin />
+        </LoadingContainer>
+      )
+    }
     if (!user || !user.administrator) {
       return (
         <Content>
           <Login
-            {...{ formatMessage }}
-            login={saveUserSessionAction}
+            {...{ formatMessage, forgotPasswordOpen, loading }}
+            login={this.handleLogin}
             loginWithEmail={this.handleMailLogin}
+            handleOpenForgotPassword={openForgotPasswordAction}
           />
         </Content>
       )
@@ -125,23 +135,26 @@ export class Admin extends React.Component<Props, {}> {
     let currentScreen
     switch (screen) {
       case ORDER_STATUS:
-        currentScreen = <OrderHistory {...{ history, formatMessage }} />
+        currentScreen = <OrderHistoryAdmin {...{ history, formatMessage }} />
         break
       default:
         break
     }
-    return (
-      <LayoutContent>
-        <AdminLayout {...{ history, intl }}>{currentScreen}</AdminLayout>
-      </LayoutContent>
-    )
+    return <AdminLayout {...{ history, intl }}>{currentScreen}</AdminLayout>
+  }
+  handleLogin = (userData: any) => {
+    const { saveUserSessionAction, setLoadingAction } = this.props
+    saveUserSessionAction(userData)
+    setLoadingAction(false)
   }
   handleMailLogin = async (email: string, password: string) => {
     const {
       loginWithEmail,
       intl: { formatMessage },
-      saveUserSessionAction
+      saveUserSessionAction,
+      setLoadingAction
     } = this.props
+    setLoadingAction(true)
     try {
       const loginData = await loginWithEmail({ variables: { email, password } })
       const data = get(loginData, 'data.login', false)
@@ -166,11 +179,13 @@ export class Admin extends React.Component<Props, {}> {
           message.error(formatMessage(messages.forbidden))
         }
       }
+      setLoadingAction(false)
     } catch (error) {
       const errorMessage =
         error.graphQLErrors.map((x: any) => x.message) || error.message
       message.error(errorMessage)
       console.error(error)
+      setLoadingAction(false)
     }
   }
 
@@ -179,7 +194,7 @@ export class Admin extends React.Component<Props, {}> {
 
     const currentScreen = this.getScreenComponent(screen)
     return (
-      <Container>
+      <AdminContainer>
         <Header>
           <ContentHeader>
             <LogoIcon src={logo} />
@@ -189,7 +204,7 @@ export class Admin extends React.Component<Props, {}> {
           </ContentHeader>
         </Header>
         {currentScreen}
-      </Container>
+      </AdminContainer>
     )
   }
 }

@@ -485,6 +485,11 @@ export interface CartItems {
   designImage?: string
   designCode?: string
   teamStoreId?: string
+  bibBraceColor?: string
+  flatlockCode?: string
+  zipperColor?: string
+  bindingColor?: string
+  flatlock?: string
 }
 
 export interface CreditCardData {
@@ -508,9 +513,11 @@ export interface OrderHistory {
   id: number
   shortId: string
   date: string
-  estimatedDate: string
+  estimatedDate?: string
   status: string
   netsuite?: NetsuiteObject
+  clientId?: string
+  netsuiteAttempts: number
 }
 
 export interface FulfillmentNetsuite {

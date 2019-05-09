@@ -17,7 +17,13 @@ import { UserType, Font, SimpleFont } from '../../types/common'
 import { getTeamStoreStatus, getFonts } from './data'
 import * as adminLayoutActions from './api'
 import { options } from './constants'
-import { SideBar, Container, OptionMenu, Content } from './styledComponents'
+import {
+  SideBar,
+  Container,
+  OptionMenu,
+  Content,
+  LogoutButton
+} from './styledComponents'
 
 const { SubMenu } = Menu
 
@@ -89,7 +95,6 @@ class AdminLayout extends React.Component<Props, {}> {
   render() {
     const {
       children,
-      user,
       fonts,
       defaultScreen,
       intl,
@@ -115,6 +120,14 @@ class AdminLayout extends React.Component<Props, {}> {
       )
     )
 
+    const logoutButton = (
+      <LogoutButton>
+        <OptionMenu onClick={this.onLogout}>
+          {intl.formatMessage(messages.logout)}
+        </OptionMenu>
+      </LogoutButton>
+    )
+
     return (
       <Container>
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
@@ -129,6 +142,7 @@ class AdminLayout extends React.Component<Props, {}> {
           >
             {menuOptions}
           </Menu>
+          {logoutButton}
         </SideBar>
         <Content>{children}</Content>
       </Container>

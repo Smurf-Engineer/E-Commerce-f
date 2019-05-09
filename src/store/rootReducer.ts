@@ -35,6 +35,7 @@ import warrantyProgram from '../screens/WarrantyProgram/reducer'
 import myLocker from '../components/MyLocker/reducer'
 import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
+import orderHistoryAdmin from '../components/orderHistoryAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
@@ -87,6 +88,7 @@ export interface ReducersObject {
   myLocker: any
   myFiles: any
   orderHistory: any
+  orderHistoryAdmin: any
   overview: any
   fitAndSizing: any
   admin: any
@@ -189,6 +191,7 @@ const rootReducer = combineReducers({
   myLocker,
   myFiles,
   orderHistory,
+  orderHistoryAdmin,
   overview,
   fitAndSizing,
   responsive: responsiveReducer,

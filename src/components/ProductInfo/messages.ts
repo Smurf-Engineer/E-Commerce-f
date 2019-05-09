@@ -24,5 +24,25 @@ export default defineMessages({
   addMoreFor: {
     id: 'components.ProductInfo.addMoreFor',
     defaultMessage: 'Add {products} more for {price}'
+  },
+  flatlock: {
+    id: 'components.CartListItem.tittle',
+    defaultMessage: 'Flatlock'
+  },
+  flatlockCode: {
+    id: 'components.CartListItem.flatlockCode',
+    defaultMessage: 'Flatlock Code'
+  },
+  zipperColor: {
+    id: 'components.CartListItem.zipperColor',
+    defaultMessage: 'Zipper Color'
+  },
+  bindingColor: {
+    id: 'components.CartListItem.bindingColor',
+    defaultMessage: 'Binding Color'
+  },
+  bibbraceColor: {
+    id: 'components.CartListItem.bibbraceColor',
+    defaultMessage: 'Bib Brace Color'
   }
 })
