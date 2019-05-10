@@ -4,6 +4,7 @@
 const namespace = 'src/Admin'
 
 export const ORDER_STATUS = 'orderStatus'
+export const PRODUCT_CATALOG = 'productCatalog'
 
 export const SET_DEFAULT_SCREEN = `${namespace}/SET_DEFAULT_SCREEN`
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`

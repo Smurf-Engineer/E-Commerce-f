@@ -13,6 +13,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.orderStatus',
     defaultMessage: 'Order Status'
   },
+  productCatalog: {
+    id: 'screens.AdminLayout.productCatalog',
+    defaultMessage: 'PRODUCT CATALOG'
+  },
   logout: {
     id: 'screens.AdminLayout.logout',
     defaultMessage: 'LOGOUT'
