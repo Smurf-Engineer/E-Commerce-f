@@ -18,21 +18,6 @@ export const fadeIn = keyframes`
     opacity: 1;
   }
 `
-export const TutorialCircle = styled.div`
-  background: #ffca2c;
-  position: absolute;
-  z-index: 2;
-  bottom: 100px;
-  cursor: pointer;
-  right: 22px;
-  width: 60px;
-  height: 60px;
-  border-radius: 100%;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-`
 
 export const BackCircle = styled.div`
   width: 24px;

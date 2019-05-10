@@ -92,6 +92,7 @@ import {
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
 import {
   Changes,
+  CustomizeTabs,
   CanvasElements
 } from '../../../screens/DesignCenter/constants'
 import ModalFooter from '../../ModalFooter'
@@ -893,7 +894,10 @@ class Render3D extends PureComponent {
       this.setupColors(colors)
     }
   }
-
+  handleGoToTutorials = () => {
+    const { onTabClick } = this.props
+    onTabClick(CustomizeTabs.TutorialsTab)
+  }
   handleOnPressLeft = () => {
     const { currentView } = this.state
     const nextView =
@@ -1225,7 +1229,6 @@ class Render3D extends PureComponent {
       onPressQuickView,
       undoEnabled,
       redoEnabled,
-      onTabClick,
       loadingModel,
       formatMessage,
       productName,
@@ -1377,7 +1380,7 @@ class Render3D extends PureComponent {
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
-        <TutorialButton onClick={() => onTabClick(5)}>
+        <TutorialButton onClick={this.handleGoToTutorials}>
           <TutorialIcon src={tutorials} />
         </TutorialButton>
         <ViewControls>
