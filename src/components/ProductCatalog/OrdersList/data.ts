@@ -1,42 +1,36 @@
 /**
- * Account-OrdersList Queries
+ * Products-ProductsList Queries
  */
 
 import gql from 'graphql-tag'
 
-export const getOrdersQuery = gql`
-  query getOrdersStatus(
-    $limit: Int
-    $offset: Int
-    $order: String
-    $orderAs: String
-    $searchText: String
-  ) {
-    ordersQuery: getOrdersStatus(
-      limit: $limit
-      offset: $offset
-      order: $order
-      orderAs: $orderAs
-      searchText: $searchText
-    ) {
+export const getProductsQuery = gql`
+  query getProducts($limit: Int, $offset: Int) {
+    productsQuery: products(limit: $limit, offset: $offset) {
       fullCount
-      orders {
+      products {
         id
-        shortId: short_id
-        date: created_at
-        estimatedDate: estimated_date
-        status
-        clientId: user_id
-        netsuite: netsuit_order {
-          orderStatus {
-            orderStatus
-            fulfillments {
-              packages
-            }
-          }
+        code
+        name
+        isCustom: design_center
+        mpn
+        retailMen: retail_version
+        images: original_pictures {
+          front: front_image
+          back: back_image
+          left: left_image
+          right: right_image
+          genderId: gender_id
+          colorId: color_id
         }
-        netsuiteAttempts: netsuite_attempts
       }
+    }
+  }
+`
+export const changeActiveProduct = gql`
+  mutation SaveStyleImage($image: String!) {
+    style: saveStyleImage(image: $image) {
+      image
     }
   }
 `

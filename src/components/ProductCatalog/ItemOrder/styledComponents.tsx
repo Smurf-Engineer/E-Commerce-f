@@ -19,7 +19,7 @@ interface CellProps {
 export const Cell = styled.td`
   border-bottom: 1px solid #d7d7d7;
   text-align: left;
-  padding: 8px 0;
+  padding: 4px 0;
   color: ${({ color }: CellProps) => (color ? color : '#5f6062')};
   font-size: 14px;
   letter-spacing: 0.1px;
@@ -38,4 +38,10 @@ export const Cell = styled.td`
     letter-spacing: 0.09px;
     font-size: 11px;
   }
+`
+export const ImageCell = styled.img`
+  height: 82px;
+  width: 82px;
+  background-color: #f1f4f5;
+  object-fit: cover;
 `

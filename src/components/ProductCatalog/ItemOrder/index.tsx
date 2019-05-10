@@ -2,37 +2,52 @@
  * ItemOrder Component - Created by miguelcanobbio on 13/07/18.
  */
 import * as React from 'react'
-import { Container, Cell } from './styledComponents'
-import upperFirst from 'lodash/upperFirst'
-
+import { Container, Cell, ImageCell } from './styledComponents'
+import { Switch } from 'antd'
 interface Props {
-  date: string
-  clientId: string
-  trackingNumber?: string
-  status: string
-  shortId: string
-  statusError?: boolean
+  image: string
+  id: number
+  name: string
+  mpn?: string
+  code: string
+  shortId?: string
+  productType?: string
+  onStore: boolean
+  onCheck: (id: number, checked: boolean) => void
   onOrderClick: (shortId: string) => void
 }
 
 const ItemOrder = ({
-  date,
-  clientId,
-  status,
+  image,
+  name,
+  mpn,
+  code,
+  id,
   shortId,
+  productType,
   onOrderClick,
-  statusError
+  onCheck,
+  onStore
 }: Props) => {
   const handleOnClick = () => {
-    onOrderClick(shortId)
+    onOrderClick(shortId || '')
+  }
+  const onChange = (checked: boolean) => {
+    onCheck(id, checked)
   }
   return (
     <Container onClick={handleOnClick}>
-      <Cell>{shortId}</Cell>
-      <Cell>{date}</Cell>
-      <Cell>{clientId}</Cell>
-      <Cell textAlign={'right'} className={statusError ? 'error' : ''}>
-        {upperFirst(status)}
+      <Cell>
+        <ImageCell src={image} />
+      </Cell>
+      <Cell>
+        <b>{name}</b>
+      </Cell>
+      <Cell>{mpn}</Cell>
+      <Cell>{code}</Cell>
+      <Cell>{productType}</Cell>
+      <Cell textAlign="center">
+        <Switch checked={onStore} onChange={onChange} />
       </Cell>
     </Container>
   )

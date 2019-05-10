@@ -1,44 +1,44 @@
 /**
- * OrdersList -  Messages
+ * ProductList -  Messages
  */
 
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'components.OrdersList.title',
-    defaultMessage: 'Recent Orders'
+    id: 'components.ProductList.title',
+    defaultMessage: 'Recent Products'
   },
-  orderNumber: {
-    id: 'components.OrdersList.orderNumber',
-    defaultMessage: 'Order Number'
+  name: {
+    id: 'components.ProductList.name',
+    defaultMessage: 'Name'
   },
-  orderNo: {
-    id: 'components.OrdersList.orderNo',
-    defaultMessage: 'Order No.'
+  mpn: {
+    id: 'components.ProductList.mpn',
+    defaultMessage: 'MPN'
   },
-  date: {
-    id: 'components.OrdersList.date',
-    defaultMessage: 'Date'
+  productCode: {
+    id: 'components.ProductList.productCode',
+    defaultMessage: 'Product Code'
   },
-  clientId: {
-    id: 'components.OrdersList.clientId',
-    defaultMessage: 'Client ID'
+  productType: {
+    id: 'components.ProductList.productType',
+    defaultMessage: 'Product Type'
   },
-  trackingNumber: {
-    id: 'components.OrdersList.trackingNumber',
-    defaultMessage: 'Tracking Number'
+  onStore: {
+    id: 'components.ProductList.onStore',
+    defaultMessage: 'On Store'
   },
-  tracking: {
-    id: 'components.OrdersList.tracking',
-    defaultMessage: 'Tracking'
+  custom: {
+    id: 'components.ProductList.custom',
+    defaultMessage: 'Custom'
   },
-  status: {
-    id: 'components.OrdersList.status',
-    defaultMessage: 'Status'
+  inline: {
+    id: 'components.ProductList.inline',
+    defaultMessage: 'Inline'
   },
   emptyMessage: {
-    id: 'components.OrdersList.emptyMessage',
+    id: 'components.ProductList.emptyMessage',
     defaultMessage: 'No orders yet'
   }
 })

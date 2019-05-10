@@ -10,27 +10,14 @@ import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
-import {
-  OrderHistory,
-  sorts,
-  QueryProps,
-  FulfillmentNetsuite
-} from '../../../types/common'
+import { Product, sorts } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getOrdersQuery } from './data'
+import { getProductsQuery, changeActiveProduct } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
-import { PAID_STATUS, ERROR_STATUS } from '../../../constants'
-
-interface Data extends QueryProps {
-  ordersQuery: {
-    fullCount: number
-    orders: OrderHistory[]
-  }
-}
 
 interface Props {
-  data: Data
+  data: any
   formatMessage: (messageDescriptor: any) => string
   interactiveHeaders: boolean
   currentPage: number
@@ -39,6 +26,7 @@ interface Props {
   withPagination?: boolean
   withoutPadding?: boolean
   searchText: string
+  updateActiveProduct: (variables: {}) => Promise<Product>
   onSortClick: (label: string, sort: sorts) => void
   onOrderClick: (shortId: string) => void
   onChangePage: (page: number) => void
@@ -46,65 +34,48 @@ interface Props {
 
 const OrdersList = ({
   formatMessage,
-  interactiveHeaders,
-  orderBy,
-  sort,
   currentPage,
-  data: { ordersQuery },
-  onSortClick,
+  data: { productsQuery, refetch },
   onOrderClick,
   onChangePage,
+  updateActiveProduct,
   withPagination = true,
   withoutPadding = false
 }: Props) => {
-  const orders = get(ordersQuery, 'orders', []) as OrderHistory[]
-  const fullCount = get(ordersQuery, 'fullCount', 0)
+  const orders = get(productsQuery, 'products', []) as Product[]
+  const fullCount = get(productsQuery, 'fullCount', 0)
 
   if (!orders || !orders.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
-
+  const handleCheck = async (id: number, onStore: boolean) => {
+    await updateActiveProduct({ variables: { id, onStore } })
+  }
   const header = (
     <MediaQuery maxWidth={768}>
       {matches => {
         if (matches) {
           return (
             <Row>
-              <Header>{formatMessage(messages.orderNo)}</Header>
-              <Header>{formatMessage(messages.date)}</Header>
-              <Header>{formatMessage(messages.clientId)}</Header>
+              <Header>{formatMessage(messages.name)}</Header>
+              <Header>{formatMessage(messages.mpn)}</Header>
+              <Header>{formatMessage(messages.productCode)}</Header>
               <Header textAlign={'right'}>
-                {formatMessage(messages.status)}
+                {formatMessage(messages.productType)}
               </Header>
             </Row>
           )
         }
         return (
           <Row>
+            <HeaderTable label={''} />
+            <HeaderTable label={formatMessage(messages.name)} />
+            <HeaderTable label={formatMessage(messages.mpn)} />
+            <HeaderTable label={formatMessage(messages.productCode)} />
+            <HeaderTable label={formatMessage(messages.productType)} />
             <HeaderTable
-              id={'id'}
-              label={formatMessage(messages.orderNumber)}
-              sort={orderBy === 'id' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'created_at'}
-              label={formatMessage(messages.date)}
-              sort={orderBy === 'created_at' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'user_id'}
-              label={formatMessage(messages.clientId)}
-              sort={orderBy === 'user_id' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'status'}
-              label={formatMessage(messages.status)}
-              justifyContent={'flex-end'}
-              sort={orderBy === 'status' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
+              label={formatMessage(messages.onStore)}
+              justifyContent="center"
             />
           </Row>
         )
@@ -113,33 +84,19 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      {
-        shortId,
-        date,
-        clientId,
-        status,
-        netsuite,
-        netsuiteAttempts
-      }: OrderHistory,
+      { id, images, retailMen, name, mpn, code, shortId, isCustom }: Product,
       index: number
     ) => {
-      const netsuiteObject = get(netsuite, 'orderStatus')
-      const netsuiteStatus = netsuiteObject && netsuiteObject.orderStatus
-      const fulfillments = get(
-        netsuiteObject,
-        'fulfillments',
-        [] as FulfillmentNetsuite[]
-      )
-      const packages = get(fulfillments, '[0].packages')
-      const trackingNumber = (packages && packages.replace('<BR>', ', ')) || '-'
-      const errorStatus =
-        netsuiteAttempts > 0 && status === PAID_STATUS ? ERROR_STATUS : null
       return (
         <ItemOrder
           key={index}
-          statusError={errorStatus}
-          status={errorStatus || netsuiteStatus || status}
-          {...{ shortId, date, clientId, onOrderClick, trackingNumber }}
+          onCheck={handleCheck}
+          image={get(images[0], 'front', '')}
+          onStore={retailMen} // Pending change
+          productType={formatMessage(
+            isCustom ? messages.custom : messages.inline
+          )}
+          {...{ id, name, mpn, code, shortId, isCustom, onOrderClick }}
         />
       )
     }
@@ -154,7 +111,7 @@ const OrdersList = ({
       {withPagination ? (
         <Pagination
           current={currentPage}
-          pageSize={ORDERS_LIMIT}
+          pageSize={PRODUCTS_LIMIT}
           total={Number(fullCount)}
           onChange={onChangePage}
         />
@@ -171,10 +128,11 @@ interface OwnProps {
   searchText?: string
 }
 
-const ORDERS_LIMIT = 12
+const PRODUCTS_LIMIT = 12
 
 const OrdersListEnhance = compose(
-  graphql(getOrdersQuery, {
+  graphql(changeActiveProduct, { name: 'updateActiveProduct' }),
+  graphql(getProductsQuery, {
     options: ({
       currentPage,
       orderBy,
@@ -182,7 +140,7 @@ const OrdersListEnhance = compose(
       customLimit,
       searchText
     }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
+      const limit = customLimit !== undefined ? customLimit : PRODUCTS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {

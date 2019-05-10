@@ -10,6 +10,7 @@ interface ContainerProps {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 34px;
   align-items: flex-end;
   padding-right: ${({ withoutPadding }: ContainerProps) =>
     withoutPadding ? '0' : '32px'};

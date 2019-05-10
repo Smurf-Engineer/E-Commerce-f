@@ -1,5 +1,5 @@
 /**
- * OrderHistoryAdmin Component - Created by eduardoquintero on 07/05/19.
+ * ProductCatalog Component - Created by Jesús Apodaca on 09/05/19.
  */
 import * as React from 'react'
 import { compose } from 'react-apollo'
