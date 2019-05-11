@@ -51,6 +51,20 @@ export const CanvasContainer = styled.div`
   border-style: solid;
   border-color: #432021;
 `
+export const TutorialButton = styled.div`
+  position: absolute;
+  right: 0;
+  bottom: 12%;
+  border: 1px solid #bfbfbf;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+`
+export const TutorialIcon = styled.img``
 
 export const Render = styled.div`
   width: 800px;

@@ -44,6 +44,7 @@ import {
   SET_DESIGN_HAS_CHANGES,
   SET_CUSTOMIZE_3D_MOUNTED,
   SET_ART_FORMAT_ACTION,
+  SET_VIDEOS,
   SET_CANVAS_JSON_ACTION,
   SET_ACCESSORY_COLOR_ACTION,
   UPLOAD_FILE_ACTION_SUCCESS,
@@ -132,7 +133,10 @@ export const setPalettesAction = (palettes: Palette[]): AnyAction => ({
   type: SET_PALETTES_ACTION,
   palettes
 })
-
+export const setVideos = (videos: object[]): AnyAction => ({
+  type: SET_VIDEOS,
+  videos
+})
 export const setLoadingModel = (loading: boolean): AnyAction => ({
   type: SET_LOADING_MODEL,
   loading
