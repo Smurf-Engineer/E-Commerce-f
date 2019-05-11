@@ -15,10 +15,7 @@ import {
   ItemDetailsHeaderPriceDetail,
   NameContainer,
   PriceContainer,
-  AddMore,
-  DeleteItem,
   BottomDivider,
-  FooterItem,
   HeaderPriceDetailEmpty,
   DesignInfoContainer,
   DesignInfoTitle,
@@ -37,6 +34,7 @@ import {
 import messages from '../ProductInfo/messages'
 import { FormattedMessage } from 'react-intl'
 import config from '../../config/index'
+import { PERSONAL } from '../../constants'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
@@ -101,7 +99,7 @@ interface Props {
 class CartListItemAdmin extends React.Component<Props, {}> {
   getQuantity = (priceRange: PriceRange) => {
     let val = 0
-    if (priceRange.quantity === 'Personal') {
+    if (priceRange.quantity === PERSONAL) {
       val = 1
     } else if (priceRange.quantity) {
       val = parseInt(priceRange.quantity.split('-')[0], 10)
@@ -112,7 +110,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
   getPriceRange(priceRanges: PriceRange[], totalItems: number) {
     const { price } = this.props
     let markslider = { quantity: '0', price: 0 }
-    if (price.quantity !== 'Personal') {
+    if (price.quantity !== PERSONAL) {
       markslider = price
     } else {
       for (const priceRangeItem of priceRanges) {
@@ -134,7 +132,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
     const priceRange = priceRanges[priceRanges.length - 1]
     let markslider = { items: 1, price: priceRange ? priceRange.price : 0 }
     const { price } = this.props
-    if (price.quantity !== 'Personal') {
+    if (price.quantity !== PERSONAL) {
       let priceIndex = findIndex(
         priceRanges,
         pr => pr.quantity === price.quantity
@@ -201,7 +199,6 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       unitPrice,
       currentCurrency,
       currencySymbol,
-      handleAddItemDetail = () => {},
       handledeleteItemDetail = () => {},
       setLabelItemDetail = () => {},
       setDetailQuantity = () => {},
@@ -209,7 +206,6 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       setDetailGender = () => {},
       setDetailColor = () => {},
       setDetailSize = () => {},
-      removeItem = () => {},
       openFitInfoAction = () => {},
       openFitInfo
     } = this.props
@@ -220,7 +216,10 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       return itemDetail.quantity
     })
 
-    const quantitySum = quantities.reduce((a, b) => a + b, 0)
+    const quantitySum = quantities.reduce(
+      (items, currentItem) => items + currentItem,
+      0
+    )
 
     const productPriceRanges = get(cartItem, 'product.priceRange', [])
     const mpnCode = get(cartItem, 'product.mpn', '')
@@ -239,7 +238,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
 
     const itemTotal = priceRange
       ? priceRange.price * quantitySum
-      : unitPrice || 0 * quantitySum
+      : unitPrice || 0
     const total = productTotal || itemTotal
     const unitaryPrice = unitPrice || priceRange.price
 
@@ -268,16 +267,6 @@ class CartListItemAdmin extends React.Component<Props, {}> {
           openFitInfo
         }}
       />
-    )
-    const footer = (
-      <FooterItem>
-        <AddMore onClick={e => handleAddItemDetail(e, itemIndex)}>
-          {formatMessage(messages.addMore)}
-        </AddMore>
-        <DeleteItem onClick={e => removeItem(e, itemIndex)}>
-          {formatMessage(messages.delete)}
-        </DeleteItem>
-      </FooterItem>
     )
 
     const itemDetailsHeader = (
@@ -367,7 +356,6 @@ class CartListItemAdmin extends React.Component<Props, {}> {
                   {itemDetailsHeader}
                   {designInfo}
                   {table}
-                  {!onlyRead && footer}
                 </ItemDetails>
               </Container>
             )
@@ -382,10 +370,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
                   />
                   <ItemDetails>{itemDetailsHeader}</ItemDetails>
                 </ItemDetails>
-                <div>
-                  {table}
-                  {!onlyRead && footer}
-                </div>
+                <div>{table}</div>
               </Container>
             )
           }

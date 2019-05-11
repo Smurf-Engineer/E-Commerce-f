@@ -2,7 +2,7 @@
  * Styled Components - Created by gustavomedina on 04/05/18.
  */
 import styled from 'styled-components'
-import { GREEN, GRAY_DARK } from '../../theme/colors'
+import { GREEN, GRAY_DARK, GRAY_LIGHTEST } from '../../theme/colors'
 
 type StyleProps = {
   onlyRead?: boolean
@@ -57,7 +57,7 @@ export const PriceContainer = styled.div`
 `
 
 export const ItemDetailsHeaderName = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.23px;
@@ -66,14 +66,14 @@ export const ItemDetailsHeaderName = styled.div`
 `
 
 export const ItemDetailsHeaderNameDetail = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 14px;
   letter-spacing: 0.18px;
   line-height: 19px;
 `
 
 export const ItemDetailsHeaderPrice = styled.div`
-  color: #5f6062;
+  color: ${GRAY_DARK};
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.11px;
@@ -113,7 +113,7 @@ export const Image = styled.img`
   user-select: none;
   height: 200.29px;
   width: 180.44px;
-  background-color: #f1f4f5;
+  background-color: ${GRAY_LIGHTEST};
   ${({ onlyRead }: StyleProps) => (!onlyRead ? 'cursor: pointer' : '')};
 
   @media only screen and (max-width: 640px) {
@@ -122,39 +122,6 @@ export const Image = styled.img`
     max-width: 196px;
     margin: 0;
     object-fit: cover;
-  }
-`
-
-export const FooterItem = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  @media (max-width: 640px) {
-    margin-top: 12px;
-  }
-`
-
-export const AddMore = styled.div`
-  color: #5f6062;
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  cursor: pointer;
-  padding-right: 16px;
-`
-
-export const DeleteItem = styled.div`
-  margin-top: 20px;
-  color: #e61737;
-  font-size: 12px;
-  letter-spacing: 0.09px;
-  line-height: 16px;
-  cursor: pointer;
-  padding-right: 16px;
-
-  @media (max-width: 640px) {
-    margin-top: 1em;
   }
 `
 

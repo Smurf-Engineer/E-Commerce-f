@@ -76,5 +76,9 @@ export default defineMessages({
   payment: {
     id: 'components.OrderDetails.payment',
     defaultMessage: 'Payment'
+  },
+  notFound: {
+    id: 'components.OrderDetails.notFound',
+    defaultMessage: 'Order not found'
   }
 })
