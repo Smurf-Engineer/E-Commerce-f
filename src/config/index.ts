@@ -9,6 +9,7 @@ interface ConfigType {
   graphqlUriBase?: string
   baseUrl?: string
   youtubeId?: string
+  youtubeKey?: string
   storageUrl?: string
   pkStripeUS?: string
   pkStripeEU?: string
@@ -30,6 +31,7 @@ interface ConfigType {
 const config: ConfigType = {
   googleId: process.env.GOOGLE_ID,
   youtubeId: process.env.YOUTUBE_ID,
+  youtubeKey: process.env.YOUTUBE_KEY,
   facebookId: process.env.FACEBOOK_ID,
   graphqlUriBase: process.env.GRAPHQL_URI_BASE,
   baseUrl: process.env.BASE_URL,

@@ -134,7 +134,8 @@ module.exports = {
         'LOG_ROCKET_KEY',
         'GOOGLE_FONTS_KEY',
         'GOOGLE_FONTS_URL',
-        'YOUTUBE_ID'
+        'YOUTUBE_ID',
+        'YOUTUBE_KEY'
       ])
     )
 

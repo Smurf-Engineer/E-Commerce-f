@@ -9,7 +9,7 @@ export const getVideos = async (setVideos: (videos: object[]) => void) => {
     const response = await fetch(
       `${baseURL}?part=snippet%2CcontentDetails&playlistId=${
         config.youtubeId
-      }&key=AIzaSyA6QH7tHRZxXqLXH7HWBtX_gkJC56KSmSQ`,
+      }&key=${config.youtubeKey}`,
       {
         method: 'GET'
       }
