@@ -48,7 +48,7 @@ export class RegionSelect extends React.Component<Props, {}> {
               {regionItem}
             </Option>
           ) : (
-            <Option value={`${regionItem}-${regionItem}`} key={index}>
+            <Option value={`${regionItem}-${index}`} key={index}>
               {regionItem}
             </Option>
           )
