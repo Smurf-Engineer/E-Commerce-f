@@ -24,6 +24,8 @@ import {
   Row,
   QuickView,
   Button,
+  TutorialButton,
+  TutorialIcon,
   DragText,
   ViewControls,
   ViewButton,
@@ -90,6 +92,7 @@ import {
 import { BLACK, SELECTION_3D_AREA } from '../../../theme/colors'
 import {
   Changes,
+  CustomizeTabs,
   CanvasElements
 } from '../../../screens/DesignCenter/constants'
 import ModalFooter from '../../ModalFooter'
@@ -112,12 +115,13 @@ import top from '../../../assets/uparrow.svg'
 import frontIcon from '../../../assets/Cube-Front.svg'
 import leftIcon from '../../../assets/Cube_Left.svg'
 import rightIcon from '../../../assets/Cube_right.svg'
+import tutorials from '../../../assets/tutorials.svg'
 import backIcon from '../../../assets/Cube_back.svg'
 import topIcon from '../../../assets/Cube-Top.svg'
 import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
-
+import config from '../../../config'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
 
@@ -445,7 +449,9 @@ class Render3D extends PureComponent {
       }
       const temporalCanvasTexture = cloneDeep(this.canvasTexture.getObjects())
       temporalCanvasTexture.forEach(el => {
-        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(indexes[el.id])
+        find(this.canvasTexture.getObjects(), obj => obj.id === el.id).moveTo(
+          indexes[el.id]
+        )
       })
       this.canvasTexture.renderAll()
     } catch (e) {
@@ -888,7 +894,10 @@ class Render3D extends PureComponent {
       this.setupColors(colors)
     }
   }
-
+  handleGoToTutorials = () => {
+    const { onTabClick } = this.props
+    onTabClick(CustomizeTabs.TutorialsTab)
+  }
   handleOnPressLeft = () => {
     const { currentView } = this.state
     const nextView =
@@ -1371,6 +1380,11 @@ class Render3D extends PureComponent {
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
+        {config.tutorialsTabActive === 'true' && (
+          <TutorialButton onClick={this.handleGoToTutorials}>
+            <TutorialIcon src={tutorials} />
+          </TutorialButton>
+        )}
         <ViewControls>
           <TopButton onClick={this.handleOnPressTop} src={top} />
           <BottomControls>

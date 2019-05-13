@@ -122,6 +122,7 @@ interface Props extends RouteComponentProps<any> {
   paletteName: string
   colors: string[]
   design: SaveDesignType
+  videos: object[]
   styleColors: string[]
   loadingModel: boolean
   undoChanges: Change[]
@@ -185,6 +186,7 @@ interface Props extends RouteComponentProps<any> {
   setCurrentTabAction: (index: number) => void
   openQuickViewAction: (index: number) => void
   setColorBlockAction: (index: number) => void
+  setVideos: (videos: object[]) => void
   setHoverColorBlockAction: (index: number) => void
   setColorAction: (color: string) => void
   setPaletteAction: (colors: string[]) => void
@@ -514,6 +516,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       text,
       currentTab,
       tabChanged,
+      videos,
       setColorBlockAction,
       setHoverColorBlockAction,
       setPaletteAction,
@@ -524,6 +527,7 @@ export class DesignCenter extends React.Component<Props, {}> {
       palettes,
       openSaveDesign,
       setPalettesAction,
+      setVideos,
       swipingView,
       colors,
       design,
@@ -868,6 +872,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   colorBlock,
                   colorBlockHovered,
                   colors,
+                  videos,
                   loadingModel,
                   swipingView,
                   styleColors,
@@ -913,6 +918,7 @@ export class DesignCenter extends React.Component<Props, {}> {
                   infoModalOpen,
                   selectedTab,
                   colorsList,
+                  setVideos,
                   placeholders,
                   openResetPlaceholderModal,
                   colorChartSending,
@@ -1140,7 +1146,6 @@ export class DesignCenter extends React.Component<Props, {}> {
       })
     }
   }
-
   handleOnGoBack = () => {
     const { setCurrentTabAction, currentTab, loadingModel } = this.props
     if (!loadingModel) {

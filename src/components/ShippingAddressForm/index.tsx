@@ -3,7 +3,11 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { isNumberValue, isPoBox, isApoCity } from '../../utils/utilsAddressValidation'
+import {
+  isNumberValue,
+  isPoBox,
+  isApoCity
+} from '../../utils/utilsAddressValidation'
 import { PHONE_FIELD } from '../../constants'
 import {
   ShippingFormContainer,
@@ -96,10 +100,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               onChange={this.handleInputChange}
               maxLength="50"
             />
-            {!firstName &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!firstName && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
           <Column inputhWidth={'49%'}>
             <InputTitleContainer>
@@ -112,10 +115,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               onChange={this.handleInputChange}
               maxLength="50"
             />
-            {!lastName &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!lastName && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
         </Row>
         <Row>
@@ -133,14 +135,14 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               value={street}
               onChange={this.handleInputChange}
             />
-            {!street &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
-            {this.hasAddressError(street, city) &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredAddressLabel)}</ErrorMsg>
-              )}
+            {!street && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
+            {this.hasAddressError(street, city) && hasError && (
+              <ErrorMsg>
+                {formatMessage(messages.requiredAddressLabel)}
+              </ErrorMsg>
+            )}
             <StyledInput
               id="apartment"
               placeholder={formatMessage(messages.apartmentSuiteLabel)}
@@ -164,10 +166,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               }
               handleCountryChange={this.handleCountryChange}
             />
-            {!country &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!country && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
           <Column inputhWidth={'32%'}>
             <InputTitleContainer>
@@ -185,10 +186,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               }
               handleRegionChange={this.handleRegionChange}
             />
-            {!stateProvince &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!stateProvince && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
           <Column inputhWidth={'32%'}>
             <InputTitleContainer>
@@ -201,10 +201,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               onChange={this.handleInputChange}
               maxLength="100"
             />
-            {!city &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!city && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
         </Row>
         <Row>
@@ -219,10 +218,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               onChange={this.handleInputChange}
               maxLength="20"
             />
-            {!zipCode &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!zipCode && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
           <Column inputhWidth={'49%'}>
             <InputTitleContainer>
@@ -235,10 +233,9 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
               onChange={this.handleInputChange}
               maxLength="20"
             />
-            {!phone &&
-              hasError && (
-                <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
-              )}
+            {!phone && hasError && (
+              <ErrorMsg>{formatMessage(messages.requiredLabel)}</ErrorMsg>
+            )}
           </Column>
         </Row>
       </ShippingFormContainer>

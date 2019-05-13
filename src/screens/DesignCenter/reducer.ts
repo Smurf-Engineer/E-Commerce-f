@@ -64,6 +64,7 @@ import {
   WHITE,
   BLACK,
   AccessoryColors,
+  SET_VIDEOS,
   ElementsToApplyScale,
   ON_CLOSE_INFO,
   SET_AUTOMATIC_SAVE,
@@ -92,6 +93,7 @@ export const initialState = fromJS({
   palettes: [],
   paletteName: '',
   designName: '',
+  videos: [],
   loadingModel: false,
   undoChanges: [],
   redoChanges: [],
@@ -181,6 +183,8 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
         tabChanged: true
       })
     }
+    case SET_VIDEOS:
+      return state.set('videos', action.videos)
     case SET_COLOR_BLOCK_ACTION:
       return state.set('colorBlock', action.index)
     case COLOR_BLOCK_HOVERED_ACTION:
