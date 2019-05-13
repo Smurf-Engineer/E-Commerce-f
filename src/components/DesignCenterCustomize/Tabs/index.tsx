@@ -30,6 +30,7 @@ import {
   UserInfo
 } from '../../../types/common'
 import { Container } from './styledComponents'
+import config from '../../../config'
 import { CanvasElements } from '../../../screens/DesignCenter/constants'
 
 const { TabPane } = AntdTabs
@@ -255,9 +256,11 @@ const Tabs = ({
             }
           />
         </TabPane>
-        <TabPane tab={<Tab label="tutorials" icon={tutorials} />} key="5">
-          <TutorialsTab {...{ formatMessage, videos, setVideos }} />
-        </TabPane>
+        {config.tutorialsTabActive === 'true' && (
+          <TabPane tab={<Tab label="tutorials" icon={tutorials} />} key="5">
+            <TutorialsTab {...{ formatMessage, videos, setVideos }} />
+          </TabPane>
+        )}
       </AntdTabs>
     </Container>
   )

@@ -26,6 +26,7 @@ interface ConfigType {
   logrocketId?: string
   googleFontsKey?: string
   googleFontsUrl?: string
+  tutorialsTabActive?: string
 }
 
 const config: ConfigType = {
@@ -49,7 +50,8 @@ const config: ConfigType = {
   googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID,
   logrocketId: process.env.LOG_ROCKET_KEY,
   googleFontsKey: process.env.GOOGLE_FONTS_KEY,
-  googleFontsUrl: process.env.GOOGLE_FONTS_URL
+  googleFontsUrl: process.env.GOOGLE_FONTS_URL,
+  tutorialsTabActive: process.env.TUTORIALS_TAB_ACTIVE
 }
 
 export default config

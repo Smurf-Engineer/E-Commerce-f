@@ -121,7 +121,7 @@ import topIcon from '../../../assets/Cube-Top.svg'
 import hintImg from '../../../assets/designCenterhelpHint.jpg'
 import mobileHintImg from '../../../assets/designCenterhelpMobileHint.png'
 import helpTooltip from '../../../assets/tooltip.svg'
-
+import config from '../../../config'
 const cubeViews = [backIcon, rightIcon, frontIcon, leftIcon, topIcon]
 const { info } = Modal
 
@@ -1380,9 +1380,11 @@ class Render3D extends PureComponent {
           onClickResetPlaceholder={this.handleOnOpenPlaceholderModal}
         />
         <Slider onChangeZoom={this.handleOnChangeZoom} />
-        <TutorialButton onClick={this.handleGoToTutorials}>
-          <TutorialIcon src={tutorials} />
-        </TutorialButton>
+        {config.tutorialsTabActive === 'true' && (
+          <TutorialButton onClick={this.handleGoToTutorials}>
+            <TutorialIcon src={tutorials} />
+          </TutorialButton>
+        )}
         <ViewControls>
           <TopButton onClick={this.handleOnPressTop} src={top} />
           <BottomControls>
