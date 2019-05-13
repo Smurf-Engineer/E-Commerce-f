@@ -33,9 +33,6 @@ export class RegionSelect extends React.Component<Props, {}> {
       value.substr(value.indexOf('-') + 1, value.length)
     )
   }
-  hasStates = () => {
-    return 'Hola'
-  }
 
   handleFilter = (input: string, { props }: any) =>
     props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
@@ -43,7 +40,6 @@ export class RegionSelect extends React.Component<Props, {}> {
   render() {
     const { data, region, formatMessage, disabled } = this.props
     let dropdownOptions: any = []
-
     if (data && data.regions && data.regions.length) {
       dropdownOptions = data.regions.map(
         ({ region: regionItem, code }, index) => {

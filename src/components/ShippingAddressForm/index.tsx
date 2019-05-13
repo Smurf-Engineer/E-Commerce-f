@@ -3,8 +3,6 @@
  */
 import * as React from 'react'
 import messages from './messages'
-import { compose, withApollo } from 'react-apollo'
-
 import {
   isNumberValue,
   isPoBox,
@@ -303,5 +301,4 @@ class ShippingAddressForm extends React.Component<Props, StateProps> {
   }
 }
 
-const ShippingAddressFormEnhance = compose(withApollo)(ShippingAddressForm)
-export default ShippingAddressFormEnhance
+export default ShippingAddressForm
