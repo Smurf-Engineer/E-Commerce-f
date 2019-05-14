@@ -133,7 +133,10 @@ module.exports = {
         'GOOGLE_TAG_MANAGER_ID',
         'LOG_ROCKET_KEY',
         'GOOGLE_FONTS_KEY',
-        'GOOGLE_FONTS_URL'
+        'GOOGLE_FONTS_URL',
+        'YOUTUBE_ID',
+        'YOUTUBE_KEY',
+        'TUTORIALS_TAB_ACTIVE'
       ])
     )
 

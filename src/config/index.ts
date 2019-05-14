@@ -8,6 +8,8 @@ interface ConfigType {
   facebookId?: string
   graphqlUriBase?: string
   baseUrl?: string
+  youtubeId?: string
+  youtubeKey?: string
   storageUrl?: string
   pkStripeUS?: string
   pkStripeEU?: string
@@ -24,10 +26,13 @@ interface ConfigType {
   logrocketId?: string
   googleFontsKey?: string
   googleFontsUrl?: string
+  tutorialsTabActive?: string
 }
 
 const config: ConfigType = {
   googleId: process.env.GOOGLE_ID,
+  youtubeId: process.env.YOUTUBE_ID,
+  youtubeKey: process.env.YOUTUBE_KEY,
   facebookId: process.env.FACEBOOK_ID,
   graphqlUriBase: process.env.GRAPHQL_URI_BASE,
   baseUrl: process.env.BASE_URL,
@@ -45,7 +50,8 @@ const config: ConfigType = {
   googleTagManagerId: process.env.GOOGLE_TAG_MANAGER_ID,
   logrocketId: process.env.LOG_ROCKET_KEY,
   googleFontsKey: process.env.GOOGLE_FONTS_KEY,
-  googleFontsUrl: process.env.GOOGLE_FONTS_URL
+  googleFontsUrl: process.env.GOOGLE_FONTS_URL,
+  tutorialsTabActive: process.env.TUTORIALS_TAB_ACTIVE
 }
 
 export default config
