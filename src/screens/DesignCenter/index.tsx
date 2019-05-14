@@ -1019,7 +1019,6 @@ export class DesignCenter extends React.Component<Props, {}> {
             ) : (
               <div />
             )}
-            {console.log(productConfig)}
           </SwipeableViews>
           <SaveDesign
             {...{
@@ -1041,10 +1040,7 @@ export class DesignCenter extends React.Component<Props, {}> {
             productMpn={get(product, 'mpn', '')}
             design={!!design.canvasJson ? design : designObject}
             hasFlatlock={!!productConfig && !!productConfig.flatlock}
-            hasZipper={
-              !!productConfig &&
-              !!productConfig.zipper
-            }
+            hasZipper={!!productConfig && !!productConfig.zipper}
             hasBinding={!!productConfig && !!productConfig.binding}
             hasBibBrace={!!productConfig && !!productConfig.bibBrace}
             open={openSaveDesign}
