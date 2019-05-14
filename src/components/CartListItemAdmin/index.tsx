@@ -7,77 +7,23 @@ import MediaQuery from 'react-responsive'
 import {
   Container,
   Image,
-  ItemDetails,
-  ItemDetailsHeader,
-  ItemDetailsHeaderName,
-  ItemDetailsHeaderPrice,
-  ItemDetailsHeaderNameDetail,
-  ItemDetailsHeaderPriceDetail,
-  NameContainer,
-  PriceContainer,
-  BottomDivider,
-  HeaderPriceDetailEmpty,
-  DesignInfoContainer,
-  DesignInfoTitle,
-  DesignInfoSubtitle,
-  DesignInfoBox
+  ItemDetailsStyle,
+  BottomDivider
 } from './styledComponents'
 import get from 'lodash/get'
 import filter from 'lodash/filter'
 import CartListItemTable from '../../components/CartListItemTable'
-import {
-  PriceRange,
-  ItemDetailType,
-  CartItems,
-  ProductColors
-} from '../../types/common'
-import messages from '../ProductInfo/messages'
-import { FormattedMessage } from 'react-intl'
+import { PriceRange, CartItems } from '../../types/common'
 import config from '../../config/index'
 import { PERSONAL } from '../../constants'
+import ItemDetails from './ItemDetails'
+import DesignInfo from './DesignInfo'
 
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   handleAddItemDetail?: (
     event: React.MouseEvent<EventTarget>,
     index: number
-  ) => void
-  removeItem?: (event: React.MouseEvent<EventTarget>, index: number) => void
-  handledeleteItemDetail?: (
-    event: React.MouseEvent<EventTarget>,
-    index: number,
-    detailIndex: number
-  ) => void
-  setLabelItemDetail?: (
-    index: number,
-    detailIndex: number,
-    label: string
-  ) => void
-  setDetailQuantity?: (
-    index: number,
-    detailIndex: number,
-    quantity: number
-  ) => void
-
-  setDetailFit?: (
-    index: number,
-    detailIndex: number,
-    fit: ItemDetailType
-  ) => void
-  setDetailGender?: (
-    index: number,
-    detailIndex: number,
-    gender: ItemDetailType
-  ) => void
-  setDetailColor?: (
-    index: number,
-    detailIndex: number,
-    color: ProductColors
-  ) => void
-  setDetailSize?: (
-    index: number,
-    detailIndex: number,
-    size: ItemDetailType
   ) => void
   openFitInfoAction: (open: boolean, selectedIndex: number) => void
 
@@ -199,13 +145,6 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       unitPrice,
       currentCurrency,
       currencySymbol,
-      handledeleteItemDetail = () => {},
-      setLabelItemDetail = () => {},
-      setDetailQuantity = () => {},
-      setDetailFit = () => {},
-      setDetailGender = () => {},
-      setDetailColor = () => {},
-      setDetailSize = () => {},
       openFitInfoAction = () => {},
       openFitInfo
     } = this.props
@@ -255,14 +194,14 @@ class CartListItemAdmin extends React.Component<Props, {}> {
           onlyRead,
           cartItem,
           formatMessage,
-          handledeleteItemDetail,
+          handledeleteItemDetail: null,
           itemIndex,
-          setDetailColor,
-          setLabelItemDetail,
-          setDetailQuantity,
-          setDetailFit,
-          setDetailGender,
-          setDetailSize,
+          setDetailColor: null,
+          setLabelItemDetail: null,
+          setDetailQuantity: null,
+          setDetailFit: null,
+          setDetailGender: null,
+          setDetailSize: null,
           openFitInfoAction,
           openFitInfo
         }}
@@ -270,77 +209,23 @@ class CartListItemAdmin extends React.Component<Props, {}> {
     )
 
     const itemDetailsHeader = (
-      <ItemDetailsHeader>
-        <NameContainer>
-          <ItemDetailsHeaderName>{title}</ItemDetailsHeaderName>
-          <ItemDetailsHeaderNameDetail>
-            {description}
-          </ItemDetailsHeaderNameDetail>
-          <div>{designCode || mpnCode}</div>
-        </NameContainer>
-        <PriceContainer>
-          <ItemDetailsHeaderPrice>
-            {`${symbol} ${(total || 0).toFixed(2)}`}
-          </ItemDetailsHeaderPrice>
-          <ItemDetailsHeaderPriceDetail>
-            {`${formatMessage(messages.unitPrice)} ${symbol} ${(
-              unitaryPrice || 0
-            ).toFixed(2)}`}
-          </ItemDetailsHeaderPriceDetail>
-          {!onlyRead && designId && nextPrice.items > 0 ? (
-            <ItemDetailsHeaderPriceDetail highlighted={true}>
-              <FormattedMessage
-                {...messages.addMoreFor}
-                values={{
-                  price: `${symbol} ${nextPrice.price.toFixed(2)}`,
-                  products: nextPrice.items
-                }}
-              />
-            </ItemDetailsHeaderPriceDetail>
-          ) : (
-            <HeaderPriceDetailEmpty />
-          )}
-        </PriceContainer>
-      </ItemDetailsHeader>
+      <ItemDetails
+        {...{
+          title,
+          description,
+          designCode,
+          mpnCode,
+          symbol,
+          total,
+          onlyRead,
+          designId,
+          nextPrice,
+          unitaryPrice,
+          formatMessage
+        }}
+      />
     )
-    const designInfo = (
-      <DesignInfoContainer>
-        <DesignInfoBox>
-          <DesignInfoTitle> {formatMessage(messages.flatlock)}</DesignInfoTitle>
-          <DesignInfoSubtitle>{cartItem.flatlock || '-'} </DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.flatlockCode)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>
-            {cartItem.flatlockCode || '-'}
-          </DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.zipperColor)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>{cartItem.zipperColor || '-'}</DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.bindingColor)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>
-            {cartItem.bindingColor || '-'}
-          </DesignInfoSubtitle>
-        </DesignInfoBox>
-        <DesignInfoBox>
-          <DesignInfoTitle>
-            {formatMessage(messages.bibbraceColor)}
-          </DesignInfoTitle>
-          <DesignInfoSubtitle>
-            {cartItem.bibBraceColor || '-'}
-          </DesignInfoSubtitle>
-        </DesignInfoBox>
-      </DesignInfoContainer>
-    )
+    const designInfo = <DesignInfo {...{ cartItem, formatMessage }} />
     const renderView = (
       <MediaQuery minWidth={'641px'}>
         {matches => {
@@ -352,24 +237,24 @@ class CartListItemAdmin extends React.Component<Props, {}> {
                   src={image}
                   onClick={this.gotToProductPage}
                 />
-                <ItemDetails>
+                <ItemDetailsStyle>
                   {itemDetailsHeader}
                   {designInfo}
                   {table}
-                </ItemDetails>
+                </ItemDetailsStyle>
               </Container>
             )
           } else {
             return (
               <Container>
-                <ItemDetails>
+                <ItemDetailsStyle>
                   <Image
                     {...{ onlyRead }}
                     src={image}
                     onClick={this.gotToProductPage}
                   />
-                  <ItemDetails>{itemDetailsHeader}</ItemDetails>
-                </ItemDetails>
+                  <ItemDetailsStyle>{itemDetailsHeader}</ItemDetailsStyle>
+                </ItemDetailsStyle>
                 <div>{table}</div>
               </Container>
             )

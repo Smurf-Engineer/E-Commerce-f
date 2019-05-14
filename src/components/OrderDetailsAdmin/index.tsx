@@ -67,8 +67,7 @@ interface Props {
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
   render() {
     const { data, orderId, formatMessage, currentCurrency } = this.props
-    console.log(data)
-    if (data && data.loading) {
+    if ((data && data.loading) || !data) {
       return (
         <LoadingContainer>
           <Spin />
@@ -80,7 +79,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       return null
     }
 
-    if (!data || !data.orderQuery) {
+    if (data && data.error) {
       return (
         <Container>
           <ViewContainer onClick={this.handleOnReturn}>
@@ -185,7 +184,6 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
               price={priceRange}
               itemIndex={index}
               onlyRead={true}
-              canReorder={false}
             />
           )
         })
@@ -309,8 +307,9 @@ interface OwnProps {
 const OrderDetailsAdminEnhance = compose(
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
+      fetchPolicy: 'network-only',
       skip: !orderId,
-      variables: { orderId },
+      variables: { orderId, global: true },
       notifyOnNetworkStatusChange: true
     })
   })

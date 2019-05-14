@@ -5,8 +5,8 @@
 import gql from 'graphql-tag'
 
 export const getOrderQuery = gql`
-  query GetOrder($orderId: String!) {
-    orderQuery: getOrder(orderId: $orderId, global: true) {
+  query GetOrder($orderId: String!, $global: Boolean!) {
+    orderQuery: getOrder(orderId: $orderId, global: $global) {
       id
       shortId: short_id
       charge_id

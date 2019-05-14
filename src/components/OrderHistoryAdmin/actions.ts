@@ -9,6 +9,7 @@ import {
   SET_ORDER_ID,
   SET_SEARCH_TEXT
 } from './constants'
+
 import { AnyAction, sorts } from '../../types/common'
 
 export const setOrderByAction = (orderBy: string, sort: sorts): AnyAction => ({
