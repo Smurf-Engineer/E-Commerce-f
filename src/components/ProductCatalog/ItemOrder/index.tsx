@@ -12,45 +12,54 @@ interface Props {
   code: string
   shortId?: string
   productType?: string
-  onStore: boolean
-  onCheck: (id: number, checked: boolean) => void
+  active: boolean
+  onCheck: (id: number) => void
   onOrderClick: (shortId: string) => void
 }
 
-const ItemOrder = ({
-  image,
-  name,
-  mpn,
-  code,
-  id,
-  shortId,
-  productType,
-  onOrderClick,
-  onCheck,
-  onStore
-}: Props) => {
-  const handleOnClick = () => {
+interface State {
+  loading: boolean
+}
+class ItemOrder extends React.PureComponent<Props, State> {
+  state = {
+    loading: false
+  }
+  componentDidUpdate(prevProps: Props) {
+    const { active: newActive } = this.props
+    const { active: oldActive } = prevProps
+    if (oldActive !== newActive) {
+      this.setState({ loading: false })
+    }
+  }
+  handleOnClick = () => {
+    const { onOrderClick, shortId } = this.props
     onOrderClick(shortId || '')
   }
-  const onChange = (checked: boolean) => {
-    onCheck(id, checked)
+  onChange = () => {
+    const { onCheck, id } = this.props
+    this.setState({ loading: true })
+    onCheck(id)
   }
-  return (
-    <Container onClick={handleOnClick}>
-      <Cell>
-        <ImageCell src={image} />
-      </Cell>
-      <Cell>
-        <b>{name}</b>
-      </Cell>
-      <Cell>{mpn}</Cell>
-      <Cell>{code}</Cell>
-      <Cell>{productType}</Cell>
-      <Cell textAlign="center">
-        <Switch checked={onStore} onChange={onChange} />
-      </Cell>
-    </Container>
-  )
+  render() {
+    const { loading } = this.state
+    const { image, name, mpn, code, productType, active } = this.props
+    return (
+      <Container onClick={this.handleOnClick}>
+        <Cell>
+          <ImageCell src={image} />
+        </Cell>
+        <Cell>
+          <b>{name}</b>
+        </Cell>
+        <Cell>{mpn}</Cell>
+        <Cell>{code}</Cell>
+        <Cell>{productType}</Cell>
+        <Cell textAlign="center">
+          <Switch checked={active} loading={loading} onChange={this.onChange} />
+        </Cell>
+      </Container>
+    )
+  }
 }
 
 export default ItemOrder

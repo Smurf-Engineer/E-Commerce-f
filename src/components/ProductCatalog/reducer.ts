@@ -20,7 +20,7 @@ export const initialState = fromJS({
   searchText: ''
 })
 
-const orderHistoryAdminReducer: Reducer<any> = (
+const productCatalogAdminReducer: Reducer<any> = (
   state = initialState,
   action
 ) => {
@@ -34,10 +34,10 @@ const orderHistoryAdminReducer: Reducer<any> = (
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
-      return state.set('searchText', action.searchText)
+      return state.set('searchText', action.searchText).set('currentPage', 1)
     default:
       return state
   }
 }
 
-export default orderHistoryAdminReducer
+export default productCatalogAdminReducer

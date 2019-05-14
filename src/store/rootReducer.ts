@@ -36,6 +36,7 @@ import myLocker from '../components/MyLocker/reducer'
 import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import orderHistoryAdmin from '../components/orderHistoryAdmin/reducer'
+import productCatalogAdmin from '../components/ProductCatalog/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
@@ -75,6 +76,7 @@ export interface ReducersObject {
   reset: any
   app: any
   menuGender: any
+  productCatalogAdmin: any
   menuSports: any
   layout: any
   menu: any
@@ -175,6 +177,7 @@ const rootReducer = combineReducers({
   designs,
   productDetail,
   productCatalog,
+  productCatalogAdmin,
   designCenter,
   languageProvider,
   menu,

@@ -116,7 +116,7 @@ class ProductCatalog extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: any) => state.get('orderHistoryAdmin').toJS()
+const mapStateToProps = (state: any) => state.get('productCatalogAdmin').toJS()
 
 const ProductCatalogEnhance = compose(
   connect(

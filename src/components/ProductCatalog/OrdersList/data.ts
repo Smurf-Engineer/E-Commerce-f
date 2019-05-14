@@ -5,16 +5,21 @@
 import gql from 'graphql-tag'
 
 export const getProductsQuery = gql`
-  query getProducts($limit: Int, $offset: Int) {
-    productsQuery: products(limit: $limit, offset: $offset) {
+  query getProducts($limit: Int, $offset: Int, $text: String) {
+    productsQuery: products(
+      limit: $limit
+      offset: $offset
+      onlyActive: false
+      text: $text
+    ) {
       fullCount
       products {
         id
         code
         name
+        active
         isCustom: design_center
         mpn
-        retailMen: retail_version
         images: original_pictures {
           front: front_image
           back: back_image
@@ -28,9 +33,10 @@ export const getProductsQuery = gql`
   }
 `
 export const changeActiveProduct = gql`
-  mutation SaveStyleImage($image: String!) {
-    style: saveStyleImage(image: $image) {
-      image
+  mutation toggleActive($id: Int!) {
+    productResult: toggleActive(id: $id) {
+      id
+      active
     }
   }
 `
