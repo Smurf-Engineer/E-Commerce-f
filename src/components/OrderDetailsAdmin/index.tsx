@@ -307,7 +307,6 @@ interface OwnProps {
 const OrderDetailsAdminEnhance = compose(
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
-      fetchPolicy: 'network-only',
       skip: !orderId,
       variables: { orderId, global: true },
       notifyOnNetworkStatusChange: true
