@@ -112,6 +112,7 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  hasZipper: boolean
   // Redux actions
   onUploadFile: (file: any) => void
   onSelectColorBlock: (index: number) => void
@@ -309,7 +310,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
       onCloseColorChart,
       onCloseColorChartForm,
       onOpenFormChart,
-      onOpenColorChart
+      onOpenColorChart,
+      hasZipper
     } = this.props
 
     const showRender3d = currentTab === DesignTabs.CustomizeTab && !swipingView
@@ -375,7 +377,8 @@ class DesignCenterCustomize extends React.PureComponent<Props> {
               onCloseColorChart,
               onCloseColorChartForm,
               onOpenFormChart,
-              onOpenColorChart
+              onOpenColorChart,
+              hasZipper
             }}
             onSelectStitchingColor={setStitchingColorAction}
             onApplyText={this.handleOnApplyText}

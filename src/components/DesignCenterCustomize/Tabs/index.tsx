@@ -68,6 +68,7 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  hasZipper: boolean
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -158,7 +159,8 @@ const Tabs = ({
   onCloseColorChart,
   onCloseColorChartForm,
   onOpenFormChart,
-  onOpenColorChart
+  onOpenColorChart,
+  hasZipper
 }: Props) => {
   return (
     <Container>
@@ -197,7 +199,8 @@ const Tabs = ({
               onCloseColorChart,
               onCloseColorChartForm,
               onOpenFormChart,
-              onOpenColorChart
+              onOpenColorChart,
+              hasZipper
             }}
           />
         </TabPane>
