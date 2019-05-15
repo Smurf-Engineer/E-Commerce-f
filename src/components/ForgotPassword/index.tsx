@@ -64,7 +64,9 @@ class ForgotPassword extends React.Component<Props, {}> {
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { dispatch } = this.props
-    const { currentTarget: { value } } = evt
+    const {
+      currentTarget: { value }
+    } = evt
     evt.persist()
     dispatch(setEmail(value))
   }
@@ -122,7 +124,10 @@ const mapStateToProps = (state: any) => state.get('forgot').toJS()
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const ForgotPasswordEnhance = compose(
-  connect(mapStateToProps, mapDispatchToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   forgotPassword
 )(ForgotPassword)
 export default ForgotPasswordEnhance

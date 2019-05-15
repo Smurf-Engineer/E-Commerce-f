@@ -167,14 +167,14 @@ export class Login extends React.Component<Props, StateProps> {
     try {
       const loginData = await loginWithEmail({ variables: { email, password } })
       const data = get(loginData, 'data.login', false)
-
       if (data) {
         const userData = {
           id: get(data, 'user.shortId', ''),
           token: get(data, 'token', ''),
           name: get(data, 'user.name', ''),
           lastName: get(data, 'user.lastName'),
-          email: get(data, 'user.email')
+          email: get(data, 'user.email'),
+          administrator: get(data, 'user.administrator', false)
         }
         message.success(
           formatMessage(messages.welcomeMessage, {

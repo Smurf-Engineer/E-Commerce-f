@@ -5,6 +5,7 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
   padding-bottom: 36px;
+  width: 100%;
 `
 export const ScreenTitle = styled.div`
   color: #5f6062;

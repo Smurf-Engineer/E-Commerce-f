@@ -218,7 +218,8 @@ class SignUp extends React.Component<Props, StateProps> {
           token: get(data, 'token', ''),
           name: get(data, 'user.name', ''),
           lastName: get(data, 'user.lastName', ''),
-          email: get(data, 'user.email', '')
+          email: get(data, 'user.email', ''),
+          administrator: get(data, 'user.administrator', false)
         }
         message.success(
           formatMessage(messages.welcomeMessage, {

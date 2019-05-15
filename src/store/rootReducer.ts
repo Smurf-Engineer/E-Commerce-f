@@ -35,10 +35,13 @@ import warrantyProgram from '../screens/WarrantyProgram/reducer'
 import myLocker from '../components/MyLocker/reducer'
 import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
+import orderHistoryAdmin from '../components/OrderHistoryAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearch from '../screens/DesignSearch/reducer'
+import admin from '../screens/Admin/reducer'
+import adminLayout from '../components/AdminLayout/reducer'
 import { Reducer } from '../types/common'
 import {
   SET_USER_ACTION,
@@ -85,8 +88,11 @@ export interface ReducersObject {
   myLocker: any
   myFiles: any
   orderHistory: any
+  orderHistoryAdmin: any
   overview: any
   fitAndSizing: any
+  admin: any
+  adminLayout: any
 }
 
 const appInitialState = fromJS({
@@ -185,10 +191,13 @@ const rootReducer = combineReducers({
   myLocker,
   myFiles,
   orderHistory,
+  orderHistoryAdmin,
   overview,
   fitAndSizing,
   responsive: responsiveReducer,
-  app: appReducer
+  app: appReducer,
+  admin,
+  adminLayout
 })
 
 export default rootReducer
