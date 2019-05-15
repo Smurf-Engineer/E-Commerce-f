@@ -2,13 +2,14 @@
  * OrderDetailsAdmin Component - Created by eduardoquintero on 07/05/19.
  */
 import * as React from 'react'
-import { Icon } from 'antd'
-import { Radio } from 'antd'
+import { Icon, Button } from 'antd'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import Spin from 'antd/lib/spin'
+import get from 'lodash/get'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
+import RowField from './RowField'
 import * as ProductDetailsAdminActions from './actions'
 import { QueryProps, Product } from '../../types/common'
 import { getProductQuery } from './data'
@@ -18,12 +19,14 @@ import {
   BackLabel,
   BackText,
   Loader,
+  HeaderRow,
   FormBody,
+  BlueButton,
+  ScreenSubTitle,
   Row,
+  DetailsContainer,
   MainBody
 } from './styledComponents'
-const RadioButton = Radio.Button
-const RadioGroup = Radio.Group
 
 interface Data extends QueryProps {
   product: Product
@@ -31,7 +34,7 @@ interface Data extends QueryProps {
 
 interface Props {
   productId: string
-  data?: Data
+  data: Data
   goBack: (id: number) => void
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
@@ -45,7 +48,15 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     }
   }
   render() {
-    const { data } = this.props
+    const {
+      formatMessage,
+      data: { loading, product }
+    } = this.props
+    const name = get(product, 'name', '')
+    const mpn = get(product, 'mpn', '')
+    const code = get(product, 'code', '')
+    const description = get(product, 'shortDescription', '')
+    const yotpoId = get(product, 'yotpoId', '')
     return (
       <Container>
         <BackLabel onClick={this.handleOnClickBack}>
@@ -54,24 +65,44 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
             <FormattedMessage {...messages.backToProducts} />
           </BackText>
         </BackLabel>
-        <ScreenTitle>
-          <FormattedMessage {...messages.addNewProduct} />
-        </ScreenTitle>
         <MainBody>
-          {data && data.loading ? (
+          {!product && loading ? (
             <Loader>
               <Spin size="large" />
             </Loader>
           ) : (
-            <FormBody>
-              <Row>
-                <FormattedMessage {...messages.productType} />
-                <RadioGroup defaultValue="a" size="large">
-                  <RadioButton value="a">Custom</RadioButton>
-                  <RadioButton value="b">Inline</RadioButton>
-                </RadioGroup>
-              </Row>
-            </FormBody>
+            <DetailsContainer>
+              <HeaderRow>
+                <ScreenTitle>
+                  {name}
+                  <ScreenSubTitle>{mpn}</ScreenSubTitle>
+                </ScreenTitle>
+                <div>
+                  <BlueButton size="large">
+                    <FormattedMessage {...messages.editProduct} />
+                  </BlueButton>
+                  <Button size="large">
+                    <FormattedMessage {...messages.openPublishingTool} />
+                  </Button>
+                </div>
+              </HeaderRow>
+              <FormBody>
+                <Row>
+                  <RowField
+                    label={formatMessage(messages.productCode)}
+                    value={code}
+                  />
+                  <RowField
+                    label={formatMessage(messages.productDescription)}
+                    value={description}
+                  />
+                  <RowField
+                    label={formatMessage(messages.productModel)}
+                    value={yotpoId}
+                  />
+                </Row>
+              </FormBody>
+            </DetailsContainer>
           )}
         </MainBody>
       </Container>
