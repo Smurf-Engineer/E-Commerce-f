@@ -57,6 +57,8 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     const code = get(product, 'code', '')
     const description = get(product, 'shortDescription', '')
     const yotpoId = get(product, 'yotpoId', '')
+    const yotpoId = get(product, 'yotpoId', '')
+
     return (
       <Container>
         <BackLabel onClick={this.handleOnClickBack}>
@@ -98,6 +100,20 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   />
                   <RowField
                     label={formatMessage(messages.productModel)}
+                    value={yotpoId}
+                  />
+                </Row>
+                <Row>
+                  <RowField
+                    label={formatMessage(messages.categories)}
+                    value={code}
+                  />
+                  <RowField
+                    label={formatMessage(messages.productCategories)}
+                    value={description}
+                  />
+                  <RowField
+                    label={formatMessage(messages.relatedTags)}
                     value={yotpoId}
                   />
                 </Row>
