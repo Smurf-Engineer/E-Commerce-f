@@ -517,6 +517,8 @@ export interface OrderHistory {
   status: string
   netsuite?: NetsuiteObject
   clientId?: string
+  firstName?: string
+  lastName?: string
   netsuiteAttempts: number
 }
 

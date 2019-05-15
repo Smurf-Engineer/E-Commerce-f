@@ -17,6 +17,6 @@ export const getVideos = async (setVideos: (videos: object[]) => void) => {
     const videos = await response.json()
     setVideos(videos.items)
   } catch (e) {
-    console.log(e.Message)
+    console.error(e.Message)
   }
 }
