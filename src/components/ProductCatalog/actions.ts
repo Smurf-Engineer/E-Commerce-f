@@ -6,7 +6,7 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
-  SET_ORDER_ID,
+  SET_PRODUCT_ID,
   SET_SEARCH_TEXT
 } from './constants'
 import { AnyAction, sorts } from '../../types/common'
@@ -26,9 +26,9 @@ export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
 })
 
-export const setOrderIdAction = (orderId: string): AnyAction => ({
-  type: SET_ORDER_ID,
-  orderId
+export const setProductIdAction = (productId: string): AnyAction => ({
+  type: SET_PRODUCT_ID,
+  productId
 })
 
 export const setSearchTextAction = (searchText: string) => ({

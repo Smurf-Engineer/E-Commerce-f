@@ -15,22 +15,20 @@ import {
 import List from './OrdersList'
 import messages from './messages'
 import { sorts } from '../../types/common'
-import OrderDetailsAdmin from '../OrderDetailsAdmin'
-import SwipeableViews from 'react-swipeable-views'
-import { ORDER_STATUS } from '../../screens/Admin/constants'
+import ProductDetailsAdmin from '../ProductDetailsAdmin'
 
 interface Props {
   history: any
   currentPage: number
   orderBy: string
   sort: sorts
-  orderId: string
+  productId: string
   searchText: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setOrderIdAction: (orderId: string) => void
+  setProductIdAction: (productId: number) => void
   setSearchTextAction: (searchText: string) => void
 }
 
@@ -46,50 +44,40 @@ class ProductCatalog extends React.Component<Props, {}> {
       orderBy,
       sort,
       formatMessage,
-      orderId,
+      productId,
       searchText
     } = this.props
 
-    return (
-      <SwipeableViews
-        onChangeIndex={this.handleOnChangeIndex}
-        index={!!orderId.length ? 1 : 0}
-      >
-        <Container>
-          <ScreenTitle>
-            <FormattedMessage {...messages.title} />
-          </ScreenTitle>
-          <AddProductButton onClick={this.addNewProduct}>
-            {formatMessage(messages.addProductLabel)}
-          </AddProductButton>
-          <SearchInput
-            value={searchText}
-            onChange={this.handleInputChange}
-            placeholder={formatMessage(messages.search)}
-          />
-          <List
-            {...{ formatMessage, currentPage, orderBy, sort, searchText }}
-            onSortClick={this.handleOnSortClick}
-            onOrderClick={this.handleOnOrderClick}
-            onChangePage={this.handleOnChangePage}
-            interactiveHeaders={true}
-          />
-        </Container>
-        <OrderDetailsAdmin
-          onReturn={this.handleOnOrderClick}
-          from={ORDER_STATUS}
-          {...{ orderId, formatMessage }}
+    return !productId ? (
+      <Container>
+        <ScreenTitle>
+          <FormattedMessage {...messages.title} />
+        </ScreenTitle>
+        <AddProductButton onClick={this.addNewProduct}>
+          {formatMessage(messages.addProductLabel)}
+        </AddProductButton>
+        <SearchInput
+          value={searchText}
+          onChange={this.handleInputChange}
+          placeholder={formatMessage(messages.search)}
         />
-      </SwipeableViews>
+        <List
+          {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+          onSortClick={this.handleOnSortClick}
+          onProductClick={this.handleOnProductClick}
+          onChangePage={this.handleOnChangePage}
+          interactiveHeaders={true}
+        />
+      </Container>
+    ) : (
+      <ProductDetailsAdmin
+        {...{ productId, formatMessage }}
+        goBack={this.handleOnProductClick}
+      />
     )
   }
   addNewProduct = () => {
     console.log('addPending')
-  }
-  handleOnChangeIndex = (index: number) => {
-    if (index === 0) {
-      this.handleOnOrderClick('')
-    }
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {
@@ -97,9 +85,9 @@ class ProductCatalog extends React.Component<Props, {}> {
     setOrderByAction(label, sort)
   }
 
-  handleOnOrderClick = (orderId: string) => {
-    const { setOrderIdAction } = this.props
-    setOrderIdAction(orderId)
+  handleOnProductClick = (productId: number) => {
+    const { setProductIdAction } = this.props
+    setProductIdAction(productId)
   }
 
   handleOnChangePage = (page: number) => {

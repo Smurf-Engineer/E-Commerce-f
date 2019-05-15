@@ -10,11 +10,10 @@ interface Props {
   name: string
   mpn?: string
   code: string
-  shortId?: string
   productType?: string
   active: boolean
   onCheck: (id: number) => void
-  onOrderClick: (shortId: string) => void
+  onProductClick: (id: number) => void
 }
 
 interface State {
@@ -32,8 +31,8 @@ class ItemOrder extends React.PureComponent<Props, State> {
     }
   }
   handleOnClick = () => {
-    const { onOrderClick, shortId } = this.props
-    onOrderClick(shortId || '')
+    const { onProductClick, id } = this.props
+    onProductClick(id)
   }
   onChange = () => {
     const { onCheck, id } = this.props

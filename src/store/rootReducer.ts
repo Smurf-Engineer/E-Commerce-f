@@ -37,6 +37,7 @@ import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import orderHistoryAdmin from '../components/orderHistoryAdmin/reducer'
 import productCatalogAdmin from '../components/ProductCatalog/reducer'
+import productDetailAdmin from '../components/ProductDetailsAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
@@ -74,6 +75,7 @@ export interface ReducersObject {
   languageProvider: any
   home: any
   reset: any
+  productDetailAdmin: any
   app: any
   menuGender: any
   productCatalogAdmin: any
@@ -179,6 +181,7 @@ const rootReducer = combineReducers({
   productCatalog,
   productCatalogAdmin,
   designCenter,
+  productDetailAdmin,
   languageProvider,
   menu,
   forgot,

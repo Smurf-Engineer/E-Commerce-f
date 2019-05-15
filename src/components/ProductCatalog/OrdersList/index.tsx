@@ -29,17 +29,15 @@ interface Props {
   searchText?: string
   updateActiveProduct: (variables: {}) => Promise<any>
   onSortClick: (label: string, sort: sorts) => void
-  onOrderClick: (shortId: string) => void
+  onProductClick: (id: number) => void
   onChangePage: (page: number) => void
 }
 
 const OrdersList = ({
   formatMessage,
   currentPage,
-  data: { productsQuery, refetch },
-  onOrderClick,
-  customLimit,
-  searchText,
+  data: { productsQuery },
+  onProductClick,
   onChangePage,
   updateActiveProduct,
   withPagination = true,
@@ -88,7 +86,7 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, shortId, isCustom }: Product,
+      { id, images, active, name, mpn, code, isCustom }: Product,
       index: number
     ) => {
       return (
@@ -100,7 +98,7 @@ const OrdersList = ({
           productType={formatMessage(
             isCustom ? messages.custom : messages.inline
           )}
-          {...{ id, name, mpn, code, shortId, isCustom, onOrderClick }}
+          {...{ id, name, mpn, code, isCustom, onProductClick }}
         />
       )
     }
