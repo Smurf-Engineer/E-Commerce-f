@@ -21,6 +21,7 @@ export const orderSearchQuery = gql`
       }
       shortId: short_id
       svgUrl: output_svg
+      pdfUrl: output_pdf
       stitchingValue: flatlock
       stitchingName: flatlock_code
       zipperColor: zipper_color

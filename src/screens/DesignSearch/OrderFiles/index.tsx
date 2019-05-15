@@ -63,7 +63,8 @@ class OrderFiles extends React.PureComponent<Props> {
         zipperColor,
         bindingColor,
         shortId,
-        image
+        image,
+        pdfUrl
       },
       uploadingFile,
       formatMessage,
@@ -136,6 +137,9 @@ class OrderFiles extends React.PureComponent<Props> {
             </Button>
           </DraggerWithLoading>
           <FinalSvg>
+            {pdfUrl && pdfUrl.length && (
+              <DownloadItem url={pdfUrl} name="Final PDF" />
+            )}
             <DownloadItem url={actualSvg || svgUrl} name="Final SVG" />
           </FinalSvg>
           <AssetsLabel>
