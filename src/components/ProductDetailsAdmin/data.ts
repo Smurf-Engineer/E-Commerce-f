@@ -11,9 +11,37 @@ export const getProductQuery = gql`
       code
       yotpoId: yotpo_id
       name
+      mtl
+      obj
+      bumpMap: bump_map
+      flatlock
+      binding {
+        white
+        black
+      }
+      zipper {
+        white
+        black
+      }
+      bibBrace {
+        white
+        black
+      }
       type: short_description
       shortDescription: short_description
       category_id
+      category_name
+      tags
+      season
+      pictures {
+        front_image
+        back_image
+        left_image
+        right_image
+        gender_id
+      }
+      active
+      design_center
       sport_id
       mpn
       colors {

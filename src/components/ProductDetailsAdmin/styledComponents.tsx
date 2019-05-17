@@ -76,3 +76,25 @@ export const Row = styled.div`
   justify-content: space-between;
   align-items: flex-start;
 `
+export const Separator = styled.div`
+  border-bottom: 1px solid #dcdcdc;
+  color: #5f6062;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+  padding-bottom: 10px;
+  margin-bottom: 30px;
+  margin-top: 84px;
+`
+export const RowImage = styled.img`
+  max-height: 200px;
+  object-fit: cover;
+`
+
+export const RenderBackground = styled.div`
+  background: ${({ openedModel }: any) => (openedModel ? '#f3f3f3' : 'white')};
+  transition: all 0.25 ease;
+  text-align: center;
+`

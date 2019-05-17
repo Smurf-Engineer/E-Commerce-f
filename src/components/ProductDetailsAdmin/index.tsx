@@ -7,9 +7,11 @@ import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
+import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
+import Render3D from '../../components/Render3D'
 import * as ProductDetailsAdminActions from './actions'
 import { QueryProps, Product } from '../../types/common'
 import { getProductQuery } from './data'
@@ -22,12 +24,15 @@ import {
   HeaderRow,
   FormBody,
   BlueButton,
+  RowImage,
+  RenderBackground,
+  Separator,
   ScreenSubTitle,
   Row,
   DetailsContainer,
   MainBody
 } from './styledComponents'
-
+const quantities = ['Personal', '2-5', '6-24', '25-49', '50-99', '100-249']
 interface Data extends QueryProps {
   product: Product
 }
@@ -41,6 +46,9 @@ interface Props {
 }
 
 export class ProductDetailsAdmin extends React.Component<Props, {}> {
+  state = {
+    openedModel: false
+  }
   componentDidUpdate(prevProps: Props) {
     const { data, setProductAction } = this.props
     if (data && data !== prevProps.data) {
@@ -52,13 +60,115 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       formatMessage,
       data: { loading, product }
     } = this.props
+    const { openedModel } = this.state
     const name = get(product, 'name', '')
     const mpn = get(product, 'mpn', '')
+    const obj = get(product, 'obj', '')
+    const mtl = get(product, 'mtl', '')
     const code = get(product, 'code', '')
-    const description = get(product, 'shortDescription', '')
+    const shortDescription = get(product, 'shortDescription', '')
+    const description = get(product, 'description', '')
     const yotpoId = get(product, 'yotpoId', '')
-    const yotpoId = get(product, 'yotpoId', '')
-
+    let categories = get(product, 'sports', '')
+    if (categories) {
+      categories = categories.map((item: any) => item.name).join(', ')
+    }
+    let gendersArray = get(product, 'genders', '')
+    let genders = gendersArray
+    if (genders) {
+      genders = genders.map((item: any) => item.name).join(', ')
+    }
+    let sizeRange = get(product, 'sizeRange', '')
+    if (sizeRange) {
+      sizeRange = sizeRange.map((item: any) => item.name).join(', ')
+    }
+    let fitStyles = get(product, 'fitStyles', '')
+    if (fitStyles) {
+      fitStyles = fitStyles.map((item: any) => item.name).join(', ')
+    }
+    let categoryName = get(product, 'category_name', '')
+    const tags = get(product, 'tags', '')
+    const active = get(product, 'active', '')
+    const designCenter = get(product, 'design_center', '')
+    const season = get(product, 'season', '')
+    const materials = get(product, 'materials', '')
+    const details = get(product, 'details', '')
+    let USD = get(product, 'priceRange', [])
+    if (USD) {
+      USD = USD.filter(item => item.shortName === 'USD')
+    }
+    let GBP = get(product, 'priceRange', [])
+    if (GBP) {
+      GBP = GBP.filter(item => item.shortName === 'GBP')
+    }
+    let EUR = get(product, 'priceRange', [])
+    if (EUR) {
+      EUR = EUR.filter(item => item.shortName === 'EUR')
+    }
+    let CAD = get(product, 'priceRange', [])
+    if (CAD) {
+      CAD = CAD.filter(item => item.shortName === 'CAD')
+    }
+    let AUD = get(product, 'priceRange', [])
+    if (AUD) {
+      AUD = AUD.filter(item => item.shortName === 'AUD')
+    }
+    const currencies = [
+      {
+        label: 'USD',
+        amounts: quantities.map(quantity =>
+          find(USD, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'GBP',
+        amounts: quantities.map(quantity =>
+          find(GBP, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'EUR',
+        amounts: quantities.map(quantity =>
+          find(EUR, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'CAD',
+        amounts: quantities.map(quantity =>
+          find(CAD, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'AUD',
+        amounts: quantities.map(quantity =>
+          find(AUD, item => item.quantity === quantity)
+        )
+      }
+    ]
+    let productImages = get(product, 'pictures', '')
+    if (productImages && gendersArray) {
+      productImages = gendersArray.map((gender: any) => ({
+        genderName: gender.name,
+        genderBlockImages: productImages
+          .filter((picture: any) => picture.gender_id === gender.id)
+          .map((block: any) => {
+            const images = []
+            if (block.back_image) {
+              images.push(block.back_image)
+            }
+            if (block.front_image) {
+              images.push(block.front_image)
+            }
+            if (block.left_image) {
+              images.push(block.left_image)
+            }
+            if (block.right_image) {
+              images.push(block.right_image)
+            }
+            return images
+          })
+      }))
+    }
     return (
       <Container>
         <BackLabel onClick={this.handleOnClickBack}>
@@ -96,7 +206,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   />
                   <RowField
                     label={formatMessage(messages.productDescription)}
-                    value={description}
+                    value={shortDescription}
                   />
                   <RowField
                     label={formatMessage(messages.productModel)}
@@ -106,17 +216,194 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 <Row>
                   <RowField
                     label={formatMessage(messages.categories)}
-                    value={code}
+                    value={categories}
                   />
                   <RowField
                     label={formatMessage(messages.productCategories)}
-                    value={description}
+                    value={categoryName}
                   />
                   <RowField
                     label={formatMessage(messages.relatedTags)}
+                    subLabel={
+                      <i>
+                        <FormattedMessage {...messages.youMayLike} />
+                      </i>
+                    }
                     value={yotpoId}
                   />
                 </Row>
+                <Row>
+                  <RowField
+                    label={formatMessage(messages.searchTags)}
+                    capitalize={true}
+                    value={tags}
+                  />
+                  <RowField
+                    label={formatMessage(messages.onStock)}
+                    value={formatMessage(
+                      active === 'true' ? messages.yes : messages.no
+                    )}
+                  />
+                  <RowField
+                    label={formatMessage(messages.productModel)}
+                    value={formatMessage(
+                      designCenter ? messages.yes : messages.no
+                    )}
+                  />
+                </Row>
+                <Row>
+                  <RowField
+                    label={formatMessage(messages.seasons)}
+                    value={season}
+                  />
+                  <RowField
+                    style={{ flex: 2 }}
+                    label={formatMessage(messages.gender)}
+                    value={genders}
+                  />
+                </Row>
+                <Separator>
+                  <FormattedMessage {...messages.productInformation} />
+                </Separator>
+                <Row>
+                  <RowField
+                    value={formatMessage(messages.productDescription)}
+                  />
+                  <RowField style={{ flex: 2 }} label={description} />
+                </Row>
+                <Row>
+                  <RowField value={formatMessage(messages.specDetails)} />
+                  <RowField style={{ flex: 2 }} label={details} />
+                </Row>
+                <Row>
+                  <RowField value={formatMessage(messages.materialInfo)} />
+                  <RowField style={{ flex: 2 }} label={materials} />
+                </Row>
+                <Separator>
+                  <FormattedMessage {...messages.fitSizing} />
+                </Separator>
+                <Row>
+                  <RowField
+                    label={formatMessage(messages.fitStyles)}
+                    value={fitStyles}
+                  />
+                  <RowField
+                    style={{ flex: 2 }}
+                    label={formatMessage(messages.productSizes)}
+                    value={sizeRange}
+                  />
+                </Row>
+                <Separator>
+                  <FormattedMessage {...messages.prices} />
+                </Separator>
+                <Row
+                  style={{
+                    margin: '0 20px',
+                    borderBottom: '1px solid gray',
+                    paddingBottom: '12px'
+                  }}
+                >
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.currency)}
+                  />
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.personal)}
+                  />
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.firstAmount)}
+                  />
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.secondAmount)}
+                  />
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.thirdAmount)}
+                  />
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.fourthAmount)}
+                  />
+                  <RowField
+                    style={{ textAlign: 'center' }}
+                    value={formatMessage(messages.fifthAmount)}
+                  />
+                </Row>
+                {currencies.map((currencyItem, index) => (
+                  <Row
+                    key={index}
+                    style={{
+                      margin: '0 20px',
+                      borderBottom: '1px solid gainsboro',
+                      padding: '12px 0'
+                    }}
+                  >
+                    <RowField
+                      style={{ textAlign: 'center' }}
+                      label={currencyItem.label}
+                    />
+                    {currencyItem.amounts.map(amount => (
+                      <RowField
+                        style={{ textAlign: 'center' }}
+                        label={amount ? `$${amount.price}` : ''}
+                      />
+                    ))}
+                  </Row>
+                ))}
+                <Separator>
+                  <FormattedMessage {...messages.productImages} />
+                </Separator>
+                {productImages.map((gender: any, index: number) => (
+                  <div key={index}>
+                    {gender.genderBlockImages.map(
+                      (imageBlock: any, blockIndex: number) => (
+                        <Row>
+                          {imageBlock.map((image: string, subindex: number) => (
+                            <RowField
+                              style={{
+                                paddingTop:
+                                  blockIndex === 0 && subindex > 0
+                                    ? '23px'
+                                    : '0'
+                              }}
+                              label={
+                                blockIndex === 0 && subindex === 0
+                                  ? gender.genderName
+                                  : ''
+                              }
+                            >
+                              <RowImage src={image} />
+                            </RowField>
+                          ))}
+                        </Row>
+                      )
+                    )}
+                  </div>
+                ))}
+                <Separator>
+                  <FormattedMessage {...messages.threeDModel} />
+                </Separator>
+                {obj && mtl ? (
+                  <RenderBackground {...{ openedModel }}>
+                    {openedModel ? (
+                      <Render3D
+                        customProduct={false}
+                        designId={0}
+                        isProduct={true}
+                        {...{ product }}
+                      />
+                    ) : (
+                      <Button onClick={this.handleOpenModel} size="large">
+                        <FormattedMessage {...messages.openModel} />
+                      </Button>
+                    )}
+                  </RenderBackground>
+                ) : (
+                  <FormattedMessage {...messages.modelNotFound} />
+                )}
               </FormBody>
             </DetailsContainer>
           )}
@@ -124,7 +411,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       </Container>
     )
   }
-
+  handleOpenModel = () => {
+    this.setState({ openedModel: true })
+  }
   handleOnClickBack = () => {
     const { goBack } = this.props
     goBack(0)
