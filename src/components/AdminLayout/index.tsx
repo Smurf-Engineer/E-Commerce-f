@@ -34,11 +34,11 @@ interface Props extends RouteComponentProps<any> {
   client: any
   user: UserType
   defaultScreen: string
-  logoutAction: () => void
   fontsData: any
   fonts: []
   openKeys: string[]
   screen: string
+  onLogout: () => void
   restoreUserSession: () => void
   deleteUserSession: () => void
   getFontsData: () => Promise<Font>
@@ -61,20 +61,10 @@ class AdminLayout extends React.Component<Props, {}> {
 
     const fontsResponse = await getFontsData()
     const fontsList = get(fontsResponse, 'data.fontsData', {})
-    const fonts: SimpleFont[] = []
-    fontsList.map((font: Font) => fonts.push({ font: font.family }))
+    const fonts: SimpleFont[] = fontsList.map((font: Font) => ({
+      font: font.family
+    }))
     setInstalledFontsAction(fonts)
-  }
-
-  handleOnClickLogout = () => {
-    this.onLogout()
-  }
-
-  onLogout = () => {
-    const { deleteUserSession, client } = this.props
-    client.resetStore()
-    deleteUserSession()
-    window.location.replace('/admin')
   }
 
   handleOnSelectedKeys = (keys: string[]) => {
@@ -99,7 +89,8 @@ class AdminLayout extends React.Component<Props, {}> {
       defaultScreen,
       intl,
       openKeys,
-      screen
+      screen,
+      onLogout
     } = this.props
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length ? (
@@ -122,7 +113,7 @@ class AdminLayout extends React.Component<Props, {}> {
 
     const logoutButton = (
       <LogoutButton>
-        <OptionMenu onClick={this.onLogout}>
+        <OptionMenu onClick={onLogout}>
           {intl.formatMessage(messages.logout)}
         </OptionMenu>
       </LogoutButton>
@@ -156,9 +147,9 @@ const mapStateToProps = (state: any) => {
   const responsive = state.get('responsive').toJS()
   const app = state.get('app').toJS()
   return {
-    ...adminLayout,
     ...layoutProps,
     ...responsive,
+    ...adminLayout,
     ...app
   }
 }

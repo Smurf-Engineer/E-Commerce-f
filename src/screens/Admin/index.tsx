@@ -11,7 +11,8 @@ import Spin from 'antd/lib/spin'
 import { RouteComponentProps } from 'react-router-dom'
 import {
   restoreUserSession,
-  saveUserSession
+  saveUserSession,
+  deleteUserSession
 } from '../../components/MainLayout/api'
 import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
@@ -49,12 +50,12 @@ interface Props extends RouteComponentProps<any> {
   client: any
   forgotPasswordOpen: boolean
   // Redux actions
-  logoutAction: () => void
   setDefaultScreenAction: (screen: string, openCreations?: boolean) => void
   setCurrentScreenAction: (screen: string) => void
   clearReducerAction: () => void
   restoreUserSessionAction: () => void
   saveUserSessionAction: (user: object) => void
+  deleteUserSessionAction: () => void
   requestClose: () => void
   loginWithEmail: (variables: {}) => void
   setLoadingAction: (loading: boolean) => void
@@ -93,12 +94,11 @@ export class Admin extends React.Component<Props, {}> {
 
   onLogout = () => {
     const {
-      logoutAction: logout,
-      client: { cache }
+      client: { cache },
+      deleteUserSessionAction
     } = this.props
     cache.reset()
-    logout()
-    window.location.replace('/')
+    deleteUserSessionAction()
   }
   login = async (user: any) => {
     await saveUserSession(user)
@@ -144,7 +144,11 @@ export class Admin extends React.Component<Props, {}> {
       default:
         break
     }
-    return <AdminLayout {...{ history, intl }}>{currentScreen}</AdminLayout>
+    return (
+      <AdminLayout {...{ history, intl }} onLogout={this.onLogout}>
+        {currentScreen}
+      </AdminLayout>
+    )
   }
   handleLogin = (userData: any) => {
     const { saveUserSessionAction, setLoadingAction } = this.props
@@ -231,7 +235,8 @@ const AdminEnhance = compose(
     {
       ...adminActions,
       restoreUserSessionAction: restoreUserSession,
-      saveUserSessionAction: saveUserSession
+      saveUserSessionAction: saveUserSession,
+      deleteUserSessionAction: deleteUserSession
     }
   )
 )(Admin)

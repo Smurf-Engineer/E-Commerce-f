@@ -66,15 +66,8 @@ interface Props {
 
 export class OrderDetailsAdmin extends React.Component<Props, {}> {
   render() {
-    const {
-      data,
-      orderId,
-      formatMessage,
-      onReturn,
-      currentCurrency
-    } = this.props
-
-    if (data && data.loading) {
+    const { data, orderId, formatMessage, currentCurrency } = this.props
+    if ((data && data.loading) || !data) {
       return (
         <LoadingContainer>
           <Spin />
@@ -82,14 +75,22 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       )
     }
 
-    const handleOnReturn = () => onReturn('')
-
     if (!orderId) {
       return null
     }
 
-    if (!data || !data.orderQuery) {
-      return <Container />
+    if (data && data.error) {
+      return (
+        <Container>
+          <ViewContainer onClick={this.handleOnReturn}>
+            <Icon type="left" />
+            <span>{formatMessage(messages.backToOrders)}</span>
+          </ViewContainer>
+          <LoadingContainer>
+            {formatMessage(messages.notFound)}
+          </LoadingContainer>
+        </Container>
+      )
     }
 
     const {
@@ -146,8 +147,8 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
       ? cart.map((cartItem, index) => {
           const {
             designId,
-            designImage,
-            designName,
+            designImage = '',
+            designName = '',
             product: { images, name, shortDescription },
             productTotal,
             unitPrice
@@ -161,8 +162,8 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
             shortName: ''
           }
 
-          const itemImage = designId ? designImage || '' : images[0].front
-          const itemTitle = designId ? designName || '' : name
+          const itemImage = designId ? designImage : images[0].front
+          const itemTitle = designId ? designName : name
           const itemDescription = designId
             ? `${name} ${shortDescription}`
             : shortDescription
@@ -183,7 +184,6 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
               price={priceRange}
               itemIndex={index}
               onlyRead={true}
-              canReorder={false}
             />
           )
         })
@@ -199,7 +199,7 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
 
     return (
       <Container>
-        <ViewContainer onClick={handleOnReturn}>
+        <ViewContainer onClick={this.handleOnReturn}>
           <Icon type="left" />
           <span>{formatMessage(messages.backToOrders)}</span>
         </ViewContainer>
@@ -294,8 +294,9 @@ export class OrderDetailsAdmin extends React.Component<Props, {}> {
     )
   }
 
-  handleOnClickReceipt = () => {
-    // TODO: Implement action for Receipt button.
+  handleOnReturn = () => {
+    const { onReturn } = this.props
+    onReturn('')
   }
 }
 
@@ -307,7 +308,8 @@ const OrderDetailsAdminEnhance = compose(
   graphql(getOrderQuery, {
     options: ({ orderId }: OwnProps) => ({
       skip: !orderId,
-      variables: { orderId }
+      variables: { orderId, global: true },
+      notifyOnNetworkStatusChange: true
     })
   })
 )(OrderDetailsAdmin)

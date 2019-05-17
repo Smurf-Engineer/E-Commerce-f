@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable'
-import { SET_OPEN_KEYS, LOGOUT, SET_INSTALLED_FONTS_ACTION } from './constants'
+import { SET_OPEN_KEYS, SET_INSTALLED_FONTS_ACTION } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -26,12 +26,6 @@ const MainLayoutReducer: Reducer<any> = (state = initialState, action) => {
   switch (action.type) {
     case SET_OPEN_KEYS:
       return state.set('openKeys', action.keys)
-    case LOGOUT: {
-      if (localStorage.getItem('user')) {
-        localStorage.removeItem('user')
-      }
-      return state.set('user', {})
-    }
     case SET_INSTALLED_FONTS_ACTION:
       return state.set('fonts', fromJS(action.fonts))
     default:

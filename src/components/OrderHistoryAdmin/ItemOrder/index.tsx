@@ -12,6 +12,8 @@ interface Props {
   status: string
   shortId: string
   statusError?: boolean
+  firstName: string
+  lastName: string
   onOrderClick: (shortId: string) => void
 }
 
@@ -21,7 +23,9 @@ const ItemOrder = ({
   status,
   shortId,
   onOrderClick,
-  statusError
+  statusError,
+  firstName,
+  lastName
 }: Props) => {
   const handleOnClick = () => {
     onOrderClick(shortId)
@@ -30,7 +34,8 @@ const ItemOrder = ({
     <Container onClick={handleOnClick}>
       <Cell>{shortId}</Cell>
       <Cell>{date}</Cell>
-      <Cell>{clientId}</Cell>
+      <Cell>JV2-{clientId}</Cell>
+      <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell textAlign={'right'} className={statusError ? 'error' : ''}>
         {upperFirst(status)}
       </Cell>

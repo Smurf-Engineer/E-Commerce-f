@@ -158,7 +158,7 @@
   "components.DesignCenterPreview.Render3D.addToTeam": "Add to Team Store",
   "components.DesignCenterPreview.Render3D.addToCart": "Add to Cart",
   "components.DesignCenterPreview.Render3D.keepShoping": "Keep Shopping",
-  "components.ShareDesignModal.tittle": "SHARE YOU AWESOME DESIGN!",
+  "components.ShareDesignModal.tittle": "SHARE YOUR AWESOME DESIGN!",
   "components.ShareDesignModal.shareLinkLabel": "Share Link",
   "components.ShareDesignModal.socialMediaLabel": "Social Media",
   "components.ShareDesignModal.emailLabel": "E-mail",
@@ -1021,6 +1021,6 @@
   "components.ImageList.apply": "Apply",
   "components.ImageList.size": "Max. size {width} cm x {height} cm",
   "components.SocialMedia.tailrecursive": "Developed by Tail Recursive",
-  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2018",
+  "components.SocialMedia.jakrooCopyright": "© Copyright JAKROO 2019",
   "components.FacebookGmailLogin.userExistsError": "An account for this email already exists, please log in with your email"
 }

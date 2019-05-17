@@ -49,3 +49,6 @@ export const PURCHASE = 'purchase'
 /* Orders status */
 export const PAID_STATUS = 'Paid'
 export const ERROR_STATUS = 'Error'
+
+/* Quantity */
+export const PERSONAL = 'Personal'
