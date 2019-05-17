@@ -21,11 +21,17 @@ import {
   SET_STORE_DATA_TO_EDIT,
   DELETE_BANNER_ON_EDIT,
   CLEAR_DATA,
-  SET_TEAM_STORE_STATUS
+  SET_TEAM_STORE_STATUS,
+  SET_DESIGNS_DATA
 } from './constants'
 import { OPEN_QUICKVIEW_ACTION } from '../../components/MainLayout/constants'
 import { Moment } from 'moment'
-import { AnyAction, DesignType, TeamstoreType } from '../../types/common'
+import {
+  AnyAction,
+  DesignType,
+  TeamstoreType,
+  DesignResultType
+} from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
   type: DEFAULT_ACTION,
@@ -87,11 +93,11 @@ export const setOpenLockerAction = (isOpen: boolean): AnyAction => ({
 })
 
 export const setItemSelectedAction = (
-  id: number,
+  item: DesignType,
   checked: boolean
 ): AnyAction => ({
   type: SET_ITEM_SELECTED_ACTION,
-  id,
+  item,
   checked
 })
 
@@ -100,9 +106,8 @@ export const deleteItemSelectedAction = (index: number): AnyAction => ({
   index
 })
 
-export const setItemsAddAction = (items: DesignType[]): AnyAction => ({
-  type: SET_ITEMS_ADD_ACTION,
-  items
+export const setItemsAddAction = (): AnyAction => ({
+  type: SET_ITEMS_ADD_ACTION
 })
 
 export const clearStoreAction = (): AnyAction => ({
@@ -152,4 +157,15 @@ export const clearDataAction = () => ({
 export const setTeamStoreStatusAction = (show: boolean) => ({
   type: SET_TEAM_STORE_STATUS,
   show
+})
+
+export const setDesignsData = (
+  data: DesignResultType,
+  offset: number,
+  page: number
+) => ({
+  type: SET_DESIGNS_DATA,
+  data,
+  offset,
+  page
 })

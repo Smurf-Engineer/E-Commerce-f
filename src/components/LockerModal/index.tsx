@@ -2,19 +2,18 @@
  * LockerModal Component - Created by david on 10/04/18.
  */
 import React from 'react'
-import { graphql, compose } from 'react-apollo'
+import ReactDOM from 'react-dom'
 import Modal from 'antd/lib/modal'
-import omitBy from 'lodash/omitBy'
-
+import find from 'lodash/find'
+import Pagination from 'antd/lib/pagination'
 import ProductThumbnail from '../../components/ProductThumbnailStore'
-import { desginsQuery } from './data'
 import {
   QueryProps,
   DesignResultType,
   DesignType,
   SelectedItem
 } from '../../types/common'
-import { Title, List, modalStyle } from './styledComponents'
+import { Title, List, modalStyle, PaginationRow } from './styledComponents'
 
 interface Data extends QueryProps {
   pagination: DesignResultType
@@ -23,46 +22,56 @@ interface Data extends QueryProps {
 interface Props {
   data: Data
   visible: boolean
-  selectedItems: SelectedItem
+  selectedItems: any
   tableItems: SelectedItem
-  onSelectItem: (id: number, checked: boolean) => void
+  client: any
+  offset: number
+  currentPage: number
+  limit: number
+  fullCount: string
+  designs: DesignType[]
+  onSelectItem: (item: any, checked: boolean) => void
   onUnselectItem: (index: number) => void
   onRequestClose: () => void
-  onAddItems: (items: any) => void
+  onAddItems: () => void
+  setDesignsData: (data: DesignResultType, offset: number, page: number) => void
+  changePage: (offset: number) => void
 }
 
 export class LockerModal extends React.PureComponent<Props, {}> {
-  handleOnItemSelect = (id: number, checked: boolean) => {
-    const { onSelectItem } = this.props
-    onSelectItem(id, checked)
+  private listRef: any
+  handleOnItemSelect = (index: number, checked: boolean) => {
+    const { onSelectItem, designs } = this.props
+    const selectedItem = Object.assign(
+      {},
+      { visible: true },
+      { design: designs[index] }
+    )
+    onSelectItem(selectedItem, checked)
+  }
+  onChangePage = (page: number) => {
+    const { changePage } = this.props
+    const node = ReactDOM.findDOMNode(this.listRef) as HTMLElement
+    node.scrollTop = 0
+    changePage(page)
   }
 
   handleOnAddItems = () => {
-    const {
-      onAddItems,
-      selectedItems,
-      data: {
-        pagination: { designs }
-      }
-    } = this.props
-    const filteredItems = omitBy(selectedItems, checked => !checked)
-    const itemsIndex = Object.keys(filteredItems)
-    const items = itemsIndex.map(index => {
-      const item = designs[index]
-      return Object.assign({}, { visible: true }, { design: item })
-    })
-    onAddItems(items)
+    const { onAddItems } = this.props
+    onAddItems()
   }
 
   render() {
     const {
       visible,
       onRequestClose,
-      data: { loading, error, pagination },
       selectedItems,
-      tableItems
+      tableItems,
+      currentPage,
+      limit,
+      fullCount,
+      designs = []
     } = this.props
-    const designs = loading || error ? [] : pagination.designs
 
     const list = designs.map(
       (
@@ -78,7 +87,12 @@ export class LockerModal extends React.PureComponent<Props, {}> {
       ) => (
         <ProductThumbnail
           key={id}
-          checked={selectedItems[index] || tableItems[id]}
+          checked={
+            find(
+              selectedItems,
+              selectedItem => selectedItem.design.id === id
+            ) || tableItems[id]
+          }
           disabled={tableItems[id]}
           id={index}
           product={product}
@@ -102,12 +116,27 @@ export class LockerModal extends React.PureComponent<Props, {}> {
         cancelText="Cancel"
       >
         <Title>My Locker</Title>
-        <List>{list}</List>
+        <List
+          ref={(listObject: any) => {
+            this.listRef = listObject
+          }}
+        >
+          {list}
+        </List>
+        <PaginationRow>
+          {Number(fullCount) > limit && (
+            <Pagination
+              size="small"
+              current={currentPage}
+              onChange={this.onChangePage}
+              total={Number(fullCount)}
+              pageSize={limit}
+            />
+          )}
+        </PaginationRow>
       </Modal>
     )
   }
 }
 
-const LockerModalDesgins = compose(graphql<Data>(desginsQuery))(LockerModal)
-
-export default LockerModalDesgins
+export default LockerModal

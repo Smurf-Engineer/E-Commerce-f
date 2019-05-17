@@ -31,7 +31,6 @@ export interface DesignSaved {
 export interface SelectedItem {
   [extraProp: number]: boolean
 }
-
 export interface Action {
   type: string
 }

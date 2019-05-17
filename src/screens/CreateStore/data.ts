@@ -107,3 +107,33 @@ export const getTeamStoreStatus = graphql(
   `,
   { name: 'teamStoreStatus' }
 )
+
+export const desginsQuery = gql`
+  query GetDesigns($limit: Int, $offset: Int) {
+    designs: myDesigns(limit: $limit, offset: $offset) {
+      fullCount
+      designs {
+        id
+        code
+        name
+        image
+        shortId: short_id
+        createdAt: created_at
+        product {
+          id
+          code
+          yotpoId: yotpo_id
+          type: name
+          weight
+          description: short_description
+          priceRange {
+            quantity
+            price
+            abbreviation
+            shortName: short_name
+          }
+        }
+      }
+    }
+  }
+`

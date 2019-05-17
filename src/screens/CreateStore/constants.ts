@@ -21,6 +21,7 @@ export const CREATE_STORE_SUCCESS = `${namespace}/CREATE_STORE_SUCCESS`
 export const SET_STORE_DATA_TO_EDIT = `${namespace}/SET_STORE_DATA_TO_EDIT`
 export const DELETE_BANNER_ON_EDIT = `${namespace}/DELETE_BANNER_ON_EDIT`
 export const CLEAR_DATA = `${namespace}/CLEAR_DATA`
+export const SET_DESIGNS_DATA = `${namespace}/SET_DESIGNS_DATA`
 
 export const MOVE_ROW = `${namespace}/MOVE_ROW`
 

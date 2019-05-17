@@ -58,3 +58,14 @@ export const Message = styled.div`
 `
 
 export const modalStyle = { top: 20 }
+
+export const PaginationRow = styled.div`
+  text-align: right;
+  padding-right: 2%;
+  margin-top: 10px;
+
+  @media (min-width: 320px) and (max-width: 480px) {
+    padding: 0;
+    text-align: center;
+  }
+`

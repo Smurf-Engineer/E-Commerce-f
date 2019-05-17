@@ -26,7 +26,8 @@ import TeamSizes from '../../components/TeamSizes'
 import {
   createStoreMutation,
   GetTeamStoreQuery,
-  updateStoreMutation
+  updateStoreMutation,
+  desginsQuery
 } from './data'
 import {
   DesignType,
@@ -86,6 +87,11 @@ interface Props extends RouteComponentProps<any> {
   banner: string
   storeId: number
   showTeamStores: boolean
+  limit: number
+  offset: number
+  currentPage: number
+  fullCount: string
+  designs: DesignType[]
   // Redux actions
   setTeamSizeAction: (id: number, range: string) => void
   updateNameAction: (name: string) => void
@@ -95,9 +101,9 @@ interface Props extends RouteComponentProps<any> {
   updateOnDemandAction: (active: boolean) => void
   updatePassCodeAction: (code: string) => void
   setOpenLockerAction: (open: boolean) => void
-  setItemSelectedAction: (id: number, checked: boolean) => void
+  setItemSelectedAction: (item: any, checked: boolean) => void
   deleteItemSelectedAction: (index: number) => void
-  setItemsAddAction: (items: DesignType[]) => void
+  setItemsAddAction: () => void
   openQuickViewAction: (
     id: number,
     yotpoId: string,
@@ -112,6 +118,7 @@ interface Props extends RouteComponentProps<any> {
   clearDataAction: () => void
   teamStoreStatus: () => Promise<any>
   setTeamStoreStatusAction: (show: boolean) => void
+  setDesignsData: (data: DesignResultType, offset: number, page: number) => void
 }
 
 interface StateProps {
@@ -216,6 +223,50 @@ export class CreateStore extends React.Component<Props, StateProps> {
     const { storeId } = queryString.parse(search)
 
     return storeId
+  }
+
+  fetchDesigns = async (offsetParam?: number, pageParam?: number) => {
+    const {
+      client: { query },
+      offset: offsetProp,
+      currentPage: pageProp,
+      limit,
+      setDesignsData
+    } = this.props
+    let offset = offsetParam !== undefined ? offsetParam : offsetProp
+    let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    if (!offsetParam && !pageParam) {
+      const fullPage = !(offset % limit)
+      const maxPageNumber = offset / limit
+
+      if (fullPage && currentPage > maxPageNumber) {
+        currentPage--
+        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
+      }
+    }
+
+    try {
+      const data = await query({
+        query: desginsQuery,
+        variables: { limit, offset },
+        fetchPolicy: 'network-only'
+      })
+      setDesignsData(data, offset, currentPage)
+    } catch (e) {
+      throw e
+    }
+  }
+
+  handleOnChangePage = async (page: number = 1) => {
+    const { setLoadingAction, limit } = this.props
+    const offset = page > 1 ? (page - 1) * limit : 0
+    setLoadingAction(true)
+    try {
+      this.fetchDesigns(offset, page)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   clearState = () => {
@@ -364,7 +415,7 @@ export class CreateStore extends React.Component<Props, StateProps> {
     setTeamStoreStatusAction(
       get(response, 'data.getTeamStoreStatus.showTeamStores', false)
     )
-
+    await this.handleOnChangePage()
     if (storeId) {
       query({
         query: GetTeamStoreQuery,
@@ -418,7 +469,11 @@ export class CreateStore extends React.Component<Props, StateProps> {
       loading,
       banner,
       location: { search },
-      showTeamStores
+      showTeamStores,
+      designs,
+      currentPage,
+      fullCount,
+      limit
     } = this.props
     const { formatMessage } = intl
     const { storeId } = queryString.parse(search)
@@ -586,12 +641,20 @@ export class CreateStore extends React.Component<Props, StateProps> {
             </ButtonBuildStyle>
           )}
           <LockerModal
-            {...{ selectedItems, tableItems }}
+            {...{
+              selectedItems,
+              tableItems,
+              designs,
+              currentPage,
+              fullCount,
+              limit
+            }}
             visible={openLocker}
             onRequestClose={this.handleOnCloseLocker}
             onSelectItem={setItemSelectedAction}
             onUnselectItem={deleteItemSelectedAction}
             onAddItems={setItemsAddAction}
+            changePage={this.handleOnChangePage}
           />
         </Container>
       </Layout>
