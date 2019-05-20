@@ -3,7 +3,11 @@
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
-
+interface RowProps {
+  margin?: string
+  borderBottom?: string
+  paddingBottom?: string
+}
 export const Container = styled.div`
   padding-bottom: 36px;
   padding-right: 48px;
@@ -71,7 +75,11 @@ export const HeaderRow = styled.div`
   align-items: flex-start;
 `
 export const Row = styled.div`
-  margin: 16px 0;
+  margin: ${({ margin }: RowProps) => (margin ? margin : '16px 0')};
+  border-bottom: ${({ borderBottom }: RowProps) =>
+    borderBottom ? borderBottom : 'unset'};
+  padding-bottom: ${({ paddingBottom }: RowProps) =>
+    paddingBottom ? paddingBottom : 'unset'};
   display: flex;
   justify-content: space-between;
   align-items: flex-start;

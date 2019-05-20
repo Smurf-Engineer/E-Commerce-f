@@ -297,11 +297,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <FormattedMessage {...messages.prices} />
                 </Separator>
                 <Row
-                  style={{
-                    margin: '0 20px',
-                    borderBottom: '1px solid gray',
-                    paddingBottom: '12px'
-                  }}
+                  margin="0 20px"
+                  borderBottom="1px solid gray"
+                  paddingBottom="12px"
                 >
                   <RowField
                     textAlign="center"
@@ -335,11 +333,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 {currencies.map((currencyItem, index) => (
                   <Row
                     key={index}
-                    style={{
-                      margin: '0 20px',
-                      borderBottom: '1px solid gainsboro',
-                      padding: '12px 0'
-                    }}
+                    margin="16px 20px"
+                    borderBottom="1px solid gainsboro"
+                    paddingBottom="12px"
                   >
                     <RowField textAlign="center" label={currencyItem.label} />
                     {currencyItem.amounts.map(amount => (
