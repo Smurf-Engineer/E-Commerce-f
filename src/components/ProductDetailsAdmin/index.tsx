@@ -257,7 +257,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     value={season}
                   />
                   <RowField
-                    style={{ flex: 2 }}
+                    flex="2"
                     label={formatMessage(messages.gender)}
                     value={genders}
                   />
@@ -269,15 +269,15 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <RowField
                     value={formatMessage(messages.productDescription)}
                   />
-                  <RowField style={{ flex: 2 }} label={description} />
+                  <RowField flex="2" label={description} />
                 </Row>
                 <Row>
                   <RowField value={formatMessage(messages.specDetails)} />
-                  <RowField style={{ flex: 2 }} label={details} />
+                  <RowField flex="2" label={details} />
                 </Row>
                 <Row>
                   <RowField value={formatMessage(messages.materialInfo)} />
-                  <RowField style={{ flex: 2 }} label={materials} />
+                  <RowField flex="2" label={materials} />
                 </Row>
                 <Separator>
                   <FormattedMessage {...messages.fitSizing} />
@@ -288,7 +288,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     value={fitStyles}
                   />
                   <RowField
-                    style={{ flex: 2 }}
+                    flex="2"
                     label={formatMessage(messages.productSizes)}
                     value={sizeRange}
                   />
@@ -304,31 +304,31 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   }}
                 >
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.currency)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.personal)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.firstAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.secondAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.thirdAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.fourthAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.fifthAmount)}
                   />
                 </Row>
@@ -341,13 +341,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                       padding: '12px 0'
                     }}
                   >
-                    <RowField
-                      style={{ textAlign: 'center' }}
-                      label={currencyItem.label}
-                    />
+                    <RowField textAlign="center" label={currencyItem.label} />
                     {currencyItem.amounts.map(amount => (
                       <RowField
-                        style={{ textAlign: 'center' }}
+                        textAlign="center"
                         label={amount ? `$${amount.price}` : ''}
                       />
                     ))}
@@ -363,12 +360,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                         <Row>
                           {imageBlock.map((image: string, subindex: number) => (
                             <RowField
-                              style={{
-                                paddingTop:
-                                  blockIndex === 0 && subindex > 0
-                                    ? '23px'
-                                    : '0'
-                              }}
+                              paddingTop={
+                                blockIndex === 0 && subindex > 0 ? '23px' : '0'
+                              }
                               label={
                                 blockIndex === 0 && subindex === 0
                                   ? gender.genderName
