@@ -56,6 +56,8 @@ const accountReducer: Reducer<any> = (state = initialState, action) => {
         screen: '',
         openKeys: ['']
       })
+    case SET_CURRENT_SCREEN:
+      return state.set('screen', action.screen)
     default:
       return state
   }

@@ -45,3 +45,10 @@ export const COLOR_COMBO_SELECTED = 'colorComboSelected'
 export const SELECTED_THEME = 'themeSelected'
 export const SELECTED_PRODUCT = 'productSelected'
 export const PURCHASE = 'purchase'
+
+/* Orders status */
+export const PAID_STATUS = 'Paid'
+export const ERROR_STATUS = 'Error'
+
+/* Quantity */
+export const PERSONAL = 'Personal'

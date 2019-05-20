@@ -75,6 +75,7 @@ interface Props {
   cartItem: CartItems
   itemIndex: number
   openFitInfo: boolean
+  hideSizeHelp: boolean
   openFitInfoAction: (open: boolean, selectedIndex: number) => void
 }
 
@@ -197,7 +198,13 @@ class CartListItemTable extends React.Component<Props, State> {
   }
 
   render() {
-    const { formatMessage, cartItem, itemIndex, onlyRead } = this.props
+    const {
+      formatMessage,
+      cartItem,
+      itemIndex,
+      onlyRead,
+      hideSizeHelp
+    } = this.props
     const { genderSelectWidth, fitSelectWidth } = this.state
     const headers = onlyRead ? dropRight(headerTitles) : headerTitles
     const isRetailProduct = !cartItem.designId
@@ -220,7 +227,7 @@ class CartListItemTable extends React.Component<Props, State> {
             >
               {message ? formatMessage(messages[message]) : ''}
             </Title>
-            {message === 'size' && (
+            {message === 'size' && !hideSizeHelp && (
               <QuestionSpan key={index} onClick={this.handleOpenFitInfo} />
             )}
           </CellContainer>
