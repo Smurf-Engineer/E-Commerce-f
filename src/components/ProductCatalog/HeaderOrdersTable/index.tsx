@@ -9,9 +9,8 @@ interface Props {
   justifyContent?: string
 }
 
-const HeaderOrdersTable = ({ label, justifyContent }: Props) => {
-  const textAlign = justifyContent === 'center' ? 'center' : 'left'
-  return <Header {...{ textAlign }}>{label}</Header>
-}
+const HeaderOrdersTable = ({ label, justifyContent }: Props) => (
+  <Header {...{ justifyContent }}>{label}</Header>
+)
 
 export default HeaderOrdersTable

@@ -77,7 +77,7 @@ class ProductCatalog extends React.Component<Props, {}> {
     )
   }
   addNewProduct = () => {
-    console.log('addPending')
+    // WIP: Add & Edit form
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {

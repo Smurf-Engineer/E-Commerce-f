@@ -11,6 +11,7 @@ import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
+import { quantities, currenciesLabel } from './constants'
 import Render3D from '../../components/Render3D'
 import * as ProductDetailsAdminActions from './actions'
 import { QueryProps, Product } from '../../types/common'
@@ -32,7 +33,6 @@ import {
   DetailsContainer,
   MainBody
 } from './styledComponents'
-const quantities = ['Personal', '2-5', '6-24', '25-49', '50-99', '100-249']
 interface Data extends QueryProps {
   product: Product
 }
@@ -95,51 +95,51 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     const details = get(product, 'details', '')
     let USD = get(product, 'priceRange', [])
     if (USD) {
-      USD = USD.filter(item => item.shortName === 'USD')
+      USD = USD.filter(item => item.shortName === currenciesLabel.USD)
     }
     let GBP = get(product, 'priceRange', [])
     if (GBP) {
-      GBP = GBP.filter(item => item.shortName === 'GBP')
+      GBP = GBP.filter(item => item.shortName === currenciesLabel.GBP)
     }
     let EUR = get(product, 'priceRange', [])
     if (EUR) {
-      EUR = EUR.filter(item => item.shortName === 'EUR')
+      EUR = EUR.filter(item => item.shortName === currenciesLabel.EUR)
     }
     let CAD = get(product, 'priceRange', [])
     if (CAD) {
-      CAD = CAD.filter(item => item.shortName === 'CAD')
+      CAD = CAD.filter(item => item.shortName === currenciesLabel.CAD)
     }
     let AUD = get(product, 'priceRange', [])
     if (AUD) {
-      AUD = AUD.filter(item => item.shortName === 'AUD')
+      AUD = AUD.filter(item => item.shortName === currenciesLabel.AUD)
     }
     const currencies = [
       {
-        label: 'USD',
+        label: currenciesLabel.USD,
         amounts: quantities.map(quantity =>
           find(USD, item => item.quantity === quantity)
         )
       },
       {
-        label: 'GBP',
+        label: currenciesLabel.GBP,
         amounts: quantities.map(quantity =>
           find(GBP, item => item.quantity === quantity)
         )
       },
       {
-        label: 'EUR',
+        label: currenciesLabel.EUR,
         amounts: quantities.map(quantity =>
           find(EUR, item => item.quantity === quantity)
         )
       },
       {
-        label: 'CAD',
+        label: currenciesLabel.CAD,
         amounts: quantities.map(quantity =>
           find(CAD, item => item.quantity === quantity)
         )
       },
       {
-        label: 'AUD',
+        label: currenciesLabel.AUD,
         amounts: quantities.map(quantity =>
           find(AUD, item => item.quantity === quantity)
         )
