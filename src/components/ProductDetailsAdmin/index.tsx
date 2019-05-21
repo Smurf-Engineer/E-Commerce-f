@@ -86,6 +86,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     if (fitStyles) {
       fitStyles = fitStyles.map((item: any) => item.name).join(', ')
     }
+    let relatedTags = get(product, 'relatedProducts', '')
+    if (relatedTags) {
+      relatedTags = relatedTags.map((item: any) => item.yotpoId).join(', ')
+    }
     let categoryName = get(product, 'category_name', '')
     const tags = get(product, 'tags', '')
     const active = get(product, 'active', '')
@@ -229,7 +233,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                         <FormattedMessage {...messages.youMayLike} />
                       </i>
                     }
-                    value={yotpoId}
+                    value={relatedTags}
                   />
                 </Row>
                 <Row>
@@ -245,7 +249,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     )}
                   />
                   <RowField
-                    label={formatMessage(messages.productModel)}
+                    label={formatMessage(messages.designLab)}
                     value={formatMessage(
                       designCenter ? messages.yes : messages.no
                     )}
