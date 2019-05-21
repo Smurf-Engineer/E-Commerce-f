@@ -17,13 +17,14 @@ import {
 import { Login } from './Login'
 import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
+import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import { ORDER_STATUS } from './constants'
+import { ORDER_STATUS, PRODUCT_CATALOG } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -136,6 +137,9 @@ export class Admin extends React.Component<Props, {}> {
     switch (screen) {
       case ORDER_STATUS:
         currentScreen = <OrderHistoryAdmin {...{ history, formatMessage }} />
+        break
+      case PRODUCT_CATALOG:
+        currentScreen = <ProductCatalog {...{ history, formatMessage }} />
         break
       default:
         break

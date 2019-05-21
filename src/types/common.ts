@@ -98,6 +98,7 @@ type ExtraFile = {
 
 export interface Product {
   id: number
+  active: string
   code: string
   shortId?: string
   images: ImageType[]

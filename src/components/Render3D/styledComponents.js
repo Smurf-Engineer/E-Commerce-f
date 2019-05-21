@@ -52,6 +52,10 @@ export const Progress = styled(AntdProgress)`
   left: 50%;
   transform: translate(-50%, -50%);
 `
+export const ProgressProduct = styled(AntdProgress)`
+  position: relative;
+  transform: translate(0%, 60%);
+`
 
 export const Loading = styled(Spin)`
   position: absolute;
