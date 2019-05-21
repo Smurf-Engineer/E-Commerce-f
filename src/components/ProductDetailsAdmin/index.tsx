@@ -40,7 +40,7 @@ interface Data extends QueryProps {
 interface Props {
   productId: string
   data: Data
-  goBack: (id: number) => void
+  goBack: (id: string, screen: string) => void
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -190,7 +190,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <ScreenSubTitle>{mpn}</ScreenSubTitle>
                 </ScreenTitle>
                 <div>
-                  <BlueButton size="large">
+                  <BlueButton onClick={this.handleOnClickEdit} size="large">
                     <FormattedMessage {...messages.editProduct} />
                   </BlueButton>
                   <Button size="large">
@@ -416,7 +416,11 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
   }
   handleOnClickBack = () => {
     const { goBack } = this.props
-    goBack(0)
+    goBack('', 'list')
+  }
+  handleOnClickEdit = () => {
+    const { goBack, productId } = this.props
+    goBack(productId, 'form')
   }
 }
 

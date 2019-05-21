@@ -26,9 +26,13 @@ export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
 })
 
-export const setProductIdAction = (productId: string): AnyAction => ({
+export const setProductIdAction = (
+  productId: string,
+  screen: string
+): AnyAction => ({
   type: SET_PRODUCT_ID,
-  productId
+  productId,
+  screen
 })
 
 export const setSearchTextAction = (searchText: string) => ({

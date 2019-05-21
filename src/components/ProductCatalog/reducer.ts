@@ -17,6 +17,7 @@ export const initialState = fromJS({
   orderBy: 'id',
   sort: 'desc',
   productId: '',
+  screen: 'list',
   searchText: ''
 })
 
@@ -30,7 +31,9 @@ const productCatalogAdminReducer: Reducer<any> = (
     case SET_CURRENT_PAGE:
       return state.set('currentPage', action.page)
     case SET_PRODUCT_ID:
-      return state.set('productId', action.productId)
+      return state
+        .set('productId', action.productId)
+        .set('screen', action.screen)
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
