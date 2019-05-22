@@ -4,6 +4,14 @@
 
 import gql from 'graphql-tag'
 
+export const getCategories = gql`
+  query categories {
+    categories {
+      id
+      name
+    }
+  }
+`
 export const getProductQuery = gql`
   query GetProductByID($id: Int!) {
     product(id: $id, onlyActive: false) {

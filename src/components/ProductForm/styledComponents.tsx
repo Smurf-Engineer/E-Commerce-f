@@ -14,6 +14,7 @@ export const ScreenTitle = styled.div`
   font-size: 18px;
   font-weight: 600;
   line-height: 27px;
+  margin-bottom: 38px;
   @media (max-width: 768px) and (min-width: 320px) {
     margin-bottom: 24px;
   }
@@ -62,11 +63,10 @@ export const Loader = styled.div`
 export const FormBody = styled.div``
 
 export const HeaderRow = styled.div`
-  padding-bottom: 40px;
-  margin-top: 24px;
-  margin-bottom: 20px;
+  flex-flow: column;
+  flex: 1;
+  margin-top: 26px;
   display: flex;
-  border-bottom: 1px solid #dcdcdc;
   justify-content: space-between;
   align-items: flex-start;
 `

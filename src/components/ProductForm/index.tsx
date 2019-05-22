@@ -10,11 +10,12 @@ import get from 'lodash/get'
 import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
-import RowField from './RowField'
+import { stepsArray } from './constants'
+import { FirstStep } from './Steps'
 import Render3D from '../../components/Render3D'
 import * as ProductFormActions from './actions'
 import { QueryProps, Product } from '../../types/common'
-import { getProductQuery } from './data'
+import { getProductQuery, getCategories } from './data'
 import {
   Container,
   ScreenTitle,
@@ -32,13 +33,17 @@ import {
   DetailsContainer,
   MainBody
 } from './styledComponents'
-interface Data extends QueryProps {
+interface DataProduct extends QueryProps {
   product: Product
+}
+interface DataCategory extends QueryProps {
+  categories: object[]
 }
 
 interface Props {
   productId: string
-  data: Data
+  dataProduct: DataProduct
+  dataCategories: DataCategory
   goBack: (id: string, screen: string) => void
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
@@ -46,17 +51,23 @@ interface Props {
 const Step = Steps.Step
 export class ProductForm extends React.Component<Props, {}> {
   state = {
-    openedModel: false
+    openedModel: false,
+    currentStep: 0
   }
   componentDidUpdate(prevProps: Props) {
-    const { data, setProductAction } = this.props
-    if (data && data !== prevProps.data) {
-      setProductAction(data.product)
+    const { dataProduct, setProductAction } = this.props
+    if (dataProduct && dataProduct !== prevProps.dataProduct) {
+      setProductAction(dataProduct.product)
     }
   }
   render() {
-    const { formatMessage, productId, data } = this.props
-    const loading = get(data, 'loading', false)
+    const { currentStep } = this.state
+    const { formatMessage, productId, dataProduct, dataCategories } = this.props
+    const loading = get(dataProduct, 'loading', false)
+    const categories = get(dataCategories, 'categories', [])
+    const screenSteps = [
+      { content: <FirstStep {...{ categories, formatMessage }} /> }
+    ]
     return (
       <Container>
         <BackLabel onClick={this.handleOnClickBack}>
@@ -71,11 +82,19 @@ export class ProductForm extends React.Component<Props, {}> {
           </Loader>
         ) : (
           <MainBody>
-            <Steps current={1}>
-              <Step title="Finished" description="This is a description." />
-              <Step title="In Progress" description="This is a description." />
-              <Step title="Waiting" description="This is a description." />
-            </Steps>
+            <HeaderRow>
+              <ScreenTitle>
+                {formatMessage(
+                  productId ? messages.editProduct : messages.addNewProduct
+                )}
+              </ScreenTitle>
+              <Steps current={currentStep}>
+                {stepsArray.map(step => (
+                  <Step title={step.title} />
+                ))}
+              </Steps>
+              {screenSteps[currentStep].content}
+            </HeaderRow>
           </MainBody>
         )}
       </Container>
@@ -103,10 +122,12 @@ const ProductFormEnhance = compose(
   ),
   graphql(getProductQuery, {
     options: ({ productId: id }: OwnProps) => ({
-      skip: true,
+      skip: false,
       variables: { id }
-    })
-  })
+    }),
+    name: 'dataProduct'
+  }),
+  graphql(getCategories, { name: 'dataCategories' })
 )(ProductForm)
 
 export default ProductFormEnhance
