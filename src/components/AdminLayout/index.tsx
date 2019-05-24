@@ -33,7 +33,6 @@ interface Props extends RouteComponentProps<any> {
   history: any
   client: any
   user: UserType
-  defaultScreen: string
   fontsData: any
   fonts: []
   openKeys: string[]
@@ -99,7 +98,7 @@ class AdminLayout extends React.Component<Props, {}> {
           title={<OptionMenu>{intl.formatMessage(messages[title])}</OptionMenu>}
         >
           {submenus.map(label => (
-            <Menu.Item key={label}>
+            <Menu.Item key={label} active={true}>
               {<FormattedMessage {...messages[label]} />}
             </Menu.Item>
           ))}
@@ -124,7 +123,6 @@ class AdminLayout extends React.Component<Props, {}> {
         {!isEmpty(fonts) && <GoogleFontLoader {...{ fonts }} />}
         <SideBar>
           <Menu
-            defaultSelectedKeys={[defaultScreen]}
             selectedKeys={[screen]}
             mode="inline"
             onSelect={this.handleOnSelectItem}
