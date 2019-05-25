@@ -104,11 +104,16 @@ export interface Product {
   images: ImageType[]
   type: string
   description: string
+  design_center?: boolean
   priceRange: PriceRange[]
   collections: number
   isTopProduct: boolean
+  related_item_tag?: string
+  category_name?: string
   details: string
   specs: string
+  materials?: string
+  season?: string
   name: string
   customizable: boolean
   yotpoId: string
@@ -126,7 +131,9 @@ export interface Product {
   obj?: string
   mtl?: string
   themes?: Theme[]
+  tags?: string
   label: string
+  sports?: any[]
   flatlock: string
   bumpMap: string
   binding?: ExtraFile

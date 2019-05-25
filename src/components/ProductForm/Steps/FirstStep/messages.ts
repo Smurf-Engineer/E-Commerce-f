@@ -72,5 +72,65 @@ export default defineMessages({
   categories: {
     id: 'components.FirstStep.categories',
     defaultMessage: 'Categories'
+  },
+  productCategories: {
+    id: 'components.FirstStep.productCategories',
+    defaultMessage: 'Product Categories'
+  },
+  productCategoriesHolder: {
+    id: 'components.FirstStep.productCategoriesHolder',
+    defaultMessage: 'Ex. Jersey & Tops'
+  },
+  relatedItemTag: {
+    id: 'components.FirstStep.relatedItemTag',
+    defaultMessage: 'Related Item Tag "You may also like"'
+  },
+  relatedItemTagHolder: {
+    id: 'components.FirstStep.relatedItemTagHolder',
+    defaultMessage: 'Ex. custom_outwear'
+  },
+  onStore: {
+    id: 'components.FirstStep.onStore',
+    defaultMessage: 'On Store'
+  },
+  designLabProduct: {
+    id: 'components.FirstStep.designLabProduct',
+    defaultMessage: 'Design Lab Product'
+  },
+  generalProduct: {
+    id: 'components.FirstStep.generalProduct',
+    defaultMessage: 'General product overview'
+  },
+  productDescription: {
+    id: 'components.FirstStep.productDescription',
+    defaultMessage: 'Product Description'
+  },
+  specsDetails: {
+    id: 'components.FirstStep.specsDetails',
+    defaultMessage: 'Specs Details'
+  },
+  addMore: {
+    id: 'components.FirstStep.addMore',
+    defaultMessage: 'Add More...'
+  },
+  materialInfo: {
+    id: 'components.FirstStep.materialInfo',
+    defaultMessage: 'Material Info'
+  },
+  season: {
+    id: 'components.FirstStep.season',
+    defaultMessage: 'Season'
+  },
+  seasonHolder: {
+    id: 'components.FirstStep.seasonHolder',
+    defaultMessage: 'Ex. Spring/Summer'
+  },
+  gender: {
+    id: 'components.FirstStep.gender',
+    defaultMessage: 'Gender'
+  },
+  genderHolder: {
+    id: 'components.FirstStep.genderHolder',
+    defaultMessage: `Ex. Men's`
   }
 })

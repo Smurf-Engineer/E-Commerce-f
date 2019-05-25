@@ -112,3 +112,10 @@ export const CheckBox = styled(Checkbox)`
 export const SwitchInput = styled(Switch)`
   margin-left: 26px;
 `
+export const ColorIcon = styled.img`
+  height: 20px;
+  vertical-align: top;
+  margin-right: 8px;
+  filter: drop-shadow(0px 0px 1px black);
+  object-fit: cover;
+`

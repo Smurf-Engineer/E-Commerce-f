@@ -152,5 +152,13 @@ export default defineMessages({
   openModel: {
     id: 'components.ProductDetailAdmin.openModel',
     defaultMessage: 'Open model'
+  },
+  next: {
+    id: 'components.ProductDetailAdmin.next',
+    defaultMessage: 'Next'
+  },
+  back: {
+    id: 'components.ProductDetailAdmin.back',
+    defaultMessage: 'Back'
   }
 })

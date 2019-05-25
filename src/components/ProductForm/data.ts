@@ -4,11 +4,39 @@
 
 import gql from 'graphql-tag'
 
-export const getCategories = gql`
-  query categories {
-    categories {
-      id
-      name
+export const getExtraData = gql`
+  query extraData {
+    extraData {
+      categories {
+        id
+        name
+      }
+      sports {
+        id
+        name
+      }
+      sizes {
+        id
+        name
+      }
+      relatedTags
+      seasons
+      colors {
+        id
+        image
+        name
+      }
+      fitStyles {
+        id
+        info
+        name: description
+        image
+      }
+      materials
+      genders {
+        id
+        gender
+      }
     }
   }
 `
@@ -23,6 +51,7 @@ export const getProductQuery = gql`
       obj
       bumpMap: bump_map
       flatlock
+      related_item_tag
       binding {
         white
         black

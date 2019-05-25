@@ -5,6 +5,8 @@
 const namespace = 'src/ProductForm'
 
 export const SET_PRODUCT_DATA = `${namespace}/SET_PRODUCT_DATA`
+export const CHANGE_VALUE = `${namespace}/CHANGE_VALUE`
+export const RESET_DATA = `${namespace}/RESET_DATA`
 export const stepsArray = [
   {
     title: 'Product Information'

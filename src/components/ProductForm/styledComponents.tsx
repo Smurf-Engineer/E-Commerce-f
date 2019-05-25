@@ -51,6 +51,7 @@ export const BackText = styled.span`
 export const MainBody = styled.div`
   display: flex;
   justify-content: center;
+  flex-flow: column;
 `
 export const DetailsContainer = styled.div`
   display: inline-flex;
@@ -97,4 +98,37 @@ export const RenderBackground = styled.div`
   background: ${({ openedModel }: any) => (openedModel ? '#f3f3f3' : 'white')};
   transition: all 0.25 ease;
   text-align: center;
+`
+export const Footer = styled.div`
+  justify-content: flex-end;
+  display: flex;
+  margin-top: 46px;
+`
+
+export const BackButton = styled.div`
+  margin-right: 26px;
+  width: 165.9px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #4a90e2;
+  border: 1px solid #4a90e2;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  background-color: white;
+`
+
+export const NextButton = styled.div`
+  margin-right: 26px;
+  width: 165.9px;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #4a90e2;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  color: white;
+  box-shadow: 0px 2px 2px 0px #b7b7b7;
 `
