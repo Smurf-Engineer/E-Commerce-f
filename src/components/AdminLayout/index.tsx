@@ -82,15 +82,7 @@ class AdminLayout extends React.Component<Props, {}> {
   }
 
   render() {
-    const {
-      children,
-      fonts,
-      defaultScreen,
-      intl,
-      openKeys,
-      screen,
-      onLogout
-    } = this.props
+    const { children, fonts, intl, openKeys, screen, onLogout } = this.props
     const menuOptions = options.map(({ title, options: submenus }) =>
       submenus.length ? (
         <SubMenu

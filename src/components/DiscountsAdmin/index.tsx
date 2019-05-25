@@ -6,7 +6,12 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import * as DiscountsActions from './actions'
-import { Container, ScreenTitle, SearchInput } from './styledComponents'
+import {
+  Container,
+  ScreenTitle,
+  SearchInput,
+  AddDiscountButton
+} from './styledComponents'
 import List from './DiscountsList'
 import messages from './messages'
 import { sorts } from '../../types/common'
@@ -52,6 +57,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           <ScreenTitle>
             <FormattedMessage {...messages.title} />
           </ScreenTitle>
+          <AddDiscountButton>
+            {formatMessage(messages.addDiscountLabel)}
+          </AddDiscountButton>
           <SearchInput
             value={searchText}
             onChange={this.handleInputChange}

@@ -12,5 +12,9 @@ export default defineMessages({
   search: {
     id: 'components.DiscountsAdmin.search',
     defaultMessage: 'Search for a discount code'
+  },
+  addDiscountLabel: {
+    id: 'components.DiscountsAdmin.addDiscountLabel',
+    defaultMessage: '+ ADD NEW DISCOUNT'
   }
 })
