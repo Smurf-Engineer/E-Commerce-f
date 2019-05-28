@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
+import { DISCOUNTS_LIMIT } from '../constants'
 import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../DiscountsTable'
 import ItemOrder from '../ItemOrder'
@@ -13,13 +14,13 @@ import EmptyContainer from '../../EmptyContainer'
 import { sorts, QueryProps, Discount } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getOrdersQuery } from './data'
+import { getDiscountsQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Data extends QueryProps {
   discountsQuery: {
     fullCount: number
-    orders: Discount[]
+    discounts: Discount[]
   }
 }
 
@@ -34,8 +35,9 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   onSortClick: (label: string, sort: sorts) => void
-  onDiscountClick: (code: string) => void
+  onDiscountClick: (discount: Discount) => void
   onChangePage: (page: number) => void
+  onChangeActive: (id: number) => void
 }
 
 const DiscountsList = ({
@@ -49,7 +51,8 @@ const DiscountsList = ({
   onDiscountClick,
   onChangePage,
   withPagination = true,
-  withoutPadding = false
+  withoutPadding = false,
+  onChangeActive
 }: Props) => {
   const discounts = get(discountsQuery, 'discounts', []) as Discount[]
   const fullCount = get(discountsQuery, 'fullCount', 0)
@@ -124,17 +127,23 @@ const DiscountsList = ({
     </MediaQuery>
   )
   const orderItems = discounts.map(
-    ({ code, discountItemId, type, rate, expiry }: Discount, index: number) => {
+    (
+      { code, discountItemId, type, rate, expiry, active, id }: Discount,
+      index: number
+    ) => {
       return (
         <ItemOrder
           key={index}
           {...{
+            id,
             code,
             discountItemId,
             type,
             rate,
             expiry,
-            onDiscountClick
+            active,
+            onDiscountClick,
+            onChangeActive
           }}
         />
       )
@@ -150,7 +159,7 @@ const DiscountsList = ({
       {withPagination ? (
         <Pagination
           current={currentPage}
-          pageSize={ORDERS_LIMIT}
+          pageSize={DISCOUNTS_LIMIT}
           total={Number(fullCount)}
           onChange={onChangePage}
         />
@@ -167,10 +176,8 @@ interface OwnProps {
   searchText?: string
 }
 
-const ORDERS_LIMIT = 12
-
 const DiscountsListEnhance = compose(
-  graphql(getOrdersQuery, {
+  graphql(getDiscountsQuery, {
     options: ({
       currentPage,
       orderBy,
@@ -178,7 +185,7 @@ const DiscountsListEnhance = compose(
       customLimit,
       searchText
     }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
+      const limit = customLimit !== undefined ? customLimit : DISCOUNTS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {
@@ -187,7 +194,8 @@ const DiscountsListEnhance = compose(
           order: orderBy,
           orderAs: sort,
           searchText
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     }
   }),

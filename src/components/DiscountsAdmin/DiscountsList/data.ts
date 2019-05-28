@@ -4,7 +4,7 @@
 
 import gql from 'graphql-tag'
 
-export const getOrdersQuery = gql`
+export const getDiscountsQuery = gql`
   query getDiscounts(
     $limit: Int
     $offset: Int
@@ -21,11 +21,13 @@ export const getOrdersQuery = gql`
     ) {
       fullCount
       discounts {
+        id
         code: coupon_code
         discountItemId: discount_item_id
         type: discount_type
         rate
         expiry
+        active
       }
     }
   }
