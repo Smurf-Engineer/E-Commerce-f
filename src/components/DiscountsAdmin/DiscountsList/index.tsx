@@ -13,13 +13,13 @@ import EmptyContainer from '../../EmptyContainer'
 import { sorts, QueryProps, Discount } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getOrdersQuery } from './data'
+import { getDiscountsQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Data extends QueryProps {
   discountsQuery: {
     fullCount: number
-    orders: Discount[]
+    discounts: Discount[]
   }
 }
 
@@ -150,7 +150,7 @@ const DiscountsList = ({
       {withPagination ? (
         <Pagination
           current={currentPage}
-          pageSize={ORDERS_LIMIT}
+          pageSize={DISCOUNTS_LIMIT}
           total={Number(fullCount)}
           onChange={onChangePage}
         />
@@ -167,10 +167,10 @@ interface OwnProps {
   searchText?: string
 }
 
-const ORDERS_LIMIT = 12
+const DISCOUNTS_LIMIT = 12
 
 const DiscountsListEnhance = compose(
-  graphql(getOrdersQuery, {
+  graphql(getDiscountsQuery, {
     options: ({
       currentPage,
       orderBy,
@@ -178,7 +178,7 @@ const DiscountsListEnhance = compose(
       customLimit,
       searchText
     }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
+      const limit = customLimit !== undefined ? customLimit : DISCOUNTS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {

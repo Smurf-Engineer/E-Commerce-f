@@ -4,7 +4,7 @@
 
 import gql from 'graphql-tag'
 
-export const getOrdersQuery = gql`
+export const getDiscountsQuery = gql`
   query getDiscounts(
     $limit: Int
     $offset: Int
