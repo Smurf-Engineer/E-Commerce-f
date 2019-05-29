@@ -102,7 +102,9 @@ export interface Product {
   code: string
   shortId?: string
   images: ImageType[]
+  media_files?: object[]
   type: string
+  material_banner?: string
   description: string
   design_center?: boolean
   priceRange: PriceRange[]

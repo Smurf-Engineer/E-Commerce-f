@@ -11,7 +11,7 @@ import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import { stepsArray } from './constants'
-import { FirstStep, SecondStep, ThirdStep } from './Steps'
+import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
 import Render3D from '../../components/Render3D'
 import * as ProductFormActions from './actions'
 import { QueryProps, Product } from '../../types/common'
@@ -149,6 +149,18 @@ export class ProductForm extends React.Component<Props, {}> {
               genders,
               relatedTags,
               sports,
+              formatMessage
+            }}
+          />
+        )
+      },
+      {
+        content: (
+          <FourthStep
+            {...{
+              product,
+              setValue,
+              genders,
               formatMessage
             }}
           />

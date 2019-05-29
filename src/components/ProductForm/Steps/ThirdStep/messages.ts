@@ -7,7 +7,7 @@ import { defineMessages } from 'react-intl'
 export default defineMessages({
   title: {
     id: 'components.FirstStep.title',
-    defaultMessage: 'Fit & Sizing'
+    defaultMessage: 'Pricing'
   },
   sizesAvailable: {
     id: 'components.FirstStep.sizesAvailable',
@@ -20,5 +20,9 @@ export default defineMessages({
   selectColors: {
     id: 'components.FirstStep.selectColors',
     defaultMessage: 'Select colors available'
+  },
+  currency: {
+    id: 'components.FirstStep.currency',
+    defaultMessage: 'Currency'
   }
 })

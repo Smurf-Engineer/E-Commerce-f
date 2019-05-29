@@ -1,20 +1,20 @@
 /**
  * Styled Components - Created by cazarez on 07/02/18.
  */
-import { Radio, Checkbox, Switch, Input } from 'antd'
+import { Radio, Checkbox, Switch } from 'antd'
 import styled from 'styled-components'
-interface TextProps {
-  capitalize: boolean
+interface DivProps {
+  capitalize?: boolean
+  upperCase?: boolean
+  inline?: boolean
+  marginTop?: string
+  big?: boolean
+  marginBottom?: string
 }
 interface InputDivProps {
   flex?: number
   isFlex?: boolean
   flexFlow?: string
-  left?: boolean
-}
-interface RowProps {
-  boldBorder?: boolean
-  boldText?: boolean
 }
 const CheckboxGroup = Checkbox.Group
 const RadioButtonComponent = Radio.Button
@@ -40,7 +40,7 @@ export const Text = styled.div`
   font-family: 'Avenir Next';
   font-size: 15px;
   font-weight: 600;
-  text-transform: ${({ capitalize }: TextProps) =>
+  text-transform: ${({ capitalize }: DivProps) =>
     capitalize ? 'capitalize' : 'none'}
   letter-spacing: 0.11px;
   line-height: 22px;
@@ -64,7 +64,7 @@ export const Separator = styled.div`
   line-height: 22px;
   padding-bottom: 10px;
   margin-bottom: 30px;
-  margin-top: 68px;
+  margin-top: ${({ inline }: DivProps) => (inline ? 'unset' : '68px')};
 `
 export const RadioButton = styled(RadioButtonComponent)`
   margin-right: 26px;
@@ -79,23 +79,25 @@ export const RadioButton = styled(RadioButtonComponent)`
 `
 
 export const RowInput = styled.div`
-  padding: 16px 0;
-  border-bottom: ${({ boldBorder }: RowProps) =>
-    boldBorder ? '1px solid black' : '1px solid #dcdcdc'}
+  margin: 16px 0;
+  margin: 16px 0;
   display: flex;
-  font-weight: ${({ boldText }: RowProps) => (boldText ? 'bold' : 'normal')}
   justify-content: space-between;
 `
 export const InputDiv = styled.div`
+  margin-right: 26px;
   flex-flow: ${({ flexFlow }: InputDivProps) =>
     flexFlow ? flexFlow : 'unset'};
   display: ${({ isFlex }: InputDivProps) => (isFlex ? 'inline-flex' : 'unset')};
   flex: ${({ flex }: InputDivProps) => (flex ? flex : 'unset')};
-  justify-content: ${({ left }: InputDivProps) =>
-    left ? 'flex-start' : 'center'};
-  align-items: center;
 `
-export const Label = styled.div``
+export const Label = styled.div`
+  margin-top: ${({ marginTop }: DivProps) => (marginTop ? marginTop : 'unset')};
+  margin-bottom: ${({ marginBottom }: DivProps) =>
+    marginBottom ? marginBottom : '10px'};
+  text-transform: ${({ upperCase }: DivProps) =>
+    upperCase ? 'uppercase' : 'unset'};
+`
 
 export const InlineLabel = styled.div`
   display: inline-flex;
@@ -119,13 +121,30 @@ export const CheckBox = styled(Checkbox)`
 export const SwitchInput = styled(Switch)`
   margin-left: 26px;
 `
-export const ColorIcon = styled.img`
-  height: 20px;
-  vertical-align: top;
-  margin-right: 8px;
-  filter: drop-shadow(0px 0px 1px black);
-  object-fit: cover;
+export const GenderBlock = styled.div`
+  margin-bottom: 30px;
 `
-export const NumberInput = styled(Input)`
-  width: 80%;
+
+export const ImageBlock = styled.div`
+  display: inline-flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: center;
+  margin-top: 8px;
+`
+export const ImageBox = styled.img`
+  object-fit: contain;
+  height: 200px;
+  width: 200px;
+`
+export const EmptyBox = styled.div`
+  height: 200px;
+  width: ${({ big }: DivProps) => (big ? '600px' : '200px')}
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+  flex-flow: column;
+  font-size: 18px;
+  padding-top: 38px;
+  color: #bebebe;
 `

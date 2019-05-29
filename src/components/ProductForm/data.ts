@@ -47,7 +47,12 @@ export const getProductQuery = gql`
       code
       yotpoId: yotpo_id
       name
+      material_banner
       mtl
+      media_files {
+        id
+        url
+      }
       obj
       bumpMap: bump_map
       flatlock

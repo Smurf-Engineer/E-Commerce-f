@@ -2,6 +2,8 @@
  * AboutUs Component - Created by cazarez on 07/02/18.
  */
 import * as React from 'react'
+import get from 'lodash/get'
+import find from 'lodash/find'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
 import {
@@ -12,11 +14,13 @@ import {
   Label,
   CheckGroup,
   InlineLabel,
+  NumberInput,
   SwitchInput,
   RadioButton,
   ColorIcon,
   InputDiv
 } from './styledComponents'
+import { quantities } from './constants'
 import {
   Product,
   ItemDetailType,
@@ -38,85 +42,132 @@ export class ThirdStep extends React.Component<Props, {}> {
     const {
       sizeRange,
       fitStyles: fitStylesProduct,
-      colors: productColors,
-      customizable
+      colors: productColors
     } = product
     const sizesSelected = sizeRange.map(e => e.id || '')
     const stylesSelected = fitStylesProduct.map(e => e.id)
     const colorsSelected = productColors ? productColors.map(e => e.id) : []
+    let USD = get(product, 'priceRange', [])
+    if (USD) {
+      USD = USD.filter(item => item.shortName === 'USD')
+    }
+    let GBP = get(product, 'priceRange', [])
+    if (GBP) {
+      GBP = GBP.filter(item => item.shortName === 'GBP')
+    }
+    let EUR = get(product, 'priceRange', [])
+    if (EUR) {
+      EUR = EUR.filter(item => item.shortName === 'EUR')
+    }
+    let CAD = get(product, 'priceRange', [])
+    if (CAD) {
+      CAD = CAD.filter(item => item.shortName === 'CAD')
+    }
+    let AUD = get(product, 'priceRange', [])
+    if (AUD) {
+      AUD = AUD.filter(item => item.shortName === 'AUD')
+    }
+    const currencies = [
+      {
+        label: 'USD',
+        amounts: quantities.map(quantity =>
+          find(USD, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'GBP',
+        amounts: quantities.map(quantity =>
+          find(GBP, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'EUR',
+        amounts: quantities.map(quantity =>
+          find(EUR, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'CAD',
+        amounts: quantities.map(quantity =>
+          find(CAD, item => item.quantity === quantity)
+        )
+      },
+      {
+        label: 'AUD',
+        amounts: quantities.map(quantity =>
+          find(AUD, item => item.quantity === quantity)
+        )
+      }
+    ]
+
     return (
       <Container>
         <Separator>
           <FormattedMessage {...messages.title} />
         </Separator>
-        <RowInput>
-          <InputDiv flex={2}>
+        <RowInput boldText={true} boldBorder={true}>
+          <InputDiv left={true} isFlex={true} flex={1}>
             <Label>
-              <FormattedMessage {...messages.sizesAvailable} />
+              <FormattedMessage {...messages.currency} />
             </Label>
-            <CheckGroup value={sizesSelected} onChange={this.handleCheckChange}>
-              {sizes.map((sizeItem: ItemDetailType, index) => (
-                <CheckBox key={index} value={sizeItem.id}>
-                  {sizeItem.name}
-                </CheckBox>
-              ))}
-            </CheckGroup>
           </InputDiv>
-          <InputDiv flex={1} />
-        </RowInput>
-        <RowInput>
-          <InputDiv flex={2}>
-            <Label>
-              <FormattedMessage {...messages.selectFitStyle} />
-            </Label>
-            <CheckGroup value={stylesSelected} onChange={this.handleCheckStyle}>
-              {fitStyles.map((style: FitStyle, index) => (
-                <CheckBox key={index} value={style.id}>
-                  {style.name}
-                </CheckBox>
-              ))}
-            </CheckGroup>
-          </InputDiv>
-          <InputDiv flex={1} />
-        </RowInput>
-        {!customizable && (
-          <RowInput>
-            <InputDiv flex={2}>
-              <Label>
-                <FormattedMessage {...messages.selectColors} />
-              </Label>
-              <CheckGroup
-                value={colorsSelected}
-                onChange={this.handleChangeColor}
-              >
-                {colors.map((color: ProductColors, index) => (
-                  <CheckBox key={index} value={color.id}>
-                    <ColorIcon src={color.image} />
-                    {color.name}
-                  </CheckBox>
-                ))}
-              </CheckGroup>
+          {quantities.map(quantity => (
+            <InputDiv isFlex={true} flex={1}>
+              <Label>{quantity}</Label>
             </InputDiv>
-            <InputDiv flex={1} />
+          ))}
+        </RowInput>
+        {currencies.map((currencyItem, index) => (
+          <RowInput>
+            <InputDiv left={true} isFlex={true} flex={1}>
+              <Label>{currencyItem.label}</Label>
+            </InputDiv>
+            {currencyItem.amounts.map(amount => (
+              <InputDiv isFlex={true} flex={1}>
+                <NumberInput
+                  name={`${currencyItem.label}@${
+                    amount ? amount.quantity : ''
+                  }`}
+                  size="large"
+                  placeholder="$000"
+                  value={amount ? this.formatCurrency(amount.price) : 0}
+                  onChange={this.handleChangeValue}
+                />
+              </InputDiv>
+            ))}
           </RowInput>
-        )}
+        ))}
       </Container>
     )
   }
-  handleCheckChange = (ids: any[]) => {
-    const { setValue, sizes } = this.props
-    const value = sizes.filter(({ id }: any) => ids.includes(id))
-    setValue('sizeRange', value)
+  formatCurrency = (value: Number) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
   }
-  handleCheckStyle = (ids: any[]) => {
-    const { setValue, fitStyles } = this.props
-    const value = fitStyles.filter(({ id }: any) => ids.includes(id))
-    setValue('fitStyles', value)
-  }
-  handleChangeColor = (ids: any[]) => {
-    const { setValue, colors } = this.props
-    const value = colors.filter(({ id }: any) => ids.includes(id))
-    setValue('colors', value)
+  handleChangeValue = (event: any) => {
+    const {
+      setValue,
+      product: { priceRange }
+    } = this.props
+    const name = get(event, 'target.name', '')
+    const value = get(event, 'target.value', '')
+    const parameters = name.split('@')
+    const currency = parameters[0]
+    const quantity = parameters[1]
+    var lastChar = value[value.length - 1]
+    const index = priceRange.findIndex(
+      item => item.quantity === quantity && item.shortName === currency
+    )
+
+    const cleanValue = value.replace(/,/g, '')
+    const filteredValue =
+      lastChar === '.' ? cleanValue : parseFloat(cleanValue || 0)
+    var regex = new RegExp(/^-?(\d+)[\.]?(\d{0,3})$/g)
+
+    if (regex.test(filteredValue.toString())) {
+      priceRange[index].price = filteredValue
+      setValue('priceRange', priceRange)
+      this.forceUpdate()
+    }
   }
 }
 

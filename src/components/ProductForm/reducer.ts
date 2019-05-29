@@ -39,7 +39,188 @@ export const initialState = fromJS({
     genders: [],
     fitStyles: [],
     retailMen: false,
-    priceRange: [],
+    priceRange: [
+      {
+        price: 0,
+        quantity: 'Personal',
+        abbreviation: 'aud',
+        shortName: 'AUD'
+      },
+      {
+        price: 0,
+        quantity: '2-5',
+        abbreviation: 'aud',
+        shortName: 'AUD'
+      },
+      {
+        price: 0,
+        quantity: '6-24',
+        abbreviation: 'aud',
+        shortName: 'AUD'
+      },
+      {
+        price: 0,
+        quantity: '25-49',
+        abbreviation: 'aud',
+        shortName: 'AUD'
+      },
+      {
+        price: 0,
+        quantity: '50-99',
+        abbreviation: 'aud',
+        shortName: 'AUD'
+      },
+      {
+        price: 0,
+        quantity: '100-249',
+        abbreviation: 'aud',
+        shortName: 'AUD'
+      },
+      {
+        price: 0,
+        quantity: 'Personal',
+        abbreviation: 'cad',
+        shortName: 'CAD'
+      },
+      {
+        price: 0,
+        quantity: '2-5',
+        abbreviation: 'cad',
+        shortName: 'CAD'
+      },
+      {
+        price: 0,
+        quantity: '6-24',
+        abbreviation: 'cad',
+        shortName: 'CAD'
+      },
+      {
+        price: 0,
+        quantity: '25-49',
+        abbreviation: 'cad',
+        shortName: 'CAD'
+      },
+      {
+        price: 0,
+        quantity: '50-99',
+        abbreviation: 'cad',
+        shortName: 'CAD'
+      },
+      {
+        price: 0,
+        quantity: '100-249',
+        abbreviation: 'cad',
+        shortName: 'CAD'
+      },
+      {
+        price: 0,
+        quantity: 'Personal',
+        abbreviation: 'eur',
+        shortName: 'EUR'
+      },
+      {
+        price: 0,
+        quantity: '2-5',
+        abbreviation: 'eur',
+        shortName: 'EUR'
+      },
+      {
+        price: 0,
+        quantity: '6-24',
+        abbreviation: 'eur',
+        shortName: 'EUR'
+      },
+      {
+        price: 0,
+        quantity: '25-49',
+        abbreviation: 'eur',
+        shortName: 'EUR'
+      },
+      {
+        price: 0,
+        quantity: '50-99',
+        abbreviation: 'eur',
+        shortName: 'EUR'
+      },
+      {
+        price: 0,
+        quantity: '100-249',
+        abbreviation: 'eur',
+        shortName: 'EUR'
+      },
+      {
+        price: 0,
+        quantity: 'Personal',
+        abbreviation: 'gbp',
+        shortName: 'GBP'
+      },
+      {
+        price: 0,
+        quantity: '2-5',
+        abbreviation: 'gbp',
+        shortName: 'GBP'
+      },
+      {
+        price: 0,
+        quantity: '6-24',
+        abbreviation: 'gbp',
+        shortName: 'GBP'
+      },
+      {
+        price: 0,
+        quantity: '25-49',
+        abbreviation: 'gbp',
+        shortName: 'GBP'
+      },
+      {
+        price: 0,
+        quantity: '50-99',
+        abbreviation: 'gbp',
+        shortName: 'GBP'
+      },
+      {
+        price: 0,
+        quantity: '100-249',
+        abbreviation: 'gbp',
+        shortName: 'GBP'
+      },
+      {
+        price: 0,
+        quantity: 'Personal',
+        abbreviation: 'usd',
+        shortName: 'USD'
+      },
+      {
+        price: 0,
+        quantity: '2-5',
+        abbreviation: 'usd',
+        shortName: 'USD'
+      },
+      {
+        price: 0,
+        quantity: '6-24',
+        abbreviation: 'usd',
+        shortName: 'USD'
+      },
+      {
+        price: 0,
+        quantity: '25-49',
+        abbreviation: 'usd',
+        shortName: 'USD'
+      },
+      {
+        price: 0,
+        quantity: '50-99',
+        abbreviation: 'usd',
+        shortName: 'USD'
+      },
+      {
+        price: 0,
+        quantity: '100-249',
+        abbreviation: 'usd',
+        shortName: 'USD'
+      }
+    ],
     collections: null,
     pictures: [],
     design_center: true,
