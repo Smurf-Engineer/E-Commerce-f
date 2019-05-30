@@ -103,7 +103,9 @@ const DiscountsModals = ({
               defaultValue={discountType}
             >
               {discountTypes.map(value => (
-                <Option value={value}>{value}</Option>
+                <Option key={value} value={value}>
+                  {value}
+                </Option>
               ))}
             </StyledSelect>
           </Column>
