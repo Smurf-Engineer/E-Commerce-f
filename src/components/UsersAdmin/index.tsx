@@ -4,7 +4,10 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { getUsersQuery } from './UsersList/data'
 import { FormattedMessage } from 'react-intl'
+import { setAdminUserMutation } from './data'
+import { USERS_LIMIT } from './constants'
 import * as UsersAdminActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './UsersList'
@@ -23,6 +26,7 @@ interface Props {
   resetDataAction: () => void
   setOrderIdAction: (orderId: string) => void
   setSearchTextAction: (searchText: string) => void
+  setAdminUser: (variables: {}) => void
 }
 
 class UsersAdmin extends React.Component<Props, {}> {
@@ -49,11 +53,32 @@ class UsersAdmin extends React.Component<Props, {}> {
           onSortClick={this.handleOnSortClick}
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
+          onSetAdministrator={this.handleOnSetAdministrator}
         />
       </Container>
     )
   }
-
+  handleOnSetAdministrator = async (id: boolean) => {
+    const { setAdminUser, orderBy, sort, searchText } = this.props
+    await setAdminUser({
+      variables: { id },
+      refetchQueries: [
+        {
+          query: getUsersQuery,
+          variables: {
+            limit: USERS_LIMIT,
+            offset: 0,
+            order: orderBy,
+            orderAs: sort,
+            searchText
+          },
+          options: {
+            fetchPolicy: 'network-only'
+          }
+        }
+      ]
+    })
+  }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
     setOrderByAction(label, sort)
@@ -76,6 +101,7 @@ class UsersAdmin extends React.Component<Props, {}> {
 const mapStateToProps = (state: any) => state.get('usersAdmin').toJS()
 
 const UsersAdminEnhance = compose(
+  setAdminUserMutation,
   connect(
     mapStateToProps,
     { ...UsersAdminActions }

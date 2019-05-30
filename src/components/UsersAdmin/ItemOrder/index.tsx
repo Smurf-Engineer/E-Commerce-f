@@ -12,6 +12,7 @@ interface Props {
   administrator: boolean
   firstName: string
   lastName: string
+  onSetAdministrator: (id: number) => void
 }
 
 const ItemOrder = ({
@@ -20,15 +21,19 @@ const ItemOrder = ({
   socialMethod,
   administrator,
   firstName,
-  lastName
+  lastName,
+  onSetAdministrator
 }: Props) => {
+  const handleOnSetAdministrator = () => {
+    onSetAdministrator(id)
+  }
   return (
     <Container>
       <Cell>JV2-{id}</Cell>
       <Cell>{`${firstName} ${lastName}`}</Cell>
       <Cell>{socialMethod}</Cell>
       <Cell>
-        <Switch checked={administrator} />
+        <Switch onChange={handleOnSetAdministrator} checked={administrator} />
       </Cell>
       <Cell>{email}</Cell>
     </Container>

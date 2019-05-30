@@ -9,6 +9,7 @@ import messages from './messages'
 import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
+import { USERS_LIMIT } from '../constants'
 import EmptyContainer from '../../EmptyContainer'
 import { sorts, QueryProps, User } from '../../../types/common'
 import withError from '../../WithError'
@@ -35,6 +36,7 @@ interface Props {
   searchText: string
   onSortClick: (label: string, sort: sorts) => void
   onChangePage: (page: number) => void
+  onSetAdministrator: (id: number) => void
 }
 
 const UsersList = ({
@@ -47,7 +49,8 @@ const UsersList = ({
   onSortClick,
   onChangePage,
   withPagination = true,
-  withoutPadding = false
+  withoutPadding = false,
+  onSetAdministrator
 }: Props) => {
   const users = get(usersQuery, 'users', []) as User[]
   const fullCount = get(usersQuery, 'fullCount', 0)
@@ -121,7 +124,8 @@ const UsersList = ({
             firstName,
             lastName,
             socialMethod,
-            administrator
+            administrator,
+            onSetAdministrator
           }}
         />
       )
@@ -137,7 +141,7 @@ const UsersList = ({
       {withPagination ? (
         <Pagination
           current={currentPage}
-          pageSize={ORDERS_LIMIT}
+          pageSize={USERS_LIMIT}
           total={Number(fullCount)}
           onChange={onChangePage}
         />
@@ -154,8 +158,6 @@ interface OwnProps {
   searchText?: string
 }
 
-const ORDERS_LIMIT = 12
-
 const UsersListEnhance = compose(
   graphql(getUsersQuery, {
     options: ({
@@ -165,7 +167,7 @@ const UsersListEnhance = compose(
       customLimit,
       searchText
     }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : ORDERS_LIMIT
+      const limit = customLimit !== undefined ? customLimit : USERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {
