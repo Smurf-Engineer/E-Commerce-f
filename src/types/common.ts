@@ -1131,3 +1131,11 @@ export interface UserInfo {
   zipCode: string
   country: string
 }
+export interface User {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  socialMethod: string
+  administrator: boolean
+}
