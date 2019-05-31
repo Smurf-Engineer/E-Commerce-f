@@ -6,6 +6,7 @@ import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
 import * as DiscountsActions from './actions'
+import message from 'antd/lib/message'
 import { DISCOUNTS_LIMIT } from './constants'
 import {
   Container,
@@ -167,11 +168,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       discountType,
       rate,
       discountActive,
-      openDiscountModalAction,
       setLoadingAction,
       discountId,
-      expiry,
-      resetDiscountDataAction
+      expiry
     } = this.props
 
     const isUpdatingDiscount = discountId !== -1
@@ -185,9 +184,12 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       active: discountActive
     }
     setLoadingAction(true)
-    await this.updateAddDiscount(isUpdatingDiscount, discount)
-    resetDiscountDataAction()
-    openDiscountModalAction(false)
+    try {
+      await this.updateAddDiscount(isUpdatingDiscount, discount)
+    } catch (error) {
+      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
+      message.error(errorMessage)
+    }
   }
   updateAddDiscount = async (
     isUpdatingAddress: boolean,
@@ -198,7 +200,11 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       addNewDiscount,
       orderBy,
       sort,
-      searchText
+      searchText,
+      formatMessage,
+      resetDiscountDataAction,
+      openDiscountModalAction,
+      setLoadingAction
     } = this.props
     if (isUpdatingAddress) {
       await updateDiscount({
@@ -223,6 +229,13 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       await addNewDiscount({
         variables: { discount },
         update: (store: any, dataDiscount: Discount) => {
+          console.log(dataDiscount)
+          const newDiscount = get(dataDiscount, 'data.discount')
+          if (!newDiscount.id) {
+            message.error(formatMessage(messages.alreadyExist))
+            setLoadingAction(false)
+            return
+          }
           const data = store.readQuery({
             query: getDiscountsQuery,
             variables: {
@@ -234,7 +247,6 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             }
           })
           const discountList = get(data, 'discountsQuery.discounts')
-          const newDiscount = get(dataDiscount, 'data.discount')
           discountList.push(newDiscount)
           store.writeQuery({
             query: getDiscountsQuery,
@@ -247,6 +259,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             },
             data
           })
+          resetDiscountDataAction()
+          openDiscountModalAction(false)
         }
       })
     }

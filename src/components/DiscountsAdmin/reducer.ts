@@ -64,7 +64,7 @@ const orderHistoryAdminReducer: Reducer<any> = (
     case OPEN_DISCOUNT_MODAL:
       return state.set('discountModalOpen', action.open)
     case SET_LOADING:
-      return state.set('loading', true)
+      return state.set('loading', action.loading)
     case RESET_DISCOUNT_DATA: {
       return state.merge({
         discountType: '%',
