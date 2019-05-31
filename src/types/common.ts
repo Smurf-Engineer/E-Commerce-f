@@ -523,6 +523,13 @@ export interface OrderHistory {
   netsuiteAttempts: number
 }
 
+export interface Discount {
+  code: string
+  discountItemId: string
+  type: string
+  rate: string
+  expiry: string
+}
 export interface FulfillmentNetsuite {
   packages: string
 }

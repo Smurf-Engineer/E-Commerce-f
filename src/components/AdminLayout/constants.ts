@@ -10,6 +10,7 @@ export const SET_INSTALLED_FONTS_ACTION = `${namespace}/SET_INSTALLED_FONTS_ACTI
 
 export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
+export const DISCOUNTS = 'discounts'
 export const PRODUCT_CATALOG = 'productCatalog'
 export const USERS = 'users'
 export const LOGOUT_MENU = 'logout'
@@ -17,7 +18,7 @@ export const LOGOUT_MENU = 'logout'
 export const options = [
   {
     title: ORDERS,
-    options: [ORDER_STATUS]
+    options: [ORDER_STATUS, DISCOUNTS]
   },
   {
     title: PRODUCT_CATALOG,

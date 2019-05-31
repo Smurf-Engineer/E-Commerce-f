@@ -4,6 +4,7 @@
 const namespace = 'src/Admin'
 
 export const ORDER_STATUS = 'orderStatus'
+export const DISCOUNTS = 'discounts'
 export const PRODUCT_CATALOG = 'productCatalog'
 export const USERS = 'users'
 
