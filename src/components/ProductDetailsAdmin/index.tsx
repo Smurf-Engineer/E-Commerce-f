@@ -342,9 +342,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     paddingBottom="12px"
                   >
                     <RowField textAlign="center" label={currencyItem.label} />
-                    {currencyItem.amounts.map((amount, i) => (
+                    {currencyItem.amounts.map((amount, subindex) => (
                       <RowField
-                        key={i}
+                        key={subindex}
                         textAlign="center"
                         label={amount ? `$${amount.price}` : ''}
                       />
