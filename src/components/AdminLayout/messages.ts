@@ -17,6 +17,14 @@ export default defineMessages({
     id: 'screens.AdminLayout.productCatalog',
     defaultMessage: 'PRODUCT CATALOG'
   },
+  editContent: {
+    id: 'screens.AdminLayout.editContent',
+    defaultMessage: 'EDIT CONTENT'
+  },
+  homepage: {
+    id: 'screens.AdminLayout.homepage',
+    defaultMessage: 'Homepage'
+  },
   logout: {
     id: 'screens.AdminLayout.logout',
     defaultMessage: 'LOGOUT'
