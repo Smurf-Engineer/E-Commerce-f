@@ -52,7 +52,7 @@ const orderHistoryAdminReducer: Reducer<any> = (
     case RESET_DATA:
       return initialState
     case SET_SEARCH_TEXT:
-      return state.set('searchText', action.searchText)
+      return state.merge({ searchText: action.searchText, currentPage: 1 })
     case SET_DISCOUNT_TEXT:
       return state.set(action.field, action.value)
     case ON_SELECT_DISCOUNT_TYPE:

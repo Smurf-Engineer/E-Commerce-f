@@ -20,5 +20,9 @@ export default defineMessages({
   alreadyExist: {
     id: 'components.DiscountsAdmin.alreadyExist',
     defaultMessage: 'Code already exists.'
+  },
+  unexpectedError: {
+    id: 'components.DiscountsAdmin.unexpectedError',
+    defaultMessage: 'Oops! Something went wrong.'
   }
 })

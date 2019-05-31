@@ -170,7 +170,8 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       discountActive,
       setLoadingAction,
       discountId,
-      expiry
+      expiry,
+      formatMessage
     } = this.props
 
     const isUpdatingDiscount = discountId !== -1
@@ -187,8 +188,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     try {
       await this.updateAddDiscount(isUpdatingDiscount, discount)
     } catch (error) {
-      const errorMessage = error.graphQLErrors.map((x: any) => x.message)
-      message.error(errorMessage)
+      message.error(formatMessage(messages.unexpectedError))
     }
   }
   updateAddDiscount = async (
@@ -206,8 +206,9 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       openDiscountModalAction,
       setLoadingAction
     } = this.props
+    let responseId
     if (isUpdatingAddress) {
-      await updateDiscount({
+      const data = await updateDiscount({
         variables: { discount },
         refetchQueries: [
           {
@@ -225,15 +226,15 @@ class DiscountsAdmin extends React.Component<Props, {}> {
           }
         ]
       })
+      const response = get(data, 'data.updateDiscount')
+      responseId = response && response.id
     } else {
       await addNewDiscount({
         variables: { discount },
         update: (store: any, dataDiscount: Discount) => {
-          console.log(dataDiscount)
           const newDiscount = get(dataDiscount, 'data.discount')
-          if (!newDiscount.id) {
-            message.error(formatMessage(messages.alreadyExist))
-            setLoadingAction(false)
+          responseId = newDiscount.id
+          if (!responseId) {
             return
           }
           const data = store.readQuery({
@@ -259,11 +260,16 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             },
             data
           })
-          resetDiscountDataAction()
-          openDiscountModalAction(false)
         }
       })
     }
+    if (!responseId) {
+      message.error(formatMessage(messages.alreadyExist))
+      setLoadingAction(false)
+      return
+    }
+    resetDiscountDataAction()
+    openDiscountModalAction(false)
   }
   handleOnAddNewDiscount = () => {
     const { resetDiscountDataAction, openDiscountModalAction } = this.props
