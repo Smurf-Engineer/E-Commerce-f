@@ -19,12 +19,13 @@ import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
+import DiscountsAdmin from '../../components/DiscountsAdmin'
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import { ORDER_STATUS, PRODUCT_CATALOG } from './constants'
+import { ORDER_STATUS, DISCOUNTS, PRODUCT_CATALOG } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -138,6 +139,9 @@ export class Admin extends React.Component<Props, {}> {
       case ORDER_STATUS:
         currentScreen = <OrderHistoryAdmin {...{ history, formatMessage }} />
         break
+      case DISCOUNTS:
+        currentScreen = <DiscountsAdmin {...{ history, formatMessage }} />
+        break
       case PRODUCT_CATALOG:
         currentScreen = <ProductCatalog {...{ history, formatMessage }} />
         break
@@ -145,7 +149,7 @@ export class Admin extends React.Component<Props, {}> {
         break
     }
     return (
-      <AdminLayout {...{ history, intl }} onLogout={this.onLogout}>
+      <AdminLayout {...{ history, intl, screen }} onLogout={this.onLogout}>
         {currentScreen}
       </AdminLayout>
     )
