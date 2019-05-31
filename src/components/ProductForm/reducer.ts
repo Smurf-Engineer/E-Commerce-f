@@ -3,7 +3,12 @@
  */
 
 import { fromJS } from 'immutable'
-import { SET_PRODUCT_DATA, CHANGE_VALUE, RESET_DATA } from './constants'
+import {
+  SET_PRODUCT_DATA,
+  CHANGE_VALUE,
+  RESET_DATA,
+  SET_LOADING
+} from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -22,6 +27,8 @@ export const initialState = fromJS({
     mtl: '',
     bumpMap: '',
     sport_id: null,
+    material_banner: '',
+    media_files: [],
     active: 'true',
     name: '',
     mpn: '',
@@ -244,7 +251,12 @@ export const initialState = fromJS({
     category_id: 0,
     temperatures: null,
     sports: []
-  }
+  },
+  loading: false,
+  productImages: [],
+  productMaterials: [],
+  bannerMaterials: [],
+  mediaFiles: []
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
@@ -253,7 +265,23 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       return initialState
     case SET_PRODUCT_DATA:
       return state.set('product', fromJS(action.product))
+    case SET_LOADING:
+      return state.set('loading', action.loading)
     case CHANGE_VALUE: {
+      if (action.field === 'genders') {
+        const pictures = action.value.map((gender: any) => ({
+          front_image: '',
+          back_image: '',
+          left_image: '',
+          right_image: '',
+          gender_id: gender.id
+        }))
+        return state
+          .setIn(['product', action.field], action.value)
+          .setIn(['product', 'pictures'], pictures)
+      } else if (action.field === 'files') {
+        return state.set(action.value.type, action.value.array)
+      }
       return state.setIn(['product', action.field], action.value)
     }
     default:

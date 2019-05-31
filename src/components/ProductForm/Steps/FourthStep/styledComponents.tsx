@@ -1,7 +1,7 @@
 /**
  * Styled Components - Created by cazarez on 07/02/18.
  */
-import { Radio, Checkbox, Switch } from 'antd'
+import { Radio, Checkbox, Switch, Icon } from 'antd'
 import styled from 'styled-components'
 interface DivProps {
   capitalize?: boolean
@@ -9,6 +9,7 @@ interface DivProps {
   inline?: boolean
   marginTop?: string
   big?: boolean
+  maxWidth?: boolean
   marginBottom?: string
 }
 interface InputDivProps {
@@ -135,7 +136,7 @@ export const ImageBlock = styled.div`
 export const ImageBox = styled.img`
   object-fit: contain;
   height: 200px;
-  width: 200px;
+  width: ${({ maxWidth }: DivProps) => (maxWidth ? 'unset' : '200px')};
 `
 export const EmptyBox = styled.div`
   height: 200px;
@@ -147,4 +148,91 @@ export const EmptyBox = styled.div`
   font-size: 18px;
   padding-top: 38px;
   color: #bebebe;
+`
+export const MediaSection = styled.div`
+  margin-top: 42px;
+  display: inline-flex;
+  flex-flow: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+`
+export const MediaDiv = styled.div`
+  margin: 8px;
+  padding: 8px;
+  border: 1px dashed #cccccc;
+`
+
+export const MediaFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+`
+export const FileName = styled.div`
+  display: inline-block;
+  font-weight: bold;
+  max-width: 70px;
+  white-space: nowrap;
+  overflow: hidden;
+  vertical-align: top;
+  text-overflow: ellipsis;
+`
+export const FileExtension = styled.div`
+  display: inline-block;
+  font-weight: bold;
+  vertical-align: top;
+`
+export const DeleteFile = styled.div`
+  height: 17px;
+  width: 50px;
+  color: #e61737;
+  font-family: 'Avenir Next';
+  font-size: 14px;
+  letter-spacing: 0.18px;
+  line-height: 19px;
+  cursor: pointer;
+`
+
+export const MaterialDiv = styled.div`
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+  align-items: center;
+  border: 0.5px solid #bebebe;
+  border-radius: 2px;
+  height: 138px;
+  width: 120px;
+  margin-right: 16px;
+  padding-bottom: 16px;
+  padding-top: 8px;
+`
+
+export const MaterialButtons = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+`
+export const MaterialImage = styled.img`
+  object-fit: contain;
+  display: inline-block;
+  max-width: 90px;
+  max-height: 90px;
+`
+
+export const AddMaterial = styled.div`
+  height: 120px;
+  width: 120px;
+  justify-content: space-between;
+  align-items: center;
+  display: inline-flex;
+  flex-flow: column;
+  font-size: 18px;
+  padding-top: 38px;
+  color: #bebebe;
+`
+
+export const MaterialButton = styled(Icon)`
+  cursor: pointer;
 `

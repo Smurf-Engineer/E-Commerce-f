@@ -2,7 +2,12 @@
  * OrderHistoryAdmin  Actions - Created by eduardoquintero on 07/05/19.
  */
 
-import { SET_PRODUCT_DATA, CHANGE_VALUE, RESET_DATA } from './constants'
+import {
+  SET_PRODUCT_DATA,
+  CHANGE_VALUE,
+  RESET_DATA,
+  SET_LOADING
+} from './constants'
 import { AnyAction, Product } from '../../types/common'
 
 export const setProductAction = (product: Product): AnyAction => ({
@@ -18,4 +23,9 @@ export const setValue = (field: string, value: any): AnyAction => ({
 
 export const resetData = () => ({
   type: RESET_DATA
+})
+
+export const setUploadingAction = (loading: boolean): AnyAction => ({
+  type: SET_LOADING,
+  loading
 })

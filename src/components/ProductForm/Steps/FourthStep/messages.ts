@@ -30,7 +30,11 @@ export default defineMessages({
     defaultMessage: 'Click or drag images or videos to this area'
   },
   assetsOnPage: {
-    id: 'components.FirstStep.dragPlaceholder',
+    id: 'components.FirstStep.assetsOnPage',
     defaultMessage: 'Assets on page'
+  },
+  delete: {
+    id: 'components.FirstStep.delete',
+    defaultMessage: 'Delete'
   }
 })

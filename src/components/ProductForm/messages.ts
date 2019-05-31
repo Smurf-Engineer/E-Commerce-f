@@ -160,5 +160,13 @@ export default defineMessages({
   back: {
     id: 'components.ProductDetailAdmin.back',
     defaultMessage: 'Back'
+  },
+  saveAndContinue: {
+    id: 'components.ProductDetailAdmin.saveAndContinue',
+    defaultMessage: 'Save and Continue later'
+  },
+  submit: {
+    id: 'components.ProductDetailAdmin.submit',
+    defaultMessage: 'Proceed with 3D model'
   }
 })

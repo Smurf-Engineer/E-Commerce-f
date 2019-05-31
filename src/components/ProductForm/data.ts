@@ -7,6 +7,10 @@ import gql from 'graphql-tag'
 export const getExtraData = gql`
   query extraData {
     extraData {
+      bannerMaterials {
+        id
+        url
+      }
       categories {
         id
         name
@@ -47,7 +51,10 @@ export const getProductQuery = gql`
       code
       yotpoId: yotpo_id
       name
-      material_banner
+      product_materials: banner_materials {
+        id
+        url
+      }
       mtl
       media_files {
         id

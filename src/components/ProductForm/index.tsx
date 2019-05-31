@@ -14,6 +14,7 @@ import { stepsArray } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
 import Render3D from '../../components/Render3D'
 import * as ProductFormActions from './actions'
+import { uploadFilesAction } from './api'
 import { QueryProps, Product } from '../../types/common'
 import { getProductQuery, getExtraData } from './data'
 import {
@@ -46,6 +47,10 @@ interface DataExtra extends QueryProps {
 
 interface Props {
   productId: string
+  productImages: any[]
+  productMaterials: any[]
+  bannerMaterials: any[]
+  mediaFiles: any[]
   product: Product
   dataProduct: DataProduct
   dataExtra: DataExtra
@@ -96,6 +101,7 @@ export class ProductForm extends React.Component<Props, {}> {
     const colors = get(dataExtra, 'extraData.colors', [])
     const seasons = get(dataExtra, 'extraData.seasons', [])
     const genders = get(dataExtra, 'extraData.genders', [])
+    const bannerMaterials = get(dataExtra, 'extraData.bannerMaterials', [])
     const screenSteps = [
       {
         content: (
@@ -159,6 +165,7 @@ export class ProductForm extends React.Component<Props, {}> {
           <FourthStep
             {...{
               product,
+              bannerMaterials,
               setValue,
               genders,
               formatMessage
@@ -201,10 +208,21 @@ export class ProductForm extends React.Component<Props, {}> {
                   <FormattedMessage {...messages.back} />
                 </BackButton>
               )}
+              {currentStep === 3 && (
+                <BackButton onClick={this.handleSave(true)}>
+                  <FormattedMessage {...messages.saveAndContinue} />
+                </BackButton>
+              )}
+
               {currentStep < 3 && (
                 <NextButton onClick={this.changeStep(currentStep + 1)}>
                   <FormattedMessage {...messages.next} />
                   <Icon type="right" />
+                </NextButton>
+              )}
+              {currentStep === 3 && (
+                <NextButton onClick={this.handleSave(false)}>
+                  <FormattedMessage {...messages.submit} />
                 </NextButton>
               )}
             </Footer>
@@ -212,6 +230,23 @@ export class ProductForm extends React.Component<Props, {}> {
         )}
       </Container>
     )
+  }
+  handleSave = (onlySave: boolean) => () => {
+    const {
+      productImages,
+      productMaterials,
+      bannerMaterials,
+      mediaFiles
+    } = this.props
+    uploadFilesAction(
+      productImages,
+      productMaterials,
+      bannerMaterials,
+      mediaFiles
+    )
+    if (!onlySave) {
+      console.log('Proceed 3D Model')
+    }
   }
   changeStep = (currentStep: Number) => () => {
     this.setState({ currentStep })
@@ -242,11 +277,15 @@ const ProductFormEnhance = compose(
   graphql(getProductQuery, {
     options: ({ productId: id }: OwnProps) => ({
       skip: !id,
+      fetchPolicy: 'no-cache',
       variables: { id }
     }),
     name: 'dataProduct'
   }),
-  graphql(getExtraData, { name: 'dataExtra' })
+  graphql(getExtraData, {
+    options: { fetchPolicy: 'no-cache' },
+    name: 'dataExtra'
+  })
 )(ProductForm)
 
 export default ProductFormEnhance
