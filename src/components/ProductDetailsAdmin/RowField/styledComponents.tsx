@@ -5,8 +5,18 @@ import styled from 'styled-components'
 interface TextProps {
   capitalize: boolean
 }
+interface ContainerProps {
+  flex?: string
+  textAlign?: string
+  paddingTop?: string
+}
 export const Container = styled.div`
-  flex: 1;
+  flex: ${({ flex }: ContainerProps) => (flex ? flex : '1')};
+  text-align: ${({ textAlign }: ContainerProps) =>
+    textAlign ? textAlign : 'left'};
+  padding-top: ${({ paddingTop }: ContainerProps) =>
+    paddingTop ? paddingTop : 'unset'};
+
   @media (min-width: 320px) and (max-width: 480px) {
     height: 132px;
   }

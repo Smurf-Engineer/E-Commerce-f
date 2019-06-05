@@ -8,6 +8,9 @@ interface Props {
   label?: string
   capitalize?: boolean
   style?: object
+  flex?: string
+  textAlign?: string
+  paddingTop?: string
   subLabel?: React.ReactNode
   children?: React.ReactNode
   value?: any
@@ -17,11 +20,13 @@ const RowField = ({
   value,
   capitalize = false,
   subLabel,
-  style,
+  flex,
+  textAlign,
+  paddingTop,
   children
 }: Props) => {
   return (
-    <Container {...{ style }}>
+    <Container {...{ flex, textAlign, paddingTop }}>
       {label && <Title>{label}</Title>}
       {subLabel && subLabel}
       {value && !children ? (

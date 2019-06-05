@@ -11,6 +11,7 @@ import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
+import { quantities, currenciesLabel } from './constants'
 import Render3D from '../../components/Render3D'
 import * as ProductDetailsAdminActions from './actions'
 import { QueryProps, Product } from '../../types/common'
@@ -32,7 +33,6 @@ import {
   DetailsContainer,
   MainBody
 } from './styledComponents'
-const quantities = ['Personal', '2-5', '6-24', '25-49', '50-99', '100-249']
 interface Data extends QueryProps {
   product: Product
 }
@@ -86,6 +86,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     if (fitStyles) {
       fitStyles = fitStyles.map((item: any) => item.name).join(', ')
     }
+    let relatedTags = get(product, 'relatedProducts', '')
+    if (relatedTags) {
+      relatedTags = relatedTags.map((item: any) => item.yotpoId).join(', ')
+    }
     let categoryName = get(product, 'category_name', '')
     const tags = get(product, 'tags', '')
     const active = get(product, 'active', '')
@@ -95,51 +99,51 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     const details = get(product, 'details', '')
     let USD = get(product, 'priceRange', [])
     if (USD) {
-      USD = USD.filter(item => item.shortName === 'USD')
+      USD = USD.filter(item => item.shortName === currenciesLabel.USD)
     }
     let GBP = get(product, 'priceRange', [])
     if (GBP) {
-      GBP = GBP.filter(item => item.shortName === 'GBP')
+      GBP = GBP.filter(item => item.shortName === currenciesLabel.GBP)
     }
     let EUR = get(product, 'priceRange', [])
     if (EUR) {
-      EUR = EUR.filter(item => item.shortName === 'EUR')
+      EUR = EUR.filter(item => item.shortName === currenciesLabel.EUR)
     }
     let CAD = get(product, 'priceRange', [])
     if (CAD) {
-      CAD = CAD.filter(item => item.shortName === 'CAD')
+      CAD = CAD.filter(item => item.shortName === currenciesLabel.CAD)
     }
     let AUD = get(product, 'priceRange', [])
     if (AUD) {
-      AUD = AUD.filter(item => item.shortName === 'AUD')
+      AUD = AUD.filter(item => item.shortName === currenciesLabel.AUD)
     }
     const currencies = [
       {
-        label: 'USD',
+        label: currenciesLabel.USD,
         amounts: quantities.map(quantity =>
           find(USD, item => item.quantity === quantity)
         )
       },
       {
-        label: 'GBP',
+        label: currenciesLabel.GBP,
         amounts: quantities.map(quantity =>
           find(GBP, item => item.quantity === quantity)
         )
       },
       {
-        label: 'EUR',
+        label: currenciesLabel.EUR,
         amounts: quantities.map(quantity =>
           find(EUR, item => item.quantity === quantity)
         )
       },
       {
-        label: 'CAD',
+        label: currenciesLabel.CAD,
         amounts: quantities.map(quantity =>
           find(CAD, item => item.quantity === quantity)
         )
       },
       {
-        label: 'AUD',
+        label: currenciesLabel.AUD,
         amounts: quantities.map(quantity =>
           find(AUD, item => item.quantity === quantity)
         )
@@ -229,7 +233,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                         <FormattedMessage {...messages.youMayLike} />
                       </i>
                     }
-                    value={yotpoId}
+                    value={relatedTags}
                   />
                 </Row>
                 <Row>
@@ -245,7 +249,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     )}
                   />
                   <RowField
-                    label={formatMessage(messages.productModel)}
+                    label={formatMessage(messages.designLab)}
                     value={formatMessage(
                       designCenter ? messages.yes : messages.no
                     )}
@@ -257,7 +261,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     value={season}
                   />
                   <RowField
-                    style={{ flex: 2 }}
+                    flex="2"
                     label={formatMessage(messages.gender)}
                     value={genders}
                   />
@@ -269,15 +273,15 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <RowField
                     value={formatMessage(messages.productDescription)}
                   />
-                  <RowField style={{ flex: 2 }} label={description} />
+                  <RowField flex="2" label={description} />
                 </Row>
                 <Row>
                   <RowField value={formatMessage(messages.specDetails)} />
-                  <RowField style={{ flex: 2 }} label={details} />
+                  <RowField flex="2" label={details} />
                 </Row>
                 <Row>
                   <RowField value={formatMessage(messages.materialInfo)} />
-                  <RowField style={{ flex: 2 }} label={materials} />
+                  <RowField flex="2" label={materials} />
                 </Row>
                 <Separator>
                   <FormattedMessage {...messages.fitSizing} />
@@ -288,7 +292,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     value={fitStyles}
                   />
                   <RowField
-                    style={{ flex: 2 }}
+                    flex="2"
                     label={formatMessage(messages.productSizes)}
                     value={sizeRange}
                   />
@@ -297,57 +301,50 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <FormattedMessage {...messages.prices} />
                 </Separator>
                 <Row
-                  style={{
-                    margin: '0 20px',
-                    borderBottom: '1px solid gray',
-                    paddingBottom: '12px'
-                  }}
+                  margin="0 20px"
+                  borderBottom="1px solid gray"
+                  paddingBottom="12px"
                 >
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.currency)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.personal)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.firstAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.secondAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.thirdAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.fourthAmount)}
                   />
                   <RowField
-                    style={{ textAlign: 'center' }}
+                    textAlign="center"
                     value={formatMessage(messages.fifthAmount)}
                   />
                 </Row>
                 {currencies.map((currencyItem, index) => (
                   <Row
                     key={index}
-                    style={{
-                      margin: '0 20px',
-                      borderBottom: '1px solid gainsboro',
-                      padding: '12px 0'
-                    }}
+                    margin="16px 20px"
+                    borderBottom="1px solid gainsboro"
+                    paddingBottom="12px"
                   >
-                    <RowField
-                      style={{ textAlign: 'center' }}
-                      label={currencyItem.label}
-                    />
+                    <RowField textAlign="center" label={currencyItem.label} />
                     {currencyItem.amounts.map(amount => (
                       <RowField
-                        style={{ textAlign: 'center' }}
+                        textAlign="center"
                         label={amount ? `$${amount.price}` : ''}
                       />
                     ))}
@@ -363,12 +360,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                         <Row>
                           {imageBlock.map((image: string, subindex: number) => (
                             <RowField
-                              style={{
-                                paddingTop:
-                                  blockIndex === 0 && subindex > 0
-                                    ? '23px'
-                                    : '0'
-                              }}
+                              paddingTop={
+                                blockIndex === 0 && subindex > 0 ? '23px' : '0'
+                              }
                               label={
                                 blockIndex === 0 && subindex === 0
                                   ? gender.genderName

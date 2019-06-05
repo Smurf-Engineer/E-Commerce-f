@@ -34,6 +34,11 @@ class ItemOrder extends React.PureComponent<Props, State> {
     const { onProductClick, id } = this.props
     onProductClick(id)
   }
+  stopPropagation = (event: any) => {
+    if (event) {
+      event.stopPropagation()
+    }
+  }
   onChange = () => {
     const { onCheck, id } = this.props
     this.setState({ loading: true })
@@ -53,7 +58,7 @@ class ItemOrder extends React.PureComponent<Props, State> {
         <Cell>{mpn}</Cell>
         <Cell>{code}</Cell>
         <Cell>{productType}</Cell>
-        <Cell textAlign="center">
+        <Cell onClick={this.stopPropagation} textAlign="center">
           <Switch checked={active} loading={loading} onChange={this.onChange} />
         </Cell>
       </Container>
