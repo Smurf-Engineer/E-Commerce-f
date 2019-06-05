@@ -1,5 +1,5 @@
 /**
- * OrderHistoryAdmin Reducer - Created by eduardoquintero on 07/05/19.
+ * ProductForm Reducer - Created by Apodaca on 16/05/19.
  */
 
 import { fromJS } from 'immutable'
@@ -27,7 +27,7 @@ export const initialState = fromJS({
     mtl: '',
     bumpMap: '',
     sport_id: null,
-    material_banner: '',
+    product_materials: [],
     media_files: [],
     active: 'true',
     name: '',
@@ -253,10 +253,8 @@ export const initialState = fromJS({
     sports: []
   },
   loading: false,
-  productImages: [],
-  productMaterials: [],
-  bannerMaterials: [],
-  mediaFiles: []
+  loadingMessage: 'Uploading...',
+  bannerMaterials: []
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
@@ -266,7 +264,9 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
     case SET_PRODUCT_DATA:
       return state.set('product', fromJS(action.product))
     case SET_LOADING:
-      return state.set('loading', action.loading)
+      return state
+        .set('loading', action.loading)
+        .set('loadingMessage', action.loadingMessage)
     case CHANGE_VALUE: {
       if (action.field === 'genders') {
         const pictures = action.value.map((gender: any) => ({

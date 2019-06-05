@@ -1,5 +1,5 @@
 /**
- * AboutUs - messages
+ * FirstStep messages - Created by Apodaca on 14/05/19.
  */
 
 import { defineMessages } from 'react-intl'

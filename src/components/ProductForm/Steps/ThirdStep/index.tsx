@@ -1,5 +1,5 @@
 /**
- * AboutUs Component - Created by cazarez on 07/02/18.
+ * ThirdStep Component - Created by Apodaca on 16/05/19.
  */
 import * as React from 'react'
 import get from 'lodash/get'
@@ -10,14 +10,8 @@ import {
   Container,
   Separator,
   RowInput,
-  CheckBox,
   Label,
-  CheckGroup,
-  InlineLabel,
   NumberInput,
-  SwitchInput,
-  RadioButton,
-  ColorIcon,
   InputDiv
 } from './styledComponents'
 import { quantities } from './constants'
@@ -38,15 +32,7 @@ interface Props {
 }
 export class ThirdStep extends React.Component<Props, {}> {
   render() {
-    const { sizes, product, fitStyles, colors } = this.props
-    const {
-      sizeRange,
-      fitStyles: fitStylesProduct,
-      colors: productColors
-    } = product
-    const sizesSelected = sizeRange.map(e => e.id || '')
-    const stylesSelected = fitStylesProduct.map(e => e.id)
-    const colorsSelected = productColors ? productColors.map(e => e.id) : []
+    const { product } = this.props
     let USD = get(product, 'priceRange', [])
     if (USD) {
       USD = USD.filter(item => item.shortName === 'USD')

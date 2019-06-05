@@ -1,5 +1,5 @@
 /**
- * AboutUs Component - Created by cazarez on 07/02/18.
+ * Steps Export File - Created by Apodaca on 15/05/19.
  */
 import FirstStep from './FirstStep'
 import SecondStep from './SecondStep'

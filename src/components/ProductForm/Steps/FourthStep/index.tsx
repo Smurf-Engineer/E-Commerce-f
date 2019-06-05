@@ -1,11 +1,10 @@
 /**
- * AboutUs Component - Created by cazarez on 07/02/18.
+ * FourthStep Component - Created by Apodaca on 14/05/19.
  */
 import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
 import { Icon, message, Upload, Checkbox } from 'antd'
-import get from 'lodash/get'
 import {
   Container,
   Separator,
@@ -31,7 +30,6 @@ import {
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
 import { Product } from '../../../../types/common'
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
-import Item from 'antd/lib/list/Item'
 const Dragger = Upload.Dragger
 interface Props {
   product: Product
@@ -50,25 +48,31 @@ interface State {
 export class FourthStep extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props)
-    const { product, bannerMaterials } = props
-    const productImages = get(product, 'pictures', [])
-    const productMaterials = get(product, 'product_materials', [])
-    const mediaFiles = get(product, 'media_files', []).map((file: any) => ({
-      toUpload: false,
-      url: file.url,
-      extension: getFileExtension(file.url),
-      name: getFileName(file.url)
+    const { product, setValue, bannerMaterials } = props
+    const productImages = product.pictures || []
+    const productMaterials = product.product_materials || []
+    const mediaFiles = product.media_files
+      ? product.media_files.map((file: any, index: number) => ({
+          toUpload: false,
+          url: file.url,
+          id: index,
+          extension: getFileExtension(file.url),
+          name: getFileName(file.url)
+        }))
+      : []
+    const detailedBanners = bannerMaterials.map((banner: any) => ({
+      ...banner,
+      active: true
     }))
-    const detailedBannerMaterials = bannerMaterials.map((item: any) => ({
-      ...item,
-      active: true,
-      toUpload: false
-    }))
+    setValue('files', {
+      type: 'bannerMaterials',
+      array: detailedBanners
+    })
     this.state = {
       newBanner: false,
       productMaterials,
       mediaFiles,
-      bannerMaterials: detailedBannerMaterials,
+      bannerMaterials: detailedBanners,
       productImages
     }
   }
@@ -267,19 +271,26 @@ export class FourthStep extends React.Component<Props, State> {
       productMaterials.splice(indextoRemove, 1)
     }
     this.setState({ productMaterials })
-    setValue('files', { type: 'productMaterials', array: productMaterials })
+    setValue('product_materials', productMaterials)
   }
   handleRemoveMaterial = (index: number) => () => {
     const { setValue } = this.props
     const { bannerMaterials, productMaterials } = this.state
-    bannerMaterials[index].active = false
+    if (bannerMaterials[index].toUpload) {
+      bannerMaterials.splice(index, 1)
+    } else {
+      bannerMaterials[index].active = false
+    }
     const indextoRemove = productMaterials.find(
       (item: any) => item.id === bannerMaterials[index].id
     )
     productMaterials.splice(indextoRemove, 1)
     this.setState({ bannerMaterials, productMaterials })
-    setValue('files', { type: 'productMaterials', array: productMaterials })
-    setValue('files', { type: 'bannerMaterials', array: bannerMaterials })
+    setValue('product_materials', productMaterials)
+    setValue('files', {
+      type: 'bannerMaterials',
+      array: bannerMaterials
+    })
   }
   handleAddMaterial = (event: any) => {
     const { setValue } = this.props
@@ -293,7 +304,10 @@ export class FourthStep extends React.Component<Props, State> {
         toUpload: file
       })
       this.setState({ bannerMaterials })
-      setValue('files', { type: 'bannerMaterials', array: bannerMaterials })
+      setValue('files', {
+        type: 'bannerMaterials',
+        array: bannerMaterials
+      })
     })
   }
   removeMediaFile = (index: number) => () => {
@@ -301,7 +315,7 @@ export class FourthStep extends React.Component<Props, State> {
     const { mediaFiles } = this.state
     mediaFiles.splice(index, 1)
     this.setState({ mediaFiles })
-    setValue('files', { type: 'mediaFiles', array: mediaFiles })
+    setValue('media_files', mediaFiles)
   }
 
   beforeUpload = (file: any) => {
@@ -336,21 +350,23 @@ export class FourthStep extends React.Component<Props, State> {
       mediaFiles.push({
         url: videoPlaceHolder,
         toUpload: file,
+        id: mediaFiles.length + 1,
         name: getFileName(file.name),
         extension: '.mp4'
       })
       this.setState({ mediaFiles })
-      setValue('files', { type: 'mediaFiles', array: mediaFiles })
+      setValue('media_files', mediaFiles)
     } else {
       this.getBase64(file, (base64Image: string) => {
         mediaFiles.push({
           url: base64Image,
           toUpload: file,
+          id: mediaFiles.length + 1,
           name: getFileName(file.name),
           extension: getFileExtension(file.name)
         })
         this.setState({ mediaFiles })
-        setValue('files', { type: 'mediaFiles', array: mediaFiles })
+        setValue('media_files', mediaFiles)
       })
     }
   }
@@ -366,9 +382,12 @@ export class FourthStep extends React.Component<Props, State> {
     )
     this.getBase64(file, (base64Image: string) => {
       productImages[index][name] = base64Image
-      productImages[index].toUpload = file
+      if (!productImages[index].toUpload) {
+        productImages[index].toUpload = {}
+      }
+      productImages[index].toUpload[name] = file
       this.setState({ productImages })
-      setValue('files', { type: 'productImages', array: productImages })
+      setValue('pictures', productImages)
     })
   }
 }

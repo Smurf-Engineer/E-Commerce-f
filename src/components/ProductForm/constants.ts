@@ -1,5 +1,5 @@
 /**
- * ProductCatalogAdmin Types - Created by Jesús Apodaca on 14/05/19.
+ * ProductForm Constants - Created by Jesús Apodaca on 14/05/19.
  */
 
 const namespace = 'src/ProductForm'

@@ -1,5 +1,5 @@
 /**
- * AboutUs Component - Created by cazarez on 07/02/18.
+ * SecondStep Component - Created by Apodaca on 14/05/19.
  */
 import * as React from 'react'
 import messages from './messages'
@@ -11,9 +11,6 @@ import {
   CheckBox,
   Label,
   CheckGroup,
-  InlineLabel,
-  SwitchInput,
-  RadioButton,
   ColorIcon,
   InputDiv
 } from './styledComponents'

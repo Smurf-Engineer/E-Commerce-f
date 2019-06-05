@@ -1,5 +1,5 @@
 /**
- * ProductDetailAdmin -  Messages
+ * ProductForm -  Messages
  */
 
 import { defineMessages } from 'react-intl'
@@ -168,5 +168,21 @@ export default defineMessages({
   submit: {
     id: 'components.ProductDetailAdmin.submit',
     defaultMessage: 'Proceed with 3D model'
+  },
+  uploadingFiles: {
+    id: 'components.ProductDetailAdmin.uploadingFiles',
+    defaultMessage: 'Uploading files...'
+  },
+  savingProduct: {
+    id: 'components.ProductDetailAdmin.savingProduct',
+    defaultMessage: 'Saving product data...'
+  },
+  errorUploading: {
+    id: 'components.ProductDetailAdmin.errorUploading',
+    defaultMessage: 'Error uploading files.'
+  },
+  errorUpdating: {
+    id: 'components.ProductDetailAdmin.errorUpdating',
+    defaultMessage: 'Error creating/updating product.'
   }
 })

@@ -104,7 +104,10 @@ export interface Product {
   images: ImageType[]
   type: string
   material_banner?: string
+  pictures?: any[]
+  media_files?: object[]
   description: string
+  product_materials?: object[]
   design_center?: boolean
   priceRange: PriceRange[]
   collections: number

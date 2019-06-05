@@ -1,5 +1,5 @@
 /**
- * OrderHistoryAdmin  Actions - Created by eduardoquintero on 07/05/19.
+ * ProductForm  Actions - Created by Apodaca on 17/05/19.
  */
 
 import {
@@ -25,7 +25,11 @@ export const resetData = () => ({
   type: RESET_DATA
 })
 
-export const setUploadingAction = (loading: boolean): AnyAction => ({
+export const setUploadingAction = (
+  loading: boolean,
+  loadingMessage: string
+): AnyAction => ({
   type: SET_LOADING,
-  loading
+  loading,
+  loadingMessage
 })

@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by cazarez on 07/02/18.
+ * Styled Components - Created by Apodaca on 17/05/19.
  */
 import { Radio, Checkbox, Switch, Input } from 'antd'
 import styled from 'styled-components'

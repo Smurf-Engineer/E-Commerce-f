@@ -1,5 +1,5 @@
 /**
- * Admin-OrderDetailsAdmin Queries
+ * Product-Form Queries
  */
 
 import gql from 'graphql-tag'
@@ -176,6 +176,19 @@ export const getProductQuery = gql`
           image
         }
       }
+    }
+  }
+`
+export const upsertProduct = gql`
+  mutation upsertProduct(
+    $body: ProductUpsert!
+    $bannerMaterials: [MediaFileInput]
+  ) {
+    productResult: upsertProduct(
+      body: $body
+      bannerMaterials: $bannerMaterials
+    ) {
+      id
     }
   }
 `

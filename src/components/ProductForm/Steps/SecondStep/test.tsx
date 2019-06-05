@@ -1,5 +1,5 @@
 /**
- * AboutUs Test - Created by cazarez on 07/02/18.
+ * AboutUs Test - Created by Apodaca on 16/05/19.
  */
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'

@@ -1,22 +1,22 @@
 /**
- * OrderDetailsAdmin Component - Created by eduardoquintero on 07/05/19.
+ * ProductForm Component - Created by Apodaca on 15/05/19.
  */
 import * as React from 'react'
-import { Icon, Button, Steps } from 'antd'
+import { Icon, Steps } from 'antd'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
-import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import { stepsArray } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
-import Render3D from '../../components/Render3D'
 import * as ProductFormActions from './actions'
-import { uploadFilesAction } from './api'
+import * as ApiActions from './api'
 import { QueryProps, Product } from '../../types/common'
-import { getProductQuery, getExtraData } from './data'
+const omitDeep = require('omit-deep')
+import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
   Container,
   ScreenTitle,
@@ -24,17 +24,11 @@ import {
   BackText,
   Loader,
   HeaderRow,
-  FormBody,
-  BlueButton,
-  RowImage,
   Footer,
   BackButton,
+  FullLoader,
+  LoadingMessage,
   NextButton,
-  RenderBackground,
-  Separator,
-  ScreenSubTitle,
-  Row,
-  DetailsContainer,
   MainBody
 } from './styledComponents'
 interface DataProduct extends QueryProps {
@@ -47,15 +41,22 @@ interface DataExtra extends QueryProps {
 
 interface Props {
   productId: string
-  productImages: any[]
-  productMaterials: any[]
   bannerMaterials: any[]
-  mediaFiles: any[]
   product: Product
   dataProduct: DataProduct
+  loading: boolean
+  loadingMessage: string
   dataExtra: DataExtra
   resetData: () => void
+  uploadFilesAction: (
+    formatMessage: (messageDescriptor: any) => string,
+    productImages: any[],
+    productMaterials: any[],
+    bannerMaterials: any[],
+    mediaFiles: any[]
+  ) => Promise<any>
   goBack: (id: string, screen: string) => void
+  upsertProductAction: (variables: {}) => Promise<any>
   setValue: (field: string, value: any) => void
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
@@ -71,6 +72,7 @@ export class ProductForm extends React.Component<Props, {}> {
     if (
       dataProduct &&
       !dataProduct.loading &&
+      dataProduct.product &&
       dataProduct.product.id !== prevProps.product.id
     ) {
       setProductAction(dataProduct.product)
@@ -87,7 +89,9 @@ export class ProductForm extends React.Component<Props, {}> {
       productId,
       dataProduct,
       dataExtra,
+      loadingMessage,
       product,
+      loading,
       setValue
     } = this.props
     const loadingProduct = get(dataProduct, 'loading', false)
@@ -176,6 +180,12 @@ export class ProductForm extends React.Component<Props, {}> {
     ]
     return (
       <Container>
+        {loading && (
+          <FullLoader>
+            <Spin size="large" />
+            <LoadingMessage>{loadingMessage}</LoadingMessage>
+          </FullLoader>
+        )}
         <BackLabel onClick={this.handleOnClickBack}>
           <Icon type="left" />
           <BackText>
@@ -233,20 +243,51 @@ export class ProductForm extends React.Component<Props, {}> {
   }
   handleSave = (onlySave: boolean) => () => {
     const {
-      productImages,
-      productMaterials,
+      product: {
+        pictures: productImages,
+        product_materials: productMaterials,
+        media_files: mediaFiles
+      },
       bannerMaterials,
-      mediaFiles
+      formatMessage,
+      upsertProductAction,
+      goBack,
+      uploadFilesAction
     } = this.props
     uploadFilesAction(
-      productImages,
-      productMaterials,
-      bannerMaterials,
-      mediaFiles
+      formatMessage,
+      productImages || [],
+      productMaterials || [],
+      bannerMaterials || [],
+      mediaFiles || []
     )
-    if (!onlySave) {
-      console.log('Proceed 3D Model')
-    }
+      .then(success => {
+        if (success) {
+          console.log('Proceed 3D Model')
+          const { product } = this.props
+          omitDeep(product, '__typename')
+          omitDeep(bannerMaterials, '__typename')
+          upsertProductAction({
+            variables: { body: product, bannerMaterials }
+          })
+            .then(response => {
+              const id = get(response, 'data.productResult.id', '')
+              if (id) {
+                if (!onlySave) {
+                  goBack(id, 'list')
+                } else {
+                  goBack(id, 'list')
+                }
+              } else {
+                message.error(formatMessage(messages.errorUpdating))
+              }
+            })
+            .catch(error => message.error(error))
+        } else {
+          message.error(formatMessage(messages.errorUploading))
+        }
+      })
+      .catch(error => message.error(error.message))
   }
   changeStep = (currentStep: Number) => () => {
     this.setState({ currentStep })
@@ -272,18 +313,19 @@ const mapStateToProps = (state: any) => state.get('productForm').toJS()
 const ProductFormEnhance = compose(
   connect(
     mapStateToProps,
-    { ...ProductFormActions }
+    { ...ProductFormActions, ...ApiActions }
   ),
+  graphql(upsertProduct, { name: 'upsertProductAction' }),
   graphql(getProductQuery, {
     options: ({ productId: id }: OwnProps) => ({
       skip: !id,
-      fetchPolicy: 'no-cache',
+      fetchPolicy: 'network-only',
       variables: { id }
     }),
     name: 'dataProduct'
   }),
   graphql(getExtraData, {
-    options: { fetchPolicy: 'no-cache' },
+    options: { fetchPolicy: 'network-only' },
     name: 'dataExtra'
   })
 )(ProductForm)

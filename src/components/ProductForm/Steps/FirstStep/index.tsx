@@ -1,5 +1,5 @@
 /**
- * AboutUs Component - Created by cazarez on 07/02/18.
+ * FirstStep Component - Created by Apodaca on 14/05/19.
  */
 import * as React from 'react'
 import messages from './messages'
@@ -66,7 +66,7 @@ export class FirstStep extends React.Component<Props, {}> {
     } = product
     const searchValues = tags ? tags.split(', ') : []
     const gendersValues = gendersProduct ? gendersProduct.map(e => e.id) : []
-    const materialsValue = materialsProduct ? materialsProduct.split(' ') : []
+    const materialsValue = materialsProduct ? materialsProduct.split('-') : []
     const specDetails = details ? details.split(',') : []
     const sportsSelected = sports ? sports.map(e => e.id) : []
     return (
@@ -369,7 +369,7 @@ export class FirstStep extends React.Component<Props, {}> {
   handleMaterialChange = (value: any) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
-      const fieldValue = value.join(' ')
+      const fieldValue = value.join('-')
       setValue('materials', fieldValue)
     }
   }

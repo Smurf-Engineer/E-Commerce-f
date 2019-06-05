@@ -2,58 +2,110 @@
  * API REST Calls actions
  */
 import message from 'antd/lib/message'
+import messages from './messages'
 import config from '../../config/index'
 import { setValue, setUploadingAction } from './actions'
 
 export const uploadFilesAction = (
-  productImages: any[],
+  formatMessage: (messageDescriptor: any) => string,
+  productImages: any,
   productMaterials: any[],
   bannerMaterials: any[],
   mediaFiles: any[]
 ) => {
   return async (dispatch: any) => {
     try {
-      dispatch(setUploadingAction(true))
-
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
-
       bannerMaterials.forEach(file => {
         if (file.toUpload) {
-          formData.append(file.id, file.toUpload)
+          formData.append(`bannerMaterial_${file.id}`, file.toUpload)
         }
       })
-      areas.forEach((file: any, index: number) =>
-        formData.append(`colorBlock${index + 1}`, file)
-      )
-
-      const extraFiles = Object.keys(extras)
-      if (extraFiles.length) {
-        extraFiles.forEach(name => {
-          if (name === FLATLOCK) {
-            formData.append(name, extras[name])
-          } else {
-            formData.append(`${name}White`, extras[name].white)
-            formData.append(`${name}Black`, extras[name].black)
-          }
-        })
-      }
-
-      const response = await fetch(`${config.graphqlUriBase}upload/model`, {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          Authorization: `Bearer ${user.token}`
-        },
-        body: formData
+      mediaFiles.forEach(file => {
+        if (file.toUpload) {
+          formData.append(`mediaFile_${file.id}`, file.toUpload)
+        }
       })
-
-      const modelConfig = await response.json()
-
-      dispatch(setUploadingSuccess(modelConfig))
+      productImages.forEach((gender: any) => {
+        if (gender.toUpload) {
+          Object.keys(gender.toUpload).forEach(key => {
+            const file = gender.toUpload[key]
+            formData.append(`picture_${gender.gender_id}@${key}`, file)
+          })
+        }
+      })
+      dispatch(setUploadingAction(true, formatMessage(messages.uploadingFiles)))
+      const response = await fetch(
+        `${config.graphqlUriBase}upload/product/files`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        }
+      )
+      const {
+        bannersUploaded,
+        mediaFilesUploaded,
+        picturesUploaded
+      } = await response.json()
+      bannersUploaded.forEach((file: any) => {
+        const index = bannerMaterials.findIndex(
+          banner => banner.id === parseInt(file.id, 10)
+        )
+        if (productMaterials && productMaterials.length) {
+          const indexProd = productMaterials.findIndex(
+            banner => banner.id === parseInt(file.id, 10)
+          )
+          if (indexProd !== -1) {
+            productMaterials[indexProd].url = file.imageUri
+            productMaterials[indexProd].toUpload = false
+          }
+        }
+        if (index !== -1) {
+          bannerMaterials[index].url = file.imageUri
+          bannerMaterials[index].toUpload = true
+        }
+      })
+      mediaFilesUploaded.forEach((file: any) => {
+        const index = mediaFiles.findIndex(
+          mediaFile => mediaFile.id === parseInt(file.id, 10)
+        )
+        if (index !== -1) {
+          mediaFiles[index].url = file.imageUri
+          mediaFiles[index].toUpload = false
+        }
+      })
+      picturesUploaded.forEach((file: any) => {
+        const parameters = file.id.split('@')
+        const genderId = parseInt(parameters[0], 10)
+        const name = parameters[1]
+        const index = productImages.findIndex(
+          (gender: any) => gender.gender_id === genderId
+        )
+        if (index !== -1) {
+          productImages[index][name] = file.imageUri
+          productImages[index].toUpload = false
+        }
+      })
+      dispatch(setValue('pictures', productImages))
+      dispatch(setValue('media_files', mediaFiles))
+      dispatch(setValue('product_materials', productMaterials))
+      dispatch(
+        setValue('files', {
+          type: 'bannerMaterials',
+          array: bannerMaterials
+        })
+      )
+      dispatch(setUploadingAction(true, formatMessage(messages.savingProduct)))
+      return true
     } catch (e) {
-      dispatch(setUploadingAction(false))
+      dispatch(setUploadingAction(false, ''))
       message.error(e.message)
+      return false
     }
   }
 }

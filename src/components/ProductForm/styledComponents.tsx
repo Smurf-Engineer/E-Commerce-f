@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by eduardoquintero on 07/05/19.
+ * Styled Components - Created by Apodaca on 17/05/19.
  */
 import styled from 'styled-components'
 import Button from 'antd/lib/button'
@@ -58,8 +58,27 @@ export const DetailsContainer = styled.div`
   width: 100%;
   flex-flow: column;
 `
+export const FullLoader = styled.div`
+  text-align: center;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 0;
+  flex-flow: column;
+  background: #ffffffb5;
+  z-index: 999;
+`
 export const Loader = styled.div`
   margin-top: 128px;
+  text-align: center;
+`
+export const LoadingMessage = styled.div`
+  margin-top: 28px;
+  text-align: center;
 `
 export const FormBody = styled.div``
 
