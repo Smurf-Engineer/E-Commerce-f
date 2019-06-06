@@ -37,6 +37,7 @@ import myFiles from '../components/MyFiles/reducer'
 import orderHistory from '../components/OrderHistory/reducer'
 import orderHistoryAdmin from '../components/OrderHistoryAdmin/reducer'
 import discountsAdmin from '../components/DiscountsAdmin/reducer'
+import homepageAdmin from '../components/HomepageAdmin/reducer'
 import productCatalogAdmin from '../components/ProductCatalog/reducer'
 import productDetailAdmin from '../components/ProductDetailsAdmin/reducer'
 import overview from '../components/Overview/reducer'
@@ -95,6 +96,7 @@ export interface ReducersObject {
   orderHistory: any
   orderHistoryAdmin: any
   discountsAdmin: any
+  homepageAdmin: any
   overview: any
   fitAndSizing: any
   admin: any
@@ -201,6 +203,7 @@ const rootReducer = combineReducers({
   orderHistory,
   orderHistoryAdmin,
   discountsAdmin,
+  homepageAdmin,
   overview,
   fitAndSizing,
   responsive: responsiveReducer,
