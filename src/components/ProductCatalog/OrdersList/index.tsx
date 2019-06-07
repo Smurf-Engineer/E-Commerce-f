@@ -87,7 +87,7 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, isCustom }: Product,
+      { id, images, active, name, mpn, code, isCustom, obj, mtl }: Product,
       index: number
     ) => {
       return (
@@ -95,6 +95,7 @@ const OrdersList = ({
           key={index}
           active={active === 'true'}
           onCheck={handleCheck}
+          disabled={!obj && !mtl}
           image={get(images[0], 'front', '') || jakrooLogo}
           productType={formatMessage(
             isCustom ? messages.custom : messages.inline

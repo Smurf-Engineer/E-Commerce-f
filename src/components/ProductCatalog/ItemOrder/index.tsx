@@ -12,6 +12,7 @@ interface Props {
   code: string
   productType?: string
   active: boolean
+  disabled: boolean
   onCheck: (id: number) => void
   onProductClick: (id: number) => void
 }
@@ -46,7 +47,7 @@ class ItemOrder extends React.PureComponent<Props, State> {
   }
   render() {
     const { loading } = this.state
-    const { image, name, mpn, code, productType, active } = this.props
+    const { image, name, mpn, code, productType, active, disabled } = this.props
     return (
       <Container onClick={this.handleOnClick}>
         <Cell>
@@ -59,7 +60,12 @@ class ItemOrder extends React.PureComponent<Props, State> {
         <Cell>{code}</Cell>
         <Cell>{productType}</Cell>
         <Cell onClick={this.stopPropagation} textAlign="center">
-          <Switch checked={active} loading={loading} onChange={this.onChange} />
+          <Switch
+            disabled={disabled}
+            checked={active}
+            loading={loading}
+            onChange={this.onChange}
+          />
         </Cell>
       </Container>
     )
