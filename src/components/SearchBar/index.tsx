@@ -24,7 +24,7 @@ interface StateProps {
 class SearchBar extends React.Component<Props, StateProps> {
   raiseSearchWhenUserStopsTyping = debounce(
     () => this.props.search(this.state.searchValue),
-    300
+    600
   )
   constructor(props: Props) {
     super(props)
