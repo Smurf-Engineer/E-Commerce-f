@@ -61,7 +61,7 @@ interface Props {
 class SymbolTab extends React.PureComponent<Props, {}> {
   searchrAfterTyping = debounce(
     param => this.props.setSearchClipParamAction(param),
-    300
+    600
   )
   state = {
     option: 0,
