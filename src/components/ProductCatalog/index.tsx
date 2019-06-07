@@ -75,6 +75,7 @@ class ProductCatalog extends React.Component<Props, {}> {
       currentPage,
       orderBy,
       sort,
+      history,
       screen,
       formatMessage,
       productId,
@@ -108,14 +109,14 @@ class ProductCatalog extends React.Component<Props, {}> {
       case DETAILS_SCREEN:
         return (
           <ProductDetailsAdmin
-            {...{ productId, formatMessage }}
+            {...{ productId, formatMessage, history }}
             goBack={this.handleOnProductClick}
           />
         )
       case FORM_SCREEN:
         return (
           <ProductForm
-            {...{ productId, formatMessage }}
+            {...{ productId, formatMessage, history }}
             goBack={this.handleOnProductClick}
           />
         )

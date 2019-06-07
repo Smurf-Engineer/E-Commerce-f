@@ -43,6 +43,7 @@ interface Props {
   productId: string
   bannerMaterials: any[]
   product: Product
+  history: any
   dataProduct: DataProduct
   loading: boolean
   loadingMessage: string
@@ -264,7 +265,7 @@ export class ProductForm extends React.Component<Props, {}> {
       .then(success => {
         if (success) {
           console.log('Proceed 3D Model')
-          const { product } = this.props
+          const { product, history } = this.props
           omitDeep(product, '__typename')
           omitDeep(bannerMaterials, '__typename')
           upsertProductAction({
@@ -274,7 +275,10 @@ export class ProductForm extends React.Component<Props, {}> {
               const id = get(response, 'data.productResult.id', '')
               if (id) {
                 if (!onlySave) {
-                  goBack(id, 'list')
+                  const code = get(product, 'code', '')
+                  if (code) {
+                    history.push(`/publishing-tool?code=${code}`)
+                  }
                 } else {
                   goBack(id, 'list')
                 }

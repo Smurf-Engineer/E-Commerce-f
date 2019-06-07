@@ -40,6 +40,7 @@ interface Data extends QueryProps {
 interface Props {
   productId: string
   data: Data
+  history: any
   goBack: (id: string, screen: string) => void
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
@@ -197,7 +198,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <BlueButton onClick={this.handleOnClickEdit} size="large">
                     <FormattedMessage {...messages.editProduct} />
                   </BlueButton>
-                  <Button size="large">
+                  <Button onClick={this.handlePublishing} size="large">
                     <FormattedMessage {...messages.openPublishingTool} />
                   </Button>
                 </div>
@@ -404,6 +405,13 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
         </MainBody>
       </Container>
     )
+  }
+  handlePublishing = () => {
+    const { data, history } = this.props
+    const code = get(data, 'product.code', '')
+    if (code) {
+      history.push(`/publishing-tool?code=${code}`)
+    }
   }
   handleOpenModel = () => {
     this.setState({ openedModel: true })
