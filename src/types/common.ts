@@ -524,11 +524,13 @@ export interface OrderHistory {
 }
 
 export interface Discount {
+  id?: number
   code: string
   discountItemId: string
   type: string
-  rate: string
+  rate: number
   expiry: string
+  active?: boolean
 }
 export interface FulfillmentNetsuite {
   packages: string

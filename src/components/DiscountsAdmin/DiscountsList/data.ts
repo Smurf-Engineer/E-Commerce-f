@@ -21,11 +21,13 @@ export const getDiscountsQuery = gql`
     ) {
       fullCount
       discounts {
+        id
         code: coupon_code
         discountItemId: discount_item_id
         type: discount_type
         rate
         expiry
+        active
       }
     }
   }

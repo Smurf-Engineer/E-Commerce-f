@@ -6,6 +6,7 @@ import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
+import { DISCOUNTS_LIMIT } from '../constants'
 import { Container, Header, Row, Table } from './styledComponents'
 import HeaderTable from '../DiscountsTable'
 import ItemOrder from '../ItemOrder'
@@ -34,8 +35,9 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   onSortClick: (label: string, sort: sorts) => void
-  onDiscountClick: (code: string) => void
+  onDiscountClick: (discount: Discount) => void
   onChangePage: (page: number) => void
+  onChangeActive: (id: number) => void
 }
 
 const DiscountsList = ({
@@ -49,7 +51,8 @@ const DiscountsList = ({
   onDiscountClick,
   onChangePage,
   withPagination = true,
-  withoutPadding = false
+  withoutPadding = false,
+  onChangeActive
 }: Props) => {
   const discounts = get(discountsQuery, 'discounts', []) as Discount[]
   const fullCount = get(discountsQuery, 'fullCount', 0)
@@ -124,17 +127,23 @@ const DiscountsList = ({
     </MediaQuery>
   )
   const orderItems = discounts.map(
-    ({ code, discountItemId, type, rate, expiry }: Discount, index: number) => {
+    (
+      { code, discountItemId, type, rate, expiry, active, id }: Discount,
+      index: number
+    ) => {
       return (
         <ItemOrder
           key={index}
           {...{
+            id,
             code,
             discountItemId,
             type,
             rate,
             expiry,
-            onDiscountClick
+            active,
+            onDiscountClick,
+            onChangeActive
           }}
         />
       )
@@ -167,8 +176,6 @@ interface OwnProps {
   searchText?: string
 }
 
-const DISCOUNTS_LIMIT = 12
-
 const DiscountsListEnhance = compose(
   graphql(getDiscountsQuery, {
     options: ({
@@ -187,7 +194,8 @@ const DiscountsListEnhance = compose(
           order: orderBy,
           orderAs: sort,
           searchText
-        }
+        },
+        fetchPolicy: 'network-only'
       }
     }
   }),
