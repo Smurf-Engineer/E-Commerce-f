@@ -137,25 +137,37 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     )
   }
   handleOnChangeActive = async (id: boolean) => {
-    const { activateDiscount, orderBy, sort, searchText } = this.props
-    await activateDiscount({
-      variables: { id },
-      refetchQueries: [
-        {
-          query: getDiscountsQuery,
-          variables: {
-            limit: DISCOUNTS_LIMIT,
-            offset: 0,
-            order: orderBy,
-            orderAs: sort,
-            searchText
-          },
-          options: {
-            fetchPolicy: 'network-only'
+    const {
+      activateDiscount,
+      orderBy,
+      sort,
+      searchText,
+      formatMessage,
+      currentPage
+    } = this.props
+    try {
+      const offset = currentPage ? (currentPage - 1) * DISCOUNTS_LIMIT : 0
+      await activateDiscount({
+        variables: { id },
+        refetchQueries: [
+          {
+            query: getDiscountsQuery,
+            variables: {
+              limit: DISCOUNTS_LIMIT,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            },
+            options: {
+              fetchPolicy: 'network-only'
+            }
           }
-        }
-      ]
-    })
+        ]
+      })
+    } catch {
+      message.error(formatMessage(messages.unexpectedError))
+    }
   }
   onSelectDate = (date: Moment) => {
     const { onSelectDateAction } = this.props
@@ -201,33 +213,46 @@ class DiscountsAdmin extends React.Component<Props, {}> {
       orderBy,
       sort,
       searchText,
+      currentPage,
       formatMessage,
       resetDiscountDataAction,
       openDiscountModalAction,
       setLoadingAction
     } = this.props
-    let responseId
+    let responseId: number
     if (isUpdatingAddress) {
-      const data = await updateDiscount({
+      const offset = currentPage ? (currentPage - 1) * DISCOUNTS_LIMIT : 0
+      await updateDiscount({
         variables: { discount },
-        refetchQueries: [
-          {
+        update: (store: any, dataDiscount: Discount) => {
+          const newDiscount = get(dataDiscount, 'data.updateDiscount')
+          responseId = newDiscount.id
+          if (!responseId) {
+            return
+          }
+          const storedData = store.readQuery({
             query: getDiscountsQuery,
             variables: {
               limit: DISCOUNTS_LIMIT,
-              offset: 0,
+              offset,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            }
+          })
+          store.writeQuery({
+            query: getDiscountsQuery,
+            variables: {
+              limit: DISCOUNTS_LIMIT,
+              offset,
               order: orderBy,
               orderAs: sort,
               searchText
             },
-            options: {
-              fetchPolicy: 'network-only'
-            }
-          }
-        ]
+            data: storedData
+          })
+        }
       })
-      const response = get(data, 'data.updateDiscount')
-      responseId = response && response.id
     } else {
       await addNewDiscount({
         variables: { discount },
