@@ -34,10 +34,6 @@ export const IconsContainer = styled.div`
   justify-content: center;
 `
 
-interface HeaderProps {
-  textAlign?: string
-}
-
 export const Header = styled.th`
   border-bottom: 1px solid #818181;
   text-align: left;
@@ -47,9 +43,8 @@ export const Header = styled.th`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
-  text-align: ${({ textAlign }: HeaderProps) =>
-    textAlign ? textAlign : 'start'};
-
+  text-align: ${({ justifyContent }: ContainerProps) =>
+    justifyContent === 'flex-end' ? 'right' : 'left'};
   @media (min-width: 320px) and (max-width: 768px) {
     letter-spacing: 0.09px;
     font-size: 12px;

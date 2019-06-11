@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import debounce from 'lodash/debounce'
 import { getUsersQuery } from './UsersList/data'
 import { FormattedMessage } from 'react-intl'
 import { setAdminUserMutation } from './data'
@@ -12,6 +13,7 @@ import * as UsersAdminActions from './actions'
 import { Container, ScreenTitle, SearchInput } from './styledComponents'
 import List from './UsersList'
 import messages from './messages'
+import message from 'antd/lib/message'
 import { sorts } from '../../types/common'
 
 interface Props {
@@ -28,8 +30,20 @@ interface Props {
   setSearchTextAction: (searchText: string) => void
   setAdminUser: (variables: {}) => void
 }
-
-class UsersAdmin extends React.Component<Props, {}> {
+interface StateProps {
+  searchValue: string
+}
+class UsersAdmin extends React.Component<Props, StateProps> {
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.setSearchTextAction(this.state.searchValue),
+    600
+  )
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      searchValue: ''
+    }
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -44,7 +58,7 @@ class UsersAdmin extends React.Component<Props, {}> {
           <FormattedMessage {...messages.title} />
         </ScreenTitle>
         <SearchInput
-          value={searchText}
+          value={this.state.searchValue}
           onChange={this.handleInputChange}
           placeholder={formatMessage(messages.search)}
         />
@@ -59,25 +73,35 @@ class UsersAdmin extends React.Component<Props, {}> {
     )
   }
   handleOnSetAdministrator = async (id: boolean) => {
-    const { setAdminUser, orderBy, sort, searchText } = this.props
-    await setAdminUser({
-      variables: { id },
-      refetchQueries: [
-        {
-          query: getUsersQuery,
-          variables: {
-            limit: USERS_LIMIT,
-            offset: 0,
-            order: orderBy,
-            orderAs: sort,
-            searchText
-          },
-          options: {
-            fetchPolicy: 'network-only'
+    const {
+      setAdminUser,
+      orderBy,
+      sort,
+      searchText,
+      formatMessage
+    } = this.props
+    try {
+      await setAdminUser({
+        variables: { id },
+        refetchQueries: [
+          {
+            query: getUsersQuery,
+            variables: {
+              limit: USERS_LIMIT,
+              offset: 0,
+              order: orderBy,
+              orderAs: sort,
+              searchText
+            },
+            options: {
+              fetchPolicy: 'network-only'
+            }
           }
-        }
-      ]
-    })
+        ]
+      })
+    } catch (e) {
+      message.error(formatMessage(messages.unexpectedError))
+    }
   }
   handleOnSortClick = (label: string, sort: sorts) => {
     const { setOrderByAction } = this.props
@@ -89,12 +113,12 @@ class UsersAdmin extends React.Component<Props, {}> {
     setCurrentPageAction(page)
   }
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setSearchTextAction } = this.props
     const {
       currentTarget: { value }
     } = evt
-    evt.persist()
-    setSearchTextAction(value)
+    this.setState({ searchValue: value }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
   }
 }
 

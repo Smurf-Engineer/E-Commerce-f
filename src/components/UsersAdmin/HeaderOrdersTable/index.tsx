@@ -29,8 +29,8 @@ const HeaderOrdersTable = ({
   interactiveHeaders
 }: Props) => {
   if (!interactiveHeaders) {
-    const textAlign = justifyContent === 'flex-end' ? 'right' : 'left'
-    return <Header {...{ textAlign }}>{label}</Header>
+    // const textAlign = justifyContent === 'flex-end' ? 'right' : 'left'
+    return <Header {...{ justifyContent }}>{label}</Header>
   }
 
   const handleOnClick = () => {

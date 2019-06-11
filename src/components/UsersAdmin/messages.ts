@@ -12,5 +12,9 @@ export default defineMessages({
   search: {
     id: 'components.UsersAdmin.search',
     defaultMessage: 'Search for a user'
+  },
+  unexpectedError: {
+    id: 'components.UsersAdmin.unexpectedError',
+    defaultMessage: 'Oops! Something went wrong.'
   }
 })
