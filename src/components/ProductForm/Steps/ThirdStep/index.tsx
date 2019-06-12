@@ -113,7 +113,6 @@ export class ThirdStep extends React.Component<Props, {}> {
     if (regex.test(filteredValue.toString())) {
       priceRange[index].price = filteredValue
       setValue('priceRange', priceRange)
-      this.forceUpdate()
     }
   }
 }
