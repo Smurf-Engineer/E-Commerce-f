@@ -29,6 +29,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.homepage',
     defaultMessage: 'Homepage'
   },
+  users: {
+    id: 'screens.AdminLayout.users',
+    defaultMessage: 'USERS'
+  },
   logout: {
     id: 'screens.AdminLayout.logout',
     defaultMessage: 'LOGOUT'

@@ -40,6 +40,7 @@ import discountsAdmin from '../components/DiscountsAdmin/reducer'
 import homepageAdmin from '../components/HomepageAdmin/reducer'
 import productCatalogAdmin from '../components/ProductCatalog/reducer'
 import productDetailAdmin from '../components/ProductDetailsAdmin/reducer'
+import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
@@ -95,6 +96,7 @@ export interface ReducersObject {
   myFiles: any
   orderHistory: any
   orderHistoryAdmin: any
+  usersAdmin: any
   discountsAdmin: any
   homepageAdmin: any
   overview: any
@@ -209,7 +211,8 @@ const rootReducer = combineReducers({
   responsive: responsiveReducer,
   app: appReducer,
   admin,
-  adminLayout
+  adminLayout,
+  usersAdmin
 })
 
 export default rootReducer

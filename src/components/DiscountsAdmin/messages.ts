@@ -16,5 +16,13 @@ export default defineMessages({
   addDiscountLabel: {
     id: 'components.DiscountsAdmin.addDiscountLabel',
     defaultMessage: '+ ADD NEW DISCOUNT'
+  },
+  alreadyExist: {
+    id: 'components.DiscountsAdmin.alreadyExist',
+    defaultMessage: 'Code already exists.'
+  },
+  unexpectedError: {
+    id: 'components.DiscountsAdmin.unexpectedError',
+    defaultMessage: 'Oops! Something went wrong.'
   }
 })

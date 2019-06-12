@@ -9,3 +9,8 @@ export const getFileExtension = (fileName: string) => {
   }
   return ''
 }
+
+export const isNumber = (fileName: string) => {
+  const numbersRegex = /^\d+$/
+  return numbersRegex.test(fileName)
+}

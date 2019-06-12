@@ -1,26 +1,26 @@
 /**
- * DiscountsList Component - Created by eduardoquintero on 24/05/19.
+ * UsersList Component - Created by eduardoquintero on 29/05/19.
  */
 import * as React from 'react'
 import MediaQuery from 'react-responsive'
 import { graphql, compose } from 'react-apollo'
 import get from 'lodash/get'
 import messages from './messages'
-import { DISCOUNTS_LIMIT } from '../constants'
 import { Container, Header, Row, Table } from './styledComponents'
-import HeaderTable from '../DiscountsTable'
+import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
+import { USERS_LIMIT } from '../constants'
 import EmptyContainer from '../../EmptyContainer'
-import { sorts, QueryProps, Discount } from '../../../types/common'
+import { sorts, QueryProps, User } from '../../../types/common'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
-import { getDiscountsQuery } from './data'
+import { getUsersQuery } from './data'
 import Pagination from 'antd/lib/pagination/Pagination'
 
 interface Data extends QueryProps {
-  discountsQuery: {
+  usersQuery: {
     fullCount: number
-    discounts: Discount[]
+    users: User[]
   }
 }
 
@@ -35,29 +35,27 @@ interface Props {
   withoutPadding?: boolean
   searchText: string
   onSortClick: (label: string, sort: sorts) => void
-  onDiscountClick: (discount: Discount) => void
   onChangePage: (page: number) => void
-  onChangeActive: (id: number) => void
+  onSetAdministrator: (id: number) => void
 }
 
-const DiscountsList = ({
+const UsersList = ({
   formatMessage,
   interactiveHeaders,
   orderBy,
   sort,
   currentPage,
-  data: { discountsQuery },
+  data: { usersQuery },
   onSortClick,
-  onDiscountClick,
   onChangePage,
   withPagination = true,
   withoutPadding = false,
-  onChangeActive
+  onSetAdministrator
 }: Props) => {
-  const discounts = get(discountsQuery, 'discounts', []) as Discount[]
-  const fullCount = get(discountsQuery, 'fullCount', 0)
+  const users = get(usersQuery, 'users', []) as User[]
+  const fullCount = get(usersQuery, 'fullCount', 0)
 
-  if (!discounts || !discounts.length) {
+  if (!users || !users.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
 
@@ -67,68 +65,54 @@ const DiscountsList = ({
         if (matches) {
           return (
             <Row>
-              <Header>{formatMessage(messages.code)}</Header>
-              <Header>{formatMessage(messages.discountItem)}</Header>
-              <Header>{formatMessage(messages.type)}</Header>
-              <Header>{formatMessage(messages.rate)}</Header>
-              <Header>{formatMessage(messages.expiry)}</Header>
-              <Header>{''}</Header>
-              <Header>{''}</Header>
+              <Header>{formatMessage(messages.clientID)}</Header>
+              <Header>{formatMessage(messages.name)}</Header>
+              <Header>{formatMessage(messages.accountType)}</Header>
+              <Header>{formatMessage(messages.admin)}</Header>
+              <Header>{formatMessage(messages.email)}</Header>
             </Row>
           )
         }
         return (
           <Row>
             <HeaderTable
-              id={'coupon_code'}
-              label={formatMessage(messages.code)}
-              sort={orderBy === 'coupon_code' ? sort : 'none'}
+              id={'id'}
+              label={formatMessage(messages.clientID)}
+              sort={orderBy === 'id' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'discount_item_id'}
-              label={formatMessage(messages.discountItem)}
-              sort={orderBy === 'discount_item_id' ? sort : 'none'}
+              id={'first_name'}
+              label={formatMessage(messages.name)}
+              sort={orderBy === 'first_name' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'discount_type'}
-              label={formatMessage(messages.type)}
-              sort={orderBy === 'discount_type' ? sort : 'none'}
+              id={'social_method'}
+              label={formatMessage(messages.accountType)}
+              sort={orderBy === 'social_method' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'rate'}
-              label={formatMessage(messages.rate)}
-              sort={orderBy === 'rate' ? sort : 'none'}
+              id={'administrator'}
+              label={formatMessage(messages.admin)}
+              sort={orderBy === 'administrator' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'expiry'}
-              label={formatMessage(messages.expiry)}
-              sort={orderBy === 'expiry' ? sort : 'none'}
+              id={'email'}
+              label={formatMessage(messages.email)}
+              sort={orderBy === 'email' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'switch'}
-              label={''}
-              interactiveHeaders={false}
-              {...{ onSortClick }}
-            />
-            <HeaderTable
-              id={'edit'}
-              label={''}
-              interactiveHeaders={false}
-              {...{ onSortClick }}
             />
           </Row>
         )
       }}
     </MediaQuery>
   )
-  const orderItems = discounts.map(
+  const userItems = users.map(
     (
-      { code, discountItemId, type, rate, expiry, active, id }: Discount,
+      { id, email, firstName, lastName, socialMethod, administrator }: User,
       index: number
     ) => {
       return (
@@ -136,14 +120,12 @@ const DiscountsList = ({
           key={index}
           {...{
             id,
-            code,
-            discountItemId,
-            type,
-            rate,
-            expiry,
-            active,
-            onDiscountClick,
-            onChangeActive
+            email,
+            firstName,
+            lastName,
+            socialMethod,
+            administrator,
+            onSetAdministrator
           }}
         />
       )
@@ -154,12 +136,12 @@ const DiscountsList = ({
     <Container {...{ withoutPadding }}>
       <Table>
         <thead>{header}</thead>
-        <tbody>{orderItems}</tbody>
+        <tbody>{userItems}</tbody>
       </Table>
       {withPagination ? (
         <Pagination
           current={currentPage}
-          pageSize={DISCOUNTS_LIMIT}
+          pageSize={USERS_LIMIT}
           total={Number(fullCount)}
           onChange={onChangePage}
         />
@@ -176,8 +158,8 @@ interface OwnProps {
   searchText?: string
 }
 
-const DiscountsListEnhance = compose(
-  graphql(getDiscountsQuery, {
+const UsersListEnhance = compose(
+  graphql(getUsersQuery, {
     options: ({
       currentPage,
       orderBy,
@@ -185,7 +167,7 @@ const DiscountsListEnhance = compose(
       customLimit,
       searchText
     }: OwnProps) => {
-      const limit = customLimit !== undefined ? customLimit : DISCOUNTS_LIMIT
+      const limit = customLimit !== undefined ? customLimit : USERS_LIMIT
       const offset = currentPage ? (currentPage - 1) * limit : 0
       return {
         variables: {
@@ -201,6 +183,6 @@ const DiscountsListEnhance = compose(
   }),
   withError,
   withLoading
-)(DiscountsList)
+)(UsersList)
 
-export default DiscountsListEnhance
+export default UsersListEnhance
