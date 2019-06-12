@@ -8,7 +8,12 @@ export const getHomepageInfo = graphql(
         headerImageMobile: header_image_mobile
         headerImage: header_image
         headerImageLink: header_image_link
-        homepageImages: homepage_images
+        homepageImages {
+          id
+          desktopImage: image
+          mobileImage: image_mobile
+          url: link
+        }
       }
     }
   `,
@@ -32,4 +37,15 @@ export const setMainHeaderMutation = graphql(
     }
   `,
   { name: 'setMainHeader' }
+)
+
+export const setSecondaryHeaderMutation = graphql(
+  gql`
+    mutation setSecondaryHeader($homepageImages: [HomePageImageInput]) {
+      setSecondaryHeader(homepageImages: $homepageImages) {
+        message
+      }
+    }
+  `,
+  { name: 'setSecondaryHeader' }
 )

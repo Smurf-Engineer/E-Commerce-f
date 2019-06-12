@@ -5,7 +5,11 @@ import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
-import { getHomepageInfo, setMainHeaderMutation } from './data'
+import {
+  getHomepageInfo,
+  setMainHeaderMutation,
+  setSecondaryHeaderMutation
+} from './data'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
 import { FormattedMessage } from 'react-intl'
@@ -19,15 +23,17 @@ import messages from './messages'
 
 interface Props {
   history: any
-  dekstopImage: string
+  desktopImage: string
   mainHeader: any
-  loading: any
+  mainHeaderLoading: any
+  secondaryHeaderLoading: any
   loaders: any
   dispatch: any
+  secondaryHeader: any
   formatMessage: (messageDescriptor: any) => string
-  uploadFileAction: (file: any, section: string, imageType: string) => void
   homepageInfo: () => Promise<any>
   setMainHeader: (variables: {}) => Promise<any>
+  setSecondaryHeader: (variables: {}) => Promise<any>
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -37,7 +43,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
     try {
       dispatch(setLoadersAction(Sections.MAIN_CONTAINER, true))
       const response = await homepageInfo()
-      // const data = get(response, 'data.getHomepageContent', {})
 
       dispatch(setHomepageInfoAction(response.data.getHomepageContent))
       dispatch(setLoadersAction(Sections.MAIN_CONTAINER, false))
@@ -48,16 +53,22 @@ class HomepageAdmin extends React.Component<Props, {}> {
   handleOnUploadFile = async (
     file: any,
     section: string,
-    imageType: string
+    imageType: string,
+    index: number = -1
   ) => {
     const { dispatch } = this.props
     const { uploadFileAction } = homepageAdminApiActions
-    dispatch(uploadFileAction(file, section, imageType))
+    dispatch(uploadFileAction(file, section, imageType, index))
   }
   handleOnSetUrl = (value: string) => {
     const { dispatch } = this.props
     const { setUrlAction } = HomepageAdminActions
     dispatch(setUrlAction(value))
+  }
+  handleOnSetUrlLists = (value: string, index: number) => {
+    const { dispatch } = this.props
+    const { setUrlListAction } = HomepageAdminActions
+    dispatch(setUrlListAction(value, index))
   }
   handleOnSaveMainHeader = async () => {
     try {
@@ -66,7 +77,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       dispatch(setLoadersAction(Sections.MAIN_HEADER, true))
       const response = await setMainHeader({
         variables: {
-          headerImage: mainHeader.dekstopImage,
+          headerImage: mainHeader.desktopImage,
           headerImageMobile: mainHeader.mobileImage,
           headerImageLink: mainHeader.url
         }
@@ -77,13 +88,41 @@ class HomepageAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  handleOnSaveSecondaryHeader = async () => {
+    try {
+      const { setSecondaryHeader, dispatch, secondaryHeader } = this.props
+      const { setLoadersAction } = HomepageAdminActions
+      dispatch(setLoadersAction(Sections.SECONDARY_HEADER, true))
+      const homepageImages = secondaryHeader.map((item: any) => ({
+        id: item.id,
+        image: item.desktopImage,
+        image_mobile: item.mobileImage,
+        link: item.url
+      }))
+      const response = await setSecondaryHeader({
+        variables: {
+          homepageImages
+        }
+      })
+      message.success(get(response, 'data.setSecondaryHeader.message', ''))
+      dispatch(setLoadersAction(Sections.SECONDARY_HEADER, false))
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   render() {
     const {
       formatMessage,
-      dekstopImage,
+      desktopImage,
       mainHeader,
-      loading,
-      loaders: { mainLoader, mainHeader: mainHeaderLoader }
+      mainHeaderLoading,
+      secondaryHeaderLoading,
+      loaders: {
+        mainLoader,
+        mainHeader: mainHeaderLoader,
+        secondaryHeader: secondaryHeaderLoader
+      },
+      secondaryHeader
     } = this.props
 
     return mainLoader ? (
@@ -101,24 +140,24 @@ class HomepageAdmin extends React.Component<Props, {}> {
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
           {...{
-            dekstopImage,
+            desktopImage,
             formatMessage,
             mainHeader,
-            loading,
+            loading: mainHeaderLoading,
             mainHeaderLoader
           }}
         />
         <SecondaryHeader
           onUploadFile={this.handleOnUploadFile}
-          setUrl={this.handleOnSetUrl}
-          onSaveHeader={this.handleOnSaveMainHeader}
-          saving={mainHeaderLoader}
+          setUrl={this.handleOnSetUrlLists}
+          onSaveHeader={this.handleOnSaveSecondaryHeader}
+          saving={secondaryHeaderLoader}
           {...{
-            dekstopImage,
+            desktopImage,
             formatMessage,
-            mainHeader,
-            loading,
-            mainHeaderLoader
+            loading: secondaryHeaderLoading,
+            mainHeaderLoader,
+            secondaryHeader
           }}
         />
       </Container>
@@ -132,6 +171,7 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 const HomepageAdminEnhance = compose(
   getHomepageInfo,
   setMainHeaderMutation,
+  setSecondaryHeaderMutation,
   connect(
     mapStateToProps,
     mapDispatchToProps

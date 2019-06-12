@@ -3,16 +3,26 @@
  */
 import message from 'antd/lib/message'
 import config from '../../config/index'
-import { setUrlImage, setLoadingAction } from './actions'
+import {
+  setUrlImage,
+  setLoadingAction,
+  setUrlImageList,
+  setLoadingListAction
+} from './actions'
 
 export const uploadFileAction = (
   file: any,
   section: string,
-  imageType: string
+  imageType: string,
+  index: number
 ) => {
   return async (dispatch: any) => {
     try {
-      dispatch(setLoadingAction(imageType, true))
+      if (index >= 0) {
+        dispatch(setLoadingListAction(imageType, true, index))
+      } else {
+        dispatch(setLoadingAction(imageType, true))
+      }
       const user = JSON.parse(localStorage.getItem('user') || '')
       const formData = new FormData()
       formData.append('file', file)
@@ -28,10 +38,15 @@ export const uploadFileAction = (
         }
       )
       const imageObject = await response.json()
+      if (index >= 0) {
+        dispatch(setLoadingListAction(imageType, false, index))
+        return dispatch(
+          setUrlImageList(imageObject.image, section, imageType, index)
+        )
+      }
       dispatch(setLoadingAction(imageType, false))
       return dispatch(setUrlImage(imageObject.image, section, imageType))
     } catch (e) {
-      console.log('hubo un error')
       message.error(e.message)
       return false
     }

@@ -2,134 +2,62 @@
  * SecondaryHeader Component - Created by eduardoquintero on 30/05/19.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
-import { connect } from 'react-redux'
-import Spin from 'antd/lib/spin'
 import Button from 'antd/lib/button'
-import indexOf from 'lodash/indexOf'
-import { getFileExtension } from '../../../utils/utilsFiles'
 import {
   Container,
-  UploadButton,
-  StyledUpload,
-  StyledUploadMobile,
-  ImagePreview,
-  StyledInput,
-  ImagesContainer,
   ButtonContainer,
-  InputContainer,
-  Title
+  Title,
+  UploadersContainer
 } from './styledComponents'
+import Uploader from './Uploader'
 import messages from './messages'
-import message from 'antd/lib/message'
-import Icon from 'antd/lib/icon'
-import { ImageTypes, Sections } from '../constants'
 
-const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
-const { MAIN_HEADER } = Sections
 interface Props {
-  history: any
-  dekstopImage: string
+  desktopImage: string
   mainHeader: any
   loading: any
   saving: boolean
+  secondaryHeader: any
   formatMessage: (messageDescriptor: any) => string
-  onUploadFile: (file: any, section: string, imageType: string) => void
-  setUrl: (value: string) => void
+  onUploadFile: (
+    file: any,
+    section: string,
+    imageType: string,
+    index: number
+  ) => void
+  setUrl: (value: string, index: number) => void
   onSaveHeader: () => void
 }
 
 class SecondaryHeader extends React.Component<Props, {}> {
-  beforeUpload = (file: any, imageType: string) => {
-    const { formatMessage, onUploadFile } = this.props
-    if (file) {
-      const { size, name } = file
-      // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
-      if (size / 1000000 > 20) {
-        message.error(formatMessage(messages.imageSizeError))
-        return false
-      }
-      const fileExtension = getFileExtension(name)
-      if (
-        indexOf(
-          validFileExtensions,
-          (fileExtension as String).toLowerCase()
-        ) === -1
-      ) {
-        message.error(formatMessage(messages.imageExtensionError))
-        return false
-      }
-      onUploadFile(file, MAIN_HEADER, imageType)
-    }
-    return false
-  }
-  uploadDesktopImage = (file: any) => {
-    this.beforeUpload(file, ImageTypes.DESKTOP)
-  }
-  uploadMobileImage = (file: any) => {
-    this.beforeUpload(file, ImageTypes.MOBILE)
-  }
-  handleOnSetUrl = (event: any) => {
-    const { setUrl } = this.props
-    setUrl(event.target.value)
-  }
   render() {
     const {
-      mainHeader,
+      secondaryHeader,
       loading,
       formatMessage,
-      mainHeader: { url },
       onSaveHeader,
-      saving
+      saving,
+      onUploadFile,
+      setUrl
     } = this.props
-    const uploadButton = (
-      <UploadButton>
-        <Icon type="upload" /> {formatMessage(messages.clickToUpload)}
-      </UploadButton>
-    )
-    const desktopView = loading[ImageTypes.DESKTOP] ? <Spin /> : uploadButton
-    const mobileView = loading[ImageTypes.MOBILE] ? <Spin /> : uploadButton
+
+    const uploadItems = secondaryHeader.map((item: any, index: number) => (
+      <Uploader
+        key={index}
+        {...{
+          item,
+          formatMessage,
+          index,
+          loading: loading[index],
+          onUploadFile,
+          setUrl
+        }}
+      />
+    ))
     return (
       <Container>
         <Title>{formatMessage(messages.mainHeaderTitle)}</Title>
-        <ImagesContainer>
-          <StyledUpload
-            id={'desktop'}
-            listType="picture-card"
-            multiple={false}
-            supportServerRender={true}
-            showUploadList={false}
-            beforeUpload={this.uploadDesktopImage}
-          >
-            {mainHeader[ImageTypes.DESKTOP] && !loading[ImageTypes.DESKTOP] ? (
-              <ImagePreview src={mainHeader[ImageTypes.DESKTOP]} />
-            ) : (
-              desktopView
-            )}
-          </StyledUpload>
-          <StyledUploadMobile
-            id={'desktop'}
-            listType="picture-card"
-            multiple={false}
-            supportServerRender={true}
-            showUploadList={false}
-            beforeUpload={this.uploadMobileImage}
-          >
-            {mainHeader[ImageTypes.MOBILE] && !loading[ImageTypes.MOBILE] ? (
-              <ImagePreview src={mainHeader[ImageTypes.MOBILE]} />
-            ) : (
-              mobileView
-            )}
-          </StyledUploadMobile>
-        </ImagesContainer>
-        <InputContainer>
-          {formatMessage(messages.jakrooUrl)}
-          <StyledInput
-            placeholder={formatMessage(messages.destinationUrl)}
-            value={url}
-            onChange={this.handleOnSetUrl}
-          />
-        </InputContainer>
+        <UploadersContainer>{uploadItems}</UploadersContainer>
         <ButtonContainer>
           <Button loading={saving} onClick={onSaveHeader}>
             {formatMessage(messages.saveChanges)}
@@ -140,6 +68,4 @@ class SecondaryHeader extends React.Component<Props, {}> {
   }
 }
 
-const SecondaryHeaderEnhance = compose(connect())(SecondaryHeader)
-
-export default SecondaryHeaderEnhance
+export default SecondaryHeader

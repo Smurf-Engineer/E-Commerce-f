@@ -1,12 +1,9 @@
 /**
- * MainHeader Component - Created by eduardoquintero on 30/05/19.
+ * Uploader Component - Created by eduardoquintero on 30/05/19.
  */
 import * as React from 'react'
-import Divider from 'antd/lib/divider'
 import Spin from 'antd/lib/spin'
-import Button from 'antd/lib/button'
 import indexOf from 'lodash/indexOf'
-import { getFileExtension } from '../../../utils/utilsFiles'
 import {
   Container,
   UploadButton,
@@ -15,31 +12,33 @@ import {
   ImagePreview,
   StyledInput,
   ImagesContainer,
-  ButtonContainer,
-  InputContainer,
-  Title
+  InputContainer
 } from './styledComponents'
 import messages from './messages'
 import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
-import { ImageTypes, Sections } from '../constants'
+import { getFileExtension } from '../../../../utils/utilsFiles'
+import { ImageTypes, Sections } from '../../constants'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png', '.gif']
-const { MAIN_HEADER } = Sections
+const { SECONDARY_HEADER } = Sections
 interface Props {
-  desktopImage: string
-  mainHeader: any
+  item: any
   loading: any
-  saving: boolean
-  formatMessage: (messageDescriptor: any) => string
-  onUploadFile: (file: any, section: string, imageType: string) => void
-  setUrl: (value: string) => void
-  onSaveHeader: () => void
+  index: number
+  formatMessage: (messageDescriptor: any, params?: any) => string
+  onUploadFile: (
+    file: any,
+    section: string,
+    imageType: string,
+    index: number
+  ) => void
+  setUrl: (value: string, index: number) => void
 }
 
-class MainHeader extends React.Component<Props, {}> {
+class Uploader extends React.Component<Props, {}> {
   beforeUpload = (file: any, imageType: string) => {
-    const { formatMessage, onUploadFile } = this.props
+    const { formatMessage, onUploadFile, index } = this.props
     if (file) {
       const { size, name } = file
       // size is in byte(s) divided size / 1'000,000 to convert bytes to MB
@@ -57,7 +56,7 @@ class MainHeader extends React.Component<Props, {}> {
         message.error(formatMessage(messages.imageExtensionError))
         return false
       }
-      onUploadFile(file, MAIN_HEADER, imageType)
+      onUploadFile(file, SECONDARY_HEADER, imageType, index)
     }
     return false
   }
@@ -68,28 +67,33 @@ class MainHeader extends React.Component<Props, {}> {
     this.beforeUpload(file, ImageTypes.MOBILE)
   }
   handleOnSetUrl = (event: any) => {
-    const { setUrl } = this.props
-    setUrl(event.target.value)
+    const { setUrl, index } = this.props
+    setUrl(event.target.value, index)
   }
   render() {
-    const {
-      mainHeader,
-      loading,
-      formatMessage,
-      mainHeader: { url },
-      onSaveHeader,
-      saving
-    } = this.props
+    const { item, formatMessage, loading, index } = this.props
+    const { url } = item
     const uploadButton = (
       <UploadButton>
-        <Icon type="upload" /> {formatMessage(messages.clickToUpload)}
+        <Icon type="upload" />
+        {formatMessage(messages.clickToUpload, { index: index + 1 })}
       </UploadButton>
     )
+    const uploadButtonMobile = (
+      <UploadButton>
+        <Icon type="upload" />
+        {formatMessage(messages.clickToUploadMobile, { index: index + 1 })}
+      </UploadButton>
+    )
+
     const desktopView = loading[ImageTypes.DESKTOP] ? <Spin /> : uploadButton
-    const mobileView = loading[ImageTypes.MOBILE] ? <Spin /> : uploadButton
+    const mobileView = loading[ImageTypes.MOBILE] ? (
+      <Spin />
+    ) : (
+      uploadButtonMobile
+    )
     return (
       <Container>
-        <Title>{formatMessage(messages.mainHeaderTitle)}</Title>
         <ImagesContainer>
           <StyledUpload
             listType="picture-card"
@@ -98,8 +102,8 @@ class MainHeader extends React.Component<Props, {}> {
             showUploadList={false}
             beforeUpload={this.uploadDesktopImage}
           >
-            {mainHeader[ImageTypes.DESKTOP] && !loading[ImageTypes.DESKTOP] ? (
-              <ImagePreview src={mainHeader[ImageTypes.DESKTOP]} />
+            {item[ImageTypes.DESKTOP] && !loading[ImageTypes.DESKTOP] ? (
+              <ImagePreview src={item[ImageTypes.DESKTOP]} />
             ) : (
               desktopView
             )}
@@ -111,8 +115,8 @@ class MainHeader extends React.Component<Props, {}> {
             showUploadList={false}
             beforeUpload={this.uploadMobileImage}
           >
-            {mainHeader[ImageTypes.MOBILE] && !loading[ImageTypes.MOBILE] ? (
-              <ImagePreview src={mainHeader[ImageTypes.MOBILE]} />
+            {item[ImageTypes.MOBILE] && !loading[ImageTypes.MOBILE] ? (
+              <ImagePreview src={item[ImageTypes.MOBILE]} />
             ) : (
               mobileView
             )}
@@ -126,15 +130,9 @@ class MainHeader extends React.Component<Props, {}> {
             onChange={this.handleOnSetUrl}
           />
         </InputContainer>
-        <ButtonContainer>
-          <Button loading={saving} onClick={onSaveHeader}>
-            {formatMessage(messages.saveChanges)}
-          </Button>
-        </ButtonContainer>
-        <Divider />
       </Container>
     )
   }
 }
 
-export default MainHeader
+export default Uploader
