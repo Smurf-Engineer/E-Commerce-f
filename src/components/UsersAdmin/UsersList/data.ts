@@ -1,18 +1,18 @@
 /**
- * Account-OrdersList Queries
+ * UsersList Queries
  */
 
 import gql from 'graphql-tag'
 
-export const getDiscountsQuery = gql`
-  query getDiscounts(
+export const getUsersQuery = gql`
+  query getUsers(
     $limit: Int
     $offset: Int
     $order: String
     $orderAs: String
     $searchText: String
   ) {
-    discountsQuery: getDiscounts(
+    usersQuery: getUsers(
       limit: $limit
       offset: $offset
       order: $order
@@ -20,14 +20,13 @@ export const getDiscountsQuery = gql`
       searchText: $searchText
     ) {
       fullCount
-      discounts {
+      users {
         id
-        code: coupon_code
-        discountItemId: discount_item_id
-        type: discount_type
-        rate
-        expiry
-        active
+        email
+        firstName: first_name
+        lastName: last_name
+        socialMethod: social_method
+        administrator
       }
     }
   }

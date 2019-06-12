@@ -40,11 +40,11 @@ import discountsAdmin from '../components/DiscountsAdmin/reducer'
 import productCatalogAdmin from '../components/ProductCatalog/reducer'
 import productDetailAdmin from '../components/ProductDetailsAdmin/reducer'
 import productForm from '../components/ProductForm/reducer'
+import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearch from '../screens/DesignSearch/reducer'
-import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
 import { Reducer } from '../types/common'
@@ -73,7 +73,6 @@ export interface ReducersObject {
   designs: any
   productDetail: any
   productForm: any
-  designSearchAdmin: any
   product: any
   productCatalog: any
   designCenter: any
@@ -98,6 +97,7 @@ export interface ReducersObject {
   myFiles: any
   orderHistory: any
   orderHistoryAdmin: any
+  usersAdmin: any
   discountsAdmin: any
   overview: any
   fitAndSizing: any
@@ -184,7 +184,6 @@ const rootReducer = combineReducers({
   fitWidget,
   designs,
   productForm,
-  designSearchAdmin,
   productDetail,
   productCatalog,
   productCatalogAdmin,
@@ -212,7 +211,8 @@ const rootReducer = combineReducers({
   responsive: responsiveReducer,
   app: appReducer,
   admin,
-  adminLayout
+  adminLayout,
+  usersAdmin
 })
 
 export default rootReducer

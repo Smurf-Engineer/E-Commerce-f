@@ -341,8 +341,9 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                     paddingBottom="12px"
                   >
                     <RowField textAlign="center" label={currencyItem.label} />
-                    {currencyItem.amounts.map(amount => (
+                    {currencyItem.amounts.map((amount, subindex) => (
                       <RowField
+                        key={subindex}
                         textAlign="center"
                         label={amount ? `$${amount.price}` : ''}
                       />
@@ -356,9 +357,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <div key={index}>
                     {gender.genderBlockImages.map(
                       (imageBlock: any, blockIndex: number) => (
-                        <Row>
+                        <Row key={blockIndex}>
                           {imageBlock.map((image: string, subindex: number) => (
                             <RowField
+                              key={subindex}
                               paddingTop={
                                 blockIndex === 0 && subindex > 0 ? '23px' : '0'
                               }

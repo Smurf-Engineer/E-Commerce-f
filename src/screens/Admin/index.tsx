@@ -18,6 +18,7 @@ import logo from '../../assets/jakroo_logo.svg'
 import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
+import UsersAdmin from '../../components/UsersAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 
 // import Menu from 'antd/lib/menu'
@@ -33,6 +34,8 @@ import {
   ROOT_URL,
   DISCOUNTS_URL,
   PRODUCT_URL,
+  USERS,
+  USERS_URL,
   DESIGN_URL
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
@@ -105,32 +108,16 @@ export class Admin extends React.Component<Props, {}> {
         case DESIGN_URL:
           key = DESIGN_SEARCH
           break
+        case USERS_URL:
+          key = USERS
+          break
         default:
           break
       }
       setDefaultScreenAction(key)
     }
   }
-  setURL = (key: string) => {
-    console.log('setURL:', key)
-    const { history } = this.props
-    switch (key) {
-      case ORDER_STATUS:
-        history.push(ROOT_URL)
-        break
-      case DISCOUNTS:
-        history.push(DISCOUNTS_URL)
-        break
-      case PRODUCT_CATALOG:
-        history.push(PRODUCT_CATALOG)
-        break
-      case DESIGN_SEARCH:
-        history.push(DESIGN_URL)
-        break
-      default:
-        break
-    }
-  }
+
   onLogout = () => {
     const {
       client: { cache },
@@ -189,8 +176,8 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <ProductCatalog {...{ history, formatMessage }} />}
         />
         <Route
-          path="/admin/design-search"
-          render={() => <div>WIP Design-Search</div>}
+          path="/admin/users"
+          render={() => <UsersAdmin {...{ history, formatMessage }} />}
         />
       </AdminLayout>
     )

@@ -535,11 +535,13 @@ export interface OrderHistory {
 }
 
 export interface Discount {
+  id?: number
   code: string
   discountItemId: string
   type: string
-  rate: string
+  rate: number
   expiry: string
+  active?: boolean
 }
 export interface FulfillmentNetsuite {
   packages: string
@@ -1148,4 +1150,12 @@ export interface UserInfo {
   state: string
   zipCode: string
   country: string
+}
+export interface User {
+  id: number
+  firstName: string
+  lastName: string
+  email: string
+  socialMethod: string
+  administrator: boolean
 }
