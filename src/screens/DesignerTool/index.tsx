@@ -10,7 +10,6 @@ import GoogleFontLoader, { Font } from 'react-google-font-loader'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
 import findIndex from 'lodash/findIndex'
-import queryString from 'query-string'
 import every from 'lodash/every'
 import { connect } from 'react-redux'
 import { injectIntl, InjectedIntl } from 'react-intl'
@@ -55,9 +54,7 @@ import {
 
 const { confirm } = Modal
 const { uploadThemeImage } = designerToolApi
-type State = {
-  themeImage: [UploadFile?]
-}
+
 type Thumbnail = {
   style: {
     image: string
@@ -236,21 +233,9 @@ interface Props {
   onTabClickAction: (selectedIndex: number) => void
 }
 
-export class DesignerTool extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      themeImage: []
-    }
-    const search = get(props, 'location.search', '')
-    if (search) {
-      const { setProductCodeAction } = props
-      const queryParams = queryString.parse(search)
-      const code = get(queryParams, 'code', '')
-      if (code) {
-        setProductCodeAction(code)
-      }
-    }
+export class DesignerTool extends React.Component<Props, {}> {
+  state = {
+    themeImage: []
   }
 
   render() {
