@@ -156,7 +156,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
             desktopImage,
             formatMessage,
             loading: secondaryHeaderLoading,
-            mainHeaderLoader,
             secondaryHeader
           }}
         />

@@ -13,8 +13,6 @@ import Uploader from './Uploader'
 import messages from './messages'
 
 interface Props {
-  desktopImage: string
-  mainHeader: any
   loading: any
   saving: boolean
   secondaryHeader: any

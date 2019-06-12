@@ -57,7 +57,7 @@ export const ImagePreview = styled.div`
   height: 100%;
   width: 100%;
   background-image: url(${({ src }: ImagePreviewProps) => src || ''});
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 `
