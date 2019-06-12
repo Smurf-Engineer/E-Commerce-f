@@ -51,19 +51,19 @@ export const getProductQuery = gql`
       code
       yotpoId: yotpo_id
       name
-      product_materials: banner_materials {
+      productMaterials: banner_materials {
         id
         url
       }
       mtl
-      media_files {
+      mediaFiles: media_files {
         id
         url
       }
       obj
       bumpMap: bump_map
       flatlock
-      related_item_tag
+      relatedItemTag: related_item_tag
       binding {
         white
         black
@@ -76,10 +76,9 @@ export const getProductQuery = gql`
         white
         black
       }
-      type: short_description
       shortDescription: short_description
       category_id
-      category_name
+      categoryName: category_name
       tags
       season
       pictures {
@@ -90,7 +89,7 @@ export const getProductQuery = gql`
         gender_id
       }
       active
-      design_center
+      designCenter: design_center
       sport_id
       mpn
       colors {
@@ -104,7 +103,6 @@ export const getProductQuery = gql`
       }
       gender_id
       retail_version
-      customizable: design_center
       description
       details
       materials: materials_info
@@ -147,35 +145,6 @@ export const getProductQuery = gql`
       retailMen: men_retail
       retailWomen: women_retail
       template
-      relatedProducts: related {
-        id
-        type: name
-        description: short_description
-        shortDescription: short_description
-        images: pictures {
-          front: front_image
-          back: back_image
-          left: left_image
-          right: right_image
-          genderId: gender_id
-        }
-        isTopProduct
-        customizable: design_center
-        genderId: gender_id
-        collections
-        yotpoId: yotpo_id
-        priceRange {
-          price
-          quantity
-          abbreviation
-          shortName: short_name
-        }
-        colors {
-          id
-          name
-          image
-        }
-      }
     }
   }
 `

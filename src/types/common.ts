@@ -98,22 +98,22 @@ type ExtraFile = {
 
 export interface Product {
   id: number
-  active: string
+  active: boolean
   code: string
   shortId?: string
   images: ImageType[]
   type: string
   material_banner?: string
   pictures?: any[]
-  media_files?: object[]
+  mediaFiles?: object[]
   description: string
-  product_materials?: object[]
-  design_center?: boolean
+  productMaterials?: object[]
+  designCenter?: boolean
   priceRange: PriceRange[]
   collections: number
   isTopProduct: boolean
-  related_item_tag?: string
-  category_name?: string
+  relatedItemTag?: string
+  categoryName?: string
   details: string
   specs: string
   materials?: string

@@ -93,10 +93,10 @@ const OrdersList = ({
       return (
         <ItemOrder
           key={index}
-          active={active === 'true'}
+          active={active}
           onCheck={handleCheck}
           disabled={!obj && !mtl}
-          image={get(images[0], 'front', '') || jakrooLogo}
+          image={get(images[0], 'front', jakrooLogo)}
           productType={formatMessage(
             isCustom ? messages.custom : messages.inline
           )}

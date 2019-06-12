@@ -12,7 +12,6 @@ import {
   RowInput,
   MediaDiv,
   AddMaterial,
-  EmptyBox,
   MediaFooter,
   FileName,
   MaterialDiv,
@@ -21,101 +20,69 @@ import {
   MaterialButton,
   FileExtension,
   DeleteFile,
-  GenderBlock,
   MediaSection,
-  ImageBlock,
   Label,
   InputDiv
 } from './styledComponents'
+import GenderBlock from './GenderBlock'
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
-import { Product } from '../../../../types/common'
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 const Dragger = Upload.Dragger
 interface Props {
-  product: Product
+  productMaterials: any[]
+  mediaFiles: any[]
+  gendersArray: any[]
+  pictures: any[]
+  customizable: any[]
+  setBannerActions: (banners: any) => void
   bannerMaterials: any[]
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
-interface State {
-  newBanner: boolean
-  materialBanner?: string
-  bannerMaterials: any[]
-  productMaterials: any[]
-  mediaFiles: any[]
-  productImages: any[]
-}
-export class FourthStep extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    const { product, setValue, bannerMaterials } = props
-    const productImages = product.pictures || []
-    const productMaterials = product.product_materials || []
-    const mediaFiles = product.media_files
-      ? product.media_files.map((file: any, index: number) => ({
-          toUpload: false,
-          url: file.url,
-          id: index,
-          extension: getFileExtension(file.url),
-          name: getFileName(file.url)
-        }))
-      : []
-    const detailedBanners = bannerMaterials.map((banner: any) => ({
-      ...banner,
-      active: true
-    }))
-    setValue('files', {
-      type: 'bannerMaterials',
-      array: detailedBanners
-    })
-    this.state = {
-      newBanner: false,
-      productMaterials,
-      mediaFiles,
-      bannerMaterials: detailedBanners,
-      productImages
-    }
-  }
 
+export class FourthStep extends React.Component<Props, {}> {
   render() {
-    const { product } = this.props
-    const { customizable, genders: gendersArray } = product
-    let {
-      productImages,
-      mediaFiles,
+    const {
       productMaterials,
+      mediaFiles,
+      gendersArray,
+      pictures: productImages,
+      customizable,
       bannerMaterials
-    } = this.state
+    } = this.props
+    let productsImagesForm
     if (productImages && gendersArray) {
-      productImages = gendersArray.map((gender: any) => ({
+      productsImagesForm = gendersArray.map((gender: any) => ({
         genderName: gender.name || gender.gender,
         genderId: gender.id,
-        genderBlockImages: productImages
-          .filter((picture: any) => picture.gender_id === gender.id)
-          .map((block: any) => {
-            const images = []
-            images.push({
-              name: 'front_image',
-              label: 'Front',
-              src: block.front_image || ''
-            })
-            images.push({
-              name: 'left_image',
-              label: 'Left',
-              src: block.left_image || ''
-            })
-            images.push({
-              name: 'back_image',
-              label: 'Back',
-              src: block.back_image || ''
-            })
-            images.push({
-              name: 'right_image',
-              label: 'Right',
-              src: block.right_image || ''
-            })
-            return images
-          })
+        genderBlockImages: productImages.reduce((arr: any[], block: any) => {
+          if (block.gender_id === gender.id) {
+            arr.push([
+              {
+                name: 'front_image',
+                label: 'Front',
+                src: block.front_image || ''
+              },
+              {
+                name: 'left_image',
+                label: 'Left',
+                src: block.left_image || ''
+              },
+              {
+                name: 'back_image',
+                label: 'Back',
+                src: block.back_image || ''
+              },
+              {
+                name: 'right_image',
+                label: 'Right',
+                src: block.right_image || ''
+              }
+            ])
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
       }))
     }
     const checkedMaterials = productMaterials.map((item: any) => item.id)
@@ -126,38 +93,13 @@ export class FourthStep extends React.Component<Props, State> {
             {...(customizable ? messages.howItFits : messages.productImages)}
           />
         </Separator>
-        {productImages.map((gender: any, index: number) => (
-          <GenderBlock key={index}>
-            <Label upperCase={true}>{gender.genderName}</Label>
-            {gender.genderBlockImages.map(
-              (imageBlock: any, blockIndex: number) => (
-                <ImageBlock>
-                  {imageBlock.map((image: any, subindex: number) => (
-                    <Upload
-                      name={`${gender.genderId}@${image.name}`}
-                      listType="picture-card"
-                      className="avatar-uploader"
-                      customRequest={this.handleSetFile}
-                      showUploadList={false}
-                      beforeUpload={this.beforeUpload}
-                    >
-                      {image.src ? (
-                        <ImageBox src={image.src} alt="avatar" />
-                      ) : (
-                        <EmptyBox>
-                          <div />
-                          <Icon type={'plus'} />
-                          <Label marginTop="16px" className="ant-upload-text">
-                            {image.label}
-                          </Label>
-                        </EmptyBox>
-                      )}
-                    </Upload>
-                  ))}
-                </ImageBlock>
-              )
-            )}
-          </GenderBlock>
+        {productsImagesForm.map((gender: any, index: number) => (
+          <GenderBlock
+            {...{ gender }}
+            key={index}
+            handleSetFile={this.handleSetFile}
+            beforeUpload={this.beforeUpload}
+          />
         ))}
         {customizable && (
           <div>
@@ -197,7 +139,6 @@ export class FourthStep extends React.Component<Props, State> {
                     beforeUpload={this.beforeUpload}
                   >
                     <AddMaterial>
-                      <div />
                       <Icon type={'plus'} />
                       <Label marginTop="16px" className="ant-upload-text">
                         <FormattedMessage {...messages.materialsBanner} />
@@ -252,30 +193,35 @@ export class FourthStep extends React.Component<Props, State> {
       </Container>
     )
   }
+
   getBase64 = (img: any, callback: any) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => callback(reader.result))
     reader.readAsDataURL(img)
   }
+
   handleCheckMaterial = (event: any) => {
     const {
       target: { name, checked }
     } = event
-    const { setValue } = this.props
+    const { setValue, productMaterials, bannerMaterials } = this.props
     const id = parseInt(name, 10)
-    const { productMaterials, bannerMaterials } = this.state
     if (checked) {
       productMaterials.push(bannerMaterials.find((item: any) => item.id === id))
     } else {
       const indextoRemove = productMaterials.find((item: any) => item.id === id)
       productMaterials.splice(indextoRemove, 1)
     }
-    this.setState({ productMaterials })
-    setValue('product_materials', productMaterials)
+    setValue('productMaterials', productMaterials)
   }
+
   handleRemoveMaterial = (index: number) => () => {
-    const { setValue } = this.props
-    const { bannerMaterials, productMaterials } = this.state
+    const {
+      setValue,
+      setBannerActions,
+      bannerMaterials,
+      productMaterials
+    } = this.props
     if (bannerMaterials[index].toUpload) {
       bannerMaterials.splice(index, 1)
     } else {
@@ -285,17 +231,13 @@ export class FourthStep extends React.Component<Props, State> {
       (item: any) => item.id === bannerMaterials[index].id
     )
     productMaterials.splice(indextoRemove, 1)
-    this.setState({ bannerMaterials, productMaterials })
-    setValue('product_materials', productMaterials)
-    setValue('files', {
-      type: 'bannerMaterials',
-      array: bannerMaterials
-    })
+    setValue('productMaterials', productMaterials)
+    setBannerActions(bannerMaterials)
   }
+
   handleAddMaterial = (event: any) => {
-    const { setValue } = this.props
+    const { setBannerActions, bannerMaterials } = this.props
     const { file } = event
-    const { bannerMaterials } = this.state
     this.getBase64(file, (base64Image: string) => {
       bannerMaterials.push({
         url: base64Image,
@@ -303,19 +245,14 @@ export class FourthStep extends React.Component<Props, State> {
         id: bannerMaterials.length + 1,
         toUpload: file
       })
-      this.setState({ bannerMaterials })
-      setValue('files', {
-        type: 'bannerMaterials',
-        array: bannerMaterials
-      })
+      setBannerActions(bannerMaterials)
     })
   }
+
   removeMediaFile = (index: number) => () => {
-    const { setValue } = this.props
-    const { mediaFiles } = this.state
+    const { setValue, mediaFiles } = this.props
     mediaFiles.splice(index, 1)
-    this.setState({ mediaFiles })
-    setValue('media_files', mediaFiles)
+    setValue('mediaFiles', mediaFiles)
   }
 
   beforeUpload = (file: any) => {
@@ -329,6 +266,7 @@ export class FourthStep extends React.Component<Props, State> {
     }
     return isJPG && isLt2M
   }
+
   beforeUploadMedia = (file: any) => {
     const isJPG = file.type === 'image/jpeg'
     const isPNG = file.type === 'image/png'
@@ -342,10 +280,10 @@ export class FourthStep extends React.Component<Props, State> {
     }
     return (isJPG || isPNG || isMP4) && isLt2M
   }
+
   handleSetMedia = (event: any) => {
-    const { setValue } = this.props
+    const { setValue, mediaFiles } = this.props
     const { file } = event
-    const { mediaFiles } = this.state
     if (file.type === 'video/mp4') {
       mediaFiles.push({
         url: videoPlaceHolder,
@@ -354,8 +292,7 @@ export class FourthStep extends React.Component<Props, State> {
         name: getFileName(file.name),
         extension: '.mp4'
       })
-      this.setState({ mediaFiles })
-      setValue('media_files', mediaFiles)
+      setValue('mediaFiles', mediaFiles)
     } else {
       this.getBase64(file, (base64Image: string) => {
         mediaFiles.push({
@@ -365,15 +302,14 @@ export class FourthStep extends React.Component<Props, State> {
           name: getFileName(file.name),
           extension: getFileExtension(file.name)
         })
-        this.setState({ mediaFiles })
-        setValue('media_files', mediaFiles)
+        setValue('mediaFiles', mediaFiles)
       })
     }
   }
+
   handleSetFile = (event: any) => {
-    const { setValue } = this.props
+    const { setValue, pictures: productImages } = this.props
     const { file } = event
-    const { productImages } = this.state
     const parameters = event.filename.split('@')
     const genderId = parameters[0]
     const name = parameters[1]
@@ -386,7 +322,6 @@ export class FourthStep extends React.Component<Props, State> {
         productImages[index].toUpload = {}
       }
       productImages[index].toUpload[name] = file
-      this.setState({ productImages })
       setValue('pictures', productImages)
     })
   }

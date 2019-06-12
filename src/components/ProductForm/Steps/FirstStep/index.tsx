@@ -17,20 +17,21 @@ import {
   InputDiv
 } from './styledComponents'
 import { Radio, Input, Select, AutoComplete } from 'antd'
-import { Product, ItemDetailType } from '../../../../types/common'
+import { Product, ItemDetailType, GenderType } from '../../../../types/common'
 const RadioGroup = Radio.Group
 const Option = Select.Option
 const { TextArea } = Input
 
 interface Props {
-  genders: object[]
+  genders: GenderType[]
   product: Product
-  categories: object[]
+  categories: ItemDetailType[]
   materials: string[]
-  sports: object[]
+  sports: ItemDetailType[]
   relatedTags: string[]
   seasons: string[]
   setValue: (field: string, value: any) => void
+  setGenderActions: (genders: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
 export class FirstStep extends React.Component<Props, {}> {
@@ -47,21 +48,23 @@ export class FirstStep extends React.Component<Props, {}> {
     } = this.props
     const {
       name,
-      customizable,
       mpn,
       tags,
+      obj,
+      mtl,
       active,
       season,
       yotpoId,
-      design_center,
+      designCenter,
       genders: gendersProduct,
       details,
       materials: materialsProduct,
       code,
-      category_name: categoryName,
+      categoryName,
       sports,
-      related_item_tag,
+      relatedItemTag,
       description,
+      weight,
       shortDescription
     } = product
     const searchValues = tags ? tags.split(', ') : []
@@ -81,8 +84,8 @@ export class FirstStep extends React.Component<Props, {}> {
             </Label>
             <RadioGroup
               onChange={this.handleChangeCustom}
-              value={customizable}
-              name="customizable"
+              value={designCenter}
+              name="designCenter"
               size="large"
             >
               <RadioButton value={true}>
@@ -216,7 +219,7 @@ export class FirstStep extends React.Component<Props, {}> {
             </Label>
             <AutoComplete
               size="large"
-              value={related_item_tag}
+              value={relatedItemTag}
               dataSource={relatedTags}
               style={{ width: '100%' }}
               filterOption={(inputValue, option) =>
@@ -229,27 +232,20 @@ export class FirstStep extends React.Component<Props, {}> {
             />
           </InputDiv>
         </RowInput>
-        <RowInput>
-          <InputDiv flex={1} isFlex={true} flexFlow="row">
-            <InlineLabel>
-              <FormattedMessage {...messages.onStore} />
-              <SwitchInput
-                checked={active === 'true'}
-                onChange={this.handleSwitchActive}
-              />
-            </InlineLabel>
-            {customizable && (
+        {obj && mtl && (
+          <RowInput>
+            <InputDiv flex={1} isFlex={true} flexFlow="row">
               <InlineLabel>
-                <FormattedMessage {...messages.designLabProduct} />
+                <FormattedMessage {...messages.onStore} />
                 <SwitchInput
-                  checked={design_center}
-                  onChange={this.handleSwitchDesign}
+                  checked={active}
+                  onChange={this.handleSwitchActive}
                 />
               </InlineLabel>
-            )}
-          </InputDiv>
-          <InputDiv flex={1} />
-        </RowInput>
+            </InputDiv>
+            <InputDiv flex={1} />
+          </RowInput>
+        )}
         <RowInput>
           <InputDiv flex={1}>
             <Label>
@@ -339,6 +335,22 @@ export class FirstStep extends React.Component<Props, {}> {
             </Select>
           </InputDiv>
         </RowInput>
+        <RowInput>
+          <InputDiv flex={1}>
+            <Label>
+              <FormattedMessage {...messages.weight} />
+            </Label>
+            <Input
+              size="large"
+              type="number"
+              value={weight}
+              name="weight"
+              onChange={this.handleChangeCustom}
+              placeholder={formatMessage(messages.weightHolder)}
+            />
+          </InputDiv>
+          <InputDiv flex={2} />
+        </RowInput>
       </Container>
     )
   }
@@ -348,9 +360,9 @@ export class FirstStep extends React.Component<Props, {}> {
     setValue('sports', value)
   }
   handleGenderChange = (ids: any[]) => {
-    const { setValue, genders } = this.props
+    const { setGenderActions, genders } = this.props
     const value = genders.filter(({ id }: any) => ids.includes(id))
-    setValue('genders', value)
+    setGenderActions(value)
   }
   handleSearchTagChange = (value: any) => {
     const { setValue } = this.props
@@ -375,11 +387,11 @@ export class FirstStep extends React.Component<Props, {}> {
   }
   handleRelatedChange = (value: any) => {
     const { setValue } = this.props
-    setValue('related_item_tag', value)
+    setValue('relatedItemTag', value)
   }
   handleChangeCategory = (value: string) => {
     const { setValue } = this.props
-    setValue('category_name', value)
+    setValue('categoryName', value)
   }
   handleSwitchActive = (value: boolean) => {
     const { setValue } = this.props
@@ -387,7 +399,7 @@ export class FirstStep extends React.Component<Props, {}> {
   }
   handleSwitchDesign = (value: boolean) => {
     const { setValue } = this.props
-    setValue('design_center', value)
+    setValue('designCenter', value)
   }
   handleSeason = (value: any) => {
     const { setValue } = this.props
@@ -396,9 +408,9 @@ export class FirstStep extends React.Component<Props, {}> {
   handleChangeCustom = (event: any) => {
     const { setValue } = this.props
     const {
-      target: { value, name }
+      target: { value, name, type }
     } = event
-    setValue(name, value)
+    setValue(name, type === 'number' ? parseFloat(value) : value)
   }
 }
 

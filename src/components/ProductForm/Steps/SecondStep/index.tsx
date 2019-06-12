@@ -38,9 +38,9 @@ export class SecondStep extends React.Component<Props, {}> {
       colors: productColors,
       customizable
     } = product
-    const sizesSelected = sizeRange.map(e => e.id || '')
-    const stylesSelected = fitStylesProduct.map(e => e.id)
-    const colorsSelected = productColors ? productColors.map(e => e.id) : []
+    const sizesSelected = sizeRange && sizeRange.map(e => e.id || '')
+    const stylesSelected = fitStylesProduct && fitStylesProduct.map(e => e.id)
+    const colorsSelected = productColors && productColors.map(e => e.id)
     return (
       <Container>
         <Separator>

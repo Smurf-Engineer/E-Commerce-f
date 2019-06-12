@@ -5,6 +5,7 @@ import * as React from 'react'
 import { Icon, Steps } from 'antd'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import { withRouter } from 'react-router-dom'
 import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
@@ -14,8 +15,9 @@ import { stepsArray } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
 import * as ProductFormActions from './actions'
 import * as ApiActions from './api'
-import { QueryProps, Product } from '../../types/common'
-const omitDeep = require('omit-deep')
+import { getFileExtension, getFileName } from '../../utils/utilsFiles'
+import { QueryProps, Product, PriceRange } from '../../types/common'
+import omitDeep from 'omit-deep'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
   Container,
@@ -31,6 +33,7 @@ import {
   NextButton,
   MainBody
 } from './styledComponents'
+import { currencies, quantities } from './Steps/ThirdStep/constants'
 interface DataProduct extends QueryProps {
   product: Product
 }
@@ -40,10 +43,11 @@ interface DataExtra extends QueryProps {
 }
 
 interface Props {
-  productId: string
   bannerMaterials: any[]
   product: Product
   history: any
+  match: any
+  fixed: boolean
   dataProduct: DataProduct
   loading: boolean
   loadingMessage: string
@@ -56,9 +60,11 @@ interface Props {
     bannerMaterials: any[],
     mediaFiles: any[]
   ) => Promise<any>
-  goBack: (id: string, screen: string) => void
   upsertProductAction: (variables: {}) => Promise<any>
   setValue: (field: string, value: any) => void
+  setBannerActions: (banners: any) => void
+  setGenderActions: (genders: any) => void
+  setCurrencies: (currencies: any) => void
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -69,14 +75,64 @@ export class ProductForm extends React.Component<Props, {}> {
     currentStep: 0
   }
   componentDidUpdate(prevProps: Props) {
-    const { dataProduct, setProductAction } = this.props
+    const {
+      dataProduct,
+      setProductAction,
+      dataExtra,
+      setCurrencies,
+      setValue,
+      product: reduxProduct,
+      match,
+      fixed,
+      setBannerActions
+    } = this.props
+    const productId = get(prevProps, 'product.id', '')
     if (
       dataProduct &&
       !dataProduct.loading &&
       dataProduct.product &&
-      dataProduct.product.id !== prevProps.product.id
+      dataProduct.product.id !== parseInt(productId, 10)
     ) {
-      setProductAction(dataProduct.product)
+      const product = dataProduct.product
+      setProductAction(product)
+      const productImages = product.pictures || []
+      const productMaterials = product.productMaterials || []
+      const mediaFiles = product.mediaFiles
+        ? product.mediaFiles.map((file: any, index: number) => ({
+            toUpload: false,
+            url: file.url,
+            id: index,
+            extension: getFileExtension(file.url),
+            name: getFileName(file.url)
+          }))
+        : []
+      setValue('pictures', productImages)
+      setValue('mediaFiles', mediaFiles)
+      setValue('productMaterials', productMaterials)
+    }
+    if (dataExtra && !dataExtra.loading && !fixed) {
+      const bannerMaterials = get(dataExtra, 'extraData.bannerMaterials', [])
+      const detailedBanners = bannerMaterials.map((banner: any) => ({
+        ...banner,
+        active: true
+      }))
+      setBannerActions(detailedBanners)
+    }
+    if (
+      !parseInt(get(match, 'params.id', ''), 10) &&
+      !reduxProduct.priceRange
+    ) {
+      const currenciesProduct: PriceRange[] = []
+      currencies.forEach(shortName => {
+        quantities.forEach(quantity => {
+          currenciesProduct.push({
+            price: 0,
+            quantity,
+            shortName
+          })
+        })
+      })
+      setCurrencies(currenciesProduct)
     }
   }
   componentWillUnmount() {
@@ -87,14 +143,18 @@ export class ProductForm extends React.Component<Props, {}> {
     const { currentStep } = this.state
     const {
       formatMessage,
-      productId,
+      match,
       dataProduct,
       dataExtra,
+      bannerMaterials,
+      setBannerActions,
+      setGenderActions,
       loadingMessage,
       product,
       loading,
       setValue
     } = this.props
+    const productId = get(match, 'params.id', '')
     const loadingProduct = get(dataProduct, 'loading', false)
     const loadingExtra = get(dataExtra, 'loading', false)
     const categories = get(dataExtra, 'extraData.categories', [])
@@ -106,78 +166,75 @@ export class ProductForm extends React.Component<Props, {}> {
     const colors = get(dataExtra, 'extraData.colors', [])
     const seasons = get(dataExtra, 'extraData.seasons', [])
     const genders = get(dataExtra, 'extraData.genders', [])
-    const bannerMaterials = get(dataExtra, 'extraData.bannerMaterials', [])
+    const productMaterials = get(product, 'productMaterials', [])
+    const mediaFiles = get(product, 'mediaFiles', [])
+    const customizable = get(product, 'customizable', [])
+    const pictures = get(product, 'pictures', [])
+    const gendersArray = get(product, 'genders', [])
     const screenSteps = [
-      {
-        content: (
-          <FirstStep
-            {...{
-              categories,
-              setValue,
-              seasons,
-              product,
-              materials,
-              genders,
-              relatedTags,
-              sports,
-              formatMessage
-            }}
-          />
-        )
-      },
-      {
-        content: (
-          <SecondStep
-            {...{
-              categories,
-              setValue,
-              seasons,
-              colors,
-              fitStyles,
-              sizes,
-              product,
-              materials,
-              genders,
-              relatedTags,
-              sports,
-              formatMessage
-            }}
-          />
-        )
-      },
-      {
-        content: (
-          <ThirdStep
-            {...{
-              categories,
-              setValue,
-              seasons,
-              colors,
-              fitStyles,
-              sizes,
-              product,
-              materials,
-              genders,
-              relatedTags,
-              sports,
-              formatMessage
-            }}
-          />
-        )
-      },
-      {
-        content: (
-          <FourthStep
-            {...{
-              product,
-              bannerMaterials,
-              setValue,
-              genders,
-              formatMessage
-            }}
-          />
-        )
-      }
+      <FirstStep
+        key={0}
+        {...{
+          categories,
+          setValue,
+          seasons,
+          setGenderActions,
+          product,
+          materials,
+          genders,
+          relatedTags,
+          sports,
+          formatMessage
+        }}
+      />,
+      <SecondStep
+        key={1}
+        {...{
+          categories,
+          setValue,
+          seasons,
+          colors,
+          fitStyles,
+          sizes,
+          product,
+          materials,
+          genders,
+          relatedTags,
+          sports,
+          formatMessage
+        }}
+      />,
+      <ThirdStep
+        key={2}
+        {...{
+          categories,
+          setValue,
+          seasons,
+          colors,
+          fitStyles,
+          sizes,
+          product,
+          materials,
+          genders,
+          relatedTags,
+          sports,
+          formatMessage
+        }}
+      />,
+      <FourthStep
+        key={3}
+        {...{
+          productMaterials,
+          mediaFiles,
+          customizable,
+          pictures,
+          setBannerActions,
+          bannerMaterials,
+          setValue,
+          gendersArray,
+          formatMessage
+        }}
+      />
     ]
     return (
       <Container>
@@ -210,7 +267,7 @@ export class ProductForm extends React.Component<Props, {}> {
                   <Step title={step.title} />
                 ))}
               </Steps>
-              {screenSteps[currentStep].content}
+              {screenSteps[currentStep]}
             </HeaderRow>
             <Footer>
               {currentStep > 0 && (
@@ -242,56 +299,44 @@ export class ProductForm extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleSave = (onlySave: boolean) => () => {
+  handleSave = (onlySave: boolean) => async () => {
     const {
-      product: {
-        pictures: productImages,
-        product_materials: productMaterials,
-        media_files: mediaFiles
-      },
+      product: { pictures: productImages, productMaterials, mediaFiles },
       bannerMaterials,
       formatMessage,
       upsertProductAction,
-      goBack,
       uploadFilesAction
     } = this.props
-    uploadFilesAction(
+    const success = await uploadFilesAction(
       formatMessage,
       productImages || [],
       productMaterials || [],
       bannerMaterials || [],
       mediaFiles || []
     )
-      .then(success => {
-        if (success) {
-          console.log('Proceed 3D Model')
-          const { product, history } = this.props
-          omitDeep(product, '__typename')
-          omitDeep(bannerMaterials, '__typename')
-          upsertProductAction({
-            variables: { body: product, bannerMaterials }
-          })
-            .then(response => {
-              const id = get(response, 'data.productResult.id', '')
-              if (id) {
-                if (!onlySave) {
-                  const code = get(product, 'code', '')
-                  if (code) {
-                    history.push(`/publishing-tool?code=${code}`)
-                  }
-                } else {
-                  goBack(id, 'list')
-                }
-              } else {
-                message.error(formatMessage(messages.errorUpdating))
-              }
-            })
-            .catch(error => message.error(error))
-        } else {
-          message.error(formatMessage(messages.errorUploading))
-        }
+    if (success) {
+      const { product, history } = this.props
+      omitDeep(product, '__typename')
+      omitDeep(bannerMaterials, '__typename')
+      const response = await upsertProductAction({
+        variables: { body: product, bannerMaterials }
       })
-      .catch(error => message.error(error.message))
+      const id = get(response, 'data.productResult.id', '')
+      if (id) {
+        if (!onlySave) {
+          const code = get(product, 'code', '')
+          if (code) {
+            history.push(`/publishing-tool?code=${code}`)
+          }
+        } else {
+          history.push('/admin/products')
+        }
+      } else {
+        message.error(formatMessage(messages.errorUpdating))
+      }
+    } else {
+      message.error(formatMessage(messages.errorUploading))
+    }
   }
   changeStep = (currentStep: Number) => () => {
     this.setState({ currentStep })
@@ -302,29 +347,34 @@ export class ProductForm extends React.Component<Props, {}> {
     this.setState({ openedModel: true })
   }
   handleOnClickBack = () => {
-    const { goBack, productId, resetData } = this.props
-    resetData()
-    goBack(productId, productId ? 'details' : 'list')
+    const { history, match } = this.props
+    const productId = get(match, 'params.id', '')
+    if (parseInt(productId, 10)) {
+      history.push(`/admin/products/details/${productId}`)
+    } else {
+      history.push(`/admin/products`)
+    }
   }
 }
 
 interface OwnProps {
-  productId?: string
+  match?: any
 }
 
 const mapStateToProps = (state: any) => state.get('productForm').toJS()
 
 const ProductFormEnhance = compose(
+  withRouter,
   connect(
     mapStateToProps,
     { ...ProductFormActions, ...ApiActions }
   ),
   graphql(upsertProduct, { name: 'upsertProductAction' }),
   graphql(getProductQuery, {
-    options: ({ productId: id }: OwnProps) => ({
-      skip: !id,
+    options: ({ match }: OwnProps) => ({
+      skip: !parseInt(get(match, 'params.id', ''), 10),
       fetchPolicy: 'network-only',
-      variables: { id }
+      variables: { id: parseInt(get(match, 'params.id', ''), 10) }
     }),
     name: 'dataProduct'
   }),

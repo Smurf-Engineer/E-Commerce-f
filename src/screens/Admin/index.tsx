@@ -4,11 +4,10 @@
 import * as React from 'react'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { compose, withApollo } from 'react-apollo'
-import queryString from 'query-string'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
-import { RouteComponentProps } from 'react-router-dom'
+import { RouteComponentProps, Route } from 'react-router-dom'
 import {
   restoreUserSession,
   saveUserSession,
@@ -20,12 +19,22 @@ import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
+
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import { ORDER_STATUS, DISCOUNTS, PRODUCT_CATALOG } from './constants'
+import {
+  ORDER_STATUS,
+  DISCOUNTS,
+  PRODUCT_CATALOG,
+  DESIGN_SEARCH,
+  ROOT_URL,
+  DISCOUNTS_URL,
+  PRODUCT_URL,
+  DESIGN_URL
+} from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -77,22 +86,51 @@ export class Admin extends React.Component<Props, {}> {
     const {
       user,
       setDefaultScreenAction,
-      location: { search }
+      location: { pathname }
     } = this.props
     if (typeof window !== 'undefined' && !user) {
       const { restoreUserSessionAction } = this.props
       restoreUserSessionAction()
-      setDefaultScreenAction(ORDER_STATUS)
+      let key = ''
+      switch (pathname) {
+        case ROOT_URL:
+          key = ORDER_STATUS
+          break
+        case DISCOUNTS_URL:
+          key = DISCOUNTS
+          break
+        case PRODUCT_URL:
+          key = PRODUCT_CATALOG
+          break
+        case DESIGN_URL:
+          key = DESIGN_SEARCH
+          break
+        default:
+          break
+      }
+      setDefaultScreenAction(key)
     }
-    const queryParams = queryString.parse(search)
-    const { option } = queryParams
-    if (option) {
-      setDefaultScreenAction(option)
-      return
-    }
-    setDefaultScreenAction(ORDER_STATUS)
   }
-
+  setURL = (key: string) => {
+    console.log('setURL:', key)
+    const { history } = this.props
+    switch (key) {
+      case ORDER_STATUS:
+        history.push(ROOT_URL)
+        break
+      case DISCOUNTS:
+        history.push(DISCOUNTS_URL)
+        break
+      case PRODUCT_CATALOG:
+        history.push(PRODUCT_CATALOG)
+        break
+      case DESIGN_SEARCH:
+        history.push(DESIGN_URL)
+        break
+      default:
+        break
+    }
+  }
   onLogout = () => {
     const {
       client: { cache },
@@ -134,23 +172,26 @@ export class Admin extends React.Component<Props, {}> {
         </Content>
       )
     }
-    let currentScreen
-    switch (screen) {
-      case ORDER_STATUS:
-        currentScreen = <OrderHistoryAdmin {...{ history, formatMessage }} />
-        break
-      case DISCOUNTS:
-        currentScreen = <DiscountsAdmin {...{ history, formatMessage }} />
-        break
-      case PRODUCT_CATALOG:
-        currentScreen = <ProductCatalog {...{ history, formatMessage }} />
-        break
-      default:
-        break
-    }
     return (
       <AdminLayout {...{ history, intl, screen }} onLogout={this.onLogout}>
-        {currentScreen}
+        <Route
+          exact={true}
+          path="/admin"
+          render={() => <OrderHistoryAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          exact={true}
+          path="/admin/discounts"
+          render={() => <DiscountsAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/products"
+          render={() => <ProductCatalog {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/design-search"
+          render={() => <div>WIP Design-Search</div>}
+        />
       </AdminLayout>
     )
   }

@@ -44,6 +44,7 @@ import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearch from '../screens/DesignSearch/reducer'
+import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
 import { Reducer } from '../types/common'
@@ -72,6 +73,7 @@ export interface ReducersObject {
   designs: any
   productDetail: any
   productForm: any
+  designSearchAdmin: any
   product: any
   productCatalog: any
   designCenter: any
@@ -182,6 +184,7 @@ const rootReducer = combineReducers({
   fitWidget,
   designs,
   productForm,
+  designSearchAdmin,
   productDetail,
   productCatalog,
   productCatalogAdmin,

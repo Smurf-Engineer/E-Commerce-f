@@ -14,7 +14,7 @@ import {
   NumberInput,
   InputDiv
 } from './styledComponents'
-import { quantities } from './constants'
+import { quantities, currencies } from './constants'
 import {
   Product,
   ItemDetailType,
@@ -33,59 +33,20 @@ interface Props {
 export class ThirdStep extends React.Component<Props, {}> {
   render() {
     const { product } = this.props
-    let USD = get(product, 'priceRange', [])
-    if (USD) {
-      USD = USD.filter(item => item.shortName === 'USD')
-    }
-    let GBP = get(product, 'priceRange', [])
-    if (GBP) {
-      GBP = GBP.filter(item => item.shortName === 'GBP')
-    }
-    let EUR = get(product, 'priceRange', [])
-    if (EUR) {
-      EUR = EUR.filter(item => item.shortName === 'EUR')
-    }
-    let CAD = get(product, 'priceRange', [])
-    if (CAD) {
-      CAD = CAD.filter(item => item.shortName === 'CAD')
-    }
-    let AUD = get(product, 'priceRange', [])
-    if (AUD) {
-      AUD = AUD.filter(item => item.shortName === 'AUD')
-    }
-    const currencies = [
-      {
-        label: 'USD',
+    const priceRange = get(product, 'priceRange', [])
+    const currenciesValues = currencies.reduce((acc: any[], currency) => {
+      acc.push({
+        label: currency,
         amounts: quantities.map(quantity =>
-          find(USD, item => item.quantity === quantity)
+          find(
+            priceRange,
+            item => item.quantity === quantity && item.shortName === currency
+          )
         )
-      },
-      {
-        label: 'GBP',
-        amounts: quantities.map(quantity =>
-          find(GBP, item => item.quantity === quantity)
-        )
-      },
-      {
-        label: 'EUR',
-        amounts: quantities.map(quantity =>
-          find(EUR, item => item.quantity === quantity)
-        )
-      },
-      {
-        label: 'CAD',
-        amounts: quantities.map(quantity =>
-          find(CAD, item => item.quantity === quantity)
-        )
-      },
-      {
-        label: 'AUD',
-        amounts: quantities.map(quantity =>
-          find(AUD, item => item.quantity === quantity)
-        )
-      }
-    ]
-
+      })
+      return acc
+      // tslint:disable-next-line: align
+    }, [])
     return (
       <Container>
         <Separator>
@@ -103,12 +64,12 @@ export class ThirdStep extends React.Component<Props, {}> {
             </InputDiv>
           ))}
         </RowInput>
-        {currencies.map((currencyItem, index) => (
+        {currenciesValues.map((currencyItem, index) => (
           <RowInput>
             <InputDiv left={true} isFlex={true} flex={1}>
               <Label>{currencyItem.label}</Label>
             </InputDiv>
-            {currencyItem.amounts.map(amount => (
+            {currencyItem.amounts.map((amount: any) => (
               <InputDiv isFlex={true} flex={1}>
                 <NumberInput
                   name={`${currencyItem.label}@${
@@ -139,7 +100,7 @@ export class ThirdStep extends React.Component<Props, {}> {
     const parameters = name.split('@')
     const currency = parameters[0]
     const quantity = parameters[1]
-    var lastChar = value[value.length - 1]
+    const lastChar = value[value.length - 1]
     const index = priceRange.findIndex(
       item => item.quantity === quantity && item.shortName === currency
     )
@@ -147,7 +108,7 @@ export class ThirdStep extends React.Component<Props, {}> {
     const cleanValue = value.replace(/,/g, '')
     const filteredValue =
       lastChar === '.' ? cleanValue : parseFloat(cleanValue || 0)
-    var regex = new RegExp(/^-?(\d+)[\.]?(\d{0,3})$/g)
+    const regex = new RegExp(/^-?(\d+)[\.]?(\d{0,3})$/g)
 
     if (regex.test(filteredValue.toString())) {
       priceRange[index].price = filteredValue

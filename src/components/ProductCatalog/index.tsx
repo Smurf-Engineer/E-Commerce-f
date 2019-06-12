@@ -2,6 +2,7 @@
  * ProductCatalog Component - Created by Jesús Apodaca on 09/05/19.
  */
 import * as React from 'react'
+import { Route } from 'react-router-dom'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
@@ -15,7 +16,6 @@ import {
 import List from './OrdersList'
 import messages from './messages'
 import { sorts } from '../../types/common'
-import { LIST_SCREEN, DETAILS_SCREEN, FORM_SCREEN } from './constants'
 import ProductDetailsAdmin from '../ProductDetailsAdmin'
 import ProductForm from '../ProductForm'
 interface Props {
@@ -30,7 +30,6 @@ interface Props {
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setProductIdAction: (productId: string, screen: string) => void
   setSearchTextAction: (searchText: string) => void
 }
 
@@ -40,8 +39,8 @@ class ProductCatalog extends React.Component<Props, {}> {
     resetDataAction()
   }
   addNewProduct = () => {
-    const { setProductIdAction } = this.props
-    setProductIdAction('', 'form')
+    const { history } = this.props
+    history.push('/admin/products/form/0')
   }
 
   handleOnSortClick = (label: string, sort: sorts) => {
@@ -50,8 +49,12 @@ class ProductCatalog extends React.Component<Props, {}> {
   }
 
   handleOnProductClick = (productId: string, screen = 'details') => {
-    const { setProductIdAction } = this.props
-    setProductIdAction(productId, screen)
+    const { history } = this.props
+    if (screen === 'details') {
+      history.push(`/admin/products/details/${productId}`)
+    } else {
+      history.push('/admin/products')
+    }
   }
 
   handleOnChangePage = (page: number) => {
@@ -67,8 +70,8 @@ class ProductCatalog extends React.Component<Props, {}> {
     setSearchTextAction(value)
   }
   handleEditProduct = () => {
-    const { setProductIdAction, productId } = this.props
-    setProductIdAction(productId, 'form')
+    const { productId, history } = this.props
+    history.push(`/admin/products/form/${productId}`)
   }
   render() {
     const {
@@ -76,53 +79,55 @@ class ProductCatalog extends React.Component<Props, {}> {
       orderBy,
       sort,
       history,
-      screen,
       formatMessage,
-      productId,
       searchText
     } = this.props
-
-    switch (screen) {
-      case LIST_SCREEN:
-        return (
-          <Container>
-            <ScreenTitle>
-              <FormattedMessage {...messages.title} />
-            </ScreenTitle>
-            <AddProductButton onClick={this.addNewProduct}>
-              {formatMessage(messages.addProductLabel)}
-            </AddProductButton>
-            <SearchInput
-              value={searchText}
-              onChange={this.handleInputChange}
-              placeholder={formatMessage(messages.search)}
-            />
-            <List
-              {...{ formatMessage, currentPage, orderBy, sort, searchText }}
-              onSortClick={this.handleOnSortClick}
-              onProductClick={this.handleOnProductClick}
-              onChangePage={this.handleOnChangePage}
-              interactiveHeaders={true}
-            />
-          </Container>
-        )
-      case DETAILS_SCREEN:
-        return (
-          <ProductDetailsAdmin
-            {...{ productId, formatMessage, history }}
-            goBack={this.handleOnProductClick}
-          />
-        )
-      case FORM_SCREEN:
-        return (
-          <ProductForm
-            {...{ productId, formatMessage, history }}
-            goBack={this.handleOnProductClick}
-          />
-        )
-      default:
-        return <div>Screen not found</div>
-    }
+    return (
+      <div>
+        <Route
+          path="/admin/products"
+          exact={true}
+          render={() => (
+            <Container>
+              <ScreenTitle>
+                <FormattedMessage {...messages.title} />
+              </ScreenTitle>
+              <AddProductButton onClick={this.addNewProduct}>
+                {formatMessage(messages.addProductLabel)}
+              </AddProductButton>
+              <SearchInput
+                value={searchText}
+                onChange={this.handleInputChange}
+                placeholder={formatMessage(messages.search)}
+              />
+              <List
+                {...{ formatMessage, currentPage, orderBy, sort, searchText }}
+                onSortClick={this.handleOnSortClick}
+                onProductClick={this.handleOnProductClick}
+                onChangePage={this.handleOnChangePage}
+                interactiveHeaders={true}
+              />
+            </Container>
+          )}
+        />
+        <Route
+          path="/admin/products/details/:id"
+          render={() => (
+            <div>
+              <ProductDetailsAdmin {...{ formatMessage, history }} />
+            </div>
+          )}
+        />
+        <Route
+          path="/admin/products/form/:id"
+          render={() => (
+            <div>
+              <ProductForm {...{ formatMessage, history }} />
+            </div>
+          )}
+        />
+      </div>
+    )
   }
 }
 

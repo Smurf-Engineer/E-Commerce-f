@@ -7,254 +7,19 @@ import {
   SET_PRODUCT_DATA,
   CHANGE_VALUE,
   RESET_DATA,
-  SET_LOADING
+  SET_LOADING,
+  SET_BANNERS,
+  SET_GENDERS,
+  SET_CURRENCIES
 } from './constants'
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
-  product: {
-    shortDescription: '',
-    details: '',
-    season: '',
-    flatlock: '',
-    isTopProduct: null,
-    __typename: '',
-    binding: {
-      white: '',
-      black: '',
-      __typename: 'Binding'
-    },
-    mtl: '',
-    bumpMap: '',
-    sport_id: null,
-    product_materials: [],
-    media_files: [],
-    active: 'true',
-    name: '',
-    mpn: '',
-    related_item_tag: '',
-    materials: '',
-    category_name: '',
-    code: '',
-    relatedProducts: [],
-    colors: [],
-    yotpoAverageScore: {
-      total: 0,
-      averageScore: 0,
-      __typename: 'YotpoScore'
-    },
-    genders: [],
-    fitStyles: [],
-    retailMen: false,
-    priceRange: [
-      {
-        price: 0,
-        quantity: 'Personal',
-        abbreviation: 'aud',
-        shortName: 'AUD'
-      },
-      {
-        price: 0,
-        quantity: '2-5',
-        abbreviation: 'aud',
-        shortName: 'AUD'
-      },
-      {
-        price: 0,
-        quantity: '6-24',
-        abbreviation: 'aud',
-        shortName: 'AUD'
-      },
-      {
-        price: 0,
-        quantity: '25-49',
-        abbreviation: 'aud',
-        shortName: 'AUD'
-      },
-      {
-        price: 0,
-        quantity: '50-99',
-        abbreviation: 'aud',
-        shortName: 'AUD'
-      },
-      {
-        price: 0,
-        quantity: '100-249',
-        abbreviation: 'aud',
-        shortName: 'AUD'
-      },
-      {
-        price: 0,
-        quantity: 'Personal',
-        abbreviation: 'cad',
-        shortName: 'CAD'
-      },
-      {
-        price: 0,
-        quantity: '2-5',
-        abbreviation: 'cad',
-        shortName: 'CAD'
-      },
-      {
-        price: 0,
-        quantity: '6-24',
-        abbreviation: 'cad',
-        shortName: 'CAD'
-      },
-      {
-        price: 0,
-        quantity: '25-49',
-        abbreviation: 'cad',
-        shortName: 'CAD'
-      },
-      {
-        price: 0,
-        quantity: '50-99',
-        abbreviation: 'cad',
-        shortName: 'CAD'
-      },
-      {
-        price: 0,
-        quantity: '100-249',
-        abbreviation: 'cad',
-        shortName: 'CAD'
-      },
-      {
-        price: 0,
-        quantity: 'Personal',
-        abbreviation: 'eur',
-        shortName: 'EUR'
-      },
-      {
-        price: 0,
-        quantity: '2-5',
-        abbreviation: 'eur',
-        shortName: 'EUR'
-      },
-      {
-        price: 0,
-        quantity: '6-24',
-        abbreviation: 'eur',
-        shortName: 'EUR'
-      },
-      {
-        price: 0,
-        quantity: '25-49',
-        abbreviation: 'eur',
-        shortName: 'EUR'
-      },
-      {
-        price: 0,
-        quantity: '50-99',
-        abbreviation: 'eur',
-        shortName: 'EUR'
-      },
-      {
-        price: 0,
-        quantity: '100-249',
-        abbreviation: 'eur',
-        shortName: 'EUR'
-      },
-      {
-        price: 0,
-        quantity: 'Personal',
-        abbreviation: 'gbp',
-        shortName: 'GBP'
-      },
-      {
-        price: 0,
-        quantity: '2-5',
-        abbreviation: 'gbp',
-        shortName: 'GBP'
-      },
-      {
-        price: 0,
-        quantity: '6-24',
-        abbreviation: 'gbp',
-        shortName: 'GBP'
-      },
-      {
-        price: 0,
-        quantity: '25-49',
-        abbreviation: 'gbp',
-        shortName: 'GBP'
-      },
-      {
-        price: 0,
-        quantity: '50-99',
-        abbreviation: 'gbp',
-        shortName: 'GBP'
-      },
-      {
-        price: 0,
-        quantity: '100-249',
-        abbreviation: 'gbp',
-        shortName: 'GBP'
-      },
-      {
-        price: 0,
-        quantity: 'Personal',
-        abbreviation: 'usd',
-        shortName: 'USD'
-      },
-      {
-        price: 0,
-        quantity: '2-5',
-        abbreviation: 'usd',
-        shortName: 'USD'
-      },
-      {
-        price: 0,
-        quantity: '6-24',
-        abbreviation: 'usd',
-        shortName: 'USD'
-      },
-      {
-        price: 0,
-        quantity: '25-49',
-        abbreviation: 'usd',
-        shortName: 'USD'
-      },
-      {
-        price: 0,
-        quantity: '50-99',
-        abbreviation: 'usd',
-        shortName: 'USD'
-      },
-      {
-        price: 0,
-        quantity: '100-249',
-        abbreviation: 'usd',
-        shortName: 'USD'
-      }
-    ],
-    collections: null,
-    pictures: [],
-    design_center: true,
-    obj: '',
-    yotpoId: '',
-    bibBrace: null,
-    images: [],
-    weight: 0,
-    tags: '',
-    gender_id: null,
-    template: '',
-    type: '',
-    retailWomen: false,
-    id: 0,
-    customizable: true,
-    intendedUse: null,
-    retail_version: null,
-    sizeRange: [],
-    zipper: null,
-    description: '',
-    category_id: 0,
-    temperatures: null,
-    sports: []
-  },
+  product: {},
   loading: false,
   loadingMessage: 'Uploading...',
-  bannerMaterials: []
+  bannerMaterials: [],
+  fixed: false
 })
 
 const productFormReducer: Reducer<any> = (state = initialState, action) => {
@@ -263,27 +28,29 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       return initialState
     case SET_PRODUCT_DATA:
       return state.set('product', fromJS(action.product))
+    case SET_CURRENCIES:
+      return state.setIn(['product', 'priceRange'], action.currencies)
     case SET_LOADING:
+      return state.merge({
+        loading: action.loading,
+        loadingMessage: action.loadingMessage
+      })
+    case SET_BANNERS:
+      return state.merge({ bannerMaterials: action.banners, fixed: true })
+    case SET_GENDERS: {
+      const pictures = action.genders.map((gender: any) => ({
+        front_image: '',
+        back_image: '',
+        left_image: '',
+        right_image: '',
+        gender_id: gender.id
+      }))
       return state
-        .set('loading', action.loading)
-        .set('loadingMessage', action.loadingMessage)
-    case CHANGE_VALUE: {
-      if (action.field === 'genders') {
-        const pictures = action.value.map((gender: any) => ({
-          front_image: '',
-          back_image: '',
-          left_image: '',
-          right_image: '',
-          gender_id: gender.id
-        }))
-        return state
-          .setIn(['product', action.field], action.value)
-          .setIn(['product', 'pictures'], pictures)
-      } else if (action.field === 'files') {
-        return state.set(action.value.type, action.value.array)
-      }
-      return state.setIn(['product', action.field], action.value)
+        .setIn(['product', 'genders'], action.genders)
+        .setIn(['product', 'pictures'], pictures)
     }
+    case CHANGE_VALUE:
+      return state.setIn(['product', action.field], fromJS(action.value))
     default:
       return state
   }

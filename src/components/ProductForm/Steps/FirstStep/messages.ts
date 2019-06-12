@@ -132,5 +132,13 @@ export default defineMessages({
   genderHolder: {
     id: 'components.FirstStep.genderHolder',
     defaultMessage: `Ex. Men's`
+  },
+  weight: {
+    id: 'components.FirstStep.weight',
+    defaultMessage: `Weight`
+  },
+  weightHolder: {
+    id: 'components.FirstStep.weightHolder',
+    defaultMessage: `0.00`
   }
 })

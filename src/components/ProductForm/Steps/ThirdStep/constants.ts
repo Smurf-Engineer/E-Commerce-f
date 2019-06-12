@@ -10,3 +10,4 @@ export const quantities = [
   '50-99',
   '100-249'
 ]
+export const currencies = ['USD', 'GBP', 'EUR', 'CAD', 'AUD']
