@@ -233,7 +233,10 @@ export class FourthStep extends React.Component<Props, {}> {
   handleAddMaterial = (event: any) => {
     const { addBanner, bannerMaterials } = this.props
     const { file } = event
-    const id = Math.max.apply(Math, bannerMaterials.map(item => item.id))
+    const id = bannerMaterials.length
+      ? Math.max.apply(Math, bannerMaterials.map(item => item.id))
+      : 0
+    console.log('id:', id)
     this.getBase64(file, (base64Image: string) => {
       addBanner({
         url: base64Image,
