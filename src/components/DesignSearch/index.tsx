@@ -16,6 +16,7 @@ import { FormattedMessage, injectIntl, InjectedIntl } from 'react-intl'
 import { uploadProDesign } from './api'
 import {
   Container,
+  Content,
   Title,
   Subtitle,
   LoadErrContainer
