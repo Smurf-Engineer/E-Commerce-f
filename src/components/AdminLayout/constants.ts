@@ -14,6 +14,7 @@ export const DISCOUNTS = 'discounts'
 export const PRODUCT_CATALOG = 'productCatalog'
 export const EDIT_CONTENT = 'editContent'
 export const HOMEPAGE = 'homepage'
+export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
 export const LOGOUT_MENU = 'logout'
 
@@ -28,7 +29,7 @@ export const options = [
   },
   {
     title: EDIT_CONTENT,
-    options: [HOMEPAGE]
+    options: [HOMEPAGE, DESIGN_LAB]
   },
   {
     title: USERS,
