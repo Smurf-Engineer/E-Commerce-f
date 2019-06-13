@@ -40,6 +40,7 @@ import discountsAdmin from '../components/DiscountsAdmin/reducer'
 import homepageAdmin from '../components/HomepageAdmin/reducer'
 import productCatalogAdmin from '../components/ProductCatalog/reducer'
 import productDetailAdmin from '../components/ProductDetailsAdmin/reducer'
+import productForm from '../components/ProductForm/reducer'
 import usersAdmin from '../components/UsersAdmin/reducer'
 import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
@@ -72,6 +73,7 @@ export interface ReducersObject {
   fitWidget: any
   designs: any
   productDetail: any
+  productForm: any
   product: any
   productCatalog: any
   designCenter: any
@@ -183,6 +185,7 @@ const rootReducer = combineReducers({
   subscriptionTest,
   fitWidget,
   designs,
+  productForm,
   productDetail,
   productCatalog,
   productCatalogAdmin,

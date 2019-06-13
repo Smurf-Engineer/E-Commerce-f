@@ -78,7 +78,7 @@ const productCatalogReducer: Reducer<any> = (state = initialState, action) => {
         openDeleteModal: false,
         currentDesignId: '',
         currentDesignName: '',
-        modalLoading: false,
+        modalLoading: false
       }
       return state.set('deleteModal', deleteModal)
     }

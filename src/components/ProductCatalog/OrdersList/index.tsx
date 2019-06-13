@@ -11,6 +11,7 @@ import HeaderTable from '../HeaderOrdersTable'
 import ItemOrder from '../ItemOrder'
 import EmptyContainer from '../../EmptyContainer'
 import { Product, sorts } from '../../../types/common'
+import jakrooLogo from '../../../assets/Jackroologo.svg'
 import withError from '../../WithError'
 import withLoading from '../../WithLoading'
 import { getProductsQuery, changeActiveProduct } from './data'
@@ -86,15 +87,16 @@ const OrdersList = ({
   )
   const orderItems = orders.map(
     (
-      { id, images, active, name, mpn, code, isCustom }: Product,
+      { id, images, active, name, mpn, code, isCustom, obj, mtl }: Product,
       index: number
     ) => {
       return (
         <ItemOrder
           key={index}
-          active={active === 'true'}
+          active={active}
           onCheck={handleCheck}
-          image={get(images[0], 'front', '')}
+          disabled={!obj && !mtl}
+          image={get(images[0], 'front', jakrooLogo)}
           productType={formatMessage(
             isCustom ? messages.custom : messages.inline
           )}
