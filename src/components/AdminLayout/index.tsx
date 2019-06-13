@@ -22,6 +22,7 @@ import {
   DISCOUNTS,
   PRODUCT_CATALOG,
   USERS,
+  HOMEPAGE,
   DESIGN_SEARCH
 } from './constants'
 import {
@@ -100,6 +101,9 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case USERS:
         history.push('/admin/users')
+        break
+      case HOMEPAGE:
+        history.push('/admin/homepage')
         break
       default:
         break

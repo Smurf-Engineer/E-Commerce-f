@@ -36,7 +36,9 @@ import {
   PRODUCT_URL,
   USERS,
   USERS_URL,
-  DESIGN_URL
+  DESIGN_URL,
+  HOMEPAGE_URL,
+  HOMEPAGE
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -111,6 +113,9 @@ export class Admin extends React.Component<Props, {}> {
         case USERS_URL:
           key = USERS
           break
+        case HOMEPAGE_URL:
+          key = HOMEPAGE
+          break
         default:
           break
       }
@@ -159,6 +164,7 @@ export class Admin extends React.Component<Props, {}> {
         </Content>
       )
     }
+
     return (
       <AdminLayout {...{ history, intl, screen }} onLogout={this.onLogout}>
         <Route
