@@ -74,7 +74,8 @@ import {
   OPEN_RESET_PLACEHOLDER_MODAL,
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
-  ON_OPEN_COLOR_CHART_FORM
+  ON_OPEN_COLOR_CHART_FORM,
+  SET_DATA_LAB_INFO
 } from './constants'
 import { Reducer, Change } from '../../types/common'
 import { DEFAULT_FONT } from '../../constants'
@@ -161,7 +162,9 @@ export const initialState = fromJS({
   selectedTab: CustomizeTabs.ColorsTab,
   colorChartSending: false,
   colorChartModalOpen: false,
-  colorChartModalFormOpen: false
+  colorChartModalFormOpen: false,
+  deliveryDays: 10,
+  tutorialPlaylist: ''
 })
 
 const designCenterReducer: Reducer<any> = (state = initialState, action) => {
@@ -975,6 +978,10 @@ const designCenterReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('colorChartModalOpen', action.open)
     case ON_OPEN_COLOR_CHART_FORM:
       return state.set('colorChartModalFormOpen', action.open)
+    case SET_DATA_LAB_INFO: {
+      const { deliveryDays, tutorialPlaylist } = action.data
+      return state.merge({ deliveryDays, tutorialPlaylist })
+    }
     default:
       return state
   }

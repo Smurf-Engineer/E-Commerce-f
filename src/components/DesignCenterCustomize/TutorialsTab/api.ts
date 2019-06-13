@@ -4,12 +4,15 @@
 
 import config from '../../../config/index'
 const baseURL = 'https://www.googleapis.com/youtube/v3/playlistItems'
-export const getVideos = async (setVideos: (videos: object[]) => void) => {
+export const getVideos = async (
+  tutorialPlaylist: string,
+  setVideos: (videos: object[]) => void
+) => {
   try {
     const response = await fetch(
-      `${baseURL}?part=snippet%2CcontentDetails&playlistId=${
-        config.youtubeId
-      }&key=${config.youtubeKey}`,
+      `${baseURL}?part=snippet%2CcontentDetails&playlistId=${tutorialPlaylist}&key=${
+        config.youtubeKey
+      }`,
       {
         method: 'GET'
       }

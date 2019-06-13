@@ -33,6 +33,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.homepage',
     defaultMessage: 'Homepage'
   },
+  designLab: {
+    id: 'screens.AdminLayout.designLab',
+    defaultMessage: 'Design Lab'
+  },
   users: {
     id: 'screens.AdminLayout.users',
     defaultMessage: 'USERS'
