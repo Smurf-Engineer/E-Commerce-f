@@ -21,12 +21,19 @@ import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
+import HomepageAdmin from '../../components/HomepageAdmin'
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
 import * as adminActions from './actions'
 import messages from './messages'
 import { mailLogin } from './data'
-import { ORDER_STATUS, DISCOUNTS, PRODUCT_CATALOG, USERS } from './constants'
+import {
+  ORDER_STATUS,
+  DISCOUNTS,
+  PRODUCT_CATALOG,
+  HOMEPAGE,
+  USERS
+} from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
 import {
@@ -145,6 +152,9 @@ export class Admin extends React.Component<Props, {}> {
         break
       case PRODUCT_CATALOG:
         currentScreen = <ProductCatalog {...{ history, formatMessage }} />
+        break
+      case HOMEPAGE:
+        currentScreen = <HomepageAdmin {...{ history, formatMessage }} />
         break
       case USERS:
         currentScreen = <UsersAdmin {...{ history, formatMessage }} />
