@@ -83,7 +83,6 @@ export class Home extends React.Component<Props, {}> {
     try {
       const response = await query({
         query: getHomepageInfo,
-        variables: {},
         fetchPolicy: 'network-only'
       })
       dispatch(setHomepageInfoAction(response.data.getHomepageContent))

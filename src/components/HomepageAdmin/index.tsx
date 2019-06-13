@@ -57,7 +57,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setLoadersAction(Sections.MAIN_CONTAINER, true)
       const response = await query({
         query: getHomepageInfo,
-        variables: {},
         fetchPolicy: 'network-only'
       })
 
