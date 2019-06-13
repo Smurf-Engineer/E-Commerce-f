@@ -46,6 +46,7 @@ import overview from '../components/Overview/reducer'
 import customProductDetail from '../screens/CustomProductDetail/reducer'
 import fitAndSizing from '../screens/FitAndSizing/reducer'
 import designSearch from '../screens/DesignSearch/reducer'
+import designSearchAdmin from '../components/DesignSearch/reducer'
 import admin from '../screens/Admin/reducer'
 import adminLayout from '../components/AdminLayout/reducer'
 import { Reducer } from '../types/common'
@@ -66,6 +67,7 @@ export interface ReducersObject {
   shoppingCartPage: any
   storeFront: any
   createStore: any
+  designSearchAdmin: any
   searchTeamstores: any
   teamstoreProductPage: any
   account: any
@@ -185,6 +187,7 @@ const rootReducer = combineReducers({
   subscriptionTest,
   fitWidget,
   designs,
+  designSearchAdmin,
   productForm,
   productDetail,
   productCatalog,

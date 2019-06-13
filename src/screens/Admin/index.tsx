@@ -21,6 +21,7 @@ import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
+import DesignSearchAdmin from '../../components/DesignSearch'
 
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
@@ -187,8 +188,8 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <UsersAdmin {...{ history, formatMessage }} />}
         />
         <Route
-          path="/admin/users"
-          render={() => <UsersAdmin {...{ history, formatMessage }} />}
+          path="/admin/design-search"
+          render={() => <DesignSearchAdmin {...{ history, formatMessage }} />}
         />
         <Route
           path="/admin/homepage"
