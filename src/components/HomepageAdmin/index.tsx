@@ -2,7 +2,7 @@
  * HomepageAdminActions Component - Created by eduardoquintero on 30/05/19.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
 import {
@@ -24,6 +24,7 @@ import messages from './messages'
 interface Props {
   history: any
   desktopImage: string
+  client: any
   mainHeader: any
   mainHeaderLoading: any
   secondaryHeaderLoading: any
@@ -31,7 +32,6 @@ interface Props {
   dispatch: any
   secondaryHeader: any
   formatMessage: (messageDescriptor: any) => string
-  homepageInfo: () => Promise<any>
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
   setLoadersAction: (section: string, loading: boolean) => void
@@ -48,10 +48,18 @@ interface Props {
 
 class HomepageAdmin extends React.Component<Props, {}> {
   async componentDidMount() {
-    const { homepageInfo, setLoadersAction, setHomepageInfoAction } = this.props
+    const {
+      client: { query },
+      setLoadersAction,
+      setHomepageInfoAction
+    } = this.props
     try {
       setLoadersAction(Sections.MAIN_CONTAINER, true)
-      const response = await homepageInfo()
+      const response = await query({
+        query: getHomepageInfo,
+        variables: {},
+        fetchPolicy: 'network-only'
+      })
 
       setHomepageInfoAction(response.data.getHomepageContent)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -170,7 +178,7 @@ const mapStateToProps = (state: any) => state.get('homepageAdmin').toJS()
 const mapDispatchToProps = { ...HomepageAdminActions, homepageAdminApiActions }
 
 const HomepageAdminEnhance = compose(
-  getHomepageInfo,
+  withApollo,
   setMainHeaderMutation,
   setSecondaryHeaderMutation,
   connect(

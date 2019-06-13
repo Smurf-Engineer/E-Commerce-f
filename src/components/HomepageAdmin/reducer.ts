@@ -52,13 +52,19 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         action.loading
       )
     case SET_HOMEPAGE_INFO: {
-      return state
-        .set('secondaryHeader', List.of(...fromJS(action.data.homepageImages)))
-        .set(
+      const {
+        homepageImages,
+        headerImageLink,
+        headerImage,
+        headerImageMobile
+      } = action.data
+      return state.withMutations((map: any) => {
+        map.set('secondaryHeader', List.of(...fromJS(homepageImages)))
+        map.set(
           'secondaryHeaderLoading',
           List.of(
             ...fill(
-              Array(action.data.homepageImages.length),
+              Array(homepageImages.length),
               fromJS({
                 [ImageTypes.DESKTOP]: false,
                 [ImageTypes.MOBILE]: false
@@ -66,37 +72,30 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
-        .setIn(['mainHeader', ImageTypes.DESKTOP], action.data.headerImage)
-        .setIn(['mainHeader', ImageTypes.MOBILE], action.data.headerImageMobile)
-        .setIn(['mainHeader', 'url'], action.data.headerImageLink)
+        map.setIn(['mainHeader', ImageTypes.DESKTOP], headerImage)
+        map.setIn(['mainHeader', ImageTypes.MOBILE], headerImageMobile)
+        map.setIn(['mainHeader', 'url'], headerImageLink)
+        return map
+      })
     }
     case SET_URL:
       return state.setIn(['mainHeader', 'url'], action.value)
     case SET_LOADERS:
       return state.setIn(['loaders', action.section], action.loading)
     case SET_URL_IMAGE_LIST: {
-      const currentImage = state.getIn(['secondaryHeader', action.index]).toJS()
-      currentImage[action.imageType] = action.url
       return state.setIn(
-        ['secondaryHeader', action.index],
-        fromJS(currentImage)
+        ['secondaryHeader', action.index, action.imageType],
+        action.url
       )
     }
     case SET_LOADING_LIST: {
-      const currentLoader = state
-        .getIn(['secondaryHeaderLoading', action.index])
-        .toJS()
-      currentLoader[action.imageType] = action.loading
       return state.setIn(
-        ['secondaryHeaderLoading', action.index],
-        fromJS(currentLoader)
+        ['secondaryHeaderLoading', action.index, action.imageType],
+        action.loading
       )
     }
-    case SET_URL_LIST: {
-      const currentUrl = state.getIn(['secondaryHeader', action.index]).toJS()
-      currentUrl.url = action.value
-      return state.setIn(['secondaryHeader', action.index], fromJS(currentUrl))
-    }
+    case SET_URL_LIST:
+      return state.setIn(['secondaryHeader', action.index, 'url'], action.value)
     default:
       return state
   }

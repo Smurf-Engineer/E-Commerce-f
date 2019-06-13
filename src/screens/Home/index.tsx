@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
 import { getHomepageInfo } from './data'
@@ -13,6 +13,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import * as homeActions from './actions'
+import { setHomepageInfoAction } from './actions'
 import Layout from '../../components/MainLayout'
 import {
   Container,
@@ -47,6 +48,7 @@ interface Props extends RouteComponentProps<any> {
   data: Data
   someKey?: string
   productId: number
+  client: any
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -61,8 +63,6 @@ interface Props extends RouteComponentProps<any> {
   headerImageMobile: string
   headerImage: string
   headerImageLink: string
-  homepageInfo: () => Promise<any>
-  setHomepageInfoAction: (data: any) => void
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -77,13 +77,19 @@ export class Home extends React.Component<Props, {}> {
       dispatch,
       match: { params },
       location: { search },
-      homepageInfo
+      client: { query }
     } = this.props
-    const { setHomepageInfoAction } = homeActions
     const queryParams = queryString.parse(search)
-    const response = await homepageInfo()
-
-    dispatch(setHomepageInfoAction(response.data.getHomepageContent))
+    try {
+      const response = await query({
+        query: getHomepageInfo,
+        variables: {},
+        fetchPolicy: 'network-only'
+      })
+      dispatch(setHomepageInfoAction(response.data.getHomepageContent))
+    } catch (e) {
+      console.error(e)
+    }
     if (params && params.region && !isEmpty(queryParams)) {
       dispatch(
         setRegionAction({
@@ -165,14 +171,14 @@ export class Home extends React.Component<Props, {}> {
                 if (matches) {
                   return (
                     <SearchBackground
-                      src={`${headerImageMobile}`}
+                      src={headerImageMobile}
                       onClick={this.handleGoTo}
                     />
                   )
                 }
                 return (
                   <SearchBackground
-                    src={`${headerImage}`}
+                    src={headerImage}
                     onClick={this.handleGoTo}
                   />
                 )
@@ -241,8 +247,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const HomeEnhance = compose(
-  getHomepageInfo,
   injectIntl,
+  withApollo,
   connect(
     mapStateToProps,
     mapDispatchToProps

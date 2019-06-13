@@ -1,24 +1,21 @@
 import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 
-export const getHomepageInfo = graphql(
-  gql`
-    mutation getHomepageContent {
-      getHomepageContent {
-        headerImageMobile: header_image_mobile
-        headerImage: header_image
-        headerImageLink: header_image_link
-        homepageImages {
-          id
-          desktopImage: image
-          mobileImage: image_mobile
-          url: link
-        }
+export const getHomepageInfo = gql`
+  query getHomepageContent {
+    getHomepageContent {
+      headerImageMobile: header_image_mobile
+      headerImage: header_image
+      headerImageLink: header_image_link
+      homepageImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
       }
     }
-  `,
-  { name: 'homepageInfo' }
-)
+  }
+`
 
 export const setMainHeaderMutation = graphql(
   gql`
