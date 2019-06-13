@@ -58,6 +58,18 @@ interface Props {
   getDataProduct: (variables: {}) => Promise<any>
   getExtraDataAction: () => Promise<any>
   setValue: (field: string, value: any) => void
+  removeBanner: (index: number) => void
+  addBanner: (item: any) => void
+  addPicture: (index: number, item: any) => void
+  setBanner: (index: number, field: string, value: any) => void
+  removeFile: (array: string, index: number) => void
+  addFile: (array: string, item: any) => void
+  setFileField: (
+    array: string,
+    index: number,
+    field: string,
+    value: any
+  ) => void
   setBannerActions: (banners: any) => void
   setGenderActions: (genders: any) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
@@ -106,6 +118,13 @@ export class ProductForm extends React.Component<Props, {}> {
       bannerMaterials,
       setCheck,
       setBannerActions,
+      removeFile,
+      addFile,
+      addPicture,
+      removeBanner,
+      addBanner,
+      setBanner,
+      setFileField,
       setGenderActions,
       loadingMessage,
       product,
@@ -184,6 +203,13 @@ export class ProductForm extends React.Component<Props, {}> {
         {...{
           productMaterials,
           mediaFiles,
+          removeFile,
+          addFile,
+          setFileField,
+          removeBanner,
+          addBanner,
+          addPicture,
+          setBanner,
           customizable,
           setCheck,
           pictures,
@@ -197,7 +223,7 @@ export class ProductForm extends React.Component<Props, {}> {
     ]
     return (
       <Container>
-        {loading && (
+        {loadingMessage && (
           <FullLoader>
             <Spin size="large" />
             <LoadingMessage>{loadingMessage}</LoadingMessage>
@@ -209,7 +235,7 @@ export class ProductForm extends React.Component<Props, {}> {
             <FormattedMessage {...messages.backToProducts} />
           </BackText>
         </BackLabel>
-        {loading ? (
+        {loading && !loadingMessage ? (
           <Loader>
             <Spin size="large" />
           </Loader>
@@ -266,13 +292,14 @@ export class ProductForm extends React.Component<Props, {}> {
       upsertProductAction,
       uploadFilesAction
     } = this.props
-    const success = await uploadFilesAction(
-      formatMessage,
-      productImages || [],
-      bannerMaterials || [],
-      mediaFiles || []
-    )
-    if (success) {
+    try {
+      await uploadFilesAction(
+        formatMessage,
+        productImages || [],
+        bannerMaterials || [],
+        mediaFiles || []
+      )
+
       const { product, history } = this.props
       const { sports, productMaterials, sizeRange, fitStyles, colors } = product
       const sportsProduct = sports
@@ -331,23 +358,19 @@ export class ProductForm extends React.Component<Props, {}> {
         colors: colorsDet,
         productMaterials: productMaterialsDet
       }
-      const response = await upsertProductAction({
+      await upsertProductAction({
         variables: { body: productToSave, bannerMaterials }
       })
-      const id = get(response, 'data.productResult.id', '')
-      if (id) {
-        if (!onlySave) {
-          const code = get(productToSave, 'code', '')
-          if (code) {
-            history.push(`/publishing-tool?code=${code}`)
-          }
-        } else {
-          history.push('/admin/products')
+
+      if (!onlySave) {
+        const code = get(productToSave, 'code', '')
+        if (code) {
+          history.push(`/publishing-tool?code=${code}`)
         }
       } else {
-        message.error(formatMessage(messages.errorUpdating))
+        history.push('/admin/products')
       }
-    } else {
+    } catch (error) {
       message.error(formatMessage(messages.errorUploading))
     }
   }

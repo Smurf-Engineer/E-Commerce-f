@@ -11,7 +11,14 @@ import {
   SET_GENDERS,
   SET_CURRENCIES,
   SET_CHECK,
-  REMOVE_MATERIAL
+  REMOVE_MATERIAL,
+  ADD_MATERIAL,
+  SET_FILE_FIELD,
+  REMOVE_BANNER,
+  ADD_BANNER,
+  SET_BANNER,
+  ADD_PICTURE,
+  SAVED_PRODUCT
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
 
@@ -28,6 +35,19 @@ export const setValue = (field: string, value: any): AnyAction => ({
   type: CHANGE_VALUE,
   field,
   value
+})
+
+export const savedProduct = (
+  productImages: any[],
+  mediaFiles: any[],
+  bannerMaterials: any[],
+  loadingMessage: string
+): AnyAction => ({
+  type: SAVED_PRODUCT,
+  productImages,
+  mediaFiles,
+  bannerMaterials,
+  loadingMessage
 })
 
 export const setBannerActions = (banners: any): AnyAction => ({
@@ -51,11 +71,57 @@ export const setCheck = (
   checked
 })
 
-export const removeMaterial = (id: number, checked: boolean): AnyAction => ({
+export const removeFile = (array: string, index: number): AnyAction => ({
   type: REMOVE_MATERIAL,
-  id,
-  checked
+  array,
+  index
 })
+
+export const addFile = (array: string, item: any): AnyAction => ({
+  type: ADD_MATERIAL,
+  array,
+  item
+})
+
+export const setFileField = (
+  array: string,
+  index: number,
+  field: string,
+  value: any
+): AnyAction => ({
+  type: SET_FILE_FIELD,
+  array,
+  index,
+  field,
+  value
+})
+export const addPicture = (index: number, item: any): AnyAction => ({
+  type: ADD_PICTURE,
+  index,
+  item
+})
+
+export const removeBanner = (index: number): AnyAction => ({
+  type: REMOVE_BANNER,
+  index
+})
+
+export const addBanner = (item: any): AnyAction => ({
+  type: ADD_BANNER,
+  item
+})
+
+export const setBanner = (
+  index: number,
+  field: string,
+  value: any
+): AnyAction => ({
+  type: SET_BANNER,
+  index,
+  field,
+  value
+})
+
 export const setCurrencies = (currencies: any): AnyAction => ({
   type: SET_CURRENCIES,
   currencies

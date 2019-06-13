@@ -2,7 +2,7 @@
  * ProductForm Reducer - Created by Apodaca on 16/05/19.
  */
 
-import { fromJS } from 'immutable'
+import { fromJS, List } from 'immutable'
 import {
   SET_PRODUCT_DATA,
   CHANGE_VALUE,
@@ -11,7 +11,15 @@ import {
   SET_BANNERS,
   SET_CHECK,
   SET_GENDERS,
-  SET_CURRENCIES
+  SET_CURRENCIES,
+  REMOVE_MATERIAL,
+  SET_FILE_FIELD,
+  ADD_MATERIAL,
+  ADD_BANNER,
+  SET_BANNER,
+  SAVED_PRODUCT,
+  REMOVE_BANNER,
+  ADD_PICTURE
 } from './constants'
 import { getFileExtension, getFileName } from '../../utils/utilsFiles'
 import { Reducer } from '../../types/common'
@@ -20,8 +28,8 @@ import omitDeep from 'omit-deep'
 
 export const initialState = fromJS({
   product: {},
-  loading: false,
-  loadingMessage: 'Uploading...',
+  loading: true,
+  loadingMessage: '',
   bannerMaterials: [],
   fixed: false,
   dataExtra: {}
@@ -69,41 +77,46 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
           })
         })
       }
-      const sportsProduct = sports
-        ? sports.reduce((obj, item) => {
-            obj[item.id] = true
-            return obj
-            // tslint:disable-next-line: align
-          }, {})
-        : {}
-      const productMaterialsDet = productMaterials
-        ? productMaterials.reduce((obj, item) => {
-            obj[item.id] = true
-            return obj
-            // tslint:disable-next-line: align
-          }, {})
-        : {}
-      const sizeRangeDet = sizeRange
-        ? sizeRange.reduce((obj, item) => {
-            obj[item.id] = true
-            return obj
-            // tslint:disable-next-line: align
-          }, {})
-        : {}
-      const fitStylesDet = fitStyles
-        ? fitStyles.reduce((obj, item) => {
-            obj[item.id] = true
-            return obj
-            // tslint:disable-next-line: align
-          }, {})
-        : {}
-      const colorsDet = colors
-        ? colors.reduce((obj, item) => {
-            obj[item.id] = true
-            return obj
-            // tslint:disable-next-line: align
-          }, {})
-        : {}
+      const sportsProduct =
+        sports && sports.length
+          ? sports.reduce((obj, item) => {
+              obj[item.id] = true
+              return obj
+              // tslint:disable-next-line: align
+            }, {})
+          : {}
+      const productMaterialsDet =
+        productMaterials && productMaterials.length
+          ? productMaterials.reduce((obj, item) => {
+              obj[item.id] = true
+              return obj
+              // tslint:disable-next-line: align
+            }, {})
+          : {}
+      const sizeRangeDet =
+        sizeRange && sizeRange.length
+          ? sizeRange.reduce((obj, item) => {
+              obj[item.id] = true
+              return obj
+              // tslint:disable-next-line: align
+            }, {})
+          : {}
+      const fitStylesDet =
+        fitStyles && fitStyles.length
+          ? fitStyles.reduce((obj, item) => {
+              obj[item.id] = true
+              return obj
+              // tslint:disable-next-line: align
+            }, {})
+          : {}
+      const colorsDet =
+        colors && colors.length
+          ? colors.reduce((obj, item) => {
+              obj[item.id] = true
+              return obj
+              // tslint:disable-next-line: align
+            }, {})
+          : {}
       const detailedProduct = {
         ...product,
         sports: sportsProduct,
@@ -120,7 +133,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       return state.merge({
         product: detailedProduct,
         dataExtra: extraData,
-        bannerMaterials: detailedBanners
+        bannerMaterials: detailedBanners,
+        loading: false
       })
     }
     case SET_CURRENCIES:
@@ -135,6 +149,52 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         ['product', action.selected, action.id],
         action.checked
       )
+    case REMOVE_MATERIAL: {
+      const { index, array } = action
+      const oldList = state.getIn(['product', array])
+      return state.setIn(['product', array], oldList.remove(index))
+    }
+    case ADD_MATERIAL: {
+      const { item, array } = action
+      const oldList = state.getIn(['product', array])
+      return state.setIn(['product', array], oldList.push(item))
+    }
+    case SET_FILE_FIELD: {
+      const { array, index, field, value } = action
+      return state.setIn(['product', array, index, field], value)
+    }
+    case ADD_PICTURE: {
+      const { index, item } = action
+      return state.setIn(['product', 'pictures', index], fromJS(item))
+    }
+    case ADD_BANNER: {
+      const { item } = action
+      const oldList = state.get('bannerMaterials')
+      return state.set('bannerMaterials', oldList.push(item))
+    }
+    case SET_BANNER: {
+      const { index, field, value } = action
+      return state.setIn(['bannerMaterials', index, field], value)
+    }
+    case REMOVE_BANNER: {
+      const { index } = action
+      const oldList = state.get('bannerMaterials')
+      return state.set('bannerMaterials', oldList.remove(index))
+    }
+    case SAVED_PRODUCT: {
+      const {
+        bannerMaterials,
+        mediaFiles,
+        productImages,
+        loadingMessage
+      } = action
+      return state.withMutations((map: any) => {
+        map.setIn(['product', 'mediaFiles'], mediaFiles)
+        map.setIn(['product', 'pictures'], productImages)
+        map.merge({ bannerMaterials, loadingMessage })
+        return map
+      })
+    }
     case SET_BANNERS:
       return state.merge({ bannerMaterials: action.banners, fixed: true })
     case SET_GENDERS: {
@@ -145,9 +205,11 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         right_image: '',
         gender_id: gender.id
       }))
-      return state
-        .setIn(['product', 'genders'], action.genders)
-        .setIn(['product', 'pictures'], pictures)
+      return state.withMutations((map: any) => {
+        map.setIn(['product', 'genders'], action.genders)
+        map.setIn(['product', 'pictures'], List.of(...pictures))
+        return map
+      })
     }
     case CHANGE_VALUE:
       return state.setIn(['product', action.field], fromJS(action.value))

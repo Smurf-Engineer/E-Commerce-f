@@ -10,7 +10,6 @@ import {
   RowInput,
   CheckBox,
   Label,
-  CheckGroup,
   ColorIcon,
   InputDiv
 } from './styledComponents'
@@ -34,7 +33,7 @@ export class SecondStep extends React.Component<Props, {}> {
   render() {
     const { sizes, product, fitStyles, colors } = this.props
     const {
-      sizeRange,
+      sizeRange: sizesSelected,
       fitStyles: fitStylesProduct,
       colors: productColors,
       customizable
@@ -51,10 +50,10 @@ export class SecondStep extends React.Component<Props, {}> {
             </Label>
             {sizes.map((sizeItem: ItemDetailType, index) => (
               <CheckBox
-                key={index}
-                name={sizeItem.id}
-                checked={sizeRange[sizeItem.id]}
                 onChange={this.handleCheckChange}
+                key={index}
+                name={sizeItem.id.toString()}
+                checked={sizesSelected[sizeItem.id]}
               >
                 {sizeItem.name}
               </CheckBox>
@@ -70,9 +69,9 @@ export class SecondStep extends React.Component<Props, {}> {
             {fitStyles.map((style: FitStyle, index) => (
               <CheckBox
                 key={index}
-                name={style.id}
-                onChange={this.handleCheckStyle}
+                name={style.id.toString()}
                 checked={fitStylesProduct[style.id]}
+                onChange={this.handleCheckStyle}
               >
                 {style.name}
               </CheckBox>
@@ -89,9 +88,9 @@ export class SecondStep extends React.Component<Props, {}> {
               {colors.map((color: ProductColors, index) => (
                 <CheckBox
                   key={index}
-                  name={color.id}
-                  onChange={this.handleChangeColor}
+                  name={color.id.toString()}
                   checked={productColors[color.id]}
+                  onChange={this.handleChangeColor}
                 >
                   <ColorIcon src={color.image} />
                   {color.name}
@@ -106,15 +105,15 @@ export class SecondStep extends React.Component<Props, {}> {
   }
   handleCheckChange = ({ target: { name, checked } }: any) => {
     const { setCheck } = this.props
-    setCheck('sizeRange', parseInt(name, 10), checked)
+    setCheck('sizeRange', name, checked)
   }
   handleCheckStyle = ({ target: { name, checked } }: any) => {
     const { setCheck } = this.props
-    setCheck('fitStyles', parseInt(name, 10), checked)
+    setCheck('fitStyles', name, checked)
   }
   handleChangeColor = ({ target: { name, checked } }: any) => {
     const { setCheck } = this.props
-    setCheck('colors', parseInt(name, 10), checked)
+    setCheck('colors', name, checked)
   }
 }
 

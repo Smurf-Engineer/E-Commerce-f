@@ -10,7 +10,6 @@ import {
   RowInput,
   CheckBox,
   Label,
-  CheckGroup,
   InlineLabel,
   SwitchInput,
   RadioButton,
@@ -356,7 +355,7 @@ export class FirstStep extends React.Component<Props, {}> {
   }
   handleCheckChange = ({ target: { name, checked } }: any) => {
     const { setCheck } = this.props
-    setCheck('sports', parseInt(name, 10), checked)
+    setCheck('sports', name, checked)
   }
   handleGenderChange = (ids: any[]) => {
     const { setGenderActions, genders } = this.props

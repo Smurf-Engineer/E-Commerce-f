@@ -35,6 +35,18 @@ interface Props {
   pictures: any[]
   customizable: any[]
   setBannerActions: (banners: any) => void
+  addPicture: (index: number, item: any) => void
+  removeBanner: (index: number) => void
+  addBanner: (item: any) => void
+  setBanner: (index: number, field: string, value: any) => void
+  removeFile: (array: string, index: number) => void
+  addFile: (array: string, item: any) => void
+  setFileField: (
+    array: string,
+    index: number,
+    field: string,
+    value: any
+  ) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   bannerMaterials: any[]
   setValue: (field: string, value: any) => void
@@ -205,48 +217,36 @@ export class FourthStep extends React.Component<Props, {}> {
       target: { name, checked }
     } = event
     const { setCheck } = this.props
-    const id = parseInt(name, 10)
-    setCheck('productMaterials', id, checked)
+    setCheck('productMaterials', name, checked)
   }
 
   handleRemoveMaterial = (index: number) => () => {
-    const {
-      setValue,
-      setBannerActions,
-      bannerMaterials,
-      productMaterials
-    } = this.props
+    const { removeBanner, setBanner, bannerMaterials, setCheck } = this.props
+    setCheck('productMaterials', bannerMaterials[index].id, false)
     if (bannerMaterials[index].toUpload) {
-      bannerMaterials.splice(index, 1)
+      removeBanner(index)
     } else {
-      bannerMaterials[index].active = false
+      setBanner(index, 'active', false)
     }
-    const indextoRemove = productMaterials.find(
-      (item: any) => item.id === bannerMaterials[index].id
-    )
-    productMaterials.splice(indextoRemove, 1)
-    setValue('productMaterials', productMaterials)
-    setBannerActions(bannerMaterials)
   }
 
   handleAddMaterial = (event: any) => {
-    const { setBannerActions, bannerMaterials } = this.props
+    const { addBanner, bannerMaterials } = this.props
     const { file } = event
+    const id = Math.max.apply(Math, bannerMaterials.map(item => item.id))
     this.getBase64(file, (base64Image: string) => {
-      bannerMaterials.push({
+      addBanner({
         url: base64Image,
         active: true,
-        id: bannerMaterials.length + 1,
+        id: id + 1,
         toUpload: file
       })
-      setBannerActions(bannerMaterials)
     })
   }
 
   removeMediaFile = (index: number) => () => {
-    const { setValue, mediaFiles } = this.props
-    mediaFiles.splice(index, 1)
-    setValue('mediaFiles', mediaFiles)
+    const { removeFile } = this.props
+    removeFile('mediaFiles', index)
   }
 
   beforeUpload = (file: any) => {
@@ -276,33 +276,31 @@ export class FourthStep extends React.Component<Props, {}> {
   }
 
   handleSetMedia = (event: any) => {
-    const { setValue, mediaFiles } = this.props
+    const { addFile, mediaFiles } = this.props
     const { file } = event
     if (file.type === 'video/mp4') {
-      mediaFiles.push({
+      addFile('mediaFiles', {
         url: videoPlaceHolder,
         toUpload: file,
         id: mediaFiles.length + 1,
         name: getFileName(file.name),
         extension: '.mp4'
       })
-      setValue('mediaFiles', mediaFiles)
     } else {
       this.getBase64(file, (base64Image: string) => {
-        mediaFiles.push({
+        addFile('mediaFiles', {
           url: base64Image,
           toUpload: file,
           id: mediaFiles.length + 1,
           name: getFileName(file.name),
           extension: getFileExtension(file.name)
         })
-        setValue('mediaFiles', mediaFiles)
       })
     }
   }
 
   handleSetFile = (event: any) => {
-    const { setValue, pictures: productImages } = this.props
+    const { addPicture, pictures: productImages } = this.props
     const { file } = event
     const parameters = event.filename.split('@')
     const genderId = parameters[0]
@@ -311,12 +309,13 @@ export class FourthStep extends React.Component<Props, {}> {
       (item: any) => item.gender_id.toString() === genderId
     )
     this.getBase64(file, (base64Image: string) => {
-      productImages[index][name] = base64Image
-      if (!productImages[index].toUpload) {
-        productImages[index].toUpload = {}
+      const item = productImages[index]
+      item[name] = base64Image
+      if (!item.toUpload) {
+        item.toUpload = {}
       }
-      productImages[index].toUpload[name] = file
-      setValue('pictures', productImages)
+      item.toUpload[name] = file
+      addPicture(index, item)
     })
   }
 }

@@ -4,7 +4,7 @@
 import message from 'antd/lib/message'
 import messages from './messages'
 import config from '../../config/index'
-import { setValue, setUploadingAction, setBannerActions } from './actions'
+import { setUploadingAction, savedProduct } from './actions'
 
 export const uploadFilesAction = (
   formatMessage: (messageDescriptor: any) => string,
@@ -81,10 +81,14 @@ export const uploadFilesAction = (
           productImages[index].toUpload = false
         }
       })
-      dispatch(setValue('pictures', productImages))
-      dispatch(setValue('mediaFiles', mediaFiles))
-      dispatch(setBannerActions(bannerMaterials))
-      dispatch(setUploadingAction(true, formatMessage(messages.savingProduct)))
+      dispatch(
+        savedProduct(
+          productImages,
+          mediaFiles,
+          bannerMaterials,
+          formatMessage(messages.savingProduct)
+        )
+      )
       return true
     } catch (e) {
       dispatch(setUploadingAction(false, ''))
