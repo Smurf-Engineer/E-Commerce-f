@@ -77,9 +77,9 @@ class ProductTable extends React.PureComponent<Props, {}> {
       const image = get(product, 'images[0].front')
       const code = get(product, 'code')
       const mpn = get(product, 'mpn')
+      const productType = get(product, 'custom') ? 'Custom' : 'Inline'
       const description =
         get(product, 'shortDescription', false) || get(product, 'description')
-      const type = get(product, 'type')
       return (
         <Product
           {...{
@@ -94,7 +94,7 @@ class ProductTable extends React.PureComponent<Props, {}> {
             formatMessage,
             code,
             mpn,
-            type
+            type: productType
           }}
           key={index}
           moveRow={this.moveRow}

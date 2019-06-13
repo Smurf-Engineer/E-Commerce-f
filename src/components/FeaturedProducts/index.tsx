@@ -35,13 +35,13 @@ interface Props {
 const arrowLeft = <Arrow src={leftArrow} />
 const arrowRight = <Arrow src={rightArrow} />
 
+const defaultSlideToShow = 4
+
 const settings = {
   dots: false,
   infinite: true,
   speed: 800,
   autoplay: false,
-  slidesToShow: 4,
-  slidesToScroll: 4,
   initialSlide: 0,
   arrows: true,
   centerMode: true,
@@ -139,7 +139,21 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       <Container>
         <Title>{formatMessage(messages.title)}</Title>
         <CarouselContent>
-          <Caroussel {...settings}>{featuredList}</Caroussel>
+          <Caroussel
+            {...settings}
+            slidesToShow={
+              featuredProducts.length - 1 < defaultSlideToShow
+                ? featuredProducts.length - 1
+                : defaultSlideToShow
+            }
+            slidesToScroll={
+              featuredProducts.length - 1 < defaultSlideToShow
+                ? featuredProducts.length - 1
+                : defaultSlideToShow
+            }
+          >
+            {featuredList}
+          </Caroussel>
         </CarouselContent>
       </Container>
     )

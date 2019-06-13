@@ -28,7 +28,6 @@ interface Props {
   products: Product[]
   formatMessage: (messageDescriptor: any) => string
   onSelectItem: (item: any, checked: boolean) => void
-  onUnselectItem: (index: number) => void
   onRequestClose: () => void
   onAddItems: () => void
   setDesignsData: (data: DesignResultType, offset: number, page: number) => void

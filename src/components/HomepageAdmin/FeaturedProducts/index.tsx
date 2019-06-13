@@ -19,7 +19,6 @@ interface Props {
   changePage: (offset: number) => void
   formatMessage: (messageDescriptor: any) => string
   onSelectItem: (item: any, checked: boolean) => void
-  onUnselectItem: (index: number) => void
   openModal: (open: boolean) => void
   setItemsAdd: () => void
   onPressDelete: (id: number) => void
@@ -44,7 +43,6 @@ class FeaturedProducts extends React.Component<Props, {}> {
       changePage,
       selectedItems,
       onSelectItem,
-      onUnselectItem,
       productsModalOpen,
       items,
       setItemsAdd,
@@ -74,7 +72,6 @@ class FeaturedProducts extends React.Component<Props, {}> {
           visible={productsModalOpen}
           onRequestClose={this.handleOnCloseModal}
           onSelectItem={onSelectItem}
-          onUnselectItem={onUnselectItem}
           onAddItems={setItemsAdd}
           changePage={changePage}
         />
