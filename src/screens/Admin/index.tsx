@@ -19,6 +19,7 @@ import AdminLayout from '../../components/AdminLayout'
 import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
+import HomepageAdmin from '../../components/HomepageAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 
 // import Menu from 'antd/lib/menu'
@@ -184,6 +185,14 @@ export class Admin extends React.Component<Props, {}> {
         <Route
           path="/admin/users"
           render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/users"
+          render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/homepage"
+          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
         />
       </AdminLayout>
     )

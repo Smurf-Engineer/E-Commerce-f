@@ -89,7 +89,6 @@ export const uploadFilesAction = (
           formatMessage(messages.savingProduct)
         )
       )
-      return true
     } catch (e) {
       dispatch(setUploadingAction(false, ''))
       message.error(e.message)

@@ -254,6 +254,7 @@ export class ProductForm extends React.Component<Props, {}> {
               </Steps>
               {screenSteps[currentStep]}
             </HeaderRow>
+            {/* TODO: Create a component to make the bottom steps of the back and next buttons for the form */}
             <Footer>
               {currentStep > 0 && (
                 <BackButton onClick={this.changeStep(currentStep - 1)}>
