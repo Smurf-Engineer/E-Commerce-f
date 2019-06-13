@@ -29,12 +29,12 @@ import { Product, ProductType } from '../../types/common'
 interface Props {
   history: any
   desktopImage: string
+  client: any
   mainHeader: any
   mainHeaderLoading: any
   secondaryHeaderLoading: any
   loaders: any
   secondaryHeader: any
-  client: any
   limit: number
   offset: number
   currentPage: number
@@ -77,7 +77,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setLoadersAction(Sections.MAIN_CONTAINER, true)
       const response = await query({
         query: getHomepageInfo,
-        variables: {},
         fetchPolicy: 'network-only'
       })
       await this.handleOnChangePage()

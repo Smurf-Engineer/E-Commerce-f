@@ -70,10 +70,11 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         homepageImages,
         headerImageLink,
         headerImage,
-        headerImageMobile
+        headerImageMobile,
+        items
       } = action.data
       return state.withMutations((map: any) => {
-        map.set('items', fromJS(action.data.items))
+        map.set('items', fromJS(items))
         map.set('secondaryHeader', List.of(...fromJS(homepageImages)))
         map.set(
           'secondaryHeaderLoading',
@@ -90,7 +91,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         map.setIn(['mainHeader', ImageTypes.DESKTOP], headerImage)
         map.setIn(['mainHeader', ImageTypes.MOBILE], headerImageMobile)
         map.setIn(['mainHeader', 'url'], headerImageLink)
-        return map.toJS()
+        return map
       })
     }
     case SET_URL:

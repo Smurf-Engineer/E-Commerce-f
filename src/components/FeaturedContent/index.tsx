@@ -43,19 +43,13 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
               if (matches) {
                 return (
                   <a>
-                    <StyledImg
-                      src={`${desktop}`}
-                      onClick={this.handleGoTo(link)}
-                    />
+                    <StyledImg src={desktop} onClick={this.handleGoTo(link)} />
                   </a>
                 )
               }
               return (
                 <a>
-                  <StyledImg
-                    src={`${mobile}`}
-                    onClick={this.handleGoTo(link)}
-                  />
+                  <StyledImg src={mobile} onClick={this.handleGoTo(link)} />
                 </a>
               )
             }}

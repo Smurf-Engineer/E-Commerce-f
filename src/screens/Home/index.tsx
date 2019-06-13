@@ -13,6 +13,7 @@ import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
 import * as homeActions from './actions'
+import { setHomepageInfoAction } from './actions'
 import Layout from '../../components/MainLayout'
 import {
   Container,
@@ -35,7 +36,6 @@ import FeaturedProducts from '../../components/FeaturedProducts'
 import FeaturedContent from '../../components/FeaturedContent'
 import messages from './messages'
 import { setRegionAction } from '../LanguageProvider/actions'
-import { setHomepageInfoAction } from './actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
@@ -83,7 +83,6 @@ export class Home extends React.Component<Props, {}> {
     try {
       const response = await query({
         query: getHomepageInfo,
-        variables: {},
         fetchPolicy: 'network-only'
       })
       dispatch(setHomepageInfoAction(response.data.getHomepageContent))
