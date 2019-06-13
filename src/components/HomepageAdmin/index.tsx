@@ -6,9 +6,12 @@ import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
 import {
-  getHomepageInfo,
   setMainHeaderMutation,
-  setSecondaryHeaderMutation
+  setSecondaryHeaderMutation,
+  productsQuery,
+  setFeaturedProductsMutation,
+  deleteFeaturedProductMutation,
+  getHomepageInfo
 } from './data'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
@@ -18,8 +21,10 @@ import { Sections } from './constants'
 import * as homepageAdminApiActions from './api'
 import MainHeader from './MainHeader'
 import SecondaryHeader from './SecondaryHeader'
+import FeaturedProducts from './FeaturedProducts'
 import { Container, ScreenTitle, SpinContainer } from './styledComponents'
 import messages from './messages'
+import { Product, ProductType } from '../../types/common'
 
 interface Props {
   history: any
@@ -29,14 +34,28 @@ interface Props {
   mainHeaderLoading: any
   secondaryHeaderLoading: any
   loaders: any
-  dispatch: any
   secondaryHeader: any
+  limit: number
+  offset: number
+  currentPage: number
+  fullCount: string
+  products: Product[]
+  selectedItems: any
+  productsModalOpen: boolean
+  items: any
   formatMessage: (messageDescriptor: any) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
+  setFeaturedProducts: (variables: {}) => Promise<any>
+  openModalAction: (open: boolean) => void
+  deleteFromTableAction: (id: number) => void
+  setItemsAddAction: () => void
+  deleteItemSelectedAction: (id: number) => void
+  setItemSelectedAction: (item: any, checked: boolean) => void
+  setProductsData: (data: ProductType, offset: number, page: number) => void
+  setUrlAction: (value: string) => void
   setLoadersAction: (section: string, loading: boolean) => void
   setHomepageInfoAction: (data: any) => void
-  setUrlAction: (value: string) => void
   setUrlListAction: (value: string, index: number) => void
   uploadFileAction: (
     file: any,
@@ -44,14 +63,15 @@ interface Props {
     imageType: string,
     index: number
   ) => void
+  deleteFeaturedProduct: (variables: {}) => Promise<any>
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
   async componentDidMount() {
     const {
-      client: { query },
       setLoadersAction,
-      setHomepageInfoAction
+      setHomepageInfoAction,
+      client: { query }
     } = this.props
     try {
       setLoadersAction(Sections.MAIN_CONTAINER, true)
@@ -59,8 +79,25 @@ class HomepageAdmin extends React.Component<Props, {}> {
         query: getHomepageInfo,
         fetchPolicy: 'network-only'
       })
-
-      setHomepageInfoAction(response.data.getHomepageContent)
+      await this.handleOnChangePage()
+      const {
+        featuredProducts,
+        homepageImages,
+        headerImageLink,
+        headerImage,
+        headerImageMobile
+      } = response.data.getHomepageContent
+      const items = featuredProducts.map((item: Product) => {
+        return { visible: true, product: item }
+      })
+      const cleanData = {
+        items,
+        homepageImages,
+        headerImageLink,
+        headerImage,
+        headerImageMobile
+      }
+      setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
     } catch (e) {
       console.error(e)
@@ -75,6 +112,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
     const { uploadFileAction } = this.props
     uploadFileAction(file, section, imageType, index)
   }
+
   handleOnSaveMainHeader = async () => {
     try {
       const { setMainHeader, mainHeader, setLoadersAction } = this.props
@@ -96,8 +134,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
     try {
       const {
         setSecondaryHeader,
-        secondaryHeader,
-        setLoadersAction
+        setLoadersAction,
+        secondaryHeader
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
       const homepageImages = secondaryHeader.map((item: any) => ({
@@ -117,6 +155,90 @@ class HomepageAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  // TODO
+  handleOnChangePage = async (page: number = 1) => {
+    const { limit } = this.props
+    const offset = page > 1 ? (page - 1) * limit : 0
+    try {
+      this.fetchDesigns(offset, page)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  fetchDesigns = async (offsetParam?: number, pageParam?: number) => {
+    const {
+      client: { query },
+      offset: offsetProp,
+      currentPage: pageProp,
+      limit,
+      setProductsData
+    } = this.props
+    let offset = offsetParam !== undefined ? offsetParam : offsetProp
+    let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    if (!offsetParam && !pageParam) {
+      const fullPage = !(offset % limit)
+      const maxPageNumber = offset / limit
+
+      if (fullPage && currentPage > maxPageNumber) {
+        currentPage--
+        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
+      }
+    }
+
+    try {
+      const data = await query({
+        query: productsQuery,
+        variables: { limit, offset },
+        fetchPolicy: 'network-only'
+      })
+      setProductsData(data, offset, currentPage)
+    } catch (e) {
+      throw e
+    }
+  }
+  handleOnSelectItem = (item: any, checked: boolean) => {
+    const { setItemSelectedAction, deleteItemSelectedAction } = this.props
+    // const itemToAdd = {[item.product.id]: checked}
+    if (!checked) {
+      return deleteItemSelectedAction(item.product.id)
+    }
+    setItemSelectedAction(item, checked)
+  }
+  handleAddNewItems = async () => {
+    const {
+      setItemsAddAction,
+      items,
+      selectedItems,
+      setFeaturedProducts
+    } = this.props
+    setItemsAddAction()
+    const itemsToSave = selectedItems.concat(items)
+    const idCollection = itemsToSave.map((item: any) => item.product.id)
+    try {
+      const response = await setFeaturedProducts({
+        variables: {
+          products: idCollection
+        }
+      })
+      message.success(get(response, 'data.setFeaturedProducts.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+  handleDeleteFromTable = async (index: number, id: number) => {
+    const { deleteFromTableAction, deleteFeaturedProduct } = this.props
+    deleteFromTableAction(index)
+    try {
+      await deleteFeaturedProduct({
+        variables: {
+          id
+        }
+      })
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   render() {
     const {
       formatMessage,
@@ -124,17 +246,25 @@ class HomepageAdmin extends React.Component<Props, {}> {
       mainHeader,
       mainHeaderLoading,
       secondaryHeaderLoading,
+      products,
+      currentPage,
+      fullCount,
+      limit,
       loaders: {
-        mainLoader,
+        mainContainer,
         mainHeader: mainHeaderLoader,
         secondaryHeader: secondaryHeaderLoader
       },
       secondaryHeader,
+      selectedItems,
+      productsModalOpen,
+      items,
+      openModalAction,
       setUrlAction,
       setUrlListAction
     } = this.props
 
-    return mainLoader ? (
+    return mainContainer ? (
       <SpinContainer>
         <Spin />
       </SpinContainer>
@@ -168,18 +298,40 @@ class HomepageAdmin extends React.Component<Props, {}> {
             secondaryHeader
           }}
         />
+        <FeaturedProducts
+          {...{
+            formatMessage,
+            products,
+            currentPage,
+            fullCount,
+            limit,
+            selectedItems,
+            productsModalOpen,
+            items
+          }}
+          changePage={this.handleOnChangePage}
+          onSelectItem={this.handleOnSelectItem}
+          onPressDelete={this.handleDeleteFromTable}
+          openModal={openModalAction}
+          setItemsAdd={this.handleAddNewItems}
+        />
       </Container>
     )
   }
 }
 
 const mapStateToProps = (state: any) => state.get('homepageAdmin').toJS()
-const mapDispatchToProps = { ...HomepageAdminActions, homepageAdminApiActions }
+const mapDispatchToProps = {
+  ...HomepageAdminActions,
+  ...homepageAdminApiActions
+}
 
 const HomepageAdminEnhance = compose(
   withApollo,
   setMainHeaderMutation,
   setSecondaryHeaderMutation,
+  setFeaturedProductsMutation,
+  deleteFeaturedProductMutation,
   connect(
     mapStateToProps,
     mapDispatchToProps

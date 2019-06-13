@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Button from 'antd/lib/button'
+import Divider from 'antd/lib/divider'
 import {
   Container,
   ButtonContainer,
@@ -61,6 +62,7 @@ class SecondaryHeader extends React.Component<Props, {}> {
             {formatMessage(messages.saveChanges)}
           </Button>
         </ButtonContainer>
+        <Divider />
       </Container>
     )
   }

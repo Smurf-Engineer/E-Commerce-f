@@ -30,7 +30,7 @@ export const getProductQuery = gql`
       type: short_description
       shortDescription: short_description
       category_id
-      category_name
+      categoryName: category_name
       tags
       season
       pictures {
@@ -41,7 +41,7 @@ export const getProductQuery = gql`
         gender_id
       }
       active
-      design_center
+      designCenter: design_center
       sport_id
       mpn
       colors {

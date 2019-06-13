@@ -47,8 +47,8 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   data: Data
   someKey?: string
-  productId: number
   client: any
+  productId: number
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void

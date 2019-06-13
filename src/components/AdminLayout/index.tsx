@@ -16,7 +16,16 @@ import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { UserType, Font, SimpleFont } from '../../types/common'
 import { getTeamStoreStatus, getFonts } from './data'
 import * as adminLayoutActions from './api'
-import { options } from './constants'
+import {
+  options,
+  ORDER_STATUS,
+  DISCOUNTS,
+  PRODUCT_CATALOG,
+  USERS,
+  HOMEPAGE,
+  DESIGN_SEARCH,
+  DESIGN_LAB
+} from './constants'
 import {
   SideBar,
   Container,
@@ -77,7 +86,32 @@ class AdminLayout extends React.Component<Props, {}> {
     }
   }
   handleOnSelectItem = ({ key }: any) => {
-    const { setCurrentScreenAction } = this.props
+    const { setCurrentScreenAction, history } = this.props
+    switch (key) {
+      case ORDER_STATUS:
+        history.push('/admin')
+        break
+      case DISCOUNTS:
+        history.push('/admin/discounts')
+        break
+      case PRODUCT_CATALOG:
+        history.push('/admin/products')
+        break
+      case DESIGN_SEARCH:
+        history.push('/admin/design-search')
+        break
+      case USERS:
+        history.push('/admin/users')
+        break
+      case HOMEPAGE:
+        history.push('/admin/homepage')
+        break
+      case DESIGN_LAB:
+        history.push('/admin/design-lab')
+        break
+      default:
+        break
+    }
     setCurrentScreenAction(key)
   }
 

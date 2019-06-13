@@ -5,6 +5,7 @@ import * as React from 'react'
 import { Icon, Button } from 'antd'
 import { connect } from 'react-redux'
 import { FormattedMessage } from 'react-intl'
+import { withRouter } from 'react-router-dom'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import find from 'lodash/find'
@@ -38,9 +39,9 @@ interface Data extends QueryProps {
 }
 
 interface Props {
-  productId: string
+  match: any
   data: Data
-  goBack: (id: number) => void
+  history: any
   setProductAction: (product: Product) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -90,10 +91,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     if (relatedTags) {
       relatedTags = relatedTags.map((item: any) => item.yotpoId).join(', ')
     }
-    let categoryName = get(product, 'category_name', '')
+    let categoryName = get(product, 'categoryName', '')
     const tags = get(product, 'tags', '')
     const active = get(product, 'active', '')
-    const designCenter = get(product, 'design_center', '')
+    const designCenter = get(product, 'designCenter', '')
     const season = get(product, 'season', '')
     const materials = get(product, 'materials', '')
     const details = get(product, 'details', '')
@@ -194,10 +195,10 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   <ScreenSubTitle>{mpn}</ScreenSubTitle>
                 </ScreenTitle>
                 <div>
-                  <BlueButton size="large">
+                  <BlueButton onClick={this.handleOnClickEdit} size="large">
                     <FormattedMessage {...messages.editProduct} />
                   </BlueButton>
-                  <Button size="large">
+                  <Button onClick={this.handlePublishing} size="large">
                     <FormattedMessage {...messages.openPublishingTool} />
                   </Button>
                 </div>
@@ -244,9 +245,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                   />
                   <RowField
                     label={formatMessage(messages.onStock)}
-                    value={formatMessage(
-                      active === 'true' ? messages.yes : messages.no
-                    )}
+                    value={formatMessage(active ? messages.yes : messages.no)}
                   />
                   <RowField
                     label={formatMessage(messages.designLab)}
@@ -407,29 +406,42 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       </Container>
     )
   }
+  handlePublishing = () => {
+    const { data, history } = this.props
+    const code = get(data, 'product.code', '')
+    if (code) {
+      history.push(`/publishing-tool?code=${code}`)
+    }
+  }
   handleOpenModel = () => {
     this.setState({ openedModel: true })
   }
   handleOnClickBack = () => {
-    const { goBack } = this.props
-    goBack(0)
+    const { history } = this.props
+    history.push('/admin/products')
+  }
+  handleOnClickEdit = () => {
+    const { history, match } = this.props
+    const productId = get(match, 'params.id', '')
+    history.push(`/admin/products/form/${productId}`)
   }
 }
 
 interface OwnProps {
-  productId?: string
+  match?: any
 }
 
 const mapStateToProps = (state: any) => state.get('productDetailAdmin').toJS()
 
 const ProductDetailsAdminEnhance = compose(
+  withRouter,
   connect(
     mapStateToProps,
     { ...ProductDetailsAdminActions }
   ),
   graphql(getProductQuery, {
-    options: ({ productId: id }: OwnProps) => ({
-      variables: { id }
+    options: ({ match }: OwnProps) => ({
+      variables: { id: get(match, 'params.id', '') }
     })
   })
 )(ProductDetailsAdmin)

@@ -4,9 +4,14 @@
 import * as React from 'react'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
+import get from 'lodash/get'
 import message from 'antd/lib/message'
 import { BLUE } from '../../theme/colors'
-import { getDesignLabAdmin, setSecondaryHeaderMutation } from './data'
+import {
+  getDesignLabInfo,
+  setDeliveryDaysMutation,
+  setPlaylistMutation
+} from './data'
 import Spin from 'antd/lib/spin'
 import * as DesignLabActions from './actions'
 import {
@@ -27,27 +32,68 @@ interface Props {
   client: any
   loading: any
   dispatch: any
+  tutorialPlaylist: string
+  deliveryDays: number
+  deliveryDaysChanges: boolean
+  tutorialPlaylistChanged: boolean
   formatMessage: (messageDescriptor: any) => string
+  setDataAction: (data: any) => void
+  setDeliveryDaysAction: (value: number) => void
+  setPlaylistAction: (value: string) => void
+  setDeliveryDays: (variables: {}) => Promise<any>
+  setPlaylist: (variables: {}) => Promise<any>
 }
 
 class DesignLabAdmin extends React.Component<Props, {}> {
   async componentDidMount() {
     const {
-      client: { query }
+      client: { query },
+      setDataAction
     } = this.props
     try {
       const response = await query({
-        query: getDesignLabAdmin,
+        query: getDesignLabInfo,
         fetchPolicy: 'network-only'
       })
-      console.log(response)
+      setDataAction(response.data.getDesignLabInfo)
     } catch (e) {
       message.error(e.message)
     }
   }
-
+  handleChangeText = (event: any) => {
+    const { setPlaylistAction } = this.props
+    setPlaylistAction(event.target.value)
+  }
+  saveDeliveryDays = async () => {
+    const { setDeliveryDays, deliveryDays } = this.props
+    try {
+      const response = await setDeliveryDays({ variables: { deliveryDays } })
+      message.success(get(response, 'data.setDeliveryDays.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
+  savePlaylist = async () => {
+    const { tutorialPlaylist, setPlaylist } = this.props
+    try {
+      const response = await setPlaylist({
+        variables: { playlist: tutorialPlaylist }
+      })
+      message.success(get(response, 'data.setPlaylist.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    }
+  }
   render() {
-    const { formatMessage, loading } = this.props
+    const {
+      formatMessage,
+      loading,
+      tutorialPlaylist,
+      deliveryDays,
+      tutorialPlaylistChanged,
+      deliveryDaysChanges,
+      setDeliveryDaysAction
+    } = this.props
 
     return loading ? (
       <SpinContainer>
@@ -58,11 +104,15 @@ class DesignLabAdmin extends React.Component<Props, {}> {
         <ScreenTitle>{formatMessage(messages.deliveryDates)}</ScreenTitle>
         <BoxContainer>
           <InfoText>{formatMessage(messages.currentDeliveryDate)}</InfoText>
-          <StyledInputNumber />
+          <StyledInputNumber
+            onChange={setDeliveryDaysAction}
+            value={deliveryDays}
+          />
           <ButtonWrapper color={BLUE}>
             <StyledButton
               type="primary"
-              onClick={this.onSaveDiscount}
+              disabled={!deliveryDaysChanges}
+              onClick={this.saveDeliveryDays}
               loading={loading}
             >
               {formatMessage(messages.update)}
@@ -72,11 +122,15 @@ class DesignLabAdmin extends React.Component<Props, {}> {
         <ScreenTitle>{formatMessage(messages.videoTutorial)}</ScreenTitle>
         <BoxContainer>
           <InfoText>{formatMessage(messages.tutorialPlaylist)}</InfoText>
-          <StyledInput />
+          <StyledInput
+            onChange={this.handleChangeText}
+            value={tutorialPlaylist}
+          />
           <ButtonWrapper color={BLUE}>
             <StyledButton
               type="primary"
-              onClick={this.onSaveDiscount}
+              disabled={!tutorialPlaylistChanged}
+              onClick={this.savePlaylist}
               loading={loading}
             >
               {formatMessage(messages.update)}
@@ -92,7 +146,8 @@ const mapStateToProps = (state: any) => state.get('designLabAdmin').toJS()
 
 const DesignLabAdminEnhance = compose(
   withApollo,
-  setSecondaryHeaderMutation,
+  setDeliveryDaysMutation,
+  setPlaylistMutation,
   connect(
     mapStateToProps,
     { ...DesignLabActions }

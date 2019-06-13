@@ -18,6 +18,7 @@ import { getVideos } from './api'
 interface Props {
   formatMessage: (messageDescriptor: any) => string
   videos: object[]
+  tutorialPlaylist: string
   setVideos: (videos: object[]) => void
 }
 interface State {
@@ -34,8 +35,12 @@ class TutorialsTab extends React.PureComponent<Props, State> {
     videoName: ''
   }
   async componentDidMount() {
-    const { setVideos } = this.props
-    getVideos(setVideos)
+    const { setVideos, tutorialPlaylist } = this.props
+    try {
+      getVideos(tutorialPlaylist, setVideos)
+    } catch (e) {
+      console.error(e)
+    }
   }
   componentWillReceiveProps() {
     this.setState({ loading: false })
@@ -56,6 +61,7 @@ class TutorialsTab extends React.PureComponent<Props, State> {
             <Spin />
           </Loading>
         ) : (
+          videos &&
           videos.map((video, index) => (
             <VideoContainer key={index}>
               <VideoFrame
