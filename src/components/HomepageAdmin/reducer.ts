@@ -127,7 +127,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_ITEM_SELECTED: {
-      // TODO
+      // TODO Change selectedItems array to store a object with id & status of selection
       const selectedItems = state.get('selectedItems')
       const addItem = selectedItems.push(action.item)
       const itemsMap = addItem.map((item: any) => fromJS(item))
