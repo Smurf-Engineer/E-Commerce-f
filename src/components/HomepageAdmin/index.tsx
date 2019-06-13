@@ -22,6 +22,7 @@ import * as homepageAdminApiActions from './api'
 import MainHeader from './MainHeader'
 import SecondaryHeader from './SecondaryHeader'
 import FeaturedProducts from './FeaturedProducts'
+import Tiles from './Tiles'
 import { Container, ScreenTitle, SpinContainer } from './styledComponents'
 import messages from './messages'
 import { Product, ProductType } from '../../types/common'
@@ -315,6 +316,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           openModal={openModalAction}
           setItemsAdd={this.handleAddNewItems}
         />
+        <Tiles />
       </Container>
     )
   }

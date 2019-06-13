@@ -200,6 +200,10 @@ export class Admin extends React.Component<Props, {}> {
           path="/admin/homepage"
           render={() => <HomepageAdmin {...{ history, formatMessage }} />}
         />
+        <Route
+          path="/admin/users"
+          render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
       </AdminLayout>
     )
   }
