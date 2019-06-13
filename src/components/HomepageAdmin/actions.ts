@@ -11,10 +11,16 @@ import {
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
   SET_LOADING_LIST,
-  SET_URL_LIST
+  SET_URL_LIST,
+  SET_PRODUCTS_DATA,
+  SET_ITEM_SELECTED,
+  DELETE_ITEM_SELECTED,
+  OPEN_MODAL,
+  ADD_ITEMS,
+  DELETE_FROM_TABLE
 } from './constants'
 
-import { AnyAction } from '../../types/common'
+import { AnyAction, ProductType } from '../../types/common'
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
@@ -92,3 +98,39 @@ export const setLoadersAction = (
     loading
   }
 }
+
+export const setProductsData = (
+  data: ProductType,
+  offset: number,
+  page: number
+) => ({
+  type: SET_PRODUCTS_DATA,
+  data,
+  offset,
+  page
+})
+
+export const setItemSelectedAction = (item: any, checked: boolean) => ({
+  type: SET_ITEM_SELECTED,
+  item,
+  checked
+})
+
+export const deleteItemSelectedAction = (id: number): AnyAction => ({
+  type: DELETE_ITEM_SELECTED,
+  id
+})
+
+export const deleteFromTableAction = (index: number): AnyAction => ({
+  type: DELETE_FROM_TABLE,
+  index
+})
+
+export const openModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_MODAL,
+  open
+})
+
+export const setItemsAddAction = (): AnyAction => ({
+  type: ADD_ITEMS
+})

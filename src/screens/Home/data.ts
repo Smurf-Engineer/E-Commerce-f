@@ -10,6 +10,12 @@ export const getHomepageInfo = gql`
       headerImageMobile: header_image_mobile
       headerImage: header_image
       headerImageLink: header_image_link
+      homepageImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+      }
     }
   }
 `

@@ -5,10 +5,6 @@
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
-  title: {
-    id: 'components.MainHeader.title',
-    defaultMessage: 'Homepage Images'
-  },
   imageSizeError: {
     id: 'components.MainHeader.imageSizeError',
     defaultMessage: 'Oh no! Max file size is limited to 20MB'
