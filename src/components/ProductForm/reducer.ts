@@ -40,6 +40,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
     case RESET_DATA:
       return initialState
     case SET_PRODUCT_DATA: {
+      // TODO: Refactor all of the incoming data logic
       const { product, extraData } = action
       const {
         mediaFiles,
