@@ -98,17 +98,26 @@ type ExtraFile = {
 
 export interface Product {
   id: number
-  active: string
+  active: boolean
   code: string
   shortId?: string
   images: ImageType[]
   type: string
+  material_banner?: string
+  pictures?: any[]
+  mediaFiles?: object[]
   description: string
+  productMaterials?: object[]
+  designCenter?: boolean
   priceRange: PriceRange[]
   collections: number
   isTopProduct: boolean
+  relatedItemTag?: string
+  categoryName?: string
   details: string
   specs: string
+  materials?: string
+  season?: string
   name: string
   customizable: boolean
   yotpoId: string
@@ -126,7 +135,9 @@ export interface Product {
   obj?: string
   mtl?: string
   themes?: Theme[]
+  tags?: string
   label: string
+  sports?: any[]
   flatlock: string
   bumpMap: string
   binding?: ExtraFile

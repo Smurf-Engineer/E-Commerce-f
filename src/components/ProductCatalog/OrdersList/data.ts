@@ -17,6 +17,8 @@ export const getProductsQuery = gql`
         id
         code
         name
+        obj
+        mtl
         active
         isCustom: design_center
         mpn

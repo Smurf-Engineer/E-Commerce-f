@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'screens.AdminLayout.discounts',
     defaultMessage: 'Discounts'
   },
+  designSearch: {
+    id: 'screens.AdminLayout.designSearch',
+    defaultMessage: 'Design Search'
+  },
   productCatalog: {
     id: 'screens.AdminLayout.productCatalog',
     defaultMessage: 'PRODUCT CATALOG'

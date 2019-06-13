@@ -145,6 +145,10 @@ declare module 'react-paypal-express-checkout-authorize' {
   export default PaypalExpressBtn
 }
 
+declare module 'omit-deep' {
+  export default function omitDeep(object: any, keys: any): any
+}
+
 declare module 'react-intercom' {
   interface Props {
     appID?: string

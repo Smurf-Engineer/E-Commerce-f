@@ -1,9 +1,49 @@
 /**
- * Admin-OrderDetailsAdmin Queries
+ * Product-Form Queries
  */
 
 import gql from 'graphql-tag'
 
+export const getExtraData = gql`
+  query extraData {
+    extraData {
+      bannerMaterials {
+        id
+        url
+      }
+      categories {
+        id
+        name
+      }
+      sports {
+        id
+        name
+      }
+      sizes {
+        id
+        name
+      }
+      relatedTags
+      seasons
+      colors {
+        id
+        image
+        name
+      }
+      fitStyles {
+        id
+        info
+        name: description
+        image
+      }
+      materials
+      genders {
+        id
+        gender
+      }
+    }
+  }
+`
 export const getProductQuery = gql`
   query GetProductByID($id: Int!) {
     product(id: $id, onlyActive: false) {
@@ -11,10 +51,19 @@ export const getProductQuery = gql`
       code
       yotpoId: yotpo_id
       name
+      productMaterials: banner_materials {
+        id
+        url
+      }
       mtl
+      mediaFiles: media_files {
+        id
+        url
+      }
       obj
       bumpMap: bump_map
       flatlock
+      relatedItemTag: related_item_tag
       binding {
         white
         black
@@ -27,7 +76,6 @@ export const getProductQuery = gql`
         white
         black
       }
-      type: short_description
       shortDescription: short_description
       category_id
       categoryName: category_name
@@ -55,7 +103,6 @@ export const getProductQuery = gql`
       }
       gender_id
       retail_version
-      customizable: design_center
       description
       details
       materials: materials_info
@@ -98,35 +145,19 @@ export const getProductQuery = gql`
       retailMen: men_retail
       retailWomen: women_retail
       template
-      relatedProducts: related {
-        id
-        type: name
-        description: short_description
-        shortDescription: short_description
-        images: pictures {
-          front: front_image
-          back: back_image
-          left: left_image
-          right: right_image
-          genderId: gender_id
-        }
-        isTopProduct
-        customizable: design_center
-        genderId: gender_id
-        collections
-        yotpoId: yotpo_id
-        priceRange {
-          price
-          quantity
-          abbreviation
-          shortName: short_name
-        }
-        colors {
-          id
-          name
-          image
-        }
-      }
+    }
+  }
+`
+export const upsertProduct = gql`
+  mutation upsertProduct(
+    $body: ProductUpsert!
+    $bannerMaterials: [MediaFileInput]
+  ) {
+    productResult: upsertProduct(
+      body: $body
+      bannerMaterials: $bannerMaterials
+    ) {
+      id
     }
   }
 `

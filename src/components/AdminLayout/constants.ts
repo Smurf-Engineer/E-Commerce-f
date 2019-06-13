@@ -12,6 +12,7 @@ export const ORDERS = 'aboutOrders'
 export const ORDER_STATUS = 'orderStatus'
 export const DISCOUNTS = 'discounts'
 export const PRODUCT_CATALOG = 'productCatalog'
+export const DESIGN_SEARCH = 'designSearch'
 export const EDIT_CONTENT = 'editContent'
 export const HOMEPAGE = 'homepage'
 export const USERS = 'users'
@@ -20,7 +21,7 @@ export const LOGOUT_MENU = 'logout'
 export const options = [
   {
     title: ORDERS,
-    options: [ORDER_STATUS, DISCOUNTS]
+    options: [ORDER_STATUS, DISCOUNTS, DESIGN_SEARCH]
   },
   {
     title: PRODUCT_CATALOG,
