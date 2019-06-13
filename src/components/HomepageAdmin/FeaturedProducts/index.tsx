@@ -21,7 +21,7 @@ interface Props {
   onSelectItem: (item: any, checked: boolean) => void
   openModal: (open: boolean) => void
   setItemsAdd: () => void
-  onPressDelete: (id: number) => void
+  onPressDelete: (index: number, id: number) => void
 }
 
 class FeaturedProducts extends React.Component<Props, {}> {
@@ -67,13 +67,13 @@ class FeaturedProducts extends React.Component<Props, {}> {
             products,
             currentPage,
             fullCount,
-            limit
+            limit,
+            changePage,
+            onSelectItem
           }}
           visible={productsModalOpen}
           onRequestClose={this.handleOnCloseModal}
-          onSelectItem={onSelectItem}
           onAddItems={setItemsAdd}
-          changePage={changePage}
         />
       </Container>
     )

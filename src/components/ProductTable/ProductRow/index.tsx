@@ -16,7 +16,7 @@ interface Props {
   mpn: string
   id: number
   text?: string
-  onPressDelete: (id: number) => void
+  onPressDelete: (index: number, id: number) => void
   formatMessage: (messageDescriptor: any) => string
 }
 
@@ -24,6 +24,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
   render() {
     const {
       id,
+      index,
       image,
       name,
       type,
@@ -34,7 +35,7 @@ class ProductRow extends React.PureComponent<Props, {}> {
     } = this.props
 
     const handleOnClick = () => {
-      onPressDelete(id)
+      onPressDelete(index, id)
     }
 
     const renderView = (

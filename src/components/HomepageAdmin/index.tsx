@@ -80,13 +80,22 @@ class HomepageAdmin extends React.Component<Props, {}> {
         fetchPolicy: 'network-only'
       })
       await this.handleOnChangePage()
-      const { featuredProducts } = response.data.getHomepageContent
+      const {
+        featuredProducts,
+        homepageImages,
+        headerImageLink,
+        headerImage,
+        headerImageMobile
+      } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
         return { visible: true, product: item }
       })
       const cleanData = {
         items,
-        ...{ ...response.data.getHomepageContent }
+        homepageImages,
+        headerImageLink,
+        headerImage,
+        headerImageMobile
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -146,6 +155,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  // TODO
   handleOnChangePage = async (page: number = 1) => {
     const { limit } = this.props
     const offset = page > 1 ? (page - 1) * limit : 0
@@ -189,7 +199,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
   }
   handleOnSelectItem = (item: any, checked: boolean) => {
     const { setItemSelectedAction, deleteItemSelectedAction } = this.props
-
+    // const itemToAdd = {[item.product.id]: checked}
     if (!checked) {
       return deleteItemSelectedAction(item.product.id)
     }
@@ -216,9 +226,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
-  handleDeleteFromTable = async (id: number) => {
+  handleDeleteFromTable = async (index: number, id: number) => {
     const { deleteFromTableAction, deleteFeaturedProduct } = this.props
-    deleteFromTableAction(id)
+    deleteFromTableAction(index)
     try {
       await deleteFeaturedProduct({
         variables: {
@@ -241,7 +251,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       fullCount,
       limit,
       loaders: {
-        mainLoader,
+        mainContainer,
         mainHeader: mainHeaderLoader,
         secondaryHeader: secondaryHeaderLoader
       },
@@ -254,7 +264,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setUrlListAction
     } = this.props
 
-    return mainLoader ? (
+    return mainContainer ? (
       <SpinContainer>
         <Spin />
       </SpinContainer>

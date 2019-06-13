@@ -121,9 +121,9 @@ export const deleteItemSelectedAction = (id: number): AnyAction => ({
   id
 })
 
-export const deleteFromTableAction = (id: number): AnyAction => ({
+export const deleteFromTableAction = (index: number): AnyAction => ({
   type: DELETE_FROM_TABLE,
-  id
+  index
 })
 
 export const openModalAction = (open: boolean): AnyAction => ({

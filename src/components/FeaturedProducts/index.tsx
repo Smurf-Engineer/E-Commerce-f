@@ -134,6 +134,10 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
           </div>
         )
       })
+    const slides =
+      featuredProducts.length - 1 < defaultSlideToShow
+        ? featuredProducts.length - 1
+        : defaultSlideToShow
 
     return (
       <Container>
@@ -141,16 +145,8 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
         <CarouselContent>
           <Caroussel
             {...settings}
-            slidesToShow={
-              featuredProducts.length - 1 < defaultSlideToShow
-                ? featuredProducts.length - 1
-                : defaultSlideToShow
-            }
-            slidesToScroll={
-              featuredProducts.length - 1 < defaultSlideToShow
-                ? featuredProducts.length - 1
-                : defaultSlideToShow
-            }
+            slidesToShow={slides}
+            slidesToScroll={slides}
           >
             {featuredList}
           </Caroussel>

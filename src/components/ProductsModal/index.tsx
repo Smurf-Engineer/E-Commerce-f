@@ -40,8 +40,7 @@ export class ProductsModal extends React.PureComponent<Props, {}> {
     const { onSelectItem, products } = this.props
     const selectedItem = Object.assign(
       {},
-      { visible: true },
-      { product: products[index] }
+      { visible: true, product: products[index] } // TODO
     )
     onSelectItem(selectedItem, checked)
   }

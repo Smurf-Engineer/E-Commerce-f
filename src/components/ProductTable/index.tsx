@@ -32,7 +32,7 @@ interface Props {
   formatMessage: (messageDescriptor: any) => string
   items: LockerTableType[]
   teamSizeRange: string
-  onPressDelete: (id: number) => void
+  onPressDelete: (index: number, id: number) => void
   onPressVisible: (index: number, checked: boolean) => void
   onMoveRow: (index: number, hoverIndex: number, row: any) => void
 }
@@ -70,37 +70,39 @@ class ProductTable extends React.PureComponent<Props, {}> {
         }}
       </MediaQuery>
     )
-
-    const itemsSelected = items.map(({ product }: ProductTableType, index) => {
-      const name = get(product, 'name')
-      const id = get(product, 'id')
-      const image = get(product, 'images[0].front')
-      const code = get(product, 'code')
-      const mpn = get(product, 'mpn')
-      const productType = get(product, 'custom') ? 'Custom' : 'Inline'
-      const description =
-        get(product, 'shortDescription', false) || get(product, 'description')
-      return (
-        <Product
-          {...{
-            id,
-            index,
-            image,
-            name,
-            description,
-            productId: product.id,
-            onPressDelete,
-            onPressVisible,
-            formatMessage,
-            code,
-            mpn,
-            type: productType
-          }}
-          key={index}
-          moveRow={this.moveRow}
-        />
-      )
-    })
+    console.log(items)
+    const itemsSelected =
+      items &&
+      items.map(({ product }: ProductTableType, index) => {
+        const name = get(product, 'name')
+        const id = get(product, 'id')
+        const image = get(product, 'images[0].front')
+        const code = get(product, 'code')
+        const mpn = get(product, 'mpn')
+        const productType = get(product, 'custom') ? 'Custom' : 'Inline'
+        const description =
+          get(product, 'shortDescription', false) || get(product, 'description')
+        return (
+          <Product
+            {...{
+              id,
+              index,
+              image,
+              name,
+              description,
+              productId: product.id,
+              onPressDelete,
+              onPressVisible,
+              formatMessage,
+              code,
+              mpn,
+              type: productType
+            }}
+            key={index}
+            moveRow={this.moveRow}
+          />
+        )
+      })
 
     return (
       <Table>

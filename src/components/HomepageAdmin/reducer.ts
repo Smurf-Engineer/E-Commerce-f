@@ -127,6 +127,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_ITEM_SELECTED: {
+      // TODO
       const selectedItems = state.get('selectedItems')
       const addItem = selectedItems.push(action.item)
       const itemsMap = addItem.map((item: any) => fromJS(item))
@@ -148,8 +149,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     case ADD_ITEMS: {
       const items = state.get('items')
       const selectedItems = state.get('selectedItems')
-      const addItem = items.push(...selectedItems)
-      const itemsMap = addItem.map((item: any) => fromJS(item))
+      const itemToAdd = items.push(...selectedItems)
+      const itemsMap = itemToAdd.map((item: any) => fromJS(item))
       return state.merge({
         items: itemsMap,
         productsModalOpen: false,
@@ -157,14 +158,9 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case DELETE_FROM_TABLE: {
-      const { id } = action
-      const indexOfListingToDelete = state
-        .get('items')
-        .findIndex((productType: any) => {
-          return productType.getIn(['product', 'id']) === id
-        })
+      const { index } = action
       const selectedItems = state.get('items')
-      const updatedSelectedItems = selectedItems.delete(indexOfListingToDelete)
+      const updatedSelectedItems = selectedItems.delete(index)
       return state.set('items', updatedSelectedItems)
     }
 
