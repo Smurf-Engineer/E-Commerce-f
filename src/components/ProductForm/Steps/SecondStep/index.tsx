@@ -26,6 +26,7 @@ interface Props {
   sizes: ItemDetailType[]
   colors: ProductColors[]
   fitStyles: FitStyle[]
+  setCheck: (selected: string, id: number, checked: boolean) => void
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -38,9 +39,6 @@ export class SecondStep extends React.Component<Props, {}> {
       colors: productColors,
       customizable
     } = product
-    const sizesSelected = sizeRange && sizeRange.map(e => e.id || '')
-    const stylesSelected = fitStylesProduct && fitStylesProduct.map(e => e.id)
-    const colorsSelected = productColors && productColors.map(e => e.id)
     return (
       <Container>
         <Separator>
@@ -51,13 +49,16 @@ export class SecondStep extends React.Component<Props, {}> {
             <Label>
               <FormattedMessage {...messages.sizesAvailable} />
             </Label>
-            <CheckGroup value={sizesSelected} onChange={this.handleCheckChange}>
-              {sizes.map((sizeItem: ItemDetailType, index) => (
-                <CheckBox key={index} value={sizeItem.id}>
-                  {sizeItem.name}
-                </CheckBox>
-              ))}
-            </CheckGroup>
+            {sizes.map((sizeItem: ItemDetailType, index) => (
+              <CheckBox
+                key={index}
+                name={sizeItem.id}
+                checked={sizeRange[sizeItem.id]}
+                onChange={this.handleCheckChange}
+              >
+                {sizeItem.name}
+              </CheckBox>
+            ))}
           </InputDiv>
           <InputDiv flex={1} />
         </RowInput>
@@ -66,13 +67,16 @@ export class SecondStep extends React.Component<Props, {}> {
             <Label>
               <FormattedMessage {...messages.selectFitStyle} />
             </Label>
-            <CheckGroup value={stylesSelected} onChange={this.handleCheckStyle}>
-              {fitStyles.map((style: FitStyle, index) => (
-                <CheckBox key={index} value={style.id}>
-                  {style.name}
-                </CheckBox>
-              ))}
-            </CheckGroup>
+            {fitStyles.map((style: FitStyle, index) => (
+              <CheckBox
+                key={index}
+                name={style.id}
+                onChange={this.handleCheckStyle}
+                checked={fitStylesProduct[style.id]}
+              >
+                {style.name}
+              </CheckBox>
+            ))}
           </InputDiv>
           <InputDiv flex={1} />
         </RowInput>
@@ -82,17 +86,17 @@ export class SecondStep extends React.Component<Props, {}> {
               <Label>
                 <FormattedMessage {...messages.selectColors} />
               </Label>
-              <CheckGroup
-                value={colorsSelected}
-                onChange={this.handleChangeColor}
-              >
-                {colors.map((color: ProductColors, index) => (
-                  <CheckBox key={index} value={color.id}>
-                    <ColorIcon src={color.image} />
-                    {color.name}
-                  </CheckBox>
-                ))}
-              </CheckGroup>
+              {colors.map((color: ProductColors, index) => (
+                <CheckBox
+                  key={index}
+                  name={color.id}
+                  onChange={this.handleChangeColor}
+                  checked={productColors[color.id]}
+                >
+                  <ColorIcon src={color.image} />
+                  {color.name}
+                </CheckBox>
+              ))}
             </InputDiv>
             <InputDiv flex={1} />
           </RowInput>
@@ -100,20 +104,17 @@ export class SecondStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleCheckChange = (ids: any[]) => {
-    const { setValue, sizes } = this.props
-    const value = sizes.filter(({ id }: any) => ids.includes(id))
-    setValue('sizeRange', value)
+  handleCheckChange = ({ target: { name, checked } }: any) => {
+    const { setCheck } = this.props
+    setCheck('sizeRange', parseInt(name, 10), checked)
   }
-  handleCheckStyle = (ids: any[]) => {
-    const { setValue, fitStyles } = this.props
-    const value = fitStyles.filter(({ id }: any) => ids.includes(id))
-    setValue('fitStyles', value)
+  handleCheckStyle = ({ target: { name, checked } }: any) => {
+    const { setCheck } = this.props
+    setCheck('fitStyles', parseInt(name, 10), checked)
   }
-  handleChangeColor = (ids: any[]) => {
-    const { setValue, colors } = this.props
-    const value = colors.filter(({ id }: any) => ids.includes(id))
-    setValue('colors', value)
+  handleChangeColor = ({ target: { name, checked } }: any) => {
+    const { setCheck } = this.props
+    setCheck('colors', parseInt(name, 10), checked)
   }
 }
 

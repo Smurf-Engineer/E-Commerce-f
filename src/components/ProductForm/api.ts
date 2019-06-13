@@ -9,7 +9,6 @@ import { setValue, setUploadingAction, setBannerActions } from './actions'
 export const uploadFilesAction = (
   formatMessage: (messageDescriptor: any) => string,
   productImages: any,
-  productMaterials: any[],
   bannerMaterials: any[],
   mediaFiles: any[]
 ) => {
@@ -56,15 +55,6 @@ export const uploadFilesAction = (
         const index = bannerMaterials.findIndex(
           banner => banner.id === parseInt(file.id, 10)
         )
-        if (productMaterials && productMaterials.length) {
-          const indexProd = productMaterials.findIndex(
-            banner => banner.id === parseInt(file.id, 10)
-          )
-          if (indexProd !== -1) {
-            productMaterials[indexProd].url = file.imageUri
-            productMaterials[indexProd].toUpload = false
-          }
-        }
         if (index !== -1) {
           bannerMaterials[index].url = file.imageUri
           bannerMaterials[index].toUpload = true
@@ -93,14 +83,12 @@ export const uploadFilesAction = (
       })
       dispatch(setValue('pictures', productImages))
       dispatch(setValue('mediaFiles', mediaFiles))
-      dispatch(setValue('productMaterials', productMaterials))
       dispatch(setBannerActions(bannerMaterials))
       dispatch(setUploadingAction(true, formatMessage(messages.savingProduct)))
       return true
     } catch (e) {
       dispatch(setUploadingAction(false, ''))
       message.error(e.message)
-      return false
     }
   }
 }

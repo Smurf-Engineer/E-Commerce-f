@@ -35,6 +35,7 @@ interface Props {
   pictures: any[]
   customizable: any[]
   setBannerActions: (banners: any) => void
+  setCheck: (selected: string, id: number, checked: boolean) => void
   bannerMaterials: any[]
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
@@ -85,7 +86,6 @@ export class FourthStep extends React.Component<Props, {}> {
         }, [])
       }))
     }
-    const checkedMaterials = productMaterials.map((item: any) => item.id)
     return (
       <Container>
         <Separator>
@@ -124,7 +124,7 @@ export class FourthStep extends React.Component<Props, {}> {
                             <Checkbox
                               name={material.id}
                               onChange={this.handleCheckMaterial}
-                              checked={checkedMaterials.includes(material.id)}
+                              checked={productMaterials[material.id]}
                             />
                           </MaterialButtons>
                           <MaterialImage src={material.url} alt="avatar" />
@@ -204,15 +204,9 @@ export class FourthStep extends React.Component<Props, {}> {
     const {
       target: { name, checked }
     } = event
-    const { setValue, productMaterials, bannerMaterials } = this.props
+    const { setCheck } = this.props
     const id = parseInt(name, 10)
-    if (checked) {
-      productMaterials.push(bannerMaterials.find((item: any) => item.id === id))
-    } else {
-      const indextoRemove = productMaterials.find((item: any) => item.id === id)
-      productMaterials.splice(indextoRemove, 1)
-    }
-    setValue('productMaterials', productMaterials)
+    setCheck('productMaterials', id, checked)
   }
 
   handleRemoveMaterial = (index: number) => () => {

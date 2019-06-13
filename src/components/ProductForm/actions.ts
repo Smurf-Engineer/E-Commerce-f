@@ -9,13 +9,19 @@ import {
   SET_BANNERS,
   SET_LOADING,
   SET_GENDERS,
-  SET_CURRENCIES
+  SET_CURRENCIES,
+  SET_CHECK,
+  REMOVE_MATERIAL
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
 
-export const setProductAction = (product: Product): AnyAction => ({
+export const setProductAction = (
+  product: Product,
+  extraData: any
+): AnyAction => ({
   type: SET_PRODUCT_DATA,
-  product
+  product,
+  extraData
 })
 
 export const setValue = (field: string, value: any): AnyAction => ({
@@ -34,6 +40,22 @@ export const setGenderActions = (genders: any): AnyAction => ({
   genders
 })
 
+export const setCheck = (
+  selected: string,
+  id: number,
+  checked: boolean
+): AnyAction => ({
+  type: SET_CHECK,
+  selected,
+  id,
+  checked
+})
+
+export const removeMaterial = (id: number, checked: boolean): AnyAction => ({
+  type: REMOVE_MATERIAL,
+  id,
+  checked
+})
 export const setCurrencies = (currencies: any): AnyAction => ({
   type: SET_CURRENCIES,
   currencies

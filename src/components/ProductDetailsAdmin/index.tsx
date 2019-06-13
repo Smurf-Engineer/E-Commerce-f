@@ -418,7 +418,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
   }
   handleOnClickBack = () => {
     const { history } = this.props
-    history.push(`/admin/products`)
+    history.push('/admin/products')
   }
   handleOnClickEdit = () => {
     const { history, match } = this.props

@@ -9,15 +9,13 @@ import { withRouter } from 'react-router-dom'
 import message from 'antd/lib/message'
 import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
-import { graphql, compose } from 'react-apollo'
+import { graphql, compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import { stepsArray } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
 import * as ProductFormActions from './actions'
 import * as ApiActions from './api'
-import { getFileExtension, getFileName } from '../../utils/utilsFiles'
-import { QueryProps, Product, PriceRange } from '../../types/common'
-import omitDeep from 'omit-deep'
+import { QueryProps, Product } from '../../types/common'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
   Container,
@@ -33,10 +31,7 @@ import {
   NextButton,
   MainBody
 } from './styledComponents'
-import { currencies, quantities } from './Steps/ThirdStep/constants'
-interface DataProduct extends QueryProps {
-  product: Product
-}
+
 interface DataExtra extends QueryProps {
   categories: object[]
   sports: object[]
@@ -47,8 +42,8 @@ interface Props {
   product: Product
   history: any
   match: any
+  client: any
   fixed: boolean
-  dataProduct: DataProduct
   loading: boolean
   loadingMessage: string
   dataExtra: DataExtra
@@ -56,84 +51,47 @@ interface Props {
   uploadFilesAction: (
     formatMessage: (messageDescriptor: any) => string,
     productImages: any[],
-    productMaterials: any[],
     bannerMaterials: any[],
     mediaFiles: any[]
   ) => Promise<any>
   upsertProductAction: (variables: {}) => Promise<any>
+  getDataProduct: (variables: {}) => Promise<any>
+  getExtraDataAction: () => Promise<any>
   setValue: (field: string, value: any) => void
   setBannerActions: (banners: any) => void
   setGenderActions: (genders: any) => void
+  setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
-  setProductAction: (product: Product) => void
+  setProductAction: (product: Product | {}, extraData: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
 const Step = Steps.Step
 export class ProductForm extends React.Component<Props, {}> {
   state = {
-    openedModel: false,
     currentStep: 0
   }
-  componentDidUpdate(prevProps: Props) {
+  async componentDidMount() {
     const {
-      dataProduct,
       setProductAction,
-      dataExtra,
-      setCurrencies,
-      setValue,
-      product: reduxProduct,
       match,
-      fixed,
-      setBannerActions
+      client: { query }
     } = this.props
-    const productId = get(prevProps, 'product.id', '')
-    if (
-      dataProduct &&
-      !dataProduct.loading &&
-      dataProduct.product &&
-      dataProduct.product.id !== parseInt(productId, 10)
-    ) {
-      const product = dataProduct.product
-      setProductAction(product)
-      const productImages = product.pictures || []
-      const productMaterials = product.productMaterials || []
-      const mediaFiles = product.mediaFiles
-        ? product.mediaFiles.map((file: any, index: number) => ({
-            toUpload: false,
-            url: file.url,
-            id: index,
-            extension: getFileExtension(file.url),
-            name: getFileName(file.url)
-          }))
-        : []
-      setValue('pictures', productImages)
-      setValue('mediaFiles', mediaFiles)
-      setValue('productMaterials', productMaterials)
-    }
-    if (dataExtra && !dataExtra.loading && !fixed) {
-      const bannerMaterials = get(dataExtra, 'extraData.bannerMaterials', [])
-      const detailedBanners = bannerMaterials.map((banner: any) => ({
-        ...banner,
-        active: true
-      }))
-      setBannerActions(detailedBanners)
-    }
-    if (
-      !parseInt(get(match, 'params.id', ''), 10) &&
-      !reduxProduct.priceRange
-    ) {
-      const currenciesProduct: PriceRange[] = []
-      currencies.forEach(shortName => {
-        quantities.forEach(quantity => {
-          currenciesProduct.push({
-            price: 0,
-            quantity,
-            shortName
-          })
-        })
+    let product = {}
+    const id = parseInt(get(match, 'params.id', ''), 10)
+    if (id) {
+      const result = await query({
+        query: getProductQuery,
+        variables: { id },
+        fetchPolicy: 'network-only'
       })
-      setCurrencies(currenciesProduct)
+      product = get(result, 'data.product', {})
     }
+    const dataExtra = await query({
+      query: getExtraData,
+      fetchPolicy: 'network-only'
+    })
+    const extraData = get(dataExtra, 'data.extraData', [])
+    setProductAction(product, extraData)
   }
   componentWillUnmount() {
     const { resetData } = this.props
@@ -144,9 +102,9 @@ export class ProductForm extends React.Component<Props, {}> {
     const {
       formatMessage,
       match,
-      dataProduct,
       dataExtra,
       bannerMaterials,
+      setCheck,
       setBannerActions,
       setGenderActions,
       loadingMessage,
@@ -155,17 +113,15 @@ export class ProductForm extends React.Component<Props, {}> {
       setValue
     } = this.props
     const productId = get(match, 'params.id', '')
-    const loadingProduct = get(dataProduct, 'loading', false)
-    const loadingExtra = get(dataExtra, 'loading', false)
-    const categories = get(dataExtra, 'extraData.categories', [])
-    const sports = get(dataExtra, 'extraData.sports', [])
-    const sizes = get(dataExtra, 'extraData.sizes', [])
-    const fitStyles = get(dataExtra, 'extraData.fitStyles', [])
-    const materials = get(dataExtra, 'extraData.materials', [])
-    const relatedTags = get(dataExtra, 'extraData.relatedTags', [])
-    const colors = get(dataExtra, 'extraData.colors', [])
-    const seasons = get(dataExtra, 'extraData.seasons', [])
-    const genders = get(dataExtra, 'extraData.genders', [])
+    const categories = get(dataExtra, 'categories', [])
+    const sports = get(dataExtra, 'sports', [])
+    const sizes = get(dataExtra, 'sizes', [])
+    const fitStyles = get(dataExtra, 'fitStyles', [])
+    const materials = get(dataExtra, 'materials', [])
+    const relatedTags = get(dataExtra, 'relatedTags', [])
+    const colors = get(dataExtra, 'colors', [])
+    const seasons = get(dataExtra, 'seasons', [])
+    const genders = get(dataExtra, 'genders', [])
     const productMaterials = get(product, 'productMaterials', [])
     const mediaFiles = get(product, 'mediaFiles', [])
     const customizable = get(product, 'customizable', [])
@@ -177,6 +133,7 @@ export class ProductForm extends React.Component<Props, {}> {
         {...{
           categories,
           setValue,
+          setCheck,
           seasons,
           setGenderActions,
           product,
@@ -194,6 +151,7 @@ export class ProductForm extends React.Component<Props, {}> {
           setValue,
           seasons,
           colors,
+          setCheck,
           fitStyles,
           sizes,
           product,
@@ -227,6 +185,7 @@ export class ProductForm extends React.Component<Props, {}> {
           productMaterials,
           mediaFiles,
           customizable,
+          setCheck,
           pictures,
           setBannerActions,
           bannerMaterials,
@@ -250,7 +209,7 @@ export class ProductForm extends React.Component<Props, {}> {
             <FormattedMessage {...messages.backToProducts} />
           </BackText>
         </BackLabel>
-        {loadingProduct || loadingExtra ? (
+        {loading ? (
           <Loader>
             <Spin size="large" />
           </Loader>
@@ -301,7 +260,7 @@ export class ProductForm extends React.Component<Props, {}> {
   }
   handleSave = (onlySave: boolean) => async () => {
     const {
-      product: { pictures: productImages, productMaterials, mediaFiles },
+      product: { pictures: productImages, mediaFiles },
       bannerMaterials,
       formatMessage,
       upsertProductAction,
@@ -310,21 +269,75 @@ export class ProductForm extends React.Component<Props, {}> {
     const success = await uploadFilesAction(
       formatMessage,
       productImages || [],
-      productMaterials || [],
       bannerMaterials || [],
       mediaFiles || []
     )
     if (success) {
       const { product, history } = this.props
-      omitDeep(product, '__typename')
-      omitDeep(bannerMaterials, '__typename')
+      const { sports, productMaterials, sizeRange, fitStyles, colors } = product
+      const sportsProduct = sports
+        ? Object.keys(sports).reduce((arr: any[], sportId: string) => {
+            if (sports[sportId]) {
+              arr.push({ id: sportId })
+            }
+            return arr
+            // tslint:disable-next-line: align
+          }, [])
+        : []
+      const productMaterialsDet = productMaterials
+        ? Object.keys(productMaterials).reduce(
+            (arr: any[], materialId: string) => {
+              if (productMaterials[materialId]) {
+                arr.push({ id: materialId })
+              }
+              return arr
+              // tslint:disable-next-line: align
+            },
+            []
+          )
+        : []
+      const sizeRangeDet = sizeRange
+        ? Object.keys(sizeRange).reduce((arr: any[], sizeId: string) => {
+            if (sizeRange[sizeId]) {
+              arr.push({ id: sizeId })
+            }
+            return arr
+            // tslint:disable-next-line: align
+          }, [])
+        : []
+      const fitStylesDet = fitStyles
+        ? Object.keys(fitStyles).reduce((arr: any[], fitId: string) => {
+            if (fitStyles[fitId]) {
+              arr.push({ id: fitId })
+            }
+            return arr
+            // tslint:disable-next-line: align
+          }, [])
+        : []
+      const colorsDet = colors
+        ? Object.keys(colors).reduce((arr: any[], colorId: string) => {
+            if (colors[colorId]) {
+              arr.push({ id: colorId })
+            }
+            return arr
+            // tslint:disable-next-line: align
+          }, [])
+        : []
+      const productToSave = {
+        ...product,
+        sports: sportsProduct,
+        fitStyles: fitStylesDet,
+        sizeRange: sizeRangeDet,
+        colors: colorsDet,
+        productMaterials: productMaterialsDet
+      }
       const response = await upsertProductAction({
-        variables: { body: product, bannerMaterials }
+        variables: { body: productToSave, bannerMaterials }
       })
       const id = get(response, 'data.productResult.id', '')
       if (id) {
         if (!onlySave) {
-          const code = get(product, 'code', '')
+          const code = get(productToSave, 'code', '')
           if (code) {
             history.push(`/publishing-tool?code=${code}`)
           }
@@ -343,9 +356,6 @@ export class ProductForm extends React.Component<Props, {}> {
     document.body.scrollTop = 0 // For Safari
     document.documentElement.scrollTop = 0 // For Chrome, Firefox, IE and Opera
   }
-  handleOpenModel = () => {
-    this.setState({ openedModel: true })
-  }
   handleOnClickBack = () => {
     const { history, match } = this.props
     const productId = get(match, 'params.id', '')
@@ -357,31 +367,16 @@ export class ProductForm extends React.Component<Props, {}> {
   }
 }
 
-interface OwnProps {
-  match?: any
-}
-
 const mapStateToProps = (state: any) => state.get('productForm').toJS()
 
 const ProductFormEnhance = compose(
   withRouter,
+  withApollo,
+  graphql(upsertProduct, { name: 'upsertProductAction' }),
   connect(
     mapStateToProps,
     { ...ProductFormActions, ...ApiActions }
-  ),
-  graphql(upsertProduct, { name: 'upsertProductAction' }),
-  graphql(getProductQuery, {
-    options: ({ match }: OwnProps) => ({
-      skip: !parseInt(get(match, 'params.id', ''), 10),
-      fetchPolicy: 'network-only',
-      variables: { id: parseInt(get(match, 'params.id', ''), 10) }
-    }),
-    name: 'dataProduct'
-  }),
-  graphql(getExtraData, {
-    options: { fetchPolicy: 'network-only' },
-    name: 'dataExtra'
-  })
+  )
 )(ProductForm)
 
 export default ProductFormEnhance

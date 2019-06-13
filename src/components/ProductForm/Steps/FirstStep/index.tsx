@@ -32,6 +32,7 @@ interface Props {
   seasons: string[]
   setValue: (field: string, value: any) => void
   setGenderActions: (genders: any) => void
+  setCheck: (selected: string, id: number, checked: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
 export class FirstStep extends React.Component<Props, {}> {
@@ -71,7 +72,6 @@ export class FirstStep extends React.Component<Props, {}> {
     const gendersValues = gendersProduct ? gendersProduct.map(e => e.id) : []
     const materialsValue = materialsProduct ? materialsProduct.split('-') : []
     const specDetails = details ? details.split(',') : []
-    const sportsSelected = sports ? sports.map(e => e.id) : []
     return (
       <Container>
         <Separator>
@@ -181,16 +181,16 @@ export class FirstStep extends React.Component<Props, {}> {
             <Label>
               <FormattedMessage {...messages.categories} />
             </Label>
-            <CheckGroup
-              value={sportsSelected}
-              onChange={this.handleCheckChange}
-            >
-              {sportsOptions.map((sport: ItemDetailType, index) => (
-                <CheckBox key={index} value={sport.id}>
-                  {sport.name}
-                </CheckBox>
-              ))}
-            </CheckGroup>
+            {sportsOptions.map((sport: ItemDetailType, index) => (
+              <CheckBox
+                onChange={this.handleCheckChange}
+                key={index}
+                name={sport.id.toString()}
+                checked={sports[sport.id]}
+              >
+                {sport.name}
+              </CheckBox>
+            ))}
           </InputDiv>
           <InputDiv flex={1} />
         </RowInput>
@@ -354,10 +354,9 @@ export class FirstStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleCheckChange = (ids: any[]) => {
-    const { setValue, sports } = this.props
-    const value = sports.filter(({ id }: any) => ids.includes(id))
-    setValue('sports', value)
+  handleCheckChange = ({ target: { name, checked } }: any) => {
+    const { setCheck } = this.props
+    setCheck('sports', parseInt(name, 10), checked)
   }
   handleGenderChange = (ids: any[]) => {
     const { setGenderActions, genders } = this.props
