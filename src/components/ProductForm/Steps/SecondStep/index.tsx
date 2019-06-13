@@ -36,7 +36,7 @@ export class SecondStep extends React.Component<Props, {}> {
       sizeRange: sizesSelected,
       fitStyles: fitStylesProduct,
       colors: productColors,
-      customizable
+      designCenter
     } = product
     return (
       <Container>
@@ -79,7 +79,7 @@ export class SecondStep extends React.Component<Props, {}> {
           </InputDiv>
           <InputDiv flex={1} />
         </RowInput>
-        {!customizable && (
+        {!designCenter && (
           <RowInput>
             <InputDiv flex={2}>
               <Label>
