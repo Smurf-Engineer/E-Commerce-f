@@ -36,10 +36,11 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_QUICKVIEW_ACTION:
       return state.set('productId', action.id)
     case SET_HOMEPAGE_INFO: {
+      const { headerImageMobile, headerImage, headerImageLink } = action.data
       return state.merge({
-        headerImageMobile: action.data.headerImageMobile,
-        headerImage: action.data.headerImage,
-        headerImageLink: action.data.headerImageLink
+        headerImageMobile,
+        headerImage,
+        headerImageLink
       })
     }
     default:
