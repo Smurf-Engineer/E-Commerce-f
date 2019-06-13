@@ -49,3 +49,59 @@ export const setSecondaryHeaderMutation = graphql(
   `,
   { name: 'setSecondaryHeader' }
 )
+
+export const productsQuery = gql`
+  query GetDesigns($limit: Int, $offset: Int) {
+    products: products(limit: $limit, offset: $offset) {
+      fullCount
+      products {
+        id
+        code
+        yotpoId: yotpo_id
+        name
+        type: name
+        description: short_description
+        shortDescription: short_description
+        collections
+        isTopProduct
+        weight
+        mpn
+        genders {
+          id
+          name: gender
+        }
+        fitStyles {
+          id
+          name: description
+        }
+        sizeRange: size_range {
+          id
+          name
+        }
+        priceRange {
+          quantity
+          price
+          abbreviation
+          shortName: short_name
+        }
+        images: pictures {
+          front: front_image
+          back: back_image
+          left: left_image
+          right: right_image
+        }
+      }
+    }
+  }
+`
+
+export const setFeaturedProductsMutation = graphql(
+  gql`
+    mutation setFeaturedProducts($products: [IdInput]) {
+      setFeaturedProducts(products: $products) {
+        message
+      }
+    }
+  `,
+  { name: 'setFeaturedProducts' }
+)

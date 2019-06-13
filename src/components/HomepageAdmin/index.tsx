@@ -2,13 +2,15 @@
  * HomepageAdminActions Component - Created by eduardoquintero on 30/05/19.
  */
 import * as React from 'react'
-import { compose } from 'react-apollo'
+import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
 import {
   getHomepageInfo,
   setMainHeaderMutation,
-  setSecondaryHeaderMutation
+  setSecondaryHeaderMutation,
+  productsQuery,
+  setFeaturedProductsMutation
 } from './data'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
@@ -18,8 +20,10 @@ import { Sections } from './constants'
 import * as homepageAdminApiActions from './api'
 import MainHeader from './MainHeader'
 import SecondaryHeader from './SecondaryHeader'
+import FeaturedProducts from './FeaturedProducts'
 import { Container, ScreenTitle, SpinContainer } from './styledComponents'
 import messages from './messages'
+import { Product, ProductType } from '../../types/common'
 
 interface Props {
   history: any
@@ -28,24 +32,48 @@ interface Props {
   mainHeaderLoading: any
   secondaryHeaderLoading: any
   loaders: any
-  dispatch: any
   secondaryHeader: any
+  client: any
+  limit: number
+  offset: number
+  currentPage: number
+  fullCount: string
+  products: Product[]
+  selectedItems: any
+  productsModalOpen: boolean
+  items: any
   formatMessage: (messageDescriptor: any) => string
   homepageInfo: () => Promise<any>
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
+  setFeaturedProducts: (variables: {}) => Promise<any>
+  openModalAction: (open: boolean) => void
+  deleteFromTableAction: (id: number) => void
+  setItemsAddAction: () => void
+  deleteItemSelectedAction: (id: number) => void
+  setItemSelectedAction: (item: any, checked: boolean) => void
+  setProductsData: (data: ProductType, offset: number, page: number) => void
+  setUrlAction: (value: string) => void
+  setLoadersAction: (section: string, loading: boolean) => void
+  setHomepageInfoAction: (data: any) => void
+  setUrlListAction: (value: string, index: number) => void
+  uploadFileAction: (
+    file: any,
+    section: string,
+    imageType: string,
+    index: number
+  ) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
   async componentDidMount() {
-    const { homepageInfo, dispatch } = this.props
-    const { setLoadersAction, setHomepageInfoAction } = HomepageAdminActions
+    const { homepageInfo, setLoadersAction, setHomepageInfoAction } = this.props
     try {
-      dispatch(setLoadersAction(Sections.MAIN_CONTAINER, true))
+      setLoadersAction(Sections.MAIN_CONTAINER, true)
       const response = await homepageInfo()
-
-      dispatch(setHomepageInfoAction(response.data.getHomepageContent))
-      dispatch(setLoadersAction(Sections.MAIN_CONTAINER, false))
+      await this.handleOnChangePage()
+      setHomepageInfoAction(response.data.getHomepageContent)
+      setLoadersAction(Sections.MAIN_CONTAINER, false)
     } catch (e) {
       console.error(e)
     }
@@ -56,25 +84,14 @@ class HomepageAdmin extends React.Component<Props, {}> {
     imageType: string,
     index: number = -1
   ) => {
-    const { dispatch } = this.props
-    const { uploadFileAction } = homepageAdminApiActions
-    dispatch(uploadFileAction(file, section, imageType, index))
+    const { uploadFileAction } = this.props
+    uploadFileAction(file, section, imageType, index)
   }
-  handleOnSetUrl = (value: string) => {
-    const { dispatch } = this.props
-    const { setUrlAction } = HomepageAdminActions
-    dispatch(setUrlAction(value))
-  }
-  handleOnSetUrlLists = (value: string, index: number) => {
-    const { dispatch } = this.props
-    const { setUrlListAction } = HomepageAdminActions
-    dispatch(setUrlListAction(value, index))
-  }
+
   handleOnSaveMainHeader = async () => {
     try {
-      const { setMainHeader, mainHeader, dispatch } = this.props
-      const { setLoadersAction } = HomepageAdminActions
-      dispatch(setLoadersAction(Sections.MAIN_HEADER, true))
+      const { setMainHeader, mainHeader, setLoadersAction } = this.props
+      setLoadersAction(Sections.MAIN_HEADER, true)
       const response = await setMainHeader({
         variables: {
           headerImage: mainHeader.desktopImage,
@@ -83,16 +100,19 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       })
       message.success(get(response, 'data.setMainHeader.message', ''))
-      dispatch(setLoadersAction(Sections.MAIN_HEADER, false))
+      setLoadersAction(Sections.MAIN_HEADER, false)
     } catch (e) {
       message.error(e.message)
     }
   }
   handleOnSaveSecondaryHeader = async () => {
     try {
-      const { setSecondaryHeader, dispatch, secondaryHeader } = this.props
-      const { setLoadersAction } = HomepageAdminActions
-      dispatch(setLoadersAction(Sections.SECONDARY_HEADER, true))
+      const {
+        setSecondaryHeader,
+        setLoadersAction,
+        secondaryHeader
+      } = this.props
+      setLoadersAction(Sections.SECONDARY_HEADER, true)
       const homepageImages = secondaryHeader.map((item: any) => ({
         id: item.id,
         image: item.desktopImage,
@@ -105,11 +125,61 @@ class HomepageAdmin extends React.Component<Props, {}> {
         }
       })
       message.success(get(response, 'data.setSecondaryHeader.message', ''))
-      dispatch(setLoadersAction(Sections.SECONDARY_HEADER, false))
+      setLoadersAction(Sections.SECONDARY_HEADER, false)
     } catch (e) {
       message.error(e.message)
     }
   }
+  handleOnChangePage = async (page: number = 1) => {
+    const { limit } = this.props
+    const offset = page > 1 ? (page - 1) * limit : 0
+    try {
+      this.fetchDesigns(offset, page)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+  fetchDesigns = async (offsetParam?: number, pageParam?: number) => {
+    const {
+      client: { query },
+      offset: offsetProp,
+      currentPage: pageProp,
+      limit,
+      setProductsData
+    } = this.props
+    let offset = offsetParam !== undefined ? offsetParam : offsetProp
+    let currentPage = pageParam !== undefined ? pageParam : pageProp
+
+    if (!offsetParam && !pageParam) {
+      const fullPage = !(offset % limit)
+      const maxPageNumber = offset / limit
+
+      if (fullPage && currentPage > maxPageNumber) {
+        currentPage--
+        offset = currentPage > 1 ? (currentPage - 1) * limit : 0
+      }
+    }
+
+    try {
+      const data = await query({
+        query: productsQuery,
+        variables: { limit, offset },
+        fetchPolicy: 'network-only'
+      })
+      setProductsData(data, offset, currentPage)
+    } catch (e) {
+      throw e
+    }
+  }
+  handleOnSelectItem = (item: any, checked: boolean) => {
+    const { setItemSelectedAction, deleteItemSelectedAction } = this.props
+
+    if (!checked) {
+      return deleteItemSelectedAction(item.product.id)
+    }
+    setItemSelectedAction(item, checked)
+  }
+
   render() {
     const {
       formatMessage,
@@ -117,12 +187,24 @@ class HomepageAdmin extends React.Component<Props, {}> {
       mainHeader,
       mainHeaderLoading,
       secondaryHeaderLoading,
+      products,
+      currentPage,
+      fullCount,
+      limit,
       loaders: {
         mainLoader,
         mainHeader: mainHeaderLoader,
         secondaryHeader: secondaryHeaderLoader
       },
-      secondaryHeader
+      secondaryHeader,
+      selectedItems,
+      productsModalOpen,
+      items,
+      openModalAction,
+      deleteFromTableAction,
+      setItemsAddAction,
+      setUrlAction,
+      setUrlListAction
     } = this.props
 
     return mainLoader ? (
@@ -136,7 +218,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         </ScreenTitle>
         <MainHeader
           onUploadFile={this.handleOnUploadFile}
-          setUrl={this.handleOnSetUrl}
+          setUrl={setUrlAction}
           onSaveHeader={this.handleOnSaveMainHeader}
           saving={mainHeaderLoader}
           {...{
@@ -149,7 +231,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         />
         <SecondaryHeader
           onUploadFile={this.handleOnUploadFile}
-          setUrl={this.handleOnSetUrlLists}
+          setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveSecondaryHeader}
           saving={secondaryHeaderLoader}
           {...{
@@ -159,18 +241,37 @@ class HomepageAdmin extends React.Component<Props, {}> {
             secondaryHeader
           }}
         />
+        <FeaturedProducts
+          {...{
+            formatMessage,
+            products,
+            currentPage,
+            fullCount,
+            limit,
+            selectedItems,
+            productsModalOpen,
+            items
+          }}
+          changePage={this.handleOnChangePage}
+          onSelectItem={this.handleOnSelectItem}
+          onPressDelete={deleteFromTableAction}
+          openModal={openModalAction}
+          setItemsAdd={setItemsAddAction}
+        />
       </Container>
     )
   }
 }
 
 const mapStateToProps = (state: any) => state.get('homepageAdmin').toJS()
-const mapDispatchToProps = (dispatch: any) => ({ dispatch })
+const mapDispatchToProps = { ...HomepageAdminActions, homepageAdminApiActions }
 
 const HomepageAdminEnhance = compose(
+  withApollo,
   getHomepageInfo,
   setMainHeaderMutation,
   setSecondaryHeaderMutation,
+  setFeaturedProductsMutation,
   connect(
     mapStateToProps,
     mapDispatchToProps

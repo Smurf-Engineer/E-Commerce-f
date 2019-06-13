@@ -209,6 +209,11 @@ export type LockerTableType = {
   visible: boolean
 }
 
+export type ProductTableType = {
+  product: Product
+  visible: boolean
+}
+
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
