@@ -43,7 +43,7 @@ interface Props {
   colorAccessories: any
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
-  formatMessage: (messageDescriptor: any, params: any) => string
+  formatMessage: (messageDescriptor: any, params?: any) => string
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
