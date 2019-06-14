@@ -25,7 +25,8 @@ import {
   RenderLayout,
   ThumbnailLabel,
   ChangesContainer,
-  MessageContainer
+  MessageContainer,
+  ModelNameContainer
 } from './styledComponents'
 import DraggerWithLoading from '../../../components/DraggerWithLoading'
 import { OrderSearchResult, StitchingColor } from '../../../types/common'
@@ -42,7 +43,7 @@ interface Props {
   colorAccessories: any
   downloadFile: (code: string) => void
   onUploadFile: (file: any, code: string) => void
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: any, params: any) => string
   onSaveThumbnail: (thumbnail: string) => void
   setUploadingThumbnailAction: (uploading: boolean) => void
   onSelectStitchingColor: (stitchingColor: StitchingColor) => void
@@ -64,7 +65,8 @@ class OrderFiles extends React.PureComponent<Props> {
         bindingColor,
         shortId,
         image,
-        pdfUrl
+        pdfUrl,
+        product: { name: modelName }
       },
       uploadingFile,
       formatMessage,
@@ -81,6 +83,9 @@ class OrderFiles extends React.PureComponent<Props> {
     return (
       <Container>
         <RenderLayout>
+          <ModelNameContainer>
+            <Code>{formatMessage(messages.modelNameLabel, { modelName })}</Code>
+          </ModelNameContainer>
           <AccessoryColors
             {...{
               bibColor,

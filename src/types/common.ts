@@ -1085,6 +1085,7 @@ export interface OrderSearchResult {
   stitchingValue?: string
   stitchingName?: string
   shortId: string
+  product: Product
 }
 
 export interface FilesDownload {
