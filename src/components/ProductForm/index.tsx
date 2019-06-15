@@ -76,6 +76,7 @@ interface Props {
   setCurrencies: (currencies: any) => void
   setProductAction: (product: Product | {}, extraData: any) => void
   formatMessage: (messageDescriptor: any) => string
+  setUploadingAction: (loading: boolean, loadingMessage: string) => void
 }
 const Step = Steps.Step
 export class ProductForm extends React.Component<Props, {}> {
@@ -143,7 +144,7 @@ export class ProductForm extends React.Component<Props, {}> {
     const genders = get(dataExtra, 'genders', [])
     const productMaterials = get(product, 'productMaterials', [])
     const mediaFiles = get(product, 'mediaFiles', [])
-    const customizable = get(product, 'customizable', [])
+    const customizable = get(product, 'designCenter', null)
     const pictures = get(product, 'pictures', [])
     const gendersArray = get(product, 'genders', [])
     const screenSteps = [
@@ -291,7 +292,8 @@ export class ProductForm extends React.Component<Props, {}> {
       bannerMaterials,
       formatMessage,
       upsertProductAction,
-      uploadFilesAction
+      uploadFilesAction,
+      setUploadingAction
     } = this.props
     try {
       await uploadFilesAction(
@@ -372,6 +374,7 @@ export class ProductForm extends React.Component<Props, {}> {
         history.push('/admin/products')
       }
     } catch (error) {
+      setUploadingAction(false, '')
       message.error(formatMessage(messages.errorUploading))
     }
   }

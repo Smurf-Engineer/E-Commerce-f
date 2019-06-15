@@ -179,7 +179,7 @@ export default defineMessages({
   },
   errorUploading: {
     id: 'components.ProductDetailAdmin.errorUploading',
-    defaultMessage: 'Error uploading files.'
+    defaultMessage: 'Oops! Something went wrong.'
   },
   errorUpdating: {
     id: 'components.ProductDetailAdmin.errorUpdating',
