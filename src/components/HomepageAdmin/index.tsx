@@ -11,7 +11,8 @@ import {
   productsQuery,
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
-  getHomepageInfo
+  getHomepageInfo,
+  updateProductTilesMutation
 } from './data'
 import get from 'lodash/get'
 import Spin from 'antd/lib/spin'
@@ -44,6 +45,7 @@ interface Props {
   selectedItems: any
   productsModalOpen: boolean
   items: any
+  productTiles: any
   formatMessage: (messageDescriptor: any) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -65,6 +67,9 @@ interface Props {
     index: number
   ) => void
   deleteFeaturedProduct: (variables: {}) => Promise<any>
+  uploadProductFileAction: (file: any, index: number) => Promise<any>
+  updateProductTiles: (variables: {}) => Promise<any>
+  setTilesTextAction: (index: number, section: string, value: string) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -86,7 +91,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         homepageImages,
         headerImageLink,
         headerImage,
-        headerImageMobile
+        headerImageMobile,
+        productTiles
       } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
         return { visible: true, product: item }
@@ -96,7 +102,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         homepageImages,
         headerImageLink,
         headerImage,
-        headerImageMobile
+        headerImageMobile,
+        productTiles
       }
       setHomepageInfoAction(cleanData)
       setLoadersAction(Sections.MAIN_CONTAINER, false)
@@ -111,7 +118,11 @@ class HomepageAdmin extends React.Component<Props, {}> {
     index: number = -1
   ) => {
     const { uploadFileAction } = this.props
-    uploadFileAction(file, section, imageType, index)
+    await uploadFileAction(file, section, imageType, index)
+  }
+  handleOnUploadProductFile = async (file: any, index: number) => {
+    const { uploadProductFileAction } = this.props
+    await uploadProductFileAction(file, index)
   }
 
   handleOnSaveMainHeader = async () => {
@@ -200,7 +211,6 @@ class HomepageAdmin extends React.Component<Props, {}> {
   }
   handleOnSelectItem = (item: any, checked: boolean) => {
     const { setItemSelectedAction, deleteItemSelectedAction } = this.props
-    // const itemToAdd = {[item.product.id]: checked}
     if (!checked) {
       return deleteItemSelectedAction(item.product.id)
     }
@@ -240,6 +250,25 @@ class HomepageAdmin extends React.Component<Props, {}> {
       message.error(e.message)
     }
   }
+  handleOnSaveProductTiles = async () => {
+    const { productTiles, setLoadersAction, updateProductTiles } = this.props
+    setLoadersAction(Sections.PRODUCT_TILES, true)
+    const products = productTiles.map((item: any) => ({
+      id: item.id,
+      image: item.image,
+      content_tile: item.contentTile,
+      title: item.title
+    }))
+    try {
+      const response = await updateProductTiles({
+        variables: { products }
+      })
+      message.success(get(response, 'data.updateProductTiles.message', ''))
+    } catch (e) {
+      message.error(e.message)
+    }
+    setLoadersAction(Sections.PRODUCT_TILES, false)
+  }
   render() {
     const {
       formatMessage,
@@ -254,7 +283,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
       loaders: {
         mainContainer,
         mainHeader: mainHeaderLoader,
-        secondaryHeader: secondaryHeaderLoader
+        secondaryHeader: secondaryHeaderLoader,
+        productTiles: productTilesLoader
       },
       secondaryHeader,
       selectedItems,
@@ -262,7 +292,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       items,
       openModalAction,
       setUrlAction,
-      setUrlListAction
+      setUrlListAction,
+      productTiles,
+      setTilesTextAction
     } = this.props
 
     return mainContainer ? (
@@ -316,7 +348,13 @@ class HomepageAdmin extends React.Component<Props, {}> {
           openModal={openModalAction}
           setItemsAdd={this.handleAddNewItems}
         />
-        <Tiles />
+        <Tiles
+          onUploadFile={this.handleOnUploadProductFile}
+          {...{ formatMessage, productTiles }}
+          saving={productTilesLoader}
+          onSave={this.handleOnSaveProductTiles}
+          onChangeText={setTilesTextAction}
+        />
       </Container>
     )
   }
@@ -334,6 +372,7 @@ const HomepageAdminEnhance = compose(
   setSecondaryHeaderMutation,
   setFeaturedProductsMutation,
   deleteFeaturedProductMutation,
+  updateProductTilesMutation,
   connect(
     mapStateToProps,
     mapDispatchToProps

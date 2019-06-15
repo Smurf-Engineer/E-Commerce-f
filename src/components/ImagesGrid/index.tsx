@@ -31,12 +31,12 @@ import FeaturedCategory from '../FeaturedCategory'
 // }
 
 interface Props {
-  fakeWidth: number
   history: any
   browserName?: string
+  productTiles: any
 }
 
-const ImagesGrid = ({ fakeWidth, history, browserName }: Props) => {
+const ImagesGrid = ({ productTiles, history, browserName }: Props) => {
   return (
     <Container>
       {/* TODO: Remove after verify it wount be needed  */}
@@ -63,7 +63,7 @@ const ImagesGrid = ({ fakeWidth, history, browserName }: Props) => {
           }}
         </MediaQuery>
         </QuoteContent>*/}
-      <FeaturedCategory {...{ history, browserName }} />
+      <FeaturedCategory {...{ history, browserName, productTiles }} />
       <ScenesFromTitle withoutCarouselContent={true}>
         <FormattedMessage {...messages.scenesFromLabel} />
       </ScenesFromTitle>

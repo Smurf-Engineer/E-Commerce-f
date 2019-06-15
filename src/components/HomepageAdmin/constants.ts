@@ -7,7 +7,8 @@ const namespace = 'src/OrderHistoryAdmin'
 export enum Sections {
   MAIN_CONTAINER = 'mainContainer',
   MAIN_HEADER = 'mainHeader',
-  SECONDARY_HEADER = 'secondaryHeader'
+  SECONDARY_HEADER = 'secondaryHeader',
+  PRODUCT_TILES = 'productTiles'
 }
 export enum ImageTypes {
   DESKTOP = 'desktopImage',
@@ -29,3 +30,6 @@ export const DELETE_ITEM_SELECTED = `${namespace}/DELETE_ITEM_SELECTED`
 export const OPEN_MODAL = `${namespace}/OPEN_MODAL`
 export const ADD_ITEMS = `${namespace}/ADD_ITEMS`
 export const DELETE_FROM_TABLE = `${namespace}/DELETE_FROM_TABLE`
+export const SET_PRODUCT_TILE_IMAGE = `${namespace}/SET_PRODUCT_TILE_IMAGE`
+export const SET_PRODUCT_TILE_LOADING = `${namespace}/SET_PRODUCT_TILE_LOADING`
+export const SET_TILES_TEXT = `${namespace}/SET_TILES_TEXT`

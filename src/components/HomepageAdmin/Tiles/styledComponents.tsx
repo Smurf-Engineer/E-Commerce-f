@@ -1,8 +1,7 @@
 /**
- * Styled Components - Created by eduardoquintero on 30/05/19.
+ * Styled Components - Created by eduardoquintero on 13/06/19.
  */
 import styled from 'styled-components'
-import Button from 'antd/lib/button'
 
 export const Container = styled.div`
   margin-bottom: 20px;
@@ -20,15 +19,13 @@ export const ScreenTitle = styled.div`
   }
 `
 
-export const AddProductButton = styled(Button)`
-  height: 50px;
-  border: 2px solid #e61737;
-  border-radius: 2px;
-  background-color: #ffffff;
-  color: #e61737;
-  margin-right: 22px;
-  font-size: 16px;
-  letter-spacing: 0.11px;
-  line-height: 22px;
-  text-align: center;
+export const UploadersContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const ButtonContainer = styled.div`
+  width: 100%;
+  text-align: right;
+  margin-top: 10px;
 `

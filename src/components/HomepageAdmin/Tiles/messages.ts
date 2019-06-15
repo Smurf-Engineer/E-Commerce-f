@@ -1,16 +1,16 @@
 /**
- * FeaturedProducts -  Messages
+ * Tiles -  Messages
  */
 
 import { defineMessages } from 'react-intl'
 
 export default defineMessages({
   title: {
-    id: 'components.FeaturedProducts.title',
-    defaultMessage: 'Featured Products'
+    id: 'components.Tiles.title',
+    defaultMessage: 'Product Tiles'
   },
-  addProduct: {
-    id: 'components.FeaturedProducts.addProduct',
-    defaultMessage: '+ ADD NEW PRODUCT'
+  saveChanges: {
+    id: 'components.SecondaryHeader.saveChanges',
+    defaultMessage: 'Save Changes'
   }
 })

@@ -25,6 +25,12 @@ export const getHomepageInfo = gql`
           front: front_image
         }
       }
+      productTiles {
+        id
+        title
+        contentTile: content_tile
+        image
+      }
     }
   }
 `
@@ -99,4 +105,15 @@ export const deleteFeaturedProductMutation = graphql(
     }
   `,
   { name: 'deleteFeaturedProduct' }
+)
+
+export const updateProductTilesMutation = graphql(
+  gql`
+    mutation updateProductTiles($products: [ProductTilesInput]) {
+      updateProductTiles(products: $products) {
+        message
+      }
+    }
+  `,
+  { name: 'updateProductTiles' }
 )

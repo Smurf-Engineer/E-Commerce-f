@@ -19,6 +19,9 @@ import {
   OPEN_MODAL,
   ADD_ITEMS,
   DELETE_FROM_TABLE,
+  SET_PRODUCT_TILE_IMAGE,
+  SET_PRODUCT_TILE_LOADING,
+  SET_TILES_TEXT,
   ImageTypes,
   Sections
 } from './constants'
@@ -40,7 +43,8 @@ export const initialState = fromJS({
   loaders: {
     [Sections.MAIN_CONTAINER]: true,
     [Sections.MAIN_HEADER]: false,
-    [Sections.SECONDARY_HEADER]: false
+    [Sections.SECONDARY_HEADER]: false,
+    [Sections.PRODUCT_TILES]: false
   },
   fullCount: '',
   products: [],
@@ -49,7 +53,8 @@ export const initialState = fromJS({
   currentPage: 1,
   selectedItems: [],
   productsModalOpen: false,
-  items: []
+  items: [],
+  productTiles: []
 })
 
 const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
@@ -71,11 +76,13 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         headerImageLink,
         headerImage,
         headerImageMobile,
-        items
+        items,
+        productTiles
       } = action.data
       return state.withMutations((map: any) => {
         map.set('items', fromJS(items))
         map.set('secondaryHeader', List.of(...fromJS(homepageImages)))
+        map.set('productTiles', List.of(...fromJS(productTiles)))
         map.set(
           'secondaryHeaderLoading',
           List.of(
@@ -163,7 +170,17 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       const updatedSelectedItems = selectedItems.delete(index)
       return state.set('items', updatedSelectedItems)
     }
-
+    case SET_PRODUCT_TILE_IMAGE:
+      return state.setIn(['productTiles', action.index, 'image'], action.url)
+    case SET_PRODUCT_TILE_LOADING:
+      return state.setIn(
+        ['productTiles', action.index, 'loading'],
+        action.loading
+      )
+    case SET_TILES_TEXT: {
+      const { index, section, value } = action
+      return state.setIn(['productTiles', index, section], value)
+    }
     default:
       return state
   }
