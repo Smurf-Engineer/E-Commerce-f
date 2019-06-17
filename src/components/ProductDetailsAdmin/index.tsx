@@ -70,6 +70,7 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
     const shortDescription = get(product, 'shortDescription', '')
     const description = get(product, 'description', '')
     const yotpoId = get(product, 'yotpoId', '')
+    const colors = get(product, 'colors', '')
     let categories = get(product, 'sports', '')
     if (categories) {
       categories = categories.map((item: any) => item.name).join(', ')
@@ -150,28 +151,24 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
         )
       }
     ]
-    let productImages = get(product, 'pictures', '')
-    if (productImages && gendersArray) {
-      productImages = gendersArray.map((gender: any) => ({
-        genderName: gender.name,
-        genderBlockImages: productImages
-          .filter((picture: any) => picture.gender_id === gender.id)
-          .map((block: any) => {
-            const images = []
-            if (block.back_image) {
-              images.push(block.back_image)
-            }
-            if (block.front_image) {
-              images.push(block.front_image)
-            }
-            if (block.left_image) {
-              images.push(block.left_image)
-            }
-            if (block.right_image) {
-              images.push(block.right_image)
-            }
-            return images
-          })
+    const pictures = get(product, 'pictures', '')
+    const arrayType = designCenter ? gendersArray : colors
+    let productImages: any[] = []
+    if (pictures && arrayType) {
+      productImages = arrayType.map((item: any) => ({
+        genderName: item.name,
+        genderBlockImages: pictures.reduce((arr: any[], block: any) => {
+          if ((designCenter ? block.gender_id : block.color_id) === item.id) {
+            arr.push([
+              block.back_image,
+              block.front_image,
+              block.left_image,
+              block.right_image
+            ])
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
       }))
     }
     return (

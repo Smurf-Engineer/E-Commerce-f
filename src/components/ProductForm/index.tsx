@@ -52,13 +52,16 @@ interface Props {
     formatMessage: (messageDescriptor: any) => string,
     productImages: any[],
     bannerMaterials: any[],
-    mediaFiles: any[]
+    mediaFiles: any[],
+    isCustom: boolean
   ) => Promise<any>
   upsertProductAction: (variables: {}) => Promise<any>
   getDataProduct: (variables: {}) => Promise<any>
   getExtraDataAction: () => Promise<any>
   setValue: (field: string, value: any) => void
   removeBanner: (index: number) => void
+  setDesignCenter: (checked: boolean) => void
+  setColors: () => void
   addBanner: (item: any) => void
   addPicture: (index: number, item: any) => void
   setBanner: (index: number, field: string, value: any) => void
@@ -122,7 +125,9 @@ export class ProductForm extends React.Component<Props, {}> {
       removeFile,
       addFile,
       addPicture,
+      setDesignCenter,
       removeBanner,
+      setColors,
       addBanner,
       setBanner,
       setFileField,
@@ -147,12 +152,14 @@ export class ProductForm extends React.Component<Props, {}> {
     const customizable = get(product, 'designCenter', null)
     const pictures = get(product, 'pictures', [])
     const gendersArray = get(product, 'genders', [])
+    const colorsProducts = get(product, 'colors', {})
     const screenSteps = [
       <FirstStep
         key={0}
         {...{
           categories,
           setValue,
+          setDesignCenter,
           setCheck,
           seasons,
           setGenderActions,
@@ -172,6 +179,7 @@ export class ProductForm extends React.Component<Props, {}> {
           seasons,
           colors,
           setCheck,
+          setColors,
           fitStyles,
           sizes,
           product,
@@ -207,6 +215,7 @@ export class ProductForm extends React.Component<Props, {}> {
           removeFile,
           addFile,
           setFileField,
+          colorsProducts,
           removeBanner,
           addBanner,
           addPicture,
@@ -222,6 +231,7 @@ export class ProductForm extends React.Component<Props, {}> {
         }}
       />
     ]
+    const validNext = this.validateFields()
     return (
       <Container>
         {loadingMessage && (
@@ -270,13 +280,20 @@ export class ProductForm extends React.Component<Props, {}> {
               )}
 
               {currentStep < 3 && (
-                <NextButton onClick={this.changeStep(currentStep + 1)}>
+                <NextButton
+                  enabled={validNext}
+                  onClick={
+                    validNext
+                      ? this.changeStep(currentStep + 1)
+                      : this.showMissingFields
+                  }
+                >
                   <FormattedMessage {...messages.next} />
                   <Icon type="right" />
                 </NextButton>
               )}
               {currentStep === 3 && (
-                <NextButton onClick={this.handleSave(false)}>
+                <NextButton enabled={true} onClick={this.handleSave(false)}>
                   <FormattedMessage {...messages.submit} />
                 </NextButton>
               )}
@@ -286,9 +303,89 @@ export class ProductForm extends React.Component<Props, {}> {
       </Container>
     )
   }
+  showMissingFields = () => {
+    const { formatMessage } = this.props
+    message.error(formatMessage(messages.missingFields))
+  }
+  validateFields = () => {
+    const { currentStep } = this.state
+    const { product } = this.props
+    let valid
+    switch (currentStep) {
+      case 0:
+        const {
+          name,
+          mpn,
+          tags,
+          season,
+          yotpoId,
+          genders,
+          details,
+          materials,
+          code,
+          categoryName,
+          sports,
+          relatedItemTag,
+          description,
+          weight,
+          shortDescription
+        } = product
+        if (
+          name &&
+          mpn &&
+          tags &&
+          season &&
+          yotpoId &&
+          code &&
+          details &&
+          genders &&
+          product.hasOwnProperty('designCenter') &&
+          genders.length &&
+          materials &&
+          categoryName &&
+          sports &&
+          Object.keys(sports).some(key => sports[key]) &&
+          relatedItemTag &&
+          description &&
+          weight &&
+          shortDescription
+        ) {
+          valid = true
+        }
+        break
+      case 1:
+        const { sizeRange, fitStyles, colors, designCenter } = product
+        if (
+          sizeRange &&
+          Object.keys(sizeRange).some(key => sizeRange[key]) &&
+          fitStyles &&
+          Object.keys(fitStyles).some(key => fitStyles[key]) &&
+          ((!designCenter &&
+            colors &&
+            Object.keys(colors).some(key => colors[key])) ||
+            designCenter)
+        ) {
+          valid = true
+        }
+        break
+      case 2:
+        const { priceRange } = product
+        if (priceRange.every(item => item.price > 0)) {
+          valid = true
+        }
+        break
+      case 3:
+        valid = true
+        break
+      default:
+        valid = false
+        break
+    }
+    return valid
+  }
   handleSave = (onlySave: boolean) => async () => {
     const {
-      product: { pictures: productImages, mediaFiles },
+      product: { pictures: productImages, mediaFiles, designCenter },
       bannerMaterials,
       formatMessage,
       upsertProductAction,
@@ -300,7 +397,8 @@ export class ProductForm extends React.Component<Props, {}> {
         formatMessage,
         productImages || [],
         bannerMaterials || [],
-        mediaFiles || []
+        mediaFiles || [],
+        designCenter
       )
 
       const { product, history } = this.props

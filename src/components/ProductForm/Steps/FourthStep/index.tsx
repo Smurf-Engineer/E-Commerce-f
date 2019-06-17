@@ -33,7 +33,8 @@ interface Props {
   mediaFiles: any[]
   gendersArray: any[]
   pictures: any[]
-  customizable: any[]
+  colorsProducts: any[]
+  customizable: boolean
   setBannerActions: (banners: any) => void
   addPicture: (index: number, item: any) => void
   removeBanner: (index: number) => void
@@ -61,15 +62,28 @@ export class FourthStep extends React.Component<Props, {}> {
       gendersArray,
       pictures: productImages,
       customizable,
+      colorsProducts,
       bannerMaterials
     } = this.props
     let productsImagesForm
-    if (productImages && gendersArray) {
-      productsImagesForm = gendersArray.map((gender: any) => ({
+    const arrayType = customizable
+      ? gendersArray
+      : Object.keys(colorsProducts).reduce((arr: any[], id: any) => {
+          if (colorsProducts[id]) {
+            arr.push({ id, name: colorsProducts[id] })
+          }
+          return arr
+          // tslint:disable-next-line: align
+        }, [])
+    if (productImages && arrayType) {
+      productsImagesForm = arrayType.map((gender: any) => ({
         genderName: gender.name || gender.gender,
         genderId: gender.id,
         genderBlockImages: productImages.reduce((arr: any[], block: any) => {
-          if (block.gender_id === gender.id) {
+          if (
+            (customizable ? block.gender_id : block.color_id) ===
+            parseInt(gender.id, 10)
+          ) {
             arr.push([
               {
                 name: 'front_image',
@@ -303,13 +317,15 @@ export class FourthStep extends React.Component<Props, {}> {
   }
 
   handleSetFile = (event: any) => {
-    const { addPicture, pictures: productImages } = this.props
+    const { addPicture, pictures: productImages, customizable } = this.props
     const { file } = event
     const parameters = event.filename.split('@')
     const genderId = parameters[0]
     const name = parameters[1]
     const index = productImages.findIndex(
-      (item: any) => item.gender_id.toString() === genderId
+      (item: any) =>
+        (customizable ? item.gender_id : item.color_id) ===
+        parseInt(genderId, 10)
     )
     this.getBase64(file, (base64Image: string) => {
       const item = productImages[index]

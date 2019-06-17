@@ -10,7 +10,8 @@ export const uploadFilesAction = (
   formatMessage: (messageDescriptor: any) => string,
   productImages: any,
   bannerMaterials: any[],
-  mediaFiles: any[]
+  mediaFiles: any[],
+  isCustom: boolean
 ) => {
   return async (dispatch: any) => {
     try {
@@ -30,7 +31,10 @@ export const uploadFilesAction = (
         if (gender.toUpload) {
           Object.keys(gender.toUpload).forEach(key => {
             const file = gender.toUpload[key]
-            formData.append(`picture_${gender.gender_id}@${key}`, file)
+            formData.append(
+              `picture_${isCustom ? gender.gender_id : gender.color_id}@${key}`,
+              file
+            )
           })
         }
       })
@@ -74,7 +78,8 @@ export const uploadFilesAction = (
         const genderId = parseInt(parameters[0], 10)
         const name = parameters[1]
         const index = productImages.findIndex(
-          (gender: any) => gender.gender_id === genderId
+          (gender: any) =>
+            (isCustom ? gender.gender_id : gender.color_id) === genderId
         )
         if (index !== -1) {
           productImages[index][name] = file.imageUri

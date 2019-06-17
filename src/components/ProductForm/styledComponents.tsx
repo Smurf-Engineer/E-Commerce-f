@@ -142,9 +142,11 @@ export const NextButton = styled.div`
   margin-right: 26px;
   width: 165.9px;
   border-radius: 4px;
-  cursor: pointer;
+  cursor: ${({ enabled }: any) => (enabled ? 'pointer' : 'default')};
   background-color: #4a90e2;
+  transition: all 0.25s ease;
   height: 50px;
+  opacity: ${({ enabled }: any) => (enabled ? 1 : 0.3)};
   justify-content: center;
   align-items: center;
   display: flex;

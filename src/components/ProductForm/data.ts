@@ -51,6 +51,7 @@ export const getProductQuery = gql`
       code
       yotpoId: yotpo_id
       name
+      contentTile: content_tile
       productMaterials: banner_materials {
         id
         url
@@ -87,6 +88,7 @@ export const getProductQuery = gql`
         left_image
         right_image
         gender_id
+        color_id
       }
       active
       designCenter: design_center

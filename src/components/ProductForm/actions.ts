@@ -14,6 +14,8 @@ import {
   REMOVE_MATERIAL,
   ADD_MATERIAL,
   SET_FILE_FIELD,
+  SET_DESIGN_CENTER,
+  SET_COLORS,
   REMOVE_BANNER,
   ADD_BANNER,
   SET_BANNER,
@@ -71,6 +73,10 @@ export const setCheck = (
   checked
 })
 
+export const setColors = (): AnyAction => ({
+  type: SET_COLORS
+})
+
 export const removeFile = (array: string, index: number): AnyAction => ({
   type: REMOVE_MATERIAL,
   array,
@@ -105,7 +111,10 @@ export const removeBanner = (index: number): AnyAction => ({
   type: REMOVE_BANNER,
   index
 })
-
+export const setDesignCenter = (value: boolean): AnyAction => ({
+  type: SET_DESIGN_CENTER,
+  value
+})
 export const addBanner = (item: any): AnyAction => ({
   type: ADD_BANNER,
   item

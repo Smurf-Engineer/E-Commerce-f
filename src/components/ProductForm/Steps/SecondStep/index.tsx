@@ -25,11 +25,21 @@ interface Props {
   sizes: ItemDetailType[]
   colors: ProductColors[]
   fitStyles: FitStyle[]
+  setColors: () => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
 export class SecondStep extends React.Component<Props, {}> {
+  componentWillUnmount() {
+    const {
+      setColors,
+      product: { designCenter }
+    } = this.props
+    if (!designCenter) {
+      setColors()
+    }
+  }
   render() {
     const { sizes, product, fitStyles, colors } = this.props
     const {
@@ -88,7 +98,8 @@ export class SecondStep extends React.Component<Props, {}> {
               {colors.map((color: ProductColors, index) => (
                 <CheckBox
                   key={index}
-                  name={color.id.toString()}
+                  id={color.id.toString()}
+                  name={color.name}
                   checked={productColors[color.id]}
                   onChange={this.handleChangeColor}
                 >
@@ -111,9 +122,9 @@ export class SecondStep extends React.Component<Props, {}> {
     const { setCheck } = this.props
     setCheck('fitStyles', name, checked)
   }
-  handleChangeColor = ({ target: { name, checked } }: any) => {
+  handleChangeColor = ({ target: { name, id, checked } }: any) => {
     const { setCheck } = this.props
-    setCheck('colors', name, checked)
+    setCheck('colors', id, checked ? name : false)
   }
 }
 

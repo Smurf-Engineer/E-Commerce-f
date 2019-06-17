@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'components.FirstStep.name',
     defaultMessage: 'Name'
   },
+  contentTile: {
+    id: 'components.FirstStep.contentTile',
+    defaultMessage: 'Content Tile'
+  },
+  contentTileHolder: {
+    id: 'components.FirstStep.contentTileHolder',
+    defaultMessage: 'content_tile'
+  },
   mpn: {
     id: 'components.FirstStep.mpn',
     defaultMessage: 'MPN'

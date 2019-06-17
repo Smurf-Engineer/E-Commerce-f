@@ -39,6 +39,7 @@ export const getProductQuery = gql`
         left_image
         right_image
         gender_id
+        color_id
       }
       active
       designCenter: design_center
