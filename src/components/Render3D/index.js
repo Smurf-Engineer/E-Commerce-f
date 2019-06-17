@@ -207,7 +207,7 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if ((proDesign || designSearch) && outputSvg) {
+        if (proDesign && outputSvg) {
           const imageCanvas = document.createElement('canvas')
           canvg(
             imageCanvas,
@@ -536,7 +536,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign && !designSearch) {
+          if (!proDesign) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -562,7 +562,7 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
 
-          if (!proDesign && !designSearch) {
+          if (!proDesign) {
             areas.forEach(
               (map, index) =>
                 (children[
