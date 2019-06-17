@@ -16,12 +16,18 @@ class FeaturedCategory extends React.PureComponent<Props, {}> {
   render() {
     const { browserName, productTiles } = this.props
     const tiles = productTiles.map(({ id, image, title, contentTile }: any) => {
-      return (
-        <Category key={id}>
-          <StyledImg id={contentTile} src={image} onClick={this.handleClick} />
-          <Text>{title}</Text>
-        </Category>
-      )
+      if (image) {
+        return (
+          <Category key={id}>
+            <StyledImg
+              id={contentTile}
+              src={image}
+              onClick={this.handleClick}
+            />
+            <Text>{title}</Text>
+          </Category>
+        )
+      }
     })
     return <Container {...{ browserName }}>{tiles}</Container>
   }

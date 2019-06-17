@@ -33,3 +33,5 @@ export const DELETE_FROM_TABLE = `${namespace}/DELETE_FROM_TABLE`
 export const SET_PRODUCT_TILE_IMAGE = `${namespace}/SET_PRODUCT_TILE_IMAGE`
 export const SET_PRODUCT_TILE_LOADING = `${namespace}/SET_PRODUCT_TILE_LOADING`
 export const SET_TILES_TEXT = `${namespace}/SET_TILES_TEXT`
+export const REMOVE_TILE_DATA = `${namespace}/REMOVE_TILE_DATA`
+export const REMOVE_HEADER = `${namespace}/REMOVE_HEADER`

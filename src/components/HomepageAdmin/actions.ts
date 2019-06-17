@@ -20,7 +20,9 @@ import {
   DELETE_FROM_TABLE,
   SET_PRODUCT_TILE_IMAGE,
   SET_PRODUCT_TILE_LOADING,
-  SET_TILES_TEXT
+  SET_TILES_TEXT,
+  REMOVE_TILE_DATA,
+  REMOVE_HEADER
 } from './constants'
 
 import { AnyAction, ProductType } from '../../types/common'
@@ -162,4 +164,14 @@ export const setTilesTextAction = (
   index,
   section,
   value
+})
+
+export const removeTileDataAction = (index: number) => ({
+  type: REMOVE_TILE_DATA,
+  index
+})
+
+export const removeHeaderAction = (index: number) => ({
+  type: REMOVE_HEADER,
+  index
 })

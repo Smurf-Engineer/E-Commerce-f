@@ -26,7 +26,7 @@ import FeaturedProducts from './FeaturedProducts'
 import Tiles from './Tiles'
 import { Container, ScreenTitle, SpinContainer } from './styledComponents'
 import messages from './messages'
-import { Product, ProductType } from '../../types/common'
+import { Product, ProductType, ProductTiles } from '../../types/common'
 
 interface Props {
   history: any
@@ -45,7 +45,7 @@ interface Props {
   selectedItems: any
   productsModalOpen: boolean
   items: any
-  productTiles: any
+  productTiles: ProductTiles[]
   formatMessage: (messageDescriptor: any) => string
   setMainHeader: (variables: {}) => Promise<any>
   setSecondaryHeader: (variables: {}) => Promise<any>
@@ -67,9 +67,11 @@ interface Props {
     index: number
   ) => void
   deleteFeaturedProduct: (variables: {}) => Promise<any>
-  uploadProductFileAction: (file: any, index: number) => Promise<any>
+  uploadProductFileAction: (file: File, index: number) => Promise<any>
   updateProductTiles: (variables: {}) => Promise<any>
   setTilesTextAction: (index: number, section: string, value: string) => void
+  removeTileDataAction: (index: number) => void
+  removeHeaderAction: (index: number) => void
 }
 
 class HomepageAdmin extends React.Component<Props, {}> {
@@ -120,7 +122,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
     const { uploadFileAction } = this.props
     await uploadFileAction(file, section, imageType, index)
   }
-  handleOnUploadProductFile = async (file: any, index: number) => {
+  handleOnUploadProductFile = async (file: File, index: number) => {
     const { uploadProductFileAction } = this.props
     await uploadProductFileAction(file, index)
   }
@@ -294,7 +296,9 @@ class HomepageAdmin extends React.Component<Props, {}> {
       setUrlAction,
       setUrlListAction,
       productTiles,
-      setTilesTextAction
+      setTilesTextAction,
+      removeTileDataAction,
+      removeHeaderAction
     } = this.props
 
     return mainContainer ? (
@@ -324,6 +328,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           setUrl={setUrlListAction}
           onSaveHeader={this.handleOnSaveSecondaryHeader}
           saving={secondaryHeaderLoader}
+          removeImage={removeHeaderAction}
           {...{
             desktopImage,
             formatMessage,
@@ -354,6 +359,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
           saving={productTilesLoader}
           onSave={this.handleOnSaveProductTiles}
           onChangeText={setTilesTextAction}
+          removeImage={removeTileDataAction}
         />
       </Container>
     )

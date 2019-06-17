@@ -11,14 +11,16 @@ import {
 import Button from 'antd/lib/button'
 import Uploader from './Uploader'
 import messages from './messages'
+import { ProductTiles } from '../../../types/common'
 
 interface Props {
-  productTiles: any
+  productTiles: ProductTiles[]
   saving: boolean
   formatMessage: (messageDescriptor: any) => string
   onUploadFile: (file: any, index: number) => void
   onSave: () => void
   onChangeText: (index: number, section: string, value: string) => void
+  removeImage: (index: number) => void
 }
 
 class Tiles extends React.Component<Props, {}> {
@@ -29,22 +31,26 @@ class Tiles extends React.Component<Props, {}> {
       onUploadFile,
       saving,
       onSave,
-      onChangeText
+      onChangeText,
+      removeImage
     } = this.props
 
-    const uploadItems = productTiles.map((item: any, index: number) => (
-      <Uploader
-        key={index}
-        {...{
-          item,
-          formatMessage,
-          index,
-          loading: null,
-          onChangeText,
-          onUploadFile
-        }}
-      />
-    ))
+    const uploadItems = productTiles.map(
+      (item: ProductTiles, index: number) => (
+        <Uploader
+          key={index}
+          {...{
+            item,
+            formatMessage,
+            index,
+            loading: null,
+            onChangeText,
+            onUploadFile,
+            removeImage
+          }}
+        />
+      )
+    )
 
     return (
       <Container>

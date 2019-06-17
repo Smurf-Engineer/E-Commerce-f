@@ -10,21 +10,24 @@ import {
   StyledUpload,
   ImagePreview,
   StyledInput,
-  ImagesContainer
+  ImagesContainer,
+  StyledButton
 } from './styledComponents'
 import messages from './messages'
 import message from 'antd/lib/message'
 import Icon from 'antd/lib/icon'
+import { ProductTiles } from '../../../../types/common'
 import { getFileExtension } from '../../../../utils/utilsFiles'
 
 const validFileExtensions = ['.jpg', '.jpeg', '.png']
 interface Props {
-  item: any
-  loading: any
+  item: ProductTiles
+  loading: boolean
   index: number
   formatMessage: (messageDescriptor: any, params?: any) => string
   onUploadFile: (file: any, index: number) => void
   onChangeText: (index: number, section: string, value: string) => void
+  removeImage: (index: number) => void
 }
 
 class Uploader extends React.Component<Props, {}> {
@@ -39,6 +42,10 @@ class Uploader extends React.Component<Props, {}> {
   handleOnChangeContentTile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     this.handleOnChangeText('contentTile', value)
+  }
+  handleRemoveImage = () => {
+    const { index, removeImage } = this.props
+    removeImage(index)
   }
   beforeUpload = (file: any) => {
     const { formatMessage, onUploadFile, index } = this.props
@@ -79,6 +86,13 @@ class Uploader extends React.Component<Props, {}> {
     return (
       <Container>
         <ImagesContainer>
+          {image && (
+            <StyledButton
+              shape="circle"
+              icon="delete"
+              onClick={this.handleRemoveImage}
+            />
+          )}
           <StyledUpload
             listType="picture-card"
             multiple={false}

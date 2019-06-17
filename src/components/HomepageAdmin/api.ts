@@ -13,7 +13,7 @@ import {
 } from './actions'
 
 export const uploadFileAction = (
-  file: any,
+  file: File,
   section: string,
   imageType: string,
   index: number
@@ -55,7 +55,7 @@ export const uploadFileAction = (
   }
 }
 
-export const uploadProductFileAction = (file: any, index: number) => {
+export const uploadProductFileAction = (file: File, index: number) => {
   return async (dispatch: any) => {
     try {
       dispatch(setProductTileLoading(true, index))

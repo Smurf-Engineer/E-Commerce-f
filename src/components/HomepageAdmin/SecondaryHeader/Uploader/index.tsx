@@ -12,7 +12,8 @@ import {
   ImagePreview,
   StyledInput,
   ImagesContainer,
-  InputContainer
+  InputContainer,
+  StyledButton
 } from './styledComponents'
 import messages from './messages'
 import message from 'antd/lib/message'
@@ -34,6 +35,7 @@ interface Props {
     index: number
   ) => void
   setUrl: (value: string, index: number) => void
+  removeImage: (index: number) => void
 }
 
 class Uploader extends React.Component<Props, {}> {
@@ -70,6 +72,10 @@ class Uploader extends React.Component<Props, {}> {
     const { setUrl, index } = this.props
     setUrl(event.target.value, index)
   }
+  handleRemoveImage = () => {
+    const { index, removeImage } = this.props
+    removeImage(index)
+  }
   render() {
     const { item, formatMessage, loading, index } = this.props
     const { url } = item
@@ -95,6 +101,13 @@ class Uploader extends React.Component<Props, {}> {
     return (
       <Container>
         <ImagesContainer>
+          {(item[ImageTypes.DESKTOP] || item[ImageTypes.MOBILE]) && (
+            <StyledButton
+              shape="circle"
+              icon="delete"
+              onClick={this.handleRemoveImage}
+            />
+          )}
           <StyledUpload
             listType="picture-card"
             multiple={false}
