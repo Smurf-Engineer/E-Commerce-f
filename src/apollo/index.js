@@ -22,7 +22,6 @@ const errorLink = onError(({ response, operation }) => {
   }
   const errorMessage =
     response.errors.length && head(response.errors.map(error => error.message))
-  console.log(errorMessage)
 
   if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
     message.error('User session has expired!')
