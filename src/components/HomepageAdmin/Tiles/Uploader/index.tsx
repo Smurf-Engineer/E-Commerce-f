@@ -32,11 +32,11 @@ class Uploader extends React.Component<Props, {}> {
     const { onChangeText, index } = this.props
     onChangeText(index, section, value)
   }
-  handleOnChangeTitle = (event: any) => {
+  handleOnChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     this.handleOnChangeText('title', value)
   }
-  handleOnChangeContentTile = (event: any) => {
+  handleOnChangeContentTile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
     this.handleOnChangeText('contentTile', value)
   }
