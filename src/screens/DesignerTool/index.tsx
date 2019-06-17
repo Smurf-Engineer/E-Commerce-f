@@ -237,6 +237,7 @@ export class DesignerTool extends React.Component<Props, {}> {
   state = {
     themeImage: []
   }
+
   render() {
     const {
       intl: { formatMessage },

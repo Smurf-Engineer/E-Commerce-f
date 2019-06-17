@@ -7,12 +7,12 @@ const renderHtml = (styleTags: any, html: any) => {
   <!DOCTYPE html>
   <html lang="en">
       <head>
-          <script type="text/javascript" src="js/three.min.js"></script>
-          <script type="text/javascript" src="js/loaders/MTLLoader.js"></script>
-          <script type="text/javascript" src="js/loaders/OBJLoader.js"></script>
-          <script type="text/javascript" src="js/controls/OrbitControls.js"></script>
-          <script type="text/javascript" src="js/fabric.min.js"></script>
-          <script type="text/javascript" src="js/customiseControls.min.js"></script>
+          <script type="text/javascript" src="/js/three.min.js"></script>
+          <script type="text/javascript" src="/js/loaders/MTLLoader.js"></script>
+          <script type="text/javascript" src="/js/loaders/OBJLoader.js"></script>
+          <script type="text/javascript" src="/js/controls/OrbitControls.js"></script>
+          <script type="text/javascript" src="/js/fabric.min.js"></script>
+          <script type="text/javascript" src="/js/customiseControls.min.js"></script>
           <script type="text/javascript" \
             src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.3/rgbcolor.min.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/canvg/dist/browser/canvg.min.js"></script>

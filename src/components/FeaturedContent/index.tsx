@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import { compose, graphql } from 'react-apollo'
-import config from '../../config'
 import { GetFeaturedContent } from './data'
 import { Container, StyledImg } from './styledComponents'
 import { QueryProps } from '../../types/common'
@@ -37,7 +36,6 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
 
     let content
     if (featuredContent) {
-      const storageUrl = config.storageUrl || ''
       content = featuredContent.map(({ desktop, mobile, link }, key) => {
         return (
           <MediaQuery {...{ key }} minWidth={640}>
@@ -45,19 +43,13 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
               if (matches) {
                 return (
                   <a>
-                    <StyledImg
-                      src={`${storageUrl}/homepage/${desktop}`}
-                      onClick={this.handleGoTo(link)}
-                    />
+                    <StyledImg src={desktop} onClick={this.handleGoTo(link)} />
                   </a>
                 )
               }
               return (
                 <a>
-                  <StyledImg
-                    src={`${storageUrl}/homepage/${mobile}`}
-                    onClick={this.handleGoTo(link)}
-                  />
+                  <StyledImg src={mobile} onClick={this.handleGoTo(link)} />
                 </a>
               )
             }}

@@ -8,6 +8,8 @@ import {
   SET_LOADING,
   OPEN_FORGOT_PASSWORD
 } from './constants'
+import { SET_CURRENT_SCREEN } from '../../components/AdminLayout/constants'
+
 import { Reducer } from '../../types/common'
 
 export const initialState = fromJS({
@@ -34,6 +36,8 @@ const adminReducer: Reducer<any> = (state = initialState, action) => {
         defaultScreen: action.screen
       })
     }
+    case SET_CURRENT_SCREEN:
+      return state.set('screen', action.screen)
     case CLEAR_REDUCER:
       return state.merge(initialState)
     case SET_LOADING:

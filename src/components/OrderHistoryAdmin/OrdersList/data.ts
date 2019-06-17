@@ -27,6 +27,8 @@ export const getOrdersQuery = gql`
         estimatedDate: estimated_date
         status
         clientId: user_id
+        firstName: first_name
+        lastName: last_name
         netsuite: netsuit_order {
           orderStatus {
             orderStatus

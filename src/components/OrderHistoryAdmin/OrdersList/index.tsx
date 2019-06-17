@@ -94,9 +94,15 @@ const OrdersList = ({
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
-              id={'user_id'}
+              id={'users.id'}
               label={formatMessage(messages.clientId)}
-              sort={orderBy === 'user_id' ? sort : 'none'}
+              sort={orderBy === 'users.id' ? sort : 'none'}
+              {...{ onSortClick, interactiveHeaders }}
+            />
+            <HeaderTable
+              id={'users.first_name'}
+              label={formatMessage(messages.clientName)}
+              sort={orderBy === 'users.first_name' ? sort : 'none'}
               {...{ onSortClick, interactiveHeaders }}
             />
             <HeaderTable
@@ -119,7 +125,9 @@ const OrdersList = ({
         clientId,
         status,
         netsuite,
-        netsuiteAttempts
+        netsuiteAttempts,
+        firstName,
+        lastName
       }: OrderHistory,
       index: number
     ) => {
@@ -139,7 +147,15 @@ const OrdersList = ({
           key={index}
           statusError={errorStatus}
           status={errorStatus || netsuiteStatus || status}
-          {...{ shortId, date, clientId, onOrderClick, trackingNumber }}
+          {...{
+            shortId,
+            date,
+            clientId,
+            firstName,
+            lastName,
+            onOrderClick,
+            trackingNumber
+          }}
         />
       )
     }

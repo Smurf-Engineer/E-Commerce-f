@@ -25,6 +25,10 @@ export default defineMessages({
     id: 'components.OrdersList.clientId',
     defaultMessage: 'Client ID'
   },
+  clientName: {
+    id: 'components.OrdersList.clientName',
+    defaultMessage: 'Client Name'
+  },
   trackingNumber: {
     id: 'components.OrdersList.trackingNumber',
     defaultMessage: 'Tracking Number'

@@ -69,7 +69,8 @@ import {
   OPEN_RESET_PLACEHOLDER_MODAL,
   SET_SENDING_CHART,
   ON_OPEN_COLOR_CHART,
-  ON_OPEN_COLOR_CHART_FORM
+  ON_OPEN_COLOR_CHART_FORM,
+  SET_DATA_LAB_INFO
 } from './constants'
 import {
   AnyAction,
@@ -518,4 +519,9 @@ export const onOpenColorChartAction = (open: boolean) => ({
 export const onOpenColorChartFormAction = (open: boolean) => ({
   type: ON_OPEN_COLOR_CHART_FORM,
   open
+})
+
+export const setDesignLabAction = (data: any) => ({
+  type: SET_DATA_LAB_INFO,
+  data
 })

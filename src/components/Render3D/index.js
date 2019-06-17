@@ -19,6 +19,7 @@ import {
   Title,
   Message,
   ContainerError,
+  ProgressProduct,
   Loading
 } from './styledComponents'
 import { modelPositions } from './config'
@@ -113,20 +114,25 @@ class Render3D extends PureComponent {
       colorAccessories
     } = nextProps
     const {
+      product,
+      isProduct,
       data: { design: oldDesign = {} },
       actualSvg: oldSvg = '',
       colorAccessories: oldColorAccessories
     } = this.props
-
-    const notEqual =
-      !isEqual(design, oldDesign) ||
-      !isEqual(actualSvg, oldSvg) ||
-      !isEqual(colorAccessories, oldColorAccessories)
-    const { firstLoad } = this.state
-    if (!error && (notEqual || (firstLoad && !loading))) {
-      setTimeout(() => {
-        this.renderModel(design, actualSvg, colorAccessories)
-      }, 100)
+    if (isProduct && product) {
+      this.renderProduct(product)
+    } else if (!isProduct) {
+      const notEqual =
+        !isEqual(design, oldDesign) ||
+        !isEqual(actualSvg, oldSvg) ||
+        !isEqual(colorAccessories, oldColorAccessories)
+      const { firstLoad } = this.state
+      if (!error && (notEqual || (firstLoad && !loading))) {
+        setTimeout(() => {
+          this.renderModel(design, actualSvg, colorAccessories)
+        }, 100)
+      }
     }
   }
 
@@ -271,10 +277,12 @@ class Render3D extends PureComponent {
     const {
       customProduct,
       designSearch,
+      product,
+      isProduct,
       data: { loading, error }
     } = this.props
 
-    if (error) {
+    if (error && !isProduct) {
       return (
         <ContainerError>
           <Title>
@@ -291,13 +299,18 @@ class Render3D extends PureComponent {
 
     return (
       <Container designSearch={designSearch} onKeyDown={this.handleOnKeyDown}>
+        {loadingModel && isProduct && (
+          <ProgressProduct type="circle" percent={progress + 1} />
+        )}
         <Render
           {...{ customProduct, designSearch }}
           id="render-3d"
           innerRef={container => (this.container = container)}
         >
-          {loading && <Loading indicator={circleIcon} />}
-          {loadingModel && <Progress type="circle" percent={progress + 1} />}
+          {loading && !isProduct && <Loading indicator={circleIcon} />}
+          {loadingModel && !isProduct && (
+            <Progress type="circle" percent={progress + 1} />
+          )}
         </Render>
         {showDragmessage && !loading && (
           <DragText>
@@ -307,7 +320,130 @@ class Render3D extends PureComponent {
       </Container>
     )
   }
+  renderProduct = async product => {
+    const { obj, mtl, flatlock, zipper, bumpMap, binding, bibBrace } = product
+    /* Object and MTL load */
+    if (obj && mtl) {
+      const mtlLoader = new THREE.MTLLoader()
+      mtlLoader.load(mtl, materials => {
+        this.handleOnLoadModel(true)
+        materials.preload()
+        const objLoader = new THREE.OBJLoader()
+        objLoader.setMaterials(materials)
+        objLoader.load(
+          obj,
+          async object => {
+            const { children } = object
+            const objectChildCount = children.length
+            const getMeshIndex = meshName => {
+              const index = findIndex(children, mesh => mesh.name === meshName)
+              return index < 0 ? 0 : index
+            }
+            const meshIndex = getMeshIndex(MESH)
+            const textureLoader = new THREE.TextureLoader()
 
+            /* Stitching */
+            if (!!flatlock) {
+              const flatlockObj = textureLoader.load(flatlock)
+              const flatlockIndex = getMeshIndex(FLATLOCK)
+              const flatlockMaterial = new THREE.MeshLambertMaterial({
+                alphaMap: flatlockObj,
+                color: '#000000'
+              })
+              flatlockMaterial.alphaMap.wrapS = THREE.RepeatWrapping
+              flatlockMaterial.alphaMap.wrapT = THREE.RepeatWrapping
+              flatlockMaterial.alphaTest = 0.5
+              children[flatlockIndex].material = flatlockMaterial
+            }
+            /* Zipper */
+            if (!!zipper) {
+              const texture = zipper[Object.keys(zipper)[0]]
+              const zipperObj = textureLoader.load(texture)
+              zipperObj.minFilter = THREE.LinearFilter
+              const zipperIndex = getMeshIndex(ZIPPER)
+              const zipperMaterial = new THREE.MeshPhongMaterial({
+                map: zipperObj
+              })
+              children[zipperIndex].material = zipperMaterial
+            }
+            /* Binding */
+            if (!!binding) {
+              const texture = binding[Object.keys(binding)[0]]
+              const bindingObj = textureLoader.load(texture)
+              bindingObj.minFilter = THREE.LinearFilter
+              const bindingIndex = getMeshIndex(BINDING)
+              const bindingMaterial = new THREE.MeshPhongMaterial({
+                map: bindingObj
+              })
+              children[bindingIndex].material = bindingMaterial
+            }
+            /* Bib Brace */
+            if (!!bibBrace) {
+              const texture = bibBrace[Object.keys(bibBrace)[0]]
+              const bibBraceObj = textureLoader.load(texture)
+              bibBraceObj.minFilter = THREE.LinearFilter
+              const bibBraceIndex = getMeshIndex(BIB_BRACE)
+              const bibBraceMaterial = new THREE.MeshPhongMaterial({
+                map: bibBraceObj
+              })
+              children[bibBraceIndex].material = bibBraceMaterial
+            }
+
+            /* Inside material */
+            const insideMaterial = new THREE.MeshPhongMaterial({
+              side: THREE.BackSide,
+              color: BLACK
+            })
+            const bumpMapObj = textureLoader.load(bumpMap)
+            const frontMaterial = new THREE.MeshPhongMaterial({
+              color: 0xdbdde0,
+              side: THREE.FrontSide,
+              bumpMap: bumpMapObj
+            })
+
+            /* Extra files loaded by MTL file */
+            const labelIndex = findIndex(
+              children,
+              ({ name }) => name === RED_TAG
+            )
+            if (labelIndex >= 0) {
+              object.children[labelIndex].material.color.set(WHITE)
+            }
+            const propelPalmsIndex = findIndex(
+              children,
+              ({ name }) => name === PROPEL_PALMS
+            )
+            if (propelPalmsIndex >= 0) {
+              object.children[propelPalmsIndex].material.color.set(WHITE)
+            }
+            const gripTapeIndex = findIndex(
+              children,
+              ({ name }) => name === GRIP_TAPE
+            )
+            if (gripTapeIndex >= 0) {
+              object.children[gripTapeIndex].material.color.set(WHITE)
+            }
+
+            /* Assign materials */
+            const canvasObj = children[meshIndex].clone()
+            object.add(canvasObj)
+
+            children[meshIndex].material = insideMaterial
+            children[objectChildCount].material = frontMaterial
+
+            /* Object Conig */
+            object.position.y = 0
+            object.name = MESH_NAME
+            this.scene.add(object)
+
+            this.setState({ loadingModel: false, firstLoad: false })
+          },
+          this.onProgress,
+          this.onError
+        )
+      })
+    }
+  }
   renderModel = async (design, actualSvg, colorAccessories) => {
     const {
       product = {},

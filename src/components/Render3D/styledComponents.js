@@ -12,6 +12,7 @@ export const Container = styled.div`
   @media (max-width: 375px) {
     height: 25em;
   }
+  position: relative;
 `
 
 export const Render = styled.div`
@@ -51,6 +52,12 @@ export const Progress = styled(AntdProgress)`
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
+`
+export const ProgressProduct = styled(AntdProgress)`
+  position: absolute;
+  top: 30%;
+  right: 0;
+  left: 0;
 `
 
 export const Loading = styled(Spin)`

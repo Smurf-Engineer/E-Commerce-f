@@ -4,11 +4,18 @@
 
 import gql from 'graphql-tag'
 
-export const usersQuery = gql`
-  query GetUsers {
-    users {
-      id
-      email
+export const getHomepageInfo = gql`
+  query getHomepageContent {
+    getHomepageContent {
+      headerImageMobile: header_image_mobile
+      headerImage: header_image
+      headerImageLink: header_image_link
+      homepageImages {
+        id
+        desktopImage: image
+        mobileImage: image_mobile
+        url: link
+      }
     }
   }
 `

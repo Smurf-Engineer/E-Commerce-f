@@ -5,13 +5,15 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
+import { compose, withApollo } from 'react-apollo'
 import isEmpty from 'lodash/isEmpty'
 import get from 'lodash/get'
+import { getHomepageInfo } from './data'
 import { injectIntl, InjectedIntl, FormattedMessage } from 'react-intl'
 import { RouteComponentProps } from 'react-router-dom'
 import zenscroll from 'zenscroll'
-import { compose } from 'react-apollo'
 import * as homeActions from './actions'
+import { setHomepageInfoAction } from './actions'
 import Layout from '../../components/MainLayout'
 import {
   Container,
@@ -37,12 +39,15 @@ import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
+import { QueryProps } from '../../types/common'
 
-const backgroundImg = 'homepage_cycling_desktop.jpg'
-const backgroundImgMobile = 'homepage_cycling_mobile.jpg'
-
+interface Data extends QueryProps {
+  files: any
+}
 interface Props extends RouteComponentProps<any> {
+  data: Data
   someKey?: string
+  client: any
   productId: number
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
@@ -55,6 +60,9 @@ interface Props extends RouteComponentProps<any> {
   fakeWidth: number
   currentCurrency: string
   clientInfo: any
+  headerImageMobile: string
+  headerImage: string
+  headerImageLink: string
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -64,13 +72,23 @@ export class Home extends React.Component<Props, {}> {
   }
   private stepInput: any
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       dispatch,
       match: { params },
-      location: { search }
+      location: { search },
+      client: { query }
     } = this.props
     const queryParams = queryString.parse(search)
+    try {
+      const response = await query({
+        query: getHomepageInfo,
+        fetchPolicy: 'network-only'
+      })
+      dispatch(setHomepageInfoAction(response.data.getHomepageContent))
+    } catch (e) {
+      console.error(e)
+    }
     if (params && params.region && !isEmpty(queryParams)) {
       dispatch(
         setRegionAction({
@@ -113,8 +131,8 @@ export class Home extends React.Component<Props, {}> {
   }
 
   handleGoTo = () => {
-    const { history } = this.props
-    history.push('/design-center?id=5')
+    const { history, headerImageLink } = this.props
+    history.push(headerImageLink)
   }
 
   render() {
@@ -125,7 +143,9 @@ export class Home extends React.Component<Props, {}> {
       intl,
       fakeWidth,
       currentCurrency,
-      clientInfo
+      clientInfo,
+      headerImageMobile,
+      headerImage
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
@@ -150,16 +170,14 @@ export class Home extends React.Component<Props, {}> {
                 if (matches) {
                   return (
                     <SearchBackground
-                      src={`${
-                        config.storageUrl
-                      }/homepage/${backgroundImgMobile}`}
+                      src={headerImageMobile}
                       onClick={this.handleGoTo}
                     />
                   )
                 }
                 return (
                   <SearchBackground
-                    src={`${config.storageUrl}/homepage/${backgroundImg}`}
+                    src={headerImage}
                     onClick={this.handleGoTo}
                   />
                 )
@@ -222,7 +240,6 @@ const mapStateToProps = (state: any) => {
   const responsive = state.get('responsive').toJS()
   const langProps = state.get('languageProvider').toJS()
   const app = state.get('app').toJS()
-
   return { ...home, ...responsive, ...langProps, ...app }
 }
 
@@ -230,6 +247,7 @@ const mapDispatchToProps = (dispatch: any) => ({ dispatch })
 
 const HomeEnhance = compose(
   injectIntl,
+  withApollo,
   connect(
     mapStateToProps,
     mapDispatchToProps
