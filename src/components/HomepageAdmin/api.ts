@@ -7,11 +7,13 @@ import {
   setUrlImage,
   setLoadingAction,
   setUrlImageList,
-  setLoadingListAction
+  setLoadingListAction,
+  setProductTileImage,
+  setProductTileLoading
 } from './actions'
 
 export const uploadFileAction = (
-  file: any,
+  file: File,
   section: string,
   imageType: string,
   index: number
@@ -46,6 +48,35 @@ export const uploadFileAction = (
       }
       dispatch(setLoadingAction(imageType, false))
       return dispatch(setUrlImage(imageObject.image, section, imageType))
+    } catch (e) {
+      message.error(e.message)
+      return false
+    }
+  }
+}
+
+export const uploadProductFileAction = (file: File, index: number) => {
+  return async (dispatch: any) => {
+    try {
+      dispatch(setProductTileLoading(true, index))
+      const user = JSON.parse(localStorage.getItem('user') || '')
+      const formData = new FormData()
+      formData.append('file', file)
+      const response = await fetch(
+        `${config.graphqlUriBase}upload/adminImage`,
+        {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            Authorization: `Bearer ${user.token}`
+          },
+          body: formData
+        }
+      )
+      const imageObject = await response.json()
+
+      dispatch(setProductTileLoading(false, index))
+      return dispatch(setProductTileImage(imageObject.image, index))
     } catch (e) {
       message.error(e.message)
       return false

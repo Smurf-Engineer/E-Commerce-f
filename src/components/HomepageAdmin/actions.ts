@@ -17,7 +17,12 @@ import {
   DELETE_ITEM_SELECTED,
   OPEN_MODAL,
   ADD_ITEMS,
-  DELETE_FROM_TABLE
+  DELETE_FROM_TABLE,
+  SET_PRODUCT_TILE_IMAGE,
+  SET_PRODUCT_TILE_LOADING,
+  SET_TILES_TEXT,
+  REMOVE_TILE_DATA,
+  REMOVE_HEADER
 } from './constants'
 
 import { AnyAction, ProductType } from '../../types/common'
@@ -133,4 +138,40 @@ export const openModalAction = (open: boolean): AnyAction => ({
 
 export const setItemsAddAction = (): AnyAction => ({
   type: ADD_ITEMS
+})
+
+export const setProductTileImage = (url: string, index: number): AnyAction => ({
+  type: SET_PRODUCT_TILE_IMAGE,
+  url,
+  index
+})
+
+export const setProductTileLoading = (
+  loading: boolean,
+  index: number
+): AnyAction => ({
+  type: SET_PRODUCT_TILE_LOADING,
+  loading,
+  index
+})
+
+export const setTilesTextAction = (
+  index: number,
+  section: string,
+  value: string
+) => ({
+  type: SET_TILES_TEXT,
+  index,
+  section,
+  value
+})
+
+export const removeTileDataAction = (index: number) => ({
+  type: REMOVE_TILE_DATA,
+  index
+})
+
+export const removeHeaderAction = (index: number) => ({
+  type: REMOVE_HEADER,
+  index
 })

@@ -16,6 +16,12 @@ export const getHomepageInfo = gql`
         mobileImage: image_mobile
         url: link
       }
+      productTiles {
+        id
+        contentTile: content_tile
+        title
+        image
+      }
     }
   }
 `

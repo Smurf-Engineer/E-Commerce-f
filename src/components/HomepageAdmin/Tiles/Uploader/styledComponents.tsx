@@ -1,5 +1,5 @@
 /**
- * Styled Components - Created by eduardoquintero on 30/05/19.
+ * Styled Components - Created by eduardoquintero on 13/06/19.
  */
 import styled from 'styled-components'
 import Upload from 'antd/lib/upload'
@@ -12,7 +12,8 @@ interface ImagePreviewProps {
 
 export const Container = styled.div`
   margin-bottom: 20px;
-  width: 48%;
+  width: 27%;
+  position: relative;
 `
 
 export const ImagesContainer = styled.div`
@@ -20,7 +21,6 @@ export const ImagesContainer = styled.div`
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
-  position: relative;
 `
 
 export const UploadButton = styled.div`
@@ -30,10 +30,10 @@ export const UploadButton = styled.div`
   line-height: 22px;
   padding: 8px;
   cursor: pointer;
+  width: 100%;
 `
 
 export const StyledUpload = styled(Upload)`
-  width: calc(70% - 5px);
   border-radius: 0;
   & .ant-upload {
     border-radius: 0;
@@ -42,17 +42,7 @@ export const StyledUpload = styled(Upload)`
     width: 100% !important;
     height: 140px;
   }
-`
-
-export const StyledUploadMobile = styled(Upload)`
-  width: calc(30% - 5px);
-  & .ant-upload {
-    border-radius: 0;
-  }
-  & .ant-upload-select-picture-card {
-    width: 100% !important;
-    height: 140px;
-  }
+  width: 100%;
 `
 
 export const ImagePreview = styled.div`
@@ -66,18 +56,9 @@ export const ImagePreview = styled.div`
 
 export const StyledInput = styled(Input)`
   border-radius: 0;
-  margin-left: 10px;
-`
-
-export const ButtonContainer = styled.div`
-  width: 100%;
-  text-align: right;
-  margin-top: 10px;
-`
-
-export const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
+  &.margin {
+    margin-bottom: 15px;
+  }
 `
 
 export const Title = styled.div`

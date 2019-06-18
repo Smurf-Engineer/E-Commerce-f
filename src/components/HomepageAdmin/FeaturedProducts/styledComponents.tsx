@@ -5,7 +5,7 @@ import styled from 'styled-components'
 import Button from 'antd/lib/button'
 
 export const Container = styled.div`
-  margin-bottom: 20px;
+  margin-bottom: 30px;
   width: 100%;
 `
 
