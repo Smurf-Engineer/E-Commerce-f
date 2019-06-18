@@ -28,6 +28,7 @@ import GenderBlock from './GenderBlock'
 import {
   ItemDetailType,
   GenderType,
+  ProductFile,
   ProductPicture
 } from '../../../../types/common'
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
@@ -203,7 +204,16 @@ export class FourthStep extends React.Component<Props, {}> {
               <MediaSection>
                 {mediaFiles.map((mediaFile: any, index: number) => (
                   <MediaDiv key={index}>
-                    <ImageBox src={mediaFile.url} alt="avatar" />
+                    <ImageBox
+                      onClick={this.openMedia(mediaFile)}
+                      clickable={!mediaFile.toUpload}
+                      src={
+                        mediaFile.extension === '.mp4'
+                          ? videoPlaceHolder
+                          : mediaFile.url
+                      }
+                      alt="avatar"
+                    />
                     <MediaFooter>
                       <div>
                         <FileName>{mediaFile.name}</FileName>
@@ -224,7 +234,11 @@ export class FourthStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-
+  openMedia = ({ url, toUpload }: ProductFile) => () => {
+    if (!toUpload && url) {
+      window.open(url)
+    }
+  }
   getBase64 = (img: any, callback: any) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => callback(reader.result))
