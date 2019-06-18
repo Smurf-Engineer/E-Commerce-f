@@ -17,6 +17,7 @@ import {
   ScenesFromTitle
 } from './styledComponents'
 import FeaturedCategory from '../FeaturedCategory'
+import { ProductTiles } from '../../types/common'
 
 // TODO: See if this is going to be necessary, is from carousel
 // const settings = {
@@ -33,7 +34,7 @@ import FeaturedCategory from '../FeaturedCategory'
 interface Props {
   history: any
   browserName?: string
-  productTiles: any
+  productTiles: ProductTiles[]
 }
 
 const ImagesGrid = ({ productTiles, history, browserName }: Props) => {

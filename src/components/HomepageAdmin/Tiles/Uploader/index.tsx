@@ -31,18 +31,12 @@ interface Props {
 }
 
 class Uploader extends React.Component<Props, {}> {
-  handleOnChangeText = (section: string, value: string) => {
-    const { onChangeText, index } = this.props
-    onChangeText(index, section, value)
+  handleOnChangeText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, id } = event.target
+    const { index, onChangeText } = this.props
+    onChangeText(index, id, value)
   }
-  handleOnChangeTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    this.handleOnChangeText('title', value)
-  }
-  handleOnChangeContentTile = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target
-    this.handleOnChangeText('contentTile', value)
-  }
+
   handleRemoveImage = () => {
     const { index, removeImage } = this.props
     removeImage(index)
@@ -104,15 +98,17 @@ class Uploader extends React.Component<Props, {}> {
           </StyledUpload>
         </ImagesContainer>
         <StyledInput
+          id={'title'}
           className={'margin'}
           placeholder={formatMessage(messages.title)}
           value={title}
-          onChange={this.handleOnChangeTitle}
+          onChange={this.handleOnChangeText}
         />
         <StyledInput
+          id={'contentTile'}
           placeholder={formatMessage(messages.contentTile)}
           value={contentTile}
-          onChange={this.handleOnChangeContentTile}
+          onChange={this.handleOnChangeText}
         />
       </Container>
     )

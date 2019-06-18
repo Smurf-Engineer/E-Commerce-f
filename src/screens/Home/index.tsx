@@ -39,7 +39,7 @@ import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
-import { QueryProps } from '../../types/common'
+import { QueryProps, ProductTiles } from '../../types/common'
 
 interface Data extends QueryProps {
   files: any
@@ -63,7 +63,7 @@ interface Props extends RouteComponentProps<any> {
   headerImageMobile: string
   headerImage: string
   headerImageLink: string
-  productTiles: any
+  productTiles: ProductTiles[]
 }
 
 export class Home extends React.Component<Props, {}> {

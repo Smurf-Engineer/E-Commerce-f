@@ -26,7 +26,12 @@ import FeaturedProducts from './FeaturedProducts'
 import Tiles from './Tiles'
 import { Container, ScreenTitle, SpinContainer } from './styledComponents'
 import messages from './messages'
-import { Product, ProductType, ProductTiles } from '../../types/common'
+import {
+  Product,
+  ProductType,
+  ProductTiles,
+  MessagePayload
+} from '../../types/common'
 
 interface Props {
   history: any
@@ -67,8 +72,11 @@ interface Props {
     index: number
   ) => void
   deleteFeaturedProduct: (variables: {}) => Promise<any>
-  uploadProductFileAction: (file: File, index: number) => Promise<any>
-  updateProductTiles: (variables: {}) => Promise<any>
+  uploadProductFileAction: (
+    file: File,
+    index: number
+  ) => Promise<MessagePayload>
+  updateProductTiles: (variables: {}) => Promise<MessagePayload>
   setTilesTextAction: (index: number, section: string, value: string) => void
   removeTileDataAction: (index: number) => void
   removeHeaderAction: (index: number) => void
@@ -255,7 +263,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
   handleOnSaveProductTiles = async () => {
     const { productTiles, setLoadersAction, updateProductTiles } = this.props
     setLoadersAction(Sections.PRODUCT_TILES, true)
-    const products = productTiles.map((item: any) => ({
+    const products = productTiles.map((item: ProductTiles) => ({
       id: item.id,
       image: item.image,
       content_tile: item.contentTile,

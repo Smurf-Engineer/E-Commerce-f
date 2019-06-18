@@ -24,6 +24,8 @@ import {
   SET_TILES_TEXT,
   REMOVE_TILE_DATA,
   REMOVE_HEADER,
+  EMPTY_TILE,
+  EMPTY_SECONDARY_HEADER,
   ImageTypes,
   Sections
 } from './constants'
@@ -97,9 +99,13 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
             )
           )
         )
-        map.setIn(['mainHeader', ImageTypes.DESKTOP], headerImage)
-        map.setIn(['mainHeader', ImageTypes.MOBILE], headerImageMobile)
-        map.setIn(['mainHeader', 'url'], headerImageLink)
+        map.update('mainHeader', (mainHeader: any) => {
+          return mainHeader.merge({
+            [ImageTypes.DESKTOP]: headerImage,
+            [ImageTypes.MOBILE]: headerImageMobile,
+            url: headerImageLink
+          })
+        })
         return map
       })
     }
@@ -185,24 +191,14 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     }
     case REMOVE_TILE_DATA: {
       const { index } = action
-      return state.withMutations((map: any) => {
-        map.setIn(['productTiles', index, 'image'], '')
-        map.setIn(['productTiles', index, 'contentTile'], '')
-        map.setIn(['productTiles', index, 'title'], '')
-        map.setIn(['productTiles', index, 'loading'], false)
-
-        return map
-      })
+      return state.setIn(['productTiles', index], fromJS(EMPTY_TILE))
     }
     case REMOVE_HEADER: {
       const { index } = action
-      return state.withMutations((map: any) => {
-        map.setIn([Sections.SECONDARY_HEADER, index, ImageTypes.DESKTOP], '')
-        map.setIn([Sections.SECONDARY_HEADER, index, ImageTypes.MOBILE], '')
-        map.setIn([Sections.SECONDARY_HEADER, index, 'loading'], false)
-        map.setIn([Sections.SECONDARY_HEADER, index, 'url'], '')
-        return map
-      })
+      return state.setIn(
+        [Sections.SECONDARY_HEADER, index],
+        fromJS(EMPTY_SECONDARY_HEADER)
+      )
     }
     default:
       return state

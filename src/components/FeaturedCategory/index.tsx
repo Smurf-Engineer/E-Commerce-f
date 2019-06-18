@@ -4,31 +4,35 @@
 import * as React from 'react'
 
 import { Container, Text, StyledImg, Category } from './styledComponents'
+import { ProductTiles } from '../../types/common'
 
 interface Props {
   history: any
   browserName?: string
-  productTiles: any
+  productTiles: ProductTiles[]
 }
 
 // TODO: EVERYTHING HARDCODED FOR THE MOMENT CHANGE  LATER
 class FeaturedCategory extends React.PureComponent<Props, {}> {
   render() {
     const { browserName, productTiles } = this.props
-    const tiles = productTiles.map(({ id, image, title, contentTile }: any) => {
-      if (image) {
-        return (
-          <Category key={id}>
-            <StyledImg
-              id={contentTile}
-              src={image}
-              onClick={this.handleClick}
-            />
-            <Text>{title}</Text>
-          </Category>
-        )
+    const tiles = productTiles.map(
+      ({ id, image, title, contentTile }: ProductTiles) => {
+        if (image) {
+          return (
+            <Category key={id}>
+              <StyledImg
+                id={contentTile}
+                src={image}
+                onClick={this.handleClick}
+              />
+              <Text>{title}</Text>
+            </Category>
+          )
+        }
+        return
       }
-    })
+    )
     return <Container {...{ browserName }}>{tiles}</Container>
   }
 

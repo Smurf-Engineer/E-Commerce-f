@@ -14,6 +14,19 @@ export enum ImageTypes {
   DESKTOP = 'desktopImage',
   MOBILE = 'mobileImage'
 }
+export const EMPTY_TILE = {
+  image: '',
+  contentTile: '',
+  loading: false,
+  title: ''
+}
+
+export const EMPTY_SECONDARY_HEADER = {
+  desktopImage: '',
+  mobileImage: '',
+  loading: false,
+  url: ''
+}
 
 export const CLEAR_REDUCER = `${namespace}/CLEAR_REDUCER`
 export const SET_URL_IMAGE = `${namespace}/SET_URL_IMAGE`
