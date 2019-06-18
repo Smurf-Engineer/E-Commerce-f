@@ -134,7 +134,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       omitDeep(extraData, '__typename')
       omitDeep(detailedBanners, '__typename')
       return state.merge({
-        product: detailedProduct,
+        product: fromJS(detailedProduct),
         dataExtra: extraData,
         bannerMaterials: detailedBanners,
         loading: false
@@ -213,7 +213,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
     case SET_GENDERS: {
       const customizable = state.getIn(['product', 'designCenter'])
       return state.withMutations((map: any) => {
-        map.setIn(['product', 'genders'], List.of(...action.genders))
+        map.setIn(['product', 'genders'], fromJS(action.genders))
         if (customizable) {
           const pictures = action.genders.map((gender: any) => ({
             front_image: '',
@@ -223,6 +223,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
             gender_id: gender.id
           }))
           map.setIn(['product', 'pictures'], List.of(...pictures))
+        } else {
+          map.setIn(['product', 'pictures'], List())
         }
         return map
       })

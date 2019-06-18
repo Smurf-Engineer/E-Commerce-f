@@ -25,6 +25,11 @@ import {
   InputDiv
 } from './styledComponents'
 import GenderBlock from './GenderBlock'
+import {
+  ItemDetailType,
+  GenderType,
+  ProductPicture
+} from '../../../../types/common'
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 const Dragger = Upload.Dragger
@@ -33,7 +38,7 @@ interface Props {
   mediaFiles: any[]
   gendersArray: any[]
   pictures: any[]
-  colorsProducts: any[]
+  colorsProducts: object
   customizable: boolean
   setBannerActions: (banners: any) => void
   addPicture: (index: number, item: any) => void
@@ -68,7 +73,7 @@ export class FourthStep extends React.Component<Props, {}> {
     let productsImagesForm
     const arrayType = customizable
       ? gendersArray
-      : Object.keys(colorsProducts).reduce((arr: any[], id: any) => {
+      : Object.keys(colorsProducts).reduce((arr: ItemDetailType[], id: any) => {
           if (colorsProducts[id]) {
             arr.push({ id, name: colorsProducts[id] })
           }
@@ -76,7 +81,7 @@ export class FourthStep extends React.Component<Props, {}> {
           // tslint:disable-next-line: align
         }, [])
     if (productImages && arrayType) {
-      productsImagesForm = arrayType.map((gender: any) => ({
+      productsImagesForm = arrayType.map((gender: GenderType) => ({
         genderName: gender.name || gender.gender,
         genderId: gender.id,
         genderBlockImages: productImages.reduce((arr: any[], block: any) => {
@@ -323,7 +328,7 @@ export class FourthStep extends React.Component<Props, {}> {
     const genderId = parameters[0]
     const name = parameters[1]
     const index = productImages.findIndex(
-      (item: any) =>
+      (item: ProductPicture) =>
         (customizable ? item.gender_id : item.color_id) ===
         parseInt(genderId, 10)
     )

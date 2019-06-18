@@ -83,6 +83,7 @@ export type PriceRange = {
 
 export interface GenderType {
   id: number
+  name?: string
   gender: string
 }
 
@@ -416,6 +417,16 @@ export type TeamstoreType = {
   totalItems: number
 }
 
+export type ProductPicture = {
+  gender_id?: number
+  front_image?: string
+  back_image?: string
+  left_image?: string
+  right_image?: string
+  toUpload?: object | boolean
+  color_id?: number
+}
+
 export interface TeamstoreResult {
   fullCount: string
   teamStores: TeamstoreType[]
@@ -423,6 +434,15 @@ export interface TeamstoreResult {
 
 export type ItemDetailType = {
   id?: number
+  name?: string | boolean
+}
+
+export type ProductFile = {
+  id: number
+  url?: string
+  active?: boolean
+  toUpload?: Blob | boolean
+  extension?: string
   name?: string
 }
 

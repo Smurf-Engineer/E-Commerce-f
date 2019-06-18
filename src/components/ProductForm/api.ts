@@ -4,13 +4,14 @@
 import message from 'antd/lib/message'
 import messages from './messages'
 import config from '../../config/index'
+import { ProductPicture, ProductFile } from '../../types/common'
 import { setUploadingAction, savedProduct } from './actions'
 
 export const uploadFilesAction = (
   formatMessage: (messageDescriptor: any) => string,
-  productImages: any,
-  bannerMaterials: any[],
-  mediaFiles: any[],
+  productImages: ProductPicture[],
+  bannerMaterials: ProductFile[],
+  mediaFiles: ProductFile[],
   isCustom: boolean
 ) => {
   return async (dispatch: any) => {
@@ -31,10 +32,8 @@ export const uploadFilesAction = (
         if (gender.toUpload) {
           Object.keys(gender.toUpload).forEach(key => {
             const file = gender.toUpload[key]
-            formData.append(
-              `picture_${isCustom ? gender.gender_id : gender.color_id}@${key}`,
-              file
-            )
+            const id = isCustom ? gender.gender_id : gender.color_id
+            formData.append(`picture_${id}@${key}`, file)
           })
         }
       })

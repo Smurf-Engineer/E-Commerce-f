@@ -376,11 +376,17 @@ export class FirstStep extends React.Component<Props, {}> {
       genders,
       product: { designCenter }
     } = this.props
-    let value: any[] = []
-    if (ids.length) {
-      value = designCenter
-        ? genders.filter(({ id }: any) => ids.includes(id))
-        : [genders.find(({ id }: any) => id === ids[0])]
+    // let value: any[] = []
+    // if (ids.length) {
+    //   value = designCenter
+    //     ? genders.filter(({ id }: any) => ids.includes(id))
+    //     : [genders.find(({ id }: any) => id === ids[0])]
+    // }
+    let value: GenderType[] = []
+    if (!designCenter && ids.length) {
+      value.push(genders.find(({ id }: GenderType) => id === ids[0]))
+    } else {
+      value = genders.filter(({ id }: GenderType) => ids.includes(id))
     }
     setGenderActions(value)
   }
@@ -417,7 +423,9 @@ export class FirstStep extends React.Component<Props, {}> {
     const { setValue } = this.props
     setValue('active', value ? 'true' : 'false')
   }
-  handleSwitchDesign = ({ target: { value } }: any) => {
+  handleSwitchDesign = ({
+    target: { value }
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { setDesignCenter } = this.props
     setDesignCenter(value)
   }

@@ -114,15 +114,21 @@ export class SecondStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleCheckChange = ({ target: { name, checked } }: any) => {
+  handleCheckChange = ({
+    target: { name, checked }
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { setCheck } = this.props
     setCheck('sizeRange', name, checked)
   }
-  handleCheckStyle = ({ target: { name, checked } }: any) => {
+  handleCheckStyle = ({
+    target: { name, checked }
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { setCheck } = this.props
     setCheck('fitStyles', name, checked)
   }
-  handleChangeColor = ({ target: { name, id, checked } }: any) => {
+  handleChangeColor = ({
+    target: { name, id, checked }
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { setCheck } = this.props
     setCheck('colors', id, checked ? name : false)
   }

@@ -12,7 +12,7 @@ import get from 'lodash/get'
 import { graphql, compose, withApollo } from 'react-apollo'
 import messages from './messages'
 import { stepsArray } from './constants'
-import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
+import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
 import * as ApiActions from './api'
 import { QueryProps, Product } from '../../types/common'
@@ -24,11 +24,8 @@ import {
   BackText,
   Loader,
   HeaderRow,
-  Footer,
-  BackButton,
   FullLoader,
   LoadingMessage,
-  NextButton,
   MainBody
 } from './styledComponents'
 
@@ -265,39 +262,12 @@ export class ProductForm extends React.Component<Props, {}> {
               </Steps>
               {screenSteps[currentStep]}
             </HeaderRow>
-            {/* TODO: Create a component to make the bottom steps of the back and next buttons for the form */}
-            <Footer>
-              {currentStep > 0 && (
-                <BackButton onClick={this.changeStep(currentStep - 1)}>
-                  <Icon type="left" />
-                  <FormattedMessage {...messages.back} />
-                </BackButton>
-              )}
-              {currentStep === 3 && (
-                <BackButton onClick={this.handleSave(true)}>
-                  <FormattedMessage {...messages.saveAndContinue} />
-                </BackButton>
-              )}
-
-              {currentStep < 3 && (
-                <NextButton
-                  enabled={validNext}
-                  onClick={
-                    validNext
-                      ? this.changeStep(currentStep + 1)
-                      : this.showMissingFields
-                  }
-                >
-                  <FormattedMessage {...messages.next} />
-                  <Icon type="right" />
-                </NextButton>
-              )}
-              {currentStep === 3 && (
-                <NextButton enabled={true} onClick={this.handleSave(false)}>
-                  <FormattedMessage {...messages.submit} />
-                </NextButton>
-              )}
-            </Footer>
+            <Stepper
+              {...{ currentStep, validNext }}
+              changeStep={this.changeStep}
+              showMissingFields={this.showMissingFields}
+              handleSave={this.handleSave}
+            />
           </MainBody>
         )}
       </Container>
