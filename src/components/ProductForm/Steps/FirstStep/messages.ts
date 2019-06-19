@@ -43,7 +43,7 @@ export default defineMessages({
   },
   mpnPlaceholder: {
     id: 'components.FirstStep.mpnPlaceholder',
-    defaultMessage: 'JV-00000000'
+    defaultMessage: 'JV2-00000000'
   },
   searchTags: {
     id: 'components.FirstStep.searchTags',

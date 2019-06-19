@@ -29,7 +29,8 @@ import {
   ItemDetailType,
   GenderType,
   ProductFile,
-  ProductPicture
+  ProductPicture,
+  BlockProduct
 } from '../../../../types/common'
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
@@ -85,37 +86,44 @@ export class FourthStep extends React.Component<Props, {}> {
       productsImagesForm = arrayType.map((gender: GenderType) => ({
         genderName: gender.name || gender.gender,
         genderId: gender.id,
-        genderBlockImages: productImages.reduce((arr: any[], block: any) => {
-          if (
-            (customizable ? block.gender_id : block.color_id) ===
-            parseInt(gender.id, 10)
-          ) {
-            arr.push([
-              {
-                name: 'front_image',
-                label: 'Front',
-                src: block.front_image || ''
-              },
-              {
-                name: 'left_image',
-                label: 'Left',
-                src: block.left_image || ''
-              },
-              {
-                name: 'back_image',
-                label: 'Back',
-                src: block.back_image || ''
-              },
-              {
-                name: 'right_image',
-                label: 'Right',
-                src: block.right_image || ''
-              }
-            ])
-          }
-          return arr
-          // tslint:disable-next-line: align
-        }, [])
+        genderBlockImages: productImages.reduce(
+          (arr: BlockProduct[], block: ProductPicture, index: number) => {
+            if (
+              (customizable ? block.gender_id : block.color_id) ===
+              parseInt(gender.id, 10)
+            ) {
+              arr.push([
+                {
+                  name: 'front_image',
+                  label: 'Front',
+                  src: block.front_image || '',
+                  index
+                },
+                {
+                  name: 'left_image',
+                  label: 'Left',
+                  src: block.left_image || '',
+                  index
+                },
+                {
+                  name: 'back_image',
+                  label: 'Back',
+                  src: block.back_image || '',
+                  index
+                },
+                {
+                  name: 'right_image',
+                  label: 'Right',
+                  src: block.right_image || '',
+                  index
+                }
+              ])
+            }
+            return arr
+            // tslint:disable-next-line: align
+          },
+          []
+        )
       }))
     }
     return (
@@ -269,7 +277,6 @@ export class FourthStep extends React.Component<Props, {}> {
     const id = bannerMaterials.length
       ? Math.max.apply(Math, bannerMaterials.map(item => item.id))
       : 0
-    console.log('id:', id)
     this.getBase64(file, (base64Image: string) => {
       addBanner({
         url: base64Image,
@@ -336,16 +343,10 @@ export class FourthStep extends React.Component<Props, {}> {
   }
 
   handleSetFile = (event: any) => {
-    const { addPicture, pictures: productImages, customizable } = this.props
-    const { file } = event
+    const { addPicture, pictures: productImages } = this.props
+    const { file, data: index } = event
     const parameters = event.filename.split('@')
-    const genderId = parameters[0]
     const name = parameters[1]
-    const index = productImages.findIndex(
-      (item: ProductPicture) =>
-        (customizable ? item.gender_id : item.color_id) ===
-        parseInt(genderId, 10)
-    )
     this.getBase64(file, (base64Image: string) => {
       const item = productImages[index]
       item[name] = base64Image

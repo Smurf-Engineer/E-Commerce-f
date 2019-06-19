@@ -11,7 +11,13 @@ import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import { graphql, compose, withApollo } from 'react-apollo'
 import messages from './messages'
-import { stepsArray } from './constants'
+import {
+  stepsArray,
+  FIRST_STEP,
+  SECOND_STEP,
+  THIRD_STEP,
+  FOURTH_STEP
+} from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
 import * as ApiActions from './api'
@@ -280,9 +286,8 @@ export class ProductForm extends React.Component<Props, {}> {
   validateFields = () => {
     const { currentStep } = this.state
     const { product } = this.props
-    let valid
     switch (currentStep) {
-      case 0:
+      case FIRST_STEP:
         const {
           name,
           mpn,
@@ -300,7 +305,7 @@ export class ProductForm extends React.Component<Props, {}> {
           weight,
           shortDescription
         } = product
-        if (
+        return (
           name &&
           mpn &&
           tags &&
@@ -319,13 +324,10 @@ export class ProductForm extends React.Component<Props, {}> {
           description &&
           weight &&
           shortDescription
-        ) {
-          valid = true
-        }
-        break
-      case 1:
+        )
+      case SECOND_STEP:
         const { sizeRange, fitStyles, colors, designCenter } = product
-        if (
+        return (
           sizeRange &&
           Object.keys(sizeRange).some(key => sizeRange[key]) &&
           fitStyles &&
@@ -334,24 +336,15 @@ export class ProductForm extends React.Component<Props, {}> {
             colors &&
             Object.keys(colors).some(key => colors[key])) ||
             designCenter)
-        ) {
-          valid = true
-        }
-        break
-      case 2:
+        )
+      case THIRD_STEP:
         const { priceRange } = product
-        if (priceRange.every(item => item.price > 0)) {
-          valid = true
-        }
-        break
-      case 3:
-        valid = true
-        break
+        return priceRange.every(item => item.price > 0)
+      case FOURTH_STEP:
+        return true
       default:
-        valid = false
-        break
+        return true
     }
-    return valid
   }
   handleSave = (onlySave: boolean) => async () => {
     const {

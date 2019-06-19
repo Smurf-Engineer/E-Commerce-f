@@ -199,20 +199,23 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_DESIGN_CENTER:
-      return state.withMutations((map: any) => {
-        map.setIn(['product', 'designCenter'], action.value)
-        map.setIn(['product', 'genders'], List())
-        map.setIn(['product', 'pictures'], List())
-        map.setIn(['product', 'productMaterials'], Map())
-        map.setIn(['product', 'mediaFiles'], List())
-        map.setIn(['product', 'colors'], Map())
-        return map
+      return state.update('product', product => {
+        return product.merge({
+          designCenter: action.value,
+          genders: List(),
+          pictures: List(),
+          productMaterials: Map(),
+          mediaFiles: List(),
+          colors: Map()
+        })
       })
+
     case SET_BANNERS:
       return state.merge({ bannerMaterials: action.banners, fixed: true })
     case SET_GENDERS: {
       const customizable = state.getIn(['product', 'designCenter'])
       return state.withMutations((map: any) => {
+        // TODO: Review for a future refactor
         map.setIn(['product', 'genders'], fromJS(action.genders))
         if (customizable) {
           const pictures = action.genders.map((gender: any) => ({
@@ -230,9 +233,8 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_COLORS: {
-      const colors = state.getIn(['product', 'colors']).toJS()
-      const pictures = state.getIn(['product', 'pictures']).toJS()
-      const gender = state.getIn(['product', 'genders', 0, 'id'])
+      const { colors, pictures, genders } = state.get('product').toJS()
+      const gender = genders.length ? genders[0].id : ''
       Object.keys(colors).forEach((id: string) => {
         const index = pictures.findIndex(
           (picture: any) => picture.color_id === parseInt(id, 10)

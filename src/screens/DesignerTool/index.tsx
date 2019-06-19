@@ -241,13 +241,10 @@ export class DesignerTool extends React.Component<Props, {}> {
   }
   componentDidMount() {
     const { setProductCodeAction, location } = this.props
-    const search = get(location, 'search', '')
-    if (search) {
-      const queryParams = queryString.parse(search)
-      const code = get(queryParams, 'code', '')
-      if (code) {
-        setProductCodeAction(code)
-      }
+    const queryParams = queryString.parse(location.search)
+    const code = get(queryParams, 'code', '')
+    if (code) {
+      setProductCodeAction(code)
     }
   }
   render() {

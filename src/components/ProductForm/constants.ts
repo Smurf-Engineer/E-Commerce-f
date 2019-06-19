@@ -37,3 +37,8 @@ export const stepsArray = [
     title: 'Product page assets'
   }
 ]
+
+export const FIRST_STEP = 0
+export const SECOND_STEP = 1
+export const THIRD_STEP = 2
+export const FOURTH_STEP = 3
