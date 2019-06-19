@@ -133,7 +133,7 @@ class Render3D extends PureComponent {
         }
         setTimeout(() => {
           this.renderModel(design, actualSvg, colorAccessories, svgChanged)
-        }, 3000)
+        }, 100)
       }
     }
   }
