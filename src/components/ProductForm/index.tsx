@@ -348,7 +348,13 @@ export class ProductForm extends React.Component<Props, {}> {
   }
   handleSave = (onlySave: boolean) => async () => {
     const {
-      product: { pictures: productImages, mediaFiles, designCenter },
+      product: {
+        pictures: productImages,
+        mediaFiles,
+        designCenter,
+        categoryName,
+        contentTile
+      },
       bannerMaterials,
       formatMessage,
       upsertProductAction,
@@ -416,6 +422,8 @@ export class ProductForm extends React.Component<Props, {}> {
         : []
       const productToSave = {
         ...product,
+        category_name: categoryName,
+        content_tile: contentTile,
         sports: sportsProduct,
         fitStyles: fitStylesDet,
         sizeRange: sizeRangeDet,
