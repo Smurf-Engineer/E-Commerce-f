@@ -215,7 +215,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
     case SET_GENDERS: {
       const customizable = state.getIn(['product', 'designCenter'])
       return state.withMutations((map: any) => {
-        // TODO: Review for a future refactor
+        // TODO: Change the way we store the pictures depending of the product type setting everything in different Maps
         map.setIn(['product', 'genders'], fromJS(action.genders))
         if (customizable) {
           const pictures = action.genders.map((gender: any) => ({
@@ -233,6 +233,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       })
     }
     case SET_COLORS: {
+      // TODO: Change the way we store the pictures depending of the product type setting everything in different Maps
       const { colors, pictures, genders } = state.get('product').toJS()
       const gender = genders.length ? genders[0].id : ''
       Object.keys(colors).forEach((id: string) => {
