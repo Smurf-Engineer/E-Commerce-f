@@ -244,10 +244,7 @@ class CartListItemTable extends React.Component<Props, State> {
       )
     })
 
-    const fits =
-      cartItem.product.fitStyles &&
-      cartItem.product.fitStyles.length &&
-      cartItem.product.fitStyles[0].id
+    const fits = cartItem.product.fitStyles && cartItem.product.fitStyles[0].id
 
     const genders: Filter[] = get(cartItem, 'product.genders', [])
     const genderOptions = genders.map(gender => {
