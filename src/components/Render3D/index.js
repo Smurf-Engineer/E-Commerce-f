@@ -66,6 +66,96 @@ class Render3D extends PureComponent {
     renderer.setPixelRatio(window.devicePixelRatio)
     renderer.setClearColor(0x000000, 0)
     renderer.setSize(clientWidth, clientHeight)
+    /* Camera */
+    const camera = new THREE.PerspectiveCamera(
+      25,
+      clientWidth / clientHeight,
+      0.1,
+      1000
+    )
+    camera.position.z = phoneView ? 150 : 250
+    if (designSearch) {
+      camera.position.z = 150
+    }
+    const controls = new THREE.OrbitControls(camera, renderer.domElement)
+    controls.addEventListener('change', this.lightUpdate)
+
+    controls.enableKeys = false
+    controls.minDistance = 100
+    controls.maxDistance = 350
+    controls.enableZoom = true
+    /* Scene and light */
+    const scene = new THREE.Scene()
+    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
+    directionalLight.position.copy(camera.position)
+
+    scene.add(camera)
+    scene.add(ambient)
+    scene.add(directionalLight)
+
+    this.scene = scene
+    this.camera = camera
+    this.renderer = renderer
+    this.controls = controls
+    this.directionalLight = directionalLight
+
+    this.container.appendChild(this.renderer.domElement)
+
+    this.start()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      data: { loading, error, design = {} },
+      actualSvg = '',
+      colorAccessories
+    } = nextProps
+    const {
+      product,
+      isProduct,
+      data: { design: oldDesign = {} },
+      actualSvg: oldSvg = '',
+      colorAccessories: oldColorAccessories
+    } = this.props
+    if (isProduct && product) {
+      this.renderProduct(product)
+    } else if (!isProduct) {
+      const svgChanged = !isEqual(actualSvg, oldSvg)
+      const notEqual =
+        !isEqual(design, oldDesign) ||
+        svgChanged ||
+        !isEqual(colorAccessories, oldColorAccessories)
+      const { firstLoad } = this.state
+      if (!error && (notEqual || (firstLoad && !loading))) {
+        if (this.renderer) {
+          this.removeObject()
+        }
+        setTimeout(() => {
+          this.renderModel(design, actualSvg, colorAccessories, svgChanged)
+        }, 3000)
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this.stop()
+    this.clearScene()
+  }
+  initScene = () => {
+    const { phoneView, designSearch } = this.props
+    /* Renderer config */
+    const { clientWidth, clientHeight } = this.container
+    const precision = 'highp'
+    const renderer = new THREE.WebGLRenderer({
+      alpha: true,
+      antialias: true,
+      precision,
+      preserveDrawingBuffer: true
+    })
+    renderer.setPixelRatio(window.devicePixelRatio)
+    renderer.setClearColor(0x000000, 0)
+    renderer.setSize(clientWidth, clientHeight)
 
     /* Camera */
     const camera = new THREE.PerspectiveCamera(
@@ -107,41 +197,7 @@ class Render3D extends PureComponent {
     this.start()
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {
-      data: { loading, error, design = {} },
-      actualSvg = '',
-      colorAccessories
-    } = nextProps
-    const {
-      product,
-      isProduct,
-      data: { design: oldDesign = {} },
-      actualSvg: oldSvg = '',
-      colorAccessories: oldColorAccessories
-    } = this.props
-    if (isProduct && product) {
-      this.renderProduct(product)
-    } else if (!isProduct) {
-      const notEqual =
-        !isEqual(design, oldDesign) ||
-        !isEqual(actualSvg, oldSvg) ||
-        !isEqual(colorAccessories, oldColorAccessories)
-      const { firstLoad } = this.state
-      if (!error && (notEqual || (firstLoad && !loading))) {
-        setTimeout(() => {
-          this.renderModel(design, actualSvg, colorAccessories)
-        }, 100)
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    this.stop()
-    this.clearScene()
-  }
-
-  loadTextures = (design, actualSvg) =>
+  loadTextures = (design, actualSvg, fromSvg) =>
     new Promise((resolve, reject) => {
       try {
         const {
@@ -154,7 +210,7 @@ class Render3D extends PureComponent {
           proDesign,
           outputSvg
         } = design
-        const { designSearch, colorAccessories } = this.props
+        const { colorAccessories } = this.props
         const { flatlock, bumpMap, zipper, binding, bibBrace } = product
         const loadedTextures = {}
         const textureLoader = new THREE.TextureLoader()
@@ -207,7 +263,7 @@ class Render3D extends PureComponent {
 
         loadedTextures.colors = []
 
-        if (proDesign && outputSvg) {
+        if (proDesign || (outputSvg && fromSvg)) {
           const imageCanvas = document.createElement('canvas')
           canvg(
             imageCanvas,
@@ -444,7 +500,12 @@ class Render3D extends PureComponent {
       })
     }
   }
-  renderModel = async (design, actualSvg, colorAccessories) => {
+  renderModel = async (
+    design,
+    actualSvg,
+    colorAccessories,
+    fromSvg = false
+  ) => {
     const {
       product = {},
       flatlockColor,
@@ -455,7 +516,7 @@ class Render3D extends PureComponent {
 
     const { designSearch, stitchingValue } = this.props
 
-    const loadedTextures = await this.loadTextures(design, actualSvg)
+    const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
     /* Object and MTL load */
     const mtlLoader = new THREE.MTLLoader()
     mtlLoader.load(product.mtl, materials => {
@@ -536,7 +597,7 @@ class Render3D extends PureComponent {
             bumpMap: bumpMap
           })
           /* Assign materials */
-          if (!proDesign) {
+          if (!proDesign && !fromSvg) {
             children[meshIndex].material = insideMaterial
             const areasLayers = areas.map(() => children[meshIndex].clone())
             object.add(...areasLayers)
@@ -562,7 +623,7 @@ class Render3D extends PureComponent {
             object.children[gripTapeIndex].material.color.set(WHITE)
           }
 
-          if (!proDesign) {
+          if (!proDesign && !fromSvg) {
             areas.forEach(
               (map, index) =>
                 (children[
@@ -629,7 +690,6 @@ class Render3D extends PureComponent {
             // /* Assign materials */
             const cloneObject = children[meshIndex].clone()
             object.add(cloneObject)
-
             children[meshIndex].material = insideMaterial
             children[objectChildCount].material = frontMaterial
           }
@@ -750,6 +810,22 @@ class Render3D extends PureComponent {
     }
     if (this.container) {
       this.container.removeChild(this.renderer.domElement)
+    }
+  }
+
+  removeObject = () => {
+    const object = this.scene.getObjectByName(MESH_NAME)
+    if (!!object) {
+      object.children.forEach(({ material }) => {
+        if (!!material) {
+          const { map, bumpMap, alphaMap } = material
+          if (map && map.dispose) map.dispose()
+          if (bumpMap && bumpMap.dispose) bumpMap.dispose()
+          if (alphaMap && alphaMap.dispose) alphaMap.dispose()
+          if (material.dispose) material.dispose()
+        }
+      })
+      this.scene.remove(object)
     }
   }
   setFrontFaceModel = () => {
