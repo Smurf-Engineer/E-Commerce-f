@@ -26,6 +26,7 @@ interface Props {
   ) => void
   setUrl: (value: string, index: number) => void
   onSaveHeader: () => void
+  removeImage: (index: number) => void
 }
 
 class SecondaryHeader extends React.Component<Props, {}> {
@@ -37,7 +38,8 @@ class SecondaryHeader extends React.Component<Props, {}> {
       onSaveHeader,
       saving,
       onUploadFile,
-      setUrl
+      setUrl,
+      removeImage
     } = this.props
 
     const uploadItems = secondaryHeader.map((item: any, index: number) => (
@@ -49,7 +51,8 @@ class SecondaryHeader extends React.Component<Props, {}> {
           index,
           loading: loading[index],
           onUploadFile,
-          setUrl
+          setUrl,
+          removeImage
         }}
       />
     ))

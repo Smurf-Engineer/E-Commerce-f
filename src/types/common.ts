@@ -225,6 +225,14 @@ export type ProductTableType = {
   visible: boolean
 }
 
+export type ProductTiles = {
+  id: number
+  contentTile: string
+  title: string
+  image: string
+  loading: boolean
+}
+
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]

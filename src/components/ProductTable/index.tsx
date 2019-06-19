@@ -70,7 +70,6 @@ class ProductTable extends React.PureComponent<Props, {}> {
         }}
       </MediaQuery>
     )
-    console.log(items)
     const itemsSelected =
       items &&
       items.map(({ product }: ProductTableType, index) => {

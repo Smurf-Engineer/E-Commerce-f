@@ -19,7 +19,8 @@ export const initialState = fromJS({
   productId: 0,
   headerImageMobile: '',
   headerImage: '',
-  headerImageLink: ''
+  headerImageLink: '',
+  productTiles: []
 })
 
 const homeReducer: Reducer<any> = (state = initialState, action) => {
@@ -36,11 +37,17 @@ const homeReducer: Reducer<any> = (state = initialState, action) => {
     case OPEN_QUICKVIEW_ACTION:
       return state.set('productId', action.id)
     case SET_HOMEPAGE_INFO: {
-      const { headerImageMobile, headerImage, headerImageLink } = action.data
+      const {
+        headerImageMobile,
+        headerImage,
+        headerImageLink,
+        productTiles
+      } = action.data
       return state.merge({
         headerImageMobile,
         headerImage,
-        headerImageLink
+        headerImageLink,
+        productTiles
       })
     }
     default:

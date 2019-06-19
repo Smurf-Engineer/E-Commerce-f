@@ -236,7 +236,6 @@ export class FourthStep extends React.Component<Props, {}> {
     const id = bannerMaterials.length
       ? Math.max.apply(Math, bannerMaterials.map(item => item.id))
       : 0
-    console.log('id:', id)
     this.getBase64(file, (base64Image: string) => {
       addBanner({
         url: base64Image,
