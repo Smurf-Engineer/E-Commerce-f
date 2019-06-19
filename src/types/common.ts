@@ -1094,6 +1094,7 @@ export interface OrderSearchResult {
   stitchingName?: string
   shortId: string
   pdfUrl?: string
+  product: Product
 }
 
 export interface FilesDownload {

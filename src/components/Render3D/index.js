@@ -142,60 +142,6 @@ class Render3D extends PureComponent {
     this.stop()
     this.clearScene()
   }
-  initScene = () => {
-    const { phoneView, designSearch } = this.props
-    /* Renderer config */
-    const { clientWidth, clientHeight } = this.container
-    const precision = 'highp'
-    const renderer = new THREE.WebGLRenderer({
-      alpha: true,
-      antialias: true,
-      precision,
-      preserveDrawingBuffer: true
-    })
-    renderer.setPixelRatio(window.devicePixelRatio)
-    renderer.setClearColor(0x000000, 0)
-    renderer.setSize(clientWidth, clientHeight)
-
-    /* Camera */
-    const camera = new THREE.PerspectiveCamera(
-      25,
-      clientWidth / clientHeight,
-      0.1,
-      1000
-    )
-    camera.position.z = phoneView ? 150 : 250
-    if (designSearch) {
-      camera.position.z = 150
-    }
-    const controls = new THREE.OrbitControls(camera, renderer.domElement)
-    controls.addEventListener('change', this.lightUpdate)
-
-    controls.enableKeys = false
-    controls.minDistance = 100
-    controls.maxDistance = 350
-    controls.enableZoom = true
-
-    /* Scene and light */
-    const scene = new THREE.Scene()
-    const ambient = new THREE.AmbientLight(0xffffff, 0.25)
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.65)
-    directionalLight.position.copy(camera.position)
-
-    scene.add(camera)
-    scene.add(ambient)
-    scene.add(directionalLight)
-
-    this.scene = scene
-    this.camera = camera
-    this.renderer = renderer
-    this.controls = controls
-    this.directionalLight = directionalLight
-
-    this.container.appendChild(this.renderer.domElement)
-
-    this.start()
-  }
 
   loadTextures = (design, actualSvg, fromSvg) =>
     new Promise((resolve, reject) => {
