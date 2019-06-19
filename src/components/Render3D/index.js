@@ -333,7 +333,6 @@ class Render3D extends PureComponent {
     const {
       customProduct,
       designSearch,
-      product,
       isProduct,
       data: { loading, error }
     } = this.props
@@ -506,15 +505,9 @@ class Render3D extends PureComponent {
     colorAccessories,
     fromSvg = false
   ) => {
-    const {
-      product = {},
-      flatlockColor,
-      proDesign,
-      canvas,
-      highResolution
-    } = design
+    const { product = {}, flatlockColor, proDesign, highResolution } = design
 
-    const { designSearch, stitchingValue } = this.props
+    const { stitchingValue } = this.props
 
     const loadedTextures = await this.loadTextures(design, actualSvg, fromSvg)
     /* Object and MTL load */

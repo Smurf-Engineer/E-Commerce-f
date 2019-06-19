@@ -96,7 +96,7 @@ class OrderFiles extends React.PureComponent<Props> {
           />
           <RenderContainer>
             <Render3D
-              designSearch={false}
+              designSearch={true}
               loading={uploadingFile}
               actualSvg={actualSvg}
               designId={shortId}
