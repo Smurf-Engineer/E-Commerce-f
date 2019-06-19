@@ -7,7 +7,6 @@ import { connect } from 'react-redux'
 import get from 'lodash/get'
 import GoogleFontLoader from 'react-google-font-loader'
 import message from 'antd/lib/message'
-// import Search from 'antd/lib/input/Search'
 import Search from 'antd/lib/auto-complete'
 import Button from 'antd/lib/button'
 import Input from 'antd/lib/input'
@@ -292,7 +291,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
         const searchCodes = data.getDesignSearchCode.map(
           (item: DesignSearchCode) => item.code
         )
-        setSearchCodesAction(searchCodes || [])
+        setSearchCodesAction(searchCodes)
       }
     } catch (error) {
       Message.error(error.message)
