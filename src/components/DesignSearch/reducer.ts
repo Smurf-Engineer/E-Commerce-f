@@ -14,7 +14,8 @@ import {
   UPDATE_THUMBNAIL_ACTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
-  RESET_CHANGES_ACTION
+  RESET_CHANGES_ACTION,
+  SET_SEARCH_CODES
 } from './constants'
 import { Reducer } from '../../types/common'
 
@@ -34,7 +35,8 @@ export const initialState = fromJS({
     zipperColor: '',
     bibColor: '',
     bindingColor: ''
-  }
+  },
+  designSearchCodes: []
 })
 
 const designSearchAdminReducer: Reducer<any> = (
@@ -97,6 +99,8 @@ const designSearchAdminReducer: Reducer<any> = (
         .set('changes', true)
     case RESET_CHANGES_ACTION:
       return state.set('changes', false)
+    case SET_SEARCH_CODES:
+      return state.set('designSearchCodes', action.codes)
     default:
       return state
   }

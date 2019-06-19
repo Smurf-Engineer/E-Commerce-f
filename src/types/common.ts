@@ -1164,3 +1164,7 @@ export interface User {
   socialMethod: string
   administrator: boolean
 }
+
+export interface DesignSearchCode {
+  code: string
+}

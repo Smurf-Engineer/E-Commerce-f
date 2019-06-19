@@ -13,12 +13,14 @@ import {
   UPDATE_THUMBNAIL_ACTION,
   SET_STITCHING_COLOR_ACTION,
   SET_COLOR_ACTION,
-  RESET_CHANGES_ACTION
+  RESET_CHANGES_ACTION,
+  SET_SEARCH_CODES
 } from './constants'
 import {
   AnyAction,
   OrderSearchResult,
-  StitchingColor
+  StitchingColor,
+  DesignSearchCode
 } from '../../types/common'
 
 export const defaultAction = (someValue: string): AnyAction => ({
@@ -77,4 +79,9 @@ export const setColorAction = (color: string, id: string) => ({
 
 export const resetChangesAction = () => ({
   type: RESET_CHANGES_ACTION
+})
+
+export const setSearchCodesAction = (codes: DesignSearchCode[]) => ({
+  type: SET_SEARCH_CODES,
+  codes
 })

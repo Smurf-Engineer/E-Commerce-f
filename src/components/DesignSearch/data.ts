@@ -69,3 +69,12 @@ export const getFonts = graphql(
   `,
   { name: 'fontsData' }
 )
+
+export const getDesignSearchCode = gql`
+  query GetDesignSearchCodeQuery($pattern: String!) {
+    getDesignSearchCode(pattern: $pattern) {
+      id
+      code
+    }
+  }
+`
