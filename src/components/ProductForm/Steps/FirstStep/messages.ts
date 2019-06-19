@@ -25,6 +25,14 @@ export default defineMessages({
     id: 'components.FirstStep.name',
     defaultMessage: 'Name'
   },
+  contentTile: {
+    id: 'components.FirstStep.contentTile',
+    defaultMessage: 'Content Tile'
+  },
+  contentTileHolder: {
+    id: 'components.FirstStep.contentTileHolder',
+    defaultMessage: 'content_tile'
+  },
   mpn: {
     id: 'components.FirstStep.mpn',
     defaultMessage: 'MPN'
@@ -35,7 +43,7 @@ export default defineMessages({
   },
   mpnPlaceholder: {
     id: 'components.FirstStep.mpnPlaceholder',
-    defaultMessage: 'JV-00000000'
+    defaultMessage: 'JV2-00000000'
   },
   searchTags: {
     id: 'components.FirstStep.searchTags',

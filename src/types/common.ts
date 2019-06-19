@@ -50,6 +50,7 @@ export interface Prices {
 export interface Filter {
   id: number
   name: string
+  image?: string
 }
 
 export interface SelectedType extends Filter {}
@@ -83,7 +84,8 @@ export type PriceRange = {
 
 export interface GenderType {
   id: number
-  gender: string
+  name?: string
+  gender?: string
 }
 
 export type HomePageBatch = {
@@ -102,6 +104,7 @@ export interface Product {
   code: string
   shortId?: string
   images: ImageType[]
+  contentTile?: string
   type: string
   material_banner?: string
   pictures?: any[]
@@ -428,6 +431,20 @@ export type TeamstoreType = {
   totalItems: number
 }
 
+export type ProductPicture = {
+  gender_id?: number
+  front_image?: string
+  back_image?: string
+  left_image?: string
+  right_image?: string
+  toUpload?: object | boolean
+  color_id?: number
+}
+
+export type FileUploaded = {
+  id: string
+  imageUri: string
+}
 export interface TeamstoreResult {
   fullCount: string
   teamStores: TeamstoreType[]
@@ -435,6 +452,30 @@ export interface TeamstoreResult {
 
 export type ItemDetailType = {
   id?: number
+  name?: string | boolean
+}
+
+export type BlockImage = {
+  name?: string
+  label?: string
+  src?: string
+  index?: number
+}
+
+export type BlockProduct = string[] | BlockImage[]
+
+export type ProductImage = {
+  genderName?: string
+  genderId?: number
+  genderBlockImages: BlockProduct[]
+}
+
+export type ProductFile = {
+  id: number
+  url?: string
+  active?: boolean
+  toUpload?: Blob | boolean
+  extension?: string
   name?: string
 }
 

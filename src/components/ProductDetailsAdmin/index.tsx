@@ -12,10 +12,19 @@ import find from 'lodash/find'
 import { graphql, compose } from 'react-apollo'
 import messages from './messages'
 import RowField from './RowField'
+import ProductImageBox from './ProductImage'
 import { quantities, currenciesLabel } from './constants'
 import Render3D from '../../components/Render3D'
 import * as ProductDetailsAdminActions from './actions'
-import { QueryProps, Product } from '../../types/common'
+import {
+  QueryProps,
+  Product,
+  GenderType,
+  ProductPicture,
+  BlockProduct,
+  ProductImage,
+  ProductColors
+} from '../../types/common'
 import { getProductQuery } from './data'
 import {
   Container,
@@ -26,7 +35,6 @@ import {
   HeaderRow,
   FormBody,
   BlueButton,
-  RowImage,
   RenderBackground,
   Separator,
   ScreenSubTitle,
@@ -62,59 +70,68 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
       data: { loading, product }
     } = this.props
     const { openedModel } = this.state
-    const name = get(product, 'name', '')
-    const mpn = get(product, 'mpn', '')
-    const obj = get(product, 'obj', '')
-    const mtl = get(product, 'mtl', '')
-    const code = get(product, 'code', '')
-    const shortDescription = get(product, 'shortDescription', '')
-    const description = get(product, 'description', '')
-    const yotpoId = get(product, 'yotpoId', '')
-    let categories = get(product, 'sports', '')
+    const {
+      name,
+      mpn,
+      obj,
+      mtl,
+      code,
+      shortDescription,
+      description,
+      yotpoId,
+      colors,
+      pictures,
+      sports,
+      genders: gendersProduct,
+      sizeRange: sizeRangeProduct,
+      fitStyles: fitStylesProduct,
+      relatedProducts: relatedTagsProduct,
+      categoryName,
+      tags,
+      active,
+      designCenter,
+      season,
+      materials,
+      details,
+      priceRange
+    }: Product = product || {}
+    let categories = sports
     if (categories) {
       categories = categories.map((item: any) => item.name).join(', ')
     }
-    let gendersArray = get(product, 'genders', '')
-    let genders = gendersArray
+    let genders = gendersProduct
     if (genders) {
       genders = genders.map((item: any) => item.name).join(', ')
     }
-    let sizeRange = get(product, 'sizeRange', '')
+    let sizeRange = sizeRangeProduct
     if (sizeRange) {
       sizeRange = sizeRange.map((item: any) => item.name).join(', ')
     }
-    let fitStyles = get(product, 'fitStyles', '')
+    let fitStyles = fitStylesProduct
     if (fitStyles) {
       fitStyles = fitStyles.map((item: any) => item.name).join(', ')
     }
-    let relatedTags = get(product, 'relatedProducts', '')
+    let relatedTags = relatedTagsProduct
     if (relatedTags) {
       relatedTags = relatedTags.map((item: any) => item.yotpoId).join(', ')
     }
-    let categoryName = get(product, 'categoryName', '')
-    const tags = get(product, 'tags', '')
-    const active = get(product, 'active', '')
-    const designCenter = get(product, 'designCenter', '')
-    const season = get(product, 'season', '')
-    const materials = get(product, 'materials', '')
-    const details = get(product, 'details', '')
-    let USD = get(product, 'priceRange', [])
+    let USD = priceRange
     if (USD) {
       USD = USD.filter(item => item.shortName === currenciesLabel.USD)
     }
-    let GBP = get(product, 'priceRange', [])
+    let GBP = priceRange
     if (GBP) {
       GBP = GBP.filter(item => item.shortName === currenciesLabel.GBP)
     }
-    let EUR = get(product, 'priceRange', [])
+    let EUR = priceRange
     if (EUR) {
       EUR = EUR.filter(item => item.shortName === currenciesLabel.EUR)
     }
-    let CAD = get(product, 'priceRange', [])
+    let CAD = priceRange
     if (CAD) {
       CAD = CAD.filter(item => item.shortName === currenciesLabel.CAD)
     }
-    let AUD = get(product, 'priceRange', [])
+    let AUD = priceRange
     if (AUD) {
       AUD = AUD.filter(item => item.shortName === currenciesLabel.AUD)
     }
@@ -150,28 +167,26 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
         )
       }
     ]
-    let productImages = get(product, 'pictures', '')
-    if (productImages && gendersArray) {
-      productImages = gendersArray.map((gender: any) => ({
-        genderName: gender.name,
-        genderBlockImages: productImages
-          .filter((picture: any) => picture.gender_id === gender.id)
-          .map((block: any) => {
-            const images = []
-            if (block.back_image) {
-              images.push(block.back_image)
+    const arrayType = designCenter ? gendersProduct : colors
+    let productImages
+    if (pictures && arrayType) {
+      productImages = arrayType.map((item: GenderType | ProductColors) => ({
+        genderName: item.name,
+        genderBlockImages: pictures.reduce(
+          (arr: BlockProduct[], block: ProductPicture) => {
+            if ((designCenter ? block.gender_id : block.color_id) === item.id) {
+              arr.push([
+                block.back_image,
+                block.front_image,
+                block.left_image,
+                block.right_image
+              ])
             }
-            if (block.front_image) {
-              images.push(block.front_image)
-            }
-            if (block.left_image) {
-              images.push(block.left_image)
-            }
-            if (block.right_image) {
-              images.push(block.right_image)
-            }
-            return images
-          })
+            return arr
+            // tslint:disable-next-line: align
+          },
+          []
+        )
       }))
     }
     return (
@@ -353,30 +368,8 @@ export class ProductDetailsAdmin extends React.Component<Props, {}> {
                 <Separator>
                   <FormattedMessage {...messages.productImages} />
                 </Separator>
-                {productImages.map((gender: any, index: number) => (
-                  <div key={index}>
-                    {gender.genderBlockImages.map(
-                      (imageBlock: any, blockIndex: number) => (
-                        <Row key={blockIndex}>
-                          {imageBlock.map((image: string, subindex: number) => (
-                            <RowField
-                              key={subindex}
-                              paddingTop={
-                                blockIndex === 0 && subindex > 0 ? '23px' : '0'
-                              }
-                              label={
-                                blockIndex === 0 && subindex === 0
-                                  ? gender.genderName
-                                  : ''
-                              }
-                            >
-                              <RowImage src={image} />
-                            </RowField>
-                          ))}
-                        </Row>
-                      )
-                    )}
-                  </div>
+                {productImages.map((picture: ProductImage, index: number) => (
+                  <ProductImageBox key={index} {...{ picture }} />
                 ))}
                 <Separator>
                   <FormattedMessage {...messages.threeDModel} />

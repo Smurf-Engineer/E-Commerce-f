@@ -11,8 +11,14 @@ import Spin from 'antd/lib/spin'
 import get from 'lodash/get'
 import { graphql, compose, withApollo } from 'react-apollo'
 import messages from './messages'
-import { stepsArray } from './constants'
-import { FirstStep, SecondStep, ThirdStep, FourthStep } from './Steps'
+import {
+  stepsArray,
+  FIRST_STEP,
+  SECOND_STEP,
+  THIRD_STEP,
+  FOURTH_STEP
+} from './constants'
+import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
 import * as ApiActions from './api'
 import { QueryProps, Product } from '../../types/common'
@@ -24,11 +30,8 @@ import {
   BackText,
   Loader,
   HeaderRow,
-  Footer,
-  BackButton,
   FullLoader,
   LoadingMessage,
-  NextButton,
   MainBody
 } from './styledComponents'
 
@@ -52,13 +55,16 @@ interface Props {
     formatMessage: (messageDescriptor: any) => string,
     productImages: any[],
     bannerMaterials: any[],
-    mediaFiles: any[]
+    mediaFiles: any[],
+    isCustom: boolean
   ) => Promise<any>
   upsertProductAction: (variables: {}) => Promise<any>
   getDataProduct: (variables: {}) => Promise<any>
   getExtraDataAction: () => Promise<any>
   setValue: (field: string, value: any) => void
   removeBanner: (index: number) => void
+  setDesignCenter: (checked: boolean) => void
+  setColors: () => void
   addBanner: (item: any) => void
   addPicture: (index: number, item: any) => void
   setBanner: (index: number, field: string, value: any) => void
@@ -122,7 +128,9 @@ export class ProductForm extends React.Component<Props, {}> {
       removeFile,
       addFile,
       addPicture,
+      setDesignCenter,
       removeBanner,
+      setColors,
       addBanner,
       setBanner,
       setFileField,
@@ -147,12 +155,14 @@ export class ProductForm extends React.Component<Props, {}> {
     const customizable = get(product, 'designCenter', null)
     const pictures = get(product, 'pictures', [])
     const gendersArray = get(product, 'genders', [])
+    const colorsProducts = get(product, 'colors', {})
     const screenSteps = [
       <FirstStep
         key={0}
         {...{
           categories,
           setValue,
+          setDesignCenter,
           setCheck,
           seasons,
           setGenderActions,
@@ -172,6 +182,7 @@ export class ProductForm extends React.Component<Props, {}> {
           seasons,
           colors,
           setCheck,
+          setColors,
           fitStyles,
           sizes,
           product,
@@ -207,6 +218,7 @@ export class ProductForm extends React.Component<Props, {}> {
           removeFile,
           addFile,
           setFileField,
+          colorsProducts,
           removeBanner,
           addBanner,
           addPicture,
@@ -222,6 +234,7 @@ export class ProductForm extends React.Component<Props, {}> {
         }}
       />
     ]
+    const validNext = this.validateFields()
     return (
       <Container>
         {loadingMessage && (
@@ -255,40 +268,93 @@ export class ProductForm extends React.Component<Props, {}> {
               </Steps>
               {screenSteps[currentStep]}
             </HeaderRow>
-            {/* TODO: Create a component to make the bottom steps of the back and next buttons for the form */}
-            <Footer>
-              {currentStep > 0 && (
-                <BackButton onClick={this.changeStep(currentStep - 1)}>
-                  <Icon type="left" />
-                  <FormattedMessage {...messages.back} />
-                </BackButton>
-              )}
-              {currentStep === 3 && (
-                <BackButton onClick={this.handleSave(true)}>
-                  <FormattedMessage {...messages.saveAndContinue} />
-                </BackButton>
-              )}
-
-              {currentStep < 3 && (
-                <NextButton onClick={this.changeStep(currentStep + 1)}>
-                  <FormattedMessage {...messages.next} />
-                  <Icon type="right" />
-                </NextButton>
-              )}
-              {currentStep === 3 && (
-                <NextButton onClick={this.handleSave(false)}>
-                  <FormattedMessage {...messages.submit} />
-                </NextButton>
-              )}
-            </Footer>
+            <Stepper
+              {...{ currentStep, validNext }}
+              changeStep={this.changeStep}
+              showMissingFields={this.showMissingFields}
+              handleSave={this.handleSave}
+            />
           </MainBody>
         )}
       </Container>
     )
   }
+  showMissingFields = () => {
+    const { formatMessage } = this.props
+    message.error(formatMessage(messages.missingFields))
+  }
+  validateFields = () => {
+    const { currentStep } = this.state
+    const { product } = this.props
+    switch (currentStep) {
+      case FIRST_STEP:
+        const {
+          name,
+          mpn,
+          tags,
+          season,
+          yotpoId,
+          genders,
+          details,
+          materials,
+          code,
+          categoryName,
+          sports,
+          relatedItemTag,
+          description,
+          weight,
+          shortDescription
+        } = product
+        return (
+          name &&
+          mpn &&
+          tags &&
+          season &&
+          yotpoId &&
+          code &&
+          details &&
+          genders &&
+          product.hasOwnProperty('designCenter') &&
+          genders.length &&
+          materials &&
+          categoryName &&
+          sports &&
+          Object.keys(sports).some(key => sports[key]) &&
+          relatedItemTag &&
+          description &&
+          weight &&
+          shortDescription
+        )
+      case SECOND_STEP:
+        const { sizeRange, fitStyles, colors, designCenter } = product
+        return (
+          sizeRange &&
+          Object.keys(sizeRange).some(key => sizeRange[key]) &&
+          fitStyles &&
+          Object.keys(fitStyles).some(key => fitStyles[key]) &&
+          ((!designCenter &&
+            colors &&
+            Object.keys(colors).some(key => colors[key])) ||
+            designCenter)
+        )
+      case THIRD_STEP:
+        const { priceRange } = product
+        return priceRange.every(item => item.price > 0)
+      case FOURTH_STEP:
+        return true
+      default:
+        return true
+    }
+  }
   handleSave = (onlySave: boolean) => async () => {
     const {
-      product: { pictures: productImages, mediaFiles },
+      product: {
+        pictures: productImages,
+        mediaFiles,
+        designCenter,
+        categoryName,
+        contentTile
+      },
       bannerMaterials,
       formatMessage,
       upsertProductAction,
@@ -300,7 +366,8 @@ export class ProductForm extends React.Component<Props, {}> {
         formatMessage,
         productImages || [],
         bannerMaterials || [],
-        mediaFiles || []
+        mediaFiles || [],
+        designCenter
       )
 
       const { product, history } = this.props
@@ -355,6 +422,8 @@ export class ProductForm extends React.Component<Props, {}> {
         : []
       const productToSave = {
         ...product,
+        category_name: categoryName,
+        content_tile: contentTile,
         sports: sportsProduct,
         fitStyles: fitStylesDet,
         sizeRange: sizeRangeDet,

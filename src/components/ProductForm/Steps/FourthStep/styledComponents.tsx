@@ -7,6 +7,7 @@ interface DivProps {
   capitalize?: boolean
   upperCase?: boolean
   inline?: boolean
+  clickable?: boolean
   marginTop?: string
   big?: boolean
   maxWidth?: boolean
@@ -135,6 +136,7 @@ export const ImageBlock = styled.div`
 `
 export const ImageBox = styled.img`
   object-fit: contain;
+  cursor: ${({ clickable }: DivProps) => (clickable ? 'pointer' : 'default')}
   height: 200px;
   width: ${({ maxWidth }: DivProps) => (maxWidth ? 'unset' : '200px')};
 `

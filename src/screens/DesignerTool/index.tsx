@@ -6,6 +6,7 @@ import { compose, graphql } from 'react-apollo'
 import message from 'antd/lib/message'
 import Modal from 'antd/lib/modal'
 import get from 'lodash/get'
+import queryString from 'query-string'
 import GoogleFontLoader, { Font } from 'react-google-font-loader'
 import set from 'lodash/set'
 import remove from 'lodash/remove'
@@ -85,6 +86,7 @@ interface Props {
   colors: string[]
   styleColors: string[]
   areas: string[]
+  location: any
   extraFiles: string[]
   colorBlock: number
   colorBlockHovered: number
@@ -237,7 +239,14 @@ export class DesignerTool extends React.Component<Props, {}> {
   state = {
     themeImage: []
   }
-
+  componentDidMount() {
+    const { setProductCodeAction, location } = this.props
+    const queryParams = queryString.parse(location.search)
+    const code = get(queryParams, 'code', '')
+    if (code) {
+      setProductCodeAction(code)
+    }
+  }
   render() {
     const {
       intl: { formatMessage },

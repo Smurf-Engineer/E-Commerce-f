@@ -25,6 +25,13 @@ import {
   InputDiv
 } from './styledComponents'
 import GenderBlock from './GenderBlock'
+import {
+  ItemDetailType,
+  GenderType,
+  ProductFile,
+  ProductPicture,
+  BlockProduct
+} from '../../../../types/common'
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
 const Dragger = Upload.Dragger
@@ -33,7 +40,8 @@ interface Props {
   mediaFiles: any[]
   gendersArray: any[]
   pictures: any[]
-  customizable: any[]
+  colorsProducts: object
+  customizable: boolean
   setBannerActions: (banners: any) => void
   addPicture: (index: number, item: any) => void
   removeBanner: (index: number) => void
@@ -61,41 +69,61 @@ export class FourthStep extends React.Component<Props, {}> {
       gendersArray,
       pictures: productImages,
       customizable,
+      colorsProducts,
       bannerMaterials
     } = this.props
     let productsImagesForm
-    if (productImages && gendersArray) {
-      productsImagesForm = gendersArray.map((gender: any) => ({
-        genderName: gender.name || gender.gender,
-        genderId: gender.id,
-        genderBlockImages: productImages.reduce((arr: any[], block: any) => {
-          if (block.gender_id === gender.id) {
-            arr.push([
-              {
-                name: 'front_image',
-                label: 'Front',
-                src: block.front_image || ''
-              },
-              {
-                name: 'left_image',
-                label: 'Left',
-                src: block.left_image || ''
-              },
-              {
-                name: 'back_image',
-                label: 'Back',
-                src: block.back_image || ''
-              },
-              {
-                name: 'right_image',
-                label: 'Right',
-                src: block.right_image || ''
-              }
-            ])
+    const arrayType = customizable
+      ? gendersArray
+      : Object.keys(colorsProducts).reduce((arr: ItemDetailType[], id: any) => {
+          if (colorsProducts[id]) {
+            arr.push({ id, name: colorsProducts[id] })
           }
           return arr
           // tslint:disable-next-line: align
         }, [])
+    if (productImages && arrayType) {
+      productsImagesForm = arrayType.map((gender: GenderType) => ({
+        genderName: gender.name || gender.gender,
+        genderId: gender.id,
+        genderBlockImages: productImages.reduce(
+          (arr: BlockProduct[], block: ProductPicture, index: number) => {
+            if (
+              (customizable ? block.gender_id : block.color_id) ===
+              parseInt(gender.id, 10)
+            ) {
+              arr.push([
+                {
+                  name: 'front_image',
+                  label: 'Front',
+                  src: block.front_image || '',
+                  index
+                },
+                {
+                  name: 'left_image',
+                  label: 'Left',
+                  src: block.left_image || '',
+                  index
+                },
+                {
+                  name: 'back_image',
+                  label: 'Back',
+                  src: block.back_image || '',
+                  index
+                },
+                {
+                  name: 'right_image',
+                  label: 'Right',
+                  src: block.right_image || '',
+                  index
+                }
+              ])
+            }
+            return arr
+            // tslint:disable-next-line: align
+          },
+          []
+        )
       }))
     }
     return (
@@ -184,7 +212,16 @@ export class FourthStep extends React.Component<Props, {}> {
               <MediaSection>
                 {mediaFiles.map((mediaFile: any, index: number) => (
                   <MediaDiv key={index}>
-                    <ImageBox src={mediaFile.url} alt="avatar" />
+                    <ImageBox
+                      onClick={this.openMedia(mediaFile)}
+                      clickable={!mediaFile.toUpload}
+                      src={
+                        mediaFile.extension === '.mp4'
+                          ? videoPlaceHolder
+                          : mediaFile.url
+                      }
+                      alt="avatar"
+                    />
                     <MediaFooter>
                       <div>
                         <FileName>{mediaFile.name}</FileName>
@@ -205,7 +242,11 @@ export class FourthStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-
+  openMedia = ({ url, toUpload }: ProductFile) => () => {
+    if (!toUpload && url) {
+      window.open(url)
+    }
+  }
   getBase64 = (img: any, callback: any) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => callback(reader.result))
@@ -303,13 +344,9 @@ export class FourthStep extends React.Component<Props, {}> {
 
   handleSetFile = (event: any) => {
     const { addPicture, pictures: productImages } = this.props
-    const { file } = event
+    const { file, data: index } = event
     const parameters = event.filename.split('@')
-    const genderId = parameters[0]
     const name = parameters[1]
-    const index = productImages.findIndex(
-      (item: any) => item.gender_id.toString() === genderId
-    )
     this.getBase64(file, (base64Image: string) => {
       const item = productImages[index]
       item[name] = base64Image

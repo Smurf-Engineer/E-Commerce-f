@@ -30,6 +30,7 @@ interface Props {
   relatedTags: string[]
   seasons: string[]
   setValue: (field: string, value: any) => void
+  setDesignCenter: (checked: boolean) => void
   setGenderActions: (genders: any) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   formatMessage: (messageDescriptor: any) => string
@@ -58,6 +59,7 @@ export class FirstStep extends React.Component<Props, {}> {
       designCenter,
       genders: gendersProduct,
       details,
+      contentTile,
       materials: materialsProduct,
       code,
       categoryName,
@@ -82,7 +84,7 @@ export class FirstStep extends React.Component<Props, {}> {
               <FormattedMessage {...messages.productType} />
             </Label>
             <RadioGroup
-              onChange={this.handleChangeCustom}
+              onChange={this.handleSwitchDesign}
               value={designCenter}
               name="designCenter"
               size="large"
@@ -231,7 +233,7 @@ export class FirstStep extends React.Component<Props, {}> {
             />
           </InputDiv>
         </RowInput>
-        {obj && mtl && (
+        {((obj && mtl) || !designCenter) && (
           <RowInput>
             <InputDiv flex={1} isFlex={true} flexFlow="row">
               <InlineLabel>
@@ -337,6 +339,18 @@ export class FirstStep extends React.Component<Props, {}> {
         <RowInput>
           <InputDiv flex={1}>
             <Label>
+              <FormattedMessage {...messages.contentTile} />
+            </Label>
+            <Input
+              size="large"
+              value={contentTile}
+              name="contentTile"
+              onChange={this.handleChangeCustom}
+              placeholder={formatMessage(messages.contentTileHolder)}
+            />
+          </InputDiv>
+          <InputDiv flex={1}>
+            <Label>
               <FormattedMessage {...messages.weight} />
             </Label>
             <Input
@@ -348,7 +362,6 @@ export class FirstStep extends React.Component<Props, {}> {
               placeholder={formatMessage(messages.weightHolder)}
             />
           </InputDiv>
-          <InputDiv flex={2} />
         </RowInput>
       </Container>
     )
@@ -358,8 +371,17 @@ export class FirstStep extends React.Component<Props, {}> {
     setCheck('sports', name, checked)
   }
   handleGenderChange = (ids: any[]) => {
-    const { setGenderActions, genders } = this.props
-    const value = genders.filter(({ id }: any) => ids.includes(id))
+    const {
+      setGenderActions,
+      genders,
+      product: { designCenter }
+    } = this.props
+    let value: GenderType[] = []
+    if (!designCenter && ids.length) {
+      value.push(genders.find(({ id }: GenderType) => id === ids[0]))
+    } else {
+      value = genders.filter(({ id }: GenderType) => ids.includes(id))
+    }
     setGenderActions(value)
   }
   handleSearchTagChange = (value: any) => {
@@ -395,9 +417,11 @@ export class FirstStep extends React.Component<Props, {}> {
     const { setValue } = this.props
     setValue('active', value ? 'true' : 'false')
   }
-  handleSwitchDesign = (value: boolean) => {
-    const { setValue } = this.props
-    setValue('designCenter', value)
+  handleSwitchDesign = ({
+    target: { value }
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const { setDesignCenter } = this.props
+    setDesignCenter(value)
   }
   handleSeason = (value: any) => {
     const { setValue } = this.props

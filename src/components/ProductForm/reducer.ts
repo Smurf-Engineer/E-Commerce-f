@@ -2,7 +2,7 @@
  * ProductForm Reducer - Created by Apodaca on 16/05/19.
  */
 
-import { fromJS, List } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import {
   SET_PRODUCT_DATA,
   CHANGE_VALUE,
@@ -14,9 +14,11 @@ import {
   SET_CURRENCIES,
   REMOVE_MATERIAL,
   SET_FILE_FIELD,
+  SET_COLORS,
   ADD_MATERIAL,
   ADD_BANNER,
   SET_BANNER,
+  SET_DESIGN_CENTER,
   SAVED_PRODUCT,
   REMOVE_BANNER,
   ADD_PICTURE
@@ -113,7 +115,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const colorsDet =
         colors && colors.length
           ? colors.reduce((obj, item) => {
-              obj[item.id] = true
+              obj[item.id] = item.name
               return obj
               // tslint:disable-next-line: align
             }, {})
@@ -132,7 +134,7 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       omitDeep(extraData, '__typename')
       omitDeep(detailedBanners, '__typename')
       return state.merge({
-        product: detailedProduct,
+        product: fromJS(detailedProduct),
         dataExtra: extraData,
         bannerMaterials: detailedBanners,
         loading: false
@@ -196,18 +198,63 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         return map
       })
     }
+    case SET_DESIGN_CENTER:
+      return state.update('product', product => {
+        return product.merge({
+          designCenter: action.value,
+          genders: List(),
+          pictures: List(),
+          productMaterials: Map(),
+          mediaFiles: List(),
+          colors: Map()
+        })
+      })
+
     case SET_BANNERS:
       return state.merge({ bannerMaterials: action.banners, fixed: true })
     case SET_GENDERS: {
-      const pictures = action.genders.map((gender: any) => ({
-        front_image: '',
-        back_image: '',
-        left_image: '',
-        right_image: '',
-        gender_id: gender.id
-      }))
+      const customizable = state.getIn(['product', 'designCenter'])
       return state.withMutations((map: any) => {
-        map.setIn(['product', 'genders'], action.genders)
+        // TODO: Change the way we store the pictures depending of the product type setting everything in different Maps
+        map.setIn(['product', 'genders'], fromJS(action.genders))
+        if (customizable) {
+          const pictures = action.genders.map((gender: any) => ({
+            front_image: '',
+            back_image: '',
+            left_image: '',
+            right_image: '',
+            gender_id: gender.id
+          }))
+          map.setIn(['product', 'pictures'], List.of(...pictures))
+        } else {
+          map.setIn(['product', 'pictures'], List())
+        }
+        return map
+      })
+    }
+    case SET_COLORS: {
+      // TODO: Change the way we store the pictures depending of the product type setting everything in different Maps
+      const { colors, pictures, genders } = state.get('product').toJS()
+      const gender = genders.length ? genders[0].id : ''
+      Object.keys(colors).forEach((id: string) => {
+        const index = pictures.findIndex(
+          (picture: any) => picture.color_id === parseInt(id, 10)
+        )
+        if (!colors[id] && index !== -1) {
+          pictures.splice(index, 1)
+        } else if (colors[id] && index === -1) {
+          pictures.push({
+            front_image: '',
+            back_image: '',
+            left_image: '',
+            right_image: '',
+            color_id: parseInt(id, 10),
+            gender_id: gender || ''
+          })
+        }
+      })
+      return state.withMutations((map: any) => {
+        map.setIn(['product', 'colors'], fromJS(colors))
         map.setIn(['product', 'pictures'], List.of(...pictures))
         return map
       })

@@ -22,12 +22,14 @@ const GenderBlock = ({ gender, handleSetFile, beforeUpload }: Props) => {
     <Container>
       <Label upperCase={true}>{gender.genderName}</Label>
       {gender.genderBlockImages.map((imageBlock: any, blockIndex: number) => (
-        <ImageBlock>
+        <ImageBlock key={blockIndex}>
           {imageBlock.map((image: any, subindex: number) => (
             <Upload
+              key={subindex}
               name={`${gender.genderId}@${image.name}`}
               listType="picture-card"
               className="avatar-uploader"
+              data={image.index}
               customRequest={handleSetFile}
               showUploadList={false}
               beforeUpload={beforeUpload}

@@ -18,6 +18,8 @@ export const REMOVE_BANNER = `${namespace}/REMOVE_BANNER`
 export const ADD_PICTURE = `${namespace}/ADD_PICTURE`
 export const SET_CURRENCIES = `${namespace}/SET_CURRENCIES`
 export const SAVED_PRODUCT = `${namespace}/SAVED_PRODUCT`
+export const SET_DESIGN_CENTER = `${namespace}/SET_DESIGN_CENTER`
+export const SET_COLORS = `${namespace}/SET_COLORS`
 
 export const CHANGE_VALUE = `${namespace}/CHANGE_VALUE`
 export const RESET_DATA = `${namespace}/RESET_DATA`
@@ -35,3 +37,8 @@ export const stepsArray = [
     title: 'Product page assets'
   }
 ]
+
+export const FIRST_STEP = 0
+export const SECOND_STEP = 1
+export const THIRD_STEP = 2
+export const FOURTH_STEP = 3
