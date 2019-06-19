@@ -5,6 +5,7 @@ import * as React from 'react'
 import { withApollo, compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import debounce from 'lodash/debounce'
 import GoogleFontLoader from 'react-google-font-loader'
 import message from 'antd/lib/message'
 import Search from 'antd/lib/auto-complete'
@@ -88,6 +89,7 @@ interface Props {
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
+  debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
   componentWillMount() {
     const { user } = this.props
     if (typeof window !== 'undefined' && !user) {
@@ -173,7 +175,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           </Subtitle>
           <Search
             placeholder="Product Code"
-            onChange={this.handleOnchange}
+            onChange={this.debounceSearchCode}
             size="large"
             dataSource={designSearchCodes}
             onSelect={this.handleOnSearch}
