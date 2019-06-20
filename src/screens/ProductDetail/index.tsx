@@ -225,7 +225,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
     const queryParams = queryString.parse(search)
 
-    const yotpoId = queryParams.yotpoId || ''
+    const yotpoId = queryParams.modelId || ''
 
     const gender = queryParams.gender || 0
     const colorId = selectedColor && selectedColor.id

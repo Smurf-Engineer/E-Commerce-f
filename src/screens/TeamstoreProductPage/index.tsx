@@ -174,7 +174,7 @@ export class TeamstoreProductPage extends React.Component<Props, StateProps> {
       location: { search }
     } = this.props
     const queryParams = queryString.parse(search)
-    const yotpoId = queryParams.yotpoId || ''
+    const yotpoId = queryParams.modelId || ''
     const storeId = queryParams.store || ''
 
     // TODO: Change to real priceRange and starting price when gets implemmented in the backq
