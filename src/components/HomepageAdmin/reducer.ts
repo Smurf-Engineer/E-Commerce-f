@@ -192,7 +192,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     case REMOVE_TILE_DATA: {
       const { index } = action
       return state.updateIn(['productTiles', index], (productTile: any) => {
-        return productTile.merge({ ...{ ...EMPTY_TILE } })
+        return productTile.merge(EMPTY_TILE)
       })
     }
     case REMOVE_HEADER: {
@@ -200,7 +200,7 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
       return state.updateIn(
         [Sections.SECONDARY_HEADER, index],
         (secondaryHeader: any) => {
-          return secondaryHeader.merge({ ...{ ...EMPTY_SECONDARY_HEADER } })
+          return secondaryHeader.merge(EMPTY_SECONDARY_HEADER)
         }
       )
     }
