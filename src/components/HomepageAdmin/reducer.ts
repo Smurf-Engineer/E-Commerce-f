@@ -191,13 +191,17 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
     }
     case REMOVE_TILE_DATA: {
       const { index } = action
-      return state.setIn(['productTiles', index], fromJS(EMPTY_TILE))
+      return state.updateIn(['productTiles', index], (productTile: any) => {
+        return productTile.merge({ ...{ ...EMPTY_TILE } })
+      })
     }
     case REMOVE_HEADER: {
       const { index } = action
-      return state.setIn(
+      return state.updateIn(
         [Sections.SECONDARY_HEADER, index],
-        fromJS(EMPTY_SECONDARY_HEADER)
+        (secondaryHeader: any) => {
+          return secondaryHeader.merge({ ...{ ...EMPTY_SECONDARY_HEADER } })
+        }
       )
     }
     default:
