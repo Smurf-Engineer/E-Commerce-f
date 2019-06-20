@@ -443,7 +443,6 @@ export class ProductForm extends React.Component<Props, {}> {
             // tslint:disable-next-line: align
           }, [])
         : []
-      // TODO: Handle all the camelCase variables (this is a hotfix for production)
       const productToSave = {
         id,
         code,
