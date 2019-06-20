@@ -34,6 +34,7 @@ import {
   LoadingMessage,
   MainBody
 } from './styledComponents'
+import omitDeep from 'omit-deep'
 
 interface DataExtra extends QueryProps {
   categories: object[]
@@ -420,6 +421,9 @@ export class ProductForm extends React.Component<Props, {}> {
             // tslint:disable-next-line: align
           }, [])
         : []
+      // TODO: Handle all the camelCase variables (this is a hotfix for production)
+      omitDeep(product, 'categoryName')
+      omitDeep(product, 'contentTile')
       const productToSave = {
         ...product,
         category_name: categoryName,
