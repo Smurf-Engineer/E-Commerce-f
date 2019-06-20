@@ -273,7 +273,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
             }
           })
           const discountList = get(data, 'discountsQuery.discounts')
-          discountList.push(newDiscount)
+          discountList.unshift(newDiscount)
           store.writeQuery({
             query: getDiscountsQuery,
             variables: {
@@ -309,7 +309,7 @@ class DiscountsAdmin extends React.Component<Props, {}> {
     const acceptNumbersOnly = event.target.getAttribute('data-is-number')
     const { value, id } = event.target
     const { setDiscountTextAction } = this.props
-    if (acceptNumbersOnly && !isNumber(value)) {
+    if (acceptNumbersOnly && (!isNumber(value) && value !== '')) {
       return
     }
     setDiscountTextAction(id, value)
