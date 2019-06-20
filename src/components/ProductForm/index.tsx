@@ -348,13 +348,7 @@ export class ProductForm extends React.Component<Props, {}> {
   }
   handleSave = (onlySave: boolean) => async () => {
     const {
-      product: {
-        pictures: productImages,
-        mediaFiles,
-        designCenter,
-        categoryName,
-        contentTile
-      },
+      product: { pictures: productImages, mediaFiles, designCenter },
       bannerMaterials,
       formatMessage,
       upsertProductAction,
@@ -371,7 +365,36 @@ export class ProductForm extends React.Component<Props, {}> {
       )
 
       const { product, history } = this.props
-      const { sports, productMaterials, sizeRange, fitStyles, colors } = product
+      const {
+        sports,
+        productMaterials,
+        sizeRange,
+        fitStyles,
+        colors,
+        id,
+        code,
+        name,
+        shortDescription,
+        yotpoId,
+        categoryName,
+        description,
+        obj,
+        mtl,
+        details,
+        materials,
+        genders,
+        season,
+        contentTile,
+        pictures,
+        priceRange,
+        retailMen,
+        retailWomen,
+        relatedItemTag,
+        weight,
+        mpn,
+        tags,
+        active
+      } = product
       const sportsProduct = sports
         ? Object.keys(sports).reduce((arr: any[], sportId: string) => {
             if (sports[sportId]) {
@@ -421,21 +444,41 @@ export class ProductForm extends React.Component<Props, {}> {
           }, [])
         : []
       const productToSave = {
-        ...product,
+        id,
+        code,
+        name,
+        short_description: shortDescription,
+        yotpo_id: yotpoId,
+        media_files: mediaFiles,
         category_name: categoryName,
+        design_center: designCenter,
+        description,
+        obj,
+        mtl,
+        details,
+        materials,
+        genders,
+        season,
         content_tile: contentTile,
+        pictures,
+        price_range: priceRange,
+        retail_men: retailMen,
+        retail_women: retailWomen,
+        related_item_tag: relatedItemTag,
+        weight,
+        mpn,
+        tags,
+        active,
         sports: sportsProduct,
-        fitStyles: fitStylesDet,
-        sizeRange: sizeRangeDet,
+        fit_styles: fitStylesDet,
+        size_range: sizeRangeDet,
         colors: colorsDet,
-        productMaterials: productMaterialsDet
+        product_materials: productMaterialsDet
       }
       await upsertProductAction({
         variables: { body: productToSave, bannerMaterials }
       })
-
       if (!onlySave) {
-        const code = get(productToSave, 'code', '')
         if (code) {
           history.push(`/publishing-tool?code=${code}`)
         }
