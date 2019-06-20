@@ -68,6 +68,7 @@ interface Props {
   colorChartSending: boolean
   colorChartModalOpen: boolean
   colorChartModalFormOpen: boolean
+  tutorialPlaylist: string
   onSelectColorBlock: (index: number) => void
   onSelectColor: (color: string) => void
   onSelectPalette: (colors: string[]) => void
@@ -158,7 +159,8 @@ const Tabs = ({
   onCloseColorChart,
   onCloseColorChartForm,
   onOpenFormChart,
-  onOpenColorChart
+  onOpenColorChart,
+  tutorialPlaylist
 }: Props) => {
   return (
     <Container>
@@ -258,7 +260,9 @@ const Tabs = ({
         </TabPane>
         {config.tutorialsTabActive === 'true' && (
           <TabPane tab={<Tab label="tutorials" icon={tutorials} />} key="5">
-            <TutorialsTab {...{ formatMessage, videos, setVideos }} />
+            <TutorialsTab
+              {...{ formatMessage, videos, setVideos, tutorialPlaylist }}
+            />
           </TabPane>
         )}
       </AntdTabs>

@@ -69,6 +69,7 @@
     "node-fetch": "1.6",
     "node-noop": "^1.0.0",
     "numeral": "^2.0.6",
+    "omit-deep": "^0.3.0",
     "pre-commit": "^1.2.2",
     "query-string": "^5.1.0",
     "raf": "^3.4.0",

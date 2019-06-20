@@ -98,7 +98,7 @@ export const uploadThemeImage = async (file: any) => {
     const user = JSON.parse(localStorage.getItem('user') || '')
     const formData = new FormData()
     formData.append('file', file)
-    const response = await fetch(`${config.graphqlUriBase}upload/themeImage`, {
+    const response = await fetch(`${config.graphqlUriBase}upload/adminImage`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

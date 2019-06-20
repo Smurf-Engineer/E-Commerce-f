@@ -14,7 +14,13 @@ import queryString from 'query-string'
 import * as LayoutActions from './actions'
 import * as LocaleActions from '../../screens/LanguageProvider/actions'
 import { openOutWithoutSaveModalAction } from '../../screens/DesignCenter/actions'
-import { RegionConfig, CartItems, UserType, Font, SimpleFont } from '../../types/common'
+import {
+  RegionConfig,
+  CartItems,
+  UserType,
+  Font,
+  SimpleFont
+} from '../../types/common'
 import MenuBar from '../../components/MenuBar'
 import ContactAndLinks from '../../components/ContactAndLinks'
 import SocialMedia from '../../components/SocialMedia'
@@ -138,7 +144,9 @@ class MainLayout extends React.Component<Props, {}> {
 
   onSearch = (value: string) => {
     const { setSearchParam } = this.props
-    setSearchParam(value)
+    if (value.length >= 3) {
+      setSearchParam(value)
+    }
   }
 
   handleOnClickLogout = () => {

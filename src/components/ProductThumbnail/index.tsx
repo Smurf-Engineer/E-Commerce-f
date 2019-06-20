@@ -123,12 +123,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
       designId
     } = this.props
     if (teamStoreShortId) {
-      return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&yotpoId=${yotpoId}`
+      return `/teamstore-product-page?store=${teamStoreShortId}&id=${id}&modelId=${yotpoId}`
     }
     if (myLockerList) {
       return `/custom-product?${designId && `id=${designId}`}`
     }
-    return `/product?id=${id}&yotpoId=${yotpoId}${
+    return `/product?id=${id}&modelId=${yotpoId}${
       gender ? `&gender=${gender}` : ''
     }`
   }

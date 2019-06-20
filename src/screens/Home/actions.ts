@@ -4,7 +4,8 @@
 import {
   DEFAULT_ACTION,
   SHOW_SEARCH_RESULTS_HOME,
-  SET_SEARCH_PARAM
+  SET_SEARCH_PARAM,
+  SET_HOMEPAGE_INFO
 } from './constants'
 import { AnyAction } from '../../types/common'
 
@@ -24,5 +25,12 @@ export const showSearchResultsHome = (show: boolean): AnyAction => {
   return {
     type: SHOW_SEARCH_RESULTS_HOME,
     show
+  }
+}
+
+export const setHomepageInfoAction = (data: any): AnyAction => {
+  return {
+    type: SET_HOMEPAGE_INFO,
+    data
   }
 }
