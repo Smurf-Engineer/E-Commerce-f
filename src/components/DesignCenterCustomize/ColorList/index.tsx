@@ -18,6 +18,7 @@ import Message from 'antd/lib/message'
 interface Color {
   value: string
   name: string
+  type?: string
 }
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
