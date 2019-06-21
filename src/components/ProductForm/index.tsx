@@ -20,7 +20,6 @@ import {
 } from './constants'
 import { FirstStep, SecondStep, ThirdStep, FourthStep, Stepper } from './Steps'
 import * as ProductFormActions from './actions'
-import * as ApiActions from './api'
 import { QueryProps, Product } from '../../types/common'
 import { getProductQuery, getExtraData, upsertProduct } from './data'
 import {
@@ -46,7 +45,7 @@ interface Props {
   history: any
   match: any
   client: any
-  fixed: boolean
+  bannersLoading: boolean
   loading: boolean
   loadingMessage: string
   dataExtra: DataExtra
@@ -64,20 +63,19 @@ interface Props {
   setValue: (field: string, value: any) => void
   removeBanner: (index: number) => void
   setDesignCenter: (checked: boolean) => void
-  setColors: () => void
+  setColors: (id: number, value: boolean) => void
   addBanner: (item: any) => void
-  addPicture: (index: number, item: any) => void
   setBanner: (index: number, field: string, value: any) => void
   removeFile: (array: string, index: number) => void
   addFile: (array: string, item: any) => void
   setFileField: (
-    array: string,
-    index: number,
-    field: string,
-    value: any
+    selected: string,
+    id: string,
+    name: string,
+    value: string
   ) => void
-  setBannerActions: (banners: any) => void
-  setGenderActions: (genders: any) => void
+  setBannersLoading: (value: boolean) => void
+  setGenderActions: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
   setProductAction: (product: Product | {}, extraData: any) => void
@@ -124,10 +122,10 @@ export class ProductForm extends React.Component<Props, {}> {
       dataExtra,
       bannerMaterials,
       setCheck,
-      setBannerActions,
+      bannersLoading,
+      setBannersLoading,
       removeFile,
       addFile,
-      addPicture,
       setDesignCenter,
       removeBanner,
       setColors,
@@ -154,7 +152,7 @@ export class ProductForm extends React.Component<Props, {}> {
     const mediaFiles = get(product, 'mediaFiles', [])
     const customizable = get(product, 'designCenter', null)
     const pictures = get(product, 'pictures', [])
-    const gendersArray = get(product, 'genders', [])
+    const selectedGenders = get(product, 'genders', {})
     const colorsProducts = get(product, 'colors', {})
     const screenSteps = [
       <FirstStep
@@ -221,15 +219,17 @@ export class ProductForm extends React.Component<Props, {}> {
           colorsProducts,
           removeBanner,
           addBanner,
-          addPicture,
+          bannersLoading,
           setBanner,
           customizable,
           setCheck,
+          genders,
+          colors,
           pictures,
-          setBannerActions,
+          setBannersLoading,
           bannerMaterials,
           setValue,
-          gendersArray,
+          selectedGenders,
           formatMessage
         }}
       />
@@ -314,8 +314,8 @@ export class ProductForm extends React.Component<Props, {}> {
           code &&
           details &&
           genders &&
+          Object.keys(genders).some(key => genders[key].selected) &&
           product.hasOwnProperty('designCenter') &&
-          genders.length &&
           materials &&
           categoryName &&
           sports &&
@@ -326,15 +326,13 @@ export class ProductForm extends React.Component<Props, {}> {
           shortDescription
         )
       case SECOND_STEP:
-        const { sizeRange, fitStyles, colors, designCenter } = product
+        const { sizeRange, colors, designCenter } = product
         return (
           sizeRange &&
           Object.keys(sizeRange).some(key => sizeRange[key]) &&
-          fitStyles &&
-          Object.keys(fitStyles).some(key => fitStyles[key]) &&
           ((!designCenter &&
             colors &&
-            Object.keys(colors).some(key => colors[key])) ||
+            Object.keys(colors).some(key => colors[key].selected)) ||
             designCenter)
         )
       case THIRD_STEP:
@@ -347,30 +345,22 @@ export class ProductForm extends React.Component<Props, {}> {
     }
   }
   handleSave = (onlySave: boolean) => async () => {
-    const {
-      product: { pictures: productImages, mediaFiles, designCenter },
-      bannerMaterials,
-      formatMessage,
-      upsertProductAction,
-      uploadFilesAction,
-      setUploadingAction
-    } = this.props
+    const { setUploadingAction, formatMessage } = this.props
     try {
-      await uploadFilesAction(
-        formatMessage,
-        productImages || [],
-        bannerMaterials || [],
-        mediaFiles || [],
-        designCenter
-      )
-
-      const { product, history } = this.props
+      const {
+        product,
+        history,
+        bannerMaterials,
+        upsertProductAction
+      } = this.props
       const {
         sports,
         productMaterials,
         sizeRange,
         fitStyles,
         colors,
+        mediaFiles,
+        designCenter,
         id,
         code,
         name,
@@ -385,7 +375,6 @@ export class ProductForm extends React.Component<Props, {}> {
         genders,
         season,
         contentTile,
-        pictures,
         priceRange,
         retailMen,
         retailWomen,
@@ -436,12 +425,32 @@ export class ProductForm extends React.Component<Props, {}> {
         : []
       const colorsDet = colors
         ? Object.keys(colors).reduce((arr: any[], colorId: string) => {
-            if (colors[colorId]) {
+            if (colors[colorId].selected) {
               arr.push({ id: colorId })
             }
             return arr
             // tslint:disable-next-line: align
           }, [])
+        : []
+      const gendersDet = genders
+        ? Object.keys(genders).reduce((arr: any[], genderId: string) => {
+            if (genders[genderId].selected) {
+              arr.push({ id: genderId })
+            }
+            return arr
+            // tslint:disable-next-line: align
+          }, [])
+        : []
+      const arrayType = designCenter ? genders : colors
+      const picturesDet = arrayType
+        ? Object.keys(arrayType).map((imageId: string) => ({
+            front_image: arrayType[imageId].front_image || '',
+            back_image: arrayType[imageId].back_image || '',
+            left_image: arrayType[imageId].left_image || '',
+            right_image: arrayType[imageId].right_image || '',
+            color_id: !designCenter ? imageId : null,
+            gender_id: designCenter ? imageId : gendersDet[0].id
+          }))
         : []
       const productToSave = {
         id,
@@ -457,10 +466,10 @@ export class ProductForm extends React.Component<Props, {}> {
         mtl,
         details,
         materials,
-        genders,
+        genders: gendersDet,
         season,
         content_tile: contentTile,
-        pictures,
+        pictures: picturesDet,
         price_range: priceRange,
         retail_men: retailMen,
         retail_women: retailWomen,
@@ -475,6 +484,7 @@ export class ProductForm extends React.Component<Props, {}> {
         colors: colorsDet,
         product_materials: productMaterialsDet
       }
+      setUploadingAction(true, formatMessage(messages.savingProduct))
       await upsertProductAction({
         variables: { body: productToSave, bannerMaterials }
       })
@@ -514,7 +524,7 @@ const ProductFormEnhance = compose(
   graphql(upsertProduct, { name: 'upsertProductAction' }),
   connect(
     mapStateToProps,
-    { ...ProductFormActions, ...ApiActions }
+    { ...ProductFormActions }
   )
 )(ProductForm)
 

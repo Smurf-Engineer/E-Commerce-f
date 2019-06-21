@@ -4,6 +4,7 @@
 import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
+import get from 'lodash/get'
 import {
   Container,
   Separator,
@@ -31,7 +32,7 @@ interface Props {
   seasons: string[]
   setValue: (field: string, value: any) => void
   setDesignCenter: (checked: boolean) => void
-  setGenderActions: (genders: any) => void
+  setGenderActions: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -70,7 +71,9 @@ export class FirstStep extends React.Component<Props, {}> {
       shortDescription
     } = product
     const searchValues = tags ? tags.split(', ') : []
-    const gendersValues = gendersProduct ? gendersProduct.map(e => e.id) : []
+    const gendersValues = gendersProduct
+      ? Object.keys(gendersProduct).filter(id => gendersProduct[id].selected)
+      : []
     const materialsValue = materialsProduct ? materialsProduct.split('-') : []
     const specDetails = details ? details.split(',') : []
     return (
@@ -325,11 +328,12 @@ export class FirstStep extends React.Component<Props, {}> {
               mode="multiple"
               value={gendersValues}
               style={{ width: '100%' }}
+              onSelect={this.handleGenderChange}
+              onDeselect={this.handleGenderChange}
               placeholder={formatMessage(messages.genderHolder)}
-              onChange={this.handleGenderChange}
             >
               {genders.map((gender: any, index) => (
-                <Option key={index.toString()} value={gender.id}>
+                <Option key={index.toString()} value={gender.id.toString()}>
                   {gender.gender}
                 </Option>
               ))}
@@ -370,19 +374,20 @@ export class FirstStep extends React.Component<Props, {}> {
     const { setCheck } = this.props
     setCheck('sports', name, checked)
   }
-  handleGenderChange = (ids: any[]) => {
+  handleGenderChange = (selectedId: string) => {
     const {
       setGenderActions,
-      genders,
-      product: { designCenter }
+      product: { designCenter, genders }
     } = this.props
-    let value: GenderType[] = []
-    if (!designCenter && ids.length) {
-      value.push(genders.find(({ id }: GenderType) => id === ids[0]))
-    } else {
-      value = genders.filter(({ id }: GenderType) => ids.includes(id))
+    const idsSelected = Object.keys(genders).filter(
+      id => genders[id].selected && selectedId !== id
+    ).length
+    if (!(!designCenter && idsSelected > 0)) {
+      setGenderActions(
+        selectedId,
+        !get(genders, `${selectedId}.selected`, false)
+      )
     }
-    setGenderActions(value)
   }
   handleSearchTagChange = (value: any) => {
     const { setValue } = this.props

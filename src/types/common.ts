@@ -427,7 +427,11 @@ export type ProductPicture = {
   toUpload?: object | boolean
   color_id?: number
 }
-
+export type TypePicture = {
+  id: string
+  name: string
+  images: BlockImage[]
+}
 export type FileUploaded = {
   id: string
   imageUri: string
@@ -440,6 +444,7 @@ export interface TeamstoreResult {
 export type ItemDetailType = {
   id?: number
   name?: string | boolean
+  gender?: string
 }
 
 export type BlockImage = {
