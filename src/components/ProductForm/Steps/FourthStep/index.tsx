@@ -87,32 +87,40 @@ export class FourthStep extends React.Component<Props, {}> {
     )
     const arrayType = customizable ? selectedGenders : colorsProducts
     if (arrayType) {
-      productsImagesForm = Object.keys(arrayType).map((id: string) => ({
-        name: names[id],
-        id,
-        images: [
-          {
-            name: 'front_image',
-            label: 'Front',
-            src: arrayType[id].front_image || ''
-          },
-          {
-            name: 'left_image',
-            label: 'Left',
-            src: arrayType[id].left_image || ''
-          },
-          {
-            name: 'back_image',
-            label: 'Back',
-            src: arrayType[id].back_image || ''
-          },
-          {
-            name: 'right_image',
-            label: 'Right',
-            src: arrayType[id].right_image || ''
+      productsImagesForm = Object.keys(arrayType).reduce(
+        (arr: TypePicture[], id: string) => {
+          if (arrayType[id].selected) {
+            arr.push({
+              name: names[id],
+              id,
+              images: [
+                {
+                  name: 'front_image',
+                  label: 'Front',
+                  src: arrayType[id].front_image || ''
+                },
+                {
+                  name: 'left_image',
+                  label: 'Left',
+                  src: arrayType[id].left_image || ''
+                },
+                {
+                  name: 'back_image',
+                  label: 'Back',
+                  src: arrayType[id].back_image || ''
+                },
+                {
+                  name: 'right_image',
+                  label: 'Right',
+                  src: arrayType[id].right_image || ''
+                }
+              ]
+            })
           }
-        ]
-      }))
+          return arr
+        },
+        []
+      )
     }
     return (
       <Container>
