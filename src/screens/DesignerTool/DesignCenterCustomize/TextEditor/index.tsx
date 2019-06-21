@@ -37,7 +37,7 @@ class TextEditor extends React.Component<Props, {}> {
       case FONT_LIST:
         return <FontList text={text || ''} {...{ onSelectFont }} />
       case FILL_COLOR:
-        return <FillColor {...{ onSelectFill }} />
+        return <FillColor {...{ onSelectFill, formatMessage }} />
       case OUTLINE_COLOR:
         return (
           <OutlineColor

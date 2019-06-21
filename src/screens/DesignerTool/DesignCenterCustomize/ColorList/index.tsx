@@ -3,6 +3,8 @@
  */
 import * as React from 'react'
 import Tooltip from 'antd/lib/tooltip/'
+import filter from 'lodash/filter'
+import Divider from 'antd/lib/divider'
 import get from 'lodash/get'
 import { Container, Color, Row, Col } from './styledComponents'
 import Message from 'antd/lib/message'
@@ -10,6 +12,7 @@ import Message from 'antd/lib/message'
 interface Color {
   value: string
   name: string
+  type?: string
 }
 interface Props {
   onSelectColor?: (color: string) => void
@@ -37,19 +40,42 @@ const ColorList = ({
   } catch (e) {
     Message.error(e)
   }
+  const regularColors =
+    arrayColors && arrayColors.length
+      ? filter(arrayColors, color => !color.type)
+      : []
+  const fluorescentColors =
+    !stitching && arrayColors && arrayColors.length
+      ? filter(arrayColors, color => color.type)
+      : []
 
-  const colorList =
-    arrayColors &&
-    arrayColors.map(({ value, name }: Color, index: number) => (
+  const colorList = regularColors.map(
+    ({ value, name }: Color, index: number) => (
       <Tooltip key={index} title={name}>
         <Col>
           <Color color={value} onClick={handleOnSelectColor(value)} />
         </Col>
       </Tooltip>
-    ))
+    )
+  )
+  const fluorescentColorList = fluorescentColors.map(
+    ({ value, name }: Color, index: number) => (
+      <Tooltip key={index} title={name}>
+        <Col>
+          <Color color={value} onClick={handleOnSelectColor(value)} />
+        </Col>
+      </Tooltip>
+    )
+  )
   return (
     <Container height={height}>
       <Row>{arrayColors && arrayColors.length && colorList}</Row>
+      {!stitching && (
+        <div>
+          <Divider />
+          <Row>{arrayColors && arrayColors.length && fluorescentColorList}</Row>
+        </div>
+      )}
     </Container>
   )
 }

@@ -242,7 +242,8 @@ class ColorsTab extends React.PureComponent<Props, State> {
                   onSelectStitchingColor,
                   stitchingColor,
                   disableTooltip,
-                  colorsList
+                  colorsList,
+                  formatMessage
                 }}
               />
             </StitchingList>
