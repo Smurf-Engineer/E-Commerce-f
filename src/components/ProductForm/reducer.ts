@@ -17,6 +17,8 @@ import {
   SET_COLORS,
   ADD_MATERIAL,
   ADD_BANNER,
+  SET_SPORT,
+  ENABLE_SPORT,
   SET_BANNERS_LOADING,
   SET_DESIGN_CENTER,
   SAVED_PRODUCT,
@@ -32,6 +34,8 @@ export const initialState = fromJS({
   loading: true,
   loadingMessage: '',
   bannerMaterials: [],
+  newSport: '',
+  newSportEnabled: false,
   bannersLoading: false,
   dataExtra: {}
 })
@@ -178,6 +182,10 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
       const oldList = state.getIn(['product', array])
       return state.setIn(['product', array], oldList.remove(index))
     }
+    case ENABLE_SPORT:
+      return state.set('newSportEnabled', action.value)
+    case SET_SPORT:
+      return state.set('newSport', action.value)
     case ADD_MATERIAL: {
       const { item, array } = action
       const oldList = state.getIn(['product', array])

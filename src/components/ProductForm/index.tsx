@@ -43,6 +43,8 @@ interface Props {
   bannerMaterials: any[]
   product: Product
   history: any
+  newSport: string
+  newSportEnabled: boolean
   match: any
   client: any
   bannersLoading: boolean
@@ -57,6 +59,8 @@ interface Props {
     mediaFiles: any[],
     isCustom: boolean
   ) => Promise<any>
+  enableNewSportAction: (value: boolean) => void
+  setNewSport: (value: string) => void
   upsertProductAction: (variables: {}) => Promise<any>
   getDataProduct: (variables: {}) => Promise<any>
   getExtraDataAction: () => Promise<any>
@@ -121,8 +125,12 @@ export class ProductForm extends React.Component<Props, {}> {
       match,
       dataExtra,
       bannerMaterials,
+      enableNewSportAction,
+      setNewSport,
       setCheck,
       bannersLoading,
+      newSport,
+      newSportEnabled,
       setBannersLoading,
       removeFile,
       addFile,
@@ -162,7 +170,11 @@ export class ProductForm extends React.Component<Props, {}> {
           setValue,
           setDesignCenter,
           setCheck,
+          newSport,
+          newSportEnabled,
           seasons,
+          enableNewSportAction,
+          setNewSport,
           setGenderAction,
           product,
           materials,
@@ -285,7 +297,7 @@ export class ProductForm extends React.Component<Props, {}> {
   }
   validateFields = () => {
     const { currentStep } = this.state
-    const { product } = this.props
+    const { product, newSport, newSportEnabled } = this.props
     switch (currentStep) {
       case FIRST_STEP:
         const {
@@ -318,8 +330,8 @@ export class ProductForm extends React.Component<Props, {}> {
           product.hasOwnProperty('designCenter') &&
           materials &&
           categoryName &&
-          sports &&
-          Object.keys(sports).some(key => sports[key]) &&
+          ((sports && Object.keys(sports).some(key => sports[key])) ||
+            (newSportEnabled && newSport)) &&
           relatedItemTag &&
           description &&
           weight &&
@@ -351,7 +363,9 @@ export class ProductForm extends React.Component<Props, {}> {
         product,
         history,
         bannerMaterials,
-        upsertProductAction
+        upsertProductAction,
+        newSport,
+        newSportEnabled
       } = this.props
       const {
         sports,
@@ -467,6 +481,7 @@ export class ProductForm extends React.Component<Props, {}> {
         materials,
         genders: gendersDet,
         season,
+        new_sport: newSportEnabled ? newSport : '',
         content_tile: contentTile,
         pictures: picturesDet,
         price_range: priceRange,
