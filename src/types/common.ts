@@ -1134,6 +1134,7 @@ export interface OrderSearchResult {
   stitchingValue?: string
   stitchingName?: string
   shortId: string
+  pdfUrl?: string
   product: Product
 }
 
