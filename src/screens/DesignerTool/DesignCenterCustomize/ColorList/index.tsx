@@ -3,7 +3,6 @@
  */
 import * as React from 'react'
 import Tooltip from 'antd/lib/tooltip/'
-import filter from 'lodash/filter'
 import Divider from 'antd/lib/divider'
 import get from 'lodash/get'
 import { Container, Color, Row, Col } from './styledComponents'
@@ -28,7 +27,7 @@ const ColorList = ({
   colorsList
 }: Props) => {
   const handleOnSelectColor = (color: string) => () => onSelectColor(color)
-  let arrayColors: any
+  let arrayColors: any = []
   try {
     arrayColors = JSON.parse(
       get(
@@ -40,40 +39,38 @@ const ColorList = ({
   } catch (e) {
     Message.error(e)
   }
-  const regularColors =
-    arrayColors && arrayColors.length
-      ? filter(arrayColors, color => !color.type)
-      : []
-  const fluorescentColors =
-    !stitching && arrayColors && arrayColors.length
-      ? filter(arrayColors, color => color.type)
-      : []
+  const regularColors: JSX.Element[] = []
+  const fluorescentColors: JSX.Element[] = []
 
-  const colorList = regularColors.map(
-    ({ value, name }: Color, index: number) => (
-      <Tooltip key={index} title={name}>
-        <Col>
-          <Color color={value} onClick={handleOnSelectColor(value)} />
-        </Col>
-      </Tooltip>
-    )
-  )
-  const fluorescentColorList = fluorescentColors.map(
-    ({ value, name }: Color, index: number) => (
-      <Tooltip key={index} title={name}>
-        <Col>
-          <Color color={value} onClick={handleOnSelectColor(value)} />
-        </Col>
-      </Tooltip>
-    )
-  )
+  arrayColors.forEach(({ value, type }: Color, index: number) => {
+    if (type) {
+      const node = (
+        <Tooltip key={index} title={name}>
+          <Col>
+            <Color color={value} onClick={handleOnSelectColor(value)} />
+          </Col>
+        </Tooltip>
+      )
+      fluorescentColors.push(node)
+    } else {
+      const node = (
+        <Tooltip key={index} title={name}>
+          <Col>
+            <Color color={value} onClick={handleOnSelectColor(value)} />
+          </Col>
+        </Tooltip>
+      )
+      regularColors.push(node)
+    }
+  })
+
   return (
     <Container height={height}>
-      <Row>{arrayColors && arrayColors.length && colorList}</Row>
+      <Row>{regularColors.length && regularColors}</Row>
       {!stitching && (
         <div>
           <Divider />
-          <Row>{arrayColors && arrayColors.length && fluorescentColorList}</Row>
+          <Row>{fluorescentColors.length && fluorescentColors}</Row>
         </div>
       )}
     </Container>
