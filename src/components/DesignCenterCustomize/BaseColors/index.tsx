@@ -53,7 +53,9 @@ class ColorTab extends React.PureComponent<Props, {}> {
           }}
         />
         <Divider />
-        <ColorList {...{ onSelectColor, disableTooltip, colorsList }} />
+        <ColorList
+          {...{ onSelectColor, disableTooltip, colorsList, formatMessage }}
+        />
       </Container>
     )
   }
