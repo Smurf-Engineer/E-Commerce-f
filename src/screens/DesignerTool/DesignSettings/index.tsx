@@ -64,10 +64,10 @@ interface Props {
 }
 
 class DesignSettings extends React.PureComponent<Props, {}> {
-  state = {
-    code: ''
+  constructor(props: Props) {
+    super(props)
+    this.state = { code: props.productCode }
   }
-
   render() {
     const {
       themeImage,
@@ -241,7 +241,8 @@ class DesignSettings extends React.PureComponent<Props, {}> {
         size
       }
       const design = {
-        name, colors: areaColors,
+        name,
+        colors: areaColors,
         image: styleImage,
         canvas,
         fullColors: colors,

@@ -55,30 +55,34 @@ const productFormReducer: Reducer<any> = (state = initialState, action) => {
         pictures
       } = product
       const { bannerMaterials } = extraData
-      const gendersSelected = genders.reduce((obj, { id, name }) => {
-        const blockImage = pictures.find(
-          (block: ProductPicture) => block.gender_id === id
-        )
-        obj[id] = {
-          ...blockImage,
-          name,
-          selected: true
-        }
-        return obj
-        // tslint:disable-next-line: align
-      }, {})
-      const colorsSelected = colors.reduce((obj, { id, name }) => {
-        const blockImage = pictures.find(
-          (block: ProductPicture) => block.color_id === id
-        )
-        obj[id] = {
-          ...blockImage,
-          name,
-          selected: true
-        }
-        return obj
-        // tslint:disable-next-line: align
-      }, {})
+      const gendersSelected = genders
+        ? genders.reduce((obj, { id, name }) => {
+            const blockImage = pictures.find(
+              (block: ProductPicture) => block.gender_id === id
+            )
+            obj[id] = {
+              ...blockImage,
+              name,
+              selected: true
+            }
+            return obj
+            // tslint:disable-next-line: align
+          }, {})
+        : {}
+      const colorsSelected = colors
+        ? colors.reduce((obj, { id, name }) => {
+            const blockImage = pictures.find(
+              (block: ProductPicture) => block.color_id === id
+            )
+            obj[id] = {
+              ...blockImage,
+              name,
+              selected: true
+            }
+            return obj
+            // tslint:disable-next-line: align
+          }, {})
+        : {}
       const mediaFilesDetailed = mediaFiles
         ? mediaFiles.map((file: any, index: number) => ({
             url: file.url,
