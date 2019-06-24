@@ -16,7 +16,10 @@ import {
   RadioButton,
   InputDiv
 } from './styledComponents'
-import { Radio, Input, Select, AutoComplete } from 'antd'
+import Radio from 'antd/lib/radio'
+import Input from 'antd/lib/input'
+import Select from 'antd/lib/select'
+import AutoComplete from 'antd/lib/auto-complete'
 import { Product, ItemDetailType, GenderType } from '../../../../types/common'
 const RadioGroup = Radio.Group
 const Option = Select.Option

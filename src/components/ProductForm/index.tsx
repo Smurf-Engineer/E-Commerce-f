@@ -442,16 +442,15 @@ export class ProductForm extends React.Component<Props, {}> {
           }, [])
         : []
       const arrayType = designCenter ? genders : colors
-      const picturesDet = arrayType
-        ? Object.keys(arrayType).map((imageId: string) => ({
-            front_image: arrayType[imageId].front_image || '',
-            back_image: arrayType[imageId].back_image || '',
-            left_image: arrayType[imageId].left_image || '',
-            right_image: arrayType[imageId].right_image || '',
-            color_id: !designCenter ? imageId : null,
-            gender_id: designCenter ? imageId : gendersDet[0].id
-          }))
-        : []
+      const picturesDet = Object.keys(arrayType).map((imageId: string) => ({
+        front_image: arrayType[imageId].front_image || '',
+        back_image: arrayType[imageId].back_image || '',
+        left_image: arrayType[imageId].left_image || '',
+        right_image: arrayType[imageId].right_image || '',
+        color_id: !designCenter ? imageId : null,
+        gender_id: designCenter ? imageId : gendersDet[0].id
+      }))
+
       const productToSave = {
         id,
         code,
