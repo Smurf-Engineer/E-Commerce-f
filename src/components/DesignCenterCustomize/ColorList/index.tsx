@@ -58,8 +58,8 @@ const ColorList = ({
   } catch (e) {
     Message.error(e)
   }
-  const regularColors: JSX.Element[] = []
-  const fluorescentColors: JSX.Element[] = []
+  const regularColors: React.ReactNodeArray = []
+  const fluorescentColors: React.ReactNodeArray = []
 
   arrayColors.forEach(({ value, type }: Color, index: number) => {
     if (type) {
