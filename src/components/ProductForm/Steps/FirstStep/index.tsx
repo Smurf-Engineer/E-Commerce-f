@@ -4,7 +4,6 @@
 import * as React from 'react'
 import messages from './messages'
 import { FormattedMessage } from 'react-intl'
-import get from 'lodash/get'
 import {
   Container,
   Separator,
@@ -35,7 +34,7 @@ interface Props {
   seasons: string[]
   setValue: (field: string, value: any) => void
   setDesignCenter: (checked: boolean) => void
-  setGenderActions: (id: number, value: boolean) => void
+  setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   formatMessage: (messageDescriptor: any) => string
 }
@@ -331,8 +330,8 @@ export class FirstStep extends React.Component<Props, {}> {
               mode="multiple"
               value={gendersValues}
               style={{ width: '100%' }}
-              onSelect={this.handleGenderChange}
-              onDeselect={this.handleGenderChange}
+              onSelect={this.handleGenderChange(true)}
+              onDeselect={this.handleGenderChange(false)}
               placeholder={formatMessage(messages.genderHolder)}
             >
               {genders.map((gender: any, index) => (
@@ -377,19 +376,16 @@ export class FirstStep extends React.Component<Props, {}> {
     const { setCheck } = this.props
     setCheck('sports', name, checked)
   }
-  handleGenderChange = (selectedId: string) => {
+  handleGenderChange = (selected: boolean) => (selectedId: string) => {
     const {
-      setGenderActions,
+      setGenderAction,
       product: { designCenter, genders }
     } = this.props
     const idsSelected = Object.keys(genders).filter(
       id => genders[id].selected && selectedId !== id
     ).length
     if (!(!designCenter && idsSelected > 0)) {
-      setGenderActions(
-        selectedId,
-        !get(genders, `${selectedId}.selected`, false)
-      )
+      setGenderAction(selectedId, selected)
     }
   }
   handleSearchTagChange = (value: any) => {

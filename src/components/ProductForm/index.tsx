@@ -75,7 +75,7 @@ interface Props {
     value: string
   ) => void
   setBannersLoading: (value: boolean) => void
-  setGenderActions: (id: number, value: boolean) => void
+  setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setCurrencies: (currencies: any) => void
   setProductAction: (product: Product | {}, extraData: any) => void
@@ -132,7 +132,7 @@ export class ProductForm extends React.Component<Props, {}> {
       addBanner,
       setBanner,
       setFileField,
-      setGenderActions,
+      setGenderAction,
       loadingMessage,
       product,
       loading,
@@ -163,7 +163,7 @@ export class ProductForm extends React.Component<Props, {}> {
           setDesignCenter,
           setCheck,
           seasons,
-          setGenderActions,
+          setGenderAction,
           product,
           materials,
           genders,

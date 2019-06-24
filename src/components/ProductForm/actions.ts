@@ -56,7 +56,7 @@ export const setBannersLoading = (value: boolean): AnyAction => ({
   value
 })
 
-export const setGenderActions = (id: number, value: boolean): AnyAction => ({
+export const setGenderAction = (id: number, value: boolean): AnyAction => ({
   type: SET_GENDERS,
   id,
   value
