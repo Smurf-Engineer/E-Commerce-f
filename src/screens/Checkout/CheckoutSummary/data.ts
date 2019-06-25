@@ -3,8 +3,8 @@ import gql from 'graphql-tag'
 export const getTaxQuery = gql`
   query getTaxes(
     $country: String!
-    $weight: Float!
     $shipAddress: NetsuiteTaxAddress!
+    $cart: [SimpleCartInput]!
   ) {
     taxes: getTaxesByAddress(
       shipAddress: $shipAddress
@@ -18,7 +18,7 @@ export const getTaxQuery = gql`
       countrySub
     }
 
-    shipping: getShippingByCountry(country: $country, weight: $weight) {
+    shipping: getShippingByCountry(country: $country, cart: $cart) {
       id
       total
       internalId
