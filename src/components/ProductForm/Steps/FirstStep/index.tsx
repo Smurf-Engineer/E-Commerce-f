@@ -383,8 +383,8 @@ export class FirstStep extends React.Component<Props, {}> {
     } = this.props
     const idsSelected = Object.keys(genders).filter(
       id => genders[id].selected && selectedId !== id
-    ).length
-    if (!(!designCenter && idsSelected > 0)) {
+    )
+    if (!(!designCenter && idsSelected.length > 0)) {
       setGenderAction(selectedId, selected)
     }
   }
