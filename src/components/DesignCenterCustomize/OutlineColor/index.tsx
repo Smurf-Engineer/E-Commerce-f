@@ -46,7 +46,10 @@ const OutlineColor = ({
           max={5}
         />
       </Header>
-      <ColorList onSelectColor={onSelectStrokeColor} {...{ colorsList }} />
+      <ColorList
+        onSelectColor={onSelectStrokeColor}
+        {...{ colorsList, formatMessage }}
+      />
     </Container>
   )
 }
