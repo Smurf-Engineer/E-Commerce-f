@@ -123,7 +123,7 @@ class CartListItemAdmin extends React.Component<Props, {}> {
       return
     }
 
-    let productUrl = `/product?id=${id}&yotpoId=${yotpoId}`
+    let productUrl = `/product?id=${id}&modelId=${yotpoId}`
 
     if (designId) {
       productUrl = `/custom-product?id=${designId}`

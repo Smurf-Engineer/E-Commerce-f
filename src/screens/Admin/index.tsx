@@ -20,6 +20,7 @@ import ProductCatalog from '../../components/ProductCatalog'
 import OrderHistoryAdmin from '../../components/OrderHistoryAdmin'
 import UsersAdmin from '../../components/UsersAdmin'
 import HomepageAdmin from '../../components/HomepageAdmin'
+import DesignLabAdmin from '../../components/DesignLabAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 import DesignSearchAdmin from '../../components/DesignSearch'
 
@@ -40,7 +41,9 @@ import {
   USERS_URL,
   DESIGN_URL,
   HOMEPAGE_URL,
-  HOMEPAGE
+  HOMEPAGE,
+  DESIGN_LAB,
+  DESIGN_LAB_URL
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -118,6 +121,9 @@ export class Admin extends React.Component<Props, {}> {
         case HOMEPAGE_URL:
           key = HOMEPAGE
           break
+        case DESIGN_LAB_URL:
+          key = DESIGN_LAB
+          break
         default:
           break
       }
@@ -166,7 +172,6 @@ export class Admin extends React.Component<Props, {}> {
         </Content>
       )
     }
-
     return (
       <AdminLayout {...{ history, intl, screen }} onLogout={this.onLogout}>
         <Route
@@ -184,8 +189,8 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <ProductCatalog {...{ history, formatMessage }} />}
         />
         <Route
-          path="/admin/users"
-          render={() => <UsersAdmin {...{ history, formatMessage }} />}
+          path="/admin/design-lab"
+          render={() => <DesignLabAdmin {...{ history, formatMessage }} />}
         />
         <Route
           path="/admin/design-search"
@@ -194,6 +199,10 @@ export class Admin extends React.Component<Props, {}> {
         <Route
           path="/admin/homepage"
           render={() => <HomepageAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/users"
+          render={() => <UsersAdmin {...{ history, formatMessage }} />}
         />
       </AdminLayout>
     )

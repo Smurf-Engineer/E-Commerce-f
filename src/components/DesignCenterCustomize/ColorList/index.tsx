@@ -3,16 +3,26 @@
  */
 import * as React from 'react'
 import get from 'lodash/get'
-import { Container, Color, Row, Col } from './styledComponents'
+import {
+  Container,
+  Color,
+  Row,
+  Col,
+  ColorTitle,
+  SyledDivider
+} from './styledComponents'
 import { StitchingColor } from '../../../types/common'
+import messages from './messages'
 import Message from 'antd/lib/message'
 interface Color {
   value: string
   name: string
+  type?: string
 }
 interface Props {
   onSelectColor?: (color: string, name: string, index: number) => void
   onSelectStitchingColor?: (color: StitchingColor) => void
+  formatMessage: (messageDescriptor: any) => string
   height?: number
   stitching?: boolean
   stitchingColor?: StitchingColor
@@ -23,6 +33,7 @@ interface Props {
 const ColorList = ({
   onSelectColor = () => {},
   onSelectStitchingColor = () => {},
+  formatMessage,
   height = 40,
   stitching = false,
   stitchingColor = { value: '', name: '' },
@@ -47,24 +58,51 @@ const ColorList = ({
   } catch (e) {
     Message.error(e)
   }
+  const regularColors: React.ReactNodeArray = []
+  const fluorescentColors: React.ReactNodeArray = []
 
-  const colorList = arrayColors.map(({ value, name }: Color, index: number) => (
-    <Col key={index} className="custom-tooltip">
-      <Color
-        selected={value === stitchingColor.value}
-        color={value}
-        onClick={
-          stitching
-            ? setStitchingColor({ name, value })
-            : setColor(value, name, index)
-        }
-      />
-      {!!name && <div className="tooltip-content">{name}</div>}
-    </Col>
-  ))
+  arrayColors.forEach(({ value, type }: Color, index: number) => {
+    if (type) {
+      const node = (
+        <Col key={index} className="custom-tooltip">
+          <Color
+            selected={value === stitchingColor.value}
+            color={value}
+            onClick={setColor(value, name, index)}
+          />
+          {!!name && <div className="tooltip-content">{name}</div>}
+        </Col>
+      )
+      fluorescentColors.push(node)
+    } else {
+      const node = (
+        <Col key={index} className="custom-tooltip">
+          <Color
+            selected={value === stitchingColor.value}
+            color={value}
+            onClick={
+              stitching
+                ? setStitchingColor({ name, value })
+                : setColor(value, name, index)
+            }
+          />
+          {!!name && <div className="tooltip-content">{name}</div>}
+        </Col>
+      )
+      regularColors.push(node)
+    }
+  })
+
   return (
     <Container {...{ height }}>
-      <Row>{arrayColors.length && colorList}</Row>
+      <Row>{regularColors.length && regularColors}</Row>
+      {!stitching && (
+        <div>
+          <ColorTitle>{formatMessage(messages.fluorescent)}</ColorTitle>
+          <SyledDivider />
+          <Row>{fluorescentColors.length && fluorescentColors}</Row>
+        </div>
+      )}
     </Container>
   )
 }

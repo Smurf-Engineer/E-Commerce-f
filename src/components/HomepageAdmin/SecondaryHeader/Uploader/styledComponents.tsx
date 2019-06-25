@@ -4,6 +4,7 @@
 import styled from 'styled-components'
 import Upload from 'antd/lib/upload'
 import Input from 'antd/lib/input'
+import Button from 'antd/lib/button'
 
 interface ImagePreviewProps {
   src: string
@@ -19,6 +20,7 @@ export const ImagesContainer = styled.div`
   width: 100%;
   display: inline-flex;
   justify-content: space-between;
+  position: relative;
 `
 
 export const UploadButton = styled.div`
@@ -80,4 +82,10 @@ export const InputContainer = styled.div`
 
 export const Title = styled.div`
   margin-bottom: 20px;
+`
+
+export const StyledButton = styled(Button)`
+  position: absolute;
+  right: 5px;
+  top: 5px;
 `

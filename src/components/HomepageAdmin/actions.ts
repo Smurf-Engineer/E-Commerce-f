@@ -11,10 +11,21 @@ import {
   SET_LOADERS,
   SET_URL_IMAGE_LIST,
   SET_LOADING_LIST,
-  SET_URL_LIST
+  SET_URL_LIST,
+  SET_PRODUCTS_DATA,
+  SET_ITEM_SELECTED,
+  DELETE_ITEM_SELECTED,
+  OPEN_MODAL,
+  ADD_ITEMS,
+  DELETE_FROM_TABLE,
+  SET_PRODUCT_TILE_IMAGE,
+  SET_PRODUCT_TILE_LOADING,
+  SET_TILES_TEXT,
+  REMOVE_TILE_DATA,
+  REMOVE_HEADER
 } from './constants'
 
-import { AnyAction } from '../../types/common'
+import { AnyAction, ProductType } from '../../types/common'
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
@@ -92,3 +103,75 @@ export const setLoadersAction = (
     loading
   }
 }
+
+export const setProductsData = (
+  data: ProductType,
+  offset: number,
+  page: number
+) => ({
+  type: SET_PRODUCTS_DATA,
+  data,
+  offset,
+  page
+})
+
+export const setItemSelectedAction = (item: any, checked: boolean) => ({
+  type: SET_ITEM_SELECTED,
+  item,
+  checked
+})
+
+export const deleteItemSelectedAction = (id: number): AnyAction => ({
+  type: DELETE_ITEM_SELECTED,
+  id
+})
+
+export const deleteFromTableAction = (index: number): AnyAction => ({
+  type: DELETE_FROM_TABLE,
+  index
+})
+
+export const openModalAction = (open: boolean): AnyAction => ({
+  type: OPEN_MODAL,
+  open
+})
+
+export const setItemsAddAction = (): AnyAction => ({
+  type: ADD_ITEMS
+})
+
+export const setProductTileImage = (url: string, index: number): AnyAction => ({
+  type: SET_PRODUCT_TILE_IMAGE,
+  url,
+  index
+})
+
+export const setProductTileLoading = (
+  loading: boolean,
+  index: number
+): AnyAction => ({
+  type: SET_PRODUCT_TILE_LOADING,
+  loading,
+  index
+})
+
+export const setTilesTextAction = (
+  index: number,
+  section: string,
+  value: string
+) => ({
+  type: SET_TILES_TEXT,
+  index,
+  section,
+  value
+})
+
+export const removeTileDataAction = (index: number) => ({
+  type: REMOVE_TILE_DATA,
+  index
+})
+
+export const removeHeaderAction = (index: number) => ({
+  type: REMOVE_HEADER,
+  index
+})

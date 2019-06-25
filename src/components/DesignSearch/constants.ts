@@ -15,3 +15,4 @@ export const UPDATE_THUMBNAIL_ACTION = `${namespace}/UPDATE_THUMBNAIL_ACTION`
 export const SET_STITCHING_COLOR_ACTION = `${namespace}/SET_STITCHING_COLOR_ACTION`
 export const SET_COLOR_ACTION = `${namespace}/SET_COLOR_ACTION`
 export const RESET_CHANGES_ACTION = `${namespace}/RESET_CHANGES_ACTION`
+export const SET_SEARCH_CODES = `${namespace}/SET_SEARCH_CODES`

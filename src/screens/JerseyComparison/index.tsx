@@ -249,7 +249,7 @@ export class JerseyComparison extends React.Component<Props, {}> {
     )
     const id = jersey && jersey.id
 
-    push(`/product?id=${id}&yotpoId=${title.toLowerCase()}`)
+    push(`/product?id=${id}&modelId=${title.toLowerCase()}`)
   }
 }
 

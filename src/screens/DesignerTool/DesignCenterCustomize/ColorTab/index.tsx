@@ -128,7 +128,7 @@ class ColorTab extends React.PureComponent<Props> {
         </DraggerContainer>
         <ColorList
           stitching={false}
-          {...{ onSelectColor }}
+          {...{ onSelectColor, formatMessage }}
           colorsList={colorsList}
         />
         <SectionTitle>

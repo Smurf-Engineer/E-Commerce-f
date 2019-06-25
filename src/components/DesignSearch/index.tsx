@@ -5,9 +5,14 @@ import * as React from 'react'
 import { withApollo, compose, graphql } from 'react-apollo'
 import { connect } from 'react-redux'
 import get from 'lodash/get'
+import debounce from 'lodash/debounce'
 import GoogleFontLoader from 'react-google-font-loader'
 import message from 'antd/lib/message'
-import Search from 'antd/lib/input/Search'
+import Search from 'antd/lib/auto-complete'
+import Button from 'antd/lib/button'
+import Input from 'antd/lib/input'
+import Icon from 'antd/lib/icon'
+import { SelectValue } from 'antd/lib/select'
 import Spin from 'antd/lib/spin'
 import * as designSearchActions from './actions'
 import { restoreUserSession } from '../MainLayout/api'
@@ -26,12 +31,14 @@ import {
   OrderSearchResult,
   UserType,
   StitchingColor,
-  Font
+  Font,
+  DesignSearchCode
 } from '../../types/common'
 import {
   orderSearchQuery,
   uploadThumbnailMutation,
   updateDesignMutation,
+  getDesignSearchCode,
   getFonts
 } from './data'
 import { downloadFile } from './api'
@@ -60,6 +67,7 @@ interface Props {
   colorAccessories: any
   stitchingValue: string
   fontsData: any
+  designSearchCodes: string[]
   // redux actions
   uploadFileSuccessAction: (url: string) => void
   uploadFileSuccessFailure: () => void
@@ -77,9 +85,11 @@ interface Props {
   setColorAction: (color: string, id: string) => void
   updateDesign: (variables: {}) => Promise<Thumbnail>
   resetChangesAction: () => void
+  setSearchCodesAction: (codes: DesignSearchCode) => void
 }
 
 export class DesignSearchAdmin extends React.Component<Props, {}> {
+  debounceSearchCode = debounce(value => this.handleOnchange(value), 300)
   componentWillMount() {
     const { user } = this.props
     if (typeof window !== 'undefined' && !user) {
@@ -109,7 +119,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       setStitchingColorAction,
       colorAccessories,
       setColorAction,
-      fontsData
+      fontsData,
+      designSearchCodes
     } = this.props
 
     let loadErrContent = <Spin />
@@ -164,10 +175,19 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
           </Subtitle>
           <Search
             placeholder="Product Code"
-            onSearch={this.handleOnSearch}
-            enterButton={true}
+            onChange={this.debounceSearchCode}
             size="large"
-          />
+            dataSource={designSearchCodes}
+            onSelect={this.handleOnSearch}
+          >
+            <Input
+              suffix={
+                <Button className="search-btn" size="large" type="primary">
+                  <Icon type="search" />
+                </Button>
+              }
+            />
+          </Search>
           {content}
         </Content>
       </Container>
@@ -179,8 +199,8 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
     history.push('designer-tool')
   }
 
-  handleOnSearch = async (productCode: string) => {
-    const code = productCode.trim()
+  handleOnSearch = async (productCode: SelectValue) => {
+    const code = productCode.toString().trim()
     const {
       client: { query },
       setLoadingAction,
@@ -191,12 +211,12 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
     resetDataAction()
     setLoadingAction()
     try {
-      const data = await query({
+      const { data } = await query({
         query: orderSearchQuery,
         variables: { code },
         fetchPolicy: 'network-only'
       })
-      setOrderAction(data.data.order)
+      setOrderAction(data.order)
     } catch (error) {
       const errorMessage =
         (error.graphQLErrors &&
@@ -253,6 +273,30 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
     } catch (e) {
       setUploadingThumbnailAction(false)
       message.error(e.message)
+    }
+  }
+
+  handleOnchange = async (value: SelectValue) => {
+    const {
+      client: { query },
+      setSearchCodesAction
+    } = this.props
+    try {
+      const parsedValue = value.toString()
+      if (parsedValue.length > 4) {
+        const { data } = await query({
+          query: getDesignSearchCode,
+          variables: { pattern: parsedValue.trim() },
+          fetchPolicy: 'network-only'
+        })
+
+        const searchCodes = data.getDesignSearchCode.map(
+          (item: DesignSearchCode) => item.code
+        )
+        setSearchCodesAction(searchCodes)
+      }
+    } catch (error) {
+      Message.error(error.message)
     }
   }
 }

@@ -45,6 +45,10 @@ export const Content = styled.div`
   flex: 1;
   flex-direction: column;
   margin-left: 16px;
+
+  .ant-input-affix-wrapper .ant-input-suffix {
+    right: 0;
+  }
 `
 
 export const Title = styled.div`
