@@ -10,7 +10,7 @@ type StyleProps = {
 export const Container = styled.div`
   padding: 60px 35px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 
   @media (min-width: 320px) and (max-width: 425px) {
     flex-direction: column;

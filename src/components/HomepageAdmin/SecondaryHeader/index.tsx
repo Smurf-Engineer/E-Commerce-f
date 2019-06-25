@@ -3,6 +3,7 @@
  */
 import * as React from 'react'
 import Button from 'antd/lib/button'
+import Divider from 'antd/lib/divider'
 import {
   Container,
   ButtonContainer,
@@ -25,6 +26,7 @@ interface Props {
   ) => void
   setUrl: (value: string, index: number) => void
   onSaveHeader: () => void
+  removeImage: (index: number) => void
 }
 
 class SecondaryHeader extends React.Component<Props, {}> {
@@ -36,7 +38,8 @@ class SecondaryHeader extends React.Component<Props, {}> {
       onSaveHeader,
       saving,
       onUploadFile,
-      setUrl
+      setUrl,
+      removeImage
     } = this.props
 
     const uploadItems = secondaryHeader.map((item: any, index: number) => (
@@ -48,7 +51,8 @@ class SecondaryHeader extends React.Component<Props, {}> {
           index,
           loading: loading[index],
           onUploadFile,
-          setUrl
+          setUrl,
+          removeImage
         }}
       />
     ))
@@ -61,6 +65,7 @@ class SecondaryHeader extends React.Component<Props, {}> {
             {formatMessage(messages.saveChanges)}
           </Button>
         </ButtonContainer>
+        <Divider />
       </Container>
     )
   }

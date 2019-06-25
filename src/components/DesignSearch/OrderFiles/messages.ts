@@ -40,5 +40,9 @@ export default defineMessages({
   saveChanges: {
     id: 'screens.DesignSearch.saveChanges',
     defaultMessage: 'Save changes'
+  },
+  modelNameLabel: {
+    id: 'screens.DesignSearch.modelNameLabel',
+    defaultMessage: 'Model Name: {modelName}'
   }
 })

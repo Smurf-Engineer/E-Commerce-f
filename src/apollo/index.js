@@ -2,12 +2,15 @@ import { ApolloClient } from 'apollo-client'
 import { ApolloLink } from 'apollo-link'
 import { createHttpLink } from 'apollo-link-http'
 import { onError } from 'apollo-link-error'
+import message from 'antd/lib/message'
+import head from 'lodash/head'
 // TODO: ENABLE LATER
 // import { WebSocketLink } from 'apollo-link-ws'
 // import { getMainDefinition } from 'apollo-utilities'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import config from '../config'
 import fetch from 'node-fetch'
+const unauthorizedExp = /\bUser is not authenticated\b/
 
 /**
  * https://github.com/apollographql/react-apollo/issues/1321
@@ -16,6 +19,20 @@ import fetch from 'node-fetch'
 const errorLink = onError(({ response, operation }) => {
   if (operation.operationName === 'GetProductFromCode' && !!response) {
     response.errors = null
+  }
+  const errorMessage =
+    response.errors.length && head(response.errors.map(error => error.message))
+
+  if (errorMessage.length && unauthorizedExp.test(errorMessage)) {
+    message.error('User session has expired!')
+    setTimeout(() => {
+      try {
+        localStorage.removeItem('user')
+        window.location.replace('/')
+      } catch (e) {
+        console.error(e)
+      }
+    }, 1500)
   }
 })
 

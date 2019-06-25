@@ -2,55 +2,38 @@
  * FeaturedCategory Component - Created by cazarez on 25/05/18.
  */
 import * as React from 'react'
-import { FormattedMessage } from 'react-intl'
 
-import messages from './messages'
 import { Container, Text, StyledImg, Category } from './styledComponents'
-
-import image1 from '../../assets/black-to-basics.jpg'
-import image2 from '../../assets/high-visibility-gear.jpg'
-import image3 from '../../assets/warmers.jpg'
+import { ProductTiles } from '../../types/common'
 
 interface Props {
   history: any
   browserName?: string
+  productTiles: ProductTiles[]
 }
 
 // TODO: EVERYTHING HARDCODED FOR THE MOMENT CHANGE  LATER
 class FeaturedCategory extends React.PureComponent<Props, {}> {
   render() {
-    const { browserName } = this.props
-
-    return (
-      <Container {...{ browserName }}>
-        <Category>
-          <StyledImg
-            id="black_to_basic"
-            src={image1}
-            onClick={this.handleClick}
-          />
-          <Text>
-            <FormattedMessage {...messages.blackToBasicsLabel} />
-          </Text>
-        </Category>
-        <Category>
-          <StyledImg
-            id="high_visibility"
-            src={image2}
-            onClick={this.handleClick}
-          />
-          <Text>
-            <FormattedMessage {...messages.highVisibilityLabel} />
-          </Text>
-        </Category>
-        <Category>
-          <StyledImg id="warmers" src={image3} onClick={this.handleClick} />
-          <Text>
-            <FormattedMessage {...messages.warmersLabel} />
-          </Text>
-        </Category>
-      </Container>
+    const { browserName, productTiles } = this.props
+    const tiles = productTiles.map(
+      ({ id, image, title, contentTile }: ProductTiles) => {
+        if (image) {
+          return (
+            <Category key={id}>
+              <StyledImg
+                id={contentTile}
+                src={image}
+                onClick={this.handleClick}
+              />
+              <Text>{title}</Text>
+            </Category>
+          )
+        }
+        return
+      }
     )
+    return <Container {...{ browserName }}>{tiles}</Container>
   }
 
   handleClick = (evt: any) => {

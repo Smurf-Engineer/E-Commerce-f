@@ -19,16 +19,17 @@ import {
 import expressLogo from '../../assets/JakrooDesignLogo.png'
 
 interface Props {
+  deliveryDays: number
   onPressBack: () => void
 }
 
-const getDeliveryDate = (): string => {
-  const currentDate = moment().add(10, 'days')
+const getDeliveryDate = (deliveryDays: number): string => {
+  const currentDate = moment().add(deliveryDays, 'days')
   return currentDate.format('MMMM DD')
 }
 
-const DesignCenterHeader = ({ onPressBack }: Props) => {
-  const date = getDeliveryDate()
+const DesignCenterHeader = ({ onPressBack, deliveryDays }: Props) => {
+  const date = getDeliveryDate(deliveryDays)
   return (
     <Container>
       <Row>

@@ -118,3 +118,7 @@ export const ChangesContainer = styled.div`
 export const MessageContainer = styled.div`
   margin-right: 40px;
 `
+
+export const ModelNameContainer = styled.div`
+  margin-bottom: 15px;
+`

@@ -223,6 +223,19 @@ export type LockerTableType = {
   visible: boolean
 }
 
+export type ProductTableType = {
+  product: Product
+  visible: boolean
+}
+
+export type ProductTiles = {
+  id: number
+  contentTile: string
+  title: string
+  image: string
+  loading: boolean
+}
+
 export type DesignResultType = {
   fullCount: string
   designs: DesignType[]
@@ -1126,6 +1139,8 @@ export interface OrderSearchResult {
   stitchingValue?: string
   stitchingName?: string
   shortId: string
+  pdfUrl?: string
+  product: Product
 }
 
 export interface FilesDownload {
@@ -1204,4 +1219,8 @@ export interface User {
   email: string
   socialMethod: string
   administrator: boolean
+}
+
+export interface DesignSearchCode {
+  code: string
 }

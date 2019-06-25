@@ -107,7 +107,7 @@ class EditInspiration extends React.PureComponent<Props, State> {
         <ColorList
           onSelectColor={this.handleOnSelectColor}
           stitching={false}
-          {...{ colorsList }}
+          {...{ colorsList, formatMessage }}
         />
       </Container>
     )

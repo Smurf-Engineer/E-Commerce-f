@@ -23,7 +23,8 @@ import {
   PRODUCT_CATALOG,
   USERS,
   HOMEPAGE,
-  DESIGN_SEARCH
+  DESIGN_SEARCH,
+  DESIGN_LAB
 } from './constants'
 import {
   SideBar,
@@ -104,6 +105,9 @@ class AdminLayout extends React.Component<Props, {}> {
         break
       case HOMEPAGE:
         history.push('/admin/homepage')
+        break
+      case DESIGN_LAB:
+        history.push('/admin/design-lab')
         break
       default:
         break

@@ -39,7 +39,7 @@ import { setRegionAction } from '../LanguageProvider/actions'
 import { openQuickViewAction } from '../../components/MainLayout/actions'
 import config from '../../config/index'
 import MediaQuery from 'react-responsive'
-import { QueryProps } from '../../types/common'
+import { QueryProps, ProductTiles } from '../../types/common'
 
 interface Data extends QueryProps {
   files: any
@@ -47,8 +47,8 @@ interface Data extends QueryProps {
 interface Props extends RouteComponentProps<any> {
   data: Data
   someKey?: string
-  productId: number
   client: any
+  productId: number
   openQuickViewAction: (id: number | null) => void
   defaultAction: (someKey: string) => void
   setSearchParam: (param: string) => void
@@ -63,6 +63,7 @@ interface Props extends RouteComponentProps<any> {
   headerImageMobile: string
   headerImage: string
   headerImageLink: string
+  productTiles: ProductTiles[]
 }
 
 export class Home extends React.Component<Props, {}> {
@@ -145,7 +146,8 @@ export class Home extends React.Component<Props, {}> {
       currentCurrency,
       clientInfo,
       headerImageMobile,
-      headerImage
+      headerImage,
+      productTiles
     } = this.props
     const { formatMessage } = intl
     const browserName = get(clientInfo, 'browser.name', '')
@@ -227,7 +229,7 @@ export class Home extends React.Component<Props, {}> {
               <SubText>{formatMessage(messages.priceDrop)}</SubText>
             </PropositionTile>
           </PropositionTilesContainer>
-          <ImagesGrid {...{ fakeWidth, history, browserName }} />
+          <ImagesGrid {...{ fakeWidth, history, browserName, productTiles }} />
           <YotpoHome />
         </Container>
       </Layout>
