@@ -233,6 +233,7 @@ interface Props {
   onReApplyImageElementAction: (el: CanvasElement) => void
   setArtFormatAction: (key: string, value: string | number) => void
   onTabClickAction: (selectedIndex: number) => void
+  updateColorIdeasListAction: (colorIdeas: DesignObject[]) => void
 }
 
 export class DesignerTool extends React.Component<Props, {}> {
@@ -713,8 +714,9 @@ export class DesignerTool extends React.Component<Props, {}> {
         modelConfig,
         colorIdeas,
         selectedTheme,
+        selectedStyle,
         saveDesignSuccessAction,
-        openSaveDesignAction
+        updateColorIdeasListAction
       } = this.props
 
       if (!productCode) {
@@ -807,6 +809,7 @@ export class DesignerTool extends React.Component<Props, {}> {
 
       if (!themeResponse && !hasSelectedTheme) {
         message.error('Select a theme or create new one')
+        setSavingDesign(false)
         return
       }
 
@@ -831,14 +834,23 @@ export class DesignerTool extends React.Component<Props, {}> {
 
       const saveResponse = await saveDesign({
         variables: { design: model },
-        refetchQueries: [
-          { query: getProductFromCode, variables: { code: productCode } }
-        ]
+        refetchQueries: ({ data }: any) => {
+          const themes = get(data, 'design.product.themes', [])
+          const themeIndex = findIndex(themes, ({ id }) => id === selectedTheme)
+          const { styles } = themes[themeIndex]
+          const styleIndex = findIndex(
+            styles,
+            ({ id: styleId }) => styleId === selectedStyle
+          )
+          const { colorIdeas: updatedColorIdeas } = styles[styleIndex]
+          updateColorIdeasListAction(updatedColorIdeas)
+          return [
+            { query: getProductFromCode, variables: { code: productCode } }
+          ]
+        }
       })
 
       saveDesignSuccessAction()
-      openSaveDesignAction(false)
-      setSavingDesign(false)
       const successMessage = get(saveResponse, 'data.design.message')
       message.success(successMessage)
     } catch (e) {
