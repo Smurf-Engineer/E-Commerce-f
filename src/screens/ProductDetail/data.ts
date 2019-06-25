@@ -26,6 +26,8 @@ export const GetProductsByIdQuery = gql`
       customizable: design_center
       description
       details
+      obj
+      mtl
       materials: materials_info
       temperatures: temperature_range
       weight
