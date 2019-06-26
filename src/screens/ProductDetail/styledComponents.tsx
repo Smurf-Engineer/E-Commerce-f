@@ -87,6 +87,15 @@ export const StyledLink = styled.a`
   }
 `
 
+export const ModelContainer = styled.div`
+  background: #2b2b2c;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 3px;
+`
+
 export const StyledBreadCrumb = styled(Breadcrumb)`
   border: 1px solid #dcdcdc;
   padding: 10px 0 10px 49px;

@@ -29,6 +29,7 @@ import {
   AvailablePrices,
   PricesRow,
   Description,
+  ModelContainer,
   ButtonsRow,
   StyledButton,
   CompareButton,
@@ -203,6 +204,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const mpnCode = get(product, 'mpn')
     const customizable = get(product, 'customizable', '')
+    const obj = get(product, 'obj', '')
+    const mtl = get(product, 'mtl', '')
+
     const colors = get(product, 'colors', [] as ProductColors[])
 
     const maleGender = genders.find(x => x.name === Men)
@@ -492,15 +496,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   </Loading>
                 ) : (
                   <div>
-                    {customizable ? (
-                      <div>
+                    {customizable && obj && mtl ? (
+                      <ModelContainer>
                         <Render3D
                           customProduct={false}
                           designId={0}
+                          textColor="white"
                           isProduct={true}
                           {...{ product }}
                         />
-                      </div>
+                      </ModelContainer>
                     ) : (
                       <ImagesSlider
                         onLoadModel={setLoadingModel}

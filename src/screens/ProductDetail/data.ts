@@ -28,6 +28,7 @@ export const GetProductsByIdQuery = gql`
       details
       obj
       mtl
+      bumpMap: bump_map
       materials: materials_info
       temperatures: temperature_range
       weight
