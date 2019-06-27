@@ -317,6 +317,9 @@ export class ProductForm extends React.Component<Props, {}> {
           weight,
           shortDescription
         } = product
+        const hasNewSport = newSportEnabled && newSport
+        const sportSelected =
+          sports && Object.keys(sports).some(key => sports[key])
         return (
           name &&
           mpn &&
@@ -330,8 +333,7 @@ export class ProductForm extends React.Component<Props, {}> {
           product.hasOwnProperty('designCenter') &&
           materials &&
           categoryName &&
-          ((sports && Object.keys(sports).some(key => sports[key])) ||
-            (newSportEnabled && newSport)) &&
+          (sportSelected || hasNewSport) &&
           relatedItemTag &&
           description &&
           weight &&
