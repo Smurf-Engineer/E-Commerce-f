@@ -1224,3 +1224,8 @@ export interface User {
 export interface DesignSearchCode {
   code: string
 }
+
+export interface SimpleCart {
+  id: number
+  quantity: number
+}
