@@ -20,6 +20,7 @@ import Input from 'antd/lib/input'
 import Select from 'antd/lib/select'
 import AutoComplete from 'antd/lib/auto-complete'
 import { Product, ItemDetailType, GenderType } from '../../../../types/common'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 const RadioGroup = Radio.Group
 const Option = Select.Option
 const { TextArea } = Input
@@ -391,17 +392,19 @@ export class FirstStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleCheckChange = ({ target: { name, checked } }: any) => {
+  handleCheckChange = ({ target: { name, checked } }: CheckboxChangeEvent) => {
     const { setCheck } = this.props
     setCheck('sports', name, checked)
   }
 
-  handleEnableNewSport = ({ target: { checked } }: any) => {
+  handleEnableNewSport = ({ target: { checked } }: CheckboxChangeEvent) => {
     const { enableNewSportAction } = this.props
     enableNewSportAction(checked)
   }
 
-  handleChangeNewSport = ({ target: { value } }: any) => {
+  handleChangeNewSport = ({
+    target: { value }
+  }: React.ChangeEvent<HTMLInputElement>) => {
     const { setNewSport } = this.props
     setNewSport(value)
   }
@@ -419,7 +422,7 @@ export class FirstStep extends React.Component<Props, {}> {
     }
   }
 
-  handleSearchTagChange = (value: any) => {
+  handleSearchTagChange = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join(', ')
@@ -427,7 +430,7 @@ export class FirstStep extends React.Component<Props, {}> {
     }
   }
 
-  handleSpecDetails = (value: any) => {
+  handleSpecDetails = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join(', ')
@@ -435,7 +438,7 @@ export class FirstStep extends React.Component<Props, {}> {
     }
   }
 
-  handleMaterialChange = (value: any) => {
+  handleMaterialChange = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join('-')
@@ -443,7 +446,7 @@ export class FirstStep extends React.Component<Props, {}> {
     }
   }
 
-  handleRelatedChange = (value: any) => {
+  handleRelatedChange = (value: string[]) => {
     const { setValue } = this.props
     setValue('relatedItemTag', value)
   }
@@ -465,12 +468,12 @@ export class FirstStep extends React.Component<Props, {}> {
     setDesignCenter(value)
   }
 
-  handleSeason = (value: any) => {
+  handleSeason = (value: string) => {
     const { setValue } = this.props
     setValue('season', value)
   }
 
-  handleChangeCustom = (event: any) => {
+  handleChangeCustom = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { setValue } = this.props
     const {
       target: { value, name, type }
