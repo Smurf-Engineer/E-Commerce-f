@@ -29,6 +29,7 @@ import {
   AvailablePrices,
   PricesRow,
   Description,
+  HowItFits,
   ModelContainer,
   ButtonsRow,
   StyledButton,
@@ -505,6 +506,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                           isProduct={true}
                           {...{ product }}
                         />
+                        <HowItFits>
+                          <FormattedMessage {...messages.howItFits} />
+                        </HowItFits>
                       </ModelContainer>
                     ) : (
                       <ImagesSlider
