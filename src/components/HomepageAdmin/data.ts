@@ -3,13 +3,11 @@ import { graphql } from 'react-apollo'
 
 export const getHomepageInfo = gql`
   query getHomepageContent {
-    getHomepageContent(sportRoute: "cycl") {
+    getHomepageContent {
       headerImageMobile: header_image_mobile
       headerImage: header_image
       headerImageLink: header_image_link
-      id
       homepageImages {
-        id
         desktopImage: image
         mobileImage: image_mobile
         url: link
@@ -42,13 +40,11 @@ export const setMainHeaderMutation = graphql(
       $headerImage: String!
       $headerImageMobile: String!
       $headerImageLink: String!
-      $id: Int!
     ) {
       setMainHeader(
         headerImage: $headerImage
         headerImageMobile: $headerImageMobile
         headerImageLink: $headerImageLink
-        id: $id
       ) {
         message
       }
