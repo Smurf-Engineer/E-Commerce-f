@@ -36,7 +36,8 @@ export const initialState = fromJS({
     [ImageTypes.DESKTOP]: '',
     [ImageTypes.MOBILE]: '',
     url: '',
-    loading: false
+    loading: false,
+    id: 0
   },
   secondaryHeader: [],
   mainHeaderLoading: {
@@ -81,7 +82,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         headerImage,
         headerImageMobile,
         items,
-        productTiles
+        productTiles,
+        id
       } = action.data
       return state.withMutations((map: any) => {
         map.set('items', fromJS(items))
@@ -103,7 +105,8 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
           return mainHeader.merge({
             [ImageTypes.DESKTOP]: headerImage,
             [ImageTypes.MOBILE]: headerImageMobile,
-            url: headerImageLink
+            url: headerImageLink,
+            id
           })
         })
         return map

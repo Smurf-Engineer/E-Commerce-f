@@ -96,11 +96,11 @@ const ColorList = ({
   return (
     <Container {...{ height }}>
       <Row>{regularColors.length && regularColors}</Row>
-      {!stitching && (
+      {!stitching && !!fluorescentColors.length && (
         <div>
           <ColorTitle>{formatMessage(messages.fluorescent)}</ColorTitle>
           <SyledDivider />
-          <Row>{fluorescentColors.length && fluorescentColors}</Row>
+          <Row>{fluorescentColors}</Row>
         </div>
       )}
     </Container>

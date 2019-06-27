@@ -102,6 +102,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         headerImageLink,
         headerImage,
         headerImageMobile,
+        id,
         productTiles
       } = response.data.getHomepageContent
       const items = featuredProducts.map((item: Product) => {
@@ -113,6 +114,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         headerImageLink,
         headerImage,
         headerImageMobile,
+        id,
         productTiles
       }
       setHomepageInfoAction(cleanData)
@@ -143,7 +145,8 @@ class HomepageAdmin extends React.Component<Props, {}> {
         variables: {
           headerImage: mainHeader.desktopImage,
           headerImageMobile: mainHeader.mobileImage,
-          headerImageLink: mainHeader.url
+          headerImageLink: mainHeader.url,
+          id: mainHeader.id
         }
       })
       message.success(get(response, 'data.setMainHeader.message', ''))
