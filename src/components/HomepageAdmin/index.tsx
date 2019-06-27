@@ -161,7 +161,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
       const homepageImages = secondaryHeader.map((item: any) => ({
-        id: item.id
+        id: item.id,
         image: item.desktopImage,
         image_mobile: item.mobileImage,
         link: item.url
