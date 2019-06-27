@@ -14,7 +14,7 @@ describe(' ProductCatalog Screen', () => {
 
   it('Update someKey correctly', () => {
     const testValue = 'Test value'
-    let state = productCatalogReducer(initialState, defaultAction(testValue))
+    const state = productCatalogReducer(initialState, defaultAction(testValue))
     const someKey = state.get('someKey')
     expect(someKey).toEqual(testValue)
 
