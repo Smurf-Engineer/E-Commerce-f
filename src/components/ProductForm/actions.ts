@@ -6,7 +6,6 @@ import {
   SET_PRODUCT_DATA,
   CHANGE_VALUE,
   RESET_DATA,
-  SET_BANNERS,
   SET_LOADING,
   SET_GENDERS,
   SET_CURRENCIES,
@@ -19,7 +18,7 @@ import {
   REMOVE_BANNER,
   ADD_BANNER,
   SET_BANNER,
-  ADD_PICTURE,
+  SET_BANNERS_LOADING,
   SAVED_PRODUCT
 } from './constants'
 import { AnyAction, Product } from '../../types/common'
@@ -52,14 +51,15 @@ export const savedProduct = (
   loadingMessage
 })
 
-export const setBannerActions = (banners: any): AnyAction => ({
-  type: SET_BANNERS,
-  banners
+export const setBannersLoading = (value: boolean): AnyAction => ({
+  type: SET_BANNERS_LOADING,
+  value
 })
 
-export const setGenderActions = (genders: any): AnyAction => ({
+export const setGenderAction = (id: number, value: boolean): AnyAction => ({
   type: SET_GENDERS,
-  genders
+  id,
+  value
 })
 
 export const setCheck = (
@@ -73,8 +73,10 @@ export const setCheck = (
   checked
 })
 
-export const setColors = (): AnyAction => ({
-  type: SET_COLORS
+export const setColors = (id: number, value: boolean): AnyAction => ({
+  type: SET_COLORS,
+  id,
+  value
 })
 
 export const removeFile = (array: string, index: number): AnyAction => ({
@@ -90,21 +92,16 @@ export const addFile = (array: string, item: any): AnyAction => ({
 })
 
 export const setFileField = (
-  array: string,
-  index: number,
-  field: string,
-  value: any
+  selected: string,
+  id: string,
+  name: string,
+  value: string
 ): AnyAction => ({
   type: SET_FILE_FIELD,
-  array,
-  index,
-  field,
+  selected,
+  id,
+  name,
   value
-})
-export const addPicture = (index: number, item: any): AnyAction => ({
-  type: ADD_PICTURE,
-  index,
-  item
 })
 
 export const removeBanner = (index: number): AnyAction => ({

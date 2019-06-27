@@ -25,21 +25,12 @@ interface Props {
   sizes: ItemDetailType[]
   colors: ProductColors[]
   fitStyles: FitStyle[]
-  setColors: () => void
+  setColors: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
   setValue: (field: string, value: any) => void
   formatMessage: (messageDescriptor: any) => string
 }
 export class SecondStep extends React.Component<Props, {}> {
-  componentWillUnmount() {
-    const {
-      setColors,
-      product: { designCenter }
-    } = this.props
-    if (!designCenter) {
-      setColors()
-    }
-  }
   render() {
     const { sizes, product, fitStyles, colors } = this.props
     const {
@@ -99,8 +90,9 @@ export class SecondStep extends React.Component<Props, {}> {
                 <CheckBox
                   key={index}
                   id={color.id.toString()}
-                  name={color.name}
-                  checked={productColors[color.id]}
+                  checked={
+                    productColors[color.id] && productColors[color.id].selected
+                  }
                   onChange={this.handleChangeColor}
                 >
                   <ColorIcon src={color.image} />
@@ -127,10 +119,10 @@ export class SecondStep extends React.Component<Props, {}> {
     setCheck('fitStyles', name, checked)
   }
   handleChangeColor = ({
-    target: { name, id, checked }
+    target: { id, checked }
   }: React.ChangeEvent<HTMLInputElement>) => {
-    const { setCheck } = this.props
-    setCheck('colors', id, checked ? name : false)
+    const { setColors } = this.props
+    setColors(id, checked)
   }
 }
 
