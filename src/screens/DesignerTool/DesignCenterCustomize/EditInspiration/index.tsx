@@ -18,7 +18,7 @@ import {
 import { NONE } from '../../reducer'
 import ColorButton from '../ColorButton'
 import ColorList from '../ColorList'
-import { DesignObject, ModelDesign } from '../../../../types/common'
+import { DesignObject, ModelDesign, Message } from '../../../../types/common'
 
 interface Props {
   colorIdea: DesignObject | ModelDesign | null
@@ -31,6 +31,7 @@ interface Props {
   onEditColorIdea: (item: number) => void
   onHoverColorBlock: (index: number) => void
   onSelectColorBlock: (index: number) => void
+  formatMessage: (messageDescriptor: Message) => string
   onUpdateColorIdeaName: (
     name: string,
     updateColors: boolean,
@@ -60,7 +61,8 @@ class EditInspiration extends React.PureComponent<Props, State> {
       onHoverColorBlock,
       onSelectColorBlock,
       colorBlock,
-      colorsList
+      colorsList,
+      formatMessage
     } = this.props
     if (!colorIdea || !render) {
       return <div />

@@ -67,10 +67,10 @@ const ColorList = ({
   return (
     <Container height={height}>
       <Row>{regularColors.length && regularColors}</Row>
-      {!stitching && (
+      {!stitching && !!fluorescentColors.length && (
         <div>
           <Divider />
-          <Row>{fluorescentColors.length && fluorescentColors}</Row>
+          <Row>{fluorescentColors}</Row>
         </div>
       )}
     </Container>
