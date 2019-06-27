@@ -143,8 +143,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
         variables: {
           headerImage: mainHeader.desktopImage,
           headerImageMobile: mainHeader.mobileImage,
-          headerImageLink: mainHeader.url,
-          id: mainHeader.id
+          headerImageLink: mainHeader.url
         }
       })
       message.success(get(response, 'data.setMainHeader.message', ''))
@@ -162,6 +161,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       } = this.props
       setLoadersAction(Sections.SECONDARY_HEADER, true)
       const homepageImages = secondaryHeader.map((item: any) => ({
+        id: item.id
         image: item.desktopImage,
         image_mobile: item.mobileImage,
         link: item.url
