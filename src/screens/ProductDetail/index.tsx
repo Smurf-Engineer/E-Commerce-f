@@ -29,6 +29,7 @@ import {
   AvailablePrices,
   PricesRow,
   Description,
+  ModelContainer,
   ButtonsRow,
   StyledButton,
   CompareButton,
@@ -60,6 +61,7 @@ import {
 } from './styledComponents'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
+import Render3D from '../../components/Render3D'
 import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
@@ -201,6 +203,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const products = get(product, 'relatedProducts', [] as Product[])
 
     const mpnCode = get(product, 'mpn')
+    const customizable = get(product, 'customizable', '')
+    const obj = get(product, 'obj', '')
+    const mtl = get(product, 'mtl', '')
+
     const colors = get(product, 'colors', [] as ProductColors[])
 
     const maleGender = genders.find(x => x.name === Men)
@@ -489,16 +495,30 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     <Spin />
                   </Loading>
                 ) : (
-                  <ImagesSlider
-                    onLoadModel={setLoadingModel}
-                    squareArrows={true}
-                    {...{
-                      images,
-                      moreImages,
-                      loadingImage,
-                      setLoadingImageAction
-                    }}
-                  />
+                  <div>
+                    {customizable && obj && mtl ? (
+                      <ModelContainer>
+                        <Render3D
+                          customProduct={false}
+                          designId={0}
+                          textColor="white"
+                          isProduct={true}
+                          {...{ product }}
+                        />
+                      </ModelContainer>
+                    ) : (
+                      <ImagesSlider
+                        onLoadModel={setLoadingModel}
+                        squareArrows={true}
+                        {...{
+                          images,
+                          moreImages,
+                          loadingImage,
+                          setLoadingImageAction
+                        }}
+                      />
+                    )}
+                  </div>
                 )}
                 {/* {!isRetail &&
                   template && (

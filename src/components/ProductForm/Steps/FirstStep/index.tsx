@@ -20,6 +20,7 @@ import Input from 'antd/lib/input'
 import Select from 'antd/lib/select'
 import AutoComplete from 'antd/lib/auto-complete'
 import { Product, ItemDetailType, GenderType } from '../../../../types/common'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 const RadioGroup = Radio.Group
 const Option = Select.Option
 const { TextArea } = Input
@@ -32,7 +33,11 @@ interface Props {
   sports: ItemDetailType[]
   relatedTags: string[]
   seasons: string[]
+  newSport: string
+  newSportEnabled: boolean
   setValue: (field: string, value: any) => void
+  enableNewSportAction: (value: boolean) => void
+  setNewSport: (value: string) => void
   setDesignCenter: (checked: boolean) => void
   setGenderAction: (id: number, value: boolean) => void
   setCheck: (selected: string, id: number, checked: boolean) => void
@@ -45,6 +50,8 @@ export class FirstStep extends React.Component<Props, {}> {
       sports: sportsOptions,
       seasons,
       genders,
+      newSport,
+      newSportEnabled,
       product,
       materials,
       formatMessage,
@@ -197,6 +204,19 @@ export class FirstStep extends React.Component<Props, {}> {
                 {sport.name}
               </CheckBox>
             ))}
+            <CheckBox
+              onChange={this.handleEnableNewSport}
+              checked={newSportEnabled}
+            >
+              {formatMessage(messages.other)}
+            </CheckBox>
+            <Input
+              size="large"
+              value={newSport}
+              disabled={!newSportEnabled}
+              onChange={this.handleChangeNewSport}
+              placeholder={formatMessage(messages.typeName)}
+            />
           </InputDiv>
           <InputDiv flex={1} />
         </RowInput>
@@ -372,10 +392,23 @@ export class FirstStep extends React.Component<Props, {}> {
       </Container>
     )
   }
-  handleCheckChange = ({ target: { name, checked } }: any) => {
+  handleCheckChange = ({ target: { name, checked } }: CheckboxChangeEvent) => {
     const { setCheck } = this.props
     setCheck('sports', name, checked)
   }
+
+  handleEnableNewSport = ({ target: { checked } }: CheckboxChangeEvent) => {
+    const { enableNewSportAction } = this.props
+    enableNewSportAction(checked)
+  }
+
+  handleChangeNewSport = ({
+    target: { value }
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    const { setNewSport } = this.props
+    setNewSport(value)
+  }
+
   handleGenderChange = (selected: boolean) => (selectedId: string) => {
     const {
       setGenderAction,
@@ -388,50 +421,59 @@ export class FirstStep extends React.Component<Props, {}> {
       setGenderAction(selectedId, selected)
     }
   }
-  handleSearchTagChange = (value: any) => {
+
+  handleSearchTagChange = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join(', ')
       setValue('tags', fieldValue)
     }
   }
-  handleSpecDetails = (value: any) => {
+
+  handleSpecDetails = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join(', ')
       setValue('details', fieldValue)
     }
   }
-  handleMaterialChange = (value: any) => {
+
+  handleMaterialChange = (value: string[]) => {
     const { setValue } = this.props
     if (!value.find((str: string) => /[,\/]/g.test(str))) {
       const fieldValue = value.join('-')
       setValue('materials', fieldValue)
     }
   }
-  handleRelatedChange = (value: any) => {
+
+  handleRelatedChange = (value: string[]) => {
     const { setValue } = this.props
     setValue('relatedItemTag', value)
   }
+
   handleChangeCategory = (value: string) => {
     const { setValue } = this.props
     setValue('categoryName', value)
   }
+
   handleSwitchActive = (value: boolean) => {
     const { setValue } = this.props
     setValue('active', value ? 'true' : 'false')
   }
+
   handleSwitchDesign = ({
     target: { value }
   }: React.ChangeEvent<HTMLInputElement>) => {
     const { setDesignCenter } = this.props
     setDesignCenter(value)
   }
-  handleSeason = (value: any) => {
+
+  handleSeason = (value: string) => {
     const { setValue } = this.props
     setValue('season', value)
   }
-  handleChangeCustom = (event: any) => {
+
+  handleChangeCustom = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { setValue } = this.props
     const {
       target: { value, name, type }
