@@ -315,7 +315,7 @@ class Render3D extends PureComponent {
           )}
         </Render>
         {showDragmessage && !loading && (
-          <DragText {...{ textColor }}>
+          <DragText {...{ isProduct, textColor }}>
             <FormattedMessage {...messages.drag} />
           </DragText>
         )}

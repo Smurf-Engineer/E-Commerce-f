@@ -21,6 +21,10 @@ export default defineMessages({
     id: 'screens.ProductDetail.intendedUseLabel',
     defaultMessage: 'INTENDED USE'
   },
+  howItFits: {
+    id: 'screens.ProductDetail.howItFits',
+    defaultMessage: 'See how it fits'
+  },
   detailsLabel: {
     id: 'screens.ProductDetail.detailsLabel',
     defaultMessage: 'Details'
