@@ -520,7 +520,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                             open={showFits}
                             requestClose={this.toggleFitsModal(false)}
                             width={'90%'}
-                            style={{ maxWidth: '1024px' }}
+                            style={{ maxWidth: '704px' }}
                             withLogo={false}
                           >
                             <ImagesSlider
