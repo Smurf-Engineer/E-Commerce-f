@@ -26,6 +26,10 @@ export const GetProductsByIdQuery = gql`
       customizable: design_center
       description
       details
+      bannerMaterials: banner_materials {
+        id
+        url
+      }
       obj
       mtl
       bumpMap: bump_map
