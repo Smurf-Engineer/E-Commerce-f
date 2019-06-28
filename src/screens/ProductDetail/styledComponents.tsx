@@ -81,7 +81,6 @@ export const HowItFits = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 16px;
-  margin-top: -77px;
   z-index: 2;
   background: #2b2b2c73;
   cursor: pointer;
@@ -108,7 +107,7 @@ export const StyledLink = styled.a`
 export const ModelContainer = styled.div`
   background: #2b2b2c;
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   text-align: center;
   flex-flow: column;

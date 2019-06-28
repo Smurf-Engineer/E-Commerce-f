@@ -60,6 +60,7 @@ import {
   MobileButtonWrapper,
   StyledButtonWrapper
 } from './styledComponents'
+import Modal from '../../components/Common/JakrooModal'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
 import Render3D from '../../components/Render3D'
@@ -129,12 +130,14 @@ interface Props extends RouteComponentProps<any> {
 interface StateProps {
   showDetails: boolean
   showSpecs: boolean
+  showFits: boolean
 }
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: false,
-    showSpecs: false
+    showSpecs: false,
+    showFits: false
   }
 
   componentWillUnmount() {
@@ -186,7 +189,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
 
     const { formatMessage } = intl
-    const { showDetails, showSpecs } = this.state
+    const { showDetails, showSpecs, showFits } = this.state
 
     const name = get(product, 'name', '')
     // TODO: commented until MNP code gets implemented in all retail products
@@ -500,15 +503,36 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     {customizable && obj && mtl ? (
                       <ModelContainer>
                         <Render3D
-                          customProduct={false}
+                          customProduct={true}
                           designId={0}
                           textColor="white"
                           isProduct={true}
                           {...{ product }}
                         />
-                        <HowItFits>
+                        <HowItFits onClick={this.toggleFitsModal(true)}>
                           <FormattedMessage {...messages.howItFits} />
                         </HowItFits>
+                        {showFits && (
+                          <Modal
+                            open={showFits}
+                            requestClose={this.toggleFitsModal(false)}
+                            width={'90%'}
+                            style={{ maxWidth: '1024px' }}
+                            withLogo={false}
+                          >
+                            <ImagesSlider
+                              onLoadModel={setLoadingModel}
+                              squareArrows={true}
+                              leftSide={true}
+                              {...{
+                                images,
+                                moreImages,
+                                loadingImage,
+                                setLoadingImageAction
+                              }}
+                            />
+                          </Modal>
+                        )}
                       </ModelContainer>
                     ) : (
                       <ImagesSlider
@@ -599,7 +623,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
       </Layout>
     )
   }
-
+  toggleFitsModal = (showFits: boolean) => () => {
+    this.setState({ showFits })
+  }
   toggleProductInfo = (id: string) => {
     const stateValue = this.state[`show${id}`]
     this.setState({ [`show${id}`]: !stateValue } as any)
