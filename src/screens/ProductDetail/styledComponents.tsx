@@ -18,11 +18,9 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  padding: 0px 32px 50px 32px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
-    padding: 0px 12px 50px 12px;
   }
 
   @media (min-width: 1440px) {
@@ -32,7 +30,6 @@ export const Content = styled.div`
 
 export const ImagePreview = styled.div`
   width: 50%;
-  padding: 70px 50px 0px;
 
   @media (min-width: 320px) and (max-width: 480px) {
     width: 100%;
@@ -40,7 +37,6 @@ export const ImagePreview = styled.div`
   }
 
   @media (min-width: 481px) and (max-width: 768px) {
-    padding: 0 20px 0 0;
     width: 100%;
   }
 
@@ -50,11 +46,10 @@ export const ImagePreview = styled.div`
 `
 
 export const ProductData = styled.div`
-  padding-top: 70px;
+  padding: 18px;
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    padding-top: 16px;
     width: 100%;
   }
 `
@@ -188,38 +183,78 @@ export const StyledButtonWrapper = styled.div`
     border-color: ${BLUE_DARK};
   }
 `
+export const SlideImage = styled.img`
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+`
+export const SlideImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 328px;
+`
 
-export const StyledButton = styled(Button)`
+export const Separator = styled.div`
+  text-align: center;
+  margin: 48px 10% 28px 10%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dcdcdc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+
+export const TitleName = styled.div`
+  margin-right: 8px;
+`
+
+export const StyledButton = styled.div`
   height: 50px;
-  width: 221px;
+  width: 277px;
+  border: 1px solid #4a90e2;
   border-radius: 2px;
-
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: #4a90e2;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   @media (min-width: 320px) and (max-width: 480px) {
     display: none;
   }
 `
 
-export const MobileButtonWrapper = styled.div`
-  padding-top: 8px;
-  .ant-btn-primary  {
-    background-color: ${BLUE_DARK};
-    border-color: ${BLUE_DARK};
-  }
-  .ant-btn-primary:hover {
-    background-color: ${BLUE_DARK};
-    border-color: ${BLUE_DARK};
-  }
+export const ColorWheel = styled.img`
+  width: 20px;
+  margin-right: 12px;
 `
 
-export const MobileButton = styled(Button)`
+export const MobileButtonWrapper = styled.div`
+  width: 100%;
+`
+
+export const MobileButton = styled.div`
   display: none;
   height: 50px;
   width: 100%;
-  border: 2px solid #e61737;
+  margin-bottom: 16px;
+  border: 1px solid #4a90e2;
   border-radius: 2px;
+  cursor: pointer;
+  font-weight: 600;
+  background-color: #ffffff;
+  box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.07);
+  color: #4a90e2;
+  font-size: 16px;
+  justify-content: center;
+  align-items: center;
 
   @media (min-width: 320px) and (max-width: 480px) {
-    display: block;
+    display: flex;
   }
 `
 

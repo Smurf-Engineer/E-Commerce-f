@@ -5,6 +5,8 @@ import * as React from 'react'
 import {
   Container,
   YotpoReviewsContainer,
+  YotpoReviewsElement,
+  YotpoCarouselContainer,
   YotpoCarousel
 } from './styledComponents'
 import ReactDOM from 'react-dom'
@@ -58,10 +60,16 @@ class YotpoReviews extends React.Component<Props, any> {
   }
 
   render() {
+    const { children } = this.props
     return (
       <Container>
-        <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
-        <YotpoReviewsContainer innerRef={yotpo => (this.yotpo = yotpo)} />
+        <YotpoCarouselContainer>
+          <YotpoCarousel innerRef={yotpo => (this.yotpoGallery = yotpo)} />
+        </YotpoCarouselContainer>
+        {children}
+        <YotpoReviewsContainer>
+          <YotpoReviewsElement innerRef={yotpo => (this.yotpo = yotpo)} />
+        </YotpoReviewsContainer>
       </Container>
     )
   }
