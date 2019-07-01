@@ -85,7 +85,6 @@ import {
   ProductFile
 } from '../../types/common'
 import { ProductGenders } from './constants'
-// import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
