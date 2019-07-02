@@ -41,3 +41,14 @@ export const SpinContainer = styled.div`
   justify-content: center;
   align-items: center;
 `
+
+export const Goback = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 40px;
+  font-family: 'Avenir Next';
+  font-size: 16px;
+  letter-spacing: 0.11px;
+  line-height: 22px;
+`

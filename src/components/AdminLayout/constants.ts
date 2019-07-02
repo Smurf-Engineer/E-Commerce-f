@@ -18,6 +18,7 @@ export const HOMEPAGE = 'homepage'
 export const DESIGN_LAB = 'designLab'
 export const USERS = 'users'
 export const LOGOUT_MENU = 'logout'
+export const EDIT_NAVIGATION = 'editNavigation'
 
 export const options = [
   {
@@ -30,7 +31,7 @@ export const options = [
   },
   {
     title: EDIT_CONTENT,
-    options: [HOMEPAGE, DESIGN_LAB]
+    options: [EDIT_NAVIGATION, DESIGN_LAB]
   },
   {
     title: USERS,

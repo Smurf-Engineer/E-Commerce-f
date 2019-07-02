@@ -22,9 +22,9 @@ import {
   DISCOUNTS,
   PRODUCT_CATALOG,
   USERS,
-  HOMEPAGE,
   DESIGN_SEARCH,
-  DESIGN_LAB
+  DESIGN_LAB,
+  EDIT_NAVIGATION
 } from './constants'
 import {
   SideBar,
@@ -39,7 +39,6 @@ const { SubMenu } = Menu
 interface Props extends RouteComponentProps<any> {
   children: React.ReactChildren
   intl: InjectedIntl
-  history: any
   client: any
   user: UserType
   fontsData: any
@@ -103,8 +102,8 @@ class AdminLayout extends React.Component<Props, {}> {
       case USERS:
         history.push('/admin/users')
         break
-      case HOMEPAGE:
-        history.push('/admin/homepage')
+      case EDIT_NAVIGATION:
+        history.push('/admin/edit-navigation')
         break
       case DESIGN_LAB:
         history.push('/admin/design-lab')
