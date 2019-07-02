@@ -20,9 +20,6 @@ export const Container = styled.div`
   flex-flow: column;
   margin-top: ${({ leftSide }: ContainerProps) => (leftSide ? '48px' : '0')};
   @media (min-width: 1440px) {
-    margin: 0 auto;
-    max-width: ${({ leftSide }: ContainerProps) =>
-      leftSide ? '70%' : '600px'};
     max-height: ${({ leftSide }: ContainerProps) =>
       leftSide ? '570px' : '800px'};
     flex-flow: ${({ leftSide }: ContainerProps) =>

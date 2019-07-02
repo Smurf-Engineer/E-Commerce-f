@@ -34,6 +34,8 @@ import {
   ButtonsRow,
   StyledButton,
   CompareButton,
+  BannerMaterialSection,
+  BannerMaterial,
   BuyNowOptions,
   SectionRow,
   SectionTitle,
@@ -79,10 +81,10 @@ import {
   SelectedType,
   Filter,
   PriceRange,
-  ProductColors
+  ProductColors,
+  ProductFile
 } from '../../types/common'
 import { ProductGenders } from './constants'
-// import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
@@ -210,7 +212,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const customizable = get(product, 'customizable', '')
     const obj = get(product, 'obj', '')
     const mtl = get(product, 'mtl', '')
-
+    const bannerMaterials = get(product, 'bannerMaterials', '')
     const colors = get(product, 'colors', [] as ProductColors[])
 
     const maleGender = genders.find(x => x.name === Men)
@@ -517,7 +519,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                             open={showFits}
                             requestClose={this.toggleFitsModal(false)}
                             width={'90%'}
-                            style={{ maxWidth: '1024px' }}
+                            style={{ maxWidth: '704px' }}
                             withLogo={false}
                           >
                             <ImagesSlider
@@ -588,6 +590,11 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 />
                 <Description>{description}</Description>
                 <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
+                <BannerMaterialSection>
+                  {bannerMaterials.map((banner: ProductFile) => (
+                    <BannerMaterial src={banner.url} />
+                  ))}
+                </BannerMaterialSection>
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButtonWrapper>
