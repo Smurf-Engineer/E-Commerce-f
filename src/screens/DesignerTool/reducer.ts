@@ -70,7 +70,8 @@ import {
   REAPPLY_CANVAS_IMAGE_ACTION,
   Changes,
   SET_ART_FORMAT_ACTION,
-  ON_TAB_CLICK_ACTION
+  ON_TAB_CLICK_ACTION,
+  UPDATE_COLOR_IDEAS_LIST
 } from './constants'
 import { BLACK as BLACK_COLOR } from '../../theme/colors'
 import { Reducer } from '../../types/common'
@@ -320,7 +321,11 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
       return state.set(color, !currentValue)
     }
     case SAVE_DESIGN_SUCCESS_ACTION:
-      return state.set('designConfig', state.get('designConfig').clear())
+      return state.merge({
+        designConfig: state.get('designConfig').clear(),
+        openSaveDesign: false,
+        saveDesignLoading: false
+      })
     case EDIT_COLOR_IDEA_ACTION: {
       const { item } = action
       if (item !== NONE) {
@@ -673,6 +678,8 @@ const designerToolReducer: Reducer<any> = (state = initialState, action) => {
     }
     case ON_TAB_CLICK_ACTION:
       return state.set('selectedTab', action.selectedIndex)
+    case UPDATE_COLOR_IDEAS_LIST:
+      return state.set('colorIdeas', List.of(...action.colorIdeas))
     default:
       return state
   }

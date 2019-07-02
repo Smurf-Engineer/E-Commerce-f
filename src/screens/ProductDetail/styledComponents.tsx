@@ -69,6 +69,23 @@ export const Title = styled.div`
   }
 `
 
+export const HowItFits = styled.div`
+  margin: 16px 0;
+  margin-bottom: 45px;
+  height: 40px;
+  width: 190px;
+  color: white;
+  border: 2px solid #dcdcdc;
+  border-radius: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  z-index: 2;
+  background: #2b2b2c73;
+  cursor: pointer;
+`
+
 export const Subtitle = styled.div`
   color: #5f6062;
   font-size: 14px;
@@ -85,6 +102,16 @@ export const StyledLink = styled.a`
   @media (min-width: 320px) and (max-width: 480px) {
     align-self: center;
   }
+`
+
+export const ModelContainer = styled.div`
+  background: #2b2b2c;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  flex-flow: column;
+  border-radius: 3px;
 `
 
 export const StyledBreadCrumb = styled(Breadcrumb)`

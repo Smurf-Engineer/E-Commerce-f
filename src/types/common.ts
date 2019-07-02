@@ -440,7 +440,11 @@ export type ProductPicture = {
   toUpload?: object | boolean
   color_id?: number
 }
-
+export type TypePicture = {
+  id: string
+  name: string
+  images: BlockImage[]
+}
 export type FileUploaded = {
   id: string
   imageUri: string
@@ -453,6 +457,7 @@ export interface TeamstoreResult {
 export type ItemDetailType = {
   id?: number
   name?: string | boolean
+  gender?: string
 }
 
 export type BlockImage = {
@@ -1134,6 +1139,7 @@ export interface OrderSearchResult {
   stitchingValue?: string
   stitchingName?: string
   shortId: string
+  pdfUrl?: string
   product: Product
 }
 
@@ -1223,4 +1229,8 @@ export interface NavbarSports {
   name: string
   visible: boolean
   navbar: boolean
+}
+export interface SimpleCart {
+  id: number
+  quantity: number
 }

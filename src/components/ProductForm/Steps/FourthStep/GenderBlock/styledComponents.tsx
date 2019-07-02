@@ -47,3 +47,11 @@ export const EmptyBox = styled.div`
   font-size: 18px;
   padding-top: 38px;
   color: #bebebe;`
+
+export const Loader = styled.div`
+  width: 200px;
+  height: 200px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+`

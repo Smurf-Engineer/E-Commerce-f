@@ -26,6 +26,7 @@ interface Props {
   onLoadModel?: (loading: boolean) => void
   threeDmodel?: React.ReactNode
   customProduct?: boolean
+  leftSide?: boolean
   customImage?: string
   squareArrows?: boolean
 }
@@ -72,6 +73,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
       customProduct,
       customImage,
       moreImages,
+      leftSide,
       squareArrows
     } = this.props
     const { index } = this.state
@@ -96,7 +98,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
     const ThumbnailsArrayWith3D = [customImage, front, right, back, left]
 
     const thumbnails = ThumbnailsArray.map((thumbnail, i) => (
-      <ThumbnailContainer design={false} key={i}>
+      <ThumbnailContainer {...{ leftSide }} design={false} key={i}>
         <ThumbnailImg
           id={i.toString()}
           src={thumbnail}
@@ -139,7 +141,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
       <SwipeableViews {...{ index }}>{selectedImages}</SwipeableViews>
     )
     return (
-      <Container>
+      <Container {...{ leftSide }}>
         <SwipeContainer squareArrows={!!squareArrows}>
           <ArrowContainer onClick={this.handlePreviousPage}>
             <Arrow src={PreviousArrow} />
@@ -149,7 +151,7 @@ class ImageSlider extends React.Component<Props, StateProps> {
             <Arrow src={NextArrow} />
           </ArrowContainer>
         </SwipeContainer>
-        <ImageThumbnails>
+        <ImageThumbnails {...{ leftSide }}>
           {customProduct ? thumbnailsWith3d : thumbnails}
         </ImageThumbnails>
       </Container>

@@ -19,7 +19,8 @@ import {
   NetsuiteTax,
   NetsuiteShipping,
   AddressObj,
-  TaxAddressObj
+  TaxAddressObj,
+  SimpleCart
 } from '../../../types/common'
 import OrderSummary from '../../../components/OrderSummary'
 import config from '../../../config/index'
@@ -85,7 +86,6 @@ const CheckoutSummary = ({
   subsidiaryQuery,
   taxShipQuery
 }: Props) => {
-
   let paypalClientId
   const subsidiary = get(subsidiaryQuery, 'subsidiary', 1)
   switch (subsidiary) {
@@ -180,10 +180,10 @@ const CheckoutSummary = ({
         {...{ currency }}
       />
     ) : (
-        <PlaceOrderButton onClick={onPlaceOrder}>
-          {formatMessage(messages.placeOrder)}
-        </PlaceOrderButton>
-      )
+      <PlaceOrderButton onClick={onPlaceOrder}>
+        {formatMessage(messages.placeOrder)}
+      </PlaceOrderButton>
+    )
 
   const orderButton = showOrderButton && orderButtonComponent
   return (
@@ -220,14 +220,15 @@ interface OwnProps {
   country?: string
   weight?: string
   shipAddress?: AddressObj
+  simpleCart?: SimpleCart[]
 }
 
 const CheckoutSummaryEnhance = compose(
   graphql(getTaxQuery, {
     name: 'taxShipQuery',
-    options: ({ country, weight, shipAddress }: OwnProps) => ({
-      skip: !country || !weight || !shipAddress,
-      variables: { country, weight, shipAddress },
+    options: ({ country, shipAddress, simpleCart }: OwnProps) => ({
+      skip: !country || !shipAddress || !simpleCart,
+      variables: { country, shipAddress, cart: simpleCart },
       fetchPolicy: 'network-only'
     })
   }),

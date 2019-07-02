@@ -94,12 +94,12 @@ export const ThumbnailButton = styled(AntdButton)`
 `
 
 export const DragText = styled.div`
-  color: #5f6062;
+  color: ${({ textColor }) => (textColor ? textColor : '#5f6062')};
   user-select: none;
   font-size: 14px;
   line-height: 23px;
   position: absolute;
-  bottom: 19%;
+  bottom: ${({ isProduct }) => (isProduct ? '8%' : '19%')};
   left: 50%;
   transform: translate(-50%, -50%);
 
