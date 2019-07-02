@@ -32,7 +32,7 @@ export const ColumnTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
-  ${({ align }: StyleProps) => (align ? `text-align: ${align};` : GRAY_LIGHT)};
+  ${({ align }: StyleProps) => (align ? `text-align: ${align};` : '')};
 `
 
 export const SportTyle = styled(ColumnTitle)`
