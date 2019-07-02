@@ -1229,3 +1229,12 @@ export interface SimpleCart {
   id: number
   quantity: number
 }
+
+export interface SportType {
+  id: number
+  name: string
+  active: boolean
+  catalogue: boolean
+  route: string
+  navbar: boolean
+}

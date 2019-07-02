@@ -85,6 +85,19 @@ export const HowItFits = styled.div`
   background: #2b2b2c73;
   cursor: pointer;
 `
+export const BannerMaterialSection = styled.div`
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+`
+
+export const BannerMaterial = styled.img`
+  max-width: 85px;
+  object-fit: cover;
+  max-height: 85px;
+  margin-right: 8px;
+  border-radius: 3px;
+`
 
 export const Subtitle = styled.div`
   color: #5f6062;

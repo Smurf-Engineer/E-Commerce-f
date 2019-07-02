@@ -44,5 +44,9 @@ export default defineMessages({
   logout: {
     id: 'screens.AdminLayout.logout',
     defaultMessage: 'LOGOUT'
+  },
+  editNavigation: {
+    id: 'screens.AdminLayout.editNavigation',
+    defaultMessage: 'Edit Main Navigation'
   }
 })

@@ -5,6 +5,7 @@ import * as React from 'react'
 import { compose, withApollo } from 'react-apollo'
 import { connect } from 'react-redux'
 import message from 'antd/lib/message'
+import Icon from 'antd/lib/icon'
 import {
   setMainHeaderMutation,
   setSecondaryHeaderMutation,
@@ -24,7 +25,12 @@ import MainHeader from './MainHeader'
 import SecondaryHeader from './SecondaryHeader'
 import FeaturedProducts from './FeaturedProducts'
 import Tiles from './Tiles'
-import { Container, ScreenTitle, SpinContainer } from './styledComponents'
+import {
+  Container,
+  ScreenTitle,
+  SpinContainer,
+  Goback
+} from './styledComponents'
 import messages from './messages'
 import {
   Product,
@@ -32,9 +38,10 @@ import {
   ProductTiles,
   MessagePayload
 } from '../../types/common'
+import { History } from 'history'
 
 interface Props {
-  history: any
+  history: History
   desktopImage: string
   client: any
   mainHeader: any
@@ -279,6 +286,12 @@ class HomepageAdmin extends React.Component<Props, {}> {
     }
     setLoadersAction(Sections.PRODUCT_TILES, false)
   }
+
+  handleGoback = () => {
+    const { history } = this.props
+    history.goBack()
+  }
+
   render() {
     const {
       formatMessage,
@@ -315,6 +328,10 @@ class HomepageAdmin extends React.Component<Props, {}> {
       </SpinContainer>
     ) : (
       <Container>
+        <Goback onClick={this.handleGoback}>
+          <Icon type="left" />
+          <FormattedMessage {...messages.backToEditNavigation} />
+        </Goback>
         <ScreenTitle>
           <FormattedMessage {...messages.title} />
         </ScreenTitle>

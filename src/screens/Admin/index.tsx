@@ -23,6 +23,7 @@ import HomepageAdmin from '../../components/HomepageAdmin'
 import DesignLabAdmin from '../../components/DesignLabAdmin'
 import DiscountsAdmin from '../../components/DiscountsAdmin'
 import DesignSearchAdmin from '../../components/DesignSearch'
+import EditNavigationAdmin from '../../components/EditNavigationAdmin'
 
 // import Menu from 'antd/lib/menu'
 import message from 'antd/lib/message'
@@ -40,10 +41,10 @@ import {
   USERS,
   USERS_URL,
   DESIGN_URL,
-  HOMEPAGE_URL,
-  HOMEPAGE,
   DESIGN_LAB,
-  DESIGN_LAB_URL
+  DESIGN_LAB_URL,
+  EDIT_NAVIGATION,
+  EDIT_NAVIGATION_URL
 } from './constants'
 // import red_logo from '../../assets/Jackroologo.svg'
 
@@ -118,8 +119,8 @@ export class Admin extends React.Component<Props, {}> {
         case USERS_URL:
           key = USERS
           break
-        case HOMEPAGE_URL:
-          key = HOMEPAGE
+        case EDIT_NAVIGATION_URL:
+          key = EDIT_NAVIGATION
           break
         case DESIGN_LAB_URL:
           key = DESIGN_LAB
@@ -197,12 +198,16 @@ export class Admin extends React.Component<Props, {}> {
           render={() => <DesignSearchAdmin {...{ history, formatMessage }} />}
         />
         <Route
-          path="/admin/homepage"
-          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
+          path="/admin/edit-navigation"
+          render={() => <EditNavigationAdmin {...{ history }} />}
         />
         <Route
           path="/admin/users"
           render={() => <UsersAdmin {...{ history, formatMessage }} />}
+        />
+        <Route
+          path="/admin/homepage/:sportName?"
+          render={() => <HomepageAdmin {...{ history, formatMessage }} />}
         />
       </AdminLayout>
     )
