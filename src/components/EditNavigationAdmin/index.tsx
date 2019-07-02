@@ -9,6 +9,7 @@ import message from 'antd/lib/message'
 import messages from './messages'
 import { GetSportsQuery, ActivateInNavbarMutation } from './data'
 import { DARKER_GRAY } from '../../theme/colors'
+import WithLoading from '../../components/WithLoading'
 import {
   Container,
   Title,
@@ -36,33 +37,31 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
       data: { sports }
     } = this.props
 
-    const sportsList =
-      sports &&
-      sports.map(({ id: checkId, name, navbar }, index) => {
-        return (
-          <div key={index}>
-            <Row>
-              <SportTyle
-                fontSize={'16px'}
-                id={name}
-                onClick={this.handleRedirect}
-              >
-                {name}
-              </SportTyle>
-              <ColumnTitle align="center">
-                <SwitchWrapper>
-                  <StyledSwitch
-                    key={checkId}
-                    checked={navbar}
-                    onChange={this.handleActivateSport(checkId)}
-                  />
-                </SwitchWrapper>
-              </ColumnTitle>
-            </Row>
-            <Divider />
-          </div>
-        )
-      })
+    const sportsList = sports.map(({ id: checkId, name, navbar }, index) => {
+      return (
+        <div key={index}>
+          <Row>
+            <SportTyle
+              fontSize={'16px'}
+              id={name}
+              onClick={this.handleRedirect}
+            >
+              {name}
+            </SportTyle>
+            <ColumnTitle align="center">
+              <SwitchWrapper>
+                <StyledSwitch
+                  key={checkId}
+                  checked={navbar}
+                  onChange={this.handleActivateSport(checkId)}
+                />
+              </SwitchWrapper>
+            </ColumnTitle>
+          </Row>
+          <Divider />
+        </div>
+      )
+    })
 
     return (
       <Container>
@@ -98,7 +97,6 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
   handleRedirect = ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
     const { history } = this.props
     const { id: routeID } = currentTarget
-    console.log(routeID)
     history.push(`/admin/homepage/${routeID}`)
   }
 
@@ -115,7 +113,8 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
 }
 const EditNavigationAdminEnhance = compose(
   graphql<Data>(GetSportsQuery),
-  ActivateInNavbarMutation
+  ActivateInNavbarMutation,
+  WithLoading
 )(EditNavigationAdmin)
 
 export default EditNavigationAdminEnhance
