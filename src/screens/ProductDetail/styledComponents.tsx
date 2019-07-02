@@ -18,7 +18,7 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-
+  margin-bottom: 24px;
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
   }
@@ -71,14 +71,20 @@ export const HowItFits = styled.div`
   width: 190px;
   color: white;
   border: 2px solid #dcdcdc;
-  border-radius: 2px;
+  border-radius: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 16px;
+  transition: all 0.2s ease;
   z-index: 2;
   background: #2b2b2c73;
   cursor: pointer;
+  &:hover {
+    background: gainsboro;
+    color: #2b2b2c;
+    font-weight: bold;
+  }
 `
 export const BannerMaterialSection = styled.div`
   display: inline-flex;
@@ -221,10 +227,15 @@ export const StyledButton = styled.div`
   color: #4a90e2;
   font-size: 16px;
   display: flex;
+  transition: all 0.2s;
   justify-content: center;
   align-items: center;
   @media (min-width: 320px) and (max-width: 480px) {
     display: none;
+  }
+  &:hover {
+    background: #4a90e2;
+    color: white;
   }
 `
 

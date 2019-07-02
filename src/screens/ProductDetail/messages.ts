@@ -23,7 +23,7 @@ export default defineMessages({
   },
   howItFits: {
     id: 'screens.ProductDetail.howItFits',
-    defaultMessage: 'See how it fits'
+    defaultMessage: 'SEE HOW IT FITS'
   },
   customerReview: {
     id: 'screens.ProductDetail.customerReview',
