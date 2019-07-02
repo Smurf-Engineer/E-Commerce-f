@@ -16,7 +16,6 @@ import {
   Row,
   ColumnTitle,
   SportTyle,
-  Divider,
   SwitchWrapper,
   StyledSwitch
 } from './styledComponents'
@@ -39,27 +38,20 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
 
     const sportsList = sports.map(({ id: checkId, name, navbar }, index) => {
       return (
-        <div key={index}>
-          <Row>
-            <SportTyle
-              fontSize={'16px'}
-              id={name}
-              onClick={this.handleRedirect}
-            >
-              {name}
-            </SportTyle>
-            <ColumnTitle align="center">
-              <SwitchWrapper>
-                <StyledSwitch
-                  key={checkId}
-                  checked={navbar}
-                  onChange={this.handleActivateSport(checkId)}
-                />
-              </SwitchWrapper>
-            </ColumnTitle>
-          </Row>
-          <Divider />
-        </div>
+        <Row key={index}>
+          <SportTyle fontSize={'16px'} id={name} onClick={this.handleRedirect}>
+            {name}
+          </SportTyle>
+          <ColumnTitle align="center">
+            <SwitchWrapper>
+              <StyledSwitch
+                key={checkId}
+                checked={navbar}
+                onChange={this.handleActivateSport(checkId)}
+              />
+            </SwitchWrapper>
+          </ColumnTitle>
+        </Row>
       )
     })
 
@@ -69,7 +61,7 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
           <FormattedMessage {...messages.title} />
         </Title>
         <>
-          <Row>
+          <Row color={DARKER_GRAY}>
             <ColumnTitle>
               <FormattedMessage {...messages.nameLabel} />
             </ColumnTitle>
@@ -77,7 +69,6 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
               <FormattedMessage {...messages.mainNavigationLabel} />
             </ColumnTitle>
           </Row>
-          <Divider color={DARKER_GRAY} />
           <Row>
             <SportTyle
               fontSize={'16px'}
@@ -87,7 +78,6 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
               <FormattedMessage {...messages.homepageLabel} />
             </SportTyle>
           </Row>
-          <Divider />
           {sportsList}
         </>
       </Container>
