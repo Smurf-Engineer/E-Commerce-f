@@ -6,7 +6,8 @@ import { fromJS } from 'immutable'
 import {
   SET_MENU_GENDER_SELECTED,
   SET_MENU_SPORT_SELECTED,
-  SET_GENDER_SPORT_SELECTED
+  SET_GENDER_SPORT_SELECTED,
+  SET_SPORTS
 } from './constants'
 import { Reducer } from '../../types/common'
 import { CLEAR_STATE_ACTION } from '../MenuGender/constants'
@@ -22,6 +23,7 @@ export const initialState = fromJS({
     // { label: 'nordic', visible: false }, TODO: uncomment when nordic will be needed
     { label: 'active', visible: false }
   ],
+  sports: [],
   genderSportSelected: 0
 })
 
@@ -49,6 +51,10 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
       return state.set('genderSportSelected', action.sport)
     case CLEAR_STATE_ACTION:
       return state.set('genderSportSelected', 0)
+    case SET_SPORTS: {
+      const { sportOptions, sportsData } = action
+      return state.merge({ sportOptions, sports: sportsData })
+    }
     default:
       return state
   }

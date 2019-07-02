@@ -1218,3 +1218,9 @@ export interface User {
 export interface DesignSearchCode {
   code: string
 }
+
+export interface NavbarSports {
+  name: string
+  visible: boolean
+  navbar: boolean
+}
