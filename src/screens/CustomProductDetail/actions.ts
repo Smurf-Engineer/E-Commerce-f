@@ -8,6 +8,7 @@ import {
   SET_SELECTED_FIT,
   OPEN_FITINFO,
   SET_SHOW_DETAILS,
+  SET_FITS_MODAL,
   SET_SHOW_SPECS,
   RESET_DATA
 } from './constants'
@@ -21,6 +22,11 @@ export const defaultAction = (someValue: string): AnyAction => ({
 export const setSelectedGenderAction = (selected: SelectedType) => ({
   type: SET_SELECTED_GENDER,
   selected
+})
+
+export const setFitsModal = (showFits: boolean) => ({
+  type: SET_FITS_MODAL,
+  showFits
 })
 
 export const setSelectedSizeAction = (selected: SelectedType) => ({

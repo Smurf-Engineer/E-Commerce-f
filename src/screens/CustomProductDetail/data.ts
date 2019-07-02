@@ -17,8 +17,17 @@ export const GetDesignByIdQuery = gql`
         customizable: design_center
         description
         details
+        relatedItemTag: related_item_tag
         materials: materials_info
         temperatures: temperature_range
+        bannerMaterials: banner_materials {
+          id
+          url
+        }
+        mediaFiles: media_files {
+          id
+          url
+        }
         relatedProducts: related {
           id
           type: name

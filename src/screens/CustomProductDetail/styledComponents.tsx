@@ -9,11 +9,9 @@ export const Container = styled.div`
 `
 export const Content = styled.div`
   display: flex;
-  padding: 0px 32px 250px 32px;
 
   @media (min-width: 320px) and (max-width: 572px) {
     display: block;
-    padding: 0px 12px 50px 12px;
   }
 
   @media (min-width: 1440px) {
@@ -21,7 +19,6 @@ export const Content = styled.div`
   }
 `
 export const ImagePreview = styled.div`
-  padding: 70px 50px 0px;
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 572px) {
@@ -30,17 +27,83 @@ export const ImagePreview = styled.div`
   }
 
   @media (min-width: 573px) and (max-width: 984px) {
-    padding: 0 20px 0 0;
     width: 100%;
   }
 `
 export const ProductData = styled.div`
-  padding-top: 31px;
+  padding: 18px;
   width: 50%;
 
   @media (min-width: 320px) and (max-width: 572px) {
     width: 100%;
   }
+`
+export const RenderContainer = styled.div`
+  background: #2b2b2c;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+  flex-flow: column;
+  border-radius: 3px;
+`
+export const BannerMaterialSection = styled.div`
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+`
+
+export const BannerMaterial = styled.img`
+  max-width: 85px;
+  object-fit: cover;
+  max-height: 85px;
+  margin-right: 8px;
+  border-radius: 3px;
+`
+export const TitleName = styled.div`
+  margin-right: 8px;
+`
+export const HowItFits = styled.div`
+  margin: 16px 0;
+  margin-bottom: 45px;
+  height: 40px;
+  width: 190px;
+  color: white;
+  border: 2px solid #dcdcdc;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  z-index: 2;
+  background: #2b2b2c73;
+  cursor: pointer;
+  &:hover {
+    background: gainsboro;
+    color: #2b2b2c;
+    font-weight: bold;
+  }
+`
+export const Separator = styled.div`
+  text-align: center;
+  margin: 48px 10% 28px 10%;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dcdcdc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
+export const SlideImage = styled.img`
+  height: 100%;
+  object-fit: contain;
+  width: 100%;
+`
+export const SlideImageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 328px;
 `
 export const TitleRow = styled.div`
   display: flex;
@@ -209,19 +272,7 @@ export const RelatedProductsContainer = styled.div`
   margin-bottom: 80px;
   padding: 0px 32px;
 `
-export const ReviewsHeader = styled.div`
-  align-items: center;
-  background-color: #f7f7f7;
-  color: #5f6062;
-  display: flex;
-  font-size: 18px;
-  font-weight: 600;
-  height: 38px;
-  letter-spacing: 0.23px;
-  line-height: 25px;
-  margin-bottom: 15px;
-  padding-left: 32px;
-`
+
 export const ButtonsRow = styled.div`
   display: flex;
   margin: 30px 0 25px;
