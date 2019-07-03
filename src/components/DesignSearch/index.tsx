@@ -327,6 +327,7 @@ export class DesignSearchAdmin extends React.Component<Props, {}> {
       setPdfAction(url)
       creatingPdfAction(false)
     } catch (error) {
+      creatingPdfAction(false)
       Message.error(error.message)
     }
   }
