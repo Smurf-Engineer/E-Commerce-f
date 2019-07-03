@@ -52,7 +52,8 @@ import {
   RenderContainer,
   PrivateSubtitle,
   ProApproved,
-  ProApprovedLabel
+  ProApprovedLabel,
+  SlideVideo
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -79,6 +80,7 @@ import YotpoReviews from '../../components/YotpoReviews'
 import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
+import { getFileExtension } from '../../utils/utilsFiles'
 
 const MAX_AMOUNT_PRICES = 4
 const { Men, Women, Unisex } = ProductGenders
@@ -471,7 +473,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 </Separator>
                 {mediaFiles.map(image => (
                   <SlideImageContainer>
-                    <SlideImage src={image.url} />
+                    {getFileExtension(image.url) === '.mp4' ? (
+                      <SlideVideo
+                        loop={true}
+                        autoPlay={true}
+                        playsinline={true}
+                        muted={true}
+                      >
+                        <source src={image.url} type="video/mp4" />
+                      </SlideVideo>
+                    ) : (
+                      <SlideImage src={image.url} />
+                    )}
                   </SlideImageContainer>
                 ))}
               </div>

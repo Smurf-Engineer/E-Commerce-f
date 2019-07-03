@@ -29,6 +29,7 @@ import {
   ColorWheel,
   ProductData,
   AvailablePrices,
+  SlideVideo,
   PricesRow,
   TitleName,
   Description,
@@ -91,6 +92,7 @@ import {
 } from '../../types/common'
 import { ProductGenders } from './constants'
 import config from '../../config/index'
+import { getFileExtension } from '../../utils/utilsFiles'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -625,7 +627,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                 </Separator>
                 {mediaFiles.map(image => (
                   <SlideImageContainer>
-                    <SlideImage src={image.url} />
+                    {getFileExtension(image.url) === '.mp4' ? (
+                      <SlideVideo
+                        loop={true}
+                        autoPlay={true}
+                        playsinline={true}
+                        muted={true}
+                      >
+                        <source src={image.url} type="video/mp4" />
+                      </SlideVideo>
+                    ) : (
+                      <SlideImage src={image.url} />
+                    )}
                   </SlideImageContainer>
                 ))}
               </div>
