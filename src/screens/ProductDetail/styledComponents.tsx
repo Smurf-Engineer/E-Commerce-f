@@ -190,14 +190,10 @@ export const StyledButtonWrapper = styled.div`
   }
 `
 export const SlideImage = styled.img`
-  height: 100%;
-  object-fit: contain;
   width: 100%;
 `
 
 export const SlideVideo = styled.video`
-  height: 100%;
-  object-fit: contain;
   width: 100%;
 `
 
@@ -205,7 +201,6 @@ export const SlideImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 328px;
   margin-top: 8px;
 `
 
