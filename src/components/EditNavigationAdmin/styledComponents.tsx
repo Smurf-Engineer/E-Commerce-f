@@ -23,13 +23,8 @@ export const Title = styled.div`
 export const Row = styled.div`
   display: grid;
   grid-template-columns: 70% 30%;
-  margin: 30px 0;
-`
-
-export const Body = styled.div`
-  display: grid;
-  grid-template-columns: 70% 30%;
-  margin: 30px 0;
+  padding: 30px 0;
+  border-bottom: 1px solid ${({ color }: StyleProps) => color || GRAY_LIGHT};
 `
 
 export const ColumnTitle = styled.div`
@@ -37,15 +32,11 @@ export const ColumnTitle = styled.div`
   font-weight: 600;
   letter-spacing: 0.1px;
   line-height: 23px;
-  ${({ align }: StyleProps) => (align ? `text-align: ${align};` : '')}
+  ${({ align }: StyleProps) => (align ? `text-align: ${align};` : '')};
 `
 
 export const SportTyle = styled(ColumnTitle)`
   cursor: pointer;
-`
-
-export const Divider = styled.hr`
-  border-color: ${({ color }: StyleProps) => color || GRAY_LIGHT};
 `
 
 export const SwitchWrapper = styled.div`
