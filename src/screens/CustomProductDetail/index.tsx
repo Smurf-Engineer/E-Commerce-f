@@ -474,12 +474,7 @@ export class CustomProductDetail extends React.Component<Props, {}> {
                 {mediaFiles.map(image => (
                   <SlideImageContainer>
                     {getFileExtension(image.url) === '.mp4' ? (
-                      <SlideVideo
-                        loop={true}
-                        autoPlay={true}
-                        playsinline={true}
-                        muted={true}
-                      >
+                      <SlideVideo controls={true}>
                         <source src={image.url} type="video/mp4" />
                       </SlideVideo>
                     ) : (
