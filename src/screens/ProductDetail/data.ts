@@ -26,6 +26,10 @@ export const GetProductsByIdQuery = gql`
       customizable: design_center
       description
       details
+      mediaFiles: media_files {
+        id
+        url
+      }
       bannerMaterials: banner_materials {
         id
         url
@@ -73,6 +77,7 @@ export const GetProductsByIdQuery = gql`
       retailMen: men_retail
       retailWomen: women_retail
       template
+      relatedItemTag: related_item_tag
       relatedProducts: related {
         id
         type: name

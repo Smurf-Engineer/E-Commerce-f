@@ -11,7 +11,7 @@ export default defineMessages({
   },
   customizeLabel: {
     id: 'screens.ProductDetail.customizeLabel',
-    defaultMessage: 'CUSTOMIZE'
+    defaultMessage: 'START YOUR DESIGN'
   },
   buyNowLabel: {
     id: 'screens.ProductDetail.buyNowLabel',
@@ -23,11 +23,23 @@ export default defineMessages({
   },
   howItFits: {
     id: 'screens.ProductDetail.howItFits',
-    defaultMessage: 'See how it fits'
+    defaultMessage: 'SEE HOW IT FITS'
+  },
+  customerReview: {
+    id: 'screens.ProductDetail.customerReview',
+    defaultMessage: 'CUSTOMER REVIEW'
+  },
+  featured: {
+    id: 'screens.ProductDetail.featured',
+    defaultMessage: ' FEATURED'
+  },
+  more: {
+    id: 'screens.ProductDetail.more',
+    defaultMessage: 'MORE'
   },
   detailsLabel: {
     id: 'screens.ProductDetail.detailsLabel',
-    defaultMessage: 'Details'
+    defaultMessage: 'Additional Product details'
   },
   specsLabel: {
     id: 'screens.ProductDetail.specsLabel',
