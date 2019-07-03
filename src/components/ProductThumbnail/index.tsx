@@ -13,6 +13,9 @@ import {
   Type,
   Description,
   InfoContainer,
+  GendersContainer,
+  MenIcon,
+  WomenIcon,
   Label,
   Price,
   BuyNow,
@@ -175,6 +178,7 @@ class ProductThumbnail extends React.Component<Props, {}> {
       footer,
       labelButton,
       image,
+      product,
       hideCustomButton,
       hideQuickView,
       customizable,
@@ -240,6 +244,12 @@ class ProductThumbnail extends React.Component<Props, {}> {
         </BuyNow>
       </RetailColors>
     )
+    const menAvailable = product.genders
+      ? product.genders.some(gender => gender.name === 'Men')
+      : false
+    const womenAvailable = product.genders
+      ? product.genders.some(gender => gender.name === 'Women')
+      : false
     return (
       <Container>
         <ImageSlide
@@ -272,7 +282,13 @@ class ProductThumbnail extends React.Component<Props, {}> {
           footer
         ) : (
           <Footer>
-            <Type>{type}</Type>
+            <Type>
+              {type}
+              <GendersContainer>
+                {menAvailable && <MenIcon type="man" />}
+                {womenAvailable && <WomenIcon type="woman" />}
+              </GendersContainer>
+            </Type>
             <Description>{description}</Description>
             <InfoContainer>
               {colorOptions}
