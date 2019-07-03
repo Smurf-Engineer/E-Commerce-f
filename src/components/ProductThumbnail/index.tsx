@@ -244,12 +244,11 @@ class ProductThumbnail extends React.Component<Props, {}> {
         </BuyNow>
       </RetailColors>
     )
-    const menAvailable = product.genders
-      ? product.genders.some(gender => gender.name === 'Men')
-      : false
-    const womenAvailable = product.genders
-      ? product.genders.some(gender => gender.name === 'Women')
-      : false
+    const menAvailable =
+      !!product.genders && product.genders.some(gender => gender.name === 'Men')
+    const womenAvailable =
+      !!product.genders &&
+      product.genders.some(gender => gender.name === 'Women')
     return (
       <Container>
         <ImageSlide
