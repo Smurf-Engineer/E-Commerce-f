@@ -22,10 +22,19 @@ import {
   SET_PRODUCT_TILE_LOADING,
   SET_TILES_TEXT,
   REMOVE_TILE_DATA,
-  REMOVE_HEADER
+  REMOVE_HEADER,
+  ADD_MORE_IMAGES,
+  ADD_MORE_TILES,
+  UPDATE_IMAGES_PLACEHOLDER_LIST,
+  UPDATE_PRODUCT_TILES_LIST
 } from './constants'
 
-import { AnyAction, ProductType } from '../../types/common'
+import {
+  AnyAction,
+  ProductType,
+  HeaderImagePlaceHolder,
+  ProductTilePlaceHolder
+} from '../../types/common'
 
 export const clearReducerAction = (): AnyAction => ({
   type: CLEAR_REDUCER
@@ -174,4 +183,32 @@ export const removeTileDataAction = (index: number) => ({
 export const removeHeaderAction = (index: number) => ({
   type: REMOVE_HEADER,
   index
+})
+
+export const addMoreImagesAction = (
+  imagePlaceholder: HeaderImagePlaceHolder
+) => ({
+  type: ADD_MORE_IMAGES,
+  imagePlaceholder
+})
+
+export const addMoreTilesAction = (
+  tilePlaceholder: ProductTilePlaceHolder
+) => ({
+  type: ADD_MORE_TILES,
+  tilePlaceholder
+})
+
+export const updatePlaceHolderListAction = (
+  list: [HeaderImagePlaceHolder]
+) => ({
+  type: UPDATE_IMAGES_PLACEHOLDER_LIST,
+  list
+})
+
+export const updateProductTilesListAction = (
+  tilesList: [ProductTilePlaceHolder]
+) => ({
+  type: UPDATE_PRODUCT_TILES_LIST,
+  tilesList
 })

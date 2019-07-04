@@ -22,6 +22,7 @@ export const ScreenTitle = styled.div`
 export const UploadersContainer = styled.div`
   display: flex;
   justify-content: space-between;
+  margin-top: 50px;
 `
 
 export const ButtonContainer = styled.div`

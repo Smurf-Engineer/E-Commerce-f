@@ -36,18 +36,22 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
       data: { sports }
     } = this.props
 
-    const sportsList = sports.map(({ id: checkId, name, navbar }, index) => {
+    const sportsList = sports.map(({ id, name, navbar, route }, index) => {
       return (
         <Row key={index}>
-          <SportTyle fontSize={'16px'} id={name} onClick={this.handleRedirect}>
+          <SportTyle
+            fontSize={'16px'}
+            id={name}
+            onClick={this.handleRedirect(id, route)}
+          >
             {name}
           </SportTyle>
           <ColumnTitle align="center">
             <SwitchWrapper>
               <StyledSwitch
-                key={checkId}
+                key={id}
                 checked={navbar}
-                onChange={this.handleActivateSport(checkId)}
+                onChange={this.handleActivateSport(id)}
               />
             </SwitchWrapper>
           </ColumnTitle>
@@ -70,11 +74,7 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
             </ColumnTitle>
           </Row>
           <Row>
-            <SportTyle
-              fontSize={'16px'}
-              id="main"
-              onClick={this.handleRedirect}
-            >
+            <SportTyle fontSize={'16px'} onClick={this.handleRedirect()}>
               <FormattedMessage {...messages.homepageLabel} />
             </SportTyle>
           </Row>
@@ -84,10 +84,12 @@ class EditNavigationAdmin extends React.Component<Props, {}> {
     )
   }
 
-  handleRedirect = ({ currentTarget }: React.MouseEvent<HTMLDivElement>) => {
+  handleRedirect = (sportId?: number, sportRoute?: string) => ({
+    currentTarget
+  }: React.MouseEvent<HTMLDivElement>) => {
     const { history } = this.props
-    const { id: routeID } = currentTarget
-    history.push(`/admin/homepage/${routeID}`)
+    const { id: sportName } = currentTarget
+    history.push(`/admin/homepage/${sportRoute || ''}`, { sportId, sportName })
   }
 
   handleActivateSport = (id: number) => async () => {
