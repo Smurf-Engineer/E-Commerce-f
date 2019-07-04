@@ -53,12 +53,9 @@ import Layout from '../../components/MainLayout'
 import {
   QueryProps,
   DesignType,
-  Filter,
   SelectedType,
   ItemDetailType,
-  FitStyle,
   CartItemDetail,
-  Product,
   ProductFile
 } from '../../types/common'
 import Modal from '../../components/Common/JakrooModal'
@@ -165,25 +162,26 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const proDesign = get(design, 'proDesign', false)
-
-    const imagesArray = get(product, 'images', [])
-    const genders = get(product, 'genders', [] as Filter[])
-    const type = get(product, 'type', '')
-    const yotpoAverageScore = get(product, 'yotpoAverageScore')
-    const description = get(product, 'description')
-    const yotpoId = get(product, 'yotpoId', '')
-    const sizeRange = get(product, 'sizeRange', [] as ItemDetailType[])
-    const fitStyles = get(product, 'fitStyles', [] as FitStyle[])
-    const details = get(product, 'details', '')
-    const products = get(product, 'relatedProducts', [] as Product[])
-    const materials = get(product, 'materials', '')
-    const mediaFiles = get(product, 'mediaFiles', '')
-    const bannerMaterials = get(product, 'bannerMaterials', '')
-    const rating = get(yotpoAverageScore, 'averageScore', 0)
+    const {
+      images: imagesArray,
+      genders,
+      type,
+      yotpoAverageScore,
+      description,
+      yotpoId,
+      sizeRange,
+      fitStyles,
+      details,
+      relatedProducts: products,
+      materials,
+      mediaFiles,
+      bannerMaterials,
+      averageScore: rating,
+      relatedItemTag
+    } = product
     const totalReviews = get(yotpoAverageScore, 'total', 0)
     const genderId = selectedGender ? selectedGender.id : 0
     const genderIndex = findIndex(imagesArray, { genderId })
-    const relatedItemTag = get(product, 'relatedItemTag', '')
     const moreTag = relatedItemTag.replace(/_/, ' ')
 
     const currencyPrices =

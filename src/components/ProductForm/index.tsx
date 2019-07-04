@@ -270,9 +270,7 @@ export class ProductForm extends React.Component<Props, {}> {
             <HeaderRow>
               <ScreenTitle>
                 {formatMessage(
-                  parseInt(productId, 10)
-                    ? messages.editProduct
-                    : messages.addNewProduct
+                  productId ? messages.editProduct : messages.addNewProduct
                 )}
               </ScreenTitle>
               <Steps current={currentStep}>

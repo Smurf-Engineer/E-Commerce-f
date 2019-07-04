@@ -22,12 +22,17 @@ import {
   Container,
   Content,
   TitleRow,
-  Title,  Subtitle,
+  Title,
+  Subtitle,
   ImagePreview,
   ColorWheel,
   ProductData,
-  AvailablePrices,  PricesRow,  Description,  HowItFits,
-  ModelContainer,  ButtonsRow,
+  AvailablePrices,
+  PricesRow,
+  Description,
+  HowItFits,
+  ModelContainer,
+  ButtonsRow,
   StyledButton,
   CompareButton,
   BannerMaterialSection,
@@ -40,7 +45,7 @@ import {
   SectionButton,
   SizeRowTitleRow,
   // GetFittedLabel, TODO: hide get fitted for Jakroo phase I
-  QuestionSpan,  // Downloadtemplate,
+  QuestionSpan, // Downloadtemplate,
   // DownloadTemplateContainer,
   // DownloadAnchor,
   AvailableLabel,
@@ -68,10 +73,8 @@ import AddtoCartButton from '../../components/AddToCartButton'
 import {
   Product,
   QueryProps,
-  ImageType,
   CartItemDetail,
   SelectedType,
-  Filter,
   PriceRange,
   ProductColors,
   ProductFile
@@ -200,30 +203,31 @@ export class ProductDetail extends React.Component<Props, StateProps> {
         </Layout>
       )
     }
-    const name = get(product, 'name', '')
-    // TODO: commented until MNP code gets implemented in all retail products
-    // const code = get(product, 'code', '')
-    const type = get(product, 'type', '')
-    const description = get(product, 'description', '')
-    const materials = get(product, 'materials', '')
-    const genders = get(product, 'genders', [] as Filter[])
-    const customizable = get(product, 'customizable', '')
-    const isRetail =
-      get(product, 'retailMen', false) ||
-      get(product, 'retailWomen', !customizable)
-    const imagesArray = get(product, 'images', [] as ImageType[])
-    const reviewsScore = get(product, 'yotpoAverageScore', {})
-    // const template = get(product, 'template', '')
-    const products = get(product, 'relatedProducts', [] as Product[])
-
-    const mpnCode = get(product, 'mpn')
-    const obj = get(product, 'obj', '')
-    const mtl = get(product, 'mtl', '')
-    const bannerMaterials = get(product, 'bannerMaterials', '')
-    const relatedItemTag = get(product, 'relatedItemTag', '')
+    const {
+      name,
+      type,
+      description,
+      materials,
+      genders,
+      images: imagesArray,
+      customizable,
+      retailMen,
+      retailWomen,
+      yotpoAverageScore: reviewsScore,
+      relatedProducts: products,
+      mpn: mpnCode,
+      obj,
+      mtl,
+      bannerMaterials,
+      details: detailsOptions,
+      mediaFiles,
+      colors,
+      relatedItemTag,
+      fitStyles,
+      sizeRange
+    } = product
+    const isRetail = retailMen || retailWomen || !customizable
     const moreTag = relatedItemTag.replace(/_/, ' ')
-    const mediaFiles = get(product, 'mediaFiles', '')
-    const colors = get(product, 'colors', [] as ProductColors[])
 
     const maleGender = genders.find(x => x.name === Men)
     const femaleGender = genders.find(x => x.name === Women)
@@ -239,8 +243,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
 
     let renderPrices
-    const fitStyles = get(product, 'fitStyles', []) as SelectedType[]
-    const sizeRange = get(product, 'sizeRange', []) as SelectedType[]
 
     const {
       location: { search }
@@ -317,7 +319,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     let productInfo
     let availableFits
 
-    const detailsOptions = get(product, 'details')
     const productDetails = (detailsOptions && detailsOptions.split(',')) || ['']
     const details = productDetails.map((productDetail, index) => (
       <DetailsListItem key={index}>{productDetail}</DetailsListItem>
