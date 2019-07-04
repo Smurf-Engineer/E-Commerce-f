@@ -1238,3 +1238,27 @@ export interface SportType {
   route: string
   navbar: boolean
 }
+
+export interface HeaderImagePlaceHolder {
+  id?: number
+  desktopImage?: string
+  mobileImage?: string
+  url?: string
+  sport_id?: string | null
+}
+
+export interface HeadeImageResponse {
+  id?: number
+  image?: string
+  image_mobile: string
+  link?: string
+  sport_id?: string
+}
+
+export interface ProductTilePlaceHolder {
+  id?: number
+  title?: string
+  contentTile?: string
+  image?: string
+  sport_id?: string | null
+}

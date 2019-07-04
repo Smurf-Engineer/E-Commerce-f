@@ -12,5 +12,9 @@ export default defineMessages({
   mainHeaderTitle: {
     id: 'components.SecondaryHeader.mainHeaderTitle',
     defaultMessage: 'Header 2'
+  },
+  addMoreImagesLabel: {
+    id: 'components.SecondaryHeader.addMoreImagesLabel',
+    defaultMessage: '+ ADD MORE IMAGES'
   }
 })

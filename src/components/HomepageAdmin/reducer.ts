@@ -26,10 +26,18 @@ import {
   REMOVE_HEADER,
   EMPTY_TILE,
   EMPTY_SECONDARY_HEADER,
+  ADD_MORE_IMAGES,
+  ADD_MORE_TILES,
+  UPDATE_IMAGES_PLACEHOLDER_LIST,
+  UPDATE_PRODUCT_TILES_LIST,
   ImageTypes,
   Sections
 } from './constants'
-import { Reducer } from '../../types/common'
+import {
+  Reducer,
+  HeaderImagePlaceHolder,
+  ProductTilePlaceHolder
+} from '../../types/common'
 
 export const initialState = fromJS({
   mainHeader: {
@@ -204,6 +212,29 @@ const homepageAdminReducer: Reducer<any> = (state = initialState, action) => {
         }
       )
     }
+    case ADD_MORE_IMAGES:
+      return state.withMutations((tempState: any) => {
+        const initialLoadingValues = { desktopImage: false, mobileImage: false }
+        tempState.updateIn(
+          ['secondaryHeader'],
+          (images: [HeaderImagePlaceHolder]) =>
+            images.push(fromJS(action.imagePlaceholder))
+        )
+        tempState.updateIn(['secondaryHeaderLoading'], (loadings: [any]) =>
+          loadings.push(fromJS(initialLoadingValues))
+        )
+        return tempState
+      })
+    case UPDATE_IMAGES_PLACEHOLDER_LIST:
+      return state.set('secondaryHeader', action.list)
+    case ADD_MORE_TILES:
+      return state.updateIn(
+        ['productTiles'],
+        (tiles: [ProductTilePlaceHolder]) =>
+          tiles.push(fromJS(action.tilePlaceholder))
+      )
+    case UPDATE_PRODUCT_TILES_LIST:
+      return state.set('productTiles', action.tilesList)
     default:
       return state
   }
