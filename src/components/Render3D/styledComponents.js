@@ -17,7 +17,7 @@ export const Container = styled.div`
 
 export const Render = styled.div`
   height: ${({ customProduct, designSearch }) =>
-    customProduct || designSearch ? '535px' : '90vh'};
+    customProduct || designSearch ? '465px' : '90vh'};
   width: 100%;
   cursor: grab;
   @media (max-width: 375px) {
