@@ -205,16 +205,17 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const description = get(product, 'description', '')
     const materials = get(product, 'materials', '')
     const genders = get(product, 'genders', [] as Filter[])
-
+    const customizable = get(product, 'customizable', '')
     const isRetail =
-      get(product, 'retailMen', false) || get(product, 'retailWomen', false)
+      get(product, 'retailMen', false) ||
+      get(product, 'retailWomen', false) ||
+      !customizable
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
     // const template = get(product, 'template', '')
     const products = get(product, 'relatedProducts', [] as Product[])
 
     const mpnCode = get(product, 'mpn')
-    const customizable = get(product, 'customizable', '')
     const obj = get(product, 'obj', '')
     const mtl = get(product, 'mtl', '')
     const bannerMaterials = get(product, 'bannerMaterials', '')

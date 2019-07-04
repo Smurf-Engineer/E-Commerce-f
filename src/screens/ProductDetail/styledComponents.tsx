@@ -18,7 +18,9 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  margin-bottom: 24px;
+  max-width: 1658px;
+  margin: 0 auto;
+  margin-bottom: 36px;
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
   }
@@ -212,6 +214,10 @@ export const Separator = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.93px;
+  line-height: 18px;
 `
 
 export const TitleName = styled.div`

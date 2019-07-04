@@ -13,6 +13,10 @@ export const Title = styled.div`
   align-items: center;
   text-transform: uppercase;
   justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.93px;
+  line-height: 18px;
 
   @media (min-width: 1440px) {
     padding: 0px 10%;
@@ -20,7 +24,7 @@ export const Title = styled.div`
 `
 export const Divider = styled(AntDivider)`
   display: block;
-  margin: 28px 10%;
+  margin: 8px 10%;
   width: auto;
   min-width: 20px;
 `
