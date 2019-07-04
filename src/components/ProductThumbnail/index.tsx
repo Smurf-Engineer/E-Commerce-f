@@ -244,11 +244,18 @@ class ProductThumbnail extends React.Component<Props, {}> {
         </BuyNow>
       </RetailColors>
     )
-    const menAvailable =
-      !!product.genders && product.genders.some(gender => gender.name === 'Men')
-    const womenAvailable =
-      !!product.genders &&
-      product.genders.some(gender => gender.name === 'Women')
+    let menAvailable = false
+    let womenAvailable = false
+    if (!!product.genders) {
+      product.genders.forEach(gender => {
+        if (gender.name === 'Men') {
+          menAvailable = true
+        }
+        if (gender.name === 'Women') {
+          womenAvailable = true
+        }
+      })
+    }
     return (
       <Container>
         <ImageSlide
