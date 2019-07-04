@@ -290,7 +290,8 @@ export class FourthStep extends React.Component<Props, {}> {
 
   beforeUpload = (file: any) => {
     const isJPG = file.type === 'image/jpeg'
-    if (!isJPG) {
+    const isPNG = file.type === 'image/png'
+    if (!isJPG && !isPNG) {
       message.error('You can only upload JPG file!')
     }
     const isLt2M = file.size / 1024 / 1024 < 2
