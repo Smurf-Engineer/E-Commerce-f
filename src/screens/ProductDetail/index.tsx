@@ -22,22 +22,12 @@ import {
   Container,
   Content,
   TitleRow,
-  Title,
-  SlideImageContainer,
-  Subtitle,
+  Title,  Subtitle,
   ImagePreview,
   ColorWheel,
   ProductData,
-  AvailablePrices,
-  SlideVideo,
-  PricesRow,
-  TitleName,
-  Description,
-  Separator,
-  HowItFits,
-  ModelContainer,
-  SlideImage,
-  ButtonsRow,
+  AvailablePrices,  PricesRow,  Description,  HowItFits,
+  ModelContainer,  ButtonsRow,
   StyledButton,
   CompareButton,
   BannerMaterialSection,
@@ -50,9 +40,7 @@ import {
   SectionButton,
   SizeRowTitleRow,
   // GetFittedLabel, TODO: hide get fitted for Jakroo phase I
-  QuestionSpan,
-  RelatedProductsContainer,
-  // Downloadtemplate,
+  QuestionSpan,  // Downloadtemplate,
   // DownloadTemplateContainer,
   // DownloadAnchor,
   AvailableLabel,
@@ -76,9 +64,7 @@ import PriceQuantity from '../../components/PriceQuantity'
 import ProductInfo from '../../components/ProductInfo'
 import FitInfo from '../../components/FitInfo'
 import ImagesSlider from '../../components/ImageSlider'
-import YotpoReviews from '../../components/YotpoReviews'
 import AddtoCartButton from '../../components/AddToCartButton'
-import RelatedProducts from '../../components/RelatedProducts'
 import {
   Product,
   QueryProps,
@@ -92,7 +78,7 @@ import {
 } from '../../types/common'
 import { ProductGenders } from './constants'
 import config from '../../config/index'
-import { getFileExtension } from '../../utils/utilsFiles'
+import YotpoSection from '../../components/YotpoSection'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
 const COMPARABLE_PRODUCTS = ['TOUR', 'NOVA', 'FONDO']
@@ -197,7 +183,23 @@ export class ProductDetail extends React.Component<Props, StateProps> {
 
     const { formatMessage } = intl
     const { showDetails, showFits } = this.state
-
+    if ((!product || error) && !loading) {
+      return (
+        <Layout {...{ intl, history }}>
+          <Loading>
+            <FormattedMessage {...messages.productNotFound} />
+          </Loading>
+        </Layout>
+      )
+    } else if (loading) {
+      return (
+        <Layout {...{ intl, history }}>
+          <Loading>
+            <Spin />
+          </Loading>
+        </Layout>
+      )
+    }
     const name = get(product, 'name', '')
     // TODO: commented until MNP code gets implemented in all retail products
     // const code = get(product, 'code', '')
@@ -208,8 +210,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const customizable = get(product, 'customizable', '')
     const isRetail =
       get(product, 'retailMen', false) ||
-      get(product, 'retailWomen', false) ||
-      !customizable
+      get(product, 'retailWomen', !customizable)
     const imagesArray = get(product, 'images', [] as ImageType[])
     const reviewsScore = get(product, 'yotpoAverageScore', {})
     // const template = get(product, 'template', '')
@@ -257,23 +258,16 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     }
     const genderIndex = findIndex(imagesArray, searchObject)
 
-    const images = imagesArray[genderIndex] || imagesArray[0]
-
-    const moreImages =
-      imagesArray.length > 1
-        ? imagesArray.filter(({ genderId }) => genderId !== images.genderId)
-        : []
-
-    let retailPrice
-    if (!product || error) {
-      return (
-        <Layout {...{ intl, history }}>
-          <Loading>
-            <Spin />
-          </Loading>
-        </Layout>
+    let images = null
+    let moreImages = []
+    if (!!imagesArray) {
+      images = imagesArray[genderIndex] || imagesArray[0]
+      moreImages = imagesArray.filter(
+        ({ genderId: imageGender }) => imageGender !== images.genderId
       )
     }
+
+    let retailPrice
 
     const currencyPrices = filter(product.priceRange, {
       abbreviation: currentCurrency || config.defaultCurrency
@@ -619,39 +613,18 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          <YotpoReviews {...{ yotpoId }}>
-            {mediaFiles && !!mediaFiles.length && (
-              <div>
-                <Separator>
-                  <TitleName>{name}</TitleName>
-                  <FormattedMessage {...messages.featured} />
-                </Separator>
-                {mediaFiles.map(image => (
-                  <SlideImageContainer>
-                    {getFileExtension(image.url) === '.mp4' ? (
-                      <SlideVideo controls={true}>
-                        <source src={image.url} type="video/mp4" />
-                      </SlideVideo>
-                    ) : (
-                      <SlideImage src={image.url} />
-                    )}
-                  </SlideImageContainer>
-                ))}
-              </div>
-            )}
-            {product && !!products.length && (
-              <RelatedProductsContainer>
-                <RelatedProducts
-                  title={`${formatMessage(messages.more)} ${moreTag}`}
-                  currentCurrency={currentCurrency || config.defaultCurrency}
-                  {...{ products, history, formatMessage }}
-                />
-              </RelatedProductsContainer>
-            )}
-            <Separator>
-              <FormattedMessage {...messages.customerReview} />
-            </Separator>
-          </YotpoReviews>
+          <YotpoSection
+            {...{
+              yotpoId,
+              mediaFiles,
+              products,
+              moreTag,
+              name,
+              history,
+              formatMessage,
+              currentCurrency
+            }}
+          />
         </Container>
       </Layout>
     )

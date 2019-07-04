@@ -24,13 +24,9 @@ import {
   Title,
   Subtitle,
   EditDesignButton,
-  Separator,
   PricesRow,
-  TitleName,
   AvailablePrices,
   Description,
-  SlideImageContainer,
-  SlideImage,
   AvailableLabel,
   HowItFits,
   BuyNowOptions,
@@ -43,7 +39,6 @@ import {
   SectionButton,
   SizeRowTitleRow,
   QuestionSpan,
-  RelatedProductsContainer,
   ButtonsRow,
   DetailsList,
   DetailsListItem,
@@ -52,8 +47,7 @@ import {
   RenderContainer,
   PrivateSubtitle,
   ProApproved,
-  ProApprovedLabel,
-  SlideVideo
+  ProApprovedLabel
 } from './styledComponents'
 import Layout from '../../components/MainLayout'
 import {
@@ -74,13 +68,11 @@ import PriceQuantity from '../../components/PriceQuantity'
 import Ratings from '../../components/Ratings'
 import FitInfo from '../../components/FitInfo'
 import AddtoCartButton from '../../components/AddToCartButton'
-import RelatedProducts from '../../components/RelatedProducts'
 import ProductInfo from '../../components/ProductInfo'
-import YotpoReviews from '../../components/YotpoReviews'
 import withLoading from '../../components/WithLoading'
 import config from '../../config/index'
 import { ProductGenders } from '../ProductDetail/constants'
-import { getFileExtension } from '../../utils/utilsFiles'
+import YotpoSection from '../../components/YotpoSection'
 
 const MAX_AMOUNT_PRICES = 4
 const { Men, Women, Unisex } = ProductGenders
@@ -147,12 +139,13 @@ export class CustomProductDetail extends React.Component<Props, {}> {
 
     const shared = get(design, 'shared', false)
     const shortId = get(design, 'shortId', '')
+    const product = get(design, 'product', null)
 
     const designs = get(myDesigns, 'designs', [] as DesignType[])
 
     const ownedDesign = designs && designs.find(d => d.shortId === shortId)
 
-    if (error || (!shared && !ownedDesign)) {
+    if (!product || error || (!shared && !ownedDesign)) {
       return (
         <Layout {...{ history, intl }}>
           <PrivateContainer>
@@ -172,7 +165,6 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const designImage = get(design, 'image')
     const designCode = get(design, 'code', '')
     const proDesign = get(design, 'proDesign', false)
-    const product = get(design, 'product', null)
 
     const imagesArray = get(product, 'images', [])
     const genders = get(product, 'genders', [] as Filter[])
@@ -194,19 +186,19 @@ export class CustomProductDetail extends React.Component<Props, {}> {
     const relatedItemTag = get(product, 'relatedItemTag', '')
     const moreTag = relatedItemTag.replace(/_/, ' ')
 
-    const images = imagesArray && (imagesArray[genderIndex] || imagesArray[0])
-    const moreImages =
-      imagesArray.length > 1
-        ? imagesArray.filter(
-            ({ genderId: imageGender }) => imageGender !== images.genderId
-          )
-        : []
     const currencyPrices =
       product &&
       filter(product.priceRange, {
         abbreviation: currentCurrency || config.defaultCurrency
       })
-
+    let images = null
+    let moreImages = []
+    if (!!imagesArray) {
+      images = imagesArray[genderIndex] || imagesArray[0]
+      moreImages = imagesArray.filter(
+        ({ genderId: imageGender }) => imageGender !== images.genderId
+      )
+    }
     const symbol = currencyPrices ? currencyPrices[0].shortName : ''
 
     const renderPrices =
@@ -464,39 +456,18 @@ export class CustomProductDetail extends React.Component<Props, {}> {
               />
             </Content>
           )}
-          <YotpoReviews {...{ yotpoId }}>
-            {mediaFiles && !!mediaFiles.length && (
-              <div>
-                <Separator>
-                  <TitleName>{name}</TitleName>
-                  <FormattedMessage {...messages.featured} />
-                </Separator>
-                {mediaFiles.map(image => (
-                  <SlideImageContainer>
-                    {getFileExtension(image.url) === '.mp4' ? (
-                      <SlideVideo controls={true}>
-                        <source src={image.url} type="video/mp4" />
-                      </SlideVideo>
-                    ) : (
-                      <SlideImage src={image.url} />
-                    )}
-                  </SlideImageContainer>
-                ))}
-              </div>
-            )}
-            {product && !!products.length && (
-              <RelatedProductsContainer>
-                <RelatedProducts
-                  title={`${formatMessage(messages.more)} ${moreTag}`}
-                  currentCurrency={currentCurrency || config.defaultCurrency}
-                  {...{ products, history, formatMessage }}
-                />
-              </RelatedProductsContainer>
-            )}
-            <Separator>
-              <FormattedMessage {...messages.customerReview} />
-            </Separator>
-          </YotpoReviews>
+          <YotpoSection
+            {...{
+              yotpoId,
+              mediaFiles,
+              products,
+              moreTag,
+              name,
+              history,
+              formatMessage,
+              currentCurrency
+            }}
+          />
         </Container>
       </Layout>
     )
