@@ -21,7 +21,7 @@ export const Container = styled.div`
   margin-top: ${({ leftSide }: ContainerProps) => (leftSide ? '48px' : '0')};
   @media (min-width: 1440px) {
     max-height: ${({ leftSide }: ContainerProps) =>
-      leftSide ? '570px' : '800px'};
+      leftSide ? '570px' : '828px'};
     flex-flow: ${({ leftSide }: ContainerProps) =>
       leftSide ? 'row-reverse' : 'column'};
   }

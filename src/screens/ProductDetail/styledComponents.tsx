@@ -18,7 +18,9 @@ export const Container = styled.div`
 
 export const Content = styled.div`
   display: flex;
-  margin-bottom: 24px;
+  max-width: 1658px;
+  margin: 0 auto;
+  margin-bottom: 36px;
   @media (min-width: 320px) and (max-width: 480px) {
     display: block;
   }
@@ -190,15 +192,18 @@ export const StyledButtonWrapper = styled.div`
   }
 `
 export const SlideImage = styled.img`
-  height: 100%;
-  object-fit: contain;
   width: 100%;
 `
+
+export const SlideVideo = styled.video`
+  width: 100%;
+`
+
 export const SlideImageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 328px;
+  margin-top: 8px;
 `
 
 export const Separator = styled.div`
@@ -209,6 +214,10 @@ export const Separator = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.93px;
+  line-height: 18px;
 `
 
 export const TitleName = styled.div`

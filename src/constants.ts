@@ -52,3 +52,6 @@ export const ERROR_STATUS = 'Error'
 
 /* Quantity */
 export const PERSONAL = 'Personal'
+
+/* Files Constants */
+export const MP4_EXTENSION = '.mp4'
