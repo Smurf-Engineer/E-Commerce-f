@@ -12,6 +12,7 @@ import Button from 'antd/lib/button'
 import Uploader from './Uploader'
 import messages from './messages'
 import { ProductTiles } from '../../../types/common'
+import AddMoretilesButton from '../../Button'
 
 interface Props {
   productTiles: ProductTiles[]
@@ -21,18 +22,20 @@ interface Props {
   onSave: () => void
   onChangeText: (index: number, section: string, value: string) => void
   removeImage: (index: number) => void
+  handleAddMoreTiles: () => void
 }
 
 class Tiles extends React.Component<Props, {}> {
   render() {
     const {
       formatMessage,
-      productTiles,
+      productTiles = [],
       onUploadFile,
       saving,
       onSave,
       onChangeText,
-      removeImage
+      removeImage,
+      handleAddMoreTiles
     } = this.props
 
     const uploadItems = productTiles.map(
@@ -55,6 +58,10 @@ class Tiles extends React.Component<Props, {}> {
     return (
       <Container>
         <ScreenTitle>{formatMessage(messages.title)}</ScreenTitle>
+        <AddMoretilesButton
+          label={formatMessage(messages.addMoretilesLabel)}
+          onClick={handleAddMoreTiles}
+        />
         <UploadersContainer>{uploadItems}</UploadersContainer>
         <ButtonContainer>
           <Button loading={saving} onClick={onSave}>

@@ -337,7 +337,7 @@ export class FourthStep extends React.Component<Props, {}> {
     } = event
     const fileType = customizable ? 'genders' : 'colors'
     setFileField(fileType, fileId, name, 'loading')
-    uploadFile(file, fileId, name, 'picture').then(({ imageUri }) => {
+    uploadFile(file, fileId, 'picture', name).then(({ imageUri }) => {
       setFileField(fileType, fileId, name, imageUri)
     })
   }

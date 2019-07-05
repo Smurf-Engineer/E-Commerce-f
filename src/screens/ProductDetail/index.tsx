@@ -23,17 +23,24 @@ import {
   Content,
   TitleRow,
   Title,
+  SlideImageContainer,
   Subtitle,
   ImagePreview,
+  ColorWheel,
   ProductData,
   AvailablePrices,
   PricesRow,
+  TitleName,
   Description,
+  Separator,
   HowItFits,
   ModelContainer,
+  SlideImage,
   ButtonsRow,
   StyledButton,
   CompareButton,
+  BannerMaterialSection,
+  BannerMaterial,
   BuyNowOptions,
   SectionRow,
   SectionTitle,
@@ -44,7 +51,6 @@ import {
   // GetFittedLabel, TODO: hide get fitted for Jakroo phase I
   QuestionSpan,
   RelatedProductsContainer,
-  ReviewsHeader,
   // Downloadtemplate,
   // DownloadTemplateContainer,
   // DownloadAnchor,
@@ -60,6 +66,7 @@ import {
   MobileButtonWrapper,
   StyledButtonWrapper
 } from './styledComponents'
+import colorWheel from '../../assets/Colorwheel.svg'
 import Modal from '../../components/Common/JakrooModal'
 import Ratings from '../../components/Ratings'
 import Layout from '../../components/MainLayout'
@@ -79,10 +86,10 @@ import {
   SelectedType,
   Filter,
   PriceRange,
-  ProductColors
+  ProductColors,
+  ProductFile
 } from '../../types/common'
 import { ProductGenders } from './constants'
-// import DownloadIcon from '../../assets/download.svg'
 import config from '../../config/index'
 
 // const Desktop = (props: any) => <Responsive {...props} minWidth={768} />
@@ -129,14 +136,12 @@ interface Props extends RouteComponentProps<any> {
 
 interface StateProps {
   showDetails: boolean
-  showSpecs: boolean
   showFits: boolean
 }
 
 export class ProductDetail extends React.Component<Props, StateProps> {
   state = {
     showDetails: false,
-    showSpecs: false,
     showFits: false
   }
 
@@ -189,7 +194,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     } = this.props
 
     const { formatMessage } = intl
-    const { showDetails, showSpecs, showFits } = this.state
+    const { showDetails, showFits } = this.state
 
     const name = get(product, 'name', '')
     // TODO: commented until MNP code gets implemented in all retail products
@@ -210,7 +215,10 @@ export class ProductDetail extends React.Component<Props, StateProps> {
     const customizable = get(product, 'customizable', '')
     const obj = get(product, 'obj', '')
     const mtl = get(product, 'mtl', '')
-
+    const bannerMaterials = get(product, 'bannerMaterials', '')
+    const relatedItemTag = get(product, 'relatedItemTag', '')
+    const moreTag = relatedItemTag.replace(/_/, ' ')
+    const mediaFiles = get(product, 'mediaFiles', '')
     const colors = get(product, 'colors', [] as ProductColors[])
 
     const maleGender = genders.find(x => x.name === Men)
@@ -331,15 +339,9 @@ export class ProductDetail extends React.Component<Props, StateProps> {
           showContent={showDetails}
           toggleView={this.toggleProductInfo}
         >
-          <DetailsList>{details}</DetailsList>
-        </ProductInfo>
-        <ProductInfo
-          id="Specs"
-          title={formatMessage(messages.materialsLabel)}
-          showContent={showSpecs}
-          toggleView={this.toggleProductInfo}
-        >
-          {materialsLit}
+          <DetailsList>
+            {details} {materialsLit}
+          </DetailsList>
         </ProductInfo>
       </div>
     )
@@ -517,7 +519,7 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                             open={showFits}
                             requestClose={this.toggleFitsModal(false)}
                             width={'90%'}
-                            style={{ maxWidth: '1024px' }}
+                            style={{ maxWidth: '704px' }}
                             withLogo={false}
                           >
                             <ImagesSlider
@@ -562,13 +564,6 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                     </Desktop>
                   )} */}
               </ImagePreview>
-              {!isRetail && (
-                <MobileButtonWrapper>
-                  <MobileButton type="primary" onClick={this.gotoCustomize}>
-                    {formatMessage(messages.customizeLabel)}
-                  </MobileButton>
-                </MobileButtonWrapper>
-              )}
               <ProductData>
                 <TitleRow>
                   <TitleSubtitleContainer>
@@ -586,12 +581,26 @@ export class ProductDetail extends React.Component<Props, StateProps> {
                   rating={get(reviewsScore, 'averageScore', 0)}
                   totalReviews={get(reviewsScore, 'total', 0)}
                 />
+                {!isRetail && (
+                  <MobileButtonWrapper>
+                    <MobileButton onClick={this.gotoCustomize}>
+                      <ColorWheel src={colorWheel} />
+                      {formatMessage(messages.customizeLabel)}
+                    </MobileButton>
+                  </MobileButtonWrapper>
+                )}
                 <Description>{description}</Description>
                 <AvailableLabel>{formatMessage(genderMessage)}</AvailableLabel>
+                <BannerMaterialSection>
+                  {bannerMaterials.map((banner: ProductFile) => (
+                    <BannerMaterial src={banner.url} />
+                  ))}
+                </BannerMaterialSection>
                 <ButtonsRow>
                   {!isRetail && (
                     <StyledButtonWrapper>
-                      <StyledButton type="primary" onClick={this.gotoCustomize}>
+                      <StyledButton onClick={this.gotoCustomize}>
+                        <ColorWheel src={colorWheel} />
                         {formatMessage(messages.customizeLabel)}
                       </StyledButton>
                     </StyledButtonWrapper>
@@ -607,18 +616,33 @@ export class ProductDetail extends React.Component<Props, StateProps> {
               />
             </Content>
           )}
-          {product && !!products.length && (
-            <RelatedProductsContainer>
-              <RelatedProducts
-                currentCurrency={currentCurrency || config.defaultCurrency}
-                {...{ products, history, formatMessage }}
-              />
-            </RelatedProductsContainer>
-          )}
-          <ReviewsHeader>
-            <FormattedMessage {...messages.reviews} />
-          </ReviewsHeader>
-          <YotpoReviews {...{ yotpoId }} />
+          <YotpoReviews {...{ yotpoId }}>
+            {mediaFiles && !!mediaFiles.length && (
+              <div>
+                <Separator>
+                  <TitleName>{name}</TitleName>
+                  <FormattedMessage {...messages.featured} />
+                </Separator>
+                {mediaFiles.map(image => (
+                  <SlideImageContainer>
+                    <SlideImage src={image.url} />
+                  </SlideImageContainer>
+                ))}
+              </div>
+            )}
+            {product && !!products.length && (
+              <RelatedProductsContainer>
+                <RelatedProducts
+                  title={`${formatMessage(messages.more)} ${moreTag}`}
+                  currentCurrency={currentCurrency || config.defaultCurrency}
+                  {...{ products, history, formatMessage }}
+                />
+              </RelatedProductsContainer>
+            )}
+            <Separator>
+              <FormattedMessage {...messages.customerReview} />
+            </Separator>
+          </YotpoReviews>
         </Container>
       </Layout>
     )

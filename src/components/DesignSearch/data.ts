@@ -81,3 +81,11 @@ export const getDesignSearchCode = gql`
     }
   }
 `
+
+export const generatePdfMutation = gql`
+  mutation generatePdf($code: String!) {
+    generatePdf(code: $code) {
+      message
+    }
+  }
+`
