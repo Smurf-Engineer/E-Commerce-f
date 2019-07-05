@@ -2,13 +2,9 @@
  * FeaturedProducts Component - Created by cazarez on 22/05/18.
  */
 import * as React from 'react'
-
-import { compose, graphql } from 'react-apollo'
-
 import Caroussel from 'react-slick'
 import Spin from 'antd/lib/spin'
 import messages from './messages'
-import { GetProductsQuery } from './data'
 import {
   Container,
   Title,
@@ -19,15 +15,12 @@ import {
 import ProductThumbnail from '../ProductThumbnail'
 import leftArrow from '../../assets/leftarrow.svg'
 import rightArrow from '../../assets/arrow.svg'
-import { QueryProps, Product } from '../../types/common'
+import { Product } from '../../types/common'
 
-interface Data extends QueryProps {
-  featuredProducts: Product[]
-}
 interface Props {
-  data: Data
   history: any
-  currentCurrency: string
+  featuredProducts: Product[]
+  currentCurrency?: string
   formatMessage: (messageDescriptor: any) => string
   openQuickView: (id: number, yotpoId: string, gender: number) => void
 }
@@ -76,14 +69,10 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       openQuickView,
       formatMessage,
       currentCurrency,
-      data: { loading, featuredProducts, error }
+      featuredProducts
     } = this.props
 
-    if (error) {
-      return null
-    }
-
-    if (loading) {
+    if (!!!featuredProducts.length) {
       return (
         <Loading>
           <Spin />
@@ -105,6 +94,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
           customizable,
           colors
         } = product
+
         return (
           <div {...{ key }}>
             <ProductThumbnail
@@ -134,10 +124,12 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
           </div>
         )
       })
-    const slides =
-      featuredProducts.length - 1 < defaultSlideToShow
-        ? featuredProducts.length - 1
-        : defaultSlideToShow
+    let slides = defaultSlideToShow
+    if (featuredProducts.length === 1) {
+      slides = 1
+    } else if (featuredProducts.length - 1 < defaultSlideToShow) {
+      slides = featuredProducts.length - 1
+    }
 
     return (
       <Container>
@@ -161,8 +153,4 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
   }
 }
 
-const FeaturedProductsEnhanced = compose(graphql<Data>(GetProductsQuery))(
-  FeaturedProducts
-)
-
-export default FeaturedProductsEnhanced
+export default FeaturedProducts

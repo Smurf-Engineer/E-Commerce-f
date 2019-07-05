@@ -2,6 +2,7 @@
  * Styled Components - Created by david on 07/02/18.
  */
 import styled from 'styled-components'
+import { GRAY_DARK, RED } from '../../theme/colors'
 
 export const Container = styled.div`
   display: flex;
@@ -10,8 +11,12 @@ export const Container = styled.div`
   flex-direction: row;
 `
 
+interface OptionDropdownProps {
+  selected?: boolean
+}
+
 export const OptionDropdown = styled.div`
-  color: #5f6062;
+  color: ${({ selected }: OptionDropdownProps) => (selected ? RED : GRAY_DARK)};
   font-size: 18px;
   cursor: pointer;
   text-transform: uppercase;

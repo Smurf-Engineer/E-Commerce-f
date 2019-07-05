@@ -1228,6 +1228,7 @@ export interface DesignSearchCode {
 export interface NavbarSports {
   name: string
   menuOpen: boolean
+  route: string
 }
 export interface SimpleCart {
   id: number
@@ -1265,4 +1266,11 @@ export interface ProductTilePlaceHolder {
   contentTile?: string
   image?: string
   sport_id?: string | null
+}
+
+export interface HomepageImagesType {
+  id: number
+  desktopImage: string
+  mobilemage: string
+  url: string
 }

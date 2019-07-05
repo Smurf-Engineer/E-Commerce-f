@@ -13,9 +13,10 @@ export const getSportsMenu = (client: any) => {
         fetchPolicy: 'network-only'
       })
       const sportsData = get(response, 'data.sports', [])
-      const sportOptions = sportsData.map((sport: NavbarSports) => ({
-        label: sport.name.toLowerCase(),
-        menuOpen: false
+      const sportOptions = sportsData.map(({ name, route }: NavbarSports) => ({
+        label: name.toLowerCase(),
+        menuOpen: false,
+        route
       }))
       dispatch(setSportsAction(sportOptions, sportsData))
     } catch (e) {
