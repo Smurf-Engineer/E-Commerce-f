@@ -3,7 +3,8 @@
  */
 
 import gql from 'graphql-tag'
-
+// TODO: Check if all the data requested in the featuredProducts field
+// is required
 export const getHomepageInfo = gql`
   query getHomepageContent($sportRoute: String) {
     getHomepageContent(sportRoute: $sportRoute) {

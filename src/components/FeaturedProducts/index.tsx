@@ -72,7 +72,7 @@ export class FeaturedProducts extends React.PureComponent<Props, {}> {
       featuredProducts
     } = this.props
 
-    if (!!!featuredProducts.length) {
+    if (!featuredProducts.length) {
       return (
         <Loading>
           <Spin />

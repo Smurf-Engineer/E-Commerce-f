@@ -16,7 +16,7 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
   render() {
     const { featuredContent = [] } = this.props
     const content = featuredContent.map(
-      ({ desktopImage, mobilemage, url }, key) => {
+      ({ desktopImage, mobileImage, url }, key) => {
         return (
           <MediaQuery {...{ key }} minWidth={640}>
             {matches => {
@@ -32,7 +32,7 @@ export class FeaturedContent extends React.PureComponent<Props, {}> {
               }
               return (
                 <a>
-                  <StyledImg src={mobilemage} onClick={this.handleGoTo(url)} />
+                  <StyledImg src={mobileImage} onClick={this.handleGoTo(url)} />
                 </a>
               )
             }}

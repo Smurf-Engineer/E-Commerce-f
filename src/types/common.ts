@@ -1271,6 +1271,6 @@ export interface ProductTilePlaceHolder {
 export interface HomepageImagesType {
   id: number
   desktopImage: string
-  mobilemage: string
+  mobileImage: string
   url: string
 }

@@ -18,6 +18,7 @@ import {
   setMenuSportSelectedAction,
   setGenderSportAction
 } from './actions'
+import { sportRoutePosition } from './constants'
 import { Filter } from '../../types/common'
 import {
   Option,
@@ -151,7 +152,7 @@ export class DropdownList extends React.PureComponent<Props> {
     }
   }
 
-  handleOnHideSportsMenu = (visible: boolean, index: number) => {
+  handleOnHideSportsMenu = (index: number) => (visible: boolean) => {
     const { dispatch } = this.props
     dispatch(setMenuSportSelectedAction(index, visible))
 
@@ -180,7 +181,7 @@ export class DropdownList extends React.PureComponent<Props> {
     const sportMenus =
       sportOptions &&
       sportOptions.map(({ label: name, menuOpen, route }, index) => {
-        const sportSelected = sportRoute[1] === route
+        const sportSelected = sportRoute[sportRoutePosition] === route
         return (
           <Menu.Item key={name}>
             <Popover
@@ -189,9 +190,7 @@ export class DropdownList extends React.PureComponent<Props> {
               placement="bottom"
               visible={menuOpen}
               mouseEnterDelay={0.3}
-              onVisibleChange={isVisible =>
-                this.handleOnHideSportsMenu(isVisible, index)
-              }
+              onVisibleChange={this.handleOnHideSportsMenu(index)}
               content={
                 <MenuSports
                   {...{
