@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import { isNumber } from '../../utils/utilsFiles'
 import { FormattedMessage } from 'react-intl'
 import * as ProductInternalActions from './actions'
 import {
@@ -13,6 +14,7 @@ import {
   AddInternalButton
 } from './styledComponents'
 import List from './InternalsList'
+import InternalsModal from './InternalsModal'
 import messages from './messages'
 import { sorts, ProductInternal } from '../../types/common'
 
@@ -21,15 +23,18 @@ interface Props {
   currentPage: number
   orderBy: string
   sort: sorts
-  internalId: number
+  internalId: string
   searchText: string
+  productCode: string
   formatMessage: (messageDescriptor: any) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setInternalIdAction: (internalId: string) => void
+  setIdAction: (id: number) => void
   setSearchTextAction: (searchText: string) => void
   setLoadingAction: (loading: boolean) => void
+  setTextAction: (field: string, value: string) => void
+  onSelectChangeAction: (value: string, id: string) => void
 }
 
 class ProductInternalsAdmin extends React.Component<Props, {}> {
@@ -39,7 +44,16 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
   }
 
   render() {
-    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
+    const {
+      currentPage,
+      orderBy,
+      sort,
+      formatMessage,
+      searchText,
+      internalId,
+      productCode,
+      onSelectChangeAction
+    } = this.props
 
     return (
       <Container>
@@ -61,6 +75,24 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
         />
+        <InternalsModal
+          open={true}
+          requestClose={this.handleOnCloseDiscountModal}
+          handleOnInputChange={this.handleOnInputChange}
+          handleOnSelectChange={onSelectChangeAction}
+          onSaveDiscount={this.handleOnSaveDiscount}
+          {...{
+            formatMessage,
+            internalId,
+            productCode,
+            discountItemId: '',
+            discountTypes: ['%'],
+            rate: 1,
+            discountActive: true,
+            expiry: '',
+            loading: false
+          }}
+        />
       </Container>
     )
   }
@@ -78,6 +110,19 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
     const { setCurrentPageAction } = this.props
     setCurrentPageAction(page)
   }
+  handleOnInputChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget,
+      currentTarget: { value, id }
+    } = event
+    const { setTextAction } = this.props
+    const acceptNumbersOnly = currentTarget.getAttribute('data-is-number')
+    if (acceptNumbersOnly && (!isNumber(value) && value !== '')) {
+      return
+    }
+    setTextAction(id, value)
+  }
+
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
     const { setSearchTextAction } = this.props
     const {

@@ -6,9 +6,11 @@ import {
   SET_ORDER_BY,
   SET_CURRENT_PAGE,
   RESET_DATA,
-  SET_INTERNAL_ID,
+  SET_ID,
   SET_SEARCH_TEXT,
-  SET_LOADING
+  SET_LOADING,
+  SET_TEXT,
+  SELECT_CHANGE
 } from './constants'
 
 import { AnyAction, sorts } from '../../types/common'
@@ -28,9 +30,9 @@ export const resetDataAction = (): AnyAction => ({
   type: RESET_DATA
 })
 
-export const setInternalIdAction = (internalId: string): AnyAction => ({
-  type: SET_INTERNAL_ID,
-  internalId
+export const setIdAction = (id: number): AnyAction => ({
+  type: SET_ID,
+  id
 })
 
 export const setSearchTextAction = (searchText: string) => ({
@@ -41,4 +43,16 @@ export const setSearchTextAction = (searchText: string) => ({
 export const setLoadingAction = (loading: boolean) => ({
   type: SET_LOADING,
   loading
+})
+
+export const setTextAction = (field: string, value: string) => ({
+  type: SET_TEXT,
+  field,
+  value
+})
+
+export const onSelectChangeAction = (value: string, id: string) => ({
+  type: SELECT_CHANGE,
+  value,
+  id
 })
