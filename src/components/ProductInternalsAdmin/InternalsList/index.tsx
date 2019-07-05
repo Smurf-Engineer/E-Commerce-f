@@ -62,6 +62,32 @@ const InternalsList = ({
   if (!internals || !internals.length) {
     return <EmptyContainer message={formatMessage(messages.emptyMessage)} />
   }
+  const productHeaders = [
+    { title: 'internalId', id: 'internal_id' },
+    { title: 'productCode', id: 'product_code' },
+    { title: 'gender', id: 'gender' },
+    { title: 'size', id: 'size' },
+    { title: 'fitStyle', id: 'fit_style' },
+    { title: 'color', id: 'color' },
+    { title: 'frontZipper', id: 'front_zipper' },
+    { title: 'pocketZipper', id: 'pocket_zipper' },
+    { title: 'binding', id: 'binding' },
+    { title: 'bibBrace', id: 'bib_brace' },
+    { title: 'productCode', id: 'collection' }
+  ]
+
+  const mobileHeaders = productHeaders.map(({ title, id }) => (
+    <Header key={id}>{formatMessage(messages[title])}</Header>
+  ))
+
+  const headers = productHeaders.map(({ title, id }) => (
+    <HeaderTable
+      key={id}
+      label={formatMessage(messages[title])}
+      sort={orderBy === id ? sort : 'none'}
+      {...{ onSortClick, interactiveHeaders, id }}
+    />
+  ))
 
   const header = (
     <MediaQuery maxWidth={768}>
@@ -69,90 +95,15 @@ const InternalsList = ({
         if (matches) {
           return (
             <Row>
-              <Header>{formatMessage(messages.internalId)}</Header>
-              <Header>{formatMessage(messages.productCode)}</Header>
-              <Header>{formatMessage(messages.gender)}</Header>
-              <Header>{formatMessage(messages.size)}</Header>
-              <Header>{formatMessage(messages.fitStyle)}</Header>
-              <Header>{formatMessage(messages.color)}</Header>
-              <Header>{formatMessage(messages.bibBrace)}</Header>
-              <Header>{formatMessage(messages.frontZipper)}</Header>
-              <Header>{formatMessage(messages.pocketZipper)}</Header>
-              <Header>{formatMessage(messages.binding)}</Header>
-              <Header>{formatMessage(messages.collection)}</Header>
-              <Header>{''}}</Header>
+              {mobileHeaders}
+              <Header>{''}</Header>
             </Row>
           )
         }
 
         return (
           <Row>
-            <HeaderTable
-              id={'internal_id'}
-              label={formatMessage(messages.internalId)}
-              sort={orderBy === 'internal_id' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'product_code'}
-              label={formatMessage(messages.productCode)}
-              sort={orderBy === 'product_code' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'gender'}
-              label={formatMessage(messages.gender)}
-              sort={orderBy === 'gender' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'size'}
-              label={formatMessage(messages.size)}
-              sort={orderBy === 'size' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'fit_style'}
-              label={formatMessage(messages.fitStyle)}
-              sort={orderBy === 'fit_style' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'color'}
-              label={formatMessage(messages.color)}
-              sort={orderBy === 'color' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'front_zipper'}
-              label={formatMessage(messages.frontZipper)}
-              sort={orderBy === 'front_zipper' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'pocket_zipper'}
-              label={formatMessage(messages.pocketZipper)}
-              sort={orderBy === 'pocket_zipper' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'binding'}
-              label={formatMessage(messages.binding)}
-              sort={orderBy === 'binding' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'bib_brace'}
-              label={formatMessage(messages.bibBrace)}
-              sort={orderBy === 'bib_brace' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
-            <HeaderTable
-              id={'collection'}
-              label={formatMessage(messages.collection)}
-              sort={orderBy === 'collection' ? sort : 'none'}
-              {...{ onSortClick, interactiveHeaders }}
-            />
+            {headers}
             <HeaderTable
               id={'edit'}
               label={''}
