@@ -4,7 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
-import { isNumber } from '../../utils/utilsFiles'
+import debounce from 'lodash/debounce'
 import { FormattedMessage } from 'react-intl'
 import * as ProductInternalActions from './actions'
 import {
@@ -14,46 +14,46 @@ import {
   AddInternalButton
 } from './styledComponents'
 import List from './InternalsList'
-import InternalsModal from './InternalsModal'
 import messages from './messages'
-import { sorts, ProductInternal } from '../../types/common'
+import { sorts, ProductInternal, Message } from '../../types/common'
 
 interface Props {
   history: any
   currentPage: number
   orderBy: string
   sort: sorts
-  internalId: string
+  internalId: number
   searchText: string
-  productCode: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
-  setIdAction: (id: number) => void
+  setInternalIdAction: (internalId: string) => void
   setSearchTextAction: (searchText: string) => void
   setLoadingAction: (loading: boolean) => void
-  setTextAction: (field: string, value: string) => void
-  onSelectChangeAction: (value: string, id: string) => void
 }
 
-class ProductInternalsAdmin extends React.Component<Props, {}> {
+interface StateProps {
+  searchValue: string
+}
+class ProductInternalsAdmin extends React.Component<Props, StateProps> {
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.setSearchTextAction(this.state.searchValue),
+    600
+  )
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      searchValue: ''
+    }
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
   }
 
   render() {
-    const {
-      currentPage,
-      orderBy,
-      sort,
-      formatMessage,
-      searchText,
-      internalId,
-      productCode,
-      onSelectChangeAction
-    } = this.props
+    const { currentPage, orderBy, sort, formatMessage, searchText } = this.props
 
     return (
       <Container>
@@ -64,7 +64,7 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
           {formatMessage(messages.addInternalLabel)}
         </AddInternalButton>
         <SearchInput
-          value={searchText}
+          value={this.state.searchValue}
           onChange={this.handleInputChange}
           placeholder={formatMessage(messages.search)}
         />
@@ -74,24 +74,6 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
           onInternalClick={this.handleOnInternalClick}
           onChangePage={this.handleOnChangePage}
           interactiveHeaders={true}
-        />
-        <InternalsModal
-          open={true}
-          requestClose={this.handleOnCloseDiscountModal}
-          handleOnInputChange={this.handleOnInputChange}
-          handleOnSelectChange={onSelectChangeAction}
-          onSaveDiscount={this.handleOnSaveDiscount}
-          {...{
-            formatMessage,
-            internalId,
-            productCode,
-            discountItemId: '',
-            discountTypes: ['%'],
-            rate: 1,
-            discountActive: true,
-            expiry: '',
-            loading: false
-          }}
         />
       </Container>
     )
@@ -110,26 +92,14 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
     const { setCurrentPageAction } = this.props
     setCurrentPageAction(page)
   }
-  handleOnInputChange = (event: React.FormEvent<HTMLInputElement>) => {
-    const {
-      currentTarget,
-      currentTarget: { value, id }
-    } = event
-    const { setTextAction } = this.props
-    const acceptNumbersOnly = currentTarget.getAttribute('data-is-number')
-    if (acceptNumbersOnly && (!isNumber(value) && value !== '')) {
-      return
-    }
-    setTextAction(id, value)
-  }
-
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setSearchTextAction } = this.props
     const {
       currentTarget: { value }
     } = evt
     evt.persist()
-    setSearchTextAction(value)
+    this.setState({ searchValue: value }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
   }
 }
 
