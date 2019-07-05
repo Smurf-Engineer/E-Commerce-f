@@ -312,7 +312,6 @@ export class ProductForm extends React.Component<Props, {}> {
           code,
           categoryName,
           sports,
-          relatedItemTag,
           description,
           weight,
           shortDescription
@@ -334,7 +333,6 @@ export class ProductForm extends React.Component<Props, {}> {
           materials &&
           categoryName &&
           (sportSelected || hasNewSport) &&
-          relatedItemTag &&
           description &&
           weight &&
           shortDescription
