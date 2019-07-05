@@ -4,13 +4,9 @@
 
 import gql from 'graphql-tag'
 
-export const categoriesQuery = gql`
-  query GetCategories {
-    genders {
-      id
-      name: gender
-    }
-    sports {
+export const getSportsQuery = gql`
+  query GetSports {
+    sports(navbarSports: true) {
       id
       name
     }
