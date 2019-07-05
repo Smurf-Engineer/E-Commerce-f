@@ -4,6 +4,7 @@
 import * as React from 'react'
 import { compose } from 'react-apollo'
 import { connect } from 'react-redux'
+import debounce from 'lodash/debounce'
 import { isNumber } from '../../utils/utilsFiles'
 import { FormattedMessage } from 'react-intl'
 import * as ProductInternalActions from './actions'
@@ -16,7 +17,7 @@ import {
 import List from './InternalsList'
 import InternalsModal from './InternalsModal'
 import messages from './messages'
-import { sorts, ProductInternal } from '../../types/common'
+import { sorts, ProductInternal, Message } from '../../types/common'
 
 interface Props {
   history: any
@@ -26,7 +27,7 @@ interface Props {
   internalId: string
   searchText: string
   productCode: string
-  formatMessage: (messageDescriptor: any) => string
+  formatMessage: (messageDescriptor: Message) => string
   setOrderByAction: (orderBy: string, sort: sorts) => void
   setCurrentPageAction: (page: number) => void
   resetDataAction: () => void
@@ -37,7 +38,20 @@ interface Props {
   onSelectChangeAction: (value: string, id: string) => void
 }
 
-class ProductInternalsAdmin extends React.Component<Props, {}> {
+interface StateProps {
+  searchValue: string
+}
+class ProductInternalsAdmin extends React.Component<Props, StateProps> {
+  raiseSearchWhenUserStopsTyping = debounce(
+    () => this.props.setSearchTextAction(this.state.searchValue),
+    600
+  )
+  constructor(props: Props) {
+    super(props)
+    this.state = {
+      searchValue: ''
+    }
+  }
   componentWillUnmount() {
     const { resetDataAction } = this.props
     resetDataAction()
@@ -64,7 +78,7 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
           {formatMessage(messages.addInternalLabel)}
         </AddInternalButton>
         <SearchInput
-          value={searchText}
+          value={this.state.searchValue}
           onChange={this.handleInputChange}
           placeholder={formatMessage(messages.search)}
         />
@@ -124,12 +138,13 @@ class ProductInternalsAdmin extends React.Component<Props, {}> {
   }
 
   handleInputChange = (evt: React.FormEvent<HTMLInputElement>) => {
-    const { setSearchTextAction } = this.props
     const {
       currentTarget: { value }
     } = evt
     evt.persist()
-    setSearchTextAction(value)
+    this.setState({ searchValue: value }, () => {
+      this.raiseSearchWhenUserStopsTyping()
+    })
   }
 }
 
