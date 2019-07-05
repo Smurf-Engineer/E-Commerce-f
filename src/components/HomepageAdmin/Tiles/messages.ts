@@ -12,5 +12,9 @@ export default defineMessages({
   saveChanges: {
     id: 'components.SecondaryHeader.saveChanges',
     defaultMessage: 'Save Changes'
+  },
+  addMoretilesLabel: {
+    id: 'components.SecondatyHeader.addMoretilesLabel',
+    defaultMessage: '+ ADD MORE TILES'
   }
 })

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import Button from 'antd/lib/button'
+import { StyledButton } from './styledComponents'
 
 interface Props {
   label: string
@@ -8,9 +8,9 @@ interface Props {
 
 const MyButton = ({ label, onClick }: Props) => {
   return (
-    <Button type="primary" {...{ onClick }}>
+    <StyledButton type="primary" {...{ onClick }}>
       {label}
-    </Button>
+    </StyledButton>
   )
 }
 

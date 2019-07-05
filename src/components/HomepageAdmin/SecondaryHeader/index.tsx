@@ -12,6 +12,7 @@ import {
 } from './styledComponents'
 import Uploader from './Uploader'
 import messages from './messages'
+import AddMoreButton from '../../Button'
 
 interface Props {
   loading: any
@@ -27,6 +28,7 @@ interface Props {
   setUrl: (value: string, index: number) => void
   onSaveHeader: () => void
   removeImage: (index: number) => void
+  handleAddMoreImages: () => void
 }
 
 class SecondaryHeader extends React.Component<Props, {}> {
@@ -39,7 +41,8 @@ class SecondaryHeader extends React.Component<Props, {}> {
       saving,
       onUploadFile,
       setUrl,
-      removeImage
+      removeImage,
+      handleAddMoreImages
     } = this.props
 
     const uploadItems = secondaryHeader.map((item: any, index: number) => (
@@ -59,6 +62,10 @@ class SecondaryHeader extends React.Component<Props, {}> {
     return (
       <Container>
         <Title>{formatMessage(messages.mainHeaderTitle)}</Title>
+        <AddMoreButton
+          label={formatMessage(messages.addMoreImagesLabel)}
+          onClick={handleAddMoreImages}
+        />
         <UploadersContainer>{uploadItems}</UploadersContainer>
         <ButtonContainer>
           <Button loading={saving} onClick={onSaveHeader}>
