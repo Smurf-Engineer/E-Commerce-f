@@ -14,6 +14,7 @@ export const OptionDropdown = styled.div`
   color: #5f6062;
   font-size: 18px;
   cursor: pointer;
+  text-transform: uppercase;
 `
 export const Option = styled.div`
   height: 100%;

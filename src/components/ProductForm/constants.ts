@@ -38,7 +38,7 @@ export const stepsArray = [
     title: 'Product page assets'
   }
 ]
-
+export const validTypes = ['image/jpeg', 'image/png']
 export const FIRST_STEP = 0
 export const SECOND_STEP = 1
 export const THIRD_STEP = 2

@@ -1225,6 +1225,10 @@ export interface DesignSearchCode {
   code: string
 }
 
+export interface NavbarSports {
+  name: string
+  menuOpen: boolean
+}
 export interface SimpleCart {
   id: number
   quantity: number

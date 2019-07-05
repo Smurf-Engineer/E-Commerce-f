@@ -7,6 +7,7 @@ import {
   SET_SELECTED_GENDER,
   SET_SELECTED_SIZE,
   SET_SELECTED_FIT,
+  SET_FITS_MODAL,
   OPEN_FITINFO,
   SET_SHOW_DETAILS,
   SET_SHOW_SPECS,
@@ -21,7 +22,8 @@ export const initialState = fromJS({
   selectedFit: {},
   openFitInfo: false,
   showDetails: false,
-  showSpecs: false
+  showSpecs: false,
+  showFitsModal: false
 })
 
 const customProductDetailReducer: Reducer<any> = (
@@ -37,6 +39,8 @@ const customProductDetailReducer: Reducer<any> = (
       return state.set('selectedSize', action.selected)
     case SET_SELECTED_FIT:
       return state.set('selectedFit', action.selected)
+    case SET_FITS_MODAL:
+      return state.set('showFitsModal', action.showFits)
     case OPEN_FITINFO:
       return state.set('openFitInfo', action.open)
     case SET_SHOW_DETAILS:

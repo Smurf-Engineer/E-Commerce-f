@@ -35,6 +35,7 @@ import {
 } from '../../../../types/common'
 import videoPlaceHolder from '../../../../assets/video-placeholder.jpg'
 import { getFileExtension, getFileName } from '../../../../utils/utilsFiles'
+import { validTypes } from '../../constants'
 const Dragger = Upload.Dragger
 interface Props {
   productMaterials: ProductFile[]
@@ -289,15 +290,15 @@ export class FourthStep extends React.Component<Props, {}> {
   }
 
   beforeUpload = (file: any) => {
-    const isJPG = file.type === 'image/jpeg'
-    if (!isJPG) {
+    const isValidType = validTypes.includes(file.type)
+    if (!isValidType) {
       message.error('You can only upload JPG file!')
     }
     const isLt2M = file.size / 1024 / 1024 < 2
     if (!isLt2M) {
       message.error('Image must smaller than 2MB!')
     }
-    return isJPG && isLt2M
+    return isValidType && isLt2M
   }
 
   beforeUploadMedia = (file: any) => {
