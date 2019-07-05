@@ -11,7 +11,7 @@ export default defineMessages({
   },
   backToEditNavigation: {
     id: 'components.HomepageAdmin.backToEditNavigation',
-    defaultMessage: 'Back to edit main navigationn'
+    defaultMessage: 'Back to edit main navigation'
   },
   updatedHeaderSuccess: {
     id: 'components.HomeAdmin.updatedHeaderSuccess',

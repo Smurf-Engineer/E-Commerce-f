@@ -138,6 +138,7 @@ class HomepageAdmin extends React.Component<Props, {}> {
       console.error(e)
     }
   }
+
   handleOnUploadFile = async (
     file: any,
     section: string,

@@ -9,6 +9,7 @@ export const getSportsQuery = gql`
     sports(navbarSports: true) {
       id
       name
+      route
     }
   }
 `

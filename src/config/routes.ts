@@ -203,7 +203,7 @@ const routes = [
     component: NotFound
   },
   {
-    path: '/:region',
+    path: '/:sportRoute?/:region',
     name: 'home',
     exact: true,
     component: Home
