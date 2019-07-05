@@ -18,10 +18,10 @@ export const initialState = fromJS({
     { label: 'women', visible: false }
   ],
   sportOptions: [
-    { label: 'cycling', visible: false },
-    { label: 'triathlon', visible: false },
+    { label: 'cycling', menuOpen: false },
+    { label: 'triathlon', menuOpen: false },
     // { label: 'nordic', visible: false }, TODO: uncomment when nordic will be needed
-    { label: 'active', visible: false }
+    { label: 'active', menuOpen: false }
   ],
   sports: [],
   genderSportSelected: 0
@@ -33,7 +33,7 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
       const { index, visible } = action
       const genderOptions = state.get('genderOptions')
       const updatedGenderOptions = genderOptions.update(index, (sport: any) => {
-        const updatedGender = sport.set('visible', visible)
+        const updatedGender = sport.set('menuOpen', visible)
         return updatedGender
       })
       return state.set('genderOptions', updatedGenderOptions)
@@ -42,7 +42,7 @@ const menuReducer: Reducer<any> = (state = initialState, action) => {
       const { index, visible } = action
       const sportOptions = state.get('sportOptions')
       const updatedSportOptions = sportOptions.update(index, (sport: any) => {
-        const updatedSport = sport.set('visible', visible)
+        const updatedSport = sport.set('menuOpen', visible)
         return updatedSport
       })
       return state.set('sportOptions', updatedSportOptions)

@@ -1227,8 +1227,7 @@ export interface DesignSearchCode {
 
 export interface NavbarSports {
   name: string
-  visible: boolean
-  navbar: boolean
+  menuOpen: boolean
 }
 export interface SimpleCart {
   id: number

@@ -6,10 +6,9 @@ import gql from 'graphql-tag'
 
 export const getSportsQuery = gql`
   query GetSports {
-    sports {
+    sports(navbarSports: true) {
       id
       name
-      navbar
     }
   }
 `
